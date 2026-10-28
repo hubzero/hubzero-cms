@@ -16,28 +16,28 @@ class Xml
     /**
      * No error
      */
-    const XML_ERROR_NONE = null;
+    public const XML_ERROR_NONE = null;
 
     /**
      * Error message type for depth
      */
-    const XML_ERROR_DEPTH = 1;
+    public const XML_ERROR_DEPTH = 1;
 
     /**
      * Error message type for state mismatch
      */
-    const XML_ERROR_STATE_MISMATCH = 2;
+    public const XML_ERROR_STATE_MISMATCH = 2;
 
     /**
      * Error message type for ctrl char
      */
-    const XML_ERROR_CTRL_CHAR = 3;
+    public const XML_ERROR_CTRL_CHAR = 3;
     //const XML_ERROR_SYNTAX = 4;
 
     /**
      * Error message type for UTF8
      */
-    const XML_ERROR_UTF8 = 5;
+    public const XML_ERROR_UTF8 = 5;
 
     /**
      * Encode a variable into XML
@@ -76,11 +76,11 @@ class Xml
 
         if (in_array($element_type, array('object', 'a-array'))) {
             $xml_element_type = 'object';
-        } else if (in_array($element_type, array('double', 'integer'))) {
+        } elseif (in_array($element_type, array('double', 'integer'))) {
             $xml_element_type = 'number';
-        } else if (in_array($element_type, array('array', 'boolean', 'string'))) {
+        } elseif (in_array($element_type, array('array', 'boolean', 'string'))) {
             $xml_element_type = $element_type;
-        } else if ($element_type == 'NULL') {
+        } elseif ($element_type == 'NULL') {
             $xml_element_type = 'null';
         } else {
             $xml_element_type = '';
@@ -120,7 +120,7 @@ class Xml
 
                 if ($element_type == 'array') {
                     $vname = 'item';
-                } else if ($element_type == 'a-array') {
+                } elseif ($element_type == 'a-array') {
                     $vname = 'a:item';
                     $vattributes = 'xmlns:a="item" item="' . $key . '"';
                 } else {
@@ -134,7 +134,7 @@ class Xml
         } else {
             if (is_bool($mixed)) {
                 $xml .= ($mixed) ? 'true' : 'false';
-            } else if (is_null($mixed)) {
+            } elseif (is_null($mixed)) {
                 $xml .= '';
             } else {
                 $xml .= htmlspecialchars($mixed, ENT_QUOTES);
@@ -158,6 +158,7 @@ class Xml
      * @param   integer  $id  Error number
      * @return  integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function last_error($id)
     {
         static $last_error = 0;
@@ -197,17 +198,17 @@ class Xml
                 if ($v['attributes']['type'] == 'object') {
                     if (is_null($obj)) {
                         array_push($stack, array(null,$obj));
-                    } else if (is_array($obj) || is_object($obj)) {
+                    } elseif (is_array($obj) || is_object($obj)) {
                         array_push($stack, array($v['tag'],$obj));
                     } else {
                         return false;
                     }
 
                     $obj = new \stdClass();
-                } else if ($v['attributes']['type'] == 'array') {
+                } elseif ($v['attributes']['type'] == 'array') {
                     if (is_null($obj)) {
                         array_push($stack, array(null,$obj));
-                    } else if (is_array($obj) || is_object($obj)) {
+                    } elseif (is_array($obj) || is_object($obj)) {
                         array_push($stack, array($v['tag'],$obj));
                     } else {
                         return false; // malformed input is a decode failure, not a process exit
@@ -217,12 +218,12 @@ class Xml
                 } else {
                     die('invalid element');
                 }
-            } else if ($v['type'] == 'complete') {
+            } elseif ($v['type'] == 'complete') {
                 if ($v['attributes']['type'] == 'string') {
                     $value = $v['value'];
-                } else if ($v['attributes']['type'] == 'boolean') {
+                } elseif ($v['attributes']['type'] == 'boolean') {
                     $value = $v['value'] == 'true';
-                } else if ($v['attributes']['type'] == 'number') {
+                } elseif ($v['attributes']['type'] == 'number') {
                     $value = $v['value'];
 
                     if (!is_numeric($value)) {
@@ -230,11 +231,11 @@ class Xml
                     }
 
                     $value = $value + 0; // converts to type int or float as required
-                } else if ($v['attributes']['type'] == 'null') {
+                } elseif ($v['attributes']['type'] == 'null') {
                     $value = null;
-                } else if ($v['attributes']['type'] == 'array') {
+                } elseif ($v['attributes']['type'] == 'array') {
                     $value = array();
-                } else if ($v['attributes']['type'] == 'object') {
+                } elseif ($v['attributes']['type'] == 'object') {
                     $value = new \stdClass();
                 } else {
                     die('invalid value type');
@@ -242,9 +243,9 @@ class Xml
 
                 if (is_null($obj)) {
                     $obj = $value;
-                } else if (is_array($obj)) {
+                } elseif (is_array($obj)) {
                     $obj[] = $value;
-                } else if (is_object($obj)) {
+                } elseif (is_object($obj)) {
                     if (isset($v['attributes']['item'])) {
                         $obj->{$v['attributes']['item']} = $value;
                     } else {
@@ -253,14 +254,14 @@ class Xml
                 } else {
                     return false; // malformed input is a decode failure, not a process exit
                 }
-            } else if ($v['type'] == 'close') {
+            } elseif ($v['type'] == 'close') {
                 $prev = array_pop($stack);
 
                 if (is_object($prev[1])) {
                     $prev[1]->{$prev[0]} = $obj;
-                } else if (is_array($prev[1])) {
+                } elseif (is_array($prev[1])) {
                     $prev[1][$prev[0]] = $obj;
-                } else if (is_null($prev[1])) {
+                } elseif (is_null($prev[1])) {
                     break;
                 } else {
                     return false; // malformed input is a decode failure, not a process exit

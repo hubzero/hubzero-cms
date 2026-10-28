@@ -57,7 +57,7 @@ class Help extends AdminController
             require_once $finalHelpPage;
             $this->view->content = ob_get_contents();
             ob_end_clean();
-        } else if (isset($component) && $component != '' && $page == 'index') {
+        } elseif (isset($component) && $component != '' && $page == 'index') {
             // Get list of component pages
             $pages[] = Finder::pages($component);
 
@@ -133,19 +133,27 @@ class Help extends AdminController
                     if (!empty($component->element)) {
                         // Load the core file then
                         // Load extension-local file.
-                        $lang->load($component->element . '.sys', PATH_APP . '/bootstrap/admin', null, false, false)
-                        || $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', null, false, false)
-                        || $lang->load($component->element . '.sys', PATH_APP . '/bootstrap/admin', $lang->getDefault(), false, false)
-                        || $lang->load($component->element . '.sys', PATH_CORE . '/components/' . $component->element . '/admin', $lang->getDefault(), false, false);
+                        $elem = $component->element;
+                        $corePath = PATH_CORE . '/components/' . $elem . '/admin';
+                        $appPath = PATH_APP . '/bootstrap/admin';
+                        $defLang = $lang->getDefault();
+                        $lang->load($elem . '.sys', $appPath, null, false, false)
+                            || $lang->load($elem . '.sys', $corePath, null, false, false)
+                            || $lang->load($elem . '.sys', $appPath, $defLang, false, false)
+                            || $lang->load($elem . '.sys', $corePath, $defLang, false, false);
                     }
-                    $component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
+                    $component->text = $lang->hasKey($component->title)
+                        ? Lang::txt($component->title)
+                        : $component->alias;
                 }
             } else {
                 // Sub-menu level.
                 if (isset($result[$component->parent_id])) {
                     // Add the submenu link if it is defined.
                     if (isset($result[$component->parent_id]->submenu) && !empty($component->link)) {
-                        $component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
+                        $component->text = $lang->hasKey($component->title)
+                            ? Lang::txt($component->title)
+                            : $component->alias;
                         $result[$component->parent_id]->submenu[] = &$component;
                     }
                 }
@@ -164,7 +172,8 @@ class Help extends AdminController
     private function helpPagesForComponent($component)
     {
         // Get component name from database
-        $sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote('component') . " AND `element`=" . $this->database->quote($component) . " AND `enabled`=1";
+        $sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote('component')
+            . " AND `element`=" . $this->database->quote($component) . " AND `enabled`=1";
         $this->database->setQuery($sql);
         $name = $this->database->loadResult();
 
@@ -210,7 +219,9 @@ class Help extends AdminController
             $name = ucfirst(str_replace('com_', '', $component['name']));
 
             // Build content to return
-            $content .= '<' . $headingLevel . '>' . Lang::txt('COM_HELP_COMPONENT_HELP', $name) . '</' . $headingLevel . '>';
+            $content .= '<' . $headingLevel . '>'
+                . Lang::txt('COM_HELP_COMPONENT_HELP', $name)
+                . '</' . $headingLevel . '>';
 
             // Make sure we have pages
             if (count($component['pages']) > 0) {
@@ -218,7 +229,8 @@ class Help extends AdminController
                 $content .= '<ul>';
                 foreach ($component['pages'] as $page) {
                     $name = str_replace('.phtml', '', $page);
-                    $url  = Route::url('index.php?option=com_help&component=' . $component['option'] . '&page=' . $name);
+                    $url = Route::url('index.php?option=com_help&component='
+                        . $component['option'] . '&page=' . $name);
 
                     $content .= '<li><a href="' . $url . '">' . ucwords(str_replace('_', ' ', $name)) . '</a></li>';
                 }

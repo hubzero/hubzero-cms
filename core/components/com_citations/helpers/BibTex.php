@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -91,7 +92,7 @@ class Structures_BibTex
      * @access public
      * @var    array
      */
-    var $data;
+    public $data;
 
     /**
      * String with the BibTex content
@@ -99,7 +100,7 @@ class Structures_BibTex
      * @access public
      * @var    string
      */
-    var $content;
+    public $content;
 
     /**
      * Array with possible Delimiters for the entries
@@ -107,7 +108,8 @@ class Structures_BibTex
      * @access private
      * @var    array
      */
-    var $_delimiters;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_delimiters;
 
     /**
      * Array to store warnings
@@ -115,7 +117,7 @@ class Structures_BibTex
      * @access public
      * @var    array
      */
-    var $warnings;
+    public $warnings;
 
     /**
      * Run-time configuration options
@@ -123,7 +125,8 @@ class Structures_BibTex
      * @access private
      * @var    array
      */
-    var $_options;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_options;
 
     /**
      * RTF Format String
@@ -131,7 +134,7 @@ class Structures_BibTex
      * @access public
      * @var    string
      */
-    var $rtfstring;
+    public $rtfstring;
 
     /**
      * HTML Format String
@@ -139,7 +142,7 @@ class Structures_BibTex
      * @access public
      * @var    string
      */
-    var $htmlstring;
+    public $htmlstring;
 
     /**
      * Array with the "allowed" types
@@ -147,7 +150,7 @@ class Structures_BibTex
      * @access public
      * @var    array
      */
-    var $allowedTypes;
+    public $allowedTypes;
 
     /**
      * Author Format Strings
@@ -155,10 +158,12 @@ class Structures_BibTex
      * @access public
      * @var    string
      */
-    var $authorstring;
+    public $authorstring;
 
-    var $_oldpos;
-    var $_pos;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_oldpos;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_pos;
 
     /**
      * Constructor
@@ -192,7 +197,8 @@ class Structures_BibTex
             }
         }
         $this->rtfstring    = 'AUTHORS, "{\b TITLE}", {\i JOURNAL}, YEAR';
-        $this->htmlstring   = '<tr><td>AUTHORS, "<strong>TITLE</strong>", <em>JOURNAL</em>, VOLUME, PAGES, PUBLISHER, YEAR</th></td>';
+        $this->htmlstring   = '<tr><td>AUTHORS, "<strong>TITLE</strong>", '
+            . '<em>JOURNAL</em>, VOLUME, PAGES, PUBLISHER, YEAR</th></td>';
         $this->allowedTypes = array(
             'article',
             'book',
@@ -301,11 +307,14 @@ class Structures_BibTex
                     $i--;
                 }
             }
-            if ((0 == $open) && ('@' == $char)) { //The beginning of an entry
+            // The beginning of an entry
+            if ((0 == $open) && ('@' == $char)) {
                 $entry = true;
-            } elseif ($entry && ('{' == $char) && ('\\' != $lastchar)) { //Inside an entry and non quoted brace is opening
+            } elseif ($entry && ('{' == $char) && ('\\' != $lastchar)) {
+                // Inside an entry and non quoted brace is opening
                 $open++;
-            } elseif ($entry && ('}' == $char) && ('\\' != $lastchar)) { //Inside an entry and non quoted brace is closing
+            } elseif ($entry && ('}' == $char) && ('\\' != $lastchar)) {
+                // Inside an entry and non quoted brace is closing
                 $open--;
                 if ($open < 0) { //More are closed than opened
                     $valid = false;
@@ -391,6 +400,7 @@ class Structures_BibTex
      * @param  string  $entry The entry
      * @return array   The representation of the entry or false if there is a problem
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _parseEntry($entry)
     {
         $entrycopy = '';
@@ -487,6 +497,7 @@ class Structures_BibTex
      * @param  int     the    current used place of the '='
      * @return bool    true if the '=' is correct, false if it contains to an equation
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _checkEqualSign($entry, $position)
     {
         $ret = true;
@@ -517,9 +528,10 @@ class Structures_BibTex
                 $lastchar = $entrycopy[strlen($entrycopy) - 2];
             }
             if ('"' == $lastchar) {
-                //The return value is set to false
-                //If we find the closing " before the '=' it is set to true again.
-                //Remember we begin to search the entry backwards so the " has to show up twice - ending and beginning delimiter
+                // The return value is set to false
+                // If we find the closing " before the '=' it is set to true again.
+                // Remember we begin to search the entry backwards so the " has to show up
+                // twice - ending and beginning delimiter
                 $ret = false;
                 $found = 0;
                 for ($i = $length; $i >= $position; $i--) {
@@ -545,6 +557,7 @@ class Structures_BibTex
      * @param  string  $entry The entry to check
      * @return bool    true if allowed, false otherwise
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _checkAllowedType($entry)
     {
         return in_array($entry, $this->allowedTypes);
@@ -561,6 +574,7 @@ class Structures_BibTex
      * @param  string  $entry The text of the entry until the at
      * @return bool    true if the at is correct, false if the at is likely to begin the next entry.
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _checkAt($entry)
     {
         $ret     = false;
@@ -609,6 +623,7 @@ class Structures_BibTex
      * @param  string  $entry The entry where the Delimiter should be stripped from
      * @return string  Stripped entry
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _stripDelimiter($entry)
     {
         $beginningdels = array_keys($this->_delimiters);
@@ -634,6 +649,7 @@ class Structures_BibTex
      * @param  string  $entry The entry to unwrap
      * @return string  unwrapped entry
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _unwrap($entry)
     {
         $entry = preg_replace('/\s+/', ' ', $entry);
@@ -647,10 +663,14 @@ class Structures_BibTex
      * @param  string  $entry The entry to wrap
      * @return string  wrapped entry
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _wordwrap($entry)
     {
         if (('' != $entry) && (is_string($entry))) {
-            $entry = wordwrap($entry, $this->_options['wordWrapWidth'], $this->_options['wordWrapBreak'], $this->_options['wordWrapCut']);
+            $width = $this->_options['wordWrapWidth'];
+            $break = $this->_options['wordWrapBreak'];
+            $cut = $this->_options['wordWrapCut'];
+            $entry = wordwrap($entry, $width, $break, $cut);
         }
         return $entry;
     }
@@ -662,6 +682,7 @@ class Structures_BibTex
      * @param  string  $entry The entry with the authors
      * @return array   the extracted authors
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _extractAuthors($entry)
     {
         $entry       = $this->_unwrap($entry);
@@ -781,7 +802,12 @@ class Structures_BibTex
                 //Everything in the last entry is first
                 $first = $tmparray[count($tmparray) - 1];
             }
-            $authorarray[$i] = array('first' => trim($first), 'von' => trim($von), 'last' => trim($last), 'jr' => trim($jr));
+            $authorarray[$i] = array(
+                'first' => trim($first),
+                'von' => trim($von),
+                'last' => trim($last),
+                'jr' => trim($jr)
+            );
         }
         return $authorarray;
     }
@@ -799,6 +825,7 @@ class Structures_BibTex
      * @param  string  $word
      * @return int     The Case or Exception if there was a problem
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _determineCase($word)
     {
         $ret         = -1;
@@ -846,6 +873,7 @@ class Structures_BibTex
      * @param  string  $wholeentry The whole BibTex Entry which the one line is part of
      * @return void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _validateValue($entry, $wholeentry)
     {
         //There is no @ allowed if the entry is enclosed by braces
@@ -882,6 +910,7 @@ class Structures_BibTex
      * @param  string  $value The value in which curly braces to be removed
      * @param  string  Value  with removed curly braces
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _removeCurlyBraces($value)
     {
         //First we save the delimiters
@@ -918,6 +947,7 @@ class Structures_BibTex
      * @param  string  $entry      The line of the entry where the warning occurred
      * @param  string  $wholeentry OPTIONAL The whole entry where the warning occurred
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _generateWarning($type, $entry, $wholeentry = '')
     {
         $warning['warning']    = $type;
@@ -971,6 +1001,7 @@ class Structures_BibTex
      * @param  array   $array Author array
      * @return string  the formatted author string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _formatAuthor($array)
     {
         if (!array_key_exists('von', $array)) {

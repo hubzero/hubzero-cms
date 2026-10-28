@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +24,8 @@ class Migration20121018000000ComWiki extends Base
     {
         if ($this->db->tableExists('#__wiki_page')) {
             if (!$this->db->tableHasField('#__wiki_page', 'modified')) {
-                $query = "ALTER TABLE `#__wiki_page` ADD `modified` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'  AFTER `state`";
+                $query = "ALTER TABLE `#__wiki_page` ADD `modified` DATETIME NOT NULL "
+                    . "DEFAULT '0000-00-00 00:00:00' AFTER `state`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

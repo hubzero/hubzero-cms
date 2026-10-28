@@ -21,14 +21,16 @@ class Comment extends ItemComment
      *
      * @var  integer
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * URL for this entry
      *
      * @var  string
      */
+    // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     private $_base = null;
+    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Generate and return various links to the entry
@@ -63,7 +65,8 @@ class Comment extends ItemComment
                 break;
 
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('item_id');
+                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id='
+                    . $this->get('id') . '&parent=' . $this->get('item_id');
                 break;
 
             case 'permalink':

@@ -353,7 +353,8 @@ class Attachment extends Table
             $versionid = $this->publication_version_id;
         }
 
-        $query = "SELECT COUNT(*) FROM $this->_tbl AS a where a.publication_version_id = " . $this->_db->quote($versionid);
+        $query = "SELECT COUNT(*) FROM $this->_tbl AS a"
+            . " WHERE a.publication_version_id = " . $this->_db->quote($versionid);
         $this->_db->setQuery($query);
 
         return $this->_db->loadResult();
@@ -743,11 +744,19 @@ class Attachment extends Table
 
         switch ($dir) {
             case 'up':
-                $sql = "SELECT * FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering < " . $this->_db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+                $sql = "SELECT * FROM `$this->_tbl`"
+                    . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
+                    . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
+                    . " AND ordering < " . $this->_db->quote($this->ordering)
+                    . " ORDER BY ordering DESC LIMIT 1";
                 break;
 
             case 'down':
-                $sql = "SELECT * FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " AND ordering > " . $this->_db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+                $sql = "SELECT * FROM `$this->_tbl`"
+                    . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
+                    . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
+                    . " AND ordering > " . $this->_db->quote($this->ordering)
+                    . " ORDER BY ordering LIMIT 1";
                 break;
         }
         $this->_db->setQuery($sql);
@@ -765,7 +774,11 @@ class Attachment extends Table
      */
     public function getLastOrder()
     {
-        $this->_db->setQuery("SELECT `ordering` FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " ORDER BY ordering DESC LIMIT 1");
+        $sql = "SELECT `ordering` FROM $this->_tbl"
+            . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
+            . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
+            . " ORDER BY ordering DESC LIMIT 1";
+        $this->_db->setQuery($sql);
         return $this->_db->loadResult();
     }
 
@@ -776,7 +789,10 @@ class Attachment extends Table
      */
     public function rebuild()
     {
-        $sql = "SELECT id FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($this->publication_id) . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id) . " ORDER BY ordering ASC, id ASC";
+        $sql = "SELECT id FROM `$this->_tbl`"
+            . " WHERE publication_id=" . $this->_db->quote($this->publication_id)
+            . " AND publication_version_id=" . $this->_db->quote($this->publication_version_id)
+            . " ORDER BY ordering ASC, id ASC";
 
         $this->_db->setQuery($sql);
         $rows = $this->_db->loadObjectList();

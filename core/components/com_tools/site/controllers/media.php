@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -299,6 +300,7 @@ class Media extends SiteController
      * @param      string $base Directory to scan
      * @return     array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _recursiveListDir($base)
     {
         static $filelist = array();

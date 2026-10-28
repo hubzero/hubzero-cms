@@ -64,7 +64,15 @@ class Viewperm extends Table
             return false;
         }
 
-        $sql = "UPDATE `viewperm` SET `viewtoken`=" . $this->_db->quote($this->viewtoken) . ", `geometry`=" . $this->_db->quote($this->geometry) . ", `fwhost`=" . $this->_db->quote($this->fwhost) . ", `fwport`=" . $this->_db->quote($this->fwport) . ", `vncpass`=" . $this->_db->quote($this->vncpass) . ", `readonly`=" . $this->_db->quote($this->readonly) . " WHERE `sessnum`=" . $this->_db->quote($this->sessnum) . " AND `viewuser`=" . $this->_db->quote($this->viewuser);
+        $sql = "UPDATE `viewperm` SET "
+            . "`viewtoken`=" . $this->_db->quote($this->viewtoken) . ", "
+            . "`geometry`=" . $this->_db->quote($this->geometry) . ", "
+            . "`fwhost`=" . $this->_db->quote($this->fwhost) . ", "
+            . "`fwport`=" . $this->_db->quote($this->fwport) . ", "
+            . "`vncpass`=" . $this->_db->quote($this->vncpass) . ", "
+            . "`readonly`=" . $this->_db->quote($this->readonly)
+            . " WHERE `sessnum`=" . $this->_db->quote($this->sessnum)
+            . " AND `viewuser`=" . $this->_db->quote($this->viewuser);
         $this->_db->setQuery($sql);
         $this->_db->query();
     }

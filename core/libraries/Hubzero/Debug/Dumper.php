@@ -19,6 +19,7 @@ class Dumper
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_renderer = null;
 
     /**
@@ -26,6 +27,7 @@ class Dumper
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_messages = array();
 
     /**
@@ -33,6 +35,7 @@ class Dumper
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_nameReplacements = array(
         '-'  => '',
         '_'  => '',
@@ -46,6 +49,7 @@ class Dumper
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct()
     {
         $this->clear();

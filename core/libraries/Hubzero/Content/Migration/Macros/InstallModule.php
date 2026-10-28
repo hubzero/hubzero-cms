@@ -20,7 +20,8 @@ class InstallModule extends Macro
      *
      * @param   string  $module    Module name
      * @param   string  $position  Module position
-     * @param   bool    $always    If true - always install, false - only install if another module of that type isn't present
+     * @param   bool    $always    If true - always install, false - only install if another module
+     *                             of that type isn't present
      * @param   array   $params    Params (if already known)
      * @param   int     $client    Client (site=0, admin=1)
      * @param   mixed   $menus     (int, array) menus to install to (0=all)

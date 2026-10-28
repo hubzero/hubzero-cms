@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die;
 
 /**
  * External HREF processor
+ *
  */
 class plgContentExternalhref extends \Hubzero\Plugin\Plugin
 {
@@ -59,14 +61,14 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
 
         $content = '';
 
-        $key = $this->_key($context);
+        $key = $this->key($context);
 
         if (
             $article instanceof Hubzero\Base\Obj
             || $article instanceof Hubzero\Database\Relational
         ) {
             $content = $article->get($key);
-        } else if (isset($article->$key)) {
+        } elseif (isset($article->$key)) {
             $content = $article->$key;
         }
 
@@ -85,7 +87,8 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
             $classes = array_map('strtolower', $classes);
         }
 
-        //$content = preg_replace_callback('/<a\s[^>]*href\s*=\s*(?:[\"\']??)(http[^\\1 >]*?)\\1[^>]*>(.*)<\/a>/uiUs', array(&$this, 'nofollow'), $content);
+        // Commented out: preg_replace_callback for nofollow
+        // Pattern: /<a\s[^>]*href\s*=\s*(?:[\"\']??)(http[^\\1 >]*?)\\1[^>]*>(.*)<\/a>/uiUs
 
         $tags = array(
             'a'    => '/<a\s+([^>]*)>/i',
@@ -144,21 +147,21 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
 
                 if ($mode == 0 && !isset($list['rel'])) {
                     $list['rel'] = 'nofollow';
-                } else if ($mode == 1) {
+                } elseif ($mode == 1) {
                     $list['rel'] = 'nofollow';
-                } else if ($mode == 2) {
+                } elseif ($mode == 2) {
                     unset($list['rel']);
                 }
 
                 if ($target == 0 && !isset($list['target'])) {
                     $list['target'] = '_blank';
                     $list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noopener noreferrer';
-                } else if ($target == 1) {
+                } elseif ($target == 1) {
                     $list['target'] = '_blank';
                     $list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noopener noreferrer';
-                } else if ($target == 2) {
+                } elseif ($target == 2) {
                     $list['target'] = '_parent';
-                } else if ($list['target'] == '_blank') {
+                } elseif ($list['target'] == '_blank') {
                     $list['rel'] = (isset($list['rel']) ? $list['rel'] . ' ' : '') . 'noopener noreferrer';
                 }
 
@@ -220,7 +223,7 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
      * @param   string  $context  A dot-notation string
      * @return  string
      */
-    private function _key($context)
+    private function key($context)
     {
         $key = 'content';
 

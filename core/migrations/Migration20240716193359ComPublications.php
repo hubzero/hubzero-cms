@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for ...
+  *
  **/
 class Migration20240716193359ComPublications extends Base
 {
@@ -18,7 +19,10 @@ class Migration20240716193359ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_authors') && !$this->db->tableHasField('#__publication_authors', 'orcid')) {
+        if (
+            $this->db->tableExists('#__publication_authors')
+            && !$this->db->tableHasField('#__publication_authors', 'orcid')
+        ) {
             $query = "ALTER TABLE `#__publication_authors` ADD COLUMN `orcid` VARCHAR(50) NULL DEFAULT NULL";
             $this->db->setQuery($query);
             $this->db->query();
@@ -30,7 +34,10 @@ class Migration20240716193359ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_authors') && $this->db->tableHasField('#__publication_authors', 'orcid')) {
+        if (
+            $this->db->tableExists('#__publication_authors')
+            && $this->db->tableHasField('#__publication_authors', 'orcid')
+        ) {
             $query = "ALTER TABLE `#__publication_authors` DROP COLUMN `orcid`";
             $this->db->setQuery($query);
             $this->db->query();

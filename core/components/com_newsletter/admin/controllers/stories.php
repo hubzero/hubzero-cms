@@ -204,8 +204,11 @@ class Stories extends AdminController
             Notify::warning(Lang::txt('COM_NEWSLETTER_STORY_MISSING_REQUIRED'));
 
             // Redirect if the information is lacking
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller
+                . '&task=add&type=autogen&id=' . $nid;
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=add&type=autogen&id=' . $nid, false)
+                Route::url($url, false)
             );
         }
 
@@ -316,22 +319,27 @@ class Stories extends AdminController
         $database = \App::get('db');
 
         //is there a nother story having the order we want?
-        $sql = "SELECT * FROM {$story->getTableName()} WHERE `order`=" . $database->quote($newOrder) . " AND nid=" . $database->quote($id);
+        $tableName = $story->getTableName();
+        $sql = "SELECT * FROM {$tableName} WHERE `order`=" . $database->quote($newOrder)
+            . " AND nid=" . $database->quote($id);
         $database->setQuery($sql);
         $moveTo = $database->loadResult();
 
         //if there isnt just update story
         if (!$moveTo) {
-            $sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote($newOrder) . " WHERE id=" . $database->quote($sid);
+            $sql = "UPDATE {$tableName} SET `order`=" . $database->quote($newOrder)
+                . " WHERE id=" . $database->quote($sid);
             $database->setQuery($sql);
             $database->query();
         } else {
             //swith orders
-            $sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote($newOrder) . " WHERE id=" . $database->quote($sid);
+            $sql = "UPDATE {$tableName} SET `order`=" . $database->quote($newOrder)
+                . " WHERE id=" . $database->quote($sid);
             $database->setQuery($sql);
             $database->query();
 
-            $sql = "UPDATE {$story->getTableName()} SET `order`=" . $database->quote($currentOrder) . " WHERE id=" . $database->quote($moveTo);
+            $sql = "UPDATE {$tableName} SET `order`=" . $database->quote($currentOrder)
+                . " WHERE id=" . $database->quote($moveTo);
             $database->setQuery($sql);
             $database->query();
         }
@@ -339,8 +347,10 @@ class Stories extends AdminController
         //redirect back to campaigns list
         Notify::success(Lang::txt('COM_NEWSLETTER_STORY_REORDER_SUCCESS'));
 
+        $url = 'index.php?option=com_newsletter&controller=newsletters&task=edit&id='
+            . $id . '#' . $type . '-stories';
         App::redirect(
-            Route::url('index.php?option=com_newsletter&controller=newsletters&task=edit&id=' . $id . '#' . $type . '-stories', false)
+            Route::url($url, false)
         );
     }
 

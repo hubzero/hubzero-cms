@@ -1951,10 +1951,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
                 $this->_connect->fetchFile($data, $ftname, $temp_path);
                 $downloadPath = $temp_path . DS . $ftname;
-            }
-            // Download local revision
-            elseif ($hash) {
-                $tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode(4, 4, 0, 1, 0) . $serveas;
+            } elseif ($hash) {
+                // Download local revision
+                $tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode(4, 4, 0, 1, 0);
+                $tempPath .= $serveas;
                 $downloadPath = sys_get_temp_dir() . DS . $tempPath;
 
                 // Get file content
@@ -3430,8 +3430,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
         switch ($last) {
             case 'g':
                 $num *= 1024;
+                // no break
             case 'm':
                 $num *= 1024;
+                // no break
             case 'k':
                 $num *= 1024;
         }

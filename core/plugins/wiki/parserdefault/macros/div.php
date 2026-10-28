@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for wrapping content in a div
@@ -22,8 +20,15 @@ class DivMacro extends WikiMacro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'Allows content to be wrapped in a `div` tag. This macro must be used twice: `Div(start)` to indicate where to create the opening `div` tag and `Div(end)` to indicate where to close the resulting `div` tag. Attributes may be applied by separating name/value pairs with a comma. Example: Div(start, class=myclass)';
-        $txt['html'] = '<p>Allows content to be wrapped in a <code>&lt;div&gt;</code> tag. This macro must be used twice: <code>[[Div(start)]]</code> to indicate where to create the opening <code>&lt;div&gt;</code> tag and <code>[[Div(end)]]</code> to indicate where to close the resulting <code>&lt;div&gt;</code> tag. Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Div(start, class=myclass)]]</code>';
+        $txt['wiki'] = 'Allows content to be wrapped in a div tag. This macro must be used twice: '
+            . 'Div(start) to indicate where to create the opening div tag and Div(end) to indicate '
+            . 'where to close the resulting div tag. Attributes may be applied by separating '
+            . 'name/value pairs with a comma. Example: Div(start, class=myclass)';
+        $txt['html'] = '<p>Allows content to be wrapped in a <code>&lt;div&gt;</code> tag. This macro '
+            . 'must be used twice: <code>[[Div(start)]]</code> to indicate where to create the opening '
+            . '<code>&lt;div&gt;</code> tag and <code>[[Div(end)]]</code> to indicate where to close the '
+            . 'resulting <code>&lt;div&gt;</code> tag. Attributes may be applied by separating name/value '
+            . 'pairs with a comma. Example: <code>[[Div(start, class=myclass)]]</code>';
         return $txt['html'];
     }
 

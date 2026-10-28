@@ -6,20 +6,42 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Utility\Date;
+use Hubzero\Plugin\Plugin;
 
 /**
  * Plugin class for course announcements
  */
-class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
+class PlgCoursesAnnouncements extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+
+    /**
+     * Course object
+     *
+     * @var  object
+     */
+    protected $course = null;
+
+    /**
+     * Offering object
+     *
+     * @var  object
+     */
+    protected $offering = null;
+
+    /**
+     * Option declaration
+     *
+     * @var  string
+     */
+    public $option = null;
 
     /**
      * Return data on a course view (this will be some form of HTML)
@@ -53,8 +75,8 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
         // Check if our area is in the array of areas we want to return results for
         if ($response->get('name') == $active) {
             // Set some variables so other functions have access
-            $this->option   = Request::getCmd('option', 'com_courses');
-            $this->course   = $course;
+            $this->option = Request::getCmd('option', 'com_courses');
+            $this->course = $course;
             $this->offering = $offering;
 
             // Set the page title
@@ -71,19 +93,19 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 
             switch (strtolower($action)) {
                 case 'save':
-                    $response->set('html', $this->_save());
+                    $response->set('html', $this->saveEntry());
                     break;
                 case 'new':
-                    $response->set('html', $this->_edit());
+                    $response->set('html', $this->editEntry());
                     break;
                 case 'edit':
-                    $response->set('html', $this->_edit());
+                    $response->set('html', $this->editEntry());
                     break;
                 case 'delete':
-                    $response->set('html', $this->_delete());
+                    $response->set('html', $this->deleteEntry());
                     break;
                 default:
-                    $response->set('html', $this->_list());
+                    $response->set('html', $this->listEntries());
                     break;
             }
         }
@@ -97,15 +119,15 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
      *
      * @param   object  $course
      * @param   object  $offering
-     * @return  void
+     * @return  string
      */
     public function onCourseBeforeOutline($course, $offering)
     {
         return $this->view('default', 'latest')
-                    ->set('course', $course)
-                    ->set('offering', $offering)
-                    ->set('params', $this->params)
-                    ->loadTemplate();
+            ->set('course', $course)
+            ->set('offering', $offering)
+            ->set('params', $this->params)
+            ->loadTemplate();
     }
 
     /**
@@ -137,7 +159,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
      *
      * @return  string  HTML
      */
-    private function _list()
+    private function listEntries()
     {
         $view = with($this->view('default', 'browse'))
             ->set('course', $this->course)
@@ -150,8 +172,8 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
         // Get filters for the entries list
         $filters = array(
             'search' => Request::getString('q', ''),
-            'limit'  => Request::getInt('limit', Config::get('list_limit', 25)),
-            'start'  => Request::getInt('limitstart', 0)
+            'limit' => Request::getInt('limit', Config::get('list_limit', 25)),
+            'start' => Request::getInt('limitstart', 0)
         );
         $filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
 
@@ -170,11 +192,11 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
      * @param   object  $model
      * @return  string  HTML
      */
-    private function _edit($model = null)
+    private function editEntry($model = null)
     {
         // Permissions check
         if (!$this->offering->access('manage', 'section')) {
-            return $this->_list();
+            return $this->listEntries();
         }
 
         $view = with($this->view('default', 'edit'))
@@ -202,11 +224,11 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
      *
      * @return  string  HTML
      */
-    private function _save()
+    private function saveEntry()
     {
         // Permissions check
         if (!$this->offering->access('manage', 'section')) {
-            return $this->_list();
+            return $this->listEntries();
         }
 
         // Check for request forgeries
@@ -225,7 +247,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
         $model = new \Components\Courses\Models\Announcement(0);
         if (!$model->bind($fields)) {
             $this->setError($model->getError());
-            return $this->_edit($model);
+            return $this->editEntry($model);
         }
 
         // Incoming dates are in local time. We need to convert to UTC
@@ -246,15 +268,15 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
         if (!$model->store(true)) {
             $this->setError($model->getError());
             if (!$no_html) {
-                return $this->_edit($model);
+                return $this->editEntry($model);
             }
         }
 
         if ($no_html) {
             if ($this->getError()) {
-                $response->code   = 1;
+                $response->code = 1;
                 $response->errors = $this->getErrors();
-                $response->data   = $fields;
+                $response->data = $fields;
             }
             ob_clean();
             header('Content-type: text/plain');
@@ -263,7 +285,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Display listing
-        return $this->_list();
+        return $this->listEntries();
     }
 
     /**
@@ -271,11 +293,11 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
      *
      * @return  string  HTML
      */
-    private function _delete()
+    private function deleteEntry()
     {
         // Permissions check
         if (!$this->offering->access('manage', 'section')) {
-            return $this->_list();
+            return $this->listEntries();
         }
 
         // Check for request forgeries
@@ -294,6 +316,6 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Display listing
-        return $this->_list();
+        return $this->listEntries();
     }
 }

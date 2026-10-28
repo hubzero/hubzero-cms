@@ -1961,17 +1961,15 @@ class Publications extends SiteController
                                     $filenew = $file3new;
                                     $toPub  = $newpubfilespace . DS . $galleryParams['directory'] . DS;
                                 }
-                            }
-                            // Found it
-                            else {
+                            } else {
+                                // Found it
                                 $dirHierarchy = $galleryParams['dirHierarchy'];
 
                                 $file = $file2;
                                 $filenew = $file2new;
                             }
-                        }
-                        // Found it
-                        else {
+                        } else {
+                            // Found it
                             $dirHierarchy = $galleryParams['dirHierarchy'];
                         }
                     }

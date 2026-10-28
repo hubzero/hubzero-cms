@@ -83,17 +83,15 @@ if ($params->get('tag_id') != null) {
                 break;
         endswitch;
 
-        // The next item is deeper.
         if ($item->deeper) {
+            // The next item is deeper.
             echo '<ul id="' . $ariaControlTarget . '">';
-        }
-        // The next item is shallower.
-        elseif ($item->shallower) {
+        } elseif ($item->shallower) {
+            // The next item is shallower.
             echo '</li>';
             echo str_repeat('</ul></li>', $item->level_diff);
-        }
-        // The next item is on the same level.
-        else {
+        } else {
+            // The next item is on the same level.
             echo '</li>';
         }
     endforeach;

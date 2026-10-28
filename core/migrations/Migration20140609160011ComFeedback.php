@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,12 +50,14 @@ class Migration20140609160011ComFeedback extends Base
         }
 
         if ($this->db->tableExists('#__selected_quotes')) {
-            $query = "SELECT sq.*, f.id AS fid FROM `#__selected_quotes` AS sq LEFT JOIN `#__feedback` AS f ON f.quote=sq.quote AND f.user_id=sq.userid";
+            $query = "SELECT sq.*, f.id AS fid FROM `#__selected_quotes` AS sq "
+                . "LEFT JOIN `#__feedback` AS f ON f.quote=sq.quote AND f.user_id=sq.userid";
             $this->db->setQuery($query);
             if ($results = $this->db->loadObjectList()) {
                 $path = PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php';
                 if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php';
+                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback'
+                        . DS . 'tables' . DS . 'quotes.php';
                 }
                 include_once $path;
 

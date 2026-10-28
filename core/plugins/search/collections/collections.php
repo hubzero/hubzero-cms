@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Search Collections
+ */
+/**
  */
 class plgSearchCollections extends \Hubzero\Plugin\Plugin
 {
@@ -25,20 +28,24 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->get_term_ar();
-        $weight = '(match(p.description) AGAINST (\'' . join(' ', $terms['stemmed']) . '\') + match(i.title, i.description) AGAINST (\'' . join(' ', $terms['stemmed']) . '\'))';
+        $stemmed = join(' ', $terms['stemmed']);
+        $weight = '(match(p.description) AGAINST (\'' . $stemmed . '\') '
+            . '+ match(i.title, i.description) AGAINST (\'' . $stemmed . '\'))';
 
         $addtl_where = array();
         foreach ($terms['mandatory'] as $mand) {
             $addtl_where[] = "(p.description LIKE '%$mand%' OR i.title LIKE '%$mand%' OR i.description LIKE '%$mand%')";
         }
         foreach ($terms['forbidden'] as $forb) {
-            $addtl_where[] = "(p.description NOT LIKE '%$forb%' AND i.title NOT LIKE '%$forb%' AND i.description NOT LIKE '%$forb%')";
+            $addtl_where[] = "(p.description NOT LIKE '%$forb%' AND i.title NOT LIKE '%$forb%' "
+                . "AND i.description NOT LIKE '%$forb%')";
         }
 
         $results->add(new \Components\Search\Models\Basic\Result\Sql(
             "SELECT
 				i.title,
-				CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description END AS description,
+				CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description
+					ELSE i.description END AS description,
 				concat('index.php?option=com_collections&controller=posts&post=', p.id) AS `link`,
 				$weight AS `weight`,
 				p.created AS `date`,
@@ -131,13 +138,11 @@ class plgSearchCollections extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->state == 1 && $row->access == 0) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 1) {
+                } elseif ($row->state == 1 && $row->access == 1) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

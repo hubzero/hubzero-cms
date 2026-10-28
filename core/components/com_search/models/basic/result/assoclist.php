@@ -36,6 +36,7 @@ class AssocList extends Assoc implements Iterator, Countable
      *
      * @return  boolean
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function is_scalar()
     {
         return false;
@@ -48,6 +49,7 @@ class AssocList extends Assoc implements Iterator, Countable
      * @param   boolean  $skip_cleanup
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function set_plugin($plugin, $skip_cleanup = false)
     {
         foreach ($this->rows as $row) {
@@ -98,6 +100,7 @@ class AssocList extends Assoc implements Iterator, Countable
      *
      * @return  object
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function to_associative()
     {
         return $this;
@@ -108,6 +111,7 @@ class AssocList extends Assoc implements Iterator, Countable
      *
      * @return  array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_items()
     {
         return $this->rows;

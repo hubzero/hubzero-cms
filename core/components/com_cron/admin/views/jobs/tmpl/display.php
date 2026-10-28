@@ -38,23 +38,47 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
 }');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formUrl = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <thead>
             <tr>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_CRON_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CRON_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CRON_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_CRON_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_CRON_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CRON_COL_ACTIVE', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_CRON_COL_LAST_RUN', 'last_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_TITLE', 'title', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_STATE', 'state', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_STARTS', 'publish_up', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_ENDS', 'publish_down', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_ACTIVE', 'active', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_LAST_RUN', 'last_run', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_CRON_COL_NEXT_RUN', 'next_run', $sortDir, $sort); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -98,15 +122,21 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
             ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->get('id'); ?>
+                    </label>
                 </td>
                 <td class="priority-5">
                     <?php echo $row->get('id'); ?>
                 </td>
                 <td>
-                    <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                    <?php if ($canDo->get('core.edit')) {
+                        $editUrl = Route::url('index.php?option=' . $this->option . '&controller='
+                        . $this->controller . '&task=edit&id=' . $row->get('id'));
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                         </a>
                     <?php } else { ?>
@@ -116,8 +146,13 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_CRON_SET_THIS_TO', $task); ?>">
+                    <?php if ($canDo->get('core.edit.state')) {
+                        $stateUrl = Route::url('index.php?option=' . $this->option . '&controller='
+                        . $this->controller . '&task=' . $task . '&id=' . $row->get('id')
+                        . '&' . Session::getFormToken() . '=1');
+                        ?>
+                        <a class="state <?php echo $cls; ?>" href="<?php echo $stateUrl; ?>"
+                            title="<?php echo Lang::txt('COM_CRON_SET_THIS_TO', $task); ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -128,8 +163,11 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
                 </td>
                 <td class="priority-4">
                     <span class="datetime">
-                        <?php if ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') { ?>
-                            <time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo Date::of($row->get('publish_up'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                        <?php if ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') {
+                            $pubUp = $row->get('publish_up');
+                            $pubUpFmt = Date::of($pubUp)->format(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <time datetime="<?php echo $pubUp; ?>"><?php echo $pubUpFmt; ?></time>
                         <?php } else { ?>
                             <?php echo Lang::txt('COM_CRON_NO_DATE_SET'); ?>
                         <?php } ?>
@@ -137,8 +175,11 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
                 </td>
                 <td class="priority-3">
                     <span class="datetime">
-                        <?php if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') { ?>
-                            <time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo Date::of($row->get('publish_down'))->format(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                        <?php if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') {
+                            $pubDown = $row->get('publish_down');
+                            $pubDownFmt = Date::of($pubDown)->format(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
+                            <time datetime="<?php echo $pubDown; ?>"><?php echo $pubDownFmt; ?></time>
                         <?php } else { ?>
                             <?php echo Lang::txt('COM_CRON_NONE'); ?>
                         <?php } ?>
@@ -151,8 +192,10 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
                 </td>
                 <td class="priority-4">
                     <span class="datetime">
-                        <?php if ($row->get('last_run') && $row->get('last_run') != '0000-00-00 00:00:00') { ?>
-                            <time datetime="<?php echo $this->escape($row->get('last_run')); ?>"><?php echo $this->escape($row->get('last_run')); ?></time>
+                        <?php if ($row->get('last_run') && $row->get('last_run') != '0000-00-00 00:00:00') {
+                            $lastRun = $this->escape($row->get('last_run'));
+                            ?>
+                            <time datetime="<?php echo $lastRun; ?>"><?php echo $lastRun; ?></time>
                         <?php } else { ?>
                             <?php echo $this->escape($row->get('last_run')); ?>
                         <?php } ?>
@@ -161,8 +204,10 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
                 <td class="priority-2">
                     <span class="datetime">
                         <?php $nxt = ($row->started() ? $row->get('next_run') : $row->get('publish_up')); ?>
-                        <?php if ($nxt && $nxt != '0000-00-00 00:00:00') { ?>
-                            <time datetime="<?php echo $this->escape($nxt); ?>"><?php echo $this->escape($nxt); ?></time>
+                        <?php if ($nxt && $nxt != '0000-00-00 00:00:00') {
+                            $nxtEsc = $this->escape($nxt);
+                            ?>
+                            <time datetime="<?php echo $nxtEsc; ?>"><?php echo $nxtEsc; ?></time>
                         <?php } else { ?>
                             <?php echo $this->escape($nxt); ?>
                         <?php } ?>

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -165,7 +166,8 @@ class Migration20130924000007Core extends Base
                         $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
                     }
 
-                    $query = "UPDATE `#__users` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
+                    $query = "UPDATE `#__users` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE "
+                        . "`id` = {$r->id};";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -197,12 +199,17 @@ class Migration20130924000007Core extends Base
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__users', 'lastResetTime') && $this->db->tableHasField('#__users', 'params')) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `lastResetTime` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `params`;";
+            $query = "ALTER TABLE `#__users` ADD COLUMN `lastResetTime` DATETIME NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00' AFTER `params`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__users', 'resetCount') && $this->db->tableHasField('#__users', 'lastResetTime')) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `resetCount` INT(11) NOT NULL DEFAULT '0' AFTER `lastResetTime`;";
+        if (
+            !$this->db->tableHasField('#__users', 'resetCount')
+            && $this->db->tableHasField('#__users', 'lastResetTime')
+        ) {
+            $query = "ALTER TABLE `#__users` ADD COLUMN `resetCount` INT(11) NOT NULL DEFAULT '0' AFTER "
+                . "`lastResetTime`;";
             $this->db->setQuery($query);
             $this->db->query();
         }

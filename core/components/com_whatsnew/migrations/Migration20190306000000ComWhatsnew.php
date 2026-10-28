@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for removing items from 'components' menu (they have hard-coded menu links elsewhere)
  **/
@@ -37,7 +34,8 @@ class Migration20190306000000ComWhatsnew extends Base
             }
 
             // Check for an admin menu entry...if it's not there, create it
-            $query = "DELETE FROM `#__menu` WHERE `menutype` = 'main' AND `title` IN (" . implode(',', $components) . ");";
+            $query = "DELETE FROM `#__menu` WHERE `menutype` = 'main' AND `title` IN ("
+                . implode(',', $components) . ");";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -55,7 +53,8 @@ class Migration20190306000000ComWhatsnew extends Base
             $components = array();
             foreach (self::$components as $option) {
                 // Check for an admin menu entry...if it's not there, create it
-                $query = "SELECT `id` FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $this->db->quote($option);
+                $query = "SELECT `id` FROM `#__menu` WHERE `menutype` = 'main' AND `title` = "
+                    . $this->db->quote($option);
                 $this->db->setQuery($query);
                 if ($this->db->loadResult()) {
                     continue;
@@ -72,8 +71,13 @@ class Migration20190306000000ComWhatsnew extends Base
                 $alias = substr($option, 4);
                 $enabled = 1;
 
-                $query = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)";
-                $query .= " VALUES ('main', '{$option}', '{$alias}', '', '{$alias}', 'index.php?option={$option}', 'component', {$enabled}, 1, 1, {$component_id}, 0, 0, 0, 0, '', 0, '', 0, 0, 0, '*', 1)";
+                $query  = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, ";
+                $query .= "`link`, `type`, `published`, `parent_id`, `level`, `component_id`, ";
+                $query .= "`ordering`, `checked_out`, `browserNav`, `access`, `img`, ";
+                $query .= "`template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)";
+                $query .= " VALUES ('main', '{$option}', '{$alias}', '', '{$alias}', ";
+                $query .= "'index.php?option={$option}', 'component', {$enabled}, 1, 1, ";
+                $query .= "{$component_id}, 0, 0, 0, 0, '', 0, '', 0, 0, 0, '*', 1)";
                 $this->db->setQuery($query);
                 $this->db->query();
 
@@ -121,7 +125,8 @@ class Migration20190306000000ComWhatsnew extends Base
             // $rightId is the current right value, which is incremented on recursion return.
             // Increment the level for the children.
             // Add this item's alias to the path (but avoid a leading /)
-            $rightId = $this->rebuildMainMenu($node->id, $rightId, $level + 1, $path . (empty($path) ? '' : '/') . $node->alias);
+            $newPath = $path . (empty($path) ? '' : '/') . $node->alias;
+            $rightId = $this->rebuildMainMenu($node->id, $rightId, $level + 1, $newPath);
 
             // If there is an update failure, return false to break out of the recursion.
             if ($rightId === false) {

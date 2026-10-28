@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for having tags associated with publication versions
  **/
@@ -44,7 +41,8 @@ class Migration20190620000000ComPublications extends Base
             }
 
             foreach ($publications as $publication) {
-                $query = "SELECT id, publication_id FROM `#__publication_versions` WHERE `publication_id`=" . $this->db->quote($publication);
+                $query = "SELECT id, publication_id FROM `#__publication_versions` "
+                    . "WHERE `publication_id`=" . $this->db->quote($publication);
                 $this->db->setQuery($query);
                 $versions = $this->db->loadObjectList();
 
@@ -72,23 +70,42 @@ class Migration20190620000000ComPublications extends Base
                         foreach ($pubtags[$publication] as $tag) {
                             $ids[] = $tag->id;
                         }
-                        $query = "UPDATE `$table` SET `objectid`=" . $this->db->quote($version->id) . " WHERE `id` IN (" . implode(',', $ids) . ")";
+                        $query = "UPDATE `$table` SET `objectid`="
+                            . $this->db->quote($version->id)
+                            . " WHERE `id` IN (" . implode(',', $ids) . ")";
 
                         $this->db->setQuery($query);
                         if (!$this->db->query()) {
                             $this->log('Query failed: ' . $query, 'error');
                         } else {
-                            $this->log(sprintf('Updated tag association from publication ID %s to publication version ID %s', $publication, $version->id));
+                            $this->log(sprintf(
+                                'Updated tag association from publication ID %s '
+                                . 'to publication version ID %s',
+                                $publication,
+                                $version->id
+                            ));
                         }
                     } else {
                         foreach ($pubtags[$publication] as $tag) {
-                            $query = "INSERT INTO `$table` (`tagid`, `objectid`, `strength`, `taggerid`, `taggedon`, `tbl`, `label`) VALUES (" . $this->db->quote($tag->tagid) . ", " . $this->db->quote($version->id) . ", 1, " . $this->db->quote($tag->taggerid) . ", " . $this->db->quote($tag->taggedon) . ", 'publications', '')";
+                            $query = "INSERT INTO `$table` "
+                                . "(`tagid`, `objectid`, `strength`, `taggerid`, "
+                                . "`taggedon`, `tbl`, `label`) VALUES ("
+                                . $this->db->quote($tag->tagid) . ", "
+                                . $this->db->quote($version->id) . ", 1, "
+                                . $this->db->quote($tag->taggerid) . ", "
+                                . $this->db->quote($tag->taggedon)
+                                . ", 'publications', '')";
 
                             $this->db->setQuery($query);
                             if (!$this->db->query()) {
                                 $this->log('Query failed: ' . $query, 'error');
                             } else {
-                                $this->log(sprintf('Creating tag association for tag ID %s and publication version ID %s', $tag->tagid, $version->id));
+                                $this->log(sprintf(
+                                    'Creating tag association for tag ID %s '
+                                    . 'and publication version ID %s',
+                                    $tag->tagid,
+                                    $version->id
+                                ));
                             }
                         }
                     }
@@ -112,18 +129,27 @@ class Migration20190620000000ComPublications extends Base
             $tags = $this->db->loadObjectList();
 
             foreach ($tags as $tag) {
-                $query = "SELECT id, publication_id FROM `#__publication_versions` WHERE `id`=" . $this->db->quote($tag->objectid);
+                $query = "SELECT id, publication_id FROM `#__publication_versions` "
+                    . "WHERE `id`=" . $this->db->quote($tag->objectid);
                 $this->db->setQuery($query);
                 $version = $this->db->loadObject();
 
                 if ($version && $version->id) {
-                    $query = "UPDATE `$table` SET `objectid`=" . $this->db->quote($version->publication_id) . " WHERE `id`=" . $this->db->quote($tag->id);
+                    $query = "UPDATE `$table` SET `objectid`="
+                        . $this->db->quote($version->publication_id)
+                        . " WHERE `id`=" . $this->db->quote($tag->id);
                     $this->db->setQuery($query);
 
                     if (!$this->db->query()) {
                         $this->log('Query failed: ' . $query, 'error');
                     } else {
-                        $this->log(sprintf('Updated tag association #%s from publication version ID %s to publication ID %s', $tag->id, $tag->objectid, $version->publication_id));
+                        $this->log(sprintf(
+                            'Updated tag association #%s from publication '
+                            . 'version ID %s to publication ID %s',
+                            $tag->id,
+                            $tag->objectid,
+                            $version->publication_id
+                        ));
                     }
                 }
             }

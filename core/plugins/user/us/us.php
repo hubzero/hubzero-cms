@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\User\Us;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\User;
 
 /**
  * Plugin for automatically adding users to the location_us group based on IP country lookup
  */
-class plgUserUs extends \Hubzero\Plugin\Plugin
+class Us extends Plugin
 {
     public function onLoginUser($user, $options = array())
     {
@@ -37,7 +40,7 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
             Log::debug('[' . $username . '] is a member of [d1_nation], not a member of [location_us].');
 
             \Hubzero\User\Group::setMember('location_us', $uid, false);
-            return;
+            return true;
         }
 
         $ip = Request::ip();
@@ -51,6 +54,8 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
         Log::debug($ip . ' is ' . ($country == 'us' ? 'a' : 'not a') . ' US address' . ($country === '' ? ' (no country found)' : '') . ', [' . $username . '] ' . ($country == 'us' ? 'in' : 'not in') . ' group [location_us].');
 
         \Hubzero\User\Group::setMember('location_us', $uid, $country == 'us');
+
+        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

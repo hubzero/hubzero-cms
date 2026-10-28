@@ -67,7 +67,9 @@ class PdfFormRespondent
 
         $dbh = \App::get('db');
         $query  = 'SELECT id, started, finished, attempt FROM `#__courses_form_respondents`';
-        $query .= ' WHERE deployment_id = ' . (int)$depId . ' AND member_id = ' . (int)$member_id . ' AND attempt=' . (int)$attempt;
+        $query .= ' WHERE deployment_id = ' . (int)$depId
+            . ' AND member_id = ' . (int)$member_id
+            . ' AND attempt=' . (int)$attempt;
         $dbh->setQuery($query);
 
         // Set deployment id
@@ -80,7 +82,16 @@ class PdfFormRespondent
             $this->finished = $res['finished'];
             $this->attempt  = $res['attempt'];
         } else {
-            $dbh->setQuery('INSERT INTO #__courses_form_respondents(deployment_id, member_id, attempt) VALUES (' . (int)$depId . ', ' . (int)$member_id . ', ' . (int)$attempt . ')');
+            $insertValues = sprintf(
+                '(%d, %d, %d)',
+                (int)$depId,
+                (int)$member_id,
+                (int)$attempt
+            );
+            $dbh->setQuery(
+                'INSERT INTO #__courses_form_respondents(deployment_id, member_id, attempt) '
+                . 'VALUES ' . $insertValues
+            );
             $dbh->query();
             $this->id = $dbh->insertid();
             $this->attempt = (int) $attempt;
@@ -112,7 +123,10 @@ class PdfFormRespondent
             $key    = 'question-' . $question->id;
             $answer = (isset($answers[$key])) ? $answers[$key] : 0;
 
-            $dbh->setQuery('INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) VALUES (' . $this->id . ', ' . $question->id . ', ' . (int)$answer . ')');
+            $dbh->setQuery(
+                'INSERT INTO #__courses_form_responses(respondent_id, question_id, answer_id) '
+                . 'VALUES (' . $this->id . ', ' . $question->id . ', ' . (int)$answer . ')'
+            );
             $dbh->query();
         }
 
@@ -203,7 +217,14 @@ class PdfFormRespondent
     public function getAnswers()
     {
         $dbh = \App::get('db');
-        $dbh->setQuery('SELECT pfr.question_id, answer_id, pfa.id AS correct_answer_id, version FROM #__courses_form_latest_responses_view pfr INNER JOIN #__courses_form_questions pfq ON pfq.id = pfr.question_id INNER JOIN #__courses_form_answers pfa ON pfr.question_id = pfa.question_id AND pfa.correct WHERE pfr.respondent_id = ' . $this->id);
+        $dbh->setQuery(
+            'SELECT pfr.question_id, answer_id, pfa.id AS correct_answer_id, version '
+            . 'FROM #__courses_form_latest_responses_view pfr '
+            . 'INNER JOIN #__courses_form_questions pfq ON pfq.id = pfr.question_id '
+            . 'INNER JOIN #__courses_form_answers pfa '
+            . 'ON pfr.question_id = pfa.question_id AND pfa.correct '
+            . 'WHERE pfr.respondent_id = ' . $this->id
+        );
 
         $rv = array(
             'summary' => array('correct' => 0, 'total' => 0, 'score' => null, 'version' => null),
@@ -241,7 +262,9 @@ class PdfFormRespondent
             }
         }
 
-        $rv['summary']['score'] = ($rv['summary']['total'] > 0) ? number_format($rv['summary']['correct'] * 100 / $rv['summary']['total'], 1) : 0;
+        $total = $rv['summary']['total'];
+        $correct = $rv['summary']['correct'];
+        $rv['summary']['score'] = ($total > 0) ? number_format($correct * 100 / $total, 1) : 0;
 
         return $rv;
     }
@@ -254,9 +277,22 @@ class PdfFormRespondent
     public function saveProgress($qid, $aid)
     {
         $dbh = \App::get('db');
-        $dbh->setQuery('DELETE FROM #__courses_form_respondent_progress WHERE respondent_id = ' . (int)$this->id . ' AND question_id = ' . (int)$qid);
+        $dbh->setQuery(
+            'DELETE FROM #__courses_form_respondent_progress '
+            . 'WHERE respondent_id = ' . (int)$this->id . ' AND question_id = ' . (int)$qid
+        );
         $dbh->query();
-        $dbh->setQuery('INSERT INTO #__courses_form_respondent_progress(respondent_id, question_id, answer_id, submitted) VALUES (' . (int)$this->id . ', ' . (int)$qid . ', ' . (int)$aid . ', ' . $dbh->Quote(\Date::toSql()) . ')');
+        $insertValues = sprintf(
+            '(%d, %d, %d, %s)',
+            (int)$this->id,
+            (int)$qid,
+            (int)$aid,
+            $dbh->Quote(\Date::toSql())
+        );
+        $dbh->setQuery(
+            'INSERT INTO #__courses_form_respondent_progress'
+            . '(respondent_id, question_id, answer_id, submitted) VALUES ' . $insertValues
+        );
         $dbh->query();
 
         return $this;
@@ -270,7 +306,10 @@ class PdfFormRespondent
     public function getProgress()
     {
         $dbh = \App::get('db');
-        $dbh->setQuery('SELECT question_id, answer_id FROM #__courses_form_respondent_progress WHERE respondent_id = ' . (int)$this->id);
+        $dbh->setQuery(
+            'SELECT question_id, answer_id FROM #__courses_form_respondent_progress '
+            . 'WHERE respondent_id = ' . (int)$this->id
+        );
         return $dbh->loadAssocList('question_id');
     }
 
@@ -312,8 +351,10 @@ class PdfFormRespondent
     public function getCompletedAttempts()
     {
         $dbh   = \App::get('db');
-        $query  = 'SELECT `attempt` FROM `#__courses_form_respondents` WHERE `deployment_id` = ' . $dbh->quote($this->depId);
-        $query .= ' AND `member_id` = ' . $dbh->quote($this->member_id) . ' AND `finished` IS NOT NULL ORDER BY `attempt` ASC';
+        $query  = 'SELECT `attempt` FROM `#__courses_form_respondents` '
+            . 'WHERE `deployment_id` = ' . $dbh->quote($this->depId);
+        $query .= ' AND `member_id` = ' . $dbh->quote($this->member_id)
+            . ' AND `finished` IS NOT NULL ORDER BY `attempt` ASC';
         $dbh->setQuery($query);
         return $dbh->loadColumn();
     }
@@ -347,7 +388,10 @@ class PdfFormRespondent
     {
         $this->started = \Date::toSql();
         $dbh = \App::get('db');
-        $dbh->setQuery('UPDATE #__courses_form_respondents SET started = \'' . $this->started . '\' WHERE started IS NULL AND id = ' . (int)$this->id);
+        $dbh->setQuery(
+            'UPDATE #__courses_form_respondents SET started = \'' . $this->started . '\' '
+            . 'WHERE started IS NULL AND id = ' . (int)$this->id
+        );
         $dbh->query();
 
         return $this;
@@ -362,7 +406,10 @@ class PdfFormRespondent
     {
         $this->started = \Date::toSql();
         $dbh = \App::get('db');
-        $dbh->setQuery('UPDATE #__courses_form_respondents SET finished = \'' . $this->started . '\' WHERE id = ' . (int)$this->id);
+        $dbh->setQuery(
+            'UPDATE #__courses_form_respondents SET finished = \'' . $this->started . '\' '
+            . 'WHERE id = ' . (int)$this->id
+        );
         $dbh->query();
 
         return $this;

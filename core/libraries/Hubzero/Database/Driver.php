@@ -21,7 +21,7 @@ abstract class Driver
     /**
      * The connection instances factory
      *
-     * @var    array
+     * @public array
      * @since  2.0.0
      **/
     protected static $instances = [];
@@ -29,7 +29,7 @@ abstract class Driver
     /**
      * The cumulative query timer (in miliseconds)
      *
-     * @var    int
+     * @public int
      * @since  2.0.0
      */
     protected $timer = 0;
@@ -39,7 +39,7 @@ abstract class Driver
      *
      * This will likely be an object for all modern database drivers.
      *
-     * @var    object|resource
+     * @public object|resource
      * @since  2.0.0
      */
     protected $connection;
@@ -47,7 +47,7 @@ abstract class Driver
     /**
      * The incremental count of executed queries
      *
-     * @var    int
+     * @public int
      * @since  2.0.0
      */
     protected $count = 0;
@@ -58,7 +58,7 @@ abstract class Driver
      * For prepared statements, this would the be actual statement class, for non-prepared
      * statements, this will simply be the last executed or upcoming query.
      *
-     * @var    object|string
+     * @public object|string
      * @since  2.0.0
      */
     protected $statement;
@@ -66,7 +66,7 @@ abstract class Driver
     /**
      * The prepared statement bindings
      *
-     * @var    array
+     * @public array
      * @since  2.0.0
      */
     protected $bindings = [];
@@ -77,7 +77,7 @@ abstract class Driver
      * For prepared statements, we'll try to interpolate prepared statement into basic strings,
      * even though this isn't really an accurate representation of the query.
      *
-     * @var    array
+     * @public array
      * @since  2.0.0
      */
     protected $log = [];
@@ -85,7 +85,7 @@ abstract class Driver
     /**
      * The character(s) used to quote items such as table names or field names
      *
-     * @var    string
+     * @public string
      * @since  2.0.0
      */
     protected $wrapper = '`%s`';
@@ -93,7 +93,7 @@ abstract class Driver
     /**
      * The null or zero representation of a timestamp for the database driver
      *
-     * @var    string
+     * @public string
      * @since  2.0.0
      */
     protected $nullDate = '0000-00-00 00:00:00';
@@ -101,7 +101,7 @@ abstract class Driver
     /**
      * The common database table prefix
      *
-     * @var    string
+     * @public string
      * @since  2.0.0
      */
     protected $tablePrefix = 'jos_';
@@ -109,7 +109,7 @@ abstract class Driver
     /**
      * The state of debugging
      *
-     * @var    bool
+     * @public bool
      * @since  2.0.0
      */
     protected $debug = false;
@@ -117,7 +117,7 @@ abstract class Driver
     /**
      * The name of the database
      *
-     * @var    string
+     * @public string
      * @since  2.0.0
      */
     protected $database;
@@ -125,7 +125,7 @@ abstract class Driver
     /**
      * The database driver syntax
      *
-     * @var    string
+     * @public string
      * @since  2.0.0
      **/
     protected $syntax = null;
@@ -191,10 +191,15 @@ abstract class Driver
     public static function getInstance($options = [])
     {
         // Sanitize the database connector options
-        $options['driver']   = (isset($options['driver']))   ? preg_replace('/[^A-Z0-9_\.-]/i', '', $options['driver']) : 'mysql';
-        $options['database'] = (isset($options['database'])) ? $options['database']                                     : null;
-        $options['select']   = (isset($options['select']))   ? $options['select']                                       : true;
-
+        $options['driver']   = (isset($options['driver']))   ? preg_replace(
+            '/[^A-Z0-9_\.-]/i',
+            '',
+            $options['driver']
+        ) : 'mysql';
+        $options['database'] = (isset($options['database'])) ? $options['database']
+            : null;
+        $options['select']   = (isset($options['select']))   ? $options['select']
+            : true;
         // @TODO: Eventually remove this?
         if ($options['driver'] == 'pdo') {
             $options['driver'] = 'mysql';
@@ -446,14 +451,12 @@ abstract class Driver
                 // If the value is null and we want to update nulls then set it
                 if ($nulls) {
                     $val = 'NULL';
-                }
+                } else {
                 // If the value is null and we do not want to update nulls then ignore this field
-                else {
                     continue;
                 }
-            }
+            } else {
             // The field is not null so we prep it for update
-            else {
                 $val = $this->quote($v);
             }
 
@@ -821,7 +824,12 @@ abstract class Driver
         $count        = 0;
 
         foreach (Str::findLiteral($prefix, $sql) as $prefixPosition) {
-            $sql = substr_replace($sql, $this->tablePrefix, $prefixPosition + ($differential * $count), strlen($prefix));
+            $sql = substr_replace(
+                $sql,
+                $this->tablePrefix,
+                $prefixPosition + ($differential * $count),
+                strlen($prefix)
+            );
             $count++;
         }
 

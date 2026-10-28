@@ -21,6 +21,7 @@ class Languages extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Language List';
 
     /**
@@ -28,6 +29,7 @@ class Languages extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_codes = array(
         "aa" => "Afar",
         "ab" => "Abkhazian",
@@ -239,7 +241,19 @@ class Languages extends Base
 
         array_unshift($languages, \Html::select('option', '', '- ' . Lang::txt('Select Language') . ' -'));
 
-        return '<span class="field-wrap">' . \Html::select('genericlist', $languages, $control_name . '[' . $name . ']', 'class="inputbox"', 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
+        $fieldName = $control_name . '[' . $name . ']';
+        $fieldId = $control_name . '-' . $name;
+        $selectHtml = \Html::select(
+            'genericlist',
+            $languages,
+            $fieldName,
+            'class="inputbox"',
+            'value',
+            'text',
+            $value,
+            $fieldId
+        );
+        return '<span class="field-wrap">' . $selectHtml . '</span>';
     }
 
     /**

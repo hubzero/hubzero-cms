@@ -156,7 +156,8 @@ class ToolLog extends Table
 
         $query  = "SELECT log ";
         $query .= "FROM $this->_tbl ";
-        $query .= "WHERE parent_id=" . $this->_db->quote($toolid) . " AND project_activity_id=" . $this->_db->quote($aid);
+        $query .= "WHERE parent_id=" . $this->_db->quote($toolid)
+            . " AND project_activity_id=" . $this->_db->quote($aid);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();

@@ -327,7 +327,7 @@ class Entity extends Obj
 
         if (isset($this->dirname)) {
             $return = $this->dirname;
-        } else if ($path = $this->getPath()) {
+        } elseif ($path = $this->getPath()) {
             $bits = explode('/', $path);
             array_pop($bits);
 

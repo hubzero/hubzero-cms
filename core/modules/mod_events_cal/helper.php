@@ -140,16 +140,39 @@ class Helper extends Module
         // Display last month?
         if ($disp_lastMonth && (!$disp_lastMonthDays || $thisDayOfMonth <= $disp_lastMonthDays)) {
             // Build last month calendar
-            $this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") - 1, 1, date("Y")), Lang::txt('_CAL_LANG_LAST_MONTH'), $day_name, $disp_lastMonth == 2);
+            $lastMonthTime = mktime(0, 0, 0, date("n") - 1, 1, date("Y"));
+            $this->content .= $this->calendar(
+                $timeWithOffset,
+                $startday,
+                $lastMonthTime,
+                Lang::txt('_CAL_LANG_LAST_MONTH'),
+                $day_name,
+                $disp_lastMonth == 2
+            );
         }
 
         // Build this month
-        $this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n"), 1, date("Y")), Lang::txt('EVENTS_CAL_LANG_THIS_MONTH'), $day_name);
+        $thisMonthTime = mktime(0, 0, 0, date("n"), 1, date("Y"));
+        $this->content .= $this->calendar(
+            $timeWithOffset,
+            $startday,
+            $thisMonthTime,
+            Lang::txt('EVENTS_CAL_LANG_THIS_MONTH'),
+            $day_name
+        );
 
         // Display next month?
         if ($disp_nextMonth && (!$disp_nextMonthDays || $daysLeftInMonth <= $disp_nextMonthDays)) {
             // Build next month calendar
-            $this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") + 1, 1, date("Y")), Lang::txt('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
+            $nextMonthTime = mktime(0, 0, 0, date("n") + 1, 1, date("Y"));
+            $this->content .= $this->calendar(
+                $timeWithOffset,
+                $startday,
+                $nextMonthTime,
+                Lang::txt('_CAL_LANG_NEXT_MONTH'),
+                $day_name,
+                $disp_nextMonth == 2
+            );
         }
 
         require $this->getLayoutPath();
@@ -168,7 +191,7 @@ class Helper extends Module
      * @param      boolean $monthMustHaveEvent Parameter description (if any) ...
      * @return     string Return description (if any) ...
      */
-    private function _calendar($timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent = false)
+    private function calendar($timeWithOffset, $startday, $time, $linkString, &$day_name, $monthMustHaveEvent = false)
     {
         $database = App::get('db');
 
@@ -181,11 +204,27 @@ class Helper extends Module
         $content  = '<table class="mod_events_calendar">' . "\n";
         $content .= ' <caption>' . "\n";
         if ($this->params->get('show_nav_prev_month')) {
-            $content .= ' <a class="prev month" href="' . Route::url('index.php?option=com_events&year=' . ($cal_month == 1 ? $cal_year - 1 : $cal_year) . '&month=' . ($cal_month == 1 ? 12 : $cal_month - 1)) . '">' . Html::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)) . '</a>' . "\n";
+            $prevYear = ($cal_month == 1 ? $cal_year - 1 : $cal_year);
+            $prevMonth = ($cal_month == 1 ? 12 : $cal_month - 1);
+            $prevUrl = Route::url(
+                'index.php?option=com_events&year=' . $prevYear . '&month=' . $prevMonth
+            );
+            $content .= ' <a class="prev month" href="' . $prevUrl . '">' .
+                Html::getMonthName($prevMonth) . '</a>' . "\n";
         }
-        $content .= ' <a class="current month" href="' . Route::url('index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month) . '">' . Html::getMonthName($cal_month) . '</a>' . "\n";
+        $currentUrl = Route::url(
+            'index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month
+        );
+        $content .= ' <a class="current month" href="' . $currentUrl . '">' .
+            Html::getMonthName($cal_month) . '</a>' . "\n";
         if ($this->params->get('show_nav_next_month')) {
-            $content .= ' <a class="next month" href="' . Route::url('index.php?option=com_events&year=' . ($cal_month == 12 ? $cal_year + 1 : $cal_year) . '&month=' . ($cal_month == 12 ? 1 : $cal_month + 1)) . '">' . Html::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)) . '</a>' . "\n";
+            $nextYear = ($cal_month == 12 ? $cal_year + 1 : $cal_year);
+            $nextMonth = ($cal_month == 12 ? 1 : $cal_month + 1);
+            $nextUrl = Route::url(
+                'index.php?option=com_events&year=' . $nextYear . '&month=' . $nextMonth
+            );
+            $content .= ' <a class="next month" href="' . $nextUrl . '">' .
+                Html::getMonthName($nextMonth) . '</a>' . "\n";
         }
         $content .= ' </caption>' . "\n";
         $content .= ' <thead>' . "\n";
@@ -218,11 +257,16 @@ class Helper extends Module
             $selected_date = "$cal_year-$cal_month-$do";
 
             $sql = "SELECT `#__events`.* FROM `#__events`, `#__categories` as b"
-                . " WHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid"
-                . " AND ((publish_up >= '$selected_date 00:00:00' AND publish_up <= '$selected_date 23:59:59')"
-                . " OR (publish_down >= '$selected_date 00:00:00' AND publish_down <= '$selected_date 23:59:59')"
-                . " OR (publish_up <= '$selected_date 00:00:00' AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
-                . " AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
+                . " WHERE #__events.catid = b.id "
+                // AND b.access <= $gid AND #__events.access <= $gid
+                . " AND ((publish_up >= '$selected_date 00:00:00' "
+                . "AND publish_up <= '$selected_date 23:59:59')"
+                . " OR (publish_down >= '$selected_date 00:00:00' "
+                . "AND publish_down <= '$selected_date 23:59:59')"
+                . " OR (publish_up <= '$selected_date 00:00:00' "
+                . "AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
+                . " AND (#__events.scope IS NULL OR #__events.scope="
+                . $database->quote('event') . ")"
                 . " ORDER BY publish_up ASC";
 
             $database->setQuery($sql);
@@ -242,7 +286,11 @@ class Helper extends Module
             // Only adds link if event scheduled that day
             $content .= '   <td class="' . $class . '">';
             if ($class == 'todaywithevents' || $class == 'daywithevents') {
-                $content .= '<a class="mod_events_daylink" href="' . Route::url('index.php?option=com_events&year=' . $cal_year . '&month=' . $cal_month . '&day=' . $do) . '">' . $d . '</a>';
+                $dayUrl = Route::url(
+                    'index.php?option=com_events&year=' . $cal_year .
+                    '&month=' . $cal_month . '&day=' . $do
+                );
+                $content .= '<a class="mod_events_daylink" href="' . $dayUrl . '">' . $d . '</a>';
             } else {
                 $content .= "$d";
             }

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Helpers\Admin;
@@ -99,7 +100,9 @@ class Imports extends AdminController
         $r = Run::blank()->getTableName();
 
         if ($filters['sort'] == 'ran_at') {
-            $model->select("(SELECT MAX(" . $r . ".ran_at) FROM " . $r . " WHERE " . $r . ".import_id=" . $i . ".`id` AND " . $r . ".dry_run=0)", 'ran_at');
+            $subquery = "(SELECT MAX(" . $r . ".ran_at) FROM " . $r
+                . " WHERE " . $r . ".import_id=" . $i . ".`id` AND " . $r . ".dry_run=0)";
+            $model->select($subquery, 'ran_at');
         }
 
         if (isset($filters['state']) && $filters['state']) {
@@ -166,7 +169,7 @@ class Imports extends AdminController
         $files = array();
 
         if ($import->get('id')) {
-            if ($this->_createImportFilespace($import)) {
+            if ($this->createImportFilespace($import)) {
                 $files = Filesystem::files($import->fileSpacePath(), '.');
             }
         }
@@ -266,7 +269,7 @@ class Imports extends AdminController
         }
 
         // create folder for files
-        if (!$this->_createImportFilespace($model)) {
+        if (!$this->createImportFilespace($model)) {
             return $this->editTask();
         }
 
@@ -420,9 +423,9 @@ class Imports extends AdminController
         // Run process task on importer
         // passed the import model, array or callbacks, and test mode flag
         $resourceData = $importImporter->process($import, array(
-            'postparse'   => $this->_hooks('postparse', $import),
-            'postmap'     => $this->_hooks('postmap', $import),
-            'postconvert' => $this->_hooks('postconvert', $import)
+            'postparse'   => $this->hooks('postparse', $import),
+            'postmap'     => $this->hooks('postmap', $import),
+            'postconvert' => $this->hooks('postconvert', $import)
         ), $dryRun);
 
         // Calculate execution time
@@ -485,7 +488,7 @@ class Imports extends AdminController
      * @param   object  $import  Import Model
      * @return  object  Closure
      */
-    private function _hooks($event, $import)
+    private function hooks($event, $import)
     {
         // Array to hold callbacks
         $callbacks = array();
@@ -532,7 +535,7 @@ class Imports extends AdminController
      * @param   object  $import  \Hubzero\Content\Import\Model\Import
      * @return  boolean
      */
-    private function _createImportFilespace(\Hubzero\Content\Import\Model\Import $import)
+    private function createImportFilespace(\Hubzero\Content\Import\Model\Import $import)
     {
         // Upload path
         $uploadPath = $import->fileSpacePath();
@@ -540,7 +543,8 @@ class Imports extends AdminController
         // If we dont have a filespace, create it
         if (!is_dir($uploadPath)) {
             if (!Filesystem::makeDirectory($uploadPath)) {
-                $this->setError(Lang::txt('Failed to create target upload path "%s".', $uploadPath));
+                $msg = Lang::txt('Failed to create target upload path "%s".', $uploadPath);
+                $this->setError($msg);
                 return false;
             }
         }
@@ -585,7 +589,10 @@ class Imports extends AdminController
      */
     public function sampleTask()
     {
-        $skip = array('gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword', 'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber');
+        $skip = array(
+            'gid', 'gidnumber', 'regIP', 'regHost', 'modifiedDate', 'proxypassword',
+            'loginshell', 'ftpshell', 'shadowexpire', 'params', 'proxyuidnumber'
+        );
 
         $fields = array();
         $row    = array();
@@ -625,7 +632,10 @@ class Imports extends AdminController
             }
 
             $example = 'Example';
-            if ($field->options->count() || in_array($field->get('type'), array('tags', 'select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes'))) {
+            $multiTypes = array(
+                'tags', 'select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes'
+            );
+            if ($field->options->count() || in_array($field->get('type'), $multiTypes)) {
                 $example = 'example;example;example';
             }
 

@@ -11,7 +11,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 
 // Prevent direct access except through proper entry points
 if (!defined('HUBZERO_INSTALL') && !defined('_HZEXEC_')) {

@@ -18,7 +18,8 @@ Toolbar::spacer();
 Toolbar::help('tool');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -29,27 +30,32 @@ Toolbar::help('tool');
 
                 <div class="input-wrap">
                     <label for="field-title"><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>:</label><br />
-                    <input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+                    <?php $titleVal = $this->escape(stripslashes($this->row->title)); ?>
+                    <input type="text" name="fields[title]" id="field-title" value="<?php echo $titleVal; ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-ticketid"><?php echo Lang::txt('COM_TOOLS_FIELD_TICKETID'); ?>:</label><br />
-                    <input type="text" name="fields[ticketid]" id="field-ticketid" value="<?php echo $this->escape($this->row->ticketid); ?>" />
+                    <input type="text" name="fields[ticketid]" id="field-ticketid"
+                        value="<?php echo $this->escape($this->row->ticketid); ?>" />
                 </div>
 
                 <?php /*<div class="input-wrap">
                     <label for="field-toolaccess"><?php echo Lang::txt('COM_TOOLS_FIELD_TOOLACCESS'); ?>:</label><br />
-                    <input type="text" name="fields[toolaccess]" id="field-toolaccess" value="<?php echo $this->escape($this->row->toolaccess); ?>" />
+                    <input type="text" name="fields[toolaccess]" id="field-toolaccess"
+                        value="<?php echo $this->escape($this->row->toolaccess); ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-codeaccess"><?php echo Lang::txt('COM_TOOLS_FIELD_CODEACCESS'); ?>:</label><br />
-                    <input type="text" name="fields[codeaccess]" id="field-codeaccess" value="<?php echo $this->escape($this->row->codeaccess); ?>" />
+                    <input type="text" name="fields[codeaccess]" id="field-codeaccess"
+                        value="<?php echo $this->escape($this->row->codeaccess); ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-wikiaccess"><?php echo Lang::txt('COM_TOOLS_FIELD_WIKIACCESS'); ?>:</label><br />
-                    <input type="text" name="fields[wikiaccess]" id="field-wikiaccess" value="<?php echo $this->escape($this->row->wikiaccess); ?>" />
+                    <input type="text" name="fields[wikiaccess]" id="field-wikiaccess"
+                        value="<?php echo $this->escape($this->row->wikiaccess); ?>" />
                 </div>*/?>
 
                 <div class="input-wrap">

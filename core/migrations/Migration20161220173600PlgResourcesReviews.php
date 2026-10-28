@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving votes from #__vote_log to #__item_votes
- **/
+ *
+ */
 class Migration20161220173600PlgResourcesReviews extends Base
 {
     /**
@@ -26,8 +28,14 @@ class Migration20161220173600PlgResourcesReviews extends Base
             $this->db->setQuery($query);
             $votes = $this->db->loadObjectList();
             foreach ($votes as $vote) {
-                $query = "INSERT INTO `#__item_votes` (`id`, `item_id`, `item_type`, `ip`, `created`, `created_by`, `vote`)
-						VALUES (NULL, " . $this->db->quote($vote->referenceid) . ", " . $this->db->quote($vote->category) . ", " . $this->db->quote($vote->ip) . ", " . $this->db->quote($vote->voted) . ", " . $this->db->quote($vote->voter) . ", " . $this->db->quote($vote->helpful == 'no' ? -1 : 1) . ")";
+                $query = "INSERT INTO `#__item_votes` "
+                    . "(`id`, `item_id`, `item_type`, `ip`, `created`, `created_by`, `vote`) VALUES (NULL, "
+                    . $this->db->quote($vote->referenceid) . ", "
+                    . $this->db->quote($vote->category) . ", "
+                    . $this->db->quote($vote->ip) . ", "
+                    . $this->db->quote($vote->voted) . ", "
+                    . $this->db->quote($vote->voter) . ", "
+                    . $this->db->quote($vote->helpful == 'no' ? -1 : 1) . ")";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -48,8 +56,14 @@ class Migration20161220173600PlgResourcesReviews extends Base
             $this->db->setQuery($query);
             $votes = $this->db->loadObjectList();
             foreach ($votes as $vote) {
-                $query = "INSERT INTO `#__vote_log` (`id`, `referenceid`, `category`, `ip`, `voted`, `voter`, `helpful`)
-						VALUES (NULL, " . $this->db->quote($vote->item_id) . ", " . $this->db->quote($vote->item_type) . ", " . $this->db->quote($vote->ip) . ", " . $this->db->quote($vote->created) . ", " . $this->db->quote($vote->created_by) . ", " . $this->db->quote($vote->helpful == 1 ? 'yes' : 'no') . ")";
+                $query = "INSERT INTO `#__vote_log` "
+                    . "(`id`, `referenceid`, `category`, `ip`, `voted`, `voter`, `helpful`) VALUES (NULL, "
+                    . $this->db->quote($vote->item_id) . ", "
+                    . $this->db->quote($vote->item_type) . ", "
+                    . $this->db->quote($vote->ip) . ", "
+                    . $this->db->quote($vote->created) . ", "
+                    . $this->db->quote($vote->created_by) . ", "
+                    . $this->db->quote($vote->helpful == 1 ? 'yes' : 'no') . ")";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

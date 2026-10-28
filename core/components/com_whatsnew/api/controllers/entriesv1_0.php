@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -176,6 +177,7 @@ class Entriesv1_0 extends ApiController
      * @param   array    $b
      * @return  integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function sorter_asc($a, $b)
     {
         return (strtotime($a['date']) < strtotime($b['date'])) ? -1 : 1;

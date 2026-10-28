@@ -128,7 +128,7 @@ class Media extends SiteController
             if (!$this->page->access('view')) {
                 App::abort(403, Lang::txt('COM_WIKI_WARNING_NOT_AUTH'));
             }
-        } else if ($this->page->getNamespace() == 'tmp') {
+        } elseif ($this->page->getNamespace() == 'tmp') {
             $this->page->set('id', $this->page->stripNamespace());
         } else {
             App::abort(404, Lang::txt('COM_WIKI_PAGE_NOT_FOUND'));
@@ -155,7 +155,8 @@ class Media extends SiteController
         }
 
         // Add root
-        $filename = $attachment->filespace() . DS . $this->page->get('id') . DS . ltrim($attachment->get('filename'), DS);
+        $filename = $attachment->filespace() . DS . $this->page->get('id')
+            . DS . ltrim($attachment->get('filename'), DS);
 
         // Ensure the file exist
         if (!file_exists($filename)) {
@@ -266,7 +267,8 @@ class Media extends SiteController
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_WIKI_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            $error = Lang::txt('COM_WIKI_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
+            echo json_encode(array('error' => $error));
             return;
         }
 
@@ -386,9 +388,8 @@ class Media extends SiteController
         // Upload new files
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_UPLOADING'));
-        }
-        // File was uploaded
-        else {
+        } else {
+            // File was uploaded
             // Virus scan
             if (!Filesystem::isSafe($path . DS . $file['name'])) {
                 Filesystem::delete($path . DS . $file['name']);

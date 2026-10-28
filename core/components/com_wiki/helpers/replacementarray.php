@@ -19,7 +19,7 @@ class ReplacementArray
      *
      * @var mixed
      */
-    var $data = false;
+    public $data = false;
     /*mostly private*/
 
     // Create an object with the specified replacement array
@@ -33,7 +33,7 @@ class ReplacementArray
      * @param      array $data Parameter description (if any) ...
      * @return     void
      */
-    function __construct($data = array())
+    public function __construct($data = array())
     {
         $this->data = $data;
     }
@@ -45,7 +45,7 @@ class ReplacementArray
      *
      * @return     mixed Return description (if any) ...
      */
-    function __sleep()
+    public function __sleep()
     {
         return array('data');
     }
@@ -57,7 +57,7 @@ class ReplacementArray
      *
      * @return     void
      */
-    function __wakeup()
+    public function __wakeup()
     {
     }
 
@@ -71,7 +71,7 @@ class ReplacementArray
      * @param      unknown $data Parameter description (if any) ...
      * @return     void
      */
-    function setArray($data)
+    public function setArray($data)
     {
         $this->data = $data;
     }
@@ -83,7 +83,7 @@ class ReplacementArray
      *
      * @return     mixed Return description (if any) ...
      */
-    function getArray()
+    public function getArray()
     {
         return $this->data;
     }
@@ -99,7 +99,7 @@ class ReplacementArray
      * @param      unknown $to Parameter description (if any) ...
      * @return     void
      */
-    function setPair($from, $to)
+    public function setPair($from, $to)
     {
         $this->data[$from] = $to;
     }
@@ -112,7 +112,7 @@ class ReplacementArray
      * @param      unknown $data Parameter description (if any) ...
      * @return     void
      */
-    function mergeArray($data)
+    public function mergeArray($data)
     {
         $this->data = array_merge($this->data, $data);
     }
@@ -125,7 +125,7 @@ class ReplacementArray
      * @param      object $other Parameter description (if any) ...
      * @return     void
      */
-    function merge($other)
+    public function merge($other)
     {
         $this->data = array_merge($this->data, $other->data);
     }
@@ -138,7 +138,7 @@ class ReplacementArray
      * @param      unknown $subject Parameter description (if any) ...
      * @return     unknown Return description (if any) ...
      */
-    function replace($subject)
+    public function replace($subject)
     {
         return strtr($subject, $this->data);
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,9 +27,9 @@ class Badges
 {
     public $scope = '';
     public $scopeId = '';
-    private $_db = '';
+    private $db = '';
 
-    const LABEL = 'badge';
+    public const LABEL = 'badge';
 
     /**
      * Instantiate a Badges instance
@@ -40,7 +41,7 @@ class Badges
     {
         $this->scope = $args['scope'];
         $this->scopeId = $args['scopeId'];
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
     }
 
     /**
@@ -81,6 +82,7 @@ class Badges
      * @param   string   $rawTagNames   Comma separated list of raw_tag names
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseBadgesString($newBadgesString)
     {
         $rawTagNames = explode(',', $newBadgesString);
@@ -99,6 +101,7 @@ class Badges
      * @param   boolean  $admin         Mark tags as admin?
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _translateRawNamesToIds($rawTagNames, $taggerId, $admin)
     {
         $nameFormatter = Tag::blank();
@@ -127,6 +130,7 @@ class Badges
      * @param   boolean  $admin       Mark tags as admin?
      * @return  boolean
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _createTag($tag, $tagName, $rawTagName, $taggerId, $admin)
     {
         $tagData = [
@@ -152,6 +156,7 @@ class Badges
      * @param   integer  $strength    Association strength
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addBadges($tagIds, $taggerId, $admin, $strength)
     {
         foreach ($tagIds as $tagId) {
@@ -168,6 +173,7 @@ class Badges
      * @param   integer  $strength    Badge strength
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addBadge($tagId, $taggerId, $admin, $strength)
     {
         $taggedOn = Date::toSql();
@@ -191,6 +197,7 @@ class Badges
      * @param   array    $tagIds      IDs of tags
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _removeBadges($tagIds)
     {
         foreach ($tagIds as $tagId) {
@@ -204,6 +211,7 @@ class Badges
      * @param   integer  $tagId       ID of tag record
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _removeBadge($tagId)
     {
         $tagAssociationId = Objct::all()
@@ -275,6 +283,7 @@ class Badges
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _renderString()
     {
         $output = '';

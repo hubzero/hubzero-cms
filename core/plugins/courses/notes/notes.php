@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once __DIR__ . DS . 'models' . DS . 'note.php';
-
 /**
  * Courses Plugin class for user notes
  */

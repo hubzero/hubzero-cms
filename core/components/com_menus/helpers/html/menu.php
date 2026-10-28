@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -186,7 +187,8 @@ class HtmlMenu
                 )
             );
         } else {
-            $ordering = '<input type="hidden" name="ordering" value="' . $row->ordering . '" />' . Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');
+            $ordering = '<input type="hidden" name="ordering" value="' . $row->ordering . '" />'
+                . Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');
         }
 
         return $ordering;

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding Creative Commons 4.0 license to resources
+  *
  **/
 class Migration20150901115230ComResources extends Base
 {
@@ -43,14 +45,21 @@ to Adapt — remix, transform, and build upon the material
 The licensor cannot revoke these freedoms as long as you follow the license terms.
 Under the following terms:
 
-Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if '
+                    . 'changes were made. You may do so in any reasonable manner, but not in any way that suggests '
+                    . 'the licensor endorses you or your use.
 NonCommercial — You may not use the material for commercial purposes.
-ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
-No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+ShareAlike — If you remix, transform, or build upon the material, you must distribute your '
+                    . 'contributions under the same license as the original.
+No additional restrictions — You may not apply legal terms or technological measures that legally '
+                    . 'restrict others from doing anything the license permits.
 
 Notices:
-You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
-No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material. 
+You do not have to comply with the license for elements of the material in the public domain or '
+                    . 'where your use is permitted by an applicable exception or limitation.
+No warranties are given. The license may not give you all of the permissions necessary for your '
+                    . 'intended use. For example, other rights such as publicity, privacy, or moral rights may '
+                    . 'limit how you use the material.
 
 For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.';
 

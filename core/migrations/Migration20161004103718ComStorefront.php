@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add `exclude` column to storefront access_groups table
- **/
+ *
+ */
 class Migration20161004103718ComStorefront extends Base
 {
     /**
@@ -21,7 +23,10 @@ class Migration20161004103718ComStorefront extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__storefront_product_access_groups') && !$this->db->tableHasField('#__storefront_product_access_groups', 'exclude')) {
+        if (
+            $this->db->tableExists('#__storefront_product_access_groups')
+            && !$this->db->tableHasField('#__storefront_product_access_groups', 'exclude')
+        ) {
             $query = "ALTER TABLE `#__storefront_product_access_groups` ADD `exclude` tinyint(2) NOT NULL DEFAULT '0'";
             $this->db->setQuery($query);
             $this->db->query();
@@ -33,7 +38,10 @@ class Migration20161004103718ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_product_access_groups') && $this->db->tableHasField('#__storefront_product_access_groups', 'exclude')) {
+        if (
+            $this->db->tableExists('#__storefront_product_access_groups')
+            && $this->db->tableHasField('#__storefront_product_access_groups', 'exclude')
+        ) {
             $query = "ALTER TABLE `#__storefront_product_access_groups` DROP `exclude`";
             $this->db->setQuery($query);
             $this->db->query();

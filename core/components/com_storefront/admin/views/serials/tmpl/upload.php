@@ -35,13 +35,24 @@ Html::behavior('framework');
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form" enctype="multipart/form-data">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="component-form"
+    enctype="multipart/form-data"
+>
     <?php if ($tmpl == 'component') { ?>
         <fieldset>
             <div class="configuration" >
                 <div class="fltrt configuration-options">
-                    <button type="button" onclick="submitbutton('uploadcsv');"><?php echo Lang::txt('Import');?></button>
-                    <button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('Cancel');?></button>
+                    <button type="button" onclick="submitbutton('uploadcsv');">
+                        <?php echo Lang::txt('Import');?>
+                    </button>
+                    <button type="button" onclick="window.parent.$.fancybox.close();">
+                        <?php echo Lang::txt('Cancel');?>
+                    </button>
                 </div>
                 <?php echo Lang::txt('Uplaod a file with serial numbers') ?>
             </div>

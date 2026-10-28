@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:ignoreFile PSR1.Files.SideEffects.FoundWithSymbols
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +20,8 @@ function view($hash)
     }
 
     if (!isset($_SESSION['dv']['gallery']['list'][$hash])) {
-        print "<h2>Invalid Gallery ID or Your session may have expired</h2>Please close this window and refresh the previous View/Page.";
+        print "<h2>Invalid Gallery ID or Your session may have expired</h2>"
+            . "Please close this window and refresh the previous View/Page.";
         exit();
     }
 
@@ -53,8 +56,12 @@ function view($hash)
         }
 
         if (in_array($ext, $imagetypes)) {
-            $image_list[] = '<img title="' . $desc . '" alt="' . $pi['basename'] . '" src="' . $dir_name . '/small/' . $pi['basename'] . '" />';
-            $image_viewer[] = '<a title="Click to view the original image." target="_blank" href="' . $dir_name . '/' . $pi['basename'] . '"><img alt="' . $pi['basename'] . '" src="' . $dir_name . '/medium/' . $pi['basename'] . '" style="display:none;" /></a>';
+            $image_list[] = '<img title="' . $desc . '" alt="' . $pi['basename'] . '"'
+                . ' src="' . $dir_name . '/small/' . $pi['basename'] . '" />';
+            $image_viewer[] = '<a title="Click to view the original image." target="_blank"'
+                . ' href="' . $dir_name . '/' . $pi['basename'] . '">'
+                . '<img alt="' . $pi['basename'] . '" src="' . $dir_name . '/medium/'
+                . $pi['basename'] . '" style="display:none;" /></a>';
         }
     }
     ?>
@@ -86,19 +93,29 @@ function view($hash)
             <br />
             <?php echo implode("\n", $image_viewer);?>
             <br style="line-haight: 5px;" />
-            <div id="dv_gallery_desc" class="ui-widget ui-widget-content ui-corner-all" style="display:none; margin: 0px 20px 0px 20px; border-style: inset;">The description will be displayed here...</div>
+            <div id="dv_gallery_desc" class="ui-widget ui-widget-content ui-corner-all"
+                style="display:none; margin: 0px 20px 0px 20px; border-style: inset;">
+                The description will be displayed here...
+            </div>
             <br style="line-haight: 5px;" />
         </div>
 
         <div class="dv_gallery_toolbar ui-widget ui-widget-header ui-corner-bottom">
             <span id="dv_gallery_dl_image">
-                <a href="" target="_blank"><img src="<?php echo $html_path?>/download-l.png" alt="Click here to download the full size image." title="Download Original Image (Right click and save image)" style="border: 1px #DDD solid;" /></a>
+                <a href="" target="_blank">
+                    <img src="<?php echo $html_path?>/download-l.png"
+                        alt="Click here to download the full size image."
+                        title="Download Original Image (Right click and save image)"
+                        style="border: 1px #DDD solid;" />
+                </a>
             </span>
             &nbsp;
             <input type="checkbox" id="description" /><label for="description">Description</label>
             [ <span id="color">Background :
-                <input type="radio" id="color1" name="color" value="#3C3C3C" checked="checked" /><label for="color1">Dark</label>
-                <input type="radio" id="color2" name="color" value="#ECECEC" /><label for="color2">Light</label>
+                <input type="radio" id="color1" name="color" value="#3C3C3C" checked="checked" />
+                <label for="color1">Dark</label>
+                <input type="radio" id="color2" name="color" value="#ECECEC" />
+                <label for="color2">Light</label>
             </span> ]
             &nbsp;&nbsp;&nbsp;
             <input type="button" value="Close Window" style="color: red;" onclick="window.close();">

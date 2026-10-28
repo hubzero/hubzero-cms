@@ -290,10 +290,9 @@ class Router extends Base
                         $vars['action'] = $segments[3];
                     }
                     return $vars;
-                }
-
-                // Notes
-                elseif (!empty($segments[2]) && $vars['active'] == 'notes') { //!is_numeric($segments[2]) &&
+                } elseif (!empty($segments[2]) && $vars['active'] == 'notes') {
+                    // Notes
+                    //!is_numeric($segments[2]) &&
                 // Wiki actions
                     $wiki_actions = array('media', 'list', 'upload',
                         'deletefolder', 'deletefile', 'view',
@@ -358,10 +357,8 @@ class Router extends Base
                     } else {
                         $vars['action'] = $segments[2];
                     }
-                }
-
-                // All other plugins
-                elseif (!empty($segments[2]) && !is_numeric($segments[2])) {
+                } elseif (!empty($segments[2]) && !is_numeric($segments[2])) {
+                    // All other plugins
                     $vars['action'] = $segments[2];
                 }
             }

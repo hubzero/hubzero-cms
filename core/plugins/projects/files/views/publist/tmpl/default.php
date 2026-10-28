@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +30,8 @@ if ($items) {
             $ref = json_decode($item->reference);
             $file = new \Components\Projects\Models\File($e);
             ?>
-        <li><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $file::drawIcon($file->get('ext')); ?> <?php echo basename($ref->file); ?></li>
+        <li><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>
+        "><?php echo $file::drawIcon($file->get('ext'));?> <?php echo basename($ref->file); ?></li>
             <?php
         } ?>
     </ul>

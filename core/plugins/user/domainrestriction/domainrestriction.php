@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 use Hubzero\Utility\Network;
 
@@ -16,16 +14,16 @@ use Hubzero\Utility\Network;
  */
 class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 {
-    public $_tlds;
-    public $_domains;
-    public $_emails;
-    public $_badtlds;
-    public $_baddomains;
-    public $_bademails;
-    public $_email;
-    public $_domain;
-    public $_tld;
-    public $_allowed;
+    private $_tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_emails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_badtlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_baddomains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_bademails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_email; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_domain; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_tld; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_allowed; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Utility method to act on a user before it has been saved.
@@ -42,7 +40,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
         }
 
         if ($isNew) {
-            $listtest = $this->_blackwhite($this->_getIP());
+            $listtest = $this->blackwhite($this->getIP());
 
             if ($listtest === true) {
                 return true;
@@ -61,12 +59,14 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
         $result = true;
 
         // retrieve and clean up domain and email params
-        $this->_sortParams();
-        $this->_parseEmail($new['email']);
+        $this->sortParams();
+        $this->parseEmail($new['email']);
 
         //var_dump($this->_domains); die;
 
-        // Here is the logic: allowed takes precedence over disallowed: if the domain/email is both allowed and disallowed it will be allowed. If the domain/email both neither allowed, nor disallowed it will be allowed.
+        // Here is the logic: allowed takes precedence over disallowed: if the domain/email is both
+        // allowed and disallowed it will be allowed. If the domain/email both neither allowed,
+        // nor disallowed it will be allowed.
         // I'm open to suggestions
 
         // Presumption of innocence: allowed, unless disallowed
@@ -128,7 +128,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
         if ($isnew) {
-            $this->_updateGroups($user);
+            $this->updateGroups($user);
         }
 
         return true;
@@ -143,7 +143,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      */
     public function onUserLogin($user, $options)
     {
-        $this->_updateGroups($user);
+        $this->updateGroups($user);
         return true;
     }
 
@@ -152,7 +152,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _getIP()
+    private function getIP()
     {
         return Request::ip();
     }
@@ -163,7 +163,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   string  $ip
      * @return  mixed
      */
-    private function _blackwhite($ip)
+    private function blackwhite($ip)
     {
         $whitelistnet = array();
         $blacklistnet = array();
@@ -172,8 +172,14 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 
         foreach (array('whitelist', 'blacklist') as $list) {
             $listnet = $list . 'net';
-            $listdefault = ($list == 'blacklist') ? Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_BLACKLIST') : Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_WHITELIST');
-            $$list = explode("\n", trim(str_replace(array("\r", "\t", " "), array('', '', ''), $this->params->get($list, $listdefault))));
+            $listdefault = ($list == 'blacklist')
+                ? Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_BLACKLIST')
+                : Lang::txt('PLG_USER_DOMAINRESTRICTION_DEFAULT_WHITELIST');
+            $$list = explode("\n", trim(str_replace(
+                array("\r", "\t", " "),
+                array('', '', ''),
+                $this->params->get($list, $listdefault)
+            )));
 
             foreach ($$list as $key => $item) {
                 $item = trim($item);
@@ -188,17 +194,17 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 
         // Single addresses compare as addresses, not strings, like the
         // networks below: 2001:DB8::1 or ::ffff:192.0.2.1 matches its entry
-        if ($this->_inList($ip, $whitelist)) {
+        if ($this->inList($ip, $whitelist)) {
             return true;
         }
 
-        if ($this->_inList($ip, $blacklist)) {
+        if ($this->inList($ip, $blacklist)) {
             return $ip;
         }
 
         if (count(array_merge($whitelistnet, $blacklistnet))) {
             foreach ($whitelistnet as $net) {
-                $ipnet = $this->_bwnet($net);
+                $ipnet = $this->bwnet($net);
 
                 if ($ipnet && $ipnet->contains($ip)) {
                     return true;
@@ -206,7 +212,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
             }
 
             foreach ($blacklistnet as $net) {
-                $ipnet = $this->_bwnet($net);
+                $ipnet = $this->bwnet($net);
 
                 if ($ipnet && $ipnet->contains($ip)) {
                     return $net;
@@ -223,10 +229,10 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   array   $addresses
      * @return  bool
      */
-    private function _inList($ip, $addresses)
+    private function inList($ip, $addresses)
     {
         foreach ($addresses as $address) {
-            $network = $this->_bwnet($address);
+            $network = $this->bwnet($address);
 
             if ($network && $network->contains($ip)) {
                 return true;
@@ -245,7 +251,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   string  $net
      * @return  Network|null
      */
-    private function _bwnet($net)
+    private function bwnet($net)
     {
         return Network::parse($net);
     }
@@ -256,11 +262,11 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   bool  $allowed
      * @return  bool
      */
-    private function _decision($allowed = false)
+    private function decision($allowed = false)
     {
         $ret = $allowed ?
-                $this->_mailmatch(array('_tlds', '_domains', '_emails')) :
-                !$this->_mailmatch(array('_badtlds', '_baddomains', '_bademails'));
+                $this->mailmatch(array('_tlds', '_domains', '_emails')) :
+                !$this->mailmatch(array('_badtlds', '_baddomains', '_bademails'));
         return $ret;
     }
 
@@ -270,7 +276,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   array  $keys
      * @return  bool
      */
-    private function _mailmatch($keys = array())
+    private function mailmatch($keys = array())
     {
         $ret = false;
 
@@ -296,7 +302,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _sortParams()
+    private function sortParams()
     {
         foreach (array('tld', 'domain', 'email', 'badtld', 'baddomain', 'bademail') as $param) {
             $paramvalue = $this->params->get($param, null);
@@ -324,14 +330,14 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   string  $email
      * @return  string
      */
-    private function _parseEmail($email)
+    private function parseEmail($email)
     {
         $this->_email = strtolower($email);
 
         $email = explode('@', $this->_email);
 
         $this->_domain = $email[1];
-        $this->_tld = $this->_getTldFromUrl($email[1]);
+        $this->_tld = $this->getTldFromUrl($email[1]);
 
         return $email[0];
     }
@@ -342,19 +348,19 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   array  $user
      * @return  bool
      */
-    private function _updateGroups($user)
+    private function updateGroups($user)
     {
         if (App::isAdmin()) {
             return true;
         }
 
         // Are there any auto-group assignments?
-        $assignments = $this->_getAssignments();
+        $assignments = $this->getAssignments();
         if (!$assignments) {
             return true;
         }
 
-        $user = $this->_getUser($user['username']);
+        $user = $this->getUser($user['username']);
 
         $excludegroups = $this->params->get('excludegroup', array());
         foreach ($user->groups as $group) {
@@ -363,14 +369,14 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
             }
         }
 
-        $emailuser = $this->_parseEmail($user->email);
+        $emailuser = $this->parseEmail($user->email);
         $excluded = json_decode(str_replace('*', $emailuser, base64_decode($this->params->get('excludeauto', 'W10K'))));
 
         if (count($excluded) && in_array(strtolower($user->email), $excluded)) {
             return true;
         }
 
-        $akey = $this->_getAssignmentsKey($assignments);
+        $akey = $this->getAssignmentsKey($assignments);
 
         if ($akey) {
             $groupchange = false;
@@ -401,7 +407,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   string  $username
      * @return  object
      */
-    private function _getUser($username)
+    private function getUser($username)
     {
         return User::getInstance($username);
     }
@@ -411,7 +417,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      *
      * @return  mixed
      */
-    private function _getAssignments()
+    private function getAssignments()
     {
         $assignments = json_decode(base64_decode($this->params->get('autogroups', 'W10K')));
         if (count($assignments)) {
@@ -435,7 +441,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   array  $assignments
      * @return  mixed
      */
-    private function _getAssignmentsKey($assignments)
+    private function getAssignmentsKey($assignments)
     {
         return array_key_exists($this->_email, $assignments) ? $this->_email : (
                 array_key_exists($this->_domain, $assignments) ? $this->_domain : (
@@ -450,7 +456,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      * @param   string  $url
      * @return  string
      */
-    private function _getTldFromUrl($url)
+    private function getTldFromUrl($url)
     {
         $url = strpos($url, '://') ? $url : 'http://' . $url;
 

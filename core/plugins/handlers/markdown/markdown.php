@@ -14,13 +14,14 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for MD file handling
  */
-class plgHandlersMarkdown extends Plugin
+class PlgHandlersMarkdown extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

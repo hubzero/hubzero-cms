@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -177,7 +178,11 @@ class Orders extends AdminController
                         $skuInfo = $transactionItems[$item->sId];
                         $msg = $skuInfo['info']->sSku;
 
-                        if (is_object($item->key) && !empty($item->key->tiMeta) && $item->key->tiMeta == 'checkoutNotes') {
+                        if (
+                            is_object($item->key)
+                            && !empty($item->key->tiMeta)
+                            && $item->key->tiMeta == 'checkoutNotes'
+                        ) {
                             $msg .= ' <strong>notes</strong>';
                         } elseif ($item->key == 'tiQty') {
                             $msg .= ' <strong>quantity</strong>';
@@ -341,7 +346,11 @@ class Orders extends AdminController
 
         if ($redirect) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $id, false),
+                Route::url(
+                    'index.php?option=' . $this->_option
+                    . '&controller=' . $this->_controller . '&task=view&id=' . $id,
+                    false
+                ),
                 Lang::txt('Order info saved')
             );
         }
@@ -520,7 +529,8 @@ class Orders extends AdminController
                 if (!empty($meta->checkoutNotes)) {
                     $notes[] = array(
                         //'label' => $item['info']->pName . ', ' . $item['info']->sSku,
-                        'label' => $transactionInfoItems[$sId]['info']->pName . ', ' . $transactionInfoItems[$sId]['info']->sSku,
+                        'label' => $transactionInfoItems[$sId]['info']->pName
+                            . ', ' . $transactionInfoItems[$sId]['info']->sSku,
                         'notes' => $meta->checkoutNotes);
                 }
             }
@@ -560,7 +570,8 @@ class Orders extends AdminController
         $date = gmdate('d-m-Y');
 
         header("Content-Type: text/csv");
-        header("Content-Disposition: attachment; filename=cart-orders-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
+        $filename = "cart-orders-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv";
+        header("Content-Disposition: attachment; filename=" . $filename);
         // Disable caching
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0
@@ -632,7 +643,10 @@ class Orders extends AdminController
 
         foreach ($rowsRaw as $row) {
             $itemInfo = $row->itemInfo['info'];
-            $rows[] = array($row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty, $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber);
+            $rows[] = array(
+                $row->sId, $itemInfo->pName . ', ' . $itemInfo->sSku, $row->tiQty,
+                $row->tiPrice, $row->tId, $row->tLastUpdated, $row->name, $row->uidNumber
+            );
         }
 
         $dateFrom = gmdate('dMY', strtotime($filters['report-from']));
@@ -640,14 +654,18 @@ class Orders extends AdminController
         $date = gmdate('d-m-Y');
 
         header("Content-Type: text/csv");
-        header("Content-Disposition: attachment; filename=cart-items-ordered-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
+        $filename = "cart-items-ordered-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv";
+        header("Content-Disposition: attachment; filename=" . $filename);
         // Disable caching
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0
         header("Expires: 0"); // Proxies
 
         $output = fopen("php://output", "w");
-        $row = array('SKU ID', 'Product', 'QTY', 'Price', 'Order ID', 'Order Placed', 'Purchased By', 'Purchased By (userId)');
+        $row = array(
+            'SKU ID', 'Product', 'QTY', 'Price', 'Order ID',
+            'Order Placed', 'Purchased By', 'Purchased By (userId)'
+        );
         fputcsv($output, $row);
         foreach ($rows as $row) {
             fputcsv($output, $row);

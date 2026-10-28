@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding members quota interface
- **/
+ *
+ */
 class Migration20131014103753ComMembers extends Base
 {
     /**
@@ -51,7 +53,8 @@ class Migration20131014103753ComMembers extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "INSERT INTO `#__users_quotas_classes` (`id`, `alias`, `hard_files`, `soft_files`, `hard_blocks`, `soft_blocks`) VALUES (1, 'default', 0, 0, 1000000, 900000);";
+            $query = "INSERT INTO `#__users_quotas_classes` (`id`, `alias`, `hard_files`, `soft_files`, "
+                . "`hard_blocks`, `soft_blocks`) VALUES (1, 'default', 0, 0, 1000000, 900000);";
             $this->db->setQuery($query);
             $this->db->query();
         }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +27,8 @@ class Migration20150626141512Core extends Base
             foreach (self::$components as $c) {
                 $components[] = $this->db->quote($c);
             }
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='component' AND `element` IN (" . implode(',', $components) . ")";
+            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='component' AND `element` IN ("
+                . implode(',', $components) . ")";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -34,7 +36,8 @@ class Migration20150626141512Core extends Base
             foreach (self::$modules as $c) {
                 $modules[] = $this->db->quote($c);
             }
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='module' AND `element` IN (" . implode(',', $modules) . ")";
+            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='module' AND `element` IN ("
+                . implode(',', $modules) . ")";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -42,7 +45,8 @@ class Migration20150626141512Core extends Base
             foreach (self::$templates as $c) {
                 $templates[] = $this->db->quote($c);
             }
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='template' AND `element` IN (" . implode(',', $templates) . ")";
+            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='template' AND `element` IN ("
+                . implode(',', $templates) . ")";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -52,7 +56,8 @@ class Migration20150626141512Core extends Base
                 foreach ($plugs as $c) {
                     $contents[] = $this->db->quote($c);
                 }
-                $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='plugin' AND `folder`=" . $this->db->quote($folder) . " AND `element` IN (" . implode(',', $contents) . ")";
+                $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='plugin' AND `folder`="
+                    . $this->db->quote($folder) . " AND `element` IN (" . implode(',', $contents) . ")";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -52,11 +52,28 @@ foreach ($profiles as $profile) {
     <?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
         <ul id="page_options">
             <li>
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite'); ?>">
+                <?php
+                $cn = $this->group->get('cn');
+                $inviteUrl = Route::url(
+                    'index.php?option=com_groups&cn='
+                    . $cn . '&task=invite'
+                );
+                $addRoleUrl = Route::url(
+                    'index.php?option=com_groups&cn='
+                    . $cn . '&active=members&action=addrole'
+                );
+                ?>
+                <a
+                    class="icon-add add btn"
+                    href="<?php echo $inviteUrl; ?>"
+                >
                     <?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
                 </a>
                 <?php if ($this->membership_control == 1 && $this->authorized == 'manager') : ?>
-                    <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&action=addrole'); ?>">
+                    <a
+                        class="icon-add add btn"
+                        href="<?php echo $addRoleUrl; ?>"
+                    >
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
                     </a>
                 <?php endif; ?>
@@ -81,7 +98,9 @@ foreach ($profiles as $profile) {
                 <div class="field-content">
                     <div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL'); ?></div>
                     <div class="value">
-                        <a href="<?php echo $this->profile->link(); ?>"><?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL_GO'); ?></a>
+                        <a href="<?php echo $this->profile->link(); ?>">
+                            <?php echo Lang::txt('PLG_GROUPS_PROFILE_FULL_GO'); ?>
+                        </a>
                     </div>
                 </div>
             </li>
@@ -96,8 +115,17 @@ foreach ($profiles as $profile) {
                         <div class="field-content">
                             <div class="key"><?php echo Lang::txt('PLG_GROUPS_PROFILE_EMAIL'); ?></div>
                             <div class="value">
-                                <a class="email" href="mailto:<?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
-                                    <?php echo \Hubzero\Utility\Str::obfuscate($this->profile->get('email')); ?>
+                                <?php
+                                $obfEmail = \Hubzero\Utility\Str::obfuscate(
+                                    $this->profile->get('email')
+                                );
+                                ?>
+                                <a
+                                    class="email"
+                                    href="mailto:<?php echo $obfEmail; ?>"
+                                    rel="nofollow"
+                                >
+                                    <?php echo $obfEmail; ?>
                                 </a>
                             </div>
                         </div>
@@ -179,7 +207,16 @@ foreach ($profiles as $profile) {
                     <li class="<?php echo implode(' ', $cls); ?> section">
                         <div class="section-content">
                             <div class="key"><?php echo $field->get('label'); ?></div>
-                            <div class="value"><?php echo !empty($value) ? (is_array($value) ? implode(', ', $value) : $value) : '(not set)'; ?></div>
+                            <?php
+                            if (!empty($value)) {
+                                $displayValue = is_array($value)
+                                    ? implode(', ', $value)
+                                    : $value;
+                            } else {
+                                $displayValue = '(not set)';
+                            }
+                            ?>
+                            <div class="value"><?php echo $displayValue; ?></div>
                         </div>
                     </li>
                 <?php } ?>

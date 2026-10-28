@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Models;
 
 use Hubzero\Database\Relational;

@@ -60,9 +60,8 @@ class Ordering extends Field
         if ((string) $this->element['readonly'] == 'true') {
             $html[] = self::ordering('', $query, trim($attr), $this->value, $pluginId ? 0 : 1);
             $html[] = '<input type="hidden" name="' . $this->name . '" value="' . $this->value . '" />';
-        }
-        // Create a regular list.
-        else {
+        } else {
+            // Create a regular list.
             $html[] = self::ordering($this->name, $query, trim($attr), $this->value, $pluginId ? 0 : 1);
         }
 
@@ -105,7 +104,9 @@ class Ordering extends Field
 
             $options[] = Html::select('option', $items[$i]->value, $items[$i]->value . '. ' . $text);
         }
-        $options[] = Html::select('option', $items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . Lang::txt('JOPTION_ORDER_LAST'));
+        $lastValue = $items[$i - 1]->value + 1;
+        $lastText = $lastValue . ' ' . Lang::txt('JOPTION_ORDER_LAST');
+        $options[] = Html::select('option', $lastValue, $lastText);
 
         return $options;
     }
@@ -129,14 +130,16 @@ class Ordering extends Field
 
         if (empty($neworder)) {
             $orders = self::genericordering($query);
-            $html = Html::select('genericlist', $orders, $name, array('list.attr' => $attribs, 'list.select' => (int) $selected));
+            $opts = array('list.attr' => $attribs, 'list.select' => (int) $selected);
+            $html = Html::select('genericlist', $orders, $name, $opts);
         } else {
             if ($neworder > 0) {
                 $text = Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');
             } elseif ($neworder <= 0) {
                 $text = Lang::txt('JGLOBAL_NEWITEMSFIRST_DESC');
             }
-            $html = '<input type="hidden" name="' . $name . '" value="' . (int) $selected . '" />' . '<span class="readonly">' . $text . '</span>';
+            $html = '<input type="hidden" name="' . $name . '" value="' . (int) $selected . '" />'
+                . '<span class="readonly">' . $text . '</span>';
         }
         return $html;
     }

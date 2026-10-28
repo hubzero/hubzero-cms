@@ -700,7 +700,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
                 if ($link['url'] && $link['title']) {
                     $l->set($link);
                     $l->save();
-                } else if ($l->id) {
+                } elseif ($l->id) {
                     $l->destroy();
                 }
             }
@@ -914,9 +914,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
                 );
                 return;
             }
-        }
-        // for bulk citations operation
-        elseif ((bool)$bulk) {
+        } elseif ((bool)$bulk) {
+            // for bulk citations operation
             /**
              * @TODO move to API, possible use of whereIn()?
              */
@@ -1499,16 +1498,14 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
                     ->where('scope_id', '=', $scope_id)
                     ->orWhereIn('id', $memberCites)
                     ->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
-            }
-            // if members excluisvely is shown
-            elseif (array_key_exists('filter', $filters) && $filters['filter'] == 'member') {
+            } elseif (array_key_exists('filter', $filters) && $filters['filter'] == 'member') {
+                // if members excluisvely is shown
                 $citations
                     ->where('scope', '=', 'member')
                     ->whereIn('scope_id', $members)
                     ->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
-            }
-            // return members + group
-            else {
+            } else {
+                // return members + group
                 // get the ID's of the citations of members of the group
                 $memberCitations = \Components\Citations\Models\Citation::all()
                     ->where('scope', '=', 'member')
@@ -1529,8 +1526,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
                     ->orWhereIn('id', $memberCites)
                     ->where('published', '!=', $citations::STATE_DELETED); // don't include deleted citations
             }
-        } // end if $config->display == member
-        else {
+        } else {
+            // end if $config->display == member
             // display only group citations
             $citations->where('scope', '=', self::PLUGIN_SCOPE);
             $citations->where('scope_id', '=', $scope_id);

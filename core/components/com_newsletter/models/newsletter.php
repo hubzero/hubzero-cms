@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -325,20 +326,31 @@ class Newsletter extends Relational
             $campaignTemplate = $newsletterTemplate->template;
 
             //get primary & secondary colors
-            $primaryTitleColor   = ($newsletterTemplate->primary_title_color) ? $newsletterTemplate->primary_title_color : '#000000';
+            $primaryTitleColor = $newsletterTemplate->primary_title_color
+                ? $newsletterTemplate->primary_title_color
+                : '#000000';
             if (strlen($primaryTitleColor) <= 7 && !strstr($primaryTitleColor, ';')) {
-                $primaryTitleColor = 'font-size:20px;font-weight:bold;color:' . $primaryTitleColor . ';font-family:arial;line-height:100%;margin-bottom:10px;';
+                $primaryTitleColor = 'font-size:20px;font-weight:bold;color:' . $primaryTitleColor
+                    . ';font-family:arial;line-height:100%;margin-bottom:10px;';
             }
-            $primaryTextColor    = ($newsletterTemplate->primary_text_color) ? $newsletterTemplate->primary_text_color : '#444444';
+            $primaryTextColor = $newsletterTemplate->primary_text_color
+                ? $newsletterTemplate->primary_text_color
+                : '#444444';
             if (strlen($primaryTextColor) <= 7 && !strstr($primaryTextColor, ';')) {
-                $primaryTextColor = 'font-size:14px;font-weight:normal;color:' . $primaryTextColor . ';font-family:arial;margin-bottom:50px;';
+                $primaryTextColor = 'font-size:14px;font-weight:normal;color:' . $primaryTextColor
+                    . ';font-family:arial;margin-bottom:50px;';
             }
 
-            $secondaryTitleColor = ($newsletterTemplate->secondary_title_color) ? $newsletterTemplate->secondary_title_color : '#666666';
+            $secondaryTitleColor = $newsletterTemplate->secondary_title_color
+                ? $newsletterTemplate->secondary_title_color
+                : '#666666';
             if (strlen($secondaryTitleColor) <= 7 && !strstr($secondaryTitleColor, ';')) {
-                $secondaryTitleColor = 'font-size:15px;font-weight:bold;color:' . $secondaryTitleColor . ';font-family:arial;line-height:150%;';
+                $secondaryTitleColor = 'font-size:15px;font-weight:bold;color:' . $secondaryTitleColor
+                    . ';font-family:arial;line-height:150%;';
             }
-            $secondaryTextColor  = ($newsletterTemplate->secondary_text_color) ? $newsletterTemplate->secondary_text_color : '#999999';
+            $secondaryTextColor = $newsletterTemplate->secondary_text_color
+                ? $newsletterTemplate->secondary_text_color
+                : '#999999';
             if (strlen($secondaryTextColor) <= 7 && !strstr($secondaryTextColor, ';')) {
                 $secondaryTextColor = 'font-size:12px;color:' . $secondaryTextColor . ';font-family:arial;';
             }
@@ -350,10 +362,12 @@ class Newsletter extends Relational
                 ->ordered()
                 ->rows();
             foreach ($primaryStories as $pStory) {
-                $campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;' . $primaryTitleColor . '">';
+                $campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;'
+                    . $primaryTitleColor . '">';
                 $campaignPrimaryStories .= $pStory->title;
                 $campaignPrimaryStories .= '</span>';
-                $campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;' . $primaryTextColor . '">';
+                $campaignPrimaryStories .= '<span style="display:block;page-break-inside:avoid;'
+                    . $primaryTextColor . '">';
                 $sanitizedStory = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $pStory->story);
                 $campaignPrimaryStories .= $sanitizedStory;
 
@@ -373,16 +387,19 @@ class Newsletter extends Relational
                 ->ordered()
                 ->rows();
             foreach ($secondaryStories as $sStory) {
-                $campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;' . $secondaryTitleColor . '">';
+                $campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;'
+                    . $secondaryTitleColor . '">';
                 $campaignSecondaryStories .= $sStory->title;
                 $campaignSecondaryStories .= '</span>';
-                $campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;' . $secondaryTextColor . '">';
+                $campaignSecondaryStories .= '<span style="display:block;page-break-inside:avoid;'
+                    . $secondaryTextColor . '">';
                 $campaignSecondaryStories .= $sStory->story;
 
                 //do we have a readmore link
                 if ($sStory->readmore_link) {
                     $readmore_title = ($sStory->readmore_title) ? $sStory->readmore_title : 'Read More &rsaquo;';
-                    $campaignSecondaryStories .= "<br /><br /><a href=\"{$sStory->readmore_link}\">{$readmore_title}</a>";
+                    $campaignSecondaryStories .= "<br /><br /><a href=\"{$sStory->readmore_link}\">"
+                        . "{$readmore_title}</a>";
                 }
 
                 $campaignSecondaryStories .= '</span>';
@@ -439,7 +456,10 @@ class Newsletter extends Relational
 
                     // Pass the object through to the view
                     $view->object = $content;
-                    $view->addTemplatePath(\Component::path('com_newsletter') . DS . 'admin' . DS . 'views' . DS . 'storytemplates' . DS . 'tmpl');
+                    $view->addTemplatePath(
+                        \Component::path('com_newsletter') . DS . 'admin' . DS . 'views'
+                        . DS . 'storytemplates' . DS . 'tmpl'
+                    );
 
                     // Oh, what's this a buffer hijack?
                     ob_start();
@@ -462,7 +482,8 @@ class Newsletter extends Relational
         $campaignParsed = str_replace("{{PRIMARY_STORIES}}", $campaignPrimaryStories, $campaignParsed);
         $campaignParsed = str_replace("{{SECONDARY_STORIES}}", $campaignSecondaryStories, $campaignParsed);
         $campaignParsed = str_replace("{{COPYRIGHT}}", date("Y"), $campaignParsed);
-        $campaignParsed = str_replace('src="/site', 'src="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $campaignParsed);
+        $sitePrefix = 'src="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site';
+        $campaignParsed = str_replace('src="/site', $sitePrefix, $campaignParsed);
 
         // replace .org, .com., .net, .edu 's
         //if ($campaign->type == 'html')
@@ -551,7 +572,8 @@ class Newsletter extends Relational
         }
 
         // put it all together
-        $plainText = $title . implode($storySeparator, $primary) . $sectionSeparator . implode($storySeparator, $secondary);
+        $plainText = $title . implode($storySeparator, $primary)
+            . $sectionSeparator . implode($storySeparator, $secondary);
 
         return $plainText;
     }

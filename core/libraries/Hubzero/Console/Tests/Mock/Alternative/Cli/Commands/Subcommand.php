@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,21 +20,21 @@ use Hubzero\Console\Arguments;
  **/
 class Subcommand extends Base implements CommandInterface
 {
-	/**
-	 * Default (required) command
-	 *
-	 * @return  void
-	 **/
-	public function execute()
-	{
-	}
+    /**
+     * Default (required) command
+     *
+     * @return  void
+     **/
+    public function execute()
+    {
+    }
 
-	/**
-	 * Output help documentation
-	 *
-	 * @return  void
-	 **/
-	public function help()
-	{
-	}
+    /**
+     * Output help documentation
+     *
+     * @return  void
+     **/
+    public function help()
+    {
+    }
 }

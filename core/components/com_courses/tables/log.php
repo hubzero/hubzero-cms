@@ -77,7 +77,8 @@ class Log extends Table
             return null;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope) . " ORDER BY `timestamp` DESC";
+        $query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
+            . " AND `scope`=" . $this->_db->quote($scope) . " ORDER BY `timestamp` DESC";
         if ($limit) {
             $query .= " LIMIT " . (int) $limit;
         }
@@ -108,7 +109,8 @@ class Log extends Table
             return null;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope) . " ";
+        $query = "SELECT * FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
+            . " AND `scope`=" . $this->_db->quote($scope) . " ";
         if ($which == 'first') {
             $query .= "ORDER BY `timestamp` ASC LIMIT 1";
         } else {
@@ -145,7 +147,10 @@ class Log extends Table
             return null;
         }
 
-        $this->_db->setQuery("DELETE FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope));
+        $this->_db->setQuery(
+            "DELETE FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
+            . " AND `scope`=" . $this->_db->quote($scope)
+        );
         if (!$this->_db->query()) {
             $this->setError($this->_db->getErrorMsg());
             return false;
@@ -175,7 +180,8 @@ class Log extends Table
             return null;
         }
 
-        $query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id) . " AND `scope`=" . $this->_db->quote($scope);
+        $query = "SELECT COUNT(*) FROM $this->_tbl WHERE `scope_id`=" . $this->_db->quote($scope_id)
+            . " AND `scope`=" . $this->_db->quote($scope);
         if ($action) {
             $query .= " AND action=" . $this->_db->quote($action);
         }

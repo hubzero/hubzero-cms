@@ -22,6 +22,7 @@ class Metadata extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'metadata';
 
     /**
@@ -47,7 +48,8 @@ class Metadata extends Base
 
         // Parse data in metadata field
         $data = array();
-        preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $pub->metadata == null ? '' : $pub->metadata, $matches, PREG_SET_ORDER);
+        $metadataStr = $pub->metadata == null ? '' : $pub->metadata;
+        preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $metadataStr, $matches, PREG_SET_ORDER);
         if (count($matches) > 0) {
             foreach ($matches as $match) {
                 $data[$match[1]] = \Components\Publications\Helpers\Html::_txtUnpee($match[2]);

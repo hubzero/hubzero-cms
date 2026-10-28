@@ -18,6 +18,7 @@ use App;
 
 /**
  * API controller class for group members
+ *
  */
 class Membersv1_0 extends ApiController
 {

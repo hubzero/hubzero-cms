@@ -102,6 +102,7 @@ class Base extends SiteController
      * @param       array $pages    Array of group pages, if any
      * @return      void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildPathway($pages = array())
     {
         //add 'groups' item to pathway
@@ -125,7 +126,8 @@ class Base extends SiteController
         }
 
         //add task to pathway
-        if ($this->_task && $this->_task != 'view' && !in_array($this->_controller, array('pages', 'modules', 'categories'))) {
+        $pageControllers = array('pages', 'modules', 'categories');
+        if ($this->_task && $this->_task != 'view' && !in_array($this->_controller, $pageControllers)) {
             // if we browsing or creating a new group
             if (in_array($this->_task, array('new', 'browse'))) {
                 Pathway::append(
@@ -154,7 +156,7 @@ class Base extends SiteController
                     Lang::txt($page->get('title')),
                     'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
                 );
-            } else if ($this->active != 'overview') {
+            } elseif ($this->active != 'overview') {
                 Pathway::append(
                     Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->active)),
                     'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&active=' . $this->active
@@ -169,9 +171,13 @@ class Base extends SiteController
             );
 
             if ($this->_task && $this->_task != 'view') {
+                $taskUrl = 'index.php?option=' . $this->_option
+                    . '&cn=' . $this->cn
+                    . '&controller=' . $this->_controller
+                    . '&task=' . $this->_task;
                 Pathway::append(
                     Lang::txt('COM_GROUPS_PAGES_' . strtoupper($this->_task)),
-                    'index.php?option=' . $this->_option . '&cn=' . $this->cn . '&controller=' . $this->_controller . '&task=' . $this->_task
+                    $taskUrl
                 );
             }
         }
@@ -183,6 +189,7 @@ class Base extends SiteController
      * @param   array  $pages  Array of group pages, if any
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildTitle($pages = array())
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
@@ -208,7 +215,7 @@ class Base extends SiteController
 
             if ($page !== null) {
                 $this->_title .= ' ~ ' . Lang::txt($page->get('title'));
-            } else if ($this->active != 'overview') {
+            } elseif ($this->active != 'overview') {
                 $this->_title .= ' ~ ' . Lang::txt('COM_GROUPS_' . $this->active);
             }
         }
@@ -246,6 +253,7 @@ class Base extends SiteController
      * @param   boolean  $checkOnlyMembership  Do we want to check admin
      * @return  boolean  True if authorized, false if not
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($checkOnlyMembership = true)
     {
         $group = Group::getInstance($this->cn);
@@ -262,6 +270,7 @@ class Base extends SiteController
      * @param   string   $task  Task to be performed
      * @return  boolean
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _authorizedForTask($task)
     {
         $group = Group::getInstance($this->cn);

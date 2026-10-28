@@ -18,12 +18,15 @@ class Url extends Rule
     /**
      * Method to test for a valid color in hexadecimal.
      *
-     * @param   object   &$element  The SimpleXMLElement object representing the <field /> tag for the form field object.
+     * @param   object   &$element  The SimpleXMLElement object representing the <field /> tag for
+     * the form field object.
      * @param   mixed    $value     The form field value to validate.
-     * @param   string   $group     The field name group control value. This acts as as an array container for the field.
+     * @param   string   $group     The field name group control value. This acts as as an array
+     *                              container for the field.
      *                              For example if the field has name="foo" and the group value is set to "bar" then the
      *                              full field name would end up being "bar[foo]".
-     * @param   object   &$input    An optional Registry object with the entire data set to validate against the entire form.
+     * @param   object   &$input    An optional Registry object with the entire data set to
+     * validate against the entire form.
      * @param   object   &$form     The form object for which the field is being tested.
      * @return  boolean  True if the value is valid, false otherwise.
      */
@@ -40,7 +43,8 @@ class Url extends Rule
         // See http://www.w3.org/Addressing/URL/url-spec.txt
         // Use the full list or optionally specify a list of permitted schemes.
         if ($element['schemes'] == '') {
-            $scheme = array('http', 'https', 'ftp', 'ftps', 'gopher', 'mailto', 'news', 'prospero', 'telnet', 'rlogin', 'tn3270', 'wais', 'url',
+            $scheme = array('http', 'https', 'ftp', 'ftps', 'gopher', 'mailto', 'news', 'prospero', 'telnet', 'rlogin',
+                'tn3270', 'wais', 'url',
                 'mid', 'cid', 'nntp', 'tel', 'urn', 'ldap', 'file', 'fax', 'modem', 'git');
         } else {
             $scheme = explode(',', $element['schemes']);
@@ -59,9 +63,18 @@ class Url extends Rule
 
         // For some schemes here must be two slashes.
         if (
-            ($urlScheme == 'http' || $urlScheme == 'https' || $urlScheme == 'ftp' || $urlScheme == 'sftp' || $urlScheme == 'gopher'
-            || $urlScheme == 'wais' || $urlScheme == 'gopher' || $urlScheme == 'prospero' || $urlScheme == 'telnet' || $urlScheme == 'git')
-            && ((substr($value, strlen($urlScheme), 3)) !== '://')
+            ($urlScheme == 'http' ||
+                $urlScheme == 'https' ||
+                $urlScheme == 'ftp' ||
+                $urlScheme == 'sftp' ||
+                $urlScheme == 'gopher'
+            ||
+                $urlScheme == 'wais' ||
+                $urlScheme == 'gopher' ||
+                $urlScheme == 'prospero' ||
+                $urlScheme == 'telnet' ||
+                $urlScheme == 'git') &&
+            ((substr($value, strlen($urlScheme), 3)) !== '://')
         ) {
             return false;
         }
@@ -92,7 +105,8 @@ class Url extends Rule
         $result = false;
 
         // Build arrays of values we need to decode before parsing
-        $entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D');
+        $entities = array('%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%24', '%2C', '%2F',
+            '%3F', '%25', '%23', '%5B', '%5D');
         $replacements = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "$", ",", "/", "?", "%", "#", "[", "]");
 
         // Create encoded URL with special URL characters decoded so it can be parsed
@@ -200,11 +214,15 @@ class Url extends Rule
                         // Check for illegal sequences and codepoints.
                         // From Unicode 3.1, non-shortest form is illegal
                         if (
-                            ((2 == $mBytes) && ($mUcs4 < 0x0080)) || ((3 == $mBytes) && ($mUcs4 < 0x0800)) || ((4 == $mBytes) && ($mUcs4 < 0x10000))
+                            ((2 == $mBytes) && ($mUcs4 < 0x0080))
+                            || ((3 == $mBytes) && ($mUcs4 < 0x0800))
+                            || ((4 == $mBytes) && ($mUcs4 < 0x10000))
                             || (4 < $mBytes)
-                            || (($mUcs4 & 0xFFFFF800) == 0xD800) // From Unicode 3.2, surrogate characters are illegal
+                            // From Unicode 3.2, surrogate characters are illegal
+                            || (($mUcs4 & 0xFFFFF800) == 0xD800)
+                            // Codepoints outside the Unicode range are illegal
                             || ($mUcs4 > 0x10FFFF)
-                        ) { // Codepoints outside the Unicode range are illegal
+                        ) {
                             return false;
                         }
 

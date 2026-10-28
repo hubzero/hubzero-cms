@@ -103,7 +103,8 @@ class Rules extends Field
         $html[] = '<div id="permissions-sliders" class="pane-sliders">';
         $html[] = '<p class="rule-desc">' . $lang->txt('JLIB_RULES_SETTINGS_DESC') . '</p>';
         $html[] = '<div id="permissions-rules">';
-        // If AssetId is blank and section wasn't set to component, set it to the component name here for inheritance checks.
+        // If AssetId is blank and section wasn't set to component, set it to the component name here for inheritance
+        // checks.
         $assetId = empty($assetId) && $section != 'component' ? $component : $assetId;
 
         // Start a row for each user group.
@@ -143,16 +144,41 @@ class Rules extends Field
             foreach ($actions as $action) {
                 $html[] = '<tr>';
                 $html[] = '<td headers="actions-th' . $group->value . '">';
-                $html[] = '<label class="hasTip" for="' . $this->id . '_' . $action->name . '_' . $group->value . '" title="' . htmlspecialchars($lang->txt($action->title) . '::' . $lang->txt($action->description), ENT_COMPAT, 'UTF-8') . '">';
+                $html[] = '<label class="hasTip" for="' .
+                    $this->id .
+                    '_' .
+                    $action->name .
+                    '_' .
+                    $group->value .
+                    '" title="' .
+                    htmlspecialchars($lang->txt($action->title) .
+                    '::' .
+                    $lang->txt($action->description), ENT_COMPAT, 'UTF-8') .
+                    '">';
                 $html[] = $lang->txt($action->title);
                 $html[] = '</label>';
                 $html[] = '</td>';
 
                 $html[] = '<td headers="settings-th' . $group->value . '">';
 
-                $html[] = '<select name="' . $this->name . '[' . $action->name . '][' . $group->value . ']" id="' . $this->id . '_' . $action->name
+                $html[] = '<select name="' .
+                    $this->name .
+                    '[' .
+                    $action->name .
+                    '][' .
+                    $group->value .
+                    ']" id="' .
+                    $this->id .
+                    '_' .
+                    $action->name
                     . '_' . $group->value . '" title="'
-                    . $lang->txt('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', $lang->txt($action->title), trim($group->text)) . '">';
+                    .
+                        $lang->txt(
+                            'JLIB_RULES_SELECT_ALLOW_DENY_GROUP',
+                            $lang->txt($action->title),
+                            trim($group->text)
+                        ) .
+                        '">';
                 $inheritedRule = Access::checkGroup($group->value, $action->name, $assetId);
 
                 // Get the actual setting for the action for this group.
@@ -161,9 +187,22 @@ class Rules extends Field
                 // Build the dropdowns for the permissions sliders
 
                 // The parent group has "Not Set", all children can rightly "Inherit" from that.
-                $html[] = '<option value=""' . ($assetRule === null ? ' selected="selected"' : '') . '>' . $lang->txt(empty($group->parent_id) && empty($component) ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
-                $html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . $lang->txt('JLIB_RULES_ALLOWED') . '</option>';
-                $html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . $lang->txt('JLIB_RULES_DENIED') . '</option>';
+                $html[] = '<option value=""' .
+                    ($assetRule === null ? ' selected="selected"' : '') .
+                    '>' .
+                    $lang->txt(empty($group->parent_id) &&
+                        empty($component) ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') .
+                    '</option>';
+                $html[] = '<option value="1"' .
+                    ($assetRule === true ? ' selected="selected"' : '') .
+                    '>' .
+                    $lang->txt('JLIB_RULES_ALLOWED') .
+                    '</option>';
+                $html[] = '<option value="0"' .
+                    ($assetRule === false ? ' selected="selected"' : '') .
+                    '>' .
+                    $lang->txt('JLIB_RULES_DENIED') .
+                    '</option>';
 
                 $html[] = '</select>&#160; ';
 
@@ -179,7 +218,8 @@ class Rules extends Field
                 if ($canCalculateSettings) {
                     $html[] = '<td headers="aclactionth' . $group->value . '">';
 
-                    // This is where we show the current effective settings considering currrent group, path and cascade.
+                    // This is where we show the current effective settings considering currrent group, path and
+                    // cascade.
                     // Check whether this is a component or global. Change the text slightly.
                     if (Access::checkGroup($group->value, 'core.admin', $assetId) !== true) {
                         if ($inheritedRule === null) {
@@ -188,13 +228,19 @@ class Rules extends Field
                             $html[] = '<span class="icon-16-allowed">' . $lang->txt('JLIB_RULES_ALLOWED') . '</span>';
                         } elseif ($inheritedRule === false) {
                             if ($assetRule === false) {
-                                $html[] = '<span class="icon-16-denied">' . $lang->txt('JLIB_RULES_NOT_ALLOWED') . '</span>';
+                                $html[] = '<span class="icon-16-denied">' .
+                                    $lang->txt('JLIB_RULES_NOT_ALLOWED') .
+                                    '</span>';
                             } else {
-                                $html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' . $lang->txt('JLIB_RULES_NOT_ALLOWED_LOCKED') . '</span></span>';
+                                $html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' .
+                                    $lang->txt('JLIB_RULES_NOT_ALLOWED_LOCKED') .
+                                    '</span></span>';
                             }
                         }
                     } elseif (!empty($component)) {
-                        $html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . $lang->txt('JLIB_RULES_ALLOWED_ADMIN') . '</span></span>';
+                        $html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' .
+                            $lang->txt('JLIB_RULES_ALLOWED_ADMIN') .
+                            '</span></span>';
                     } else {
                         // Special handling for  groups that have global admin because they can't  be denied.
                         // The admin rights can be changed.
@@ -202,9 +248,13 @@ class Rules extends Field
                             $html[] = '<span class="icon-16-allowed">' . $lang->txt('JLIB_RULES_ALLOWED') . '</span>';
                         } elseif ($inheritedRule === false) {
                             // Other actions cannot be changed.
-                            $html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' . $lang->txt('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') . '</span></span>';
+                            $html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' .
+                                $lang->txt('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') .
+                                '</span></span>';
                         } else {
-                            $html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . $lang->txt('JLIB_RULES_ALLOWED_ADMIN') . '</span></span>';
+                            $html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' .
+                                $lang->txt('JLIB_RULES_ALLOWED_ADMIN') .
+                                '</span></span>';
                         }
                     }
 

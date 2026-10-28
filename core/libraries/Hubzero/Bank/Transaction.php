@@ -18,7 +18,7 @@ class Transaction extends Relational
     /**
      * The table namespace
      *
-     * @var string
+     * @public string
      */
     protected $namespace = 'users';
 
@@ -29,28 +29,28 @@ class Transaction extends Relational
      * overwritten by a given subclass. Definition of this property likely
      * indicates some derivation from standard naming conventions.
      *
-     * @var  string
+     * @public string
      */
     protected $table = '#__users_transactions';
 
     /**
      * Default order by for model
      *
-     * @var  string
+     * @public string
      */
     public $orderBy = 'created';
 
     /**
      * Default order direction for select queries
      *
-     * @var  string
+     * @public string
      */
     public $orderDir = 'desc';
 
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @public array
      */
     protected $rules = array(
         'uid'      => 'positive|nonzero',
@@ -61,7 +61,7 @@ class Transaction extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @public array
      */
     public $initiate = array(
         'created'
@@ -176,16 +176,25 @@ class Transaction extends Relational
      * @param   integer  $calc         How total is calculated (record sum, avg, record count)
      * @return  integer
      */
-    public static function getTotals($category = null, $type = null, $referenceid = null, $royalty = 0, $action = null, $uid = null, $allusers = 0, $when = null, $calc = 0)
-    {
+    public static function getTotals(
+        $category = null,
+        $type = null,
+        $referenceid = null,
+        $royalty = 0,
+        $action = null,
+        $uid = null,
+        $allusers = 0,
+        $when = null,
+        $calc = 0
+    ) {
         $model = self::all();
 
         if ($calc == 0) {
             $model->select("SUM(amount) AS total");
-        } else if ($calc == 1) {
+        } elseif ($calc == 1) {
             // average
             $model->select("AVG(amount) AS total");
-        } else if ($calc == 2) {
+        } elseif ($calc == 2) {
             // num of transactions
             $model->select("COUNT(*) AS total");
         }
@@ -208,9 +217,12 @@ class Transaction extends Relational
 
         if ($action == 'asked') {
             $model->whereLike('description', '%posting question%');
-        } else if ($action == 'answered') {
-            $model->whereLike('description', '%answering question%');// OR description like 'Answer for question%' OR description like 'Answered question%') ";
-        } else if ($action == 'misc') {
+        } elseif ($action == 'answered') {
+            $model->whereLike(
+                'description',
+                '%answering question%'
+            );// OR description like 'Answer for question%' OR description like 'Answered question%') ";
+        } elseif ($action == 'misc') {
             $model->where('description', 'NOT LIKE', '%posting question%');
             $model->where('description', 'NOT LIKE', '%answering question%');
             $model->where('description', 'NOT LIKE', 'Answer for question%');

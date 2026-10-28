@@ -18,6 +18,8 @@ require_once dirname(__DIR__) . DS . 'category.php';
 
 /**
  * Group page category archive model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Archive extends Model
 {

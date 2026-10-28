@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +15,13 @@ namespace Hubzero\Facades\Tests\Mock;
  */
 class Bar
 {
-	/**
-	 * Get the registered name.
-	 *
-	 * @return  string
-	 */
-	public function bar()
-	{
-		return 'zab';
-	}
+    /**
+     * Get the registered name.
+     *
+     * @return  string
+     */
+    public function bar()
+    {
+        return 'zab';
+    }
 }

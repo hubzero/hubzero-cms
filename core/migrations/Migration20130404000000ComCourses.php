@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,10 +22,12 @@ class Migration20130404000000ComCourses extends Base
         $query = '';
 
         if (!$this->db->tableHasField('#__courses_announcements', 'publish_up')) {
-            $query .= "ALTER TABLE `#__courses_announcements` ADD `publish_up` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';\n";
+            $query .= "ALTER TABLE `#__courses_announcements` ADD `publish_up` DATETIME  NOT NULL  DEFAULT "
+                . "'0000-00-00 00:00:00';\n";
         }
         if (!$this->db->tableHasField('#__courses_announcements', 'publish_down')) {
-            $query .= "ALTER TABLE `#__courses_announcements` ADD `publish_down` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';\n";
+            $query .= "ALTER TABLE `#__courses_announcements` ADD `publish_down` DATETIME  NOT NULL  DEFAULT "
+                . "'0000-00-00 00:00:00';\n";
         }
         if (!$this->db->tableHasField('#__courses_announcements', 'sticky')) {
             $query .= "ALTER TABLE `#__courses_announcements` ADD `sticky` TINYINT(2)  NOT NULL  DEFAULT '0';\n";

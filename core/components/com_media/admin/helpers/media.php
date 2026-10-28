@@ -44,8 +44,10 @@ class MediaHelper
 
         // Media file names should never have executable extensions buried in them.
         $executable = array(
-            'php', 'js', 'exe', 'phtml', 'java', 'perl', 'py', 'asp','dll', 'go', 'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta', 'ins', 'isp',
-            'jse', 'lib', 'mde', 'msc', 'msp', 'mst', 'pif', 'scr', 'sct', 'shb', 'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
+            'php', 'js', 'exe', 'phtml', 'java', 'perl', 'py', 'asp', 'dll', 'go',
+            'ade', 'adp', 'bat', 'chm', 'cmd', 'com', 'cpl', 'hta', 'ins', 'isp',
+            'jse', 'lib', 'mde', 'msc', 'msp', 'mst', 'pif', 'scr', 'sct', 'shb',
+            'sys', 'vb', 'vbe', 'vbs', 'vxd', 'wsc', 'wsf', 'wsh'
         );
 
         $explodedFileName = explode('.', $file['name']);
@@ -132,7 +134,8 @@ class MediaHelper
                 'nobr', 'noembed', 'noframes', 'noscript', 'nosmartquotes', 'object', 'ol', 'optgroup', 'option',
                 'param', 'plaintext', 'pre', 'rt', 'ruby', 's', 'samp', 'script', 'select', 'server', 'shadow',
                 'sidebar', 'small', 'spacer', 'span', 'strike', 'strong', 'style', 'sub', 'sup', 'table', 'tbody', 'td',
-                'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE', '!--'
+                'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'ul', 'var', 'wbr', 'xml', 'xmp', '!DOCTYPE',
+                '!--'
             );
 
             foreach ($html_tags as $tag) {
@@ -271,6 +274,7 @@ class MediaHelper
      * @param   string  $path
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public static function _buildFolderTree($folders, $parent_id = 0, $path = '')
     {
         $branch = array();

@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +33,8 @@ if (count($this->activities) > 0) {
                 //$a = $activity['activity'];
 
                 if (!isset($projects[$activity->get('scope_id')])) {
-                    $projects[$activity->get('scope_id')] = \Components\Projects\Models\Project::getInstance($activity->get('scope_id'));
+                    $projects[$activity->get('scope_id')] =
+                    \Components\Projects\Models\Project::getInstance($activity->get('scope_id'));
                 }
 
                 // Show activity
@@ -61,9 +64,20 @@ if (count($this->activities) > 0) {
         $start = $this->filters['start'] + $this->filters['limit'] - 1;
 
         $option = Request::getCmd('option', 'com_members');
+
+        $idParam = $option == 'com_groups'
+            ? 'cn=' . Request::getCmd('cn')
+            : 'id=' . $this->uid;
+        $updatesUrl = Route::url(
+            'index.php?option=' . $option
+            . '&' . $idParam
+            . '&active=projects&action=updates'
+            . '&limit=' . $this->filters['limit']
+            . '&start=' . $start . '#' . $li
+        );
         ?>
-        <p><a href="<?php echo Route::url('index.php?option=' . $option . '&' . ($option == 'com_groups' ? 'cn=' . Request::getCmd('cn') : 'id=' . $this->uid) . '&active=projects&action=updates&limit=' .  $this->filters['limit'] . '&start=' . $start . '#' . $li);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
-    <?php } else if ($this->filters['limit'] != $this->limit) { ?>
+        <p><a href="<?php echo $updatesUrl; ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
+    <?php } elseif ($this->filters['limit'] != $this->limit) { ?>
         <p><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES_NO_MORE'); ?></p>
         <?php
     }

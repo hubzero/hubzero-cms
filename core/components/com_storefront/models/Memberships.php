@@ -21,6 +21,7 @@ class Memberships
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db = null;
 
     /**
@@ -61,7 +62,11 @@ class Memberships
     {
         $now = Date::toSql();
 
-        $sql = "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` WHERE `pId` = " . $this->_db->quote($pId) . " AND `crtId` = " . $this->_db->quote($crtId);
+        $sql = "SELECT `crtmExpires`,";
+        $sql .= " IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive`";
+        $sql .= " FROM `#__cart_memberships`";
+        $sql .= " WHERE `pId` = " . $this->_db->quote($pId);
+        $sql .= " AND `crtId` = " . $this->_db->quote($crtId);
         $this->_db->setQuery($sql);
 
         return $this->_db->loadAssoc();
@@ -80,9 +85,11 @@ class Memberships
     public static function getSubscriptionObject($type, $pId, $uId)
     {
         // Find if there is a corresponding object
-        $lookupPath = dirname(dirname(__DIR__)) . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions';
+        $lookupPath = dirname(dirname(__DIR__)) . DS . 'com_storefront';
+        $lookupPath .= DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions';
 
-        $objectClass = str_replace(' ', '_', ucwords(strtolower($type))) . '_Subscription';
+        $objectClass = str_replace(' ', '_', ucwords(strtolower($type)));
+        $objectClass .= '_Subscription';
 
         if (!file_exists($lookupPath . DS . $objectClass . '.php')) {
             $objectClass = 'BaseSubscription';
@@ -166,9 +173,12 @@ class Memberships
         $db = \App::get('db');
 
         $now = Date::of('now')->toSql();
-        $sql =  "SELECT `crtmExpires`, IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive` FROM `#__cart_memberships` m";
+        $sql = "SELECT `crtmExpires`,";
+        $sql .= " IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive`";
+        $sql .= " FROM `#__cart_memberships` m";
         $sql .= " LEFT JOIN `#__cart_carts` c on c.`crtId` = m.`crtId`";
-        $sql .= "WHERE m.`pId` = " . $db->quote($pId) . " AND c.`uidNumber` = " . $db->quote($uId);
+        $sql .= " WHERE m.`pId` = " . $db->quote($pId);
+        $sql .= " AND c.`uidNumber` = " . $db->quote($uId);
         $db->setQuery($sql);
         $membershipInfo = $db->loadAssoc();
 

@@ -6,13 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
-
 use Hubzero\Content\Migration\Base;
 
 class Migration20240210000000DropTableReplyAccessCode extends Base
 {
-    static $tableName = '#__reply_access_codes';
+    public static $tableName = '#__reply_access_codes';
 
     // jos_reply_access_codes table should not be present in core implementation
     public function up()

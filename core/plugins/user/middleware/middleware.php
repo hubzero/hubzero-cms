@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,15 +8,27 @@
  */
 
 // No direct access
-defined('_HZEXEC_') or die();
 
-require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
 /**
  * User plugin for updating quotas and session limits
  */
 class plgUserMiddleware extends \Hubzero\Plugin\Plugin
 {
+    /**
+     * Constructor
+     *
+     * @param   object  $subject  The object to observe
+     * @param   array   $config   An optional associative array of configuration settings.
+     * @return  void
+     */
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
+
+        require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
+    }
+
     /**
      * Utility method to act on a user after it has been saved.
      *
@@ -61,10 +74,13 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
                         'soft_blocks' => $row->get('soft_blocks', 0)
                     );
 
-                    $db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c LEFT JOIN `#__users_quotas_classes_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
+                    $db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c"
+                        . " LEFT JOIN `#__users_quotas_classes_groups` AS g ON g.`class_id`=c.`id`"
+                        . " WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
                     $cids = $db->loadObjectList();
                     if (count($cids) <= 0) {
-                        $db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c WHERE c.`alias`=" . $db->quote('default'));
+                        $db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c"
+                            . " WHERE c.`alias`=" . $db->quote('default'));
                         $cids = $db->loadObjectList();
                     }
                     // Loop through each usergroup and find the highest quota values
@@ -78,10 +94,16 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
                         ) {
                             $row->set('class_id', $cls->id);
                         }
-                        //$val['hard_files']  = ($val['hard_files']  > $cls->hard_files  ?: $cls->hard_files);
-                        //$val['soft_files']  = ($val['soft_files']  > $cls->soft_files  ?: $cls->soft_files);
-                        $val['hard_blocks'] = ($val['hard_blocks'] > $cls->hard_blocks ? $val['hard_blocks'] : $cls->hard_blocks);
-                        $val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ? $val['soft_blocks'] : $cls->soft_blocks);
+                        /*
+                        //$val['hard_files']  = ($val['hard_files']  > $cls->hard_files
+                        //    ?: $cls->hard_files);
+                        //$val['soft_files']  = ($val['soft_files']  > $cls->soft_files
+                        //    ?: $cls->soft_files);
+                        */
+                        $val['hard_blocks'] = ($val['hard_blocks'] > $cls->hard_blocks
+                            ? $val['hard_blocks'] : $cls->hard_blocks);
+                        $val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks
+                            ? $val['soft_blocks'] : $cls->soft_blocks);
                     }
 
                     $row->set('hard_files', $val['hard_files']);
@@ -117,10 +139,13 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
                         'jobs'  => 0
                     );
 
-                    $db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c LEFT JOIN `#__tool_session_class_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
+                    $db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c"
+                        . " LEFT JOIN `#__tool_session_class_groups` AS g ON g.`class_id`=c.`id`"
+                        . " WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
                     $cids = $db->loadObjectList();
                     if (count($cids) <= 0) {
-                        $db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c WHERE c.`alias`=" . $db->quote('default'));
+                        $db->setQuery("SELECT c.* FROM `#__tool_session_classes` AS c"
+                            . " WHERE c.`alias`=" . $db->quote('default'));
                         $cids = $db->loadObjectList();
                     }
                     // Loop through each usergroup and find the highest 'jobs allowed' value
@@ -201,7 +226,8 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
         $db->setQuery($query);
         $objRows = $db->loadObjectList();
 
-        // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the value encoded in json in appropriate PHP type
+        // json_encode: returns a string containing the JSON representation from the mySQL
+        // -> json_decode: Returns the value encoded in json in appropriate PHP type
         $objString = json_encode($objRows, true);
         return json_decode($objString, true);
     }
@@ -235,24 +261,31 @@ class plgUserMiddleware extends \Hubzero\Plugin\Plugin
         }
         $anonUserName = "anonUsername_" . $userId;
 
-        // Access from different database, pulling from the Middleware Database Object, accessing the tables (jobs, sessions, views)
+        // Access from different database, pulling from the Middleware Database Object,
+        // accessing the tables (jobs, sessions, views)
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
-        $update_Job_Query = "UPDATE job set username=" . $mwdb->quote($anonUserName) . " where username=" . $mwdb->quote($userName);
+        $update_Job_Query = "UPDATE job set username=" . $mwdb->quote($anonUserName)
+            . " where username=" . $mwdb->quote($userName);
         $this->runUpdateOrDeleteQueryMiddlewareDb($update_Job_Query);
 
-        $update_FilePerm_Query = "UPDATE fileperm set fileuser=" . $mwdb->quote($anonUserName) . " where fileuser=" . $mwdb->quote($userName);
+        $update_FilePerm_Query = "UPDATE fileperm set fileuser=" . $mwdb->quote($anonUserName)
+            . " where fileuser=" . $mwdb->quote($userName);
         $this->runUpdateOrDeleteQueryMiddlewareDb($update_FilePerm_Query);
 
-        $update_ViewPerm_Query = "UPDATE viewperm set viewuser=" . $mwdb->quote($anonUserName) . " where viewuser=" . $mwdb->quote($userName);
+        $update_ViewPerm_Query = "UPDATE viewperm set viewuser=" . $mwdb->quote($anonUserName)
+            . " where viewuser=" . $mwdb->quote($userName);
         $this->runUpdateOrDeleteQueryMiddlewareDb($update_ViewPerm_Query);
 
-        $update_ViewLog_Query = "UPDATE viewlog set username=" . $mwdb->quote($anonUserName) . ", remoteip='', remotehost='' where username=" . $mwdb->quote($userName);
+        $update_ViewLog_Query = "UPDATE viewlog set username=" . $mwdb->quote($anonUserName)
+            . ", remoteip='', remotehost='' where username=" . $mwdb->quote($userName);
         $this->runUpdateOrDeleteQueryMiddlewareDb($update_ViewLog_Query);
 
-        $update_SessionLog_Query = "UPDATE sessionlog set username=" . $mwdb->quote($anonUserName) . ", remoteip='', remotehost='' where username=" . $mwdb->quote($userName);
+        $update_SessionLog_Query = "UPDATE sessionlog set username=" . $mwdb->quote($anonUserName)
+            . ", remoteip='', remotehost='' where username=" . $mwdb->quote($userName);
         $this->runUpdateOrDeleteQueryMiddlewareDb($update_SessionLog_Query);
 
-        $update_Session_Query = "UPDATE session set username=" . $mwdb->quote($anonUserName) . ", remoteip='' where username=" . $mwdb->quote($userName);
+        $update_Session_Query = "UPDATE session set username=" . $mwdb->quote($anonUserName)
+            . ", remoteip='' where username=" . $mwdb->quote($userName);
         $this->runUpdateOrDeleteQueryMiddlewareDb($update_Session_Query);
     }
 }

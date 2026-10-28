@@ -101,7 +101,7 @@ class Polls extends AdminController
         if ($filters['state']) {
             if ($filters['state'] == 'P') {
                 $polls->whereEquals('state', 1);
-            } else if ($filters['state'] == 'U') {
+            } elseif ($filters['state'] == 'U') {
                 $polls->whereEquals('state', 0);
             }
         }

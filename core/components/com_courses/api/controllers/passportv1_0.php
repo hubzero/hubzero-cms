@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -144,7 +145,7 @@ class Passportv1_0 extends base
      *
      * @return bool
      */
-    private function authorize_call()
+    private function authorizeCall()
     {
         $consumerKey = Request::getString('oauth_consumer_key', null, 'post');
 
@@ -160,7 +161,8 @@ class Passportv1_0 extends base
         $path = Request::path();
 
         // Do access check
-        // @NOTE: The following assumption is made: the code check only permissions for the closest parent. Parent's parent permissions are not inherited.
+        // @NOTE: The following assumption is made: the code check only permissions
+        // for the closest parent. Parent's parent permissions are not inherited.
 
         $db = App::get('db');
 
@@ -188,8 +190,9 @@ class Passportv1_0 extends base
         }
 
         // Next see if the user is allowed to make this call
-        $sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = ' . $db->quote($permissions_path) . ' AND
-				(`user_id` = ' . $db->quote($userid) . ' OR `consumer_key` = ' . $db->quote($consumerKey) . ' OR 0';
+        $sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = '
+            . $db->quote($permissions_path) . ' AND (`user_id` = ' . $db->quote($userid)
+            . ' OR `consumer_key` = ' . $db->quote($consumerKey) . ' OR 0';
 
         foreach ($user_groups as $group) {
             $sql .= ' OR `group_id` = ' . $db->quote($group->gidNumber);

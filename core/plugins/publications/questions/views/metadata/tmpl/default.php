@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
 defined('_HZEXEC_') or die();
 ?>
 <p class="answer">
@@ -23,5 +22,6 @@ defined('_HZEXEC_') or die();
         }
         ?>
     </a>
-    (<a href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+    (<a href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>
+    "><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION');?></a>)
 </p>

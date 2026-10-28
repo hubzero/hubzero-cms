@@ -64,8 +64,13 @@ class FixedBitNotation
      * @param bool   $padFinalGroup     Add padding to end of encoded output
      * @param string $padCharacter      Character to use for padding
      */
-    public function __construct($bitsPerCharacter, $chars = null, $rightPadFinalBits = false, $padFinalGroup = false, $padCharacter = '=')
-    {
+    public function __construct(
+        $bitsPerCharacter,
+        $chars = null,
+        $rightPadFinalBits = false,
+        $padFinalGroup = false,
+        $padCharacter = '='
+    ) {
         // Ensure validity of $chars
         if (!\is_string($chars) || ($charLength = \strlen($chars)) < 2) {
             $chars =

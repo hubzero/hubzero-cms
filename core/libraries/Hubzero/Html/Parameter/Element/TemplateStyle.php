@@ -23,6 +23,7 @@ class TemplateStyle extends Element
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'TemplateStyle';
 
     /**
@@ -51,7 +52,10 @@ class TemplateStyle extends Element
         array_unshift($data, $default);
 
         $selected = $this->_getSelected();
-        $html = Builder\Select::genericlist($data, $control_name . '[' . $name . ']', 'class="inputbox" size="6"', 'id', 'description', $selected);
+        $html = Builder\Select::genericlist($data, $control_name .
+            '[' .
+            $name .
+            ']', 'class="inputbox" size="6"', 'id', 'description', $selected);
 
         return $html;
     }
@@ -61,6 +65,7 @@ class TemplateStyle extends Element
      *
      * @return  integer  The template style id.
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getSelected()
     {
         $id = Request::getVar('cid', 0);

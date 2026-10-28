@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for displaying an image slider
@@ -23,11 +21,12 @@ class SliderMacro extends WikiMacro
     {
         $txt = array();
         $txt['wiki'] = "Creates a slider with the images passed in.";
-        $txt['html'] = '<p>Creates a slider with the images passed in. Enter uploaded image names seperated by commas.</p>
-						<p>Examples:</p>
-						<ul>
-							<li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
-						</ul>';
+        $txt['html'] = '<p>Creates a slider with the images passed in. '
+            . 'Enter uploaded image names seperated by commas.</p>' . "\n"
+            . '                        <p>Examples:</p>
+                        <ul>
+                            <li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
+                        </ul>';
 
         return $txt['html'];
     }
@@ -97,8 +96,18 @@ class SliderMacro extends WikiMacro
         $html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
         $html .= '</div>';
 
-        \Document::addStyleSheet(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css'));
-        \Document::addScript(\Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js'));
+        \Document::addStyleSheet(\Request::root()
+            . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
+            . css?t='
+            . filemtime(__DIR__
+            . '/macro-assets/slider/slider
+            . css'));
+        \Document::addScript(\Request::root()
+            . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
+            . js?t='
+            . filemtime(__DIR__
+            . '/macro-assets/slider/slider
+            . js'));
 
         return $html;
     }

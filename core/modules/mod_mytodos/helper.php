@@ -29,11 +29,13 @@ class Helper extends Module
         // Find the user's most recent to do items
         if (!User::isGuest()) {
             $database = App::get('db');
+            $limit = intval($this->params->get('limit', 10));
             $database->setQuery(
                 "SELECT a.id, a.content, b.title, b.alias
-				FROM `#__project_todo` a
-				INNER JOIN `#__projects` b ON b.id=a.projectid
-				WHERE a.assigned_to=" . $database->escape(User::get('id')) . " AND a.state=0 LIMIT 0, " . intval($this->params->get('limit', 10))
+                FROM `#__project_todo` a
+                INNER JOIN `#__projects` b ON b.id=a.projectid
+                WHERE a.assigned_to=" . $database->escape(User::get('id')) .
+                " AND a.state=0 LIMIT 0, " . $limit
             );
             $this->rows = $database->loadObjectList();
         }

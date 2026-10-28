@@ -45,7 +45,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
                 /*$thread = $row->id;
                 if ($row->parent)
                 {
-                    $thread = $this->_getThread($row->parent);
+                    $thread = $this->getThread($row->parent);
                 }*/
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {
                     $rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
@@ -84,7 +84,7 @@ class plgSupportForum extends \Hubzero\Plugin\Plugin
      * @param   integer  $parent  Parent comment to load
      * @return  array
      */
-    private function _getThread($parent = 0)
+    private function getThread($parent = 0)
     {
         $comment = \Components\Forum\Models\Post::oneOrFail($parent);
         return $comment->get('thread');

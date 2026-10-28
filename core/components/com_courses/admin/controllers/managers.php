@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -60,9 +61,8 @@ class Managers extends AdminController
                 if (is_object($user) && $user->get('username')) {
                     $uid = $mbr;
                 }
-            }
-            // Username
-            else {
+            } else {
+                // Username
                 $uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
             }
 

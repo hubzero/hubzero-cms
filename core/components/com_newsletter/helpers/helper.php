@@ -39,7 +39,11 @@ class Helper
     public static function generateMailingToken($mailingRecipientObject)
     {
         //we must have valid mailing recipient object
-        if (!is_object($mailingRecipientObject) || !$mailingRecipientObject->mailingid || !$mailingRecipientObject->email) {
+        if (
+            !is_object($mailingRecipientObject)
+            || !$mailingRecipientObject->mailingid
+            || !$mailingRecipientObject->email
+        ) {
             return false;
         }
 
@@ -227,20 +231,28 @@ class Helper
 
         //build body
         if ($addedByAdmin) {
-            $body = "You are receiving this email because you have been added to the following mailing list by a site administrator. ";
+            $body = "You are receiving this email because you have been added to the "
+                . "following mailing list by a site administrator. ";
         } else {
-            $body = "You are receiving this email because you have signed up for the following mailing list. ";
+            $body = "You are receiving this email because you have signed up "
+                . "for the following mailing list. ";
         }
-        $body .= "Please confirm or remove your email subscription by clicking on one of the links below" . PHP_EOL . PHP_EOL;
+        $body .= "Please confirm or remove your email subscription by clicking "
+            . "on one of the links below" . PHP_EOL . PHP_EOL;
         $body .= $mailinglistObject->name . PHP_EOL;
         $body .= $mailinglistObject->description . PHP_EOL . PHP_EOL . PHP_EOL;
-        $body .= "========================================================================" . PHP_EOL . PHP_EOL;
+        $body .= "========================================";
+        $body .= "========================================" . PHP_EOL . PHP_EOL;
         $body .= "Click this link to CONFIRM your subscription:" . PHP_EOL;
-        $body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/confirm?e=' . urlencode($emailAddress) . '&t=' . $token . PHP_EOL . PHP_EOL;
-        $body .= "------------------------------------------------------------------------" . PHP_EOL . PHP_EOL;
+        $body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/confirm?e='
+            . urlencode($emailAddress) . '&t=' . $token . PHP_EOL . PHP_EOL;
+        $body .= "----------------------------------------";
+        $body .= "----------------------------------------" . PHP_EOL . PHP_EOL;
         $body .= "Click this link to REMOVE this email from the mailing list:" . PHP_EOL;
-        $body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/remove?e=' . urlencode($emailAddress) . '&t=' . $token . PHP_EOL . PHP_EOL;
-        $body .= "========================================================================";
+        $body .= 'https://' . $_SERVER['HTTP_HOST'] . '/newsletter/remove?e='
+            . urlencode($emailAddress) . '&t=' . $token . PHP_EOL . PHP_EOL;
+        $body .= "========================================";
+        $body .= "========================================";
 
         // create new message
         $message = new \Hubzero\Mail\Message();
@@ -313,7 +325,9 @@ class Helper
                 //only track http & https links
                 if (substr($url, 0, 4) == 'http') {
                     //build tracking url
-                    $clickTracker = $protocol . '://' . $_SERVER['SERVER_NAME'] . '/newsletter/track/click/?t=' . $emailToken . '&l=' . urlencode($url);
+                    $clickTracker = $protocol . '://' . $_SERVER['SERVER_NAME']
+                        . '/newsletter/track/click/?t=' . $emailToken
+                        . '&l=' . urlencode($url);
 
                     //replace normal links with tracking links
                     // Make sure to only replace links wrapped in href="" otherwise
@@ -340,7 +354,9 @@ class Helper
         $protocol = self::getNewsletterTrackingProtocol();
 
         //create open tracker img
-        $openTracker = '<img src="' . $protocol . '://' . $_SERVER['SERVER_NAME'] . '/newsletter/track/open?t=' . $emailToken . '" width="1" height="1" />';
+        $trackerUrl = $protocol . '://' . $_SERVER['SERVER_NAME']
+            . '/newsletter/track/open?t=' . $emailToken;
+        $openTracker = '<img src="' . $trackerUrl . '" width="1" height="1" />';
 
         //add to the end of the message body
         $emailMessage = str_replace('</body>', $openTracker . '</body>', $emailMessage);
@@ -362,6 +378,8 @@ class Helper
         $protocol = self::getNewsletterTrackingProtocol();
 
         //create print tracker
+        $printTrackerUrl = $protocol . '://' . $_SERVER['SERVER_NAME']
+            . '/newsletter/track/print?t=' . $emailToken;
         $printTracker = "<style>
 							@media print {
 								#_print {
@@ -369,7 +387,7 @@ class Helper
 									height:1px;
 									border:none;
 									background-color: transparent;
-									background-image: url('" . $protocol . "://" . $_SERVER['SERVER_NAME'] . "/newsletter/track/print?t=" . $emailToken . "');
+									background-image: url('" . $printTrackerUrl . "');
 								}
 							}
 						</style>";
@@ -395,6 +413,8 @@ class Helper
         $protocol = self::getNewsletterTrackingProtocol();
 
         //create forward tracker
+        $forwardTrackerUrl = $protocol . '://' . $_SERVER['SERVER_NAME']
+            . '/newsletter/track/forward?t=' . $emailToken;
         $forwardTracker = "<style>
 							div.OutlookMessageHeader,
 							table.moz-email-headers-table,
@@ -404,7 +424,7 @@ class Helper
 								height:1px;
 								border:none;
 								background-color: transparent;
-								background-image: url('" . $protocol . "://" . $_SERVER['SERVER_NAME'] . "/newsletter/track/forward?t=" . $emailToken . "');
+								background-image: url('" . $forwardTrackerUrl . "');
 							}
 						</style>";
         $forwardTracker .= "<div id=\"_forward\"></div>";

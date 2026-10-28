@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,8 @@ defined('_HZEXEC_') or die();
  * Short description for 'plgSearchSuffixes'
  *
  * Long description (if any) ...
+ */
+/**
  */
 class plgSearchSuffixes extends \Hubzero\Plugin\Plugin
 {

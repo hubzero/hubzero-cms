@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing notices module
- **/
+ *
+ */
 class Migration20190109000000ModNotices extends Base
 {
     /**

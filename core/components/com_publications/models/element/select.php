@@ -22,6 +22,7 @@ class Select extends Base
   *
   * @var  string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Select list';
 
     /**
@@ -47,7 +48,19 @@ class Select extends Base
             $options[] = Html::select('option', $val, Lang::txt($text));
         }
 
-        return '<span class="field-wrap">' . Html::select('genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
+        $fieldName = $control_name . '[' . $name . ']';
+        $fieldId = $control_name . '-' . $name;
+        $selectHtml = Html::select(
+            'genericlist',
+            $options,
+            $fieldName,
+            $class,
+            'value',
+            'text',
+            $value,
+            $fieldId
+        );
+        return '<span class="field-wrap">' . $selectHtml . '</span>';
     }
 
     /**
@@ -64,19 +77,27 @@ class Select extends Base
         $html = array();
 
         $k = 0;
+        $idBase = $control_name . '-' . $name;
+        $nameBase = $control_name . '[' . $name . ']';
 
         $html[] = '<table class="admintable" id="' . $name . '">';
-        $html[] = '<caption>' . Lang::txt('Lists include blank "Select..." option unless made a required field') . '</caption>';
+        $captionText = Lang::txt('Lists include blank "Select..." option unless made a required field');
+        $html[] = '<caption>' . $captionText . '</caption>';
         $html[] = '<tfoot>';
         $html[] = '<tr>';
-        $html[] = '<td colspan="4" class="option-button"><button rel="' . $name . '" class="add-custom-option"><span>' . Lang::txt('COM_PUBLICATIONS_NEW_OPTION') . '</span></button></td>';
+        $buttonText = Lang::txt('COM_PUBLICATIONS_NEW_OPTION');
+        $html[] = '<td colspan="4" class="option-button">'
+            . '<button rel="' . $name . '" class="add-custom-option"><span>' . $buttonText . '</span></button></td>';
         $html[] = '</tr>';
         $html[] = '</tfoot>';
         $html[] = '<tbody>';
         foreach ($element->options as $option) {
+            $labelId = $idBase . '-label-' . $k;
+            $inputName = $nameBase . '[options][' . $k . '][label]';
             $html[] = '<tr>';
-            $html[] = '<td><label for="' . $control_name . '-' . $name . '-label-' . $k . '">' . Lang::txt('Option') . '</label></td>';
-            $html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="' . $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
+            $html[] = '<td><label for="' . $labelId . '">' . Lang::txt('Option') . '</label></td>';
+            $html[] = '<td><input type="text" size="35" name="' . $inputName . '" id="' . $labelId . '"'
+                . ' value="' . $option->label . '" /></td>';
             $html[] = '</tr>';
 
             $k++;

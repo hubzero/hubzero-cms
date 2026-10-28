@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,33 +21,32 @@ use Component;
 
 class SolariumBoostQueryTest extends Basic
 {
-	use canMock;
+    use canMock;
 
-	public function testOneReturnsInstance()
-	{
-		$expected = new Query(['boost' => []]);
+    public function testOneReturnsInstance()
+    {
+        $expected = new Query(['boost' => []]);
 
-		$queries = Query::one(['boost' => []]);
+        $queries = Query::one(['boost' => []]);
 
-		$this->assertEquals($expected, $queries);
-	}
+        $this->assertEquals($expected, $queries);
+    }
 
-	public function testToArray()
-	{
-		$boostMock = $this->mock([
-			'class' => 'Boost',
-			'methods' => [
-				'getField' => 'resource',
-				'getFieldValue' => 'Tools',
-				'getStrength' => 83
-			]
-		]);
-		$expected = ['query' => 'resource:Tools^83'];
-		$query = new Query(['boost' => $boostMock]);
+    public function testToArray()
+    {
+        $boostMock = $this->mock([
+            'class' => 'Boost',
+            'methods' => [
+                'getField' => 'resource',
+                'getFieldValue' => 'Tools',
+                'getStrength' => 83
+            ]
+        ]);
+        $expected = ['query' => 'resource:Tools^83'];
+        $query = new Query(['boost' => $boostMock]);
 
-		$queryAsArray = $query->toArray();
+        $queryAsArray = $query->toArray();
 
-		$this->assertEquals($expected, $queryAsArray);
-	}
-
+        $this->assertEquals($expected, $queryAsArray);
+    }
 }

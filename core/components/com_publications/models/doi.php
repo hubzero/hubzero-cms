@@ -332,10 +332,10 @@ class Doi extends Obj
 
             // get mime-type for all files
             $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $pub->version->publication_id, $pub->version->id, $pub->version->secret, $attachments);
-        } else if ($type->id == 5) {
+        } elseif ($type->id == 5) {
             // get the quantity of publication in series publication.
             $quantity = count($attachments[1]);
-        } else if ($type->id == 7) {
+        } elseif ($type->id == 7) {
             // get the quantity of the support and gallery files in database publication
             $quantity = $pub->attachmentsCount();
             $quantity--;
@@ -647,7 +647,7 @@ class Doi extends Obj
                     if (!empty($citation->relationType) && (preg_match("/" . self::REFERENCES . "/i", $citation->relationType) || preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType))) {
                         if (preg_match("/" . self::REFERENCES . "/i", $citation->relationType)) {
                             $citation->relationType = ucfirst(self::REFERENCES);
-                        } else if (preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType)) {
+                        } elseif (preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType)) {
                             $citation->relationType = self::ISREFERENCEDBY;
                         }
 

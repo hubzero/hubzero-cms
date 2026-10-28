@@ -160,8 +160,16 @@ class Google extends Obj
      * @param   boolean  $convert     Convert for remote editing?
      * @return  string   (id) or false
      */
-    public static function insertFile($apiService, $client, $title, $localPath, $mimeType, $parentId, &$metadata, $convert = false)
-    {
+    public static function insertFile(
+        $apiService,
+        $client,
+        $title,
+        $localPath,
+        $mimeType,
+        $parentId,
+        &$metadata,
+        $convert = false
+    ) {
         // Check for what we need
         if (!$apiService || !$title || !$parentId || !file_exists($localPath) || !$mimeType) {
             return false;
@@ -186,7 +194,12 @@ class Google extends Obj
             $file->setMimeType(self::mimetypeToGoogle($mimeType));
 
             // OCR conversion
-            if ($mimeType == 'application/pdf' || $mimeType == 'image/png' || $mimeType == 'image/jpeg' || $mimeType == 'image/gif') {
+            if (
+                $mimeType == 'application/pdf'
+                || $mimeType == 'image/png'
+                || $mimeType == 'image/jpeg'
+                || $mimeType == 'image/gif'
+            ) {
                 $fparams['ocr'] = true;
             }
         }
@@ -265,8 +278,17 @@ class Google extends Obj
      * @param   boolean  $convert     Convert for remote editing?
      * @return  mixed  string (id) or false
      */
-    public static function updateFile($apiService, $client, $id, $title, $localPath, $mimeType, $parentId, &$metadata, $convert = false)
-    {
+    public static function updateFile(
+        $apiService,
+        $client,
+        $id,
+        $title,
+        $localPath,
+        $mimeType,
+        $parentId,
+        &$metadata,
+        $convert = false
+    ) {
         // Check for what we need
         if (!$apiService || !$id) {
             return false;
@@ -509,8 +531,15 @@ class Google extends Obj
      * @param   array   $connections    Array of local-remote connections
      * @return  mixed   int (new change ID) or false
      */
-    public static function collectChanges($apiService, $folderID, &$remotes, &$deletes, $path = '', $startChangeId = null, $connections = array())
-    {
+    public static function collectChanges(
+        $apiService,
+        $folderID,
+        &$remotes,
+        &$deletes,
+        $path = '',
+        $startChangeId = null,
+        $connections = array()
+    ) {
         // Check for what we need
         if (!$apiService || !$folderID) {
             return false;
@@ -583,7 +612,9 @@ class Google extends Obj
                     }
 
                     $status    = $doc['labels']['trashed'] ? 'D' : 'A';
-                    $converted = preg_match("/google-apps/", $doc['mimeType']) && !preg_match("/.folder/", $doc['mimeType']) ? 1 : 0;
+                    $isGoogleApp = preg_match("/google-apps/", $doc['mimeType']);
+                    $isFolder = preg_match("/.folder/", $doc['mimeType']);
+                    $converted = $isGoogleApp && !$isFolder ? 1 : 0;
                     $url       = isset($doc['downloadUrl']) ? $doc['downloadUrl'] : '';
                     $original  = isset($doc['originalFilename']) ? $doc['originalFilename'] : '';
                     $time      = strtotime($doc['modifiedDate']);
@@ -621,8 +652,16 @@ class Google extends Obj
                     $md5Checksum = isset($doc['md5Checksum']) ? $doc['md5Checksum'] : null;
                     $fileSize    = isset($doc['fileSize']) ? $doc['fileSize'] : null;
 
-                    // Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-                    $fpath = self::buildDuplicatePath($doc['id'], $fpath, $doc['mimeType'], $connections, $remotes, $duplicates);
+                    // Make sure path is not already used
+                    // (Google allows files with same name in same dir, Git doesn't)
+                    $fpath = self::buildDuplicatePath(
+                        $doc['id'],
+                        $fpath,
+                        $doc['mimeType'],
+                        $connections,
+                        $remotes,
+                        $duplicates
+                    );
 
                     // Detect a rename or move
                     $rename = '';
@@ -664,7 +703,15 @@ class Google extends Obj
 
                     if (preg_match("/.folder/", $doc['mimeType'])) {
                         // Recurse
-                        self::getFolderChange($items, $doc['id'], $remotes, $deletes, $fpath, $connections, $duplicates);
+                        self::getFolderChange(
+                            $items,
+                            $doc['id'],
+                            $remotes,
+                            $deletes,
+                            $fpath,
+                            $connections,
+                            $duplicates
+                        );
                     }
                 }
             }
@@ -897,7 +944,9 @@ class Google extends Obj
                         $skip = 1;
                     }
 
-                    $converted = preg_match("/google-apps/", $item->getMimeType()) && !preg_match("/.folder/", $item->getMimeType()) ? 1 : 0;
+                    $isGoogleApp = preg_match("/google-apps/", $item->getMimeType());
+                    $isFolder = preg_match("/.folder/", $item->getMimeType());
+                    $converted = $isGoogleApp && !$isFolder ? 1 : 0;
                     $url       = $item->getWebContentLink() ? $item->getWebContentLink() : $item->getWebViewLink();
                     //$url = $url ?: 'https://www.googleapis.com/drive/v3/files/' . $item->getId() . '?alt=media';
                     $original  = $item->getOriginalFilename();
@@ -929,8 +978,16 @@ class Google extends Obj
                     $md5Checksum = $item->getMd5Checksum();
                     $fileSize    = $item->getSize();
 
-                    /// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-                    $fpath = self::buildDuplicatePath($item->getId(), $fpath, $item->getMimeType(), $connections, $remotes, $duplicates);
+                    // Make sure path is not already used
+                    // (Google allows files with same name in same dir, Git doesn't)
+                    $fpath = self::buildDuplicatePath(
+                        $item->getId(),
+                        $fpath,
+                        $item->getMimeType(),
+                        $connections,
+                        $remotes,
+                        $duplicates
+                    );
 
                     // Detect a rename or move
                     $rename = '';
@@ -985,7 +1042,15 @@ class Google extends Obj
 
                     if (preg_match("/.folder/", $item->getMimeType())) {
                         // Recurse
-                        $remotes = self::getFolderContent($apiService, $item->getId(), $remotes, $fpath, $since, $connections, $duplicates);
+                        $remotes = self::getFolderContent(
+                            $apiService,
+                            $item->getId(),
+                            $remotes,
+                            $fpath,
+                            $since,
+                            $connections,
+                            $duplicates
+                        );
                     }
                 }
             }
@@ -1008,7 +1073,9 @@ class Google extends Obj
                         $skip = 1;
                     }
 
-                    $converted = preg_match("/google-apps/", $item['mimeType']) && !preg_match("/.folder/", $item['mimeType']) ? 1 : 0;
+                    $isGApp = preg_match("/google-apps/", $item['mimeType']);
+                    $isFldr = preg_match("/.folder/", $item['mimeType']);
+                    $converted = $isGApp && !$isFldr ? 1 : 0;
                     $url       = isset($item['downloadUrl']) ? $item['downloadUrl'] : '';
                     $original  = isset($item['originalFilename']) ? $item['originalFilename'] : '';
                     $thumb     = isset($item['thumbnailLink']) ? $item['thumbnailLink'] : null;
@@ -1044,8 +1111,16 @@ class Google extends Obj
                     $md5Checksum = isset($item['md5Checksum']) ? $item['md5Checksum'] : null;
                     $fileSize    = isset($item['fileSize']) ? $item['fileSize'] : null;
 
-                    /// Make sure path is not already used (Google allows files with same name in same dir, Git doesn't)
-                    $fpath = self::buildDuplicatePath($item['id'], $fpath, $item['mimeType'], $connections, $remotes, $duplicates);
+                    // Make sure path is not already used
+                    // (Google allows files with same name in same dir, Git doesn't)
+                    $fpath = self::buildDuplicatePath(
+                        $item['id'],
+                        $fpath,
+                        $item['mimeType'],
+                        $connections,
+                        $remotes,
+                        $duplicates
+                    );
 
                     // Detect a rename or move
                     $rename = '';
@@ -1110,7 +1185,15 @@ class Google extends Obj
                     if (preg_match("/.folder/", $item['mimeType']))
                     {
                         // Recurse
-                        $remotes = self::getFolderContent($apiService, $item['id'], $remotes, $fpath, $since, $connections, $duplicates);
+                        $remotes = self::getFolderContent(
+                            $apiService,
+                            $item['id'],
+                            $remotes,
+                            $fpath,
+                            $since,
+                            $connections,
+                            $duplicates
+                        );
                     }
                 }
             }*/
@@ -1131,8 +1214,13 @@ class Google extends Obj
      * @param   string   $original_ext
      * @return  mixed    string or array
      */
-    public static function getGoogleConversionFormat($mimeType = '', $getAll = false, $getExt = false, $getPaired = 0, $original_ext = '')
-    {
+    public static function getGoogleConversionFormat(
+        $mimeType = '',
+        $getAll = false,
+        $getExt = false,
+        $getPaired = 0,
+        $original_ext = ''
+    ) {
         $formats = array();
         $ext = '';
 
@@ -1173,7 +1261,15 @@ class Google extends Obj
 
             case 'application/vnd.google-apps.document':
             default:
-                $formats = array('MS Word document', 'PDF', 'HTML', 'Plain text', 'Rich text', 'Open Office doc', 'LaTeX');
+                $formats = array(
+                    'MS Word document',
+                    'PDF',
+                    'HTML',
+                    'Plain text',
+                    'Rich text',
+                    'Open Office doc',
+                    'LaTeX'
+                );
 
                 // LaTeX files get special treatment, hey!
                 if ($original_ext == 'tex' && $getPaired) {

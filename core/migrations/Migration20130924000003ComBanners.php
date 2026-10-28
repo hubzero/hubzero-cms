@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,12 +36,14 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__banners', 'alias')) {
-                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
+                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' "
+                    . "COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__banners', 'checked_out')) {
-                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
+                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT "
+                    . "NULL DEFAULT '0';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -49,7 +52,10 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'showBanner') && !$this->db->tableHasField('#__banners', 'state')) {
+            if (
+                $this->db->tableHasField('#__banners', 'showBanner')
+                && !$this->db->tableHasField('#__banners', 'state')
+            ) {
                 $query = "ALTER TABLE `#__banners` CHANGE COLUMN `showBanner` `state` TINYINT(3) NOT NULL DEFAULT '0';";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -60,7 +66,8 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__banners', 'date') && !$this->db->tableHasField('#__banners', 'created')) {
-                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `date` `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `params`;";
+                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `date` `created` DATETIME NOT NULL DEFAULT "
+                    . "'0000-00-00 00:00:00' AFTER `params`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -70,31 +77,50 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__banners', 'catid')) {
-                $query = "ALTER TABLE `#__banners` MODIFY COLUMN `catid` INTEGER UNSIGNED NOT NULL DEFAULT 0 AFTER `state`;";
+                $query = "ALTER TABLE `#__banners` MODIFY COLUMN `catid` INTEGER UNSIGNED NOT NULL DEFAULT 0 AFTER "
+                    . "`state`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'description') && $this->db->tableHasField('#__banners', 'catid')) {
+            if (
+                $this->db->tableHasField('#__banners', 'description')
+                && $this->db->tableHasField('#__banners', 'catid')
+            ) {
                 $query = "ALTER TABLE `#__banners` MODIFY COLUMN `description` TEXT NOT NULL AFTER `catid`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'custombannercode') && $this->db->tableHasField('#__banners', 'description')) {
-                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `custombannercode` `custombannercode` VARCHAR(2048) NOT NULL  AFTER `description`;";
+            if (
+                $this->db->tableHasField('#__banners', 'custombannercode')
+                && $this->db->tableHasField('#__banners', 'description')
+            ) {
+                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `custombannercode` `custombannercode` "
+                    . "VARCHAR(2048) NOT NULL  AFTER `description`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'sticky') && $this->db->tableHasField('#__banners', 'description')) {
-                $query = "ALTER TABLE `#__banners` MODIFY COLUMN `sticky` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `description`;";
+            if (
+                $this->db->tableHasField('#__banners', 'sticky')
+                && $this->db->tableHasField('#__banners', 'description')
+            ) {
+                $query = "ALTER TABLE `#__banners` MODIFY COLUMN `sticky` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 "
+                    . "AFTER `description`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'custombannercode') && $this->db->tableHasField('#__banners', 'description')) {
-                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `custombannercode` `custombannercode` VARCHAR(2048) NOT NULL  AFTER `description`;";
+            if (
+                $this->db->tableHasField('#__banners', 'custombannercode')
+                && $this->db->tableHasField('#__banners', 'description')
+            ) {
+                $query = "ALTER TABLE `#__banners` CHANGE COLUMN `custombannercode` `custombannercode` "
+                    . "VARCHAR(2048) NOT NULL  AFTER `description`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'ordering') && $this->db->tableHasField('#__banners', 'sticky')) {
+            if (
+                $this->db->tableHasField('#__banners', 'ordering')
+                && $this->db->tableHasField('#__banners', 'sticky')
+            ) {
                 $query = "ALTER TABLE `#__banners` MODIFY COLUMN `ordering` INTEGER NOT NULL DEFAULT 0 AFTER `sticky`;";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -104,42 +130,72 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'own_prefix') && $this->db->tableHasField('#__banners', 'params')) {
-                $query = "ALTER TABLE `#__banners` ADD COLUMN `own_prefix` TINYINT(1) NOT NULL DEFAULT '0' AFTER `params`;";
+            if (
+                !$this->db->tableHasField('#__banners', 'own_prefix')
+                && $this->db->tableHasField('#__banners', 'params')
+            ) {
+                $query = "ALTER TABLE `#__banners` ADD COLUMN `own_prefix` TINYINT(1) NOT NULL DEFAULT '0' AFTER "
+                    . "`params`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'metakey_prefix') && $this->db->tableHasField('#__banners', 'own_prefix')) {
-                $query = "ALTER TABLE `#__banners` ADD COLUMN `metakey_prefix` VARCHAR(255) NOT NULL DEFAULT '' AFTER `own_prefix`;";
+            if (
+                !$this->db->tableHasField('#__banners', 'metakey_prefix')
+                && $this->db->tableHasField('#__banners', 'own_prefix')
+            ) {
+                $query = "ALTER TABLE `#__banners` ADD COLUMN `metakey_prefix` VARCHAR(255) NOT NULL DEFAULT '' "
+                    . "AFTER `own_prefix`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'purchase_type') && $this->db->tableHasField('#__banners', 'metakey_prefix')) {
-                $query = "ALTER TABLE `#__banners` ADD COLUMN `purchase_type` TINYINT NOT NULL DEFAULT '-1' AFTER `metakey_prefix`;";
+            if (
+                !$this->db->tableHasField('#__banners', 'purchase_type')
+                && $this->db->tableHasField('#__banners', 'metakey_prefix')
+            ) {
+                $query = "ALTER TABLE `#__banners` ADD COLUMN `purchase_type` TINYINT NOT NULL DEFAULT '-1' AFTER "
+                    . "`metakey_prefix`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'track_clicks') && $this->db->tableHasField('#__banners', 'purchase_type')) {
-                $query = "ALTER TABLE `#__banners` ADD COLUMN `track_clicks` TINYINT NOT NULL DEFAULT '-1' AFTER `purchase_type`;";
+            if (
+                !$this->db->tableHasField('#__banners', 'track_clicks')
+                && $this->db->tableHasField('#__banners', 'purchase_type')
+            ) {
+                $query = "ALTER TABLE `#__banners` ADD COLUMN `track_clicks` TINYINT NOT NULL DEFAULT '-1' AFTER "
+                    . "`purchase_type`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'track_impressions') && $this->db->tableHasField('#__banners', 'track_clicks')) {
-                $query = "ALTER TABLE `#__banners` ADD COLUMN `track_impressions` TINYINT NOT NULL DEFAULT '-1' AFTER `track_clicks`;";
+            if (
+                !$this->db->tableHasField('#__banners', 'track_impressions')
+                && $this->db->tableHasField('#__banners', 'track_clicks')
+            ) {
+                $query = "ALTER TABLE `#__banners` ADD COLUMN `track_impressions` TINYINT NOT NULL DEFAULT '-1' "
+                    . "AFTER `track_clicks`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'reset') && $this->db->tableHasField('#__banners', 'publish_down')) {
-                $query = "ALTER TABLE `#__banners` ADD COLUMN `reset` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `publish_down`;";
+            if (
+                !$this->db->tableHasField('#__banners', 'reset')
+                && $this->db->tableHasField('#__banners', 'publish_down')
+            ) {
+                $query = "ALTER TABLE `#__banners` ADD COLUMN `reset` DATETIME NOT NULL DEFAULT '0000-00-00 "
+                    . "00:00:00' AFTER `publish_down`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__banners', 'language') && $this->db->tableHasField('#__banners', 'created')) {
+            if (
+                !$this->db->tableHasField('#__banners', 'language')
+                && $this->db->tableHasField('#__banners', 'created')
+            ) {
                 $query = "ALTER TABLE `#__banners` ADD COLUMN `language` char(7) NOT NULL DEFAULT '' AFTER `created`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__banners', 'type') && $this->db->tableHasField('#__banners', 'custombannercode')) {
+            if (
+                $this->db->tableHasField('#__banners', 'type')
+                && $this->db->tableHasField('#__banners', 'custombannercode')
+            ) {
                 $query = "UPDATE `#__banners` SET `type`=1 WHERE TRIM(`custombannercode`)!='';";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -184,18 +240,23 @@ class Migration20130924000003ComBanners extends Base
         }
 
         if ($this->db->tableExists('#__banner_clients')) {
-            if ($this->db->tableHasField('#__banner_clients', 'cid') && !$this->db->tableHasField('#__banner_clients', 'id')) {
+            if (
+                $this->db->tableHasField('#__banner_clients', 'cid')
+                && !$this->db->tableHasField('#__banner_clients', 'id')
+            ) {
                 $query = "ALTER TABLE `#__banner_clients` CHANGE COLUMN `cid` `id` INTEGER NOT NULL auto_increment;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__banner_clients', 'checked_out')) {
-                $query = "ALTER TABLE `#__banner_clients` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
+                $query = "ALTER TABLE `#__banner_clients` CHANGE COLUMN `checked_out` `checked_out` INT(10) "
+                    . "UNSIGNED NOT NULL DEFAULT '0';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__banner_clients', 'checked_out_time')) {
-                $query = "ALTER TABLE `#__banner_clients` CHANGE COLUMN `checked_out_time` `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__banner_clients` CHANGE COLUMN `checked_out_time` `checked_out_time` "
+                    . "DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -205,7 +266,8 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__banner_clients', 'state')) {
-                $query = "ALTER TABLE `#__banner_clients` ADD COLUMN `state` TINYINT(3) NOT NULL DEFAULT '0' AFTER `extrainfo`;";
+                $query = "ALTER TABLE `#__banner_clients` ADD COLUMN `state` TINYINT(3) NOT NULL DEFAULT '0' AFTER "
+                    . "`extrainfo`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -220,7 +282,8 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__banner_clients', 'metakey_prefix')) {
-                $query = "ALTER TABLE `#__banner_clients` ADD COLUMN `metakey_prefix` VARCHAR(255) NOT NULL DEFAULT '';";
+                $query = "ALTER TABLE `#__banner_clients` ADD COLUMN `metakey_prefix` VARCHAR(255) NOT NULL "
+                    . "DEFAULT '';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -235,7 +298,8 @@ class Migration20130924000003ComBanners extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__banner_clients', 'track_impressions')) {
-                $query = "ALTER TABLE `#__banner_clients` ADD COLUMN `track_impressions` TINYINT NOT NULL DEFAULT '-1';";
+                $query = "ALTER TABLE `#__banner_clients` ADD COLUMN `track_impressions` TINYINT NOT NULL DEFAULT "
+                    . "'-1';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

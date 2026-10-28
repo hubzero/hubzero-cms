@@ -32,12 +32,16 @@ Toolbar::spacer();
 Toolbar::help('entries');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $listAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $listAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('COM_TAGS_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
+                <?php $searchPlaceholder = Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo $searchPlaceholder; ?>" />
 
                 <input type="submit" name="filter_submit" value="<?php echo Lang::txt('COM_TAGS_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -63,15 +67,34 @@ Toolbar::help('entries');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_RAW_TAG', 'raw_tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_TAG', 'tag', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TAGS_COL_TYPE', 'admin', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TAGS_COL_NUMBER_TAGGED', 'objects', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TAGS_COL_ALIAS', 'substitutes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sortCol = @$this->filters['sort'];
+                ?>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_RAW_TAG', 'raw_tag', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_TAG', 'tag', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_TYPE', 'admin', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_NUMBER_TAGGED', 'objects', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_ALIAS', 'substitutes', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED', 'created', $sortDir, $sortCol); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -102,17 +125,30 @@ Toolbar::help('entries');
             }
             */
             $calt = array("User", "Admin", "Core")[$row->get('admin')];
+            $rowId = $row->get('id');
+            $rowEditUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $rowId
+            );
+            $taggedUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=tagged&tag=' . $rowId
+            );
+            $rowCreated = $row->created();
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                            value="<?php echo $rowId; ?>" class="checkbox-toggle" />
+                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                            <?php echo $rowId; ?>
+                        </label>
                     <?php } ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo $rowEditUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
                         </a>
                     <?php } else { ?>
@@ -123,7 +159,7 @@ Toolbar::help('entries');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo $rowEditUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('tag'))); ?>
                         </a>
                     <?php } else { ?>
@@ -136,7 +172,7 @@ Toolbar::help('entries');
                     <span><?php echo $calt ?></span>
                 </td>
                 <td class="priority-3">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tagged&tag=' . $row->get('id')); ?>">
+                    <a href="<?php echo $taggedUrl; ?>">
                         <?php echo $row->get('objects', 0); ?>
                     </a>
                 </td>
@@ -144,7 +180,12 @@ Toolbar::help('entries');
                     <?php echo $row->get('substitutes', 0); ?>
                 </td>
                 <td class="priority-4">
-                    <time datetime="<?php echo $row->created(); ?>"><?php echo ($row->created() && $row->created() != '0000-00-00 00:00:00') ? $row->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
+                    <time datetime="<?php echo $rowCreated; ?>">
+                        <?php
+                        echo ($rowCreated && $rowCreated != '0000-00-00 00:00:00')
+                            ? $rowCreated : Lang::txt('COM_TAGS_UNKNOWN');
+                        ?>
+                    </time>
                 </td>
             </tr>
             <?php

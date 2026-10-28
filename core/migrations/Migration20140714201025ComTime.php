@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -69,7 +70,7 @@ class Migration20140714201025ComTime extends Base
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
             $this->db->setQuery($query);
             $this->db->query();
-        } else if ($this->db->tableExists('#__time_records') && $this->db->tableHasField('#__time_records', 'billed')) {
+        } elseif ($this->db->tableExists('#__time_records') && $this->db->tableHasField('#__time_records', 'billed')) {
             $query = "ALTER TABLE `#__time_records` DROP `billed`";
             $this->db->setQuery($query);
             $this->db->query();

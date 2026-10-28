@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for expire-session daemon, to record end time for jobs automatically with a timestamp
- **/
+ *
+ */
 class Migration20161003151102ComTools extends Base
 {
     /**

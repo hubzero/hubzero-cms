@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -56,7 +57,8 @@ class Stats extends AdminController
         if ($filters['group'] || $filters['group'] == '_none_') {
             $query = "SELECT a.username, a.name, a.id
 				FROM `#__users` AS a, `#__xgroups` AS g, `#__xgroups_members` AS gm
-				WHERE g.cn=" . $this->database->quote($filters['group']) . " AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
+				WHERE g.cn=" . $this->database->quote($filters['group']) . "
+				AND g.gidNumber=gm.gidNumber AND gm.uidNumber=a.id
 				ORDER BY a.name";
         } else {
             $query = "SELECT DISTINCT a.username, a.name, a.id
@@ -126,13 +128,15 @@ class Stats extends AdminController
         }
 
         // Closed tickets
-        $sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
+        $sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created,
+				YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`,
+				UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
 				AND t.type=" . $this->database->quote($filters['type']) . " AND t.open=0";
         if (!$filters['group'] || $filters['group'] == '_none_') {
             $sql .= " AND t.`group_id`=0";
-        } else if ($filters['group']) {
+        } elseif ($filters['group']) {
             $gidNumber = 0;
             if ($group = \Hubzero\User\Group::getInstance($filters['group'])) {
                 $gidNumber = $group->get('gidNumber');
@@ -183,8 +187,10 @@ class Stats extends AdminController
                     //$this->view->closedmonths[$k][$i] = 'null';
                     //$this->view->openedmonths[$k][$i] = 'null';
                 } else {
-                    $this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
-                    $this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i]))     ? $open[$k][$i]   : 0;
+                    $closedVal = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
+                    $this->view->closedmonths[$k][$i] = $closedVal;
+                    $openedVal = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
+                    $this->view->openedmonths[$k][$i] = $openedVal;
                 }
 
                 foreach ($users as $j => $user) {

@@ -8,6 +8,10 @@
 
 namespace Components\Storefront\Models;
 
+
+// No direct access
+defined('_HZEXEC_') or die();
+
 use Components\Storefront\Helpers\Serials;
 use Component;
 use Lang;

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,6 +31,7 @@ class Handlers extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_db = null;
 
     /**
@@ -37,6 +39,7 @@ class Handlers extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_types = array();
 
     /**
@@ -44,6 +47,7 @@ class Handlers extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_path = array();
 
     /**
@@ -51,6 +55,7 @@ class Handlers extends Obj
      *
      * @var
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_configs = null;
 
     /**
@@ -448,10 +453,12 @@ class Handlers extends Obj
             foreach ($configs as $configName => $configValue) {
                 if ($configName == 'params') {
                     foreach ($configValue as $paramName => $paramValue) {
-                        $configs['params'][$paramName] = isset($savedConfig['params'][$paramName]) && $savedConfig['params'][$paramName] ? $savedConfig['params'][$paramName] : $paramValue;
+                        $savedParam = $savedConfig['params'][$paramName] ?? null;
+                        $configs['params'][$paramName] = $savedParam ?: $paramValue;
                     }
                 } else {
-                    $configs[$configName] = isset($savedConfig[$configName]) && $savedConfig[$configName] ? $savedConfig[$configName] : $configValue;
+                    $savedValue = $savedConfig[$configName] ?? null;
+                    $configs[$configName] = $savedValue ?: $configValue;
                 }
             }
         }

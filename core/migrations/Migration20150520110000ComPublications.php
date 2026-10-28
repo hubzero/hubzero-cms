@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -56,19 +57,23 @@ class Migration20150520110000ComPublications extends Base
                 $query .= "JOIN `#__publication_master_types` AS t ON t.id = p.master_type ";
                 $query .= "WHERE v.curation IS NOT NULL ";
                 $query .= "AND v.curation != '' ";
-                $query .= "AND v.accepted IS NOT NULL AND v.accepted !=" . $this->db->quote($this->db->getNullDate()) . " ";
+                $query .= "AND v.accepted IS NOT NULL AND v.accepted !="
+                    . $this->db->quote($this->db->getNullDate());
                 $query .= "ORDER BY v.accepted ASC";
 
                 $this->db->setQuery($query);
                 $results = $this->db->loadObjectList();
 
                 if ($results && count($results) > 0) {
-                    $path = PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'curation.version.php';
+                    $path = PATH_CORE . DS . 'components' . DS . 'com_publications'
+                        . DS . 'tables' . DS . 'curation.version.php';
                     include_once $path;
 
                     foreach ($results as $result) {
                         // Determine version number
-                        $query = "SELECT MAX(version_number) FROM `#__publication_curation_versions` WHERE type_id=" . $this->db->quote($result->type_id);
+                        $query = "SELECT MAX(version_number) FROM "
+                            . "`#__publication_curation_versions` "
+                            . "WHERE type_id=" . $this->db->quote($result->type_id);
                         $this->db->setQuery($query);
                         $versionNumber = $this->db->loadResult();
                         $versionNumber = intval($versionNumber) + 1;
@@ -80,7 +85,9 @@ class Migration20150520110000ComPublications extends Base
                         $stq->curation        = $result->curation;
 
                         if ($stq->store()) {
-                            $query = "UPDATE `#__publication_versions` SET `curation_version_id`=" . ($stq->id) . " WHERE `curation`=" . $this->db->quote($result->curation);
+                            $query = "UPDATE `#__publication_versions` "
+                                . "SET `curation_version_id`=" . ($stq->id)
+                                . " WHERE `curation`=" . $this->db->quote($result->curation);
                             $this->db->setQuery($query);
                             $this->db->query();
                         }

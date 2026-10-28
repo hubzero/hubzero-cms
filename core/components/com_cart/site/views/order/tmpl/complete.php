@@ -19,7 +19,9 @@ defined('_HZEXEC_') or die('Restricted access');
     <div class="section-inner">
 
         <p>Thank you for your order.</p>
-        <p>You will receive an email confirmation shortly at the email address associated with your account. Your transaction is now complete.</p>
+        <p>You will receive an email confirmation shortly at the email
+        address associated with your account. Your transaction is
+        now complete.</p>
 
         <section class="section">
             <?php
@@ -37,7 +39,10 @@ defined('_HZEXEC_') or die('Restricted access');
                 echo '<table id="cartContents">';
                 echo '<tr><th>Item</th><th>Status</th><th>Notes</th></tr>';
 
-                require_once PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
+                $warehousePath = PATH_CORE . DS . 'components'
+                    . DS . 'com_storefront' . DS . 'models'
+                    . DS . 'Warehouse.php';
+                require_once $warehousePath;
                 $warehouse = new \Components\Storefront\Models\Warehouse();
 
                 foreach ($transactionItems as $sId => $item) {
@@ -52,14 +57,20 @@ defined('_HZEXEC_') or die('Restricted access');
                         $status = 'Registered';
                         $action = '<a href="' . Route::url('index.php?option=com_courses/' . $item['meta']['courseId']);
                         $action .= '">Go to the course page</a>';
-                    }
-                    // If software
-                    elseif ($productType == 'Software Download') {
+                    } elseif ($productType == 'Software Download') {
+                        // If software
                         $status = 'Ready';
-                        $action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transactionInfo->tId . '/' . $info->sId;
+                        $downloadUrl = Route::url('index.php?option=com_cart')
+                            . 'download/' . $this->transactionInfo->tId
+                            . '/' . $info->sId;
+                        $action = '<a href="' . $downloadUrl;
                         $action .= '" target="_blank" rel="noopener">Download</a>';
 
-                        if (isset($item['meta']['serialManagement']) && $item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials'])) {
+                        $hasMultipleSerials = isset($item['meta']['serialManagement'])
+                            && $item['meta']['serialManagement'] == 'multiple'
+                            && isset($item['meta']['serials'])
+                            && !empty($item['meta']['serials']);
+                        if ($hasMultipleSerials) {
                             $action .= "<br>";
                             $action .= " Serial number";
                             if (count($item['meta']['serials']) > 1) {

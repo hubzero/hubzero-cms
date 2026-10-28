@@ -23,6 +23,7 @@ class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_items = array();
 
     /**
@@ -30,6 +31,7 @@ class Base extends Obj
      *
      * @var  integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_default = array();
 
     /**
@@ -37,6 +39,7 @@ class Base extends Obj
      *
      * @var  integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_active = 0;
 
     /**
@@ -80,6 +83,7 @@ class Base extends Obj
      * @param   array  $options  An array of configuration options.
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($options = array())
     {
         parent::__construct($options);

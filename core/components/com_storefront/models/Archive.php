@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,14 +25,14 @@ class Archive extends \Hubzero\Base\Obj
      *
      * @var object
      */
-    private $_products = null;
+    private $products = null;
 
     /**
      * Products count
      *
      * @var integer
      */
-    private $_products_count = null;
+    private $productsCount = null;
 
     /**
      * Get a count or list of products
@@ -62,27 +63,27 @@ class Archive extends \Hubzero\Base\Obj
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_products_count) || !is_numeric($this->_products_count) || $clear) {
+                if (!isset($this->productsCount) || !is_numeric($this->productsCount) || $clear) {
                     $warehouse = new Warehouse();
                     // Reset limit, since all records count is needed here
                     unset($filters['limit']);
 
-                    $this->_products_count = $warehouse->getProducts('count', false, $filters);
+                    $this->productsCount = $warehouse->getProducts('count', false, $filters);
                 }
-                return $this->_products_count;
+                return $this->productsCount;
                 break;
 
             case 'list':
             case 'rows':
             case 'results':
             default:
-                if (!$this->_products instanceof \Hubzero\Base\ItemList || $clear) {
+                if (!$this->products instanceof \Hubzero\Base\ItemList || $clear) {
                     $warehouse = new Warehouse();
                     if (!$results = $warehouse->getProducts('rows', false, $filters)) {
                         $results = array();
                     }
-                    $this->_products = new \Hubzero\Base\ItemList($results);
-                    return $this->_products;
+                    $this->products = new \Hubzero\Base\ItemList($results);
+                    return $this->products;
                 }
                 break;
         }
@@ -157,8 +158,8 @@ class Archive extends \Hubzero\Base\Obj
                     $results = $resultsPlain;
                 }
 
-                $this->_products = new \Hubzero\Base\ItemList($results);
-                return $this->_products;
+                $this->products = new \Hubzero\Base\ItemList($results);
+                return $this->products;
         }
     }
 

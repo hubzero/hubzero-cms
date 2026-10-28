@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -36,6 +37,7 @@ class Offering extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Offering';
 
     /**
@@ -43,6 +45,7 @@ class Offering extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'offering';
 
     /**
@@ -50,6 +53,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_units = null;
 
     /**
@@ -57,6 +61,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_unit = null;
 
     /**
@@ -64,6 +69,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_page = null;
 
     /**
@@ -71,6 +77,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_pages = null;
 
     /**
@@ -78,6 +85,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_announcements = null;
 
     /**
@@ -85,6 +93,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_roles = null;
 
     /**
@@ -92,6 +101,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_members = null;
 
     /**
@@ -99,6 +109,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_member = null;
 
     /**
@@ -106,6 +117,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_manager = null;
 
     /**
@@ -113,6 +125,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_managers = null;
 
     /**
@@ -120,6 +133,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_student = null;
 
     /**
@@ -127,6 +141,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_gradebook = null;
 
     /**
@@ -134,6 +149,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_sections = null;
 
     /**
@@ -141,6 +157,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_section = null;
 
     /**
@@ -148,6 +165,7 @@ class Offering extends Base
      *
      * @var object
      **/
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_assets = null;
 
     /**
@@ -155,6 +173,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_permissions = null;
 
     /**
@@ -162,6 +181,7 @@ class Offering extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_link = null;
 
     /**
@@ -169,6 +189,7 @@ class Offering extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_params = null;
 
     /**
@@ -193,7 +214,7 @@ class Offering extends Base
                     $oid = substr($oid, 0, $dot);
                 }
                 $this->_tbl->load($oid, $course_id);
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -212,7 +233,7 @@ class Offering extends Base
      * @param   mixed  $oid  ID (int) or alias (string)
      * @return  object
      */
-    static function &getInstance($oid = null, $course_id = null)
+    public static function &getInstance($oid = null, $course_id = null)
     {
         static $instances;
 
@@ -224,9 +245,9 @@ class Offering extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid;
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $key = $oid->get('id');
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         }
 
@@ -269,10 +290,10 @@ class Offering extends Base
             return $this->_section;
         }
 
-        if (
-            !isset($this->_section)
-            || ($id !== null && (int) $this->_section->get('id') != $id && (string) $this->_section->get('alias') != $id)
-        ) {
+        $idMismatch = $id !== null
+            && (int) $this->_section->get('id') != $id
+            && (string) $this->_section->get('alias') != $id;
+        if (!isset($this->_section) || $idMismatch) {
             $this->_section = null;
             $this->_link = null; // Clear any potential existing data that may have another (prevous) section's info
 
@@ -283,7 +304,7 @@ class Offering extends Base
                             $this->_section = $section;
                             break;
                         }
-                    } else if ((int) $section->get('id') == $id || (string) $section->get('alias') == $id) {
+                    } elseif ((int) $section->get('id') == $id || (string) $section->get('alias') == $id) {
                         $this->_section = $section;
                         break;
                     }
@@ -441,7 +462,12 @@ class Offering extends Base
             if (isset($this->_managers) && isset($this->_managers[$user_id])) {
                 $this->_manager = $this->_managers[$user_id];
             } else {
-                $this->_manager = Manager::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+                $this->_manager = Manager::getInstance(
+                    $user_id,
+                    $this->get('course_id'),
+                    $this->get('id'),
+                    $this->section()->get('id')
+                );
             }
         }
 
@@ -490,9 +516,8 @@ class Offering extends Base
                         // Course manager takes precedence over offering manager
                         if ($result->course_id && !$result->offering_id && !$result->section_id) {
                             $results[$result->user_id] = new Manager($result, $this->get('id'));
-                        }
-                        // Course offering takes precedence over section manager
-                        else if ($result->course_id && $result->offering_id && !$result->section_id) {
+                        } elseif ($result->course_id && $result->offering_id && !$result->section_id) {
+                            // Course offering takes precedence over section manager
                             $results[$result->user_id] = new Manager($result, $this->get('id'));
                         }
                     }
@@ -538,7 +563,9 @@ class Offering extends Base
             }*/
             if (isset($this->_members)) { // && isset($this->_members[$user_id]))
                 foreach ($this->_members as $member) {
-                    if ($member->get('user_id') == $user_id && $member->get('section_id') == $this->section()->get('id') && $member->get('student')) {
+                    $matchesUser = $member->get('user_id') == $user_id;
+                    $matchesSection = $member->get('section_id') == $this->section()->get('id');
+                    if ($matchesUser && $matchesSection && $member->get('student')) {
                         $this->_student = $member;
                         break;
                     }
@@ -547,7 +574,12 @@ class Offering extends Base
         }
 
         if (!$this->_student) {
-            $this->_student = Student::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+            $this->_student = Student::getInstance(
+                $user_id,
+                $this->get('course_id'),
+                $this->get('id'),
+                $this->section()->get('id')
+            );
         }
 
         return $this->_student;
@@ -631,7 +663,9 @@ class Offering extends Base
 
             if (isset($this->_members)) { // && isset($this->_members[$user_id]))
                 foreach ($this->_members as $member) {
-                    if ($member->get('user_id') == $user_id && $member->get('section_id') == $this->section()->get('id')) {
+                    $matchesUser = $member->get('user_id') == $user_id;
+                    $matchesSection = $member->get('section_id') == $this->section()->get('id');
+                    if ($matchesUser && $matchesSection) {
                         $this->_member = $member;
                         break;
                     }
@@ -640,7 +674,12 @@ class Offering extends Base
         }
 
         if (!$this->_member) {
-            $this->_member = Member::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+            $this->_member = Member::getInstance(
+                $user_id,
+                $this->get('course_id'),
+                $this->get('id'),
+                $this->section()->get('id')
+            );
         }
 
         return $this->_member;
@@ -689,7 +728,7 @@ class Offering extends Base
                 $mdl = '\\Components\\Courses\\Models\\Member';
                 if (isset($filters['student']) && $filters['student']) {
                     $mdl = '\\Components\\Courses\\Models\\Student';
-                } else if (isset($filters['student']) && !$filters['student']) {
+                } elseif (isset($filters['student']) && !$filters['student']) {
                     $mdl = '\\Components\\Courses\\Models\\Manager';
                 }
 
@@ -966,9 +1005,14 @@ class Offering extends Base
         }
 
         foreach ($data as $result) {
-            $user_id = (int) $this->_userId($result);
+            $user_id = (int) $this->userId($result);
 
-            $model = Member::getInstance($user_id, $this->get('course_id'), $this->get('id'), $this->section()->get('id'));
+            $model = Member::getInstance(
+                $user_id,
+                $this->get('course_id'),
+                $this->get('id'),
+                $this->section()->get('id')
+            );
             $model->set('user_id', $user_id);
             $model->set('course_id', $this->get('course_id'));
             $model->set('offering_id', $this->get('id'));
@@ -1001,7 +1045,7 @@ class Offering extends Base
             $this->members();
 
             foreach ($data as $result) {
-                $user_id = $this->_userId($result);
+                $user_id = $this->userId($result);
 
                 if (isset($this->_members[$user_id])) {
                     $this->_members[$user_id]->delete();
@@ -1018,7 +1062,7 @@ class Offering extends Base
      * @param     mixed $user User ID or username
      * @return    integer
      */
-    private function _userId($user)
+    private function userId($user)
     {
         if (is_numeric($user)) {
             return $user;
@@ -1200,9 +1244,11 @@ class Offering extends Base
 
             // Copy logo
             if ($file = $this->logo('file')) {
-                $src  = DS . trim($this->config('uploadpath', '/site/courses'), '/') . DS . $c_id . '/offerings/' . $o_id . DS . $file;
+                $uploadPath = DS . trim($this->config('uploadpath', '/site/courses'), '/');
+                $src  = $uploadPath . DS . $c_id . '/offerings/' . $o_id . DS . $file;
                 if (file_exists(PATH_APP . $src)) {
-                    $dest = DS . trim($this->config('uploadpath', '/site/courses'), '/') . DS . $this->get('course_id') . '/offerings/' . $this->get('id');
+                    $dest = $uploadPath . DS . $this->get('course_id')
+                        . '/offerings/' . $this->get('id');
 
                     if (!is_dir(PATH_APP . $dest)) {
                         if (!Filesystem::makeDirectory(PATH_APP . $dest)) {
@@ -1227,7 +1273,12 @@ class Offering extends Base
                     } else {
                         // Copy asset associations
                         $tbl = new Tables\AssetAssociation($this->_db);
-                        foreach ($tbl->find(array('scope_id' => $o_id, 'scope' => 'offering', 'asset_id' => $oldAssetId)) as $aa) {
+                        $findParams = array(
+                            'scope_id' => $o_id,
+                            'scope' => 'offering',
+                            'asset_id' => $oldAssetId
+                        );
+                        foreach ($tbl->find($findParams) as $aa) {
                             $tbl->bind($aa);
                             $tbl->id = 0;
                             $tbl->scope_id = $this->get('id');
@@ -1258,7 +1309,8 @@ class Offering extends Base
                 $course = Course::getInstance($this->get('course_id'));
                 $this->set('course_alias', $course->get('alias'));
             }
-            $this->_link  = 'index.php?option=com_courses&controller=offering&gid=' . $this->get('course_alias') . '&offering=' . $this->alias();
+            $this->_link = 'index.php?option=com_courses&controller=offering&gid='
+                . $this->get('course_alias') . '&offering=' . $this->alias();
         }
 
         // If it doesn't exist or isn't published
@@ -1306,7 +1358,8 @@ class Offering extends Base
      */
     public function alias()
     {
-        return $this->get('alias') . ($this->section()->get('is_default') ? '' : ':' . $this->section()->get('alias'));
+        $suffix = $this->section()->get('is_default') ? '' : ':' . $this->section()->get('alias');
+        return $this->get('alias') . $suffix;
     }
 
     /**
@@ -1325,7 +1378,8 @@ class Offering extends Base
         }
 
         // Build the path
-        $path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id');
+        $uploadPath = '/' . trim($this->config('uploadpath', '/site/courses'), '/');
+        $path = $uploadPath . '/' . $this->get('course_id') . '/offerings/' . $this->get('id');
 
         // Return just the upload path?
         if ($rtrn == 'path') {

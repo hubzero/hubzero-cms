@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die;
-
 /**
  * System Remember Me Plugin
  */
@@ -61,7 +59,11 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
                     // json_decoded cookie could be any object structure, so make sure the
                     // credentials are well structured and only have user and password.
                     if (isset($cookieData->username) && is_string($cookieData->username)) {
-                        $credentials['username'] = (string) preg_replace('/[\x00-\x1F\x7F<>"\'%&]/', '', $cookieData->username);
+                        $credentials['username'] = (string) preg_replace(
+                            '/[\x00-\x1F\x7F<>"\'%&]/',
+                            '',
+                            $cookieData->username
+                        );
                     } else {
                         throw new Exception('Malformed username.');
                     }
@@ -73,7 +75,10 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
                     }
 
                     // We're only doing this for the site app, so we explicitly set the action here
-                    $return = App::get('auth')->login($credentials, array('silent' => true, 'action' => 'core.login.site'));
+                    $return = App::get('auth')->login(
+                        $credentials,
+                        array('silent' => true, 'action' => 'core.login.site')
+                    );
 
                     if (!$return) {
                         throw new Exception('Log-in failed.');

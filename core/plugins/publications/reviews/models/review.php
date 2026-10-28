@@ -1,13 +1,12 @@
 <?php
 
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 require_once __DIR__ . '/comment.php';
@@ -22,6 +21,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Publications\\Tables\\Review';
 
     /**
@@ -29,6 +29,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_publications.review.comment';
 
     /**
@@ -36,21 +37,21 @@ class PublicationsModelReview extends \Hubzero\Base\Model
      *
      * @var object
      */
-    private $_creator = null;
+    private $creator = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_comments = null;
+    private $comments = null;
 
     /**
      * Commen count
      *
      * @var integer
      */
-    private $_comments_count = null;
+    private $comments_count = null;
 
     /**
      * Returns a reference to a blog comment model
@@ -58,7 +59,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
      * @param   mixed   $oid  ID (int) or alias (string)
      * @return  object
      */
-    static function &getInstance($oid = 0)
+    public static function &getInstance($oid = 0)
     {
         static $instances;
 
@@ -138,17 +139,17 @@ class PublicationsModelReview extends \Hubzero\Base\Model
      */
     public function creator($property = null)
     {
-        if (!($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
+        if (!($this->creator instanceof \Hubzero\User\User)) {
+            $this->creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
         }
         if ($property) {
             $property = ($property == 'uidNumber') ? 'id' : $property;
             if ($property == 'picture') {
-                return $this->_creator->picture($this->get('anonymous'));
+                return $this->creator->picture($this->get('anonymous'));
             }
-            return $this->_creator->get($property);
+            return $this->creator->get($property);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**
@@ -181,20 +182,20 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear) {
-                    $this->_comments_count = Components\Publications\Reviews\Models\Comment::all()
+                if (!isset($this->comments_count) || !is_numeric($this->comments_count) || $clear) {
+                    $this->comments_count = Components\Publications\Reviews\Models\Comment::all()
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])
                         ->whereIn('state', $filters['state'])
                         ->total();
                 }
-                return $this->_comments_count;
+                return $this->comments_count;
             break;
 
             case 'list':
             case 'results':
             default:
-                if (!$this->_comments || $clear) {
+                if (!$this->comments || $clear) {
                     $results = Components\Publications\Reviews\Models\Comment::all()
                         ->whereEquals('parent', $filters['parent'])
                         ->whereEquals('item_id', $filters['item_id'])
@@ -203,9 +204,9 @@ class PublicationsModelReview extends \Hubzero\Base\Model
                         ->ordered()
                         ->rows();
 
-                    $this->_comments = $results;
+                    $this->comments = $results;
                 }
-                return $this->_comments;
+                return $this->comments;
             break;
         }
     }
@@ -238,7 +239,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
                     $content = (string) stripslashes($this->get('comment', ''));
                     $this->importPlugin('content')->trigger('onContentPrepare', array(
-                        $this->_context,
+                        $this->context,
                         &$this,
                         &$config
                     ));
@@ -298,7 +299,9 @@ class PublicationsModelReview extends \Hubzero\Base\Model
                 break;
 
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=pubreview&id=' . $this->get('id') . '&parent=' . $this->get('publication_id');
+                $link = 'index.php?option=com_support&task=reportabuse&category=pubreview&id='
+                    . $this->get('id')
+                    . '&parent=' . $this->get('publication_id');
                 break;
 
             case 'permalink':

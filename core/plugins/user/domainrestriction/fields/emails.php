@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,11 +44,16 @@ class Emails extends Field
             $strings[$string] = Lang::txt('PLG_USER_DOMAINRESTRICTION_' . $string);
         }
 
-        $value = base64_decode($this->value) ? trim(base64_decode($this->value)) : json_encode(explode("\n", trim($this->value)));
+        $value = base64_decode($this->value) ? trim(base64_decode($this->value))
+            : json_encode(explode("\n", trim($this->value)));
 
         $script   = array("jQuery(document).ready(function ($) {");
         $script[] = "var " . $this->id . '_emailsobject = Emails.initialize({';
-        $script[] = implode(',', array("id:\"" . $this->id . "\"", "emails:" . $value, "strings:" . json_encode($strings)));
+        $script[] = implode(',', array(
+            "id:\"" . $this->id . "\"",
+            "emails:" . $value,
+            "strings:" . json_encode($strings)
+        ));
         $script[] = "})";
         $script[] = '});';
 
@@ -57,7 +63,8 @@ class Emails extends Field
         $html[] = '<div class="input-modal">';
         $html[] = '<span class="input-cell">';
         $html[] = '<input type="text" id="' . $this->id . '-email" />';
-        $html[] = '<input id="' . $this->id . '" name="' . $this->name . '" type="hidden" value="' . base64_encode($value) . '"/>';
+        $html[] = '<input id="' . $this->id . '" name="' . $this->name
+            . '" type="hidden" value="' . base64_encode($value) . '"/>';
         $html[] = '</span>';
         $html[] = '<span class="input-cell">';
         $html[] = '<button id="' . $this->id . '-save">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_ADD') . '</button>';

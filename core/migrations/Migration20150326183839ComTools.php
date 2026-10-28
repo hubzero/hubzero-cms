@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add tables to associate sessions allowed with user groups
- **/
+ *
+ */
 class Migration20150326183839ComTools extends Base
 {
     /**
@@ -68,10 +70,13 @@ class Migration20150326183839ComTools extends Base
 
             if ($this->db->tableHasField('#__xprofiles', 'jobsAllowed')) {
                 // Create a preferences entry for anyone who has a non-default value for jobs allowed
-                $query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` WHERE `jobsAllowed`!=3 AND `uidNumber` > 0";
+                $query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` "
+                    . "WHERE `jobsAllowed`!=3 AND `uidNumber` > 0";
                 $this->db->setQuery($query);
                 if ($rows = $this->db->loadObjectList()) {
-                    include_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'preferences.php';
+                    $path = PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables'
+                        . DS . 'preferences.php';
+                    include_once $path;
 
                     foreach ($rows as $row) {
                         $preferences = new \Components\Tools\Tables\Preferences($this->db);
@@ -120,7 +125,9 @@ class Migration20150326183839ComTools extends Base
 
             if ($rows = $this->db->loadObjectList()) {
                 foreach ($rows as $row) {
-                    $query = "UPDATE `#__xprofiles` SET `jobsAllowed`=" . $this->db->quote($row->jobs) . " WHERE `uidNumber`=" . $this->db->quote($row->user_id);
+                    $query = "UPDATE `#__xprofiles` SET `jobsAllowed`="
+                        . $this->db->quote($row->jobs)
+                        . " WHERE `uidNumber`=" . $this->db->quote($row->user_id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

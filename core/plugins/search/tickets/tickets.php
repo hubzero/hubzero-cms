@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,8 @@ use Hubzero\Utility\Sanitize;
 
 /**
  * Search ticket object?
+ */
+/**
  */
 class plgSearchTickets extends \Hubzero\Plugin\Plugin
 {

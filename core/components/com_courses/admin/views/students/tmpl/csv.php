@@ -23,7 +23,9 @@ foreach ($this->rows as $row) {
     echo ',';
     echo encodeCSVField($row->get('email'));
     echo ',';
-    echo encodeCSVField($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE');
+    echo encodeCSVField($section->exists())
+        ? $this->escape(stripslashes($section->get('title')))
+        : Lang::txt('COM_COURSES_NONE');
     echo ',';
     if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') {
         echo encodeCSVField(Date::of($row->get('enrolled'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')));

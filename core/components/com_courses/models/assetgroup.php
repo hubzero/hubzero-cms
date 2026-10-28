@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,6 +29,7 @@ class Assetgroup extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\AssetGroup';
 
     /**
@@ -35,6 +37,7 @@ class Assetgroup extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'asset_group';
 
     /**
@@ -42,6 +45,7 @@ class Assetgroup extends Base
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_asset = null;
 
     /**
@@ -49,6 +53,7 @@ class Assetgroup extends Base
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_assets = null;
 
     /**
@@ -63,6 +68,7 @@ class Assetgroup extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_parent = null;
 
     /**
@@ -70,6 +76,7 @@ class Assetgroup extends Base
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_siblings = null;
 
     /**
@@ -77,6 +84,7 @@ class Assetgroup extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_params = null;
 
     /**
@@ -118,9 +126,9 @@ class Assetgroup extends Base
     {
         if (isset($this->_tbl->$property)) {
             return $this->_tbl->$property;
-        } else if (isset($this->_tbl->{'__' . $property})) {
+        } elseif (isset($this->_tbl->{'__' . $property})) {
             return $this->_tbl->{'__' . $property};
-        } else if (in_array($property, self::$_section_keys)) {
+        } elseif (in_array($property, self::$_section_keys)) {
             $tbl = new Tables\SectionDate($this->_db);
             $tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
 
@@ -168,7 +176,7 @@ class Assetgroup extends Base
                     $this->setError(Lang::txt('Index not found: ') . __CLASS__ . '::' . __METHOD__ . '[' . $idx . ']');
                     return false;
                 }
-            } else if (is_array($idx)) {
+            } elseif (is_array($idx)) {
                 $found = false;
                 $res = array();
                 foreach ($this->children as $child) {
@@ -185,7 +193,7 @@ class Assetgroup extends Base
                     }
                 }
                 return $res;
-            } else if (is_string($idx)) {
+            } elseif (is_string($idx)) {
                 $idx = strtolower(trim($idx));
 
                 $res = array();
@@ -520,13 +528,16 @@ class Assetgroup extends Base
                     if (!$asset->duplicate($courseId)) {
                         $this->setError($asset->getError());
                     } else {
-                        // With the new duplicated asset, find the row with the previous set scope_id, scope, and asset_id to duplicate
+                        // With the new duplicated asset, find the row with the previous
+                        // scope_id, scope, and asset_id to duplicate
                         $tbl = new Tables\AssetAssociation($this->_db);
-                        foreach (
-                            $tbl->find(array(
+                        $findParams = array(
                             'scope_id' => $startingAssetGroupId,
                             'scope' => 'asset_group',
-                            'asset_id' => $startingAssetId)) as $aa
+                            'asset_id' => $startingAssetId
+                        );
+                        foreach (
+                            $tbl->find($findParams) as $aa
                         ) {
                                 // Take the selected row, adjust scope_id and asset_id
                                 $tbl->bind($aa);

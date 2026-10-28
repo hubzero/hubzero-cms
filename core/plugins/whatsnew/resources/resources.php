@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,28 +20,30 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+	// @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Resource types and "all" category
      *
      * @var  array
      */
-    private $_areas = null;
+    private $areas = null;
 
     /**
      * Resource types
      *
      * @var  array
      */
-    private $_cats  = null;
+    private $cats = null;
 
     /**
      * Results total
      *
      * @var  integer
      */
-    private $_total = null;
+    private $total = null;
 
     /**
      * Constructor
@@ -63,28 +66,28 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
      */
     public function onWhatsnewAreas()
     {
-        if (is_array($this->_areas)) {
-            return $this->_areas;
+        if (is_array($this->areas)) {
+            return $this->areas;
         }
 
-        $categories = $this->_cats;
+        $categories = $this->cats;
         if (!$categories) {
             // Get categories
-            $this->_cats = \Components\Resources\Models\Type::getMajorTypes();
+            $this->cats = \Components\Resources\Models\Type::getMajorTypes();
         }
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
         $cats = array();
-        foreach ($this->_cats as $cat) {
+        foreach ($this->cats as $cat) {
             $cats[$cat->alias] = $cat->type;
         }
 
-        $this->_areas = array(
+        $this->areas = array(
             'resources' => $cats
         );
 
-        return $this->_areas;
+        return $this->areas;
     }
 
     /**
@@ -118,14 +121,14 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
         // Build query
         $filters = array(
             'startdate' => $period->cStartDate,
-            'enddate'   => $period->cEndDate,
-            'sortby'    => 'date'
+            'enddate' => $period->cEndDate,
+            'sortby' => 'date'
         );
         if (count($tagids) > 0) {
             $filters['tags'] = $tagids;
         }
 
-        $groups = \Hubzero\User\Helper::getGroups((int)User::get('id', 0), 'all');
+        $groups = \Hubzero\User\Helper::getGroups((int) User::get('id', 0), 'all');
         $filters['usergroups'] = array();
 
         if (!empty($groups)) {
@@ -137,7 +140,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
         }
 
         // Get categories
-        $categories = $this->_cats;
+        $categories = $this->cats;
         if (!$categories) {
             $categories = \Components\Resources\Models\Type::getMajorTypes();
         }
@@ -158,9 +161,9 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
         $filters['authorized'] = false;
 
         if ($limit) {
-            if ($this->_total != null) {
+            if ($this->total != null) {
                 $total = 0;
-                $t = $this->_total;
+                $t = $this->total;
                 foreach ($t as $l) {
                     $total += $l;
                 }
@@ -254,7 +257,7 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
                 }
             }
             // Return the counts
-            $this->_total = $counts;
+            $this->total = $counts;
             return $counts;
         }
     }
@@ -288,8 +291,8 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
         $view = new \Hubzero\Component\View(array(
             'base_path' => Component::path('com_resources') . '/site',
-            'name'      => 'browse',
-            'layout'    => 'item'
+            'name' => 'browse',
+            'layout' => 'item'
         ));
         $view->set('line', $row)
             ->set('option', 'com_resources')

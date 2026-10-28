@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ class Elements
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_raw = null;
 
     /**
@@ -32,6 +34,7 @@ class Elements
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_schema = null;
 
     /**
@@ -39,6 +42,7 @@ class Elements
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_elements = array();
 
     /**
@@ -46,6 +50,7 @@ class Elements
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_elementPath = array();
 
     /**
@@ -160,7 +165,10 @@ class Elements
         $result = $default;
 
         if (!strpos($path, '.')) {
-            return (isset($this->data->$path) && $this->data->$path !== null && $this->data->$path !== '') ? $this->data->$path : $default;
+            $hasValue = isset($this->data->$path)
+                && $this->data->$path !== null
+                && $this->data->$path !== '';
+            return $hasValue ? $this->data->$path : $default;
         }
         // Explode the registry path into an array
         $nodes = explode('.', $path);
@@ -560,9 +568,9 @@ class Elements
         // Get the type of the parameter.
         if (is_object($node)) {
             $type = $node->type;
-        } else if (is_array($node)) {
+        } elseif (is_array($node)) {
             $type = $node['type'];
-        } else if (is_string($node)) {
+        } elseif (is_string($node)) {
             $type = $node;
         }
 
@@ -638,8 +646,10 @@ class Elements
      * Render a parameter type.
      *
      * @param   object  $node          A parameter XML element.
-     * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
-     * @param   string  $group         An optional group to render.  The default group is used if not supplied.
+     * @param   string  $control_name  An optional name of the HTML form control.
+     *                                 The default is 'params' if not supplied.
+     * @param   string  $group         An optional group to render.
+     *                                 The default group is used if not supplied.
      * @return  array   Any array of the label, the form element and the tooltip.
      */
     public function getElement(&$node, $control_name = 'nbtag', $group = '_default')
@@ -673,9 +683,12 @@ class Elements
      *
      * @param   string  $name
      * @param   object  $node          A parameter XML element.
-     * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
-     * @param   string  $group         An optional group to render.  The default group is used if not supplied.
-     * @return  array                  Any array of the label, the form element and the tooltip.
+     * @param   string  $control_name  An optional name of the HTML form control.
+     *                                 The default is 'params' if not supplied.
+     * @param   string  $group         An optional group to render.
+     *                                 The default group is used if not supplied.
+     * @return  array                  An array of the label, the form element
+     *                                 and the tooltip.
      */
     public function getElementOptions($name, &$node, $control_name = 'nbtag', $group = '_default')
     {
@@ -719,7 +732,9 @@ class Elements
 
         $signature = md5($type);
 
-        if ((isset($this->_elements[$signature]) && !($this->_elements[$signature] instanceof __PHP_Incomplete_Class))  && $new === false) {
+        $elementExists = isset($this->_elements[$signature])
+            && !($this->_elements[$signature] instanceof __PHP_Incomplete_Class);
+        if ($elementExists && $new === false) {
             return $this->_elements[$signature];
         }
 
@@ -733,7 +748,9 @@ class Elements
             }
 
             $source = str_replace('_', DS, $type) . '.php';
-            preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', (string) $source, $matches);
+            $pattern = '/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*'
+                . '([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+            preg_match($pattern, (string) $source, $matches);
             $file = @ (string) $matches[0];
 
             if ($elementFile = \Filesystem::find($dirs, $file)) {

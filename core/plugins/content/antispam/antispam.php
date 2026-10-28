@@ -1,16 +1,16 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die;
 
 /**
  * Antispam Content Plugin
+ *
  */
 class plgContentAntispam extends \Hubzero\Plugin\Plugin
 {
@@ -55,10 +55,10 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
         }
 
         if ($article instanceof \Hubzero\Base\Obj || $article instanceof \Hubzero\Database\Relational) {
-            $key = $this->_key($context);
+            $key = $this->key($context);
 
             $content = ltrim($article->get($key) == null ? '' : $article->get($key));
-        } else if (is_object($article) || is_array($article)) {
+        } elseif (is_object($article) || is_array($article)) {
             return;
         } else {
             $content = $article;
@@ -144,7 +144,7 @@ class plgContentAntispam extends \Hubzero\Plugin\Plugin
      * @param   string  $context  A dot-notation string
      * @return  string
      */
-    private function _key($context)
+    private function key($context)
     {
         $parts = explode('.', $context);
         $key = 'content';

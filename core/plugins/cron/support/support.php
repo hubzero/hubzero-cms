@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Cron plugin for support tickets
  */
@@ -100,7 +97,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
         $sconfig = Component::params('com_support');
 
         $slc = "SELECT id, login, email, name FROM `#__support_tickets` AS t";
-        $upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(Date::toSql());
+        $upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`="
+            . $database->quote(Date::toSql());
 
         $where = array();
 
@@ -157,7 +155,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
             if ($owned = intval($params->get('support_ticketpending_owned', 0))) {
                 if ($owned == 1) {
                     $where[] = "(t.`owner` IS NULL OR `owner`='')";
-                } else if ($owned == 2) {
+                } elseif ($owned == 2) {
                     $where[] = "(t.`owner` IS NOT NULL AND `owner` !='')";
                 }
             }
@@ -183,10 +181,11 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
-							AND (
-								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
-							)
-						)";
+                            AND (
+                                jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+                                . implode(", ", $tags) . ")
+                            )
+                        )";
             }
 
             if ($tags = $params->get('support_ticketpending_includeTags', '')) {
@@ -200,10 +199,11 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
-							AND (
-								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
-							)
-						)";
+                            AND (
+                                jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+                                . implode(", ", $tags) . ")
+                            )
+                        )";
             }
 
             if ($created = $params->get('support_ticketpending_activity', '-2week')) {
@@ -251,7 +251,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
                 }
 
                 if ($op) {
-                    $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) " . $op . $database->quote($timestamp->toSql());
+                    $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
+                        . $op . $database->quote($timestamp->toSql());
                 }
             }
         } else {
@@ -277,9 +278,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
         $database->setQuery($upd);
         if (!$database->query()) {
             Log::error('CRON query failed: ' . $database->getErrorMsg());
-        }
-        // If we're sending a message...
-        else if ($message_id && !empty($tickets)) {
+        } elseif ($message_id && !empty($tickets)) {
+            // If we're sending a message...
             Lang::load('com_support') ||
             Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
@@ -567,7 +567,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
         Lang::load('com_support') ||
         Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
-        $sql = "SELECT t.*, o.`name` AS owner_name, s.`title` as status_title FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner` LEFT JOIN `#__support_statuses` AS s ON s.`id`=t.`status`";
+        $sql = "SELECT t.*, o.`name` AS owner_name, s.`title` as status_title FROM `#__support_tickets` AS t "
+            . "LEFT JOIN `#__users` AS o ON o.`id`=t.`owner` LEFT JOIN `#__support_statuses` AS s ON s.`id`=t.`status`";
 
         $where = array();
 
@@ -628,7 +629,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
             if ($owned = intval($params->get('support_ticketlist_owned', 0))) {
                 if ($owned == 1) {
                     $where[] = "(t.`owner` IS NULL OR t.`owner`='0')";
-                } else if ($owned == 2) {
+                } elseif ($owned == 2) {
                     $where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='0')";
                 }
             }
@@ -655,7 +656,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
-								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+                                . implode(", ", $tags) . ")
 							)
 						)";
             }
@@ -672,7 +674,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
-								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN (" . implode(", ", $tags) . ")
+                                jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+                                . implode(", ", $tags) . ")
 							)
 						)";
             }
@@ -804,7 +807,8 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
                 }
 
                 if ($op) {
-                    $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) " . $op . $database->quote($timestamp->toSql());
+                    $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
+                        . $op . $database->quote($timestamp->toSql());
                 }
             }
         } else {
@@ -855,7 +859,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
             if ($owner == '{config.mailfrom}') {
                 $name  = Config::get('mailfrom');
                 $email = Config::get('mailfrom');
-            } else if (strstr($owner, '@')) {
+            } elseif (strstr($owner, '@')) {
                 $name  = $owner;
                 $email = $owner;
             } else {

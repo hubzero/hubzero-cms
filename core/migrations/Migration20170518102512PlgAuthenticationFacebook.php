@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving registerDate data from #__xprofiles to #__users
- **/
+ *
+ */
 class Migration20170518102512PlgAuthenticationFacebook extends Base
 {
     /**
@@ -29,7 +31,8 @@ class Migration20170518102512PlgAuthenticationFacebook extends Base
             if (!empty($params)) {
                 $params = (array) json_decode($params);
                 $params['graph_version'] = 'v2.9';
-                $updateQuery = "UPDATE `#__extensions` SET params = '" . json_encode($params) . "'" . $facebookWhere . ";";
+                $updateQuery = "UPDATE `#__extensions` SET params = '"
+                    . json_encode($params) . "'" . $facebookWhere . ";";
                 $this->db->setQuery($updateQuery);
                 $this->db->query();
             }

@@ -10,7 +10,9 @@
 defined('_HZEXEC_') or die('Restricted access');
 
 //print_r($this->transaction); die;
-$tiTotalAmount = $this->transaction->tInfo->tiSubtotal + $this->transaction->tInfo->tiTax + $this->transaction->tInfo->tiShipping;
+$tiTotalAmount = $this->transaction->tInfo->tiSubtotal
+    + $this->transaction->tInfo->tiTax
+    + $this->transaction->tInfo->tiShipping;
 ?>
 
 <li class="order">
@@ -19,7 +21,8 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal + $this->transaction->tIn
         <div class="grid">
             <div class="col span-half">
                 <p class="order-info">
-                    <span>Order placed: <?php echo date("F j, Y", strtotime($this->transaction->tLastUpdated)); ?></span>
+                    <?php $orderDate = date("F j, Y", strtotime($this->transaction->tLastUpdated)); ?>
+                    <span>Order placed: <?php echo $orderDate; ?></span>
                 </p>
             </div>
             <div class="col span-half omega">
@@ -54,17 +57,23 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal + $this->transaction->tIn
                 } else {
                     $action = 'This product is no longer available';
                 }
-            }
-            // If software
-            elseif ($productType == 'Software Download') {
+            } elseif ($productType == 'Software Download') {
+                // If software
                 if ($info->available) {
-                    $action = '<a href="' . Route::url('index.php?option=com_cart') . 'download/' . $this->transaction->tInfo->tId . '/' . $info->sId . '/direct';
+                    $downloadUrl = Route::url('index.php?option=com_cart')
+                        . 'download/' . $this->transaction->tInfo->tId
+                        . '/' . $info->sId . '/direct';
+                    $action = '<a href="' . $downloadUrl;
                     $action .= '" target="_blank" download="download" rel="noopener">Download</a>';
                 } else {
                     $action = 'This product is no longer available';
                 }
 
-                if (isset($item['meta']['serialManagement']) && $item['meta']['serialManagement'] == 'multiple' && isset($item['meta']['serials']) && !empty($item['meta']['serials'])) {
+                $hasMultipleSerials = isset($item['meta']['serialManagement'])
+                    && $item['meta']['serialManagement'] == 'multiple'
+                    && isset($item['meta']['serials'])
+                    && !empty($item['meta']['serials']);
+                if ($hasMultipleSerials) {
                     $action .= "<br>";
                     $action .= " Serial number";
                     if (count($item['meta']['serials']) > 1) {

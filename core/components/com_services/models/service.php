@@ -68,6 +68,7 @@ class Service extends Relational
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_params = null;
 
     /**
@@ -117,8 +118,10 @@ class Service extends Relational
             ->order($ser . '.ordering', 'asc');
 
         if ($specialgroup) {
+            $joinCondition = $grm . '.gidNumber=' . $grp . '.gidNumber AND '
+                . $grm . '.uidNumber=' . \User::get('id');
             $query->join($grp, $grp . '.cn', "'" . $specialgroup . "'", 'inner')
-                ->joinRaw($grm, $grm . '.gidNumber=' . $grp . '.gidNumber AND ' . $grm . '.uidNumber=' . \User::get('id'), 'left');
+                ->joinRaw($grm, $joinCondition, 'left');
                 //->whereEquals($grm . '.uidNumber', \User::get('id'));
 
             $query->whereEquals($ser . '.restricted', 0, 1)

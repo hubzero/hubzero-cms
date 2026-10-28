@@ -30,8 +30,8 @@ class Ticketstate extends Field
     protected function getInput()
     {
         $value = $this->value;
-        $name  = $this->name;
-        $id    = $this->id;
+        $name = $this->name;
+        $id = $this->id;
 
         $html = array();
 
@@ -43,16 +43,21 @@ class Ticketstate extends Field
             ->order('open', 'desc')
             ->rows();
 
-        $html[] = '<option value=""' . ($value === '' || $value === null ? ' selected="selected"' : '') . '>--</option>';
-        $html[] = '<option value="0"' . ($value === 0 || $value === '0' ? ' selected="selected"' : '') . '>open: New</option>';
+        $html[] = '<option value=""' . ($value === '' || $value === null ? ' selected="selected"' : '')
+            . '>--</option>';
+        $html[] = '<option value="0"' . ($value === 0 || $value === '0' ? ' selected="selected"' : '')
+            . '>open: New</option>';
 
         $switched = false;
         foreach ($status as $anode) {
             if (!$anode->open && !$switched) {
-                $html[] = '<option value="-1"' . ($value == -1 ? ' selected="selected"' : '') . '>closed: No resolution</option>';
+                $html[] = '<option value="-1"' . ($value == -1 ? ' selected="selected"' : '')
+                    . '>closed: No resolution</option>';
                 $switched = true;
             }
-            $html[] = '<option value="' . $anode->id . '"' . ($value == $anode->id ? ' selected="selected"' : '') . '>' . ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title) . '</option>';
+            $selected = ($value == $anode->id ? ' selected="selected"' : '');
+            $html[] = '<option value="' . $anode->id . '"' . $selected . '>' . ($anode->open ? 'open: ' : 'closed: ')
+                . stripslashes($anode->title) . '</option>';
         }
 
         $html[] = '</select>';

@@ -124,7 +124,7 @@ class Project extends Model
      * @param   mixed  $oid  ID or alias
      * @return  object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -134,7 +134,7 @@ class Project extends Model
 
         if (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         } else {
             $key = $oid;

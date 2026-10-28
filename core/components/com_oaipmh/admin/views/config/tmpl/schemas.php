@@ -18,9 +18,10 @@ if ($canDo->get('core.admin')) {
 Toolbar::help('oaipmh');
 
 $this->css();
+$formUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>

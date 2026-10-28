@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for cleaning up hubgraph extension entry
- **/
+ *
+ */
 class Migration20141120215253ComHubgraph extends Base
 {
     /**
@@ -31,7 +33,8 @@ class Migration20141120215253ComHubgraph extends Base
 
         if ($this->db->tableExists('#__extensions')) {
             // Look for multiple entries
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'com_hubgraph' ORDER BY `extension_id` ASC";
+            $query = "SELECT `extension_id` FROM `#__extensions` "
+                . "WHERE `element` = 'com_hubgraph' ORDER BY `extension_id` ASC";
             $this->db->setQuery($query);
             $ids = $this->db->loadColumn();
 
@@ -52,7 +55,8 @@ class Migration20141120215253ComHubgraph extends Base
                 /*$object = unserialize($params);
                 $params = $object->settings();
 
-                $query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `element` = 'com_hubgraph'";
+                $query = "UPDATE `#__extensions` SET `params` = "
+                    . $this->db->quote(json_encode($params)) . " WHERE `element` = 'com_hubgraph'";
                 $this->db->setQuery($query);
                 $this->db->query();*/
             }

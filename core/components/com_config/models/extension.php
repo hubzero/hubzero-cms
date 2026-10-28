@@ -122,7 +122,8 @@ class Extension extends Relational
                 break;
         }
 
-        return (Lang::load($file, PATH_APP . $path, null, false, true) || Lang::load($file, PATH_CORE . $path, null, false, true));
+        return (Lang::load($file, PATH_APP . $path, null, false, true)
+            || Lang::load($file, PATH_CORE . $path, null, false, true));
     }
 
     /**

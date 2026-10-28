@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +30,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
             $query = "SELECT * FROM `#__xfavorites` ORDER BY uid ASC;";
             $this->db->setQuery($query);
             if ($results = $this->db->loadObjectList()) {
-                require_once PATH_CORE . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php';
+                require_once PATH_CORE . DS . 'components' . DS . 'com_collections'
+                    . DS . 'models' . DS . 'archive.php';
 
                 $objs  = array();
                 $usrs  = array();
@@ -39,9 +41,10 @@ class Migration20140506104910PlgMembersFavorites extends Base
                 foreach ($results as $result) {
                     // Does this user already have this favorite as a collection item?
                     $query = "SELECT p.id
-							FROM `#__collections_posts` AS p
-							JOIN `#__collections_items` AS i ON p.`item_id`=i.`id`
-							WHERE p.`created_by`=" . $this->db->quote($result->uid) . " AND i.`type`='resource' AND i.`object_id`=" . $this->db->quote($result->oid);
+                        FROM `#__collections_posts` AS p
+                        JOIN `#__collections_items` AS i ON p.`item_id`=i.`id`
+                        WHERE p.`created_by`=" . $this->db->quote($result->uid)
+                        . " AND i.`type`='resource' AND i.`object_id`=" . $this->db->quote($result->oid);
 
                     $this->db->setQuery($query);
                     if (!$this->db->loadResult()) {
@@ -50,7 +53,9 @@ class Migration20140506104910PlgMembersFavorites extends Base
                         // Do we have a collection ID for this user?
                         if (!isset($usrs[$result->uid])) {
                             // No ID yet. Check if the user has a default collection
-                            $query = "SELECT p.id FROM `#__collections` AS p WHERE p.`object_id`=" . $this->db->quote($result->uid) . " AND p.`object_type`='member' AND p.`is_default`=1";
+                            $query = "SELECT p.id FROM `#__collections` AS p "
+                                . "WHERE p.`object_id`=" . $this->db->quote($result->uid)
+                                . " AND p.`object_type`='member' AND p.`is_default`=1";
                             $this->db->setQuery($query);
                             if (!($collection_id = $this->db->loadResult())) {
                                 // No default collection.
@@ -72,7 +77,8 @@ class Migration20140506104910PlgMembersFavorites extends Base
                                 // No item entry
 
                                 // Get some resource data
-                                $query = "SELECT id, title, introtext FROM `#__resources` WHERE id=" . $this->db->quote($result->oid);
+                                $query = "SELECT id, title, introtext FROM `#__resources` "
+                                    . "WHERE id=" . $this->db->quote($result->oid);
                                 $this->db->setQuery($query);
                                 $resource = $this->db->loadObject();
                                 if (!$resource || !$resource->id) {

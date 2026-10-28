@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Tags plugin class for publications
@@ -19,6 +17,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -97,7 +96,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
             $filters['category'] = $t['id'];
 
             // Execute a count query for each area/category
-            $database->setQuery($this->_buildPluginQuery($filters));
+            $database->setQuery($this->buildPluginQuery($filters));
             $response['children'][$k]['total'] = $database->loadResult();
             $response['total'] += $response['children'][$k]['total'];
         }
@@ -113,12 +112,12 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
             if (isset($response['children'][$areas])) {
                 $filters['category'] = $response['children'][$areas]['id'];
 
-                $database->setQuery($this->_buildPluginQuery($filters));
+                $database->setQuery($this->buildPluginQuery($filters));
                 $response['children'][$areas]['results'] = $database->loadObjectList();
             } else {
                 unset($filters['category']);
 
-                $database->setQuery($this->_buildPluginQuery($filters));
+                $database->setQuery($this->buildPluginQuery($filters));
                 $response['results'] = $database->loadObjectList();
             }
         } else {
@@ -132,10 +131,10 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
             if (isset($response['children'][$areas])) {
                 $filters['category'] = $response['children'][$areas]['id'];
 
-                $response['children'][$key]['sql'] = $this->_buildPluginQuery($filters);
+                $response['children'][$key]['sql'] = $this->buildPluginQuery($filters);
             } else {
                 unset($filters['category']);
-                $response['sql'] = $this->_buildPluginQuery($filters);
+                $response['sql'] = $this->buildPluginQuery($filters);
             }
         }
 
@@ -148,7 +147,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
      * @param   array   $filters  Options for building the query
      * @return  string  SQL
      */
-    private function _buildPluginQuery($filters = array())
+    private function buildPluginQuery($filters = array())
     {
         $database = App::get('db');
 
@@ -163,9 +162,9 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
             }
         } else {
             $query = "SELECT DISTINCT r.id, V.title, V.version_number as alias,
-					V.abstract as itext, V.id as ftext, V.state AS state, V.created, V.created_by,
-					V.modified, V.published_up as publish_up, V.published_down as publish_down,
-					CONCAT('index.php?option=com_publications&id=', r.id) AS href, 'publications' AS section ";
+                    V.abstract as itext, V.id as ftext, V.state AS state, V.created, V.created_by,
+                    V.modified, V.published_up as publish_up, V.published_down as publish_down,
+                    CONCAT('index.php?option=com_publications&id=', r.id) AS href, 'publications' AS section ";
             if (isset($filters['tags'])) {
                 $query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
             }
@@ -181,7 +180,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
         }
         $query .= "WHERE V.publication_id=r.id AND V.state=1 AND V.main = 1 ";
         if (isset($filters['tag'])) {
-            $query .= "AND t.objectid=r.id AND t.tbl='publications' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag'] . "' OR tg.alias='" . $filters['tag'] . "') ";
+            $query .= "AND t.objectid=r.id AND t.tbl='publications' AND t.tagid=tg.id AND (tg.tag='" . $filters['tag']
+                . "' OR tg.alias='" . $filters['tag'] . "') ";
         }
         if (isset($filters['tags'])) {
             $ids = implode(',', $filters['tags']);
@@ -192,7 +192,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
         }
 
         if (isset($filters['tags'])) {
-            $query .= " GROUP BY r.id, V.id, V.version_number, V.title, V.abstract HAVING uniques=" . count($filters['tags']) . " ";
+            $query .= " GROUP BY r.id, V.id, V.version_number, V.title, V.abstract HAVING uniques="
+                . count($filters['tags']) . " ";
         }
         if (isset($filters['select']) && $filters['select'] != 'count') {
             if (isset($filters['sortby'])) {
@@ -294,14 +295,23 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 
         $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . $row->area;
         if ($authors) {
-            $html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS') . ' ' . stripslashes(\Components\Publications\Helpers\Html::showContributors($authors, true, false));
+            $html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_PUBLICATIONS_CONTRIBUTORS') . ' '
+                . stripslashes(\Components\Publications\Helpers\Html::showContributors(
+                    $authors,
+                    true,
+                    false
+                ));
         }
         $html .= '</p>' . "\n";
         if ($row->itext) {
-            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
+            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(
+                \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)),
+                200
+            ) . '</p>' . "\n";
         }
 
-        $html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href . '/?v=' . $row->alias, '/') . '</p>' . "\n";
+        $html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href . '/?v=' . $row->alias, '/')
+            . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";
 
         // Return output

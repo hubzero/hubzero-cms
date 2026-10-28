@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,9 +8,6 @@
  */
 
 use Hubzero\Content\Migration\Base;
-
-// no direct access
-defined('_HZEXEC_') or die();
 
 $componentPath = Component::path('com_courses');
 
@@ -24,8 +22,9 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
  */
 class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
 {
-    static $announcementsTable = '#__courses_announcements';
-    static $announcementsColumns = [
+    public static $announcementsTable = '#__courses_announcements';
+
+    public static $announcementsColumns = [
         ['name' => 'publish_down', 'type' => 'timestamp', 'default' => "'0000-00-00 00:00:00'"],
         ['name' => 'publish_up', 'type' => 'timestamp', 'default' => "'0000-00-00 00:00:00'"],
         ['name' => 'sticky', 'type' => 'tinyint(2)', 'default' => '0']
@@ -45,6 +44,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         $this->_queryIfTableExists($announcementsTable, $query);
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateSafeAddColumns($table, $columns)
     {
         $query = $this->_generateSafeAlterTableColumnOperation(
@@ -56,6 +56,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $query;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _safeAddColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
@@ -69,6 +70,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $addColumnStatement;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateSafeDropColumns($table, $columns)
     {
         $query = $this->_generateSafeAlterTableColumnOperation(
@@ -80,6 +82,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $query;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _safeDropColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
@@ -93,6 +96,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $dropColumnStatement;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
     {
         $query = "ALTER TABLE $table ";
@@ -106,6 +110,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
         return $query;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _queryIfTableExists($tableName, $query)
     {
         if ($this->db->tableExists($tableName)) {

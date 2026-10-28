@@ -50,9 +50,12 @@ class Helper extends Module
         $this->browser     = $browser->name();
         $this->browser_ver = $browser->version();
 
+        $trigger = $this->params->get('trigger', '#tab');
+        $jsInit = 'jQuery(document).ready(function(jq) { '
+            . 'HUB.Modules.ReportProblems.initialize("' . $trigger . '"); });';
         $this->css()
              ->js()
-             ->js('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
+             ->js($jsInit);
 
         $this->supportParams = Component::params('com_support');
 

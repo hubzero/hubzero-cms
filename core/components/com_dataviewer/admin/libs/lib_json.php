@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -64,6 +65,7 @@ function json_format($json)
                 if ($c > 0 && $json[$c - 1] != '\\') {
                     $in_string = !$in_string;
                 }
+                // no break
             default:
                 $new_json .= $char;
                 break;

@@ -83,10 +83,19 @@ class AuthorizationCode implements GrantTypeInterface
             return false;
         }
 
-        // make sure "redirect_uri" parameter is present if the "redirect_uri" parameter was included in the initial authorization request
+        // make sure "redirect_uri" parameter is present if the "redirect_uri" parameter was included in the initial
+        // authorizationrequest
         if (isset($authCode['redirect_uri']) && $authCode['redirect_uri']) {
-            if (!$request->request('redirect_uri') || urldecode($request->request('redirect_uri')) != $authCode['redirect_uri']) {
-                $response->setError(400, 'redirect_uri_mismatch', "The redirect URI is missing or do not match", "#section-4.1.3");
+            if (
+                !$request->request('redirect_uri') ||
+                urldecode($request->request('redirect_uri')) != $authCode['redirect_uri']
+            ) {
+                setError(
+                    400,
+                    'redirect_uri_mismatch',
+                    "The redirect URI is missing or do not match",
+                    "#section-4.1.3"
+                );
                 return false;
             }
         }

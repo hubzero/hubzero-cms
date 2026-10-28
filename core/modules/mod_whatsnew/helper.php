@@ -27,7 +27,7 @@ class Helper extends Module
      *
      * @return  array
      */
-    private function _getAreas()
+    private function getAreas()
     {
         // Do we already have an array of areas?
         if (!isset($this->searchareas) || empty($this->searchareas)) {
@@ -73,7 +73,9 @@ class Helper extends Module
                 }
                 if ($i < $num) {
                     // display tag
-                    $out .= "\t" . '<a href="' . Route::url($tag->link()) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a> ' . "\n";
+                    $tagText = $this->escape(stripslashes($tag->get('raw_tag')));
+                    $out .= "\t" . '<a href="' . Route::url($tag->link()) . '">' .
+                        $tagText . '</a> ' . "\n";
                 }
             }
             if ($i > $num) {
@@ -114,7 +116,7 @@ class Helper extends Module
         }
 
         // Get categories
-        $areas = $this->_getAreas();
+        $areas = $this->getAreas();
 
         $area = '';
 

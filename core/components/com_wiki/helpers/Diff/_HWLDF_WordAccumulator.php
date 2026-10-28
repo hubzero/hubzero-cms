@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access.
-defined('_HZEXEC_') or die();
 
 /**
  * iso-8859-x non-breaking space.
@@ -17,13 +15,16 @@ define('NBSP', '&#160;');
 /**
  * Additions by Axel Boldt follow,
  * partly taken from diff.php, phpwiki-1.3.3
+ *
+ * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class _HWLDF_WordAccumulator
 {
-    var $_lines = '';
-    var $_line = '';
-    var $_group = '';
-    var $_tag = '';
+    public $_lines = '';
+    public $_line = '';
+    public $_group = '';
+    public $_tag = '';
 
     /**
      * Short description for '_HWLDF_WordAccumulator'

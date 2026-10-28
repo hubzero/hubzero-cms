@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to rename production_collections primary key
+  *
  **/
 class Migration20171201000001ComCart extends Base
 {
@@ -23,7 +25,8 @@ class Migration20171201000001ComCart extends Base
     {
         if ($this->db->tableExists('#__cart_transaction_info')) {
             if (!$this->db->tableHasField('#__cart_transaction_info', 'tiPayment')) {
-                $query = "ALTER TABLE `#__cart_transaction_info` ADD COLUMN `tiPayment` CHAR(30), ADD COLUMN `tiPaymentDetails` CHAR(255);";
+                $query = "ALTER TABLE `#__cart_transaction_info` ADD COLUMN `tiPayment` CHAR(30), ADD COLUMN "
+                    . "`tiPaymentDetails` CHAR(255);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -37,7 +40,8 @@ class Migration20171201000001ComCart extends Base
     {
         if ($this->db->tableExists('#__cart_transaction_info')) {
             if ($this->db->tableHasField('#__cart_transaction_info', 'tiPayment')) {
-                $query = "ALTER TABLE `#__cart_transaction_info` DROP COLUMN `tiPayment`, DROP COLUMN `tiPaymentDetails`;";
+                $query = "ALTER TABLE `#__cart_transaction_info` DROP COLUMN `tiPayment`, DROP COLUMN "
+                    . "`tiPaymentDetails`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

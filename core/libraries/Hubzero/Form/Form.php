@@ -37,42 +37,42 @@ class Form
     /**
      * The Registry data store for form fields during display.
      *
-     * @var  object
+     * @public object
      */
     protected $data;
 
     /**
      * The form object errors array.
      *
-     * @var  array
+     * @public array
      */
     protected $errors = array();
 
     /**
      * The name of the form instance.
      *
-     * @var  string
+     * @public string
      */
     protected $name;
 
     /**
      * The form object options for use in rendering and validation.
      *
-     * @var  array
+     * @public array
      */
     protected $options = array();
 
     /**
      * The form XML definition.
      *
-     * @var  object
+     * @public object
      */
     protected $xml;
 
     /**
      * Form instances.
      *
-     * @var  array
+     * @public array
      */
     protected static $forms = array();
 
@@ -204,7 +204,11 @@ class Form
             if ($group) {
                 // Filter the value if it exists.
                 if ($input->has($group . '.' . $name)) {
-                    $output->set($group . '.' . $name, $this->filterField($field, $input->get($group . '.' . $name, (string) $field['default'])));
+                    $output->set($group .
+                        '.' .
+                        $name, $this->filterField($field, $input->get($group .
+                        '.' .
+                        $name, (string) $field['default'])));
                 }
             } else {
                 // Filter the value if it exists.
@@ -298,9 +302,8 @@ class Form
         // Get all of the field elements in the fieldset.
         if ($set) {
             $elements = $this->findFieldsByFieldset($set);
-        }
-        // Get all fields.
-        else {
+        } else {
+            // Get all fields.
             $elements = $this->findFieldsByGroup();
         }
 
@@ -377,9 +380,8 @@ class Form
                     // Add the fieldset object to the list.
                     $fieldsets[$fieldset->name] = $fieldset;
                 }
-            }
+            } else {
             // Must be dealing with a fieldset attribute.
-            else {
                 // Only create it if it doesn't already exist.
                 if (empty($fieldsets[(string) $set])) {
                     // Attempt to get the fieldset element for data (throughout the entire form document).
@@ -388,9 +390,8 @@ class Form
                     // If no element was found, build a very simple fieldset object.
                     if (empty($tmp)) {
                         $fieldset = (object) array('name' => (string) $set, 'label' => '', 'description' => '');
-                    }
+                    } else {
                     // Build the fieldset object from the element.
-                    else {
                         $fieldset = (object) array('name' => '', 'label' => '', 'description' => '');
                         foreach ($tmp[0]->attributes() as $name => $value) {
                             $fieldset->$name = (string) $value;
@@ -424,7 +425,8 @@ class Form
      * Method to get an array of Field objects in a given field group by name.
      *
      * @param   string   $group   The dot-separated form group path for which to get the form fields.
-     * @param   boolean  $nested  True to also include fields in nested groups that are inside of the group for which to find fields.
+     * @param   boolean  $nested  True to also include fields in nested groups that are inside of
+     *                            the group for which to find fields.
      * @return  array    The array of Field objects in the field group.
      */
     public function getGroup($group, $nested = false)
@@ -531,7 +533,8 @@ class Form
      * method will move on to the next field to load.
      *
      * @param   string   $data     The name of an XML string or object.
-     * @param   string   $replace  Flag to toggle whether form fields should be replaced if a field already exists with the same group/name.
+     * @param   string   $replace  Flag to toggle whether form fields should be replaced if a field
+     *                             already exists with the same group/name.
      * @param   string   $xpath    An optional xpath to search for the fields.
      * @return  boolean  True on success, false otherwise.
      */
@@ -562,9 +565,8 @@ class Form
                 $this->syncPaths();
 
                 return true;
-            }
+            } else {
             // Create a root element for the form.
-            else {
                 $this->xml = new SimpleXMLElement('<form></form>');
             }
         }
@@ -800,9 +802,8 @@ class Form
         // If the element doesn't exist return false.
         if (!($element instanceof SimpleXMLElement)) {
             return false;
-        }
+        } else {
         // Otherwise set the attribute and return true.
-        else {
             $element[$attribute] = $value;
 
             // Synchronize any paths found in the load.
@@ -885,7 +886,8 @@ class Form
      * retrieved with Form::getErrors() when validate returns boolean false.
      *
      * @param   array   $data   An array of field values to validate.
-     * @param   string  $group  The optional dot-separated form group path on which to filter the fields to be validated.
+     * @param   string  $group  The optional dot-separated form group path on which to filter the
+     *                          fields to be validated.
      * @return  mixed   True on sucess.
      */
     public function validate($data, $group = null)
@@ -1057,25 +1059,20 @@ class Form
                     // If it looks like an internal link, then add the root.
                     if (substr($value, 0, 9) == 'index.php') {
                         $value = App::get('request')->root() . $value;
-                    }
-
+                    } else {
                     // Otherwise we treat it as an external link.
-                    else {
                         // Put the url back together.
                         $value = $protocol . '://' . $value;
                     }
-                }
-
+                } elseif (!$protocol && $element['relative']) {
                 // If relative URLS are allowed we assume that URLs without protocols are internal.
-                elseif (!$protocol && $element['relative']) {
                     $host = App::get('request')->host();
 
                     // If it starts with the host string, just prepend the protocol.
                     if (substr($value, 0) == $host) {
                         $value = 'http://' . $value;
-                    }
+                    } else {
                     // Otherwise prepend the root.
-                    else {
                         $value = App::get('request')->root() . $value;
                     }
                 }
@@ -1086,7 +1083,12 @@ class Form
             case 'TEL':
                 $value = trim($value);
                 // Does it match the NANP pattern?
-                if (preg_match('/^(?:\+?1[-. ]?)?\(?([2-9][0-8][0-9])\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$/', $value) == 1) {
+                if (
+                    preg_match(
+                        '/^(?:\+?1[-. ]?)?\(?([2-9][0-8][0-9])\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$/',
+                        $value
+                    ) == 1
+                ) {
                     $number = (string) preg_replace('/[^\d]/', '', $value);
                     if (substr($number, 0, 1) == 1) {
                         $number = substr($number, 1);
@@ -1095,29 +1097,25 @@ class Form
                         $number = substr($number, 2);
                     }
                     $result = '1.' . $number;
-                }
+                } elseif (preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $value) == 1) {
                 // If not, does it match ITU-T?
-                elseif (preg_match('/^\+(?:[0-9] ?){6,14}[0-9]$/', $value) == 1) {
                     $countrycode = substr($value, 0, strpos($value, ' '));
                     $countrycode = (string) preg_replace('/[^\d]/', '', $countrycode);
                     $number = strstr($value, ' ');
                     $number = (string) preg_replace('/[^\d]/', '', $number);
                     $result = $countrycode . '.' . $number;
-                }
+                } elseif (preg_match('/^\+[0-9]{1,3}\.[0-9]{4,14}(?:x.+)?$/', $value) == 1) {
                 // If not, does it match EPP?
-                elseif (preg_match('/^\+[0-9]{1,3}\.[0-9]{4,14}(?:x.+)?$/', $value) == 1) {
                     if (strstr($value, 'x')) {
                         $xpos = strpos($value, 'x');
                         $value = substr($value, 0, $xpos);
                     }
                     $result = str_replace('+', '', $value);
-                }
+                } elseif (preg_match('/[0-9]{1,3}\.[0-9]{4,14}$/', $value) == 1) {
                 // Maybe it is already ccc.nnnnnnn?
-                elseif (preg_match('/[0-9]{1,3}\.[0-9]{4,14}$/', $value) == 1) {
                     $result = $value;
-                }
+                } else {
                 // If not, can we make it a string of digits?
-                else {
                     $value = (string) preg_replace('/[^\d]/', '', $value);
                     if ($value != null && strlen($value) <= 15) {
                         $length = strlen($value);
@@ -1129,9 +1127,8 @@ class Form
                             $cclen = $length - 12;
                             $result = substr($value, 0, $cclen) . '.' . substr($value, $cclen);
                         }
-                    }
+                    } else {
                     // If not let's not save anything.
-                    else {
                         $result = '';
                     }
                 }
@@ -1142,13 +1139,11 @@ class Form
                 // Check for a callback filter.
                 if (strpos($filter, '::') !== false && is_callable(explode('::', $filter))) {
                     $return = call_user_func(explode('::', $filter), $value);
-                }
+                } elseif (function_exists($filter)) {
                 // Filter using a callback function if specified.
-                elseif (function_exists($filter)) {
                     $return = call_user_func($filter, $value);
-                }
+                } else {
                 // Filter. All HTML code is filtered by default.
-                else {
                     $return = Sanitize::filter($value, $filter);
                 }
                 break;
@@ -1220,9 +1215,8 @@ class Form
                 // If we find an ancestor fields element with a group name then it isn't what we want.
                 if ($field->xpath('ancestor::fields[@name]')) {
                     continue;
-                }
+                } else {
                 // Found it!
-                else {
                     $element = &$field;
                     break;
                 }
@@ -1261,8 +1255,11 @@ class Form
      * Method to get an array of <field /> elements from the form XML document which are
      * in a control group by name.
      *
-     * @param   mixed    $group   The optional dot-separated form group path on which to find the fields. Null will return all fields. False will return fields not in a group.
-     * @param   boolean  $nested  True to also include fields in nested groups that are inside of the group for which to find fields.
+     * @param   mixed    $group   The optional dot-separated form group path on which to find the
+     *                            fields. Null will return all fields. False will return fields not
+     *                            in a group.
+     * @param   boolean  $nested  True to also include fields in nested groups that are inside of
+     *                            the group for which to find fields.
      * @return  mixed    Boolean false on error or array of SimpleXMLElement objects.
      */
     protected function &findFieldsByGroup($group = null, $nested = false)
@@ -1288,9 +1285,8 @@ class Form
                     // If we also want fields in nested groups then just merge the arrays.
                     if ($nested) {
                         $fields = array_merge($fields, $tmp);
-                    }
+                    } else {
                     // If we want to exclude nested groups then we need to check each field.
-                    else {
                         $groupNames = explode('.', $group);
                         foreach ($tmp as $field) {
                             // Get the names of the groups that the field is in.
@@ -1307,7 +1303,9 @@ class Form
             }
         } elseif ($group === false) {
             // Get only field elements not in a group.
-            $fields = $this->xml->xpath('descendant::fields[not(@name)]/field | descendant::fields[not(@name)]/fieldset/field ');
+            $fields = $this->
+                xml->
+                xpath('descendant::fields[not(@name)]/field | descendant::fields[not(@name)]/fieldset/field ');
         } else {
             // Get an array of all the <field /> elements.
             $fields = $this->xml->xpath('//field');
@@ -1424,7 +1422,10 @@ class Form
         // else the value of the 'default' attribute for the field.
         if ($value === null) {
             $default = (string) $element['default'];
-            if (($translate = $element['translate_default']) && ((string) $translate == 'true' || (string) $translate == '1')) {
+            if (
+                ($translate = $element['translate_default']) &&
+                ((string) $translate == 'true' || (string) $translate == '1')
+            ) {
                 $lang = App::get('language');
                 if ($lang->hasKey($default)) {
                     $debug   = $lang->setDebug(false);
@@ -1527,7 +1528,8 @@ class Form
      * @param   string  $element  The XML element object representation of the form field.
      * @param   string  $group    The optional dot-separated form group path on which to find the field.
      * @param   mixed   $value    The optional value to use as the default for the field.
-     * @param   object  $input    An optional Registry object with the entire data set to validate against the entire form.
+     * @param   object  $input    An optional Registry object with the entire data set to validate
+     *                            against the entire form.
      * @return  mixed   Boolean true if field value is valid, Exception on failure.
      */
     protected function validateField($element, $group = null, $value = null, $input = null)
@@ -1636,7 +1638,8 @@ class Form
      * @param   string  $name     The name of the form.
      * @param   string  $data     The name of an XML file or string to load as the form definition.
      * @param   array   $options  An array of form options.
-     * @param   string  $replace  Flag to toggle whether form fields should be replaced if a field already exists with the same group/name.
+     * @param   string  $replace  Flag to toggle whether form fields should be replaced if a field
+     *                            already exists with the same group/name.
      * @param   string  $xpath    An optional xpath to search for the fields.
      * @return  object  Form instance.
      * @throws  Exception if an error occurs.

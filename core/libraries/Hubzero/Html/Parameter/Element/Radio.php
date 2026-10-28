@@ -22,6 +22,7 @@ class Radio extends Element
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Radio';
 
     /**
@@ -42,7 +43,13 @@ class Radio extends Element
             $options[] = Builder\Select::option($val, $text);
         }
 
-        return Builder\Select::radiolist($options, '' . $control_name . '[' . $name . ']', 'class="option"', 'value', 'text', $value, $control_name . $name, true) . '</fieldset>';
+        return Builder\Select::radiolist($options, '' .
+            $control_name .
+            '[' .
+            $name .
+            ']', 'class="option"', 'value', 'text', $value, $control_name .
+            $name, true) .
+            '</fieldset>';
     }
 
     /**
@@ -57,9 +64,19 @@ class Radio extends Element
      */
     public function fetchTooltip($label, $description, &$xmlElement, $control_name = '', $name = '')
     {
-        $output = '<fieldset id="' . $control_name . $name . '-lbl" class="radio" data-for="' . $control_name . $name . '"><legend';
+        $output = '<fieldset id="' .
+            $control_name .
+            $name .
+            '-lbl" class="radio" data-for="' .
+            $control_name .
+            $name .
+            '"><legend';
         if ($description) {
-            $output .= ' class="hasTip" title="' . App::get('language')->txt($label) . '::' . App::get('language')->txt($description) . '">';
+            $output .= ' class="hasTip" title="' .
+                App::get('language')->txt($label) .
+                '::' .
+                App::get('language')->txt($description) .
+                '">';
         } else {
             $output .= '>';
         }

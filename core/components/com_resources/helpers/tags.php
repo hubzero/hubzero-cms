@@ -268,10 +268,10 @@ class Tags extends Cloud
             if ($tag && !$tag2) {
                 $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag) . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
-            } else if ($tag2 && !$tag) {
+            } elseif ($tag2 && !$tag) {
                 $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag2) . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
-            } else if ($tag && $tag2) {
+            } elseif ($tag && $tag2) {
                 $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag) . "," . $this->_db->quote($tag2) . "))";
                 $query .= " GROUP BY C.id HAVING uniques=2";
             }

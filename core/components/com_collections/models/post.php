@@ -25,6 +25,7 @@ class Post extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Collections\\Tables\\Post';
 
     /**
@@ -32,6 +33,7 @@ class Post extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_collections.post.description';
 
     /**
@@ -39,21 +41,21 @@ class Post extends Base
      *
      * @var object
      */
-    private $_adapter = null;
+    private $adapterInstance = null;
 
     /**
      * Post
      *
      * @var object
      */
-    private $_data = null;
+    private $data = null;
 
     /**
      * CollectionsModelCollection
      *
      * @var object
      */
-    private $_collection = null;
+    private $collectionItem = null;
 
     /**
      * Returns a reference to this model
@@ -61,7 +63,7 @@ class Post extends Base
      * @param   mixed   $oid  Integer, string, object or array
      * @return  object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -71,9 +73,9 @@ class Post extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid;
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         }
 
@@ -110,7 +112,7 @@ class Post extends Base
                     }
                 }
             }
-        } else if (is_array($data)) {
+        } elseif (is_array($data)) {
             $res = $this->_tbl->bind($data);
 
             if ($res) {
@@ -127,10 +129,14 @@ class Post extends Base
                 }
             }
         } else {
-            $this->_logError(
-                __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
+            $errorMsg = Lang::txt(
+                'Data must be of type object or array. Type given was %s',
+                gettype($data)
             );
-            throw new \InvalidArgumentException(Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)));
+            $this->_logError(
+                __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg
+            );
+            throw new \InvalidArgumentException($errorMsg);
         }
 
         $this->item($item);
@@ -146,19 +152,19 @@ class Post extends Base
      */
     public function item($oid = null)
     {
-        if (!($this->_data instanceof Item)) {
+        if (!($this->data instanceof Item)) {
             if ($oid === null) {
                 $oid = $this->get('item_id', 0);
             }
 
-            $this->_data = new Item($oid);
+            $this->data = new Item($oid);
             /*if ($d = $this->description('raw'))
             {
-                $this->_data->set('description', $this->get('description'));
+                $this->data->set('description', $this->get('description'));
             }*/
         }
 
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -169,15 +175,15 @@ class Post extends Base
      */
     public function collection($oid = null)
     {
-        if (!($this->_collection instanceof Collection)) {
+        if (!($this->collectionItem instanceof Collection)) {
             if ($oid === null) {
                 $oid = $this->get('collection_id', 0);
             }
 
-            $this->_collection = new Collection($oid);
+            $this->collectionItem = new Collection($oid);
         }
 
-        return $this->_collection;
+        return $this->collectionItem;
     }
 
     /**
@@ -246,7 +252,7 @@ class Post extends Base
      */
     public function link($type = '', $params = null)
     {
-        return $this->_adapter()->build($type, $params);
+        return $this->adapter()->build($type, $params);
     }
 
     /**
@@ -255,9 +261,9 @@ class Post extends Base
      *
      * @return  object
      */
-    private function _adapter()
+    private function adapter()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapterInstance) {
             $scope = strtolower($this->get('object_type'));
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
@@ -269,11 +275,11 @@ class Post extends Base
                 include_once $path;
             }
 
-            $this->_adapter = new $cls($this->get('object_id'));
-            $this->_adapter->set('id', $this->get('id'));
-            $this->_adapter->set('alias', $this->get('alias'));
+            $this->adapterInstance = new $cls($this->get('object_id'));
+            $this->adapterInstance->set('id', $this->get('id'));
+            $this->adapterInstance->set('alias', $this->get('alias'));
         }
-        return $this->_adapter;
+        return $this->adapterInstance;
     }
 
     /**

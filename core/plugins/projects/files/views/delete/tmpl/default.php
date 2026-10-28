@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,11 +52,19 @@ if (!$this->getError()) {
         </ul>
 
         <p class="submitarea">
-            <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?>" id="submit-ajaxform" />
+            <input type="submit"
+                class="btn"
+                value="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?>"
+                id="submit-ajaxform"/>
             <?php if ($this->ajax) { ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                <input type="reset"
+                    id="cancel-action"
+                    class="btn btn-cancel"
+                    value="<?php echo Lang::txt('JCANCEL'); ?>"/>
             <?php } else {  ?>
-                    <a id="cancel-action" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
+                    <a id="cancel-action"
+                        href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"
+                        class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
             <?php } ?>
         </p>
     </fieldset>

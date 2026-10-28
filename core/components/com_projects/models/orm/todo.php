@@ -24,7 +24,7 @@ class Todo extends Relational
      *
      * @var  integer
      **/
-    const STATE_COMPLETED = 1;
+    public const STATE_COMPLETED = 1;
 
     /**
      * The table namespace
@@ -179,7 +179,7 @@ class Todo extends Relational
             ->whereEquals('scope', 'project.todo')
             ->row();
 
-        return \Hubzero\Activity\Log::all()->whereEquals('parent', $activity->get('id')); //$this->oneToMany('Hubzero\Activity\Log', 'scope_id', 'id')->whereEquals('scope', 'project.todo.comment');
+        return \Hubzero\Activity\Log::all()->whereEquals('parent', $activity->get('id'));
     }
 
     /**
@@ -248,6 +248,7 @@ class Todo extends Relational
      * @param   string  $as   What data to return
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _date($key, $as = '')
     {
         $dt = $this->get($key);

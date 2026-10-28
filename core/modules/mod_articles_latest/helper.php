@@ -105,7 +105,9 @@ class Helper extends Module
                     ->order('created', 'asc');
                 break;
             case 'mc_dsc':
-                $query->order('CASE WHEN (modified = ' . $db->quote(Date::toSql()) . ') THEN created ELSE modified END', 'desc');
+                $quotedDate = $db->quote(Date::toSql());
+                $orderCase = 'CASE WHEN (modified = ' . $quotedDate . ') THEN created ELSE modified END';
+                $query->order($orderCase, 'desc');
                 break;
             case 'c_dsc':
                 $query->order('created', 'desc');
@@ -124,7 +126,12 @@ class Helper extends Module
 
             if ($access || in_array($item->access, $authorised)) {
                 // We know that user has the privilege to view the article
-                $item->link = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language));
+                $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $item->slug,
+                    $item->catslug,
+                    $item->language
+                );
+                $item->link = Route::url($articleRoute);
             } else {
                 $item->link = Route::url('index.php?option=com_login');
             }

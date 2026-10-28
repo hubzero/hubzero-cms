@@ -23,7 +23,8 @@ class Html
      */
     public static function categories($categories, $val, $name, $id = null, $atts = null)
     {
-        $out  = '<select name="' . $name . '" id="' . ($id ? $id : str_replace(array('[', ']'), '', $name)) . '"' . ($atts ? ' ' . $atts : '') . '>';
+        $selectId = $id ? $id : str_replace(array('[', ']'), '', $name);
+        $out  = '<select name="' . $name . '" id="' . $selectId . '"' . ($atts ? ' ' . $atts : '') . '>';
         $out .= '<option value="">' . \Lang::txt('COM_KB_SELECT_CATEGORY') . '</option>';
         foreach ($categories as $category) {
             $selected = ($category->get('id') == $val)
@@ -37,7 +38,8 @@ class Html
                 }
             }
 
-            $out .= '<option value="' . $category->get('id') . '"' . $selected . '>' . $prfx . stripslashes($category->get('title')) . '</option>';
+            $out .= '<option value="' . $category->get('id') . '"' . $selected . '>'
+                . $prfx . stripslashes($category->get('title')) . '</option>';
         }
         $out .= '</select>';
         return $out;

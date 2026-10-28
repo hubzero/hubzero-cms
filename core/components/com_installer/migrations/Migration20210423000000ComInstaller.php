@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding component entry for com_installer
  **/
@@ -52,7 +49,8 @@ class Migration20210423000000ComInstaller extends Base
             $this->db->tableExists('#__custom_extensions') &&
             $this->db->tableHasField('#__custom_extensions', 'installed_version')
         ) {
-            $query = "ALTER TABLE `#__custom_extensions` CHANGE `installed_version` `installed_version` varchar(255) DEFAULT NULL;";
+            $query = "ALTER TABLE `#__custom_extensions` CHANGE `installed_version`";
+            $query .= " `installed_version` varchar(255) DEFAULT NULL;";
             $this->db->setQuery($query);
             $this->db->query();
         }

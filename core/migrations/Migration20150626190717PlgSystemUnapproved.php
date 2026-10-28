@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for system plugin verifying user approval status
- **/
+ *
+ */
 class Migration20150626190717PlgSystemUnapproved extends Base
 {
     /**

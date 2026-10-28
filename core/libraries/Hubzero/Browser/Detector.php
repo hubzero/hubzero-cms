@@ -20,57 +20,57 @@ namespace Hubzero\Browser;
 class Detector
 {
     /**
-     * @var  integer  Major version number
+     * @public integer  Major version number
      */
     protected $majorVersion = 0;
 
     /**
-     * @var  integer  Minor version number
+     * @public integer  Minor version number
      */
     protected $minorVersion = 0;
 
     /**
-     * @var  string  Browser name.
+     * @public string  Browser name.
      */
     protected $browser = '';
 
     /**
-     * @var  string  Full user agent string.
+     * @public string  Full user agent string.
      */
     protected $agent = '';
 
     /**
-     * @var  string  Lower-case user agent string
+     * @public string  Lower-case user agent string
      */
     protected $lowerAgent = '';
 
     /**
-     * @var  string  HTTP_ACCEPT string.
+     * @public string  HTTP_ACCEPT string.
      */
     protected $accept = '';
 
     /**
-     * @var  array  Parsed HTTP_ACCEPT string
+     * @public array  Parsed HTTP_ACCEPT string
      */
     protected $acceptParsed = array();
 
     /**
-     * @var  string  Platform the browser is running on
+     * @public string  Platform the browser is running on
      */
     protected $platform = '';
 
     /**
-     * @var  string  Platform version the browser is running on
+     * @public string  Platform version the browser is running on
      */
     protected $platformVersion = '';
 
     /**
-     * @var  string  Device the browser is running on
+     * @public string  Device the browser is running on
      */
     protected $device = '';
 
     /**
-     * @var  array  Known robots.
+     * @public array  Known robots.
      */
     protected $robots = array(
         'Googlebot\/',
@@ -477,7 +477,7 @@ class Detector
     /**
      * Is this a mobile browser?
      *
-     * @var  boolean
+     * @public boolean
      */
     protected $mobile = false;
 
@@ -485,7 +485,7 @@ class Detector
      * List of viewable image MIME subtypes.
      * This list of viewable images works for IE and Netscape/Mozilla.
      *
-     * @var  array
+     * @public array
      */
     protected $images = array(
         'jpeg',
@@ -499,7 +499,7 @@ class Detector
     /**
      * List of browser regex
      *
-     * @var  array
+     * @public array
      */
     protected $regexes = array(
         array(
@@ -747,7 +747,7 @@ class Detector
     /**
      * Browser instances container.
      *
-     * @var  array
+     * @public array
      */
     protected static $instances = array();
 
@@ -758,6 +758,7 @@ class Detector
      * @param   string  $accept     The HTTP_ACCEPT settings to use.
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($userAgent = null, $accept = null)
     {
         $this->match($userAgent, $accept);
@@ -851,6 +852,7 @@ class Detector
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setPlatform()
     {
         $this->device = 'computer';
@@ -896,7 +898,7 @@ class Detector
             //!stristr($browser_string, "linux") corrects a linux detection bug
             if (stristr($this->lowerAgent, 'android')) {
                 $this->platform = 'Android';
-            } else if (!is_array($s_os) && stristr($this->lowerAgent, $s_os) && !stristr($this->lowerAgent, 'linux')) {
+            } elseif (!is_array($s_os) && stristr($this->lowerAgent, $s_os) && !stristr($this->lowerAgent, 'linux')) {
                 $this->platform = $s_os;
 
                 switch ($this->platform) {
@@ -931,11 +933,17 @@ class Detector
                         $this->platform = 'Windows';
                         if (stristr($this->lowerAgent, 'nt 5.2')) { // windows server 2003
                             $this->platformVersion = 5.2;
-                        } elseif (stristr($this->lowerAgent, 'nt 5.1') || stristr($this->lowerAgent, 'xp')) { // windows xp
+                        } elseif (
+                            stristr($this->lowerAgent, 'nt 5.1') ||
+                            stristr($this->lowerAgent, 'xp')
+                        ) { // windows xp
                         //$this->platformVersion = 5.1;
                             $this->platformVersion = 'XP';
                             $this->platform = 'Windows';
-                        } elseif (stristr($this->lowerAgent, 'nt 5') || stristr($this->lowerAgent, '2000')) { // windows 2000
+                        } elseif (
+                            stristr($this->lowerAgent, 'nt 5') ||
+                            stristr($this->lowerAgent, '2000')
+                        ) { // windows 2000
                         //$this->platformVersion = 5.0;
                             $this->platformVersion = '2000';
                             $this->platform = 'Windows';
@@ -967,21 +975,20 @@ class Detector
                         break;
                 }
                 break;
-            }
+            } elseif (is_array($s_os) && ($i == (count($a_os) - 2))) {
             // check that it's an array, check it's the second to last item
             // in the main os array, the unix one that is
-            elseif (is_array($s_os) && ($i == (count($a_os) - 2))) {
                 for ($j = 0; $j < count($s_os); $j++) {
                     if (stristr($this->lowerAgent, $s_os[$j])) {
                         $this->platform = 'Unix'; // if the os is in the unix array, it's unix, obviously...
-                        $this->platformVersion = ($s_os[$j] != 'unix') ? $s_os[$j] : ''; // assign sub unix version from the unix array
+                        $this->platformVersion =
+                            ($s_os[$j] != 'unix') ? $s_os[$j] : ''; // assign sub unix version from the unix array
                         break;
                     }
                 }
-            }
+            } elseif (is_array($s_os) && ($i == (count($a_os) - 1))) {
             // check that it's an array, check it's the last item
             // in the main os array, the linux one that is
-            elseif (is_array($s_os) && ($i == (count($a_os) - 1))) {
                 for ($j = 0; $j < count($s_os); $j++) {
                     if (stristr($this->lowerAgent, $s_os[$j])) {
                         $this->platform = 'Linux';

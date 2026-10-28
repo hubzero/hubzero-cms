@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 use Hubzero\Content\Migration\Base;
 
 // No direct access

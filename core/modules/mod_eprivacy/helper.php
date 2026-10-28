@@ -54,7 +54,8 @@ class Helper extends Module
             return;
         }
 
-        $this->message  = $this->params->get('message', Lang::txt('MOD_EPRIVACY_DEFAULT_MESSAGE', Config::get('sitename')));
+        $defaultMessage = Lang::txt('MOD_EPRIVACY_DEFAULT_MESSAGE', Config::get('sitename'));
+        $this->message  = $this->params->get('message', $defaultMessage);
 
         $uri  = Request::getString('REQUEST_URI', '', 'server');
         $uri .= (strstr($uri, '?')) ? '&' : '?';

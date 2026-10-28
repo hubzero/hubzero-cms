@@ -66,7 +66,13 @@ class Sliders
         } else {
             self::$open = true;
         }
-        $content .= '<h3 class="pane-toggler title" id="' . $id . '"><a href="#' . $id . '"><span>' . $text . '</span></a></h3><div class="panel"><div class="pane-slider content">';
+        $content .= '<h3 class="pane-toggler title" id="' .
+            $id .
+            '"><a href="#' .
+            $id .
+            '"><span>' .
+            $text .
+            '</span></a></h3><div class="panel"><div class="pane-slider content">';
 
         return $content;
     }
@@ -84,24 +90,40 @@ class Sliders
 
         if (!array_key_exists($group, $loaded)) {
             $loaded[$group] = true;
-
-            $display = (isset($params['startOffset']) && isset($params['startTransition']) && $params['startTransition'])
+            $display = (isset($params['startOffset']) &&
+                isset($params['startTransition']) &&
+                $params['startTransition'])
                 ? (int) $params['startOffset'] : null;
-            $show = (isset($params['startOffset']) && !(isset($params['startTransition']) && $params['startTransition']))
+            $show = (isset($params['startOffset']) &&
+                !(isset($params['startTransition']) &&
+                $params['startTransition']))
                 ? (int) $params['startOffset'] : null;
 
             $opt = array();
             $opt['heightStyle'] = "'content'";
             /*$opt['onActive'] = "function(toggler, i) {toggler.addClass('pane-toggler-down');" .
-                "toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_" . $group . "',$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
+                "toggler.removeClass('pane-toggler');i.addClass('pane-down');" .
+                "i.removeClass('pane-hide');Cookie.write('jpanesliders_" . $group .
+                "',$('div#" . $group . ".pane-sliders > .panel > h3').indexOf(toggler));}";
             $opt['onBackground'] = "function(toggler, i) {toggler.addClass('pane-toggler');" .
                 "toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');i.removeClass('pane-down');if($('div#"
-                . $group . ".pane-sliders > .panel > h3').length==$('div#" . $group . ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" . $group . "',-1);}";
+                .
+                    $group .
+                    ".pane-sliders > .panel > h3').length==$('div#" .
+                    $group .
+                    ".pane-sliders > .panel > h3.pane-toggler').length) Cookie.write('jpanesliders_" .
+                    $group .
+                    "',-1);}";
             $opt['duration']   = (isset($params['duration'])) ? (int) $params['duration'] : 300;
-            $opt['display']    = (isset($params['useCookie']) && $params['useCookie']) ? Request::getInt('jpanesliders_' . $group, $display, 'cookie')
+            $opt['display']    = (isset($params['useCookie']) &&
+                $params['useCookie']) ? Request::getInt('jpanesliders_' .
+                $group, $display, 'cookie')
                 : $display;
-            $opt['show']       = (isset($params['useCookie']) && $params['useCookie']) ? Request::getInt('jpanesliders_' . $group, $show, 'cookie') : $show;
-            $opt['opacity']    = (isset($params['opacityTransition']) && ($params['opacityTransition'])) ? 'true' : 'false';
+            $opt['show']       = (isset($params['useCookie']) &&
+                $params['useCookie']) ? Request::getInt('jpanesliders_' .
+                $group, $show, 'cookie') : $show;
+            $opt['opacity']    = (isset($params['opacityTransition']) &&
+                ($params['opacityTransition'])) ? 'true' : 'false';
             $opt['alwaysHide'] = (isset($params['allowAllClose']) && (!$params['allowAllClose'])) ? 'false' : 'true';*/
 
             $options = array();

@@ -30,10 +30,18 @@ class Helper extends Module
         $this->cls = trim($this->params->get('moduleclass_sfx', ''));
 
         if ($udb) {
-            $udb->setQuery('SELECT value FROM summary_user_vals WHERE datetime = (SELECT CAST(MAX(datetime) AS CHAR) FROM summary_user_vals) AND period = "12" AND colid = "1" AND rowid = "1"');
+            $udb->setQuery(
+                'SELECT value FROM summary_user_vals WHERE datetime = ' .
+                '(SELECT CAST(MAX(datetime) AS CHAR) FROM summary_user_vals) ' .
+                'AND period = "12" AND colid = "1" AND rowid = "1"'
+            );
             $this->users = $udb->loadResult();
 
-            $udb->setQuery('SELECT value FROM summary_simusage_vals WHERE datetime  = (SELECT CAST(MAX(datetime) AS CHAR) FROM summary_simusage_vals) AND period = "12" AND colid = "1" AND rowid = "2"');
+            $udb->setQuery(
+                'SELECT value FROM summary_simusage_vals WHERE datetime = ' .
+                '(SELECT CAST(MAX(datetime) AS CHAR) FROM summary_simusage_vals) ' .
+                'AND period = "12" AND colid = "1" AND rowid = "2"'
+            );
             $this->sims = $udb->loadResult();
         } else {
             $database->setQuery("SELECT COUNT(*) FROM `#__users`");
@@ -42,10 +50,16 @@ class Helper extends Module
             $this->sims = 0;
         }
 
-        $database->setQuery("SELECT COUNT(*) FROM `#__resources` WHERE standalone=1 AND published=1 AND access!=1 AND access!=4");
+        $database->setQuery(
+            "SELECT COUNT(*) FROM `#__resources` " .
+            "WHERE standalone=1 AND published=1 AND access!=1 AND access!=4"
+        );
         $this->resources = $database->loadResult();
 
-        $database->setQuery("SELECT COUNT(*) FROM `#__resources` WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7");
+        $database->setQuery(
+            "SELECT COUNT(*) FROM `#__resources` " .
+            "WHERE standalone=1 AND published=1 AND access!=1 AND access!=4 AND type=7"
+        );
         $this->tools = $database->loadResult();
 
         require $this->getLayoutPath();

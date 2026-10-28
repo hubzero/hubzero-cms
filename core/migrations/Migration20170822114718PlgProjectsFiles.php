@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to update file handler base path
+  *
  **/
 class Migration20170822114718PlgProjectsFiles extends Base
 {
@@ -31,7 +33,9 @@ class Migration20170822114718PlgProjectsFiles extends Base
                 if ($params && isset($params->handler_base_path) && $params->handler_base_path != '/srv/projects/') {
                     $params->handler_base_path = rtrim($params->handler_base_path, '/') . '/{project}/{file}';
 
-                    $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote(json_encode($params)) . " WHERE `extension_id`=" . $row->extension_id;
+                    $query = "UPDATE `#__extensions` SET `params`="
+                        . $this->db->quote(json_encode($params))
+                        . " WHERE `extension_id`=" . $row->extension_id;
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -54,7 +58,9 @@ class Migration20170822114718PlgProjectsFiles extends Base
                 if ($params && isset($params->handler_base_path) && strstr($params->handler_base_path, '{')) {
                     $params->handler_base_path = str_replace('{project}/{file}', '', $params->handler_base_path);
 
-                    $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote(json_encode($params)) . " WHERE `extension_id`=" . $row->extension_id;
+                    $query = "UPDATE `#__extensions` SET `params`="
+                        . $this->db->quote(json_encode($params))
+                        . " WHERE `extension_id`=" . $row->extension_id;
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

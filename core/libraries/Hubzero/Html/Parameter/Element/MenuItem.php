@@ -23,6 +23,7 @@ class MenuItem extends Element
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'MenuItem';
 
     /**
@@ -117,7 +118,9 @@ class MenuItem extends Element
         foreach ($menuTypes as $type) {
             if ($menuType == '') {
                 $options[] = Builder\Select::option('0', '&#160;', 'value', 'text', true);
-                $options[] = Builder\Select::option($type->menutype, $type->title . ' - ' . App::get('language')->txt('JGLOBAL_TOP'), 'value', 'text', true);
+                $options[] = Builder\Select::option($type->menutype, $type->title .
+                    ' - ' .
+                    App::get('language')->txt('JGLOBAL_TOP'), 'value', 'text', true);
             }
             if (isset($groupedList[$type->menutype])) {
                 $n = count($groupedList[$type->menutype]);
@@ -135,7 +138,8 @@ class MenuItem extends Element
                     }
 
                     $disable = strpos($node->attributes('disable'), $item->type) !== false ? true : false;
-                    $options[] = Builder\Select::option($item->id, '&#160;&#160;&#160;' . $item->treename, 'value', 'text', $disable);
+                    $options[] = Builder\Select::option($item->id, '&#160;&#160;&#160;' .
+                        $item->treename, 'value', 'text', $disable);
                 }
             }
         }

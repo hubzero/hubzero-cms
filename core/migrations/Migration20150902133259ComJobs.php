@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding expiredate column to jobs table
- **/
+ *
+ */
 class Migration20150902133259ComJobs extends Base
 {
     /**

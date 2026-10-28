@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Oaipmh\Models;
 
 use Components\Oaipmh\Models\Xml\Response;
@@ -28,13 +29,13 @@ class Service extends Obj
     /**
      * OAI-PMH error types
      */
-    const ERROR_BAD_VERB             = 'badVerb';
-    const ERROR_BAD_ARGUMENT         = 'badArgument';
-    const ERROR_BAD_ID               = 'idDoesNotExist';
-    const ERROR_BAD_FORMAT           = 'cannotDisseminateFormat';
-    const ERROR_RECORD_NOT_FOUND     = 'noRecordsMatch';
-    const ERROR_BAD_RESUMPTION_TOKEN = 'badResumptionToken';
-    const ERROR_NO_SET_HIERARCHY     = 'noSetHierarchy';
+    public const ERROR_BAD_VERB             = 'badVerb';
+    public const ERROR_BAD_ARGUMENT         = 'badArgument';
+    public const ERROR_BAD_ID               = 'idDoesNotExist';
+    public const ERROR_BAD_FORMAT           = 'cannotDisseminateFormat';
+    public const ERROR_RECORD_NOT_FOUND     = 'noRecordsMatch';
+    public const ERROR_BAD_RESUMPTION_TOKEN = 'badResumptionToken';
+    public const ERROR_NO_SET_HIERARCHY     = 'noSetHierarchy';
 
     /**
      * Schema to use
@@ -86,11 +87,13 @@ class Service extends Obj
         if ($stylesheet) {
             $this->response->stylesheet((string) $stylesheet);
         }
+        $schemaLoc = 'http://www.openarchives.org/OAI/2.0/ '
+            . 'http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd';
         $this->response
             ->element('OAI-PMH')
                 ->attr('xmlns', 'http://www.openarchives.org/OAI/2.0/')
                 ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-                ->attr('xsi:schemaLocation', 'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd')
+                ->attr('xsi:schemaLocation', $schemaLoc)
                 ->element('responseDate', gmdate('c', time()))->end();
 
         $this->loadSchemas();
@@ -589,7 +592,8 @@ class Service extends Obj
      */
     public function decodeToken($resumption)
     {
-        $resumption = base64_decode(str_pad(strtr($resumption, '-_', '+/'), strlen($resumption) % 4, '=', STR_PAD_RIGHT));
+        $padded = str_pad(strtr($resumption, '-_', '+/'), strlen($resumption) % 4, '=', STR_PAD_RIGHT);
+        $resumption = base64_decode($padded);
         if (function_exists('gzuncompress')) {
             $resumption = gzuncompress($resumption);
         }

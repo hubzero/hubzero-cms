@@ -258,7 +258,10 @@ class Generator
             $phpdoc = $factory->create($docblock);
 
             // Skip methods we don't want processed
-            if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), array('registerTask', 'unregisterTask', 'indexTask'))) {
+            if (
+                substr($method->getName(), -4) != 'Task' ||
+                in_array($method->getName(), array('registerTask', 'unregisterTask', 'indexTask'))
+            ) {
                 continue;
             }
 
@@ -270,7 +273,9 @@ class Generator
             // Skip if we dont have a short desc
             // but put in error
             if (!$phpdoc->getSummary()) {
-                $this->output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method->getName(), $file);
+                $this->
+                    output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method->
+                    getName(), $file);
                 continue;
             }
 
@@ -283,7 +288,8 @@ class Generator
             // Create endpoint data array
             $endpoint = array(
                 //'name'        => substr($method->getName(), 0, -4),
-                //'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), // $phpdoc->getLongDescription()->getContents()
+                // 'description' => preg_replace('/\s+/', ' ', $phpdoc->getShortDescription()), //
+                // $phpdoc->getLongDescription()->getContents()
                 'name'        => $phpdoc->getSummary(),
                 'description' => $phpdoc->getDescription()->render(),
                 'method'      => '',
@@ -308,7 +314,11 @@ class Generator
                     $parameter = json_decode($content);
 
                     if (json_last_error() != JSON_ERROR_NONE) {
-                        $this->output['errors'][] = sprintf('Unable to parse parameter info for method "%s" in "%s"', $method->getName(), $file);
+                        $this->output['errors'][] = sprintf(
+                            'Unable to parse parameter info for method "%s" in "%s"',
+                            $method->getName(),
+                            $file
+                        );
                         continue;
                     }
 

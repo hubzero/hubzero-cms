@@ -66,6 +66,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_generator = 'HUBzero - The open source platform for scientific and educational collaboration';
 
     /**
@@ -73,6 +74,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_mdate = '';
 
     /**
@@ -80,6 +82,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_tab = "\11";
 
     /**
@@ -87,6 +90,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_lineEnd = "\12";
 
     /**
@@ -94,6 +98,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_charset = 'utf-8';
 
     /**
@@ -101,6 +106,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_mime = '';
 
     /**
@@ -108,6 +114,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_namespace = '';
 
     /**
@@ -115,6 +122,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_profile = '';
 
     /**
@@ -122,6 +130,7 @@ class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_scripts = array();
 
     /**
@@ -129,6 +138,7 @@ class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_script = array();
 
     /**
@@ -136,6 +146,7 @@ class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_styleSheets = array();
 
     /**
@@ -143,6 +154,7 @@ class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_style = array();
 
     /**
@@ -150,6 +162,7 @@ class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_metaTags = array();
 
     /**
@@ -157,6 +170,7 @@ class Base extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_engine = null;
 
     /**
@@ -164,6 +178,7 @@ class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_type = null;
 
     /**
@@ -171,6 +186,7 @@ class Base extends Obj
      *
      * @var  mixed (depends on the renderer)
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public static $_buffer = null;
 
     /**
@@ -179,6 +195,7 @@ class Base extends Obj
      * @param   array  $options  Associative array of options
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($options = array())
     {
         parent::__construct();
@@ -640,6 +657,7 @@ class Base extends Obj
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _getLineEnd()
     {
         return $this->_lineEnd;
@@ -663,6 +681,7 @@ class Base extends Obj
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _getTab()
     {
         return $this->_tab;
@@ -706,9 +725,12 @@ class Base extends Obj
     public function render($cache = false, $params = array())
     {
         if ($mdate = $this->getModifiedDate()) {
-            \App::get('response')->headers->set('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) . ' GMT' */);
+            \App::get('response')->headers->set('Last-Modified', $mdate /* gmdate('D, d M Y H:i:s', time() + 900) .
+                ' GMT' */);
         }
 
-        \App::get('response')->headers->set('Content-Type', $this->_mime . ($this->_charset ? '; charset=' . $this->_charset : ''));
+        \App::get('response')->headers->set('Content-Type', $this->_mime .
+            ($this->_charset ? '; charset=' .
+            $this->_charset : ''));
     }
 }

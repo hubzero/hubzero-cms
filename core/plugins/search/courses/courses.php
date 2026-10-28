@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,6 +16,8 @@ require_once Component::path('com_courses') . DS . 'models' . DS . 'orm' . DS . 
 
 /**
  * Search course entries
+ */
+/**
  */
 class plgSearchCourses extends \Hubzero\Plugin\Plugin
 {
@@ -141,13 +144,11 @@ class plgSearchCourses extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->state == 1 && $row->access == 1) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 2) {
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

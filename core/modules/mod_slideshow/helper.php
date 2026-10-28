@@ -47,7 +47,8 @@ class Helper extends Module
         $noflash        = $this->params->get('stype', 0);
         $noflash_link   = $this->params->get('noflash_link', '');
 
-        $swffile = rtrim(Assets::getModuleImage($this->module->module, 'banner' . $width . 'x' . $height . '.swf'), '.swf');
+        $swfFilename = 'banner' . $width . 'x' . $height . '.swf';
+        $swffile = rtrim(Assets::getModuleImage($this->module->module, $swfFilename), '.swf');
 
         // check for directory
         if (!is_dir(PATH_APP . DS . $image_dir)) {
@@ -118,7 +119,11 @@ class Helper extends Module
 
         if (!$noflash) {
             $this->js();
-            $this->js('HUB.ModSlideshow.src="' . $swffile . '"; HUB.ModSlideshow.alias="' . $alias . '"; HUB.ModSlideshow.height="' . $height . '"; HUB.ModSlideshow.width="' . $width . '"');
+            $jsConfig = 'HUB.ModSlideshow.src="' . $swffile . '"; '
+                . 'HUB.ModSlideshow.alias="' . $alias . '"; '
+                . 'HUB.ModSlideshow.height="' . $height . '"; '
+                . 'HUB.ModSlideshow.width="' . $width . '"';
+            $this->js($jsConfig);
         }
 
         $this->width = $width;

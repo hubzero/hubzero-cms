@@ -15,7 +15,10 @@ defined('_HZEXEC_') or die;
             <a href="<?php echo $item->route; ?>">
                 <?php
                 if ($showDate) :
-                    echo '<time datetime="' . $item->created . '">' . Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')) . '</time> - ';
+                    $formattedDate = Date::of($item->created)
+                        ->toLocal(Lang::txt('DATE_FORMAT_LC4'));
+                    echo '<time datetime="' . $item->created . '">'
+                        . $formattedDate . '</time> - ';
                 endif;
                 ?>
                 <?php echo $this->escape($item->title); ?>

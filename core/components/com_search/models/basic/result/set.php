@@ -185,6 +185,7 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tags()
     {
         return ($this->tags instanceof Blank) ? array() : $this->tags;
@@ -197,6 +198,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_limit()
     {
         return $this->limit;
@@ -209,6 +211,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_offset()
     {
         return $this->offset;
@@ -222,6 +225,7 @@ class Set extends Obj implements Iterator
      * @param      unknown $limit Parameter description (if any) ...
      * @return     void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function set_limit($limit)
     {
         $this->limit = $limit;
@@ -235,6 +239,7 @@ class Set extends Obj implements Iterator
      * @param      unknown $offset Parameter description (if any) ...
      * @return     void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function set_offset($offset)
     {
         $this->offset = $offset;
@@ -247,6 +252,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_widgets()
     {
         return $this->widgets;
@@ -259,6 +265,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_shown_results()
     {
         return $this->shown_results;
@@ -271,6 +278,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_shown_count()
     {
         return count($this->shown_results);
@@ -283,6 +291,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_result_counts()
     {
         return $this->result_counts;
@@ -295,6 +304,7 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function get_tag_weight_modifier()
     {
         return array_key_exists('tagmod', self::$plugin_weights) ? self::$plugin_weights['tagmod'] : 1.3;
@@ -307,6 +317,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_custom_title()
     {
         return $this->custom_title;
@@ -345,7 +356,9 @@ class Set extends Obj implements Iterator
                     $refl = new ReflectionClass("plgSearch$plugin->name");
                     if ($refl->hasMethod('onSearchCustom')) {
                         $this->current_plugin = $plugin->name;
-                        if ($this->custom_title = $refl->getMethod('onSearchCustom')->invokeArgs(null, array($req, &$this, $authz))) {
+                        $method = $refl->getMethod('onSearchCustom');
+                        $args = array($req, &$this, $authz);
+                        if ($this->custom_title = $method->invokeArgs(null, $args)) {
                             break;
                         }
                     }
@@ -382,7 +395,9 @@ class Set extends Obj implements Iterator
                 'count' => 0
             );
 
-            // custom results like Google does when you enter a stock symbol. tags used to be implemented this way, but they got moved into the core so other plugins could use them to find tagged results
+            // custom results like Google does when you enter a stock symbol.
+            // tags used to be implemented this way, but they got moved into the core
+            // so other plugins could use them to find tagged results
             if ($refl->hasMethod('onSearchWidget')) {
                 $refl->getMethod('onSearchWidget')->invokeArgs(null, array($req, &$this->widgets, $authz));
             }
@@ -419,7 +434,7 @@ class Set extends Obj implements Iterator
 
         $this->highlighter = $this->terms->get_word_regex();
         foreach ($this->results as $res) {
-            $this->process_result($res);
+            $this->processResult($res);
         }
 
         // call weighters
@@ -438,12 +453,16 @@ class Set extends Obj implements Iterator
         foreach ($flat_results as $res) {
             $plugin = $res->get_plugin();
             $this->result_counts[$plugin]['count']++;
-            if ((!$term_plugin || $term_plugin == $plugin) && (!$term_section || $term_section == $res->get_section_key())) {
+            $pluginMatch = !$term_plugin || $term_plugin == $plugin;
+            $sectionMatch = !$term_section || $term_section == $res->get_section_key();
+            if ($pluginMatch && $sectionMatch) {
                 if (array_key_exists($plugin, self::$plugin_weights)) {
                     $res->adjust_weight(self::$plugin_weights[$plugin], $plugin . ' base weight');
                 }
                 $used = array();
-                foreach (array_key_exists($plugin, $weighters) ? array_merge($weighters['all'], $weighters[$plugin]) : $weighters['all'] as $weight_plugin) {
+                $pluginWeighters = array_key_exists($plugin, $weighters)
+                    ? array_merge($weighters['all'], $weighters[$plugin]) : $weighters['all'];
+                foreach ($pluginWeighters as $weight_plugin) {
                     list($name, $mtd) = $weight_plugin;
                     if (!array_key_exists($name, $used)) {
                         $used[$name] = true;
@@ -459,7 +478,7 @@ class Set extends Obj implements Iterator
                 $this->shown_results[] = $res;
             }
         }
-        usort($this->shown_results, array($this, 'sort_results'));
+        usort($this->shown_results, array($this, 'sortResults'));
 
         $links = array();
         foreach ($this->shown_results as $res) {
@@ -586,7 +605,7 @@ class Set extends Obj implements Iterator
      * @param      mixed $b Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    private function sort_results($a, $b)
+    private function sortResults($a, $b)
     {
         $weight = array(
             'a' => 0,
@@ -604,7 +623,9 @@ class Set extends Obj implements Iterator
                 continue;
             }
 
-            $weight[$res > 0 ? 'a' : 'b'] += array_key_exists($plugin, self::$plugin_weights) ? self::$plugin_weights[$plugin] : 1;
+            $pluginWeight = array_key_exists($plugin, self::$plugin_weights)
+                ? self::$plugin_weights[$plugin] : 1;
+            $weight[$res > 0 ? 'a' : 'b'] += $pluginWeight;
         }
 
         $diff = $weight['a'] - $weight['b'];
@@ -642,7 +663,7 @@ class Set extends Obj implements Iterator
      * @param      mixed $res Parameter description (if any) ...
      * @return     unknown Return description (if any) ...
      */
-    private function process_result($res)
+    private function processResult($res)
     {
         $res = $res->to_associative();
 
@@ -655,7 +676,7 @@ class Set extends Obj implements Iterator
             $this->processed_results[] = $res;
         } else {
             foreach ($res as $subres) {
-                $this->process_result($subres);
+                $this->processResult($subres);
             }
         }
     }
@@ -667,6 +688,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_total_count()
     {
         return $this->total_count;
@@ -679,6 +701,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_total_list_count()
     {
         return $this->total_list_count;
@@ -691,6 +714,7 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_plugin_list_count()
     {
         @list($term_plugin, $term_section) = $this->terms->get_section();
@@ -712,6 +736,7 @@ class Set extends Obj implements Iterator
      *
      * @return     mixed Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_plugin_count()
     {
         list($term_plugin, $term_section) = $this->terms->get_section();
@@ -729,6 +754,7 @@ class Set extends Obj implements Iterator
      *
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_shown()
     {
         return $this->shown_results;

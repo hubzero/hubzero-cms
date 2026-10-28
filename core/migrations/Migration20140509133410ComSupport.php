@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating support categories field names
- **/
+ *
+ */
 class Migration20140509133410ComSupport extends Base
 {
     /**
@@ -23,12 +25,14 @@ class Migration20140509133410ComSupport extends Base
     {
         if ($this->db->tableExists('#__support_categories')) {
             if (!$this->db->tableHasField('#__support_categories', 'section_id')) {
-                $query = "ALTER TABLE `#__support_categories` CHANGE `section` `section_id` INT(11)  NOT NULL  DEFAULT '0';";
+                $query = "ALTER TABLE `#__support_categories` "
+                    . "CHANGE `section` `section_id` INT(11)  NOT NULL  DEFAULT '0';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__support_categories', 'category')) {
-                $query = "ALTER TABLE `#__support_categories` CHANGE `category` `alias` VARCHAR(250)  NOT NULL  DEFAULT '';";
+                $query = "ALTER TABLE `#__support_categories` "
+                    . "CHANGE `category` `alias` VARCHAR(250)  NOT NULL  DEFAULT '';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -38,7 +42,8 @@ class Migration20140509133410ComSupport extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__support_categories', 'created')) {
-                $query = "ALTER TABLE `#__support_categories` ADD `created` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__support_categories` "
+                    . "ADD `created` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -48,7 +53,8 @@ class Migration20140509133410ComSupport extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__support_categories', 'modified')) {
-                $query = "ALTER TABLE `#__support_categories` ADD `modified` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__support_categories` "
+                    . "ADD `modified` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -67,12 +73,14 @@ class Migration20140509133410ComSupport extends Base
     {
         if ($this->db->tableExists('#__support_categories')) {
             if ($this->db->tableHasField('#__support_categories', 'section_id')) {
-                $query = "ALTER TABLE `#__support_categories` CHANGE `section_id` `section` INT(11)  NOT NULL  DEFAULT '0';";
+                $query = "ALTER TABLE `#__support_categories` "
+                    . "CHANGE `section_id` `section` INT(11)  NOT NULL  DEFAULT '0';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__support_categories', 'alias')) {
-                $query = "ALTER TABLE `#__support_categories` CHANGE `alias` `category` VARCHAR(50)  NOT NULL  DEFAULT '';";
+                $query = "ALTER TABLE `#__support_categories` "
+                    . "CHANGE `alias` `category` VARCHAR(50)  NOT NULL  DEFAULT '';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

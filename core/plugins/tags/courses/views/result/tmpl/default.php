@@ -6,12 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
 defined('_HZEXEC_') or die();
 ?>
 <li class="course-entry">
     <p class="title">
-        <a href="<?php echo Route::url($this->course->link()); ?>"><?php echo $this->escape(stripslashes($this->course->get('title'))); ?></a>
+        <a href="<?php echo Route::url($this->course->link()); ?>
+        "><?php echo $this->escape(stripslashes($this->course->get('title')));?></a>
     </p>
     <p class="details">
         <strong class="type">Courses</strong><span>|</span>'

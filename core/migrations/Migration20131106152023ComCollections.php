@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding fulltext key to collections tables
+  *
  **/
 class Migration20131106152023ComCollections extends Base
 {
@@ -27,7 +29,8 @@ class Migration20131106152023ComCollections extends Base
             && $this->db->tableHasField('#__collections_items', 'title')
             && $this->db->tableHasField('#__collections_items', 'description')
         ) {
-            $query = "ALTER TABLE `#__collections_items` ADD FULLTEXT KEY `idx_fulltxt_title_description` (`title`, `description`);";
+            $query = "ALTER TABLE `#__collections_items` ADD FULLTEXT KEY "
+                . "`idx_fulltxt_title_description` (`title`, `description`);";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -48,13 +51,19 @@ class Migration20131106152023ComCollections extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__collections_items') && $this->db->tableHasKey('#__collections_items', 'idx_fulltxt_title_description')) {
+        if (
+            $this->db->tableExists('#__collections_items')
+            && $this->db->tableHasKey('#__collections_items', 'idx_fulltxt_title_description')
+        ) {
             $query = "ALTER TABLE `#__collections_items` DROP INDEX `idx_fulltxt_title_description`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if ($this->db->tableExists('#__collections_posts') && $this->db->tableHasKey('#__collections_posts', 'idx_fulltxt_description')) {
+        if (
+            $this->db->tableExists('#__collections_posts')
+            && $this->db->tableHasKey('#__collections_posts', 'idx_fulltxt_description')
+        ) {
             $query = "ALTER TABLE `#__collections_posts` DROP INDEX `idx_fulltxt_description`;";
             $this->db->setQuery($query);
             $this->db->query();

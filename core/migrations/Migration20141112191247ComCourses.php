@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving course form dates to section dates table
- **/
+ *
+ */
 class Migration20141112191247ComCourses extends Base
 {
     /**
@@ -26,7 +28,8 @@ class Migration20141112191247ComCourses extends Base
         $query .= " FROM `#__courses_form_deployments` AS cfd";
         $query .= " LEFT JOIN `#__courses_forms` AS cf ON cfd.form_id = cf.id";
         $query .= " LEFT JOIN `#__courses_assets` AS ca ON cf.asset_id = ca.id";
-        $query .= " LEFT JOIN `#__courses_asset_associations` AS caa ON ca.id = caa.asset_id AND scope = 'asset_group'";
+        $query .= " LEFT JOIN `#__courses_asset_associations` AS caa "
+            . "ON ca.id = caa.asset_id AND scope = 'asset_group'";
         $query .= " LEFT JOIN `#__courses_asset_groups` AS cag ON caa.scope_id = cag.id";
         $query .= " LEFT JOIN `#__courses_units` AS cu ON cag.unit_id = cu.id";
         $this->db->setQuery($query);
@@ -49,13 +52,15 @@ class Migration20141112191247ComCourses extends Base
                     foreach ($sections as $section) {
                         $query  = "SELECT * FROM `#__courses_offering_section_dates`";
                         $query .= " WHERE `section_id` = " . $this->db->quote($section->id);
-                        $query .= " AND `scope` = 'asset' AND `scope_id` = " . $this->db->quote($deployment->asset_id);
+                        $query .= " AND `scope` = 'asset' "
+                            . "AND `scope_id` = " . $this->db->quote($deployment->asset_id);
                         $this->db->setQuery($query);
                         $found = $this->db->loadObject();
 
                         if (!$found) {
                             // No date exists...so add it
-                            $query  = "INSERT INTO `#__courses_offering_section_dates` (section_id, scope, scope_id, publish_up, publish_down, created) VALUES ";
+                            $query  = "INSERT INTO `#__courses_offering_section_dates` "
+                                . "(section_id, scope, scope_id, publish_up, publish_down, created) VALUES ";
                             $query .= "(" . $this->db->quote($section->id) . ",";
                             $query .= "'asset',";
                             $query .= $this->db->quote($deployment->asset_id) . ",";
@@ -66,8 +71,12 @@ class Migration20141112191247ComCourses extends Base
                             $this->db->setQuery($query);
                             $this->db->query();
                         } else {
-                            $start = (isset($found->publish_up) && $found->publish_up != '0000-00-00 00:00:00') ? $found->publish_up : $deployment->start_time;
-                            $end   = (isset($found->publish_down) && $found->publish_down != '0000-00-00 00:00:00') ? $found->publish_down : $deployment->end_time;
+                            $start = (isset($found->publish_up) && $found->publish_up != '0000-00-00 00:00:00')
+                                ? $found->publish_up
+                                : $deployment->start_time;
+                            $end = (isset($found->publish_down) && $found->publish_down != '0000-00-00 00:00:00')
+                                ? $found->publish_down
+                                : $deployment->end_time;
                             $query  = "UPDATE `#__courses_offering_section_dates` SET ";
                             $query .= "publish_up = " . $this->db->quote($start);
                             $query .= ", ";

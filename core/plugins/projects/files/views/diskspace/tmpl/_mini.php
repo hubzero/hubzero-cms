@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +26,17 @@ $warning          = ($inuse > $approachingQuota) ? 1 : 0;
 
 ?>
 <?php echo Lang::txt('PLG_PROJECTS_FILES_DISK_SPACE'); ?>
-<a href="<?php echo $this->url . '/?action=diskspace'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) {
-    echo 'class="quota-warning"';
-         } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse . '% ' . Lang::txt('PLG_PROJECTS_FILES_USED'); ?></span></span></span></a>
-     <span class="show-quota"><?php echo Lang::txt('PLG_PROJECTS_FILES_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
+<a href="<?php echo $this->url . '/?action=diskspace'; ?>"
+    title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"
+    ><span id="indicator-wrapper" <?php if ($warning) {
+        echo 'class="quota-warning"';
+                                  } ?>><span
+        id="indicator-area"
+        class="used:<?php echo $inuse; ?>">&nbsp;</span><span
+        id="indicator-value"><span><?php
+            echo $inuse . '% ' . Lang::txt('PLG_PROJECTS_FILES_USED');
+        ?></span></span></span></a>
+     <span class="show-quota"><?php
+        echo Lang::txt('PLG_PROJECTS_FILES_QUOTA') . ': '
+            . \Hubzero\Utility\Number::formatBytes($this->quota);
+        ?></span>

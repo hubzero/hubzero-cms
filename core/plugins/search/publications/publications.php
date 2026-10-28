@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,6 +18,8 @@ require_once __DIR__ . DS . 'childsorter.php';
 
 /**
  * Search plugin class for publications
+ */
+/**
  */
 class plgSearchPublications extends \Hubzero\Plugin\Plugin
 {
@@ -45,7 +48,8 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
         /*if ($groups)
         {
             $group_list = '(\'' . join('\', \'', $groups) . '\')';
-            $access = '(p.access IN (' . $viewlevels . ') OR ((v.access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
+            $access = '(p.access IN (' . $viewlevels . ') '
+                . 'OR ((v.access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
         }
         else
         {*/
@@ -75,19 +79,35 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $weight_authors = 'a.name LIKE \'%' . implode(' ', $terms['optional']) . '%\'';
-        $weight = $terms['stemmed'] ? 'match(v.title, v.description, v.abstract) against (\'' . join(' ', $terms['stemmed']) . '\')' : '0';
+        $optionalTerms = implode(' ', $terms['optional']);
+        $weight_authors = 'a.name LIKE \'%' . $optionalTerms . '%\'';
+        $weight = $terms['stemmed']
+            ? 'match(v.title, v.description, v.abstract) against (\'' . join(' ', $terms['stemmed']) . '\')'
+            : '0';
         foreach ($quoted_terms as $term) {
-            $weight .= " + (CASE WHEN v.title LIKE '%$term%' OR v.description LIKE '%$term%' OR v.abstract LIKE '%$term%' THEN 1 ELSE 0 END)";
+            $weight .= " + (CASE WHEN v.title LIKE '%$term%' OR v.description LIKE '%$term%' "
+                . "OR v.abstract LIKE '%$term%' THEN 1 ELSE 0 END)";
         }
 
         $addtl_where = array();
         foreach ($terms['mandatory'] as $mand) {
-            $addtl_where[] = "(v.title LIKE '%$mand%' OR v.description LIKE '%$mand%' OR v.abstract LIKE '%$mand%')";
+            $addtl_where[] = "(v.title LIKE '%$mand%' OR v.description LIKE '%$mand%' "
+                . "OR v.abstract LIKE '%$mand%')";
         }
         foreach ($terms['forbidden'] as $forb) {
-            $addtl_where[] = "(v.title NOT LIKE '%$forb%' AND v.description NOT LIKE '%$forb%' AND v.abstract NOT LIKE '%$forb%')";
+            $addtl_where[] = "(v.title NOT LIKE '%$forb%' AND v.description NOT LIKE '%$forb%' "
+                . "AND v.abstract NOT LIKE '%$forb%')";
         }
+
+        $linkConcat = "concat('index.php?option=com_publications&id=', "
+            . "coalesce(case when p.alias = '' then null else p.alias end, p.id))";
+        $authorsSubquery = "(SELECT group_concat(a.name order by a.ordering separator '\\n') "
+            . "FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)";
+        $authorIdsSubquery = "(SELECT group_concat(a.user_id order by a.ordering separator '\\n') "
+            . "FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)";
+        $whereClause = "v.state = 1 AND $access "
+            . "AND (v.published_up AND NOW() > v.published_up) "
+            . "AND (NOT v.published_down OR NOW() < v.published_down)";
 
         $sql = new \Components\Search\Models\Basic\Result\Sql(
             "SELECT
@@ -95,14 +115,12 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				v.publication_id,
 				v.title,
 				v.description,
-				concat('index.php?option=com_publications&id=', coalesce(case when p.alias = '' then null else p.alias end, p.id)) AS link,
+				$linkConcat AS link,
 				$weight AS weight,
 				v.published_up AS date,
 				c.alias AS section,
-				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
-					AS contributors,
-				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
-					AS contributor_ids,
+				$authorsSubquery AS contributors,
+				$authorIdsSubquery AS contributor_ids,
 				NULL AS parents
 			FROM #__publication_versions v
 			INNER JOIN #__publications p
@@ -110,7 +128,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			LEFT JOIN #__publication_categories c
 				ON c.id = p.category
 			WHERE
-				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down)
+				$whereClause
 				AND ($weight > 0)" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
             "UNION
@@ -119,14 +137,12 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 				v.publication_id,
 				v.title,
 				v.description,
-				concat('index.php?option=com_publications&id=', coalesce(case when p.alias = '' then null else p.alias end, p.id)) AS link,
+				$linkConcat AS link,
 				1 AS weight,
 				v.published_up AS date,
 				c.alias AS section,
-				(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
-					AS contributors,
-				(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
-					AS contributor_ids,
+				$authorsSubquery AS contributors,
+				$authorIdsSubquery AS contributor_ids,
 				NULL AS parents
 			FROM #__publication_authors a
 			INNER JOIN #__publication_versions v
@@ -136,7 +152,7 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 			LEFT JOIN #__publication_categories c
 				ON c.id = p.category
 			WHERE
-				v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down)
+				$whereClause
 				AND a.status = 1 AND $weight_authors"
         );
         $assoc = $sql->to_associative();
@@ -158,20 +174,20 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
             }
             // Fill in tagged resources that did not match on fulltext
             if ($tag_map) {
+                $tagIds = implode(',', array_keys($tag_map));
+                $addtlWhereSql = $addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '';
                 $sql = new \Components\Search\Models\Basic\Result\Sql(
                     "SELECT
 						p.id,
 						v.publication_id,
 						v.title,
 						v.description,
-						concat('index.php?option=com_publications&id=', coalesce(case when p.alias = '' then null else p.alias end, p.id)) AS link,
+						$linkConcat AS link,
 						0.5 as weight,
 						v.published_up AS date,
 						c.alias AS section,
-						(SELECT group_concat(a.name order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
-							AS contributors,
-						(SELECT group_concat(a.user_id order by a.ordering separator '\\n') FROM #__publication_authors a WHERE a.publication_version_id = v.id AND a.status=1)
-							AS contributor_ids,
+						$authorsSubquery AS contributors,
+						$authorIdsSubquery AS contributor_ids,
 						NULL AS parents
 					FROM #__publication_versions v
 					INNER JOIN #__publications p
@@ -179,14 +195,15 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 					LEFT JOIN #__publication_categories c
 						ON c.id = p.category
 					WHERE
-						v.state = 1 AND $access AND (v.published_up AND NOW() > v.published_up) AND (NOT v.published_down OR NOW() < v.published_down)
-						AND p.id in (" . implode(',', array_keys($tag_map)) . ")" . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
+						$whereClause
+						AND p.id in (" . $tagIds . ")" . $addtlWhereSql
                 );
                 foreach ($sql->to_associative() as $row) {
                     $rows = $sql->to_associative();
                     foreach ($rows as $row) {
                         if ($tag_map[$row->get('id')] > 1) {
-                            $row->adjust_weight($tag_map[$row->get('id')] / 8, 'tag bonus for non-matching but tagged publications');
+                            $tagBonus = 'tag bonus for non-matching but tagged publications';
+                            $row->adjust_weight($tag_map[$row->get('id')] / 8, $tagBonus);
                         }
                         $id_assoc[$row->get('id')] = $row;
                     }
@@ -273,7 +290,8 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 
                 // Get the name of the author
                 if (isset($row->latestVersion)) {
-                    $sql1 = "SELECT user_id, name FROM `#__publication_authors` WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
+                    $sql1 = "SELECT user_id, name FROM `#__publication_authors` "
+                        . "WHERE publication_version_id={$row->latestVersion} AND role != 'submitter';";
                     $authors = $db->setQuery($sql1)->query()->loadAssocList();
 
                     // Get any tags
@@ -281,7 +299,8 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
 						FROM `#__tags`
 						LEFT JOIN `#__tags_object`
 						ON `#__tags`.id=`#__tags_object`.tagid
-						WHERE `#__tags_object`.objectid = {$row->latestVersion} AND `#__tags_object`.tbl = 'publications';";
+						WHERE `#__tags_object`.objectid = {$row->latestVersion}
+						AND `#__tags_object`.tbl = 'publications';";
                     $tags = $db->setQuery($sql2)->query()->loadColumn();
                 } else {
                     $authors = array();
@@ -311,13 +330,11 @@ class plgSearchPublications extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->state == 1 && $row->access == 0) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 1) {
+                } elseif ($row->state == 1 && $row->access == 1) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

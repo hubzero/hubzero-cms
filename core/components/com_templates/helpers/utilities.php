@@ -190,11 +190,14 @@ class Utilities
         $html     = '';
 
         if (file_exists($thumb)) {
-            $html = Html::asset('image', ltrim(substr($thumb, strlen(PATH_ROOT)), DS), Lang::txt('COM_TEMPLATES_PREVIEW'));
+            $thumbPath = ltrim(substr($thumb, strlen(PATH_ROOT)), DS);
+            $html = Html::asset('image', $thumbPath, Lang::txt('COM_TEMPLATES_PREVIEW'));
 
             if (file_exists($preview)) {
                 $preview = $baseUrl . '/templates/' . $template . '/template_preview.png';
-                $html    = '<a href="' . $preview . '" class="modal" title="' . Lang::txt('COM_TEMPLATES_CLICK_TO_ENLARGE') . '">' . $html . '</a>';
+                $title = Lang::txt('COM_TEMPLATES_CLICK_TO_ENLARGE');
+                $html = '<a href="' . $preview . '" class="modal" title="' . $title . '">'
+                    . $html . '</a>';
             }
         }
 

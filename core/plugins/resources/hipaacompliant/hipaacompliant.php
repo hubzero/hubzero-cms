@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Allow saving of hipaa compliance checkbox
@@ -39,7 +37,8 @@ class plgResourcesHipaacompliant extends \Hubzero\Plugin\Plugin
 
         if ($compliant == 2) {
             if (!$resource->group_owner || !in_array($resource->access, array(4, 5))) {
-                return Lang::txt('If materials are marked as containing potentially sensitive data, the Resource must be private to a group.');
+                return Lang::txt('If materials are marked as containing potentially sensitive data,
+                     the Resource must be private to a group.');
             }
         }
 

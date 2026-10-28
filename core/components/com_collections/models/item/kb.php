@@ -27,6 +27,7 @@ class Kb extends GenericItem
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_type = 'kb';
 
     /**

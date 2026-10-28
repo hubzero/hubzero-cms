@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,7 +51,10 @@ class Basic extends SiteController
         $terms = new Terms(Request::getString('terms'));
 
         // Set the document title
-        Document::setTitle($terms->is_set() ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw())) : 'Search');
+        $title = $terms->is_set()
+            ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms->get_raw()))
+            : 'Search';
+        Document::setTitle($title);
 
         // Get search results
         $results = new Set($terms);

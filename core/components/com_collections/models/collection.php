@@ -29,13 +29,14 @@ class Collection extends Base
      *
      * @var boolean
      */
-    private $_authorized = false;
+    private $authorized = false;
 
     /**
      * Table class name
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Collections\\Tables\\Collection';
 
     /**
@@ -43,6 +44,7 @@ class Collection extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_collections.collection.description';
 
     /**
@@ -50,35 +52,35 @@ class Collection extends Base
      *
      * @var object
      */
-    private $_posts = null;
+    private $posts = null;
 
     /**
      * Post
      *
      * @var object
      */
-    private $_post = null;
+    private $post = null;
 
     /**
      * Item
      *
      * @var object
      */
-    private $_item = null;
+    private $item = null;
 
     /**
      * Following
      *
      * @var object
      */
-    private $_following = null;
+    private $followingFlag = null;
 
     /**
      * Adapter
      *
      * @var object
      */
-    private $_adapter = null;
+    private $adapter = null;
 
     /**
      * Constructor
@@ -97,17 +99,17 @@ class Collection extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $this->_tbl->load($oid, $object_id, $object_type);
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $this->bind($oid);
 
             if (isset($oid->following)) {
-                $this->_following = $oid->following ? true : false;
+                $this->followingFlag = $oid->following ? true : false;
             }
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $this->bind($oid);
 
             if (isset($oid['following'])) {
-                $this->_following = $oid['following'] ? true : false;
+                $this->followingFlag = $oid['following'] ? true : false;
             }
         }
     }
@@ -120,7 +122,7 @@ class Collection extends Base
      * @param   string   $object_type  [member, group]
      * @return  object
      */
-    static function &getInstance($oid = null, $object_id = 0, $object_type = 'member')
+    public static function &getInstance($oid = null, $object_id = 0, $object_type = 'member')
     {
         static $instances;
 
@@ -221,7 +223,7 @@ class Collection extends Base
      */
     public function item()
     {
-        if (!($this->_item instanceof Item)) {
+        if (!($this->item instanceof Item)) {
             $item = new Tables\Item($this->_db);
             $item->loadType($this->get('id'), 'collection');
             if (!$item->get('id')) {
@@ -240,9 +242,9 @@ class Collection extends Base
                 }
             }
 
-            $this->_item = new Item($item);
+            $this->item = new Item($item);
         }
-        return $this->_item;
+        return $this->item;
     }
 
     /**
@@ -271,30 +273,30 @@ class Collection extends Base
         // If the current post isn't set
         //    OR the ID passed doesn't equal the current post's ID
         if (
-            !isset($this->_post)
-            || ($id !== null && (int) $this->_post->get('id') != $id)
+            !isset($this->post)
+            || ($id !== null && (int) $this->post->get('id') != $id)
         ) {
             // Reset current offering
-            $this->_post = null;
+            $this->post = null;
 
             // If the list of all posts is available ...
-            if (isset($this->_posts) && $this->_posts instanceof ItemList) {
+            if (isset($this->posts) && $this->posts instanceof ItemList) {
                 // Find a post in the list that matches the ID passed
                 foreach ($this->posts() as $key => $post) {
                     if ((int) $post->get('id') == $id) {
                         // Set current offering
-                        $this->_post = $post;
+                        $this->post = $post;
                         break;
                     }
                 }
             }
 
-            if (!$this->_post) {
-                $this->_post = Post::getInstance($id);
+            if (!$this->post) {
+                $this->post = Post::getInstance($id);
             }
         }
         // Return current post
-        return $this->_post;
+        return $this->post;
     }
 
     /**
@@ -330,7 +332,7 @@ class Collection extends Base
             return $tbl->getCount($filters);
         }
 
-        if (!isset($this->_posts) || !($this->_posts instanceof ItemList)) {
+        if (!isset($this->posts) || !($this->posts instanceof ItemList)) {
             $tbl = new Tables\Post($this->_db);
 
             if ($results = $tbl->getRecords($filters)) {
@@ -373,10 +375,10 @@ class Collection extends Base
                 $results = array();
             }
 
-            $this->_posts = new ItemList($results);
+            $this->posts = new ItemList($results);
         }
 
-        return $this->_posts;
+        return $this->posts;
     }
 
     /**
@@ -466,8 +468,8 @@ class Collection extends Base
      */
     public function isFollowing($follower_id = null, $follower_type = 'member')
     {
-        if (!isset($this->_following)) {
-            $this->_following = false;
+        if (!isset($this->followingFlag)) {
+            $this->followingFlag = false;
 
             if (!$follower_id && $follower_type == 'member') {
                 $follower_id = User::get('id');
@@ -475,10 +477,10 @@ class Collection extends Base
 
             $follow = new Following($this->get('id'), 'collection', $follower_id, $follower_type);
             if ($follow->exists()) {
-                $this->_following = true;
+                $this->followingFlag = true;
             }
         }
-        return $this->_following;
+        return $this->followingFlag;
     }
 
     /**
@@ -536,7 +538,7 @@ class Collection extends Base
      */
     public function link()
     {
-        return $this->_adapter()->build();
+        return $this->adapter()->build();
     }
 
     /**
@@ -602,9 +604,9 @@ class Collection extends Base
      *
      * @return  object
      */
-    private function _adapter()
+    private function adapter()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapter) {
             $scope = strtolower((string) $this->get('object_type', 'site'));
             $scope = ($scope ?: 'site');
 
@@ -613,16 +615,21 @@ class Collection extends Base
             if (!class_exists($cls)) {
                 $path = __DIR__ . '/adapters/' . $scope . '.php';
                 if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for collection #%s', $scope, $this->get('id')));
+                    $msg = Lang::txt(
+                        'Invalid scope of "%s" for collection #%s',
+                        $scope,
+                        $this->get('id')
+                    );
+                    throw new \InvalidArgumentException($msg);
                 }
                 include_once $path;
             }
 
-            $this->_adapter = new $cls($this->get('object_id'));
-            $this->_adapter->set('id', $this->get('id'));
-            $this->_adapter->set('alias', $this->get('alias'));
+            $this->adapter = new $cls($this->get('object_id'));
+            $this->adapter->set('id', $this->get('id'));
+            $this->adapter->set('alias', $this->get('alias'));
         }
-        return $this->_adapter;
+        return $this->adapter;
     }
 
     /**
@@ -644,7 +651,7 @@ class Collection extends Base
 
         // If private
         if ($this->get('access') == 4) {
-            return $this->_adapter()->canAccess($user_id);
+            return $this->adapter()->canAccess($user_id);
         }
 
         return true;

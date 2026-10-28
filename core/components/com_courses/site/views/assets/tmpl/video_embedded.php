@@ -22,7 +22,7 @@ if (preg_match('/<iframe(.*?)src="([^"]+)"([^>]*)>(.*?)<\/iframe>/si', $this->as
 
         $this->asset->content = str_replace($matches[2], $url, $this->asset->content);
         $this->asset->content = str_replace('<iframe', '<iframe id="player"', $this->asset->content);
-    } else if (stristr($matches[2], 'vimeo')) {
+    } elseif (stristr($matches[2], 'vimeo')) {
         $url = $matches[2];
 
         $prfx = '&';
@@ -34,8 +34,8 @@ if (preg_match('/<iframe(.*?)src="([^"]+)"([^>]*)>(.*?)<\/iframe>/si', $this->as
 
         $this->asset->content = str_replace($matches[2], $url, $this->asset->content);
         $this->asset->content = str_replace('<iframe', '<iframe id="player"', $this->asset->content);
-    } else if (stristr($matches[2], 'blip')) {
-    } else if (stristr($matches[2], 'kaltura')) {
+    } elseif (stristr($matches[2], 'blip')) {
+    } elseif (stristr($matches[2], 'kaltura')) {
     }
 }
 ?>

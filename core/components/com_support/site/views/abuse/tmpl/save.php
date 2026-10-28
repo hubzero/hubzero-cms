@@ -32,7 +32,11 @@ $this->css();
                     <p><?php echo Lang::txt('COM_SUPPORT_REPORT_NUMBER_REFERENCE', $this->report->id); ?></p>
                 <?php } ?>
                 <?php if ($this->returnlink) { ?>
-                    <p><a class="btn" href="<?php echo $this->returnlink; ?>"><?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_CONTINUE'); ?></a></p>
+                    <p>
+                        <a class="btn" href="<?php echo $this->returnlink; ?>">
+                            <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_CONTINUE'); ?>
+                        </a>
+                    </p>
                 <?php } ?>
                 </div>
             </div>

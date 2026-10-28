@@ -367,7 +367,7 @@ class Media extends Base
                     $ext      = isset($fileInfo['extension']) ? strtolower($fileInfo['extension']) : '';
                     if ($this->view->type == 'images' && !in_array($ext, array('jpg','jpeg','png','gif','bmp','tiff'))) {
                         unset($files[$k]);
-                    } else if ($this->view->type == 'files' && in_array($ext, array('jpg','jpeg','png','gif','bmp','tiff'))) {
+                    } elseif ($this->view->type == 'files' && in_array($ext, array('jpg','jpeg','png','gif','bmp','tiff'))) {
                         unset($files[$k]);
                     }
                 }

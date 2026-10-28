@@ -237,7 +237,8 @@ class Tags extends SiteController
                             foreach ($response['children'] as $sresponse) {
                                 //$this->view->total += $sresponse['total'];
 
-                                if (is_array($sresponse['results']) && !empty($sresponse['results']) && ($parent == $response['name'])) {
+                                $hasResults = is_array($sresponse['results']) && !empty($sresponse['results']);
+                                if ($hasResults && ($parent == $response['name'])) {
                                     $this->view->results = $sresponse['results'];
                                     break 2;
                                 }
@@ -317,14 +318,18 @@ class Tags extends SiteController
                     'name' => $name
                 );
 
+                $tagLower = strtolower($row->get('tag'));
+                $nameLower = strtolower($name);
+                $searchLower = strtolower($filters['search']);
+                $searchWithSpace = $filters['search'] . ' ';
+
                 // Find the exact match
-                if (strtolower($row->get('tag')) == strtolower($filters['search']) || strtolower($name) == strtolower($filters['search'])) {
+                if ($tagLower == $searchLower || $nameLower == $searchLower) {
                     $exactMatches[] = $item;
-                } elseif (stripos($row->get('tag'), $filters['search'] . ' ') === 0 || stripos($name, $filters['search'] . ' ') === 0) {
+                } elseif (stripos($row->get('tag'), $searchWithSpace) === 0 || stripos($name, $searchWithSpace) === 0) {
                     $beginsWithWord[] = $item;
-                }
-                // Prioritize beginning of the string
-                elseif (stripos($row->get('tag'), $filters['search']) === 0 || stripos($name, $filters['search']) === 0) {
+                } elseif (stripos($tagLower, $searchLower) === 0 || stripos($nameLower, $searchLower) === 0) {
+                    // Prioritize beginning of the string
                     $beginWith[] = $item;
                 } else {
                     $json[] = $item;
@@ -782,9 +787,11 @@ class Tags extends SiteController
         $sortby = Request::getInt('sortby', '');
         $search = urldecode(Request::getString('search', ''));
 
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . urlencode($search) . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start)
-        );
+        $url = 'index.php?option=' . $this->_option . '&task=browse';
+        $url .= '&search=' . urlencode($search) . '&sortby=' . $sortby;
+        $url .= '&limit=' . $limit . '&limitstart=' . $start;
+
+        App::redirect(Route::url($url));
     }
 
     /**
@@ -839,9 +846,11 @@ class Tags extends SiteController
         $count  = Request::getInt('count', 1);
 
         // Redirect back to browse mode
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=browse&search=' . $search . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count)
-        );
+        $url = 'index.php?option=' . $this->_option . '&task=browse';
+        $url .= '&search=' . $search . '&sortby=' . $sortby;
+        $url .= '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count;
+
+        App::redirect(Route::url($url));
     }
 
     /**
@@ -867,6 +876,7 @@ class Tags extends SiteController
      * @param   array  $tags  Tags currently viewing
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway($tags = null)
     {
         if (Pathway::count() <= 0) {
@@ -902,6 +912,7 @@ class Tags extends SiteController
      * @param   array  $tags  Tags currently viewing
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle($tags = null)
     {
         $this->view->title = Lang::txt(strtoupper($this->_option));
@@ -924,6 +935,7 @@ class Tags extends SiteController
      *
      * @return  boolean  True on success
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'tag', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

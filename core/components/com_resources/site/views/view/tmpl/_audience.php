@@ -44,7 +44,7 @@ if ($this->audience && !$this->audience->isNew()) { ?>
                 // figure out text label
                 if (count($selected) == 1) {
                     $txtlabel = $labels[$selected[0]]['title'];
-                } else if (count($selected) > 1) {
+                } elseif (count($selected) > 1) {
                     $first     = array_shift($selected);
                     $first     = $labels[$first]['title'];
                     $firstbits = explode("-", $first);
@@ -93,7 +93,12 @@ if ($this->audience && !$this->audience->isNew()) { ?>
                     <?php } ?>
                     </tbody>
                 </table>
-                <p class="learnmore"><a href="<?php echo $this->audiencelink; ?>"><?php echo Lang::txt('Learn more'); ?> &rsaquo;</a></p>
+                <p class="learnmore"><a
+                   href="<?php echo $this->audiencelink; ?>"><?php
+                    echo
+                    Lang::txt('Learn more');
+                    ?>
+                   &rsaquo;</a></p>
             </div>
         <?php } ?>
     </div>

@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script to add a doi_shoulder column
  **/
@@ -40,7 +37,9 @@ class Migration20190107140800ComResources extends Base
             $params = json_decode($row);
 
             if (isset($params->doi_shoulder) && $params->doi_shoulder) {
-                $query = "UPDATE `#__doi_mapping` SET `doi_shoulder`=" . $this->db->quote($params->doi_shoulder) . " WHERE `doi_shoulder` IS NULL";
+                $query = "UPDATE `#__doi_mapping` SET `doi_shoulder`="
+                    . $this->db->quote($params->doi_shoulder)
+                    . " WHERE `doi_shoulder` IS NULL";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

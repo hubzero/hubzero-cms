@@ -14,10 +14,23 @@ $task = ($nextstep == 5) ? 'preview' : 'start';
 $dev = ($this->version == 'dev') ? 1 : 0;
 
 if ($this->version == 'dev') {
-    $v = ($this->status['version'] && $this->status['version'] != $this->status['currentversion']) ? $this->status['version'] : '';
+    $v = ($this->status['version'] && $this->status['version'] != $this->status['currentversion'])
+        ? $this->status['version'] : '';
 } else {
     $v = $this->status['version'];
 }
+
+$statusUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=pipeline&task=status&app=' . $this->row->alias
+);
+$newUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=pipeline&task=create'
+);
+$formAction = Route::url('index.php?option=' . $this->option);
+$prevLabel = '&lt; ' . ucfirst(Lang::txt('COM_TOOLS_PREVIOUS'));
+$nextLabel = ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT'));
 
 $this->css('resource.css')
      ->js('resource.js');
@@ -27,8 +40,12 @@ $this->css('resource.css')
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="icon-status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-            <li><a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+            <li><a class="icon-status btn" href="<?php echo $statusUrl; ?>"><?php
+                echo Lang::txt('COM_TOOLS_TOOL_STATUS');
+            ?></a></li>
+            <li><a class="icon-add btn" href="<?php echo $newUrl; ?>"><?php
+                echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL');
+            ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -48,16 +65,20 @@ $this->css('resource.css')
 </section>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
+    <form action="<?php echo $formAction; ?>" method="post" id="hubForm">
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
         <?php } ?>
 
         <div class="steps-nav">
             <?php if ($this->step != 1) { ?>
-                <span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
+                <span class="step-prev"><input type="button"
+                    value="<?php echo $prevLabel; ?>"
+                    class="btn returntoedit" /></span>
             <?php } ?>
-            <span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" class="btn" /></span>
+            <span class="step-next"><input type="submit"
+                value="<?php echo $nextLabel; ?>"
+                class="btn" /></span>
         </div>
 
         <?php
@@ -103,9 +124,13 @@ $this->css('resource.css')
 
         <div class="steps-nav">
             <?php if ($this->step != 1) { ?>
-                <span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
+                <span class="step-prev"><input type="button"
+                    value="<?php echo $prevLabel; ?>"
+                    class="btn returntoedit" /></span>
             <?php } ?>
-            <span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_SAVE_AND_GO_NEXT')); ?>" class="btn" /></span>
+            <span class="step-next"><input type="submit"
+                value="<?php echo $nextLabel; ?>"
+                class="btn" /></span>
         </div>
     </form>
 </section>

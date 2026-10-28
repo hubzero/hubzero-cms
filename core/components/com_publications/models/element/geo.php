@@ -22,6 +22,7 @@ class Geo extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Geo Location';
 
     /**
@@ -29,6 +30,7 @@ class Geo extends Base
      *
      * @var  bool
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_script = false;
 
     /**
@@ -49,8 +51,11 @@ class Geo extends Base
         } else {
             $output .= '>';
         }
-        $output .= Lang::txt($label) . ' <span class="hint">' . Lang::txt('(street, city, state/province postal-code, country)') . '</span>';
-        $output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
+        $output .= Lang::txt($label) . ' <span class="hint">'
+            . Lang::txt('(street, city, state/province postal-code, country)') . '</span>';
+        if (isset($element->required) && $element->required) {
+            $output .= ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+        }
         $output .= '</label>';
 
         return $output;
@@ -69,7 +74,8 @@ class Geo extends Base
     {
         if (!$this->_script) {
             Document::addScript('//maps.google.com/maps/api/js?sensor=false');
-            Document::addScript(\Request::base(true) . '/core/components/com_publications/models/element/assets/js/geo.js');
+            $geoJs = \Request::base(true) . '/core/components/com_publications/models/element/assets/js/geo.js';
+            Document::addScript($geoJs);
             $this->_script = true;
         }
 
@@ -92,9 +98,15 @@ class Geo extends Base
          */
         $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-        $html  = '<input type="text" name="' . $control_name . '[' . $name . '][value]" id="' . $control_name . '-' . $name . '" value="' . $address . '" ' . $class . ' ' . $size . ' />';
-        $html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lat]" id="' . $control_name . '-' . $name . '-lat" value="' . $lat . '" />';
-        $html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lng]" id="' . $control_name . '-' . $name . '-lng" value="' . $lng . '" />';
+        $fieldName = $control_name . '[' . $name . ']';
+        $fieldId = $control_name . '-' . $name;
+
+        $html  = '<input type="text" name="' . $fieldName . '[value]" id="' . $fieldId . '"'
+            . ' value="' . $address . '" ' . $class . ' ' . $size . ' />';
+        $html .= '<input type="hidden" name="' . $fieldName . '[lat]" id="' . $fieldId . '-lat"'
+            . ' value="' . $lat . '" />';
+        $html .= '<input type="hidden" name="' . $fieldName . '[lng]" id="' . $fieldId . '-lng"'
+            . ' value="' . $lng . '" />';
 
         return $html;
     }
@@ -106,6 +118,7 @@ class Geo extends Base
      * @param   string  $text Data
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";

@@ -13,7 +13,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for installing groups tables
- **/
+ *
+ */
 class Migration20170901000000ComGroups extends Base
 {
     /**

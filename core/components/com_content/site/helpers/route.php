@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -159,6 +160,7 @@ abstract class Route
      * @param   array  $needles
      * @return  mixed
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function _findItem($needles = null)
     {
         $menus = App::get('menu');

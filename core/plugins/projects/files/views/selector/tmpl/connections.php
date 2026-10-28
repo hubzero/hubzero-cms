@@ -1,5 +1,7 @@
 <?php
 
+// @phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +27,10 @@ defined('_HZEXEC_') or die();
         <?php $imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png'; ?>
         <?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
         <?php $id = 'dir-' . strtolower(\Components\Projects\Helpers\Html::generateCode(5, 5, 0, 1, 1)); ?>
-        <li class="type-folder collapsed connection" id="<?php echo $id; ?>" data-connection="<?php echo $connection->id ?>" data-path=".">
+        <li class="type-folder collapsed connection"
+            id="<?php echo $id; ?>"
+            data-connection="<?php echo $connection->id ?>"
+            data-path=".">
             <span class="item-info"></span>
             <span class="item-wrap collapsor">
                 <span class="collapsor-indicator">&nbsp;</span>

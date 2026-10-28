@@ -23,6 +23,7 @@ abstract class Button extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = null;
 
     /**
@@ -30,6 +31,7 @@ abstract class Button extends Obj
      *
      * @var  object  Button
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parent = null;
 
     /**
@@ -38,6 +40,7 @@ abstract class Button extends Obj
      * @param   object  $parent  The parent
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($parent = null)
     {
         $this->_parent = $parent;

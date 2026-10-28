@@ -24,7 +24,7 @@ class Helper
      *
      * @return  array  An array of JHtmlOption elements.
      */
-    static function getClientOptions()
+    public static function getClientOptions()
     {
         $items = array();
 

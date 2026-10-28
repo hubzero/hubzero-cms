@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,6 +22,7 @@ defined('_HZEXEC_') or die;
  * <code><hr class="system-pagebreak" title="The page title" alt="The first page" /></code>
  * or
  * <code><hr class="system-pagebreak" alt="The first page" title="The page title" /></code>
+ *
  */
 class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 {
@@ -87,7 +89,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
             if ($hasToc) {
                 // Display TOC.
                 $page = 1;
-                $this->_createToc($row, $matches, $page);
+                $this->_createTOC($row, $matches, $page);
             } else {
                 $row->toc = '';
             }
@@ -129,7 +131,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
             if ($style == 'pages') {
                 // Display TOC.
                 if ($hasToc) {
-                    $this->_createToc($row, $matches, $page);
+                    $this->_createTOC($row, $matches, $page);
                 } else {
                     $row->toc = '';
                 }
@@ -203,6 +205,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
      * @param   integer  $page
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _createTOC(&$row, &$matches, &$page)
     {
         $heading    = isset($row->title) ? $row->title : Lang::txt('PLG_CONTENT_PAGEBREAK_NO_TITLE');
@@ -223,16 +226,22 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
         // TOC first Page link.
         $class = ($limitstart === 0 && $showall === 0) ? 'toclink active' : 'toclink';
+        $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+            $row->slug,
+            $row->catid,
+            $row->language
+        );
         $row->toc .= '<ul>
-			<li>
-				<a href="' . Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=') . '" class="' . $class . '">' . $heading . '</a>
-			</li>
-			';
+            <li>
+                <a href="' . Route::url($articleRoute . '&showall=&limitstart=') . '" class="' .
+                $class . '">' . $heading . '</a>
+            </li>
+            ';
 
         $i = 2;
 
         foreach ($matches as $bot) {
-            $link = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=' . ($i - 1));
+            $link = Route::url($articleRoute . '&showall=&limitstart=' . ($i - 1));
 
             if (@$bot[0]) {
                 $attrs2 = self::parseAttributes($bot[0]);
@@ -257,7 +266,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
         }
 
         if ($this->params->get('showall')) {
-            $link = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=1&limitstart=');
+            $link = Route::url($articleRoute . '&showall=1&limitstart=');
             $class = ($showall == 1) ? 'toclink active' : 'toclink';
             $row->toc .= '
 			<li>
@@ -276,6 +285,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
      * @param   integer  $n
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _createNavigation(&$row, $page, $n)
     {
         $pnSpace = '';
@@ -283,12 +293,19 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
             $pnSpace = ' ';
         }
 
+        $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+            $row->slug,
+            $row->catid,
+            $row->language
+        );
+
         if ($page < $n - 1) {
             $page_next = $page + 1;
 
-            $link_next = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=' . ($page_next));
+            $link_next = Route::url($articleRoute . '&showall=&limitstart=' . ($page_next));
             // Next >>
-            $next = '<a href="' . $link_next . '">' . Lang::txt('JNEXT') . $pnSpace . Lang::txt('JGLOBAL_GT') . Lang::txt('JGLOBAL_GT') . '</a>';
+            $next = '<a href="' . $link_next . '">' . Lang::txt('JNEXT') . $pnSpace .
+                Lang::txt('JGLOBAL_GT') . Lang::txt('JGLOBAL_GT') . '</a>';
         } else {
             $next = Lang::txt('JNEXT');
         }
@@ -296,9 +313,10 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
         if ($page > 0) {
             $page_prev = $page - 1 == 0 ? '' : $page - 1;
 
-            $link_prev = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catid, $row->language) . '&showall=&limitstart=' . ($page_prev));
+            $link_prev = Route::url($articleRoute . '&showall=&limitstart=' . ($page_prev));
             // << Prev
-            $prev = '<a href="' . $link_prev . '">' . Lang::txt('JGLOBAL_LT') . Lang::txt('JGLOBAL_LT') . $pnSpace . Lang::txt('JPREV') . '</a>';
+            $prev = '<a href="' . $link_prev . '">' . Lang::txt('JGLOBAL_LT') . Lang::txt('JGLOBAL_LT') .
+                $pnSpace . Lang::txt('JPREV') . '</a>';
         } else {
             $prev = Lang::txt('JPREV');
         }

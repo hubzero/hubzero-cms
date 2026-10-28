@@ -12,7 +12,9 @@ defined('_HZEXEC_') or die();
 Html::behavior('framework', true);
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css'));
+$this->addStyleSheet(
+    $this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css')
+);
 
 // Load theme
 $theme = $this->params->get('theme');
@@ -34,21 +36,28 @@ $cls = array(
 );
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
+    class="<?php echo implode(' ', $cls); ?>">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
 
         <jdoc:include type="head" />
 
-        <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js?v=<?php echo filemtime(__DIR__ . '/js/index.js'); ?>"></script>
+        <script type="text/javascript"
+            src="<?php echo $this->baseurl . '/templates/' . $this->template
+                . '/js/index.js?v=' . filemtime(__DIR__ . '/js/index.js'); ?>"></script>
 
         <!--[if lt IE 9]>
-            <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
+            <script type="text/javascript"
+                src="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/js/html5.js?v=' . filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
         <![endif]-->
 
         <!--[if IE 9]>
-            <link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
+            <link type="text/css" rel="stylesheet"
+                href="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/css/browser/ie9.css?v=' . filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
         <![endif]-->
     </head>
     <body id="minwidth-body">
@@ -69,9 +78,14 @@ $cls = array(
                 endif;
 
                 $output = array();
-                $output[] = ($hideLinks
-                                ? '<li class="disabled" data-title="' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '"><span class="logout">'
-                                : '<li data-title="' . Lang::txt('TPL_KAMELEON_LOG_OUT') . '"><a class="logout" href="' . $logoutLink . '">') . Lang::txt('TPL_KAMELEON_LOG_OUT') . ($hideLinks ? '</span></li>' : '</a></li>');
+                $logoutText = Lang::txt('TPL_KAMELEON_LOG_OUT');
+                if ($hideLinks) {
+                    $output[] = '<li class="disabled" data-title="' . $logoutText . '">'
+                        . '<span class="logout">' . $logoutText . '</span></li>';
+                } else {
+                    $output[] = '<li data-title="' . $logoutText . '">'
+                        . '<a class="logout" href="' . $logoutLink . '">' . $logoutText . '</a></li>';
+                }
 
                 // Reverse rendering order for rtl display.
                 if ($this->direction == 'rtl') :
@@ -87,7 +101,8 @@ $cls = array(
         </header><!-- / #header -->
 
         <main id="wrap">
-            <nav role="navigation" class="main-navigation" aria-label="<?php echo Lang::txt('TPL_KAMELEON_MAIN_NAV'); ?>">
+            <nav role="navigation" class="main-navigation"
+                aria-label="<?php echo Lang::txt('TPL_KAMELEON_MAIN_NAV'); ?>">
                 <div class="inner-wrap">
                     <jdoc:include type="modules" name="menu" />
                 </div>
@@ -104,7 +119,8 @@ $cls = array(
                 <!-- Notifications ends -->
 
                 <?php if (!$hideLinks && $this->countModules('submenu')) : ?>
-                    <nav role="navigation" class="sub-navigation" aria-label="<?php echo Lang::txt('TPL_KAMELEON_COMPONENT_NAV'); ?>">
+                    <nav role="navigation" class="sub-navigation"
+                        aria-label="<?php echo Lang::txt('TPL_KAMELEON_COMPONENT_NAV'); ?>">
                         <jdoc:include type="modules" name="submenu" />
                     </nav><!-- / .sub-navigation -->
                 <?php endif; ?>
@@ -124,7 +140,12 @@ $cls = array(
         <footer id="footer">
             <section class="basement">
                 <p class="copyright">
-                    <?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), Date::of('now')->format("Y")); ?>
+                    <?php echo Lang::txt(
+                        'TPL_KAMELEON_COPYRIGHT',
+                        Request::root(),
+                        Config::get('sitename'),
+                        Date::of('now')->format("Y")
+                    ); ?>
                 </p>
                 <p class="promotion">
                     <?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>

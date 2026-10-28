@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,6 @@ defined('_HZEXEC_') or die();
 /**
  * Migration to fix file extensions on screenshots
  **/
-
 class Migration20181015161919ComTools extends Base
 {
     /**
@@ -44,7 +44,9 @@ class Migration20181015161919ComTools extends Base
                     if (in_array($ext, array('png', 'PNG', 'gif', 'GIF', 'jpg', 'JPG', 'bmp', 'BMP', ))) {
                         $filename = substr($row->filename, 0, -3) . '.' . $ext;
 
-                        $query = "UPDATE `#__screenshots` SET `filename`=" . $this->db->quote($filename) . " WHERE `id`=" . $this->db->quote($row->id);
+                        $query = "UPDATE `#__screenshots` SET `filename`="
+                            . $this->db->quote($filename)
+                            . " WHERE `id`=" . $this->db->quote($row->id);
                         $this->db->setQuery($query);
                         $this->db->query();
                     }

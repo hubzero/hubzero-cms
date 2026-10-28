@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for setting character set on tables to UTF8
- **/
+ *
+ */
 class Migration20160914183602ComProjects extends Base
 {
     /**

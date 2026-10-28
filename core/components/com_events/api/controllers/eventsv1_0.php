@@ -12,6 +12,8 @@ use Hubzero\Component\ApiController;
 use stdClass;
 use Request;
 
+// phpcs:disable PSR1.Methods.CamelCapsMethodName
+
 /**
  * API controller class for events
  */

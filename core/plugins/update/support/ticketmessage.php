@@ -39,7 +39,9 @@ class Ticketmessage extends Field
         $html[] = '<option value="0"' . (!$this->value ? ' selected="selected"' : '') . '>[ none ]</option>';
 
         foreach ($messages as $anode) {
-            $html[] = '<option value="' . $anode->id . '"' . ($this->value == $anode->id ? ' selected="selected"' : '') . '>' . stripslashes($anode->title) . '</option>';
+            $selected = ($this->value == $anode->id ? ' selected="selected"' : '');
+            $html[] = '<option value="' . $anode->id . '"' . $selected . '>'
+                . stripslashes($anode->title) . '</option>';
         }
 
         $html[] = '</select>';

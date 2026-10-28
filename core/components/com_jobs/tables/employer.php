@@ -90,10 +90,10 @@ class Employer extends Table
         $query .= "FROM `$this->_tbl` AS e ";
         if ($subscriptionCode == 'admin') {
             $query .= "WHERE e.uid = 1";
-        } else if ($subscriptionCode) {
+        } elseif ($subscriptionCode) {
             $query .= "JOIN `#__users_points_subscriptions` AS s ON s.id=e.subscriptionid AND s.uid=e.uid ";
             $query .= "WHERE s.code=" . $this->_db->quote($subscriptionCode);
-        } else if ($uid) {
+        } elseif ($uid) {
             $query .= "WHERE e.uid = " . $this->_db->quote($uid);
         }
         $this->_db->setQuery($query);

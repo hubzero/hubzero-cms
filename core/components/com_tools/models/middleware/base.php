@@ -22,6 +22,7 @@ class Base extends Model
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_config = null;
 
     /**
@@ -40,9 +41,12 @@ class Base extends Model
 
             if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
                 $this->_logError(
-                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
+                    __CLASS__ . '::' . __FUNCTION__ . '(); ' .
+                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
                 );
-                throw new \LogicException(Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'));
+                throw new \LogicException(
+                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
+                );
             }
 
             if (is_numeric($oid) || is_string($oid)) {
@@ -51,7 +55,7 @@ class Base extends Model
                 if ($oid) {
                     $this->_tbl->load($oid);
                 }
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }

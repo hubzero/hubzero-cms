@@ -129,9 +129,8 @@ class Screenshot extends Relational
         if ($delta < 0) {
             $query->where('ordering', '<', (int) $this->get('ordering'));
             $query->order('ordering', 'desc');
-        }
-        // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
+        } elseif ($delta > 0) {
+            // If the movement delta is positive move the row down.
             $query->where('ordering', '>', (int) $this->get('ordering'));
             $query->order('ordering', 'asc');
         }

@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for citations
@@ -19,6 +18,7 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -110,7 +110,9 @@ class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $view = $this->view('default', 'metadata')
-                ->set('url', Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' . $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' . $publication->version_number))
+                ->set('url', Route::url('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' .
+                $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' .
+                $publication->version_number))
                 ->set('citations', $citations);
 
             $arr['metadata'] = $view->loadTemplate();

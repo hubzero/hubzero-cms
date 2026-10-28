@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +25,8 @@ function filter($res, &$dd)
     $kml .= '<name>' . $dd['title'] . '</name>';
     $kml .= '<description><![CDATA[' . $dd['title'] . ']]></description>';
     $kml .= '<Style id="style0">';
-    $kml .= '<IconStyle><Icon><href>http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-dot.png</href></Icon></IconStyle></Style>';
+    $iconUrl = 'http://maps.gstatic.com/intl/en_us/mapfiles/ms/micons/blue-dot.png';
+    $kml .= '<IconStyle><Icon><href>' . $iconUrl . '</href></Icon></IconStyle></Style>';
 
     if (!isset($dd['maps'])) {
         return;

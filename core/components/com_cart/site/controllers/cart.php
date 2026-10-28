@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -102,9 +103,8 @@ class Cart extends ComponentController
             if ($cart->hasMessages()) {
                 $redirect = false;
             }
-        }
-        // Check if there is a delete request
-        else {
+        } else {
+            // Check if there is a delete request
             $allPost = Request::request();
 
             foreach ($allPost as $var => $val) {
@@ -161,7 +161,8 @@ class Cart extends ComponentController
 
         // Check for express add to cart
         if (!empty($redirect) && $redirect) {
-            // If this is an express checkout (go to the confirm page right away) there shouldn't be any items in the cart
+            // If this is an express checkout (go to the confirm page right away)
+            // there shouldn't be any items in the cart
             // Since redirect is set, there are no errors
             $expressCheckout = Request::getBool('expressCheckout', false, 'post');
 

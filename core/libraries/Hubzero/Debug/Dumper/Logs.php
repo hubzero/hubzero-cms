@@ -18,6 +18,7 @@ class Logs extends AbstractRenderer
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_logger = null;
 
     /**
@@ -26,6 +27,7 @@ class Logs extends AbstractRenderer
      * @param   array  $messages
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($messages = null)
     {
         parent::__construct($messages);
@@ -68,15 +70,26 @@ class Logs extends AbstractRenderer
      * @param   array  $arr
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _deflate($arr)
     {
         $output = 'Array( ' . "\n";
         $a = array();
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
-                $a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $this->_deflate($val) . '</code>';
+                $a[] = "\t" .
+                    '<code class="ky">' .
+                    $key .
+                    '</code> <code class="op">=></code> <code class="vl">' .
+                    $this->_deflate($val) .
+                    '</code>';
             } else {
-                $a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '</code>';
+                $a[] = "\t" .
+                    '<code class="ky">' .
+                    $key .
+                    '</code> <code class="op">=></code> <code class="vl">' .
+                    htmlentities($val, ENT_COMPAT, 'UTF-8') .
+                    '</code>';
             }
         }
         $output .= implode(", \n", $a) . "\n" . ' )' . "\n";

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Search questions
+ *
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 {
@@ -78,7 +81,8 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
         $dbh = App::get('db');
         $dbh->setQuery(
             "SELECT
-				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, $qweight AS qweight, null AS rweight,
+				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer,
+				r.created AS r_created, $qweight AS qweight, null AS rweight,
 			CASE
 				when q.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = q.created_by)
@@ -100,7 +104,8 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
 			WHERE $qweight > 0 AND q.state != 2
 			UNION
 			SELECT
-				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer, r.created AS r_created, null AS qweight, $rweight AS rweight,
+				q.id AS qid, q.created AS q_created, q.subject, q.question, r.id AS rid, r.answer,
+				r.created AS r_created, null AS qweight, $rweight AS rweight,
 			CASE
 				when q.anonymous > 0 then NULL
 				else (SELECT name FROM `#__users` WHERE id = q.created_by)
@@ -140,8 +145,9 @@ class plgSearchQuestions extends \Hubzero\Plugin\Plugin
                 ));
             }
             if (!array_key_exists($row['qid'] . '-' . $row['rid'], $seen_answers) && $row['answer']) {
+                $contributorName = $row['rcontributors'] ? $row['rcontributors'] : 'Anonymous';
                 $questions[$row['qid']]->add_child(new \Components\Search\Models\Basic\Result\AssocScalar(array(
-                    'title'           => ($row['rcontributors'] ? $row['rcontributors'] : 'Anonymous') . (', ' . $row['r_created']),
+                    'title'           => $contributorName . ', ' . $row['r_created'],
                     'description'     => $row['answer'],
                     'section'         => 'Questions',
                     'date'            => $row['r_created'],

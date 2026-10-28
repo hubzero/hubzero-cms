@@ -29,7 +29,7 @@ class SessionServiceProvider extends ServiceProvider
             $handler = $app['config']->get('session_handler', 'none');
 
             $options = array(
-                'name'          => md5($app['config']->get('secret') . 'site'),
+                'name'          => md5($app['config']->get('secret') . 'administrator'),
                 'cookie_domain' => $app['config']->get('cookie_domain', ''),
                 'cookie_path'   => $app['config']->get('cookie_path', '/'),
                 // Config time is in minutes so we need to do some
@@ -37,17 +37,16 @@ class SessionServiceProvider extends ServiceProvider
                 'expire'        => ($app['config']->get('lifetime') ? $app['config']->get('lifetime') * 60 : 900)
             );
 
+            if ($app['config']->get('force_ssl') >= 1) {
+                $options['force_ssl'] = true;
+            }
+
             // If profiling or debugging is turned on...
             if ($app['config']->get('profile') || $app['config']->get('debug')) {
-                // If we have a profiler...
+                // If we have a profiler and the client is Admin or Site...
                 if ($app->has('profiler')) {
                     $options['profiler'] = $app['profiler'];
                 }
-            }
-
-            // Skip session writes on the API and command line calls
-            if ($app['client']->id == 4 || php_sapi_name() == 'cli') {
-                $options['skipWrites'] = true;
             }
 
             $session = new Manager($handler, $options);
@@ -68,8 +67,10 @@ class SessionServiceProvider extends ServiceProvider
     public function boot()
     {
         if (
-            ($this->app['config']->get('session_handler') != 'database' && (time() % 2 || $this->app['session']->isNew()))
-            || ($this->app['config']->get('session_handler') == 'database' && $this->app['session']->isNew())
+            ($this->app['config']->get('session_handler') != 'database'
+                && (time() % 2 || $this->app['session']->isNew()))
+            || ($this->app['config']->get('session_handler') == 'database'
+                && $this->app['session']->isNew())
         ) {
             if ($this->app['config']->get('session_handler') == 'database' && $this->app->has('db')) {
                 $db = $this->app['db'];
@@ -115,9 +116,9 @@ class SessionServiceProvider extends ServiceProvider
                         $db->setQuery($query->toString());
                     }
 
-                    // If the insert failed, log the error.
+                    // If the insert failed, exit the application.
                     if (!$db->execute()) {
-                        $this->app->abort(500, $db->getErrorMsg());
+                        exit($db->getErrorMsg());
                     }
                 }
             }

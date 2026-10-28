@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +22,12 @@ class Migration20140716180300ComTools extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__tool_version_zone') && !$this->db->tableHasKey('#__tool_version_zone', 'idx_zoneid_toolversionid')) {
-            $query = "ALTER TABLE `#__tool_version_zone` ADD CONSTRAINT UNIQUE KEY `idx_zoneid_toolversionid`(zone_id, tool_version_id)";
+        if (
+            $this->db->tableExists('#__tool_version_zone')
+            && !$this->db->tableHasKey('#__tool_version_zone', 'idx_zoneid_toolversionid')
+        ) {
+            $query = "ALTER TABLE `#__tool_version_zone` "
+                . "ADD CONSTRAINT UNIQUE KEY `idx_zoneid_toolversionid`(zone_id, tool_version_id)";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -33,7 +38,10 @@ class Migration20140716180300ComTools extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__tool_version_zone') && $this->db->tableHasKey('#__tool_version_zone', 'idx_zoneid_toolversionid')) {
+        if (
+            $this->db->tableExists('#__tool_version_zone')
+            && $this->db->tableHasKey('#__tool_version_zone', 'idx_zoneid_toolversionid')
+        ) {
             $query = "ALTER TABLE `#__tool_version_zone` DROP KEY `idx_zoneid_toolversionid`";
             $this->db->setQuery($query);
             $this->db->query();

@@ -10,7 +10,8 @@
 defined('_HZEXEC_') or die();
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>" class="<?php echo $this->direction; ?>">
+<html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>"
+    class="<?php echo $this->direction; ?>">
     <head>
         <jdoc:include type="head" />
         <link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/system.css" type="text/css" />

@@ -12,7 +12,19 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-$foo = App::get('editor')->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer'));
+$foo = App::get('editor')->display(
+    'description',
+    '',
+    '',
+    '',
+    35,
+    5,
+    false,
+    'field_description',
+    null,
+    null,
+    array('class' => 'minimal no-footer')
+);
 
 $url  = urldecode(Request::path());
 $url  = implode('/', array_map('rawurlencode', explode('/', $url)));

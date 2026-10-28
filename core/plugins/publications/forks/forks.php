@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for forks
@@ -19,6 +18,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -77,11 +77,11 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 
             switch ($action) {
                 case 'fork':
-                    $arr['html'] = $this->_fork($publication);
+                    $arr['html'] = $this->fork($publication);
                     break;
 
                 default:
-                    $arr['html'] = $this->_forks($publication);
+                    $arr['html'] = $this->forks($publication);
                     break;
             }
 
@@ -139,7 +139,9 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
 
         $forks = 0;
         if (count($sources)) {
-            $db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" . implode(',', $sources) . ")");
+            $db->setQuery("SELECT COUNT(id) FROM `#__publication_versions` WHERE `forked_from` IN (" .
+                    implode(',', $sources) .
+                    ")");
 
             $forks = $db->loadResult();
         }
@@ -159,7 +161,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
      * @param   object  $publication
      * @return  string  HTML
      */
-    private function _forks($publication)
+    private function forks($publication)
     {
         /* @TODO: Move query to use ORM model
         $forks = Version::all()
@@ -187,12 +189,18 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
         $forks = array();
         foreach ($versions as $version) {
             // Now find all the forks for each version
-            $db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" . $db->quote($version->id) . " ORDER BY `created` DESC");
+            $db->setQuery("SELECT id, publication_id FROM `#__publication_versions` WHERE `forked_from`=" .
+                    $db->quote($version->id) .
+                    " ORDER BY `created` DESC");
 
             $forked = $db->loadObjectList();
 
             foreach ($forked as $i => $fork) {
-                $forks[$i] = new Components\Publications\Models\Publication($fork->publication_id, 'default', $fork->id);
+                $forks[$i] = new Components\Publications\Models\Publication(
+                    $fork->publication_id,
+                    'default',
+                    $fork->id
+                );
                 $forks[$i]->set('forked_from', $version->version_label);
                 $forks[$i]->set('forked_version', $version->version_number);
             }
@@ -215,7 +223,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
      * @param   object  $publication
      * @return  string  HTML
      */
-    private function _fork($publication)
+    private function fork($publication)
     {
         // Load classes
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';

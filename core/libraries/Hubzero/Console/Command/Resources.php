@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    framework
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -35,6 +36,7 @@ class Resources extends Base implements CommandInterface
      * @param   \Hubzero\Console\Arguments $arguments  The command arguments
      * @return  void
      **/
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct(Output $output, Arguments $arguments)
     {
         parent::__construct($output, $arguments);
@@ -71,10 +73,12 @@ class Resources extends Base implements CommandInterface
 
             if (is_dir("/opt/gitExternal/tools/" . $entry->alias)) {
                 $repopath = "/opt/gitExternal/tools/" . $entry->alias;
-                // file_put_contents('/var/log/muselog', "/opt/gitExternal/tools/" . $entry->alias . "\n", FILE_APPEND | LOCK_EX);
-            } else if (is_dir("/opt/git/tools/" . $entry->alias . ".git")) {
+                // file_put_contents('/var/log/muselog', "/opt/gitExternal/tools/" . $entry->alias . "\n", FILE_APPEND
+                // |LOCK_EX);
+            } elseif (is_dir("/opt/git/tools/" . $entry->alias . ".git")) {
                 $repopath = "/opt/git/tools/" . $entry->alias . ".git";
-                // file_put_contents('/var/log/muselog', "/opt/git/tools/" . $entry->alias . ".git" . "\n", FILE_APPEND | LOCK_EX);
+                // file_put_contents('/var/log/muselog', "/opt/git/tools/" . $entry->alias . ".git" . "\n",
+                // FILE_APPEND| LOCK_EX);
             }
             $statsfullpath = $entry->basepath() . DS . $entry->relativepath() . DS . 'stats/';
             // if ($repopath)
@@ -131,24 +135,23 @@ class Resources extends Base implements CommandInterface
         foreach ($rows as $row) {
             $record = array();
 
-
             foreach ($keys as $key) {
                 if ($key == 'tags') {
                     $val = implode(",", $row->tags());
                     $record[$key] = $val;
-                } else if ($key == 'introtext') {
+                } elseif ($key == 'introtext') {
                     $val = htmlspecialchars($row->get($key), ENT_COMPAT | ENT_XML1, 'UTF-8');
                     $record[$key] = strip_tags($val);
-                } else if ($key == 'fulltxt') {
+                } elseif ($key == 'fulltxt') {
                     $val = htmlspecialchars($row->get($key), ENT_COMPAT | ENT_XML1, 'UTF-8');
                     $record[$key] = strip_tags($val);
-                } else if ($key == 'created_by') {
+                } elseif ($key == 'created_by') {
                     $val = User::getInstance($row->created_by)->get('username');
                     $record[$key] = $val;
-                } else if ($key == 'modified_by') {
+                } elseif ($key == 'modified_by') {
                     $val = User::getInstance($row->modified_by)->get('username');
                     $record[$key] = $val;
-                } else if ($key == 'authors') {
+                } elseif ($key == 'authors') {
                     $authnames = $row->authors()->ordered()->rows();
                     $authors_array = array();
                     foreach ($authnames as $author) {
@@ -156,10 +159,10 @@ class Resources extends Base implements CommandInterface
                     }
                     $val = implode(",", $authors_array);
                     $record[$key] = $val;
-                } else if ($key == 'type') {
+                } elseif ($key == 'type') {
                     $val = $row->type->type;
                     $record[$key] = $val;
-                } else if ($key == 'children') {
+                } elseif ($key == 'children') {
                     $children = Entry::oneOrFail($row->get('id'))->children()->rows();
                     $children_array = array();
                     foreach ($children as $child) {
@@ -178,7 +181,6 @@ class Resources extends Base implements CommandInterface
         fclose($file);
         exit;
     }
-
 
     /**
      * Run Export to XML
@@ -211,7 +213,11 @@ class Resources extends Base implements CommandInterface
             ->rows();
 
         // Create the root node.
-        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><publications xsi:noNamespaceSchemaLocation="schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></publications>');
+        $xml = new \SimpleXMLElement(
+            '<?xml version="1.0" encoding="utf-8"?><publications ' .
+            'xsi:noNamespaceSchemaLocation="schema.xsd" ' .
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></publications>'
+        );
         $i = 0;
         foreach ($rows as $row) {
             $pub_node = $xml->addChild('publication');
@@ -284,7 +290,6 @@ class Resources extends Base implements CommandInterface
             // citations
             $citations_node = $pub_node->addChild('citations');
             $citations_node->addChild('citation');
-
 
                 // }
                 // else if ($key == 'children')

@@ -18,6 +18,8 @@ require_once dirname(__DIR__) . DS . 'log.php';
 
 /**
  * Group log archive model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Archive extends Model
 {
@@ -45,7 +47,7 @@ class Archive extends Model
      * @param   string  $key  Instance Key
      * @return  object
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
         if (!isset($instances)) {

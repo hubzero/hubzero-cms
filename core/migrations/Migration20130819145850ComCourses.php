@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding concept of 'attempts' to forms
- **/
+ *
+ */
 class Migration20130819145850ComCourses extends Base
 {
     /**
@@ -21,13 +23,21 @@ class Migration20130819145850ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__courses_form_deployments', 'allowed_attempts') && $this->db->tableHasField('#__courses_form_deployments', 'user_id')) {
-            $query = "ALTER TABLE `#__courses_form_deployments` ADD `allowed_attempts` INT(11) NOT NULL DEFAULT '1' AFTER `user_id`;";
+        if (
+            !$this->db->tableHasField('#__courses_form_deployments', 'allowed_attempts')
+            && $this->db->tableHasField('#__courses_form_deployments', 'user_id')
+        ) {
+            $query = "ALTER TABLE `#__courses_form_deployments` ADD `allowed_attempts` INT(11) NOT NULL DEFAULT "
+                . "'1' AFTER `user_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__courses_form_respondents', 'attempt') && $this->db->tableHasField('#__courses_form_respondents', 'finished')) {
-            $query = "ALTER TABLE `#__courses_form_respondents` ADD `attempt` INT(11) NOT NULL DEFAULT '1' AFTER `finished`;";
+        if (
+            !$this->db->tableHasField('#__courses_form_respondents', 'attempt')
+            && $this->db->tableHasField('#__courses_form_respondents', 'finished')
+        ) {
+            $query = "ALTER TABLE `#__courses_form_respondents` ADD `attempt` INT(11) NOT NULL DEFAULT '1' AFTER "
+                . "`finished`;";
             $this->db->setQuery($query);
             $this->db->query();
         }

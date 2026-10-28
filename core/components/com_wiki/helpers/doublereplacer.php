@@ -8,6 +8,7 @@
 
 /**
  * Class to perform secondary replacement within each replacement string
+ *
  */
 class DoubleReplacer extends Replacer
 {
@@ -21,7 +22,7 @@ class DoubleReplacer extends Replacer
      * @param      integer $index Parameter description (if any) ...
      * @return     void
      */
-    function __construct($from, $to, $index = 0)
+    public function __construct($from, $to, $index = 0)
     {
         $this->from = $from;
         $this->to = $to;
@@ -36,7 +37,7 @@ class DoubleReplacer extends Replacer
      * @param      array $matches Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    function replace($matches)
+    public function replace($matches)
     {
         return str_replace($this->from, $this->to, $matches[$this->index]);
     }

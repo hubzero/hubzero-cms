@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,21 +13,22 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for groups
  */
-class plgMembersGroups extends \Hubzero\Plugin\Plugin
+class PlgMembersGroups extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @return array   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -47,11 +49,11 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @param   string  $option  Component name
-     * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -69,14 +71,14 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
         }
 
         $arr = array(
-            'html'     => '',
+            'html' => '',
             'metadata' => array()
         );
 
         $applicants = array();
-        $invitees   = array();
-        $members    = array();
-        $managers   = array();
+        $invitees = array();
+        $members = array();
+        $managers = array();
 
         // Look for any invites by email
         $emails = Hubzero\User\Group\InviteEmail::all()
@@ -148,9 +150,9 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 
         // Build the final HTML
         if ($returnhtml) {
-            $total  = count($groups);
+            $total = count($groups);
             $filter = strtolower(Request::getWord('filter', '', 'get'));
-            $state  = strtolower(Request::getWord('state', 'active', 'get'));
+            $state = strtolower(Request::getWord('state', 'active', 'get'));
 
             if (in_array($state, array('active', 'archived'))) {
                 $g = array();
@@ -253,10 +255,10 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
     /**
      * Get a list of groups for a user
      *
-     * @param   string  $uid
-     * @param   string  $type
-     * @param   string  $cat
-     * @return  boolean
+     * @param  string $uid
+     * @param  string $type
+     * @param  string $cat
+     * @return boolean
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
     {
@@ -273,10 +275,23 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
         }
 
         // Get all groups the user is a member of
-        $query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-        $query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM `#__xgroups` AS g, `#__xgroups_members` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-        $query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM `#__xgroups` AS g, `#__xgroups_managers` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-        $query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+        // Get all groups the user is a member of
+        $query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy,
+                '1' AS registered, '0' AS regconfirmed, '0' AS manager
+                FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m
+                WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+        $query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy,
+                '1' AS registered, '1' AS regconfirmed, '0' AS manager
+                FROM `#__xgroups` AS g, `#__xgroups_members` AS m
+                WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+        $query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy,
+                '1' AS registered, '1' AS regconfirmed, '1' AS manager
+                FROM `#__xgroups` AS g, `#__xgroups_managers` AS m
+                WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+        $query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.logo, g.created, g.join_policy,
+                '0' AS registered, '1' AS regconfirmed, '0' AS manager
+                FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m
+                WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
         switch ($type) {
             case 'applicants':

@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * HUBzero plugin class for system overview
  */
@@ -44,7 +41,11 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
             ->from('#__template_styles', 's')
             ->whereEquals('s.client_id', '0')
             ->whereEquals('e.enabled', '1')
-            ->joinRaw('#__extensions as e', 'e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id', 'left');
+            ->joinRaw(
+                '#__extensions as e',
+                'e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id',
+                'left'
+            );
 
         $path = PATH_APP;
 
@@ -59,13 +60,16 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $response->data['site'] = $this->_obj('Name', $tmpl);
+        $response->data['site'] = $this->obj('Name', $tmpl);
 
         $overrides = array();
         $path .= '/templates/' . $tmpl . '/html';
 
         if (is_dir($path)) {
-            $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
+            $objects = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
             foreach ($objects as $name => $file) {
                 if ($file->isDir()) {
                     continue;
@@ -75,7 +79,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $response->data['overrides'] = $this->_obj('Overrides', $overrides);
+        $response->data['overrides'] = $this->obj('Overrides', $overrides);
 
         return $response;
     }
@@ -87,7 +91,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
      * @param   mixed  $value
      * @return  object
      */
-    private function _obj($label, $value)
+    private function obj($label, $value)
     {
         $obj = new stdClass();
         $obj->label = $label;

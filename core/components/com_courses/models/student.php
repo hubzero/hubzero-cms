@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,6 +23,7 @@ class Student extends Member
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'student';
 
     /**
@@ -44,12 +46,12 @@ class Student extends Member
             if (is_numeric($uid) || is_string($uid)) {
                 if ($sid !== null) {
                     $this->_tbl->loadBySection($uid, $sid);
-                } else if ($cid !== null) {
+                } elseif ($cid !== null) {
                     $this->_tbl->load($uid, $cid, null, null, 1);
                 } else {
                     $this->_tbl->load($uid);
                 }
-            } else if (is_object($uid) || is_array($uid)) {
+            } elseif (is_object($uid) || is_array($uid)) {
                 $this->bind($uid);
             }
         }
@@ -64,7 +66,7 @@ class Student extends Member
      * @param   string $sid Section ID
      * @return  object \Components\Courses\Models\Member
      */
-    static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
+    public static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
     {
         static $instances;
 

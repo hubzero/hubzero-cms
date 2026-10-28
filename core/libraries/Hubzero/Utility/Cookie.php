@@ -40,7 +40,7 @@ class Cookie
 
         if (\App::isAdmin() && $forceSsl >= 1) {
             $secure = true;
-        } else if (\App::isSite() && $forceSsl == 2) {
+        } elseif (\App::isSite() && $forceSsl == 2) {
             $secure = true;
         }
 

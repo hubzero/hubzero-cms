@@ -24,25 +24,25 @@ use User;
  */
 class SolrQueryAdapter implements QueryInterface
 {
-    var $logPath = null;
+    public $logPath = null;
 
-    var $connection = null;
+    public $connection = null;
 
-    var $config = null;
+    public $config = null;
 
-    var $query = null;
+    public $query = null;
 
-    var $adapter = null;
+    public $adapter = null;
 
-    var $resultset = null;
+    public $resultset = null;
 
-    var $numFound = null;
+    public $numFound = null;
 
-    var $results = null;
+    public $results = null;
 
-    var $resultsFacetSet = null;
+    public $resultsFacetSet = null;
 
-    var $debug = false;
+    public $debug = false;
 
     /**
      * __construct
@@ -473,7 +473,6 @@ class SolrQueryAdapter implements QueryInterface
 
         return $string;
     }
-
 
     /**
      * lastInsert - Returns the timestamp of the latest indexed document

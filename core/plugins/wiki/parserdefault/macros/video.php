@@ -156,17 +156,14 @@ class VideoMacro extends WikiMacro
                 }
                 $video_url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
             }
-        }
-        // Vimeo
-        else if (stristr($video_url, 'vimeo')) {
+        } elseif (stristr($video_url, 'vimeo')) {
+            // Vimeo
             $type = 'vimeo';
-        }
-        // BlipTV
-        else if (stristr($video_url, 'blip')) {
+        } elseif (stristr($video_url, 'blip')) {
+            // BlipTV
             $type = 'blip';
-        }
-        // Kaltura
-        else if (stristr($video_url, 'kaltura')) {
+        } elseif (stristr($video_url, 'kaltura')) {
+            // Kaltura
             $type = 'kaltura';
 
             if (!stristr($video_url, 'iframeembed') && stristr($video_url, 'kmc')) {
@@ -226,9 +223,8 @@ class VideoMacro extends WikiMacro
             }
             $html .= '</video>';
             $html .= '</div>';
-        }
-        // External
-        else {
+        } else {
+            // External
             $title = isset($this->attr['title']) ? $this->attr['title'] : ucfirst($type) . ' video';
             // As youtube.php: the url and the dimensions come from macro args and
             // land in unquoted-by-nothing attributes, so a title containing a
@@ -328,7 +324,7 @@ class VideoMacro extends WikiMacro
                 $this->attr['style']['float'] = $key;
                 if ($key == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($key == 'right') {
+                } elseif ($key == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
@@ -345,11 +341,11 @@ class VideoMacro extends WikiMacro
                 $this->attr['style']['float'] = $val;
                 if ($val == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($val == 'right') {
+                } elseif ($val == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-        } else if ($key == 'border') {
+        } elseif ($key == 'border') {
             $this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
         } else {
             $this->attr[$key] = $val;
@@ -400,7 +396,7 @@ class VideoMacro extends WikiMacro
                 $this->attr['style']['float'] = $key;
                 if ($key == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($key == 'right') {
+                } elseif ($key == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }

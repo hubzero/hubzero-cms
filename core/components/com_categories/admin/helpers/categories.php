@@ -52,9 +52,11 @@ class CategoriesHelper
             if (class_exists($cName)) {
                 if (is_callable(array($cName, 'addSubmenu'))) {
                     // loading language file from the components/*extension*/admin/language directory
-                    Lang::load($component, Filesystem::cleanPath(Component::path($component) . '/admin'), null, false, true);
+                    $langPath = Filesystem::cleanPath(Component::path($component) . '/admin');
+                    Lang::load($component, $langPath, null, false, true);
 
-                    call_user_func(array($cName, 'addSubmenu'), 'categories' . (isset($section) ? '.' . $section : ''));
+                    $suffix = isset($section) ? '.' . $section : '';
+                    call_user_func(array($cName, 'addSubmenu'), 'categories' . $suffix);
                 }
             }
         }

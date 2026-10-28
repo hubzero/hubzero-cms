@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding general announcements table and hiding group messaging tab
+  *
  **/
 class Migration20130619181459PlgGroupsAnnouncements extends Base
 {
@@ -47,7 +49,8 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
 
         // get citation params
         if ($this->db->tableExists('#__extensions')) {
-            $sql = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
+            $sql = "SELECT `params` FROM `#__extensions` "
+                . "WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
         } else {
             $sql = "SELECT `params` FROM `#__plugins` WHERE `element`='messages' AND `folder`='groups'";
         }
@@ -63,9 +66,11 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
 
         // save new params
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote(json_encode($params->toArray())) . " WHERE `element`='messages' AND `folder`='groups'";
+            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote(json_encode($params->toArray()))
+                . " WHERE `element`='messages' AND `folder`='groups'";
         } else {
-            $query = "UPDATE `#__plugins` SET `params`='" . $params->toString() . "' WHERE `element`='messages' AND `folder`='groups'";
+            $query = "UPDATE `#__plugins` SET `params`='" . $params->toString() . "' WHERE `element`='messages' "
+                . "AND `folder`='groups'";
         }
         $this->db->setQuery($query);
         $this->db->query();

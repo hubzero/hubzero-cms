@@ -111,7 +111,8 @@ class Scaffolding extends Base implements CommandInterface
             $obj = new $class($this->output, $this->arguments);
         } else {
             if (empty($this->type)) {
-                $this->output->error('Error: Sorry, scaffolding can\'t create nothing/everything. Try telling it what you want to create.');
+                $this->output->error('Error: Sorry,
+                    scaffolding can\'t create nothing/everything. Try telling it what you want to create.');
             } else {
                 $this->output->error('Error: Sorry, scaffolding doesn\'t know how to create a ' . $this->type);
             }
@@ -163,7 +164,8 @@ class Scaffolding extends Base implements CommandInterface
             $obj = new $class($this->output, $this->arguments);
         } else {
             if (empty($this->type)) {
-                $this->output->error('Error: Sorry, scaffolding can\'t copy nothing. Try telling it what you want to copy.');
+                $this->output->error('Error: Sorry,
+                    scaffolding can\'t copy nothing. Try telling it what you want to copy.');
             } else {
                 $this->output->error('Error: Sorry, scaffolding doesn\'t know how to copy a ' . $this->type);
             }
@@ -210,14 +212,20 @@ class Scaffolding extends Base implements CommandInterface
             foreach ($this->templateFiles as $template) {
                 if (is_dir($template['path'])) {
                     if (!Filesystem::copyDirectory($template['path'], $template['destination'])) {
-                        $this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
+                        $this->output->error(
+                            "Error: an problem occured copying {$template['path']} " .
+                            "to {$template['destination']}."
+                        );
                     }
 
                     // Get folder contents
                     $this->scanFolder($template['destination']);
                 } elseif (is_file($template['path'])) {
                     if (!copy($template['path'], $template['destination'])) {
-                        $this->output->error("Error: an problem occured copying {$template['path']} to {$template['destination']}.");
+                        $this->output->error(
+                            "Error: an problem occured copying {$template['path']} " .
+                            "to {$template['destination']}."
+                        );
                     }
 
                     // Get template contents
@@ -256,7 +264,13 @@ class Scaffolding extends Base implements CommandInterface
     protected function addTemplateFile($filename, $destination, $fullPath = false)
     {
         $this->templateFiles[] = array(
-            'path'        => ((!$fullPath) ? __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $filename : $filename),
+            'path'        => ((!$fullPath) ? __DIR__ .
+                DS .
+                'Scaffolding' .
+                DS .
+                'Templates' .
+                DS .
+                $filename : $filename),
             'destination' => $destination
         );
 
@@ -327,7 +341,16 @@ class Scaffolding extends Base implements CommandInterface
                 foreach ($match as $key) {
                     // Get template contents
                     $keyReal = preg_replace('/\$\^([[:alpha:]\.]*)\^\$/', '$1', $key);
-                    $subPath = __DIR__ . DS . 'Scaffolding' . DS . 'Templates' . DS . $this->getType() . '.' . $keyReal . '.tmpl';
+                    $subPath = __DIR__ .
+                        DS .
+                        'Scaffolding' .
+                        DS .
+                        'Templates' .
+                        DS .
+                        $this->getType() .
+                        '.' .
+                        $keyReal .
+                        '.tmpl';
 
                     if (!is_file($subPath)) {
                         continue;
@@ -370,7 +393,10 @@ class Scaffolding extends Base implements CommandInterface
         $info = pathinfo($path);
 
         // See if we need to do var replacement in actual filename
-        if (preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $info['filename'], $matches) && isset($this->replacements[$matches[1]])) {
+        if (
+            preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $info['filename'], $matches) &&
+            isset($this->replacements[$matches[1]])
+        ) {
             $newfile = str_replace($matches[0], $this->replacements[$matches[1]], $info['filename']);
 
             if (isset($matches[2])) {
@@ -422,7 +448,11 @@ class Scaffolding extends Base implements CommandInterface
                     $this->putContents($path . DS . $file, $contents);
                 } else {
                     // See if we need to do var replacement in directory name
-                    if (preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $path . DS . $file, $matches) && isset($this->replacements[$matches[1]])) {
+                    if (
+                        preg_match("/%=([[:alpha:]_]*)(\+[[:alpha:]]+)?=%/", $path .
+                        DS .
+                        $file, $matches) && isset($this->replacements[$matches[1]])
+                    ) {
                         $newfile = str_replace($matches[0], $this->replacements[$matches[1]], $file);
 
                         if (isset($matches[2])) {

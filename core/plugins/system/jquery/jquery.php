@@ -7,7 +7,6 @@
  */
 
 // no direct access
-defined('_HZEXEC_') or die();
 
 /**
  * System plugin for adding jQuery to the document

@@ -236,7 +236,7 @@ class Modules extends AdminController
         if ($filters['sort'] == 'name') {
             $query->order('name', $filters['sort_Dir']);
             $query->order('ordering', 'asc');
-        } else if ($filters['sort'] == 'ordering') {
+        } elseif ($filters['sort'] == 'ordering') {
             $query->order('position', 'asc');
             $query->order('ordering', $filters['sort_Dir']);
             $query->order('name', 'asc');
@@ -395,7 +395,8 @@ class Modules extends AdminController
         }
 
         // Trigger before save event
-        $result = Event::trigger('extension.onExtensionBeforeSave', array($this->_option . '.module', &$model, $model->isNew()));
+        $eventArgs = array($this->_option . '.module', &$model, $model->isNew());
+        $result = Event::trigger('extension.onExtensionBeforeSave', $eventArgs);
 
         if (in_array(false, $result, true)) {
             Notify::error($model->getError());
@@ -485,11 +486,12 @@ class Modules extends AdminController
         $lang = App::get('language');
 
         foreach ($items as &$item) {
-            $path  = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . '/modules/' . $item->module . '/' . $item->module . '.xml');
-            $path2 = \Hubzero\Filesystem\Util::normalizePath(PATH_CORE . '/modules/' . $item->module . '/' . $item->module . '.xml');
+            $xmlFile = '/modules/' . $item->module . '/' . $item->module . '.xml';
+            $path  = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . $xmlFile);
+            $path2 = \Hubzero\Filesystem\Util::normalizePath(PATH_CORE . $xmlFile);
             if (file_exists($path)) {
                 $item->xml = simplexml_load_file($path);
-            } else if (file_exists($path2)) {
+            } elseif (file_exists($path2)) {
                 $item->xml = simplexml_load_file($path2);
             } else {
                 $item->xml = null;
@@ -596,32 +598,47 @@ class Modules extends AdminController
 
         // Load the positions from the installed templates.
         foreach (ModulesHelper::getTemplates($filters['client_id']) as $template) {
-            $path = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . '/templates/' . $template->element . '/templateDetails.xml');
+            $xmlFile = '/templates/' . $template->element . '/templateDetails.xml';
+            $path = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . $xmlFile);
 
             if (!file_exists($path)) {
-                $path = \Hubzero\Filesystem\Util::normalizePath(PATH_CORE . '/templates/' . $template->element . '/templateDetails.xml');
+                $path = \Hubzero\Filesystem\Util::normalizePath(PATH_CORE . $xmlFile);
             }
 
             if (file_exists($path)) {
                 $xml = simplexml_load_file($path);
                 if (isset($xml->positions[0])) {
-                    Lang::load('tpl_' . $template->element . '.sys', PATH_APP . '/templates/' . $template->element, null, false, true) ||
-                    Lang::load('tpl_' . $template->element . '.sys', PATH_CORE . '/templates/' . $template->element, null, false, true);
+                    $tplPath = '/templates/' . $template->element;
+                    $langFile = 'tpl_' . $template->element . '.sys';
+                    Lang::load($langFile, PATH_APP . $tplPath, null, false, true) ||
+                    Lang::load($langFile, PATH_CORE . $tplPath, null, false, true);
 
                     foreach ($xml->positions[0] as $position) {
                         $value = (string)$position['value'];
                         $label = (string)$position;
                         if (!$value) {
                             $value    = $label;
-                            $label    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', 'TPL_' . $template->element . '_POSITION_' . $value);
-                            $altlabel = preg_replace('/[^a-zA-Z0-9_\-]/', '_', 'COM_MODULES_POSITION_' . $value);
+                            $label    = preg_replace(
+                                '/[^a-zA-Z0-9_\-]/',
+                                '_',
+                                'TPL_' . $template->element . '_POSITION_' . $value
+                            );
+                            $altlabel = preg_replace(
+                                '/[^a-zA-Z0-9_\-]/',
+                                '_',
+                                'COM_MODULES_POSITION_' . $value
+                            );
                             if (!Lang::hasKey($label) && Lang::hasKey($altlabel)) {
                                 $label = $altlabel;
                             }
                         }
-                        if ($filters['type'] == 'user' || ($filters['state'] != '' && $filters['state'] != $template->enabled)) {
+                        $stateMatch = $filters['state'] != '' && $filters['state'] != $template->enabled;
+                        if ($filters['type'] == 'user' || $stateMatch) {
                             unset($positions[$value]);
-                        } elseif (preg_match(chr(1) . $filters['search'] . chr(1) . 'i', $value) && ($filters['template'] == '' || $filters['template'] == $template->element)) {
+                        } elseif (
+                            preg_match(chr(1) . $filters['search'] . chr(1) . 'i', $value)
+                            && ($filters['template'] == '' || $filters['template'] == $template->element)
+                        ) {
                             if (!isset($positions[$value])) {
                                 $positions[$value] = array();
                             }

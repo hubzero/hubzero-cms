@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,9 +19,9 @@ require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehous
 class CartProductHandler
 {
     // Item info
-    var $item;
-    var $crtId;
-    var $tId;
+    public $item;
+    public $crtId;
+    public $tId;
 
     /**
      * Constructor

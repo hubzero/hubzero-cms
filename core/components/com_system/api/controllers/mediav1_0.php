@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -92,7 +93,8 @@ class Mediav1_0 extends ApiController
             // If we have a positive value and its less then our ten second threshold
             // add viewing time to total watched time
             if ($time_viewed < 10 && $time_viewed > 0) {
-                $trackingInformation->set('total_viewing_time', $trackingInformation->get('total_viewing_time') + $time_viewed);
+                $totalViewingTime = $trackingInformation->get('total_viewing_time') + $time_viewed;
+                $trackingInformation->set('total_viewing_time', $totalViewingTime);
             }
 
             // Set the new current position
@@ -147,10 +149,9 @@ class Mediav1_0 extends ApiController
             }
 
             // Check to see if we need to set a new farthest position
-            if (
-                $trackingInformationDetailed->get('farthest_position')
-                && $trackingInformationDetailed->get('current_position') > $trackingInformationDetailed->get('farthest_position')
-            ) {
+            $farthestPos = $trackingInformationDetailed->get('farthest_position');
+            $currentPos = $trackingInformationDetailed->get('current_position');
+            if ($farthestPos && $currentPos > $farthestPos) {
                 $trackingInformationDetailed->set('farthest_position', $time);
                 $trackingInformationDetailed->set('farthest_position_timestamp', Date::toSql());
             }

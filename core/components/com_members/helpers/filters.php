@@ -207,7 +207,8 @@ class Filters
         }
 
         // Get an array of kays for sorting purposes
-        // We do this here, as opposed to in the query, because the data could have been modified at this point by the overrides above
+        // We do this here, as opposed to in the query, because the data could have
+        // been modified at this point by the overrides above
         foreach ($return as $key => $row) {
             $display[$key] = $row['display'];
         }

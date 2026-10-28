@@ -13,7 +13,13 @@ use App;
 
 class RecommendedTags
 {
-    private $tags = array(), $existing_tags = array(), $existing_map = array(), $focus_areas = array(), $focus_areas_map = array(), $fa_properties = array(), $existing_fa_map = array();
+    private $tags = array();
+    private $existing_tags = array();
+    private $existing_map = array();
+    private $focus_areas = array();
+    private $focus_areas_map = array();
+    private $fa_properties = array();
+    private $existing_fa_map = array();
 
     const ENDORSED_TAG = 2;
     const REGULAR_TAG  = 1;

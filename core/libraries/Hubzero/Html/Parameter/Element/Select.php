@@ -21,6 +21,7 @@ class Select extends Element
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Select';
 
     /**
@@ -29,6 +30,7 @@ class Select extends Element
      * @param   object  &$node  XMLElement node object containing the settings for the element
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getOptions(&$node)
     {
         $options = array();

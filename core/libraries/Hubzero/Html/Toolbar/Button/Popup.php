@@ -19,8 +19,9 @@ class Popup extends Button
     /**
      * Button type
      *
-     * @var  string
+     * @public string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Popup';
 
     /**
@@ -37,15 +38,26 @@ class Popup extends Button
      * @param   string   $onClose  JavaScript for the onClose event.
      * @return  string   HTML string for the button
      */
-    public function fetchButton($type = 'Popup', $name = '', $text = '', $url = '', $width = 640, $height = 480, $top = 0, $left = 0, $onClose = '')
-    {
+    public function fetchButton(
+        $type = 'Popup',
+        $name = '',
+        $text = '',
+        $url = '',
+        $width = 640,
+        $height = 480,
+        $top = 0,
+        $left = 0,
+        $onClose = ''
+    ) {
         Behavior::modal();
 
         $text  = \Lang::txt($text);
         $class = $this->fetchIconClass($name);
         $url   = $this->_getCommand($name, $url, $width, $height, $top, $left);
-
-        $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" rel=\"{size: {width: $width, height: $height}, onClose: function() {" . $onClose . "}}\">\n";
+        $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" 
+            rel=\"{size: {width: $width, height: $height}, onClose: function() {" .
+            $onClose .
+            "}}\">\n";
         $html .= "<span class=\"$class\">\n";
         $html .= "$text\n";
         $html .= "</span>\n";
@@ -77,6 +89,7 @@ class Popup extends Button
      * @param   integer  $left    Unused formerly left attribure.
      * @return  string   Command string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCommand($name, $url, $width, $height, $top, $left)
     {
         if (substr($url, 0, 4) !== 'http') {

@@ -59,7 +59,10 @@ class Country extends Select
             // Create a new option object based on the <option /> element.
             $tmp = Dropdown::option(
                 (string) $option->code,
-                App::get('language')->alt(trim((string) $option->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)),
+                App::get('language')->
+                    alt(trim((string) $option->
+                    name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->
+                    fieldname)),
                 'value',
                 'text'
             );

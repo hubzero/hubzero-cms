@@ -6,19 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for the course overview page
  */
-class plgCoursesOverview extends \Hubzero\Plugin\Plugin
+class PlgCoursesOverview extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var    boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -26,7 +26,7 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
      *
      * @param      object  $course Current course
      * @param      string  $active Current active area
-     * @return     array
+     * @return     object
      */
     public function onCourseView($course, $active = null)
     {
@@ -38,8 +38,8 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
         if ($response->get('name') == $active) {
             $view = $this->view('default', 'overview');
             $view->set('option', Request::getCmd('option', 'com_courses'))
-                 ->set('controller', Request::getWord('controller', 'course'))
-                 ->set('course', $course);
+                ->set('controller', Request::getWord('controller', 'course'))
+                ->set('course', $course);
 
             $response->set('html', $view->loadTemplate());
         }

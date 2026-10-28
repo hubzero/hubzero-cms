@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,6 +25,7 @@ class GradePolicies extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\GradePolicies';
 
     /**
@@ -31,6 +33,7 @@ class GradePolicies extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'gradepolicies';
 
     /**

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,7 +20,9 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+	// @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Return the alias and name for this category of content
@@ -85,8 +88,8 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
             foreach ($pages as $page) {
                 $row = new stdClass();
                 $row->title = $page->title;
-                $row->href  = Route::url($page->link());
-                $row->text  = strip_tags($page->version->get('pagehtml', ''));
+                $row->href = Route::url($page->link());
+                $row->text = strip_tags($page->version->get('pagehtml', ''));
                 $row->category = $page->get('scope');
                 $row->section = $this->_name;
 

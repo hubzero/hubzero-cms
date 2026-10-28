@@ -14,7 +14,12 @@ defined('_HZEXEC_') or die();
 <?php foreach ($this->filter->options as $option) : ?>
         <label>
             <?php $checked = in_array($option->value, $this->selectedOptions) ? 'checked' : ''; ?>
-            <input type="checkbox" class="checkbox" name="filters[<?php echo $this->filter->field;?>][<?php $option->id;?>]" value="<?php echo $option->value;?>" <?php echo $checked; ?>/>
+            <input type="checkbox"
+                class="checkbox"
+                name="filters[<?php echo $this->filter->field;?>][<?php $option->id;?>]"
+                value="<?php echo $option->value;?>"
+                <?php echo $checked; ?>
+            />
             <?php
                 $countIndex = $this->filter->field . '_' . $option->id;
                 $count = isset($this->facetCounts[$countIndex]) ? $this->facetCounts[$countIndex] : '';

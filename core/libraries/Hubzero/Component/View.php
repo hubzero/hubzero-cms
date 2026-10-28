@@ -24,6 +24,7 @@ class View extends AbstractView
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_layout = 'display';
 
     /**
@@ -60,6 +61,7 @@ class View extends AbstractView
      * @param   array  $config  A named configuration array for object construction.<br/>
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($config = array())
     {
         // Look for overrides under the component that owns the view, not
@@ -149,6 +151,7 @@ class View extends AbstractView
      * @throws  \BadMethodCallException
      * @since   1.3.1
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __call($method, $parameters)
     {
         if (!static::hasHelper($method)) {
@@ -172,7 +175,7 @@ class View extends AbstractView
             $callback = null;
             if (class_exists($invokable1)) {
                 $callback = new $invokable1();
-            } else if (class_exists($invokable2)) {
+            } elseif (class_exists($invokable2)) {
                 $callback = new $invokable2();
             }
 

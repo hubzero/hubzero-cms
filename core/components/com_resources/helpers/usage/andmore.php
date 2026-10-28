@@ -22,21 +22,21 @@ class Andmore extends Base
      *
      * @var string
      */
-    var $views    = 'unavailable';
+    public $views    = 'unavailable';
 
     /**
      * Average view time
      *
      * @var string
      */
-    var $avg_view = 'unavailable';
+    public $avg_view = 'unavailable';
 
     /**
      * Total views
      *
      * @var string
      */
-    var $tot_view = 'unavailable';
+    public $tot_view = 'unavailable';
 
     /**
      * Constructor
@@ -109,7 +109,7 @@ class Andmore extends Base
             $html .= ' </tbody>' . "\n";
             $html .= '</table>' . "\n";
         }
-        $html .= $this->display_substats();
+        $html .= $this->displaySubstats();
 
         return $html;
     }

@@ -121,7 +121,8 @@ class plgCronActivity extends \Hubzero\Plugin\Plugin
                     if (count($posts) > 0) {
                         if ($this->sendEmail($user, $posts, $interval)) {
                             // Update the last sent timestamp
-                            $query = "UPDATE `#__activity_digests` SET `sent`=" . $db->quote(Date::toSql()) . " WHERE `scope`=" . $db->quote('user') . " AND `scope_id`=" . $db->quote($user);
+                            $query = "UPDATE `#__activity_digests` SET `sent`=" . $db->quote(Date::toSql())
+                                . " WHERE `scope`=" . $db->quote('user') . " AND `scope_id`=" . $db->quote($user);
                             $db->setQuery($query);
                             $db->query();
                         }

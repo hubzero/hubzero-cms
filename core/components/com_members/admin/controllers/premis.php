@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -75,7 +76,9 @@ class Unit extends Relational
      */
     public function automaticAlias($data)
     {
-        $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
+        $alias = (isset($data['alias']) && $data['alias'])
+            ? $data['alias']
+            : $data['title'];
         $alias = strip_tags($alias);
         $alias = trim($alias);
         if (strlen($alias) > 100) {

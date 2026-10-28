@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Search plugin for wiki pages
+ */
+/**
  */
 class plgSearchWiki extends \Hubzero\Plugin\Plugin
 {
@@ -25,7 +28,9 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->get_term_ar();
-        $weight = '(match(wp.title) against (\'' . join(' ', $terms['stemmed']) . '\') + match(wv.pagetext) against (\'' . join(' ', $terms['stemmed']) . '\'))';
+        $stemmed = join(' ', $terms['stemmed']);
+        $weight = '(match(wp.title) against (\'' . $stemmed . '\') '
+            . '+ match(wv.pagetext) against (\'' . $stemmed . '\'))';
 
         $addtl_where = array();
         foreach ($terms['mandatory'] as $mand) {
@@ -38,7 +43,9 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
         $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
         if ($gids = $authz->get_group_ids()) {
-            $authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
+            $gidList = join(',', $gids);
+            $authorization = '(wp.access IN (0,' . $viewlevels . ') '
+                . 'OR (wp.access = 1 AND xg.gidNumber IN (' . $gidList . ')))';
         } else {
             $authorization = '(wp.access IN (0,' . $viewlevels . '))';
         }
@@ -52,7 +59,9 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
             if (!$authz->is_guest()) {
                 $groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
                 if ($gids = $authz->get_group_ids()) {
-                    $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
+                    $gidList = join(',', $gids);
+                    $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' '
+                        . 'AND xg.gidNumber IN (' . $gidList . '))';
                 }
             }
         }
@@ -102,7 +111,8 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
             $page->set('scope_id', $row->scope_id);
 
             $row->set_link(Route::url($page->link()));
-            // rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
+            // rough de-wikifying. probably a bit faster than rendering to html and
+            // then stripping the tags, but not perfect
             //$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
             $row->set_description(strip_tags($row->get_description()));
             $results->add($row);
@@ -191,13 +201,11 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->state == 1 && ($row->access == 0 || $row->access = 1)) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 2) {
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

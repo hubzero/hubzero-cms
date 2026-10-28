@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for adding JSON-LD metadata to the document
@@ -113,7 +111,8 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
             if (!$contributor->organization) {
                 $contributor->organization = $contributor->p_organization;
             }
-            $contributor->organization = stripslashes(trim($contributor->organization ? $contributor->organization : ''));
+            $contributor->organization = stripslashes(trim($contributor->organization ?
+                    $contributor->organization : ''));
 
             $author = array(
                 '@type'      => 'Person',
@@ -139,7 +138,10 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
             }
 
             if ($contributor->user_id && $contributor->open) {
-                $author['url'] = rtrim(Request::root(), '/') . '/' . ltrim(Route::url('index.php?option=com_members&id=' . $contributor->user_id), '/');
+                $author['url'] = rtrim(Request::root(), '/') .
+                    '/' .
+                    ltrim(Route::url('index.php?option=com_members&id=' .
+                    $contributor->user_id), '/');
             }
 
             $authors[] = $author;
@@ -187,20 +189,35 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
 
         if ($type->id == 1) {
             $quantity = $publication->attachmentsCount();
-            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $publication->version->publication_id, $publication->version->id, $publication->version->secret, $attachments);
-        } else if ($type->id == 5) {
+            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
+                $type->id,
+                $publication->version->publication_id,
+                $publication->version->id,
+                $publication->version->secret,
+                $attachments
+            );
+        } elseif ($type->id == 5) {
             $quantity = count($attachments[1]);
-        } else if ($type->id == 7) {
+        } elseif ($type->id == 7) {
             $quantity = $publication->attachmentsCount();
             $quantity--;
 
-            $files = \Components\Publications\Helpers\Html::getdatabaseFiles($publication->version->publication_id, $publication->version->id);
+            $files = \Components\Publications\Helpers\Html::getdatabaseFiles(
+                $publication->version->publication_id,
+                $publication->version->id
+            );
 
             if ($files != false && !empty($files)) {
                 $quantity += count($files);
             }
 
-            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $publication->version->publication_id, $publication->version->id, $publication->version->secret, $attachments);
+            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
+                $type->id,
+                $publication->version->publication_id,
+                $publication->version->id,
+                $publication->version->secret,
+                $attachments
+            );
 
             if ($files != false && !empty($files)) {
                 foreach ($files as $file) {
@@ -215,7 +232,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
         if (!empty($quantity)) {
             if ($type->id == 1 || $type->id == 7) {
                 $data['size'] = $quantity == 1 ? $quantity . " file" : $quantity . " files";
-            } else if ($type->id == 5) {
+            } elseif ($type->id == 5) {
                 $data['size'] = $quantity == 1 ? $quantity . " publication" : $quantity . " publications";
             }
         }
@@ -245,7 +262,7 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
             "creator":{
                  "@type":"Organization",
                  "url": "https://www.ncei.noaa.gov/",
-                 "name":"OC/NOAA/NESDIS/NCEI > National Centers for Environmental Information, NESDIS, NOAA, U.S. Department of Commerce",
+                 "name":"OC/NOAA/NESDIS/NCEI > National Centers for Environmental Information",
                  "contactPoint":{
                         "@type":"ContactPoint",
                         "contactType": "customer service",
@@ -266,7 +283,8 @@ class plgPublicationsJsonld extends \Hubzero\Plugin\Plugin
                  {
                         "@type":"DataDownload",
                         "encodingFormat":"XML",
-                        "contentUrl":"http://gis.ncdc.noaa.gov/all-records/catalog/search/resource/details.page?id=gov.noaa.ncdc:C00510"
+                        "contentUrl" :"http://gis.ncdc.noaa.gov/all-records/catalog/search/resource/
+                            details.page?id=gov.noaa.ncdc:C00510"
                  }
             ],
             "temporalCoverage":"1950-01-01/2013-12-18",

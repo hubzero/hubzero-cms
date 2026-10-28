@@ -6,19 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
- * Courses Plugin class for PEC
+ * Courses Plugin class for course PEC
  */
-class plgCoursesPec extends \Hubzero\Plugin\Plugin
+class PlgCoursesPec extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var    boolean
+     * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -29,7 +29,7 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
     public function onOfferingEdit()
     {
         $area = array(
-            'name'  => $this->_name,
+            'name' => $this->_name,
             'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name))
         );
         return $area;
@@ -41,19 +41,23 @@ class plgCoursesPec extends \Hubzero\Plugin\Plugin
      * @param      object  $course
      * @param      object  $offering
      * @param      object  $section
-     * @return     array
+     * @return     string|null
      */
     public function onCourseEnrolled($course, $offering, $section)
     {
         if (!$course->exists() || !$offering->exists()) {
-            return;
+            return null;
         }
 
         $offering->section($section->get('alias'));
         $url = $offering->link() . '&task=enroll';
 
         if ($offering->params('pec_register', 0) && $offering->params('pec_course', 0)) {
-            $url = str_replace('{{course}}', $offering->params('pec_course', 0), $offering->params('url', 'https://www.distance.purdue.edu/{{course}}'));
+            $url = str_replace(
+                '{{course}}',
+                $offering->params('pec_course', 0),
+                $offering->params('url', 'https://www.distance.purdue.edu/{{course}}')
+            );
         }
 
         return $url;

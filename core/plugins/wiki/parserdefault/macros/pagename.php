@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for getting the page title or pagename of a page
@@ -22,8 +20,12 @@ class PageNameMacro extends WikiMacro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) or title of the current page.";
-        $txt['html'] = "<p>Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) or title of the current page.</p>";
+        $txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) "
+            . "or title" . "\n"
+            . "of the current page.";
+        $txt['html'] = "<p>Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args "
+            . "given) " . "\n"
+            . "or title of the current page.</p>";
         return $txt['html'];
     }
 

@@ -22,6 +22,7 @@ class Group extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_groups',
     );
@@ -31,6 +32,7 @@ class Group extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_group = null;
 
     /**

@@ -113,7 +113,7 @@ class INI extends Base
                     $obj->$section = new stdClass();
                     continue;
                 }
-            } else if ($line[0] == '[') {
+            } elseif ($line[0] == '[') {
                 continue;
             }
 
@@ -141,16 +141,14 @@ class INI extends Base
             } else {
                 // If the value is not quoted, we assume it is not a string.
 
-                // If the value is 'false' assume boolean false.
                 if ($value == 'false') {
+                    // If the value is 'false' assume boolean false.
                     $value = false;
-                }
-                // If the value is 'true' assume boolean true.
-                elseif ($value == 'true') {
+                } elseif ($value == 'true') {
+                    // If the value is 'true' assume boolean true.
                     $value = true;
-                }
-                // If the value is numeric than it is either a float or int.
-                elseif (is_numeric($value)) {
+                } elseif (is_numeric($value)) {
+                    // If the value is numeric than it is either a float or int.
                     // If there is a period then we assume a float.
                     if (strpos($value, '.') !== false) {
                         $value = (float) $value;

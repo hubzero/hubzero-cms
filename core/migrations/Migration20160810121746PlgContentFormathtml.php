@@ -19,7 +19,8 @@ class Migration20160810121746PlgContentFormathtml extends Base
     public function up()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `enabled`=1 WHERE `folder`=" . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
+            $query = "UPDATE `#__extensions` SET `enabled`=1 WHERE `folder`="
+                . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -31,7 +32,8 @@ class Migration20160810121746PlgContentFormathtml extends Base
     public function down()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `enabled`=0 WHERE `folder`=" . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
+            $query = "UPDATE `#__extensions` SET `enabled`=0 WHERE `folder`="
+                . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
             $this->db->setQuery($query);
             $this->db->query();
         }

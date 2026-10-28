@@ -323,101 +323,101 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             switch ($this->action) {
                 // Comments
                 case 'savecomment':
-                    $arr['html'] = $this->_savecomment();
+                    $arr['html'] = $this->savecomment();
                     break;
                 // 'newcomment' and 'editcomment' used to dispatch to methods that
                 // have never existed in this plugin -- reaching either was a fatal.
                 // Commenting is savecomment/deletecomment.
                 case 'deletecomment':
-                    $arr['html'] = $this->_deletecomment();
+                    $arr['html'] = $this->deletecomment();
                     break;
 
                 case 'followers':
-                    $arr['html'] = $this->_followers();
+                    $arr['html'] = $this->followers();
                     break;
                 case 'following':
-                    $arr['html'] = $this->_following();
+                    $arr['html'] = $this->following();
                     break;
                 case 'follow':
-                    $arr['html'] = $this->_follow('group');
+                    $arr['html'] = $this->follow('group');
                     break;
                 case 'unfollow':
-                    $arr['html'] = $this->_unfollow('group');
+                    $arr['html'] = $this->unfollow('group');
                     break;
 
                 // Entries
                 case 'savepost':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
                 case 'newpost':
-                    $arr['html'] = $this->_new();
+                    $arr['html'] = $this->new();
                     break;
                 case 'editpost':
-                    $arr['html'] = $this->_edit();
+                    $arr['html'] = $this->edit();
                     break;
                 case 'deletepost':
-                    $arr['html'] = $this->_delete();
+                    $arr['html'] = $this->delete();
                     break;
                 case 'posts':
-                    $arr['html'] = $this->_posts();
+                    $arr['html'] = $this->posts();
                     break;
 
                 case 'comment':
                 case 'post':
-                    $arr['html'] = $this->_post();
+                    $arr['html'] = $this->post();
                     break;
                 case 'vote':
-                    $arr['html'] = $this->_vote();
+                    $arr['html'] = $this->vote();
                     break;
                 case 'collect':
-                    $arr['html'] = $this->_repost();
+                    $arr['html'] = $this->repost();
                     break;
                 case 'remove':
-                    $arr['html'] = $this->_remove();
+                    $arr['html'] = $this->remove();
                     break;
                 case 'move':
-                    $arr['html'] = $this->_move();
+                    $arr['html'] = $this->move();
                     break;
 
                 case 'followcollection':
-                    $arr['html'] = $this->_follow('collection');
+                    $arr['html'] = $this->follow('collection');
                     break;
                 case 'unfollowcollection':
-                    $arr['html'] = $this->_unfollow('collection');
+                    $arr['html'] = $this->unfollow('collection');
                     break;
                 case 'collectcollection':
-                    $arr['html'] = $this->_repost();
+                    $arr['html'] = $this->repost();
                     break;
                 case 'newcollection':
-                    $arr['html'] = $this->_newcollection();
+                    $arr['html'] = $this->newcollection();
                     break;
                 case 'editcollection':
-                    $arr['html'] = $this->_editcollection();
+                    $arr['html'] = $this->editcollection();
                     break;
                 case 'savecollection':
-                    $arr['html'] = $this->_savecollection();
+                    $arr['html'] = $this->savecollection();
                     break;
                 case 'deletecollection':
-                    $arr['html'] = $this->_deletecollection();
+                    $arr['html'] = $this->deletecollection();
                     break;
                 case 'all':
                 case 'collections':
-                    $arr['html'] = $this->_collections();
+                    $arr['html'] = $this->collections();
                     break;
 
                 case 'settings':
-                    $arr['html'] = $this->_settings();
+                    $arr['html'] = $this->settings();
                     break;
                 case 'savesettings':
-                    $arr['html'] = $this->_savesettings();
+                    $arr['html'] = $this->savesettings();
                     break;
 
                 case 'collection':
-                    $arr['html'] = $this->_collection();
+                    $arr['html'] = $this->collection();
                     break;
 
                 default:
-                    $arr['html'] = $this->_collections();
+                    $arr['html'] = $this->collections();
                     break;
             }
         }
@@ -439,7 +439,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _login()
+    private function login()
     {
         $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
 
@@ -466,7 +466,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _following()
+    private function following()
     {
         // Filters for returning results
         $filters = array(
@@ -513,7 +513,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         return $view->loadTemplate();
     }
 
-    private function _followers()
+    private function followers()
     {
         // Filters for returning results
         $filters = array(
@@ -565,7 +565,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    private function _collections()
+    private function collections()
     {
         $view = $this->view('collections', 'collection')
             ->set('name', $this->_name)
@@ -630,7 +630,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    private function _collection()
+    private function collection()
     {
         $view = $this->view('default', 'collection')
             ->set('name', $this->_name)
@@ -708,11 +708,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      * @param   string  $what
      * @return  string
      */
-    private function _follow($what = 'collection')
+    private function follow($what = 'collection')
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -760,7 +760,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             exit;
         }
 
-        return $this->_collection();
+        return $this->collection();
     }
 
     /**
@@ -769,11 +769,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      * @param   string  $what
      * @return  string
      */
-    private function _unfollow($what = 'collection')
+    private function unfollow($what = 'collection')
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -821,7 +821,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             exit;
         }
 
-        return $this->_collection();
+        return $this->collection();
     }
 
     /**
@@ -829,7 +829,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _posts()
+    private function posts()
     {
         $view = $this->view('default', 'collection')
             ->set('name', $this->_name)
@@ -893,14 +893,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _post()
+    private function post()
     {
         $post_id = Request::getInt('post', 0);
 
         $post = \Components\Collections\Models\Post::getInstance($post_id);
 
         if (!$post->exists()) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         $collection = $this->model->collection($post->get('collection_id'));
@@ -911,7 +911,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // collection, whose access reads 0, and every group's private post
         // renders through whichever group the caller can see.
         if (!$collection->exists()) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Check authorization
@@ -950,9 +950,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _new()
+    private function new()
     {
-        return $this->_edit();
+        return $this->edit();
     }
 
     /**
@@ -961,10 +961,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      * @param   object  $entry
      * @return  string
      */
-    private function _edit($entry = null)
+    private function edit($entry = null)
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
@@ -1054,20 +1054,20 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _save()
+    private function save()
     {
         // Check for request forgeries
         Request::checkToken();
 
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-edit-item') || !$this->params->get('access-create-item')) {
             $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1114,7 +1114,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             // Bind content
             if (!$item->bind($fields)) {
                 $this->setError($item->getError());
-                return $this->_edit($item);
+                return $this->edit($item);
             }
 
             // Add some data
@@ -1131,7 +1131,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             // Store new content
             if (!$item->store()) {
                 $this->setError($item->getError());
-                return $this->_edit($item);
+                return $this->edit($item);
             }
         }
 
@@ -1153,7 +1153,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
                     $asset = new \Components\Collections\Models\Asset($asset);
                     if (!$asset->move($item->get('id'))) {
                         $this->setError($item->getError());
-                        return $this->_edit($item);
+                        return $this->edit($item);
                     }
                 }
 
@@ -1201,7 +1201,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // Check for any errors
         if ($this->getError()) {
             Request::setVar('post', $p['id']);
-            return $this->_edit($post->item()->bind($fields));
+            return $this->edit($post->item()->bind($fields));
         }
 
         if (!isset($collection)) {
@@ -1273,10 +1273,10 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _repost()
+    private function repost()
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Deliberately not gated on access-create-item: a repost writes into a
@@ -1459,7 +1459,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         }
 
         // Display the main listing
-        return $this->_collection();
+        return $this->collection();
     }
 
     /**
@@ -1467,11 +1467,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _remove()
+    private function remove()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Check for request forgeries
@@ -1480,7 +1480,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // Access check
         if (!$this->params->get('access-create-item')) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1493,7 +1493,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             || $__coll->get('object_id') != $this->group->get('gidNumber')
         ) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // views/collection/tmpl/default.php offers Remove to the post's creator or
@@ -1508,7 +1508,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             && !$__coll->canBeModeratedBy()
         ) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         $collection = $this->model->collection($post->get('collection_id'));
@@ -1565,17 +1565,17 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _move()
+    private function move()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-create-item')) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1588,13 +1588,13 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             || $__coll->get('object_id') != $this->group->get('gidNumber')
         ) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Moving a post off a board is the poster's or a board moderator's call
         if ($post->get('created_by') != User::get('id') && !$__coll->canBeModeratedBy()) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // The destination board arrives from the request like the source did, so
@@ -1625,17 +1625,17 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _delete()
+    private function delete()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-delete-item')) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1650,11 +1650,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             || $__coll->get('object_id') != $this->group->get('gidNumber')
         ) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         if (!$post->get('id')) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Two different actions share this route. Marking the ITEM deleted removes
@@ -1780,14 +1780,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _savecomment()
+    private function savecomment()
     {
         // Check for request forgeries
         Request::checkToken();
 
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Incoming
@@ -1859,7 +1859,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // Store new content
         if (!$comment->save()) {
             $this->setError($comment->getError());
-            return $this->_post();
+            return $this->post();
         }
 
         // Log activity ($post is resolved and group-checked above)
@@ -1896,7 +1896,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
             'recipients' => $recipients
         ]);
 
-        return $this->_post();
+        return $this->post();
     }
 
     /**
@@ -1904,11 +1904,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _deletecomment()
+    private function deletecomment()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -1921,7 +1921,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // Incoming
         $id = Request::getInt('comment', 0);
         if (!$id) {
-            return $this->_post();
+            return $this->post();
         }
 
         // The post the comment is claimed to be on, which must be one of this
@@ -1996,7 +1996,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         ]);*/
 
         // Return the topics list
-        return $this->_post();
+        return $this->post();
     }
 
     /**
@@ -2004,14 +2004,14 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _vote()
+    private function vote()
     {
         // Login check. The collection view offers this control only to a logged-in
         // viewer -- a guest is given a login link instead -- and Item::vote() keys
         // its de-duplication row on the user id, which is 0 for a guest: every
         // guest would share one row and toggle it against the others.
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -2098,9 +2098,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _newcollection()
+    private function newcollection()
     {
-        return $this->_editcollection();
+        return $this->editcollection();
     }
 
     /**
@@ -2109,11 +2109,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      * @param   object  $row
      * @return  string
      */
-    private function _editcollection($row = null)
+    private function editcollection($row = null)
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
@@ -2161,18 +2161,18 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _savecollection()
+    private function savecollection()
     {
         // Check for request forgeries
         Request::checkToken();
 
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -2206,7 +2206,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
         if (!$collection->bind($fields)) {
             $this->setError($collection->getError());
-            return $this->_editcollection($collection);
+            return $this->editcollection($collection);
         }
 
         if ($collection->get('access') != 0 && $collection->get('access') != 4) {
@@ -2216,7 +2216,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // Store new content
         if (!$collection->store()) {
             $this->setError($collection->getError());
-            return $this->_editcollection($collection);
+            return $this->editcollection($collection);
         }
 
         $collection->item()->tag(trim(Request::getString('tags', '', 'post')));
@@ -2260,17 +2260,17 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _deletecollection()
+    private function deletecollection()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-delete-collection')) {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -2279,7 +2279,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
         // Ensure we have an ID to work with
         if (!$id) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         $process = Request::getString('process', '');
@@ -2371,11 +2371,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _settings()
+    private function settings()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
@@ -2401,16 +2401,16 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _savesettings()
+    private function savesettings()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if ($this->authorized != 'manager' && $this->authorized != 'admin') {
             $this->setError(Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Check for request forgeries
@@ -2425,7 +2425,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->_settings();
+            return $this->settings();
         }
 
         // Record the activity

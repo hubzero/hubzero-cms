@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 require_once __DIR__ . '/helpers/publicationUsageHelper.php';
 
@@ -21,6 +19,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -89,7 +88,11 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 
         if (!in_array($table, $tables)) {
             $arr['html']     = '<p class="error">' . Lang::txt('PLG_PUBLICATION_USAGE_MISSING_TABLE') . '</p>';
-            $arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt('PLG_PUBLICATION_USAGE_DETAILED') . '</a></p>';
+            $arr['metadata'] = '<p class="usage"><a href="' .
+                    $url .
+                    '">' .
+                    Lang::txt('PLG_PUBLICATION_USAGE_DETAILED') .
+                    '</a></p>';
             return $arr;
         }
 
@@ -148,11 +151,11 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
     {
         if ($time < 60) {
             $data = round($time, 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
-        } else if ($time > 60 && $time < 3600) {
+        } elseif ($time > 60 && $time < 3600) {
             $data = round(($time / 60), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_MINUTES');
-        } else if ($time >= 3600 && $time < 86400) {
+        } elseif ($time >= 3600 && $time < 86400) {
             $data = round(($time / 3600), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_HOURS');
-        } else if ($time >= 86400) {
+        } elseif ($time >= 86400) {
             $data = round(($time / 86400), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
         }
 

@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin for hubzero
  */
@@ -50,7 +47,8 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
             // get com_groups params to get upload path
             //$uploadPath      = $this->filespace($group);
             $params = App::get('component')->params('com_groups');
-            $uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+            $uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS)
+                                     . DS . $group->get('gidNumber');
             $componentPath   = $uploadPath . DS . 'components';
             $componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
 
@@ -68,7 +66,10 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 
                 // get current route and remove prefix
                 $currentRoute = rtrim(Request::path(), '/');
-                $currentRoute = trim(str_replace('groups/' . $group->get('cn') . '/' . $active, '', $currentRoute), '/');
+                $currentRoute = trim(
+                    str_replace('groups/' . $group->get('cn') . '/' . $active, '', $currentRoute),
+                    '/'
+                );
 
                 // split route into segements
                 $segments = explode('/', $currentRoute);
@@ -79,7 +80,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 
                     // get segments from router
                     $vars = $router->parse($segments);
-                } else if (class_exists($alt)) {
+                } elseif (class_exists($alt)) {
                     $router = new $alt();
 
                     // get segments from router
@@ -156,7 +157,9 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
                 $params = App::get('component')->params('com_groups');
 
                 // get com_groups params to get upload path
-                $uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber'); //$this->filespace($group);
+                $uploadPath      = PATH_APP . DS . trim($params->get('uploadpath', '/site/groups'), DS)
+                                     . DS . $group->get('gidNumber');
+                //$this->filespace($group);
                 $componentPath   = $uploadPath . DS . 'components';
                 $componentRouter = $componentPath . DS . 'com_' . $active . DS . 'router.php';
 
@@ -189,15 +192,14 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
 
                         // get segments from router
                         $routeParts = $router->build($query);
-                    } else if (class_exists($alt)) {
+                    } elseif (class_exists($alt)) {
                         $router = new $alt();
 
                         // get segments from router
                         $routeParts = $router->build($query);
-                    }
-                    // if we have a build route functions, run it
-                    else if (function_exists($buildRouteFunction)) {
-                        // get segments from router
+                    } elseif (function_exists($buildRouteFunction)) {
+                        // if we have a build route functions, run it
+                        // run segments from router
                         $routeParts = $buildRouteFunction($query);
                     }
 

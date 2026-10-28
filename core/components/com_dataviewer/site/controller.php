@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -132,15 +133,19 @@ function authorize($dd)
 {
     global $dv_conf;
 
-    if (isset($dd['acl']['allowed_users']) && (is_array($dd['acl']['allowed_users']) || $dd['acl']['allowed_users'] === false || $dd['acl']['allowed_users'] == 'registered')) {
+    $allowedUsers = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : null;
+    if (isset($allowedUsers) && (is_array($allowedUsers) || $allowedUsers === false || $allowedUsers == 'registered')) {
         $dv_conf['acl']['allowed_users'] = $dd['acl']['allowed_users'];
     }
 
-    if (isset($dd['acl']['allowed_groups']) && (is_array($dd['acl']['allowed_groups']) || $dd['acl']['allowed_groups'] === false)) {
+    $allowedGroups = isset($dd['acl']['allowed_groups']) ? $dd['acl']['allowed_groups'] : null;
+    if (isset($allowedGroups) && (is_array($allowedGroups) || $allowedGroups === false)) {
         $dv_conf['acl']['allowed_groups'] = $dd['acl']['allowed_groups'];
     }
 
-    if ($dv_conf['acl']['allowed_users'] === false && $dv_conf['acl']['allowed_groups'] === false || isset($dd['acl']['public'])) {
+    $usersAllowed = $dv_conf['acl']['allowed_users'];
+    $groupsAllowed = $dv_conf['acl']['allowed_groups'];
+    if ($usersAllowed === false && $groupsAllowed === false || isset($dd['acl']['public'])) {
         return true;
     } elseif (User::isGuest()) {
         $redir_url = '?return=' . base64_encode($_SERVER['REQUEST_URI']);
@@ -154,15 +159,15 @@ function authorize($dd)
         return true;
     }
 
-    if ($dv_conf['acl']['allowed_users'] !== false && $dv_conf['acl']['allowed_users'] == 'registered' && !User::isGuest()) {
+    if ($usersAllowed !== false && $usersAllowed == 'registered' && !User::isGuest()) {
         return true;
-    } elseif (isset($dv_conf['acl']['allowed_users']) && is_array($dv_conf['acl']['allowed_users']) && !User::isGuest()) {
+    } elseif (isset($usersAllowed) && is_array($usersAllowed) && !User::isGuest()) {
         if (in_array(User::get('username'), $dv_conf['acl']['allowed_users'])) {
             return true;
         }
     }
 
-    if ($dv_conf['acl']['allowed_groups'] !== false && is_array($dv_conf['acl']['allowed_groups']) && !User::isGuest()) {
+    if ($groupsAllowed !== false && is_array($groupsAllowed) && !User::isGuest()) {
         $groups = \Hubzero\User\Helper::getGroups(User::get('id'));
         if ($groups && count($groups)) {
             foreach ($groups as $g) {

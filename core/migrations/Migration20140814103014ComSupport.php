@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -48,7 +49,8 @@ class Migration20140814103014ComSupport extends Base
                 $i = 5;
                 $entries = array();
                 foreach ($results as $result) {
-                    $entries[] = "(" . $i . ",0," . $this->db->quote($result->title) . "," . $this->db->quote($result->alias) . ")";
+                    $entries[] = "(" . $i . ",0," . $this->db->quote($result->title)
+                        . "," . $this->db->quote($result->alias) . ")";
                     $i++;
                 }
 
@@ -64,7 +66,10 @@ class Migration20140814103014ComSupport extends Base
             $this->db->setQuery("SELECT * FROM `#__support_statuses` WHERE `open`=0");
             if ($rows = $this->db->loadObjectList()) {
                 foreach ($rows as $row) {
-                    $this->db->setQuery("UPDATE `#__support_tickets` SET `status`=" . $this->db->quote($row->id) . " WHERE `resolved`=" . $this->db->quote($row->alias));
+                    $this->db->setQuery(
+                        "UPDATE `#__support_tickets` SET `status`=" . $this->db->quote($row->id)
+                        . " WHERE `resolved`=" . $this->db->quote($row->alias)
+                    );
                     $this->db->query();
                 }
             }

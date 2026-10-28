@@ -89,7 +89,8 @@ class Helper extends Module
     /**
      * Get a list of the authorised, non-special components to display in the components menu.
      *
-     * @param   boolean  $authCheck  An optional switch to turn off the auth check (to support custom layouts 'grey out' behaviour).
+     * @param   boolean  $authCheck  An optional switch to turn off the auth check
+     *                               (to support custom layouts 'grey out' behaviour).
      * @return  array    A nest array of component objects and submenus
      */
     public static function getComponents($authCheck = true)
@@ -133,7 +134,8 @@ class Helper extends Module
 
             if ($component->parent_id == 1) {
                 // Only add this top level if it is authorised and enabled.
-                if ($authCheck == false || ($authCheck && User::authorise('core.manage', $component->element))) {
+                $canManage = User::authorise('core.manage', $component->element);
+                if ($authCheck == false || ($authCheck && $canManage)) {
                     // Root level.
                     $result[$component->id] = $component;
                     if (!isset($result[$component->id]->submenu)) {
@@ -148,19 +150,27 @@ class Helper extends Module
                     if (!empty($component->element)) {
                         // Load the core file then
                         // Load extension-local file.
-                        $lang->load($component->element . '.sys', PATH_APP . '/bootstrap/administrator', null, false, false)
-                        || $lang->load($component->element . '.sys', Component::path($component->element) . '/admin', null, false, false)
-                        || $lang->load($component->element . '.sys', PATH_APP . '/bootstrap/administrator', $lang->getDefault(), false, false)
-                        || $lang->load($component->element . '.sys', Component::path($component->element) . '/admin', $lang->getDefault(), false, false);
+                        $sysFile = $component->element . '.sys';
+                        $appPath = PATH_APP . '/bootstrap/administrator';
+                        $componentPath = Component::path($component->element) . '/admin';
+                        $defaultLang = $lang->getDefault();
+                        $lang->load($sysFile, $appPath, null, false, false)
+                        || $lang->load($sysFile, $componentPath, null, false, false)
+                        || $lang->load($sysFile, $appPath, $defaultLang, false, false)
+                        || $lang->load($sysFile, $componentPath, $defaultLang, false, false);
                     }
-                    $component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
+                    $component->text = $lang->hasKey($component->title)
+                        ? Lang::txt($component->title)
+                        : $component->alias;
                 }
             } else {
                 // Sub-menu level.
                 if (isset($result[$component->parent_id])) {
                     // Add the submenu link if it is defined.
                     if (isset($result[$component->parent_id]->submenu) && !empty($component->link)) {
-                        $component->text = $lang->hasKey($component->title) ? Lang::txt($component->title) : $component->alias;
+                        $component->text = $lang->hasKey($component->title)
+                            ? Lang::txt($component->title)
+                            : $component->alias;
                         $result[$component->parent_id]->submenu[] =& $component;
                     }
                 }

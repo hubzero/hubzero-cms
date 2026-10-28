@@ -20,40 +20,40 @@ class Token
     /**
      * Description for 'mailTokenTicket'
      */
-    const EMAIL_TOKEN_TICKET = 1;
+    public const EMAIL_TOKEN_TICKET = 1;
 
     /**
      * Description for 'mailTokenGroupThread'
      */
-    const EMAIL_TOKEN_GROUP_THREAD = 2;
+    public const EMAIL_TOKEN_GROUP_THREAD = 2;
 
     /**
      * Description for '_currentVersion'
      *
      * @var  string
      */
-    private $_currentVersion;
+    private $currentVersion;
 
     /**
      * Description for '_iv'
      *
      * @var  unknown
      */
-    private $_iv;
+    private $iv;
 
     /**
      * Description for '_key'
      *
      * @var  unknown
      */
-    private $_key;
+    private $key;
 
     /**
      * Description for '_blocksize'
      *
      * @var  number
      */
-    private $_blocksize;
+    private $blocksize;
 
     /**
      * Read encryption configuration from config file
@@ -78,30 +78,34 @@ class Token
         $HubmailConfig1 = new HubmailConfig();
 
         // Get current token version
-        $this->_currentVersion = $HubmailConfig1->email_token_current_version;
+        $this->currentVersion = $HubmailConfig1->email_token_current_version;
 
-        if (empty($this->_currentVersion)) {
+        if (empty($this->currentVersion)) {
             throw new RuntimeException('Class HubmailConfig->email_token_current_version not found in config file');
         }
 
         // Grab the encryption info for that version
-        $prop = 'email_token_encryption_info_v' . $this->_currentVersion;
+        $prop = 'email_token_encryption_info_v' . $this->currentVersion;
         $encryption_info = $HubmailConfig1->$prop;
 
         if (empty($encryption_info)) {
-            throw new RuntimeException('Class HubmailConfig->email_token_encryption_info_vX not found for version: ' . $this->_currentVersion);
+            throw new RuntimeException('Class HubmailConfig->email_token_encryption_info_vX not found for version: ' .
+                $this->currentVersion);
         }
 
         // Encryption info is comma delimited (key, iv) in this configuraiton value
         $keyArray = explode(',', $encryption_info);
 
         if (count($keyArray) <> 2) {
-            throw new RuntimeException(__CLASS__ . '::__construct(); config.email_token_encryption_info_v' . $tokenVersion . ' cannot be split');
+            throw new RuntimeException(__CLASS__ .
+                '::__construct(); config.email_token_encryption_info_v' .
+                $tokenVersion .
+                ' cannot be split');
         }
 
-        $this->_key = $keyArray[0];
-        $this->_iv  = $keyArray[1];
-        $this->_blocksize = 8; // in bytes
+        $this->key = $keyArray[0];
+        $this->iv  = $keyArray[1];
+        $this->blocksize = 8; // in bytes
     }
 
     /**
@@ -130,11 +134,11 @@ class Token
         $binaryString .= pack("n", hexdec($hashsub));
 
         // Add PKCS7 style padding before encryption
-        $pad = $this->_blocksize - (strlen($binaryString) % $this->_blocksize);
+        $pad = $this->blocksize - (strlen($binaryString) % $this->blocksize);
         $binaryString .= str_repeat(chr($pad), $pad);
 
         // Do the encryption
-        $encrypted = openssl_encrypt($binaryString, 'AES-128-CBC', $this->_key, OPENSSL_RAW_DATA, $this->_iv);
+        $encrypted = openssl_encrypt($binaryString, 'AES-128-CBC', $this->key, OPENSSL_RAW_DATA, $this->iv);
 
         // Prepend an unencrypted version byte and action byte (in base16)
         $rv = substr(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted), 0, 36);
@@ -161,8 +165,9 @@ class Token
         $encrypted = hex2bin($rawtoken);
 
         // Do the decryption
-        $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this->_key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $this->_iv);
-
+        $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this->
+            key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $this->
+            iv);
         // unpack the original values, no need to strip padding or hash
         // we'll just unpack what we need
         $arr = unpack("N3", $decrypted);

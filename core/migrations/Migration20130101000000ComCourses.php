@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -156,7 +157,8 @@ class Migration20130101000000ComCourses extends Base
 				`answer_id` int(11) NOT NULL,
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `id` (`id`),
-				UNIQUE KEY `#__pdf_form_respondent_progress_respondent_id_question_id_uidx` (`respondent_id`,`question_id`)
+				UNIQUE KEY `#__pdf_form_respondent_progress_respondent_id_question_id_uidx`
+					(`respondent_id`,`question_id`)
 			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS `#__courses_form_respondents` (
@@ -345,13 +347,20 @@ class Migration20130101000000ComCourses extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
-			CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `#__courses_form_latest_responses_view`
+			CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER
+			VIEW `#__courses_form_latest_responses_view`
 			AS SELECT
 				 `fre`.`id` AS `id`,
 				 `fre`.`respondent_id` AS `respondent_id`,
 				 `fre`.`question_id` AS `question_id`,
 				 `fre`.`answer_id` AS `answer_id`
-			FROM `#__courses_form_responses` `fre` where ((select count(0) from `#__courses_form_responses` `frei` where ((`frei`.`respondent_id` = `fre`.`respondent_id`) and (`frei`.`id` > `fre`.`id`))) < (select count(distinct `frei`.`question_id`) from `#__courses_form_responses` `frei` where (`frei`.`respondent_id` = `fre`.`respondent_id`)));";
+			FROM `#__courses_form_responses` `fre`
+			WHERE (
+				(SELECT COUNT(0) FROM `#__courses_form_responses` `frei`
+				WHERE ((`frei`.`respondent_id` = `fre`.`respondent_id`) AND (`frei`.`id` > `fre`.`id`)))
+				< (SELECT COUNT(DISTINCT `frei`.`question_id`) FROM `#__courses_form_responses` `frei`
+				WHERE (`frei`.`respondent_id` = `fre`.`respondent_id`))
+			);";
 
         $this->db->setQuery($query);
         $this->db->query();

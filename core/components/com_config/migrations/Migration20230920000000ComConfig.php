@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 use Hubzero\Content\Migration\Base;
 
 // No direct access
@@ -17,7 +18,7 @@ defined('_HZEXEC_') or die();
 class Migration20230920000000ComConfig extends Base
 {
     // TODO: finalize this name
-    static $tableName = "#__config";
+    protected static $tableName = "#__config";
 
     /**
      * Up

@@ -171,9 +171,14 @@ class Item extends Table
 
             case 'list':
             default:
-                $query = "SELECT b.*, u.name AS poster_name, s.description AS user_description, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id, s.collection_id,
-						(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
-						(SELECT COUNT(*) FROM `#__item_comments` AS c WHERE c.item_id=b.id AND c.item_type='collection' AND c.state IN (1, 3)) AS comments";
+                $query = "SELECT b.*, u.name AS poster_name, "
+                    . "s.description AS user_description, s.created AS posted, "
+                    . "s.created_by AS poster, s.original, s.id AS post_id, s.collection_id, "
+                    . "(SELECT COUNT(*) FROM `#__collections_posts` AS s "
+                    . "WHERE s.item_id=b.id AND s.original=0) AS reposts, "
+                    . "(SELECT COUNT(*) FROM `#__item_comments` AS c "
+                    . "WHERE c.item_id=b.id AND c.item_type='collection' "
+                    . "AND c.state IN (1, 3)) AS comments";
                 if (isset($filters['user_id']) && $filters['user_id']) {
                     $query .= ", v.id AS voted ";
                 }
@@ -208,6 +213,7 @@ class Item extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS b";
@@ -218,7 +224,8 @@ class Item extends Table
         $query .= " LEFT JOIN #__users AS u ON s.created_by=u.id";
 
         if (isset($filters['user_id']) && $filters['user_id']) {
-            $query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=b.id AND v.user_id=" . $this->_db->quote($filters['user_id']);
+            $query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=b.id "
+                . "AND v.user_id=" . $this->_db->quote($filters['user_id']);
         }
 
         $where = array();
@@ -233,9 +240,10 @@ class Item extends Table
         } else {
             if (isset($filters['created_by']) && $filters['created_by']) {
                 $where[] = "b.created_by=" . $this->_db->quote($filters['created_by']);
-            } else if (!\App::isAdmin()) {
+            } elseif (!\App::isAdmin()) {
                 $where[] = "d.access=0";
-                $where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";
+                $where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 "
+                    . "WHERE s.item_id = s2.item_id)";
                 if (isset($filters['trending'])) {
                     $where[] = "s.created >= DATE_FORMAT(UTC_TIMESTAMP(), '%Y-%m-01 00:00:00')";
                 }
@@ -246,14 +254,15 @@ class Item extends Table
             if (is_array($filters['state'])) {
                 $filters['state'] = array_map('intval', $filters['state']);
                 $where[] = "b.state IN (" . implode(',', $filters['state']) . ")";
-            } else if ($filters['state'] >= 0) {
+            } elseif ($filters['state'] >= 0) {
                 $where[] = "b.state=" . $this->_db->quote(intval($filters['state']));
             }
         }
 
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(b.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(b.description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $searchTerm = '%' . strtolower($filters['search']) . '%';
+            $where[] = "(LOWER(b.title) LIKE " . $this->_db->quote($searchTerm)
+                . " OR LOWER(b.description) LIKE " . $this->_db->quote($searchTerm) . ")";
         }
 
         if (count($where) > 0) {
@@ -302,9 +311,15 @@ class Item extends Table
         }
 
         if (is_array($id)) {
-            $query = "SELECT COUNT(*) FROM `#__collections_posts` AS s INNER JOIN `$this->_tbl` AS i ON s.item_id=i.id WHERE i.type=" . $this->_db->quote($id['object_type']) . " AND i.object_id=" . $this->_db->quote($id['object_id']) . " AND s.original=" . $this->_db->quote('0');
+            $query = "SELECT COUNT(*) FROM `#__collections_posts` AS s "
+                . "INNER JOIN `$this->_tbl` AS i ON s.item_id=i.id "
+                . "WHERE i.type=" . $this->_db->quote($id['object_type'])
+                . " AND i.object_id=" . $this->_db->quote($id['object_id'])
+                . " AND s.original=" . $this->_db->quote('0');
         } else {
-            $query = "SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=" . $this->_db->quote(intval($id)) . " AND s.original=" . $this->_db->quote('0');
+            $query = "SELECT COUNT(*) FROM `#__collections_posts` AS s "
+                . "WHERE s.item_id=" . $this->_db->quote(intval($id))
+                . " AND s.original=" . $this->_db->quote('0');
         }
 
         $this->_db->setQuery($query);
@@ -327,7 +342,9 @@ class Item extends Table
             return false;
         }
 
-        $query = "SELECT v.id FROM `#__collections_votes` AS v WHERE v.item_id=" . $this->_db->quote($id) . " AND v.user_id=" . $this->_db->quote(User::get('id'));
+        $query = "SELECT v.id FROM `#__collections_votes` AS v "
+            . "WHERE v.item_id=" . $this->_db->quote($id)
+            . " AND v.user_id=" . $this->_db->quote(User::get('id'));
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -342,9 +359,12 @@ class Item extends Table
     public function getLikes($filters = array())
     {
         if (isset($filters['object_id'])) {
-            $query = "SELECT positive FROM `$this->_tbl` WHERE type=" . $this->_db->quote($filters['object_type']) . " AND object_id=" . $this->_db->quote($filters['object_id']);
+            $query = "SELECT positive FROM `$this->_tbl` "
+                . "WHERE type=" . $this->_db->quote($filters['object_type'])
+                . " AND object_id=" . $this->_db->quote($filters['object_id']);
         } else {
-            $query = "SELECT positive FROM `$this->_tbl` WHERE id=" . $this->_db->quote(intval($filters['id']));
+            $query = "SELECT positive FROM `$this->_tbl` "
+                . "WHERE id=" . $this->_db->quote(intval($filters['id']));
         }
 
         $this->_db->setQuery($query);
@@ -360,9 +380,12 @@ class Item extends Table
     public function getDislikes($filters = array())
     {
         if (isset($filters['object_id'])) {
-            $query = "SELECT negative FROM `$this->_tbl` WHERE type=" . $this->_db->quote($filters['object_type']) . " AND object_id=" . $this->_db->quote($filters['object_id']);
+            $query = "SELECT negative FROM `$this->_tbl` "
+                . "WHERE type=" . $this->_db->quote($filters['object_type'])
+                . " AND object_id=" . $this->_db->quote($filters['object_id']);
         } else {
-            $query = "SELECT negative FROM `$this->_tbl` WHERE id=" . $this->_db->quote(intval($filters['id']));
+            $query = "SELECT negative FROM `$this->_tbl` "
+                . "WHERE id=" . $this->_db->quote(intval($filters['id']));
         }
 
         $this->_db->setQuery($query);
@@ -378,9 +401,12 @@ class Item extends Table
     public function getTrending($filters = array())
     {
         $filters['collection_id'] = 0;
-        $query = "SELECT b.*, u.name, s.created AS posted, s.created_by AS poster, s.original, s.id AS post_id,
-				(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=b.id AND s.original=0) AS reposts,
-				(SELECT COUNT(*) FROM `#__item_comments` AS c WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
+        $query = "SELECT b.*, u.name, s.created AS posted, s.created_by AS poster, "
+            . "s.original, s.id AS post_id, "
+            . "(SELECT COUNT(*) FROM `#__collections_posts` AS s "
+            . "WHERE s.item_id=b.id AND s.original=0) AS reposts, "
+            . "(SELECT COUNT(*) FROM `#__item_comments` AS c "
+            . "WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
         if (isset($filters['user_id']) && $filters['user_id']) {
             $query .= ", v.id AS voted ";
         }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Editor Article buton
+ *
  */
 class plgButtonArticle extends \Hubzero\Plugin\Plugin
 {
@@ -57,7 +59,8 @@ class plgButtonArticle extends \Hubzero\Plugin\Plugin
 
         // Use the built-in element view to select the article.
         // Currently uses blank class.
-        $link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
+        $link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;'
+            . Session::getFormToken() . '=1';
 
         $button = new \Hubzero\Base\Obj();
         $button->set('modal', true);

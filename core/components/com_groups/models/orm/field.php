@@ -547,7 +547,7 @@ class Field extends Relational
 
                     if (is_array($values) && in_array($option->get('value'), $values)) {
                         $selected = true;
-                    } else if ($values == $option->get('value')) {
+                    } elseif ($values == $option->get('value')) {
                         $selected = true;
                     }
                 }
@@ -594,10 +594,23 @@ class Field extends Relational
         $xml[] = '<form>';
         $xml[] = '<fieldset name="basic">';
         foreach ($fields as $field) {
-            $f  = '<field type="' . $field->get('type') . '" name="' . htmlspecialchars($field->get('name'), ENT_COMPAT) . '" label="' . htmlspecialchars($field->get('label'), ENT_COMPAT) . '"';
-            $f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
-            $f .= ($field->get('placeholder')  ? ' placeholder="' . htmlspecialchars($field->get('placeholder'), ENT_COMPAT) . '"' : '');
-            $f .= ($field->get('validate')     ? ' validate="' . htmlspecialchars($field->get('validate'), ENT_COMPAT) . '"' : '');
+            $fieldName = htmlspecialchars($field->get('name'), ENT_COMPAT);
+            $fieldLabel = htmlspecialchars($field->get('label'), ENT_COMPAT);
+            $f  = '<field type="' . $field->get('type') . '"'
+                . ' name="' . $fieldName . '"'
+                . ' label="' . $fieldLabel . '"';
+            if ($field->get('description')) {
+                $desc = htmlspecialchars($field->get('description'), ENT_COMPAT);
+                $f .= ' description="' . $desc . '"';
+            }
+            if ($field->get('placeholder')) {
+                $placeholder = htmlspecialchars($field->get('placeholder'), ENT_COMPAT);
+                $f .= ' placeholder="' . $placeholder . '"';
+            }
+            if ($field->get('validate')) {
+                $validate = htmlspecialchars($field->get('validate'), ENT_COMPAT);
+                $f .= ' validate="' . $validate . '"';
+            }
             $f .= ' default="' . htmlspecialchars($field->get('default_value', ''), ENT_COMPAT) . '"';
             $f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
             $f .= ($field->get('option_other') ? ' option_other="1"' : '');
@@ -617,8 +630,14 @@ class Field extends Relational
             foreach ($field->options()->ordered('ordering')->rows() as $option) {
                 $dependents = json_decode($option->dependents);
                 $dependents = implode(", ", $dependents);
-                $dependents = !empty($dependents) ? ' data-dependents="' . htmlspecialchars($dependents) . '"' : '';
-                $xml[] = '<option value="' . htmlspecialchars($option->get('value'), ENT_COMPAT) . '"' . $dependents . '>' . htmlspecialchars($option->get('label'), ENT_COMPAT) . '</option>';
+                $dependentsAttr = '';
+                if (!empty($dependents)) {
+                    $dependentsAttr = ' data-dependents="' . htmlspecialchars($dependents) . '"';
+                }
+                $optionValue = htmlspecialchars($option->get('value'), ENT_COMPAT);
+                $optionLabel = htmlspecialchars($option->get('label'), ENT_COMPAT);
+                $xml[] = '<option value="' . $optionValue . '"' . $dependentsAttr . '>'
+                    . $optionLabel . '</option>';
             }
             $xml[] = '</field>';
         }

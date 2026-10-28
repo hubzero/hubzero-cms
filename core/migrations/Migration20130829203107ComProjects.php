@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for setting up projects
- **/
+ *
+ */
 class Migration20130829203107ComProjects extends Base
 {
     /**
@@ -49,11 +51,16 @@ class Migration20130829203107ComProjects extends Base
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
             // Make entries to enable HUB messaging
-            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES ('com_projects','projects_member_added','You were added or invited to a project')";
+            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
+                . "('com_projects','projects_member_added','You were added or invited to a project')";
 
-            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES ('com_projects','projects_new_project_admin','Receive notifications about project(s) you monitor as an admin or reviewer')";
+            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
+                . "('com_projects','projects_new_project_admin',"
+                . "'Receive notifications about project(s) you monitor as an admin or reviewer')";
 
-            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES ('com_projects','projects_admin_message','Receive administrative messages about your project(s)')";
+            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
+                . "('com_projects','projects_admin_message',"
+                . "'Receive administrative messages about your project(s)')";
         }
 
         if (!$this->db->tableExists('#__project_activity')) {
@@ -167,15 +174,22 @@ class Migration20130829203107ComProjects extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`)
-							SELECT 'General','Individual or collaborative projects of general nature','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0'
-							FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
-            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`)
-							SELECT 'Content publication','Projects created with the purpose to publish data as a resource or a collection of related resources','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0'
-							FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'Content publication')";
-            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`)
-							SELECT 'Application development','Projects created with the purpose to develop and publish a simulation tool or a code library','apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0'
-							FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'Application development')";
+            $params1 = 'apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0';
+            $params2 = 'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0';
+            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
+                . "SELECT 'General','Individual or collaborative projects of general nature','$params1' "
+                . "FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
+            $desc2 = 'Projects created with the purpose to publish data as a resource '
+                . 'or a collection of related resources';
+            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
+                . "SELECT 'Content publication','$desc2','$params1' "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `type` FROM `#__project_types` WHERE `type` = 'Content publication')";
+            $desc3 = 'Projects created with the purpose to develop and publish a simulation tool or a code library';
+            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
+                . "SELECT 'Application development','$desc3','$params2' "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `type` FROM `#__project_types` WHERE `type` = 'Application development')";
         }
 
         if (!$this->db->tableExists('#__project_logs')) {

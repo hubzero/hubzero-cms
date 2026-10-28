@@ -30,7 +30,8 @@ class Json extends Output
     /**
      * Render out stored output to command line
      *
-     * @param   bool  $newLine  Whether or not to include new line with each response (really only applies to interactive output)
+     * @param   bool  $newLine  Whether or not to include new line with each response (really only
+     *                          applies to interactive output)
      * @return  void
      **/
     public function render($newLine = true)
@@ -48,7 +49,8 @@ class Json extends Output
      * Add a new line to the output buffer (not actually a real php output buffer)
      *
      * @param   string  $message  Text of line
-     * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+     * @param   mixed   $styles   Array of custom styles or string containing predefined term (see
+     *                            formatLine() for posibilities)
      * @param   bool    $newLine  Whether or not line should end with a new line
      * @return  $this
      **/

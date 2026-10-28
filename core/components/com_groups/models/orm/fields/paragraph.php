@@ -30,7 +30,12 @@ class Paragraph extends Field
     protected function getInput()
     {
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="paragraph paragraph-' . $this->id . ' ' . (string) $this->element['class'] . '"' : ' class="paragraph paragraph-' . $this->id . '"';
+        $baseClass = 'paragraph paragraph-' . $this->id;
+        if ($this->element['class']) {
+            $class = ' class="' . $baseClass . ' ' . (string) $this->element['class'] . '"';
+        } else {
+            $class = ' class="' . $baseClass . '"';
+        }
 
         // Initialize variables.
         $html = array();

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Plain Textarea Editor Plugin
@@ -136,8 +134,19 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = array()
+    ) {
         if (empty($id)) {
             $id = $name;
         }
@@ -152,11 +161,14 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
         }
 
         $buttons = $this->_displayButtons($id, $buttons, $asset, $author);
-        $editor  = "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\" style=\"width: $width; height: $height;\">$content</textarea>" . $buttons;
+        $editor  = "<textarea name=\"$name\" id=\"$id\" cols=\"$col\" rows=\"$row\""
+            . " style=\"width: $width; height: $height;\">"
+            . "$content</textarea>" . $buttons;
 
         return $editor;
     }
 
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior
@@ -184,7 +196,9 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
                     $href    = ($button->get('link')) ? 'href="' . Request::base() . $button->get('link') . '"' : null;
                     $onclick = ($button->get('onclick')) ? 'onclick="' . $button->get('onclick') . '"' : null;
                     $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
-                    $return .= "<div class=\"button2-left\"><div class=\"" . $button->get('name') . "\"><a " . $modal . " title=\"" . $title . "\" " . $href . " " . $onclick . " rel=\"" . $button->get('options') . "\">" . $button->get('text') . "</a></div></div>\n";
+                    $return .= "<div class=\"button2-left\"><div class=\"" . $button->get('name')
+                        . "\"><a " . $modal . " title=\"" . $title . "\" " . $href . " " . $onclick
+                        . " rel=\"" . $button->get('options') . "\">" . $button->get('text') . "</a></div></div>\n";
                 }
             }
 

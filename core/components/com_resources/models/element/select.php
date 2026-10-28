@@ -21,6 +21,7 @@ class Select extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Select list';
 
     /**
@@ -46,7 +47,19 @@ class Select extends Base
             $options[] = \Html::select('option', $val, $text);
         }
 
-        return '<span class="field-wrap">' . \Html::select('genericlist', $options, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . '-' . $name) . '</span>';
+        $selectName = $control_name . '[' . $name . ']';
+        $selectId = $control_name . '-' . $name;
+        $select = \Html::select(
+            'genericlist',
+            $options,
+            $selectName,
+            $class,
+            'value',
+            'text',
+            $value,
+            $selectId
+        );
+        return '<span class="field-wrap">' . $select . '</span>';
     }
 
     /**
@@ -68,14 +81,20 @@ class Select extends Base
         $html[] = '<caption>' . Lang::txt('COM_RESOURCES_LIST_OPTION_HELP') . '</caption>';
         $html[] = '<tfoot>';
         $html[] = '<tr>';
-        $html[] = '<td colspan="2" class="option-button"><button data-rel="' . $name . '" class="add-custom-option"><span>' . Lang::txt('COM_RESOURCES_NEW_OPTION') . '</span></button></td>';
+        $btnText = Lang::txt('COM_RESOURCES_NEW_OPTION');
+        $html[] = '<td colspan="2" class="option-button"><button data-rel="' . $name
+            . '" class="add-custom-option"><span>' . $btnText . '</span></button></td>';
         $html[] = '</tr>';
         $html[] = '</tfoot>';
         $html[] = '<tbody>';
         foreach ($element->options as $option) {
             $html[] = '<tr>';
-            $html[] = '<td><label for="' . $control_name . '-' . $name . '-label-' . $k . '">' . Lang::txt('COM_RESOURCES_OPTION') . '</label></td>';
-            $html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="' . $control_name . '-' . $name . '-label-' . $k . '" value="' . trim($option->label) . '" /></td>';
+            $labelId = $control_name . '-' . $name . '-label-' . $k;
+            $optName = $control_name . '[' . $name . '][options][' . $k . '][label]';
+            $optLabel = Lang::txt('COM_RESOURCES_OPTION');
+            $html[] = '<td><label for="' . $labelId . '">' . $optLabel . '</label></td>';
+            $html[] = '<td><input type="text" size="35" name="' . $optName . '" id="'
+                . $labelId . '" value="' . trim($option->label) . '" /></td>';
             $html[] = '</tr>';
 
             $k++;

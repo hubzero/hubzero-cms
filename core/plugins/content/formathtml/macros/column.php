@@ -12,6 +12,8 @@ use Plugins\Content\Formathtml\Macro;
 
 /**
  * Macro class for creating columns
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Column extends Macro
 {
@@ -37,8 +39,17 @@ class Column extends Macro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: `Column(3)`. Then you must use the macro twice to indicate where a column starts and ends: `Column(start)` and `Column(end)`. Attributes may be applied by separating name/value pairs with a comma. Example: Column(start, class=myclass)';
-        $txt['html'] = '<p>Allows content to be split into columns. This macro must first start with a declaration of the number of columns you want to use: <code>[[Column(3)]]</code> Then you must use the macro twice to indicate where a column starts and ends:</p><p><code>[[Column(start)]]<br />content<br />[[Column(end)]]</code></p><p>Attributes may be applied by separating name/value pairs with a comma. Example: <code>[[Column(start, class=myclass)]]</code>';
+        $txt['wiki'] = 'Allows content to be split into columns. This macro must first start ' .
+            'with a declaration of the number of columns you want to use: `Column(3)`. Then ' .
+            'you must use the macro twice to indicate where a column starts and ends: ' .
+            '`Column(start)` and `Column(end)`. Attributes may be applied by separating ' .
+            'name/value pairs with a comma. Example: Column(start, class=myclass)';
+        $txt['html'] = '<p>Allows content to be split into columns. This macro must first start ' .
+            'with a declaration of the number of columns you want to use: ' .
+            '<code>[[Column(3)]]</code> Then you must use the macro twice to indicate where a ' .
+            'column starts and ends:</p><p><code>[[Column(start)]]<br />content<br />' .
+            '[[Column(end)]]</code></p><p>Attributes may be applied by separating name/value ' .
+            'pairs with a comma. Example: <code>[[Column(start, class=myclass)]]</code>';
         return $txt['html'];
     }
 

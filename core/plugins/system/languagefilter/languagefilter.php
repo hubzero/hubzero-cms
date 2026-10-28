@@ -7,8 +7,6 @@
  */
 
 // no direct access
-defined('_HZEXEC_') or die;
-
 require_once Component::path('com_menus') . '/helpers/menus.php';
 require_once Component::path('com_languages') . '/helpers/multilangstatus.php';
 
@@ -78,7 +76,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
      *
      * @var  string
      */
-    private static $_user_lang_code;
+    private static $userLangCode;
 
     /**
      * Constructor
@@ -153,7 +151,13 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                     // Create a cookie
                     $cookie_domain = Config::get('cookie_domain', '');
                     $cookie_path   = Config::get('cookie_path', '/');
-                    setcookie(App::hash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
+                    setcookie(
+                        App::hash('language'),
+                        $lang_code,
+                        $this->getLangCookieTime(),
+                        $cookie_path,
+                        $cookie_domain
+                    );
                     // set the request var
                     Request::setVar('language', $lang_code);
                 }
@@ -228,7 +232,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                     // test if the url contains same vars as in menu link
                     $test = true;
                     foreach ($uri->getQuery(true) as $key => $value) {
-                        if (!in_array($key, array('format', 'Itemid', 'lang')) && !(isset($vars[$key]) && $vars[$key] == $value)) {
+                        if (
+                            !in_array($key, array('format', 'Itemid', 'lang'))
+                            && !(isset($vars[$key]) && $vars[$key] == $value)
+                        ) {
                             $test = false;
                             break;
                         }
@@ -254,7 +261,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                 || $this->params->get('detect_browser', 1) && Lang::detect() != self::$tag && !self::$cookie
             ) {
                 //$uri->setPath($uri->getPath() . '/' . $sef);
-                $uri->setPath('/' . trim($sef, '/') . '/' . ltrim($uri->getPath(), '/'));
+                $uri->setPath('/' . trim($sef, '/') . '/' . ltrim(
+                    $uri->getPath(),
+                    '/'
+                ));
             } else {
                 $uri->setPath($uri->getPath());
             }
@@ -299,7 +309,9 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                     // redirect if sef does not exists
                     if (!isset(self::$sefs[$sef])) {
                         // Use the current language sef or the default one
-                        $sef = isset(self::$lang_codes[$lang_code]) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
+                        $sef = isset(self::$lang_codes[$lang_code])
+                            ? self::$lang_codes[$lang_code]->sef
+                            : self::$default_sef;
                         $uri->setPath('/' . $sef . ($path ? '/' . $path : ''));
 
                         if (Config::get('sef_rewrite')) {
@@ -313,7 +325,9 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                 } else {
                     // redirect if sef does not exists and language is not the default one
                     if (!isset(self::$sefs[$sef]) && $lang_code != self::$default_lang) {
-                        $sef = isset(self::$lang_codes[$lang_code]) && empty($path) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
+                        $sef = isset(self::$lang_codes[$lang_code]) && empty($path)
+                            ? self::$lang_codes[$lang_code]->sef
+                            : self::$default_sef;
                         $uri->setPath($sef . '/' . $path);
 
                         if (Config::get('sef_rewrite')) {
@@ -322,9 +336,8 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                             $path = $uri->toString(array('path', 'query', 'fragment'));
                             App::redirect($uri->root() . 'index.php' . ($path ? ('/' . $path) : ''));
                         }
-                    }
-                    // redirect if sef is the default one
-                    elseif (
+                    } elseif (
+                        // redirect if sef is the default one
                         isset(self::$sefs[$sef]) &&
                         self::$default_lang == self::$sefs[$sef]->lang_code &&
                         (!$this->params->get('detect_browser', 1) || Lang::detect() == self::$tag || self::$cookie)
@@ -344,14 +357,19 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
             $lang_code = isset(self::$sefs[$sef]) ? self::$sefs[$sef]->lang_code : '';
 
-            if ($lang_code && (Lang::exists($lang_code, PATH_APP . '/bootstrap/site') || Lang::exists($lang_code, PATH_CORE . '/bootstrap/Site'))) {
+            if (
+                $lang_code && (Lang::exists($lang_code, PATH_APP . '/bootstrap/site')
+                || Lang::exists($lang_code, PATH_CORE . '/bootstrap/Site'))
+            ) {
                 array_shift($parts);
                 $uri->setPath(implode('/', $parts));
             }
         } else {
             $sef = $uri->getUriVar('lang');
             if (!isset(self::$sefs[$sef])) {
-                $sef = isset(self::$lang_codes[$lang_code]) ? self::$lang_codes[$lang_code]->sef : self::$default_sef;
+                $sef = isset(self::$lang_codes[$lang_code])
+                            ? self::$lang_codes[$lang_code]->sef
+                            : self::$default_sef;
                 $uri->setUriVar('lang', $sef);
                 $post = Request::get('POST');
                 if (Request::method() != "POST" || count($post) == 0) {
@@ -379,10 +397,10 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
         if ($this->params->get('automatic_change', '1') == '1' && array_key_exists('params', $user)) {
             $registry = new Hubzero\Config\Registry($user['params']);
 
-            self::$_user_lang_code = $registry->get('language');
+            self::$userLangCode = $registry->get('language');
 
-            if (empty(self::$_user_lang_code)) {
-                self::$_user_lang_code = self::$default_lang;
+            if (empty(self::$userLangCode)) {
+                self::$userLangCode = self::$default_lang;
             }
         }
     }
@@ -408,18 +426,28 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                 $lang_code = self::$default_lang;
             }
 
-            if ($lang_code == self::$_user_lang_code || !isset(self::$lang_codes[$lang_code])) {
+            if ($lang_code == self::$userLangCode || !isset(self::$lang_codes[$lang_code])) {
                 if (App::isSite()) {
                     User::setState('com_members.edit.profile.redirect', null);
                 }
             } else {
                 if (App::isSite()) {
-                    User::setState('com_members.edit.profile.redirect', 'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id . '&lang=' . self::$lang_codes[$lang_code]->sef);
+                    User::setState(
+                        'com_members.edit.profile.redirect',
+                        'index.php?Itemid=' . App::get('menu')->getDefault($lang_code)->id
+                        . '&lang=' . self::$lang_codes[$lang_code]->sef
+                    );
                     self::$tag = $lang_code;
                     // Create a cookie
                     $cookie_domain = Config::get('cookie_domain', '');
                     $cookie_path   = Config::get('cookie_path', '/');
-                    setcookie(App::hash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
+                    setcookie(
+                        App::hash('language'),
+                        $lang_code,
+                        $this->getLangCookieTime(),
+                        $cookie_path,
+                        $cookie_domain
+                    );
                 }
             }
         }
@@ -458,7 +486,13 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                 // Create a cookie
                 $cookie_domain = Config::get('cookie_domain', '');
                 $cookie_path   = Config::get('cookie_path', '/');
-                setcookie(App::hash('language'), $lang_code, $this->getLangCookieTime(), $cookie_path, $cookie_domain);
+                setcookie(
+                    App::hash('language'),
+                    $lang_code,
+                    $this->getLangCookieTime(),
+                    $cookie_path,
+                    $cookie_domain
+                );
 
                 // Change the language code
                 Lang::setLanguage($lang_code);
@@ -523,42 +557,89 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                             $item = $menu->getItem($associations[$language->lang_code]);
                             if ($item && Lang::exists($language->lang_code)) {
                                 if (Config::get('sef')) {
-                                    $link = Route::url('index.php?Itemid=' . $associations[$language->lang_code] . '&lang=' . $language->sef);
+                                    $link = Route::url(
+                                        'index.php?Itemid=' . $associations[$language->lang_code]
+                                        . '&lang=' . $language->sef
+                                    );
                                 } else {
-                                    $link = Route::url($item->link . '&Itemid=' . $associations[$language->lang_code] . '&lang=' . $language->sef);
+                                    $link = Route::url(
+                                        $item->link . '&Itemid=' . $associations[$language->lang_code]
+                                        . '&lang=' . $language->sef
+                                    );
                                 }
 
                                 // Check if language is the default site language and remove url language code is on
-                                if ($language->sef == self::$default_sef && $this->params->get('remove_default_prefix') == '1') {
+                                if (
+                                    $language->sef == self::$default_sef
+                                    && $this->params->get('remove_default_prefix') == '1'
+                                ) {
                                     $relLink = preg_replace('|/' . $language->sef . '/|', '/', $link, 1);
-                                    Document::addHeadLink($server . $relLink, 'alternate', 'rel', array('hreflang' => $language->lang_code));
+                                    Document::addHeadLink(
+                                        $server . $relLink,
+                                        'alternate',
+                                        'rel',
+                                        array(
+                                        'hreflang' => $language->lang_code
+                                        )
+                                    );
                                 } else {
-                                    Document::addHeadLink($server . $link, 'alternate', 'rel', array('hreflang' => $language->lang_code));
+                                    Document::addHeadLink(
+                                        $server . $link,
+                                        'alternate',
+                                        'rel',
+                                        array(
+                                        'hreflang' => $language->lang_code
+                                        )
+                                    );
                                 }
                             }
                         }
                     }
-                }
+                } elseif ($active->home) {
                 // Homepages in other languages
-                elseif ($active->home) {
                     $menu   = App::get('menu');
                     $server = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
 
                     foreach (Lang::available() as $language) {
                         $item = $menu->getDefault($language->lang_code);
-                        if ($item && $item->language != $active->language && $item->language != '*' && Lang::exists($language->lang_code)) {
+                        if (
+                            $item && $item->language != $active->language
+                            && $item->language != '*' && Lang::exists($language->lang_code)
+                        ) {
                             if (Config::get('sef')) {
-                                $link = Route::url('index.php?Itemid=' . $item->id . '&lang=' . $language->sef);
+                                $link = Route::url(
+                                    'index.php?Itemid=' . $item->id . '&lang=' . $language->sef
+                                );
                             } else {
-                                $link = Route::url($item->link . '&Itemid=' . $item->id . '&lang=' . $language->sef);
+                                $link = Route::url(
+                                    $item->link . '&Itemid=' . $item->id
+                                    . '&lang=' . $language->sef
+                                );
                             }
 
                             // Check if language is the default site language and remove url language code is on
-                            if ($language->sef == self::$default_sef && $this->params->get('remove_default_prefix') == '1') {
+                            if (
+                                $language->sef == self::$default_sef
+                                && $this->params->get('remove_default_prefix') == '1'
+                            ) {
                                 $relLink = preg_replace('|/' . $language->sef . '/|', '/', $link, 1);
-                                Document::addHeadLink($server . $relLink, 'alternate', 'rel', array('hreflang' => $language->lang_code));
+                                Document::addHeadLink(
+                                    $server . $relLink,
+                                    'alternate',
+                                    'rel',
+                                    array(
+                                        'hreflang' => $language->lang_code
+                                    )
+                                );
                             } else {
-                                Document::addHeadLink($server . $link, 'alternate', 'rel', array('hreflang' => $language->lang_code));
+                                Document::addHeadLink(
+                                    $server . $link,
+                                    'alternate',
+                                    'rel',
+                                    array(
+                                        'hreflang' => $language->lang_code
+                                    )
+                                );
                             }
                         }
                     }

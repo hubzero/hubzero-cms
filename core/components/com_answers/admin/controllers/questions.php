@@ -282,7 +282,9 @@ class Questions extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            $action = ($publish == 1) ? Lang::txt('COM_ANSWERS_SET_STATE_CLOSE') : Lang::txt('COM_ANSWERS_SET_STATE_OPEN');
+            $action = ($publish == 1)
+                ? Lang::txt('COM_ANSWERS_SET_STATE_CLOSE')
+                : Lang::txt('COM_ANSWERS_SET_STATE_OPEN');
 
             Notify::warning(Lang::txt('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action));
 
@@ -307,7 +309,7 @@ class Questions extends AdminController
         if ($i) {
             if ($publish == 1) {
                 $message = Lang::txt('COM_ANSWERS_QUESTIONS_CLOSED', $i);
-            } else if ($publish == 0) {
+            } elseif ($publish == 0) {
                 $message = Lang::txt('COM_ANSWERS_QUESTIONS_OPENED', $i);
             }
 

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -77,7 +78,8 @@ class Results extends SiteController
 
         if (is_array($this->view->cats)) {
             if (!$this->_task || $this->_task == 'default') {
-                $this->_task = (isset($this->view->cats[0]) && is_array($this->view->cats[0])) ? key($this->view->cats[0]) : 'overview';
+                $hasCats = isset($this->view->cats[0]) && is_array($this->view->cats[0]);
+                $this->_task = $hasCats ? key($this->view->cats[0]) : 'overview';
             }
         }
         $this->_task = ($this->_task) ? $this->_task : 'overview';
@@ -109,7 +111,10 @@ class Results extends SiteController
 
         // Build the page title
         $this->view->title  = Lang::txt(strtoupper($this->_option));
-        $this->view->title .= ($this->_task) ? ': ' . Lang::txt('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
+        if ($this->_task) {
+            $langKey = 'PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task);
+            $this->view->title .= ': ' . Lang::txt($langKey);
+        }
 
         // Set the page title
         Document::setTitle($this->view->title);

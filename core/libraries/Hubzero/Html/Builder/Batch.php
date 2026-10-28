@@ -24,7 +24,11 @@ class Batch
     {
         // Create the batch selector to change an access level on a selection list.
         $lines = array(
-            '<label id="batch-access-lbl" for="batch-access" class="hasTip" title="' . Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL') . '::' . Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL_DESC') . '">',
+            '<label id="batch-access-lbl" for="batch-access" class="hasTip" title="' .
+                Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL') .
+                '::' .
+                Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL_DESC') .
+                '">',
             Lang::txt('JLIB_HTML_BATCH_ACCESS_LABEL'),
             '</label>',
             Access::assetgrouplist(
@@ -81,7 +85,11 @@ class Batch
     {
         // Create the batch selector to change the language on a selection list.
         $lines = array(
-            '<label id="batch-language-lbl" for="batch-language" class="hasTip" title="' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL') . '::' . Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC') . '">',
+            '<label id="batch-language-lbl" for="batch-language" class="hasTip" title="' .
+                Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL') .
+                '::' .
+                Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL_DESC') .
+                '">',
             Lang::txt('JLIB_HTML_BATCH_LANGUAGE_LABEL'),
             '</label>',
             '<select name="batch[language_id]" class="inputbox" id="batch-language-id">',
@@ -123,7 +131,11 @@ class Batch
 
         // Create the batch selector to select a user on a selection list.
         $lines = array(
-            '<label id="batch-user-lbl" for="batch-user" class="hasTip" title="' . Lang::txt('JLIB_HTML_BATCH_USER_LABEL') . '::' . Lang::txt('JLIB_HTML_BATCH_USER_LABEL_DESC') . '">',
+            '<label id="batch-user-lbl" for="batch-user" class="hasTip" title="' .
+                Lang::txt('JLIB_HTML_BATCH_USER_LABEL') .
+                '::' .
+                Lang::txt('JLIB_HTML_BATCH_USER_LABEL_DESC') .
+                '">',
             Lang::txt('JLIB_HTML_BATCH_USER_LABEL'),
             '</label>',
             '<select name="batch[user_id]" class="inputbox" id="batch-user-id">',

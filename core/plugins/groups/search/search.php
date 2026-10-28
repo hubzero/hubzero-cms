@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Groups Plugin class for usage
+ *
  */
 class plgGroupsSearch extends \Hubzero\Plugin\Plugin
 {
@@ -18,6 +20,7 @@ class plgGroupsSearch extends \Hubzero\Plugin\Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $_autoloadLanguage = true;
 

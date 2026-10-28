@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,49 +33,49 @@ class Wish extends Relational
      *
      * @var integer
      */
-    const WISH_STATE_OPEN    = 0;
+    public const WISH_STATE_OPEN    = 0;
 
     /**
      * Granted state
      *
      * @var integer
      */
-    const WISH_STATE_GRANTED = 1;
+    public const WISH_STATE_GRANTED = 1;
 
     /**
      * Deleted state
      *
      * @var integer
      */
-    const WISH_STATE_DELETED = 2;
+    public const WISH_STATE_DELETED = 2;
 
     /**
      * Rejected state
      *
      * @var integer
      */
-    const WISH_STATE_REJECTED = 3;
+    public const WISH_STATE_REJECTED = 3;
 
     /**
      * Withdrawn state
      *
      * @var integer
      */
-    const WISH_STATE_WITHDRAWN = 4;
+    public const WISH_STATE_WITHDRAWN = 4;
 
     /**
      * Withdrawn state
      *
      * @var integer
      */
-    const WISH_STATE_ACCEPTED = 6;
+    public const WISH_STATE_ACCEPTED = 6;
 
     /**
      * Flagged state
      *
      * @var integer
      */
-    const WISH_STATE_FLAGGED = 7;
+    public const WISH_STATE_FLAGGED = 7;
 
     /**
      * The table namespace
@@ -262,6 +263,7 @@ class Wish extends Relational
      * @param   string  $rtrn  What data to return
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _date($key, $rtrn = '')
     {
         $rtrn = strtolower($rtrn);
@@ -391,7 +393,9 @@ class Wish extends Relational
                         break;
                     case static::WISH_STATE_OPEN:
                     default:
-                        $state = ($this->get('accepted') == 1) ? Lang::txt($ky . 'ACCEPTED') : Lang::txt($ky . 'PENDING');
+                        $state = ($this->get('accepted') == 1)
+                            ? Lang::txt($ky . 'ACCEPTED')
+                            : Lang::txt($ky . 'PENDING');
                         break;
                 }
                 break;
@@ -489,7 +493,7 @@ class Wish extends Relational
      */
     public function link($type = '', $params = null)
     {
-        return $this->_adapter()->link($type, $params);
+        return $this->adapter()->link($type, $params);
     }
 
     /**
@@ -498,9 +502,9 @@ class Wish extends Relational
      *
      * @return  object
      */
-    private function _adapter()
+    private function adapter()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapter) {
             if (!$this->get('referenceid') || !$this->get('category')) {
                 $wishlist = Wishlist::oneOrNew($this->get('wishlist'));
                 $this->set('referenceid', $wishlist->get('referenceid'));
@@ -528,18 +532,18 @@ class Wish extends Relational
                 $adapter = new $cls($this->get('referenceid'));
 
                 if ($adapter->handles($scope)) {
-                    $this->_adapter = $adapter;
-                    $this->_adapter->set('wishid', $this->get('id'));
-                    $this->_adapter->set('wishlist', $this->get('wishlist'));
+                    $this->adapter = $adapter;
+                    $this->adapter->set('wishid', $this->get('id'));
+                    $this->adapter->set('wishlist', $this->get('wishlist'));
                     break;
                 }
             }
 
-            if (!$this->_adapter) {
+            if (!$this->adapter) {
                 throw new RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
             }
         }
-        return $this->_adapter;
+        return $this->adapter;
     }
 
     /**

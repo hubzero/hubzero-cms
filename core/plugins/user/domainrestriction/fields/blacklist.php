@@ -76,7 +76,7 @@ class Blacklist extends Field
      * @param   string  $name
      * @return  string
      */
-    private function _getField($name)
+    private function getField($name)
     {
         foreach ($this->formfields as $field) {
             if (

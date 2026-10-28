@@ -18,7 +18,9 @@ class Authorization
      *
      * @var string
      */
-    private $uid = null, $super_admin = false, $groups = null;
+    private $uid = null;
+    private $super_admin = false;
+    private $groups = null;
 
     /**
      * Constructor
@@ -44,6 +46,7 @@ class Authorization
      *
      * @return  bolean
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function is_guest()
     {
         return is_null($this->uid);
@@ -54,6 +57,7 @@ class Authorization
      *
      * @return  boolean
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function is_super_admin()
     {
         return $this->super_admin;
@@ -64,6 +68,7 @@ class Authorization
      *
      * @return  array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_groups()
     {
         if (is_null($this->groups)) {
@@ -93,6 +98,7 @@ class Authorization
      *
      * @return  array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_group_ids()
     {
         return array_keys($this->get_groups());
@@ -103,6 +109,7 @@ class Authorization
      *
      * @return  array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_group_names()
     {
         return array_values($this->get_groups());

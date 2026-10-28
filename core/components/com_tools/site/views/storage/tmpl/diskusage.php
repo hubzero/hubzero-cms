@@ -34,16 +34,31 @@ $this->css('
 }
 ');
 
-$html .= "\t" . '<dd id="du-amount"><div class="du-amount-bar" title="' . $this->amt . '%"><strong>&nbsp;</strong><span class="du-amount-text">' . $this->amt . '% of ' . round((float) $this->total, 2) . 'GB</span></div></dd>' . "\n";
+$html .= "\t" . '<dd id="du-amount"><div class="du-amount-bar" title="' . $this->amt . '%">'
+    . '<strong>&nbsp;</strong><span class="du-amount-text">'
+    . $this->amt . '% of ' . round((float) $this->total, 2) . 'GB</span></div></dd>' . "\n";
 if ($this->msgs) {
     if (count($this->du) <= 1) {
-        $html .= "\t" . '<dd id="du-msg"><p class="error">' . Lang::txt('COM_TOOLS_STORAGE_ERROR_RETRIEVING') . '</p></dd>' . "\n";
+        $html .= "\t" . '<dd id="du-msg"><p class="error">'
+            . Lang::txt('COM_TOOLS_STORAGE_ERROR_RETRIEVING') . '</p></dd>' . "\n";
     }
     if ($this->percent == 100) {
-        $html .= "\t" . '<dd id="du-msg"><p class="warning">' . Lang::txt('COM_TOOLS_STORAGE_WARNING_REACHED_LIMIT') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=storageexceeded') . '">' . Lang::txt('COM_TOOLS_STORAGE_HOW_TO_RESOLVE') . '</a>.</p></dd>' . "\n";
+        $resolveUrl = Route::url(
+            'index.php?option=' . $this->option . '&task=storageexceeded'
+        );
+        $html .= "\t" . '<dd id="du-msg"><p class="warning">'
+            . Lang::txt('COM_TOOLS_STORAGE_WARNING_REACHED_LIMIT')
+            . ' <a href="' . $resolveUrl . '">'
+            . Lang::txt('COM_TOOLS_STORAGE_HOW_TO_RESOLVE') . '</a>.</p></dd>' . "\n";
     }
     if ($this->percent > 100) {
-        $html .= "\t" . '<dd id="du-msg"><p class="warning">' . Lang::txt('COM_TOOLS_STORAGE_WARNING_EXCEEDING_LIMIT') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=storageexceeded') . '">' . Lang::txt('COM_TOOLS_STORAGE_HOW_TO_RESOLVE') . '</a>.</p></dd>' . "\n";
+        $resolveUrl = Route::url(
+            'index.php?option=' . $this->option . '&task=storageexceeded'
+        );
+        $html .= "\t" . '<dd id="du-msg"><p class="warning">'
+            . Lang::txt('COM_TOOLS_STORAGE_WARNING_EXCEEDING_LIMIT')
+            . ' <a href="' . $resolveUrl . '">'
+            . Lang::txt('COM_TOOLS_STORAGE_HOW_TO_RESOLVE') . '</a>.</p></dd>' . "\n";
     }
 }
 if (!$this->ajax) {

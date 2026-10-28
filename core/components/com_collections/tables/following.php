@@ -104,7 +104,7 @@ class Following extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS f";
 
@@ -140,7 +140,7 @@ class Following extends Table
     {
         $filters['limit'] = 0;
 
-        $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+        $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -154,10 +154,12 @@ class Following extends Table
      */
     public function find($filters = array())
     {
-        $query = "SELECT f.*,
-			(SELECT COUNT(*) FROM `#__collections_following` AS fg WHERE fg.following_id=f.following_id AND fg.following_type=f.following_type) AS followers,
-			(SELECT COUNT(*) FROM `#__collections_following` AS fr WHERE fr.follower_id=f.following_id AND fr.follower_type=f.following_type) AS following";
-        $query .= $this->_buildQuery($filters);
+        $query = "SELECT f.*, "
+            . "(SELECT COUNT(*) FROM `#__collections_following` AS fg "
+            . "WHERE fg.following_id=f.following_id AND fg.following_type=f.following_type) AS followers, "
+            . "(SELECT COUNT(*) FROM `#__collections_following` AS fr "
+            . "WHERE fr.follower_id=f.following_id AND fr.follower_type=f.following_type) AS following";
+        $query .= $this->buildQuery($filters);
 
         if (!isset($filters['sort']) || !$filters['sort']) {
             $filters['sort'] = 'f.created';

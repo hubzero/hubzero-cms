@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -91,7 +92,10 @@ class Zones extends AdminController
         );
 
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $this->view->filters['start'] = ($this->view->filters['limit'] != 0
+            ? (floor($this->view->filters['start'] / $this->view->filters['limit'])
+                * $this->view->filters['limit'])
+            : 0);
 
         // Get the middleware
         $model = new Middleware();
@@ -385,7 +389,11 @@ class Zones extends AdminController
             return;
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit)
+            );
             echo json_encode(array('error' => Lang::txt('COM_TOOLS_ERROR_FILE_TOO_LARGE', $max)));
             return;
         }

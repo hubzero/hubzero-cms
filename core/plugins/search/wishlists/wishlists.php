@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for Wishlists
+ */
+/**
  */
 class plgSearchWishlists extends \Hubzero\Plugin\Plugin
 {
@@ -38,7 +41,8 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
             "SELECT
 				wli.subject AS title,
 				wli.about AS description,
-				concat('index.php?option=com_wishlist&category=', wl.category, '&rid=', wl.referenceid, '&task=wish&wishid=', wli.id) AS link,
+				concat('index.php?option=com_wishlist&category=', wl.category, '&rid=', wl.referenceid,
+					'&task=wish&wishid=', wli.id) AS link,
 				match(wli.subject, wli.about) against('collaboration') AS weight,
 				wli.proposed AS date,
 				concat(wl.title) AS section,
@@ -131,9 +135,8 @@ class plgSearchWishlists extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->public == 1) {
                     $access_level = 'public';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

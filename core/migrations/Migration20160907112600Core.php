@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to more fix index naming conventions in CNS tables (prev migration also fixed to do these)
- **/
+ *
+ */
 class Migration20160907112600Core extends Base
 {
     private function dropIndex($table, $key)

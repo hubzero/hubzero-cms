@@ -1,20 +1,21 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
 require_once __DIR__ . '/replacer.php';
 require_once __DIR__ . '/regexlikereplacer.php';
 require_once __DIR__ . '/doublereplacer.php';
 require_once __DIR__ . '/hashtablereplacer.php';
 require_once __DIR__ . '/replacementarray.php';
+
 /**
  * A collection of static methods to play with strings.
+ *
  */
 class StringUtils
 {
@@ -31,7 +32,7 @@ class StringUtils
      * @param      unknown $subject Parameter description (if any) ...
      * @return     string Return description (if any) ...
      */
-    static function hungryDelimiterReplace($startDelim, $endDelim, $replace, $subject)
+    public static function hungryDelimiterReplace($startDelim, $endDelim, $replace, $subject)
     {
         $segments = explode($startDelim, $subject);
         $output = array_shift($segments);
@@ -71,7 +72,7 @@ class StringUtils
      * @throws MWException  Exception description (if any) ...
      * @throws MWException  Exception description (if any) ...
      */
-    static function delimiterReplaceCallback($startDelim, $endDelim, $callback, $subject, $flags = '')
+    public static function delimiterReplaceCallback($startDelim, $endDelim, $callback, $subject, $flags = '')
     {
         $inputPos = 0;
         $outputPos = 0;
@@ -148,12 +149,13 @@ class StringUtils
      *
      * @param      string $startDelim Start delimiter regular expression
      * @param      string $endDelim   End delimiter regular expression
-     * @param      string $replace    Replacement string. May contain $1, which will be replaced by the text between the delimiters
+     * @param      string $replace    Replacement string. May contain $1, which will be
+     *                                 replaced by the text between the delimiters
      * @param      string $subject    String to search
      * @param      string $flags Parameter description (if any) ...
      * @return     string The string with the matches replaced
      */
-    static function delimiterReplace($startDelim, $endDelim, $replace, $subject, $flags = '')
+    public static function delimiterReplace($startDelim, $endDelim, $replace, $subject, $flags = '')
     {
         $replacer = new RegexlikeReplacer($replace);
         return self::delimiterReplaceCallback($startDelim, $endDelim, $replacer->cb(), $subject, $flags);
@@ -167,7 +169,7 @@ class StringUtils
      * @param      unknown $text Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    static function explodeMarkup($separator, $text)
+    public static function explodeMarkup($separator, $text)
     {
         $placeholder = "\x00";
 
@@ -193,7 +195,7 @@ class StringUtils
      * @param      unknown $string Parameter description (if any) ...
      * @return     unknown Return description (if any) ...
      */
-    static function escapeRegexReplacement($string)
+    public static function escapeRegexReplacement($string)
     {
         $string = str_replace('\\', '\\\\', $string);
         $string = str_replace('$', '\\$', $string);

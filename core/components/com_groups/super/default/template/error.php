@@ -30,10 +30,16 @@ Document::addScript($base . DS . 'assets/js/main.js');
                 <a class="back" title="Go Back" href="javascript: history.go(-1);">Back</a>
             </li>
             <li>
-                <a class="group" title="Go to Group Home Page" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">Go to Group Home Page</a>
+                <a class="group" title="Go to Group Home Page"
+                   href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">
+                    Go to Group Home Page
+                </a>
             </li>
             <li>
-                <a class="report" title="Report a Problem" href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>">Report a Problem</a>
+                <a class="report" title="Report a Problem"
+                   href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>">
+                    Report a Problem
+                </a>
             </li>
         </ul>
     </div>

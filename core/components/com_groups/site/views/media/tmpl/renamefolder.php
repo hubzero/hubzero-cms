@@ -13,7 +13,8 @@ defined('_HZEXEC_') or die();
 $info = pathinfo($this->folder);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=dorenamefolder&no_html=1'); ?>" method="post" class="hubForm">
+<?php $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>
+<form action="<?php echo $url . '&controller=media&task=dorenamefolder&no_html=1'; ?>" method="post" class="hubForm">
     <fieldset>
         <legend><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME_FOLDER'); ?></legend>
         <label>

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Search content articles
+ */
+/**
  */
 class plgSearchContent extends \Hubzero\Plugin\Plugin
 {
@@ -32,7 +35,8 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
             $addtl_where[] = "(c.title LIKE '%$mand%' OR c.introtext LIKE '%$mand%' OR c.`fulltext` LIKE '%$mand%')";
         }
         foreach ($terms['forbidden'] as $forb) {
-            $addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' AND c.`fulltext` NOT LIKE '%$forb%')";
+            $addtl_where[] = "(c.title NOT LIKE '%$forb%' AND c.introtext NOT LIKE '%$forb%' "
+                . "AND c.`fulltext` NOT LIKE '%$forb%')";
         }
 
         $addtl_where[] = '(c.access IN (' . implode(',', User::getAuthorisedViewLevels()) . '))';
@@ -51,8 +55,11 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 			$weight AS weight,
 			publish_up AS date,
 			ca.title AS section,
-			(SELECT group_concat(u1.name separator '\\n') FROM `#__author_assoc` anames INNER JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
-			(SELECT group_concat(ids.authorid separator '\\n') FROM `#__author_assoc` ids WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
+			(SELECT group_concat(u1.name separator '\\n') FROM `#__author_assoc` anames
+				INNER JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid
+				WHERE subtable = 'content' AND subid = c.id ORDER BY anames.ordering) AS contributors,
+			(SELECT group_concat(ids.authorid separator '\\n') FROM `#__author_assoc` ids
+				WHERE subtable = 'content' AND subid = c.id ORDER BY ids.ordering) AS contributor_ids
 		FROM `#__content` c
 		LEFT JOIN `#__categories` ca
 			ON ca.id = c.catid
@@ -121,13 +128,11 @@ class plgSearchContent extends \Hubzero\Plugin\Plugin
 
                 if ($row->state == 1 && $row->access == 1) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 2) {
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

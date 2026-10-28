@@ -20,9 +20,10 @@ Toolbar::help('oaipmh');
 $this->css();
 
 $lang = Lang::getTag();
+$formUrl = Route::url('index.php?option=' . $this->option);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="item-form">
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="task" value="save" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

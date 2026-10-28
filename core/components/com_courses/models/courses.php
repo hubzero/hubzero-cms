@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ class Courses extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_tbl = null;
 
     /**
@@ -32,6 +34,7 @@ class Courses extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_db = null;
 
     /**
@@ -39,6 +42,7 @@ class Courses extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_courses = null;
 
     /**
@@ -46,6 +50,7 @@ class Courses extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_course = null;
 
     /**
@@ -70,7 +75,7 @@ class Courses extends Obj
      * @param      mixed $oid Course ID (int) or alias (string)
      * @return     object \Components\Courses\Models\Course
      */
-    static function &getInstance($oid = 0)
+    public static function &getInstance($oid = 0)
     {
         static $instances;
 

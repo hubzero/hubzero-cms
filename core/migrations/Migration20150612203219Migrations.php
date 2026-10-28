@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +23,8 @@ class Migration20150612203219Migrations extends Base
     public function up()
     {
         if ($this->db->tableExists('#__migrations')) {
-            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('core/migrations') . " WHERE `scope`=" . $this->db->quote('migrations');
+            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('core/migrations')
+                . " WHERE `scope`=" . $this->db->quote('migrations');
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -34,7 +36,8 @@ class Migration20150612203219Migrations extends Base
     public function down()
     {
         if ($this->db->tableExists('#__migrations')) {
-            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('migrations') . " WHERE `scope`=" . $this->db->quote('core/migrations');
+            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('migrations')
+                . " WHERE `scope`=" . $this->db->quote('core/migrations');
             $this->db->setQuery($query);
             $this->db->query();
         }

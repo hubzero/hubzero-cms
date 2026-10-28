@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\User;
@@ -25,6 +26,7 @@ class Member extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_members',
     );

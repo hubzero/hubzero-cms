@@ -12,7 +12,10 @@ use Hubzero\Utility\Arr;
 
 class QueryDropColumnStatement
 {
-    protected $_asString, $_name;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_asString;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name;
 
     /**
      * Constructs QueryDropColumnStatement instance
@@ -20,6 +23,7 @@ class QueryDropColumnStatement
      * @param    array   $args   Instantiation state
      * @return   void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($args = [])
     {
         $this->_name = $args['name'];
@@ -44,6 +48,7 @@ class QueryDropColumnStatement
      *
      * @return   void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateBaseString()
     {
         $this->_asString = 'DROP COLUMN';
@@ -54,6 +59,7 @@ class QueryDropColumnStatement
      *
      * @return   void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addName()
     {
         $this->_asString .= " $this->_name";

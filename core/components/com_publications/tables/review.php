@@ -75,7 +75,8 @@ class Review extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($pid) . " AND created_by=" . $this->_db->quote($uid);
+        $query  = "SELECT * FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND created_by=" . $this->_db->quote($uid);
         $query .= $versionid ? " AND publication_version_id=" . $this->_db->quote($versionid) : '';
         $query .= " LIMIT 1";
         $this->_db->setQuery($query);
@@ -105,7 +106,8 @@ class Review extends Table
             return false;
         }
 
-        $query  = "SELECT rating FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($pid) . " AND created_by=" . $this->_db->quote($uid);
+        $query  = "SELECT rating FROM `$this->_tbl` WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND created_by=" . $this->_db->quote($uid);
         $query .= $versionid ? " AND publication_version_id=" . $this->_db->quote($versionid) : '';
         $query .= " LIMIT 1";
         $this->_db->setQuery($query);
@@ -133,10 +135,13 @@ class Review extends Table
         }
 
         $query = "SELECT rr.*, rr.id as id, v.helpful AS vote,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful
+			(SELECT COUNT(*) FROM `#__vote_log` AS v
+				WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v
+				WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='pubreview' AND v.voter=" . $this->_db->quote($uid) . "
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id
+				AND v.category='pubreview' AND v.voter=" . $this->_db->quote($uid) . "
 			WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->quote($pid);
         $query .= $versionid ? " AND rr.publication_version_id=" . $this->_db->quote($versionid) : '';
         $query .= " ORDER BY rr.created DESC";
@@ -198,12 +203,15 @@ class Review extends Table
         }
 
         $query = "SELECT rr.*, rr.id as id, v.helpful AS vote,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful,
-			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful
+			(SELECT COUNT(*) FROM `#__vote_log` AS v
+				WHERE v.helpful='yes' AND v.category='pubreview' AND v.referenceid=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v
+				WHERE v.helpful='no' AND v.category='pubreview' AND v.referenceid=rr.id) AS nothelpful
 			FROM `$this->_tbl` AS rr
-			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='pubreview' AND v.voter=" . $this->_db->quote($uid) . "
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id
+				AND v.category='pubreview' AND v.voter=" . $this->_db->quote($uid) . "
 			WHERE rr.state IN (1, 3) AND rr.publication_id=" . $this->_db->quote($pid);
-            $query .= $versionid ? " AND rr.publication_version_id=" . $this->_db->quote($versionid) : '';
+        $query .= $versionid ? " AND rr.publication_version_id=" . $this->_db->quote($versionid) : '';
 
         $this->_db->setQuery($query);
         return $this->_db->loadObjectList();

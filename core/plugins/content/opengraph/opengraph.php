@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,8 @@ defined('_HZEXEC_') or die();
  * Content Plugin class for OpenGraph meta tags
  *
  * Inspired by work from Jan Pavelka (www.phoca.cz)
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class plgContentOpenGraph extends \Hubzero\Plugin\Plugin
 {
@@ -67,12 +70,14 @@ class plgContentOpenGraph extends \Hubzero\Plugin\Plugin
             // Data from first article will be set
             $suffix = 'f';
             $this->pluginNr = 1;
-        } else if ($view == 'category' && $this->pluginNr == 0) {
+        } elseif ($view == 'category' && $this->pluginNr == 0) {
             // Data from first article will be set
             $suffix = 'c';
             if (isset($article->catid) && (int)$article->catid > 0) {
                 $db = App::get('db');
-                $db->setQuery('SELECT c.metadesc, c.title FROM `#__categories` AS c WHERE c.id = ' . (int) $article->catid);
+                $query = 'SELECT c.metadesc, c.title FROM `#__categories` AS c ' .
+                    'WHERE c.id = ' . (int) $article->catid;
+                $db->setQuery($query);
                 $cItem = $db->loadObjectList();
 
                 if (isset($cItem[0]->metadesc) && $cItem[0]->metadesc != '') {
@@ -122,9 +127,9 @@ class plgContentOpenGraph extends \Hubzero\Plugin\Plugin
                     $path = PATH_APP . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'opengraph' . DS;
                     if (Filesystem::exists($path . DS . (int)$article->id . '.jpg')) {
                         $imgPath = Request::base(false) . 'images/opengraph/' . (int)$article->id . '.jpg';
-                    } else if (Filesystem::exists($path . DS . (int)$article->id . '.png')) {
+                    } elseif (Filesystem::exists($path . DS . (int)$article->id . '.png')) {
                         $imgPath = Request::base(false) . 'images/opengraph/' . (int)$article->id . '.png';
-                    } else if (Filesystem::exists($path . DS . (int)$article->id . '.gif')) {
+                    } elseif (Filesystem::exists($path . DS . (int)$article->id . '.gif')) {
                         $imgPath = Request::base(false) . 'images/opengraph/' . (int)$article->id . '.gif';
                     }
 
@@ -148,7 +153,7 @@ class plgContentOpenGraph extends \Hubzero\Plugin\Plugin
         // Description
         if ($desc = $this->params->get('description' . $suffix, $thisDesc)) {
             Document::setMetadata('og:description', htmlspecialchars($desc));
-        } else if ($desc = Config::get('MetaDesc')) {
+        } elseif ($desc = Config::get('MetaDesc')) {
             Document::setMetadata('og:description', htmlspecialchars($desc));
         }
 
@@ -166,7 +171,9 @@ class plgContentOpenGraph extends \Hubzero\Plugin\Plugin
                         $vother = explode('=', $v);
                         if (!empty($vother)) {
                             if (isset($vother[0]) && isset($vother[1])) {
-                                Document::setMetadata(htmlspecialchars(strip_tags($vother[0])), htmlspecialchars($vother[1]));
+                                $metaName = htmlspecialchars(strip_tags($vother[0]));
+                                $metaValue = htmlspecialchars($vother[1]);
+                                Document::setMetadata($metaName, $metaValue);
                             }
                         }
                     }

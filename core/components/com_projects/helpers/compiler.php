@@ -20,7 +20,7 @@ class Compiler extends Obj
      *
      * @var  string
      */
-    private $_outputFolder  = './';
+    private $outputFolder  = './';
 
     /**
      * Is tex file?
@@ -94,7 +94,7 @@ class Compiler extends Obj
         }
 
         $cacheFolder = dirname($fullpath);
-        $outputDir   = $outputDir ? $outputDir : $this->_outputFolder;
+        $outputDir   = $outputDir ? $outputDir : $this->outputFolder;
 
         if (!$tempBase) {
             $filename = Html::takeOutExt(basename($fullpath));

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,17 +27,20 @@ class Migration20130924000000ComCategories extends Base
         $this->db->query();
 
         if ($this->db->tableHasField('#__categories', 'parent_id')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `parent_id` `parent_id` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `parent_id` `parent_id` INT(10) UNSIGNED NOT NULL "
+                . "DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if ($this->db->tableHasField('#__categories', 'alias')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
+            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' "
+                . "COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if ($this->db->tableHasField('#__categories', 'access')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `access` `access` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `access` `access` INT(10) UNSIGNED NOT NULL "
+                . "DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -50,18 +54,24 @@ class Migration20130924000000ComCategories extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'lft') && $this->db->tableHasField('#__categories', 'parent_id')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `lft` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set lft.' AFTER `parent_id`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'lft')
+            && $this->db->tableHasField('#__categories', 'parent_id')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `lft` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set"
+                . "lft.' AFTER `parent_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__categories', 'rgt') && $this->db->tableHasField('#__categories', 'lft')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `rgt` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set rgt.' AFTER `lft`;";
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `rgt` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set"
+                . "rgt.' AFTER `lft`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__categories', 'asset_id') && $this->db->tableHasField('#__categories', 'id')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.' AFTER `id`;";
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0"
+                . "COMMENT 'FK to the #__assets table.' AFTER `id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -75,7 +85,10 @@ class Migration20130924000000ComCategories extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'extension') && $this->db->tableHasField('#__categories', 'path')) {
+        if (
+            !$this->db->tableHasField('#__categories', 'extension')
+            && $this->db->tableHasField('#__categories', 'path')
+        ) {
             $query = "ALTER TABLE `#__categories` ADD COLUMN `extension` varchar(50) NOT NULL default '' AFTER `path`;";
             $this->db->setQuery($query);
             $this->db->query();
@@ -85,47 +98,82 @@ class Migration20130924000000ComCategories extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'metadesc') && $this->db->tableHasField('#__categories', 'params')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `metadesc` VARCHAR(1024) NOT NULL COMMENT 'The meta description for the page.' AFTER `params`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'metadesc')
+            && $this->db->tableHasField('#__categories', 'params')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `metadesc` VARCHAR(1024) NOT NULL COMMENT 'The meta"
+                . "description for the page.' AFTER `params`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'metakey') && $this->db->tableHasField('#__categories', 'metadesc')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `metakey` VARCHAR(1024) NOT NULL COMMENT 'The meta keywords for the page.' AFTER `metadesc`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'metakey')
+            && $this->db->tableHasField('#__categories', 'metadesc')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `metakey` VARCHAR(1024) NOT NULL COMMENT 'The meta"
+                . "keywords for the page.' AFTER `metadesc`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'metadata') && $this->db->tableHasField('#__categories', 'metakey')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `metadata` VARCHAR(2048) NOT NULL COMMENT 'JSON encoded metadata properties.' AFTER `metakey`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'metadata')
+            && $this->db->tableHasField('#__categories', 'metakey')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `metadata` VARCHAR(2048) NOT NULL COMMENT 'JSON"
+                . "encoded metadata properties.' AFTER `metakey`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'created_user_id') && $this->db->tableHasField('#__categories', 'metadata')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `created_user_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `metadata`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'created_user_id')
+            && $this->db->tableHasField('#__categories', 'metadata')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `created_user_id` INT UNSIGNED NOT NULL DEFAULT 0"
+                . "AFTER `metadata`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'created_time') && $this->db->tableHasField('#__categories', 'created_user_id')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `created_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `created_user_id`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'created_time')
+            && $this->db->tableHasField('#__categories', 'created_user_id')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `created_time` DATETIME NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00' AFTER `created_user_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'modified_user_id') && $this->db->tableHasField('#__categories', 'created_time')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `modified_user_id` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `created_time`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'modified_user_id')
+            && $this->db->tableHasField('#__categories', 'created_time')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `modified_user_id` INT UNSIGNED NOT NULL DEFAULT 0"
+                . "AFTER `created_time`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'modified_time') && $this->db->tableHasField('#__categories', 'modified_user_id')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `modified_user_id`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'modified_time')
+            && $this->db->tableHasField('#__categories', 'modified_user_id')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00' AFTER `modified_user_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'hits') && $this->db->tableHasField('#__categories', 'modified_time')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `hits` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `modified_time`;";
+        if (
+            !$this->db->tableHasField('#__categories', 'hits')
+            && $this->db->tableHasField('#__categories', 'modified_time')
+        ) {
+            $query = "ALTER TABLE `#__categories` ADD COLUMN `hits` INT UNSIGNED NOT NULL DEFAULT 0 AFTER "
+                . "`modified_time`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__categories', 'language') && $this->db->tableHasField('#__categories', 'hits')) {
+        if (
+            !$this->db->tableHasField('#__categories', 'language')
+            && $this->db->tableHasField('#__categories', 'hits')
+        ) {
             $query = "ALTER TABLE `#__categories` ADD COLUMN `language` CHAR(7) NOT NULL AFTER `hits`;";
             $this->db->setQuery($query);
             $this->db->query();
@@ -136,7 +184,8 @@ class Migration20130924000000ComCategories extends Base
             $this->db->query();
         }
         if (!$this->db->tableHasKey('#__categories', 'idx_extension_published_access')) {
-            $query = "ALTER TABLE `#__categories` ADD INDEX `idx_extension_published_access` (`extension` ASC, `published` ASC, `access` ASC);";
+            $query = "ALTER TABLE `#__categories` ADD INDEX `idx_extension_published_access` (`extension` ASC,"
+                . "`published` ASC, `access` ASC);";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -173,14 +222,33 @@ class Migration20130924000000ComCategories extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            // Insert default "uncategorised" categories (set acces to 0, because we'll increment it later with all the old categories)
-            $query  = "INSERT INTO `#__categories` (parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,created_user_id,created_time,modified_user_id,modified_time,hits,language)";
+            // Insert default "uncategorised" categories
+            // (set access to 0, because we'll increment it later with all the old categories)
+            $query = "INSERT INTO `#__categories` "
+                . "(parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,"
+                . "checked_out,checked_out_time,access,params,metadesc,metakey,metadata,"
+                . "created_user_id,created_time,modified_user_id,modified_time,hits,language)";
             $query .= " VALUES ";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_content', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:26:37', 0, '0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_banners', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\",\"foobar\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:35', 0, '0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_contact', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:57', 0, '0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_newsfeeds', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:15', 0, '0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_weblinks', 'Uncategorised', 'uncategorised', '', '', 1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '', '{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:33', 0, '0000-00-00 00:00:00', 0, '*');";
+            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_content', 'Uncategorised', 'uncategorised', '', '', 1,"
+                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
+                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:26:37', 0,"
+                . "'0000-00-00 00:00:00', 0, '*'),";
+            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_banners', 'Uncategorised', 'uncategorised', '', '', 1,"
+                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\",\"foobar\":\"\"}', '', '',"
+                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:35', 0,"
+                . "'0000-00-00 00:00:00', 0, '*'),";
+            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_contact', 'Uncategorised', 'uncategorised', '', '', 1,"
+                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
+                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:57', 0,"
+                . "'0000-00-00 00:00:00', 0, '*'),";
+            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_newsfeeds', 'Uncategorised', 'uncategorised', '', '',"
+                . "1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
+                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:15', 0,"
+                . "'0000-00-00 00:00:00', 0, '*'),";
+            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_weblinks', 'Uncategorised', 'uncategorised', '', '', 1,"
+                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
+                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:33', 0,"
+                . "'0000-00-00 00:00:00', 0, '*');";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -195,7 +263,8 @@ class Migration20130924000000ComCategories extends Base
                     $query = "SELECT `id` FROM `#__categories` WHERE `alias` = '{$r->alias}';";
                     $this->db->setQuery($query);
                     if ($this->db->loadResult()) {
-                        // Set any categories that were in recently added section to have that new category id as parent_id
+                        // Set any categories that were in recently added section
+                        // to have that new category id as parent_id
                         $query = "UPDATE  `#__categories` SET parent_id = 0 WHERE section = {$r->id};";
                         $this->db->setQuery($query);
                         $this->db->query();
@@ -203,7 +272,12 @@ class Migration20130924000000ComCategories extends Base
                         continue;
                     }
 
-                    $query  = "INSERT INTO `#__categories` (parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,created_user_id,created_time,modified_user_id,modified_time,hits,language) VALUES ";
+                    $query = "INSERT INTO `#__categories` "
+                        . "(parent_id,lft,rgt,level,path,extension,title,alias,note,description,"
+                        . "published,checked_out,checked_out_time,access,params,metadesc,metakey,"
+                        . "metadata,created_user_id,created_time,modified_user_id,modified_time,"
+                        . "hits,language) "
+                        . "VALUES";
                     $query .= "(";
                     $query .= '"0",';                                // parent_id
                     $query .= '"",';                                 // lft
@@ -244,9 +318,15 @@ class Migration20130924000000ComCategories extends Base
             }
 
             // Insert root category and set all 1st level categories to point to it
-            $query  = "INSERT INTO `#__categories` (asset_id,parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,created_user_id,created_time,modified_user_id,modified_time,hits,language) VALUES ";
-            $query .= "( 0, 0, 0, 0, 0, '', 'system', 'ROOT', 'root', '', '', 1, 0, '0000-00-00 00:00:00', 1, '{}', '', '', '', 0, '2009-10-18 16:07:09', 0, '0000-00-00 00:00:00', 0, '*');";
-            $query .= "UPDATE  `#__categories` SET parent_id=LAST_INSERT_ID() WHERE parent_id=0 AND id !=LAST_INSERT_ID();";
+            $query = "INSERT INTO `#__categories` "
+                . "(asset_id,parent_id,lft,rgt,level,path,extension,title,alias,note,description,"
+                . "published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,"
+                . "created_user_id,created_time,modified_user_id,modified_time,hits,language) "
+                . "VALUES";
+            $query .= "( 0, 0, 0, 0, 0, '', 'system', 'ROOT', 'root', '', '', 1, 0, '0000-00-00 00:00:00', 1,"
+                . "'{}', '', '', '', 0, '2009-10-18 16:07:09', 0, '0000-00-00 00:00:00', 0, '*');";
+            $query .= "UPDATE  `#__categories` SET parent_id=LAST_INSERT_ID() WHERE parent_id=0 AND id "
+                . "!=LAST_INSERT_ID();";
             $this->db->setQuery($query);
             $this->db->query();
 

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +42,10 @@ class Migration20150204181025ComMembers extends Base
             $this->db->query();
         }
 
-        if ($this->db->tableExists('#__event_registration') && $this->db->tableHasField('#__event_registration', 'username')) {
+        if (
+            $this->db->tableExists('#__event_registration')
+            && $this->db->tableHasField('#__event_registration', 'username')
+        ) {
             $query = "UPDATE `#__event_registration` SET `username` = LOWER(`username`)";
             $this->db->setQuery($query);
             $this->db->query();

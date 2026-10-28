@@ -20,7 +20,7 @@ class Archive extends Obj
     /**
      * Type
      *
-     * @var  string
+     * @public string
      */
     private $type = null;
 
@@ -41,7 +41,7 @@ class Archive extends Obj
      * @param   string  $key  Instance Key
      * @return  object
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 

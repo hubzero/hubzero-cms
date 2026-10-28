@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for 2011/12 middleware table modifications
+  *
  **/
 class Migration20120101000002Core extends Base
 {
@@ -23,13 +25,21 @@ class Migration20120101000002Core extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('display') && $mwdb->tableHasField('display', 'hostname') && !$mwdb->tableHasKey('display', 'idx_hostname')) {
+        if (
+            $mwdb->tableExists('display')
+            && $mwdb->tableHasField('display', 'hostname')
+            && !$mwdb->tableHasKey('display', 'idx_hostname')
+        ) {
             $query = "ALTER TABLE `display` ADD INDEX `idx_hostname` (`hostname` ASC)";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'hostname') && !$mwdb->tableHasKey('host', 'PRIMARY')) {
+        if (
+            $mwdb->tableExists('host')
+            && $mwdb->tableHasField('host', 'hostname')
+            && !$mwdb->tableHasKey('host', 'PRIMARY')
+        ) {
             $query = "ALTER TABLE `host` ADD PRIMARY KEY (`hostname`)";
             $mwdb->setQuery($query);
             $mwdb->query();
@@ -89,19 +99,22 @@ class Migration20120101000002Core extends Base
 
         if ($mwdb->tableExists('sessionlog')) {
             if ($mwdb->tableHasField('sessionlog', 'sessnum')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `sessnum` `sessnum` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT";
+                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `sessnum` `sessnum` "
+                    . "BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT";
                 $mwdb->setQuery($query);
                 $mwdb->query();
             }
 
             if ($mwdb->tableHasField('sessionlog', 'walltime')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `walltime` `walltime` DOUBLE UNSIGNED NULL DEFAULT '0'";
+                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `walltime` `walltime` "
+                    . "DOUBLE UNSIGNED NULL DEFAULT '0'";
                 $mwdb->setQuery($query);
                 $mwdb->query();
             }
 
             if ($mwdb->tableHasField('sessionlog', 'viewtime')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `viewtime` `viewtime` DOUBLE UNSIGNED NULL DEFAULT '0'";
+                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `viewtime` `viewtime` "
+                    . "DOUBLE UNSIGNED NULL DEFAULT '0'";
                 $mwdb->setQuery($query);
                 $mwdb->query();
             }

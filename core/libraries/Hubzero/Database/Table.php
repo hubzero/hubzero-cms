@@ -29,55 +29,61 @@ abstract class Table extends Obj
     /**
      * Name of the database table to model.
      *
-     * @var    string
+     * @public string
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl = '';
 
     /**
      * Name of the primary key field in the table.
      *
-     * @var    string
+     * @public string
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_key = '';
 
     /**
      * Database connector object.
      *
-     * @var    object
+     * @public object
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db;
 
     /**
      * Should rows be tracked as ACL assets?
      *
-     * @var    boolean
+     * @public boolean
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_trackAssets = false;
 
     /**
      * The rules associated with this record.
      *
-     * @var    object  A Access Rules object.
+     * @public object  A Access Rules object.
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_rules;
 
     /**
      * Indicator that the tables have been locked.
      *
-     * @var    boolean
+     * @public boolean
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_locked = false;
 
     /**
      * Cached table field descriptions
      *
-     * @var array
+     * @public array
      */
     private $fieldCache = null;
 
@@ -91,6 +97,7 @@ abstract class Table extends Obj
      * @param  object  &$db    Database connector object.
      * @since  2.1.12
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($table, $key, $db)
     {
         // Set internal variables.
@@ -172,12 +179,14 @@ abstract class Table extends Obj
                 }
             }
             if (!class_exists($tableClass)) {
-                // If we were unable to find the class file in the Table include paths, raise a warning and return false.
+                // If we were unable to find the class file in the Table include paths, raise a warning and return
+                // false.
                 return false;
             }
         }
 
-        // If a database object was passed in the configuration array use it, otherwise get the global one from JFactory.
+        // If a database object was passed in the configuration array use it, otherwise get the global one from
+        // JFactory.
         $db = isset($config['dbo']) ? $config['dbo'] : App::get('db');
 
         // Instantiate a new table class and return it.
@@ -228,6 +237,7 @@ abstract class Table extends Obj
      * @return  string
      * @since   2.1.12
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetName()
     {
         $k = $this->_tbl_key;
@@ -244,6 +254,7 @@ abstract class Table extends Obj
      * @return  string  The string to use as the title in the asset table.
      * @since   2.1.12
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetTitle()
     {
         return $this->_getAssetName();
@@ -261,6 +272,7 @@ abstract class Table extends Obj
      * @return  integer
      * @since   2.1.12
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetParentId($table = null, $id = null)
     {
         // For simple cases, parent to the asset root.
@@ -415,7 +427,8 @@ abstract class Table extends Obj
      * Method to load a row from the database by primary key and bind the fields
      * to the Table instance properties.
      *
-     * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.  If not
+     * @param   mixed    $keys   An optional primary key value to load the row by, or an array of
+     *                           fields to match.  If not
      *                           set the instance property value is used.
      * @param   boolean  $reset  True to reset the default values before loading the new row.
      * @return  boolean  True if successful. False if row not found or on error (internal error state set in that case).
@@ -531,7 +544,13 @@ abstract class Table extends Obj
 
         // If the store failed return false.
         if (!$stored) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_STORE_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
             return false;
         }
@@ -599,7 +618,12 @@ abstract class Table extends Obj
             $this->_db->setQuery($query->toString());
 
             if (!$this->_db->execute()) {
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $this->_db->getErrorMsg()));
+                Exception(
+                    Lang::txt(
+                        'JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID',
+                        $this->_db->getErrorMsg()
+                    )
+                );
                 $this->setError($e);
                 return false;
             }
@@ -618,7 +642,8 @@ abstract class Table extends Obj
      *
      * @param   mixed    $src             An associative array or object to bind to the Table instance.
      * @param   string   $orderingFilter  Filter for the order updating
-     * @param   mixed    $ignore          An optional array or space separated list of properties to ignore while binding.
+     * @param   mixed    $ignore          An optional array or space separated list of properties
+     *                                    to ignore while binding.
      * @return  boolean  True on success.
      * @since   2.1.12
      */
@@ -647,7 +672,9 @@ abstract class Table extends Obj
         // If an ordering filter is set, attempt reorder the rows in the table based on the filter and value.
         if ($orderingFilter) {
             $filterValue = $this->$orderingFilter;
-            $this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter) . ' = ' . $this->_db->Quote($filterValue) : '');
+            $this->reorder($orderingFilter ? $this->_db->quoteName($orderingFilter) .
+                ' = ' .
+                $this->_db->Quote($filterValue) : '');
         }
 
         // Set the error to empty and return true.
@@ -704,7 +731,13 @@ abstract class Table extends Obj
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_DELETE_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
             return false;
         }
@@ -721,7 +754,8 @@ abstract class Table extends Obj
      * in again.
      *
      * @param   integer  $userId  The Id of the user checking out the row.
-     * @param   mixed    $pk      An optional primary key value to check out.  If not set the instance property value is used.
+     * @param   mixed    $pk      An optional primary key value to check out.  If not set the
+     *                            instance property value is used.
      * @return  boolean  True on success.
      * @since   2.1.12
      */
@@ -757,7 +791,13 @@ abstract class Table extends Obj
         $this->_db->setQuery($query->toString());
 
         if (!$this->_db->execute()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_CHECKOUT_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_CHECKOUT_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
             return false;
         }
@@ -773,7 +813,8 @@ abstract class Table extends Obj
      * Method to check a row in if the necessary properties/fields exist.  Checking
      * a row in will allow other users the ability to edit the row.
      *
-     * @param   mixed    $pk  An optional primary key value to check out.  If not set the instance property value is used.
+     * @param   mixed    $pk  An optional primary key value to check out.  If not set the instance
+     *                        property value is used.
      * @return  boolean  True on success.
      * @since   2.1.12
      */
@@ -818,7 +859,13 @@ abstract class Table extends Obj
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_CHECKIN_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_CHECKIN_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
             return false;
         }
@@ -833,7 +880,8 @@ abstract class Table extends Obj
     /**
      * Method to increment the hits for a row if the necessary property/field exists.
      *
-     * @param   mixed    $pk  An optional primary key value to increment. If not set the instance property value is used.
+     * @param   mixed    $pk  An optional primary key value to increment. If not set the instance
+     *                        property value is used.
      * @return  boolean  True on success.
      * @since   2.1.12
      */
@@ -864,7 +912,13 @@ abstract class Table extends Obj
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_HIT_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_HIT_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
             return false;
         }
@@ -880,8 +934,10 @@ abstract class Table extends Obj
      * a user. If the row is checked out by the same user, then it is considered
      * not checked out -- as the user can still edit it.
      *
-     * @param   integer  $with     The userid to preform the match with, if an item is checked out by this user the function will return false.
-     * @param   integer  $against  The userid to perform the match against when the function is used as a static function.
+     * @param   integer  $with     The userid to preform the match with, if an item is checked out
+     *                             by this user the function will return false.
+     * @param   integer  $against  The userid to perform the match against when the function is
+     *                             used as a static function.
      * @return  boolean  True if checked out.
      * @since   2.1.12
      * @todo    This either needs to be static or not.
@@ -913,7 +969,13 @@ abstract class Table extends Obj
         }
 
         $db = App::get('db');
-        $db->setQuery('SELECT COUNT(userid)' . ' FROM ' . $db->quoteName('#__session') . ' WHERE ' . $db->quoteName('userid') . ' = ' . (int) $against);
+        $db->setQuery('SELECT COUNT(userid)' .
+            ' FROM ' .
+            $db->quoteName('#__session') .
+            ' WHERE ' .
+            $db->quoteName('userid') .
+            ' = ' .
+            (int) $against);
         $checkedOut = (bool) $db->loadResult();
 
         // If a session exists for the user then it is checked out.
@@ -951,7 +1013,13 @@ abstract class Table extends Obj
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_GET_NEXT_ORDER_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_GET_NEXT_ORDER_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
 
             return false;
@@ -999,7 +1067,13 @@ abstract class Table extends Obj
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_REORDER_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_REORDER_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
 
             return false;
@@ -1023,7 +1097,12 @@ abstract class Table extends Obj
                     // Check for a database error.
                     if (!$this->_db->execute()) {
                         $e = new Exception(
-                            Lang::txt('JLIB_DATABASE_ERROR_REORDER_UPDATE_ROW_FAILED', get_class($this), $i, $this->_db->getErrorMsg())
+                            Lang::txt(
+                                'JLIB_DATABASE_ERROR_REORDER_UPDATE_ROW_FAILED',
+                                get_class($this),
+                                $i,
+                                $this->_db->getErrorMsg()
+                            )
                         );
                         $this->setError($e);
 
@@ -1073,9 +1152,8 @@ abstract class Table extends Obj
         if ($delta < 0) {
             $query->where('ordering', '<', (int) $this->ordering);
             $query->order('ordering', 'DESC');
-        }
+        } elseif ($delta > 0) {
         // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
             $query->where('ordering', '>', (int) $this->ordering);
             $query->order('ordering', 'ASC');
         }
@@ -1100,7 +1178,13 @@ abstract class Table extends Obj
 
             // Check for a database error.
             if (!$this->_db->execute()) {
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+                Exception(
+                    Lang::txt(
+                        'JLIB_DATABASE_ERROR_MOVE_FAILED',
+                        get_class($this),
+                        $this->_db->getErrorMsg()
+                    )
+                );
                 $this->setError($e);
 
                 return false;
@@ -1115,7 +1199,13 @@ abstract class Table extends Obj
 
             // Check for a database error.
             if (!$this->_db->execute()) {
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+                Exception(
+                    Lang::txt(
+                        'JLIB_DATABASE_ERROR_MOVE_FAILED',
+                        get_class($this),
+                        $this->_db->getErrorMsg()
+                    )
+                );
                 $this->setError($e);
 
                 return false;
@@ -1133,7 +1223,13 @@ abstract class Table extends Obj
 
             // Check for a database error.
             if (!$this->_db->execute()) {
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+                Exception(
+                    Lang::txt(
+                        'JLIB_DATABASE_ERROR_MOVE_FAILED',
+                        get_class($this),
+                        $this->_db->getErrorMsg()
+                    )
+                );
                 $this->setError($e);
 
                 return false;
@@ -1148,7 +1244,8 @@ abstract class Table extends Obj
      * table.  The method respects checked out rows by other users and will attempt
      * to checkin rows that it can after adjustments are made.
      *
-     * @param   mixed    $pks     An optional array of primary key values to update.  If not set the instance property value is used.
+     * @param   mixed    $pks     An optional array of primary key values to update.  If not set
+     *                            the instance property value is used.
      * @param   integer  $state   The publishing state. eg. [0 = unpublished, 1 = published]
      * @param   integer  $userId  The user id of the user performing the operation.
      * @return  boolean  True on success.
@@ -1168,9 +1265,8 @@ abstract class Table extends Obj
         if (empty($pks)) {
             if ($this->$k) {
                 $pks = array($this->$k);
-            }
+            } else {
             // Nothing to set publishing state on, return false.
-            else {
                 $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
                 $this->setError($e);
 
@@ -1200,7 +1296,13 @@ abstract class Table extends Obj
 
         // Check for a database error.
         if (!$this->_db->execute()) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_PUBLISH_FAILED', get_class($this), $this->_db->getErrorMsg()));
+            Exception(
+                Lang::txt(
+                    'JLIB_DATABASE_ERROR_PUBLISH_FAILED',
+                    get_class($this),
+                    $this->_db->getErrorMsg()
+                )
+            );
             $this->setError($e);
 
             return false;
@@ -1346,6 +1448,7 @@ abstract class Table extends Obj
      * @since   2.1.12
      * @throws  Exception
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _lock()
     {
         $this->_db->lockTable($this->_tbl);
@@ -1360,6 +1463,7 @@ abstract class Table extends Obj
      * @return  boolean  True on success.
      * @since   2.1.12
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _unlock()
     {
         $this->_db->unlockTables();

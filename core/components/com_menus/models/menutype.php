@@ -75,8 +75,10 @@ class Menutype extends Obj
                         $this->rlu[MenusHelper::getLinkKey($option->request)] = $option->get('title');
 
                         if (isset($option->request['option'])) {
-                                $lang->load($option->request['option'] . '.sys', PATH_APP, null, false, true)
-                            ||  $lang->load($option->request['option'] . '.sys', Component::path($option->request['option']) . '/admin', null, false, true);
+                            $optComponent = $option->request['option'];
+                            $compPath = Component::path($optComponent) . '/admin';
+                                $lang->load($optComponent . '.sys', PATH_APP, null, false, true)
+                            ||  $lang->load($optComponent . '.sys', $compPath, null, false, true);
                         }
                     }
                 }
@@ -165,7 +167,8 @@ class Menutype extends Obj
                     $o = new Obj();
                     $o->title       = (string) $child['name'];
                     $o->description = (string) $child['msg'];
-                    $o->request     = array('option' => $component, (string) $optionsNode['var'] => (string) $child['value']);
+                    $varKey = (string) $optionsNode['var'];
+                    $o->request     = array('option' => $component, $varKey => (string) $child['value']);
 
                     $options[] = $o;
                 } elseif ($child->getName() == 'default') {
@@ -259,7 +262,8 @@ class Menutype extends Obj
                                     }
                                 }
                             } else {
-                                $options = array_merge($options, (array) $this->getTypeOptionsFromLayouts($component, $view));
+                                $layoutOpts = $this->getTypeOptionsFromLayouts($component, $view);
+                                $options = array_merge($options, (array) $layoutOpts);
                             }
                         }
                         unset($xml);
@@ -318,10 +322,12 @@ class Menutype extends Obj
             if (Filesystem::exists($folder . '/html/' . $component->option . '/' . $view)) {
                 $template = basename($folder);
 
+                $tplLangPath = PATH_CORE . '/templates/' . $template;
                     $lang->load('tpl_' . $template . '.sys', PATH_CORE, null, false, true)
-                ||  $lang->load('tpl_' . $template . '.sys', PATH_CORE . '/templates/' . $template, null, false, true);
+                ||  $lang->load('tpl_' . $template . '.sys', $tplLangPath, null, false, true);
 
-                $templateLayouts = Filesystem::files($folder . '/html/' . $component->option . '/' . $view, '.xml$', false, true);
+                $tplLayoutPath = $folder . '/html/' . $component->option . '/' . $view;
+                $templateLayouts = Filesystem::files($tplLayoutPath, '.xml$', false, true);
 
                 foreach ($templateLayouts as $layout) {
                     $file = trim($layout, '/');
@@ -359,7 +365,9 @@ class Menutype extends Obj
                 // Only add the layout request argument if not the default layout.
                 if ($layout != 'default') {
                     // If the template is set, add in format template:layout so we save the template name
-                    $o->request['layout'] = (isset($templateName[$file])) ? $templateName[$file] . ':' . $layout : $layout;
+                    $o->request['layout'] = isset($templateName[$file])
+                        ? $templateName[$file] . ':' . $layout
+                        : $layout;
                 }
 
                 // Load layout metadata if it exists.

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing triggers for com_hubgraph
+  *
  **/
 class Migration20170627153900ComHubgraph extends Base
 {
@@ -197,8 +199,13 @@ class Migration20170627153900ComHubgraph extends Base
      **/
     public function down()
     {
+        // Need elevated MySQL privileges for CREATE TRIGGER operations
+        // The runAsRoot() method will use muse escalation if available
         if (!$this->runAsRoot()) {
-            $this->setError('Failed to run with the necessary privileges.', 'warning');
+            $this->setError(
+                'Failed to run with the necessary privileges. Try running with: sudo muse migration run',
+                'warning'
+            );
             return false;
         }
 

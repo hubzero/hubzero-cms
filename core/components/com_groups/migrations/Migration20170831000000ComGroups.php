@@ -13,7 +13,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding component entry for com_groups
- **/
+ *
+ */
 class Migration20170831000000ComGroups extends Base
 {
     /**

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -24,8 +24,15 @@ $this->css()
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
-    <div id="container1" class="<?php echo $this->option; ?>-chart chart" data-datasets="<?php echo $this->option; ?>-data"></div>
+<?php
+$formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
+    <div
+        id="container1"
+        class="<?php echo $this->option; ?>-chart chart"
+        data-datasets="<?php echo $this->option; ?>-data"
+    ></div>
     <script type="application/json" id="<?php echo $this->option; ?>-data">
         <?php
         $c = '';

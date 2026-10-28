@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indexes and 'billable' column to #__time tables
- **/
+ *
+ */
 class Migration20170220190109ComTime extends Base
 {
     /**
@@ -22,7 +24,10 @@ class Migration20170220190109ComTime extends Base
     public function up()
     {
         if ($this->db->tableExists('#__time_tasks')) {
-            if ($this->db->tableHasField('#__time_tasks', 'hub_id') && !$this->db->tableHasKey('#__time_tasks', 'idx_hub_id')) {
+            if (
+                $this->db->tableHasField('#__time_tasks', 'hub_id')
+                && !$this->db->tableHasKey('#__time_tasks', 'idx_hub_id')
+            ) {
                 $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_hub_id` (`hub_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -41,7 +46,8 @@ class Migration20170220190109ComTime extends Base
             }
 
             if ($this->db->tableHasField('#__time_tasks', 'assignee_id')) {
-                $query = "ALTER TABLE `#__time_tasks` CHANGE `assignee_id` `assignee_id` INT(11)  NOT NULL  DEFAULT '0';";
+                $query = "ALTER TABLE `#__time_tasks` CHANGE `assignee_id` `assignee_id` INT(11)  NOT NULL "
+                    . "DEFAULT '0';";
                 $this->db->setQuery($query);
                 $this->db->query();
 
@@ -70,7 +76,10 @@ class Migration20170220190109ComTime extends Base
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__time_tasks', 'billable') && !$this->db->tableHasKey('#__time_tasks', 'idx_billable')) {
+            if (
+                $this->db->tableHasField('#__time_tasks', 'billable')
+                && !$this->db->tableHasKey('#__time_tasks', 'idx_billable')
+            ) {
                 $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_billable` (`billable`)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -78,13 +87,19 @@ class Migration20170220190109ComTime extends Base
         }
 
         if ($this->db->tableExists('#__time_records')) {
-            if ($this->db->tableHasField('#__time_records', 'task_id') && !$this->db->tableHasKey('#__time_records', 'idx_task_id')) {
+            if (
+                $this->db->tableHasField('#__time_records', 'task_id')
+                && !$this->db->tableHasKey('#__time_records', 'idx_task_id')
+            ) {
                 $query = "ALTER TABLE `#__time_records` ADD INDEX `idx_task_id` (`task_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__time_records', 'user_id') && !$this->db->tableHasKey('#__time_records', 'idx_user_id')) {
+            if (
+                $this->db->tableHasField('#__time_records', 'user_id')
+                && !$this->db->tableHasKey('#__time_records', 'idx_user_id')
+            ) {
                 $query = "ALTER TABLE `#__time_records` ADD INDEX `idx_user_id` (`user_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -92,7 +107,10 @@ class Migration20170220190109ComTime extends Base
         }
 
         if ($this->db->tableExists('#__time_hubs')) {
-            if ($this->db->tableHasField('#__time_hubs', 'active') && !$this->db->tableHasKey('#__time_hubs', 'idx_active')) {
+            if (
+                $this->db->tableHasField('#__time_hubs', 'active')
+                && !$this->db->tableHasKey('#__time_hubs', 'idx_active')
+            ) {
                 $query = "ALTER TABLE `#__time_hubs` ADD INDEX `idx_active` (`active`)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -100,7 +118,10 @@ class Migration20170220190109ComTime extends Base
         }
 
         if ($this->db->tableExists('#__time_hub_contacts')) {
-            if ($this->db->tableHasField('#__time_hub_contacts', 'hub_id') && !$this->db->tableHasKey('#__time_hub_contacts', 'idx_hub_id')) {
+            if (
+                $this->db->tableHasField('#__time_hub_contacts', 'hub_id')
+                && !$this->db->tableHasKey('#__time_hub_contacts', 'idx_hub_id')
+            ) {
                 $query = "ALTER TABLE `#__time_hub_contacts` ADD INDEX `idx_hub_id` (`hub_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();

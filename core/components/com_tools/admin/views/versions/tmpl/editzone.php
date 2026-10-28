@@ -25,7 +25,8 @@ $zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
@@ -40,7 +41,8 @@ $zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
             <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
             <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->id); ?>" />
-            <input type="hidden" name="fields[tool_version_id]" value="<?php echo $this->escape($this->row->tool_version_id); ?>" />
+            <input type="hidden" name="fields[tool_version_id]"
+                value="<?php echo $this->escape($this->row->tool_version_id); ?>" />
             <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>">
             <input type="hidden" name="task" value="saveZone" />
@@ -48,11 +50,13 @@ $zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
             <table class="admintable">
                 <tbody>
                     <tr>
-                        <th class="key"><label for="field-zone-id"><?php echo Lang::txt('COM_TOOLS_FIELD_ZONE'); ?>:</label></th>
+                        <th class="key">
+                            <label for="field-zone-id"><?php echo Lang::txt('COM_TOOLS_FIELD_ZONE'); ?>:</label></th>
                         <td>
                             <select name="fields[zone_id]" id="field-zone-id">
                                 <?php foreach ($zones as $zone) : ?>
-                                    <option value="<?php echo $zone->id; ?>" <?php echo ($zone->id == $this->row->zone_id) ? 'selected="selected"' : '';?>>
+                                    <?php $sel = ($zone->id == $this->row->zone_id) ? 'selected="selected"' : ''; ?>
+                                    <option value="<?php echo $zone->id; ?>" <?php echo $sel; ?>>
                                         <?php echo $zone->title; ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -60,12 +64,22 @@ $zones = with(new \Components\Tools\Tables\Zones($mwdb))->find('all');
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><label for="field-publish-up"><?php echo Lang::txt('COM_TOOLS_FIELD_PUBLISH_UP'); ?>:</label></th>
-                        <td><input class="datetime" type="text" name="fields[publish_up]" id="field-publish-up" value="<?php echo $this->escape(stripslashes($this->row->publish_up)); ?>" /></td>
+                        <th class="key">
+                            <label for="field-publish-up">
+                                <?php echo Lang::txt('COM_TOOLS_FIELD_PUBLISH_UP'); ?>:</label></th>
+                        <td>
+                            <?php $pubUpVal = $this->escape(stripslashes($this->row->publish_up)); ?>
+                            <input class="datetime" type="text" name="fields[publish_up]" id="field-publish-up"
+                                value="<?php echo $pubUpVal; ?>" /></td>
                     </tr>
                     <tr>
-                        <th class="key"><label for="field-publish-down"><?php echo Lang::txt('COM_TOOLS_FIELD_PUBLISH_DOWN'); ?>:</label></th>
-                        <td><input class="datetime" type="text" name="fields[publish_down]" id="field-publish-down" value="<?php echo $this->escape(stripslashes($this->row->publish_down)); ?>" /></td>
+                        <th class="key">
+                            <label for="field-publish-down">
+                                <?php echo Lang::txt('COM_TOOLS_FIELD_PUBLISH_DOWN'); ?>:</label></th>
+                        <td>
+                            <?php $pubDownVal = $this->escape(stripslashes($this->row->publish_down)); ?>
+                            <input class="datetime" type="text" name="fields[publish_down]" id="field-publish-down"
+                                value="<?php echo $pubDownVal; ?>" /></td>
                     </tr>
                 </tbody>
             </table>

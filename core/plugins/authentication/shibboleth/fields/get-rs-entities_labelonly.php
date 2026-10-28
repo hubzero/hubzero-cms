@@ -44,7 +44,8 @@ foreach (
 	base:Extensions/
 		mdattr:EntityAttributes/
 			saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/
-				saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or text()="http://refeds.org/category/research-and-scholarship"]
+				saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or 
+ text()="http://refeds.org/category/research-and-scholarship"]
 	]') as $entity
 ) {
     // easier to work with as an array, the SimpleXMLElement class is bizarre

@@ -14,6 +14,9 @@ use App;
 
 require_once __DIR__ . DS . 'document' . DS . 'renderer.php';
 
+/**
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+ */
 class Document extends Obj
 {
     /**
@@ -119,7 +122,7 @@ class Document extends Obj
         // loop through all includes and render
         foreach ($this->_tags as $tag => $props) {
             $replace[] = $tag;
-            $with[]    = $this->_getBuffer($tag, $props['type'], $props['name'], $props['params']);
+            $with[]    = $this->getBuffer($tag, $props['type'], $props['name'], $props['params']);
         }
 
         // replace group includes
@@ -152,7 +155,7 @@ class Document extends Obj
      *
      * @return  string
      */
-    private function _getBuffer($tag, $type = null, $name = null, $params = array())
+    private function getBuffer($tag, $type = null, $name = null, $params = array())
     {
         // make sure we have type
         // make sure this type is in allowed tags
@@ -161,7 +164,8 @@ class Document extends Obj
         }
 
         // class name for renderer
-        $renderClass = '\\Components\\Groups\\Helpers\\Document\\Renderer\\' . ucfirst($type);
+        $renderClass = '\\Components\\Groups\\Helpers\\Document\\Renderer\\'
+            . ucfirst($type);
 
         // build path to renderer
         $path = __DIR__ . DS . 'document' . DS . 'renderer' . DS . $type . '.php';

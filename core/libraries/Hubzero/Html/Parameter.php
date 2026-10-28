@@ -22,6 +22,7 @@ class Parameter extends Registry
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_raw = null;
 
     /**
@@ -29,6 +30,7 @@ class Parameter extends Registry
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_xml = null;
 
     /**
@@ -36,6 +38,7 @@ class Parameter extends Registry
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_elements = array();
 
     /**
@@ -43,6 +46,7 @@ class Parameter extends Registry
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_elementPath = array();
 
     /**
@@ -52,6 +56,7 @@ class Parameter extends Registry
      * @param   string  $path  Path to the XML setup file.
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($data = '', $path = '')
     {
         parent::__construct('_default');
@@ -139,7 +144,9 @@ class Parameter extends Registry
         }
 
         if (count($params) < 1) {
-            $html[] = '<p class="noparams">' . \App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM') . '</p>';
+            $html[] = '<p class="noparams">' .
+                \App::get('language')->txt('JLIB_HTML_NO_PARAMETERS_FOR_THIS_ITEM') .
+                '</p>';
         }
 
         return implode(PHP_EOL, $html);
@@ -227,7 +234,8 @@ class Parameter extends Registry
      * Render a parameter type.
      *
      * @param   object  &$node         A parameter XML element.
-     * @param   string  $control_name  An optional name of the HTML form control. The default is 'params' if not supplied.
+     * @param   string  $control_name  An optional name of the HTML form control. The default is
+     *                                 'params' if not supplied.
      * @param   string  $group         An optional group to render.  The default group is used if not supplied.
      * @return  array   Any array of the label, the form element and the tooltip.
      */
@@ -287,7 +295,8 @@ class Parameter extends Registry
      * Loads an element type.
      *
      * @param   string   $type  The element type.
-     * @param   boolean  $new   False (default) to reuse parameter elements; true to load the parameter element type again.
+     * @param   boolean  $new   False (default) to reuse parameter elements; true to load the
+     *                          parameter element type again.
      * @return  object
      */
     public function loadElement($type, $new = false)
@@ -297,8 +306,11 @@ class Parameter extends Registry
         }
 
         $signature = md5($type);
-
-        if ((isset($this->_elements[$signature]) && !($this->_elements[$signature] instanceof __PHP_Incomplete_Class)) && $new === false) {
+        if (
+            (isset($this->_elements[$signature]) &&
+            !($this->_elements[$signature] instanceof __PHP_Incomplete_Class)) &&
+            $new === false
+        ) {
             return $this->_elements[$signature];
         }
 
@@ -310,8 +322,12 @@ class Parameter extends Registry
             } else {
                 $dirs = array();
             }
-
-            preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', str_replace('_', DS, $type) . '.php', $matches);
+            preg_match('/^[A-Za-z0-9_-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/', str_replace(
+                '_',
+                DS,
+                $type
+            ) .
+                '.php', $matches);
             $file = @ (string) $matches[0];
 
             if ($elementFile = \App::get('filesystem')->find($dirs, $file)) {

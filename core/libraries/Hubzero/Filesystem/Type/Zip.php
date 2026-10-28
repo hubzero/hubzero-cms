@@ -32,7 +32,8 @@ class Zip extends Expandable
 
         // Open the temp archive (we use the absolute path because we're on the local filesystem)
         if ($zip->open($temp->getAbsolutePath()) === true) {
-            // We don't actually have to extract the archive, we can just read out of it and copy over to the original location
+            // We don't actually have to extract the archive, we can just read out of it and copy over to the original
+            // location
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
 

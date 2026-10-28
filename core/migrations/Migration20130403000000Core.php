@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for tracking when linked accounts are created
+  *
  **/
 class Migration20130403000000Core extends Base
 {
@@ -21,7 +23,8 @@ class Migration20130403000000Core extends Base
         $query = '';
 
         if (!$this->db->tableHasField('#__auth_link', 'linked_on')) {
-            $query .= "ALTER TABLE `#__auth_link` ADD COLUMN `linked_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;";
+            $query .= "ALTER TABLE `#__auth_link` ADD COLUMN `linked_on` timestamp "
+                . "NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;";
         }
 
         if (!empty($query)) {

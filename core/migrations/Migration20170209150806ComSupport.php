@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing #__support_tickets group (cn) field to group ID
- **/
+ *
+ */
 class Migration20170209150806ComSupport extends Base
 {
     /**
@@ -39,7 +40,9 @@ class Migration20170209150806ComSupport extends Base
                         $gidNumber = $gid;
                     }
 
-                    $query = "UPDATE `#__support_tickets` SET `group`=" . $this->db->quote($gidNumber) . " WHERE `id`=" . $this->db->quote($result->id);
+                    $query = "UPDATE `#__support_tickets` SET `group`="
+                        . $this->db->quote($gidNumber)
+                        . " WHERE `id`=" . $this->db->quote($result->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -59,7 +62,8 @@ class Migration20170209150806ComSupport extends Base
             }
 
             // Change the column type
-            $query = "ALTER TABLE `#__support_tickets` CHANGE COLUMN `group` `group_id` int(11) NOT NULL DEFAULT '0'";
+            $query = "ALTER TABLE `#__support_tickets` "
+                . "CHANGE COLUMN `group` `group_id` int(11) NOT NULL DEFAULT '0'";
             $this->db->setQuery($query);
             $this->db->query();
 

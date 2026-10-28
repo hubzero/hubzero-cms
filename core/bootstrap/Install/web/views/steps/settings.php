@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
 $sitenameVal = htmlspecialchars($config['sitename'] ?? 'My Hub');
 $mailfromVal = htmlspecialchars($config['mailfrom'] ?? '');
 $timezoneVal = $config['timezone'] ?? 'UTC';

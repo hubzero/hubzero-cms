@@ -19,17 +19,17 @@ final class Version
     /**
      * HUBzero CMS version identification - see compareVersion()
      */
-    const VERSION = '2.1.0';
+    public const VERSION = '2.1.0';
 
     /**
      * Github Service Identifier for version information is retreived from
      */
-    const VERSION_SERVICE_GITHUB = 'GITHUB';
+    public const VERSION_SERVICE_GITHUB = 'GITHUB';
 
     /**
      * HUBzero (hubzero.org) Service Identifier for version information is retreived from
      */
-    const VERSION_SERVICE_HUBZERO = 'HUBZERO';
+    public const VERSION_SERVICE_HUBZERO = 'HUBZERO';
 
     /**
      * The latest stable version HUBzero CMS available

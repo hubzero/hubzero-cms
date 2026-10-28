@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for altering #__user_profiles to allow for multi-value fields
+  *
  **/
 class Migration20160511142701ComMembers extends Base
 {
@@ -23,7 +25,8 @@ class Migration20160511142701ComMembers extends Base
     {
         if ($this->db->tableExists('#__user_profiles')) {
             if (!$this->db->tableHasField('#__user_profiles', 'id')) {
-                $query = "ALTER TABLE `#__user_profiles` ADD COLUMN `id` INT(11) UNSIGNED  PRIMARY KEY  NOT NULL  AUTO_INCREMENT  FIRST;";
+                $query = "ALTER TABLE `#__user_profiles` ADD COLUMN `id` INT(11) UNSIGNED  PRIMARY KEY  NOT NULL "
+                    . "AUTO_INCREMENT  FIRST;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -61,7 +64,8 @@ class Migration20160511142701ComMembers extends Base
             }
 
             if (!$this->db->tableHasKey('#__user_profiles', 'idx_user_id_profile_key')) {
-                $query = "ALTER TABLE `#__user_profiles` ADD UNIQUE INDEX `idx_user_id_profile_key` (`user_id`,`profile_key`)";
+                $query = "ALTER TABLE `#__user_profiles` ADD UNIQUE INDEX `idx_user_id_profile_key` "
+                    . "(`user_id`,`profile_key`)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

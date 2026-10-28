@@ -104,14 +104,14 @@ class Router extends Base
                     }
                     return $vars;
                 }
-            } else if ($segments[0] == 'upload') {
+            } elseif ($segments[0] == 'upload') {
                 $vars['controller'] = 'media';
                 $vars['task'] = $segments[0];
                 if (isset($segments[1])) {
                     $vars['course'] = $segments[1];
                 }
                 return $vars;
-            } else if ($segments[0] == 'certificate') {
+            } elseif ($segments[0] == 'certificate') {
                 $vars['controller'] = $segments[0];
                 if (isset($segments[1])) {
                     $vars['course'] = $segments[1];
@@ -230,7 +230,7 @@ class Router extends Base
                 if (isset($segments[4])) {
                     $vars['file'] = $segments[4];
                 }
-            } else if ($vars['controller'] == 'course' && isset($vars['active'])) {
+            } elseif ($vars['controller'] == 'course' && isset($vars['active'])) {
                 $vars['task'] = 'download';
                 $vars['file'] = $segments[2];
             } else {

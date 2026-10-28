@@ -21,14 +21,14 @@ class Importer
     /**
      * Import reader
      *
-     * @var  object
+     * @public object
      */
     private $adapter;
 
     /**
      * Array of Import Adapters
      *
-     * @var  array
+     * @public array
      */
     private $adapters;
 
@@ -49,7 +49,7 @@ class Importer
      * @param   $key  Instance Key
      * @return  void
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 

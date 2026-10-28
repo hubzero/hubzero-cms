@@ -28,6 +28,7 @@ class Tool extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'tool';
 
     /**
@@ -35,6 +36,7 @@ class Tool extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_connector  = array('object_name', 'object_instance');
 
     /**
@@ -63,10 +65,22 @@ class Tool extends Base
         $base = $pubconfig->get('webpath');
 
         // Log path
-        $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, 'logs', 0);
+        $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath(
+            $pub->id,
+            $pub->version_id,
+            $base,
+            'logs',
+            0
+        );
 
         // Get publication path
-        $configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, $base, '', 1);
+        $configs->pubBase = \Components\Publications\Helpers\Html::buildPubPath(
+            $pub->id,
+            $pub->version_id,
+            $base,
+            '',
+            1
+        );
 
         // Get default title
         $title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;
@@ -98,7 +112,9 @@ class Tool extends Base
 
         $html = '';
 
-        $url =  Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId);
+        $serveLink = 'index.php?option=com_publications&task=serve&id=' . $pub->id;
+        $serveLink .= '&v=' . $pub->version_number . '&el=' . $elementId;
+        $url = Route::url($serveLink);
         $url = preg_replace('/\/administrator/', '', $url);
 
         if ($attachments) {
@@ -111,7 +127,8 @@ class Tool extends Base
 
                 $html .= '<li>';
                 $html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-                $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="noopener" target="_blank" class="data-type">' . $title . '</a>';
+                $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" ';
+                $html .= 'rel="noopener" target="_blank" class="data-type">' . $title . '</a>';
                 $html .= '</li>';
             }
         }
@@ -175,7 +192,9 @@ class Tool extends Base
         // Which role?
         $role = $element->params->role;
 
-        $url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
+        $serveLink = 'index.php?option=com_publications&task=serve&id=' . $pub->id;
+        $serveLink .= '&v=' . $pub->version_number;
+        $url = Route::url($serveLink) . '?el=' . $elementId;
 
         // Primary button
         if ($role == 1) {
@@ -189,7 +208,16 @@ class Tool extends Base
             $class = 'btn btn-primary active icon-next';
             $class .= $disabled ? ' link_disabled' : '';
             $title = $configs->title ? $configs->title : Lang::txt('COM_PUBLICATIONS_LAUNCH_TOOL');
-            $html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
+            $html = \Components\Publications\Helpers\Html::primaryButton(
+                $class,
+                $url,
+                $label,
+                null,
+                $title,
+                'rel="external"',
+                $disabled,
+                $pop
+            );
         } elseif ($role == 2 && $attachments) {
             $html .= '<ul>';
             $html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);

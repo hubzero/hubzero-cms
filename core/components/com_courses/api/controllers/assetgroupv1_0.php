@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -403,15 +404,29 @@ class Assetgroupv1_0 extends base
         $this->send($object);
     }
 
-    // This is a recursive function, needed to happen because levels can vary with depth and location of nodes, it's a tree.
-    public function convertToTree($flat, $idField = 'id', $parentIdField = 'parent', $childNodesField = 'child', $curIdx = 0)
-    {
+    /**
+     * This is a recursive function, needed to happen because levels can vary
+     * with depth and location of nodes, it's a tree.
+     */
+    public function convertToTree(
+        $flat,
+        $idField = 'id',
+        $parentIdField = 'parent',
+        $childNodesField = 'child',
+        $curIdx = 0
+    ) {
         $indexed = array();
 
         foreach ($flat as $row) {
             if ($row[$parentIdField] == $curIdx) {
                 $indexed[$row[$idField]] = $row;
-                $indexed[$row[$idField]]["child"] = $this->convertToTree($flat, $idField, $parentIdField, $childNodesField, $row[$idField]);
+                $indexed[$row[$idField]]["child"] = $this->convertToTree(
+                    $flat,
+                    $idField,
+                    $parentIdField,
+                    $childNodesField,
+                    $row[$idField]
+                );
             }
         }
 

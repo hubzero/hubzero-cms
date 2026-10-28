@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,21 +23,25 @@ class Migration20150623105812Mod extends Base
     public function up()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_adminmenu') . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_menu');
+            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_adminmenu')
+                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_menu');
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_adminlogin') . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_login');
+            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_adminlogin')
+                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_login');
             $this->db->setQuery($query);
             $this->db->query();
         }
 
         if ($this->db->tableExists('#__modules')) {
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_adminmenu') . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_menu');
+            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_adminmenu')
+                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_menu');
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_adminlogin') . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_login');
+            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_adminlogin')
+                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_login');
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -50,21 +55,25 @@ class Migration20150623105812Mod extends Base
     public function down()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_menu') . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_adminmenu');
+            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_menu')
+                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_adminmenu');
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_login') . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_adminlogin');
+            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_login')
+                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_adminlogin');
             $this->db->setQuery($query);
             $this->db->query();
         }
 
         if ($this->db->tableExists('#__modules')) {
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_menu') . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_adminmenu');
+            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_menu')
+                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_adminmenu');
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_login') . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_adminlogin');
+            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_login')
+                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_adminlogin');
             $this->db->setQuery($query);
             $this->db->query();
         }

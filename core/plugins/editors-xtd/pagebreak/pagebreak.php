@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Editor Pagebreak buton
+ *
  */
 class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
 {
@@ -38,7 +40,8 @@ class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
     {
         $template = App::get('template')->template;
 
-        $link = 'index.php?option=com_content&amp;view=article&amp;layout=pagebreak&amp;tmpl=component&amp;e_name=' . $name;
+        $link = 'index.php?option=com_content&amp;view=article&amp;layout=pagebreak&amp;tmpl=component&amp;e_name='
+            . $name;
 
         Html::behavior('modal');
 

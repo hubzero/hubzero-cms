@@ -6,21 +6,36 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Utility\Date;
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
 include_once Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
- * Courses Plugin class for store
+ * Courses Plugin class for course store
  */
-class plgCoursesStore extends \Hubzero\Plugin\Plugin
+class PlgCoursesStore extends Plugin
 {
+    /**
+     * Constructor
+     *
+     * @param   object  &$subject  The object to observe
+     * @param   array   $config    An optional associative array of configuration settings
+     */
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
+    }
+
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var    boolean
+     * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -31,7 +46,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
     public function onOfferingEdit()
     {
         $area = array(
-            'name'  => $this->_name,
+            'name' => $this->_name,
             'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name))
         );
         return $area;
@@ -70,13 +85,13 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
      *
      * @param   object   $course    Current resource
      * @param   object   $offering
-     * @param   unknown  $section
-     * @return  array
+     * @param   object   $section
+     * @return  string|null
      */
     public function onCourseEnrollLink($course, $offering, $section)
     {
         if (!$course->exists() || !$offering->exists()) {
-            return;
+            return null;
         }
 
         $product = null;
@@ -117,10 +132,10 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
         if ($params->get('store_product', 0)) {
             $course = \Components\Courses\Models\Course::getInstance($model->get('course_id'));
 
-            $title       = $course->get('title') . ' (' . $model->get('title') . ')';
+            $title = $course->get('title') . ' (' . $model->get('title') . ')';
             $description = $course->get('blurb');
-            $price       = $params->get('store_price', '30.00');
-            $duration    = $params->get('store_membership_duration', '1 YEAR');
+            $price = $params->get('store_price', '30.00');
+            $duration = $params->get('store_membership_duration', '1 YEAR');
 
             if (!$params->get('store_product_id', 0)) {
                 include_once Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
@@ -135,7 +150,8 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
                 } else {
                     $product->setActiveStatus(1);
                 }
-                // Membership model: membership duration period (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...)
+                // Membership model: membership duration period
+                // (must me in MySQL date format: 1 DAY, 2 MONTH, 3 YEAR...)
                 $product->setTimeToLive($duration);
                 // Course alias id
                 $product->setCourseId($course->get('alias'));
@@ -273,7 +289,8 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 
                 // Product the coupon will be applied to:
                 // first parameter: product ID
-                // second parameter [optional, unlimited by default]: max quantity of products coupon will be applied to (if buying multiple)
+                // second parameter [optional, unlimited by default]: max quantity of products coupon
+                // will be applied to (if buying multiple)
                 //$section = new CorusesModelSection($model->get('section_id'));
 
                 include_once Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';

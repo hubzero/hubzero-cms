@@ -20,6 +20,8 @@ require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'page.version.php'
 
 /**
  * Group page version model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Version extends Model
 {
@@ -61,7 +63,7 @@ class Version extends Model
         // Load object
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }
@@ -224,13 +226,15 @@ class Version extends Model
         $group = \Hubzero\User\Group::getInstance($page->get('gidNumber'));
 
         $url = 'index.php?option=com_groups&cn=' . $group->get('cn');
+        $pageId = $page->get('id');
+        $version = $this->get('version');
         switch ($to) {
             case 'restore':
-                $url .= '&controller=pages&task=restore&pageid=' . $page->get('id') . '&version=' . $this->get('version');
+                $url .= '&controller=pages&task=restore&pageid=' . $pageId . '&version=' . $version;
                 break;
             case 'raw':
             default:
-                $url .= '&controller=pages&task=raw&pageid=' . $page->get('id') . '&version=' . $this->get('version');
+                $url .= '&controller=pages&task=raw&pageid=' . $pageId . '&version=' . $version;
         }
 
         return \Route::url($url);

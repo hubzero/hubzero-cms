@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Models;
 
 use Components\Members\Models\Import\Record;
@@ -27,14 +28,14 @@ class Import extends Base
      *
      * @var  object
      */
-    private $_fields = null;
+    private $fields = null;
 
     /**
      * Mapping key
      *
      * @var  array
      */
-    private $_fieldMap = array(
+    private $fieldMap = array(
         'surname' => array(
             'lname',
             'lastname',
@@ -382,7 +383,7 @@ class Import extends Base
 
                 $record->$field = $val;
             }
-        } else if (is_object($raw)) {
+        } elseif (is_object($raw)) {
             foreach (get_object_vars($raw) as $key => $val) {
                 $val = trim($val);
                 $val = Sanitize::cleanMsChar($val);
@@ -411,17 +412,17 @@ class Import extends Base
      */
     public function fields($name = null)
     {
-        if (!$this->_fields) {
-            $this->_fields = array();
+        if (!$this->fields) {
+            $this->fields = array();
 
             if ($fields = $this->get('fields')) {
-                $this->_fields = json_decode($fields, true);
+                $this->fields = json_decode($fields, true);
             }
 
             if ($this->get('file')) {
                 $headers = with(new Importer())->headers($this);
 
-                $this->_fields = $this->autoDetectFields($headers);
+                $this->fields = $this->autoDetectFields($headers);
             }
         }
 
@@ -429,11 +430,11 @@ class Import extends Base
             $name  = $this->normalize($name);
             $field = $name;
 
-            if (isset($this->_fields[$name])) {
-                $field = $this->_fields[$name]['field'];
+            if (isset($this->fields[$name])) {
+                $field = $this->fields[$name]['field'];
             }
 
-            foreach ($this->_fieldMap as $column => $aliases) {
+            foreach ($this->fieldMap as $column => $aliases) {
                 if (in_array($name, $aliases)) {
                     $field = $column;
                     break;
@@ -443,7 +444,7 @@ class Import extends Base
             return $field;
         }
 
-        return $this->_fields;
+        return $this->fields;
     }
 
     /**
@@ -504,11 +505,11 @@ class Import extends Base
                 ->rows();
 
             foreach ($fields as $field) {
-                if (isset($this->_fieldMap[$field->get('name')])) {
+                if (isset($this->fieldMap[$field->get('name')])) {
                     continue;
                 }
 
-                $this->_fieldMap[$field->get('name')] = array(
+                $this->fieldMap[$field->get('name')] = array(
                     $field->get('name'),
                     strtolower($field->get('name')),
                     preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name'))
@@ -516,6 +517,6 @@ class Import extends Base
             }
         }
 
-        return $this->_fieldMap;
+        return $this->fieldMap;
     }
 }

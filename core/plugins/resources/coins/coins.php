@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Resources Plugin class for adding COinS metadata to the document
@@ -147,7 +145,9 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
             $tconfig = Component::params('com_tools');
 
             if ($model->doi && ($model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
-                $doi = 'https://doi.org/' . ($model->doi_shoulder ? $model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($model->doi);
+                $doi = 'https://doi.org/' . ($model
+                    ->doi_shoulder ? $model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/'
+                    . strtoupper($model->doi);
             }
         }
 

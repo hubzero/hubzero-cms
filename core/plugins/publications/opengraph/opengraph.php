@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for adding Open Graph metadata to the document
@@ -39,7 +37,9 @@ class plgPublicationsOpengraph extends \Hubzero\Plugin\Plugin
 
         Document::addCustomTag('<meta property="og:title" content="' . $view->escape($publication->title) . '" />');
 
-        Document::addCustomTag('<meta property="og:description" content="' . $view->escape($publication->abstract) . '" />');
+        Document::addCustomTag('<meta property="og:description" content="' .
+                    $view->escape($publication->abstract) .
+                    '" />');
 
         Document::addCustomTag('<meta property="og:type" content="article" />');
 

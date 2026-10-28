@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +16,8 @@ if (count($this->activities) > 0) { ?>
         <?php
         // get all sessions
         $online = array();
-        $sessions = Hubzero\Session\Helper::getAllSessions(array(
-            'guest'    => 0,
+        $sessions = \Hubzero\Session\Helper::getAllSessions(array(
+            'guest' => 0,
             'distinct' => 1
         ));
         if ($sessions) {
@@ -48,7 +50,10 @@ if (count($this->activities) > 0) { ?>
 
     if ($this->total > $start) {
         ?>
-        <p><a href="<?php echo Route::url($this->model->link('feed') . '&limit=' . $limit);  ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a></p>
+        <p><a
+                href="<?php echo Route::url($this->model->link('feed') . '&limit=' . $limit); ?>
+                "><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES');?></a>
+        </p>
         <?php
     } else {
         ?>

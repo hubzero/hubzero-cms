@@ -42,7 +42,18 @@ class Command extends Scaffolding
         }
 
         // Define our install directory or get it from args
-        $dest = PATH_CORE . DS . 'libraries' . DS . 'Hubzero' . DS . 'Console' . DS . 'Command' . DS . ucfirst($name) . '.php';
+        $dest = PATH_CORE .
+            DS .
+            'libraries' .
+            DS .
+            'Hubzero' .
+            DS .
+            'Console' .
+            DS .
+            'Command' .
+            DS .
+            ucfirst($name) .
+            '.php';
 
         // Make command
         $this->addTemplateFile("{$this->getType()}.tmpl", $dest)

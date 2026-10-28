@@ -104,7 +104,7 @@ class Item extends Base
                 } else {
                     $this->_tbl->load($oid);
                 }
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -116,7 +116,7 @@ class Item extends Base
      * @param   mixed   $oid  Integer or string
      * @return  object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -126,9 +126,9 @@ class Item extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid;
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         }
 
@@ -459,7 +459,7 @@ class Item extends Base
         if ($like) {
             // Increase like count
             $this->set('positive', ($this->get('positive') + 1));
-        } else if ($this->get('positive') > 0) { // Make sure we don't go below 0
+        } elseif ($this->get('positive') > 0) { // Make sure we don't go below 0
         // Decrease like count
             $this->set('positive', ($this->get('positive') - 1));
         }
@@ -508,7 +508,7 @@ class Item extends Base
                     if ($a->get('id') && !$a->remove()) {
                         $this->setError($a->getError());
                     }
-                } else if (!$a->store()) {
+                } elseif (!$a->store()) {
                     $this->setError($a->getError());
                 }
             }
@@ -540,9 +540,8 @@ class Item extends Base
                     // Upload new files
                     if (!Filesystem::upload($files['tmp_name'][$i], $path . DS . $files['name'][$i])) {
                         $this->setError(Lang::txt('ERROR_UPLOADING') . ': ' . $files['name'][$i]);
-                    }
-                    // File was uploaded
-                    else {
+                    } else {
+                        // File was uploaded
                         $asset = new Asset();
                         //$asset->set('_file', $file);
                         $asset->set('item_id', $this->get('id'));

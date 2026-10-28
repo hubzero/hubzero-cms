@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -142,9 +143,12 @@ class Members extends GroupMacro
                 ->rows();
 
             foreach ($profiles as $profile) {
-                $content .= '<a href="' . Route::url($profile->link()) . '" class="member" title="Go to ' . stripslashes($profile->get('name')) . '\'s Profile.">';
-                $content .= '<img src="' . $profile->picture() . '" alt="' . stripslashes($profile->get('name')) . '" class="member-border" width="50px" height="50px" />';
-                $content .= '<span class="name">' . stripslashes($profile->get('name')) . '</span>';
+                $profileName = stripslashes($profile->get('name'));
+                $content .= '<a href="' . Route::url($profile->link()) . '" class="member" ' .
+                    'title="Go to ' . $profileName . '\'s Profile.">';
+                $content .= '<img src="' . $profile->picture() . '" alt="' . $profileName . '" ' .
+                    'class="member-border" width="50px" height="50px" />';
+                $content .= '<span class="name">' . $profileName . '</span>';
                 $content .= '<span class="org">' . stripslashes($profile->get('organization', '')) . '</span>';
                 $content .= '</a>';
             }

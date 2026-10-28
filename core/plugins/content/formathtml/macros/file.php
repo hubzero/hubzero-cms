@@ -122,7 +122,7 @@ class File extends Macro
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
             // Check for file existence
-            if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true))) {
+            if ($attach->filename && file_exists($this->path($attach->filename)) || file_exists($this->path($attach->filename, true))) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
                     $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
@@ -134,7 +134,7 @@ class File extends Macro
             }
         }
         // Check for file existence
-        else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) {
+        else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
             include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
 
             // Get resource by ID
@@ -154,7 +154,7 @@ class File extends Macro
             // $attr['desc'] = htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8');
 
             // Return HTML
-            return $this->_embed($file, $attr);
+            return $this->embed($file, $attr);
         } else {
             // Return error message. strip_tags() on the argument drops the angle
             // brackets but not the quotes, and this string is spliced into page
@@ -361,7 +361,7 @@ class File extends Macro
      * @param   boolean  $alt
      * @return  string
      */
-    private function _path($file, $alt = false)
+    private function path($file, $alt = false)
     {
         if (substr($file, 0, 1) == DS) {
             $path = PATH_APP . $file;
@@ -396,7 +396,7 @@ class File extends Macro
      * @param   $file  Filename
      * @return  string
      */
-    private function _link($file)
+    private function link($file)
     {
         $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
@@ -414,7 +414,7 @@ class File extends Macro
         $type = 'File';
         if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
             if (\Request::getString('format') == 'pdf') {
-                return $this->_path($file);
+                return $this->path($file);
             }
             $type = 'Image';
         }
@@ -430,7 +430,7 @@ class File extends Macro
      * @param   array  $attr Attributes to apply to the HTML
      * @return  string
      */
-    private function _embed($file, $attr = array())
+    private function embed($file, $attr = array())
     {
         $ext = strtolower(\Filesystem::extension($file));
 
@@ -444,17 +444,17 @@ class File extends Macro
                 if (isset($attr['style']['height'])) {
                     $attr['height'] = intval($attr['style']['height']);
                 }
-                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
+                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->link($file);
 
                 /*if (!array_key_exists('alt', $attr)
                  && array_key_exists('altimage', $attr)
                  && $attr['altimage'] != ''
-                 && file_exists($this->_path($attr['altimage'])))
+                 && file_exists($this->path($attr['altimage'])))
                 {
                     //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
                     $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
                     $attr['alt']  = '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
-                    $attr['alt'] .= '<img src="' . $this->_link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
+                    $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
                     $attr['alt'] .= '</a>';
                 }
                 else
@@ -488,7 +488,7 @@ class File extends Macro
                 if (isset($attr['style']['height'])) {
                     $attr['height'] = intval($attr['style']['height']);
                 }
-                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->_link($file);
+                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')   ? $attr['href']   : $this->link($file);
 
                 $rand = rand(0, 100000);
 
@@ -496,12 +496,12 @@ class File extends Macro
                     !array_key_exists('alt', $attr)
                     && array_key_exists('altimage', $attr)
                     && $attr['altimage'] != ''
-                    && file_exists($this->_path($attr['altimage']))
+                    && file_exists($this->path($attr['altimage']))
                 ) {
                     //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
                     $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
                     $attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
-                    $attr['alt'] .= '<img src="' . $this->_link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
+                    $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
                     $attr['alt'] .= '</a>';
                 } else {
                     $attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
@@ -544,11 +544,11 @@ class File extends Macro
                         }
                     }
                     $html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
-                    $img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
+                    $img = '<img src="' . $this->link($file) . '" ' . implode(' ', $attribs) . ' />';
                     if ($attr['href'] == 'none') {
                         $html .= $img;
                     } else {
-                        $attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
+                        $attr['href'] = ($attr['href']) ? $attr['href'] : $this->link($file);
                         $attr['rel'] = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
                         $html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
@@ -559,14 +559,14 @@ class File extends Macro
                     $html .= '</span>';
                 } else {
                     $attr['details'] = isset($attr['details']) ? $attr['details'] : true;
-                    $attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->_link($file);
+                    $attr['href'] = (isset($attr['href']) && $attr['href'] != '') ? $attr['href'] : $this->link($file);
                     $attr['rel']  = (isset($attr['rel']))  ? $attr['rel']  : 'internal';
 
                     $size = null;
-                    if (file_exists($this->_path($file))) {
-                        $size = filesize($this->_path($file));
-                    } else if (file_exists($this->_path($file, true))) {
-                        $size = filesize($this->_path($file, true));
+                    if (file_exists($this->path($file))) {
+                        $size = filesize($this->path($file));
+                    } else if (file_exists($this->path($file, true))) {
+                        $size = filesize($this->path($file, true));
                     }
 
                     $attr['title'] = (!isset($attr['title']) || !$attr['title'] ? $attr['alt'] : $attr['title']);

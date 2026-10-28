@@ -102,16 +102,16 @@ class Router extends Base
         if (isset($segments[3])) {
             if ($segments[2] == 'feed.rss') {
                 $vars['task'] = 'feed';
-            } else if ($segments[3] == 'comments.rss') {
+            } elseif ($segments[3] == 'comments.rss') {
                 $vars['task'] = 'comments';
-            } else if (strstr($segments[3], ':')) {
+            } elseif (strstr($segments[3], ':')) {
                 $parts = explode(':', $segments[3]);
                 $namespace = strtolower(trim($parts[0]));
                 if (in_array($namespace, array('image', 'file'))) {
                     $vars['task'] = 'download';
                     $vars['file'] = trim($parts[1]);
                 }
-            } else if ($segments[3] == 'editcomment') {
+            } elseif ($segments[3] == 'editcomment') {
                 $vars['action'] = $segments[3];
             } else {
                 $vars['task'] = $segments[3];

@@ -27,7 +27,7 @@ class Img extends AbstractHelper
      */
     public function __invoke($asset = '', $extension = null, $element = null)
     {
-        $extension = $extension ?: $this->_extension();
+        $extension = $extension ?: $this->extension();
 
         if ($element) {
             $extension = 'plg_' . $extension . '_' . $element;
@@ -43,7 +43,7 @@ class Img extends AbstractHelper
      *
      * @return  string
      */
-    private function _extension()
+    private function extension()
     {
         if ($this->getView() instanceof View) {
             return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for for adding default plg_about and plg_abouttool parameters for tool resource type
- **/
+ *
+ */
 class Migration20150826205631PlgResourcesAbout extends Base
 {
     /**
@@ -45,7 +47,9 @@ class Migration20150826205631PlgResourcesAbout extends Base
                 }
 
                 if ($params != $record->params) {
-                    $this->db->setQuery("UPDATE `#__resource_types` SET params=" . $this->db->quote($params) . " WHERE `id`=" . $this->db->quote($record->id) . ";");
+                    $query = "UPDATE `#__resource_types` SET params=" . $this->db->quote($params) . ""
+                        . "WHERE `id`=" . $this->db->quote($record->id) . ";";
+                    $this->db->setQuery($query);
                     $this->db->query();
                 }
             }

@@ -112,8 +112,13 @@ class Grid
      * @param   string  $trashed       The Text string for Trashed
      * @return  string
      */
-    public static function state($filter_state = '*', $published = 'Published', $unpublished = 'Unpublished', $archived = null, $trashed = null)
-    {
+    public static function state(
+        $filter_state = '*',
+        $published = 'Published',
+        $unpublished = 'Unpublished',
+        $archived = null,
+        $trashed = null
+    ) {
         return Builder\Grid::state($filter_state, $published, $unpublished, $archived, $trashed);
     }
 
@@ -157,8 +162,14 @@ class Grid
      * @param   string   $checkbox  An optional prefix for checkboxes.
      * @return  string   The required HTML.
      */
-    public static function orderUp($i, $task = 'orderup', $prefix = '', $text = 'JLIB_HTML_MOVE_UP', $enabled = true, $checkbox = 'cb')
-    {
+    public static function orderUp(
+        $i,
+        $task = 'orderup',
+        $prefix = '',
+        $text = 'JLIB_HTML_MOVE_UP',
+        $enabled = true,
+        $checkbox = 'cb'
+    ) {
         return Builder\Grid::orderUp($i, $task, $prefix, $text, $enabled, $checkbox);
     }
 
@@ -173,8 +184,14 @@ class Grid
      * @param   string   $checkbox  An optional prefix for checkboxes.
      * @return  string   The required HTML.
      */
-    public static function orderDown($i, $task = 'orderdown', $prefix = '', $text = 'JLIB_HTML_MOVE_DOWN', $enabled = true, $checkbox = 'cb')
-    {
+    public static function orderDown(
+        $i,
+        $task = 'orderdown',
+        $prefix = '',
+        $text = 'JLIB_HTML_MOVE_DOWN',
+        $enabled = true,
+        $checkbox = 'cb'
+    ) {
         return Builder\Grid::orderDown($i, $task, $prefix, $text, $enabled, $checkbox);
     }
 
@@ -210,8 +227,33 @@ class Grid
      * @param   string   $checkbox        An optional prefix for checkboxes.
      * @return  string   The Html code
      */
-    public static function action($i, $task, $prefix = '', $text = '', $active_title = '', $inactive_title = '', $tip = false, $active_class = '', $inactive_class = '', $enabled = true, $translate = true, $checkbox = 'cb')
-    {
-        return Builder\Grid::action($i, $task, $prefix, $text, $active_title, $inactive_title, $tip, $active_class, $inactive_class, $enabled, $translate, $checkbox);
+    public static function action(
+        $i,
+        $task,
+        $prefix = '',
+        $text = '',
+        $active_title = '',
+        $inactive_title = '',
+        $tip = false,
+        $active_class = '',
+        $inactive_class = '',
+        $enabled = true,
+        $translate = true,
+        $checkbox = 'cb'
+    ) {
+        return Builder\Grid::action(
+            $i,
+            $task,
+            $prefix,
+            $text,
+            $active_title,
+            $inactive_title,
+            $tip,
+            $active_class,
+            $inactive_class,
+            $enabled,
+            $translate,
+            $checkbox
+        );
     }
 }

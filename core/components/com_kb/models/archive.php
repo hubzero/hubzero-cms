@@ -21,7 +21,7 @@ class Archive
      * @param   string  $key
      * @return  object
      */
-    static function &getInstance($key = 'site')
+    public static function &getInstance($key = 'site')
     {
         static $instances;
 

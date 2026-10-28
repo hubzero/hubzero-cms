@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -88,7 +89,8 @@ function filter($res, $dd)
                     break;
             }
 
-            $width = (isset($dd['cols'][$key]['width']) && $dd['cols'][$key]['width'] != '') ? $dd['cols'][$key]['width'] : 'auto';
+            $hasWidth = isset($dd['cols'][$key]['width']) && $dd['cols'][$key]['width'] != '';
+            $width = $hasWidth ? $dd['cols'][$key]['width'] : 'auto';
             if (!strstr($width, '%') && $width != 'auto') {
                 $width .= 'px';
             }
@@ -121,28 +123,51 @@ function filter($res, $dd)
                     $desc = $dd['cols'][$key]['units']['desc'];
                 }
 
-                $label .= '<div data-name="' . $name . '" data-desc="' . $desc . '" data-label="' . $units . '" title="' . htmlentities($desc, ENT_QUOTES, 'UTF-8') . '">[' . $units . ']</div>';
+                $descEncoded = htmlentities($desc, ENT_QUOTES, 'UTF-8');
+                $label .= '<div data-name="' . $name . '" data-desc="' . $desc . '" data-label="'
+                    . $units . '" title="' . $descEncoded . '">[' . $units . ']</div>';
             }
 
             $table['col_labels'][] = (isset($dd['cols'][$key]['label'])) ? $dd['cols'][$key]['label'] : $key;
 
             $tool_bar = '';
 
-            if (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'custom_field_link' && !$single_record) {
-                $link_base = '/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $dd['cols'][$key]['custom_field_link']['data'] . '/?custom_field=' . $dd['cols'][$key]['custom_field_link']['field'] . '|';
-                $tool_bar .= '<a style="text-decoration: none; display: none; margin-left: 5px;" class="dv-multi-link" id="dv-' . str_replace('.', '_', $key) . '" data-link-base="' . $link_base . '" title="Load filtered view" target="_blank" href=""><img src="' . $html_path . '/download-m.png' . '" />&nbsp;</a>';
-            } elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'tool' && !$single_record) {
+            $colType = isset($dd['cols'][$key]['type']) ? $dd['cols'][$key]['type'] : '';
+            if ($colType == 'custom_field_link' && !$single_record) {
+                $cfl = $dd['cols'][$key]['custom_field_link'];
+                $link_base = '/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $cfl['data']
+                    . '/?custom_field=' . $cfl['field'] . '|';
+                $keyId = str_replace('.', '_', $key);
+                $imgSrc = $html_path . '/download-m.png';
+                $tool_bar .= '<a style="text-decoration: none; display: none; margin-left: 5px;" '
+                    . 'class="dv-multi-link" id="dv-' . $keyId . '" data-link-base="' . $link_base
+                    . '" title="Load filtered view" target="_blank" href="">'
+                    . '<img src="' . $imgSrc . '" />&nbsp;</a>';
+            } elseif ($colType == 'tool' && !$single_record) {
                 $name = isset($dd['cols'][$key]['name']) ? $dd['cols'][$key]['name'] : 'Tool';
                 $link_format = explode('{p}', $dd['cols'][$key]['link_format']);
                 $param = explode(',', $dd['cols'][$key]['param']);
                 $link_zip = $com_name . '/file/' . $db_id . '/?hash_list=';// . '/?task=zip&hash_list=';
 
-                if (!isset($dd['cols'][$key]['multi_launch']) || $dd['cols'][$key]['multi_launch'] != false) {
-                    $tool_bar .= '<a style="text-decoration: none; margin-left: 2px;" class="dv_tools_launch_multi" title="Launch ' . $name . ' with selected files" target="_blank" href="' . $link_format[0] . '"><img src="' . $html_path . '/run-m.png' . '" />&nbsp;</a>';
+                $noMultiLaunch = !isset($dd['cols'][$key]['multi_launch']);
+                if ($noMultiLaunch || $dd['cols'][$key]['multi_launch'] != false) {
+                    $runImg = $html_path . '/run-m.png';
+                    $tool_bar .= '<a style="text-decoration: none; margin-left: 2px;" '
+                        . 'class="dv_tools_launch_multi" title="Launch ' . $name . ' with selected files" '
+                        . 'target="_blank" href="' . $link_format[0] . '">'
+                        . '<img src="' . $runImg . '" />&nbsp;</a>';
                 }
-                $tool_bar .= '<a style="text-decoration: none;" class="dv_tools_down_multi" title="Download selected files" target="_blank" href="/' . $link_zip . '"><img src="' . $html_path . '/download-m.png' . '" />&nbsp;</a>';
-                $tool_bar .= '<input type="checkbox" class="dv_header_select_all" value="' . str_replace('.', '_', $key) . '" title="Select all" />';
-            } elseif ((isset($dd['cols'][$key]['more_info']) || isset($dd['cols'][$key]['more_info_multi'])) && isset($dd['cols'][$key]['compare']) && !$single_record) {
+                $downImg = $html_path . '/download-m.png';
+                $tool_bar .= '<a style="text-decoration: none;" class="dv_tools_down_multi" '
+                    . 'title="Download selected files" target="_blank" href="/' . $link_zip . '">'
+                    . '<img src="' . $downImg . '" />&nbsp;</a>';
+                $keyId = str_replace('.', '_', $key);
+                $tool_bar .= '<input type="checkbox" class="dv_header_select_all" value="'
+                    . $keyId . '" title="Select all" />';
+            } elseif (
+                (isset($dd['cols'][$key]['more_info']) || isset($dd['cols'][$key]['more_info_multi']))
+                && isset($dd['cols'][$key]['compare']) && !$single_record
+            ) {
                 $mode = isset($dd['cols'][$key]['more_info']) ? 'more_info' : 'more_info_multi';
                 $align = 'left';
                 $mi = explode('|', $dd['cols'][$key][$mode]);
@@ -150,8 +175,12 @@ function filter($res, $dd)
                 $link = "/$com_name/data/$db_id/$mi_dv_id/json/?id=";
 
                 $tool_bar .= '<div style="position: relative;">';
-                $tool_bar .= '<button disabled data-link="' . $link . '" data-col-id="' . $key . '" class="btn btn-mini icon-exchange dv-compare" title="' . $dd['cols'][$key]['compare'] . ': Select one or more items"></button>';
-                $tool_bar .= '<input style="position: absolute; right: 0px;" type="checkbox" class="dv-select-all" data-col-id="' . $key . '" title="Select all" />';
+                $compareTitle = $dd['cols'][$key]['compare'] . ': Select one or more items';
+                $tool_bar .= '<button disabled data-link="' . $link . '" data-col-id="' . $key
+                    . '" class="btn btn-mini icon-exchange dv-compare" title="' . $compareTitle
+                    . '"></button>';
+                $tool_bar .= '<input style="position: absolute; right: 0px;" type="checkbox" '
+                    . 'class="dv-select-all" data-col-id="' . $key . '" title="Select all" />';
                 $tool_bar .= '</div>';
             }
 
@@ -159,8 +188,14 @@ function filter($res, $dd)
                 $align = (isset($dd['cols'][$key]['align'])) ? $dd['cols'][$key]['align'] : 'left';
                 $first_col = false;
             }
-            $label = "<div class=\"dv_label css_left\" data-fieldtype=\"$data_type\" >$label $tool_bar</div>";
-            $table['aoColumns'][] = array('sTitle' => $label . '&nbsp;&nbsp;&nbsp;&nbsp;', 'sClass' => $align, 'sType' => $data_type, 'sWidth' => $width);
+            $label = "<div class=\"dv_label css_left\" data-fieldtype=\"$data_type\" >"
+                . "$label $tool_bar</div>";
+            $table['aoColumns'][] = array(
+                'sTitle' => $label . '&nbsp;&nbsp;&nbsp;&nbsp;',
+                'sClass' => $align,
+                'sType' => $data_type,
+                'sWidth' => $width
+            );
             $table['sColumns'][] = $label;
             $field_types[$key] = $data_type;
         }
@@ -220,7 +255,8 @@ function filter($res, $dd)
                         $title = $dd['cols'][$key]['null_desc'];
                     }
 
-                    $val = '<span title="' . htmlentities($title == null ? '' : $title, ENT_QUOTES, 'UTF-8') . '" class="dv-null-dash">' . $val . '</span>';
+                    $titleAttr = htmlentities($title == null ? '' : $title, ENT_QUOTES, 'UTF-8');
+                    $val = '<span title="' . $titleAttr . '" class="dv-null-dash">' . $val . '</span>';
 
                     $null_val = true;
                 } elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'file') {
@@ -246,13 +282,21 @@ function filter($res, $dd)
                                 }
                             }
 
-                            if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
-                                $small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $l;
-                                $medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $l;
-                                $link_label = '<img class="dv_image lazy-load dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
+                            $isThumb = isset($dd['cols'][$key]['file-display'])
+                                && $dd['cols'][$key]['file-display'] == 'thumb';
+                            if ($isThumb) {
+                                $repoPath = $dd['cols'][$key]['ds-repo-path'];
+                                $small_img = '/dataviewer/file/' . $db_id . '/?f='
+                                    . $repoPath . DS . '__thumb' . DS . $l;
+                                $medium_img = '/dataviewer/file/' . $db_id . '/?f='
+                                    . $repoPath . DS . '__medium' . DS . $l;
+                                $link_label = '<img class="dv_image lazy-load dv_img_preview '
+                                    . $missing . '" src="' . $small_img
+                                    . '" data-preview-img="' . $medium_img . '" />';
                             }
 
-                            $val[] = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
+                            $val[] = '<a title="' . $title . '" target="_blank" class="'
+                                . $missing . '" href="' . $link . '">' . $link_label . '</a>';
                         }
                         $val = implode('&nbsp;', $val);
                     } else {
@@ -271,17 +315,29 @@ function filter($res, $dd)
                             }
                         }
 
-                        if (isset($dd['cols'][$key]['file-display']) && $dd['cols'][$key]['file-display'] == 'thumb') {
-                            $small_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__thumb' . DS . $val;
-                            $medium_img = '/dataviewer/file/' . $db_id . '/?f=' . $dd['cols'][$key]['ds-repo-path'] . DS . '__medium' . DS . $val;
-                            $link_label = '<img class="dv_image lazy-load dv_img_preview ' . $missing . '" src="' . $small_img . '" data-preview-img="' . $medium_img . '" />';
+                        $isThumb = isset($dd['cols'][$key]['file-display'])
+                            && $dd['cols'][$key]['file-display'] == 'thumb';
+                        if ($isThumb) {
+                            $repoPath = $dd['cols'][$key]['ds-repo-path'];
+                            $small_img = '/dataviewer/file/' . $db_id . '/?f='
+                                . $repoPath . DS . '__thumb' . DS . $val;
+                            $medium_img = '/dataviewer/file/' . $db_id . '/?f='
+                                . $repoPath . DS . '__medium' . DS . $val;
+                            $link_label = '<img class="dv_image lazy-load dv_img_preview '
+                                . $missing . '" src="' . $small_img
+                                . '" data-preview-img="' . $medium_img . '" />';
                         }
-                        $val = '<a title="' . $title . '" target="_blank" class="' . $missing . '" href="' . $link . '">' . $link_label . '</a>';
+                        $val = '<a title="' . $title . '" target="_blank" class="'
+                            . $missing . '" href="' . $link . '">' . $link_label . '</a>';
                     }
                 } elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'date') {
                     $val = strtotime($val);
                     $val = date("m/d/Y", $val);
-                } elseif ((isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'image') || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'image')) {
+                } elseif (
+                    (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'image')
+                    || (isset($dd['cols'][$key]['url-display'])
+                    && $dd['cols'][$key]['url-display'] == 'image')
+                ) {
                     $small_img = $val;
                     $medium_img = $val;
 
@@ -349,13 +405,25 @@ function filter($res, $dd)
                         $path = $rec[$dd['cols'][$key]['gallery']];
                         $hash = get_dl_hash($path, 'gallery');
                         $gal_url = "/" . $com_name . '/gallery/' . $hash;
-                        $val = '<a target="_blank" class="dv_gallery_link" href="' . $gal_url . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
+                        $imgTag = '<img class="dv_image lazy-load dv_img_preview" '
+                            . 'src="' . $html_path . '/1x1.png" data-original="' . $small_img
+                            . '" data-preview-img="' . $medium_img . '" />';
+                        $val = '<a target="_blank" class="dv_gallery_link" href="'
+                            . $gal_url . '">' . $imgTag . '</a>';
                     } else {
-                        $val = '<a target="_blank" href="' . $original_img . '"><img class="dv_image lazy-load dv_img_preview" src="' . $html_path . '/1x1.png" data-original="' . $small_img . '" data-preview-img="' . $medium_img . '" /></a>';
+                        $imgTag = '<img class="dv_image lazy-load dv_img_preview" '
+                            . 'src="' . $html_path . '/1x1.png" data-original="' . $small_img
+                            . '" data-preview-img="' . $medium_img . '" />';
+                        $val = '<a target="_blank" href="' . $original_img . '">'
+                            . $imgTag . '</a>';
                     }
                 } elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'email') {
                     $val = '<a href="mailto:' . $val . '">' . $val . '</a>';
-                } elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'link' || (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] != 'image')) {
+                } elseif (
+                    (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'link')
+                    || (isset($dd['cols'][$key]['url-display'])
+                    && $dd['cols'][$key]['url-display'] != 'image')
+                ) {
                     if (isset($dd['cols'][$key]['url-display']) && $dd['cols'][$key]['url-display'] == 'full_link') {
                         $dd['cols'][$key]['full_url'] = true;
                     }
@@ -407,24 +475,31 @@ function filter($res, $dd)
                         $val = implode('<br />', $links);
                     }
                 } elseif (isset($dd['cols'][$key]['type']) && $dd['cols'][$key]['type'] == 'tool') {
-                    $label = isset($dd['cols'][$key]['link_label']) ? $rec[$dd['cols'][$key]['link_label']] : basename($rec[$dd['cols'][$key]['dl']], '.csv');
-                    $name = isset($dd['cols'][$key]['name']) ? $dd['cols'][$key]['name'] : 'Tool';
+                    $colConf = $dd['cols'][$key];
+                    $hasLabel = isset($colConf['link_label']);
+                    $label = $hasLabel
+                        ? $rec[$colConf['link_label']]
+                        : basename($rec[$colConf['dl']], '.csv');
+                    $name = isset($colConf['name']) ? $colConf['name'] : 'Tool';
 
                     $tool_link = '';
                     $dl = '';
                     $check = '';
 
-                    if (isset($dd['cols'][$key]['dl']) && file_exists($rec[$dd['cols'][$key]['dl']])) {
-                        $link_format = explode('{p}', $dd['cols'][$key]['link_format']);
-                        $param = explode(',', $dd['cols'][$key]['param']);
+                    if (isset($colConf['dl']) && file_exists($rec[$colConf['dl']])) {
+                        $link_format = explode('{p}', $colConf['link_format']);
+                        $param = explode(',', $colConf['param']);
                         $tl = '';
                         for ($i = 0; $i < count($param); $i++) {
                             $tl .= $link_format[$i] . $rec[trim($param[$i])];
                         }
-                        $tool_link = '<a class="dv_tools_launch_link" title="Launch ' . $name . '" target="_blank" href="' . $tl . '"><img src="' . $html_path . '/run.png' . '" /></a>';
+                        $runImg = $html_path . '/run.png';
+                        $tool_link = '<a class="dv_tools_launch_link" title="Launch ' . $name
+                            . '" target="_blank" href="' . $tl . '">'
+                            . '<img src="' . $runImg . '" /></a>';
 
-                        if (isset($dd['cols'][$key]['dl'])) {
-                            $path = $rec[$dd['cols'][$key]['dl']];
+                        if (isset($colConf['dl'])) {
+                            $path = $rec[$colConf['dl']];
                             $link = '';
                             if (strpos($path, PATH_ROOT) === 0) {
                                 $link = substr($path, strlen(PATH_ROOT) + 1);
@@ -432,18 +507,29 @@ function filter($res, $dd)
                                 $hash = get_dl_hash($path);
                                 $link = $com_name . '/file/' . $db_id . '/?hash=' . $hash;
                             }
-                            $dl .= '<a title="Download File" data-data-file="' . $path . '" class="dv_tools_dl_link" target="_blank" href="/' . $link . '"><img src="' . $html_path . '/download.png' . '" /></a>';
+                            $downImg = $html_path . '/download.png';
+                            $dl .= '<a title="Download File" data-data-file="' . $path
+                                . '" class="dv_tools_dl_link" target="_blank" href="/' . $link
+                                . '"><img src="' . $downImg . '" /></a>';
                         }
 
-                        if (isset($dd['cols'][$key]['tool_name']) && $rec[$dd['cols'][$key]['tool_name']] == null) {
+                        if (isset($colConf['tool_name']) && $rec[$colConf['tool_name']] == null) {
                             $tool_link = '';
                         }
 
-                        $check = '<input type="checkbox" class="' . str_replace('.', '_', $key) . '" value="' . $path . '" style="float: right;" />';
+                        $keyClass = str_replace('.', '_', $key);
+                        $check = '<input type="checkbox" class="' . $keyClass
+                            . '" value="' . $path . '" style="float: right;" />';
                     } else {
-                        $tool_link = '<span class="hand" title="File is missing or not uploaded yet."><img src="' . $html_path . '/run.png' . '" /></span>';
-                        $dl = '<span class="hand" title="File is missing or not uploaded yet."><img src="' . $html_path . '/download.png' . '" /></span>';
-                        $check = '<input title="File is missing or not uploaded yet." disabled="disabled" type="checkbox" value="" style="float: right;" />';
+                        $missingTitle = 'File is missing or not uploaded yet.';
+                        $runImg = $html_path . '/run.png';
+                        $downImg = $html_path . '/download.png';
+                        $tool_link = '<span class="hand" title="' . $missingTitle . '">'
+                            . '<img src="' . $runImg . '" /></span>';
+                        $dl = '<span class="hand" title="' . $missingTitle . '">'
+                            . '<img src="' . $downImg . '" /></span>';
+                        $check = '<input title="' . $missingTitle . '" disabled="disabled" '
+                            . 'type="checkbox" value="" style="float: right;" />';
                     }
 
                     $val = $label . '&nbsp;&nbsp;&nbsp;' . $tool_link . '&nbsp;&nbsp;' . $dl . '&nbsp;&nbsp;' . $check;
@@ -456,21 +542,28 @@ function filter($res, $dd)
                     $val = "<span data-min='$min' data-max='$max' class='range-data'>$range</span>";
                 }
 
-                if ((isset($dd['cols'][$key]['more_info']) || isset($dd['cols'][$key]['more_info_multi'])) && !$null_val) {
+                $hasMoreInfo = isset($dd['cols'][$key]['more_info'])
+                    || isset($dd['cols'][$key]['more_info_multi']);
+                if ($hasMoreInfo && !$null_val) {
                     $mode = isset($dd['cols'][$key]['more_info']) ? 'more_info' : 'more_info_multi';
                     $mi = explode('|', $dd['cols'][$key][$mode]);
                     $mi_dv_id = $mi[0];
                     $id = (isset($mi[1])) ? $rec[$mi[1]] : '';
 
                     $link = "/$com_name/data/$db_id/$mi_dv_id/json/?id=$id";
+                    $linkTitle = 'Click to view more information about this item';
 
                     if (isset($dd['cols'][$key]['compare']) && !$single_record) {
                         $new_val = '<div style="position: relative;">';
-                        $new_val .= '<a title="Click to view more information about this item" class="' . $mode . '" href="' . $link . '">' . $val . '</a>';
-                        $new_val .= '<input style="position: absolute; top: 0px; right: 0px;" data-col-id="' . $key . '" type="checkbox" class="select-cell" value="' . $rec[$mi[1]] . '" />';
+                        $new_val .= '<a title="' . $linkTitle . '" class="' . $mode
+                            . '" href="' . $link . '">' . $val . '</a>';
+                        $new_val .= '<input style="position: absolute; top: 0px; right: 0px;" '
+                            . 'data-col-id="' . $key . '" type="checkbox" class="select-cell" '
+                            . 'value="' . $rec[$mi[1]] . '" />';
                         $new_val .= '</div>';
                     } else {
-                        $new_val = '<a title="Click to view more information about this item" class="' . $mode . '" href="' . $link . '">' . $val . '</a>';
+                        $new_val = '<a title="' . $linkTitle . '" class="' . $mode
+                            . '" href="' . $link . '">' . $val . '</a>';
                     }
 
                     $val = $new_val;
@@ -494,27 +587,40 @@ function filter($res, $dd)
                     $append_to_url = isset($fv['append_to_url']) ? $fv['append_to_url'] : '';
                     $fv_data = array_key_exists($fv['data'], $rec) ? $rec[$fv['data']] : $fv['data'];
 
-                    $url = '/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data . '/' . $filter . $append_to_url . '#dv_top';
+                    $url = '/' . $com_name . '/' . $fv['task'] . '/' . $fv['db'] . '/' . $fv_data
+                        . '/' . $filter . $append_to_url . '#dv_top';
                     if ($fv_data != null) {
-                        $val = '<a class="filtered_view" href="' . $url . '" title="Pre-filtered view">' . $val . '</a>';
+                        $val = '<a class="filtered_view" href="' . $url
+                            . '" title="Pre-filtered view">' . $val . '</a>';
                     }
-                    $val .= '<a class="filtered_view dv-link" href="' . $url . '" title="Open in a new window" target="_blank"><i class="icon-external-link"></i></a>';
+                    $val .= '<a class="filtered_view dv-link" href="' . $url
+                        . '" title="Open in a new window" target="_blank">'
+                        . '<i class="icon-external-link"></i></a>';
                 }
 
                 if (isset($dd['cols'][$key]['custom_field_link']) && !$null_val) {
-                    $dv = $dd['cols'][$key]['custom_field_link']['data'];
-                    $field = $dd['cols'][$key]['custom_field_link']['field'];
-                    $v =  array_key_exists($dd['cols'][$key]['custom_field_link']['value'], $rec) ? $rec[$dd['cols'][$key]['custom_field_link']['value']] : $dd['cols'][$key]['custom_field_link']['value'];
+                    $cfl = $dd['cols'][$key]['custom_field_link'];
+                    $dv = $cfl['data'];
+                    $field = $cfl['field'];
+                    $cflVal = $cfl['value'];
+                    $v = array_key_exists($cflVal, $rec) ? $rec[$cflVal] : $cflVal;
 
                     $ll = $val;
                     if (isset($dd['cols'][$key]['link_label'])) {
                         $ll = array_key_exists($ll, $rec) ? $rec[$ll] : $ll;
                     }
 
-                    $append_to_url = isset($dd['cols'][$key]['custom_field_link']['append_to_url']) ? $dd['cols'][$key]['custom_field_link']['append_to_url'] : '';
+                    $append_to_url = isset($cfl['append_to_url']) ? $cfl['append_to_url'] : '';
+                    $keyId = str_replace('.', '_', $key);
 
-                    $check = '<input type="checkbox" class="dv-custom-field-link" data-url-append=' . $append_to_url . ' data-col-id="dv-' . str_replace('.', '_', $key) . '" value="' . $v . '" style="float: right;" />';
-                    $val = $check . '<a class="dv-custom-field-link" title="View filtered spreadsheet" target="_blank" href="/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $dv . '/?custom_field=' . $field . '|' . $v . $append_to_url . '#dv_top">' . $ll . '</a>';
+                    $check = '<input type="checkbox" class="dv-custom-field-link" '
+                        . 'data-url-append=' . $append_to_url . ' data-col-id="dv-' . $keyId
+                        . '" value="' . $v . '" style="float: right;" />';
+                    $linkUrl = '/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $dv
+                        . '/?custom_field=' . $field . '|' . $v . $append_to_url . '#dv_top';
+                    $val = $check . '<a class="dv-custom-field-link" '
+                        . 'title="View filtered spreadsheet" target="_blank" href="'
+                        . $linkUrl . '">' . $ll . '</a>';
                 }
 
                 if (isset($dd['cols'][$key]['launch_view']) && !$null_val) {
@@ -526,7 +632,11 @@ function filter($res, $dd)
                     $filter = '?filter=' . implode('||', $filter);
                     $append_to_url = isset($fv['append_to_url']) ? $fv['append_to_url'] : '';
 
-                    $val = '<a class="filtered_view" title="View filtered spreadsheet" target="_blank" href="/' . $com_name . '/view/' . $dd['db_id']['id'] . '/' . $fv['data'] . '/' . $fv['view'] . '/' . $filter . $append_to_url . '#dv_top">' . $val . '</a>';
+                    $linkUrl = '/' . $com_name . '/view/' . $dd['db_id']['id'] . '/'
+                        . $fv['data'] . '/' . $fv['view'] . '/' . $filter
+                        . $append_to_url . '#dv_top';
+                    $val = '<a class="filtered_view" title="View filtered spreadsheet" '
+                        . 'target="_blank" href="' . $linkUrl . '">' . $val . '</a>';
                 }
 
                 if (isset($dd['cols'][$key]['abbr'])) {
@@ -563,24 +673,36 @@ function filter($res, $dd)
                     $label = isset($dd['cols'][$key]['label']) ? $dd['cols'][$key]['label'] : $key;
                     if (!$null_val && isset($dd['cols'][$key]['truncate'])) {
                         $title = $val;
-                        $title = " title=" . '"' . strip_tags(str_replace('"', '&#34;', $val)) . '" ';
+                        $escaped = strip_tags(str_replace('"', '&#34;', $val));
+                        $title = ' title="' . $escaped . '" ';
                         $class = 'class="truncate hand"';
+                        $colWidth = $dd['cols'][$key]['width'];
 
-                        $val = '<span style="white-space: nowrap;"><span ' . $title . $class . ' style="' . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px;">' . $val . '</span><span class="truncateafter">&nbsp;</span></span>';
+                        $val = '<span style="white-space: nowrap;"><span ' . $title . $class
+                            . ' style="' . $opmod_style . ' width: ' . $colWidth . 'px;">'
+                            . $val . '</span><span class="truncateafter">&nbsp;</span></span>';
                     } elseif (!$null_val && isset($dd['cols'][$key]['height'])) {
                         $title = $val;
-                        $title = " title=" . '"' . strip_tags(str_replace('"', '&#34;', $val)) . '" ';
+                        $escaped = strip_tags(str_replace('"', '&#34;', $val));
+                        $title = ' title="' . $escaped . '" ';
                         $class = 'class="truncate hand scrollcell"';
+                        $colWidth = $dd['cols'][$key]['width'];
+                        $colHeight = $dd['cols'][$key]['height'];
 
-                        $val = '<div ' . $title . $class . ' style="' . $nowrap . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px; max-height: ' . $dd['cols'][$key]['height'] . 'px; overflow: clip;">' . $val . '</div>';
+                        $val = '<div ' . $title . $class . ' style="' . $nowrap . $opmod_style
+                            . ' width: ' . $colWidth . 'px; max-height: ' . $colHeight
+                            . 'px; overflow: clip;">' . $val . '</div>';
                     } else {
                         if (isset($dd['cols'][$key]['forcetruncate'])) {
                             $class = 'class="forcetruncate"';
                         }
-                        $val = '<p ' . $title . ' ' . $class . ' style="' . $nowrap . $opmod_style . ' width: ' . $dd['cols'][$key]['width'] . 'px;">' . $val . '</p>';
+                        $colWidth = $dd['cols'][$key]['width'];
+                        $val = '<p ' . $title . ' ' . $class . ' style="' . $nowrap
+                            . $opmod_style . ' width: ' . $colWidth . 'px;">' . $val . '</p>';
                     }
                 } elseif ($opmod_style != '') {
-                    $val = '<span title="' . $opmod_title . '" class="hand" style="' . $opmod_style . '">' . $val . '</span>';
+                    $val = '<span title="' . $opmod_title . '" class="hand" style="'
+                        . $opmod_style . '">' . $val . '</span>';
                 }
 
                 $row[] = $val;
@@ -683,12 +805,14 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
     $popup_data = '';
     if (isset($dd['cols'][$key]['popup'])) {
         $win_name = 'dataviewer_popup';
-        if (isset($dd['cols'][$key]['popup']['name'])) {
-            $win_name = isset($rec[$dd['cols'][$key]['popup']['name']]) ? $rec[$dd['cols'][$key]['popup']['name']] : $dd['cols'][$key]['popup']['name'];
+        $popupConf = $dd['cols'][$key]['popup'];
+        if (isset($popupConf['name'])) {
+            $popupName = $popupConf['name'];
+            $win_name = isset($rec[$popupName]) ? $rec[$popupName] : $popupName;
             $win_name = str_replace(' ', '_', $win_name);
         }
 
-        $win_features = isset($dd['cols'][$key]['popup']['features']) ? $dd['cols'][$key]['popup']['features'] : '';
+        $win_features = isset($popupConf['features']) ? $popupConf['features'] : '';
 
         $popup_data = "data-popup-name='$win_name' data-popup-features='$win_features'";
         $popup_class = 'dv-popup';
@@ -697,13 +821,16 @@ function dv_to_link($rec, $key, $dd, $val, $preview)
     $label = htmlentities($label);
 
     if ($preview != '') {
-        $val = "<a $popup_data $nowarp title=\"$title\" href=\"" . $link . "\" $preview class=\"dv_img_preview dv-link $popup_class\">$label</a>";
+        $val = "<a $popup_data $nowarp title=\"$title\" href=\"" . $link
+            . "\" $preview class=\"dv_img_preview dv-link $popup_class\">$label</a>";
     } else {
-        $val = "<a $popup_data $nowarp title=\"$title\" href=\"" . $link . "\" class=\"dv-link $popup_class\">$label</a>";
+        $val = "<a $popup_data $nowarp title=\"$title\" href=\"" . $link
+            . "\" class=\"dv-link $popup_class\">$label</a>";
     }
 
     if (!isset($dd['cols'][$key]['popup'])) {
-        $val .= "<a title=\"Open in a new window\" target=\"_blank\" href=\"" . $link . "\" class=\"dv-link\" ><i class=\"icon-external-link\"></i></a>";
+        $val .= "<a title=\"Open in a new window\" target=\"_blank\" href=\"" . $link
+            . "\" class=\"dv-link\" ><i class=\"icon-external-link\"></i></a>";
     }
 
     return $val;

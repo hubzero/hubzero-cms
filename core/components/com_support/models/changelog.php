@@ -25,14 +25,14 @@ class Changelog extends Obj
      *
      * @var object
      */
-    private $_log = null;
+    private $log = null;
 
     /**
      * Log format
      *
      * @var string
      */
-    private $_format = 'json';
+    private $format = 'json';
 
     /**
      * Is the question open?
@@ -46,9 +46,9 @@ class Changelog extends Obj
             $this->_raw = $data;
 
             if (substr($data, 0, 1) == '{') {
-                $this->_log = json_decode($data, true);
+                $this->log = json_decode($data, true);
             } else {
-                $this->_format = 'html';
+                $this->format = 'html';
 
                 $log = array(
                     'changes'       => array(),
@@ -127,18 +127,18 @@ class Changelog extends Obj
                         $log['changes'][] = $obj;
                     }
                 }
-                $this->_log = $log;
+                $this->log = $log;
             }
         }
 
-        if (!isset($this->_log['changes'])) {
-            $this->_log['changes'] = array();
+        if (!isset($this->log['changes'])) {
+            $this->log['changes'] = array();
         }
-        if (!isset($this->_log['notifications'])) {
-            $this->_log['notifications'] = array();
+        if (!isset($this->log['notifications'])) {
+            $this->log['notifications'] = array();
         }
-        if (!isset($this->_log['cc'])) {
-            $this->_log['cc'] = array();
+        if (!isset($this->log['cc'])) {
+            $this->log['cc'] = array();
         }
 
         $this->normalize();
@@ -151,7 +151,7 @@ class Changelog extends Obj
      */
     public function format()
     {
-        return $this->_format;
+        return $this->format;
     }
 
     /**
@@ -161,7 +161,7 @@ class Changelog extends Obj
      */
     public function lists()
     {
-        return $this->_log;
+        return $this->log;
     }
 
     /**
@@ -177,20 +177,20 @@ class Changelog extends Obj
     private function normalize()
     {
         foreach (array('changes', 'notifications') as $type) {
-            if (!isset($this->_log[$type]) || !is_array($this->_log[$type])) {
-                $this->_log[$type] = array();
+            if (!isset($this->log[$type]) || !is_array($this->log[$type])) {
+                $this->log[$type] = array();
                 continue;
             }
 
-            foreach ($this->_log[$type] as $key => $entry) {
+            foreach ($this->log[$type] as $key => $entry) {
                 if (is_array($entry)) {
-                    $this->_log[$type][$key] = (object) $entry;
+                    $this->log[$type][$key] = (object) $entry;
                 }
             }
         }
 
-        if (!isset($this->_log['cc']) || !is_array($this->_log['cc'])) {
-            $this->_log['cc'] = array();
+        if (!isset($this->log['cc']) || !is_array($this->log['cc'])) {
+            $this->log['cc'] = array();
         }
     }
 
@@ -203,8 +203,8 @@ class Changelog extends Obj
      */
     public function get($property, $default = null)
     {
-        if (isset($this->_log[$property])) {
-            return $this->_log[$property];
+        if (isset($this->log[$property])) {
+            return $this->log[$property];
         }
         return $default;
     }
@@ -218,7 +218,7 @@ class Changelog extends Obj
      */
     public function set($property, $value = null)
     {
-        $this->_log[$property] = $value;
+        $this->log[$property] = $value;
         return $this;
     }
 
@@ -231,7 +231,7 @@ class Changelog extends Obj
     public function render()
     {
         $clog = array();
-        foreach ($this->_log as $type => $log) {
+        foreach ($this->log as $type => $log) {
             if (is_array($log) && count($log) > 0) {
                 if ($type == 'cc') {
                     $cc = $log;
@@ -283,7 +283,7 @@ class Changelog extends Obj
         $obj->before = (string) $before;
         $obj->after  = (string) $after;
 
-        $this->_log['changes'][] = $obj;
+        $this->log['changes'][] = $obj;
 
         return $this;
     }
@@ -313,7 +313,7 @@ class Changelog extends Obj
 
                 // Did we find an account?
                 if (is_object($user)) {
-                    $this->_log['cc'][] = $user->get('username');
+                    $this->log['cc'][] = $user->get('username');
                 } else {
                     // Move on - nothing else we can do here
                     continue;
@@ -321,7 +321,7 @@ class Changelog extends Obj
             }
             // Make sure it's a valid e-mail address
             else if (Validate::email($acc)) {
-                $this->_log['cc'][] = $acc;
+                $this->log['cc'][] = $acc;
             }
         }
 
@@ -343,7 +343,7 @@ class Changelog extends Obj
         $obj->name    = (string) $name;
         $obj->address = (string) $address;
 
-        $this->_log['notifications'][] = $obj;
+        $this->log['notifications'][] = $obj;
 
         return $this;
     }
@@ -359,7 +359,7 @@ class Changelog extends Obj
      */
     public function add($to, $field, $before = '', $after = '')
     {
-        if (!isset($this->_log[$to])) {
+        if (!isset($this->log[$to])) {
             throw new InvalidArgumentException(Lang::txt('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $to));
         }
 
@@ -389,13 +389,13 @@ class Changelog extends Obj
      */
     public function remove($from, $field)
     {
-        if (!isset($this->_log[$from])) {
+        if (!isset($this->log[$from])) {
             throw new InvalidArgumentException(Lang::txt('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from));
         }
 
-        foreach ($this->_log[$from] as $key => $item) {
+        foreach ($this->log[$from] as $key => $item) {
             if ($item->field == $field) {
-                unset($this->_log[$from][$key]);
+                unset($this->log[$from][$key]);
             }
         }
 
@@ -505,7 +505,7 @@ class Changelog extends Obj
      */
     public function toString()
     {
-        return json_encode($this->_log);
+        return json_encode($this->log);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,6 +20,7 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -262,8 +264,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
         }
 
         // Redirect
+        $url = 'index.php?option=' . $this->_option . '&controller='
+            . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
+            Route::url($url, false),
             Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_SAVED')
         );
     }
@@ -284,8 +288,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
         // Ensure we have an ID to work with
         if (empty($ids)) {
             // Redirect with error message
+            $url = 'index.php?option=' . $this->_option . '&controller='
+                . $this->_controller . '&task=manage&plugin=sponsors';
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
+                Route::url($url, false),
                 Lang::txt('PLG_RESOURCES_SPONSORS_NO_ITEM_SELECTED'),
                 'error'
             );
@@ -302,8 +308,14 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
         }
 
         // Redirect
+        $url = 'index.php?option=' . $this->_option . '&controller='
+            . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
+            Route::url(
+                'index.php?option=' . $this->_option . '&controller='
+                    . $this->_controller . '&task=manage&plugin=sponsors',
+                false
+            ),
             Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_REMOVED')
         );
     }
@@ -344,10 +356,14 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 
         // Check for an ID
         if (count($ids) < 1) {
-            $action = ($state == 1) ? Lang::txt('PLG_RESOURCES_SPONSORS_UNPUBLISH') : Lang::txt('PLG_RESOURCES_SPONSORS_PUBLISH');
+            $action = ($state == 1)
+                ? Lang::txt('PLG_RESOURCES_SPONSORS_UNPUBLISH')
+                : Lang::txt('PLG_RESOURCES_SPONSORS_PUBLISH');
 
+            $url = 'index.php?option=' . $this->_option . '&controller='
+                . $this->_controller . '&task=manage&plugin=sponsors';
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
+                Route::url($url, false),
                 Lang::txt('PLG_RESOURCES_SPONSORS_SELECT_ITEM_TO', $action),
                 'error'
             );
@@ -372,8 +388,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
             $message = Lang::txt('PLG_RESOURCES_SPONSORS_ITEMS_UNPUBLISHED', count($ids));
         }
 
+        $url = 'index.php?option=' . $this->_option . '&controller='
+            . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false),
+            Route::url($url, false),
             $message
         );
     }
@@ -385,8 +403,10 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
      */
     public function cancelTask()
     {
+        $url = 'index.php?option=' . $this->_option . '&controller='
+            . $this->_controller . '&task=manage&plugin=sponsors';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&plugin=sponsors', false)
+            Route::url($url, false)
         );
     }
 }

@@ -22,7 +22,7 @@ class Comment extends Relational
     /**
      * Database state constants
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * The table namespace

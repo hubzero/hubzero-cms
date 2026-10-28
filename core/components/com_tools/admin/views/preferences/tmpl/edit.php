@@ -24,7 +24,8 @@ $user = User::getInstance($this->row->user_id);
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <?php if ($this->getError()) : ?>
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php endif; ?>
@@ -60,19 +61,32 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                         <span><?php echo Lang::txt('COM_TOOLS_USER_PREFS_USER_HINT'); ?></span>
                     </div>
                 <?php else : ?>
-                    <input type="hidden" name="fields[user_id]" id="field-user_id" value="<?php echo $this->row->user_id; ?>" />
+                    <input type="hidden" name="fields[user_id]" id="field-user_id"
+                        value="<?php echo $this->row->user_id; ?>" />
                 <?php endif; ?>
-                <div class="input-wrap" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=getClassValues'); ?>">
+                <?php $classValUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=getClassValues'
+                ); ?>
+                <div class="input-wrap" data-href="<?php echo $classValUrl; ?>">
                     <label for="class_id"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_CLASS'); ?>:</label>
                     <?php echo $this->classes; ?>
                 </div>
                 <div class="input-wrap">
                     <label for="field-jobs"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_JOBS'); ?>:</label>
-                    <input <?php echo ($this->row->class_id) ? 'readonly' : ''; ?> type="text" name="fields[jobs]" id="field-jobs" value="<?php echo $this->escape(stripslashes($this->row->jobs)); ?>" />
+                    <?php $jobsReadonly = ($this->row->class_id) ? 'readonly' : ''; ?>
+                    <?php $jobsVal = $this->escape(stripslashes($this->row->jobs)); ?>
+                    <input <?php echo $jobsReadonly; ?> type="text" name="fields[jobs]" id="field-jobs"
+                        value="<?php echo $jobsVal; ?>" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-params"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_PREFERENCES'); ?>:</label>
-                    <textarea name="fields[params]" id="field-params" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->row->params == null ? '' : $this->row->params)); ?></textarea>
+                    <?php $paramsVal = $this->escape(
+                        stripslashes($this->row->params == null ? '' : $this->row->params)
+                    ); ?>
+                    <textarea name="fields[params]" id="field-params"
+                        cols="35" rows="5"><?php echo $paramsVal; ?></textarea>
                 </div>
             </fieldset>
         </div>

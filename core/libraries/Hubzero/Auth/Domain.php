@@ -225,6 +225,7 @@ class Domain extends Relational
      * @param   integer  $id
      * @return  mixed    Object on success, False on failure
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_by_id($id)
     {
         $hzad = self::oneOrNew($id);
@@ -245,6 +246,7 @@ class Domain extends Relational
      * @param   string  $domain
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_or_create($type, $authenticator, $domain = null)
     {
         $query = self::all()

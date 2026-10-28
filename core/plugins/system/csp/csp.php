@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
- // No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Content Security Policy Header Plugin
  */
@@ -19,9 +16,9 @@ class plgSystemCsp extends \Hubzero\Plugin\Plugin
      *
      * @var  integer
      */
-    const REPORT = 0;
-    const ENFORCE = 1;
-    const ENFORCE_REPORT = 2;
+    public const REPORT = 0;
+    public const ENFORCE = 1;
+    public const ENFORCE_REPORT = 2;
 
     /**
      * List of policies we can enforce

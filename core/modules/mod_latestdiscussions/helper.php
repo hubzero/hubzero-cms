@@ -111,8 +111,9 @@ class Helper extends Module
             if ($post->get('parent') == 0) {
                 $threads[$post->get('id')] = $post->get('title');
             } else {
-                $threads[$post->get('thread')] = (isset($threads[$post->get('thread')])) ? $threads[$post->get('thread')] : '';
-                if (!$threads[$post->get('thread')]) {
+                $threadId = $post->get('thread');
+                $threads[$threadId] = (isset($threads[$threadId])) ? $threads[$threadId] : '';
+                if (!$threads[$threadId]) {
                     $t[] = $post->get('thread');
                 }
             }
@@ -141,7 +142,12 @@ class Helper extends Module
         }
 
         if (count($ids) > 0) {
-            $database->setQuery("SELECT c.id, c.alias, s.alias as section FROM `#__forum_categories` c LEFT JOIN `#__forum_sections` as s ON s.id=c.section_id WHERE c.id IN (" . implode(',', $ids) . ") AND c.state='1'");
+            $idList = implode(',', $ids);
+            $catQuery = "SELECT c.id, c.alias, s.alias as section "
+                . "FROM `#__forum_categories` c "
+                . "LEFT JOIN `#__forum_sections` as s ON s.id=c.section_id "
+                . "WHERE c.id IN (" . $idList . ") AND c.state='1'";
+            $database->setQuery($catQuery);
             $cats = $database->loadObjectList();
             if ($cats) {
                 foreach ($cats as $category) {

@@ -50,7 +50,8 @@ class Mysql extends PdoDriver
                     $options['dsn'] .= ";port={$options['port']}";
                 }
             }
-            $options['dsn'] .= (isset($options['database']) && $options['database']) ? ";dbname={$options['database']}" : '';
+            $options['dsn'] .= (isset($options['database']) &&
+                $options['database']) ? ";dbname={$options['database']}" : '';
         }
 
         if (substr($options['dsn'], 0, 6) != 'mysql:') {

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +20,7 @@ defined('_HZEXEC_') or die();
  */
 class Migration20260630000000ComCoursesOfferingOrdering extends Base
 {
-    static $table = '#__courses_offerings';
+    public static $table = '#__courses_offerings';
 
     public function up()
     {

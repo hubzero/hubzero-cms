@@ -27,8 +27,15 @@ class AddTemplateEntry extends Macro
      * @param   int     $protected  Whether or not the template is a core one or not
      * @return  bool
      **/
-    public function __invoke($element, $name = null, $client = 1, $enabled = 1, $home = 0, $styles = null, $protected = 0)
-    {
+    public function __invoke(
+        $element,
+        $name = null,
+        $client = 1,
+        $enabled = 1,
+        $home = 0,
+        $styles = null,
+        $protected = 0
+    ) {
         if ($this->db->tableExists('#__extensions')) {
             if (!isset($name)) {
                 if (substr($element, 0, 4) == 'tpl_') {

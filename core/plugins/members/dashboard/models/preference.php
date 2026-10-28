@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Plugins\Members\Dashboard\Models;
@@ -20,28 +20,28 @@ class Preference extends Relational
     /**
      * The table namespace
      *
-     * @var  string
+     * @var string
      */
     protected $namespace = 'xprofiles_dashboard';
 
     /**
      * Default order by for model
      *
-     * @var  string
+     * @var string
      */
     public $orderBy = 'id';
 
     /**
      * Default order direction for select queries
      *
-     * @var  string
+     * @var string
      */
     public $orderDir = 'asc';
 
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @var array
      */
     protected $rules = array(
         'preferences' => 'notempty',
@@ -51,7 +51,7 @@ class Preference extends Relational
     /**
      * Automatically fillable fields
      *
-     * @var  array
+     * @var array
      */
     public $always = array(
         'modified'
@@ -60,15 +60,15 @@ class Preference extends Relational
     /**
      * Registry
      *
-     * @var  object
+     * @var object
      */
     protected $preferences = null;
 
     /**
      * Generates automatic modified field value
      *
-     * @param   array   $data  The data being saved
-     * @return  string
+     * @param  array $data The data being saved
+     * @return string
      */
     public function automaticModified($data)
     {
@@ -78,8 +78,8 @@ class Preference extends Relational
     /**
      * Retrieves one row loaded by an alias field
      *
-     * @param   string  $user_id  The alias to load by
-     * @return  mixed
+     * @param  string $user_id The alias to load by
+     * @return mixed
      */
     public static function oneByUser($user_id)
     {
@@ -91,7 +91,7 @@ class Preference extends Relational
     /**
      * Get the parent user associated with this entry
      *
-     * @return  object
+     * @return object
      */
     public function user()
     {
@@ -101,7 +101,7 @@ class Preference extends Relational
     /**
      * Transform params
      *
-     * @return  string
+     * @return string
      */
     public function transformPreferences()
     {
@@ -115,7 +115,7 @@ class Preference extends Relational
     /**
      * Save data
      *
-     * @return  bool
+     * @return bool
      */
     public function save()
     {

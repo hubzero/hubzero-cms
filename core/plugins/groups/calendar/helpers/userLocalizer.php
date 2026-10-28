@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,10 @@ defined('_HZEXEC_') or die();
 
 use Hubzero\Utility\Arr;
 
+/**
+ * User Localizer helper class
+ *
+ */
 class UserLocalizer
 {
     /**
@@ -59,6 +64,7 @@ class UserLocalizer
      *
      * @return string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getUserTimezone()
     {
         $userParams = json_decode(User::get('params', '[]'), 1);

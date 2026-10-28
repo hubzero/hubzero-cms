@@ -10,7 +10,9 @@
 defined('_HZEXEC_') or die();
 
 // set title
-$title  = ($this->hook->get('id')) ? Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_EDIT') : Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_ADD');
+$title = ($this->hook->get('id'))
+    ? Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_EDIT')
+    : Lang::txt('COM_MEMBERS_IMPORTHOOK_TITLE_ADD');
 
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt($title), 'import');
 Toolbar::save();
@@ -26,7 +28,15 @@ $this->js();
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    enctype="multipart/form-data"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span8">
             <fieldset class="adminform">
@@ -56,13 +66,20 @@ $this->js();
                     <label for="field-name">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_NAME'); ?>
                     </label>
-                    <input type="text" name="hook[name]" id="field-name" value="<?php echo $this->escape($this->hook->get('name')); ?>" />
+                    <input
+                        type="text"
+                        name="hook[name]"
+                        id="field-name"
+                        value="<?php echo $this->escape($this->hook->get('name')); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-notes">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_NOTES'); ?>
                     </label>
-                    <textarea name="hook[notes]" id="field-notes" rows="5"><?php echo $this->escape($this->hook->get('notes')); ?></textarea>
+                    <textarea
+                        name="hook[notes]"
+                        id="field-notes"
+                        rows="5"><?php echo $this->escape($this->hook->get('notes')); ?></textarea>
                 </div>
             </fieldset>
 
@@ -76,7 +93,13 @@ $this->js();
                     <?php
                     if ($this->hook->get('file')) {
                         echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
-                        echo ' &mdash; <a rel="noopener" target="_blank" href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $this->hook->get('id')) . '">' . Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW') . '</a><br />';
+                        $rawUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=raw&id=' . $this->hook->get('id')
+                        );
+                        $rawLabel = Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW');
+                        echo ' &mdash; <a rel="noopener" target="_blank" href="'
+                            . $rawUrl . '">' . $rawLabel . '</a><br />';
                     }
                     ?>
                     <input type="file" name="file" />

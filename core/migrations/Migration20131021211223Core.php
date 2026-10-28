@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for converting joomla upload max units
- **/
+ *
+ */
 class Migration20131021211223Core extends Base
 {
     /**
@@ -32,7 +34,8 @@ class Migration20131021211223Core extends Base
                 if ($params->upload_maxsize > 1000000) {
                     $params->upload_maxsize = $params->upload_maxsize / 1000000;
 
-                    $query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `extension_id` = " . $this->db->quote($result->extension_id);
+                    $query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params))
+                        . " WHERE `extension_id` = " . $this->db->quote($result->extension_id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

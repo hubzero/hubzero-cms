@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -89,7 +90,10 @@ class Locations extends AdminController
             );
 
             // In case limit has been changed, adjust limitstart accordingly
-            $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+            $this->view->filters['start'] = ($this->view->filters['limit'] != 0
+                ? (floor($this->view->filters['start'] / $this->view->filters['limit'])
+                    * $this->view->filters['limit'])
+                : 0);
         }
 
         // Get the middleware database

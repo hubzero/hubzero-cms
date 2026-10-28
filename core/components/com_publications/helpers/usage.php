@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,6 +24,7 @@ class Usage
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_db = null;
 
     /**
@@ -30,6 +32,7 @@ class Usage
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_pubid = null;
 
     /**
@@ -37,6 +40,7 @@ class Usage
      *
      * @var unknown
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_type = null;
 
     /**
@@ -162,6 +166,7 @@ class Usage
      *
      * @return  string  HTML
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function display_substats()
     {
         $html  = '<table class="usagestats" summary="Review and Citation statistics for this publication">' . "\n";
@@ -178,7 +183,9 @@ class Usage
         $html .= ' <tbody>' . "\n";
         $html .= '  <tr>' . "\n";
         $html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> Review:</th>' . "\n";
-        $html .= '   <td><span class="avgrating' . $this->getRatingClass($this->rating) . '"><span>' . $this->rating . ' out of 5 stars</span></span></td>' . "\n";
+        $ratingClass = $this->getRatingClass($this->rating);
+        $html .= '   <td><span class="avgrating' . $ratingClass . '"><span>'
+            . $this->rating . ' out of 5 stars</span></span></td>' . "\n";
         $html .= '  </tr>' . "\n";
         $html .= '  <tr>' . "\n";
         $html .= '   <th scope="row">Citations:</th>' . "\n";
@@ -211,9 +218,9 @@ class Usage
         if ($val != 'unavailable') {
             if ($val <= 60) {
                 $val = ceil($val) . ' secs';
-            } else if ($val > 60 && $val <= 3600) {
+            } elseif ($val > 60 && $val <= 3600) {
                 $val = ceil($val / 60) . ' mins';
-            } else if ($val > 3600 && $val <= 86400) {
+            } elseif ($val > 3600 && $val <= 86400) {
                 $val = ceil($val / 3600) . ' hours';
             } else {
                 $val = ceil($val / 84600) . ' days';

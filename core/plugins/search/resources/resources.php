@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,6 +17,8 @@ include_once __DIR__ . '/children.php';
 
 /**
  * Search plugin for resources
+ */
+/**
  */
 class plgSearchResources extends \Hubzero\Plugin\Plugin
 {
@@ -39,11 +42,12 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         $groups = array_map(array($database, 'escape'), $authz->get_group_names());
-        $viewlevels = implode(',', (User::isGuest() ? array(0, 3) : array(0, 1, 3)));//implode(',', User::getAuthorisedViewLevels());
+        $viewlevels = implode(',', (User::isGuest() ? array(0, 3) : array(0, 1, 3)));
 
         if ($groups) {
             $group_list = '(\'' . join('\', \'', $groups) . '\')';
-            $access = '(access IN (0,' . $viewlevels . ') OR ((access = 3 OR access = 4) AND r.group_owner IN ' . $group_list . '))';
+            $access = '(access IN (0,' . $viewlevels . ') OR '
+                . '((access = 3 OR access = 4) AND r.group_owner IN ' . $group_list . '))';
         } else {
             $access = '(access IN (0,' . $viewlevels . '))';
         }
@@ -72,31 +76,48 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $weight = $terms['stemmed'] ? 'match(r.title, r.introtext, r.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')' : '0';
+        $weight = $terms['stemmed']
+            ? 'match(r.title, r.introtext, r.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')'
+            : '0';
         foreach ($quoted_terms as $term) {
-            $weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' OR r.`fulltxt` LIKE '%$term%' THEN 1 ELSE 0 END)";
+            $weight .= " + (CASE WHEN r.title LIKE '%$term%' OR r.introtext LIKE '%$term%' "
+                . "OR r.`fulltxt` LIKE '%$term%' THEN 1 ELSE 0 END)";
         }
 
         $addtl_where = array();
         foreach ($terms['mandatory'] as $mand) {
-            $addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' OR r.`fulltxt` LIKE '%$mand%')";
+            $addtl_where[] = "(r.title LIKE '%$mand%' OR r.introtext LIKE '%$mand%' "
+                . "OR r.`fulltxt` LIKE '%$mand%')";
         }
         foreach ($terms['forbidden'] as $forb) {
-            $addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' AND r.`fulltxt` NOT LIKE '%$forb%')";
+            $addtl_where[] = "(r.title NOT LIKE '%$forb%' AND r.introtext NOT LIKE '%$forb%' "
+                . "AND r.`fulltxt` NOT LIKE '%$forb%')";
         }
+
+        $linkSelect = "concat('index.php?option=com_resources&id=', "
+            . "coalesce(case when r.alias = '' then null else r.alias end, r.id))";
+        $contributorsSelect = "SELECT group_concat(u1.name order by anames.ordering separator '\\n') "
+            . "FROM `#__author_assoc` anames "
+            . "LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid "
+            . "WHERE subtable = 'resources' AND subid = r.id";
+        $contributorIdsSelect = "SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') "
+            . "FROM `#__author_assoc` anames WHERE subtable = 'resources' AND subid = r.id";
+        $whereClause = "r.published = 1 AND r.standalone AND $access "
+            . "AND (r.publish_up AND UTC_TIMESTAMP() > r.publish_up) "
+            . "AND (NOT r.publish_down OR UTC_TIMESTAMP() < r.publish_down)";
 
         $sql = new \Components\Search\Models\Basic\Result\Sql(
             "SELECT
 				r.id,
 				r.title,
 				coalesce(r.`fulltxt`, r.introtext, '') AS description,
-				concat('index.php?option=com_resources&id=', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
+				$linkSelect AS link,
 				$weight AS weight,
 				r.publish_up AS date,
 				rt.type AS section,
-				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM `#__author_assoc` anames LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
+				($contributorsSelect)
 				AS contributors,
-				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM `#__author_assoc` anames WHERE subtable = 'resources' AND subid = r.id)
+				($contributorIdsSelect)
 				AS contributor_ids,
 				(select group_concat(concat(parent_id, '|', ordering))
 					from `#__resource_assoc` ra2
@@ -106,7 +127,7 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 			LEFT JOIN `#__resource_types` rt
 				ON rt.id = r.type
 			WHERE
-				r.published = 1 AND r.standalone AND $access AND (r.publish_up AND UTC_TIMESTAMP() > r.publish_up) AND (NOT r.publish_down OR UTC_TIMESTAMP() < r.publish_down)
+				$whereClause
 				AND ($weight > 0)" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '')
         );
@@ -129,18 +150,24 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
             }
             // Fill in tagged resources that did not match on fulltxt
             if ($tag_map) {
+                $whereClause2 = "r.published = 1 AND r.standalone AND $access "
+                    . "AND (r.publish_up AND NOW() > r.publish_up) "
+                    . "AND (NOT r.publish_down OR NOW() < r.publish_down)";
+                $tagIds = implode(',', array_keys($tag_map));
+                $addtlWhereStr = $addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '';
+
                 $sql = new \Components\Search\Models\Basic\Result\Sql(
                     "SELECT
 						r.id,
 						r.title,
 						coalesce(r.`fulltxt`, r.introtext, '') AS description,
-						concat('index.php?option=com_resources&id=', coalesce(case when r.alias = '' then null else r.alias end, r.id)) AS link,
+						$linkSelect AS link,
 						r.publish_up AS date,
 						0.5 as weight,
 						rt.type AS section,
-						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM `#__author_assoc` anames LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
+						($contributorsSelect)
 							AS contributors,
-						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM `#__author_assoc` anames WHERE subtable = 'resources' AND subid = r.id)
+						($contributorIdsSelect)
 							AS contributor_ids,
 						(select group_concat(concat(parent_id, '|', ordering))
 							from `#__resource_assoc` ra2
@@ -150,12 +177,15 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
 					LEFT JOIN `#__resource_types` rt
 					ON rt.id = r.type
 					WHERE
-						r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
-						AND r.id in (" . implode(',', array_keys($tag_map)) . ")" . ($addtl_where ? ' AND ' . implode(' AND ', $addtl_where) : '')
+						$whereClause2
+						AND r.id in ($tagIds)" . $addtlWhereStr
                 );
                 foreach ($sql->to_associative() as $row) {
                     if ($tag_map[$row->get('id')] > 1) {
-                        $row->adjust_weight($tag_map[$row->get('id')] / 8, 'tag bonus for non-matching but tagged resources');
+                        $row->adjust_weight(
+                            $tag_map[$row->get('id')] / 8,
+                            'tag bonus for non-matching but tagged resources'
+                        );
                     }
                     $id_assoc[$row->get('id')] = $row;
                 }
@@ -172,7 +202,8 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
                 foreach (explode(',', $parents) as $parent)
                 {
                     list($parent_id, $ordering) = preg_split('#\|#', $parent);
-                    if (array_key_exists((int)$parent_id, $id_assoc) && $id_assoc[(int)$parent_id]->is_in_section($section, 'resources'))
+                    if (array_key_exists((int)$parent_id, $id_assoc)
+                        && $id_assoc[(int)$parent_id]->is_in_section($section, 'resources'))
                     {
                         $placed[(int)$id] = $ordering;
                         $id_assoc[(int)$parent_id]->add_child($row);
@@ -282,13 +313,11 @@ class plgSearchResources extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->published == 1 && $row->access == 0 && $row->standalone == 1) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->published == 1 && $row->access == 1 && $row->standalone == 1) {
+                } elseif ($row->published == 1 && $row->access == 1 && $row->standalone == 1) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

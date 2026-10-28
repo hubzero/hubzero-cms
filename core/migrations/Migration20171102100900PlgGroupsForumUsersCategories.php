@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,10 +14,11 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to create the `#__forum_users_categories` table
- **/
+ *
+ */
 class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 {
-    static $tableName = '#__forum_users_categories';
+    protected static $tableName = '#__forum_users_categories';
 
     public function up()
     {

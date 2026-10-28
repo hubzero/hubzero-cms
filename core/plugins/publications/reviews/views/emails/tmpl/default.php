@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
 defined('_HZEXEC_') or die();
 
 $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews');

@@ -11,6 +11,7 @@ namespace Components\Courses\Models;
 class CertificatePdf extends \TCPDF
 {
     //Page header
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function Header()
     {
         // get the current page break margin
@@ -21,9 +22,24 @@ class CertificatePdf extends \TCPDF
         $this->SetAutoPageBreak(false, 0);
         // set bacground image
         list($width, $height) = getimagesize($this->img_file);
-//var_dump($width / 300);
-//var_dump($height / 300);die();
-        $this->Image($this->img_file, 0, 0, (($width / 300) * 25.4), (($height / 300) * 25.4), '', '', '', false, 300, '', false, false, 0);
+        $imgWidth = (($width / 300) * 25.4);
+        $imgHeight = (($height / 300) * 25.4);
+        $this->Image(
+            $this->img_file,
+            0,
+            0,
+            $imgWidth,
+            $imgHeight,
+            '',
+            '',
+            '',
+            false,
+            300,
+            '',
+            false,
+            false,
+            0
+        );
         // restore auto-page-break status
         $this->SetAutoPageBreak($auto_page_break, $bMargin);
         // set the starting point for the page content

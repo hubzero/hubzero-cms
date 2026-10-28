@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Search knowledge base entries
+ */
+/**
  */
 class plgSearchKB extends \Hubzero\Plugin\Plugin
 {
@@ -138,13 +141,11 @@ class plgSearchKB extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->state == 1 && $row->access == 1) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 2) {
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

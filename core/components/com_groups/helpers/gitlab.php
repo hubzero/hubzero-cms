@@ -96,7 +96,8 @@ class Gitlab
         }
 
         // Check for valid token
-        $response = $this->client->request('GET', $this->url . DS . 'personal_access_tokens' . DS . 'self', $this->options);
+        $tokenUrl = $this->url . DS . 'personal_access_tokens' . DS . 'self';
+        $response = $this->client->request('GET', $tokenUrl, $this->options);
         $json_response = json_decode($response->getBody(), true);
         if (array_key_exists('message', $json_response)) {
             switch ($json_response['message']) {
@@ -192,7 +193,8 @@ class Gitlab
      */
     public function protectBranch($params = array())
     {
-        $resource = 'projects' . DS . $params['id'] . DS . 'repository' . DS . 'branches' . DS . $params['branch'] . DS . 'protect';
+        $resource = 'projects' . DS . $params['id'] . DS . 'repository' . DS
+            . 'branches' . DS . $params['branch'] . DS . 'protect';
         return $this->request('PUT', $resource, array());
     }
 
@@ -202,10 +204,14 @@ class Gitlab
      * @param   string  $url
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getRequest($resource, $ResourceName)
     {
-        // Get response restricted by maintainer access of the current Gitlab API key bot (MAKE SURE GROUP TOKEN ACCESS IS AT MAINTAINER LEVEL OR HIGHER)
-        $response = $this->client->request('GET', $this->url . DS . $resource . '?min_access_level=40&search=' . $ResourceName, $this->options);
+        // Get response restricted by maintainer access of the current Gitlab API key bot
+        // (MAKE SURE GROUP TOKEN ACCESS IS AT MAINTAINER LEVEL OR HIGHER)
+        $requestUrl = $this->url . DS . $resource
+            . '?min_access_level=40&search=' . $ResourceName;
+        $response = $this->client->request('GET', $requestUrl, $this->options);
         return json_decode($response->getBody(), true);
     }
 
@@ -216,6 +222,7 @@ class Gitlab
      * @param  array  $params   [description]
      * @return [type]           [description]
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _postRequest($resource, $params = array())
     {
         // init post request
@@ -233,6 +240,7 @@ class Gitlab
      * @param  array  $params   [description]
      * @return [type]           [description]
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _putRequest($resource, $params = array())
     {
         $requestOptions = array_merge(array('form_params' => $params), $this->options);

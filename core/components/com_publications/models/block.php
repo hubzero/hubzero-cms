@@ -23,6 +23,7 @@ class Block extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = null;
 
     /**
@@ -33,6 +34,7 @@ class Block extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest = null;
 
     /**
@@ -40,6 +42,7 @@ class Block extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parent = null;
 
     /**

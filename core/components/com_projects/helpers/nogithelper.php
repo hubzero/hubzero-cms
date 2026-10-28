@@ -24,14 +24,14 @@ class Nogit extends Obj
      *
      * @var integer
      */
-    private $_uid = null;
+    private $uid = null;
 
     /**
      * Full path to Git repo
      *
      * @var string
      */
-    private $_path = null;
+    private $path = null;
 
     /**
      * Constructor
@@ -45,13 +45,13 @@ class Nogit extends Obj
         $configs = Component::params('com_projects');
 
         // Set repo path
-        $this->_path = $path;
+        $this->path = $path;
         $params = [];
-        $params['path'] = $this->_path;
+        $params['path'] = $this->path;
         $this->adapter = Manager::adapter('local', $params);
 
         // Set acting user
-        $this->_uid = User::get('id');
+        $this->uid = User::get('id');
     }
 
     /**
@@ -63,13 +63,13 @@ class Nogit extends Obj
     public function iniGit($path = null)
     {
         if (!$path) {
-            $path = $this->_path;
+            $path = $this->path;
         }
         if (!$path || !is_dir($path)) {
             return false;
         }
-        if (!$this->_path) {
-            $this->_path = $path;
+        if (!$this->path) {
+            $this->path = $path;
         }
         return true;
     }
@@ -82,12 +82,12 @@ class Nogit extends Obj
      */
     public function call($call = '')
     {
-        if (!$this->_path || !is_dir($this->_path) || !$call) {
+        if (!$this->path || !is_dir($this->path) || !$call) {
             return false;
         }
 
         // cd into repo
-        chdir($this->_path);
+        chdir($this->path);
 
         // exec call
         return $this->_exec($call);
@@ -202,7 +202,7 @@ class Nogit extends Obj
     public function makeEmptyFolder($dir = '', $commit = true, $commitMsg = '')
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
 
@@ -301,11 +301,11 @@ class Nogit extends Obj
      */
     public function gitLog($file = '', $hash = '', $return = 'date')
     {
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
 
-        $file_obj = new Models\File($file, $this->_path);
+        $file_obj = new Models\File($file, $this->path);
         $out = '';
 
         // Set exec command for retrieving different commit information

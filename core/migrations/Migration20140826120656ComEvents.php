@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to html entity decode each event title.
+  *
  **/
 class Migration20140826120656ComEvents extends Base
 {
@@ -29,7 +31,8 @@ class Migration20140826120656ComEvents extends Base
         // update each event
         foreach ($events as $event) {
             $fixedTitle = html_entity_decode($event->title);
-            $query = "UPDATE `#__events` SET `title`=" . $this->db->quote($fixedTitle) . " WHERE `id`=" . $this->db->quote($event->id);
+            $query = "UPDATE `#__events` SET `title`=" . $this->db->quote($fixedTitle)
+                . " WHERE `id`=" . $this->db->quote($event->id);
             $this->db->setQuery($query);
             $this->db->query();
         }

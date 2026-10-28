@@ -52,8 +52,19 @@ class Editor extends AbstractHelper
         }
 
         $id = $id ?: str_replace(array('[', ']'), '', $name);
-
-        return $this->instance()->display($name, $content, $width, $height, intval($col), intval($row), $buttons, $id, $asset, $author, $params);
+        return $this->instance()->display(
+            $name,
+            $content,
+            $width,
+            $height,
+            intval($col),
+            intval($row),
+            $buttons,
+            $id,
+            $asset,
+            $author,
+            $params
+        );
     }
 
     /**

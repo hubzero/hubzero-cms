@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,14 +29,14 @@ class Wishlist extends Relational
      *
      * @var integer
      */
-    const WISHLIST_STATE_PRIVATE = 0;
+    public const WISHLIST_STATE_PRIVATE = 0;
 
     /**
      * Granted state
      *
      * @var integer
      */
-    const WISHLIST_STATE_PUBLIC  = 1;
+    public const WISHLIST_STATE_PUBLIC  = 1;
 
     /**
      * The table to which the class pertains
@@ -125,13 +126,18 @@ class Wishlist extends Relational
             return true;
         }
 
-        if (!$this->_adapter()->exists()) {
-            $this->addError(Lang::txt('Item of category "%s" and ID of "%s" could not be found.', $this->get('category'), $this->get('referenceid')));
+        if (!$this->adapter()->exists()) {
+            $msg = Lang::txt(
+                'Item of category "%s" and ID of "%s" could not be found.',
+                $this->get('category'),
+                $this->get('referenceid')
+            );
+            $this->addError($msg);
             return false;
         }
 
         $this->set('title', $this->get('title', $this->get('category') . ' #' . $this->get('referenceid')));
-        $this->set('description', $this->_adapter()->title());
+        $this->set('description', $this->adapter()->title());
         $this->set('public', 1);
 
         return $this->save();
@@ -145,7 +151,7 @@ class Wishlist extends Relational
      */
     public function item($key = null)
     {
-        return $this->_adapter()->item($key);
+        return $this->adapter()->item($key);
     }
 
     /**
@@ -155,7 +161,7 @@ class Wishlist extends Relational
      */
     public function title()
     {
-        return $this->_adapter()->title();
+        return $this->adapter()->title();
     }
 
     /**
@@ -168,7 +174,7 @@ class Wishlist extends Relational
      */
     public function link($type = '', $params = null)
     {
-        return $this->_adapter()->link($type, $params);
+        return $this->adapter()->link($type, $params);
     }
 
     /**
@@ -181,7 +187,7 @@ class Wishlist extends Relational
      */
     public function pathway($title = null, $pathway = null)
     {
-        return $this->_adapter()->pathway($title, $pathway);
+        return $this->adapter()->pathway($title, $pathway);
     }
 
     /**
@@ -190,9 +196,9 @@ class Wishlist extends Relational
      *
      * @return  object
      */
-    private function _adapter()
+    private function adapter()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapter) {
             $scope = strtolower($this->get('category'));
 
             if (!$scope && $this->isNew()) {
@@ -218,17 +224,17 @@ class Wishlist extends Relational
                 $adapter = new $cls($this->get('referenceid'));
 
                 if ($adapter->handles($scope)) {
-                    $this->_adapter = $adapter;
-                    $this->_adapter->set('wishlist', $this->get('id'));
+                    $this->adapter = $adapter;
+                    $this->adapter->set('wishlist', $this->get('id'));
                     break;
                 }
             }
 
-            if (!$this->_adapter) {
+            if (!$this->adapter) {
                 throw new \RuntimeException(Lang::txt('Invalid category of "%s"', $scope), 404);
             }
         }
-        return $this->_adapter;
+        return $this->adapter;
     }
 
     /**
@@ -336,7 +342,7 @@ class Wishlist extends Relational
             switch ($what) {
                 case 'advisory':
                 case 'individuals':
-                    $user_id = (int) $this->_userId($result);
+                    $user_id = (int) $this->userId($result);
 
                     if (!$user_id || in_array($user_id, (array) $native['individuals'])) {
                         continue 2;
@@ -350,7 +356,7 @@ class Wishlist extends Relational
                     break;
 
                 case 'groups':
-                    $group_id = (int) $this->_groupId($result);
+                    $group_id = (int) $this->groupId($result);
 
                     if (!$group_id || in_array($group_id, (array) $native['groups'])) {
                         continue 2;
@@ -475,7 +481,7 @@ class Wishlist extends Relational
             $owners[] = $this->get('referenceid');
         }
 
-        $owners += $this->_adapter()->owners();
+        $owners += $this->adapter()->owners();
 
         // Get groups
         $groups = $this->getOwnergroups($admingroup, $native);
@@ -557,7 +563,7 @@ class Wishlist extends Relational
             $groups[] = $this->get('referenceid');
         }
 
-        $groups += $this->_adapter()->groups();
+        $groups += $this->adapter()->groups();
 
         // if primary list, add all site admins
         if ($controlgroup && $this->get('category') == 'general') {
@@ -587,6 +593,7 @@ class Wishlist extends Relational
      * @param   mixed  $data
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _toArray($data = '')
     {
         if (is_array($data)) {
@@ -616,7 +623,7 @@ class Wishlist extends Relational
      * @param  mixed   $user  User ID or username
      * @return integer
      */
-    private function _userId($user)
+    private function userId($user)
     {
         if (is_numeric($user)) {
             return $user;
@@ -633,7 +640,7 @@ class Wishlist extends Relational
      * @param   mixed   $group  Group ID or cn
      * @return  integer
      */
-    private function _groupId($group)
+    private function groupId($group)
     {
         if (is_numeric($group)) {
             return $group;
@@ -707,7 +714,8 @@ class Wishlist extends Relational
                 // Permissions
                 $this->config()->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
                 $this->config()->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
-                $this->config()->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
+                $editStateKey = 'access-edit-state-' . $assetType;
+                $this->config()->set($editStateKey, User::authorise('core.edit.state' . $at, $asset));
 
                 if ($this->get('id')) {
                     // Get list administrators
@@ -786,7 +794,7 @@ class Wishlist extends Relational
                             if ($votesplit && in_array($vote->get('userid'), $advisory)) {
                                 $imp += $vote->get('importance') * $co_adv;
                                 $divisor += $co_adv;
-                            } else if ($votesplit) {
+                            } elseif ($votesplit) {
                                 $imp += $vote->get('importance') * $co_reg;
                                 $divisor += $co_reg;
                             } else {

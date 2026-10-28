@@ -87,9 +87,9 @@ class Asset extends Base
     {
         if (isset($this->_tbl->$property)) {
             return $this->_tbl->$property;
-        } else if (isset($this->_tbl->{'__' . $property})) {
+        } elseif (isset($this->_tbl->{'__' . $property})) {
             return $this->_tbl->{'__' . $property};
-        } else if (in_array($property, self::$_section_keys)) {
+        } elseif (in_array($property, self::$_section_keys)) {
             $tbl = new Tables\SectionDate($this->_db);
             $tbl->load($this->get('id'), 'asset', $this->get('section_id'));
 
@@ -97,7 +97,7 @@ class Asset extends Base
             $this->set('publish_down', $tbl->get('publish_down', ''));
 
             return $tbl->get($property, $default);
-        } else if (strpos($property, '.') !== false) {
+        } elseif (strpos($property, '.') !== false) {
             $parts = explode('.', $property);
             if (isset($parts[0]) && array_key_exists($parts[0], self::$_aux_tablekeys)) {
                 $key = str_replace('_', ' ', $parts[0]);
@@ -353,7 +353,7 @@ class Asset extends Base
         $filename = Request::getString('file', '');
         if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') {
             $filename = substr($filename, strlen('image:'));
-        } else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') {
+        } elseif (substr(strtolower($filename), 0, strlen('file:')) == 'file:') {
             $filename = substr($filename, strlen('file:'));
         }
         $filename = urldecode($filename);

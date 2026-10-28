@@ -19,6 +19,7 @@ class plgWikiParsermarkdown extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -53,7 +54,9 @@ class plgWikiParsermarkdown extends \Hubzero\Plugin\Plugin
                 $config['url']       = (isset($config['url']))       ? $config['url']       : null;
                 $config['loglinks']  = (isset($config['loglinks']))  ? $config['loglinks']  : null;
 
-                $config['style']     = (isset($config['style'])      ? $config['style']     : $this->params->get('style', 'GithubMarkdown'));
+                $config['style'] = isset($config['style'])
+                    ? $config['style']
+                    : $this->params->get('style', 'GithubMarkdown');
 
                 $this->parser = new MarkdownParser($config);
             }

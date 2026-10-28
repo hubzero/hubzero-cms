@@ -15,6 +15,7 @@ defined('_HZEXEC_') or die();
         <a class="pub-info-pop more-content" title="Click to learn more" href="#handler-hint"></a>
     </h6>
     <div class="hidden">
-        <div id="handler-hint" class="full-content"><?php echo Lang::txt('COM_PUBLICATIONS_HANDLER_CHOICE_HINT'); ?></div>
+        <?php $langTxt = Lang::txt('COM_PUBLICATIONS_HANDLER_CHOICE_HINT'); ?>
+        <div id="handler-hint" class="full-content"><?php echo $langTxt; ?></div>
     </div>
 </div>

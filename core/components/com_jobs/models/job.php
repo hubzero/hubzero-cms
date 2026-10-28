@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,6 +28,7 @@ class Job extends Model
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Jobs\\Tables\\Job';
 
     /**
@@ -34,6 +36,7 @@ class Job extends Model
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_jobs.job.description';
 
     /**
@@ -41,7 +44,7 @@ class Job extends Model
      *
      * @var  object
      */
-    private $_creator = null;
+    private $creator = null;
 
     /**
      * Get the creator of this entry
@@ -55,17 +58,17 @@ class Job extends Model
      */
     public function creator($property = null)
     {
-        if (!($this->_creator instanceof Member)) {
-            $this->_creator = Member::oneOrNew($this->get('addedBy'));
+        if (!($this->creator instanceof Member)) {
+            $this->creator = Member::oneOrNew($this->get('addedBy'));
         }
         if ($property) {
             $property = ($property == 'uidNumber') ? 'id' : $property;
             if ($property == 'picture') {
-                return $this->_creator->picture();
+                return $this->creator->picture();
             }
-            return $this->_creator->get($property);
+            return $this->creator->get($property);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**

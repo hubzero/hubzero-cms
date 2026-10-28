@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for displaying a message with links to articles
@@ -22,8 +20,10 @@ class MainMacro extends WikiMacro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'Displays a message containing links to articles with further details on a topic. Accepts a list of comma-separated page names.';
-        $txt['html'] = '<p>Displays a message containing links to articles with further details on a topic. Accepts a list of comma-separated page names.</p>';
+        $txt['wiki'] = 'Displays a message containing links to articles with further details on a topic. '
+            . 'Accepts a list of comma-separated page names.';
+        $txt['html'] = '<p>Displays a message containing links to articles with further details on a topic. '
+            . 'Accepts a list of comma-separated page names.</p>';
         return $txt['html'];
     }
 
@@ -68,7 +68,11 @@ class MainMacro extends WikiMacro
             if (strstr($page, ' ')) {
                 $g = \Components\Wiki\Models\Page::oneByTitle($page, $this->domain, $this->domain_id);
             } else {
-                $g = \Components\Wiki\Models\Page::oneByPath(($scope ? $scope . '/' : '') . $page, $this->domain, $this->domain_id);
+                $g = \Components\Wiki\Models\Page::oneByPath(
+                    ($scope ? $scope . '/' : '') . $page,
+                    $this->domain,
+                    $this->domain_id
+                );
             }
             if (!$g->get('id')) {
                 $g->set('pagename', $page);

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for truncating possibly large obsolete session_log table
- **/
+ *
+ */
 class Migration20161018093917Core extends Base
 {
     /**

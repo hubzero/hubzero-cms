@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,13 +14,15 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding section grade policy id field
+  *
  **/
 class Migration20130412000000ComCourses extends Base
 {
     public function up()
     {
         if (!$this->db->tableHasField('#__courses_offering_sections', 'grade_policy_id')) {
-            $query = "ALTER TABLE `#__courses_offering_sections` ADD `grade_policy_id` INT(11)  NOT NULL  DEFAULT '1'  AFTER `enrollment`;";
+            $query = "ALTER TABLE `#__courses_offering_sections` ADD `grade_policy_id` "
+                . "INT(11) NOT NULL DEFAULT '1' AFTER `enrollment`;";
 
             $this->db->setQuery($query);
             $this->db->query();

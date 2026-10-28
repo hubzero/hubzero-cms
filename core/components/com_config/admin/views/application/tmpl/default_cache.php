@@ -24,7 +24,12 @@ defined('_HZEXEC_') or die();
         endforeach;
         ?>
 
-        <?php if (isset($this->data['cache']['cache_handler']) && $this->data['cache']['cache_handler'] == 'memcache' || $this->data['session']['session_handler'] == 'memcache') : ?>
+        <?php
+        $cacheIsMemcache = isset($this->data['cache']['cache_handler'])
+            && $this->data['cache']['cache_handler'] == 'memcache';
+        $sessionIsMemcache = $this->data['session']['session_handler'] == 'memcache';
+        ?>
+        <?php if ($cacheIsMemcache || $sessionIsMemcache) : ?>
             <?php
             foreach ($this->form->getFieldset('memcache') as $mfield) :
                 ?>

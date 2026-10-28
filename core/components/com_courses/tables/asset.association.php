@@ -75,7 +75,9 @@ class AssetAssociation extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->quote(intval($asset_id)) . " AND scope_id=" . $this->_db->quote(intval($scope_id)) . " AND scope=" . $this->_db->quote($scope);
+        $query = "SELECT * FROM $this->_tbl WHERE asset_id=" . $this->_db->quote(intval($asset_id))
+            . " AND scope_id=" . $this->_db->quote(intval($scope_id))
+            . " AND scope=" . $this->_db->quote($scope);
 
         $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {
@@ -94,7 +96,8 @@ class AssetAssociation extends Table
      */
     public function getHighestOrdering($scope_id, $scope)
     {
-        $sql = "SELECT ordering FROM $this->_tbl WHERE scope_id=" . $this->_db->quote(intval($scope_id)) . " AND scope=" . $this->_db->quote($scope) . " ORDER BY ordering DESC LIMIT 1";
+        $sql = "SELECT ordering FROM $this->_tbl WHERE scope_id=" . $this->_db->quote(intval($scope_id))
+            . " AND scope=" . $this->_db->quote($scope) . " ORDER BY ordering DESC LIMIT 1";
         $this->_db->setQuery($sql);
         return $this->_db->loadResult();
     }
@@ -105,7 +108,7 @@ class AssetAssociation extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query = " FROM $this->_tbl AS caa";
 
@@ -137,7 +140,7 @@ class AssetAssociation extends Table
     public function count($filters = array())
     {
         $query  = "SELECT COUNT(*)";
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -152,7 +155,7 @@ class AssetAssociation extends Table
     public function find($filters = array())
     {
         $query  = "SELECT caa.*";
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (!empty($filters['start']) && !empty($filters['limit'])) {
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding the dropbox filesystem plugin
- **/
+ *
+ */
 class Migration20160322131915PlgFilesystemDropbox extends Base
 {
     /**

@@ -13,9 +13,9 @@ namespace cebe\markdown\block;
  */
 trait TableTrait
 {
-    private $_tableCellTag = 'td';
-    private $_tableCellCount = 0;
-    private $_tableCellAlign = [];
+    private $tableCellTag = 'td';
+    private $tableCellCount = 0;
+    private $tableCellAlign = [];
 
     /**
      * identify a line as the beginning of a table block.
@@ -23,7 +23,10 @@ trait TableTrait
     protected function identifyTable($line, $lines, $current)
     {
         return strpos($line, '|') !== false && isset($lines[$current + 1])
-            && preg_match('~^\\s*\\|?(\\s*:?-[\\-\\s]*:?\\s*\\|\\s*:?-[\\-\\s]*:?\\s*)+\\|?\\s*$~', $lines[$current + 1]);
+            && preg_match(
+                '~^\\s*\\|?(\\s*:?-[\\-\\s]*:?\\s*\\|\\s*:?-[\\-\\s]*:?\\s*)+\\|?\\s*$~',
+                $lines[$current + 1]
+            );
     }
 
     /**
@@ -87,20 +90,24 @@ trait TableTrait
     protected function renderTable($block)
     {
         $content = '';
-        $this->_tableCellAlign = $block['cols'];
+        $this->tableCellAlign = $block['cols'];
         $content .= "<thead>\n";
         $first = true;
         foreach ($block['rows'] as $row) {
-            $this->_tableCellTag = $first ? 'th' : 'td';
-            $align = empty($this->_tableCellAlign[$this->_tableCellCount]) ? '' : ' align="' . $this->_tableCellAlign[$this->_tableCellCount] . '"';
-            $this->_tableCellCount++;
-            $tds = "<$this->_tableCellTag$align>" . trim($this->renderAbsy($this->parseInline($row))) . "</$this->_tableCellTag>"; // TODO move this to the consume step
+            $this->tableCellTag = $first ? 'th' : 'td';
+            $align = empty($this->tableCellAlign[$this->tableCellCount])
+                ? ''
+                : ' align="' . $this->tableCellAlign[$this->tableCellCount] . '"';
+            $this->tableCellCount++;
+            $tds = "<$this->tableCellTag$align>"
+                . trim($this->renderAbsy($this->parseInline($row)))
+                . "</$this->tableCellTag>"; // TODO move this to the consume step
             $content .= "<tr>$tds</tr>\n";
             if ($first) {
                 $content .= "</thead>\n<tbody>\n";
             }
             $first = false;
-            $this->_tableCellCount = 0;
+            $this->tableCellCount = 0;
         }
         return "<table>\n$content</tbody>\n</table>\n";
     }
@@ -111,9 +118,14 @@ trait TableTrait
     protected function parseTd($markdown)
     {
         if (isset($this->context[1]) && $this->context[1] === 'table') {
-            $align = empty($this->_tableCellAlign[$this->_tableCellCount]) ? '' : ' align="' . $this->_tableCellAlign[$this->_tableCellCount] . '"';
-            $this->_tableCellCount++;
-            return [['text', "</$this->_tableCellTag><$this->_tableCellTag$align>"], isset($markdown[1]) && $markdown[1] === ' ' ? 2 : 1]; // TODO make a absy node
+            $align = empty($this->tableCellAlign[$this->tableCellCount])
+                ? ''
+                : ' align="' . $this->tableCellAlign[$this->tableCellCount] . '"';
+            $this->tableCellCount++;
+            return [
+                ['text', "</$this->tableCellTag><$this->tableCellTag$align>"],
+                isset($markdown[1]) && $markdown[1] === ' ' ? 2 : 1
+            ]; // TODO make a absy node
         }
         return [['text', $markdown[0]], 1];
     }

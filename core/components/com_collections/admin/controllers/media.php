@@ -260,8 +260,11 @@ class Media extends AdminController
         }
 
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)));
+            $pattern = '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/';
+            $max = preg_replace($pattern, '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            echo json_encode(array(
+                'error' => Lang::txt('COM_COLLECTIONS_ERROR_FILE_TOO_LARGE', $max)
+            ));
             return;
         }
 
@@ -281,10 +284,13 @@ class Media extends AdminController
         $file = $path . DS . $filename . '.' . $ext;
 
         // Check that the file type is allowed
-        $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
+        $uploadExtensions = $mediaConfig->get('upload_extensions');
+        $allowed = array_values(array_filter(explode(',', $uploadExtensions)));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            echo json_encode(array(
+                'error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))
+            ));
             return;
         }
 
@@ -329,12 +335,14 @@ class Media extends AdminController
         $view->set('no_html', 1);
 
         // Echo result
+        // Entities have to be encoded or IE 8 goes nuts
+        $html = str_replace('>', '&gt;', $view->loadTemplate());
         echo json_encode(array(
             'success'   => true,
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir,
-            'html'      => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+            'html'      => $html
         ));
     }
 
@@ -411,9 +419,8 @@ class Media extends AdminController
         // Upload new files
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_UPLOAD'));
-        }
-        // File was uploaded
-        else {
+        } else {
+            // File was uploaded
             // Virus scan
             if (!Filesystem::isSafe($path . DS . $file['name'])) {
                 Filesystem::delete($path . DS . $file['name']);

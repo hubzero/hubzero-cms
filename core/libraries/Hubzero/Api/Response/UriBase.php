@@ -59,7 +59,7 @@ class UriBase extends Middleware
             foreach ($data as $key => $value) {
                 $data[$key] = $this->convert($request, $key, $value);
             }
-        } else if (is_object($data)) {
+        } elseif (is_object($data)) {
             foreach (array_keys(get_object_vars($data)) as $key) {
                 $data->$key = $this->convert($request, $key, $data->$key);
             }

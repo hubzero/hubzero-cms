@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing duplicate extended profile entries
- **/
+ *
+ */
 class Migration20180828000000ComMembers extends Base
 {
     /**
@@ -22,7 +24,8 @@ class Migration20180828000000ComMembers extends Base
     public function up()
     {
         if ($this->db->tableExists('#__user_profiles')) {
-            $query = "SELECT user_id, profile_key, profile_value, count(*) AS no_of_records, group_concat(id) AS duplicates
+            $query = "SELECT user_id, profile_key, profile_value, count(*) AS no_of_records, "
+                . "group_concat(id) AS duplicates
 				FROM `#__user_profiles`
 				GROUP BY user_id, profile_key, profile_value
 				HAVING count(*) > 1

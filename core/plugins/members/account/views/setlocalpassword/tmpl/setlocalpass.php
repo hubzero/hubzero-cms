@@ -1,18 +1,20 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->css('providers.css', 'com_login')
-     ->js()
-     ->js('jquery.hoverIntent', 'system');
+    ->css('providers.css', 'com_login')
+    ->js()
+    ->js('jquery.hoverIntent', 'system');
 ?>
 
 <h3 class="section-header"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></h3>
@@ -28,10 +30,12 @@ $this->css()
 <?php endif; ?>
 
 <div id="members-account-section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option .
+    <form action="<?php echo Route::url(
+        'index.php?option=' . $this->option .
                                         '&id=' . $this->id .
                                         '&active=account' .
-                                        '&task=setlocalpass'); ?>" method="post">
+        '&task=setlocalpass'
+    ); ?>" method="post">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SET_LOCAL_PASSWORD'); ?></legend>
 
@@ -53,6 +57,7 @@ $this->css()
             </div>
 
             <?php
+
             if (count($this->password_rules) > 0) {
                 echo '<div id="passrules-container" class="setlocal">';
                 echo '<div id="passrules-subcontainer">';
@@ -87,7 +92,9 @@ $this->css()
         <div class="clear"></div>
         <p class="submit">
             <input type="hidden" name="change" value="1" />
-            <input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>" id="password-change-save" />
+            <input type="submit"
+                value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>"
+                id="password-change-save"/>
             <input type="hidden" name="no_html" id="pass_no_html" value="0" />
             <input type="hidden" name="redirect" id="pass_redirect" value="1" />
         </p>

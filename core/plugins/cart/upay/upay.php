@@ -20,6 +20,7 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -97,7 +98,8 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
 
         if ($expectedPayment != $paymentReceived) {
             $response['status'] = 'error';
-            $response['error'] =  'Payment received(' . $paymentReceived . ') does not match the expected payment(' . $expectedPayment . ')';
+            $response['error'] =  'Payment received(' . $paymentReceived
+                . ') does not match the expected payment(' . $expectedPayment . ')';
         }
 
         if ($response['status'] == 'ok') {
@@ -186,7 +188,9 @@ class plgCartUpay extends \Hubzero\Plugin\Plugin
         $this->transactionDetails['EXT_TRANS_ID_LABEL'] = $this->options->transactionName;
         $this->transactionDetails['AMT'] = $transactionDetails->info->tiTotal;
 
-        $base = $this->params->get('validationKey') . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
+        $base = $this->params->get('validationKey')
+            . $this->transactionDetails['EXT_TRANS_ID']
+            . $this->transactionDetails['AMT'];
         $validationKey =  base64_encode(md5($base, true));
 
         $this->transactionDetails['VALIDATION_KEY'] = $validationKey;

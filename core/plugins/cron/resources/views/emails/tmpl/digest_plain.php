@@ -21,7 +21,7 @@ foreach ($this->rows as $row) {
     $content = '';
     if ($row->get('introtext')) {
         $content = $row->get('introtext');
-    } else if ($row->get('fulltxt')) {
+    } elseif ($row->get('fulltxt')) {
         $content = $row->get('fulltxt');
         $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
         $content = trim($content);

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Config\Models;
 
 use Hubzero\Config\Registry;
@@ -42,7 +43,8 @@ class Component extends Obj
     /**
      * Class constructor, overridden in descendant classes.
      *
-     * @param   mixed  $properties  Either and associative array or another object to set the initial properties of the object.
+     * @param   mixed  $properties  Either and associative array or another
+     *                              object to set the initial properties of the object.
      * @return  void
      */
     public function __construct($properties = null)

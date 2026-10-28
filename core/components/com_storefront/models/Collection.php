@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +24,7 @@ require_once __DIR__ . DS . 'Warehouse.php';
 class Collection
 {
     // Collection data container
-    var $data;
+    public $data;
 
     /**
      * Constructor
@@ -159,7 +160,9 @@ class Collection
     public function setAlias($cAlias)
     {
         // Check if the alias is valid
-        $badAliasException = new Exception('Bad collection alias. Alias should be a non-empty non-numeric alphanumeric string.');
+        $badAliasException = new Exception(
+            'Bad collection alias. Alias should be a non-empty non-numeric alphanumeric string.'
+        );
         if (preg_match("/^[0-9a-zA-Z]+[\-_0-9a-zA-Z]*$/i", $cAlias)) {
             if (is_numeric($cAlias)) {
                 throw $badAliasException;
@@ -249,7 +252,10 @@ class Collection
     }
 
     /**
-     * Add collection to the warehouse TODO: Something tells me that this is not used. Check and kill this and the $warehouse->addCollection($this) method
+     * Add collection to the warehouse
+     *
+     * TODO: Something tells me that this is not used. Check and kill this
+     * and the $warehouse->addCollection($this) method
      *
      * @param  void
      * @return object   info
@@ -327,7 +333,8 @@ class Collection
         $img = $this->getImage();
 
         // First delete all old references
-        $sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'collection' AND `imgObjectId` = " . $db->quote($this->getId());
+        $sql = "DELETE FROM `#__storefront_images`
+            WHERE `imgObject` = 'collection' AND `imgObjectId` = " . $db->quote($this->getId());
         $db->setQuery($sql);
         $db->query();
 

@@ -19,14 +19,14 @@ class Log extends Base implements CommandInterface
     /**
      * Keep track of log class
      *
-     * @var  string
+     * @public string
      **/
     private $log = null;
 
     /**
      * Keep track of prompt character
      *
-     * @var  string
+     * @public string
      **/
     private $promptChar = null;
 
@@ -124,8 +124,11 @@ class Log extends Base implements CommandInterface
             // If we found one and not paused and not in input mode
             if ($buffer !== false && !$pause && !$input) {
                 // Parse the log line (log class will handle output)
-                $class::parse($buffer, $this->output, array('threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat));
-
+                $class::parse(
+                    $buffer,
+                    $this->output,
+                    array('threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat)
+                );
                 // Add new prompt character
                 $this->printPrompt();
             }
@@ -180,14 +183,16 @@ class Log extends Base implements CommandInterface
                         // h - help info
                         case 104:
                             $this->output->backspace();
-                            $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, r: rerender last 100 lines";
+                            $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, 
+                                r: rerender last 100 lines";
                             $this->output->addLine($help);
                             break;
 
                         // i - input mode
                         case 105:
                             $this->output->backspace((2 + strlen($prompt)));
-                            $this->output->addLine('You\'re entering input mode. Pausing log streaming. Type "done" or "i" to return.');
+                            $this->output->addLine('You\'re entering input mode. Pausing log streaming. Type "done" or 
+                                "i" to return.');
                             $this->output->addString('input mode >>> ');
 
                             // Set input mode to true and undo icanon setting
@@ -224,7 +229,11 @@ class Log extends Base implements CommandInterface
                             $lines   = explode("\n", trim($content));
                             foreach ($lines as $line) {
                                 $this->printPrompt();
-                                $class::parse($line, $this->output, array('threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat));
+                                $class::parse(
+                                    $line,
+                                    $this->output,
+                                    array('threshold' => $threshold, 'noBeep' => $noBeep, 'dateFormat' => $dateFormat)
+                                );
                             }
                             break;
 
@@ -241,9 +250,8 @@ class Log extends Base implements CommandInterface
                         $this->printPrompt();
                     }
                 }
-            }
+            } else {
             // Input mode
-            else {
                 $string = fgets(STDIN);
 
                 if ($string !== false) {
@@ -272,8 +280,10 @@ class Log extends Base implements CommandInterface
                                 $dateFormat = $this->mapDateFormat($arg);
                                 $this->output->addLine('Date format changed', 'success');
                             }
-
-                            $this->output->addLine('You can set the date format using: "date [format]". Options include: full, long, normal/default, and short.');
+                            $this->output->addLine(
+                                'You can set the date format using: "date [format]". ' .
+                                'Options include: full, long, normal/default, and short.'
+                            );
                             $this->output->addString('input mode >>> ');
                             break;
 
@@ -305,12 +315,16 @@ class Log extends Base implements CommandInterface
                                     foreach ($threshold as $t) {
                                         $printable[] = $t['key'] . $t['operator'] . $t['value'];
                                     }
-                                    $this->output->addString('Threshold is currently set to ' . implode(', ', $printable) . '. ');
+                                    $this->output->addString('Threshold is currently set to ' .
+                                        implode(', ', $printable) .
+                                        '. ');
                                 } else {
                                     $this->output->addString('No thresholds are currently set. ');
                                 }
-
-                                $this->output->addLine('You can set thresholds using the format: "threshold field>value[,field=value]"');
+                                $this->output->addLine(
+                                    'You can set thresholds using the format: ' .
+                                    '"threshold field>value[, field=value]"'
+                                );
                             }
 
                             $this->output->addString('input mode >>> ');

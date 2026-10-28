@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,11 +24,15 @@ class Migration20141022103600PlgResourcesAbout extends Base
     {
         if ($this->db->tableExists('#__resource_types')) {
             // Get all the "mine" queries
-            $this->db->setQuery("SELECT id, params FROM `#__resource_types` WHERE `category`=27 AND `params` LIKE '%plg_abouttool=1%'");
+            $query = "SELECT id, params FROM `#__resource_types` WHERE `category`=27 AND `params` LIKE "
+                . "'%plg_abouttool=1%'";
+            $this->db->setQuery($query);
             if ($records = $this->db->loadObjectList()) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
+                $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables'
+                    . DS . 'type.php';
                 if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
+                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components'
+                        . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
                 }
                 include_once $path;
 
@@ -63,11 +68,15 @@ class Migration20141022103600PlgResourcesAbout extends Base
 
         if ($this->db->tableExists('#__resource_types')) {
             // Get all the "mine" queries
-            $this->db->setQuery("SELECT id, params FROM `#__resource_types` WHERE `category`=27 AND `alias`='tools'");
+            $query = "SELECT id, params FROM `#__resource_types` "
+                . "WHERE `category`=27 AND `alias`='tools'";
+            $this->db->setQuery($query);
             if ($records = $this->db->loadObjectList()) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
+                $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables'
+                    . DS . 'type.php';
                 if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
+                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components'
+                        . DS . 'com_resources' . DS . 'tables' . DS . 'type.php';
                 }
                 include_once $path;
 

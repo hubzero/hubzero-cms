@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for creating links in the SFTP directory
  **/
@@ -39,7 +36,9 @@ class Migration20180627111315ComPublications extends Base
                 );
                 $pubParams->merge($addParams);
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($pubParams->toString()) . " WHERE `element`='com_publications'";
+                $query = "UPDATE `#__extensions` SET `params`="
+                    . $this->db->quote($pubParams->toString())
+                    . " WHERE `element`='com_publications'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -53,7 +52,9 @@ class Migration20180627111315ComPublications extends Base
             $this->db->query();
             $versionCount = $this->db->loadResult();
             while ($offset < $versionCount) {
-                $query = "SELECT `doi`, `publication_id`, `id`, `version_number`, `state` FROM `#__publication_versions` WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
+                $query = "SELECT `doi`, `publication_id`, `id`, `version_number`, "
+                    . "`state` FROM `#__publication_versions` "
+                    . "WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
                 $this->db->setQuery($query);
                 $this->db->query();
                 $publications = $this->db->loadAssocList();
@@ -81,7 +82,9 @@ class Migration20180627111315ComPublications extends Base
         $this->db->query();
         $versionCount = $this->db->loadResult();
         while ($offset < $versionCount) {
-            $query = "SELECT `doi`, `publication_id`, `id`, `version_number`, `state` FROM `#__publication_versions` WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
+            $query = "SELECT `doi`, `publication_id`, `id`, `version_number`, "
+                . "`state` FROM `#__publication_versions` "
+                . "WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
             $this->db->setQuery($query);
             $this->db->query();
             $publications = $this->db->loadAssocList();
@@ -115,8 +118,11 @@ class Migration20180627111315ComPublications extends Base
 
         $tarname = $bundleName . '.zip';
         $fileName = $bundleWithVersion . '.zip';
-        $tarPath = '..' . '/' . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/' . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/' . $tarname;
-        $linkPath = $this->_linkPath();
+        $tarPath = '..' . '/'
+            . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/'
+            . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/'
+            . $tarname;
+        $linkPath = $this->linkPath();
         if ($linkPath !== false) {
             chdir($linkPath);
         }
@@ -149,7 +155,7 @@ class Migration20180627111315ComPublications extends Base
         }
 
         $tarname = $bundleName . '.zip';
-        $linkPath = $this->_linkPath();
+        $linkPath = $this->linkPath();
         $link = $linkPath . '/' . $tarname;
         if ($link == false) {
             return false;
@@ -165,7 +171,7 @@ class Migration20180627111315ComPublications extends Base
      *
      * @return  mixed   string if sftp path provided, false if not
      */
-    private function _linkPath()
+    private function linkPath()
     {
         $sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
         if (!is_dir($sftpPath)) {

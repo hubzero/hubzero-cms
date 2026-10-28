@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding unique constraint to group membership
- **/
+ *
+ */
 class Migration20141201170547ComGroups extends Base
 {
     /**
@@ -21,8 +23,12 @@ class Migration20141201170547ComGroups extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xgroups_members') && !$this->db->tableHasKey('#__xgroups_members', 'idx_gidNumber_uidNumber')) {
-            $query = "ALTER TABLE `#__xgroups_members` ADD UNIQUE KEY idx_gidNumber_uidNumber(`gidNumber`, `uidNumber`)";
+        if (
+            $this->db->tableExists('#__xgroups_members')
+            && !$this->db->tableHasKey('#__xgroups_members', 'idx_gidNumber_uidNumber')
+        ) {
+            $query = "ALTER TABLE `#__xgroups_members` "
+                . "ADD UNIQUE KEY idx_gidNumber_uidNumber(`gidNumber`, `uidNumber`)";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -33,7 +39,10 @@ class Migration20141201170547ComGroups extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__xgroups_members') && $this->db->tableHasKey('#__xgroups_members', 'idx_gidNumber_uidNumber')) {
+        if (
+            $this->db->tableExists('#__xgroups_members')
+            && $this->db->tableHasKey('#__xgroups_members', 'idx_gidNumber_uidNumber')
+        ) {
             $query = "ALTER TABLE `#__xgroups_members` DROP KEY idx_gidNumber_uidNumber";
             $this->db->setQuery($query);
             $this->db->query();

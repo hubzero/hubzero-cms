@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,6 +11,7 @@ defined('_HZEXEC_') or die;
 
 /**
  * Plugin for ensuring categories are empty before deleting
+ *
  */
 class plgContentCategories extends \Hubzero\Plugin\Plugin
 {
@@ -48,7 +50,7 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
             $table = $tableInfo[$extension]['table_name'];
 
             // See if this category has any content items
-            $count = $this->_countItemsInCategory($table, $data->get('id'));
+            $count = $this->countItemsInCategory($table, $data->get('id'));
 
             // Return false if db error
             if ($count === false) {
@@ -56,7 +58,8 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
             } else {
                 // Show error if items are found in the category
                 if ($count > 0) {
-                    $msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) . Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
+                    $msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title'));
+                    $msg .= Lang::txts('COM_CATEGORIES_N_ITEMS_ASSIGNED', $count);
 
                     App::abort(403, $msg);
 
@@ -64,12 +67,13 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
                 }
                 // Check for items in any child categories (if it is a leaf, there are no child categories)
                 if (!$data->isLeaf()) {
-                    $count = $this->_countItemsInChildren($table, $data->get('id'), $data);
+                    $count = $this->countItemsInChildren($table, $data->get('id'), $data);
 
                     if ($count === false) {
                         $result = false;
                     } elseif ($count > 0) {
-                        $msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title')) . Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
+                        $msg = Lang::txt('COM_CATEGORIES_DELETE_NOT_ALLOWED', $data->get('title'));
+                        $msg .= Lang::txts('COM_CATEGORIES_HAS_SUBCATEGORY_ITEMS', $count);
 
                         App::abort(403, $msg);
 
@@ -89,7 +93,7 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
      * @param   int     $catid  id of the category to check
      * @return  mixed   Count of items found or false if db error
      */
-    private function _countItemsInCategory($table, $catid)
+    private function countItemsInCategory($table, $catid)
     {
         $db = App::get('db');
 
@@ -117,7 +121,7 @@ class plgContentCategories extends \Hubzero\Plugin\Plugin
      * @param   object  $data
      * @return  mixed   Count of items found or false if db error
      */
-    private function _countItemsInChildren($table, $catid, $data)
+    private function countItemsInChildren($table, $catid, $data)
     {
         $db = App::get('db');
 

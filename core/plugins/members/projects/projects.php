@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,21 +13,22 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for projects
  */
-class plgMembersProjects extends \Hubzero\Plugin\Plugin
+class PlgMembersProjects extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Constructor
      *
-     * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
-     * @return  void
+     * @param  object &$subject Event observer
+     * @param  array  $config   Optional config values
+     * @return void
      */
     public function __construct(&$subject, $config)
     {
@@ -40,9 +42,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
     /**
      * Return the alias and name for this category of content
      *
-     * @param   object  $user
-     * @param   object  $member
-     * @return  array
+     * @param  object $user
+     * @param  object $member
+     * @return array
      */
     public function &onMembersAreas($user, $member)
     {
@@ -62,11 +64,11 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
     /**
      * Perform actions when viewing a member profile
      *
-     * @param   object  $user    Current user
-     * @param   object  $member  Current member page
-     * @param   string  $option  Start of records to pull
-     * @param   array   $areas   Active area(s)
-     * @return  array
+     * @param  object $user   Current user
+     * @param  object $member Current member page
+     * @param  string $option Start of records to pull
+     * @param  array  $areas  Active area(s)
+     * @return array
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -89,7 +91,7 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
         );
 
         // Load classes
-        require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
+        include_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
         $this->model = new \Components\Projects\Models\Project();
@@ -174,9 +176,10 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
     /**
      * View entries
      *
-     * @param   string  $which  The type of entries to display
-     * @return  string
+     * @param  string  $which  The type of entries to display
+     * @return string
      */
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($which = 'all')
     {
         // Build the final HTML
@@ -220,8 +223,9 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
     /**
      * Display updates
      *
-     * @return  string
+     * @return string
      */
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
         // Build the final HTML
@@ -235,13 +239,16 @@ class plgMembersProjects extends \Hubzero\Plugin\Plugin
         );
 
         // Get shared updates feed from blog plugin
-        $results = Event::trigger('projects.onShared', array(
+        $results = Event::trigger(
+            'projects.onShared',
+            array(
             'feed',
             $this->model,
             $projects,
             $this->_user->get('id'),
             $view->filters
-        ));
+            )
+        );
 
         $view->content      = !empty($results) && isset($results[0]) ? $results[0] : null;
         $view->newcount     = $this->model->table()->getUpdateCount(

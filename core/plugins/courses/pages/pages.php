@@ -822,7 +822,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 
         if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') {
             $filename = substr($filename, strlen('image:'));
-        } else if (substr(strtolower($filename), 0, strlen('file:')) == 'file:') {
+        } elseif (substr(strtolower($filename), 0, strlen('file:')) == 'file:') {
             $filename = substr($filename, strlen('file:'));
         }
         $filename = urldecode($filename);

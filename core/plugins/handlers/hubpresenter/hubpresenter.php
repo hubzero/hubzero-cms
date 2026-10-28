@@ -16,13 +16,14 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for hubpresenter file handling
  */
-class plgHandlersHubpresenter extends Plugin
+class PlgHandlersHubpresenter extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -35,7 +36,7 @@ class plgHandlersHubpresenter extends Plugin
     {
         // Do we have everything we need?
         $need = [
-            'json'   => '1',
+            'json' => '1',
             'videos' => function ($ext, $files) {
                 // If we dont have all the necessary media formats
                 if (array_key_exists('mp4', $ext)) {
@@ -43,7 +44,7 @@ class plgHandlersHubpresenter extends Plugin
                     if (!array_key_exists('ogv', $ext) || !array_key_exists('webm', $ext)) {
                         return false;
                     }
-                } else if (array_key_exists('mp3', $ext)) {
+                } elseif (array_key_exists('mp3', $ext)) {
                     if (!array_key_exists('ogg', $ext)) {
                         return false;
                     }
@@ -68,7 +69,8 @@ class plgHandlersHubpresenter extends Plugin
                         }
                     }
 
-                    // Make sure for each of the slide videos we have all three formats and has a backup image for the slide
+                    // Check for video formats and backup image
+
                     foreach ($slideVideos as $k => $v) {
                         if (count($v) < 3) {
                             return false;
@@ -105,14 +107,14 @@ class plgHandlersHubpresenter extends Plugin
 
         // Create view
         $view = new \Hubzero\Plugin\View([
-            'folder'  => 'handlers',
+            'folder' => 'handlers',
             'element' => 'hubpresenter',
-            'name'    => 'hubpresenter',
-            'layout'  => 'view'
+            'name' => 'hubpresenter',
+            'layout' => 'view'
         ]);
 
-        $view->items      = $collection;
-        $view->entityId   = $entityId;
+        $view->items = $collection;
+        $view->entityId = $entityId;
         $view->entityType = $entityType;
 
         return $view;

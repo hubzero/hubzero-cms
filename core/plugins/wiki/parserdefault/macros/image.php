@@ -179,14 +179,13 @@ Examples:
 
                 $ret = true;
             }
-        } else if (preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file)) {
+        } elseif (preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file)) {
             $attr['desc'] = $file;
 
             $ret = true;
-        }
-        // Check for file existence, optionally located on another wiki page
-        // given as "Page:file"
-        else {
+        } else {
+            // Check for file existence, optionally located on another wiki page
+            // given as "Page:file"
             $bits = explode(':', $file);
             if (isset($bits[1])) {
                 // Constrain the lookup to the CURRENT wiki's scope. A bare title
@@ -292,7 +291,7 @@ Examples:
                 $this->attr['style']['float'] = $key;
                 if ($key == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($key == 'right') {
+                } elseif ($key == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
@@ -309,11 +308,11 @@ Examples:
                 $this->attr['style']['float'] = $val;
                 if ($val == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($val == 'right') {
+                } elseif ($val == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }
-        } else if ($key == 'border') {
+        } elseif ($key == 'border') {
             $this->attr['style']['border'] = '#ccc ' . intval($val) . 'px solid';
         } else {
             $this->attr[$key] = $val;
@@ -375,7 +374,7 @@ Examples:
                 $this->attr['style']['float'] = $key;
                 if ($key == 'left') {
                     $this->attr['style']['margin-right'] = '1em';
-                } else if ($key == 'right') {
+                } elseif ($key == 'right') {
                     $this->attr['style']['margin-left'] = '1em';
                 }
             }

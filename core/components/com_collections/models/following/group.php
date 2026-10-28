@@ -20,21 +20,21 @@ class Group extends Base
      *
      * @var  object
      */
-    private $_obj = null;
+    private $obj = null;
 
     /**
      * File path
      *
      * @var  string
      */
-    private $_image = null;
+    private $image = null;
 
     /**
      * URL
      *
      * @var string
      */
-    private $_baselink = null;
+    private $baselink = null;
 
     /**
      * Constructor
@@ -44,9 +44,9 @@ class Group extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_obj = \Hubzero\User\Group::getInstance($oid);
+        $this->obj = \Hubzero\User\Group::getInstance($oid);
 
-        $this->_baselink = 'index.php?option=com_groups&cn=' . $this->_obj->get('cn') . '&active=collections';
+        $this->baselink = 'index.php?option=com_groups&cn=' . $this->obj->get('cn') . '&active=collections';
     }
 
     /**
@@ -56,15 +56,16 @@ class Group extends Base
      */
     public function image()
     {
-        if (!isset($this->_image)) {
+        if (!isset($this->image)) {
             $config = \Component::params('com_groups');
-            if ($this->_obj->get('logo')) {
-                $this->_image = DS . trim($config->get('uploadpath', '/site/groups'), DS) . DS . $this->_obj->get('gidNumber') . DS . $this->_obj->get('logo');
+            if ($this->obj->get('logo')) {
+                $this->image = DS . trim($config->get('uploadpath', '/site/groups'), DS)
+                    . DS . $this->obj->get('gidNumber') . DS . $this->obj->get('logo');
             } else {
-                $this->_image = '/core/components/com_groups/site/assets/img/group_default_logo.png';
+                $this->image = '/core/components/com_groups/site/assets/img/group_default_logo.png';
             }
         }
-        return $this->_image;
+        return $this->image;
     }
 
     /**
@@ -74,7 +75,7 @@ class Group extends Base
      */
     public function alias()
     {
-        return $this->_obj->get('cn');
+        return $this->obj->get('cn');
     }
 
     /**
@@ -84,7 +85,7 @@ class Group extends Base
      */
     public function title()
     {
-        return $this->_obj->get('description');
+        return $this->obj->get('description');
     }
 
     /**
@@ -96,16 +97,16 @@ class Group extends Base
     {
         switch (strtolower(trim($what))) {
             case 'follow':
-                return $this->_baselink . '&scope=follow';
+                return $this->baselink . '&scope=follow';
             break;
 
             case 'unfollow':
-                return $this->_baselink . '&scope=unfollow';
+                return $this->baselink . '&scope=unfollow';
             break;
 
             case 'base':
             default:
-                return $this->_baselink;
+                return $this->baselink;
             break;
         }
     }

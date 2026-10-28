@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die;
 
 /**
  * Email cloack plugin class.
+ *
  */
 class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
 {
@@ -44,6 +46,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
      * @param   string  $text  The text enclosed by the link.
      * @return  string  A regular expression that matches a link containing the parameters.
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getPattern($link, $text)
     {
         $pattern = '~(?:<a ([^>]*)href\s*=\s*"mailto:' . $link . '"([^>]*))>' . $text . '</a>~i';
@@ -58,6 +61,7 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
      * @param   string  $after    Attributes after email.
      * @return  string  Js cloaked email with attributes.
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addAttributesToEmail($email, $before, $after)
     {
         if ($before !== '') {
@@ -76,9 +80,11 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
      * Cloak all emails in text from spambots via Javascript.
      *
      * @param   string   $text    The string to be cloaked.
-     * @param   array    $params  Additional parameters. Parameter "mode" (integer, default 1) replaces addresses with "mailto:" links if nonzero.
+     * @param   array    $params  Additional parameters. Parameter "mode" (integer, default 1)
+     *                            replaces addresses with "mailto:" links if nonzero.
      * @return  boolean  True on success.
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _cloak(&$text, &$params)
     {
         /*
@@ -102,16 +108,19 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
         // any@email.address.com?subject=anyText
         $searchEmailLink = $searchEmail . '([?&][\x20-\x7f][^"<>]+)';
         // anyText
-        $searchText = '((?:[\x20-\x7f]|[\xA1-\xFF]|[\xC2-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF4][\x80-\xBF]{3})[^<>]+)';
+        $searchText = '((?:[\x20-\x7f]|[\xA1-\xFF]|[\xC2-\xDF][\x80-\xBF]|' .
+            '[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF4][\x80-\xBF]{3})[^<>]+)';
 
         //Any Image link
         $searchImage = "(<img[^>]+>)";
 
         // Any Text with <span
-        $searchTextSpan = '(<span[^>]+>|<span>|<strong>|<strong><span[^>]+>|<strong><span>)' . $searchText . '(</span>|</strong>|</span></strong>)';
+        $spanOpen = '(<span[^>]+>|<span>|<strong>|<strong><span[^>]+>|<strong><span>)';
+        $spanClose = '(</span>|</strong>|</span></strong>)';
+        $searchTextSpan = $spanOpen . $searchText . $spanClose;
 
         // Any address with <span
-        $searchEmailSpan = '(<span[^>]+>|<span>|<strong>|<strong><span[^>]+>|<strong><span>)' . $searchEmail . '(</span>|</strong>|</span></strong>)';
+        $searchEmailSpan = $spanOpen . $searchEmail . $spanClose;
 
         /*
          * Search and fix derivatives of link code <a href="http://mce_host/ourdirectory/email@amail.com"
@@ -560,6 +569,8 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
      */
     public function cloak($mail, $mailto = true, $text = '', $email = true)
     {
-        return '<a href="mailto:' . Hubzero\Utility\Str::obfuscate($mail) . '">' . Hubzero\Utility\Str::obfuscate($text ? $text : $mail) . '</a>';
+        $obfuscatedMail = Hubzero\Utility\Str::obfuscate($mail);
+        $obfuscatedText = Hubzero\Utility\Str::obfuscate($text ? $text : $mail);
+        return '<a href="mailto:' . $obfuscatedMail . '">' . $obfuscatedText . '</a>';
     }
 }

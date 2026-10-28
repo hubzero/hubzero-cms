@@ -25,12 +25,14 @@ class Feed extends Macro
         $txt = array();
         $txt['wiki'] = 'Embeds a RSS Feed into the Page';
         $txt['html'] = '<p>Embeds a RSS feed into the page.</p>
-						<p>Examples:</p>
-						<ul>
-							<li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss)]]</code></li>
-							<li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, 3)]] - show 3 feed items</code></li>
-							<li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, class=cnn_feed)]] - feed with class "cnn_feed"</code></li>
-						</ul>';
+            <p>Examples:</p>
+            <ul>
+                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss)]]</code></li>
+                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, 3)]]</code> - ' .
+                'show 3 feed items</li>
+                <li><code>[[Feed(http://rss.cnn.com/rss/cnn_topstories.rss, class=cnn_feed)]]</code> - ' .
+                'feed with class "cnn_feed"</li>
+            </ul>';
 
         return $txt['html'];
     }
@@ -46,15 +48,15 @@ class Feed extends Macro
         $args = explode(',', $this->args);
 
         // Get feed url
-        $url = $this->_getFeedUrl($args);
+        $url = $this->getFeedUrl($args);
 
         if (!$url) {
             return '';
         }
 
         // Get feed details
-        $limit = $this->_getFeedLimit($args, 5);
-        $class = $this->_getFeedClass($args);
+        $limit = $this->getFeedLimit($args, 5);
+        $class = $this->getFeedClass($args);
 
         // Fetch the feed ourselves so every redirect hop is re-checked against the
         // SSRF guard and the connection is pinned to the checked address, then hand
@@ -135,7 +137,7 @@ class Feed extends Macro
 
         // Add each item
         foreach ($feed->get_items(0, $limit) as $item) {
-            $html .= $this->_renderItem($item);
+            $html .= $this->renderItem($item);
         }
 
         // Close feed
@@ -150,7 +152,7 @@ class Feed extends Macro
      * @param   object  $item  Feed Item
      * @return  string
      */
-    private function _renderItem($item)
+    private function renderItem($item)
     {
         $html  = '<div class="item">';
         $html .= '<h4>' . \Hubzero\Utility\Sanitize::html((string) $item->get_title()) . '</h4>';
@@ -181,7 +183,7 @@ class Feed extends Macro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getFeedUrl(&$args)
+    private function getFeedUrl(&$args)
     {
         foreach ($args as $k => $arg) {
             if (filter_var($arg, FILTER_VALIDATE_URL) && $this->isPublicHttpUrl($arg)) {
@@ -262,7 +264,7 @@ class Feed extends Macro
      * @param   integer  $default  Default return value
      * @return  mixed
      */
-    private function _getFeedLimit(&$args, $default = 5)
+    private function getFeedLimit(&$args, $default = 5)
     {
         foreach ($args as $k => $arg) {
             if (is_numeric($arg) && $arg > 0 && $arg < 50) {
@@ -282,7 +284,7 @@ class Feed extends Macro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getFeedClass(&$args)
+    private function getFeedClass(&$args)
     {
         foreach ($args as $k => $arg) {
             if (preg_match('/class=([\w-]*)/', $arg, $matches)) {

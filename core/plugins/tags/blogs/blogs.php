@@ -68,7 +68,7 @@ class plgTagsBlogs extends \Hubzero\Plugin\Plugin
 
         if (User::isGuest()) {
             $e_where .= " AND e.access=1 ";
-        } else if (!User::authorise('core.admin')) {
+        } elseif (!User::authorise('core.admin')) {
             $ugs = \Hubzero\User\Helper::getGroups(User::get('id'), 'members', 1);
 
             // Generate list of active hub groups we are a member of.

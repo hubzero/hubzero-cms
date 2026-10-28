@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -147,8 +148,10 @@ class Reports extends Base
         if ($this->getError()) {
             Notify::error($this->getError());
 
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=reports&task=custom&searchterm=' . $filter;
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=reports&task=custom&searchterm=' . $filter, false)
+                Route::url($url, false)
             );
         }
 

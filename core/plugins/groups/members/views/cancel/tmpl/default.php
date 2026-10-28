@@ -10,8 +10,14 @@
 defined('_HZEXEC_') or die();
 
 require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
+
+$formUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=members'
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm">
+<form action="<?php echo $formUrl; ?>" method="post" id="hubForm">
     <div class="explaination">
         <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_CANCEL_EXPLANATION'); ?></p>
     </div>

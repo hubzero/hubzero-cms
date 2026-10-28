@@ -223,7 +223,7 @@ class Bundle extends Base implements CommandInterface
 
         if ($version) {
             $ids = array($version);
-        } else if ($pub) {
+        } elseif ($pub) {
             $db->setQuery("SELECT `id` FROM `#__publication_versions` WHERE `publication_id` = " . $pub . " ORDER BY `id`");
             $ids = $db->loadColumn();
         } else {

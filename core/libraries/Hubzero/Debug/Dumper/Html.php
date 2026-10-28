@@ -65,6 +65,7 @@ class Html extends AbstractRenderer
      * @param   array  $arr
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _deflate($arr)
     {
         if (is_string($arr)) {
@@ -78,11 +79,25 @@ class Html extends AbstractRenderer
         if (is_array($arr)) {
             foreach ($arr as $key => $val) {
                 if (is_array($val)) {
-                    $a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $this->_deflate($val) . '</code>';
+                    $a[] = "\t" .
+                        '<code class="ky">' .
+                        $key .
+                        '</code> <code class="op">=></code> <code class="vl">' .
+                        $this->_deflate($val) .
+                        '</code>';
                 } else {
                     $val = htmlentities($val, ENT_COMPAT, 'UTF-8');
-                    $val = preg_replace('/\[(.+?)\] =&gt;/i', '<code class="ky">[$1]</code> <code class="op">=></code>', $val);
-                    $a[] = "\t" . '<code class="ky">' . $key . '</code> <code class="op">=></code> <code class="vl">' . $val . '</code>';
+                    $val = preg_replace(
+                        '/\[(.+?)\] =&gt;/i',
+                        '<code class="ky">[$1]</code> <code class="op">=></code>',
+                        $val
+                    );
+                    $a[] = "\t" .
+                        '<code class="ky">' .
+                        $key .
+                        '</code> <code class="op">=></code> <code class="vl">' .
+                        $val .
+                        '</code>';
                 }
             }
         }

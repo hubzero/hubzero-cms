@@ -35,7 +35,12 @@ class Autolink extends AbstractHelper
             'url'   => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
                 //"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
                 //"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
-                "(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))",
+                <<<'REGEX'
+(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)
+([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+
+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»""'']))
+REGEX
+                ,
 
             // Email pattern
             'email' => "([\s]*)" .  // whitespace

@@ -56,7 +56,7 @@ class Event extends Model
         // load object
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }
@@ -66,7 +66,7 @@ class Event extends Model
      *
      * @param   $key   Instance Key
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 
@@ -181,7 +181,7 @@ class Event extends Model
         // handle end
         if ($rule['end'] == 'count') {
             $readable .= ' ' . Lang::txt('COM_EVENTS_REPEATS_END_COUNT', $rule['count']);
-        } else if ($rule['end'] == 'until') {
+        } elseif ($rule['end'] == 'until') {
             $readable .= ' ' . Lang::txt('COM_EVENTS_REPEATS_END_UNTIL', $rule['until']);
         }
 

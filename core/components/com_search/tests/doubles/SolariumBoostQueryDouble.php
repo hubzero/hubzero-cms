@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -16,24 +17,24 @@ namespace Components\Search\Tests\Doubles;
  */
 class SolariumBoostQueryDouble
 {
-	/**
-	 * Factory call, stubbed by the tests
-	 *
-	 * @param   array  $args
-	 * @return  mixed
-	 */
-	public function one($args = [])
-	{
-		return null;
-	}
+    /**
+     * Factory call, stubbed by the tests
+     *
+     * @param   array  $args
+     * @return  mixed
+     */
+    public function one($args = [])
+    {
+        return null;
+    }
 
-	/**
-	 * Query serialisation, stubbed by the tests
-	 *
-	 * @return  array
-	 */
-	public function toArray()
-	{
-		return [];
-	}
+    /**
+     * Query serialisation, stubbed by the tests
+     *
+     * @return  array
+     */
+    public function toArray()
+    {
+        return [];
+    }
 }

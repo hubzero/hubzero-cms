@@ -35,6 +35,7 @@ class UrlHelper extends Obj
      * @param   string   $url
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function _appendQueryCharacter($url)
     {
         if (!preg_match('/\?.+$/', $url)) {

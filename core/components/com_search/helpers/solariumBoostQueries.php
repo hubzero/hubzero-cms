@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,9 +19,9 @@ use Component;
 
 class SolariumBoostQueries
 {
-    protected $boosts,
-        $queries,
-        $queryFactory;
+    protected $boosts;
+    protected $queries;
+    protected $queryFactory;
 
     public function __construct($args = [])
     {

@@ -356,8 +356,12 @@ class Roles extends AdminController
     {
         $gid  = Request::getString('gid', '');
         $tmpl = Request::getString('tmpl', '');
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&gid=' . $gid
+            . ($tmpl ? '&tmpl=' . $tmpl : '');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $gid . ($tmpl ? '&tmpl=' . $tmpl : ''), false)
+            Route::url($url, false)
         );
     }
 }

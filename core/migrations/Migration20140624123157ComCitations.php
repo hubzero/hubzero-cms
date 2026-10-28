@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for changing uid from username to int
- **/
+ *
+ */
 class Migration20140624123157ComCitations extends Base
 {
     /**
@@ -42,7 +44,8 @@ class Migration20140624123157ComCitations extends Base
                     $newId = $profile->get('id');
                 }
 
-                $query = "UPDATE `#__citations` SET uid=" . $this->db->quote($newId) . " WHERE id=" . $this->db->quote($citation->id);
+                $query = "UPDATE `#__citations` SET uid=" . $this->db->quote($newId)
+                    . " WHERE id=" . $this->db->quote($citation->id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing wrong datatype on column
- **/
+ *
+ */
 class Migration20130610123201PlgCoursesDiscussions extends Base
 {
     /**
@@ -24,7 +26,8 @@ class Migration20130610123201PlgCoursesDiscussions extends Base
         $query = "";
 
         if (!$this->db->tableHasField('#__forum_posts', 'scope_sub_id')) {
-            $query = "ALTER TABLE `#__forum_posts` ADD `scope_sub_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `scope_id`;";
+            $query = "ALTER TABLE `#__forum_posts` ADD `scope_sub_id` "
+                . "INT(11) NOT NULL DEFAULT '0' AFTER `scope_id`;";
         }
 
         if (!empty($query)) {

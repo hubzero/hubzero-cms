@@ -22,6 +22,7 @@ abstract class Base extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_item = null;
 
     /**
@@ -29,6 +30,7 @@ abstract class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_base = 'index.php';
 
     /**
@@ -36,6 +38,7 @@ abstract class Base extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array();
 
     /**
@@ -43,6 +46,7 @@ abstract class Base extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = '';
 
     /**
@@ -142,6 +146,7 @@ abstract class Base extends Obj
      * @param   array   $segments  An associative array of querystring bits
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _build(array $segments)
     {
         $bits = array();

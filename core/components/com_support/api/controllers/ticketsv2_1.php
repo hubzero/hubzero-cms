@@ -307,9 +307,9 @@ class Ticketsv2_1 extends ApiController
 
             if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $val, $regs)) {
                 // Time already matches pattern so do nothing.
-            } else if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {
+            } elseif (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {
                 $val .= ' 00:00:00';
-            } else if (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs)) {
+            } elseif (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs)) {
                 $val .= '-01 00:00:00';
             } else {
                 // Not an acceptable time

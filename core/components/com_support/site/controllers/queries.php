@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -155,8 +156,10 @@ class Queries extends SiteController
 
         if (!$no_html && $tmpl != 'component') {
             // Output messsage and redirect
+            $redirectUrl = 'index.php?option=' . $this->_option
+                . '&controller=tickets&task=display&show=' . $row->get('id');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=tickets&task=display&show=' . $row->get('id'), false)
+                Route::url($redirectUrl, false)
             );
         } else {
             $this->listTask();
@@ -355,8 +358,10 @@ class Queries extends SiteController
         if ($redirect) {
             if (!$no_html && $tmpl != 'component') {
                 // Output messsage and redirect
+                $redirectUrl = 'index.php?option=' . $this->_option
+                    . '&controller=' . $this->_controller . '&task=tickets';
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=tickets', false),
+                    Route::url($redirectUrl, false),
                     Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
                 );
                 return;

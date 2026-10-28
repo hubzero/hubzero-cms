@@ -85,16 +85,23 @@ class Respondent extends Relational
     {
         /*
         $dbh = \App::get('db');
-        if (is_array($resp_id))
-        {
-            $dbh->setQuery('SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') AS identification FROM #__events_respondent_race_rel WHERE respondent_id IN (' . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id');
+        if (is_array($resp_id)) {
+            $dbh->setQuery(
+                'SELECT respondent_id, group_concat(concat(race, coalesce(concat(\'(\', '
+                . 'tribal_affiliation, \')\'), \'\')) separator \', \') AS identification '
+                . 'FROM #__events_respondent_race_rel WHERE respondent_id IN ('
+                . implode(', ', array_map('intval', $resp_id)) . ') GROUP BY respondent_id'
+            );
             return $dbh->loadAssocList('respondent_id');
-        }
-        else
-        {
-            $dbh->setQuery('SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, \')\'), \'\')) separator \', \') FROM #__events_respondent_race_rel WHERE respondent_id = ' . intval($resp_id) . ' GROUP BY respondent_id');
+        } else {
+            $dbh->setQuery(
+                'SELECT group_concat(concat(race, coalesce(concat(\'(\', tribal_affiliation, '
+                . '\')\'), \'\')) separator \', \') FROM #__events_respondent_race_rel '
+                . 'WHERE respondent_id = ' . intval($resp_id) . ' GROUP BY respondent_id'
+            );
             return $dbh->loadResult();
-        }*/
+        }
+        */
         return $this->oneToMany(__NAMESPACE__ . '\Race', 'respondent_id');
     }
 }

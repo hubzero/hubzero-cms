@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for group upload folders
+  *
  **/
 class Migration20140108233319ComGroups extends Base
 {
@@ -44,7 +46,10 @@ class Migration20140108233319ComGroups extends Base
             if (!is_dir($groupUploadFolder)) {
                 // create uploads folder
                 if (!\App::get('filesystem')->makeDirectory($groupUploadFolder)) {
-                    $this->setError('Failed to create uploads folder. Try running again with elevated privileges', 'warning');
+                    $this->setError(
+                        'Failed to create uploads folder. Try running again with elevated privileges',
+                        'warning'
+                    );
                     return false;
                 }
             }
@@ -57,7 +62,10 @@ class Migration20140108233319ComGroups extends Base
                 $from = $groupFolder . DS . $groupFile;
                 $to   = $groupUploadFolder . DS . $groupFile;
                 if (!\App::get('filesystem')->move($from, $to)) {
-                    $this->setError('Failed to move files to uploads folder. Try running again with elevated privileges', 'warning');
+                    $this->setError(
+                        'Failed to move files to uploads folder. Try running again with elevated privileges',
+                        'warning'
+                    );
                     return false;
                 }
             }

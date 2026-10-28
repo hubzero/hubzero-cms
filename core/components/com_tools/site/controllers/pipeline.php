@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -83,7 +84,8 @@ class Pipeline extends SiteController
     public function pipelineTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
         Document::setTitle($this->view->title);
 
         // Filters
@@ -99,7 +101,13 @@ class Pipeline extends SiteController
         // Paging vars
         $this->view->filters['limit'] = Request::getInt('limit', Config::get('list_limit'));
         $this->view->filters['start'] = Request::getInt('limitstart', 0);
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        if ($this->view->filters['limit'] != 0) {
+            $this->view->filters['start'] = floor(
+                $this->view->filters['start'] / $this->view->filters['limit']
+            ) * $this->view->filters['limit'];
+        } else {
+            $this->view->filters['start'] = 0;
+        }
 
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);
@@ -189,8 +197,11 @@ class Pipeline extends SiteController
         $this->view->admin  = $this->config->get('access-admin-component');
 
         // Set the page title
-        $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
-        $this->view->title .= $status['toolname'] ? ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname'] : '';
+        $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->view->title .= $status['toolname']
+            ? ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname']
+            : '';
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
@@ -201,11 +212,13 @@ class Pipeline extends SiteController
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_PIPELINE'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline'
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=pipeline'
         );
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=status&app=' . $status['toolname']
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=status&app=' . $status['toolname']
         );
 
         foreach ($this->getErrors() as $error) {
@@ -266,7 +279,9 @@ class Pipeline extends SiteController
 
         // Set the page title
         $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';
-        $this->view->title .= ($this->_action == 'confirm') ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : Lang::txt('COM_TOOLS_TASK_VERSIONS');
+        $this->view->title .= ($this->_action == 'confirm')
+            ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
+            : Lang::txt('COM_TOOLS_TASK_VERSIONS');
 
         Document::setTitle($this->view->title);
 
@@ -293,13 +308,16 @@ class Pipeline extends SiteController
             );
         }
         Pathway::append(
-            Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $this->view->status['toolname'],
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . 'task=status&app=' . $this->view->status['toolname']
+            Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
+            . $this->view->status['toolname'],
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . 'task=status&app=' . $this->view->status['toolname']
         );
         if ($this->_action != 'confirm') {
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_VERSIONS'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=versions&app=' . $this->view->status['toolname']
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=versions&app=' . $this->view->status['toolname']
             );
         }
 
@@ -365,7 +383,8 @@ class Pipeline extends SiteController
         }
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {
@@ -376,7 +395,8 @@ class Pipeline extends SiteController
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=status&app=' . $this->_toolid
         );
 
         $this->view->config = $this->config;
@@ -447,12 +467,16 @@ class Pipeline extends SiteController
         }
 
         // get default license text
-        $this->database->setQuery("SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC");
+        $this->database->setQuery(
+            "SELECT text, name, title FROM `#__tool_licenses` ORDER BY ordering ASC"
+        );
         $this->view->licenses = $this->database->loadObjectList();
 
         // Set the page title
         $this->view->title  = Lang::txt(strtoupper($this->_option)) . ': ';
-        $this->view->title .= ($this->_action == 'confirm') ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL') : Lang::txt('COM_TOOLS_TASK_LICENSE');
+        $this->view->title .= ($this->_action == 'confirm')
+            ? Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL')
+            : Lang::txt('COM_TOOLS_TASK_LICENSE');
 
         Document::setTitle($this->view->title);
 
@@ -465,12 +489,14 @@ class Pipeline extends SiteController
         if (Pathway::count() <= 1) {
             Pathway::append(
                 Lang::txt('COM_TOOLS_STATUS_FOR', $status['toolname']),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $this->_toolid
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=status&app=' . $this->_toolid
             );
             if ($this->_action != 'confirm') {
                 Pathway::append(
                     Lang::txt('COM_TOOLS_TASK_LICENSE'),
-                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=license&app=' . $this->_toolid
+                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    . '&task=license&app=' . $this->_toolid
                 );
             }
         }
@@ -610,6 +636,7 @@ class Pipeline extends SiteController
      * @param   boolean  $append
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _writeToFile($content = '', $file = '', $append = false)
     {
         $place   = $append == true ? 'a' : 'w';
@@ -707,7 +734,8 @@ class Pipeline extends SiteController
         }
 
         $this->view->editversion = Request::getString('editversion', '');
-        $this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev'; // do not allow to edit all versions just yet, will default to dev
+        // do not allow to edit all versions just yet, will default to dev
+        $this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev';
 
         // check access rights
         if ($this->_toolid && !$this->_checkAccess($this->_toolid)) {
@@ -735,12 +763,15 @@ class Pipeline extends SiteController
         }
         if (Pathway::count() <= 1) {
             Pathway::append(
-                Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' ' . $status['toolname'],
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']
+                Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_FOR') . ' '
+                . $status['toolname'],
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=status&app=' . $status['toolname']
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_TASK_EDIT_TOOL'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&app=' . $status['toolname']
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=edit&app=' . $status['toolname']
             );
         }
 
@@ -765,6 +796,7 @@ class Pipeline extends SiteController
      * @param   string   $wikiaccess
      * @return  boolean
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setTracAccess($toolname, $codeaccess, $wikiaccess)
     {
         if (!($hztrac = \Hubzero\Trac\Project::find_or_create('app:' . $toolname))) {
@@ -961,7 +993,10 @@ class Pipeline extends SiteController
         if ($editversion == 'dev') {
             if ($hztv === false) {
                 Log::debug(__FUNCTION__ . "() HZTV createInstance dev_suffix=$dev_suffix");
-                $hztv = \Components\Tools\Models\Version::createInstance($tool['toolname'], $tool['toolname'] . $dev_suffix);
+                $hztv = \Components\Tools\Models\Version::createInstance(
+                    $tool['toolname'],
+                    $tool['toolname'] . $dev_suffix
+                );
 
                 $oldstatus = $hztv->toArray();
                 $oldstatus['toolstate']    = $hzt->state;
@@ -983,7 +1018,8 @@ class Pipeline extends SiteController
             $hztv->toolaccess    = $tool['exec'];
             $hztv->codeaccess    = $tool['code'];
             $hztv->wikiaccess    = $tool['wiki'];
-            $hztv->vnc_command   = $invokedir . DS . $tool['toolname'] . DS . 'dev' . DS . 'middleware' . DS . 'invoke -T dev';
+            $hztv->vnc_command   = $invokedir . DS . $tool['toolname'] . DS . 'dev' . DS
+                . 'middleware' . DS . 'invoke -T dev';
             $hztv->vnc_geometry  = $tool['vncGeometry'];
             $hztv->exportControl = (isset($exportmap[$tool['exec']]) ? $exportmap[$tool['exec']] : null);
             $hztv->state         = 3;
@@ -1122,7 +1158,8 @@ class Pipeline extends SiteController
 
         // display status page
         //$this->_task = 'status';
-        //$this->_msg = $id ? Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED'): Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED');
+        //$this->_msg = $id ? Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED')
+        //    : Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED');
         $hzg->update();
         $hzt->update();
         $hztv->update(); // @FIXME: look
@@ -1150,8 +1187,13 @@ class Pipeline extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname),
-            ($id ? Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED') : Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED'))
+            Route::url(
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=status&app=' . $hzt->toolname
+            ),
+            ($id
+                ? Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_CHANGED')
+                : Lang::txt('COM_TOOLS_NOTICE_TOOL_INFO_REGISTERED'))
         );
     }
 
@@ -1162,6 +1204,7 @@ class Pipeline extends SiteController
      * @param   array    $toolinfo  Tool information
      * @return  boolean  False if errors, True on success
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addRepo(&$output, $toolinfo = array())
     {
         if (!$this->_toolid) {
@@ -1272,7 +1315,10 @@ class Pipeline extends SiteController
             if ($this->_action == 'confirm') {
                 // Go to license page
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname)
+                    Route::url(
+                        'index.php?option=' . $this->_option
+                        . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname
+                    )
                 );
                 return;
             } else {
@@ -1460,14 +1506,14 @@ class Pipeline extends SiteController
                 $this->_task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
                 $this->versionsTask();
                 return;
-            } else if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved')) {
+            } elseif ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Approved')) {
                 $this->_error = $error;
                 Log::debug(__FUNCTION__ . "() state changing to approved, action new");
                 $this->_action = 'new';
                 $this->_task = Lang::txt('COM_TOOLS_CONTRIBTOOL_APPROVE_TOOL');
                 $this->versionsTask();
                 return;
-            } else if ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Published')) {
+            } elseif ($newstate == \Components\Tools\Helpers\Html::getStatusNum('Published')) {
                 Log::debug(__FUNCTION__ . "() state changing to published");
                 $hzt->published = '1';
             }
@@ -1600,6 +1646,7 @@ class Pipeline extends SiteController
      * @param   array   $toolinfo  Array of tool information
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _email($toolid, $summary, $comment, $access, $action, $toolinfo = array())
     {
         $headline = '';
@@ -1685,7 +1732,8 @@ class Pipeline extends SiteController
         $users = array_unique($users);
 
         // Build e-mail components
-        $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_TOOLS_TOOL') . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
+        $subject = Lang::txt(strtoupper($this->_option)) . ', ' . Lang::txt('COM_TOOLS_TOOL')
+            . ' ' . $status['toolname'] . '(#' . $toolid . '): ' . $headline;
         $from    = Config::get('sitename') . ' ' . Lang::txt('COM_TOOLS_CONTRIBTOOL');
         $hub     = array(
             'email' => Config::get('mailfrom'),
@@ -1695,9 +1743,11 @@ class Pipeline extends SiteController
         $live_site = rtrim(Request::base(), '/');
 
         // Compose Message
-        $message  = strtoupper(Lang::txt('COM_TOOLS_TOOL')) . ': ' . $status['title'] . ' (' . $status['toolname'] . ')' . "\r\n";
+        $message  = strtoupper(Lang::txt('COM_TOOLS_TOOL')) . ': ' . $status['title']
+            . ' (' . $status['toolname'] . ')' . "\r\n";
         $message .= strtoupper(Lang::txt('COM_TOOLS_SUMMARY')) . ': ' . $summary . "\r\n";
-        $message .= strtoupper(Lang::txt('COM_TOOLS_WHEN')) . ' ' . Date::of(Date::toSql())->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
+        $message .= strtoupper(Lang::txt('COM_TOOLS_WHEN')) . ' '
+            . Date::of(Date::toSql())->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
         $message .= strtoupper(Lang::txt('COM_TOOLS_BY')) . ': ' . User::get('username') . "\r\n";
         $message .= '----------------------------' . "\r\n\r\n";
         if ($comment) {
@@ -1706,11 +1756,18 @@ class Pipeline extends SiteController
             $message .= '----------------------------' . "\r\n\r\n";
         }
         $message .= Lang::txt('COM_TOOLS_TIP_URL_TO_STATUS') . "\r\n";
-        $message .= $live_site . Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $status['toolname']) . "\r\n";
+        $message .= $live_site . Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=status&app=' . $status['toolname']
+        ) . "\r\n";
 
         // fire off message
         if ($summary or $comment) {
-            if (!Event::trigger('xmessage.onSendMessage', array($action, $subject, $message, $hub, $users, $this->_option))) {
+            $triggered = Event::trigger(
+                'xmessage.onSendMessage',
+                array($action, $subject, $message, $hub, $users, $this->_option)
+            );
+            if (!$triggered) {
                 Notify::error(Lang::txt('COM_TOOLS_FAILED_TO_MESSAGE'));
             }
         }
@@ -1729,8 +1786,17 @@ class Pipeline extends SiteController
      * @param   integer  $action
      * @return  boolean  False if errors, True on success
      */
-    protected function _newUpdateTicket($toolid, $ticketid, $oldstuff, $newstuff, $comment, $access = 0, $email = 0, $action = 1)
-    {
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _newUpdateTicket(
+        $toolid,
+        $ticketid,
+        $oldstuff,
+        $newstuff,
+        $comment,
+        $access = 0,
+        $email = 0,
+        $action = 1
+    ) {
         Log::debug(__FUNCTION__ . '() started');
 
         $summary = '';
@@ -1738,7 +1804,9 @@ class Pipeline extends SiteController
         // Make sure ticket is tied to the tool group
         $row = \Components\Support\Models\Ticket::oneOrNew($ticketid);
         if ($row->get('id') && isset($newstuff['toolname'])) {
-            $group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
+            $group = \Hubzero\User\Group::getInstance(
+                $this->config->get('group_prefix', 'app-') . $newstuff['toolname']
+            );
             if ($group) {
                 $row->set('group_id', $group->get('gidNumber', 0));
                 $row->save();
@@ -1750,7 +1818,11 @@ class Pipeline extends SiteController
 
         // see what changed
         if ($oldstuff != $newstuff) {
-            if (isset($oldstuff['toolname']) && isset($newstuff['toolname']) && $oldstuff['toolname'] != $newstuff['toolname']) {
+            if (
+                isset($oldstuff['toolname'])
+                && isset($newstuff['toolname'])
+                && $oldstuff['toolname'] != $newstuff['toolname']
+            ) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_TOOLNAME'),
                     $oldstuff['toolname'],
@@ -1773,7 +1845,7 @@ class Pipeline extends SiteController
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VERSION'));
-            } else if ($oldstuff['version'] == '' && $newstuff['version'] != '') {
+            } elseif ($oldstuff['version'] == '' && $newstuff['version'] != '') {
                 $rowc->changelog()->changed(
                     strtolower(Lang::txt('COM_TOOLS_DEV_VERSION_LABEL')),
                     '',
@@ -1823,7 +1895,11 @@ class Pipeline extends SiteController
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_WIKI_ACCESS'));
             }
-            if (isset($oldstuff['vncGeometry']) && isset($newstuff['vncGeometry']) && $oldstuff['vncGeometry'] != $newstuff['vncGeometry']) {
+            if (
+                isset($oldstuff['vncGeometry'])
+                && isset($newstuff['vncGeometry'])
+                && $oldstuff['vncGeometry'] != $newstuff['vncGeometry']
+            ) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_VNC_GEOMETRY'),
                     $oldstuff['vncGeometry'],
@@ -1832,7 +1908,11 @@ class Pipeline extends SiteController
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VNC_GEOMETRY'));
             }
-            if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers']) {
+            if (
+                isset($oldstuff['developers'])
+                && isset($newstuff['developers'])
+                && $oldstuff['developers'] != $newstuff['developers']
+            ) {
                 $rowc->changelog()->changed(
                     Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'),
                     \Components\Tools\Helpers\Html::getDevTeam($oldstuff['developers']),
@@ -1863,7 +1943,9 @@ class Pipeline extends SiteController
                     \Components\Tools\Helpers\Html::getStatusName($oldstuff['toolstate'], $oldstate),
                     \Components\Tools\Helpers\Html::getStatusName($newstuff['toolstate'], $newstate)
                 );
-                $summary = Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . $newstate;
+                $summary = Lang::txt('COM_TOOLS_STATUS') . ' '
+                    . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' '
+                    . Lang::txt('COM_TOOLS_TO') . ' ' . $newstate;
                 $email   = 1; // send email about status changes
                 $action  = 2;
             }
@@ -1904,14 +1986,19 @@ class Pipeline extends SiteController
         }
 
         $hzt->load($toolid);
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname);
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=status&app=' . $hzt->toolname
+        );
 
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => ($toolid ? 'updated' : 'created'),
                 'scope'       => 'tool',
                 'scope_id'    => $toolid,
-                'description' => ($summary ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary : $comment),
+                'description' => ($summary
+                    ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary
+                    : $comment),
                 'details'     => $log
             ],
             'recipients' => $recipients
@@ -1932,8 +2019,17 @@ class Pipeline extends SiteController
      * @param   integer  $action
      * @return  boolean  False if errors, True on success
      */
-    protected function _updateTicket($toolid, $oldstuff, $newstuff, $comment, $access = 0, $email = 0, $action = 1, $toolinfo = array())
-    {
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _updateTicket(
+        $toolid,
+        $oldstuff,
+        $newstuff,
+        $comment,
+        $access = 0,
+        $email = 0,
+        $action = 1,
+        $toolinfo = array()
+    ) {
         $obj = new \Components\Tools\Tables\Tool($this->database);
 
         $summary = '';
@@ -1966,7 +2062,7 @@ class Pipeline extends SiteController
                 );
                 $summary .= $summary == '' ? '' : ', ';
                 $summary .= strtolower(Lang::txt('COM_TOOLS_VERSION'));
-            } else if ($oldstuff['version'] == '' && $newstuff['version'] != '') {
+            } elseif ($oldstuff['version'] == '' && $newstuff['version'] != '') {
                 $rowc->changelog()->changed(
                     strtolower(Lang::txt('COM_TOOLS_DEV_VERSION_LABEL')),
                     '',
@@ -2056,7 +2152,9 @@ class Pipeline extends SiteController
                     \Components\Tools\Helpers\Html::getStatusName($oldstuff['state'], $oldstate),
                     \Components\Tools\Helpers\Html::getStatusName($newstuff['state'], $newstate)
                 );
-                $summary = Lang::txt('COM_TOOLS_STATUS') . ' ' . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . $newstate;
+                $summary = Lang::txt('COM_TOOLS_STATUS') . ' '
+                    . Lang::txt('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' '
+                    . Lang::txt('COM_TOOLS_TO') . ' ' . $newstate;
                 $email = 1; // send email about status changes
                 $action = 2;
             }
@@ -2092,14 +2190,19 @@ class Pipeline extends SiteController
         }
 
         $hzt->load($toolid);
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=status&app=' . $hzt->toolname);
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=status&app=' . $hzt->toolname
+        );
 
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => ($toolid ? 'updated' : 'created'),
                 'scope'       => 'tool',
                 'scope_id'    => $toolid,
-                'description' => ($summary ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary : $comment),
+                'description' => ($summary
+                    ? '<a href="' . $url . '">' . $hzt->title . ' (' . $hzt->toolname . ')</a>: ' . $summary
+                    : $comment),
                 'details'     => $rowc->changelog()->lists()
             ],
             'recipients' => $recipients
@@ -2115,6 +2218,7 @@ class Pipeline extends SiteController
      * @param   array    $tool    Array of tool info
      * @return  mixed    False if errors, integer on success
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _createTicket($toolid, $tool)
     {
         $row = \Components\Support\Models\Ticket::blank();
@@ -2129,7 +2233,9 @@ class Pipeline extends SiteController
         $row->set('type', 3);
 
         // Attach tool group to a ticket for access
-        $group = \Hubzero\User\Group::getInstance($this->config->get('group_prefix', 'app-') . $tool['toolname']);
+        $group = \Hubzero\User\Group::getInstance(
+            $this->config->get('group_prefix', 'app-') . $tool['toolname']
+        );
         if ($group) {
             $row->set('group_id', $group->get('gidNumber'));
         }
@@ -2214,7 +2320,10 @@ class Pipeline extends SiteController
 
         // continue output
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pipeline'),
+            Route::url(
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=pipeline'
+            ),
             Lang::txt('COM_TOOLS_NOTICE_TOOL_CANCELLED')
         );
     }
@@ -2228,6 +2337,7 @@ class Pipeline extends SiteController
      * @param   integer  $success     Was the exec successful?
      * @return  boolean  True if no errors
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _invokescript($command, $successmsg, &$output, $success = 1)
     {
         $output['class'] = 'passed';
@@ -2263,6 +2373,7 @@ class Pipeline extends SiteController
      * @param   boolean  $allowAuthors  Allow authors access?
      * @return  boolean  True if they have access
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object
@@ -2297,6 +2408,7 @@ class Pipeline extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

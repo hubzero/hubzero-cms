@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for newsfeeds table changes
+  *
  **/
 class Migration20130924000012ComNewsfeeds extends Base
 {
@@ -36,7 +38,8 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->query();
         }
         if ($this->db->tableHasField('#__newsfeeds', 'alias')) {
-            $query = "ALTER TABLE `#__newsfeeds` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
+            $query = "ALTER TABLE `#__newsfeeds` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' "
+                . "COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -46,17 +49,20 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->query();
         }
         if ($this->db->tableHasField('#__newsfeeds', 'numarticles')) {
-            $query = "ALTER TABLE `#__newsfeeds` CHANGE COLUMN `numarticles` `numarticles` INT(10) UNSIGNED NOT NULL DEFAULT '1';";
+            $query = "ALTER TABLE `#__newsfeeds` CHANGE COLUMN `numarticles` `numarticles` INT(10) UNSIGNED NOT "
+                . "NULL DEFAULT '1';";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if ($this->db->tableHasField('#__newsfeeds', 'cache_time')) {
-            $query = "ALTER TABLE `#__newsfeeds` CHANGE COLUMN `cache_time` `cache_time` INT(10) UNSIGNED NOT NULL DEFAULT '3600';";
+            $query = "ALTER TABLE `#__newsfeeds` CHANGE COLUMN `cache_time` `cache_time` INT(10) UNSIGNED NOT NULL "
+                . "DEFAULT '3600';";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if ($this->db->tableHasField('#__newsfeeds', 'checked_out')) {
-            $query = "ALTER TABLE `#__newsfeeds` CHANGE `checked_out` `checked_out` integer(10) UNSIGNED NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__newsfeeds` CHANGE `checked_out` `checked_out` integer(10) UNSIGNED NOT NULL "
+                . "DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -76,7 +82,8 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__newsfeeds', 'created')) {
-            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `created` datetime NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -91,7 +98,8 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__newsfeeds', 'modified')) {
-            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `modified` datetime NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -116,17 +124,20 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__newsfeeds', 'xreference')) {
-            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.';";
+            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `xreference` varchar(50) NOT NULL COMMENT 'A"
+                . "reference to enable linkages to external data sets.';";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__newsfeeds', 'publish_up')) {
-            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `publish_up` datetime NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00';";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__newsfeeds', 'publish_down')) {
-            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__newsfeeds` ADD COLUMN   `publish_down` datetime NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -140,17 +151,26 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__newsfeeds', 'idx_access') && $this->db->tableHasField('#__newsfeeds', 'access')) {
+        if (
+            !$this->db->tableHasKey('#__newsfeeds', 'idx_access')
+            && $this->db->tableHasField('#__newsfeeds', 'access')
+        ) {
             $query = "ALTER TABLE `#__newsfeeds` ADD KEY `idx_access` (`access`);";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__newsfeeds', 'idx_checkout') && $this->db->tableHasField('#__newsfeeds', 'checked_out')) {
+        if (
+            !$this->db->tableHasKey('#__newsfeeds', 'idx_checkout')
+            && $this->db->tableHasField('#__newsfeeds', 'checked_out')
+        ) {
             $query = "ALTER TABLE `#__newsfeeds` ADD KEY `idx_checkout` (`checked_out`);";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__newsfeeds', 'idx_state') && $this->db->tableHasField('#__newsfeeds', 'published')) {
+        if (
+            !$this->db->tableHasKey('#__newsfeeds', 'idx_state')
+            && $this->db->tableHasField('#__newsfeeds', 'published')
+        ) {
             $query = "ALTER TABLE `#__newsfeeds` ADD KEY `idx_state` (`published`);";
             $this->db->setQuery($query);
             $this->db->query();
@@ -160,17 +180,26 @@ class Migration20130924000012ComNewsfeeds extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__newsfeeds', 'idx_createdby') && $this->db->tableHasField('#__newsfeeds', 'created_by')) {
+        if (
+            !$this->db->tableHasKey('#__newsfeeds', 'idx_createdby')
+            && $this->db->tableHasField('#__newsfeeds', 'created_by')
+        ) {
             $query = "ALTER TABLE `#__newsfeeds` ADD KEY `idx_createdby` (`created_by`);";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__newsfeeds', 'idx_language') && $this->db->tableHasField('#__newsfeeds', 'language')) {
+        if (
+            !$this->db->tableHasKey('#__newsfeeds', 'idx_language')
+            && $this->db->tableHasField('#__newsfeeds', 'language')
+        ) {
             $query = "ALTER TABLE `#__newsfeeds` ADD KEY `idx_language` (`language`);";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__newsfeeds', 'idx_xreference') && $this->db->tableHasField('#__newsfeeds', 'xreference')) {
+        if (
+            !$this->db->tableHasKey('#__newsfeeds', 'idx_xreference')
+            && $this->db->tableHasField('#__newsfeeds', 'xreference')
+        ) {
             $query = "ALTER TABLE `#__newsfeeds` ADD KEY `idx_xreference` (`xreference`);";
             $this->db->setQuery($query);
             $this->db->query();

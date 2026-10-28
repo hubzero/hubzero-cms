@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for dropping the steps index
+  *
  **/
 class Migration20150916164629ComStorefront extends Base
 {
@@ -84,19 +86,28 @@ class Migration20150916164629ComStorefront extends Base
             }
         }
 
-        if ($this->db->tableExists('#__storefront_option_groups') && !$this->db->tableHasField('#__storefront_option_groups', 'ogActive')) {
+        if (
+            $this->db->tableExists('#__storefront_option_groups')
+            && !$this->db->tableHasField('#__storefront_option_groups', 'ogActive')
+        ) {
             $query = "ALTER TABLE `#__storefront_option_groups` ADD `ogActive` TINYINT(1)";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if ($this->db->tableExists('#__storefront_option_groups') && $this->db->tableHasField('#__storefront_option_groups', 'ogName')) {
+        if (
+            $this->db->tableExists('#__storefront_option_groups')
+            && $this->db->tableHasField('#__storefront_option_groups', 'ogName')
+        ) {
             $query = "ALTER TABLE `#__storefront_option_groups` MODIFY `ogName` CHAR(100)";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if ($this->db->tableExists('#__storefront_options') && !$this->db->tableHasField('#__storefront_options', 'oActive')) {
+        if (
+            $this->db->tableExists('#__storefront_options')
+            && !$this->db->tableHasField('#__storefront_options', 'oActive')
+        ) {
             $query = "ALTER TABLE `#__storefront_options` ADD `oActive` TINYINT(1)";
             $this->db->setQuery($query);
             $this->db->query();
@@ -137,13 +148,19 @@ class Migration20150916164629ComStorefront extends Base
             }
         }
 
-        if ($this->db->tableExists('#__storefront_option_groups') && $this->db->tableHasField('#__storefront_option_groups', 'ogActive')) {
+        if (
+            $this->db->tableExists('#__storefront_option_groups')
+            && $this->db->tableHasField('#__storefront_option_groups', 'ogActive')
+        ) {
             $query = "ALTER TABLE `#__storefront_option_groups` DROP COLUMN `ogActive`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if ($this->db->tableExists('#__storefront_options') && $this->db->tableHasField('#__storefront_options', 'oActive')) {
+        if (
+            $this->db->tableExists('#__storefront_options')
+            && $this->db->tableHasField('#__storefront_options', 'oActive')
+        ) {
             $query = "ALTER TABLE `#__storefront_options` DROP COLUMN `oActive`";
             $this->db->setQuery($query);
             $this->db->query();

@@ -32,16 +32,28 @@ class Helper extends Module
         $database->setQuery("SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation < 1");
         $this->unconfirmed = $database->loadResult();
 
-        $database->setQuery("SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation >= 1");
+        $database->setQuery(
+            "SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation >= 1"
+        );
         $this->confirmed = $database->loadResult();
 
-        $database->setQuery("SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.registerDate >= " . $database->quote(gmdate('Y-m-d', (time() - 24 * 3600)) . ' 00:00:00'));
+        $pastDayDate = gmdate('Y-m-d', (time() - 24 * 3600)) . ' 00:00:00';
+        $database->setQuery(
+            "SELECT count(u.id) FROM `#__users` AS u " .
+            "WHERE u.block=0 AND u.registerDate >= " . $database->quote($pastDayDate)
+        );
         $this->pastDay = $database->loadResult();
 
-        $database->setQuery("SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation > 0 AND u.approved > 0");
+        $database->setQuery(
+            "SELECT count(u.id) FROM `#__users` AS u " .
+            "WHERE u.block=0 AND u.activation > 0 AND u.approved > 0"
+        );
         $this->approved = $database->loadResult();
 
-        $database->setQuery("SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation > 0 AND u.approved = 0");
+        $database->setQuery(
+            "SELECT count(u.id) FROM `#__users` AS u " .
+            "WHERE u.block=0 AND u.activation > 0 AND u.approved = 0"
+        );
         $this->unapproved = $database->loadResult();
 
         $database->setQuery(

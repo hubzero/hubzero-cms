@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,28 +34,28 @@ class Question extends Relational
      *
      * @var  integer
      */
-    const ANSWERS_STATE_OPEN   = 0;
+    public const ANSWERS_STATE_OPEN   = 0;
 
     /**
      * Closed state
      *
      * @var  integer
      */
-    const ANSWERS_STATE_CLOSED = 1;
+    public const ANSWERS_STATE_CLOSED = 1;
 
     /**
      * Deleted
      *
      * @var  integer
      */
-    const ANSWERS_STATE_DELETE = 2;
+    public const ANSWERS_STATE_DELETE = 2;
 
     /**
      * Reported
      *
      * @var  integer
      */
-    const ANSWERS_STATE_REPORTED = 3;
+    public const ANSWERS_STATE_REPORTED = 3;
 
     /**
      * The table namespace
@@ -110,6 +111,7 @@ class Question extends Relational
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_base = 'index.php?option=com_answers';
 
     /**
@@ -469,7 +471,8 @@ class Question extends Relational
             $this->set('totalmarketvalue', $this->get('marketvalue', 0) + $this->get('reward', 0));
 
             $this->set('asker_earnings', round($this->get('marketvalue', 0) / 3));
-            $this->set('answer_earnings', ($this->get('asker_earnings') + $this->get('reward', 0)) . ' &mdash; ' . $this->get('maxaward'));
+            $earnings = ($this->get('asker_earnings') + $this->get('reward', 0)) . ' &mdash; ' . $this->get('maxaward');
+            $this->set('answer_earnings', $earnings);
         }
 
         return $this->get($val, 0);

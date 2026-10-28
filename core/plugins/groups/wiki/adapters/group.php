@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,6 +24,7 @@ class Group extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_groups',
         'cn'     => '',
@@ -178,7 +180,7 @@ class Group extends Base
                             $page->config()->set('access-page-delete', true);
                             $page->config()->set('access-page-edit', true);
                             $page->config()->set('access-page-modify', true);
-                        } else if ($page->param('allow_changes')) {
+                        } elseif ($page->param('allow_changes')) {
                             $page->config()->set('access-page-modify', true); // This allows users to suggest changes
                         }
 

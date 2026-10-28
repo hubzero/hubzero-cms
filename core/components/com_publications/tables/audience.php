@@ -60,9 +60,11 @@ class Audience extends Table
 
         $sql = "SELECT a.* ";
         if ($getlabels) {
-            $sql .= "\n, L0.title as label0, L1.title as label1, L2.title as label2, L3.title as label3, L4.title as label4 ";
+            $sql .= ", L0.title as label0, L1.title as label1, L2.title as label2";
+            $sql .= ", L3.title as label3, L4.title as label4 ";
             $sql .= $numlevels == 5 ? ", L5.title as label5  " : "";
-            $sql .= "\n, L0.description as desc0, L1.description as desc1, L2.description as desc2, L3.description as desc3, L4.description as desc4 ";
+            $sql .= ", L0.description as desc0, L1.description as desc1, L2.description as desc2";
+            $sql .= ", L3.description as desc3, L4.description as desc4 ";
             $sql .= $numlevels == 5 ? ", L5.description as desc5  " : "";
         }
         $sql .= " FROM $this->_tbl AS a ";

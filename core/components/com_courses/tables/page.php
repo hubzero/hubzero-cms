@@ -81,7 +81,7 @@ class Page extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query = " FROM $this->_tbl AS r";
 
@@ -121,7 +121,7 @@ class Page extends Table
             if (is_array($filters['active'])) {
                 $filters['active'] = array_map('intval', $filters['active']);
                 $where[] = "r.`active` IN (" . implode(',', $filters['active']) . ")";
-            } else if ($filters['active'] >= 0) {
+            } elseif ($filters['active'] >= 0) {
                 $where[] = "r.`active`=" . $this->_db->quote(intval($filters['active']));
             }
         }
@@ -142,7 +142,7 @@ class Page extends Table
     public function count($filters = array())
     {
         $query  = "SELECT COUNT(DISTINCT r.`url`) ";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -157,7 +157,7 @@ class Page extends Table
      */
     public function find($filters = array())
     {
-        $sql = "SELECT r.*" . $this->_buildquery($filters);
+        $sql = "SELECT r.*" . $this->buildQuery($filters);
 
         if (!isset($filters['sort']) || !$filters['sort']) {
             $filters['sort'] = 'ordering';
@@ -186,7 +186,8 @@ class Page extends Table
      */
     public function getHighestPageOrder($course_id, $offering_id)
     {
-        $sql = "SELECT ordering from $this->_tbl WHERE course_id=" . $this->_db->quote(intval($course_id)) . " AND offering_id=" . $this->_db->quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
+        $sql = "SELECT ordering from $this->_tbl WHERE course_id=" . $this->_db->quote(intval($course_id))
+            . " AND offering_id=" . $this->_db->quote(intval($offering_id)) . " ORDER BY ordering DESC LIMIT 1";
         $this->_db->setQuery($sql);
         return $this->_db->loadResult();
     }

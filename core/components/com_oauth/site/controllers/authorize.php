@@ -43,7 +43,9 @@ class Authorize extends SiteController
         }
 
         $db = \App::get('db');
-        $db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($oauth_token) . " AND user_id=0 LIMIT 1;");
+        $sql = "SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($oauth_token)
+            . " AND user_id=0 LIMIT 1;";
+        $db->setQuery($sql);
 
         $result = $db->loadObject();
 

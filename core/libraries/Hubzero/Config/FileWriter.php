@@ -85,7 +85,13 @@ class FileWriter
             return null;
         }
 
-        $file = $path . DIRECTORY_SEPARATOR . ($client ? $client . DIRECTORY_SEPARATOR : '') . $group . '.' . $this->format;
+        $file = $path .
+            DIRECTORY_SEPARATOR .
+            ($client ? $client .
+            DIRECTORY_SEPARATOR : '') .
+            $group .
+            '.' .
+            $this->format;
 
         return $file;
     }

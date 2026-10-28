@@ -55,7 +55,11 @@ class Scale extends Radio
         $html = array();
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio scale ' . (string) $this->element['class'] . '"' : ' class="radio scale"';
+        if ($this->element['class']) {
+            $class = ' class="radio scale ' . (string) $this->element['class'] . '"';
+        } else {
+            $class = ' class="radio scale"';
+        }
 
         // Start the radio field output.
         $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
@@ -91,8 +95,16 @@ class Scale extends Radio
 
             $html[] = '<li class="li-' . $this->id . '">';
                 $html[] = '<div class="input-wrap">';
-                    $html[] = '<input type="radio" id="' . $this->id . $i . '" name="' . $this->name . '" value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . '/>';
-                    $html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . Lang::alt($option->text, preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)) . '</label>';
+                    $inputId = $this->id . $i;
+                    $escapedValue = htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8');
+                    $html[] = '<input type="radio" id="' . $inputId . '" name="' . $this->name
+                        . '" value="' . $escapedValue . '"'
+                        . $checked . $class . $onclick . $disabled . '/>';
+                    $labelText = Lang::alt(
+                        $option->text,
+                        preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)
+                    );
+                    $html[] = '<label for="' . $inputId . '"' . $class . '>' . $labelText . '</label>';
                 $html[] = '</div>';
             $html[] = '</li>';
         }
@@ -135,7 +147,9 @@ class Scale extends Radio
 
         $html = array();
         $html[] = '<div class="graph">';
-        $html[] = '<strong class="bar bar' . $this->id . ' ' . $cls . '"><span>' . Lang::txt('%s out of %s', $value, $top) . '</span></strong>';
+        $barClass = 'bar bar' . $this->id . ' ' . $cls;
+        $barText = Lang::txt('%s out of %s', $value, $top);
+        $html[] = '<strong class="' . $barClass . '"><span>' . $barText . '</span></strong>';
         $html[] = '</div>';
 
         $value = implode("\n", $html);

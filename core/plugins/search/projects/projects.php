@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,6 +17,8 @@ require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS .
 
 /**
  * Search groups
+ */
+/**
  */
 class plgSearchProjects extends \Hubzero\Plugin\Plugin
 {
@@ -35,7 +38,8 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
         $from = '';
 
         if (!User::authorise('core.view', 'com_groups')) {
-            $from = " JOIN #__xgroups_members AS m ON m.gidNumber=p.owned_by_group AND m.uidNumber=" . User::get('id', 0);
+            $from = " JOIN #__xgroups_members AS m ON m.gidNumber=p.owned_by_group "
+                . "AND m.uidNumber=" . User::get('id', 0);
         }
 
         $addtl_where = array();
@@ -43,7 +47,8 @@ class plgSearchProjects extends \Hubzero\Plugin\Plugin
             $addtl_where[] = "(p.alias LIKE '%$mand%' OR p.title LIKE '%$mand%' OR p.about LIKE '%$mand%')";
         }
         foreach ($terms['forbidden'] as $forb) {
-            $addtl_where[] = "(p.alias NOT LIKE '%$forb%' AND p.title NOT LIKE '%$forb%' AND p.about NOT LIKE '%$forb%')";
+            $addtl_where[] = "(p.alias NOT LIKE '%$forb%' AND p.title NOT LIKE '%$forb%' "
+                . "AND p.about NOT LIKE '%$forb%')";
         }
 
         $access = implode(',', User::getAuthorisedViewLevels());

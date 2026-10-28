@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding mail preference option to incremental registration
+  *
  **/
 class Migration20130715111246ModIncrementalRegistration extends Base
 {
@@ -22,7 +24,8 @@ class Migration20130715111246ModIncrementalRegistration extends Base
     public function up()
     {
         if (!$this->db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption')) {
-            $query = "ALTER TABLE `#__profile_completion_awards` ADD COLUMN mailPreferenceOption int not null default 0;";
+            $query = "ALTER TABLE `#__profile_completion_awards` ADD COLUMN mailPreferenceOption int not null"
+                . "default 0;";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -30,7 +33,8 @@ class Migration20130715111246ModIncrementalRegistration extends Base
         $query = "SELECT * FROM `#__incremental_registration_labels` WHERE `field` = 'mailPreferenceOption';";
         $this->db->setQuery($query);
         if (!$this->db->loadResult()) {
-            $query = "INSERT INTO `#__incremental_registration_labels` (field, label) VALUES ('mailPreferenceOption', 'E-Mail Updates');";
+            $query = "INSERT INTO `#__incremental_registration_labels` (field, label) VALUES"
+                . "('mailPreferenceOption', 'E-Mail Updates');";
             $this->db->setQuery($query);
             $this->db->query();
         }

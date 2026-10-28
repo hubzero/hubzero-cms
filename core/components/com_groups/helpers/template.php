@@ -61,7 +61,7 @@ class Template extends Document
         $base   = DS . trim($base, DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS;
 
         // fetch template file (sets document for parsing)
-        $this->_fetch($base);
+        $this->fetch($base);
 
         // call parse
         return parent::parse();
@@ -90,7 +90,7 @@ class Template extends Document
      * @param   string  $base
      * @return  object  $this
      */
-    private function _fetch($base)
+    private function fetch($base)
     {
         // only fetch template if we dont already have one
         // or if we are forcing it to fetch again
@@ -133,7 +133,7 @@ class Template extends Document
             }
 
             // load the template & set docuement
-            $this->set('document', $this->_load(PATH_APP . $template));
+            $this->set('document', $this->load(PATH_APP . $template));
         }
 
         // return this for chainability
@@ -170,7 +170,7 @@ class Template extends Document
      * @param   string  $template
      * @return  string
      */
-    private function _load($template)
+    private function load($template)
     {
         ob_start();
         require_once $template;

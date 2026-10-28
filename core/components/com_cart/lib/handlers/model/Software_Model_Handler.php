@@ -25,7 +25,8 @@ class Software_Model_Handler extends Model_Handler
         $itemMeta = $this->item['meta'];
         $itemCartInfo = $this->item['cartInfo'];
 
-        // Check the serial management. If multiple -- need to update the transaction info items with the serials and mark the serials as used
+        // Check the serial management. If multiple -- need to update the transaction info items
+        // with the serials and mark the serials as used
         if (isset($itemMeta['serialManagement']) && $itemMeta['serialManagement'] == 'multiple') {
             // Get the required number of serials
             $serialsNeeded = $itemCartInfo->qty;

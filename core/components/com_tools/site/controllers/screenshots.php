@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -448,8 +449,12 @@ class Screenshots extends SiteController
             }
 
             // Create thumbnail
-            $ss_height = (intval($this->config->get('screenshot_maxheight', 58)) > 30) ? intval($this->config->get('screenshot_maxheight', 58)) : 58;
-            $ss_width  = (intval($this->config->get('screenshot_maxwidth', 91)) > 80)  ? intval($this->config->get('screenshot_maxwidth', 91))  : 91;
+            $ss_height = (intval($this->config->get('screenshot_maxheight', 58)) > 30)
+                ? intval($this->config->get('screenshot_maxheight', 58))
+                : 58;
+            $ss_width  = (intval($this->config->get('screenshot_maxwidth', 91)) > 80)
+                ? intval($this->config->get('screenshot_maxwidth', 91))
+                : 91;
 
             $tn = preg_replace('#\.[^.]*$#', '', $file['name']) . '-tn.gif';
             if ($file_ext != '.swf') {
@@ -481,6 +486,7 @@ class Screenshots extends SiteController
      * @param      string  $save_name Name to save file as
      * @return     boolean False if errors, True if successful
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
     {
         $imorig = imagecreatefromjpeg(dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
@@ -514,6 +520,7 @@ class Screenshots extends SiteController
      * @param      string  $save_name Name to save file as
      * @return     boolean False if errors, True if successful
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _createThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
     {
         $save_dir = rtrim($save_dir, DS) . DS;
@@ -630,7 +637,7 @@ class Screenshots extends SiteController
                 } else {
                     echo Lang::txt('COM_TOOLS_SUCCESS');
                 }
-            } else if ($this->_task != 'copy') {
+            } elseif ($this->_task != 'copy') {
                 $this->setError(Lang::txt('COM_TOOLS_ERROR_COPYING_FILES'));
             }
         } else {
@@ -786,6 +793,7 @@ class Screenshots extends SiteController
      * @param      string $subdir  Sub-directory
      * @return     string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
@@ -824,6 +832,7 @@ class Screenshots extends SiteController
      * @param      boolean $allowAuthors Allow authors access?
      * @return     boolean True if they have access
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object
@@ -858,6 +867,7 @@ class Screenshots extends SiteController
      * @param      string $assetId   Asset id to check against
      * @return     void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

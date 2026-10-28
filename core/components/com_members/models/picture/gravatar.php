@@ -54,10 +54,13 @@ class Gravatar
         foreach ($this->config as $key => $val) {
             if (array_key_exists($key, $config)) {
                 if ($key == 'fallback') {
-                    if (
-                        filter_var($config['fallback'], FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
-                        || in_array($config['fallback'], array('mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank'))
-                    ) {
+                    $validUrl = filter_var(
+                        $config['fallback'],
+                        FILTER_VALIDATE_URL,
+                        FILTER_FLAG_PATH_REQUIRED
+                    );
+                    $validTypes = array('mm', 'identicon', 'monsterid', 'wavatar', 'retro', 'blank');
+                    if ($validUrl || in_array($config['fallback'], $validTypes)) {
                         $this->set('fallback', $config['fallback']);
                     }
                 }

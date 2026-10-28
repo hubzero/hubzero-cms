@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -402,8 +403,10 @@ class Products extends AdminController
                             $product = $obj->product($pId);
                             $product->delete();
                         } catch (\Exception $e) {
+                            $url = 'index.php?option=' . $this->_option . '&controller='
+                                . $this->_controller . '&task=display&id=' . $pId;
                             App::redirect(
-                                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&id=' . $pId),
+                                Route::url($url),
                                 $e->getMessage(),
                                 $type
                             );
@@ -416,8 +419,10 @@ class Products extends AdminController
                 }
 
                 // Set the redirect
+                $url = 'index.php?option=' . $this->_option . '&controller='
+                    . $this->_controller . '&task=display';
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display'),
+                    Route::url($url),
                     $msg,
                     $type
                 );
@@ -528,9 +533,12 @@ class Products extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
+            $msg = ($state == 1
+                ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
+                : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
-                ($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+                $msg,
                 'error'
             );
             return;

@@ -26,6 +26,7 @@ class Link extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'link';
 
     /**
@@ -33,6 +34,7 @@ class Link extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_connector  = array('path');
 
     /**
@@ -56,7 +58,13 @@ class Link extends Base
                         ? 1 : 0;
 
         // Log path
-        $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+        $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath(
+            $pub->id,
+            $pub->version_id,
+            '',
+            'logs',
+            0
+        );
 
         // replace current attachments?
         $configs->replace   = Request::getInt('replace_current', 0, 'post');
@@ -93,7 +101,9 @@ class Link extends Base
 
         $html = '';
 
-        $url =  Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId);
+        $serveLink = 'index.php?option=com_publications&task=serve&id=' . $pub->id;
+        $serveLink .= '&v=' . $pub->version_number . '&el=' . $elementId;
+        $url = Route::url($serveLink);
         $url = preg_replace('/\/administrator/', '', $url);
 
         if ($attachments) {
@@ -109,7 +119,8 @@ class Link extends Base
 
                 $html .= '<li>';
                 $html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-                $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="noreferrer" target="_blank" class="link-type">' . $title . '</a>';
+                $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" ';
+                $html .= 'rel="noreferrer" target="_blank" class="link-type">' . $title . '</a>';
                 $html .= '</li>';
             }
         }
@@ -167,7 +178,9 @@ class Link extends Base
         // Which role?
         $role = $element->params->role;
 
-        $url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
+        $serveLink = 'index.php?option=com_publications&task=serve&id=' . $pub->id;
+        $serveLink .= '&v=' . $pub->version_number;
+        $url = Route::url($serveLink) . '?el=' . $elementId;
 
         // Primary button
         if ($role == 1) {
@@ -181,7 +194,16 @@ class Link extends Base
             $class  = 'btn btn-primary active icon-next';
             $class .= $disabled ? ' link_disabled' : '';
             $title  = $configs->title ? $configs->title : Lang::txt('View publication');
-            $html   = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop);
+            $html = \Components\Publications\Helpers\Html::primaryButton(
+                $class,
+                $url,
+                $label,
+                null,
+                $title,
+                'rel="external"',
+                $disabled,
+                $pop
+            );
         } elseif ($role == 2 && $attachments) {
             $html .= '<ul>';
             $html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);
@@ -321,7 +343,17 @@ class Link extends Base
             $title = isset($titles[$i]) ? $titles[$i] : null;
             $desc  = isset($desc[$i]) ? $desc[$i] : null;
 
-            if ($this->addAttachment($identifier, $title, $pub, $configs, User::get('id'), $elementId, $element, $ordering)) {
+            $attached = $this->addAttachment(
+                $identifier,
+                $title,
+                $pub,
+                $configs,
+                User::get('id'),
+                $elementId,
+                $element,
+                $ordering
+            );
+            if ($attached) {
                 // Do we also set draft title and metadata from the link?
                 if (
                     $i == 0 && $title && $element->role == 1
@@ -524,9 +556,8 @@ class Link extends Base
             }
         } elseif ($max > 0 && $counter > $max) {
             $status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
-        }
-        // Check allowed formats
-        elseif (!self::checkAllowed($attachments, $allowed)) {
+        } elseif (!self::checkAllowed($attachments, $allowed)) {
+            // Check allowed formats
             if ($counter && !empty($accept)) {
                 $error = Lang::txt('Error: unacceptable URL. URL should start with: ');
                 foreach ($params->allowed_ext as $ext) {

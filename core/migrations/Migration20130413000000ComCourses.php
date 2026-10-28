@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for grade book unique index and form asset id reference
+  *
  **/
 class Migration20130413000000ComCourses extends Base
 {
@@ -23,7 +25,8 @@ class Migration20130413000000ComCourses extends Base
 
         // Add a unique index on grade book and asset_id field to forms table
         if (!$this->db->tableHasKey('#__courses_grade_book', 'alternate_key')) {
-            $query .= "ALTER TABLE `#__courses_grade_book` ADD UNIQUE INDEX `alternate_key` (`user_id`, `scope`, `scope_id`);\n";
+            $query .= "ALTER TABLE `#__courses_grade_book` ADD UNIQUE INDEX `alternate_key` (`user_id`, `scope`,"
+                . "`scope_id`);\n";
         }
 
         if (!$this->db->tableHasField('#__courses_forms', 'asset_id')) {
@@ -45,7 +48,8 @@ class Migration20130413000000ComCourses extends Base
             foreach ($rows as $row) {
                 $query  = "UPDATE `#__courses_forms`";
                 $query .= " SET `asset_id` = " . $this->db->Quote($row->id);
-                $query .= " WHERE `id` = " . $this->db->Quote(json_decode($row->content)->form_id) . " AND `asset_id` IS NULL";
+                $query .= " WHERE `id` = " . $this->db->Quote(json_decode($row->content)->form_id) . " AND "
+                    . "`asset_id` IS NULL";
 
                 $this->db->setQuery($query);
                 $this->db->query();

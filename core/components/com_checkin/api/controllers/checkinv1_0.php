@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,6 +22,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'inspector.php';
 /**
  * API controller class for checkin
  */
+
 class Checkinv1_0 extends ApiController
 {
     /**

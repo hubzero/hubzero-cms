@@ -67,7 +67,9 @@ class Resume extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT * FROM `$this->_tbl` WHERE $this->_tbl_key=" . $this->_db->quote($name) . " AND main='1' LIMIT 1");
+        $query = "SELECT * FROM `$this->_tbl` WHERE $this->_tbl_key="
+            . $this->_db->quote($name) . " AND main='1' LIMIT 1";
+        $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
         }
@@ -80,6 +82,7 @@ class Resume extends Table
      * @param   integer  $id  Resume ID
      * @return  boolean  False if errors, True upon success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function delete_resume($id = null)
     {
         if ($id === null) {
@@ -110,9 +113,15 @@ class Resume extends Table
     {
         $query  = "SELECT DISTINCT r.uid, r.filename FROM `$this->_tbl` AS r ";
         $query .= "JOIN `#__jobs_seekers` AS s ON s.uid=r.uid ";
-        $query .= ($pile == 'shortlisted' && $uid)  ? " JOIN `#__jobs_shortlist` AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' " : "";
+        if ($pile == 'shortlisted' && $uid) {
+            $query .= " JOIN `#__jobs_shortlist` AS W ON W.seeker=s.uid AND W.emp=" . $this->_db->quote($uid)
+                . " AND s.uid != " . $this->_db->quote($uid) . " AND s.uid=r.uid AND W.category='resume' ";
+        }
         $uid = $admin ? 1 : $uid;
-        $query .= ($pile == 'applied' && $uid)  ? " LEFT JOIN `#__jobs_openings` AS J ON J.employerid=" . $this->_db->quote($uid) . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 " : "";
+        if ($pile == 'applied' && $uid) {
+            $query .= " LEFT JOIN `#__jobs_openings` AS J ON J.employerid=" . $this->_db->quote($uid)
+                . " JOIN #__jobs_applications AS A ON A.jid=J.id AND A.uid=s.uid AND A.status=1 ";
+        }
         $query .= "WHERE s.active=1 AND r.main=1 ";
 
         $files = array();

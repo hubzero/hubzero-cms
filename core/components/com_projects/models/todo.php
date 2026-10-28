@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ class Todo extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Projects\\Tables\\Todo';
 
     /**
@@ -32,14 +34,14 @@ class Todo extends Model
      *
      * @var object
      */
-    private $_entry = null;
+    private $entry = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_entries = null;
+    private $entries = null;
 
     /**
      * Registry
@@ -68,7 +70,7 @@ class Todo extends Model
      * @param   mixed   $oid  TODO ID
      * @return  object  Todo
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -78,7 +80,7 @@ class Todo extends Model
 
         if (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         } else {
             $key = $oid;
@@ -124,12 +126,12 @@ class Todo extends Model
     public function entry($id = null)
     {
         if (
-            !isset($this->_entry)
-            || ($id !== null && (int) $this->_entry->get('id') != $id)
+            !isset($this->entry)
+            || ($id !== null && (int) $this->entry->get('id') != $id)
         ) {
-            $this->_entry = Entry::getInstance($id);
+            $this->entry = Entry::getInstance($id);
         }
-        return $this->_entry;
+        return $this->entry;
     }
 
     /**

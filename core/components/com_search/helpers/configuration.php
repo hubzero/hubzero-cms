@@ -185,6 +185,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function Year($date, $row)
     {
         $date = $row->$date;
@@ -199,6 +200,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function Month($date, $row)
     {
         $date = $row->$date;
@@ -213,6 +215,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function Field($argument, $row)
     {
         $argument = $row->$argument;
@@ -227,6 +230,7 @@ class ConfigHelper
      * @access  private
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function Group_cn($id, $row)
     {
         $group = Group::getInstance($id);
@@ -241,6 +245,7 @@ class ConfigHelper
      * @access  private
      * @return  int
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function Member_id($id, $row)
     {
         $id = $row->scope_id;

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for changing 'group_id' into 'scope_id' and adding 'access' field
- **/
+ *
+ */
 class Migration20141029112543ComBlog extends Base
 {
     /**

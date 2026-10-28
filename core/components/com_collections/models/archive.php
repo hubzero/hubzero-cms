@@ -109,7 +109,7 @@ class Archive extends Obj
      * @param   itneger  $object_id    The object ID
      * @return  object
      */
-    static function &getInstance($object_type = '', $object_id = 0)
+    public static function &getInstance($object_type = '', $object_id = 0)
     {
         static $instances;
 
@@ -336,7 +336,7 @@ class Archive extends Obj
                 } else {
                     if ($following->get('following_type') == 'member') {
                         $members[] = $following->get('following_id');
-                    } else if ($following->get('following_type') == 'group') {
+                    } elseif ($following->get('following_type') == 'group') {
                         $groups[] = $following->get('following_id');
                     }
                 }
@@ -350,9 +350,9 @@ class Archive extends Obj
                 }
                 if (count($members) > 0 && count($groups) > 0) {
                     $query = "( $query1 ) UNION ( $query2 );";
-                } else if (count($members) > 0) {
+                } elseif (count($members) > 0) {
                     $query = $query1;
-                } else if (count($groups) > 0) {
+                } elseif (count($groups) > 0) {
                     $query = $query2;
                 }
 

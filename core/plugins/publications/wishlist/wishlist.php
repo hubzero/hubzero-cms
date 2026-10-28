@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for wishes
@@ -19,6 +18,7 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -74,7 +74,8 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         // Load component language file
-        Lang::load('com_wishlist') || Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');
+        Lang::load('com_wishlist') ||
+            Lang::load('com_wishlist', PATH_CORE . DS . 'components' . DS . 'com_wishlist' . DS . 'site');
 
         $option = 'com_wishlist';
         $cat    = 'publication';
@@ -254,8 +255,16 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 
                 $entries
                     ->select($entries->getTableName() . '.*')
-                    ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'positive')
-                    ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'negative');
+                    ->select("(SELECT COUNT(*) FROM `" .
+                    $vote->getTableName() .
+                    "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" .
+                    $entries->getTableName() .
+                    ".id)", 'positive')
+                    ->select("(SELECT COUNT(*) FROM `" .
+                    $vote->getTableName() .
+                    "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" .
+                    $entries->getTableName() .
+                    ".id)", 'negative');
 
                 // list sorting
                 if ($filters['sortby']) {
@@ -286,7 +295,10 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
                             break;
                         case 'bonus':
                             $entries
-                                ->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)", 'bonus')
+                                ->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' " .
+                                    "AND type='hold' AND referenceid=" .
+                            $entries->getTableName() .
+                            ".id)", 'bonus')
                                 ->order('status', 'asc')
                                 ->order('bonus', 'desc')
                                 ->order('positive', 'desc')
@@ -307,9 +319,21 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
                     ->start($filters['start'])
                     ->rows();
 
-                $title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
+                $title = ($admin) ?
+                     Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
                 if ($wishlist->items && count($wishlist->items) > 0 && $items > $filters['limit']) {
-                    $title .= ' (<a href="' . Route::url('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . Lang::txt('view all') . ' ' . $items . '</a>)';
+                    $title .= ' (<a href="' .
+                    Route::url('index.php?option=' .
+                    $option .
+                    '&task=wishlist&category=' .
+                    $wishlist->category .
+                    '&rid=' .
+                    $wishlist->referenceid) .
+                    '">' .
+                    Lang::txt('view all') .
+                    ' ' .
+                    $items .
+                    '</a>)';
                 } else {
                     $title .= ' (' . $items . ')';
                 }

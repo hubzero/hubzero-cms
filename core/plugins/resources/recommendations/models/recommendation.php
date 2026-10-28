@@ -13,6 +13,7 @@ use Hubzero\Database\Relational;
 /**
  * Model class for resource Recommendation
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Recommendation extends Relational
 {
     /**
@@ -63,7 +64,8 @@ class Recommendation extends Relational
         $query = "SELECT *, (10*titleScore + 5*contentScore+2*tagScore)/(10+5+2) AS rec_score
         FROM #__recommendation AS rec, #__resources AS r
         WHERE (rec.fromID ='".$id."' AND r.id = rec.toID AND r.standalone=1)
-        OR (rec.toID ='".$id."' AND r.id = rec.fromID AND r.standalone=1 AND r.published=1) having rec_score > ".$threshold."
+        OR (rec.toID ='".$id."' AND r.id = rec.fromID AND r.standalone=1 AND r.published=1)
+        having rec_score > ".$threshold."
         ORDER BY rec_score DESC LIMIT ".$limit;
         */
 

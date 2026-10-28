@@ -76,15 +76,24 @@ class Helper extends Module
         $database = App::get('db');
 
         // Get module parameters
-        $mode              = $this->params->get('mode')                ? abs(intval($this->params->get('mode'))) : 4;
-        $days              = $this->params->get('days')                ? abs(intval($this->params->get('days'))) : 7;
-        $maxEvents         = $this->params->get('max_events')          ? abs(intval($this->params->get('max_events'))) : 5;
-        $displayLinks      = $this->params->get('display_links')       ? abs(intval($this->params->get('display_links'))) : 0;
-        $displayYear       = $this->params->get('display_year')        ? abs(intval($this->params->get('display_year'))) : 0;
-        $disableTitleStyle = $this->params->get('display_title_style') ? abs(intval($this->params->get('display_title_style'))) : 0;
-        $disableDateStyle  = $this->params->get('display_date_style')  ? abs(intval($this->params->get('display_date_style'))) : 0;
-        $customFormatStr   = $this->params->get('custom_format_str')   ? $this->params->get('custom_format_str') : null;
-        $charlimit         = $this->params->get('char_limit')          ? abs(intval($this->params->get('char_limit'))) : 150;
+        $modeParam = $this->params->get('mode');
+        $mode = $modeParam ? abs(intval($modeParam)) : 4;
+        $daysParam = $this->params->get('days');
+        $days = $daysParam ? abs(intval($daysParam)) : 7;
+        $maxEventsParam = $this->params->get('max_events');
+        $maxEvents = $maxEventsParam ? abs(intval($maxEventsParam)) : 5;
+        $displayLinksParam = $this->params->get('display_links');
+        $displayLinks = $displayLinksParam ? abs(intval($displayLinksParam)) : 0;
+        $displayYearParam = $this->params->get('display_year');
+        $displayYear = $displayYearParam ? abs(intval($displayYearParam)) : 0;
+        $disableTitleStyleParam = $this->params->get('display_title_style');
+        $disableTitleStyle = $disableTitleStyleParam ? abs(intval($disableTitleStyleParam)) : 0;
+        $disableDateStyleParam = $this->params->get('display_date_style');
+        $disableDateStyle = $disableDateStyleParam ? abs(intval($disableDateStyleParam)) : 0;
+        $customFormatStrParam = $this->params->get('custom_format_str');
+        $customFormatStr = $customFormatStrParam ? $customFormatStrParam : null;
+        $charlimitParam = $this->params->get('char_limit');
+        $charlimit = $charlimitParam ? abs(intval($charlimitParam)) : 150;
 
         // Can't have a mode greater than 4
         if ($mode > 4) {
@@ -115,10 +124,11 @@ class Helper extends Module
                 //if (!defined(_CAL_CONF_STARDAY)) define(_CAL_CONF_STARDAY, 0);
                 $numDay = (date("w") - _CAL_CONF_STARDAY + 7) % 7;
                 // begin of this week
-                $beginDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - $numDay, date('Y'))) . ' 00:00:00';
-                //$thisWeekEnd = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - date('w')+6, date('Y'))." 23:59:59";
+                $weekStartTs = mktime(0, 0, 0, date('m'), date('d') - $numDay, date('Y'));
+                $beginDate = date('Y-m-d', $weekStartTs) . ' 00:00:00';
                 // end of next week
-                $endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - $numDay + 13, date('Y'))) . ' 23:59:59';
+                $weekEndTs = mktime(0, 0, 0, date('m'), date('d') - $numDay + 13, date('Y'));
+                $endDate = date('Y-m-d', $weekEndTs) . ' 23:59:59';
                 break;
             case 2:
             case 3:
@@ -142,6 +152,7 @@ class Helper extends Module
         }
 
         // Display events
+        $quotedEvent = $database->quote('event');
         $query = "SELECT `#__events`.* FROM `#__events`, `#__categories` as b"
             . " WHERE #__events.catid = b.id "
             . " AND #__events.state='1'"
@@ -149,7 +160,7 @@ class Helper extends Module
             . " OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
             . " OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
             . " OR (publish_down <= '$endDate%' AND publish_down >= '$todayBegin%'))"
-            . " AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
+            . " AND (#__events.scope IS NULL OR #__events.scope=" . $quotedEvent . ")"
             . " ORDER BY publish_up ASC LIMIT $maxEvents";
 
         // Retrieve the list of returned records as an array of objects
@@ -159,7 +170,10 @@ class Helper extends Module
         // // Determine the events that occur each day within our range
         // $events = 0;
         // $date = mktime(0, 0, 0);
-        // $lastDate = mktime(0, 0, 0, intval(substr($endDate, 5, 2)), intval(substr($endDate, 8, 2)), intval(substr($endDate, 0, 4)));
+        // $lastDateMonth = intval(substr($endDate, 5, 2));
+        // $lastDateDay = intval(substr($endDate, 8, 2));
+        // $lastDateYear = intval(substr($endDate, 0, 4));
+        // $lastDate = mktime(0, 0, 0, $lastDateMonth, $lastDateDay, $lastDateYear);
         // $i = 0;
 
         // $content  = '';
@@ -170,7 +184,7 @@ class Helper extends Module
         //  while ($date <= $lastDate)
         //  {
         //      // Get the events for this $date
-        //      $eventsThisDay = $this->_getEventsByDate($rows, $date, $seenThisEvent);
+        //      $eventsThisDay = $this->getEventsByDate($rows, $date, $seenThisEvent);
         //      echo '<pre>';
         //      print_r($eventsThisDay);
         //      echo '</pre>';
@@ -201,12 +215,15 @@ class Helper extends Module
         //  // Display some recent previous events too up to a total of $maxEvents
         //  // Changed by Swaroop to display only events that are not announcements
         //  $query = "SELECT #__events.* FROM #__events, #__categories as b"
-        //      . "\nWHERE #__events.catid = b.id AND b.access <= $gid AND #__events.access <= $gid AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
+        //      . "\nWHERE #__events.catid = b.id AND b.access <= $gid"
+        //      . " AND #__events.access <= $gid"
+        //      . " AND (#__events.state='1' $ancmnt AND #__events.checked_out='0')"
         //      . "\n   AND ((publish_up <= '$beginDate%' AND publish_down >= '$beginDate%')"
         //      . "\n   OR (publish_up <= '$yesterdayEnd%' AND publish_down >= '$yesterdayEnd%')"
         //      . "\n   OR (publish_up <= '$yesterdayEnd%' AND publish_up >= '$beginDate%')"
         //      . "\n   OR (publish_down <= '$yesterdayEnd%' AND publish_down >= '$beginDate%'))"
-        //      . "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
+        //      . "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event')
+        //      . ")"
         //      . "\n  ORDER BY publish_up DESC";
 
         //  // Initialise the query in the $database connector
@@ -220,13 +237,16 @@ class Helper extends Module
         //  {
         //      // Start from yesterday
         //      $date = mktime(23, 59, 59, date('m'), date('d') - 1, date('Y'));
-        //      $lastDate = mktime(0, 0, 0, intval(substr($beginDate, 5, 2)), intval(substr($beginDate, 8, 2)), intval(substr($beginDate, 0, 4)));
+        //      $lastDateMo = intval(substr($beginDate, 5, 2));
+        //      $lastDateDy = intval(substr($beginDate, 8, 2));
+        //      $lastDateYr = intval(substr($beginDate, 0, 4));
+        //      $lastDate = mktime(0, 0, 0, $lastDateMo, $lastDateDy, $lastDateYr);
         //      $i = -1;
 
         //      while ($date >= $lastDate)
         //      {
         //          // Get the events for this $date
-        //          $eventsThisDay = $this->_getEventsByDate($prows, $date, $seenThisEvent, $norepeat);
+        //          $eventsThisDay = $this->getEventsByDate($prows, $date, $seenThisEvent, $norepeat);
         //          if (count($eventsThisDay))
         //          {
         //              $eventsByRelDay[$i] = $eventsThisDay;
@@ -244,7 +264,8 @@ class Helper extends Module
 
         // if (isset($eventsByRelDay) && count($eventsByRelDay))
         // {
-        //  // Now to display these events, we just start at the smallest index of the $eventsByRelDay array and work our way up.
+        //  // Now to display these events, we just start at the smallest index
+        //  // of the $eventsByRelDay array and work our way up.
         //  ksort($eventsByRelDay, SORT_NUMERIC);
         //  reset($eventsByRelDay);
 
@@ -286,7 +307,7 @@ class Helper extends Module
      * @param   array    &$seenThisEvent  Parameter description (if any) ...
      * @return  array    Return description (if any) ...
      */
-    private function _getEventsByDate(&$rows, $date, &$seenThisEvent)
+    private function getEventsByDate(&$rows, $date, &$seenThisEvent)
     {
         $num_events = count($rows);
         $new_rows_events = array();

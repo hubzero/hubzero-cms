@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Tags plugin class for citations
@@ -19,6 +17,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -58,8 +57,10 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
         // Build the query
         $e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 
-        $e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url as href,
-					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
+        $e_fields = "SELECT e.id,
+             e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal,
+                    e.url as href, 'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number,
+                    e.type, e.pages, e.publisher ";
         $e_from  = " FROM `#__citations` AS e, `#__tags_object` AS t"; //", #__users AS u";
         $e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND
 
@@ -170,7 +171,11 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
         if ($citationSingleView) {
             $html .= '<a href="' . \Route::url('index.php?option=com_citations&task=view&id=' . $row->id) . '">';
         } else {
-            $html .= '<a href="' . \Route::url('index.php?option=com_citations&task=browse&type=' . $row->type . '&year=' . $row->year . '&search=' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 50)) . '">';
+            $html .= '<a href="' . \Route::url('index.php?option=com_citations&task=browse&type=' . $row->type
+                . '&year=' . $row->year . '&search=' . \Hubzero\Utility\Str::truncate(
+                    \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)),
+                    50
+                )) . '">';
         }
         $html .= \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->title)), 200);
         $html .= '</a></p>' . "\n";
@@ -192,7 +197,12 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
         $cc = \Components\Citations\Models\Citation::oneOrNew($row->id);
 
-        $html .= '<p>' . $formatter->formatCitation($cc->toObject(), null, $config->get("citation_coins", 1), $config) . '</p>';
+        $html .= '<p>' . $formatter->formatCitation(
+            $cc->toObject(),
+            null,
+            $config->get("citation_coins", 1),
+            $config
+        ) . '</p>';
         $html .= "\t" . '</li>' . "\n";
 
         // Return output

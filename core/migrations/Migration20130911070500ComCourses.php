@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,7 +33,8 @@ class Migration20130911070500ComCourses extends Base
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query = "UPDATE `#__courses_asset_groups` SET `params` = 'discussions_category=1' WHERE `parent` = '{$r->id}'";
+                    $query = "UPDATE `#__courses_asset_groups` SET `params` = "
+                        . "'discussions_category=1' WHERE `parent` = '{$r->id}'";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +21,9 @@ use Component;
 
 class BoostQueryHelper
 {
-    var $boostOrm;
+    protected $boostOrm;
 
-    var $queriesFactory;
+    protected $queriesFactory;
 
     protected $boosts;
 

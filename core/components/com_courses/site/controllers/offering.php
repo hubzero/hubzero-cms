@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,29 +50,37 @@ class Offering extends SiteController
         $this->course = Models\Course::getInstance($this->gid);
 
         // Ensure we found the course info
-        if (!$this->course->exists() || $this->course->isDeleted() || $this->course->isUnpublished()) {
+        $courseNotFound = !$this->course->exists()
+            || $this->course->isDeleted()
+            || $this->course->isUnpublished();
+        if ($courseNotFound) {
             return App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
         }
 
         // No offering provided
         if (!($offering = Request::getString('offering', ''))) {
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=course&gid=' . $this->course->get('alias');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=course&gid=' . $this->course->get('alias'))
+                Route::url($url)
             );
             return;
         }
 
         // Ensure we found the course info
+        $offeringObj = $this->course->offering($offering);
+        $canManageSection = $offeringObj->access('manage', 'section');
         if (
-            !$this->course->offering($offering)->exists()
-            || $this->course->offering($offering)->isDeleted()
-            || (!$this->course->offering($offering)->access('manage', 'section') && $this->course->offering($offering)->isUnpublished())
+            !$offeringObj->exists()
+            || $offeringObj->isDeleted()
+            || (!$canManageSection && $offeringObj->isUnpublished())
         ) {
             return App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
         }
 
         // Ensure the course has been published or has been approved
-        if (!$this->course->offering()->access('manage', 'section') && !$this->course->isAvailable()) {
+        $canManage = $this->course->offering()->access('manage', 'section');
+        if (!$canManage && !$this->course->isAvailable()) {
             return App::abort(404, Lang::txt('COM_COURSES_NOT_PUBLISHED'));
         }
 
@@ -84,6 +93,7 @@ class Offering extends SiteController
      * @param      array $course_pages List of roup pages
      * @return     void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -94,15 +104,20 @@ class Offering extends SiteController
         }
 
         if ($this->course->exists()) {
+            $courseUrl = 'index.php?option=' . $this->_option
+                . '&gid=' . $this->course->get('alias');
             Pathway::append(
                 stripslashes($this->course->get('title')),
-                'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias')
+                $courseUrl
             );
 
             if ($this->course->offering()->exists()) {
+                $offeringUrl = 'index.php?option=' . $this->_option
+                    . '&gid=' . $this->course->get('alias')
+                    . '&offering=' . $this->course->offering()->get('alias');
                 Pathway::append(
                     stripslashes($this->course->offering()->get('title')),
-                    'index.php?option=' . $this->_option . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')
+                    $offeringUrl
                 );
             }
         }
@@ -113,6 +128,7 @@ class Offering extends SiteController
      *
      * @return     void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildTitle()
     {
         //set title used in view
@@ -122,7 +138,8 @@ class Offering extends SiteController
             $this->_title .= ': ' . stripslashes($this->course->get('title'));
 
             if ($this->course->offering()->exists()) {
-                $this->_title .= ': ' . stripslashes($this->course->offering()->get('title'));
+                $offeringTitle = $this->course->offering()->get('title');
+                $this->_title .= ': ' . stripslashes($offeringTitle);
             }
         }
 
@@ -137,8 +154,10 @@ class Offering extends SiteController
      */
     public function loginTask($message = '')
     {
-        $rtrn = base64_encode(Route::url($this->course->offering()->link() . '&task=' . $this->_task, false, true));
-        $link = str_replace('&amp;', '&', Route::url('index.php?option=com_users&view=login&return=' . $rtrn));
+        $offeringLink = $this->course->offering()->link() . '&task=' . $this->_task;
+        $rtrn = base64_encode(Route::url($offeringLink, false, true));
+        $loginUrl = 'index.php?option=com_users&view=login&return=' . $rtrn;
+        $link = str_replace('&amp;', '&', Route::url($loginUrl));
         App::redirect(
             $link,
             Lang::txt($message),
@@ -155,7 +174,9 @@ class Offering extends SiteController
     public function displayTask()
     {
         // Check if the offering is available
-        if (!$this->course->offering()->access('manage', 'section') && !$this->course->offering()->isAvailable()) {
+        $canManage = $this->course->offering()->access('manage', 'section');
+        $isAvailable = $this->course->offering()->isAvailable();
+        if (!$canManage && !$isAvailable) {
             return App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
         }
 
@@ -168,12 +189,14 @@ class Offering extends SiteController
         // Get the active tab (section)
         $this->view->nonadmin = 0;
         if ($this->course->offering()->access('manage', 'section')) {
+            $offeringId = $this->course->offering()->get('id');
+            $stateKey = $this->_option . '.offering' . $offeringId . '.nonadmin';
             $this->view->nonadmin = Request::getInt('nonadmin', User::getState(
-                $this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
+                $stateKey,
                 0
             ));
             User::setState(
-                $this->_option . '.offering' . $this->course->offering()->get('id') . '.nonadmin',
+                $stateKey,
                 $this->view->nonadmin
             );
         }
@@ -257,7 +280,9 @@ class Offering extends SiteController
         $enrolled = false;
 
         // If enrollment is open OR a coupon code was posted
-        if (!$offering->section()->get('enrollment') || ($code = Request::getString('code', ''))) {
+        $enrollment = $offering->section()->get('enrollment');
+        $code = Request::getString('code', '');
+        if (!$enrollment || $code) {
             $section_id = $offering->section()->get('id');
 
             // If a coupon code was posted
@@ -266,34 +291,55 @@ class Offering extends SiteController
                 $coupon = $offering->section()->code($code);
                 // Is it a valid code?
                 if (!$coupon->exists()) {
-                    $this->setError(Lang::txt('COM_COURSES_ERROR_CODE_INVALID', $code));
+                    $errorMsg = Lang::txt('COM_COURSES_ERROR_CODE_INVALID', $code);
+                    $this->setError($errorMsg);
                 }
                 // Has it already been redeemed?
                 if ($coupon->isRedeemed()) {
-                    $this->setError(Lang::txt('COM_COURSES_ERROR_CODE_ALREADY_REDEEMED', $code));
+                    $redeemedKey = 'COM_COURSES_ERROR_CODE_ALREADY_REDEEMED';
+                    $errorMsg = Lang::txt($redeemedKey, $code);
+                    $this->setError($errorMsg);
                 } else {
                     // Has it expired?
                     if ($coupon->isExpired()) {
-                        $this->setError(Lang::txt('COM_COURSES_ERROR_CODE_EXPIRED', $code));
+                        $expiredKey = 'COM_COURSES_ERROR_CODE_EXPIRED';
+                        $expiredMsg = Lang::txt($expiredKey, $code);
+                        $this->setError($expiredMsg);
                     }
                 }
                 if (!$this->getError()) {
                     // Is this a coupon for a different section?
-                    if ($offering->section()->get('id') != $coupon->get('section_id')) {
-                        $section = \Components\Courses\Models\Section::getInstance($coupon->get('section_id'));
-                        if ($section->exists() && $section->get('offering_id') != $offering->get('id')) {
-                            $offering = \Components\Courses\Models\Offering::getInstance($section->get('offering_id'));
-                            if ($offering->exists() && $offering->get('course_id') != $this->course->get('id')) {
-                                $this->course = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
+                    $sectionId = $offering->section()->get('id');
+                    if ($sectionId != $coupon->get('section_id')) {
+                        $couponSectionId = $coupon->get('section_id');
+                        $SectionModel = Models\Section::class;
+                        $section = $SectionModel::getInstance($couponSectionId);
+                        $sectionOfferingId = $section->get('offering_id');
+                        $offeringId = $offering->get('id');
+                        $offeringIdsDiffer = $sectionOfferingId != $offeringId;
+                        if ($section->exists() && $offeringIdsDiffer) {
+                            $offering = Models\Offering::getInstance(
+                                $sectionOfferingId
+                            );
+                            $offeringCourseId = $offering->get('course_id');
+                            $thisCourseId = $this->course->get('id');
+                            $courseIdsDiffer = $offeringCourseId != $thisCourseId;
+                            if ($offering->exists() && $courseIdsDiffer) {
+                                $this->course = Models\Course::getInstance(
+                                    $offeringCourseId
+                                );
                             }
                         }
+                        $enrollUrl = $offering->link()
+                            . '&task=enroll&code=' . $code;
                         App::redirect(
-                            Route::url($offering->link() . '&task=enroll&code=' . $code)
+                            Route::url($enrollUrl)
                         );
                         return;
                     }
                     // Redeem the code
-                    $coupon->redeem(User::get('id'));// set('redeemed_by', User::get('id'));
+                    // set('redeemed_by', User::get('id'));
+                    $coupon->redeem(User::get('id'));
                     //$coupon->store();
                 }
             }
@@ -301,7 +347,9 @@ class Offering extends SiteController
             // If no errors
             if (!$this->getError()) {
                 // Add the user to the course
-                $model = new \Components\Courses\Models\Member(0); //::getInstance(User::get('id'), $offering->get('id'));
+                // Previously used Models\Member::getInstance with User::get('id')
+                $MemberModel = Models\Member::class;
+                $model = new $MemberModel(0);
                 $model->set('user_id', User::get('id'));
                 $model->set('course_id', $this->course->get('id'));
                 $model->set('offering_id', $offering->get('id'));
@@ -381,7 +429,8 @@ class Offering extends SiteController
      */
     public function assetTask()
     {
-        $sparams    = new Registry($this->course->offering()->section()->get('params'));
+        $sectionParams = $this->course->offering()->section()->get('params');
+        $sparams    = new Registry($sectionParams);
         $section_id = $this->course->offering()->section()->get('id');
         $asset      = new Models\Asset(Request::getInt('asset_id', null));
         $asset->set('section_id', $section_id);
@@ -391,17 +440,19 @@ class Offering extends SiteController
             // Is a preview available?
             $preview = $sparams->get('preview', 0);
 
-            // If no preview is available or if type  is form (i.e. you can never preview forms)
+            $enrollKey = 'COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET';
+            $enrollmentRequiredMsg = Lang::txt($enrollKey);
+            // If no preview is available or if type is form (can't preview forms)
             if (!$preview || $asset->get('type') == 'form') {
                 // Check if they're logged in
                 if (User::isGuest()) {
-                    $this->loginTask(Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
+                    $this->loginTask($enrollmentRequiredMsg);
                     return;
                 } else {
                     // Redirect back to the course outline
                     App::redirect(
                         Route::url($this->course->offering()->link()),
-                        Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
+                        $enrollmentRequiredMsg,
                         'warning'
                     );
                     return;
@@ -413,13 +464,13 @@ class Offering extends SiteController
                         if ($unit->get('ordering') > 1) {
                             // Check if they're logged in
                             if (User::isGuest()) {
-                                $this->loginTask(Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
+                                $this->loginTask($enrollmentRequiredMsg);
                                 return;
                             } else {
                                 // Redirect back to the course outline
                                 App::redirect(
                                     Route::url($this->course->offering()->link()),
-                                    Lang::txt('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
+                                    $enrollmentRequiredMsg,
                                     'warning'
                                 );
                                 return;
@@ -431,13 +482,19 @@ class Offering extends SiteController
         }
 
         // If not a manager and either the offering or section is unpublished...
-        if (!$this->course->offering()->access('manage') && (!$this->course->offering()->isPublished() || !$this->course->offering()->section()->isPublished())) {
-            return App::abort(403, Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE'));
+        $canManage = $this->course->offering()->access('manage');
+        $offeringPublished = $this->course->offering()->isPublished();
+        $sectionPublished = $this->course->offering()->section()->isPublished();
+        if (!$canManage && (!$offeringPublished || !$sectionPublished)) {
+            $unavailableMsg = Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE');
+            return App::abort(403, $unavailableMsg);
         }
 
-        if (!$this->course->offering()->access('manage') && !$asset->isAvailable()) {
-            // Allow expired forms to pass through (i.e. so students can see their results)
-            if (!$asset->get('type') == 'form' || !$asset->ended()) {
+        $canManageAsset = $this->course->offering()->access('manage');
+        if (!$canManageAsset && !$asset->isAvailable()) {
+            // Allow expired forms to pass through (so students can see results)
+            $isForm = $asset->get('type') == 'form';
+            if (!$isForm || !$asset->ended()) {
                 // Redirect back to the course outline
                 App::redirect(
                     Route::url($this->course->offering()->link()),
@@ -449,14 +506,18 @@ class Offering extends SiteController
         }
 
         // Check prerequisites
-        $member = $this->course->offering()->section()->member(User::get('id'));
+        $userId = User::get('id');
+        $member = $this->course->offering()->section()->member($userId);
         if (is_null($member->get('section_id'))) {
             $member->set('section_id', $section_id);
         }
-        $prerequisites = $member->prerequisites($this->course->offering()->gradebook());
+        $gradebook = $this->course->offering()->gradebook();
+        $prerequisites = $member->prerequisites($gradebook);
 
-        if (!$this->course->offering()->access('manage') && !$prerequisites->hasMet('asset', $asset->get('id'))) {
-            $prereqs      = $prerequisites->get('asset', $asset->get('id'));
+        $assetId = $asset->get('id');
+        $hasMet = $prerequisites->hasMet('asset', $assetId);
+        if (!$canManageAsset && !$hasMet) {
+            $prereqs      = $prerequisites->get('asset', $assetId);
             $requirements = array();
             foreach ($prereqs as $pre) {
                 $reqAsset = new Models\Asset($pre['scope_id']);
@@ -466,16 +527,19 @@ class Offering extends SiteController
             $requirements = implode(', ', $requirements);
 
             // Redirect back to the course outline
+            $prereqKey = 'COM_COURSES_ERROR_ASSET_HAS_PREREQ';
+            $prereqMsg = Lang::txt($prereqKey, $requirements);
             App::redirect(
                 Route::url($this->course->offering()->link()),
-                Lang::txt('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
+                $prereqMsg,
                 'warning'
             );
             return;
         }
 
         // If requesting a file from a wiki type asset, then serve that up directly
-        if ($asset->get('subtype') == 'wiki' && Request::getString('file', false)) {
+        $isWiki = $asset->get('subtype') == 'wiki';
+        if ($isWiki && Request::getString('file', false)) {
             echo $asset->download($this->course);
         }
 
@@ -496,8 +560,12 @@ class Offering extends SiteController
         }
 
         // Redirect back to the course page
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&gid=' . $this->course->get('alias')
+            . '&task=offerings';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
+            Route::url($url)
         );
     }
 
@@ -510,8 +578,12 @@ class Offering extends SiteController
      */
     public function deleteTask()
     {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&gid=' . $this->course->get('alias')
+            . '&task=offerings';
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
+            Route::url($url)
         );
     }
 

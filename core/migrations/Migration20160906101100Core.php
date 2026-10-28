@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to fix index naming conventions in CNS tables
- **/
+ *
+ */
 class Migration20160906101100Core extends Base
 {
     private function addIndex($table, $key, $fields)
@@ -130,7 +132,11 @@ class Migration20160906101100Core extends Base
         $this->dropIndex('#__xmessage_action', 'class');
         $this->addIndex('#__xmessage_action', 'idx_element', 'element');
         $this->dropIndex('#__xmessage_action', 'element');
-        $this->addFulltextIndex('#__xgroups', 'ftidx_cn_description_public_desc', array('cn', 'description', 'public_desc'));
+        $this->addFulltextIndex(
+            '#__xgroups',
+            'ftidx_cn_description_public_desc',
+            array('cn', 'description', 'public_desc')
+        );
         $this->dropIndex('#__xgroups', 'jos_xgroups_cn_description_public_desc_ftidx');
         $this->addFulltextIndex('#__wishlist_item', 'ftidx_subject_about', array('subject', 'about'));
         $this->dropIndex('#__wishlist_item', 'jos_wishlist_item_subject_about_ftidx');
@@ -150,15 +156,37 @@ class Migration20160906101100Core extends Base
         $this->dropIndex('#__users_points_services', 'alias');
         $this->addUniqueIndex('#__user_roles', 'uidx_role_user_id_group_id', array('role', 'user_id', 'group_id'));
         $this->dropIndex('#__user_roles', 'jos_user_roles_role_user_id_group_id_uidx');
-        $this->addUniqueIndex('#__trac_user_permission', 'uidx_user_id_action_trac_project_id', array('user_id', 'action', 'trac_project_id'), 'BTREE');
+        $this->addUniqueIndex(
+            '#__trac_user_permission',
+            'uidx_user_id_action_trac_project_id',
+            array('user_id', 'action', 'trac_project_id'),
+            'BTREE'
+        );
         $this->dropIndex('#__trac_user_permission', 'trac_action');
-        $this->addUniqueIndex('#__trac_group_permission', 'uidx_group_id_action_trac_project_id', array('group_id', 'action', 'trac_project_id'), 'BTREE');
+        $this->addUniqueIndex(
+            '#__trac_group_permission',
+            'uidx_group_id_action_trac_project_id',
+            array('group_id', 'action', 'trac_project_id'),
+            'BTREE'
+        );
         $this->dropIndex('#__trac_group_permission', 'trac_action');
-        $this->addUniqueIndex('#__tool_version_tracperm', 'uidx_tool_version_id_tracperm', array('tool_version_id', 'tracperm'));
+        $this->addUniqueIndex(
+            '#__tool_version_tracperm',
+            'uidx_tool_version_id_tracperm',
+            array('tool_version_id', 'tracperm')
+        );
         $this->dropIndex('#__tool_version_tracperm', 'toolid');
-        $this->addUniqueIndex('#__tool_version_middleware', 'uidx_tool_version_id_middleware', array('tool_version_id', 'middleware'));
+        $this->addUniqueIndex(
+            '#__tool_version_middleware',
+            'uidx_tool_version_id_middleware',
+            array('tool_version_id', 'middleware')
+        );
         $this->dropIndex('#__tool_version_middleware', 'toolid');
-        $this->addUniqueIndex('#__tool_version_hostreq', 'uidx_tool_version_id_hostreq', array('tool_version_id', 'hostreq'));
+        $this->addUniqueIndex(
+            '#__tool_version_hostreq',
+            'uidx_tool_version_id_hostreq',
+            array('tool_version_id', 'hostreq')
+        );
         $this->dropIndex('#__tool_version_hostreq', 'toolid');
         $this->dropIndex('#__tool_version_hostreq', 'idx_tool_version_id_hostreq');
         $this->addUniqueIndex('#__tool_version', 'uidx_toolname_instance', array('toolname', 'instance'));
@@ -207,11 +235,19 @@ class Migration20160906101100Core extends Base
         $this->dropIndex('#__resource_stats_clusters', 'cluster_end');
         $this->addIndex('#__resource_stats_clusters', 'idx_institution', 'institution');
         $this->dropIndex('#__resource_stats_clusters', 'institution');
-        $this->addUniqueIndex('#__resource_stats', 'uidx_resid_restype_datetime_period', array('resid', 'restype', 'datetime', 'period'));
+        $this->addUniqueIndex(
+            '#__resource_stats',
+            'uidx_resid_restype_datetime_period',
+            array('resid', 'restype', 'datetime', 'period')
+        );
         $this->dropIndex('#__resource_stats', 'res_stats');
         $this->addPrimaryIndex('#__publication_stats', 'id');
         $this->dropIndex('#__publication_stats', 'id');
-        $this->addUniqueIndex('#__publication_stats', 'uidx_publication_id_datetime_period', array('publication_id', 'datetime', 'period'));
+        $this->addUniqueIndex(
+            '#__publication_stats',
+            'uidx_publication_id_datetime_period',
+            array('publication_id', 'datetime', 'period')
+        );
         $this->dropIndex('#__publication_stats', 'pub_stats');
         $this->addUniqueIndex('#__publication_master_types', 'uidx_alias', 'alias');
         $this->dropIndex('#__publication_master_types', 'alias');
@@ -281,11 +317,22 @@ class Migration20160906101100Core extends Base
         $this->dropIndex('#__document_text_data', 'jos_document_text_data_body_ftidx');
         $this->addUniqueIndex('#__document_resource_rel', 'uidx_id', 'id');
         $this->dropIndex('#__document_resource_rel', 'id');
-        $this->addUniqueIndex('#__document_resource_rel', 'uidx_document_id_resource_id', array('document_id', 'resource_id'));
-        $this->dropIndex('#__document_resource_rel', 'jos_document_resource_rel_document_id_resource_id_uidx');
+        $this->addUniqueIndex(
+            '#__document_resource_rel',
+            'uidx_document_id_resource_id',
+            array('document_id', 'resource_id')
+        );
+        $this->dropIndex(
+            '#__document_resource_rel',
+            'jos_document_resource_rel_document_id_resource_id_uidx'
+        );
         $this->addUniqueIndex('#__courses_member_badges', 'uidx_member_id', 'member_id');
         $this->dropIndex('#__courses_member_badges', 'member_id');
-        $this->addUniqueIndex('#__courses_grade_book', 'uidx_user_id_scope_scope_id', array('member_id', 'scope', 'scope_id'));
+        $this->addUniqueIndex(
+            '#__courses_grade_book',
+            'uidx_user_id_scope_scope_id',
+            array('member_id', 'scope', 'scope_id')
+        );
         $this->addPrimaryIndex('#__courses_forms', 'id');
         $this->dropIndex('#__courses_forms', 'id');
         $this->addPrimaryIndex('#__courses_form_responses', 'id');
@@ -293,17 +340,28 @@ class Migration20160906101100Core extends Base
         $this->dropIndex('#__courses_form_respondents', 'jos_pdf_form_responses_respondent_id_idx');
         $this->addPrimaryIndex('#__courses_form_respondents', 'id');
         $this->dropIndex('#__courses_form_respondents', 'id');
-        $this->addUniqueIndex('#__courses_form_respondent_progress', 'uidx_respondent_id_question_id', array('respondent_id', 'question_id'));
+        $this->addUniqueIndex(
+            '#__courses_form_respondent_progress',
+            'uidx_respondent_id_question_id',
+            array('respondent_id', 'question_id')
+        );
         $this->addPrimaryIndex('#__courses_form_respondent_progress', 'id');
         $this->dropIndex('#__courses_form_respondent_progress', 'id');
-        $this->dropIndex('#__courses_form_respondent_progress', 'jos_pdf_form_respondent_progress_respondent_id_question_id_uidx');
+        $this->dropIndex(
+            '#__courses_form_respondent_progress',
+            'jos_pdf_form_respondent_progress_respondent_id_question_id_uidx'
+        );
         $this->addPrimaryIndex('#__courses_form_questions', 'id');
         $this->dropIndex('#__courses_form_deployments', 'id');
         $this->addPrimaryIndex('#__courses_form_deployments', 'id');
         $this->dropIndex('#__courses_form_answers', 'id');
         $this->addPrimaryIndex('#__courses_form_answers', 'id');
         $this->dropIndex('#__courses_form_questions', 'id');
-        $this->addFulltextIndex('#__content', 'ftidx_title_introtext_fulltext', array('title', 'introtext', 'fulltext'));
+        $this->addFulltextIndex(
+            '#__content',
+            'ftidx_title_introtext_fulltext',
+            array('title', 'introtext', 'fulltext')
+        );
         $this->addFulltextIndex('#__content', 'ftidx_introtext_fulltext', array('introtext', 'fulltext'));
         $this->addFulltextIndex('#__content', 'ftidx_title', 'title');
         $this->dropIndex('#__content', 'jos_content_state_idx');
@@ -322,7 +380,9 @@ class Migration20160906101100Core extends Base
         $this->dropIndex('#__citations', 'jos_citations_title_isbn_doi_abstract_ftidx');
 
         if (!$this->db->tableHasKey('#__cart_saved_addresses', 'uidx_uidNumber_saToFirst_saToLast_saAddress_saZip')) {
-            $query = "ALTER TABLE `#__cart_saved_addresses` ADD UNIQUE INDEX `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)";
+            $query = "ALTER TABLE `#__cart_saved_addresses` ADD UNIQUE INDEX "
+                . "`uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` "
+                . "(`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)";
             $this->db->setQuery($query);
             $this->db->query();
         }

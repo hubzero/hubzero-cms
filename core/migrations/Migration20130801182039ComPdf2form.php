@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indices to pdf2form tables
- **/
+ *
+ */
 class Migration20130801182039ComPdf2form extends Base
 {
     /**
@@ -28,7 +30,8 @@ class Migration20130801182039ComPdf2form extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasKey('#__pdf_form_responses', 'jos_pdf_form_responses_respondent_id_idx')) {
-                $query = "create index jos_pdf_form_responses_respondent_id_idx on #__pdf_form_responses(respondent_id)";
+                $query = "create index jos_pdf_form_responses_respondent_id_idx on"
+                    . "#__pdf_form_responses(respondent_id)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -53,7 +56,8 @@ class Migration20130801182039ComPdf2form extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasKey('#__pdf_form_respondents', 'jos_pdf_form_respondents_deployment_id_idx')) {
-                $query = "create index jos_pdf_form_respondents_deployment_id_idx on #__pdf_form_respondents(deployment_id)";
+                $query = "create index jos_pdf_form_respondents_deployment_id_idx on"
+                    . "#__pdf_form_respondents(deployment_id)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

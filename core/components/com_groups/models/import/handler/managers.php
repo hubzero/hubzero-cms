@@ -41,7 +41,7 @@ class Managers extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->managers) && $raw->managers != '') {
-            $record->managers = (array)$this->_multiValueField($raw->managers);
+            $record->managers = (array)$this->multiValueField($raw->managers);
 
             foreach ($record->managers as $i => $gid) {
                 $gid = trim($gid, '"');
@@ -124,7 +124,7 @@ class Managers extends Obj
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
      * @return  array
      */
-    private function _multiValueField($data, $delim = ',|;')
+    private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
             $data = array_map('trim', preg_split("/($delim)/", $data));

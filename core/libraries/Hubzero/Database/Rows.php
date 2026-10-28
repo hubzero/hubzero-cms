@@ -16,6 +16,11 @@ use Countable;
  */
 class Rows implements Iterator, Countable
 {
+    /*
+     * Errors trait for error handling
+     **/
+    use Traits\ErrorBag;
+
     public function __construct($rows = array())
     {
         // While arrays are traversable with foreach,
@@ -27,36 +32,31 @@ class Rows implements Iterator, Countable
         }
     }
 
-    /*
-     * Errors trait for error handling
-     **/
-    use Traits\ErrorBag;
-
     /**
      * Internal array of iterable data
      *
-     * @var  array
+     * @public array
      **/
     private $rows = array();
 
     /**
      * Order by used to retrieve these rows
      *
-     * @var  string
+     * @public string
      **/
     public $orderBy = 'id';
 
     /**
      * Order direction used to retrieve these rows
      *
-     * @var  string
+     * @public string
      **/
     public $orderDir = 'asc';
 
     /**
      * The pagination object based on these rows
      *
-     * @var  \Hubzero\Database\Pagination
+     * @public \Hubzero\Database\Pagination
      **/
     public $pagination = null;
 

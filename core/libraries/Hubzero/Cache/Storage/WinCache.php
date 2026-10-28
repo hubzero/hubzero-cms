@@ -38,7 +38,9 @@ class WinCache extends None
      */
     public static function isAvailable()
     {
-        $test = extension_loaded('wincache') && function_exists('wincache_ucache_get') && !strcmp(ini_get('wincache.ucenabled'), '1');
+        $test = extension_loaded('wincache') &&
+            function_exists('wincache_ucache_get') &&
+            !strcmp(ini_get('wincache.ucenabled'), '1');
         return $test;
     }
 

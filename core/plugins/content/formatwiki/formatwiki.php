@@ -50,7 +50,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $key = $this->_key($context);
+        $key = $this->key($context);
 
         $content = $article->get($key, '');
 
@@ -82,7 +82,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $key = $this->_key($context);
+        $key = $this->key($context);
 
         $content = $article->get($key);
 
@@ -98,7 +98,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
         // No format applied
         else {
             // Force apply a format?
-            if ($this->params->get('applyFormat') && $this->_isWiki($content)) {
+            if ($this->params->get('applyFormat') && $this->isWiki($content)) {
                 // Are we converting the format?
                 // Only apply the wiki format if not. Saves us an extra DB call.
                 if (!$this->params->get('convertFormat') && $article instanceof \Hubzero\Base\Model) {
@@ -121,7 +121,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
 
         $rendered = false;
 
-        if (trim($content) && $this->_isWiki($content)) {
+        if (trim($content) && $this->isWiki($content)) {
             if (!isset($params['fullparse'])) {
                 $params['fullparse'] = true;
             }
@@ -166,7 +166,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
      * @param   string $content Content to check
      * @return  string
      */
-    private function _isWiki($content)
+    private function isWiki($content)
     {
         $content = trim($content == null ? '' : $content);
 
@@ -199,7 +199,7 @@ class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
      * @param   string $context A dot-notation string
      * @return  string
      */
-    private function _key($context)
+    private function key($context)
     {
         $parts = explode('.', $context);
         $key = 'content';

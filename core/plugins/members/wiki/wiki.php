@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,19 +13,20 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for wiki pages
  */
-class plgMembersWiki extends \Hubzero\Plugin\Plugin
+class PlgMembersWiki extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Return a list of categories
      *
-     * @return  array
+     * @return array
      */
     public function &onMembersContributionsAreas()
     {
@@ -37,16 +39,17 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
     /**
      * Build SQL for returning the count of the number of contributions
      *
-     * @param   string  $user_id   Field to join on user ID
-     * @param   string  $username  Field to join on username
-     * @return  string
+     * @param  string $user_id  Field to join on user ID
+     * @param  string $username Field to join on username
+     * @return string
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
         $username = ($username == 'm.username') ? $username : "'" . $username . "'";
 
         $query = "SELECT COUNT(*) FROM `#__wiki_pages` AS w
-					WHERE ((" . $user_id . " > 0 AND (w.created_by = " . $user_id . " OR " . $user_id . " IN (SELECT wpa.user_id FROM `#__wiki_authors` AS wpa
+					WHERE ((" . $user_id . " > 0 AND (w.created_by = " . $user_id . " OR " . $user_id
+            . " IN (SELECT wpa.user_id FROM `#__wiki_authors` AS wpa
 						WHERE wpa.page_id=w.id))) OR (" . $user_id . " <= 0 AND w.created_by = " . $user_id . "))";
 
         return $query;
@@ -55,13 +58,13 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
     /**
      * Return either a count or an array of the member's contributions
      *
-     * @param   object   $member      Current member
-     * @param   string   $option      Component name
-     * @param   integer  $limit       Number of record to return
-     * @param   integer  $limitstart  Record return start
-     * @param   string   $sort        Field to sort records on
-     * @param   array    $areas       Areas to return data for
-     * @return  array
+     * @param  object  $member     Current member
+     * @param  string  $option     Component name
+     * @param  integer $limit      Number of record to return
+     * @param  integer $limitstart Record return start
+     * @param  string  $sort       Field to sort records on
+     * @param  array   $areas      Areas to return data for
+     * @return array
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -81,14 +84,14 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
                 return array();
             } else {
                 $uidNumber = $member->get('id');
-                $username  = $member->get('username');
+                $username = $member->get('username');
             }
         } else {
             if (!$member->uidNumber) {
                 return array();
             } else {
                 $uidNumber = $member->uidNumber;
-                $username  = $member->username;
+                $username = $member->username;
             }
         }
 
@@ -129,15 +132,17 @@ class plgMembersWiki extends \Hubzero\Plugin\Plugin
     /**
      * Static method for formatting results
      *
-     * @param   object  $row  Database row
-     * @return  string  HTML
+     * @param  object $row Database row
+     * @return string  HTML
      */
     public static function out($row)
     {
-        $html  = "\t" . '<li class="resource">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+        $html = "\t" . '<li class="resource">' . "\n";
+        $html .= "\t\t" . '<p class="title"><a href="' . $row->link() . '">'
+            . stripslashes($row->title) . '</a></p>' . "\n";
         $html .= "\t\t" . '<p class="details">' . $row->get('scope') . '</p>' . "\n";
-        $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";
+        $html .= "\t\t" . '<p>'
+            . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->version->get('pagehtml'))), 300) . "</p>\n";
         $html .= "\t" . '</li>' . "\n";
         return $html;
     }

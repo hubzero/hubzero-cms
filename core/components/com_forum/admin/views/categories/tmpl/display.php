@@ -38,7 +38,11 @@ $db->setQuery($query->toString());
 $access_levels = $db->loadAssocList();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
@@ -86,9 +90,14 @@ $access_levels = $db->loadAssocList();
                         <?php
                         foreach ($this->sections as $section) {
                             ?>
-                            <option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+                            <?php
+                            $selected = ($this->filters['section_id'] == $section->id)
+                                ? ' selected="selected"'
+                                : '';
+                            ?>
+                            <option value="<?php echo $section->id; ?>"<?php echo $selected; ?>>
+                                <?php echo $this->escape(stripslashes($section->title)); ?>
+                            </option>
                             <?php
                         }
                         ?>
@@ -117,7 +126,13 @@ $access_levels = $db->loadAssocList();
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
                     <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                    <?php echo Html::select(
+                        'options',
+                        Html::access('assetgroups'),
+                        'value',
+                        'text',
+                        $this->filters['access']
+                    ); ?>
                 </select>
             </div>
         </div>
@@ -127,14 +142,34 @@ $access_levels = $db->loadAssocList();
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_ACCESS', 'access', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', $sortDir, $sort); ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_FORUM_THREADS'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_FORUM_POSTS'); ?></th>
             </tr>
@@ -205,7 +240,11 @@ $access_levels = $db->loadAssocList();
                 ?>
                 <tr class="<?php echo "row$k" . ($row->state == 2 ? ' archived' : ''); ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->id; ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td class="priority-5">
@@ -213,7 +252,13 @@ $access_levels = $db->loadAssocList();
                     </td>
                     <td>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller='
+                                . $this->controller . '&task=edit&id=' . $row->id
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo $this->escape(stripslashes($row->title)); ?>
                             </a>
                         <?php } else { ?>
@@ -224,7 +269,17 @@ $access_levels = $db->loadAssocList();
                     </td>
                     <td class="priority-2">
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section_id=' . $this->filters['section_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+                            <?php
+                            $stateUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&section_id=' . $this->filters['section_id'] . '&task=' . $task
+                                . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'
+                            );
+                            $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
+                            ?>
+                            <a class="state <?php echo $cls; ?>"
+                                href="<?php echo $stateUrl; ?>"
+                                title="<?php echo $stateTitle; ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -240,12 +295,24 @@ $access_levels = $db->loadAssocList();
                     </td>
                     <td class="priority-3">
                         <span class="scope">
-                            <span><?php echo $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')'; ?></span>
+                            <?php
+                            $scopeCaption = isset($list[$row->scope][$row->scope_id])
+                                ? $this->escape($list[$row->scope][$row->scope_id]->caption)
+                                : $this->escape($row->scope_id);
+                            ?>
+                            <span><?php echo $row->scope . ' (' . $scopeCaption . ')'; ?></span>
                         </span>
                     </td>
                     <td>
                         <?php if ($row->threads > 0) { ?>
-                            <a class="glyph thread" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_FORUM_VIEW_THREADS_FOR'); ?>">
+                            <?php
+                            $threadsUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id
+                            );
+                            ?>
+                            <a class="glyph thread"
+                                href="<?php echo $threadsUrl; ?>"
+                                title="<?php echo Lang::txt('COM_FORUM_VIEW_THREADS_FOR'); ?>">
                                 <span><?php echo $row->threads; ?></span>
                             </a>
                         <?php } else { ?>
@@ -256,7 +323,14 @@ $access_levels = $db->loadAssocList();
                     </td>
                     <td>
                         <?php if ($row->posts > 0) { ?>
-                            <a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_FORUM_VIEW_POSTS_FOR'); ?>">
+                            <?php
+                            $postsUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id
+                            );
+                            ?>
+                            <a class="glyph comment"
+                                href="<?php echo $postsUrl; ?>"
+                                title="<?php echo Lang::txt('COM_FORUM_VIEW_POSTS_FOR'); ?>">
                                 <span><?php echo $row->posts; ?></span>
                             </a>
                         <?php } else { ?>

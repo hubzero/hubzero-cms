@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for Shibboleth session data that needs to survive a logout during account linking
- **/
+ *
+ */
 class Migration20150331131922PlgAuthenticationShibboleth extends Base
 {
     /**
@@ -21,7 +23,10 @@ class Migration20150331131922PlgAuthenticationShibboleth extends Base
      **/
     public function up()
     {
-        $this->db->setQuery('create table if not exists #__shibboleth_sessions(id serial not null primary key, session_key varchar(200) not null unique key, data text not null, created timestamp not null default current_timestamp)');
+        $query = 'create table if not exists #__shibboleth_sessions(id serial not null primary key,'
+            . 'session_key varchar(200) not null unique key, data text not null, created timestamp not null '
+            . 'default current_timestamp)';
+        $this->db->setQuery($query);
         $this->db->query();
     }
 

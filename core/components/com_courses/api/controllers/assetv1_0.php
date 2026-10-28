@@ -443,7 +443,7 @@ class Assetv1_0 extends base
                     $asset->set('url', '/tools/' . $tool_alias . '/invoke?params=file:' . $param_path);
                 }
             }
-        } else if ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool' && Request::getInt('edit_tool_param', false)) {
+        } elseif ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool' && Request::getInt('edit_tool_param', false)) {
             // This is the scenario where it was a tool launch link, but the box was unchecked
             $config     = Component::params('com_courses');
             $tool_path  = DS . trim($config->get('tool_path'), DS) . DS;

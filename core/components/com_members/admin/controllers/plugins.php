@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
@@ -154,7 +155,7 @@ class Plugins extends AdminController
         if ($filters['sort'] == 'name') {
             $query->order('name', $filters['sort_Dir']);
             $query->order('ordering', 'asc');
-        } else if ($filters['sort'] == 'ordering') {
+        } elseif ($filters['sort'] == 'ordering') {
             $query->order('folder', 'asc');
             $query->order('ordering', $filters['sort_Dir']);
             $query->order('name', 'asc');

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,6 +22,7 @@ class Location extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Tools\\Tables\\ZoneLocations';
 
     /**
@@ -29,7 +31,7 @@ class Location extends Base
      * @param      mixed $oid Location ID or array or object
      * @return     object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 

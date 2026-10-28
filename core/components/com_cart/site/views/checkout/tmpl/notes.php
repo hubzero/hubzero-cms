@@ -18,7 +18,6 @@ $this->css();
 </header>
 
 <?php
-
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
     $view->notifications = $this->notifications;
@@ -52,7 +51,10 @@ if (!empty($this->notifications)) {
 
                                 <label>
                                     <?php
-                                    echo '<strong>' . $field['pName'] . ', ' . $field['sSku'] . ':</strong> ' . $field['sCheckoutNotes'];
+                                    echo '<strong>'
+                                        . $field['pName'] . ', '
+                                        . $field['sSku'] . ':</strong> '
+                                        . $field['sCheckoutNotes'];
                                     if ($field['sCheckoutNotesRequired']) {
                                         echo ' <em>Required</em>';
                                     }

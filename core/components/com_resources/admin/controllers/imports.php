@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -77,7 +78,9 @@ class Imports extends AdminController
         $query->select($i . '.*');
 
         if ($filters['sort'] == 'ran_at') {
-            $query->select("(SELECT MAX(" . $r . ".ran_at) FROM " . $r . " WHERE " . $r . ".import_id=" . $i . ".`id` AND " . $r . ".dry_run=0)", 'ran_at');
+            $subquery = "(SELECT MAX(" . $r . ".ran_at) FROM " . $r . " WHERE "
+                . $r . ".import_id=" . $i . ".`id` AND " . $r . ".dry_run=0)";
+            $query->select($subquery, 'ran_at');
         }
 
         // get all imports from archive
@@ -222,7 +225,7 @@ class Imports extends AdminController
         // is this a new import
         if ($isNew) {
             // create folder for files
-            $this->_createImportFilespace($import);
+            $this->createImportFilespace($import);
         }
 
         // if we have a file
@@ -381,9 +384,9 @@ class Imports extends AdminController
         // run process task on importer
         // passed the import model, array or callbacks, and test mode flag
         $resourceData = $importImporter->process($import, array(
-            'postparse'   => $this->_hooks('postparse', $import),
-            'postmap'     => $this->_hooks('postmap', $import),
-            'postconvert' => $this->_hooks('postconvert', $import)
+            'postparse'   => $this->hooks('postparse', $import),
+            'postmap'     => $this->hooks('postmap', $import),
+            'postconvert' => $this->hooks('postconvert', $import)
         ), $dryRun);
 
         // calculate execution time
@@ -453,7 +456,7 @@ class Imports extends AdminController
      * @param   object  $import  Resource Import Model
      * @return  array
      */
-    private function _hooks($type, $import)
+    private function hooks($type, $import)
     {
         // array to hold callbacks
         $callbacks = array();
@@ -500,7 +503,7 @@ class Imports extends AdminController
      * @param   object   $import  Models\Import
      * @return  boolean
      */
-    private function _createImportFilespace(\Components\Resources\Models\Import $import)
+    private function createImportFilespace(\Components\Resources\Models\Import $import)
     {
         // upload path
         $uploadPath = $import->fileSpacePath();

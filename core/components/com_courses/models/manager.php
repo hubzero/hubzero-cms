@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,6 +23,7 @@ class Manager extends Member
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'manager';
 
     /**
@@ -41,7 +43,7 @@ class Manager extends Member
 
         if (is_numeric($uid) || is_string($uid)) {
             $this->_tbl->load($uid, $cid, $oid, $sid, 0);
-        } else if (is_object($uid) || is_array($uid)) {
+        } elseif (is_object($uid) || is_array($uid)) {
             $this->bind($uid);
         }
 
@@ -64,7 +66,7 @@ class Manager extends Member
      * @param   string $sid Section ID
      * @return  object \Components\Courses\Models\Member
      */
-    static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
+    public static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
     {
         static $instances;
 

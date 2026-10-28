@@ -23,6 +23,7 @@ class Html extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_links = array();
 
     /**
@@ -30,6 +31,7 @@ class Html extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_custom = array();
 
     /**
@@ -58,6 +60,7 @@ class Html extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_file = null;
 
     /**
@@ -65,6 +68,7 @@ class Html extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_template = '';
 
     /**
@@ -72,6 +76,7 @@ class Html extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_template_tags = array();
 
     /**
@@ -79,6 +84,7 @@ class Html extends Base
      *
      * @var  integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_caching = null;
 
     /**
@@ -87,6 +93,7 @@ class Html extends Base
      * @param   array  $options  Associative array of options
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($options = array())
     {
         parent::__construct($options);
@@ -132,14 +139,17 @@ class Html extends Base
         }
 
         $this->title        = (isset($data['title']) && !empty($data['title'])) ? $data['title'] : $this->title;
-        $this->description  = (isset($data['description']) && !empty($data['description'])) ? $data['description'] : $this->description;
+        $this->description  = (isset($data['description']) &&
+            !empty($data['description'])) ? $data['description'] : $this->description;
         $this->link         = (isset($data['link']) && !empty($data['link'])) ? $data['link'] : $this->link;
-
-        $this->_metaTags    = (isset($data['metaTags']) && !empty($data['metaTags'])) ? $data['metaTags'] : $this->_metaTags;
+        $this->_metaTags    = (isset($data['metaTags']) &&
+            !empty($data['metaTags'])) ? $data['metaTags'] : $this->_metaTags;
         $this->_links       = (isset($data['links']) && !empty($data['links'])) ? $data['links'] : $this->_links;
-        $this->_styleSheets = (isset($data['styleSheets']) && !empty($data['styleSheets'])) ? $data['styleSheets'] : $this->_styleSheets;
+        $this->_styleSheets = (isset($data['styleSheets']) &&
+            !empty($data['styleSheets'])) ? $data['styleSheets'] : $this->_styleSheets;
         $this->_style       = (isset($data['style']) && !empty($data['style'])) ? $data['style'] : $this->_style;
-        $this->_scripts     = (isset($data['scripts']) && !empty($data['scripts'])) ? $data['scripts'] : $this->_scripts;
+        $this->_scripts     = (isset($data['scripts']) &&
+            !empty($data['scripts'])) ? $data['scripts'] : $this->_scripts;
         $this->_script      = (isset($data['script']) && !empty($data['script'])) ? $data['script'] : $this->_script;
         $this->_custom      = (isset($data['custom']) && !empty($data['custom'])) ? $data['custom'] : $this->_custom;
 
@@ -161,7 +171,9 @@ class Html extends Base
         $this->title = (isset($data['title']) && !empty($data['title']) && !stristr($this->title, $data['title']))
             ? $this->title . $data['title']
             : $this->title;
-        $this->description = (isset($data['description']) && !empty($data['description']) && !stristr($this->description, $data['description']))
+        $this->description = (isset($data['description']) &&
+            !empty($data['description']) &&
+            !stristr($this->description, $data['description']))
             ? $this->description . $data['description']
             : $this->description;
         $this->link = (isset($data['link'])) ? $data['link'] : $this->link;
@@ -178,8 +190,9 @@ class Html extends Base
         $this->_links = (isset($data['links']) && !empty($data['links']) && is_array($data['links']))
             ? array_unique(array_merge($this->_links, $data['links']))
             : $this->_links;
-
-        $this->_styleSheets = (isset($data['styleSheets']) && !empty($data['styleSheets']) && is_array($data['styleSheets']))
+        $this->_styleSheets = (isset($data['styleSheets']) &&
+            !empty($data['styleSheets']) &&
+            is_array($data['styleSheets']))
             ? array_merge($this->_styleSheets, $data['styleSheets'])
             : $this->_styleSheets;
 
@@ -477,6 +490,7 @@ class Html extends Base
      * @param   string  $filename   The actual filename
      * @return  string  The contents of the template
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _loadTemplate($directory, $filename)
     {
         $contents = '';
@@ -520,14 +534,18 @@ class Html extends Base
      * @param   array   $params  Parameters to determine the template
      * @return  object  instance of $this to allow chaining
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _fetchTemplate($params = array())
     {
         // Check
         $directory = isset($params['directory']) ? $params['directory'] : PATH_CORE . '/templates';
 
         $template = isset($params['template']) ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['template']) : 'system';
-        $file     = isset($params['file'])     ? preg_replace('/[^A-Z0-9_\.-]/i', '', $params['file'])     : 'index.php';
-
+        $file     = isset($params['file'])     ? preg_replace(
+            '/[^A-Z0-9_\.-]/i',
+            '',
+            $params['file']
+        )     : 'index.php';
         if (!file_exists($directory . DS . $template . DS . $file)) {
             $directory = PATH_CORE . '/templates';
             $template  = 'system';
@@ -536,12 +554,18 @@ class Html extends Base
 
         // Load the language file for the template
         $lang = \App::get('language');
-        $lang->load('tpl_' . $template, PATH_APP . DS . 'bootstrap' . DS . \App::get('client')->name, null, false, true) ||
+        $lang->load('tpl_' .
+            $template, PATH_APP .
+            DS .
+            'bootstrap' .
+            DS .
+            \App::get('client')->name, null, false, true) ||
         $lang->load('tpl_' . $template, $directory . DS . $template, null, false, true);
 
         // Assign the variables
         $this->template = $template;
-        //$this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) . '/templates/' . $template;
+        // $this->path     = (isset($params['path']) ? $params['path'] : rtrim(\Request::root(true), '/')) .
+        // '/templates/'. $template;
         //$this->baseurl  = rtrim(\Request::root(true), '/');
         $this->baseurl  = isset($params['baseurl']) ? $params['baseurl'] : rtrim(\Request::root(true), '/');
         $this->params   = isset($params['params'])  ? $params['params']  : new Registry();
@@ -557,6 +581,7 @@ class Html extends Base
      *
      * @return  object  instance of $this to allow chaining
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseTemplate()
     {
         $matches = array();
@@ -573,9 +598,11 @@ class Html extends Base
 
                 // Separate buffers to be executed first and last
                 if ($type == 'module' || $type == 'modules') {
-                    $template_tags_first[$matches[0][$i]] = array('type' => $type, 'name' => $name, 'attribs' => $attribs);
+                    $template_tags_first[$matches[0][$i]] = array('type' => $type,
+                        'name' => $name, 'attribs' => $attribs);
                 } else {
-                    $template_tags_last[$matches[0][$i]]  = array('type' => $type, 'name' => $name, 'attribs' => $attribs);
+                    $template_tags_last[$matches[0][$i]]  = array('type' => $type,
+                        'name' => $name, 'attribs' => $attribs);
                 }
             }
             // Reverse the last array so the jdocs are in forward order.
@@ -617,6 +644,7 @@ class Html extends Base
      *
      * @return  string  rendered template
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _renderTemplate()
     {
         $replace = array();

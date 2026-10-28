@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,6 +32,7 @@ class Session extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Tools\\Tables\\Session';
 
     /**
@@ -38,6 +40,7 @@ class Session extends Base
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_cache = array(
         'shared.count' => null,
         'shared.list'  => null
@@ -60,9 +63,12 @@ class Session extends Base
 
             if (!($this->_tbl instanceof \Hubzero\Database\Table)) {
                 $this->_logError(
-                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
+                    __CLASS__ . '::' . __FUNCTION__ . '(); ' .
+                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
                 );
-                throw new \LogicException(Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.'));
+                throw new \LogicException(
+                    Lang::txt('Table class must be an instance of \\Hubzero\\Database\\Table.')
+                );
             }
 
             if (is_numeric($oid) || is_string($oid)) {
@@ -74,7 +80,7 @@ class Session extends Base
                         $this->bind($obj);
                     }
                 }
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -87,7 +93,7 @@ class Session extends Base
      * @param   string  $authorized  Authorization level
      * @return  object
      */
-    static function &getInstance($oid = null, $authorized = null)
+    public static function &getInstance($oid = null, $authorized = null)
     {
         static $instances;
 
@@ -97,7 +103,7 @@ class Session extends Base
 
         if (is_object($oid)) {
             $key = $oid->sessnum;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['sessnum'];
         } else {
             $key = $oid;
@@ -304,7 +310,7 @@ class Session extends Base
                 $r = substr(strrchr($app, '_'), 1);
                 if (substr($r, 0, 1) == 'r') {
                     return substr($r, 1);
-                } else if (substr($r, 0, 3) == 'dev') {
+                } elseif (substr($r, 0, 3) == 'dev') {
                     return 'dev';
                 } else {
                     return '';

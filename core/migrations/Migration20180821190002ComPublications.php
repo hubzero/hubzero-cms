@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +13,10 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for initializing values of DOI service switch, DataCite DOI Service URL and username/password, and EZID DOI Service URL
- * and username/password
- **/
+ * Migration script for initializing values of DOI service switch, DataCite DOI Service URL
+ * and username/password, and EZID DOI Service URL and username/password
+ *
+ */
 class Migration20180821190002ComPublications extends Base
 {
     /**
@@ -40,7 +42,9 @@ class Migration20180821190002ComPublications extends Base
                 if (!isset($params->ezid_doi_userpw)) {
                     $params->ezid_doi_userpw = "";
                 }
-                $query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
+                $query = "UPDATE `#__extensions` SET `params` = "
+                    . $this->db->quote(json_encode($params))
+                    . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }

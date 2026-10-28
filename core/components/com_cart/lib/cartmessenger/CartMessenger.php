@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -161,7 +162,8 @@ class CartMessenger
             $transactionInfo->tiTax = 0;
         }
         if ($transactionInfo->tiDiscounts > 0 || $transactionInfo->tiShippingDiscount > 0) {
-            $summary .= 'Discounts: ' . '$' . number_format($transactionInfo->tiDiscounts + $transactionInfo->tiShippingDiscount, 2) . "\n";
+            $discountTotal = $transactionInfo->tiDiscounts + $transactionInfo->tiShippingDiscount;
+            $summary .= 'Discounts: ' . '$' . number_format($discountTotal, 2) . "\n";
         }
         if ($transactionInfo->tiTax > 0) {
             $summary .= 'Tax: ' . '$' . number_format($transactionInfo->tiTax, 2) . "\n";
@@ -173,7 +175,8 @@ class CartMessenger
             $summary .= "\n--------------------\n";
             $summary .= $transactionInfo->tiShippingToFirst . ' ' . $transactionInfo->tiShippingToLast . "\n";
             $summary .= $transactionInfo->tiShippingAddress . "\n";
-            $summary .= $transactionInfo->tiShippingCity . ', ' . $transactionInfo->tiShippingState . ' ' . $transactionInfo->tiShippingZip . "\n";
+            $summary .= $transactionInfo->tiShippingCity . ', ' . $transactionInfo->tiShippingState;
+            $summary .= ' ' . $transactionInfo->tiShippingZip . "\n";
         }
 
         if ($transactionInfo->tiNotes) {
@@ -235,12 +238,19 @@ class CartMessenger
             $action = false;
             if ($productType == 'Course') {
                 $action = ' Go to the course page at: ';
-                $action .= Route::url('index.php?option=com_courses', true, -1) . $itemMeta['courseId'] . '/' . $itemMeta['offeringId'];
+                $action .= Route::url('index.php?option=com_courses', true, -1);
+                $action .= $itemMeta['courseId'] . '/' . $itemMeta['offeringId'];
             } elseif ($productType == 'Software Download') {
                 $action = ' Download at: ';
-                $action .= Route::url('index.php?option=com_cart', true, -1) . 'download/' . $transactionInfo->tId . '/' . $itemInfo->sId;
+                $action .= Route::url('index.php?option=com_cart', true, -1);
+                $action .= 'download/' . $transactionInfo->tId . '/' . $itemInfo->sId;
 
-                if (isset($itemMeta['serialManagement']) && $itemMeta['serialManagement'] == 'multiple' && isset($itemMeta['serials']) && !empty($itemMeta['serials'])) {
+                if (
+                    isset($itemMeta['serialManagement'])
+                    && $itemMeta['serialManagement'] == 'multiple'
+                    && isset($itemMeta['serials'])
+                    && !empty($itemMeta['serials'])
+                ) {
                     $action .= "\n\t";
                     $action .= " Serial number";
                     if (count($itemMeta['serials']) > 1) {
@@ -322,7 +332,8 @@ class CartMessenger
         $message = new \Hubzero\Mail\Message();
         $message->setSubject('Your order at ' . $from['name']);
         // Find out where to send it from
-        if ($params->get('sendOrderInfoFromEmail') && \Hubzero\Utility\Validate::email($params->get('sendOrderInfoFromEmail'))) {
+        $sendOrderInfoFromEmail = $params->get('sendOrderInfoFromEmail');
+        if ($sendOrderInfoFromEmail && \Hubzero\Utility\Validate::email($sendOrderInfoFromEmail)) {
             $sendFromEmail = $params->get('sendOrderInfoFromEmail');
         } else {
             $sendFromEmail = Config::get('mailfrom');
@@ -448,6 +459,9 @@ class CartMessenger
         }
 
         // Send emails
-        Event::trigger('xmessage.onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));
+        Event::trigger(
+            'xmessage.onSendMessage',
+            array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true)
+        );
     }
 }

@@ -22,21 +22,21 @@ abstract class Base extends Obj
      *
      * @var object
      */
-    private $_obj = null;
+    private $obj = null;
 
     /**
      * File path
      *
      * @var string
      */
-    private $_image = null;
+    private $image = null;
 
     /**
      * URL
      *
      * @var string
      */
-    private $_baselink = 'index.php';
+    private $baselink = 'index.php';
 
     /**
      * Constructor
@@ -54,7 +54,7 @@ abstract class Base extends Obj
      * @param   integer  $oid  User ID
      * @return  object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -90,7 +90,7 @@ abstract class Base extends Obj
      */
     public function image()
     {
-        return $this->_image;
+        return $this->image;
     }
 
     /**
@@ -121,6 +121,6 @@ abstract class Base extends Obj
      */
     public function link($what = 'base')
     {
-        return $this->_baselink;
+        return $this->baselink;
     }
 }

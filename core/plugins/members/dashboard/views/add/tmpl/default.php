@@ -1,9 +1,11 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -34,7 +36,9 @@ defined('_HZEXEC_') or die();
                             <?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALLED'); ?>
                         </a>
                     <?php else : ?>
-                        <a href="javascript:void(0);" data-module="<?php echo $module->id; ?>" class="btn button btn-info icon-extract install-module">
+                        <a href="javascript:void(0);"
+                            data-module="<?php echo $module->id; ?>"
+                            class="btn button btn-info icon-extract install-module">
                             <?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_INSTALL'); ?>
                         </a>
                     <?php endif; ?>
@@ -43,11 +47,17 @@ defined('_HZEXEC_') or die();
                 </div>
                 <dl class="module-details">
                 <?php
+
                 $xml = null;
                 if (file_exists(PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml')) {
-                    $xml = simplexml_load_file(PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml');
-                } else if (file_exists(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml')) {
-                    $xml = simplexml_load_file(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module . '.xml');
+                    $xml = simplexml_load_file(PATH_APP . DS . 'modules' . DS . $module->module . DS . $module->module .
+                    '.xml');
+                } elseif (
+                    file_exists(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module .
+                    '.xml')
+                ) {
+                    $xml = simplexml_load_file(PATH_CORE . DS . 'modules' . DS . $module->module . DS . $module->module
+                    . '.xml');
                 }
                 ?>
                 <?php if ($xml) : ?>
@@ -59,6 +69,7 @@ defined('_HZEXEC_') or die();
                     <?php if ($xml->description != 'MOD_CUSTOM_XML_DESCRIPTION') : ?>
                         <dt><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_DESCRIPTION'); ?></dt>
                         <dd><?php
+
                         if (!strstr($xml->description, ' ')) {
                             Lang::load($module->module, PATH_APP . DS . 'modules' . DS . $module->module) ||
                             Lang::load($module->module, PATH_CORE . DS . 'modules' . DS . $module->module);

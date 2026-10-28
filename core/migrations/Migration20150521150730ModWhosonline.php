@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +23,8 @@ class Migration20150521150730ModWhosonline extends Base
     public function up()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'mod_whosonline' AND `client_id` = 1";
+            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'mod_whosonline' AND "
+                . "`client_id` = 1";
             $this->db->setQuery($query);
             $id = $this->db->loadResult();
 

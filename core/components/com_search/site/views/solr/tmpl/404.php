@@ -18,7 +18,13 @@
 <section class="container">
     <div class="inner">
         <div class="content">
-            <p><?php echo Lang::txt('The page you requested was not found. We are just going to leave you with it here.'); ?></p>
+            <?php
+                $notFoundMsg = Lang::txt(
+                    'The page you requested was not found.'
+                    . ' We are just going to leave you with it here.'
+                );
+                ?>
+            <p><?php echo $notFoundMsg; ?></p>
         </div>
     </div>
 </section>

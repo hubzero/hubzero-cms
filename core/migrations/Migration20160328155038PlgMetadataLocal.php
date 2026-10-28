@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding local metadata support
+  *
  **/
 class Migration20160328155038PlgMetadataLocal extends Base
 {

@@ -321,7 +321,9 @@ class Activity extends AdminController
         $ids = Request::getArray('id', array());
         $ids = (!is_array($ids) ? array($ids) : $ids);
 
-        $state = ($this->getTask() == 'publish' ? \Hubzero\Activity\Recipient::STATE_PUBLISHED : \Hubzero\Activity\Recipient::STATE_UNPUBLISHED);
+        $published = \Hubzero\Activity\Recipient::STATE_PUBLISHED;
+        $unpublished = \Hubzero\Activity\Recipient::STATE_UNPUBLISHED;
+        $state = ($this->getTask() == 'publish' ? $published : $unpublished);
 
         $i = 0;
 
@@ -410,8 +412,9 @@ class Activity extends AdminController
      */
     public function cancelTask()
     {
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&project=' . Request::getInt('project', 0), false)
-        );
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&project=' . Request::getInt('project', 0);
+        App::redirect(Route::url($url, false));
     }
 }

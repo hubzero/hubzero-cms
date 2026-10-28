@@ -20,7 +20,7 @@ class Comment extends ItemComment
     /**
      * Database state constants
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * Get the attachments on the wish
@@ -42,7 +42,8 @@ class Comment extends ItemComment
     public function link($type = '')
     {
         if (!isset($this->_base)) {
-            $this->_base = 'index.php?option=com_wishlist&task=wish&category=' . $this->get('listcategory') . '&rid=' . $this->get('listreference') . '&wishid=' . $this->get('item_id');
+            $this->_base = 'index.php?option=com_wishlist&task=wish&category=' . $this->get('listcategory')
+                . '&rid=' . $this->get('listreference') . '&wishid=' . $this->get('item_id');
         }
         $link = $this->_base;
 
@@ -62,11 +63,14 @@ class Comment extends ItemComment
                 break;
 
             case 'reply':
-                $link .= 'index.php?option=com_wishlist&task=reply&cat=' . $this->get('listcategory') . '&id=' . $this->get('listid') . '&refid=' . $this->get('item_id') . '&wishid=' . $this->get('item_id');
+                $link .= 'index.php?option=com_wishlist&task=reply&cat=' . $this->get('listcategory')
+                    . '&id=' . $this->get('listid') . '&refid=' . $this->get('item_id')
+                    . '&wishid=' . $this->get('item_id');
                 break;
 
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('item_id');
+                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id='
+                    . $this->get('id') . '&parent=' . $this->get('item_id');
                 break;
 
             case 'permalink':

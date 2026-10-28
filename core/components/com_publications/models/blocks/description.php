@@ -24,6 +24,7 @@ class Description extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'description';
 
     /**
@@ -31,6 +32,7 @@ class Description extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parentname = 'description';
 
     /**
@@ -38,6 +40,7 @@ class Description extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest = null;
 
     /**
@@ -45,6 +48,7 @@ class Description extends Base
      *
      * @var     integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockId = 0;
 
     /**
@@ -174,7 +178,9 @@ class Description extends Base
                 if (!$value && $required) {
                     $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_MISSING_REQUIRED'));
                 } else {
-                    if (($value && !isset($data[$aliasmap])) || (isset($data[$aliasmap]) && $data[$aliasmap] != $value)) {
+                    $isNewValue = $value && !isset($data[$aliasmap]);
+                    $isChanged = isset($data[$aliasmap]) && $data[$aliasmap] != $value;
+                    if ($isNewValue || $isChanged) {
                         $changed++;
                     }
 
@@ -394,7 +400,8 @@ class Description extends Base
                         'name'      => 'metadata',
                         'type'      => 'metadata',
                         'label'     => 'Publication Title',
-                        'about'     => '<p>Pick a descriptive yet concise publication title that will quickly tell users about its content.</p>',
+                        'about'     => '<p>Pick a descriptive yet concise publication title that will '
+                            . 'quickly tell users about its content.</p>',
                         'adminTips' => '',
                         'params'    => array (
                             'required'      => 1,

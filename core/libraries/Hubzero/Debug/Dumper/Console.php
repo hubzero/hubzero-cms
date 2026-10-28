@@ -50,6 +50,7 @@ class Console extends AbstractRenderer
      * @param   array  $arr
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _deflate($arr)
     {
         $output = 'Array( ' . "\n";

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to transfer com_users config to com_members
- **/
+ *
+ */
 class Migration20160624123301ComMembers extends Base
 {
     /**
@@ -62,7 +64,8 @@ class Migration20160624123301ComMembers extends Base
                     $members->set($param, $users->get('param', $dflt));
                 }
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($members->toString()) . " WHERE `element`='com_members'";
+                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($members->toString()) . " WHERE "
+                    . "`element`='com_members'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -103,6 +103,7 @@ class Primary extends Relational
      * @param   integer  $newsletterId  Newsletter Id
      * @return  integer
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _getCurrentHighestOrder($newsletterId)
     {
         $last = self::all()

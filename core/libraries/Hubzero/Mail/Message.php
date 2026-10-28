@@ -88,7 +88,7 @@ class Message extends \Symfony\Component\Mime\Email
     {
         if (is_subclass_of($transport, '\Symfony\Component\Mailer\Transport\AbstractTransport')) {
             // We have our transport
-        } else if (is_string($transport) && self::hasTransporter($transport)) {
+        } elseif (is_string($transport) && self::hasTransporter($transport)) {
             // Use the registered custom HUBzero transport
             $transport = self::getTransporter($transport);
         } else {
@@ -303,7 +303,7 @@ class Message extends \Symfony\Component\Mime\Email
         foreach ($addresses as $key => $value) {
             if ($key === null || $key === '') {
                 continue;
-            } else if (is_numeric($key)) {
+            } elseif (is_numeric($key)) {
                 if ($value === null) {
                     continue;
                 }
@@ -370,7 +370,7 @@ class Message extends \Symfony\Component\Mime\Email
         foreach ($addresses as $key => $value) {
             if ($key === null || $key === '') {
                 continue;
-            } else if (is_numeric($key)) {
+            } elseif (is_numeric($key)) {
                 if ($value === null) {
                     continue;
                 }
@@ -437,7 +437,7 @@ class Message extends \Symfony\Component\Mime\Email
         foreach ($addresses as $key => $value) {
             if ($key === null || $key === '') {
                 continue;
-            } else if (is_numeric($key)) {
+            } elseif (is_numeric($key)) {
                 if ($value === null) {
                     continue;
                 }
@@ -503,7 +503,7 @@ class Message extends \Symfony\Component\Mime\Email
         foreach ($addresses as $key => $value) {
             if ($key === null || $key === '') {
                 continue;
-            } else if (is_numeric($key)) {
+            } elseif (is_numeric($key)) {
                 if ($value === null) {
                     continue;
                 }
@@ -573,7 +573,7 @@ class Message extends \Symfony\Component\Mime\Email
 
         if ($contentType == "text/html") {
             $this->html($body, $charset);
-        } else if ($contentType == "text/plain") {
+        } elseif ($contentType == "text/plain") {
             $this->text($body, $charset);
         } else {
             $this->attach($body, null, $contentType);

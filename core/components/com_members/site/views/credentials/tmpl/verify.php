@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 </header>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=com_members&controller=credentials&task=verifying'); ?>" method="post" name="hubForm" id="hubForm">
+    <?php $formAction = Route::url('index.php?option=com_members&controller=credentials&task=verifying'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="hubForm" id="hubForm">
         <fieldset>
             <legend><?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_CONFIRM_VERIFICATION_TOKEN'); ?></legend>
 

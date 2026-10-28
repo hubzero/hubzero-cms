@@ -16,7 +16,7 @@ use stdClass;
  */
 class Reader implements Iterator
 {
-    const ROW_LENGTH = 0;
+    public const ROW_LENGTH = 0;
 
     /**
      * CSV file

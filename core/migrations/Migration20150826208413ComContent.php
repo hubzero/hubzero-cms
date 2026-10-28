@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -45,7 +46,10 @@ class Migration20150826208413ComContent extends Base
 
                     if (json_last_error() === JSON_ERROR_NONE) {
                         $attribs = json_encode($attribs);
-                        $this->db->setQuery("UPDATE `#__content` SET `attribs` = " . $this->db->quote($attribs) . " WHERE `id` = " . $this->db->quote($r->id));
+                        $this->db->setQuery(
+                            "UPDATE `#__content` SET `attribs` = " . $this->db->quote($attribs)
+                                . " WHERE `id` = " . $this->db->quote($r->id)
+                        );
                         $this->db->query();
                     }
                 }

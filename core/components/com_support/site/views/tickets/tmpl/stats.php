@@ -31,7 +31,7 @@ $sql = "SELECT status
 		AND type='{$this->type}' ";
 if ($this->group == '_none_') {
     $sql .= " AND group_id=0";
-} else if ($this->group) {
+} elseif ($this->group) {
     $sql .= " AND `group_id`=" . $database->quote($gidNumber);
 }
         $sql .= " ORDER BY status ASC";
@@ -53,7 +53,7 @@ $sql = "SELECT severity
 		WHERE type='{$this->type}' ";
 if ($this->group == '_none_') {
     $sql .= " AND group_id=0";
-} else if ($this->group) {
+} elseif ($this->group) {
     $sql .= " AND `group_id`=" . $database->quote($gidNumber);
 }
         $sql .= " ORDER BY severity ASC";
@@ -121,12 +121,24 @@ function getMonthName($month)
     <div id="content-header-extra">
         <ul id="useroptions">
             <li>
-                <a class="icon-browse browse btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>">
+                <?php
+                $browseUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=display'
+                );
+                ?>
+                <a class="icon-browse browse btn" href="<?php echo $browseUrl; ?>">
                     <?php echo Lang::txt('COM_SUPPORT_TICKETS'); ?>
                 </a>
             </li>
             <li class="last">
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
+                <?php
+                $newUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=new'
+                );
+                ?>
+                <a class="icon-add add btn" href="<?php echo $newUrl; ?>">
                     <?php echo Lang::txt('COM_SUPPORT_NEW_TICKET'); ?>
                 </a>
             </li>
@@ -138,32 +150,54 @@ function getMonthName($month)
     <li id="sm-1"<?php if ($this->type == 0) {
         echo ' class="active"';
                  } ?>>
-        <a class="tab" rel="submitted" href="<?php echo Route::url('index.php?option=com_support&task=stats'); ?>">
+        <?php $statsUrl = Route::url('index.php?option=com_support&task=stats'); ?>
+        <a class="tab" rel="submitted" href="<?php echo $statsUrl; ?>">
             <span><?php echo Lang::txt('COM_SUPPORT_TICKETS_SUBMITTED'); ?></span>
         </a>
     </li>
     <li id="sm-2"<?php if ($this->type == 1) {
         echo ' class="active"';
                  } ?>>
-        <a class="tab" rel="automatic" href="<?php echo Route::url('index.php?option=com_support&task=stats&type=automatic'); ?>">
+        <?php $autoUrl = Route::url('index.php?option=com_support&task=stats&type=automatic'); ?>
+        <a class="tab" rel="automatic" href="<?php echo $autoUrl; ?>">
             <span><?php echo Lang::txt('COM_SUPPORT_TICKETS_AUTOMATIC'); ?></span>
         </a>
     </li>
 </ul>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>" method="get" enctype="multipart/form-data">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller . '&task=stats'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="get" enctype="multipart/form-data">
     <section class="main section" id="ticket-stats">
         <div class="grid">
             <div class="col span4">
                 <div class="form-group">
                     <label for="start-date"><?php echo Lang::txt('COM_SUPPORT_DATE_FROM'); ?></label>
-                    <input type="text" class="form-control" name="start" id="start-date" value="<?php echo $this->escape($this->start); ?>" size="7" />
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="start"
+                        id="start-date"
+                        value="<?php echo $this->escape($this->start); ?>"
+                        size="7"
+                    />
                 </div>
             </div>
             <div class="col span4">
                 <div class="form-group">
                     <label for="end-date"><?php echo Lang::txt('COM_SUPPORT_DATE_TO'); ?></label>
-                    <input type="text" class="form-control" name="end" id="end-date" value="<?php echo $this->escape($this->end); ?>" size="7" />
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="end"
+                        id="end-date"
+                        value="<?php echo $this->escape($this->end); ?>"
+                        size="7"
+                    />
                 </div>
             </div>
             <div class="col span4 omega">
@@ -179,10 +213,14 @@ function getMonthName($month)
                         <?php
                         if ($this->groups) {
                             foreach ($this->groups as $group) {
+                                $grpSel  = ($this->group == $group->cn) ? ' selected="selected"' : '';
+                                $grpDisp = ($group->description)
+                                    ? stripslashes($this->escape($group->description))
+                                    : $this->escape($group->cn);
                                 ?>
-                                <option value="<?php echo $group->cn; ?>"<?php if ($this->group == $group->cn) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
+                                <option
+                                    value="<?php echo $group->cn; ?>"<?php echo $grpSel; ?>
+                                ><?php echo $grpDisp; ?></option>
                                 <?php
                             }
                         }
@@ -194,7 +232,14 @@ function getMonthName($month)
         </div><!-- / .grid -->
 
         <div class="container">
-            <div id="container" class="stats-tickets-chart" data-datasets="<?php echo $this->option; ?>-data-openedclosed"></div>
+            <?php
+            $optDataId = $this->option . '-data-openedclosed';
+            ?>
+            <div
+                id="container"
+                class="stats-tickets-chart"
+                data-datasets="<?php echo $optDataId; ?>"
+            ></div>
             <?php
                 $top = 0;
 
@@ -204,7 +249,8 @@ function getMonthName($month)
                 foreach ($this->closedmonths as $year => $data) {
                     foreach ($data as $k => $v) {
                         $top = ($v > $top) ? $v : $top;
-                        $c[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
+                        $monthPad = Hubzero\Utility\Str::pad(($k - 1), 2);
+                        $c[] = '[' . Date::of($year . '-' . $monthPad . '-01')->toUnix() . ',' . $v . ']';
                     }
                 }
                 $closeddata = implode(',', $c);
@@ -216,13 +262,14 @@ function getMonthName($month)
                 foreach ($this->openedmonths as $year => $data) {
                     foreach ($data as $k => $v) {
                         $top = ($v > $top) ? $v : $top;
-                        $o[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
+                        $monthPad = Hubzero\Utility\Str::pad(($k - 1), 2);
+                        $o[] = '[' . Date::of($year . '-' . $monthPad . '-01')->toUnix() . ',' . $v . ']';
                     }
                 }
                 $openeddata = implode(',', $o);
             }
             ?>
-            <script type="application/json" id="<?php echo $this->option; ?>-data-openedclosed">
+            <script type="application/json" id="<?php echo $optDataId; ?>">
                 {
                     "datasets": [
                         {
@@ -246,8 +293,12 @@ function getMonthName($month)
                     <tr>
                         <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_OPENED'); ?></th>
                         <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_CLOSED'); ?></th>
-                        <th scope="col" class="block"><?php echo Lang::txt('COM_SUPPORT_STATS_AVERAGE_LIFETIME'); ?></th>
-                        <th scope="col" class="major"><?php echo Lang::txt('COM_SUPPORT_STATS_UNASSIGNED'); ?></th>
+                        <th scope="col" class="block">
+                            <?php echo Lang::txt('COM_SUPPORT_STATS_AVERAGE_LIFETIME'); ?>
+                        </th>
+                        <th scope="col" class="major">
+                            <?php echo Lang::txt('COM_SUPPORT_STATS_UNASSIGNED'); ?>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -256,11 +307,16 @@ function getMonthName($month)
                         <td><?php echo $this->opened['closed']; ?></td>
                         <td class="block">
                             <?php
-                            $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($this->closedTickets);
+                            $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
+                                $this->closedTickets
+                            );
                             ?>
-                            <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
-                            <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
-                            <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
+                            <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>
+                            <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
+                            <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?>
+                            <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
+                            <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?>
+                            <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
                         </td>
                         <td class="major"><?php echo $this->opened['unassigned']; ?></td>
                     </tr>
@@ -272,7 +328,12 @@ function getMonthName($month)
         <div class="grid">
             <div class="col span-half">
                 <h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_SEVERITY'); ?></h3>
-                <div id="severities-container" class="stats-pie-chart" data-datasets="<?php echo $this->option; ?>-data-severity">
+                <?php $sevDataId = $this->option . '-data-severity'; ?>
+                <div
+                    id="severities-container"
+                    class="stats-pie-chart"
+                    data-datasets="<?php echo $sevDataId; ?>"
+                >
                     <table class="support-stats-resolutions">
                         <thead>
                             <tr>
@@ -307,7 +368,9 @@ function getMonthName($month)
                                     '#99B1A5' //'#6a6a6a',
                                 );
 
-                                $severities = \Components\Support\Helpers\Utilities::getSeverities($this->config->get('severities'));
+                                $severities = \Components\Support\Helpers\Utilities::getSeverities(
+                                    $this->config->get('severities')
+                                );
 
                                 $cls = 'odd';
                                 $data = array();
@@ -325,7 +388,8 @@ function getMonthName($month)
 
                                 foreach ($severtes as $severity) {
                                     $r  = '{"label": "' . $this->escape(addslashes($severity)) . '", "data": ';
-                                    $r .= (isset($sev[$severity])) ? round(($sev[$severity] / $total) * 100, 2) : 0;
+                                    $r .= (isset($sev[$severity]))
+                                        ? round(($sev[$severity] / $total) * 100, 2) : 0;
                                     $r .= ', "color": "' . $colors[$i] . '"}';
 
                                     $data[] = $r;
@@ -335,7 +399,10 @@ function getMonthName($month)
                             <tr class="<?php echo $cls; ?>">
                                 <th scope="row"><?php echo $this->escape(stripslashes($severity)); ?></th>
                                 <td><?php echo (isset($sev[$severity])) ? $sev[$severity] : '0'; ?></td>
-                                <td><?php echo (isset($sev[$severity])) ? round($sev[$severity] / $total * 100, 2) : '0'; ?></td>
+                                <td><?php
+                                    echo (isset($sev[$severity]))
+                                        ? round($sev[$severity] / $total * 100, 2) : '0';
+                                ?></td>
                             </tr>
                                     <?php
                                     $i++;
@@ -344,7 +411,7 @@ function getMonthName($month)
                         </tbody>
                     </table>
                 </div><!-- / #severities-container -->
-                <script type="application/json" id="<?php echo $this->option; ?>-data-severity">
+                <script type="application/json" id="<?php echo $sevDataId; ?>">
                     {
                         "datasets": [<?php echo implode(',' . "\n", $data); ?>]
                     }
@@ -352,7 +419,12 @@ function getMonthName($month)
             </div><!-- / .col span-half -->
             <div class="col span-half omega">
                 <h3><?php echo Lang::txt('COM_SUPPORT_TICKETS_BY_RESOLUTION'); ?></h3>
-                <div id="resolutions-container" class="stats-pie-chart" data-datasets="<?php echo $this->option; ?>-data-resolution">
+                <?php $resDataId = $this->option . '-data-resolution'; ?>
+                <div
+                    id="resolutions-container"
+                    class="stats-pie-chart"
+                    data-datasets="<?php echo $resDataId; ?>"
+                >
                     <table class="support-stats-resolutions">
                         <thead>
                             <tr>
@@ -363,7 +435,9 @@ function getMonthName($month)
                         </thead>
                         <tbody>
                             <tr class="odd">
-                                <th scope="row"><?php echo Lang::txt('COM_SUPPORT_STATS_RESOLUTION_NONE'); ?></th>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_RESOLUTION_NONE'); ?>
+                                </th>
                                 <td><?php echo (isset($res[0])) ? $res[0] : '0'; ?></td>
                                 <td><?php echo (isset($res[0])) ? $res[0] / $total : '0'; ?></td>
                             </tr>
@@ -389,7 +463,8 @@ function getMonthName($month)
 
                             foreach ($resolutns as $resolution) {
                                 $r  = '{"label": "' . $this->escape($resolution->title) . '", "data": ';
-                                $r .= (isset($res[$resolution->id])) ? round(($res[$resolution->id] / $total) * 100, 2) : 0;
+                                $r .= (isset($res[$resolution->id]))
+                                    ? round(($res[$resolution->id] / $total) * 100, 2) : 0;
                                 $r .= ', "color": "' . $colors[$i] . '"}';
                                 $data[] = $r;
 
@@ -397,19 +472,31 @@ function getMonthName($month)
                                 ?>
                                 <tr class="<?php echo $cls; ?>">
                                     <th scope="row"><?php echo $this->escape($resolution->title); ?></th>
-                                    <td><?php echo (isset($res[$resolution->id])) ? $res[$resolution->id] : '0'; ?></td>
-                                    <td><?php echo (isset($res[$resolution->id])) ? round($res[$resolution->id] / $total * 100, 2) : '0'; ?></td>
+                                    <td>
+                                        <?php
+                                        echo (isset($res[$resolution->id])) ? $res[$resolution->id] : '0';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo (isset($res[$resolution->id]))
+                                            ? round($res[$resolution->id] / $total * 100, 2) : '0';
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
                                 $i++;
                             }
-                            $nores = '{"label": "' . Lang::txt('COM_SUPPORT_STATS_RESOLUTION_NONE') . '", "data": ' . (isset($res[0]) ? $res[0] / $total : '0') . ', "color:": "' . $colors[$i] . '"}';
+                            $noresLabel = Lang::txt('COM_SUPPORT_STATS_RESOLUTION_NONE');
+                            $noresData  = isset($res[0]) ? $res[0] / $total : '0';
+                            $nores = '{"label": "' . $noresLabel . '", "data": '
+                                . $noresData . ', "color:": "' . $colors[$i] . '"}';
                             array_push($data, $nores);
                             ?>
                         </tbody>
                     </table>
                 </div><!-- / #resolutions-container -->
-                <script type="application/json" id="<?php echo $this->option; ?>-data-resolution">
+                <script type="application/json" id="<?php echo $resDataId; ?>">
                     {
                         "datasets": [<?php echo implode(',' . "\n", $data); ?>]
                     }
@@ -432,7 +519,7 @@ function getMonthName($month)
                     </div><!-- / .col span-half -->
                     <div class="col span-half omega">
                     <?php
-                } else if ($z == 2) {
+                } elseif ($z == 2) {
                     $z = 0;
                     ?>
                     </div><!-- / .col span-half -->
@@ -452,7 +539,9 @@ function getMonthName($month)
                     $c = array();
                     foreach ($user->closed as $year => $data) {
                         foreach ($data as $k => $v) {
-                            $c[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
+                            $monthPad = Hubzero\Utility\Str::pad(($k - 1), 2);
+                            $c[] = '[' . Date::of($year . '-' . $monthPad . '-01')->toUnix()
+                                . ',' . $v . ']';
                         }
                     }
                     $closeddata = implode(',', $c);
@@ -462,6 +551,9 @@ function getMonthName($month)
                 if (!$profile) {
                     $anon = 1;
                 }
+                $userChartId = $this->option . '-data-user' . $user->id;
+                $photoAlt    = $this->escape(stripslashes($user->name));
+                $numAssigned = Lang::txt('COM_SUPPORT_STATS_NUM_ASSIGNED', number_format($user->assigned));
                 ?>
                 <div class="breakdown container">
                     <div class="entry-head">
@@ -469,16 +561,23 @@ function getMonthName($month)
                             <strong>#<?php echo $j; ?></strong>
                         </p>
                         <p class="entry-member-photo">
-                            <img src="<?php echo $profile->picture($anon); ?>" alt="<?php echo $this->escape(stripslashes($user->name)); ?>" />
+                            <img
+                                src="<?php echo $profile->picture($anon); ?>"
+                                alt="<?php echo $photoAlt; ?>"
+                            />
                         </p>
                         <p class="entry-title">
                             <?php echo $this->escape($user->name); ?><br />
-                            <span><?php echo Lang::txt('COM_SUPPORT_STATS_NUM_ASSIGNED', number_format($user->assigned)); ?></span>
+                            <span><?php echo $numAssigned; ?></span>
                         </p>
                     </div>
                     <div class="entry-content">
-                        <div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart" data-datasets="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>">
-                            <script type="application/json" id="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>">
+                        <div
+                            id="user-<?php echo $this->escape($user->username); ?>"
+                            class="stats-user-chart"
+                            data-datasets="<?php echo $userChartId; ?>"
+                        >
+                            <script type="application/json" id="<?php echo $userChartId; ?>">
                                 {
                                     "top": <?php echo $top; ?>,
                                     "datasets": [{
@@ -493,7 +592,9 @@ function getMonthName($month)
                             <thead>
                                 <tr>
                                     <th scope="col"><?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?></th>
-                                    <th scope="col" class="block"><?php echo Lang::txt('COM_SUPPORT_STATS_AVERAGE_LIFETIME'); ?></th>
+                                    <th scope="col" class="block">
+                                        <?php echo Lang::txt('COM_SUPPORT_STATS_AVERAGE_LIFETIME'); ?>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -501,11 +602,16 @@ function getMonthName($month)
                                     <td><?php echo number_format($user->total); ?></td>
                                     <td class="block">
                                         <?php
-                                        $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($user->tickets);
+                                        $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
+                                            $user->tickets
+                                        );
                                         ?>
-                                        <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
-                                        <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
-                                        <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
+                                        <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>
+                                        <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
+                                        <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?>
+                                        <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
+                                        <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?>
+                                        <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
                                     </td>
                                 </tr>
                             </tbody>

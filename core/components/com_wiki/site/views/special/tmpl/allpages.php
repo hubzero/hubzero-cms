@@ -55,9 +55,10 @@ $namespaces = \Components\Wiki\Models\Page::all()
                         continue;
                     }
                     ?>
-                    <option value="<?php echo $space->get('namespace'); ?>"<?php if ($namespace == $space->get('namespace')) {
-                        echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape($space->get('namespace')); ?></option>
+                    <?php $selNs = ($namespace == $space->get('namespace')) ? ' selected="selected"' : ''; ?>
+                    <option value="<?php echo $space->get('namespace'); ?>"<?php echo $selNs; ?>>
+                        <?php echo $this->escape($space->get('namespace')); ?>
+                    </option>
                 <?php } ?>
             </select>
         </label>
@@ -105,7 +106,7 @@ $namespaces = \Components\Wiki\Models\Page::all()
                                     <h3><?php echo $index; ?></h3>
                                     <ul>
                                     <?php
-                                } else if ($k == 0) {
+                                } elseif ($k == 0) {
                                     ?>
                                     <h3><?php echo Lang::txt('COM_WIKI_INDEX_CONTINUED', $index); ?></h3>
                                     <ul>
@@ -144,7 +145,8 @@ $namespaces = \Components\Wiki\Models\Page::all()
             }
             ?>
                 <li>
-                    <a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:' . ucfirst($page)); ?>">
+                    <?php $spUrl = Route::url($this->page->link('base') . '&pagename=Special:' . ucfirst($page)); ?>
+                    <a href="<?php echo $spUrl; ?>">
                         <?php echo 'Special:' . ucfirst($this->escape(stripslashes($page))); ?>
                     </a>
                 </li>

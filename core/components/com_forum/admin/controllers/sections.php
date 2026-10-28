@@ -302,7 +302,9 @@ class Sections extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            $action = ($state == Section::STATE_PUBLISHED) ? Lang::txt('COM_FORUM_PUBLISH') : Lang::txt('COM_FORUM_UNPUBLISH');
+            $action = ($state == Section::STATE_PUBLISHED)
+                ? Lang::txt('COM_FORUM_PUBLISH')
+                : Lang::txt('COM_FORUM_UNPUBLISH');
 
             Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
             return $this->cancelTask();

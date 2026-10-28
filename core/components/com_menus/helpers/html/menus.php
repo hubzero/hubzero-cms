@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -53,10 +54,24 @@ class HtmlMenus
         $text = array();
         foreach ($associations as $tag => $associated) {
             if ($associated != $itemid) {
-                $text[] = Lang::txt('COM_MENUS_TIP_ASSOCIATED_LANGUAGE', Html::asset('image', 'mod_languages/' . $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->title, $items[$associated]->menu_title);
+                $item = $items[$associated];
+                $imgPath = 'mod_languages/' . $item->image . '.gif';
+                $imgOpts = array('title' => $item->language_title);
+                $img = Html::asset('image', $imgPath, $item->language_title, $imgOpts, true);
+                $text[] = Lang::txt(
+                    'COM_MENUS_TIP_ASSOCIATED_LANGUAGE',
+                    $img,
+                    $item->title,
+                    $item->menu_title
+                );
             }
         }
-        return Html::behavior('tooltip', implode('<br />', $text), Lang::txt('COM_MENUS_TIP_ASSOCIATION'), 'menu/icon-16-links.png');
+        return Html::behavior(
+            'tooltip',
+            implode('<br />', $text),
+            Lang::txt('COM_MENUS_TIP_ASSOCIATION'),
+            'menu/icon-16-links.png'
+        );
     }
 
     /**

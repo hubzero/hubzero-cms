@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mod_feedaggregator
- **/
+ *
+ */
 class Migration20160104220531ModFeedaggregator extends Base
 {
     /**

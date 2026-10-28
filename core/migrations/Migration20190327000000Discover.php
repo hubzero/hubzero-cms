@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for incorrect link in default discover page content
+  *
  **/
 class Migration20190327000000Discover extends Base
 {
@@ -22,7 +24,8 @@ class Migration20190327000000Discover extends Base
     public function up()
     {
         if ($this->db->tableExists('#__content')) {
-            $query = "SELECT * FROM `#__content` WHERE `title`='Discover' AND `alias`='discover' AND `introtext` LIKE '%href=\"/store\"%'";
+            $query = "SELECT * FROM `#__content` WHERE `title`='Discover' AND `alias`='discover' AND `introtext` "
+                . "LIKE '%href=\"/store\"%'";
             $this->db->setQuery($query);
             $pages = $this->db->loadObjectList();
 
@@ -31,7 +34,8 @@ class Migration20190327000000Discover extends Base
                     $content = $page->introtext;
                     $content = str_replace('href="/store"', 'href="/storefront"', $content);
 
-                    $query = "UPDATE `#__content` SET `introtext`=" . $this->db->quote($content) . " WHERE `id`=" . $this->db->quote($page->id);
+                    $query = "UPDATE `#__content` SET `introtext`=" . $this->db->quote($content)
+                        . " WHERE `id`=" . $this->db->quote($page->id);
                     $this->db->setQuery($query);
                     if ($this->db->query()) {
                         $this->log('Updated Store link from /store to /storefront in default Discover page');
@@ -49,7 +53,8 @@ class Migration20190327000000Discover extends Base
     public function down()
     {
         if ($this->db->tableExists('#__content')) {
-            $query = "SELECT * FROM `#__content` WHERE `title`='Discover' AND `alias`='discover' AND `introtext` LIKE '%href=\"/storefront\"%'";
+            $query = "SELECT * FROM `#__content` WHERE `title`='Discover' AND `alias`='discover' AND `introtext` "
+                . "LIKE '%href=\"/storefront\"%'";
             $this->db->setQuery($query);
             $pages = $this->db->loadObjectList();
 
@@ -58,7 +63,8 @@ class Migration20190327000000Discover extends Base
                     $content = $page->introtext;
                     $content = str_replace('href="/storefront"', 'href="/store"', $content);
 
-                    $query = "UPDATE `#__content` SET `introtext`=" . $this->db->quote($content) . " WHERE `id`=" . $this->db->quote($page->id);
+                    $query = "UPDATE `#__content` SET `introtext`=" . $this->db->quote($content)
+                        . " WHERE `id`=" . $this->db->quote($page->id);
                     $this->db->setQuery($query);
                     if ($this->db->query()) {
                         $this->log('Updated Store link from /storefront to /store in default Discover page');

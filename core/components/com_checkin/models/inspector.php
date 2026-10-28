@@ -36,6 +36,7 @@ class Inspector extends Obj
      *
      * @var  boolean
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $__state_set = null;
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -69,21 +70,21 @@ class Comment extends Relational
      *
      * @var string
      */
-    private $_base = null;
+    private $base = null;
 
     /**
      * Changelog
      *
      * @var  object
      */
-    private $_log = null;
+    private $changeLog = null;
 
     /**
      * Cached data
      *
      * @var array
      */
-    private $_cache = array(
+    private $cache = array(
         'recipients.added'  => array(),
         'recipients.failed' => array()
     );
@@ -193,7 +194,9 @@ class Comment extends Relational
             $original = $comment;
 
             // Replace {ticket#123}
-            $comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . Route::url("index.php?option=com_support&task=ticket&id=$1") . '">' . Lang::txt('ticket #%s', "$1") . '</a>', $comment);
+            $ticketUrl = Route::url("index.php?option=com_support&task=ticket&id=$1");
+            $ticketLink = '<a href="' . $ticketUrl . '">' . Lang::txt('ticket #%s', "$1") . '</a>';
+            $comment = preg_replace('/\{ticket#([\d]+)\}/i', $ticketLink, $comment);
 
             // Handle legacy attachment strings
             $comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
@@ -227,6 +230,7 @@ class Comment extends Relational
      * @param   array   $matches  Macro info
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAttachment($matches)
     {
         $tokens = explode('#', $matches[0]);
@@ -254,16 +258,16 @@ class Comment extends Relational
      */
     public function link($type = '')
     {
-        if (!isset($this->_base)) {
-            $this->_base = 'index.php?option=com_support&task=ticket&id=' . $this->get('ticket');
+        if (!isset($this->base)) {
+            $this->base = 'index.php?option=com_support&task=ticket&id=' . $this->get('ticket');
         }
-        $link = $this->_base;
+        $link = $this->base;
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'component':
             case 'base':
-                return $this->_base;
+                return $this->base;
             break;
 
             case 'permalink':
@@ -282,10 +286,10 @@ class Comment extends Relational
      */
     public function changelog()
     {
-        if (!($this->_log instanceof Changelog)) {
-            $this->_log = new Changelog($this->get('changelog'));
+        if (!($this->changeLog instanceof Changelog)) {
+            $this->changeLog = new Changelog($this->get('changelog'));
         }
-        return $this->_log;
+        return $this->changeLog;
     }
 
     /**
@@ -304,10 +308,10 @@ class Comment extends Relational
             $user = User::getInstance($to);
 
             if (is_object($user) && $user->get('id')) {
-                if (isset($this->_cache['recipients.added'][$user->get('email')])) {
+                if (isset($this->cache['recipients.added'][$user->get('email')])) {
                     return $this;
                 }
-                $this->_cache['recipients.added'][$user->get('email')] = array(
+                $this->cache['recipients.added'][$user->get('email')] = array(
                     'role'    => $role,
                     'name'    => $user->get('name'),
                     'email'   => $user->get('email'),
@@ -315,28 +319,27 @@ class Comment extends Relational
                 );
                 $added = true;
             }
-        } else if (is_string($to)) {
+        } elseif (is_string($to)) {
             // Email
             if (strstr($to, '@') && Validate::email($to)) {
-                if (isset($this->_cache['recipients.added'][$to])) {
+                if (isset($this->cache['recipients.added'][$to])) {
                     return $this;
                 }
-                $this->_cache['recipients.added'][$to] = array(
+                $this->cache['recipients.added'][$to] = array(
                     'role'    => $role,
                     'name'    => Lang::txt('COM_SUPPORT_UNKNOWN'),
                     'email'   => $to,
                     'id'      => 0
                 );
                 $added = true;
-            }
-            // Username
-            else {
+            } else {
+                // Username
                 $user = User::getInstance($to);
                 if (is_object($user) && $user->get('id')) {
-                    if (isset($this->_cache['recipients.added'][$user->get('email')])) {
+                    if (isset($this->cache['recipients.added'][$user->get('email')])) {
                         return $this;
                     }
-                    $this->_cache['recipients.added'][$user->get('email')] = array(
+                    $this->cache['recipients.added'][$user->get('email')] = array(
                         'role'    => $role,
                         'name'    => $user->get('name'),
                         'email'   => $user->get('email'),
@@ -345,16 +348,16 @@ class Comment extends Relational
                     $added = true;
                 }
             }
-        } else if (is_array($to)) {
-            if (isset($this->_cache['recipients.added'][$to['email']])) {
+        } elseif (is_array($to)) {
+            if (isset($this->cache['recipients.added'][$to['email']])) {
                 return $this;
             }
-            $this->_cache['recipients.added'][$to['email']] = $to;
+            $this->cache['recipients.added'][$to['email']] = $to;
             $added = true;
         }
 
         if (!$added) {
-            $this->_cache['recipients.failed'][] = $to;
+            $this->cache['recipients.failed'][] = $to;
         }
 
         return $this;
@@ -374,7 +377,7 @@ class Comment extends Relational
             case 'id':
             case 'ids':
                 $tos = array();
-                foreach ($this->_cache['recipients.added'] as $to) {
+                foreach ($this->cache['recipients.added'] as $to) {
                     if ($to['id']) {
                         $tos[] = $to;
                     }
@@ -385,7 +388,7 @@ class Comment extends Relational
             case 'email':
             case 'emails':
                 $tos = array();
-                foreach ($this->_cache['recipients.added'] as $to) {
+                foreach ($this->cache['recipients.added'] as $to) {
                     if (!$to['id'] && $to['email']) {
                         $tos[] = $to;
                     }
@@ -394,6 +397,6 @@ class Comment extends Relational
             break;
         }
 
-        return $this->_cache['recipients.added'];
+        return $this->cache['recipients.added'];
     }
 }

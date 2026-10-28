@@ -36,7 +36,8 @@ class BaseSubscription
 				IF(`crtmExpires` < ' . $this->_db->quote($now) . ', 0, 1) AS `crtmActive`
 				FROM `#__cart_memberships` m
 				LEFT JOIN `#__cart_carts` c ON m.`crtId` = c.`crtId`
-				WHERE m.`pId` = ' . $this->_db->quote($this->pId) . ' AND c.`uidNumber` = ' . $this->_db->quote($this->uId);
+				WHERE m.`pId` = ' . $this->_db->quote($this->pId) .
+                ' AND c.`uidNumber` = ' . $this->_db->quote($this->uId);
         $this->_db->setQuery($sql);
 
         $membershipInfo = $this->_db->loadAssoc();

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,10 +22,17 @@ class Migration20130516175532ComFeedback extends Base
      **/
     public function up()
     {
+        $oldPath = '/components/com_feedback/images/contributor.gif';
+        $newPath = '/components/com_feedback/assets/img/contributor.gif';
+
         if ($this->db->tableExists('#__components')) {
-            $query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/images/contributor.gif','/components/com_feedback/assets/img/contributor.gif') WHERE `option` = 'com_feedback';";
+            $query = "UPDATE `#__components` SET `params` ="
+                . "REPLACE(`params`," . $this->db->quote($oldPath) . "," . $this->db->quote($newPath) . ")"
+                . "WHERE `option` = 'com_feedback';";
         } else {
-            $query = "UPDATE `#__extensions` SET `params` = REPLACE(`params`,'/components/com_feedback/images/contributor.gif','/components/com_feedback/assets/img/contributor.gif') WHERE `element` = 'com_feedback';";
+            $query = "UPDATE `#__extensions` SET `params` ="
+                . "REPLACE(`params`," . $this->db->quote($oldPath) . "," . $this->db->quote($newPath) . ")"
+                . "WHERE `element` = 'com_feedback';";
         }
 
         if (!empty($query)) {
@@ -38,10 +46,17 @@ class Migration20130516175532ComFeedback extends Base
      **/
     public function down()
     {
+        $oldPath = '/components/com_feedback/assets/img/contributor.gif';
+        $newPath = '/components/com_feedback/images/contributor.gif';
+
         if ($this->db->tableExists('#__components')) {
-            $query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'/components/com_feedback/assets/img/contributor.gif','/components/com_feedback/images/contributor.gif') WHERE `option` = 'com_feedback';";
+            $query = "UPDATE `#__components` SET `params` ="
+                . "REPLACE(`params`," . $this->db->quote($oldPath) . "," . $this->db->quote($newPath) . ")"
+                . "WHERE `option` = 'com_feedback';";
         } else {
-            $query = "UPDATE `#__extensions` SET `params` = REPLACE(`params`,'/components/com_feedback/assets/img/contributor.gif','/components/com_feedback/images/contributor.gif') WHERE `element` = 'com_feedback';";
+            $query = "UPDATE `#__extensions` SET `params` ="
+                . "REPLACE(`params`," . $this->db->quote($oldPath) . "," . $this->db->quote($newPath) . ")"
+                . "WHERE `element` = 'com_feedback';";
         }
 
         if (!empty($query)) {

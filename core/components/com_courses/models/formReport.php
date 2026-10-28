@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,7 +51,8 @@ class FormReport extends Model
         }
 
         // Get all the questions for this form, properly ordered
-        $query = "SELECT `id`, `version` FROM `#__courses_form_questions` WHERE form_id = '{$form_id}' ORDER BY version ASC, page ASC, top_dist ASC";
+        $query = "SELECT `id`, `version` FROM `#__courses_form_questions` "
+            . "WHERE form_id = '{$form_id}' ORDER BY version ASC, page ASC, top_dist ASC";
         $db->setQuery($query);
         $results = $db->loadObjectList();
 
@@ -74,7 +76,8 @@ class FormReport extends Model
                 $questions[$r->id] = array('qidx' => $question_vs[$r->version], 'version' => $r->version);
 
                 // Now grab all of the answers for each question
-                $query = "SELECT `id` FROM `#__courses_form_answers` WHERE `question_id` = '{$r->id}' ORDER BY top_dist ASC;";
+                $query = "SELECT `id` FROM `#__courses_form_answers` "
+                    . "WHERE `question_id` = '{$r->id}' ORDER BY top_dist ASC;";
                 $db->setQuery($query);
                 $ans = $db->loadObjectList();
 
@@ -92,7 +95,9 @@ class FormReport extends Model
         }
 
         // Now, select responses and start to build the csv...
-        $query = "SELECT * FROM `#__courses_form_responses` WHERE `question_id` IN (" . implode(',', $question_ids) . ") ORDER BY `respondent_id` ASC";
+        $query = "SELECT * FROM `#__courses_form_responses` "
+            . "WHERE `question_id` IN (" . implode(',', $question_ids) . ") "
+            . "ORDER BY `respondent_id` ASC";
         $db->setQuery($query);
         $results = $db->loadObjectList();
         $output  = array();
@@ -124,7 +129,10 @@ class FormReport extends Model
 
             foreach ($respondents as $respondent_id => $response) {
                 // Get name and attempt number for this row
-                $query = "SELECT `user_id`, `attempt`, `student`, `section_id` FROM `#__courses_members` cm JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id WHERE cr.`id` = '{$respondent_id}'";
+                $query = "SELECT `user_id`, `attempt`, `student`, `section_id` "
+                    . "FROM `#__courses_members` cm "
+                    . "JOIN `#__courses_form_respondents` cr ON cr.member_id = cm.id "
+                    . "WHERE cr.`id` = '{$respondent_id}'";
                 $db->setQuery($query);
                 $aux   = $db->loadObject();
 
@@ -182,7 +190,8 @@ class FormReport extends Model
         }
 
         // Get all the questions for this form, properly ordered
-        $query = "SELECT `id`, `version` FROM `#__courses_form_questions` WHERE form_id = '{$form_id}' ORDER BY version ASC, page ASC, top_dist ASC";
+        $query = "SELECT `id`, `version` FROM `#__courses_form_questions` "
+            . "WHERE form_id = '{$form_id}' ORDER BY version ASC, page ASC, top_dist ASC";
         $db->setQuery($query);
         $results = $db->loadObjectList();
 
@@ -207,7 +216,8 @@ class FormReport extends Model
                 $question_ids[] = $r->id;
 
                 // Now grab all of the answers for each question
-                $query = "SELECT `id`, `correct` FROM `#__courses_form_answers` WHERE `question_id` = '{$r->id}' ORDER BY top_dist ASC;";
+                $query = "SELECT `id`, `correct` FROM `#__courses_form_answers` "
+                    . "WHERE `question_id` = '{$r->id}' ORDER BY top_dist ASC;";
                 $db->setQuery($query);
                 $ans = $db->loadObjectList();
 
@@ -229,7 +239,9 @@ class FormReport extends Model
         }
 
         // Now, select responses and start to build the csv...
-        $query = "SELECT * FROM `#__courses_form_responses` WHERE `question_id` IN (" . implode(',', $question_ids) . ") ORDER BY `respondent_id` ASC";
+        $query = "SELECT * FROM `#__courses_form_responses` "
+            . "WHERE `question_id` IN (" . implode(',', $question_ids) . ") "
+            . "ORDER BY `respondent_id` ASC";
         $db->setQuery($query);
         $results = $db->loadObjectList();
 

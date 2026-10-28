@@ -127,10 +127,9 @@ class Initialcon implements Resolver
             $last  = array_pop($parts);
 
             $initials = substr($first, 0, 1) . substr($last, 0, 1);
-        }
-        // One word name? (e.g., "Madonna")
-        // Take the first two letters
-        else {
+        } else {
+            // One word name? (e.g., "Madonna")
+            // Take the first two letters
             $initials = substr($name ?? '', 0, 2);
         }
         $initials = strtoupper(trim($initials));

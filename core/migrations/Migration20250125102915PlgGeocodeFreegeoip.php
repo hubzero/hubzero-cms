@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing Geocode - Free GeoIP plugin
- **/
+ *
+ */
 class Migration20250125102915PlgGeocodeFreegeoip extends Base
 {
     /**

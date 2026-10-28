@@ -125,7 +125,7 @@ class Section extends Base
             if ($oid) {
                 $this->_tbl->load($oid, $offering_id);
             }
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
 
@@ -144,7 +144,7 @@ class Section extends Base
      * @param      mixed $oid ID (int) or alias (string)
      * @return     object \Components\Courses\Models\Offering
      */
-    static function &getInstance($oid = null, $offering_id = null)
+    public static function &getInstance($oid = null, $offering_id = null)
     {
         static $instances;
 
@@ -156,9 +156,9 @@ class Section extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid . '_' . $offering_id;
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $key = $oid->get('id') . '_' . $offering_id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'] . '_' . $offering_id;
         }
 

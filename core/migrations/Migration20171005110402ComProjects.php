@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for moving projects activity to the global activity tables
- **/
+ *
+ */
 class Migration20171005110402ComProjects extends Base
 {
     /**
@@ -162,7 +163,8 @@ class Migration20171005110402ComProjects extends Base
                             $scope = 'project.file';
                             $scope_id = $activity->projectid;
                         }
-                        if (substr($activity->activity, 0, strlen('restored deleted file')) == 'restored deleted file') {
+                        $restoredStr = 'restored deleted file';
+                        if (substr($activity->activity, 0, strlen($restoredStr)) == $restoredStr) {
                             $action = 'updated';
                             $scope = 'project.file';
                             $scope_id = $activity->projectid;
@@ -182,9 +184,11 @@ class Migration20171005110402ComProjects extends Base
                             $scope = 'project.database';
                             $scope_id = $activity->referenceid;
                         }
+                        $pubStr = 'started a new publication';
+                        $draftStr = 'started draft';
                         if (
-                            substr($activity->activity, 0, strlen('started a new publication')) == 'started a new publication'
-                            || substr($activity->activity, 0, strlen('started draft')) == 'started draft'
+                            substr($activity->activity, 0, strlen($pubStr)) == $pubStr
+                            || substr($activity->activity, 0, strlen($draftStr)) == $draftStr
                         ) {
                             $action = 'created';
                             $scope = 'publication';
@@ -243,8 +247,8 @@ class Migration20171005110402ComProjects extends Base
                         break;
                 }
 
-                $query = "INSERT INTO `#__activity_logs` (`id`, `created`, `created_by`, `description`, `action`, `scope`, `scope_id`, `details`, `anonymous`, `parent`)
-						VALUES (null,
+                $query = "INSERT INTO `#__activity_logs` (`id`, `created`, `created_by`, "
+                    . "`description`, `action`, `scope`, `scope_id`, `details`, `anonymous`, `parent`) VALUES (null,
 							" . $this->db->quote($activity->recorded) . ",
 							" . $this->db->quote($activity->userid) . ",
 							" . $this->db->quote($activity->activity) . ",
@@ -266,8 +270,8 @@ class Migration20171005110402ComProjects extends Base
                 }
 
                 // Add to the project's feed
-                $query = "INSERT INTO `#__activity_recipients` (`id`, `log_id`, `scope`, `scope_id`, `created`, `viewed`, `state`, `starred`)
-						VALUES (null,
+                $query = "INSERT INTO `#__activity_recipients` (`id`, `log_id`, `scope`, `scope_id`, "
+                    . "`created`, `viewed`, `state`, `starred`) VALUES (null,
 							" . $this->db->quote($newids[$activity->id]) . ",
 							" . $this->db->quote('project') . ",
 							" . $this->db->quote($activity->projectid) . ",
@@ -293,8 +297,8 @@ class Migration20171005110402ComProjects extends Base
                     $this->db->query();
 
                     // And add a new recipient record with an updated timestamp
-                    $query = "INSERT INTO `#__activity_recipients` (`id`, `log_id`, `scope`, `scope_id`, `created`, `viewed`, `state`, `starred`)
-							VALUES (null,
+                    $query = "INSERT INTO `#__activity_recipients` (`id`, `log_id`, `scope`, `scope_id`, "
+                        . "`created`, `viewed`, `state`, `starred`) VALUES (null,
 								" . $this->db->quote($parent) . ",
 								" . $this->db->quote('project') . ",
 								" . $this->db->quote($activity->projectid) . ",
@@ -347,7 +351,9 @@ class Migration20171005110402ComProjects extends Base
                 $this->db->query();
             }
 
-            $query = "SELECT * FROM `#__activity_logs` WHERE `scope` IN ('project', 'project.note', 'project.todo', 'publication', 'project.comment', 'project.file', 'project.todo.comment', 'project.database')";
+            $query = "SELECT * FROM `#__activity_logs` WHERE `scope` IN "
+                . "('project', 'project.note', 'project.todo', 'publication', 'project.comment', "
+                . "'project.file', 'project.todo.comment', 'project.database')";
             $this->db->setQuery($query);
             $activities = $this->db->loadObjectList();
 

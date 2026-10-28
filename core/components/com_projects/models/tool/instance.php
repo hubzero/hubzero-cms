@@ -21,6 +21,7 @@ class Instance extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolInstance';
 
     /**
@@ -44,9 +45,9 @@ class Instance extends Model
         if ($oid && $oid != 'dev') {
             if (is_numeric($oid)) {
                 $this->_tbl->load($oid);
-            } else if (is_string($oid)) {
+            } elseif (is_string($oid)) {
                 $this->_tbl->loadFromInstanceName($oid);
-            } else if (is_object($oid)) {
+            } elseif (is_object($oid)) {
                 $this->bind($oid);
             }
         } elseif ($parent) {
@@ -63,7 +64,7 @@ class Instance extends Model
      * @param      mixed $oid object ID
      * @return     object Todo
      */
-    static function &getInstance($oid = null, $parent = null)
+    public static function &getInstance($oid = null, $parent = null)
     {
         static $instances;
 
@@ -73,7 +74,7 @@ class Instance extends Model
 
         if (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         } else {
             $key = $oid;

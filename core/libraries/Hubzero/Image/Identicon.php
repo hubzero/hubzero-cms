@@ -162,7 +162,6 @@ class Identicon
         return $this->arrayOfSquare;
     }
 
-
     /**
      * Generate the Identicon image
      *
@@ -191,7 +190,14 @@ class Identicon
         foreach ($this->arrayOfSquare as $lineKey => $lineValue) {
             foreach ($lineValue as $colKey => $colValue) {
                 if (true === $colValue) {
-                    imagefilledrectangle($image, $colKey * $this->pixelRatio, $lineKey * $this->pixelRatio, ($colKey + 1) * $this->pixelRatio, ($lineKey + 1) * $this->pixelRatio, $color);
+                    imagefilledrectangle(
+                        $image,
+                        $colKey * $this->pixelRatio,
+                        $lineKey * $this->pixelRatio,
+                        ($colKey + 1) * $this->pixelRatio,
+                        ($lineKey + 1) * $this->pixelRatio,
+                        $color
+                    );
                 }
             }
         }

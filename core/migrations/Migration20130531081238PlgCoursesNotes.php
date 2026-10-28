@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding offering_id to notes
- **/
+ *
+ */
 class Migration20130531081238PlgCoursesNotes extends Base
 {
     /**
@@ -24,7 +26,8 @@ class Migration20130531081238PlgCoursesNotes extends Base
         $query = "";
 
         if (!$this->db->tableHasField('#__courses_member_notes', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_member_notes` ADD `section_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `timestamp`;";
+            $query = "ALTER TABLE `#__courses_member_notes` ADD `section_id` "
+                . "INT(11) NOT NULL DEFAULT '0' AFTER `timestamp`;";
         }
 
         if (!empty($query)) {

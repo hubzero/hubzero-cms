@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,8 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for adding state, modified, modified_by
  * fields to blog comments
- **/
+ *
+ */
 class Migration20140702071151ComBlog extends Base
 {
     /**

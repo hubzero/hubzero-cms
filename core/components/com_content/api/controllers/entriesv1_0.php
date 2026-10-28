@@ -80,13 +80,11 @@ class Entriesv1_0 extends ApiController
 
                 if ($page->state == 1 && $page->access == 1) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($page->state == 1 && $page->access == 2) {
+                } elseif ($page->state == 1 && $page->access == 2) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

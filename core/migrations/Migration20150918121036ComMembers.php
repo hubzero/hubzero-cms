@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding registration reasons table and default values
- **/
+ *
+ */
 class Migration20150918121036ComMembers extends Base
 {
     /**

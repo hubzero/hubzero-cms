@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2023 The Regents of the University of California.
@@ -92,7 +93,10 @@ class AclUser extends Relational
     public static function listUsers($resource_id)
     {
         $database = App::get('db');
-        $sql = "SELECT r.id AS resource_id, u.id AS user_id, u.name, u.givenName, u.middleName, u.surname, u.username FROM `#__resources` AS r, `#__resource_acl_user` AS a, `#__users` AS u WHERE r.id=? AND a.resource_id=r.id AND a.user_id=u.id;";
+        $sql = "SELECT r.id AS resource_id, u.id AS user_id, u.name, "
+            . "u.givenName, u.middleName, u.surname, u.username "
+            . "FROM `#__resources` AS r, `#__resource_acl_user` AS a, `#__users` AS u "
+            . "WHERE r.id=? AND a.resource_id=r.id AND a.user_id=u.id;";
         $database->prepare($sql)->bind(array($resource_id));
         $aclusers = $database->loadObjectList();
         return $aclusers;
@@ -124,7 +128,8 @@ class AclUser extends Relational
         }
 
         if ($binds !== array()) {
-            $sql = "DELETE FROM #__resource_acl_user WHERE resource_id = ? AND user_id IN (" . implode(',', $binds) . ");";
+            $sql = "DELETE FROM #__resource_acl_user "
+                . "WHERE resource_id = ? AND user_id IN (" . implode(',', $binds) . ");";
             $database->prepare($sql)->bind($values);
             $database->execute();
         }

@@ -134,6 +134,7 @@ class Project
      * @param   string  $name  Project name
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_or_create($name)
     {
         $hztp = new self();
@@ -167,7 +168,11 @@ class Project
         }
 
         if (is_numeric($this->id)) {
-            $query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " . $db->quote($this->id) . "," . $db->quote($this->name) . ");";
+            $query = "INSERT INTO `#__trac_project` (id,name) VALUES ( " .
+                $db->quote($this->id) .
+                "," .
+                $db->quote($this->name) .
+                ");";
             $db->setQuery($query);
 
             $result = $db->query();
@@ -195,7 +200,7 @@ class Project
 
                 $this->id = $result;
                 return true;
-            } else if ($result !== false) {
+            } elseif ($result !== false) {
                 $this->id = $db->insertid();
                 return true;
             }
@@ -372,6 +377,7 @@ class Project
      * @param   string  $property
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __get($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -379,7 +385,7 @@ class Project
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -411,7 +417,7 @@ class Project
             return null;
         }
 
-        $this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
+        $this->error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
         return null;
     }
@@ -423,6 +429,7 @@ class Project
      * @param   mixed   $value
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __set($property = null, $value = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -430,7 +437,7 @@ class Project
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -454,6 +461,7 @@ class Project
      * @param   string  $property  Property name
      * @return  boolean
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __isset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -461,7 +469,7 @@ class Project
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -474,6 +482,7 @@ class Project
      * @param   string  $property  Property name
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __unset($property = null)
     {
         if (!property_exists(__CLASS__, $property) || $property[0] == '_') {
@@ -481,7 +490,7 @@ class Project
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -497,7 +506,7 @@ class Project
      * @param   integer  $level
      * @return  void
      */
-    private function _error($message, $level = E_USER_NOTICE)
+    private function error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();
 
@@ -548,6 +557,7 @@ class Project
      * @param   string  $action
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function add_user_permission($user, $action)
     {
         $db =  \App::get('db');
@@ -562,7 +572,7 @@ class Project
             $user_id = $db->loadResult();
 
             if ($user_id === false) {
-                $this->_error("Unknown user $user");
+                $this->error("Unknown user $user");
                 return false;
             }
         } else {
@@ -580,7 +590,9 @@ class Project
             $values .= "($quoted_project_id,$quoted_user_id," . $db->quote($a) . ")";
         }
 
-        $query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES " .  $values . ";";
+        $query = "INSERT IGNORE INTO `#__trac_user_permission` (trac_project_id,user_id,action) VALUES " .
+             $values .
+            ";";
 
         $db->setQuery($query);
         $db->query();
@@ -593,6 +605,7 @@ class Project
      * @param   string  $action
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function add_group_permission($group, $action)
     {
         $db =  \App::get('db');
@@ -607,7 +620,7 @@ class Project
             $group_id = $db->loadResult();
 
             if ($group_id === false) {
-                $this->_error("Unknown group $group");
+                $this->error("Unknown group $group");
                 return false;
             }
         }
@@ -623,7 +636,9 @@ class Project
             $values .= "($quoted_project_id,$quoted_group_id," . $db->quote($a) . ")";
         }
 
-        $query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES " .  $values . ";";
+        $query = "INSERT IGNORE INTO `#__trac_group_permission` (trac_project_id,group_id,action) VALUES " .
+             $values .
+            ";";
 
         $db->setQuery($query);
         $db->query();
@@ -636,6 +651,7 @@ class Project
      * @param   string  $action
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_user_permission($user, $action)
     {
         $db =  \App::get('db');
@@ -651,7 +667,7 @@ class Project
             $user_id = $db->loadResult();
 
             if ($user_id === false) {
-                $this->_error("Unknown user $user");
+                $this->error("Unknown user $user");
                 return false;
             }
         } else {
@@ -671,9 +687,8 @@ class Project
             }
             $values .= $db->quote($a);
         }
-
-        $query = "DELETE FROM `#__trac_user_permission` WHERE trac_project_id=$quoted_project_id AND user_id=$quoted_user_id";
-
+        $query = "DELETE FROM `#__trac_user_permission` WHERE trac_project_id=$quoted_project_id AND 
+            user_id=$quoted_user_id";
         if (!$all) {
             $query .= " AND action IN (" .  $values . ");";
         }
@@ -689,6 +704,7 @@ class Project
      * @param   string  $action
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_group_permission($group, $action)
     {
         $db =  \App::get('db');
@@ -704,7 +720,7 @@ class Project
             $group_id = $db->loadResult();
 
             if ($group_id === null) {
-                $this->_error("Unknown group $group");
+                $this->error("Unknown group $group");
                 return false;
             }
         }
@@ -722,9 +738,8 @@ class Project
             }
             $values .= $db->quote($a);
         }
-
-        $query = "DELETE FROM `#__trac_group_permission` WHERE trac_project_id=$quoted_project_id AND group_id=$quoted_group_id";
-
+        $query = "DELETE FROM `#__trac_group_permission` WHERE trac_project_id=$quoted_project_id AND 
+            group_id=$quoted_group_id";
         if (!$all) {
             $query .= " AND action IN (" .  $values . ");";
         }
@@ -739,6 +754,7 @@ class Project
      * @param   string  $user
      * @return  array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_user_permission($user)
     {
         $db =  \App::get('db');
@@ -749,9 +765,12 @@ class Project
         }
         $quoted_user = $db->quote($user);
         if (is_numeric($user)) {
-            $query = "SELECT action FROM `#__trac_user_permission` AS up WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
+            $query = "SELECT action FROM `#__trac_user_permission` AS up " .
+                "WHERE up.trac_project_id=$quoted_project_id AND up.user_id=$quoted_user;";
         } else {
-            $query = "SELECT action FROM `#__trac_user_permission` AS up, `#__users` AS u WHERE up.trac_project_id=$quoted_project_id AND u.id=up.user_id AND u.username=$quoted_user;";
+            $query = "SELECT action FROM `#__trac_user_permission` AS up, `#__users` AS u " .
+                "WHERE up.trac_project_id=$quoted_project_id " .
+                "AND u.id=up.user_id AND u.username=$quoted_user;";
         }
 
         $db->setQuery($query);
@@ -766,6 +785,7 @@ class Project
      * @param   string  $group
      * @return  array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_group_permission($group)
     {
         $db =  \App::get('db');
@@ -776,9 +796,12 @@ class Project
         }
         $quoted_group = $db->quote($group);
         if (is_numeric($group)) {
-            $query = "SELECT action FROM `#__trac_group_permission` AS gp WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
+            $query = "SELECT action FROM `#__trac_group_permission` AS gp " .
+                "WHERE gp.trac_project_id=$quoted_project_id AND gp.group_id=$quoted_group;";
         } else {
-            $query = "SELECT action FROM `#__trac_group_permission` AS gp, `#__xgroups` AS g WHERE gp.trac_project_id=$quoted_project_id AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
+            $query = "SELECT action FROM `#__trac_group_permission` AS gp, `#__xgroups` AS g " .
+                "WHERE gp.trac_project_id=$quoted_project_id " .
+                "AND g.gidNumber=gp.group_id AND g.cn=$quoted_group;";
         }
 
         $db->setQuery($query);

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mygroups module
- **/
+ *
+ */
 class Migration20190109000000ModMyGroups extends Base
 {
     /**

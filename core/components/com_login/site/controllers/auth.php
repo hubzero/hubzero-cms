@@ -215,7 +215,7 @@ class Auth extends SiteController
                 );
 
                 $multiAuth = true;
-            } else if ($p->name == 'hubzero') {
+            } elseif ($p->name == 'hubzero') {
                 $remember_me_default = $pparams->get('remember_me_default', 0);
                 $this->site_display  = $pparams->get('display_name', Config::get('sitename'));
                 $local               = true;
@@ -777,8 +777,8 @@ class Auth extends SiteController
                             } else {
                                 break;
                             }
-                        } // End PUCAS check
-                        else {
+                        } else {
+                            // End PUCAS check
                             $result = $myplugin->logout();
                             break;
                         } // Normal path

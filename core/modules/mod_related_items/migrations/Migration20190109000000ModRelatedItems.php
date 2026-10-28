@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing related_items module
- **/
+ *
+ */
 class Migration20190109000000ModRelatedItems extends Base
 {
     /**

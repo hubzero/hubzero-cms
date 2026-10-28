@@ -335,7 +335,8 @@ class Messages extends AdminController
 
                         // Save
                         if (!$notify->save()) {
-                            Notify::error(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
+                            $err = 'PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED';
+                            Notify::error(Lang::txt($err, $notify->get('method')));
                         }
                     }
                 }
@@ -359,9 +360,10 @@ class Messages extends AdminController
                 }
             }
         } else {
-            // This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
-            // It ensures we can know the difference between someone who has never changed their settings (thus, no database entries)
-            // and someone who purposely wants everything turned off.
+            // This creates a single entry to let the system know that the user has
+            // explicitly chosen "none" for all options. It ensures we can know the
+            // difference between someone who has never changed their settings (thus,
+            // no database entries) and someone who purposely wants everything turned off.
             $notify = Message\Notify::blank();
             $notify->set('uid', $member->get('uidNumber'));
 
@@ -379,9 +381,9 @@ class Messages extends AdminController
 
         $tmpl = Request::getWord('tmpl');
 
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=settings&id=' . $id . ($tmpl ? '&tmpl=' . $tmpl : ''), false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=settings&id=' . $id . ($tmpl ? '&tmpl=' . $tmpl : '');
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -399,7 +401,8 @@ class Messages extends AdminController
         $i = 0;
         foreach ($notimethods as $notimethod) {
             $out .= '<td>' . "\n";
-            $out .= "\t" . '<input type="checkbox" name="settings[' . $name . '][]" class="opt-' . $notimethod . '" value="' . $notimethod . '"';
+            $out .= "\t" . '<input type="checkbox" name="settings[' . $name . '][]" '
+                . 'class="opt-' . $notimethod . '" value="' . $notimethod . '"';
             $out .= (in_array($notimethod, $values))
                           ? ' checked="checked"'
                           : '';

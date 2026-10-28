@@ -49,7 +49,10 @@ class Helper extends Module
         $this->tpl_path = App::get('template')->path . '/html/mod_incremental_registration';
 
         $b = rtrim(Request::base(true), '/');
-        return file_exists(PATH_APP . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
+        if (file_exists(PATH_APP . $this->tpl_path . $path)) {
+            return $b . $this->tpl_path . $path;
+        }
+        return $b . $this->mod_path . $path;
     }
 
     /**
@@ -105,7 +108,10 @@ class Helper extends Module
             $this->js();
 
             if ($row) {
-                $dbh->setQuery('SELECT popover_text, award_per FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
+                $dbh->setQuery(
+                    'SELECT popover_text, award_per FROM `#__incremental_registration_options` ' .
+                    'ORDER BY added DESC LIMIT 1'
+                );
                 list($introText, $awardPer) = $dbh->loadRow();
 
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -139,14 +145,19 @@ class Helper extends Module
                         if (!isset($POST['name']['first']) || !isset($_POST['name']['last'])) {
                             $errors['name'] = true;
                         }
-                        $name = preg_replace('/\s+/', ' ', trim(implode(' ', array($name['first'], $name['middle'], $name['last']))));
+                        $name = preg_replace(
+                            '/\s+/',
+                            ' ',
+                            trim(implode(' ', array($name['first'], $name['middle'], $name['last'])))
+                        );
                     }
 
                     if (isset($row['gender'])) {
-                        if (
-                            !isset($_POST['gender'])
-                            || ($_POST['gender'] != 'male' && $_POST['gender'] != 'female' && $_POST['gender'] != 'refused')
-                        ) {
+                        $validGender = in_array(
+                            $_POST['gender'] ?? '',
+                            ['male', 'female', 'refused']
+                        );
+                        if (!isset($_POST['gender']) || !$validGender) {
                             $errors['gender'] = true;
                         } else {
                             $gender = $_POST['gender'];
@@ -178,7 +189,10 @@ class Helper extends Module
                     if (isset($row['countryorigin'])) {
                         if (isset($_POST['countryorigin_us']) && $_POST['countryorigin_us'] == 'yes') {
                             $countryorigin = 'us';
-                        } elseif (!isset($_POST['countryorigin']) || !preg_match('/[A-Za-z]{2}/', $_POST['countryorigin'])) {
+                        } elseif (
+                            !isset($_POST['countryorigin'])
+                            || !preg_match('/[A-Za-z]{2}/', $_POST['countryorigin'])
+                        ) {
                             $errors['countryorigin'] = true;
                         } else {
                             $countryorigin = $_POST['countryorigin'];
@@ -191,7 +205,10 @@ class Helper extends Module
                     if (isset($row['countryresident'])) {
                         if (isset($_POST['countryresident_us']) && $_POST['countryresident_us'] == 'yes') {
                             $countryresident = 'us';
-                        } elseif (!isset($_POST['countryresident']) || !preg_match('/[A-Za-z]{2}/', $_POST['countryresident'])) {
+                        } elseif (
+                            !isset($_POST['countryresident'])
+                            || !preg_match('/[A-Za-z]{2}/', $_POST['countryresident'])
+                        ) {
                             $errors['countryresident'] = true;
                         } else {
                             $countryresident = $_POST['countryresident'];
@@ -199,7 +216,14 @@ class Helper extends Module
                     }
 
                     if (isset($row['disability'])) {
-                        if (!isset($_POST['disability']) || ($_POST['disability'] == 'yes' && ((!isset($_POST['specificDisability']) || !$_POST['specificDisability']) && (!isset($_POST['otherDisability']) || !trim($_POST['otherDisability']))))) {
+                        $noSpecific = !isset($_POST['specificDisability'])
+                            || !$_POST['specificDisability'];
+                        $noOther = !isset($_POST['otherDisability'])
+                            || !trim($_POST['otherDisability']);
+                        if (
+                            !isset($_POST['disability'])
+                            || ($_POST['disability'] == 'yes' && ($noSpecific && $noOther))
+                        ) {
                             $errors['disability'] = true;
                         }
                     }
@@ -227,7 +251,10 @@ class Helper extends Module
                     if ($errors) {
                         require $this->getLayoutPath('popover');
                     } else {
-                        $dbh->setQuery('SELECT ' . implode(', ', array_keys($row)) . ' FROM #__profile_completion_awards WHERE user_id = ' . $uid);
+                        $dbh->setQuery(
+                            'SELECT ' . implode(', ', array_keys($row)) .
+                            ' FROM #__profile_completion_awards WHERE user_id = ' . $uid
+                        );
                         $award = 0;
                         $awarded = $dbh->loadAssoc();
 
@@ -239,16 +266,26 @@ class Helper extends Module
                             }
                         }
 
-                        //$dbh->setQuery('SELECT COALESCE((SELECT balance FROM `#__users_transactions` WHERE uid = ' . $uid . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = ' . $uid . ')), 0)');
+                        // Old query:
+                        // $dbh->setQuery('SELECT COALESCE((SELECT balance FROM
+                        // `#__users_transactions` WHERE uid = ' . $uid . ' AND id =
+                        // (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = '
+                        // . $uid . ')), 0)');
                         $dbh->setQuery('SELECT balance FROM `#__users_points` WHERE uid = ' . $uid);
                         $new_amount = intval($dbh->loadResult()) + $award;
 
                         if ($award) {
                             $BTL = new \Hubzero\Bank\Teller($uid);
-                            $BTL->deposit($award, Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'), 'registration', 0);
+                            $BTL->deposit(
+                                $award,
+                                Lang::txt('MOD_INCREMENTAL_REGISTRATION_PROFILE_COMPLETION_AWARD'),
+                                'registration',
+                                0
+                            );
                         }
 
-                        $aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, last_bothered = CURRENT_TIMESTAMP, bothered_times = bothered_times + 1,  ';
+                        $aw_update = 'UPDATE `#__profile_completion_awards` SET edited_profile = 1, ' .
+                            'last_bothered = CURRENT_TIMESTAMP, bothered_times = bothered_times + 1,  ';
                         $first = true;
                         foreach (array_keys($row) as $k) {
                             if ($k == 'race') {
@@ -287,9 +324,17 @@ class Helper extends Module
                                 $disabilities = array();
                                 switch ($_POST['disability']) {
                                     case 'yes':
-                                        $disabilities = isset($_POST['specificDisability']) && is_array($_POST['specificDisability']) ? $_POST['specificDisability'] : array();
-                                        if (($other = isset($_POST['otherDisability']) ? trim($_POST['otherDisability']) : null)) {
-                                            $disabilities[] = $other;
+                                        $disabilities = array();
+                                        $isSpecificArray = isset($_POST['specificDisability'])
+                                            && is_array($_POST['specificDisability']);
+                                        if ($isSpecificArray) {
+                                            $disabilities = $_POST['specificDisability'];
+                                        }
+                                        $hasOther = isset($_POST['otherDisability'])
+                                            ? trim($_POST['otherDisability'])
+                                            : null;
+                                        if ($hasOther) {
+                                            $disabilities[] = $hasOther;
                                         }
                                         break;
                                     case 'no':
@@ -329,11 +374,19 @@ class Helper extends Module
                                 continue;
                             }
                             if ($k == 'name') {
-                                $dbh->setQuery('UPDATE `#__users` SET givenName = ' . $dbh->quote($_POST['name']['first']) . ', middleName = ' . $dbh->quote($_POST['name']['middle']) . ', surname = ' . $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid);
+                                $dbh->setQuery(
+                                    'UPDATE `#__users` SET givenName = ' .
+                                    $dbh->quote($_POST['name']['first']) . ', middleName = ' .
+                                    $dbh->quote($_POST['name']['middle']) . ', surname = ' .
+                                    $dbh->quote($_POST['name']['last']) . ' WHERE id = ' . $uid
+                                );
                                 $dbh->execute();
                             }
                             if ($k == 'mailPreferenceOption') {
-                                $dbh->setQuery('UPDATE `#__users` SET sendEmail = ' . $dbh->quote($$k) . ' WHERE id = ' . $uid);
+                                $dbh->setQuery(
+                                    'UPDATE `#__users` SET sendEmail = ' . $dbh->quote($$k) .
+                                    ' WHERE id = ' . $uid
+                                );
                                 $dbh->execute();
                             }
                             if ($k == 'countryorigin' || $k == 'countryresident') {
@@ -360,9 +413,13 @@ class Helper extends Module
                     }
                 }
             } elseif (!preg_match('%^/members/' . $uid . '/profile%', $uri) && $hasCurl) {
-                // check if there's anything we might ask about in the future. if so, show a curl tempting the user to be proactive and fill in more of their profile
+                // check if there's anything we might ask about in the future. if so, show
+                // a curl tempting the user to be proactive and fill in more of their profile
                 list($allGroups) = $groups->getAllGroups();
-                $dbh->setQuery('SELECT ' . implode(', ', $allGroups['cols']) . ' FROM #__profile_completion_awards WHERE user_id = ' . $uid);
+                $dbh->setQuery(
+                    'SELECT ' . implode(', ', $allGroups['cols']) .
+                    ' FROM #__profile_completion_awards WHERE user_id = ' . $uid
+                );
                 $row = $dbh->loadRow();
                 // never entered anything so far, or entered partial information w/r/t requested profile groups
                 if (

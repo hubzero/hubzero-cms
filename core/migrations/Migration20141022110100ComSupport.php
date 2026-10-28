@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +23,9 @@ class Migration20141022110100ComSupport extends Base
     public function up()
     {
         if ($this->db->tableExists('#__support_tickets')) {
-            $this->db->setQuery("SELECT id, report FROM `#__support_tickets` WHERE `created` < '2013-01-01 00:00:00' AND `report` LIKE '%\\\\\'%' AND `type`=0 AND `open`=1");
+            $query = "SELECT id, report FROM `#__support_tickets` WHERE `created` < '2013-01-01"
+                . "00:00:00' AND `report` LIKE '%\\\\\'%' AND `type`=0 AND `open`=1";
+            $this->db->setQuery($query);
 
             if ($records = $this->db->loadObjectList()) {
                 foreach ($records as $row) {
@@ -35,9 +38,10 @@ class Migration20141022110100ComSupport extends Base
                     }
 
                     $this->db->setQuery(
-                        "UPDATE `#__support_tickets`
-						SET `report`=" . $this->db->quote($row->report) . ", `summary`=" . $this->db->quote($row->summary) . "
-						WHERE `id`=" . $this->db->quote($row->id)
+                        "UPDATE `#__support_tickets` "
+                        . "SET `report`=" . $this->db->quote($row->report)
+                        . ", `summary`=" . $this->db->quote($row->summary)
+                        . " WHERE `id`=" . $this->db->quote($row->id)
                     );
                     $this->db->query();
                 }

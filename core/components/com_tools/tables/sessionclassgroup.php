@@ -55,6 +55,7 @@ class SessionClassGroup extends Table
      * @param   array   $filters
      * @return  string  Database query
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query = "FROM $this->_tbl AS qcg";

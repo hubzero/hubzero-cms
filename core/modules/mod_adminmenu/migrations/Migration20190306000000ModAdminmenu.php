@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing items from 'components' menu (they have hard-coded menu links elsewhere)
- **/
+ *
+ */
 class Migration20190306000000ModAdminmenu extends Base
 {
     /**
@@ -56,7 +58,9 @@ class Migration20190306000000ModAdminmenu extends Base
             }
 
             // Check for an admin menu entry...if it's not there, create it
-            $query = "DELETE FROM `#__menu` WHERE `menutype` = 'main' AND `title` IN (" . implode(',', $components) . ");";
+            $componentList = implode(',', $components);
+            $query = "DELETE FROM `#__menu` "
+                . "WHERE `menutype` = 'main' AND `title` IN (" . $componentList . ");";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -74,13 +78,16 @@ class Migration20190306000000ModAdminmenu extends Base
             $components = array();
             foreach (self::$components as $option) {
                 // Check for an admin menu entry...if it's not there, create it
-                $query = "SELECT `id` FROM `#__menu` WHERE `menutype` = 'main' AND `title` = " . $this->db->quote($option);
+                $quotedOption = $this->db->quote($option);
+                $query = "SELECT `id` FROM `#__menu` "
+                    . "WHERE `menutype` = 'main' AND `title` = " . $quotedOption;
                 $this->db->setQuery($query);
                 if ($this->db->loadResult()) {
                     continue;
                 }
 
-                $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = " . $this->db->quote($option);
+                $query = "SELECT `extension_id` FROM `#__extensions` "
+                    . "WHERE `element` = " . $quotedOption;
                 $this->db->setQuery($query);
                 $component_id = $this->db->loadResult();
 
@@ -91,8 +98,14 @@ class Migration20190306000000ModAdminmenu extends Base
                 $alias = substr($option, 4);
                 $enabled = 1;
 
-                $query = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, `published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`, `home`, `language`, `client_id`)";
-                $query .= " VALUES ('main', '{$option}', '{$alias}', '', '{$alias}', 'index.php?option={$option}', 'component', {$enabled}, 1, 1, {$component_id}, 0, 0, 0, 0, '', 0, '', 0, 0, 0, '*', 1)";
+                $columns = "`menutype`, `title`, `alias`, `note`, `path`, `link`, `type`, "
+                    . "`published`, `parent_id`, `level`, `component_id`, `ordering`, "
+                    . "`checked_out`, `browserNav`, `access`, `img`, `template_style_id`, "
+                    . "`params`, `lft`, `rgt`, `home`, `language`, `client_id`";
+                $values = "'main', '{$option}', '{$alias}', '', '{$alias}', "
+                    . "'index.php?option={$option}', 'component', {$enabled}, 1, 1, "
+                    . "{$component_id}, 0, 0, 0, 0, '', 0, '', 0, 0, 0, '*', 1";
+                $query = "INSERT INTO `#__menu` ({$columns}) VALUES ({$values})";
                 $this->db->setQuery($query);
                 $this->db->query();
 
@@ -140,7 +153,8 @@ class Migration20190306000000ModAdminmenu extends Base
             // $rightId is the current right value, which is incremented on recursion return.
             // Increment the level for the children.
             // Add this item's alias to the path (but avoid a leading /)
-            $rightId = $this->rebuildMainMenu($node->id, $rightId, $level + 1, $path . (empty($path) ? '' : '/') . $node->alias);
+            $nodePath = $path . (empty($path) ? '' : '/') . $node->alias;
+            $rightId = $this->rebuildMainMenu($node->id, $rightId, $level + 1, $nodePath);
 
             // If there is an update failure, return false to break out of the recursion.
             if ($rightId === false) {

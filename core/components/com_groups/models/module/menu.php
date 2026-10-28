@@ -14,6 +14,8 @@ use Lang;
 
 /**
  * Group module menu model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Menu extends Model
 {
@@ -38,7 +40,7 @@ class Menu extends Model
 
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }

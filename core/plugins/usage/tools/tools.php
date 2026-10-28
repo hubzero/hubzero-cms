@@ -260,11 +260,11 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
     {
         if ($time < 60) {
             $data = $time . ' seconds';
-        } else if ($time > 60 && $time < 3600) {
+        } elseif ($time > 60 && $time < 3600) {
             $data = number_format(($time / 60), 2) . ' minutes';
-        } else if ($time >= 3600 && $time < 86400) {
+        } elseif ($time >= 3600 && $time < 86400) {
             $data = number_format(($time / 3600), 2) . ' hours';
-        } else if ($time >= 86400) {
+        } elseif ($time >= 86400) {
             $data = number_format(($time / 86400), 2) . ' days';
         }
 
@@ -682,7 +682,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 
             if ($s_top == '9') {
                 $html .= $this->gettopcited_tools($database);
-            } else if ($s_top == '1') {
+            } elseif ($s_top == '1') {
                 $html .= $this->gettoprank_tools($database);
             } else {
                 // Retrieve the header based on $s_top_name.  This is really a hack:

@@ -19,7 +19,10 @@ class ComponentsSystemHelpersHtmlPhpsetting
      */
     public static function boolean($val)
     {
-        return ($val ? '<span class="state on"><span>' . Lang::txt('JON') : '<span class="state off"><span>' . Lang::txt('JOFF')) . '</span></span>';
+        if ($val) {
+            return '<span class="state on"><span>' . Lang::txt('JON') . '</span></span>';
+        }
+        return '<span class="state off"><span>' . Lang::txt('JOFF') . '</span></span>';
     }
 
     /**
@@ -30,7 +33,10 @@ class ComponentsSystemHelpersHtmlPhpsetting
      */
     public static function set($val)
     {
-        return ($val ? '<span class="state yes"><span>' . Lang::txt('JYES') : '<span class="state no"><span>' . Lang::txt('JNO')) . '</span></span>';
+        if ($val) {
+            return '<span class="state yes"><span>' . Lang::txt('JYES') . '</span></span>';
+        }
+        return '<span class="state no"><span>' . Lang::txt('JNO') . '</span></span>';
     }
 
     /**

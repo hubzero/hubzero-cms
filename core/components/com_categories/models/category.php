@@ -446,7 +446,8 @@ class Category extends Nested
             // $rightId is the current right value, which is incremented on recursion return.
             // Increment the level for the children.
             // Add this item's alias to the path (but avoid a leading /)
-            $rightId = $this->rebuild($node->id, $rightId, $level + 1, $path . (empty($path) ? '' : '/') . $node->alias);
+            $newPath = $path . (empty($path) ? '' : '/') . $node->alias;
+            $rightId = $this->rebuild($node->id, $rightId, $level + 1, $newPath);
 
             // If there is an update failure, return false to break out of the recursion.
             if ($rightId === false) {
@@ -549,9 +550,8 @@ class Category extends Nested
         if ($delta < 0) {
             $query->where('lft', '<', (int) $this->get('lft'));
             $query->order('lft', 'desc');
-        }
-        // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
+        } elseif ($delta > 0) {
+            // If the movement delta is positive move the row down.
             $query->where('lft', '>', (int) $this->get('lft'));
             $query->order('lft', 'asc');
         }
@@ -571,7 +571,7 @@ class Category extends Nested
                 $storage = $this->updatePositionWithChildren($thisStart);
                 $rowStart = $storage->last()->get('rgt') + 1;
                 $row->updatePositionWithChildren($rowStart, $storage);
-            } else if ($delta > 0) {
+            } elseif ($delta > 0) {
                 $rowStart = $this->get('lft');
                 $storage = $row->updatePositionWithChildren($rowStart);
                 $thisStart = $storage->last()->get('rgt') + 1;

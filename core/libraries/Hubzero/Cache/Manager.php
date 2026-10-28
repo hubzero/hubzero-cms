@@ -83,7 +83,11 @@ class Manager
             $config['hash']      = $this->app->hash('');
         }
         if (!isset($config['cachebase'])) {
-            $config['cachebase'] = PATH_APP . DS . 'cache' . DS . (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
+            $config['cachebase'] = PATH_APP .
+                DS .
+                'cache' .
+                DS .
+                (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
         }
 
         if (isset($this->customCreators[$name])) {

@@ -80,7 +80,8 @@ class Announcement extends Relational
             if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00') {
                 return false;
             }
-            return $data['publish_down'] >= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it begins');
+            return $data['publish_down'] >= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it 
+                begins');
         });
     }
 

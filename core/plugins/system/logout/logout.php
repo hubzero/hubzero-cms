@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die;
-
 /**
  * Plugin class for logout redirect handling.
  */

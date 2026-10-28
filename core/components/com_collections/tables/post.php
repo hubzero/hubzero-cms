@@ -72,7 +72,9 @@ class Post extends Table
             $this->created_by = User::get('id');
 
             if (array_key_exists('ordering', $this->getFields()) && !$this->ordering) {
-                $this->_db->setQuery("SELECT MAX(ordering)+1 FROM $this->_tbl WHERE collection_id=" . $this->_db->quote($this->collection_id));
+                $query = "SELECT MAX(ordering)+1 FROM $this->_tbl "
+                    . "WHERE collection_id=" . $this->_db->quote($this->collection_id);
+                $this->_db->setQuery($query);
 
                 $this->ordering = $this->_db->loadResult();
                 $this->ordering = ($this->ordering ?: 1);
@@ -134,20 +136,23 @@ class Post extends Table
 
             case 'list':
             default:
-                $query = "SELECT p.*, c.alias, c.title, c.object_type, c.object_id, u.name,
-						i.title AS item_title,
-						i.description AS item_description,
-						i.url AS item_url,
-						i.created AS item_created,
-						i.created_by AS item_created_by,
-						i.positive AS item_positive,
-						i.state AS item_state,
-						i.access AS item_access,
-						i.negative AS item_negative,
-						i.type AS item_type,
-						i.object_id As item_object_id,
-						(SELECT COUNT(*) FROM `#__collections_posts` AS s WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts,
-						(SELECT COUNT(*) FROM `#__item_comments` AS ct WHERE ct.item_id=p.item_id AND ct.item_type='collection' AND ct.state IN (1, 3)) AS item_comments";
+                $query = "SELECT p.*, c.alias, c.title, c.object_type, c.object_id, u.name, "
+                    . "i.title AS item_title, "
+                    . "i.description AS item_description, "
+                    . "i.url AS item_url, "
+                    . "i.created AS item_created, "
+                    . "i.created_by AS item_created_by, "
+                    . "i.positive AS item_positive, "
+                    . "i.state AS item_state, "
+                    . "i.access AS item_access, "
+                    . "i.negative AS item_negative, "
+                    . "i.type AS item_type, "
+                    . "i.object_id As item_object_id, "
+                    . "(SELECT COUNT(*) FROM `#__collections_posts` AS s "
+                    . "WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts, "
+                    . "(SELECT COUNT(*) FROM `#__item_comments` AS ct "
+                    . "WHERE ct.item_id=p.item_id AND ct.item_type='collection' "
+                    . "AND ct.state IN (1, 3)) AS item_comments";
                 if (isset($filters['user_id']) && $filters['user_id']) {
                     $query .= ", v.id AS item_voted ";
                 }
@@ -179,6 +184,7 @@ class Post extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS p";
@@ -187,7 +193,8 @@ class Post extends Table
         $query .= " LEFT JOIN #__users AS u ON p.created_by=u.id";
 
         if (isset($filters['user_id']) && $filters['user_id']) {
-            $query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=p.item_id AND v.user_id=" . $this->_db->quote($filters['user_id']);
+            $query .= " LEFT JOIN #__collections_votes AS v ON v.item_id=p.item_id "
+                . "AND v.user_id=" . $this->_db->quote($filters['user_id']);
         }
 
         $where = array();
@@ -217,7 +224,7 @@ class Post extends Table
                 $filters['state'] = array_map('intval', $filters['state']);
                 $where[] = "i.state IN (" . implode(',', $filters['state']) . ")";
                 $where[] = "c.state IN (" . implode(',', $filters['state']) . ")";
-            } else if ($filters['state'] >= 0) {
+            } elseif ($filters['state'] >= 0) {
                 $where[] = "i.state=" . $this->_db->quote($filters['state']);
                 $where[] = "c.state=" . $this->_db->quote($filters['state']);
             }
@@ -227,7 +234,7 @@ class Post extends Table
                 $filters['access'] = array_map('intval', $filters['access']);
                 $where[] = "i.access IN (" . implode(',', $filters['access']) . ")";
                 $where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
-            } else if ($filters['access'] >= 0) {
+            } elseif ($filters['access'] >= 0) {
                 $where[] = "i.access=" . $this->_db->quote($filters['access']);
                 $where[] = "c.access=" . $this->_db->quote($filters['access']);
             }
@@ -236,9 +243,10 @@ class Post extends Table
             $where[] = "p.original=" . $this->_db->quote($filters['original']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(i.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR
-						LOWER(i.description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR
-						LOWER(p.description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $searchTerm = '%' . strtolower($filters['search']) . '%';
+            $where[] = "(LOWER(i.title) LIKE " . $this->_db->quote($searchTerm) . " "
+                . "OR LOWER(i.description) LIKE " . $this->_db->quote($searchTerm) . " "
+                . "OR LOWER(p.description) LIKE " . $this->_db->quote($searchTerm) . ")";
         }
 
         if (count($where) > 0) {

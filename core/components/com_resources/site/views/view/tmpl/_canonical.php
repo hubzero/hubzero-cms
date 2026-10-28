@@ -17,7 +17,7 @@ if ($canonical = $this->model->attribs->get('canonical', '')) {
         $model = \Components\Resources\Models\Entry::getInstance($matches[2]);
         $title = $model->title;
         $url   = Route::url($model->link());
-    } else if (is_numeric($canonical)) {
+    } elseif (is_numeric($canonical)) {
         $model = \Components\Resources\Models\Entry::getInstance(intval($canonical));
         $title = $model->title;
         $url   = Route::url($model->link());
@@ -38,7 +38,8 @@ if ($canonical = $this->model->attribs->get('canonical', '')) {
     <div class="new-version-message">
         <div class="inner">
             <h3><?php echo Lang::txt('COM_RESOURCES_NEWER_VER_AVAIL'); ?></h3>
-            <p><?php echo Lang::txt('COM_RESOURCES_NEWER_VER_AVAIL_EXTENDED'); ?> <a href="<?php echo $url; ?>"><?php echo $title; ?></a></p>
+            <?php $val = Lang::txt('COM_RESOURCES_NEWER_VER_AVAIL_EXTENDED'); ?>
+            <p><?php echo $val; ?> <a href="<?php echo $url; ?>"><?php echo $title; ?></a></p>
         </div>
     </div>
     <?php

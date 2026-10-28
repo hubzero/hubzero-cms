@@ -23,8 +23,10 @@ class PageName extends Macro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) or title of the current page.";
-        $txt['html'] = "<p>Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) or title of the current page.</p>";
+        $txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias " .
+            "(default if no args given) or title of the current page.";
+        $txt['html'] = "<p>Accepts either 'alias' or 'title' as arg. Returns either the alias " .
+            "(default if no args given) or title of the current page.</p>";
         return $txt['html'];
     }
 
@@ -39,7 +41,9 @@ class PageName extends Macro
 
         switch (trim($et)) {
             case 'title':
-                $sql = "SELECT title FROM `#__wiki_page` WHERE pagename=" . $this->_db->quote($this->pagename) . "' AND `group_cn`=" . $this->_db->quote($this->domain) . " AND scope=" . $this->_db->quote($this->scope);
+                $sql = "SELECT title FROM `#__wiki_page` WHERE pagename=" .
+                    $this->_db->quote($this->pagename) . "' AND `group_cn`=" .
+                    $this->_db->quote($this->domain) . " AND scope=" . $this->_db->quote($this->scope);
                 // Perform query
                 $this->_db->setQuery($sql);
                 return stripslashes($this->_db->loadResult());

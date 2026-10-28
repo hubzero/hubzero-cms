@@ -40,7 +40,8 @@ class Tools extends SiteController
             $task != 'image'
             && $task != 'css'
             && $task != 'assets'
-            && (!$this->config->get('mw_on') || ($this->config->get('mw_on') > 1 && !$this->config->get('access-admin-component')))
+            && (!$this->config->get('mw_on')
+            || ($this->config->get('mw_on') > 1 && !$this->config->get('access-admin-component')))
         ) {
             // Redirect to home page
             App::redirect(
@@ -58,6 +59,7 @@ class Tools extends SiteController
      * @param   string  $title
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle($title = null)
     {
         $this->_title = ($title) ? $title : Lang::txt(strtoupper($this->_option));
@@ -72,6 +74,7 @@ class Tools extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -264,6 +267,7 @@ class Tools extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

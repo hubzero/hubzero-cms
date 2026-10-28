@@ -21,7 +21,7 @@ class Helper extends Module
      *
      * @var  integer
      */
-    static $instances = 0;
+    protected static $instances = 0;
 
     /**
      * Constructor
@@ -42,7 +42,7 @@ class Helper extends Module
      *
      * @return     array
      */
-    private function _getList()
+    private function getList()
     {
         $db = \App::get('db');
 
@@ -57,14 +57,18 @@ class Helper extends Module
         $nullDate = $db->getNullDate();
 
         // query to determine article count
-        $query = 'SELECT a.* FROM `#__content` AS a' .
-            ' INNER JOIN `#__categories` AS cc ON cc.id = a.catid' .
-            ' WHERE a.state = 1 ' .
-            ' AND (a.publish_up IS NULL OR a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
-            ' AND (a.publish_down IS NULL OR a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
-            ' AND cc.id = ' . (int) $catid .
-            ' AND cc.published = 1' .
-            ' ORDER BY ' . $orderby . ' ' . $limitby;
+        $quotedNullDate = $db->Quote($nullDate);
+        $quotedNow = $db->Quote($now);
+        $query = 'SELECT a.* FROM `#__content` AS a'
+            . ' INNER JOIN `#__categories` AS cc ON cc.id = a.catid'
+            . ' WHERE a.state = 1 '
+            . ' AND (a.publish_up IS NULL OR a.publish_up = ' . $quotedNullDate
+            . ' OR a.publish_up <= ' . $quotedNow . ' ) '
+            . ' AND (a.publish_down IS NULL OR a.publish_down = ' . $quotedNullDate
+            . ' OR a.publish_down >= ' . $quotedNow . ' )'
+            . ' AND cc.id = ' . (int) $catid
+            . ' AND cc.published = 1'
+            . ' ORDER BY ' . $orderby . ' ' . $limitby;
 
         $db->setQuery($query);
         return $db->loadObjectList();
@@ -89,10 +93,12 @@ class Helper extends Module
 
         $id = rand();
 
-        $this->content   = $this->_getList();
+        $this->content   = $this->getList();
         $this->container = $this->params->get('container', 'pane-sliders');
 
-        $this->js("jQuery(document).ready(function($){ $('#" . $this->container . " .panes-content').jSlidingPanes(); });");
+        $jsCode = "jQuery(document).ready(function($){"
+            . " $('#" . $this->container . " .panes-content').jSlidingPanes(); });";
+        $this->js($jsCode);
 
         require $this->getLayoutPath();
     }

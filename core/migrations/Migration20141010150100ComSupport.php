@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -56,13 +57,14 @@ class Migration20141010150100ComSupport extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "INSERT INTO `#__support_query_folders` (`id`, `user_id`, `title`, `alias`, `created`, `created_by`, `modified`, `modified_by`, `ordering`, `iscore`)
-					VALUES
-						(1,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,1),
-						(2,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,1),
-						(3,0,'Custom','custom','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,3,1),
-						(4,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,2),
-						(5,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,2);";
+            $query = "INSERT INTO `#__support_query_folders` "
+                . "(`id`, `user_id`, `title`, `alias`, `created`, `created_by`, `modified`, "
+                . "`modified_by`, `ordering`, `iscore`) VALUES "
+                . "(1,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,1), "
+                . "(2,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,1), "
+                . "(3,0,'Custom','custom','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,3,1), "
+                . "(4,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,2), "
+                . "(5,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,2);";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -90,9 +92,11 @@ class Migration20141010150100ComSupport extends Base
             // Get all the "mine" queries
             $this->db->setQuery("SELECT * FROM `#__support_queries` WHERE `folder_id`=2 ORDER BY `id`");
             if ($queries = $this->db->loadObjectList()) {
-                $path = PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
+                $path = PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables'
+                    . DS . 'query.php';
                 if (!file_exists($path)) {
-                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
+                    $path = PATH_ROOT . DS . 'administrator' . DS . 'components'
+                        . DS . 'com_support' . DS . 'tables' . DS . 'query.php';
                 }
                 include_once $path;
 

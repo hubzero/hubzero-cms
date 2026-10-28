@@ -60,7 +60,7 @@ class Results extends SiteController
         $limit = Request::getInt('limit', Config::get('list_limit'));
 
         // Get categories
-        $areas = $this->_getAreas();
+        $areas = $this->getAreas();
 
         // Was there a category passed in the querystring?
         $area = trim(Request::getWord('category', ''));
@@ -181,7 +181,7 @@ class Results extends SiteController
         }
 
         // Set the page title
-        $title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->_text($period);
+        $title = Lang::txt(strtoupper($this->_option)) . ': ' . $this->text($period);
 
         Document::setTitle($title);
 
@@ -193,7 +193,7 @@ class Results extends SiteController
             );
         }
         Pathway::append(
-            $this->_text($period),
+            $this->text($period),
             'index.php?option=' . $this->_option . '&period=' . $period
         );
 
@@ -212,7 +212,8 @@ class Results extends SiteController
         }
         for ($y = $thisyear; $y >= 2002; $y--) {
             if (time() >= strtotime('01/01/' . $y)) {
-                $periodlist[] = Html::select('option', 'c_' . $y, Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
+                $optionLabel = Lang::txt('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
+                $periodlist[] = Html::select('option', 'c_' . $y, $optionLabel);
             }
         }
 
@@ -253,7 +254,7 @@ class Results extends SiteController
         $limit = Request::getInt('limit', Config::get('list_limit'));
 
         // Get categories
-        $areas = $this->_getAreas();
+        $areas = $this->getAreas();
 
         // Was there a category passed in the querystring?
         $area = trim(Request::getWord('category', ''));
@@ -386,7 +387,7 @@ class Results extends SiteController
      * @param   string  $period  Time period
      * @return  string
      */
-    private function _text($period)
+    private function text($period)
     {
         switch ($period) {
             case 'week':
@@ -426,7 +427,7 @@ class Results extends SiteController
      *
      * @return  array
      */
-    private function _getAreas()
+    private function getAreas()
     {
         // Do we already have an array of areas?
         if (!isset($this->searchareas) || empty($this->searchareas)) {

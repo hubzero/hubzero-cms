@@ -44,7 +44,7 @@ class Helper extends Module
      * @param   object  $params  Registry
      * @return  array
      */
-    static function &getList(&$params)
+    public static function &getList(&$params)
     {
         $db    = \App::get('db');
         $rows  = array();

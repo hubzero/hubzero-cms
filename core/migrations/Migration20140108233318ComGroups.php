@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for group pages updates
- **/
+ *
+ */
 class Migration20140108233318ComGroups extends Base
 {
     /**
@@ -110,7 +112,10 @@ class Migration20140108233318ComGroups extends Base
 
         // remove content field from pages table
         if ($this->db->tableHasField('#__xgroups_pages', 'content')) {
-            $query  = "INSERT INTO `#__xgroups_pages_versions` (pageid, version, content, created, created_by, approved, approved_on, approved_by) SELECT id as pageid, 1, content, NOW(), 1000, 1, NOW(), 1000 FROM `#__xgroups_pages`;";
+            $query  = "INSERT INTO `#__xgroups_pages_versions` "
+                . "(pageid, version, content, created, created_by, approved, approved_on, approved_by) "
+                . "SELECT id as pageid, 1, content, NOW(), 1000, 1, NOW(), 1000 "
+                . "FROM `#__xgroups_pages`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -127,14 +132,21 @@ class Migration20140108233318ComGroups extends Base
                 // if group has overview content
                 if (trim($group->overview_content) != '') {
                     // create page to store page info
-                    $query = "INSERT INTO `#__xgroups_pages` (`gidNumber`, `alias`,`title`, `ordering`,`state`, `privacy`, `home`)
-					          VALUES(" . $this->db->quote($group->gidNumber) . "," . $this->db->quote('home_page') . "," . $this->db->quote('Home Page') . ",0,1,'default'," . $this->db->quote($group->overview_type) . ");";
+                    $query = "INSERT INTO `#__xgroups_pages` "
+                        . "(`gidNumber`, `alias`,`title`, `ordering`,`state`, `privacy`, `home`) VALUES("
+                        . $this->db->quote($group->gidNumber) . "," . $this->db->quote('home_page') . ","
+                        . $this->db->quote('Home Page') . ",0,1,'default',"
+                        . $this->db->quote($group->overview_type) . ");";
                     $this->db->setQuery($query);
                     $this->db->query();
 
                     // create page version to store page content
-                    $query2 = "INSERT INTO `#__xgroups_pages_versions` (`pageid`,`version`,`content`,`created`,`created_by`,`approved`,`approved_on`,`approved_by`)
-					           VALUES(" . $this->db->insertid() . ",1," . $this->db->quote($group->overview_content) . ",NOW(),1000,1, NOW(), 1000);";
+                    $query2 = "INSERT INTO `#__xgroups_pages_versions` "
+                        . "(`pageid`,`version`,`content`,`created`,`created_by`,"
+                        . "`approved`,`approved_on`,`approved_by`) "
+                        . "VALUES("
+                        . $this->db->insertid() . ",1," . $this->db->quote($group->overview_content)
+                        . ",NOW(),1000,1, NOW(), 1000);";
                     $this->db->setQuery($query2);
                     $this->db->query();
                 }
@@ -174,14 +186,20 @@ class Migration20140108233318ComGroups extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "UPDATE `#__xgroups_pages` AS p SET content=(SELECT content FROM `#__xgroups_pages_versions` as pv WHERE p.id=pv.pageid ORDER BY version DESC LIMIT 1);";
+            $query = "UPDATE `#__xgroups_pages` AS p SET content="
+                . "(SELECT content FROM `#__xgroups_pages_versions` as pv "
+                . "WHERE p.id=pv.pageid ORDER BY version DESC LIMIT 1);";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
         //move home content back to xgroups table and delete those records
         if ($this->db->tableHasField('#__xgroups_pages', 'home')) {
-            $query = "UPDATE `#__xgroups` as g SET overview_content=(SELECT content FROM `#__xgroups_pages` as p WHERE g.gidNumber=p.gidNumber AND p.alias='home_page'), overview_type=(SELECT home FROM `#__xgroups_pages` as p WHERE g.gidNumber=p.gidNumber AND p.alias='home_page');";
+            $query = "UPDATE `#__xgroups` as g SET "
+                . "overview_content=(SELECT content FROM `#__xgroups_pages` as p "
+                . "WHERE g.gidNumber=p.gidNumber AND p.alias='home_page'), "
+                . "overview_type=(SELECT home FROM `#__xgroups_pages` as p "
+                . "WHERE g.gidNumber=p.gidNumber AND p.alias='home_page');";
             $this->db->setQuery($query);
             $this->db->query();
 

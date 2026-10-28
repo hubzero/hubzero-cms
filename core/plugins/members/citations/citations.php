@@ -663,9 +663,8 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
                 );
                 return;
             }
-        }
-        // for bulk citations operation
-        elseif ((bool) $bulk) {
+        } elseif ((bool) $bulk) {
+            // for bulk citations operation
             /**
              * @TODO move to API, possible use of whereIn()?
              **/

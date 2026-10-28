@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,39 +45,62 @@ class Migration20130924000002Core extends Base
             $this->db->query();
 
             // Insert some default values
-            $query = "INSERT INTO `#__assets` (`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`)
-			VALUES
-				(1,0,0,0,0, 'root.1', 'Root Asset', '{\"core.login.site\":{\"1\":1,\"6\":1,\"2\":1},\"core.login.admin\":{\"6\":1},\"core.admin\":{\"8\":1},\"core.manage\":{\"7\":1},\"core.create\":{\"6\":1,\"3\":1},\"core.delete\":{\"6\":1},\"core.edit\":{\"6\":1,\"4\":1},\"core.edit.state\":{\"6\":1,\"5\":1},\"core.edit.own\":{\"6\":1,\"3\":1}}'),
-				(2,1,0,0,1,'com_admin','com_admin','{}'),
-				(3,1,0,0,1,'com_banners','com_banners','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(4,1,0,0,1,'com_cache','com_cache','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
-				(5,1,0,0,1,'com_checkin','com_checkin','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
-				(6,1,0,0,1,'com_config','com_config','{}'),
-				(7,1,0,0,1,'com_contact','com_contact','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[],\"core.edit.own\":[]}'),
-				(8,1,0,0,1,'com_content','com_content','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":[],\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1},\"core.edit.own\":[]}'),
-				(9,1,0,0,1,'com_cpanel','com_cpanel','{}'),
-				(10,1,0,0,1,'com_installer','com_installer','{\"core.admin\":{\"7\":0},\"core.manage\":{\"7\":0},\"core.delete\":{\"7\":0},\"core.edit.state\":{\"7\":0}}'),
-				(11,1,0,0,1,'com_languages','com_languages','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(12,1,0,0,1,'com_login','com_login','{}'),
-				(13,1,0,0,1,'com_mailto','com_mailto','{}'),
-				(14,1,0,0,1,'com_massmail','com_massmail','{}'),
-				(15,1,0,0,1,'com_media','com_media','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":{\"5\":1}}'),
-				(16,1,0,0,1,'com_menus','com_menus','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(17,1,0,0,1,'com_messages','com_messages','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'),
-				(18,1,0,0,1,'com_modules','com_modules','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(19,1,0,0,1,'com_newsfeeds','com_newsfeeds','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[],\"core.edit.own\":[]}'),
-				(20,1,0,0,1,'com_plugins','com_plugins','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(21,1,0,0,1,'com_redirect','com_redirect','{\"core.admin\":{\"7\":1},\"core.manage\":[]}'),
-				(22,1,0,0,1,'com_search','com_search','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'),
-				(23,1,0,0,1,'com_templates','com_templates','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}'),
-				(24,1,0,0,1,'com_users','com_users','{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.own\":{\"6\":1},\"core.edit.state\":[]}'),
-				(25,1,0,0,1,'com_weblinks','com_weblinks','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":{\"3\":1},\"core.delete\":[],\"core.edit\":{\"4\":1},\"core.edit.state\":{\"5\":1},\"core.edit.own\":[]}'),
-				(26,1,0,0,1,'com_wrapper','com_wrapper','{}');";
+            $rootRules = '{"core.login.site":{"1":1,"6":1,"2":1},"core.login.admin":{"6":1},'
+                . '"core.admin":{"8":1},"core.manage":{"7":1},"core.create":{"6":1,"3":1},'
+                . '"core.delete":{"6":1},"core.edit":{"6":1,"4":1},"core.edit.state":{"6":1,"5":1},'
+                . '"core.edit.own":{"6":1,"3":1}}';
+            $r3 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":[],'
+                . '"core.delete":[],"core.edit":[],"core.edit.state":[]}';
+            $r7 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":[],'
+                . '"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
+            $r8 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},'
+                . '"core.delete":[],"core.edit":{"4":1},"core.edit.state":{"5":1},"core.edit.own":[]}';
+            $r10 = '{"core.admin":{"7":0},"core.manage":{"7":0},"core.delete":{"7":0},"core.edit.state":{"7":0}}';
+            $r11 = '{"core.admin":{"7":1},"core.manage":[],"core.create":[],'
+                . '"core.delete":[],"core.edit":[],"core.edit.state":[]}';
+            $r19 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":[],'
+                . '"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
+            $r24 = '{"core.admin":{"7":1},"core.manage":[],"core.create":[],'
+                . '"core.delete":[],"core.edit":[],"core.edit.own":{"6":1},"core.edit.state":[]}';
+            $r25 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},'
+                . '"core.delete":[],"core.edit":{"4":1},"core.edit.state":{"5":1},"core.edit.own":[]}';
+            $query = "INSERT INTO `#__assets` "
+                . "(`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES "
+                . "(1,0,0,0,0, 'root.1', 'Root Asset', '$rootRules'), "
+                . "(2,1,0,0,1,'com_admin','com_admin','{}'), "
+                . "(3,1,0,0,1,'com_banners','com_banners','$r3'), "
+                . "(4,1,0,0,1,'com_cache','com_cache','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'), "
+                . "(5,1,0,0,1,'com_checkin','com_checkin','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'), "
+                . "(6,1,0,0,1,'com_config','com_config','{}'), "
+                . "(7,1,0,0,1,'com_contact','com_contact','$r7'), "
+                . "(8,1,0,0,1,'com_content','com_content','$r8'), "
+                . "(9,1,0,0,1,'com_cpanel','com_cpanel','{}'), "
+                . "(10,1,0,0,1,'com_installer','com_installer','$r10'), "
+                . "(11,1,0,0,1,'com_languages','com_languages','$r11'), "
+                . "(12,1,0,0,1,'com_login','com_login','{}'), "
+                . "(13,1,0,0,1,'com_mailto','com_mailto','{}'), "
+                . "(14,1,0,0,1,'com_massmail','com_massmail','{}'), "
+                . "(15,1,0,0,1,'com_media','com_media',"
+                . "'{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},"
+                . "\"core.create\":{\"3\":1},\"core.delete\":{\"5\":1}}'), "
+                . "(16,1,0,0,1,'com_menus','com_menus','$r11'), "
+                . "(17,1,0,0,1,'com_messages','com_messages','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'), "
+                . "(18,1,0,0,1,'com_modules','com_modules','$r11'), "
+                . "(19,1,0,0,1,'com_newsfeeds','com_newsfeeds','$r19'), "
+                . "(20,1,0,0,1,'com_plugins','com_plugins',"
+                . "'{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.edit\":[],\"core.edit.state\":[]}'), "
+                . "(21,1,0,0,1,'com_redirect','com_redirect','{\"core.admin\":{\"7\":1},\"core.manage\":[]}'), "
+                . "(22,1,0,0,1,'com_search','com_search','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'), "
+                . "(23,1,0,0,1,'com_templates','com_templates','$r11'), "
+                . "(24,1,0,0,1,'com_users','com_users','$r24'), "
+                . "(25,1,0,0,1,'com_weblinks','com_weblinks','$r25'), "
+                . "(26,1,0,0,1,'com_wrapper','com_wrapper','{}');";
 
             $this->db->setQuery($query);
             $this->db->query();
 
-            // Insert all components as assets (parent is 0 because we don't need more than 1 entry per component - i.e. no sub items used for menus in 1.5)
+            // Insert all components as assets (parent is 0 because we don't need more than
+            // 1 entry per component - i.e. no sub items used for menus in 1.5)
             $this->db->setQuery('SELECT * FROM `#__components` WHERE parent = 0');
             $components = $this->db->loadObjectList();
 
@@ -104,7 +128,8 @@ class Migration20130924000002Core extends Base
                     }
 
                     // Craft query
-                    $query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES ";
+                    $query = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`,"
+                        . "`rules`) VALUES";
                     $query .= "(";
                     $query .= '1,';                                  // parent_id 1 is the root asset
                     $query .= $this->db->Quote('') . ',';                  // lft
@@ -127,14 +152,16 @@ class Migration20130924000002Core extends Base
             if (count($categories) > 0) {
                 foreach ($categories as $cat) {
                     // Make sure it isn't already in there
-                    $query = "SELECT id FROM `#__assets` WHERE `name` = " . $this->db->Quote($cat->extension . '.category.' . $cat->id);
+                    $catName = $cat->extension . '.category.' . $cat->id;
+                    $query = "SELECT id FROM `#__assets` WHERE `name` = " . $this->db->Quote($catName);
                     $this->db->setQuery($query);
                     if ($this->db->loadResult()) {
                         continue;
                     }
 
                     // Query for parent id
-                    $query = "SELECT `id` FROM `#__assets` WHERE `name` = " . $this->db->Quote($cat->extension);
+                    $query = "SELECT `id` FROM `#__assets` WHERE `name` = "
+                        . $this->db->Quote($cat->extension);
                     $this->db->setQuery($query);
                     $result = $this->db->loadResult();
                     if (!is_numeric($result)) {
@@ -142,14 +169,16 @@ class Migration20130924000002Core extends Base
                         continue;
                     }
 
-                    $query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
-                    $query .= $this->db->Quote($result) . ',';                                                             // parent_id (from list entered above)
-                    $query .= $this->db->Quote('') . ',';                                                                  // lft
-                    $query .= $this->db->Quote('') . ',';                                                                  // rgt
-                    $query .= $cat->level + 1 . ',';                                                                   // level
-                    $query .= $this->db->Quote($cat->extension . '.category.' . $cat->id) . ',';                               // name
-                    $query .= $this->db->Quote($cat->extension) . ',';                                                     // title
-                    $query .= $this->db->Quote('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}'); // rules
+                    $catRules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
+                    $query = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`,"
+                        . "`rules`) VALUES (";
+                    $query .= $this->db->Quote($result) . ',';              // parent_id (from list entered above)
+                    $query .= $this->db->Quote('') . ',';                   // lft
+                    $query .= $this->db->Quote('') . ',';                   // rgt
+                    $query .= $cat->level + 1 . ',';                        // level
+                    $query .= $this->db->Quote($catName) . ',';             // name
+                    $query .= $this->db->Quote($cat->extension) . ',';      // title
+                    $query .= $this->db->Quote($catRules);                  // rules
                     $query .= ");";
                     $this->db->setQuery($query);
                     $this->db->query();
@@ -162,7 +191,8 @@ class Migration20130924000002Core extends Base
                 }
             }
 
-            // Now, go back and set parent_id for categories that are level 2 (those were original 1.5 categories, i.e. below sections)
+            // Now, go back and set parent_id for categories that are level 2
+            // (those were original 1.5 categories, i.e. below sections)
             $query = "SELECT * FROM `#__categories` WHERE level = 2";
             $this->db->setQuery($query);
             $results = $this->db->loadObjectList();
@@ -170,12 +200,15 @@ class Migration20130924000002Core extends Base
             if (count($results) > 0) {
                 foreach ($results as $r) {
                     // Get the category id from the assets table
-                    $query = "SELECT `id` FROM `#__assets` WHERE name = " . $this->db->Quote('com_content.category.' . $r->id);
+                    $assetName = 'com_content.category.' . $r->id;
+                    $query = "SELECT `id` FROM `#__assets` WHERE name = " . $this->db->Quote($assetName);
                     $this->db->setQuery($query);
                     $id = $this->db->loadResult();
 
                     // Get the category parent id from the assets table
-                    $query = "SELECT `id` FROM `#__assets` WHERE name = " . $this->db->Quote('com_content.category.' . $r->parent_id);
+                    $parentAssetName = 'com_content.category.' . $r->parent_id;
+                    $query = "SELECT `id` FROM `#__assets` WHERE name = "
+                        . $this->db->Quote($parentAssetName);
                     $this->db->setQuery($query);
                     $parent_id = $this->db->loadResult();
 
@@ -188,7 +221,8 @@ class Migration20130924000002Core extends Base
 
             // We're going to go ahead and add asset_id here, as we need to insert into below
             if (!$this->db->tableHasField('#__content', 'asset_id') && $this->db->tableHasField('#__content', 'id')) {
-                $query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #_assets table.' AFTER `id`;";
+                $query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0"
+                    . "COMMENT 'FK to the #_assets table.' AFTER `id`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -200,7 +234,9 @@ class Migration20130924000002Core extends Base
             if (count($articles) > 0) {
                 foreach ($articles as $art) {
                     // Query for parent ID
-                    $query = "SELECT `id`, `level` FROM `#__assets` WHERE `name` = " . $this->db->Quote('com_content.category.' . $art->catid);
+                    $artCatName = 'com_content.category.' . $art->catid;
+                    $query = "SELECT `id`, `level` FROM `#__assets` WHERE `name` = "
+                        . $this->db->Quote($artCatName);
                     $this->db->setQuery($query);
                     $obj    = $this->db->loadObject();
                     $level  = (is_object($obj) && is_numeric($obj->level)) ? $obj->level + 1 : 4;
@@ -208,14 +244,16 @@ class Migration20130924000002Core extends Base
                         $result = $obj->id;
                     } else {
                         // We didn't find a parent id, so just use the 'uncategorised' category
-                        $query = "SELECT `asset_id` FROM `#__categories` WHERE `extension` = 'com_content' AND `alias` = 'uncategorised';";
+                        $query = "SELECT `asset_id` FROM `#__categories` WHERE `extension` = 'com_content' AND "
+                            . "`alias` = 'uncategorised';";
                         $this->db->setQuery($query);
                         if (!$result = $this->db->loadResult()) {
                             continue;
                         }
                     }
 
-                    $query  = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES (";
+                    $query = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`,"
+                        . "`rules`) VALUES (";
                     $query .= $this->db->Quote($result) . ',';                                            // parent_id
                     $query .= $this->db->Quote('') . ',';                                                 // lft
                     $query .= $this->db->Quote('') . ',';                                                 // rgt
@@ -256,14 +294,19 @@ class Migration20130924000002Core extends Base
                     "7" => 1
                     )
                 );
-            $this->db->setQuery("UPDATE `#__assets` SET rules='" . json_encode($rules) . "' WHERE NAME= 'com_mailto' OR NAME='com_massmail' OR NAME='com_config';");
+            $query = "UPDATE `#__assets` SET rules='" . json_encode($rules) . "' WHERE NAME="
+                . "'com_mailto' OR NAME='com_massmail' OR NAME='com_config';";
+            $this->db->setQuery($query);
             $this->db->query();
 
             // If we have the nested set class available, use it to rebuild lft/rgt
             if (file_exists(PATH_CORE . '/components/com_categories/models/category.php')) {
                 include_once PATH_CORE . '/components/com_categories/models/category.php';
 
-                if (class_exists('Components\Categories\Models\Category') && method_exists('Components\Categories\Models\Category', 'rebuild')) {
+                if (
+                    class_exists('Components\Categories\Models\Category')
+                    && method_exists('Components\Categories\Models\Category', 'rebuild')
+                ) {
                     $table = Components\Categories\Models\Category::blank();
                     $table->rebuild(1);
                 }

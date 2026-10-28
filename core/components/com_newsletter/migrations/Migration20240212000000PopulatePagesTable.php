@@ -2,12 +2,9 @@
 
 use Hubzero\Content\Migration\Base;
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 class Migration20240212000000PopulatePagesTable extends Base
 {
-    static $tableName = '#__reply_pages';
+    public static $tableName = '#__reply_pages';
 
     public function up()
     {

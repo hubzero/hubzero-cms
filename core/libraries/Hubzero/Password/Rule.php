@@ -21,7 +21,7 @@ class Rule extends Relational
     /**
      * The table namespace
      *
-     * @var  string
+     * @public string
      */
     protected $namespace = 'password';
 
@@ -32,28 +32,28 @@ class Rule extends Relational
      * overwritten by a given subclass. Definition of this property likely
      * indicates some derivation from standard naming conventions.
      *
-     * @var  string
+     * @public string
      */
     protected $table = '#__password_rule';
 
     /**
      * Default order by for model
      *
-     * @var  string
+     * @public string
      */
     public $orderBy = 'ordering';
 
     /**
      * Default order direction for select queries
      *
-     * @var  string
+     * @public string
      */
     public $orderDir = 'asc';
 
     /**
      * Fields and their validation criteria
      *
-     * @var  array
+     * @public array
      */
     protected $rules = array(
         'description' => 'notempty',
@@ -63,7 +63,7 @@ class Rule extends Relational
     /**
      * Automatic fields to populate every time a row is created
      *
-     * @var  array
+     * @public array
      */
     public $initiate = array(
         'ordering'
@@ -111,9 +111,8 @@ class Rule extends Relational
         if ($delta < 0) {
             $query->where('ordering', '<', (int) $this->get('ordering'));
             $query->order('ordering', 'desc');
-        }
+        } elseif ($delta > 0) {
         // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
             $query->where('ordering', '>', (int) $this->get('ordering'));
             $query->order('ordering', 'asc');
         }
@@ -161,7 +160,8 @@ class Rule extends Relational
     /**
      * Insert default content
      *
-     * @param   integer  $restore  Whether or not to force restoration of default values (even if other values are present)
+     * @param   integer  $restore  Whether or not to force restoration of default values (even if
+     *                             other values are present)
      * @return  void
      */
     public static function defaultContent($restore = 0)
@@ -249,9 +249,11 @@ class Rule extends Relational
             ),
             array(
                 'class'       => '',
-                'description' => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
+                'description' => 'Must be different than the previous password (re-use of the same password will not be 
+                    allowed for one (1) year)',
                 'enabled'     => '0',
-                'failuremsg'  => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
+                'failuremsg'  => 'Must be different than the previous password (re-use of the same password will not be 
+                    allowed for one (1) year)',
                 'grp'         => 'hub',
                 'ordering'    => '9',
                 'rule'        => 'notReused',
@@ -268,7 +270,6 @@ class Rule extends Relational
                 'value'       => '120'
             )
         );
-
 
         if ($restore) {
             // Delete current password rules for manual restore
@@ -364,19 +365,19 @@ class Rule extends Relational
                 if ($stats['uniqueClasses'] < $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'maxCharacterClasses') {
+            } elseif ($rule['rule'] == 'maxCharacterClasses') {
                 if ($stats['uniqueClasses'] > $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'minPasswordLength') {
+            } elseif ($rule['rule'] == 'minPasswordLength') {
                 if ($stats['count'][0] < $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'maxPasswordLength') {
+            } elseif ($rule['rule'] == 'maxPasswordLength') {
                 if ($stats['count'][0] > $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'maxClassCharacters') {
+            } elseif ($rule['rule'] == 'maxClassCharacters') {
                 if (empty($rule['class'])) {
                     continue;
                 }
@@ -390,7 +391,7 @@ class Rule extends Relational
                 if ($stats['count'][$class] > $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'minClassCharacters') {
+            } elseif ($rule['rule'] == 'minClassCharacters') {
                 if (empty($rule['class'])) {
                     continue;
                 }
@@ -404,15 +405,15 @@ class Rule extends Relational
                 if ($stats['count'][$class] < $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'minUniqueCharacters') {
+            } elseif ($rule['rule'] == 'minUniqueCharacters') {
                 if ($stats['uniqueCharacters'] < $rule['value']) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'notBlacklisted') {
+            } elseif ($rule['rule'] == 'notBlacklisted') {
                 if (Blacklist::basedOnBlackList($password)) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'notNameBased') {
+            } elseif ($rule['rule'] == 'notNameBased') {
                 if ($name == null) {
                     if (is_numeric($user)) {
                         $xuser = User::oneOrNew($user);
@@ -450,7 +451,7 @@ class Rule extends Relational
                 if (self::isBasedOnName($password, $name)) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'notUsernameBased') {
+            } elseif ($rule['rule'] == 'notUsernameBased') {
                 if (is_numeric($user)) {
                     $xuser = User::oneOrNew($user);
 
@@ -463,7 +464,7 @@ class Rule extends Relational
                 if (self::isBasedOnUsername($password, $user)) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'notReused') {
+            } elseif ($rule['rule'] == 'notReused') {
                 $date = new \DateTime('now');
                 $date->modify("-" . $rule['value'] . "day");
 
@@ -482,12 +483,12 @@ class Rule extends Relational
                 if ($isNew && Password::passwordMatches($user, $password, true)) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] == 'notRepeat') {
+            } elseif ($rule['rule'] == 'notRepeat') {
                 if (Password::passwordMatches($user, $password, true)) {
                     $fail[] = $rule['failuremsg'];
                 }
-            } else if ($rule['rule'] === 'true') {
-            } else if ($rule['rule'] == 'notStale') {
+            } elseif ($rule['rule'] === 'true') {
+            } elseif ($rule['rule'] == 'notStale') {
             } else {
                 $fail[] = $rule['failuremsg'];
             }

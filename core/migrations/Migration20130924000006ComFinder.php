@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for new joomla search/finder tables
- **/
+ *
+ */
 class Migration20130924000006ComFinder extends Base
 {
     /**
@@ -71,8 +73,10 @@ class Migration20130924000006ComFinder extends Base
 							INDEX `idx_title` (`title` ASC) ,
 							INDEX `idx_md5` (`md5sum` ASC) ,
 							INDEX `idx_url` (`url`(75) ASC) ,
-							INDEX `idx_published_list` (`published` ASC, `state` ASC, `access` ASC, `publish_start_date` ASC, `publish_end_date` ASC, `list_price` ASC) ,
-							INDEX `idx_published_sale` (`published` ASC, `state` ASC, `access` ASC, `publish_start_date` ASC, `publish_end_date` ASC, `sale_price` ASC) )
+							INDEX `idx_published_list` (`published` ASC, `state` ASC, `access` ASC,
+								`publish_start_date` ASC, `publish_end_date` ASC, `list_price` ASC) ,
+							INDEX `idx_published_sale` (`published` ASC, `state` ASC, `access` ASC,
+								`publish_start_date` ASC, `publish_end_date` ASC, `sale_price` ASC) )
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
@@ -305,7 +309,8 @@ class Migration20130924000006ComFinder extends Base
 						COLLATE = utf8_general_ci;\n";
 
 
-            $query .= "INSERT INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`, `ordering`) VALUES (1, 0, 'ROOT', 0, 0, 0);";
+            $query .= "INSERT INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`,"
+                . "`ordering`) VALUES (1, 0, 'ROOT', 0, 0, 0);";
         }
 
         if (!$this->db->tableExists('#__finder_taxonomy_map')) {

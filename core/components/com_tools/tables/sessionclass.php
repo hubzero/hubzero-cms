@@ -102,7 +102,9 @@ class SessionClass extends Table
      */
     public function userCount()
     {
-        $this->_db->setQuery("SELECT COUNT(*) FROM `#__users_tool_preferences` WHERE `class_id`=" . $this->_db->quote($this->id));
+        $query = "SELECT COUNT(*) FROM `#__users_tool_preferences` "
+            . "WHERE `class_id`=" . $this->_db->quote($this->id);
+        $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
 

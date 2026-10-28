@@ -48,13 +48,19 @@ class Filters extends Field
         $html[] = '			<span class="acl-action">' . Lang::txt('JGLOBAL_FILTER_GROUPS_LABEL') . '</span>';
         $html[] = '		</th>';
         $html[] = '		<th>';
-        $html[] = '			<span class="acl-action" title="' . Lang::txt('JGLOBAL_FILTER_TYPE_LABEL') . '">' . Lang::txt('JGLOBAL_FILTER_TYPE_LABEL') . '</span>';
+        $html[] = '			<span class="acl-action" title="'
+            . Lang::txt('JGLOBAL_FILTER_TYPE_LABEL') . '">'
+            . Lang::txt('JGLOBAL_FILTER_TYPE_LABEL') . '</span>';
         $html[] = '		</th>';
         $html[] = '		<th>';
-        $html[] = '			<span class="acl-action" title="' . Lang::txt('JGLOBAL_FILTER_TAGS_LABEL') . '">' . Lang::txt('JGLOBAL_FILTER_TAGS_LABEL') . '</span>';
+        $html[] = '			<span class="acl-action" title="'
+            . Lang::txt('JGLOBAL_FILTER_TAGS_LABEL') . '">'
+            . Lang::txt('JGLOBAL_FILTER_TAGS_LABEL') . '</span>';
         $html[] = '		</th>';
         $html[] = '		<th>';
-        $html[] = '			<span class="acl-action" title="' . Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '">' . Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '</span>';
+        $html[] = '			<span class="acl-action" title="'
+            . Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '">'
+            . Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '</span>';
         $html[] = '		</th>';
         $html[] = '	</tr>';
         $html[] = '	</thead>';
@@ -64,7 +70,11 @@ class Filters extends Field
 
         foreach ($groups as $group) {
             if (!isset($this->value[$group->value])) {
-                $this->value[$group->value] = array('filter_type' => 'BL', 'filter_tags' => '', 'filter_attributes' => '');
+                $this->value[$group->value] = array(
+                    'filter_type' => 'BL',
+                    'filter_tags' => '',
+                    'filter_attributes' => ''
+                );
             }
             $group_filter = $this->value[$group->value];
 
@@ -73,19 +83,38 @@ class Filters extends Field
             $html[] = '			' . str_repeat('<span class="gi">|&mdash;</span>', $group->level) . $group->text;
             $html[] = '		</th>';
             $html[] = '		<td>';
-            $html[] = '			<select name="' . $this->name . '[' . $group->value . '][filter_type]" id="' . $this->id . $group->value . '_filter_type" class="hasTip" title="' . Lang::txt('JGLOBAL_FILTER_TYPE_LABEL') . '::' . Lang::txt('JGLOBAL_FILTER_TYPE_DESC') . '">';
-            $html[] = '				<option value="BL"' . ($group_filter['filter_type'] == 'BL' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_CONFIG_FIELD_FILTERS_DEFAULT_BLACK_LIST') . '</option>';
-            $html[] = '				<option value="CBL"' . ($group_filter['filter_type'] == 'CBL' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_CONFIG_FIELD_FILTERS_CUSTOM_BLACK_LIST') . '</option>';
-            $html[] = '				<option value="WL"' . ($group_filter['filter_type'] == 'WL' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_CONFIG_FIELD_FILTERS_WHITE_LIST') . '</option>';
-            $html[] = '				<option value="NH"' . ($group_filter['filter_type'] == 'NH' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_HTML') . '</option>';
-            $html[] = '				<option value="NONE"' . ($group_filter['filter_type'] == 'NONE' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_FILTER') . '</option>';
+            $html[] = '			<select name="' . $this->name . '[' . $group->value . '][filter_type]"'
+                . ' id="' . $this->id . $group->value . '_filter_type" class="hasTip"'
+                . ' title="' . Lang::txt('JGLOBAL_FILTER_TYPE_LABEL')
+                . '::' . Lang::txt('JGLOBAL_FILTER_TYPE_DESC') . '">';
+            $html[] = '				<option value="BL"'
+                . ($group_filter['filter_type'] == 'BL' ? ' selected="selected"' : '') . '>'
+                . Lang::txt('COM_CONFIG_FIELD_FILTERS_DEFAULT_BLACK_LIST') . '</option>';
+            $html[] = '				<option value="CBL"'
+                . ($group_filter['filter_type'] == 'CBL' ? ' selected="selected"' : '') . '>'
+                . Lang::txt('COM_CONFIG_FIELD_FILTERS_CUSTOM_BLACK_LIST') . '</option>';
+            $html[] = '				<option value="WL"'
+                . ($group_filter['filter_type'] == 'WL' ? ' selected="selected"' : '') . '>'
+                . Lang::txt('COM_CONFIG_FIELD_FILTERS_WHITE_LIST') . '</option>';
+            $html[] = '				<option value="NH"'
+                . ($group_filter['filter_type'] == 'NH' ? ' selected="selected"' : '') . '>'
+                . Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_HTML') . '</option>';
+            $html[] = '				<option value="NONE"'
+                . ($group_filter['filter_type'] == 'NONE' ? ' selected="selected"' : '') . '>'
+                . Lang::txt('COM_CONFIG_FIELD_FILTERS_NO_FILTER') . '</option>';
             $html[] = '			</select>';
             $html[] = '		</td>';
             $html[] = '		<td>';
-            $html[] = '			<input name="' . $this->name . '[' . $group->value . '][filter_tags]" id="' . $this->id . $group->value . '_filter_tags" title="' . Lang::txt('JGLOBAL_FILTER_TAGS_LABEL') . '" value="' . $group_filter['filter_tags'] . '"/>';
+            $html[] = '			<input name="' . $this->name . '[' . $group->value . '][filter_tags]"'
+                . ' id="' . $this->id . $group->value . '_filter_tags"'
+                . ' title="' . Lang::txt('JGLOBAL_FILTER_TAGS_LABEL') . '"'
+                . ' value="' . $group_filter['filter_tags'] . '"/>';
             $html[] = '		</td>';
             $html[] = '		<td>';
-            $html[] = '			<input name="' . $this->name . '[' . $group->value . '][filter_attributes]" id="' . $this->id . $group->value . '_filter_attributes" title="' . Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '" value="' . $group_filter['filter_attributes'] . '"/>';
+            $html[] = '			<input name="' . $this->name . '[' . $group->value . '][filter_attributes]"'
+                . ' id="' . $this->id . $group->value . '_filter_attributes"'
+                . ' title="' . Lang::txt('JGLOBAL_FILTER_ATTRIBUTES_LABEL') . '"'
+                . ' value="' . $group_filter['filter_attributes'] . '"/>';
             $html[] = '		</td>';
             $html[] = '	</tr>';
         }

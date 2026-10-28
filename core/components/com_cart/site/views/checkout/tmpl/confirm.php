@@ -74,8 +74,12 @@ if ($this->paymentStatus == 'ok') {
             echo '<div class="col span6 omega orderSummary">';
 
             if (!empty($this->transactionInfo)) {
-                $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-                $discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
+                $orderTotal = $this->transactionInfo->tiSubtotal
+                    + $this->transactionInfo->tiShipping
+                    - $this->transactionInfo->tiDiscounts
+                    - $this->transactionInfo->tiShippingDiscount;
+                $discount = $this->transactionInfo->tiDiscounts
+                    + $this->transactionInfo->tiShippingDiscount;
 
                 echo '<h2>Order summary:</h2>';
 

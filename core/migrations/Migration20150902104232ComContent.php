@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating Discover page contents
+  *
  **/
 class Migration20150902104232ComContent extends Base
 {
@@ -36,7 +38,8 @@ class Migration20150902104232ComContent extends Base
                 $despaced = trim($despaced);
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
-                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated) . " WHERE `id`=" . $this->db->quote($row->id);
+                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated)
+                        . " WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -64,7 +67,8 @@ class Migration20150902104232ComContent extends Base
                 $despaced = trim($despaced);
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
-                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous) . " WHERE `id`=" . $this->db->quote($row->id);
+                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous)
+                        . " WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -138,7 +142,8 @@ class Migration20150902104232ComContent extends Base
 	<div class="col span-quarter">
 		<div class="tool">
 			<h3><a href="/tools">Tool Forge</a></h3>
-			<p>The <a href="/tools">development area</a> for simulation tools. Sign up and manage your own software project!</p>
+			<p>The <a href="/tools">development area</a> for simulation tools. '
+                . 'Sign up and manage your own software project!</p>
 		</div>
 	</div>
 	<div class="col span-quarter omega">
@@ -156,7 +161,8 @@ class Migration20150902104232ComContent extends Base
 	<div class="col span-quarter">
 		<div class="event">
 			<h3><a href="/events">Events</a></h3>
-			<p>Find information about the many upcoming <a href="/events">public meetings and scientific symposia</a>.</p>
+			<p>Find information about the many upcoming '
+                . '<a href="/events">public meetings and scientific symposia</a>.</p>
 		</div>
 	</div>
 	<div class="col span-quarter">
@@ -244,14 +250,16 @@ class Migration20150902104232ComContent extends Base
 		<div class="col span4">
 			<div class="block block-tools">
 				<h3><a href="/tools">Tool Forge</a></h3>
-				<p>The <a href="/tools">development area</a> for simulation tools. Sign up and manage your own software project!</p>
+				<p>The <a href="/tools">development area</a> for simulation tools. '
+                    . 'Sign up and manage your own software project!</p>
 			</div>
 		</div>
 
 		<div class="col span4 omega">
 			<div class="block block-store">
 				<h3><a href="/store">Store</a></h3>
-				<p><a href="/store">Purchase items</a> such as t-shirts using points you earn by helping out.</p>
+				<p><a href="/store">Purchase items</a> such as t-shirts '
+                    . 'using points you earn by helping out.</p>
 			</div>
 		</div>
 	</div>
@@ -264,14 +272,16 @@ class Migration20150902104232ComContent extends Base
 		<div class="col span4">
 			<div class="block block-events">
 				<h3><a href="/events">Events</a></h3>
-				<p>Find information about the many upcoming <a href="/events">public meetings and scientific symposia</a>.</p>
+				<p>Find information about the many upcoming '
+                    . '<a href="/events">public meetings and scientific symposia</a>.</p>
 			</div>
 		</div>
 
 		<div class="col span4">
 			<div class="block block-whatsnew">
 				<h3><a href="/whatsnew">What&#39;s New</a></h3>
-				<p>Find the latest content posted on the site with our <a href="/whatsnew">What&#39;s New</a> section.</p>
+				<p>Find the latest content posted on the site '
+                    . 'with our <a href="/whatsnew">What&#39;s New</a> section.</p>
 			</div>
 		</div>
 

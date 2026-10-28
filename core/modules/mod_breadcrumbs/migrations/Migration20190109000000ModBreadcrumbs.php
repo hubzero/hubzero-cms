@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing breadcrumbs module
- **/
+ *
+ */
 class Migration20190109000000ModBreadcrumbs extends Base
 {
     /**

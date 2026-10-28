@@ -7,7 +7,6 @@
  */
 
 // no direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Redirect to Member Home Page

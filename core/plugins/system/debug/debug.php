@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die;
-
 /**
  * Debug plugin
  */
@@ -87,9 +85,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
             // Debugging is on. Let errors bubble up.
             if (Config::get('debug')) {
                 $this->logProfile();
-            }
-            // Debugging is off.
-            else {
+            } else {
+                // Debugging is off.
                 // If, for some reason, logging fails
                 // let it happen silently
                 try {
@@ -146,17 +143,16 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                 echo $contents;
                 return;
             }
-        }
-        // [!] HUBZERO - Add ability to show deubg output to specified users
-        // zooley (2012-08-29)
-        else {
+        } else {
+                // [!] HUBZERO - Add ability to show deubg output to specified users
+                // zooley (2012-08-29)
             $filterUsers = $this->params->get('filter_users', null);
 
             if (!empty($filterUsers)) {
                 $filterUsers = explode(',', $filterUsers);
                 $filterUsers = array_map('trim', $filterUsers);
 
-                if (!in_array(User::get('username'), $filterUsers)) {
+                if (!informatArrayay(User::get('username'), $filterUsers)) {
                     echo $contents;
                     return;
                 }
@@ -168,36 +164,89 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
         $html  = '<div id="system-debug" class="' . $this->params->get('theme', 'dark') . ' profiler">';
         $html .= '<div class="debug-head" id="debug-head">';
-        $html .= '<h1>' . Lang::txt('PLG_DEBUG_TITLE') . '</h1>';
-        $html .= '<a class="debug-close-btn" href="#system-debug"><span class="icon-remove">' . Lang::txt('PLG_DEBUG_CLOSE') . '</span></a>';
+        $html .= '<h1>
+				' . Lang::txt('PLG_DEBUG_TITLE')
+
+
+                 . '</h1>';
+        $html .= '<a class="debug-close-btn" href="#system-debug"><span class="icon-remove">
+				' . Lang::txt('PLG_DEBUG_CLOSE')
+
+
+                 . '</span></a>';
 
         if (Config::get('debug')) {
             if ($this->params->get('memory', 1)) {
-                $html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="' . Lang::txt('PLG_DEBUG_MEMORY_USAGE') . '">' . $this->displayMemoryUsage() . '</span></span>';
+                $html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="
+				' . Lang::txt('PLG_DEBUG_MEMORY_USAGE')
+
+
+                 . '">' . $this->displayMemoryUsage() . '</span></span>';
             }
 
             $dumper = Hubzero\Debug\Dumper::getInstance();
             if ($dumper->hasMessages()) {
-                $html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">' . Lang::txt('PLG_DEBUG_CONSOLE') . '</span>';
-                $html .= '<span class="badge">' . count($dumper->messages()) . '</span>';
+                $html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">
+				' . Lang::txt('PLG_DEBUG_CONSOLE')
+
+
+                 . '</span>';
+                $html .= '<span class="badge">' . count($dumper->messages())
+
+
+                . '</span>';
                 $html .= '</a>';
             }
 
-            $html .= '<a href="#debug-request" class="debug-tab debug-tab-request"><span class="text">' . Lang::txt('PLG_DEBUG_REQUEST_DATA') . '</span></a>';
-            $html .= '<a href="#debug-session" class="debug-tab debug-tab-session"><span class="text">' . Lang::txt('PLG_DEBUG_SESSION') . '</span></a>';
+            $html .= '<a href="#debug-request" class="debug-tab debug-tab-request"><span class="text">
+				' . Lang::txt('PLG_DEBUG_REQUEST_DATA')
+
+
+                 . '</span></a>';
+            $html .= '<a href="#debug-session" class="debug-tab debug-tab-session"><span class="text">
+				' . Lang::txt('PLG_DEBUG_SESSION')
+
+
+                 . '</span></a>';
             if ($this->params->get('profile', 1)) {
-                $html .= '<a href="#debug-profile_information" class="debug-tab debug-tab-timeline"><span class="text">' . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE') . '</span></a>';
+                $html .= '<a href="#debug-profile_information" class="debug-tab debug-tab-timeline"><span class="text">
+				' . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE')
+
+
+                 . '</span></a>';
             }
             if ($this->params->get('queries', 1)) {
-                $html .= '<a href="#debug-queries" class="debug-tab debug-tab-database"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES') . '</span><span class="badge">' . App::get('db')->getCount() . '</span></a>';
+                $html .= '<a href="#debug-queries" class="debug-tab debug-tab-database"><span class="text">
+				' . Lang::txt('PLG_DEBUG_QUERIES')
+
+
+                 . '</span><span class="badge">' . App::get('db')->getCount()
+
+
+                 . '</span></a>';
             }
-            $html .= '<a href="#debug-events" class="debug-tab debug-tab-events"><span class="text">' . Lang::txt('PLG_DEBUG_EVENTS') . '</span><span class="badge">' . count(Event::getCalledListeners()) . '</span></a>';
+            $html .= '<a href="#debug-events" class="debug-tab debug-tab-events"><span class="text">
+				' . Lang::txt('PLG_DEBUG_EVENTS')
+
+
+                 . '</span><span class="badge">' . count(Event::getCalledListeners())
+
+
+                 . '</span></a>';
         }
 
         if (Config::get('debug_lang')) {
             if ($this->params->get('language_errorfiles', 1)) {
-                $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS') . '</span>';
-                $html .= '<span class="badge">' . count(Lang::getErrorFiles()) . '</span>';
+                $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors">
+				<span class="text">
+				' . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS')
+
+
+                 . '</span>';
+                $html .= '<span class="badge">' . count(Lang::getErrorFiles())
+
+
+                . '</span>';
                 $html .= '</a>';
             }
 
@@ -206,14 +255,30 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                 foreach (Lang::getPaths() as $extension => $files) {
                     $total += count($files);
                 }
-                $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED') . '</span>';
-                $html .= '<span class="badge">' . $total . '</span>';
+                $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files">
+				<span class="text">
+				' . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED')
+
+
+                 . '</span>';
+                $html .= '<span class="badge">' . $total
+
+
+                . '</span>';
                 $html .= '</a>';
             }
 
             if ($this->params->get('language_strings')) {
-                $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span class="text">' . Lang::txt('PLG_DEBUG_UNTRANSLATED') . '</span>';
-                $html .= '<span class="badge">' . count(Lang::getOrphans()) . '</span>';
+                $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated">
+				<span class="text">
+				' . Lang::txt('PLG_DEBUG_UNTRANSLATED')
+
+
+                 . '</span>';
+                $html .= '<span class="badge">' . count(Lang::getOrphans())
+
+
+                . '</span>';
                 $html .= '</a>';
             }
         }
@@ -260,7 +325,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
         $html .= '</div>';
         $html .= '</div>';
-        $html .= '<script type="text/javascript" src="' . Request::root() . '/core/plugins/system/debug/assets/js/debug.js"></script>';
+        $html .= '<script type="text/javascript" src="' . Request::root()
+                 . '/core/plugins/system/debug/assets/js/debug.js"></script>';
 
         echo str_replace('</body>', $html . '</body>', $contents);
     }
@@ -313,22 +379,26 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 		<dl class="debug-varlist">
 			<dt class="key">$_GET</dt>
 			<dd class="value">
-				<span id="debug-get-short" data-section="get" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
+				<span id="debug-get-short" data-section="get" class="debug-toggle open">
+				' . Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
 				<span id="debug-get-full" data-section="get" class="debug-toggle">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
-				<span id="debug-post-short" data-section="post" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
+				<span id="debug-post-short" data-section="post" class="debug-toggle open">
+				' . Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
 				<span id="debug-post-full" data-section="post" class="debug-toggle">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
-				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
+				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">
+				' . Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
 				<span id="debug-cookies-full" data-section="cookies" class="debug-toggle">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
-				<span id="debug-server-short" data-section="server" class="debug-toggle open">' . Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
+				<span id="debug-server-short" data-section="server" class="debug-toggle open">
+				' . Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
 				<span id="debug-server-full" data-section="server" class="debug-toggle">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';
@@ -354,17 +424,22 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
      * @param   array  $arr
      * @return  string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _arr($arr)
     {
         $html = 'Array( ' . "\n";
         $a = array();
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
-                $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8') . '</code> <code class="op">=></code> <code class="vl">' . $this->_arr($val) . '</code>';
-            } else if (is_object($val)) {
-                $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8') . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';
+                $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
+                     . '</code> <code class="op">=></code> <code class="vl">' . $this->_arr($val) . '</code>';
+            } elseif (is_object($val)) {
+                $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
+                     . '</code> <code class="op">=></code> <code class="vl">' . get_class($val) . '</code>';
             } else {
-                $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8') . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '</code>';
+                $a[] = "\t" . '<code class="ky">' . htmlentities($key, ENT_COMPAT, 'UTF-8')
+                     . '</code> <code class="op">=></code> <code class="vl">' . htmlentities($val, ENT_COMPAT, 'UTF-8')
+                     . '</code>';
             }
         }
         $html .= implode(", \n", $a) . "\n" . ' )' . "\n";
@@ -432,7 +507,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
                 if (is_string($entries)) {
                     $html .= '<code>';
-                    $html .= '<span class="ky">' . $sKey . '</span> <span class="op">&rArr;</span> <span class="vl">' . $entries . '</span><br />';
+                    $html .= '<span class="ky">' . $sKey . '</span> <span class="op">&rArr;</span> <span class="vl">'
+                             . $entries . '</span><br />';
                     $html .= '</code>';
                 }
             }
@@ -459,7 +535,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
         foreach (App::get('profiler')->marks() as $mark) {
             $data = sprintf(
-                '<code>%s %.3f seconds (<span class="tm">+%.3f</span>); %0.2f MB (<span class="mmry">%s%0.3f</span>) - <span class="msg">%s</span></code>',
+                '<code>%s %.3f seconds (<span class="tm">+%.3f</span>);' . "
+					" . ' %0.2f MB (<span class="mmry">%s%0.3f</span>) - <span class="msg">%s</span></code>',
                 $name,
                 ($mark->ended() - $started),
                 ($mark->ended() - $previousTime),
@@ -507,7 +584,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED', $db->getCount()) . ': ' . $db->getTimer() . ' seconds</h4></div>';
+        $html  = '<div class="status"><h4>' . Lang::txt('PLG_DEBUG_QUERIES_LOGGED', $db->getCount())
+                    . ': ' . $db->getTimer() . ' seconds</h4></div>';
         $html .= '<ol>';
 
         $selectQueryTypeTicker = array();
@@ -542,10 +620,12 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 
             // Increment the count:
             if (stripos($sql, 'select') === 0) {
-                $selectQueryTypeTicker[$fromString] = $selectQueryTypeTicker[$fromString] + 1;
+                $selectQueryTypeTicker[$fromString]
+                = $selectQueryTypeTicker[$fromString] + 1;
                 unset($otherQueryTypeTicker[$fromString]);
             } else {
-                $otherQueryTypeTicker[$fromString] = $otherQueryTypeTicker[$fromString] + 1;
+                $otherQueryTypeTicker[$fromString]
+                = $otherQueryTypeTicker[$fromString] + 1;
                 unset($selectQueryTypeTicker[$fromString]);
             }
 
@@ -563,15 +643,26 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
         $totalOtherQueryTypes  = count($otherQueryTypeTicker);
         $totalQueryTypes = $totalSelectQueryTypes + $totalOtherQueryTypes;
 
-        $html .= '<h4>' . Lang::txt('PLG_DEBUG_QUERY_TYPES_LOGGED', $totalQueryTypes) . '</h4>';
+        $html .= '<h4>
+				' . Lang::txt('PLG_DEBUG_QUERY_TYPES_LOGGED', $totalQueryTypes) . '</h4>';
 
         if ($totalSelectQueryTypes) {
             arsort($selectQueryTypeTicker);
 
-            $html .= '<h5>' . Lang::txt('PLG_DEBUG_SELECT_QUERIES') . '</h5>';
+            $html .= '<h5>
+				' . Lang::txt('PLG_DEBUG_SELECT_QUERIES')
+
+
+                 . '</h5>';
             $html .= '<ol>';
             foreach ($selectQueryTypeTicker as $query => $occurrences) {
-                $html .= '<li><code>' . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences) . '</code></li>';
+                $html .= '<li><code>'
+
+
+                     . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences)
+
+
+                     . '</code></li>';
             }
             $html .= '</ol>';
         }
@@ -579,10 +670,20 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
         if ($totalOtherQueryTypes) {
             arsort($otherQueryTypeTicker);
 
-            $html .= '<h5>' . Lang::txt('PLG_DEBUG_OTHER_QUERIES') . '</h5>';
+            $html .= '<h5>
+				' . Lang::txt('PLG_DEBUG_OTHER_QUERIES')
+
+
+                 . '</h5>';
             $html .= '<ol>';
             foreach ($otherQueryTypeTicker as $query => $occurrences) {
-                $html .= '<li><code>' . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences) . '</code></li>';
+                $html .= '<li><code>'
+
+
+                     . Lang::txt('PLG_DEBUG_QUERY_TYPE_AND_OCCURRENCES', $this->highlightQuery($query), $occurrences)
+
+
+                     . '</code></li>';
             }
             $html .= '</ol>';
         }
@@ -600,7 +701,10 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
         $called = Event::getCalledListeners();
 
         if (!count($called)) {
-            return '<p>' . Lang::txt('JNONE') . '</p>';
+            return '<p>' . Lang::txt('JNONE')
+
+
+                 . '</p>';
         }
 
         $html  = '<ul>';
@@ -615,9 +719,11 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
             if ($info['type'] == 'Function') {
                 $html .= '<span class="vl">' . $info['function'] . '</span>';
             } elseif ($info['type'] == 'Method') {
-                $html .= '<span class="ky">' . $info['class'] . '</span><span class="op">::</span><span class="vl">' . $info['method'] . '</span>';
+                $html .= '<span class="ky">' . $info['class'] . '</span><span class="op">::</span><span class="vl">'
+                         . $info['method'] . '</span>';
             }
-            $html .= ' <span class="op">&rarr;</span> <span class="op">' . $file . ':<span class="tm">' . $line . '</span></span>';
+            $html .= ' <span class="op">&rarr;</span> <span class="op">' . $file
+                     . ':<span class="tm">' . $line . '</span></span>';
             $html .= '</code></li>';
         }
 
@@ -636,7 +742,10 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
         $errorfiles = Lang::getErrorFiles();
 
         if (!count($errorfiles)) {
-            return '<p>' . Lang::txt('JNONE') . '</p>';
+            return '<p>' . Lang::txt('JNONE')
+
+
+                 . '</p>';
         }
 
         $html  = '<ul>';
@@ -664,8 +773,20 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                 $html .= '<li>';
 
                 $html .= ($status)
-                    ? '<span class="debug-loaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_LOADED') . '</strong>'
-                    : '<span class="debug-notloaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_NOT_LOADED') . '</strong>';
+                    ? '<span class="debug-loaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_LOADED')
+
+
+
+
+
+                 . '</strong>'
+                    : '<span class="debug-notloaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_NOT_LOADED')
+
+
+
+
+
+                 . '</strong>';
 
                 $html .= ' ';
                 $html .= $this->formatLink($file) . '</span>';
@@ -692,7 +813,10 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
         $orphans = Lang::getOrphans();
 
         if (!count($orphans)) {
-            return '<p>' . Lang::txt('JNONE') . '</p>';
+            return '<p>' . Lang::txt('JNONE')
+
+
+                 . '</p>';
         }
 
         $html = '';
@@ -742,12 +866,16 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                 $key = preg_replace('#\W#', '', $key);
 
                 // Prepare the text
-                $guesses[$file][] = '<li><span class="ky">' . $key . '</span><span class="op">=</span>"<span class="vl">' . $guess . '</span>"</li>';
+                $guesses[$file][] = '<li><span class="ky">' . $key . '</span>'
+                                    . '<span class="op">=</span>"<span class="vl">'
+                                    . $guess . '</span>"</li>';
             }
         }
 
         foreach ($guesses as $file => $keys) {
-            $html .= '<ul class="debug-untrans debug-varlist"><li># ' . ($file ? $this->formatLink($file) : \Lang::txt('PLG_DEBUG_UNKNOWN_FILE')) . '</li>';
+            $html .= '<ul class="debug-untrans debug-varlist"><li># '
+                     . ($file ? $this->formatLink($file) : \Lang::txt('PLG_DEBUG_UNKNOWN_FILE'))
+                     . '</li>';
             $html .= implode("\n", $keys) . '</ul>';
         }
 

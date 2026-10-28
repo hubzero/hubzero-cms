@@ -167,9 +167,8 @@ class Product extends \Hubzero\Component\SiteController
 
             if ($qtyDropDownMaxVal < 1) {
                 $qtyDropDownMaxVal = 1;
-            }
-            // Limit to max number
-            elseif ($qtyDropDownMaxVal > $qtyDropDownMaxValLimit) {
+            } elseif ($qtyDropDownMaxVal > $qtyDropDownMaxValLimit) {
+                // Limit to max number
                 $qtyDropDownMaxVal = $qtyDropDownMaxValLimit;
             }
 

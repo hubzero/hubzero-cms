@@ -253,6 +253,7 @@ class PasswordRules extends AdminController
      *
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function toggle_enabledTask()
     {
         // Check for request forgeries
@@ -298,6 +299,7 @@ class PasswordRules extends AdminController
      *
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function restore_default_contentTask()
     {
         if (
@@ -393,6 +395,17 @@ class PasswordRules extends AdminController
 
         $rselected = $current_rule;
 
-        return Html::select('genericlist', $rules, 'fields[rule]', '', 'value', 'text', $rselected, 'field-rule', false, false);
+        return Html::select(
+            'genericlist',
+            $rules,
+            'fields[rule]',
+            '',
+            'value',
+            'text',
+            $rselected,
+            'field-rule',
+            false,
+            false
+        );
     }
 }

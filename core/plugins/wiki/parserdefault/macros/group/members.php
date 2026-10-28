@@ -34,10 +34,10 @@ class Members extends GroupMacro
         $txt = array();
         $txt['html']  = '<p>Displays group members.</p>';
         $txt['html'] .= '<p>Examples:</p>
-							<ul>
-								<li><code>[[Group.Members()]]</code></li>
-								<li><code>[[Group.Members(3, random)]]</code> - Displays 3 group members</li>
-							</ul>';
+                            <ul>
+                                <li><code>[[Group.Members()]]</code></li>
+                                <li><code>[[Group.Members(3, random)]]</code> - Displays 3 group members</li>
+                            </ul>';
 
         return $txt['html'];
     }
@@ -144,8 +144,19 @@ class Members extends GroupMacro
                 $profile = \Components\Members\Models\Member::oneOrNew($member);
                 $link    = \Route::url($profile->link());
 
-                $content .= '<a href="' . $link . '" class="member" title="Go to ' . stripslashes($profile->get('name')) . '\'s Profile.">';
-                $content .= '<img src="' . $profile->picture(0, true) . '" alt="' . stripslashes($profile->get('name')) . '" class="member-border" width="50px" height="50px" />';
+                $content
+                    .= '<a href="'
+                    . $link
+                    . '" class="member" title="Go to '
+                    . stripslashes($profile->get('name'))
+                    . '\'s Profile
+                    . ">';
+                $content
+                    .= '<img src="'
+                    . $profile->picture(0, true)
+                    . '" alt="'
+                    . stripslashes($profile->get('name'))
+                    . '" class="member-border" width="50px" height="50px" />';
                 $content .= '<span class="name">' . stripslashes($profile->get('name')) . '</span>';
                 $content .= '<span class="org">' . stripslashes($profile->get('organization')) . '</span>';
                 $content .= '</a>';

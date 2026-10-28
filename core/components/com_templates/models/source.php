@@ -24,7 +24,7 @@ class Source extends Obj
      *
      * @var  object
      */
-    private $_template = null;
+    private $template = null;
 
     /**
      * Method to get a single record.
@@ -35,13 +35,13 @@ class Source extends Obj
     {
         $item = new stdClass();
 
-        if (!$this->_template) {
+        if (!$this->template) {
             $this->getTemplate();
         }
 
-        if ($this->_template) {
+        if ($this->template) {
             $fileName = $this->get('filename');
-            $filePath = \Hubzero\Filesystem\Util::normalizePath($this->_template->path . '/' . $fileName);
+            $filePath = \Hubzero\Filesystem\Util::normalizePath($this->template->path . '/' . $fileName);
 
             if (file_exists($filePath)) {
                 $item->extension_id = $this->get('extension_id');
@@ -63,7 +63,7 @@ class Source extends Obj
     public function getTemplate()
     {
         // Initialise variables.
-        if (is_null($this->_template)) {
+        if (is_null($this->template)) {
             $pk     = (int) $this->get('extension_id');
             $db     = App::get('db');
             $result = false;
@@ -89,14 +89,14 @@ class Source extends Obj
                 } else {
                     $this->setError(Lang::txt('COM_TEMPLATES_ERROR_EXTENSION_RECORD_NOT_FOUND'));
                 }
-                $this->_template = false;
+                $this->template = false;
             } else {
-                $this->_template = $result;
-                $this->_template->path = \Hubzero\Filesystem\Util::normalizePath(($this->_template->protected ? PATH_CORE : PATH_APP) . '/templates/' . $this->_template->element);
+                $this->template = $result;
+                $this->template->path = \Hubzero\Filesystem\Util::normalizePath(($this->template->protected ? PATH_CORE : PATH_APP) . '/templates/' . $this->template->element);
             }
         }
 
-        return $this->_template;
+        return $this->template;
     }
 
     /**
@@ -115,7 +115,7 @@ class Source extends Obj
         }
 
         $fileName = $this->get('filename');
-        $filePath = \Hubzero\Filesystem\Util::normalizePath($this->_template->path . '/' . $fileName);
+        $filePath = \Hubzero\Filesystem\Util::normalizePath($this->template->path . '/' . $fileName);
 
         // Try to make the template file writeable.
         if (!Filesystem::setPermissions($filePath, '0644')) {

@@ -46,7 +46,8 @@ class Helper extends Module
 
             $config = Component::params('com_answers');
 
-            $this->thumb = DS . trim($this->params->get('defaultpic', '/core/modules/mod_featuredquestion/assets/img/question_thumb.gif'), DS);
+            $defaultPic = '/core/modules/mod_featuredquestion/assets/img/question_thumb.gif';
+            $this->thumb = DS . trim($this->params->get('defaultpic', $defaultPic), DS);
             if ($this->thumb == '/modules/mod_featuredquestion/question_thumb.gif') {
                 $this->thumb = '/core/modules/mod_featuredquestion/assets/img/question_thumb.gif';
             }

@@ -63,7 +63,11 @@ class Listfilter extends Filter
         foreach ($this->options as $option) {
             $queryName = $filterField . '_' . $option->get('id');
             $optionQuery = $filterField . ':"' . $option->get('value') . '"';
-            $multifacet->createQuery($queryName, $optionQuery, array('exclude' => $filterField . '_type', 'include' => 'child_type'));
+            $multifacet->createQuery(
+                $queryName,
+                $optionQuery,
+                array('exclude' => $filterField . '_type', 'include' => 'child_type')
+            );
         }
     }
 

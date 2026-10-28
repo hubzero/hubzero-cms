@@ -15,6 +15,7 @@ use Hubzero\Spam\Detector\DetectorInterface;
 use Exception;
 use stdClass;
 
+
 include_once __DIR__ . DS . 'models' . DS . 'MessageHash.php';
 include_once __DIR__ . DS . 'models' . DS . 'TokenCount.php';
 include_once __DIR__ . DS . 'models' . DS . 'TokenProb.php';
@@ -27,15 +28,15 @@ class Detector implements DetectorInterface
     /**
      * Constants
      */
-    const GOOD_TOKEN_WEIGHT       = 2;
-    const MIN_TOKEN_COUNT         = 0;
-    const MIN_COUNT_FOR_INCLUSION = 5;
-    const MIN_SCORE               = 0.011;
-    const MAX_SCORE               = 0.99;
-    const LIKELY_SPAM_SCORE       = 0.9998;
-    const CERTAIN_SPAM_SCORE      = 0.9999;
-    const CERTAIN_SPAM_COUNT      = 10;
-    const INTERSTING_WORD_COUNT   = 15;
+    public const GOOD_TOKEN_WEIGHT = 2;
+    public const MIN_TOKEN_COUNT = 0;
+    public const MIN_COUNT_FOR_INCLUSION = 5;
+    public const MIN_SCORE = 0.011;
+    public const MAX_SCORE = 0.99;
+    public const LIKELY_SPAM_SCORE = 0.9998;
+    public const CERTAIN_SPAM_SCORE = 0.9999;
+    public const CERTAIN_SPAM_COUNT = 10;
+    public const INTERSTING_WORD_COUNT = 15;
 
     /**
      * Ratio (In Percentage) of the number of links
@@ -160,7 +161,7 @@ class Detector implements DetectorInterface
 
         if ($interest1 < $interest2) {
             return -1;
-        } else if ($interest1 > $interest2) {
+        } elseif ($interest1 > $interest2) {
             return 1;
         }
 
@@ -333,16 +334,16 @@ class Detector implements DetectorInterface
         $token_prob = TokenProb::oneByToken($token);
 
         if ($token_prob->get('id')) {
-            $g += (int)$token_prob->get('in_ham');
-            $b += (int)$token_prob->get('in_spam');
+            $g += (int) $token_prob->get('in_ham');
+            $b += (int) $token_prob->get('in_spam');
             $found = true;
         }
 
         $g *= self::GOOD_TOKEN_WEIGHT;
 
         if ($g + $b >= self::MIN_COUNT_FOR_INCLUSION) {
-            $goodfactor = min(1, ((float)$g) / ((float)$tokens_count->get('good_count')));
-            $badfactor  = min(1, ((float)$b) / ((float)$tokens_count->get('bad_count')));
+            $goodfactor = min(1, ((float) $g) / ((float) $tokens_count->get('good_count')));
+            $badfactor = min(1, ((float) $b) / ((float) $tokens_count->get('bad_count')));
             $prob = max(self::MIN_SCORE, min(self::MAX_SCORE, $badfactor / ($goodfactor + $badfactor)));
             if ($g == 0) {
                 $prob = ($b > self::CERTAIN_SPAM_COUNT) ? self::CERTAIN_SPAM_SCORE : self::LIKELY_SPAM_SCORE;
@@ -355,10 +356,10 @@ class Detector implements DetectorInterface
             if ($token_prob->get('id')) {
                 $token_prob->set('prev_prob', $token_prob->get('prob'));
             }
-            $token_prob->set('prob', (float)$prob);
+            $token_prob->set('prob', (float) $prob);
             $token_prob->set('token', $token);
-            $token_prob->set('in_ham', (int)$token_prob->get('in_ham') + (int)$good_count);
-            $token_prob->set('in_spam', (int)$token_prob->get('in_spam') + (int)$bad_count);
+            $token_prob->set('in_ham', (int) $token_prob->get('in_ham') + (int) $good_count);
+            $token_prob->set('in_spam', (int) $token_prob->get('in_spam') + (int) $bad_count);
             $token_prob->save();
         }
     }
@@ -376,8 +377,8 @@ class Detector implements DetectorInterface
             ->ordered()
             ->row();
 
-        $tbl->set('good_count', (int)$tbl->get('good_count') + (int)$good_count);
-        $tbl->set('bad_count', (int)$tbl->get('bad_count') + (int)$bad_count);
+        $tbl->set('good_count', (int) $tbl->get('good_count') + (int) $good_count);
+        $tbl->set('bad_count', (int) $tbl->get('bad_count') + (int) $bad_count);
         $tbl->save();
     }
 

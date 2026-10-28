@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding 'dependents' column to #__user_profile_options
- **/
+ *
+ */
 class Migration20160513211701ComMembers extends Base
 {
     /**

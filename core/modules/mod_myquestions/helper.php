@@ -28,7 +28,7 @@ class Helper extends Module
      * @param   integer  $max     Max character length
      * @return  string   HTML
      */
-    private function _formatTags($string = '', $num = 3, $max = 25)
+    private function formatTags($string = '', $num = 3, $max = 25)
     {
         $out = '';
         $tags = explode(',', $string);
@@ -46,7 +46,9 @@ class Helper extends Module
                     // display tag
                     $normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
                     $normalized = strtolower($normalized);
-                    $out .= "\t" . '<a href="' . Route::url('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
+                    $tagUrl = Route::url('index.php?option=com_tags&tag=' . $normalized);
+                    $out .= "\t" . '<a href="' . $tagUrl . '">'
+                        . stripslashes($tags[$i]) . '</a> ' . "\n";
                 }
             }
             if ($i > $num) {
@@ -64,7 +66,7 @@ class Helper extends Module
      * @param   integer  $cloud  Output as tagcloud (defaults to no)
      * @return  string   List of tags as either a tagcloud or comma-delimitated string
      */
-    private function _getInterests($cloud = 0)
+    private function getInterests($cloud = 0)
     {
         require_once Component::path('com_members') . '/models/tags.php';
 
@@ -86,7 +88,7 @@ class Helper extends Module
      * @param   array   $interests  Array of tags
      * @return  array   Database results
      */
-    private function _getQuestions($kind = 'open', $interests = array())
+    private function getQuestions($kind = 'open', $interests = array())
     {
         // Get some classes we need
         require_once Component::path('com_answers') . '/models/question.php';
@@ -120,7 +122,7 @@ class Helper extends Module
         }
 
         if ($kind == 'interest') {
-            $tags = (!is_array($interests) || count($interests) <= 0) ? $this->_getInterests() : $interests;
+            $tags = (!is_array($interests) || count($interests) <= 0) ? $this->getInterests() : $interests;
         }
 
         if ($kind == 'assigned') {
@@ -215,28 +217,28 @@ class Helper extends Module
         $othercount = 0;
 
         // Get Open Questions User Asked
-        $this->openquestions = $this->_getQuestions('mine');
+        $this->openquestions = $this->getQuestions('mine');
         $opencount = ($this->openquestions) ? count($this->openquestions) : 0;
 
         // Get Questions related to user contributions
         if ($this->show_assigned) {
             $c++;
-            $this->assigned = $this->_getQuestions('assigned');
+            $this->assigned = $this->getQuestions('assigned');
             $assignedcount = ($this->assigned) ? count($this->assigned) : 0;
         }
 
         // Get interest tags
         if ($this->show_interests) {
             $c++;
-            $this->interests = $this->_getInterests();
+            $this->interests = $this->getInterests();
             if (!$this->interests) {
                 $this->intext = Lang::txt('MOD_MYQUESTIONS_NA');
             } else {
-                $this->intext = $this->_formatTags($this->interests);
+                $this->intext = $this->formatTags($this->interests);
             }
 
             // Get questions of interest
-            $this->otherquestions = $this->_getQuestions("interest", $this->interests);
+            $this->otherquestions = $this->getQuestions("interest", $this->interests);
             $othercount = ($this->otherquestions) ? count($this->otherquestions) : 0;
         }
 
@@ -244,9 +246,16 @@ class Helper extends Module
         $totalq = $opencount + $assignedcount + $othercount;
         $limit_mine = $max;
         $breaker = $max / $c;
-        $this->limit_mine     = ($totalq - $opencount) >= $breaker * ($c - 1)     ? $breaker : $max - ($totalq - $opencount);
-        $this->limit_assigned = ($totalq - $assignedcount) >= $breaker * ($c - 1) ? $breaker : $max - ($totalq - $assignedcount);
-        $this->limit_interest = ($totalq - $othercount) >= $breaker * ($c - 1)    ? $breaker : $max - ($totalq - $othercount);
+        $breakerThreshold = $breaker * ($c - 1);
+        $this->limit_mine = ($totalq - $opencount) >= $breakerThreshold
+            ? $breaker
+            : $max - ($totalq - $opencount);
+        $this->limit_assigned = ($totalq - $assignedcount) >= $breakerThreshold
+            ? $breaker
+            : $max - ($totalq - $assignedcount);
+        $this->limit_interest = ($totalq - $othercount) >= $breakerThreshold
+            ? $breaker
+            : $max - ($totalq - $othercount);
 
         require $this->getLayoutPath();
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -76,16 +77,18 @@ class Migration20160508203200ComWiki extends Base
 
             if ($this->db->tableHasField('#__wiki_pages', 'group_cn')) {
                 // Convert group pages
-                $query = "SELECT w.id, w.scope, w.group_cn, g.gidNumber FROM `#__wiki_pages` AS w INNER JOIN `#__xgroups` AS g ON w.`group_cn`=g.`cn`";
+                $query = "SELECT w.id, w.scope, w.group_cn, g.gidNumber FROM `#__wiki_pages` AS w "
+                    . "INNER JOIN `#__xgroups` AS g ON w.`group_cn`=g.`cn`";
                 $this->db->setQuery($query);
                 $rows = $this->db->loadObjectList();
                 foreach ($rows as $row) {
                     $row->scope = substr($row->scope, strlen($row->group_cn . '/wiki'));
                     $row->scope = ltrim($row->scope, '/');
 
-                    $query = "UPDATE `#__wiki_pages`
-						SET `scope`='group', `scope_id`=" . $this->db->quote($row->gidNumber) . ", `path`=" . $this->db->quote($row->scope) . "
-						WHERE `id`=" . $this->db->quote($row->id);
+                    $query = "UPDATE `#__wiki_pages` "
+                        . "SET `scope`='group', `scope_id`=" . $this->db->quote($row->gidNumber) . ", "
+                        . "`path`=" . $this->db->quote($row->scope) . " "
+                        . "WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -103,9 +106,10 @@ class Migration20160508203200ComWiki extends Base
                     $this->db->setQuery($query);
                     $row->pidNumber = $this->db->loadResult();
 
-                    $query = "UPDATE `#__wiki_pages`
-						SET `scope`='project', `scope_id`=" . $this->db->quote($row->pidNumber) . ", `path`=" . $this->db->quote($row->scope) . "
-						WHERE `id`=" . $this->db->quote($row->id);
+                    $query = "UPDATE `#__wiki_pages` "
+                        . "SET `scope`='project', `scope_id`=" . $this->db->quote($row->pidNumber) . ", "
+                        . "`path`=" . $this->db->quote($row->scope) . " "
+                        . "WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -273,25 +277,30 @@ class Migration20160508203200ComWiki extends Base
                 }
 
                 // Convert group pages
-                $query = "SELECT w.id, w.path, w.scope, w.scope_id, g.cn FROM `#__wiki_pages` AS w INNER JOIN `#__xgroups` AS g ON w.`scope_id`=g.`gidNumber` AND w.scope='group'";
+                $query = "SELECT w.id, w.path, w.scope, w.scope_id, g.cn FROM `#__wiki_pages` AS w "
+                    . "INNER JOIN `#__xgroups` AS g ON w.`scope_id`=g.`gidNumber` AND w.scope='group'";
                 $this->db->setQuery($query);
                 $rows = $this->db->loadObjectList();
                 foreach ($rows as $row) {
-                    $query = "UPDATE `#__wiki_pages`
-						SET `group_cn`=" . $this->db->quote($row->cn) . " AND `scope`=" . $this->db->quote($row->cn . '/wiki' . ($row->path ? '/' . $row->path : '')) . "
-						WHERE `id`=" . $this->db->quote($row->id);
+                    $query = "UPDATE `#__wiki_pages` "
+                        . "SET `group_cn`=" . $this->db->quote($row->cn) . " AND "
+                        . "`scope`=" . $this->db->quote($row->cn . '/wiki' . ($row->path ? '/' . $row->path : '')) . " "
+                        . "WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
 
                 // Convert projects
-                $query = "SELECT w.id, w.path, w.scope, w.scope_id, p.alias FROM `#__wiki_pages` AS w INNER JOIN `#__projects` AS p ON w.scope_id=p.id AND w.scope='project'";
+                $query = "SELECT w.id, w.path, w.scope, w.scope_id, p.alias FROM `#__wiki_pages` AS w "
+                    . "INNER JOIN `#__projects` AS p ON w.scope_id=p.id AND w.scope='project'";
                 $this->db->setQuery($query);
                 $rows = $this->db->loadObjectList();
                 foreach ($rows as $row) {
-                    $query = "UPDATE `#__wiki_pages`
-						SET `group_cn`=" . $this->db->quote('pre-' . $row->alias) . " AND `scope`=" . $this->db->quote($row->alias . '/wiki' . ($row->path ? '/' . $row->path : '')) . "
-						WHERE `id`=" . $this->db->quote($row->id);
+                    $scopePath = $row->alias . '/wiki' . ($row->path ? '/' . $row->path : '');
+                    $query = "UPDATE `#__wiki_pages` "
+                        . "SET `group_cn`=" . $this->db->quote('pre-' . $row->alias) . " AND "
+                        . "`scope`=" . $this->db->quote($scopePath) . " "
+                        . "WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

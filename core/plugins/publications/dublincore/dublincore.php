@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for adding Dublin Core metadata to the document
@@ -80,9 +78,12 @@ class plgPublicationsDublincore extends \Hubzero\Plugin\Plugin
             if (!$contributor->organization) {
                 $contributor->organization = $contributor->p_organization;
             }
-            $contributor->organization = stripslashes(trim($contributor->organization ? $contributor->organization : ''));
+            $contributor->organization = stripslashes(trim($contributor->organization ?
+                    $contributor->organization : ''));
 
-            Document::setMetaData('dcterms.creator', $view->escape($name . ($contributor->organization ? ', ' . $contributor->organization : '')));
+            Document::setMetaData('dcterms.creator', $view->escape($name .
+                    ($contributor->organization ? ', ' .
+                    $contributor->organization : '')));
         }
     }
 }

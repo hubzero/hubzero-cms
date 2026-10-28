@@ -85,7 +85,12 @@ class Helper extends Module
 
             if ($access || in_array($item->access, $authorised)) {
                 // We know that user has the privilege to view the article
-                $item->link = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catid, $item->language));
+                $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $item->slug,
+                    $item->catid,
+                    $item->language
+                );
+                $item->link = Route::url($articleRoute);
                 $item->linkText = Lang::txt('MOD_ARTICLES_NEWS_READMORE');
             } else {
                 $item->link = Route::url('index.php?option=com_login');

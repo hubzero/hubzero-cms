@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding projects tables to support filesystem connections
+  *
  **/
 class Migration20151202000001ComCart extends Base
 {

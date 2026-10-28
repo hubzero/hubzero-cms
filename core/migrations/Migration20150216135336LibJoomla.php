@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +30,8 @@ class Migration20150216135336LibJoomla extends Base
                 foreach (array('Protected' => '[1]', 'Private' => '[8]') as $title => $usergroups) {
                     $i++;
 
-                    $query = "INSERT INTO `#__viewlevels` (`id`, `title`, `ordering`, `rules`) VALUES (null, " . $this->db->quote($title) . "," . $i . "," . $this->db->quote($usergroups) . ")";
+                    $query = "INSERT INTO `#__viewlevels` (`id`, `title`, `ordering`, `rules`) VALUES (null, "
+                        . $this->db->quote($title) . "," . $i . "," . $this->db->quote($usergroups) . ")";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -43,7 +45,8 @@ class Migration20150216135336LibJoomla extends Base
     public function down()
     {
         if ($this->db->tableExists('#__viewlevels')) {
-            $query = "DELETE FROM `#__viewlevels` WHERE `title` IN (" . $this->db->quote('Protected') . "," . $this->db->quote('Private') . ")";
+            $query = "DELETE FROM `#__viewlevels` WHERE `title` IN (" . $this->db->quote('Protected') . ","
+                . $this->db->quote('Private') . ")";
             $this->db->setQuery($query);
             $this->db->query();
         }

@@ -53,11 +53,13 @@ class RateLimitServiceProvider extends ServiceProvider
             $db->setQuery('INSERT IGNORE INTO #__ratelimit (ip,count) VALUE (INET6_ATON(' . $db->Quote($ip) . '),1);');
             $db->execute();
         } else {
-            $db->setQuery('UPDATE #__ratelimit SET count=count+1 WHERE rule_id=0 AND ip=INET6_ATON(' . $db->Quote($ip) . ');');
+            $db->setQuery('UPDATE #__ratelimit SET count=count+1 WHERE rule_id=0 '
+                . 'AND ip=INET6_ATON(' . $db->Quote($ip) . ');');
             $db->execute();
         }
 
-        $db->setQuery('UPDATE #__ratelimit SET count=count+1 WHERE rule_id=0 AND ip=INET6_ATON(' . $db->Quote($ip) . ');');
+        $db->setQuery('UPDATE #__ratelimit SET count=count+1 WHERE rule_id=0 '
+            . 'AND ip=INET6_ATON(' . $db->Quote($ip) . ');');
         $db->execute();
     }
 }

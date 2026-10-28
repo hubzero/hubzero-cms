@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,6 +25,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';
 /**
  * API controller for the projects component
  */
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Projectsv1_1 extends ApiController
 {
     /**
@@ -132,7 +134,11 @@ class Projectsv1_1 extends ApiController
                     $obj->owner         = $entry->owner('name');
                     $obj->created       = $entry->get('created');
                     //$obj->userRole      = $entry->member()->role;
-                    $obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
+                    $obj->thumbUrl      = str_replace(
+                        '/api',
+                        '',
+                        $base . '/' . ltrim(Route::url($entry->link('thumb')), '/')
+                    );
                     $obj->privacy       = $entry->get('private');
                     $obj->access        = $entry->get('access');
                     $obj->provisioned   = $entry->isProvisioned();
@@ -236,7 +242,11 @@ class Projectsv1_1 extends ApiController
         $obj->groupOwnerId  = $this->model->groupOwner('id');
         $obj->userOwnerId   = $this->model->owner('id');
         $obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($this->model->link()), '/'));
-        $obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($this->model->link('thumb')), '/'));
+        $obj->thumbUrl      = str_replace(
+            '/api',
+            '',
+            $base . '/' . ltrim(Route::url($this->model->link('thumb')), '/')
+        );
 
         if ($this->model->access('member')) {
             $obj->provisioned   = $this->model->isProvisioned();

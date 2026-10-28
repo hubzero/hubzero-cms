@@ -290,7 +290,8 @@ class Collectionsv1_0 extends ApiController
         $response->created_by = new stdClass();
         $response->created_by->id   = $row->get('created_by');
         $response->created_by->name = $row->creator()->get('name');
-        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($row->link()), '/'));
+        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/'
+            . ltrim(Route::url($row->link()), '/'));
 
         $this->send($response);
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for incorrect link in default footer content
- **/
+ *
+ */
 class Migration20190327000000Footer extends Base
 {
     /**
@@ -22,7 +24,8 @@ class Migration20190327000000Footer extends Base
     public function up()
     {
         if ($this->db->tableExists('#__modules')) {
-            $query = "SELECT * FROM `#__modules` WHERE `title`='Hub Footer' AND `module`='mod_custom' AND `content` LIKE '%/about/dmcapolicy%'";
+            $query = "SELECT * FROM `#__modules` WHERE `title`='Hub Footer' AND `module`='mod_custom' AND "
+                . "`content` LIKE '%/about/dmcapolicy%'";
             $this->db->setQuery($query);
             $modules = $this->db->loadObjectList();
 
@@ -31,7 +34,8 @@ class Migration20190327000000Footer extends Base
                     $content = $module->content;
                     $content = str_replace('/about/dmcapolicy', '/aboutus/dmcapolicy', $content);
 
-                    $query = "UPDATE `#__modules` SET `content`=" . $this->db->quote($content) . " WHERE `id`=" . $this->db->quote($module->id);
+                    $query = "UPDATE `#__modules` SET `content`=" . $this->db->quote($content)
+                        . " WHERE `id`=" . $this->db->quote($module->id);
                     $this->db->setQuery($query);
                     if ($this->db->query()) {
                         $this->log('Updated DMCA link in default footer module');
@@ -49,7 +53,8 @@ class Migration20190327000000Footer extends Base
     public function down()
     {
         if ($this->db->tableExists('#__modules')) {
-            $query = "SELECT * FROM `#__modules` WHERE `title`='Hub Footer' AND `module`='mod_custom' AND `content` LIKE '%/aboutus/dmcapolicy%'";
+            $query = "SELECT * FROM `#__modules` WHERE `title`='Hub Footer' AND `module`='mod_custom' AND "
+                . "`content` LIKE '%/aboutus/dmcapolicy%'";
             $this->db->setQuery($query);
             $modules = $this->db->loadObjectList();
 
@@ -58,7 +63,8 @@ class Migration20190327000000Footer extends Base
                     $content = $module->content;
                     $content = str_replace('/aboutus/dmcapolicy', '/about/dmcapolicy', $content);
 
-                    $query = "UPDATE `#__modules` SET `content`=" . $this->db->quote($content) . " WHERE `id`=" . $this->db->quote($module->id);
+                    $query = "UPDATE `#__modules` SET `content`=" . $this->db->quote($content)
+                        . " WHERE `id`=" . $this->db->quote($module->id);
                     $this->db->setQuery($query);
                     if ($this->db->query()) {
                         $this->log('Updated DMCA link in default footer module');

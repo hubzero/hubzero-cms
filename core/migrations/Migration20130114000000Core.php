@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adjusting venue tables
- **/
+ *
+ */
 class Migration20130114000000Core extends Base
 {
     public function up()
@@ -80,7 +82,8 @@ class Migration20130114000000Core extends Base
         $query = '';
 
         if (!$this->db->tableHasField('venue_countries', 'id')) {
-            $query .= "ALTER TABLE `venue_countries` ADD COLUMN `id` INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;\n";
+            $query .= "ALTER TABLE `venue_countries` ADD COLUMN `id` INT(11) PRIMARY KEY "
+                . "NOT NULL AUTO_INCREMENT FIRST;\n";
         }
         if (!$this->db->tableHasField('venue_countries', 'venue_id')) {
             $query .= "ALTER TABLE `venue_countries` ADD COLUMN `venue_id` INT(11) NOT NULL AFTER `id`;\n";

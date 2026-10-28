@@ -43,6 +43,7 @@ foreach ($this->tags as $tag) {
     switch ($tag->get('admin')) {
         case 1:
             $class = ' class="admin"';
+            // no break
         case 2:
             $class = ' class=" core"';
             break;
@@ -59,8 +60,18 @@ foreach ($this->tags as $tag) {
 
 
     if ($this->config->get('show_sizes', 0) == 2) {
-        $tll[$tag->get('tag')] = '<li' . $class . '><a href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '" data-tag="' . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->get('count') . '</span></a></li>';
-    } else if (isset($this->filters)) {
+        $tagUrl = Route::url(
+            $this->base
+            . '&filterby=' . $this->filters['filterby']
+            . '&sortby=' . $this->filters['sortby']
+            . $append
+        );
+        $tll[$tag->get('tag')] = '<li' . $class . '>'
+            . '<a href="' . $tagUrl . '"'
+            . ' data-tag="' . $this->escape($tag->get('tag')) . '">'
+            . $this->escape(stripslashes($tag->get('raw_tag')))
+            . ' <span>' . $tag->get('count') . '</span></a></li>';
+    } elseif (isset($this->filters)) {
         if ($this->filters['tag']) {
             if (!in_array($tag->get('tag'), $lst)) {
                 $lst[] = $tag->get('tag');
@@ -71,8 +82,15 @@ foreach ($this->tags as $tag) {
 
         $append = '&tags=' . $tag->get('tag');
 
+        $tagUrl = Route::url(
+            $this->base
+            . '&filterby=' . $this->filters['filterby']
+            . '&sortby=' . $this->filters['sortby']
+            . $append
+        );
         $tll[$tag->get('tag')]  = '<li' . $class . '>';
-        $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . Route::url($this->base . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . $append) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
+        $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . $tagUrl . '">'
+            . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a>';
         $tll[$tag->get('tag')] .= '</li>';
     } else {
         $tll[$tag->get('tag')]  = '<li' . $class . '>';
@@ -81,7 +99,9 @@ foreach ($this->tags as $tag) {
 
             $tll[$tag->get('tag')] .= '<span data-size="' . round($size, 1) . 'em">';
         }
-        $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
+        $tagUrl = Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'));
+        $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" href="' . $tagUrl . '">'
+            . $this->escape(stripslashes($tag->get('raw_tag')));
         if ($this->config->get('show_tag_count', 0)) {
             $tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';
         }

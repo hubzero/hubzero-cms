@@ -169,8 +169,15 @@ class Admin
      *
      * @return  string  The field input markup.
      */
-    public static function getUserInput($name, $id, $value, $class = null, $size = null, $onchange = null, $readonly = false)
-    {
+    public static function getUserInput(
+        $name,
+        $id,
+        $value,
+        $class = null,
+        $size = null,
+        $onchange = null,
+        $readonly = false
+    ) {
         // Initialize variables.
         $html = array();
         $link = Route::url('index.php?option=com_members&controller=members&task=modal&tmpl=component&field=' . $id);
@@ -211,13 +218,17 @@ class Admin
             $html[] = '<div class="input-modal">';
             $html[] = '	<span class="input-cell">';
         }
-        $html[] = '		<input type="text" id="' . $id . '_name"' . ' value="' . htmlspecialchars($user->get('name'), ENT_COMPAT, 'UTF-8') . '" disabled="disabled"' . $attr . ' />';
+        $userName = htmlspecialchars($user->get('name'), ENT_COMPAT, 'UTF-8');
+        $html[] = '		<input type="text" id="' . $id . '_name" value="' . $userName . '" disabled="disabled"'
+            . $attr . ' />';
 
         // Create the user select button.
         if (!$readonly) {
             $html[] = '	</span>';
             $html[] = '	<span class="input-cell">';
-            $html[] = '		<a class="button modal_' . $id . '" title="' . Lang::txt('JLIB_FORM_CHANGE_USER') . '"' . ' href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+            $changeUser = Lang::txt('JLIB_FORM_CHANGE_USER');
+            $html[] = '		<a class="button modal_' . $id . '" title="' . $changeUser . '" href="' . $link . '"'
+                . ' rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
             $html[] = '			' . Lang::txt('JLIB_FORM_CHANGE_USER');
             $html[] = '		</a>';
             $html[] = '	</span>';

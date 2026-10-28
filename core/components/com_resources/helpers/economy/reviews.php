@@ -25,7 +25,7 @@ class Reviews extends Obj
      *
      * @var  object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ class Reviews extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -47,12 +47,15 @@ class Reviews extends Obj
     {
         // get all eligible reviews
         $sql = "SELECT r.id, r.user_id AS author, r.resource_id as rid, "
-            . "\n (SELECT COUNT(*) FROM #__abuse_reports AS a WHERE a.category='review' AND a.state!=1 AND a.referenceid=r.id) AS reports,"
-            . "\n (SELECT COUNT(*) FROM #__item_votes AS v WHERE v.vote='1' AND v.item_type='review' AND v.item_id=r.id) AS helpful, "
-            . "\n (SELECT COUNT(*) FROM #__item_votes AS v WHERE v.vote='-1' AND v.item_type='review' AND v.item_id=r.id) AS nothelpful "
+            . "\n (SELECT COUNT(*) FROM #__abuse_reports AS a "
+            . "WHERE a.category='review' AND a.state!=1 AND a.referenceid=r.id) AS reports,"
+            . "\n (SELECT COUNT(*) FROM #__item_votes AS v "
+            . "WHERE v.vote='1' AND v.item_type='review' AND v.item_id=r.id) AS helpful, "
+            . "\n (SELECT COUNT(*) FROM #__item_votes AS v "
+            . "WHERE v.vote='-1' AND v.item_type='review' AND v.item_id=r.id) AS nothelpful "
             . "\n FROM #__resource_ratings AS r";
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
         $reviews = array();
         if ($result) {
             foreach ($result as $r) {
@@ -72,7 +75,7 @@ class Reviews extends Obj
      * @param   string  $type    Point calculation type
      * @return  mixed   False if errors, integer on success
      */
-    public function calculate_marketvalue($review, $type = 'royalty')
+    public function calculateMarketvalue($review, $type = 'royalty')
     {
         if (!is_object($review)) {
             return false;
@@ -100,14 +103,14 @@ class Reviews extends Obj
      * @param   string   $type    Point calculation type
      * @return  boolean  False if errors, true on success
      */
-    public function distribute_points($review, $type = 'royalty')
+    public function distributePoints($review, $type = 'royalty')
     {
         if (!is_object($review)) {
             return false;
         }
         $cat = 'review';
 
-        $points = $this->calculate_marketvalue($review, $type);
+        $points = $this->calculateMarketvalue($review, $type);
 
         // Get qualifying users
         $user = User::getInstance($review->author);

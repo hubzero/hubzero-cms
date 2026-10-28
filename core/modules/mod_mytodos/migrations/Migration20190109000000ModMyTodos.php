@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mytodos module
- **/
+ *
+ */
 class Migration20190109000000ModMyTodos extends Base
 {
     /**

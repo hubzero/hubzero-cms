@@ -25,11 +25,12 @@ class Slider extends Macro
     {
         $txt = array();
         $txt['wiki'] = "Creates a slider with the images passed in.";
-        $txt['html'] = '<p>Creates a slider with the images passed in. Enter uploaded image names seperated by commas.</p>
-						<p>Examples:</p>
-						<ul>
-							<li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
-						</ul>';
+        $txt['html'] = '<p>Creates a slider with the images passed in. ' .
+            'Enter uploaded image names seperated by commas.</p>
+            <p>Examples:</p>
+            <ul>
+                <li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
+            </ul>';
 
         return $txt['html'];
     }
@@ -114,8 +115,14 @@ class Slider extends Macro
             $html .= '<div class="wiki_slider_pager" id="slider_' . $id . '_pager"></div>';
         $html .= '</div>';
 
-        \Document::addStyleSheet(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css'));
-        \Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.js?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js'));
+        $cssPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.css';
+        $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/slider/slider.js';
+        \Document::addStyleSheet(
+            \Request::root() . $cssPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.css')
+        );
+        \Document::addScript(
+            \Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/slider/slider.js')
+        );
 
         return $html;
     }

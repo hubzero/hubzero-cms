@@ -20,6 +20,8 @@ require_once dirname(__DIR__) . DS . 'version.php';
 
 /**
  * Group page version archive model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Archive extends Model
 {

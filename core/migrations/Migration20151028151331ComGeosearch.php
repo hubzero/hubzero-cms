@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding an index to the GeoSearch table
- **/
+ *
+ */
 class Migration20151028151331ComGeosearch extends Base
 {
     /**
@@ -26,7 +27,8 @@ class Migration20151028151331ComGeosearch extends Base
 
             if ($key == null || $key['Key_name'] != 'PRIMARY' && $key['column'] = ! 'id') {
                 // Make an auto-incrementing index as ID
-                $query = "ALTER TABLE `#__geosearch_markers` MODIFY COLUMN id INT AUTO_INCREMENT, ADD PRIMARY KEY (id);";
+                $query = "ALTER TABLE `#__geosearch_markers` MODIFY COLUMN id INT AUTO_INCREMENT, ADD PRIMARY KEY"
+                    . "(id);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

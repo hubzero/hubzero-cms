@@ -53,7 +53,7 @@ class Courses extends Macro
     public function render()
     {
         // get & render courses
-        return $this->_renderCourses($this->_getCourses());
+        return $this->renderCourses($this->getCourses());
     }
 
     /**
@@ -61,14 +61,14 @@ class Courses extends Macro
      *
      * @return \Hubzero\Base\ItemList
      */
-    private function _getCourses()
+    private function getCourses()
     {
         // Filters for courses
         $filters = array(
             'state'    => 1,
-            'group'    => $this->_getArg('group', ''),
-            'tag'      => $this->_getArg('tag', ''),
-            'limit'    => $this->_getArg('limit', 5),
+            'group'    => $this->getArg('group', ''),
+            'tag'      => $this->getArg('tag', ''),
+            'limit'    => $this->getArg('limit', 5),
             'sort'     => 'title',
             'sort_Dir' => 'ASC'
         );
@@ -99,7 +99,7 @@ class Courses extends Macro
      * @param  array  $courses  Courses list
      * @return string
      */
-    private function _renderCourses($courses = array())
+    private function renderCourses($courses = array())
     {
         $html = '<div class="course-list">';
 
@@ -109,14 +109,14 @@ class Courses extends Macro
                 $instructors = $course->instructors();
 
                 // check to see if we want to limit by instructor
-                if ($this->_getArg('instructor', null)) {
+                if ($this->getArg('instructor', null)) {
                     // get an array of instructor uid
                     $instructorIds = array_map(function ($instructor) {
                         return $instructor->get('user_id');
                     }, $instructors);
 
                     // get the profile from the instructor param
-                    $profile = \User::getInstance($this->_getArg('instructor'));
+                    $profile = \User::getInstance($this->getArg('instructor'));
                     if ($profile->get('id')) {
                         if (!in_array($profile->get('id'), $instructorIds)) {
                             continue;
@@ -125,9 +125,9 @@ class Courses extends Macro
                 }
 
                 // show dates for first offerings first section
-                if ($this->_getArg('showdates', 0)) {
-                    $offeringParam = $this->_getArg('offering', '');
-                    $sectionParam  = $this->_getArg('section', '__default');
+                if ($this->getArg('showdates', 0)) {
+                    $offeringParam = $this->getArg('offering', '');
+                    $sectionParam  = $this->getArg('section', '__default');
 
                     // did we want a specific offering?
                     // otherwise jsut grab first
@@ -158,7 +158,7 @@ class Courses extends Macro
 
                 // do we have any instructors
                 // also make sure we dont want to hide instructors
-                if (count($instructors) > 0 && !(bool) $this->_getArg('hideinstructors')) {
+                if (count($instructors) > 0 && !(bool) $this->getArg('hideinstructors')) {
                     $instr = array();
                     foreach ($instructors as $instructor) {
                         $profile = \User::getInstance($instructor->get('user_id'));
@@ -170,7 +170,7 @@ class Courses extends Macro
                 }
 
                 // make sure we dont want to hide the description
-                if (!(bool) $this->_getArg('hidedescription')) {
+                if (!(bool) $this->getArg('hidedescription')) {
                     $html .= '<p>' . htmlspecialchars(\Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200), ENT_QUOTES, 'UTF-8') . '</p>';
                 }
             }
@@ -190,7 +190,7 @@ class Courses extends Macro
      * @param  string $default Default value if no match is found
      * @return string
      */
-    private function _getArg($arg, $default = '')
+    private function getArg($arg, $default = '')
     {
         // check to see if we have an arg matching our search
         if (preg_match('/' . $arg . '=([^,|\s]*)/', $this->args, $matches)) {

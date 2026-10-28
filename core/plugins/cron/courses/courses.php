@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Cron plugin for courses
  */
@@ -89,7 +86,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
                             $status = false;
                             if ($assertion->IsPending) {
                                 $status = false;
-                            } else if ($assertion->IsAccepted) {
+                            } elseif ($assertion->IsAccepted) {
                                 $status = 'accept';
                             } else {
                                 $status = 'deny';

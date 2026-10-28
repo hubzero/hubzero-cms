@@ -50,7 +50,7 @@ class AuthServiceProvider extends Middleware
                 foreach ($queryvars as $key => $value) {
                     if (isset($queryvars[$key])) {
                         $params[$key] = $queryvars[$key];
-                    } else if (isset($postvars[$key])) {
+                    } elseif (isset($postvars[$key])) {
                         $params[$key] = $postvars[$key];
                     }
                 }
@@ -60,7 +60,7 @@ class AuthServiceProvider extends Middleware
                 foreach ($postvars as $key => $value) {
                     if (isset($queryvars[$key])) {
                         $params[$key] = $queryvars[$key];
-                    } else if (isset($postvars[$key])) {
+                    } elseif (isset($postvars[$key])) {
                         $params[$key] = $postvars[$key];
                     }
                 }

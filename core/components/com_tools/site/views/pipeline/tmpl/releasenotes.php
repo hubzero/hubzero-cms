@@ -12,7 +12,8 @@ defined('_HZEXEC_') or die();
 $open             = ($this->code == '@OPEN') ? 1 : 0;
 $this->codeaccess = ($this->code == '@OPEN') ? 'open' : 'closed';
 $newstate         = ($this->action == 'confirm') ? 'Approved' :  $this->status['state'];
-//$this->statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
+//$this->statuspath = Route::url('index.php?option=' . $this->option
+//  . '&controller=' . $this->controller . '&task=status&app='.$this->status['toolid']);
 
 $codeChoices = array(
     '@OPEN' => 'open source (anyone can access code)',
@@ -38,8 +39,22 @@ $this->css('pipeline.css')
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="icon-status status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo Lang::txt('TOOL_STATUS'); ?></a></li>
-            <li><a class="icon-add btn add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+            <?php
+            $statusUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=status&app=' . $this->status['toolname']
+            );
+            $newUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=create'
+            );
+            ?>
+            <li><a class="icon-status status btn" href="<?php echo $statusUrl; ?>">
+                <?php echo Lang::txt('TOOL_STATUS'); ?></a></li>
+            <li><a class="icon-add btn add" href="<?php echo $newUrl; ?>">
+                <?php echo Lang::txt('CONTRIBTOOL_NEW_TOOL'); ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -57,36 +72,71 @@ $this->css('pipeline.css')
     <div class="grid">
         <div class="col span-half">
             <h3>
-                <?php echo ($this->action == 'edit') ? Lang::txt('Specify license for next tool release:') : Lang::txt('Please confirm your license for this tool release:'); ?>
+                <?php echo ($this->action == 'edit')
+                    ? Lang::txt('Specify license for next tool release:')
+                    : Lang::txt('Please confirm your license for this tool release:'); ?>
             </h3>
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license'); ?>" method="post" id="versionForm" name="versionForm">
+            <?php
+            $versionFormAction = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=license'
+            );
+            $licTemplate = $this->license_choice['template'];
+            ?>
+            <form action="<?php echo $versionFormAction; ?>" method="post"
+                id="versionForm" name="versionForm">
                 <fieldset class="versionfield">
                     <label><?php echo Lang::txt('CODE_ACCESS'); ?>:</label>
-                    <?php echo \Components\Tools\Helpers\Html::formSelect('t_code', 't_code', $codeChoices, $this->code, 'shifted', ''); ?>
+                    <?php echo \Components\Tools\Helpers\Html::formSelect(
+                        't_code',
+                        't_code',
+                        $codeChoices,
+                        $this->code,
+                        'shifted',
+                        ''
+                    ); ?>
 
                     <div id="lic_cl"><?php echo Lang::txt('LICENSE'); ?>:</div>
                     <div class="licinput" >
-                        <textarea name="license" cols="50" rows="15" id="license"><?php echo stripslashes($this->license_choice['text']); ?></textarea>
+                        <textarea name="license" cols="50" rows="15" id="license">
+                            <?php echo stripslashes($this->license_choice['text']); ?></textarea>
                         <?php
                         if ($this->licenses) {
                             foreach ($this->licenses as $l) {
-                                echo '<input type="hidden" name="' . $l->name . '" id="' . $l->name . '" value="' . stripslashes(htmlentities($l->text)) . '" />' . "\n";
+                                echo '<input type="hidden" name="' . $l->name . '" id="'
+                                    . $l->name . '" value="'
+                                    . stripslashes(htmlentities($l->text))
+                                    . '" />' . "\n";
                             }
                         }
                         ?>
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-                        <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+                        <input type="hidden" name="controller"
+                            value="<?php echo $this->controller; ?>" />
                         <input type="hidden" name="task" value="savelicense" />
-                        <input type="hidden" name="curcode" id="curcode" value="<?php echo $open; ?>" />
-                        <input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
-                        <input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
-                        <input type="hidden" name="toolid" value="<?php echo $this->escape($this->status['toolid']); ?>" />
-                        <input type="hidden" name="alias" value="<?php echo $this->escape($this->status['toolname']); ?>" />
+                        <input type="hidden" name="curcode" id="curcode"
+                            value="<?php echo $open; ?>" />
+                        <input type="hidden" name="newstate"
+                            value="<?php echo $this->escape($newstate); ?>" />
+                        <input type="hidden" name="action"
+                            value="<?php echo $this->escape($this->action); ?>" />
+                        <input type="hidden" name="toolid"
+                            value="<?php echo $this->escape($this->status['toolid']); ?>" />
+                        <input type="hidden" name="alias"
+                            value="<?php echo $this->escape($this->status['toolname']); ?>" />
                         <?php echo Html::input('token'); ?>
                     </div>
                     <div id="lic">
                         <label><?php echo Lang::txt('LICENSE_TEMPLATE'); ?>:</label>
-                        <?php echo \Components\Tools\Helpers\Html::formSelect('templates', 'templates', $licenseChoices, $this->license_choice['template'], 'shifted', ''); ?>
+                        <?php echo \Components\Tools\Helpers\Html::formSelect(
+                            'templates',
+                            'templates',
+                            $licenseChoices,
+                            $licTemplate,
+                            'shifted',
+                            ''
+                        ); ?>
                     </div>
                     <div id="legendnotes">
                         <p>
@@ -97,7 +147,12 @@ $this->css('pipeline.css')
                             <br />[<?php echo strtoupper(Lang::txt('ONE_LINE_DESCRIPTION')); ?>]
                             <br />[<?php echo Lang::txt('URL'); ?>]
                         </p>
-                        <label><input type="checkbox" name="authorize" value="1" /> <?php echo Lang::txt('LICENSE_CERTIFY') . ' <strong>' . Lang::txt('OPEN_SOURCE') . '</strong> ' . Lang::txt('LICENSE_UNDER_SPECIFIED'); ?></label>
+                        <label>
+                            <input type="checkbox" name="authorize" value="1" />
+                            <?php echo Lang::txt('LICENSE_CERTIFY') . ' <strong>'
+                                . Lang::txt('OPEN_SOURCE') . '</strong> '
+                                . Lang::txt('LICENSE_UNDER_SPECIFIED'); ?>
+                        </label>
                     </div>
                     <div class="moveon">
                         <input type="submit" value="<?php echo Lang::txt('Save'); ?>" />
@@ -108,13 +163,21 @@ $this->css('pipeline.css')
         <div class="col span-half omega">
             <h3><?php echo Lang::txt('CONTRIBTOOL_LICENSE_WHAT_OPTIONS'); ?></h3>
             <p class="opensource">
-                <?php echo '<strong>' . ucfirst(Lang::txt('OPEN_SOURCE')) . '</strong><br />' . Lang::txt('CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE') . ' <a href="http://www.opensource.org/" rel="external" title="Open Source Initiative">' . strtolower(Lang::txt('OPEN_SOURCE')) . '</a>, ' . Lang::txt('CONTRIBTOOL_LICENSE_OPEN_TXT'); ?>
+                <?php
+                $openTxt = strtolower(Lang::txt('OPEN_SOURCE'));
+                echo '<strong>' . ucfirst(Lang::txt('OPEN_SOURCE')) . '</strong><br />'
+                    . Lang::txt('CONTRIBTOOL_LICENSE_IF_YOU_CHOOSE')
+                    . ' <a href="http://www.opensource.org/" rel="external"'
+                    . ' title="Open Source Initiative">' . $openTxt . '</a>, '
+                    . Lang::txt('CONTRIBTOOL_LICENSE_OPEN_TXT');
+                ?>
             </p>
             <p class="error">
                 <?php echo Lang::txt('CONTRIBTOOL_LICENSE_ATTENTION'); ?>
             </p>
             <p class="closedsource">
-                <strong><?php echo ucfirst(Lang::txt('CLOSED_SOURCE')); ?></strong><br /><?php echo Lang::txt('CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
+                <strong><?php echo ucfirst(Lang::txt('CLOSED_SOURCE')); ?></strong><br />
+                <?php echo Lang::txt('CONTRIBTOOL_LICENSE_CLOSED_TXT'); ?>
             </p>
         </div><!-- / .col span-half omega -->
     </div><!-- / .grid -->

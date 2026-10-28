@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Usage plugin class for overview
@@ -19,6 +17,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
      *
      * @var    boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -136,7 +135,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
         $sql = "SELECT value, valfmt
 				FROM `summary_user_vals`
-				WHERE rowid=" . $db->quote(1) . " AND period=" . $db->quote($period) . " AND datetime=" . $db->quote($datetime) . "
+				WHERE rowid=" . $db->quote(1) . " AND period=" . $db->quote($period)
+                . " AND datetime=" . $db->quote($datetime) . "
 				ORDER BY colid";
         $db->setQuery($sql);
         $results = $db->loadObjectList();
@@ -230,7 +230,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
         $sql = "SELECT value
 			FROM `summary_user_vals`
-			WHERE rowid=" . $db->quote(1) . " AND period=" . $db->quote($period) . " AND datetime=" . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
+			WHERE rowid=" . $db->quote(1) . " AND period=" . $db->quote($period) . " AND datetime="
+           . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
 			ORDER BY datetime ASC";
         $db->setQuery($sql);
         $result = $db->loadResult();
@@ -243,7 +244,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
         $sql = "SELECT value, valfmt
 				FROM `summary_user_vals`
-				WHERE rowid=" . $db->quote(4) . " AND period=" . $db->quote($period) . " AND datetime=" . $db->quote($datetime) . "
+				WHERE rowid=" . $db->quote(4) . " AND period=" . $db->quote($period)
+                . " AND datetime=" . $db->quote($datetime) . "
 				ORDER BY colid";
         $db->setQuery($sql);
         $results = $db->loadObjectList();
@@ -337,7 +339,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
         $sql = "SELECT value
 			FROM `summary_user_vals`
-			WHERE rowid=" . $db->quote(4) . " AND period=" . $db->quote($period) . " AND datetime=" . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
+			WHERE rowid=" . $db->quote(4) . " AND period=" . $db->quote($period) . " AND datetime="
+           . $db->quote($datetime) . " AND colid=" . $db->quote(1) . "
 			ORDER BY datetime ASC";
         $db->setQuery($sql);
         $result = $db->loadResult();
@@ -372,7 +375,8 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
             "SELECT a.label,b.value,b.valfmt,a.plot,a.id
 			FROM `summary_simusage` AS a
 			INNER JOIN `summary_simusage_vals` AS b
-			WHERE a.id=b.rowid AND b.period = " . $db->quote($period) . " AND b.datetime = " . $db->quote($datetime) . " AND a.id > 2
+			WHERE a.id=b.rowid AND b.period = " . $db->quote($period) . " AND b.datetime = "
+            . $db->quote($datetime) . " AND a.id > 2
 			ORDER BY a.id"
         );
         $data->simulation = $db->loadObjectList();
@@ -409,26 +413,26 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 
         if ($fmt == 0) {
             return $valfmt[0];
-        } else if ($fmt == 1) {
+        } elseif ($fmt == 1) {
             $value = number_format($value) . $valfmt[$fmt];
             return $value;
-        } else if ($fmt == 2) {
+        } elseif ($fmt == 2) {
             $value = number_format($value) . $valfmt[$fmt];
             return $value;
-        } else if ($fmt == 5) {
+        } elseif ($fmt == 5) {
             if ($value < '60') {
                 $val = number_format($value) . ' seconds';
-            } else if ($value >= '60' && $value < '3600') {
+            } elseif ($value >= '60' && $value < '3600') {
                 $val = number_format($value / 60) . ' minutes';
-            } else if ($value >= '3600'  && $value < '86400') {
+            } elseif ($value >= '3600'  && $value < '86400') {
                 $val = number_format($value / 3600) . ' hours';
-            } else if ($value >= '86400') {
+            } elseif ($value >= '86400') {
                 $val = number_format($value / 86400) . ' days';
             } else {
                 $val = number_format($value);
             }
             return $val;
-        } else if ($fmt == 6) {
+        } elseif ($fmt == 6) {
             return $value;
         } else {
             $value = number_format($value) . ' ' . $valfmt[$fmt];

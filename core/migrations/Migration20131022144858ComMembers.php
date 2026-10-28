@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving member manager notes to user notes table
- **/
+ *
+ */
 class Migration20131022144858ComMembers extends Base
 {
     /**
@@ -35,8 +37,10 @@ class Migration20131022144858ComMembers extends Base
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`, `created_time`) VALUES ";
-                    $query .= "('{$r->uidNumber}', " . $this->db->quote($r->manager) . ", '1', '{$admin_id}', '" . with(new Date())->toSql() . "')";
+                    $query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`,"
+                        . "`created_time`) VALUES";
+                    $query .= "('{$r->uidNumber}', " . $this->db->quote($r->manager) . ", '1', '{$admin_id}', '"
+                        . Date::toSql() . "')";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

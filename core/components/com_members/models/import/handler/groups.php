@@ -42,7 +42,7 @@ class Groups extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->groups) && $raw->groups != '') {
-            $record->groups = (array)$this->_multiValueField($raw->groups);
+            $record->groups = (array)$this->multiValueField($raw->groups);
 
             foreach ($record->groups as $i => $gid) {
                 $gid = trim($gid, '"');
@@ -152,7 +152,7 @@ class Groups extends Obj
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
      * @return  array
      */
-    private function _multiValueField($data, $delim = ',|;')
+    private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
             $data = array_map('trim', preg_split("/($delim)/", $data));

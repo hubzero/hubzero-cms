@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding User Secret to jos_users table
  *
@@ -22,10 +19,10 @@ defined('_HZEXEC_') or die();
 class Migration20230901000000ComMembers extends Base
 {
     // specify table name
-    static $tableName = '#__users';
+    public static $tableName = '#__users';
 
     // specify column to create
-    static $columnData = [['name' => 'secret',
+    public static $columnData = [['name' => 'secret',
                 'type' => 'char(32)',
                 'restriction' => 'UNIQUE',
                 'default' => 'NULL'],

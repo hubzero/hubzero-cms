@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Utility\Arr;
-
 $connectionId = $this->connectionId;
 $item = $this->item;
 $itemName = $this->itemName;
@@ -21,16 +19,16 @@ try {
 
 if ($itemMimeType && preg_match('/^application\/vnd\.google\-apps\.([^.]+)/', $itemMimeType, $match)) {
     $googleMimetypeMap = [
-        'document'     => 'gdoc',      // Google Docs
-        'form'         => 'gform',     // Google form
+        'document' => 'gdoc',      // Google Docs
+        'form' => 'gform',     // Google form
         'presentation' => 'gslides',   // Google Slides
-        'spreadsheet'  => 'gsheet',    // Google Sheets
-        'map'          => 'gmap',      // Google Maps
+        'spreadsheet' => 'gsheet',    // Google Sheets
+        'map' => 'gmap',      // Google Maps
     ];
 
-    $format = Arr::getValue($match, 1, null);
+    $format = \Hubzero\Utility\Arr::getValue($match, 1, null);
 
-    $itemExtension = Arr::getValue($googleMimetypeMap, $format, null);
+    $itemExtension = \Hubzero\Utility\Arr::getValue($googleMimetypeMap, $format, null);
 } else {
     $itemExtension = $item->getExtension();
 }

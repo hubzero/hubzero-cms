@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for setting status=7 on reported wishes
- **/
+ *
+ */
 class Migration20140702160951ComWishlist extends Base
 {
     /**
@@ -34,7 +36,8 @@ class Migration20140702160951ComWishlist extends Base
         }
 
         if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('itemcomment', 'wishcomment')";
+            $query = "SELECT referenceid FROM `#__abuse_reports` "
+                . "WHERE state=0 AND category IN ('itemcomment', 'wishcomment')";
             $this->db->setQuery($query);
             if ($ids = $this->db->loadColumn()) {
                 $ids = array_map('intval', $ids);

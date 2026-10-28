@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -47,7 +48,8 @@ class Migration20170901000000ComLanguages extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "INSERT INTO `#__languages` VALUES (1,'en-GB','English (UK)','English (UK)','en','en','','','','',1,1,1)";
+            $query = "INSERT INTO `#__languages` VALUES "
+                . "(1,'en-GB','English (UK)','English (UK)','en','en','','','','',1,1,1)";
 
             $this->db->setQuery($query);
             $this->db->query();

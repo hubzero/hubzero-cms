@@ -63,7 +63,10 @@ class Router extends Base
             // If no specific link has been found, search for a general one.
             if (!$itemid) {
                 foreach ($items as $item) {
-                    if (isset($query['view']) && $query['view'] == 'poll' && isset($item->query['view']) && $item->query['view'] == 'poll') {
+                    if (
+                        isset($query['view']) && $query['view'] == 'poll'
+                        && isset($item->query['view']) && $item->query['view'] == 'poll'
+                    ) {
                         // Check for an undealt with newsfeed id.
                         if (isset($query['id'])) {
                             // This menu item links to the newsfeed view but we need to append the newsfeed id to it.

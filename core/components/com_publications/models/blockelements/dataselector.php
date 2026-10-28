@@ -21,6 +21,7 @@ class Dataselector extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'dataselector';
 
     /**
@@ -28,6 +29,7 @@ class Dataselector extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_git = null;
 
     /**
@@ -49,8 +51,15 @@ class Dataselector extends Base
      * @param   integer  $order
      * @return  object
      */
-    public function render($elementid, $manifest, $pub = null, $viewname = 'edit', $status = null, $master = null, $order = 0)
-    {
+    public function render(
+        $elementid,
+        $manifest,
+        $pub = null,
+        $viewname = 'edit',
+        $status = null,
+        $master = null,
+        $order = 0
+    ) {
         $html = '';
 
         // Get project path
@@ -175,8 +184,17 @@ class Dataselector extends Base
      * @param   integer  $order
      * @return  object
      */
-    public function drawSelector($elementId, $manifest, $pub = null, $status = null, $active = 0, $collapse = 0, $total = 0, $master = null, $order = 0)
-    {
+    public function drawSelector(
+        $elementId,
+        $manifest,
+        $pub = null,
+        $status = null,
+        $active = 0,
+        $collapse = 0,
+        $total = 0,
+        $master = null,
+        $order = 0
+    ) {
         // Get attachment type model
         $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
 

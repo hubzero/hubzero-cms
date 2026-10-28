@@ -263,9 +263,9 @@ class Comments extends AdminController
         }
 
         // Set the redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . $fields['page_id'], false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&page_id=' . $fields['page_id'];
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -337,7 +337,9 @@ class Comments extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            $action = ($state == Comment::STATE_PUBLISHED) ? Lang::txt('COM_WIKI_UNPUBLISH') : Lang::txt('COM_WIKI_PUBLISH');
+            $action = ($state == Comment::STATE_PUBLISHED)
+                ? Lang::txt('COM_WIKI_UNPUBLISH')
+                : Lang::txt('COM_WIKI_PUBLISH');
 
             Notify::warning(Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action));
 
@@ -382,8 +384,8 @@ class Comments extends AdminController
     public function cancelTask()
     {
         // Set the redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&page_id=' . Request::getInt('page_id', 0), false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&page_id=' . Request::getInt('page_id', 0);
+        App::redirect(Route::url($url, false));
     }
 }

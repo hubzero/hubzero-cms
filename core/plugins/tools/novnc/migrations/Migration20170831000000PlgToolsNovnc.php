@@ -1,5 +1,8 @@
 <?php
 
+
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +16,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding Tools - NoVNC plugin
- **/
+ *
+ */
 class Migration20170831000000PlgToolsNovnc extends Base
 {
     /**

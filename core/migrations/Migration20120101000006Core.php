@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for 2011/12 content
+  *
  **/
 class Migration20120101000006Core extends Base
 {
@@ -96,10 +98,12 @@ class Migration20120101000006Core extends Base
         $this->disablePlugin('authentication', 'joomla');
 
         // Update faq text
-        $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`,'/change_password','/members/{{userid}}/changepassword')";
+        $query = "UPDATE `#__faq` SET `fulltxt` = "
+            . "REPLACE(`fulltxt`,'/change_password','/members/{{userid}}/changepassword')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`,'/members/{{userid}}/changepassword','/members/myaccount/changepassword')";
+        $query = "UPDATE `#__faq` SET `fulltxt` = "
+            . "REPLACE(`fulltxt`,'/members/{{userid}}/changepassword','/members/myaccount/changepassword')";
         $this->db->setQuery($query);
         $this->db->query();
         $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`,'/mynanohub/account/','/members/{{userid}}/')";
@@ -114,49 +118,245 @@ class Migration20120101000006Core extends Base
         $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`,'/lostusername','/login/remind')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`,'\"/report_problems/','\"/feedback/report_problems')";
+        $query = "UPDATE `#__faq` SET `fulltxt` = "
+            . "REPLACE(`fulltxt`,'\"/report_problems/','\"/feedback/report_problems')";
         $this->db->setQuery($query);
         $this->db->query();
 
         // Insert resource licenses
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc25-by-nc-sa','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\nNoncommercial — You may not use this work for commercial purposes.\r\n\r\nShare Alike — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.\r\n\r\nNotice — For any reuse or distribution, you must make clear to others the license terms of this work. The best way to do this is with a link to this web page.','Creative Commons BY-NC-SA 2.5',6,0,NULL,NULL,'http://creativecommons.org/licenses/by-nc-sa/2.5/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc25-by-nc-sa')";
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc25-by-nc-sa',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to Remix — to adapt the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n"
+            . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
+            . "Share Alike — If you alter, transform, or build upon this work, you may distribute the resulting "
+            . "work only under the same or similar license to this one.\r\n\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.\r\n\r\n"
+            . "Notice — For any reuse or distribution, you must make clear to others the license terms of this "
+            . "work. The best way to do this is with a link to this web page.',"
+            . "'Creative Commons BY-NC-SA 2.5',6,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-nc-sa/2.5/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc25-by-nc-sa')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc30-by-nc-sa','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\n\r\nNoncommercial — You may not use this work for commercial purposes.\r\n\r\nShare Alike — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.','Creative Commons BY-NC-SA 3.0',7,0,NULL,NULL,'http://creativecommons.org/licenses/by-nc-sa/3.0/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nc-sa')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc30-by-nc-sa',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to Remix — to adapt the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
+            . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
+            . "Share Alike — If you alter, transform, or build upon this work, you may distribute the resulting "
+            . "work only under the same or similar license to this one.\r\n\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.',"
+            . "'Creative Commons BY-NC-SA 3.0',7,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-nc-sa/3.0/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nc-sa')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\nNoncommercial — You may not use this work for commercial purposes.\r\n\r\nShare Alike — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.\r\n\r\nNotice — For any reuse or distribution, you must make clear to others the license terms of this work. The best way to do this is with a link to this web page.','Creative Commons',1,0,NULL,NULL,'http://creativecommons.org/licenses/by-nc-sa/2.5/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to Remix — to adapt the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n"
+            . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
+            . "Share Alike — If you alter, transform, or build upon this work, you may distribute the resulting "
+            . "work only under the same or similar license to this one.\r\n\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.\r\n\r\n"
+            . "Notice — For any reuse or distribution, you must make clear to others the license terms of this "
+            . "work. The best way to do this is with a link to this web page.',"
+            . "'Creative Commons',1,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-nc-sa/2.5/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc30-by-nc-nd','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\n\r\nNoncommercial — You may not use this work for commercial purposes.\r\n\r\nNo Derivative Works — You may not alter, transform, or build upon this work.\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.','Creative Commons BY-NC-ND 3.0',8,0,NULL,NULL,'http://creativecommons.org/licenses/by-nc-nd/3.0/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nc-nd')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc30-by-nc-nd',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
+            . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
+            . "No Derivative Works — You may not alter, transform, or build upon this work.\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.',"
+            . "'Creative Commons BY-NC-ND 3.0',8,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-nc-nd/3.0/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nc-nd')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc30-by','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto Remix — to adapt the work\r\nto make commercial use of the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.','Creative Commons BY 3.0',2,0,NULL,NULL,'http://creativecommons.org/licenses/by/3.0/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc30-by',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to Remix — to adapt the work\r\n"
+            . "to make commercial use of the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.',"
+            . "'Creative Commons BY 3.0',2,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by/3.0/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc30-by-sa','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto Remix — to adapt the work\r\nto make commercial use of the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\n\r\nShare Alike — If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.','Creative Commons BY-SA 3.0',3,0,NULL,NULL,'http://creativecommons.org/licenses/by-sa/3.0/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-sa')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc30-by-sa',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to Remix — to adapt the work\r\n"
+            . "to make commercial use of the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
+            . "Share Alike — If you alter, transform, or build upon this work, you may distribute the resulting "
+            . "work only under the same or similar license to this one.\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.',"
+            . "'Creative Commons BY-SA 3.0',3,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-sa/3.0/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-sa')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc30-by-nd','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto make commercial use of the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\n\r\nNo Derivative Works — You may not alter, transform, or build upon this work.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\nThe author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.','Creative Commons BY-ND 3.0',4,0,NULL,NULL,'http://creativecommons.org/licenses/by-nd/3.0/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nd')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc30-by-nd',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to make commercial use of the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
+            . "No Derivative Works — You may not alter, transform, or build upon this work.\r\n\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.',"
+            . "'Creative Commons BY-ND 3.0',4,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-nd/3.0/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nd')";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "INSERT INTO `#__resource_licenses` (`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`)
-				  SELECT 'cc30-by-nc','You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).\r\n\r\nNoncommercial — You may not use this work for commercial purposes.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The author\'s moral rights;\r\n- Rights other persons may have either in the work itself or in how the work is used, such as publicity or privacy rights.','Creative Commons BY-NC 3.0',5,0,NULL,NULL,'http://creativecommons.org/licenses/by-nc/3.0/',0,NULL
-				  FROM DUAL WHERE NOT EXISTS (SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nc')";
+
+        $query = "INSERT INTO `#__resource_licenses` "
+            . "(`name`, `text`, `title`, `ordering`, `apps_only`, `main`, `icon`, `url`, `agreement`, `info`) "
+            . "SELECT 'cc30-by-nc',"
+            . "'You are free:\r\n\r\n"
+            . "to Share — to copy, distribute and transmit the work\r\n"
+            . "to Remix — to adapt the work\r\n\r\n"
+            . "Under the following conditions:\r\n\r\n"
+            . "Attribution — You must attribute the work in the manner specified by the author or licensor "
+            . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
+            . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
+            . "With the understanding that:\r\n\r\n"
+            . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
+            . "holder.\r\n\r\n"
+            . "Public Domain — Where the work or any of its elements is in the public domain under applicable "
+            . "law, that status is in no way affected by the license.\r\n\r\n"
+            . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
+            . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
+            . "limitations;\r\n"
+            . "- The author\'s moral rights;\r\n"
+            . "- Rights other persons may have either in the work itself or in how the work is used, such as "
+            . "publicity or privacy rights.',"
+            . "'Creative Commons BY-NC 3.0',5,0,NULL,NULL,"
+            . "'http://creativecommons.org/licenses/by-nc/3.0/',0,NULL "
+            . "FROM DUAL WHERE NOT EXISTS "
+            . "(SELECT `name` FROM `#__resource_licenses` WHERE `name` = 'cc30-by-nc')";
         $this->db->setQuery($query);
         $this->db->query();
 
@@ -187,7 +387,8 @@ class Migration20120101000006Core extends Base
         $this->db->query();
 
         // Initial population of users password table
-        $query = "INSERT IGNORE INTO `#__users_password` (`user_id`,`passhash`) SELECT uidNumber, userPassword FROM #__xprofiles";
+        $query = "INSERT IGNORE INTO `#__users_password` (`user_id`,`passhash`) "
+            . "SELECT uidNumber, userPassword FROM #__xprofiles";
         $this->db->setQuery($query);
         $this->db->query();
 
@@ -198,7 +399,8 @@ class Migration20120101000006Core extends Base
         $query = "UPDATE `#__support_tickets` SET `status`=2, `open`=1 WHERE `status`=1";
         $this->db->setQuery($query);
         $this->db->query();
-        $query = "UPDATE `#__support_tickets` SET `status`=1 WHERE (`owner` != '' AND `owner` IS NOT NULL) AND `open`=1 AND `status`=0";
+        $query = "UPDATE `#__support_tickets` SET `status`=1 "
+            . "WHERE (`owner` != '' AND `owner` IS NOT NULL) AND `open`=1 AND `status`=0";
         $this->db->setQuery($query);
         $this->db->query();
 
@@ -213,7 +415,8 @@ class Migration20120101000006Core extends Base
         $this->db->query();
 
         // Update login redirect url
-        $query = "UPDATE `#__menu` SET `params` = REPLACE(`params`,'login=/myhub','login=/members/myaccount/') WHERE `alias` = 'login'";
+        $query = "UPDATE `#__menu` SET `params` = "
+            . "REPLACE(`params`,'login=/myhub','login=/members/myaccount/') WHERE `alias` = 'login'";
         $this->db->setQuery($query);
         $this->db->query();
     }

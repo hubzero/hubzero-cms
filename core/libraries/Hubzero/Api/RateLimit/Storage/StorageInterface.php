@@ -37,8 +37,18 @@ interface StorageInterface
      * @param   string  $created        Created date string
      * @return  void
      */
-    public function createRateLimitData($applicationId, $userId, $ip, $limitShort, $limitLong, $countShort, $countLong, $expiresShort, $expiresLong, $created);
-
+    public function createRateLimitData(
+        $applicationId,
+        $userId,
+        $ip,
+        $limitShort,
+        $limitLong,
+        $countShort,
+        $countLong,
+        $expiresShort,
+        $expiresLong,
+        $created
+    );
     /**
      * Increment rate limit record
      *

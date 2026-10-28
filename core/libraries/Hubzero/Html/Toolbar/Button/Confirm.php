@@ -19,8 +19,9 @@ class Confirm extends Button
     /**
      * Button type
      *
-     * @var  string
+     * @public string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Confirm';
 
     /**
@@ -35,8 +36,15 @@ class Confirm extends Button
      * @param   boolean  $hideMenu  True to hide the menu on click
      * @return  string   HTML string for the button
      */
-    public function fetchButton($type = 'Confirm', $msg = '', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
-    {
+    public function fetchButton(
+        $type = 'Confirm',
+        $msg = '',
+        $name = '',
+        $text = '',
+        $task = '',
+        $list = true,
+        $hideMenu = false
+    ) {
         $text   = \Lang::txt($text);
         $msg    = \Lang::txt($msg, true);
         $class  = $this->fetchIconClass($name);
@@ -89,6 +97,7 @@ class Confirm extends Button
      * @param   boolean  $list  True is requires a list confirmation.
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCommand($msg, $name, $task, $list)
     {
         Behavior::framework();

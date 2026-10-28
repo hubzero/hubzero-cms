@@ -34,17 +34,6 @@ class Address extends Field
     protected static $countries = null;
 
     /**
-     * Method to get the field label markup.
-     * Suppressed because the fieldset legend serves as the label.
-     *
-     * @return  string
-     */
-    protected function getLabel()
-    {
-        return '';
-    }
-
-    /**
      * Method to get the field input markup.
      *
      * @return  string  The field input markup.
@@ -55,13 +44,11 @@ class Address extends Field
         $html = array();
 
         // Initialize some field attributes.
-        $class = $this->element['class'] ? ' class="radio addresses-' . $this->id . ' ' . (string) $this->element['class'] . '"' : ' class="radio addresses-' . $this->id . '"';
-
-        $lang = App::get('language');
+        $class = ' class="radio addresses-' . $this->id;
+        $class .= $this->element['class'] ? ' ' . (string) $this->element['class'] . '"' : '"';
 
         // Start the radio field output.
         $html[] = '<fieldset id="' . $this->id . '"' . $class . '>';
-        $html[] = '<legend>' . $lang->txt($this->element['label'] ? (string) $this->element['label'] : 'Address') . '</legend>';
 
         // Get the field options.
         $options = $this->getOptions();
@@ -70,6 +57,8 @@ class Address extends Field
 
         $values = $this->value;
         $values = is_array($values) ? $values : array($values);
+
+        $lang = App::get('language');
 
         // Build the radio field output.
         foreach ($values as $i => $value) {
@@ -93,33 +82,55 @@ class Address extends Field
             $html[] = '<ul class="address-field">';
             $html[] = '<li>';
             $html[] = '<label for="' . $this->id . '-' .  $i . '-address1">' . $lang->txt('Street') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address1" name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address1" '
+                . 'name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" '
+                . 'value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';
             $html[] = '</li>';
             $html[] = '<li>';
             $html[] = '<label for="' . $this->id . '-' . $i . '-address2">' . $lang->txt('Street 2') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address2" name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" value="' . htmlspecialchars($value['address2'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address2" '
+                . 'name="' . $this->name . '[' . $i . '][address2]" placeholder="Street 2" '
+                . 'value="' . htmlspecialchars($value['address2'], ENT_COMPAT, 'UTF-8') . '" />';
             $html[] = '</li>';
             $html[] = '<li>';
             $html[] = '<label for="' . $this->id . '-' . $i . '-city">' . $lang->txt('City') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-city" name="' . $this->name . '[' . $i . '][city]" placeholder="City" value="' . htmlspecialchars($value['city'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-city" '
+                . 'name="' . $this->name . '[' . $i . '][city]" placeholder="City" '
+                . 'value="' . htmlspecialchars($value['city'], ENT_COMPAT, 'UTF-8') . '" />';
             $html[] = '</li>';
             $html[] = '<li>';
             $html[] = '<div class="grid">';
             $html[] = '<div class="col span6">';
             $html[] = '<label for="' . $this->id . '-' . $i . '-postal">' . $lang->txt('Postal code') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-postal" name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" value="' . htmlspecialchars($value['postal'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-postal" '
+                . 'name="' . $this->name . '[' . $i . '][postal]" placeholder="Postal code" '
+                . 'value="' . htmlspecialchars($value['postal'], ENT_COMPAT, 'UTF-8') . '" />';
             $html[] = '</div>';
             $html[] = '<div class="col span6 omega">';
             $html[] = '<label for="' . $this->id . '-' . $i . '-region">' . $lang->txt('State/Region') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-region" name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" value="' . htmlspecialchars($value['region'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-region" '
+                . 'name="' . $this->name . '[' . $i . '][region]" placeholder="State/Region" '
+                . 'value="' . htmlspecialchars($value['region'], ENT_COMPAT, 'UTF-8') . '" />';
             $html[] = '</div>';
             $html[] = '</div>';
             $html[] = '</li>';
             $html[] = '<li>';
             $html[] = '<label for="' . $this->id . '-' . $i . '-country">' . $lang->txt('Country') . '</label>';
-            $html[] = Dropdown::genericlist($options, $this->name . '[' . $i . '][country]', '', 'value', 'text', $value['country'], $this->id . '-' . $i . '-country');
-            $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" name="' . $this->name . '[' . $i . '][latitude]" value="' . htmlspecialchars($value['latitude'], ENT_COMPAT, 'UTF-8') . '" />';
-            $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" name="' . $this->name . '[' . $i . '][longitude]" value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = Dropdown::genericlist(
+                $options,
+                $this->name . '[' . $i . '][country]',
+                '',
+                'value',
+                'text',
+                $value['country'],
+                $this->id . '-' . $i . '-country'
+            );
+            $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
+                . 'name="' . $this->name . '[' . $i . '][latitude]" '
+                . 'value="' . htmlspecialchars($value['latitude'], ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="hidden" id="' . $this->id . '-' . $i . '" '
+                . 'name="' . $this->name . '[' . $i . '][longitude]" '
+                . 'value="' . htmlspecialchars($value['longitude'], ENT_COMPAT, 'UTF-8') . '" />';
             $html[] = '</li>';
             $html[] = '</ul>';
             $html[] = '</div>';
@@ -133,7 +144,8 @@ class Address extends Field
 			function manageProfileAddresses() {
 				if ($('.addresses-" . $this->id . "').length > 0) {
 					var fieldset = $('.addresses-" . $this->id . "');
-					var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">Add another address</a></p>').on('click', function(e){
+					var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">"
+                        . "Add another address</a></p>').on('click', function(e){
 						e.preventDefault();
 
 						var grp = fieldset
@@ -141,20 +153,34 @@ class Address extends Field
 							.last()
 							.clone();
 						grp.find('input').each(function(){
-							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
-							this.id = this.id.replace(/\-(\d+)\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';});
+							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){
+								return '[' + (parseInt(p1,10)+1) + ']';
+							});
+							this.id = this.id.replace(/\-(\d+)\-/,function(str,p1){
+								return '-' + (parseInt(p1,10)+1) + '-';
+							});
 							this.value = '';
 						});
 						grp.find('select').each(function(){
-							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
-							this.id = this.id.replace(/\-(\d+)\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';});
+							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){
+								return '[' + (parseInt(p1,10)+1) + ']';
+							});
+							this.id = this.id.replace(/\-(\d+)\-/,function(str,p1){
+								return '-' + (parseInt(p1,10)+1) + '-';
+							});
 							this.selectedIndex = 0;
 						});
 						grp.find('label').each(function(){
-							$(this).attr('for', $(this).attr('for').replace(/\-(\d+)\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';}));
+							$(this).attr('for', $(this).attr('for').replace(
+								/\-(\d+)\-/,
+								function(str,p1){
+									return '-' + (parseInt(p1,10)+1) + '-';
+								}
+							));
 						});
 						if (!grp.find('.address-remove').length) {
-							var rmv = $('<a class=\"address-remove icon-remove\" href=\"#\">Remove</a>');
+							var rmv = $('<a class=\"address-remove icon-remove\" "
+                                . "href=\"#\">Remove</a>');
 							grp.append(rmv);
 						}
 						grp.appendTo(fieldset);
@@ -171,7 +197,8 @@ class Address extends Field
 						}
 						grp = $(grp);
 						if (!grp.find('.address-remove').length) {
-							var rmv = $('<a class=\"address-remove icon-remove\" href=\"#\">Remove</a>').on('click', function(e){
+							var rmv = $('<a class=\"address-remove icon-remove\" "
+                                . "href=\"#\">Remove</a>').on('click', function(e){
 								e.preventDefault();
 								$(this).parent().remove();
 							});
@@ -181,8 +208,12 @@ class Address extends Field
 				}
 			};
 		");
-        App::get('document')->addScriptDeclaration("jQuery(document).ready(function($){\nmanageProfileAddresses();\n});");
-        App::get('document')->addScriptDeclaration("jQuery(document).on('ajaxLoad', function($){\nmanageProfileAddresses();\n});");
+        App::get('document')->addScriptDeclaration(
+            "jQuery(document).ready(function($){\nmanageProfileAddresses();\n});"
+        );
+        App::get('document')->addScriptDeclaration(
+            "jQuery(document).on('ajaxLoad', function($){\nmanageProfileAddresses();\n});"
+        );
 
         return implode($html);
     }
@@ -211,9 +242,10 @@ class Address extends Field
 
         foreach (self::$countries as $option) {
             // Create a new option object based on the <option /> element.
+            $altKey = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname);
             $tmp = Dropdown::option(
                 (string) $option->code,
-                App::get('language')->alt(trim((string) $option->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)),
+                App::get('language')->alt(trim((string) $option->name), $altKey),
                 'value',
                 'text'
             );

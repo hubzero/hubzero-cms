@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -174,9 +175,19 @@ class Categories extends AdminController
                 if ($val['title']) {
                     $element = new stdClass();
                     $element->default  = (isset($val['default'])) ? $val['default'] : '';
-                    $element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : strtolower(preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title'])));
+                    if (isset($val['name']) && trim($val['name']) != '') {
+                        $element->name = $val['name'];
+                    } else {
+                        $element->name = strtolower(
+                            preg_replace("/[^a-zA-Z0-9]/", '', trim($val['title']))
+                        );
+                    }
                     $element->label    = $val['title'];
-                    $element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
+                    if (isset($val['type']) && trim($val['type']) != '') {
+                        $element->type = $val['type'];
+                    } else {
+                        $element->type = 'text';
+                    }
                     $element->required = (isset($val['required'])) ? $val['required'] : '0';
                     foreach ($val as $key => $v) {
                         if (!in_array($key, array('default', 'type', 'title', 'name', 'required', 'options'))) {

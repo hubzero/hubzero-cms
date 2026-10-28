@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Blog Plugin class for adding Open Graph metadata to the document
+ *
  */
 class plgBlogOpengraph extends \Hubzero\Plugin\Plugin
 {
@@ -32,7 +34,8 @@ class plgBlogOpengraph extends \Hubzero\Plugin\Plugin
 
         $view = $this->view();
 
-        Document::addCustomTag('<meta property="og:title" content="' . $view->escape(Hubzero\Utility\Str::truncate(strip_tags($model->title), 40)) . '" />');
+        $title = $view->escape(Hubzero\Utility\Str::truncate(strip_tags($model->title), 40));
+        Document::addCustomTag('<meta property="og:title" content="' . $title . '" />');
 
         $content = Hubzero\Utility\Str::truncate(strip_tags($model->content), 300);
         $content = str_replace(array("\n", "\t", "\r"), ' ', $content);

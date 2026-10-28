@@ -54,13 +54,15 @@ class Content extends Handler
 
         // Get everything ready to store
         // Check if vars are already set (i.e. by a sub class), before setting them here
-        $asset->set('title', ((!empty($this->asset['title']))        ? $this->asset['title']        : strip_tags(substr($content, 0, 25))));
-        $asset->set('type', ((!empty($this->asset['type']))         ? $this->asset['type']         : 'text'));
-        $asset->set('subtype', ((!empty($this->asset['subtype']))      ? $this->asset['subtype']      : 'content'));
-        $asset->set('content', ((!empty($this->asset['content']))      ? $this->asset['content']      : $content));
-        $asset->set('url', ((!empty($this->asset['url']))          ? $this->asset['url']          : ''));
-        $asset->set('graded', ((!empty($this->asset['graded']))       ? $this->asset['graded']       : 0));
-        $asset->set('grade_weight', ((!empty($this->asset['grade_weight'])) ? $this->asset['grade_weight'] : ''));
+        $defaultTitle = strip_tags(substr($content, 0, 25));
+        $a = $this->asset;
+        $asset->set('title', (!empty($a['title']) ? $a['title'] : $defaultTitle));
+        $asset->set('type', (!empty($a['type']) ? $a['type'] : 'text'));
+        $asset->set('subtype', (!empty($a['subtype']) ? $a['subtype'] : 'content'));
+        $asset->set('content', (!empty($a['content']) ? $a['content'] : $content));
+        $asset->set('url', (!empty($a['url']) ? $a['url'] : ''));
+        $asset->set('graded', (!empty($a['graded']) ? $a['graded'] : 0));
+        $asset->set('grade_weight', (!empty($a['grade_weight']) ? $a['grade_weight'] : ''));
         $asset->set('created', \Date::toSql());
         $asset->set('created_by', App::get('authn')['user_id']);
         $asset->set('course_id', Request::getInt('course_id', 0));
@@ -79,7 +81,11 @@ class Content extends Handler
 
         // If we're saving progress calculation var
         if ($progress = Request::getInt('progress_factors', false)) {
-            $asset->set('progress_factors', array('asset_id' => $asset->get('id'), 'section_id' => Request::getInt('section_id', 0)));
+            $progressFactors = array(
+                'asset_id' => $asset->get('id'),
+                'section_id' => Request::getInt('section_id', 0)
+            );
+            $asset->set('progress_factors', $progressFactors);
             $asset->store();
         }
 
@@ -159,10 +165,12 @@ class Content extends Handler
 
         // Get everything ready to store
         // Check if vars are already set (i.e. by a sub class), before setting them here
-        $asset->set('title', ((!empty($this->asset['title']))   ? $this->asset['title']   : strip_tags(substr($content, 0, 25))));
-        $asset->set('type', ((!empty($this->asset['type']))    ? $this->asset['type']    : 'text'));
-        $asset->set('subtype', ((!empty($this->asset['subtype'])) ? $this->asset['subtype'] : 'content'));
-        $asset->set('content', ((!empty($this->asset['content'])) ? $this->asset['content'] : $content));
+        $defaultTitle = strip_tags(substr($content, 0, 25));
+        $a = $this->asset;
+        $asset->set('title', (!empty($a['title']) ? $a['title'] : $defaultTitle));
+        $asset->set('type', (!empty($a['type']) ? $a['type'] : 'text'));
+        $asset->set('subtype', (!empty($a['subtype']) ? $a['subtype'] : 'content'));
+        $asset->set('content', (!empty($a['content']) ? $a['content'] : $content));
 
         // If we have a state coming in as an int
         if ($graded = Request::getInt('graded', false)) {
@@ -180,7 +188,11 @@ class Content extends Handler
 
         // If we're saving progress calculation var
         if ($progress = Request::getInt('progress_factors', false)) {
-            $asset->set('progress_factors', array('asset_id' => $asset->get('id'), 'section_id' => Request::getInt('section_id', 0)));
+            $progressFactors = array(
+                'asset_id' => $asset->get('id'),
+                'section_id' => Request::getInt('section_id', 0)
+            );
+            $asset->set('progress_factors', $progressFactors);
         } elseif (Request::getInt('edit_progress_factors', false)) {
             $asset->set('section_id', Request::getInt('section_id', 0));
             $asset->set('progress_factors', 'delete');

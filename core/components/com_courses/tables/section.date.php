@@ -94,7 +94,8 @@ class SectionDate extends Table
             $this->created_by = User::get('id');
 
             // Make sure the record doesn't already exist
-            $query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->quote($this->scope) . " AND scope_id=" . $this->_db->quote($this->scope_id);
+            $query  = "SELECT id FROM $this->_tbl WHERE scope=" . $this->_db->quote($this->scope)
+                . " AND scope_id=" . $this->_db->quote($this->scope_id);
             $query .= " AND section_id=" . $this->_db->quote($this->section_id);
             $query .= " LIMIT 1";
 
@@ -113,7 +114,7 @@ class SectionDate extends Table
      * @param   array   $filters
      * @return  string  SQL
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS sd";
 
@@ -147,7 +148,7 @@ class SectionDate extends Table
     public function count($filters = array())
     {
         $query  = "SELECT COUNT(sd.id)";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -162,7 +163,7 @@ class SectionDate extends Table
     public function find($filters = array())
     {
         $query  = "SELECT sd.*";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (!isset($filters['sort']) || $filters['sort'] == '') {
             $filters['sort'] = 'sd.publish_up';

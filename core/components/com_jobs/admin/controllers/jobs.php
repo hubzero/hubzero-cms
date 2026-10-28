@@ -134,7 +134,7 @@ class Jobs extends AdminController
             $this->view->row->modified_by  = 0;
             $this->view->row->publish_up   = Date::toSql();
             $this->view->row->employerid   = 1; // admin
-        } else if (!$this->view->row->load($id)) {
+        } elseif (!$this->view->row->load($id)) {
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
@@ -167,7 +167,8 @@ class Jobs extends AdminController
         // Get subscription info
         include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
-        $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($this->view->employer->subscriptionid);
+        $subId = $this->view->employer->subscriptionid;
+        $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($subId);
 
         // Get job types and categories
         $jt = new JobType($this->database);
@@ -251,7 +252,7 @@ class Jobs extends AdminController
             switch ($action) {
                 case 'publish':
                     // make sure we aren't over quota
-                    $allowed_ads = $employerid == 1 ? 1 : $this->_checkQuota($job, $employerid, $this->database);
+                    $allowed_ads = $employerid == 1 ? 1 : $this->checkQuota($job, $employerid, $this->database);
 
                     if ($allowed_ads <= 0) {
                         $statusmsg .= Lang::txt('COM_JOBS_ERROR_OVER_LIMIT');
@@ -314,7 +315,15 @@ class Jobs extends AdminController
                 $emailbody .= $message;
             }
 
-            if (!Event::trigger('xmessage.onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option))) {
+            $messageParams = array(
+                'jobs_ad_status_changed',
+                $subject,
+                $emailbody,
+                $from,
+                array($job->addedBy),
+                $this->_option
+            );
+            if (!Event::trigger('xmessage.onSendMessage', $messageParams)) {
                 Notify::error(Lang::txt('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
             }
         }
@@ -334,12 +343,18 @@ class Jobs extends AdminController
      * @param   object   $database  Database
      * @return  integer
      */
-    private function _checkQuota($job, $uid, $database)
+    private function checkQuota($job, $uid, $database)
     {
         // make sure we aren't over quota
         include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
 
-        $maxads = isset($this->config->parameters['maxads']) && intval($this->config->parameters['maxads']) > 0  ? $this->config->parameters['maxads'] : 3;
+        $maxads = 3;
+        if (
+            isset($this->config->parameters['maxads'])
+            && intval($this->config->parameters['maxads']) > 0
+        ) {
+            $maxads = $this->config->parameters['maxads'];
+        }
         $service = \Components\Services\Models\Service::getUserService($uid);
         $activejobs = $job->countMyActiveOpenings($uid, 1);
 

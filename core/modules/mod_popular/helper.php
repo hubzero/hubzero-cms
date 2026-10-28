@@ -117,6 +117,7 @@ class Helper extends Module
             $title = '';
         }
 
-        return Lang::txts('MOD_POPULAR_TITLE' . ($catid ? '_CATEGORY' : '') . ($who != '0' ? "_$who" : ''), (int)$params->get('count'), $title);
+        $titleKey = 'MOD_POPULAR_TITLE' . ($catid ? '_CATEGORY' : '') . ($who != '0' ? "_$who" : '');
+        return Lang::txts($titleKey, (int)$params->get('count'), $title);
     }
 }

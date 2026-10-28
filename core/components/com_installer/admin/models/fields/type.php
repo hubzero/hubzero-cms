@@ -50,7 +50,16 @@ class Type extends Field
             $options[] = Html::select('option', $type, Lang::txt('COM_INSTALLER_TYPE_' . strtoupper($type)));
         }
 
-        $return = Html::select('genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
+        $return = Html::select(
+            'genericlist',
+            $options,
+            $this->name,
+            $onchange,
+            'value',
+            'text',
+            $this->value,
+            $this->id
+        );
 
         return $return;
     }

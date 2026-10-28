@@ -26,7 +26,7 @@ class Comment extends Relational
      *
      * @var  integer
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * The table namespace
@@ -264,7 +264,8 @@ class Comment extends Relational
                 break;
 
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=wikicomment&id=' . $this->get('id') . '&parent=' . $this->get('pageid');
+                $link = 'index.php?option=com_support&task=reportabuse&category=wikicomment&id='
+                    . $this->get('id') . '&parent=' . $this->get('pageid');
                 break;
 
             case 'permalink':

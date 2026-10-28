@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,10 +27,11 @@ use Request;
 
 class Boosts extends AdminController
 {
-    protected $crudHelper,
-        $factory,
-        $typeHelper;
+    protected $crudHelper;
+    protected $factory;
+    protected $typeHelper;
 
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_taskMap = [
         '__default' => 'list'
     ];

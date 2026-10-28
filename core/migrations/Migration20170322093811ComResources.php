@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding normalized resource aliases where missing
- **/
+ *
+ */
 class Migration20170322093811ComResources extends Base
 {
     public function normalize($txt)
@@ -33,7 +35,8 @@ class Migration20170322093811ComResources extends Base
 
             foreach ($results as $result) {
                 $alias = $this->normalize($result->type);
-                $query = "UPDATE #__resource_types SET alias=" . $this->db->quote($alias) . " WHERE id = " . $this->db->quote($result->id);
+                $query = "UPDATE #__resource_types SET alias=" . $this->db->quote($alias)
+                    . " WHERE id = " . $this->db->quote($result->id);
                             $this->db->setQuery($query);
                             $this->db->execute();
             }

@@ -74,6 +74,7 @@ class ErrorServiceProvider extends ServiceProvider
 
             case 'simple':
                 $this->app['config']->set('error_reporting', 'relaxed');
+                // no break
 
             case 'relaxed':
                 error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);

@@ -77,9 +77,8 @@ class Managers extends SiteController
                 if (is_object($user) && $user->get('username')) {
                     $uid = $mbr;
                 }
-            }
-            // Username
-            else {
+            } else {
+                // Username
                 $uid = \Hubzero\User\User::oneByUsername($mbr)->get('id');
             }
 

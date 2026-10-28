@@ -97,7 +97,8 @@ class Media extends SiteController
 
                 // Default image
                 if (!$source) {
-                    $source = PATH_CORE . DS . trim($this->config->get('masterimage', 'components/com_publications/site/assets/img/master.png'), DS);
+                    $defaultMaster = 'components/com_publications/site/assets/img/master.png';
+                    $source = PATH_CORE . DS . trim($this->config->get('masterimage', $defaultMaster), DS);
                 }
             } else {
                 // Load from gallery
@@ -105,7 +106,8 @@ class Media extends SiteController
 
                 // Default image
                 if (!is_file($source)) {
-                    $source = PATH_CORE . DS . trim($this->config->get('gallery_thumb', 'components/com_publications/site/assets/img/gallery_thumb.gif'), DS);
+                    $defaultThumb = 'components/com_publications/site/assets/img/gallery_thumb.gif';
+                    $source = PATH_CORE . DS . trim($this->config->get('gallery_thumb', $defaultThumb), DS);
                 }
             }
         }

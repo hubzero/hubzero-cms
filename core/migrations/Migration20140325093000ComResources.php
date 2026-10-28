@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -51,7 +52,8 @@ class Migration20140325093000ComResources extends Base
 
         if (!$found) {
             // levenshtein func
-            $query = 'CREATE FUNCTION `LEVENSHTEIN`(s1 VARCHAR(255) CHARACTER SET utf8, s2 VARCHAR(255) CHARACTER SET utf8) RETURNS int(11)
+            $query = 'CREATE FUNCTION `LEVENSHTEIN`'
+                . '(s1 VARCHAR(255) CHARACTER SET utf8, s2 VARCHAR(255) CHARACTER SET utf8) RETURNS int(11)
 	DETERMINISTIC
 BEGIN
 	DECLARE s1_len, s2_len, i, j, c, c_temp, cost INT;

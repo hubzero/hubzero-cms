@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for 2011/12 table modifications
- **/
+ *
+ */
 class Migration20120101000004Core extends Base
 {
     public function up()
@@ -24,80 +26,129 @@ class Migration20120101000004Core extends Base
             && $this->db->tableHasField('#__blog_entries', 'title')
             && $this->db->tableHasField('#__blog_entries', 'content')
         ) {
-            $query = "ALTER TABLE `#__blog_entries` ADD FULLTEXT INDEX `ftidx_title_content` (`title` ASC, `content` ASC)";
+            $query = "ALTER TABLE `#__blog_entries` ADD FULLTEXT INDEX `ftidx_title_content` "
+                . "(`title` ASC, `content` ASC)";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
         if ($this->db->tableExists('#__citations')) {
-            if ($this->db->tableHasField('#__citations', 'type') && $this->db->tableHasField('#__citations', 'uid')) {
-                $query = "ALTER TABLE `#__citations` CHANGE COLUMN `type` `type` VARCHAR(30) NULL DEFAULT NULL AFTER `uid`";
+            if (
+                $this->db->tableHasField('#__citations', 'type')
+                && $this->db->tableHasField('#__citations', 'uid')
+            ) {
+                $query = "ALTER TABLE `#__citations` CHANGE COLUMN `type` `type` "
+                    . "VARCHAR(30) NULL DEFAULT NULL AFTER `uid`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__citations', 'published') && $this->db->tableHasField('#__citations', 'type')) {
-                $query = "ALTER TABLE `#__citations` CHANGE COLUMN `published` `published` INT(3) NOT NULL DEFAULT '1' AFTER `type`";
+            if (
+                $this->db->tableHasField('#__citations', 'published')
+                && $this->db->tableHasField('#__citations', 'type')
+            ) {
+                $query = "ALTER TABLE `#__citations` CHANGE COLUMN `published` `published` "
+                    . "INT(3) NOT NULL DEFAULT '1' AFTER `type`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'language') && $this->db->tableHasField('#__citations', 'notes')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `language` VARCHAR(100) NULL DEFAULT NULL AFTER `notes`";
+            if (
+                !$this->db->tableHasField('#__citations', 'language')
+                && $this->db->tableHasField('#__citations', 'notes')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `language` VARCHAR(100) "
+                    . "NULL DEFAULT NULL AFTER `notes`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'accession_number') && $this->db->tableHasField('#__citations', 'language')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `accession_number` VARCHAR(100) NULL DEFAULT NULL AFTER `language`";
+            if (
+                !$this->db->tableHasField('#__citations', 'accession_number')
+                && $this->db->tableHasField('#__citations', 'language')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `accession_number` VARCHAR(100) "
+                    . "NULL DEFAULT NULL AFTER `language`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'short_title') && $this->db->tableHasField('#__citations', 'accession_number')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `short_title` VARCHAR(250) NULL DEFAULT NULL AFTER `accession_number`";
+            if (
+                !$this->db->tableHasField('#__citations', 'short_title')
+                && $this->db->tableHasField('#__citations', 'accession_number')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `short_title` VARCHAR(250) "
+                    . "NULL DEFAULT NULL AFTER `accession_number`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'author_address') && $this->db->tableHasField('#__citations', 'short_title')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `author_address` TEXT NULL DEFAULT NULL AFTER `short_title`";
+            if (
+                !$this->db->tableHasField('#__citations', 'author_address')
+                && $this->db->tableHasField('#__citations', 'short_title')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `author_address` TEXT "
+                    . "NULL DEFAULT NULL AFTER `short_title`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'keywords') && $this->db->tableHasField('#__citations', 'author_address')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `keywords` TEXT NULL DEFAULT NULL AFTER `author_address`";
+            if (
+                !$this->db->tableHasField('#__citations', 'keywords')
+                && $this->db->tableHasField('#__citations', 'author_address')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `keywords` TEXT "
+                    . "NULL DEFAULT NULL AFTER `author_address`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'abstract') && $this->db->tableHasField('#__citations', 'keywords')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `abstract` TEXT NULL DEFAULT NULL AFTER `keywords`";
+            if (
+                !$this->db->tableHasField('#__citations', 'abstract')
+                && $this->db->tableHasField('#__citations', 'keywords')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `abstract` TEXT "
+                    . "NULL DEFAULT NULL AFTER `keywords`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'call_number') && $this->db->tableHasField('#__citations', 'abstract')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `call_number` VARCHAR(100) NULL DEFAULT NULL AFTER `abstract`";
+            if (
+                !$this->db->tableHasField('#__citations', 'call_number')
+                && $this->db->tableHasField('#__citations', 'abstract')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `call_number` VARCHAR(100) "
+                    . "NULL DEFAULT NULL AFTER `abstract`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'label') && $this->db->tableHasField('#__citations', 'call_number')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `label` VARCHAR(100) NULL DEFAULT NULL AFTER `call_number`";
+            if (
+                !$this->db->tableHasField('#__citations', 'label')
+                && $this->db->tableHasField('#__citations', 'call_number')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `label` VARCHAR(100) "
+                    . "NULL DEFAULT NULL AFTER `call_number`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'research_notes') && $this->db->tableHasField('#__citations', 'label')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `research_notes` TEXT NULL DEFAULT NULL AFTER `label`";
+            if (
+                !$this->db->tableHasField('#__citations', 'research_notes')
+                && $this->db->tableHasField('#__citations', 'label')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `research_notes` TEXT "
+                    . "NULL DEFAULT NULL AFTER `label`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations', 'params') && $this->db->tableHasField('#__citations', 'research_notes')) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `params` TEXT NULL DEFAULT NULL AFTER `research_notes` ";
+            if (
+                !$this->db->tableHasField('#__citations', 'params')
+                && $this->db->tableHasField('#__citations', 'research_notes')
+            ) {
+                $query = "ALTER TABLE `#__citations` ADD COLUMN `params` TEXT "
+                    . "NULL DEFAULT NULL AFTER `research_notes` ";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -109,29 +160,42 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__citations', 'abstract')
                 && !$this->db->tableHasKey('#__citations', 'ftidx_title_isbn_doi_abstract')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD FULLTEXT INDEX `ftidx_title_isbn_doi_abstract` (`title` ASC, `isbn` ASC, `doi` ASC, `abstract` ASC)";
+                $query = "ALTER TABLE `#__citations` ADD FULLTEXT INDEX `ftidx_title_isbn_doi_abstract` "
+                    . "(`title` ASC, `isbn` ASC, `doi` ASC, `abstract` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
         }
 
         if ($this->db->tableExists('#__citations_assoc')) {
-            if ($this->db->tableHasField('#__citations_assoc', 'table') && !$this->db->tableHasField('#__citations_assoc', 'tbl')) {
-                $query = "ALTER TABLE `#__citations_assoc` CHANGE COLUMN `table` `tbl` VARCHAR(50) NULL DEFAULT NULL AFTER `type`";
+            if (
+                $this->db->tableHasField('#__citations_assoc', 'table')
+                && !$this->db->tableHasField('#__citations_assoc', 'tbl')
+            ) {
+                $query = "ALTER TABLE `#__citations_assoc` CHANGE COLUMN `table` `tbl` "
+                    . "VARCHAR(50) NULL DEFAULT NULL AFTER `type`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
         }
 
         if ($this->db->tableExists('#__citations_authors')) {
-            if ($this->db->tableHasField('#__citations_authors', 'author_uid') && !$this->db->tableHasField('#__citations_authors', 'authorid')) {
-                $query = "ALTER TABLE `#__citations_authors` CHANGE COLUMN `author_uid` `authorid` INT(11) NULL DEFAULT '0' AFTER `author`";
+            if (
+                $this->db->tableHasField('#__citations_authors', 'author_uid')
+                && !$this->db->tableHasField('#__citations_authors', 'authorid')
+            ) {
+                $query = "ALTER TABLE `#__citations_authors` CHANGE COLUMN `author_uid` `authorid` "
+                    . "INT(11) NULL DEFAULT '0' AFTER `author`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__citations_authors', 'uidNumber') && $this->db->tableHasField('#__citations_authors', 'authorid')) {
-                $query = "ALTER TABLE `#__citations_authors` ADD COLUMN `uidNumber` INT(11) NULL DEFAULT '0' AFTER `authorid`";
+            if (
+                !$this->db->tableHasField('#__citations_authors', 'uidNumber')
+                && $this->db->tableHasField('#__citations_authors', 'authorid')
+            ) {
+                $query = "ALTER TABLE `#__citations_authors` ADD COLUMN `uidNumber` "
+                    . "INT(11) NULL DEFAULT '0' AFTER `authorid`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -143,18 +207,25 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__citations_authors', 'uidNumber')
                 && !$this->db->tableHasKey('#__citations_authors', 'uidx_cid_author_authorid_uidNumber')
             ) {
-                $query = "ALTER TABLE `#__citations_authors` ADD UNIQUE INDEX `uidx_cid_author_authorid_uidNumber` (`cid` ASC, `author` ASC, `authorid` ASC, `uidNumber` ASC)";
+                $query = "ALTER TABLE `#__citations_authors` ADD UNIQUE INDEX "
+                    . "`uidx_cid_author_authorid_uidNumber` (`cid` ASC, `author` ASC, `authorid` ASC, `uidNumber` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__citations_authors', 'authorid') && !$this->db->tableHasKey('#__citations_authors', 'idx_authorid')) {
+            if (
+                $this->db->tableHasField('#__citations_authors', 'authorid')
+                && !$this->db->tableHasKey('#__citations_authors', 'idx_authorid')
+            ) {
                 $query = "ALTER TABLE `#__citations_authors` ADD INDEX `idx_authorid` (`authorid` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__citations_authors', 'uidNumber') && !$this->db->tableHasKey('#__citations_authors', 'idx_uidNumber')) {
+            if (
+                $this->db->tableHasField('#__citations_authors', 'uidNumber')
+                && !$this->db->tableHasKey('#__citations_authors', 'idx_uidNumber')
+            ) {
                 $query = "ALTER TABLE `#__citations_authors` ADD INDEX `idx_uidNumber` (`uidNumber` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -168,28 +239,44 @@ class Migration20120101000004Core extends Base
         }
 
         if ($this->db->tableExists('#__doi_mapping')) {
-            if ($this->db->tableHasField('#__doi_mapping', 'alias') && !$this->db->tableHasField('#__doi_mapping', 'versionid')) {
+            if (
+                $this->db->tableHasField('#__doi_mapping', 'alias')
+                && !$this->db->tableHasField('#__doi_mapping', 'versionid')
+            ) {
                 $query = "ALTER TABLE `#__doi_mapping` ADD COLUMN `versionid` INT(11) NULL DEFAULT '0' AFTER `alias`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__doi_mapping', 'versionid') && !$this->db->tableHasField('#__doi_mapping', 'doi')) {
-                $query = "ALTER TABLE `#__doi_mapping` ADD COLUMN `doi` VARCHAR(50) NULL DEFAULT NULL AFTER `versionid`";
+            if (
+                $this->db->tableHasField('#__doi_mapping', 'versionid')
+                && !$this->db->tableHasField('#__doi_mapping', 'doi')
+            ) {
+                $query = "ALTER TABLE `#__doi_mapping` ADD COLUMN `doi` "
+                    . "VARCHAR(50) NULL DEFAULT NULL AFTER `versionid`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
         }
 
-        if ($this->db->tableExists('#__events') && $this->db->tableHasField('#__events', 'publish_down') && !$this->db->tableHasField('#__events', 'time_zone')) {
-            $query = "ALTER TABLE `#__events` ADD COLUMN `time_zone` VARCHAR(5) NULL DEFAULT NULL AFTER `publish_down`";
+        if (
+            $this->db->tableExists('#__events')
+            && $this->db->tableHasField('#__events', 'publish_down')
+            && !$this->db->tableHasField('#__events', 'time_zone')
+        ) {
+            $query = "ALTER TABLE `#__events` ADD COLUMN `time_zone` "
+                . "VARCHAR(5) NULL DEFAULT NULL AFTER `publish_down`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
         if ($this->db->tableExists('#__faq')) {
-            if ($this->db->tableHasField('#__faq', 'fulltext') && !$this->db->tableHasField('#__faq', 'fulltxt')) {
-                $query = "ALTER TABLE `#__faq` CHANGE COLUMN `fulltext` `fulltxt` TEXT NULL DEFAULT NULL AFTER `params`";
+            if (
+                $this->db->tableHasField('#__faq', 'fulltext')
+                && !$this->db->tableHasField('#__faq', 'fulltxt')
+            ) {
+                $query = "ALTER TABLE `#__faq` CHANGE COLUMN `fulltext` `fulltxt` "
+                    . "TEXT NULL DEFAULT NULL AFTER `params`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -206,12 +293,16 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__faq', 'fulltxt')
                 && !$this->db->tableHasKey('#__faq', 'jos_faq_title_introtext_fulltext_ftidx')
             ) {
-                $query = "ALTER TABLE `#__faq` ADD FULLTEXT INDEX `jos_faq_title_introtext_fulltext_ftidx` (`title` ASC, `params` ASC, `fulltxt` ASC)";
+                $query = "ALTER TABLE `#__faq` ADD FULLTEXT INDEX "
+                    . "`jos_faq_title_introtext_fulltext_ftidx` (`title` ASC, `params` ASC, `fulltxt` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__faq', 'fulltxt') && !$this->db->tableHasKey('#__faq', 'ftidx_fulltxt')) {
+            if (
+                $this->db->tableHasField('#__faq', 'fulltxt')
+                && !$this->db->tableHasKey('#__faq', 'ftidx_fulltxt')
+            ) {
                 $query = "ALTER TABLE `#__faq` ADD FULLTEXT INDEX `ftidx_fulltxt` (`fulltxt` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -226,13 +317,18 @@ class Migration20120101000004Core extends Base
 
         if ($this->db->tableExists('#__faq_categories')) {
             if ($this->db->tableHasField('#__faq_categories', 'description')) {
-                $query = "ALTER TABLE `#__faq_categories` CHANGE COLUMN `description` `description` VARCHAR(255) NULL DEFAULT ''";
+                $query = "ALTER TABLE `#__faq_categories` CHANGE COLUMN `description` `description` "
+                    . "VARCHAR(255) NULL DEFAULT ''";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasField('#__faq_categories', 'asset_id') && $this->db->tableHasField('#__faq_categories', 'access')) {
-                $query = "ALTER TABLE `#__faq_categories` ADD COLUMN `asset_id` INT(11) NOT NULL DEFAULT '0' AFTER `access`";
+            if (
+                !$this->db->tableHasField('#__faq_categories', 'asset_id')
+                && $this->db->tableHasField('#__faq_categories', 'access')
+            ) {
+                $query = "ALTER TABLE `#__faq_categories` ADD COLUMN `asset_id` "
+                    . "INT(11) NOT NULL DEFAULT '0' AFTER `access`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -240,7 +336,8 @@ class Migration20120101000004Core extends Base
 
         if ($this->db->tableExists('#__faq_comments')) {
             if ($this->db->tableHasField('#__faq_comments', 'entry_id')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `entry_id` `entry_id` INT(11) NOT NULL DEFAULT '0'";
+                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `entry_id` `entry_id` "
+                    . "INT(11) NOT NULL DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -252,19 +349,22 @@ class Migration20120101000004Core extends Base
             }
 
             if ($this->db->tableHasField('#__faq_comments', 'created')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `created` `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'";
+                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `created` `created` "
+                    . "DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__faq_comments', 'created_by')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `created_by` `created_by` INT(11) NOT NULL DEFAULT '0'";
+                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `created_by` `created_by` "
+                    . "INT(11) NOT NULL DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__faq_comments', 'anonymous')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `anonymous` `anonymous` TINYINT(2) NOT NULL DEFAULT '0'";
+                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `anonymous` `anonymous` "
+                    . "TINYINT(2) NOT NULL DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -275,20 +375,32 @@ class Migration20120101000004Core extends Base
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__faq_comments', 'parent') && !$this->db->tableHasField('#__faq_comments', 'asset_id')) {
-                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `asset_id` INT(11) NOT NULL DEFAULT '0' AFTER `parent`";
+            if (
+                $this->db->tableHasField('#__faq_comments', 'parent')
+                && !$this->db->tableHasField('#__faq_comments', 'asset_id')
+            ) {
+                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `asset_id` "
+                    . "INT(11) NOT NULL DEFAULT '0' AFTER `parent`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__faq_comments', 'asset_id') && !$this->db->tableHasField('#__faq_comments', 'helpful')) {
-                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `helpful` INT(11) NOT NULL DEFAULT '0' AFTER `asset_id`";
+            if (
+                $this->db->tableHasField('#__faq_comments', 'asset_id')
+                && !$this->db->tableHasField('#__faq_comments', 'helpful')
+            ) {
+                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `helpful` "
+                    . "INT(11) NOT NULL DEFAULT '0' AFTER `asset_id`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__faq_comments', 'helpful') && !$this->db->tableHasField('#__faq_comments', 'nothelpful')) {
-                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `nothelpful` INT(11) NOT NULL DEFAULT '0' AFTER `helpful`";
+            if (
+                $this->db->tableHasField('#__faq_comments', 'helpful')
+                && !$this->db->tableHasField('#__faq_comments', 'nothelpful')
+            ) {
+                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `nothelpful` "
+                    . "INT(11) NOT NULL DEFAULT '0' AFTER `helpful`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -300,7 +412,8 @@ class Migration20120101000004Core extends Base
                 && !$this->db->tableHasField('#__password_rule', 'grp')
                 && $this->db->tableHasField('#__password_rule', 'failuremsg')
             ) {
-                $query = "ALTER TABLE `#__password_rule` CHANGE COLUMN `group` `grp` CHAR(32) NOT NULL AFTER `failuremsg` ;";
+                $query = "ALTER TABLE `#__password_rule` CHANGE COLUMN `group` `grp` "
+                    . "CHAR(32) NOT NULL AFTER `failuremsg` ;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -346,7 +459,8 @@ class Migration20120101000004Core extends Base
                 && !$this->db->tableHasField('#__resources', 'fulltxt')
                 && $this->db->tableHasField('#__resources', 'introtext')
             ) {
-                $query = "ALTER TABLE `#__resources` CHANGE COLUMN `fulltext` `fulltxt` TEXT NOT NULL AFTER `introtext`";
+                $query = "ALTER TABLE `#__resources` CHANGE COLUMN `fulltext` `fulltxt` "
+                    . "TEXT NOT NULL AFTER `introtext`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -362,7 +476,8 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__resources', 'fulltxt')
                 && !$this->db->tableHasKey('#__resources', 'ftidx_introtext_fulltxt')
             ) {
-                $query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_introtext_fulltxt` (`introtext` ASC, `fulltxt` ASC)";
+                $query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_introtext_fulltxt` "
+                    . "(`introtext` ASC, `fulltxt` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -379,7 +494,8 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__resources', 'introtext')
                 && $this->db->tableHasField('#__resources', 'fulltxt')
             ) {
-                $query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_title_introtext_fulltxt` (`title` ASC, `introtext` ASC, `fulltxt` ASC)";
+                $query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_title_introtext_fulltxt` "
+                    . "(`title` ASC, `introtext` ASC, `fulltxt` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -392,7 +508,10 @@ class Migration20120101000004Core extends Base
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__session', 'PRIMARY') && $this->db->tableHasField('#__session', 'session_id')) {
+            if (
+                !$this->db->tableHasKey('#__session', 'PRIMARY')
+                && $this->db->tableHasField('#__session', 'session_id')
+            ) {
                 $query = "ALTER TABLE `#__session` ADD PRIMARY KEY USING BTREE (`session_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -401,15 +520,20 @@ class Migration20120101000004Core extends Base
 
         if ($this->db->tableExists('#__stats_topvals')) {
             if ($this->db->tableHasField('#__stats_topvals', 'rank')) {
-                $query = "ALTER TABLE `#__stats_topvals` CHANGE COLUMN `rank` `rank` SMALLINT(6) NOT NULL DEFAULT '0'";
+                $query = "ALTER TABLE `#__stats_topvals` CHANGE COLUMN `rank` `rank` "
+                    . "SMALLINT(6) NOT NULL DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
         }
 
         if ($this->db->tableExists('#__support_tickets')) {
-            if (!$this->db->tableHasField('#__support_tickets', 'open') && $this->db->tableHasField('#__support_tickets', 'group')) {
-                $query = "ALTER TABLE `#__support_tickets` ADD COLUMN `open` TINYINT(3) NOT NULL DEFAULT '1' AFTER `group`";
+            if (
+                !$this->db->tableHasField('#__support_tickets', 'open')
+                && $this->db->tableHasField('#__support_tickets', 'group')
+            ) {
+                $query = "ALTER TABLE `#__support_tickets` ADD COLUMN `open` "
+                    . "TINYINT(3) NOT NULL DEFAULT '1' AFTER `group`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -433,14 +557,18 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__tags', 'raw_tag')
                 && $this->db->tableHasField('#__tags', 'description')
             ) {
-                $query = "ALTER TABLE `#__tags` ADD FULLTEXT INDEX `jos_tags_raw_tag_alias_description_ftidx` (`raw_tag` ASC, `description` ASC)";
+                $query = "ALTER TABLE `#__tags` ADD FULLTEXT INDEX "
+                    . "`jos_tags_raw_tag_alias_description_ftidx` (`raw_tag` ASC, `description` ASC)";
             }
                 $this->db->setQuery($query);
                 $this->db->query();
         }
 
         if ($this->db->tableExists('#__tags_object')) {
-            if (!$this->db->tableHasField('#__tags_object', 'label') && $this->db->tableHasField('#__tags_object', 'tbl')) {
+            if (
+                !$this->db->tableHasField('#__tags_object', 'label')
+                && $this->db->tableHasField('#__tags_object', 'tbl')
+            ) {
                 $query = "ALTER TABLE `#__tags_object` ADD COLUMN `label` VARCHAR(30) NULL DEFAULT NULL AFTER `tbl`";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -451,7 +579,8 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__tags_object', 'objectid')
                 && $this->db->tableHasField('#__tags_object', 'tbl')
             ) {
-                $query = "ALTER TABLE `#__tags_object` ADD INDEX `jos_tags_object_objectid_tbl_idx` (`objectid` ASC, `tbl` ASC)";
+                $query = "ALTER TABLE `#__tags_object` ADD INDEX "
+                    . "`jos_tags_object_objectid_tbl_idx` (`objectid` ASC, `tbl` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -463,7 +592,8 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__tool', 'description')
                 && !$this->db->tableHasField('#__tool', 'fulltxt')
             ) {
-                $query = "ALTER TABLE `#__tool` CHANGE COLUMN `fulltext` `fulltxt` TEXT NULL DEFAULT NULL AFTER `description`";
+                $query = "ALTER TABLE `#__tool` CHANGE COLUMN `fulltext` `fulltxt` "
+                    . "TEXT NULL DEFAULT NULL AFTER `description`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -475,12 +605,16 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__tool_version', 'description')
                 && !$this->db->tableHasField('#__tool_version', 'fulltxt')
             ) {
-                $query = "ALTER TABLE `#__tool_version` CHANGE COLUMN `fulltext` `fulltxt` TEXT NULL DEFAULT NULL AFTER `description`";
+                $query = "ALTER TABLE `#__tool_version` CHANGE COLUMN `fulltext` `fulltxt` "
+                    . "TEXT NULL DEFAULT NULL AFTER `description`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__tool_version', 'priority') && !$this->db->tableHasField('#__tool_version', 'params')) {
+            if (
+                $this->db->tableHasField('#__tool_version', 'priority')
+                && !$this->db->tableHasField('#__tool_version', 'params')
+            ) {
                 $query = "ALTER TABLE `#__tool_version` ADD COLUMN `params` TEXT NULL DEFAULT NULL AFTER `priority`";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -496,19 +630,30 @@ class Migration20120101000004Core extends Base
         }
 
         if ($this->db->tableExists('#__users_password_history')) {
-            if ($this->db->tableHasField('#__users_password_history', 'user_id') && $this->db->tableHasField('#__users_password_history', 'id')) {
-                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `user_id` `user_id` INT(11) NOT NULL AFTER `id`";
+            if (
+                $this->db->tableHasField('#__users_password_history', 'user_id')
+                && $this->db->tableHasField('#__users_password_history', 'id')
+            ) {
+                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `user_id` `user_id` "
+                    . "INT(11) NOT NULL AFTER `id`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__users_password_history', 'passhash') && $this->db->tableHasField('#__users_password_history', 'user_id')) {
-                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `passhash` `passhash` CHAR(32) NOT NULL AFTER `user_id`";
+            if (
+                $this->db->tableHasField('#__users_password_history', 'passhash')
+                && $this->db->tableHasField('#__users_password_history', 'user_id')
+            ) {
+                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `passhash` `passhash` "
+                    . "CHAR(32) NOT NULL AFTER `user_id`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasKey('#__users_password_history', 'PRIMARY') && $this->db->getPrimaryKey('#__users_password_history') == 'user_id') {
+            if (
+                $this->db->tableHasKey('#__users_password_history', 'PRIMARY')
+                && $this->db->getPrimaryKey('#__users_password_history') == 'user_id'
+            ) {
                 $query = "ALTER TABLE `#__users_password_history` DROP PRIMARY KEY";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -520,14 +665,18 @@ class Migration20120101000004Core extends Base
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__users_password_history', 'PRIMARY') && $this->db->tableHasField('#__users_password_history', 'id')) {
+            if (
+                !$this->db->tableHasKey('#__users_password_history', 'PRIMARY')
+                && $this->db->tableHasField('#__users_password_history', 'id')
+            ) {
                 $query = "ALTER TABLE `#__users_password_history` ADD PRIMARY KEY (`id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__users_password_history', 'id')) {
-                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT FIRST";
+                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `id` `id` "
+                    . "INT(11) NOT NULL AUTO_INCREMENT FIRST";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -540,7 +689,8 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__users_transactions', 'category')
                 && $this->db->tableHasField('#__users_transactions', 'type')
             ) {
-                $query = "ALTER TABLE `#__users_transactions` ADD INDEX `idx_referenceid_category_type` (`referenceid` ASC, `category` ASC, `type` ASC)";
+                $query = "ALTER TABLE `#__users_transactions` ADD INDEX `idx_referenceid_category_type` "
+                    . "(`referenceid` ASC, `category` ASC, `type` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -558,13 +708,15 @@ class Migration20120101000004Core extends Base
 
         if ($this->db->tableExists('#__wiki_math')) {
             if ($this->db->tableHasField('#__wiki_math', 'inputhash')) {
-                $query = "ALTER TABLE `#__wiki_math` CHANGE COLUMN `inputhash` `inputhash` VARCHAR(32) NOT NULL DEFAULT ''";
+                $query = "ALTER TABLE `#__wiki_math` CHANGE COLUMN `inputhash` `inputhash` "
+                    . "VARCHAR(32) NOT NULL DEFAULT ''";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__wiki_math', 'outputhash')) {
-                $query = "ALTER TABLE `#__wiki_math` CHANGE COLUMN `outputhash` `outputhash` VARCHAR(32) NOT NULL DEFAULT ''";
+                $query = "ALTER TABLE `#__wiki_math` CHANGE COLUMN `outputhash` `outputhash` "
+                    . "VARCHAR(32) NOT NULL DEFAULT ''";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -576,7 +728,8 @@ class Migration20120101000004Core extends Base
             && $this->db->tableHasField('#__wiki_page', 'group')
             && $this->db->tableHasField('#__wiki_page', 'access')
         ) {
-            $query = "ALTER TABLE `#__wiki_page` CHANGE COLUMN `group` `group_cn` VARCHAR(255) NULL DEFAULT NULL AFTER `access`";
+            $query = "ALTER TABLE `#__wiki_page` CHANGE COLUMN `group` `group_cn` "
+                . "VARCHAR(255) NULL DEFAULT NULL AFTER `access`";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -612,25 +765,38 @@ class Migration20120101000004Core extends Base
         }
 
         if ($this->db->tableExists('#__xgroups')) {
-            if ($this->db->tableHasField('#__xgroups', 'privacy') && !$this->db->tableHasField('#__xgroups', 'discussion_email_autosubscribe')) {
-                $query = "ALTER TABLE `#__xgroups` ADD COLUMN `discussion_email_autosubscribe` TINYINT(3) NULL DEFAULT NULL AFTER `privacy`";
+            if (
+                $this->db->tableHasField('#__xgroups', 'privacy')
+                && !$this->db->tableHasField('#__xgroups', 'discussion_email_autosubscribe')
+            ) {
+                $query = "ALTER TABLE `#__xgroups` ADD COLUMN `discussion_email_autosubscribe` "
+                    . "TINYINT(3) NULL DEFAULT NULL AFTER `privacy`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__xgroups', 'plugins') && !$this->db->tableHasField('#__xgroups', 'created')) {
+            if (
+                $this->db->tableHasField('#__xgroups', 'plugins')
+                && !$this->db->tableHasField('#__xgroups', 'created')
+            ) {
                 $query = "ALTER TABLE `#__xgroups` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `plugins`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__xgroups', 'created') && !$this->db->tableHasField('#__xgroups', 'created_by')) {
+            if (
+                $this->db->tableHasField('#__xgroups', 'created')
+                && !$this->db->tableHasField('#__xgroups', 'created_by')
+            ) {
                 $query = "ALTER TABLE `#__xgroups` ADD COLUMN `created_by` INT(11) NULL DEFAULT NULL AFTER `created`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__xgroups', 'created_by') && !$this->db->tableHasField('#__xgroups', 'params')) {
+            if (
+                $this->db->tableHasField('#__xgroups', 'created_by')
+                && !$this->db->tableHasField('#__xgroups', 'params')
+            ) {
                 $query = "ALTER TABLE `#__xgroups` ADD COLUMN `params` TEXT NULL DEFAULT NULL AFTER `created_by`";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -676,7 +842,8 @@ class Migration20120101000004Core extends Base
             && $this->db->tableHasField('#__xprofiles', 'shadowExpire')
             && !$this->db->tableHasField('#__xprofiles', 'locked')
         ) {
-            $query = "ALTER TABLE `#__xprofiles` ADD COLUMN `locked` TINYINT(4) NOT NULL DEFAULT '0' AFTER `shadowExpire`";
+            $query = "ALTER TABLE `#__xprofiles` ADD COLUMN `locked` "
+                . "TINYINT(4) NOT NULL DEFAULT '0' AFTER `shadowExpire`";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -687,7 +854,8 @@ class Migration20120101000004Core extends Base
                 && $this->db->tableHasField('#__ysearch_site_map', 'title')
                 && $this->db->tableHasField('#__ysearch_site_map', 'description')
             ) {
-                $query = "ALTER TABLE `#__ysearch_site_map` ADD FULLTEXT INDEX `ftidx_title_description` (`title` ASC, `description` ASC)";
+                $query = "ALTER TABLE `#__ysearch_site_map` ADD FULLTEXT INDEX "
+                    . "`ftidx_title_description` (`title` ASC, `description` ASC)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

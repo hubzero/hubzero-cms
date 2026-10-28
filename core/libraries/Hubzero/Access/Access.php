@@ -20,35 +20,35 @@ class Access
     /**
      * Array of view levels
      *
-     * @var  array
+     * @public array
      */
     protected static $viewLevels = array();
 
     /**
      * Array of rules for the asset
      *
-     * @var  array
+     * @public array
      */
     protected static $assetRules = array();
 
     /**
      * Array of user groups.
      *
-     * @var  array
+     * @public array
      */
     protected static $userGroups = array();
 
     /**
      * Array of user group paths.
      *
-     * @var  array
+     * @public array
      */
     protected static $userGroupPaths = array();
 
     /**
      * Array of cached groups by user.
      *
-     * @var  array
+     * @public array
      */
     protected static $groupsByUser = array();
 
@@ -71,7 +71,8 @@ class Access
      *
      * @param   integer  $userId  Id of the user for which to check authorisation.
      * @param   string   $action  The name of the action to authorise.
-     * @param   mixed    $asset   Integer asset id or the name of the asset as a string.  Defaults to the global asset node.
+     * @param   mixed    $asset   Integer asset id or the name of the asset as a string.  Defaults
+     *                            to the global asset node.
      * @return  boolean  True if authorised.
      */
     public static function check($userId, $action, $asset = null)
@@ -105,7 +106,8 @@ class Access
      *
      * @param   integer  $groupId  The path to the group for which to check authorisation.
      * @param   string   $action   The name of the action to authorise.
-     * @param   mixed    $asset    Integer asset id or the name of the asset as a string.  Defaults to the global asset node.
+     * @param   mixed    $asset    Integer asset id or the name of the asset as a string.  Defaults
+     *                             to the global asset node.
      * @return  boolean  True if authorised.
      */
     public static function checkGroup($groupId, $action, $asset = null)
@@ -247,9 +249,8 @@ class Access
             // Guest user (if only the actually assigned group is requested)
             if (empty($userId) && !$recursive) {
                 $result = array(\Component::params('com_members')->get('guest_usergroup', 1));
-            }
+            } else {
             // Registered user and guest if all groups are requested
-            else {
                 $db = App::get('db');
 
                 // Build the database query to get the rules for the asset.
@@ -361,9 +362,8 @@ class Access
                 if (($id < 0) && (($id * -1) == $userId)) {
                     $authorised[] = $level;
                     break;
-                }
+                } elseif (($id >= 0) && in_array($id, $groups)) {
                 // Check to see if the group is mapped to the level.
-                elseif (($id >= 0) && in_array($id, $groups)) {
                     $authorised[] = $level;
                     break;
                 }

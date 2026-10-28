@@ -1,13 +1,12 @@
 <?php
 
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Support plugin class for com_resources entries
@@ -31,12 +30,12 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         if ($category == 'pubreview') {
-            $query  = "SELECT rr.id, rr.comment as text, rr.created, rr.created_by as author,
+            $query = "SELECT rr.id, rr.comment as text, rr.created, rr.created_by as author,
 						NULL as subject, 'pubreview' as parent_category, rr.anonymous as anon
 						FROM `#__publication_ratings` AS rr
 						WHERE rr.id=" . $database->quote($refid);
-        } else if ($category == 'pubreviewcomment') {
-            $query  = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author,
+        } elseif ($category == 'pubreviewcomment') {
+            $query = "SELECT rr.id, rr.content as text, rr.created, rr.created_by as author,
 						NULL as subject, 'pubreviewcomment' as parent_category, rr.anonymous as anon
 						FROM `#__item_comments` AS rr
 						WHERE rr.id=" . $database->quote($refid);
@@ -49,7 +48,9 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {
                     $rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
                 }
-                $rows[$key]->href = ($parent) ? Route::url('index.php?option=com_publications&id=' . $parent . '&active=reviews') : '';
+                $rows[$key]->href = ($parent)
+                    ? Route::url('index.php?option=com_publications&id=' . $parent . '&active=reviews')
+                    : '';
             }
         }
         return $rows;
@@ -70,7 +71,7 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
         if ($category == 'pubreviewcomment') {
             $pdata = $this->parent($parentid);
             $category = $pdata->get('item_type');
-            $refid    = $pdata->get('item_id');
+            $refid = $pdata->get('item_id');
 
             /*if ($pdata->category == 'pubreviewcomment')
             {
@@ -124,11 +125,11 @@ class plgSupportPublications extends \Hubzero\Plugin\Plugin
         switch ($category) {
             case 'pubreview':
                 return Lang::txt('PLG_SUPPORT_PUBLICATIONS_REVIEW_OF', $parentid);
-            break;
+                break;
 
             case 'pubreviewcomment':
                 return Lang::txt('PLG_SUPPORT_PUBLICATIONS_COMMENT_OF', $parentid);
-            break;
+                break;
         }
     }
 

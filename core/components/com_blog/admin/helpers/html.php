@@ -26,7 +26,8 @@ class Html
     {
         $adapters = \Filesystem::files(dirname(dirname(__DIR__)) . '/models/adapters', '\.php$');
 
-        $out  = '<select name="' . $name . '" id="' . ($id ? $id : str_replace(array('[', ']'), '', $name)) . '"' . ($atts ? ' ' . $atts : '') . '>';
+        $selectId = $id ? $id : str_replace(array('[', ']'), '', $name);
+        $out  = '<select name="' . $name . '" id="' . $selectId . '"' . ($atts ? ' ' . $atts : '') . '>';
         $out .= '<option value="">' . \Lang::txt('COM_BLOG_SELECT_SCOPE') . '</option>';
         foreach ($adapters as $adapter) {
             $adapter = ltrim($adapter, DS);

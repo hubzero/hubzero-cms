@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for listing children of a page
@@ -22,15 +20,17 @@ class ChildrenMacro extends WikiMacro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'Inserts an alphabetic list of all sub-pages (children) of the current page into the output. Accepts two parameters:
- * \'\'\'depth: how deep to mine for pages. Default is one level.
- * \'\'\'description: show/hide the first line of text from the page.';
-        $txt['html'] = '<p>Inserts an alphabetic list of all sub-pages (children) of the current page into the output. Accepts one parameter:</p>
-		<ul>
-			<li><strong>depth</strong>: how deep to mine for pages. Default is one level.</li>
-			<!-- <li><strong>description</strong>: show/hide the first line of text from the page</li> -->
-		</ul>
-		<p>Example usage: <code>[[Children(depth=3)]]</code></p>';
+        $txt['wiki'] = 'Inserts an alphabetic list of all sub-pages (children) of the current page into the output. '
+            . 'Accepts two parameters:' . "\n"
+            . ' * \'\'\'depth: how deep to mine for pages. Default is one level.' . "\n"
+            . ' * \'\'\'description: show/hide the first line of text from the page.';
+        $txt['html'] = '<p>Inserts an alphabetic list of all sub-pages (children) of the current page into the output. '
+            . 'Accepts one parameter:</p>
+        <ul>
+            <li><strong>depth</strong>: how deep to mine for pages. Default is one level.</li>
+            <!-- <li><strong>description</strong>: show/hide the first line of text from the page</li> -->
+        </ul>
+        <p>Example usage: <code>[[Children(depth=3)]]</code></p>';
         return $txt['html'];
     }
 

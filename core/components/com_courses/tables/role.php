@@ -91,7 +91,7 @@ class Role extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query = " FROM $this->_tbl AS r";
 
@@ -132,7 +132,7 @@ class Role extends Table
     public function count($filters = array())
     {
         $query  = "SELECT COUNT(*) ";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -157,7 +157,7 @@ class Role extends Table
             $query .= " AND m.`offering_id` IN (" . $offering_id . ")";
         }
         $query .= ") AS total";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (isset($filters['sort']) && $filters['sort']) {
             if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC'))) {

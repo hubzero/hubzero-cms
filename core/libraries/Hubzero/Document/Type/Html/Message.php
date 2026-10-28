@@ -54,7 +54,13 @@ class Message extends Renderer
             $buffer[] = $tab . '<dl id="system-message">';
             foreach ($lists as $type => $msgs) {
                 if (count($msgs)) {
-                    $buffer[] = $tab . $tab . '<dt class="' . strtolower($type) . '">' . \App::get('language')->txt($type) . '</dt>';
+                    $buffer[] = $tab .
+                        $tab .
+                        '<dt class="' .
+                        strtolower($type) .
+                        '">' .
+                        \App::get('language')->txt($type) .
+                        '</dt>';
                     $buffer[] = $tab . $tab . '<dd class="' . strtolower($type) . ' message">';
                     $buffer[] = $tab . $tab . $tab . '<ul>';
                     foreach ($msgs as $msg) {

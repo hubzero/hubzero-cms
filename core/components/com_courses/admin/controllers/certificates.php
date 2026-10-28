@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -99,8 +100,12 @@ class Certificates extends AdminController
 
         if ($redirect) {
             // Output messsage and redirect
+            // Original URL also included:
+            // '&controller=' . $this->_controller
+            // '&course=' . $model->get('course_id')
+            // '&certificate=' . $model->get('id')
             App::redirect(
-                Route::url('index.php?option=' . $this->_option, false), //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
+                Route::url('index.php?option=' . $this->_option, false),
                 Lang::txt('COM_COURSES_SETTINGS_SAVED')
             );
             return;

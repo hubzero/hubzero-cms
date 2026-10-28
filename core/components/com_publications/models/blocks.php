@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,6 +28,7 @@ class Blocks extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_db = null;
 
     /**
@@ -34,6 +36,7 @@ class Blocks extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_objBlock = null;
 
     /**
@@ -41,6 +44,7 @@ class Blocks extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blocks = array();
 
     /**
@@ -48,6 +52,7 @@ class Blocks extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockPath = array();
 
     /**

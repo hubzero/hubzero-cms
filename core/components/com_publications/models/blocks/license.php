@@ -23,6 +23,7 @@ class License extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'license';
 
     /**
@@ -30,6 +31,7 @@ class License extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parentname = null;
 
     /**
@@ -37,6 +39,7 @@ class License extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest = null;
 
     /**
@@ -44,6 +47,7 @@ class License extends Base
      *
      * @var     integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockId = 0;
 
     /**
@@ -208,7 +212,9 @@ class License extends Base
                             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM'));
                             return false;
                         } else {
-                            $row->license_text = preg_replace('/\[' . $sub . '\]/', trim($custom[$sub]), $row->license_text);
+                            $pattern = '/\[' . $sub . '\]/';
+                            $replacement = trim($custom[$sub]);
+                            $row->license_text = preg_replace($pattern, $replacement, $row->license_text);
                         }
                     }
                 }
@@ -368,10 +374,16 @@ class License extends Base
                 'title'         => 'Publication License',
                 'draftHeading'  => 'Choose License',
                 'draftTagline'  => 'Define copyright and terms of use:',
-                'about'         => 'It is important that you provide a license for your publication stating your copyright and terms of use of your content.',
+                'about'         => 'It is important that you provide a license for your publication '
+                    . 'stating your copyright and terms of use of your content.',
                 'adminTips'     => '',
                 'elements'      => array(),
-                'params'        => array('required' => 1, 'published_editing' => 0, 'include' => array(), 'exclude' => array())
+                'params'        => array(
+                    'required' => 1,
+                    'published_editing' => 0,
+                    'include' => array(),
+                    'exclude' => array()
+                )
             );
 
             return json_decode(json_encode($manifest), false);

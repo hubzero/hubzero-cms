@@ -38,7 +38,7 @@ class Form
                 if (count($rv) == 2) {
                     break;
                 }
-            } else if (count($rv)) {
+            } elseif (count($rv)) {
                 break;
             }
         }

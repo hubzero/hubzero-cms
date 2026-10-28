@@ -2,12 +2,9 @@
 
 use Hubzero\Content\Migration\Base;
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 class Migration20240203000000CreateRepliesTable extends Base
 {
-    static $tableName = '#__reply_replies';
+    public static $tableName = '#__reply_replies';
 
     public function up()
     {

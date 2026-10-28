@@ -128,7 +128,10 @@ class Attachment extends Relational
                     $this->set('category', $wishlist->get('category'));
                     $this->set('referenceid', $wishlist->get('referenceid'));
                 }
-                return Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->get('category') . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish') . '&file=' . $this->get('filename'));
+                $url = 'index.php?option=com_wishlist&task=wish&category=' . $this->get('category')
+                    . '&rid=' . $this->get('referenceid') . '&wishid=' . $this->get('wish')
+                    . '&file=' . $this->get('filename');
+                return Route::url($url);
                 */
                 return with(new \Hubzero\Content\Moderator($this->link('file')))->getUrl();
             break;
@@ -141,7 +144,8 @@ class Attachment extends Relational
             case 'file':
             case 'server':
                 $path = Component::params('com_wishlist')->get('webpath');
-                return PATH_APP . DS . trim($path, '/') . DS . $this->get('wish') . DS . ltrim($this->get('filename'), '/');
+                return PATH_APP . DS . trim($path, '/') . DS . $this->get('wish')
+                    . DS . ltrim($this->get('filename'), '/');
             break;
         }
     }
@@ -156,7 +160,9 @@ class Attachment extends Relational
     {
         $ext = strtolower(Filesystem::extension($this->get('filename')));
 
-        $exts = explode(',', Component::params('com_media')->get('upload_extensions', 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz'));
+        $defaultExts = 'jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,'
+            . 'ra,rm,txt,rtf,doc,xsl,wav,mp3,eps,ppt,pps,swf,tar,tex,gz';
+        $exts = explode(',', Component::params('com_media')->get('upload_extensions', $defaultExts));
         $exts = array_map('trim', $exts);
         $exts = array_values(array_filter($exts));
 

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,25 +24,29 @@ class Migration20160216115900ComNewsletter extends Base
     {
         if ($this->db->tableExists('#__newsletter_templates')) {
             if ($this->db->tableHasField('#__newsletter_templates', 'primary_title_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_title_color` `primary_title_color` VARCHAR(255) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_title_color` `primary_title_color` "
+                    . "VARCHAR(255) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__newsletter_templates', 'primary_text_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_text_color` `primary_text_color` VARCHAR(255) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_text_color` `primary_text_color` "
+                    . "VARCHAR(255) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__newsletter_templates', 'secondary_title_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_title_color` `secondary_title_color` VARCHAR(255) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_title_color` "
+                    . "`secondary_title_color` VARCHAR(255) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__newsletter_templates', 'secondary_text_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_text_color` `secondary_text_color` VARCHAR(255) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_text_color` "
+                    . "`secondary_text_color` VARCHAR(255) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -55,25 +60,29 @@ class Migration20160216115900ComNewsletter extends Base
     {
         if ($this->db->tableExists('#__newsletter_templates')) {
             if ($this->db->tableHasField('#__newsletter_templates', 'primary_title_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_title_color` `primary_title_color` VARCHAR(100) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_title_color` `primary_title_color` "
+                    . "VARCHAR(100) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__newsletter_templates', 'primary_text_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_text_color` `primary_text_color` VARCHAR(100) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `primary_text_color` `primary_text_color` "
+                    . "VARCHAR(100) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__newsletter_templates', 'secondary_title_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_title_color` `secondary_title_color` VARCHAR(100) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_title_color` "
+                    . "`secondary_title_color` VARCHAR(100) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__newsletter_templates', 'secondary_text_color')) {
-                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_text_color` `secondary_text_color` VARCHAR(100) DEFAULT NULL;";
+                $query = "ALTER TABLE `#__newsletter_templates` CHANGE `secondary_text_color` "
+                    . "`secondary_text_color` VARCHAR(100) DEFAULT NULL;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

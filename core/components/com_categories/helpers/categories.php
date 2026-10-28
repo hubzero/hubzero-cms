@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,6 +32,7 @@ class Categories
      *
      * @var  mixed
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_nodes;
 
     /**
@@ -38,6 +40,7 @@ class Categories
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_checkedCategories;
 
     /**
@@ -45,6 +48,7 @@ class Categories
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_extension = null;
 
     /**
@@ -52,6 +56,7 @@ class Categories
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_table = null;
 
     /**
@@ -59,6 +64,7 @@ class Categories
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_field = null;
 
     /**
@@ -66,6 +72,7 @@ class Categories
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_key = null;
 
     /**
@@ -73,6 +80,7 @@ class Categories
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_statefield = null;
 
     /**
@@ -80,6 +88,7 @@ class Categories
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_options = null;
 
     /**
@@ -163,9 +172,8 @@ class Categories
         // If we already have a value in _nodes for this $id, then use it.
         if (isset($this->_nodes[$id])) {
             return $this->_nodes[$id];
-        }
-        // If we processed this $id already and it was not valid, then return null.
-        elseif (isset($this->_checkedCategories[$id])) {
+        } elseif (isset($this->_checkedCategories[$id])) {
+            // If we processed this $id already and it was not valid, then return null.
             return null;
         }
 
@@ -178,6 +186,7 @@ class Categories
      * @param   integer  $id  Id of category to load
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _load($id)
     {
         $db = App::get('db');
@@ -194,7 +203,8 @@ class Categories
         $case_when .= 'CHAR_LENGTH(c.alias)';
         $case_when .= ' THEN ';
         //$c_id = $query->castAsChar('c.id');
-        $case_when .= 'CONCAT_WS(' . $db->quote(':') . ', ' . implode(', ', array('c.id', 'c.alias')) . ')'; //$query->concatenate(array('c.id', 'c.alias'), ':');
+        $concatArgs = implode(', ', array('c.id', 'c.alias'));
+        $case_when .= 'CONCAT_WS(' . $db->quote(':') . ', ' . $concatArgs . ')';
         $case_when .= ' ELSE ';
         $case_when .= 'c.id END as slug';
         $query->select($case_when);
@@ -220,9 +230,13 @@ class Categories
             $query->whereEquals('s.id', (int) $id);
 
             if (App::isSite() && App::get('language.filter')) {
-                $query->joinRaw('#__categories AS s', '(s.lft < c.lft AND s.rgt > c.rgt AND c.language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')) OR (s.lft >= c.lft AND s.rgt <= c.rgt)', 'left');
+                $langTag = $db->quote(Lang::getTag());
+                $joinCondition = '(s.lft < c.lft AND s.rgt > c.rgt AND c.language in ('
+                    . $langTag . ',' . $db->quote('*') . ')) OR (s.lft >= c.lft AND s.rgt <= c.rgt)';
+                $query->joinRaw('#__categories AS s', $joinCondition, 'left');
             } else {
-                $query->joinRaw('#__categories AS s', '(s.lft <= c.lft AND s.rgt >= c.rgt) OR (s.lft > c.lft AND s.rgt < c.rgt)', 'left');
+                $joinCondition = '(s.lft <= c.lft AND s.rgt >= c.rgt) OR (s.lft > c.lft AND s.rgt < c.rgt)';
+                $query->joinRaw('#__categories AS s', $joinCondition, 'left');
             }
         } else {
             if (App::isSite() && App::get('language.filter')) {
@@ -245,7 +259,9 @@ class Categories
                     'left'
                 );
             } else {
-                $query->joinRaw($db->quoteName($this->_table) . ' AS i', 'i.' . $db->quoteName($this->_field) . ' = c.id', 'left');
+                $tableAlias = $db->quoteName($this->_table) . ' AS i';
+                $joinOn = 'i.' . $db->quoteName($this->_field) . ' = c.id';
+                $query->joinRaw($tableAlias, $joinOn, 'left');
             }
 
             $query->select('COUNT(i.' . $db->quoteName($this->_key) . ')', 'numitems');
@@ -302,15 +318,17 @@ class Categories
                     // Create the JCategoryNode and add to _nodes
                     $this->_nodes[$result->id] = new Node($result, $this);
 
-                    // If this is not root and if the current node's parent is in the list or the current node parent is 0
-                    if ($result->id != 'root' && (isset($this->_nodes[$result->parent_id]) || $result->parent_id == 1)) {
-                        // Compute relationship between node and its parent - set the parent in the _nodes field
+                    // If not root and if the current node's parent is in the list or parent is 0
+                    $hasParent = isset($this->_nodes[$result->parent_id]) || $result->parent_id == 1;
+                    if ($result->id != 'root' && $hasParent) {
+                        // Compute relationship between node and its parent
                         $this->_nodes[$result->id]->setParent($this->_nodes[$result->parent_id]);
                     }
 
-                    // If the node's parent id is not in the _nodes list and the node is not root (doesn't have parent_id == 0),
-                    // then remove the node from the list
-                    if (!(isset($this->_nodes[$result->parent_id]) || $result->parent_id == 0)) {
+                    // If the node's parent id is not in the _nodes list and the node
+                    // is not root (doesn't have parent_id == 0), remove from the list
+                    $hasParentNode = isset($this->_nodes[$result->parent_id]) || $result->parent_id == 0;
+                    if (!$hasParentNode) {
                         unset($this->_nodes[$result->id]);
                         continue;
                     }

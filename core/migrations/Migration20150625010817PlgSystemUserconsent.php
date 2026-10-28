@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding fisma user consent plugin
- **/
+ *
+ */
 class Migration20150625010817PlgSystemUserconsent extends Base
 {
     /**

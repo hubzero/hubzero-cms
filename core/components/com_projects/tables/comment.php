@@ -39,7 +39,9 @@ class Comment extends Table
             return false;
         }
 
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid) . " AND created_by=" . $this->_db->quote($user_id) . " LIMIT 1");
+        $query = "SELECT * FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid)
+            . " AND created_by=" . $this->_db->quote($user_id) . " LIMIT 1";
+        $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
         } else {
@@ -90,15 +92,20 @@ class Comment extends Table
 
         $query = "SELECT c.*, x.name as author ";
         if ($lastvisit && $activityid) {
-            $query .= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity AND cc.created > " . $this->_db->quote($lastvisit) . ") as newcount ";
+            $query .= ", (SELECT count(*) from $this->_tbl as cc WHERE cc.parent_activity = c.parent_activity"
+                . " AND cc.created > " . $this->_db->quote($lastvisit) . ") as newcount ";
         }
         $query .= " FROM $this->_tbl as c";
         $query .= " JOIN #__xprofiles as x ON x.uidNumber=c.created_by ";
         if ($parent_activity) {
             $query .= " WHERE c.parent_activity=" . $this->_db->quote($parent_activity);
         } else {
-            $query .= $activityid ? "" : " WHERE c.itemid=" . $this->_db->quote($itemid) . " AND c.tbl=" . $this->_db->quote($tbl);
-            $query .= $activityid ? " WHERE c.activityid=" . $this->_db->quote($activityid) : "";
+            if ($activityid) {
+                $query .= " WHERE c.activityid=" . $this->_db->quote($activityid);
+            } else {
+                $query .= " WHERE c.itemid=" . $this->_db->quote($itemid)
+                    . " AND c.tbl=" . $this->_db->quote($tbl);
+            }
         }
         $query .= " AND c.state != 2 ";
         $query .= " ORDER BY c.created ASC";
@@ -147,7 +154,8 @@ class Comment extends Table
         }
         $activities = array();
 
-        $query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid) . " AND tbl=" . $this->_db->quote($tbl);
+        $query = "SELECT activityid as aid FROM $this->_tbl WHERE itemid=" . $this->_db->quote($itemid)
+            . " AND tbl=" . $this->_db->quote($tbl);
         $this->_db->setQuery($query);
         $result = $this->_db->loadObjectList();
         if ($result) {
@@ -206,7 +214,9 @@ class Comment extends Table
             return false;
         }
 
-        $this->_db->setQuery("UPDATE $this->_tbl SET activityid =" . $this->_db->quote($activityid) . " WHERE id =" . $this->_db->quote($id));
+        $query = "UPDATE $this->_tbl SET activityid =" . $this->_db->quote($activityid)
+            . " WHERE id =" . $this->_db->quote($id);
+        $this->_db->setQuery($query);
         $this->_db->query();
     }
 

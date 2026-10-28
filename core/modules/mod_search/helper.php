@@ -37,7 +37,8 @@ class Helper extends Module
         self::$instances++;
 
         if ($this->params->get('opensearch', 0)) {
-            $ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename'));
+            $defaultTitle = Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename');
+            $ostitle = $this->params->get('opensearch_title', $defaultTitle);
 
             Document::addHeadLink(
                 Request::base() . Route::url('&option=com_search&format=opensearch'),
@@ -53,9 +54,11 @@ class Helper extends Module
         $params          = $this->params;
         $button          = $this->params->get('button', '');
         $button_pos      = $this->params->get('button_pos', 'right');
-        $button_text     = htmlspecialchars($this->params->get('button_text', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT')));
-        $width           = intval($this->params->get('width', 20));
-        $text            = htmlspecialchars($this->params->get('text', Lang::txt('MOD_SEARCH_SEARCHBOX_TEXT')));
+        $defaultBtnText = Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT');
+        $button_text = htmlspecialchars($this->params->get('button_text', $defaultBtnText));
+        $width = intval($this->params->get('width', 20));
+        $defaultText = Lang::txt('MOD_SEARCH_SEARCHBOX_TEXT');
+        $text = htmlspecialchars($this->params->get('text', $defaultText));
         $label           = htmlspecialchars($this->params->get('label', Lang::txt('MOD_SEARCH_LABEL_TEXT')));
         $moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx', ''));
 

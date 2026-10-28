@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -173,8 +174,14 @@ class Resources extends SiteController
             }
 
             $hztv->fulltxt     = $objV->fulltxt     = $status['fulltxt'];
-            $hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(Request::getString('description', $status['description'], 'post'), 500);
-            $hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(preg_replace('/\s+/', ' ', Request::getString('title', $status['title'], 'post')), 500);
+            $hztv->description = $objV->description = \Hubzero\Utility\Str::truncate(
+                Request::getString('description', $status['description'], 'post'),
+                500
+            );
+            $hztv->title       = $objV->title       = \Hubzero\Utility\Str::truncate(
+                preg_replace('/\s+/', ' ', Request::getString('title', $status['title'], 'post')),
+                500
+            );
 
             if (!$hztv->update()) {
                 App::abort(500, Lang::txt('COM_TOOLS_ERROR_UPDATING_TOOL'));
@@ -291,7 +298,8 @@ class Resources extends SiteController
         $tags = implode(', ', $mytagarray);
 
         // Set the document title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE') . ' (' . $status['toolname'] . ')';
         Document::setTitle($this->view->title);
 
         // Set the document pathway (breadcrumbs)
@@ -308,7 +316,8 @@ class Resources extends SiteController
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $alias . '&task=start&step=1'
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&app=' . $alias . '&task=start&step=1'
             );
         }
 
@@ -360,7 +369,7 @@ class Resources extends SiteController
         if (!$resource->save()) {
             $this->setError($resource->getError());
             return false;
-        } else if ($newtool) {
+        } elseif ($newtool) {
             \Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_PUBLISHED'), 'tools');
         } else {
             \Notify::success(Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'), 'tools');
@@ -488,7 +497,8 @@ class Resources extends SiteController
         }
 
         // Set the document title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt('COM_TOOLS_PREVIEW_TOOL_PAGE') . ' (' . $resource->alias . ')';
         Document::setTitle($this->view->title);
 
         // Set the document pathway (breadcrumbs)
@@ -505,7 +515,8 @@ class Resources extends SiteController
             );
             Pathway::append(
                 Lang::txt('COM_TOOLS_EDIT_TOOL_PAGE'),
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&app=' . $alias . '&task=start&step=1'
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&app=' . $alias . '&task=start&step=1'
             );
         }
 
@@ -545,6 +556,7 @@ class Resources extends SiteController
      * @param   array  $groups  User's groups
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getUsersGroups($groups)
     {
         $arr = array();
@@ -566,6 +578,7 @@ class Resources extends SiteController
      * @param   boolean  $allowAuthors  Allow authors access?
      * @return  boolean  True if they have access
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object
@@ -600,6 +613,7 @@ class Resources extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

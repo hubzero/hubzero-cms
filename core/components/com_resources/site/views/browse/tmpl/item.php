@@ -127,7 +127,7 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
         $content = '';
         if ($this->line->get('introtext')) {
             $content = $this->line->get('introtext');
-        } else if ($this->line->get('fulltxt')) {
+        } elseif ($this->line->get('fulltxt')) {
             $content = $this->line->get('fulltxt');
             $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
             $content = trim($content);

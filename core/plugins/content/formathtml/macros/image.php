@@ -170,7 +170,7 @@ Examples:
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
             // Check for file existence
-            if ($attach->filename && file_exists($this->_path($attach->filename)) || file_exists($this->_path($attach->filename, true))) {
+            if ($attach->filename && file_exists($this->path($attach->filename)) || file_exists($this->path($attach->filename, true))) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
                     $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
@@ -180,7 +180,7 @@ Examples:
             }
         }
         // Check for file existence
-        else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) {
+        else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
             $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
             $ret = true;
@@ -193,12 +193,12 @@ Examples:
             }
 
             // Return HTML
-            return $this->_embed($file, $attr);
+            return $this->embed($file, $attr);
         } else {
             // Return error message. strip_tags() on the argument drops the angle
             // brackets but not the quotes, and this string is spliced into page
             // HTML, so escape it properly.
-            return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)'; // . $this->_path($file);
+            return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)'; // . $this->path($file);
         }
     }
 
@@ -371,7 +371,7 @@ Examples:
      * @param      boolean $alt
      * @return     string
      */
-    private function _path($file, $alt = false)
+    private function path($file, $alt = false)
     {
         if (substr($file, 0, 1) == DS) {
             $path = PATH_APP . $file;
@@ -405,7 +405,7 @@ Examples:
      * @param      string $file Filename
      * @return     string
      */
-    private function _link($file)
+    private function link($file)
     {
         $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
@@ -415,7 +415,7 @@ Examples:
         $file = trim($file, DS);
 
         if (\Request::getString('format') == 'pdf') {
-            return $this->_path($file);
+            return $this->path($file);
         }
         $link  = DS . substr($this->option, 4, strlen($this->option)) . DS;
         if ($this->scope) {
@@ -435,7 +435,7 @@ Examples:
      * @param      array  $attr Attributes to apply to the HTML
      * @return     string
      */
-    private function _embed($file, $attr = array())
+    private function embed($file, $attr = array())
     {
         $attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
         if (!$attr['alt']) {
@@ -462,12 +462,12 @@ Examples:
 
         $html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
 
-        $img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
+        $img = '<img src="' . $this->link($file) . '" ' . implode(' ', $attribs) . ' />';
 
         if ($attr['href'] == 'none') {
             $html .= $img;
         } else {
-            $attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
+            $attr['href'] = ($attr['href']) ? $attr['href'] : $this->link($file);
             $attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
             $html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';

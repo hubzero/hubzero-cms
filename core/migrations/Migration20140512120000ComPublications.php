@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for setting up publication building blocks
- **/
+ *
+ */
 class Migration20140512120000ComPublications extends Base
 {
     /**
@@ -67,7 +69,8 @@ class Migration20140512120000ComPublications extends Base
 
             $queries[] = "INSERT INTO `#__publication_blocks` (`id`,`block`, `label`, `title`, `status`,
 						 `minimum`, `maximum`, `ordering`, `params`, `manifest`)
-						  VALUES ('2','description','Description', 'Publication Description', '1', '1', '5', '2', '', '')";
+						  VALUES ('2','description','Description', 'Publication Description', "
+                . "'1', '1', '5', '2', '', '')";
 
             $queries[] = "INSERT INTO `#__publication_blocks` (`id`,`block`, `label`, `title`, `status`,
 						 `minimum`, `maximum`, `ordering`, `params`, `manifest`)
@@ -75,7 +78,8 @@ class Migration20140512120000ComPublications extends Base
 
             $queries[] = "INSERT INTO `#__publication_blocks` (`id`,`block`, `label`, `title`, `status`,
 						 `minimum`, `maximum`, `ordering`, `params`, `manifest`)
-						  VALUES ('4','extras','Extras', 'Publication Extra Content', '1', '0', '1', '4', 'default=1', '')";
+						  VALUES ('4','extras','Extras', 'Publication Extra Content', "
+                . "'1', '0', '1', '4', 'default=1', '')";
 
             $queries[] = "INSERT INTO `#__publication_blocks` (`id`,`block`, `label`, `title`, `status`,
 						 `minimum`, `maximum`, `ordering`, `params`, `manifest`)
@@ -107,8 +111,9 @@ class Migration20140512120000ComPublications extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-            $queries[] = "INSERT INTO `#__publication_handlers` (`id`,`name`, `label`, `title`, `status`, `about`, `params`)
-						  VALUES ('1','imageviewer','Image Viewer', 'Image Gallery Presenter', '1', '', '')";
+            $queries[] = "INSERT INTO `#__publication_handlers` "
+                . "(`id`,`name`, `label`, `title`, `status`, `about`, `params`) "
+                . "VALUES ('1','imageviewer','Image Viewer', 'Image Gallery Presenter', '1', '', '')";
         }
 
         // Add curation field
@@ -133,7 +138,8 @@ class Migration20140512120000ComPublications extends Base
         }
         // Add element field
         if (!$this->db->tableHasField('#__publication_attachments', 'element_id')) {
-            $queries[] = "ALTER TABLE `#__publication_attachments` ADD `element_id` int(11) NOT NULL DEFAULT '0';";
+            $queries[] = "ALTER TABLE `#__publication_attachments` "
+                . "ADD `element_id` int(11) NOT NULL DEFAULT '0';";
         }
 
         // Run queries

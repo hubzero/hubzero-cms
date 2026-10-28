@@ -28,6 +28,7 @@ class Economy extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db = null;
 
     /**
@@ -65,6 +66,7 @@ class Economy extends Obj
      * @param   string   $type  Transaction type
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function calculate_marketvalue($id, $type = 'regular')
     {
         if ($id === null) {
@@ -134,6 +136,7 @@ class Economy extends Obj
      * @param   string   $type      Transaction type
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distribute_points($qid, $Q_owner, $BA_owner, $type)
     {
         if ($qid === null) {
@@ -197,7 +200,9 @@ class Economy extends Obj
             $BTL_Q->credit_adjustment($adjusted);
 
             if (intval($share) > 0) {
-                $share_msg = ($type == 'royalty') ? Lang::txt('Royalty payment for posting question #%s', $qid) : Lang::txt('Commission for posting question #%s', $qid);
+                $share_msg = ($type == 'royalty')
+                    ? Lang::txt('Royalty payment for posting question #%s', $qid)
+                    : Lang::txt('Commission for posting question #%s', $qid);
                 $BTL_Q->deposit($share, $share_msg, $cat, $qid);
             }
             // withdraw reward amount
@@ -214,15 +219,25 @@ class Economy extends Obj
             if (count($eligible) > 0) {
                 foreach ($eligible as $e) {
                     $auser = User::getInstance($e);
-                    if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id')) {
+                    if (
+                        is_object($auser) && $auser->get('id')
+                        && is_object($ba_user) && $ba_user->get('id')
+                        && $ba_user->get('id') != $auser->get('id')
+                    ) {
                         $BTL_A = new Teller($auser->get('id'));
                         if (intval($A_owner_share) > 0) {
-                            $A_owner_share_msg = ($type == 'royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answered question #%s that was recently closed', $qid);
+                            $A_owner_share_msg = ($type == 'royalty')
+                                ? Lang::txt('Royalty payment for answering question #%s', $qid)
+                                : Lang::txt('Answered question #%s that was recently closed', $qid);
                             $BTL_A->deposit($A_owner_share, $A_owner_share_msg, $cat, $qid);
                         }
                     }
                     // is best answer eligible for extra points?
-                    if (is_object($auser) && $auser->get('id') &&  is_object($ba_user) && $ba_user->get('id') && ($ba_user->get('id') == $auser->get('id'))) {
+                    if (
+                        is_object($auser) && $auser->get('id')
+                        && is_object($ba_user) && $ba_user->get('id')
+                        && ($ba_user->get('id') == $auser->get('id'))
+                    ) {
                         $ba_extra = 1;
                     }
                 }
@@ -236,7 +251,9 @@ class Economy extends Obj
             }
 
             if (intval($BA_owner_share) > 0) {
-                $BA_owner_share_msg = ($type == 'royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answer for question #%s was accepted', $qid);
+                $BA_owner_share_msg = ($type == 'royalty')
+                    ? Lang::txt('Royalty payment for answering question #%s', $qid)
+                    : Lang::txt('Answer for question #%s was accepted', $qid);
                 $BTL_BA->deposit($BA_owner_share, $BA_owner_share_msg, $cat, $qid);
             }
         }

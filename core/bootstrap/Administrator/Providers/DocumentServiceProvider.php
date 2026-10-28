@@ -95,7 +95,9 @@ class DocumentServiceProvider extends Middleware
             $document->setTitle($this->app['config']->get('sitename'));
         }
         if ($this->app->isAdmin()) {
-            $document->setTitle($this->app['config']->get('sitename') . ' - ' . $this->app['language']->txt('JADMINISTRATION'));
+            $document->setTitle(
+                $this->app['config']->get('sitename') . ' - ' . $this->app['language']->txt('JADMINISTRATION')
+            );
         }
 
         if (!$document->getDescription()) {

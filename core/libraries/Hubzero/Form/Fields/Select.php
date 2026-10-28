@@ -57,9 +57,8 @@ class Select extends Field
         if ((string) $this->element['readonly'] == 'true') {
             $html[] = Dropdown::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
             $html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" />';
-        }
-        // Create a regular list.
-        else {
+        } else {
+            // Create a regular list.
             if ($this->element['option_other']) {
                 // Add "Other..." option to the dropdown
                 $options[] = Dropdown::option('other', App::get('language')->txt('Other...'), 'value', 'text');

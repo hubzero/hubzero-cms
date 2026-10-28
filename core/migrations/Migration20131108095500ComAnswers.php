@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indices and setting default field value
+  *
  **/
 class Migration20131108095500ComAnswers extends Base
 {
@@ -23,13 +25,15 @@ class Migration20131108095500ComAnswers extends Base
     {
         if ($this->db->tableExists('#__answers_questions')) {
             if ($this->db->tableHasField('#__answers_questions', 'id')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
+                $query = "ALTER TABLE `#__answers_questions` CHANGE `id` `id` "
+                    . "INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__answers_questions', 'subject')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `subject` `subject` VARCHAR(250)  NOT NULL  DEFAULT ''";
+                $query = "ALTER TABLE `#__answers_questions` CHANGE `subject` `subject` "
+                    . "VARCHAR(250)  NOT NULL  DEFAULT ''";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -41,19 +45,22 @@ class Migration20131108095500ComAnswers extends Base
             }
 
             if ($this->db->tableHasField('#__answers_questions', 'created_by')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `created_by` `created_by` VARCHAR(50)  NOT NULL  DEFAULT ''";
+                $query = "ALTER TABLE `#__answers_questions` CHANGE `created_by` `created_by` "
+                    . "VARCHAR(50)  NOT NULL  DEFAULT ''";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__answers_questions', 'email')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `email` `email` TINYINT(2)  UNSIGNED  NOT NULL  DEFAULT '0'";
+                $query = "ALTER TABLE `#__answers_questions` CHANGE `email` `email` "
+                    . "TINYINT(2)  UNSIGNED  NOT NULL  DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__answers_questions', 'helpful')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `helpful` `helpful` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
+                $query = "ALTER TABLE `#__answers_questions` CHANGE `helpful` `helpful` "
+                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -73,19 +80,22 @@ class Migration20131108095500ComAnswers extends Base
 
         if ($this->db->tableExists('#__answers_responses')) {
             if ($this->db->tableHasField('#__answers_responses', 'id')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
+                $query = "ALTER TABLE `#__answers_responses` CHANGE `id` `id` "
+                    . "INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__answers_responses', 'qid')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `qid` `qid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
+                $query = "ALTER TABLE `#__answers_responses` CHANGE `qid` `qid` "
+                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__answers_responses', 'created_by')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `created_by` `created_by` VARCHAR(50)  NOT NULL  DEFAULT ''";
+                $query = "ALTER TABLE `#__answers_responses` CHANGE `created_by` `created_by` "
+                    . "VARCHAR(50)  NOT NULL  DEFAULT ''";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -97,13 +107,15 @@ class Migration20131108095500ComAnswers extends Base
             }
 
             if ($this->db->tableHasField('#__answers_responses', 'nothelpful')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `nothelpful` `nothelpful` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
+                $query = "ALTER TABLE `#__answers_responses` CHANGE `nothelpful` `nothelpful` "
+                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
             if ($this->db->tableHasField('#__answers_responses', 'helpful')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `helpful` `helpful` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
+                $query = "ALTER TABLE `#__answers_responses` CHANGE `helpful` `helpful` "
+                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -129,7 +141,8 @@ class Migration20131108095500ComAnswers extends Base
 
         if ($this->db->tableExists('#__answers_questions_log')) {
             if ($this->db->tableHasField('#__answers_questions_log', 'id')) {
-                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
+                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `id` `id` "
+                    . "INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -147,7 +160,8 @@ class Migration20131108095500ComAnswers extends Base
             }
 
             if ($this->db->tableHasField('#__answers_questions_log', 'qid')) {
-                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `qid` `qid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
+                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `qid` `qid` "
+                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

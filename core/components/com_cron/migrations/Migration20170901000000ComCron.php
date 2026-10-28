@@ -8,12 +8,10 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing cron tables
  **/
+
 class Migration20170901000000ComCron extends Base
 {
     /**

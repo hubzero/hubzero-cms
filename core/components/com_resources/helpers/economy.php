@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +27,7 @@ class Economy extends Obj
      *
      * @var object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * Constructor
@@ -36,7 +37,7 @@ class Economy extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -51,8 +52,8 @@ class Economy extends Obj
             . " LEFT JOIN #__resources AS r ON r.id=aa.subid "
             . " WHERE aa.authorid > 0 AND r.published=1 AND r.standalone=1 GROUP BY aa.authorid ";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -62,7 +63,7 @@ class Economy extends Obj
      * @param   string   $type  Point calculation type
      * @return  boolean  False if errors, true on success
      */
-    public function distribute_points($con, $type = 'royalty')
+    public function distributePoints($con, $type = 'royalty')
     {
         if (!is_object($con)) {
             return false;

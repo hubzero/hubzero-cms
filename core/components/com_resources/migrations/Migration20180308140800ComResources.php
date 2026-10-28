@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script to add a license column
  **/
@@ -46,7 +43,9 @@ class Migration20180308140800ComResources extends Base
                 }
 
                 if ($license) {
-                    $query = "UPDATE `#__resources` SET `license`=" . $this->db->quote($license) . " WHERE `id`=" . $this->db->quote($row->id);
+                    $query = "UPDATE `#__resources` SET `license`="
+                        . $this->db->quote($license)
+                        . " WHERE `id`=" . $this->db->quote($row->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

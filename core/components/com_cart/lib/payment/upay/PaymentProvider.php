@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -178,7 +179,9 @@ class PaymentProvider
      */
     private function generateValidationKey()
     {
-        $base = $this->options->validationKey . $this->transactionDetails['EXT_TRANS_ID'] . $this->transactionDetails['AMT'];
+        $base = $this->options->validationKey
+            . $this->transactionDetails['EXT_TRANS_ID']
+            . $this->transactionDetails['AMT'];
         return base64_encode(md5($base, true));
     }
 }

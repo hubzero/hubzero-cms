@@ -22,7 +22,7 @@ class Detector implements DetectorInterface
     /**
      * Regex for matching links
      */
-    const URL_REGEX = "!((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)!";
+    public const URL_REGEX = "!((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)!";
 
     /**
      * Maximum number of links allowed in a text

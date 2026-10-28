@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for renaming and changing value format of the column to hub standards
- **/
+ *
+ */
 class Migration20160809152100ComRedirect extends Base
 {
     /**
@@ -31,7 +32,8 @@ class Migration20160809152100ComRedirect extends Base
         }
 
         if (!$this->db->tableHasField('#__redirect_links', 'modified_date')) {
-            $query = "ALTER TABLE `#__redirect_links` ADD `modified_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__redirect_links` ADD `modified_date` DATETIME NOT NULL DEFAULT '0000-00-00"
+                . "00:00:00';";
             $this->db->setQuery($query);
             $this->db->query();
 

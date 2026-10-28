@@ -1,16 +1,18 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 $this->css('import.css')
-     ->js('import.js');
+    ->js('import.js');
 
 //citation params
 $label    = $this->config->get('citation_label', 'number');
@@ -46,6 +48,7 @@ $base = $this->member->link() . '&active=citations';
 <section id="import" class="section">
     <div class="section-inner">
         <?php
+
         foreach ($this->messages as $message) {
             echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
         }
@@ -54,23 +57,27 @@ $base = $this->member->link() . '&active=citations';
         <ul id="steps">
             <li>
                 <a href="<?php echo Route::url($base . '&task=import'); ?>" class="passed">
-                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
+                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?>
+                    <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME');?></span>
                 </a>
             </li>
             <li>
                 <a href="<?php echo Route::url($base . '&task=review'); ?>" class="passed">
-                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
+                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?>
+                    <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME');?></span>
                 </a>
             </li>
             <li>
                 <a href="<?php echo Route::url($base . '&task=saved'); ?>" class="active">
-                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
+                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?>
+                    <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME');?></span>
                 </a>
             </li>
         </ul><!-- / #steps -->
 
         <?php if (count($this->citations) > 0) : ?>
             <?php
+
 
                 $counter = 1;
             ?>
@@ -84,6 +91,7 @@ $base = $this->member->link() . '&active=citations';
                             <?php if ($label != "none") : ?>
                                 <td class="citation-label <?php echo $this->escape($citations_label_class); ?>">
                                     <?php
+
                                         $type = $cite->relatedType->get('type_title', 'Generic');
 
                                     switch ($label) {

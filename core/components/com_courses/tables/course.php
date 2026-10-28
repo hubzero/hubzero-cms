@@ -36,6 +36,7 @@ class Course extends Table
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetName()
     {
         $k = $this->_tbl_key;
@@ -47,6 +48,7 @@ class Course extends Table
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetTitle()
     {
         return $this->title;
@@ -59,6 +61,7 @@ class Course extends Table
      * @param   integer  $id     The id for the asset
      * @return  integer  The id of the asset's parent
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetParentId($table = null, $id = null)
     {
         // Initialise variables.
@@ -183,6 +186,7 @@ class Course extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         if (isset($filters['tag']) && $filters['tag'] != '') {
@@ -240,7 +244,8 @@ class Course extends Table
         }
 
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            $query .= " GROUP BY c.id HAVING uniques=" . (isset($filters['tag_any']) && $filters['tag_any'] ? '1' : count($tags));
+            $uniqueCount = (isset($filters['tag_any']) && $filters['tag_any'] ? '1' : count($tags));
+            $query .= " GROUP BY c.id HAVING uniques=" . $uniqueCount;
         }
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
@@ -282,8 +287,12 @@ class Course extends Table
      */
     public function getRecords($filters = array())
     {
-        $query  = "SELECT c.*, (SELECT COUNT(*) FROM `#__courses_members` AS m WHERE m.student=1 AND m.course_id=c.id) AS students";
-        $query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", t.tag, t.raw_tag, COUNT(DISTINCT t.tag) AS uniques " : " ";
+        $query  = "SELECT c.*, "
+            . "(SELECT COUNT(*) FROM `#__courses_members` AS m WHERE m.student=1 AND m.course_id=c.id) AS students";
+        $tagFields = (isset($filters['tag']) && $filters['tag'] != '')
+            ? ", t.tag, t.raw_tag, COUNT(DISTINCT t.tag) AS uniques "
+            : " ";
+        $query .= $tagFields;
         $query .= $this->_buildQuery($filters);
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
@@ -313,47 +322,28 @@ class Course extends Table
             return false;
         }
 
-        $query2 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
-					FROM $this->_tbl AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=0 AND r.alias='manager'";
+        $selectFields = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, "
+            . "s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, "
+            . "s.alias AS section_alias, s.title AS section_title";
 
-        $query3 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
-					FROM $this->_tbl AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=0 AND r.alias='instructor'";
-
-        $query4 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
-					FROM $this->_tbl AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=1 AND c.state=1";
-
-        $query5 = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
-					FROM $this->_tbl AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->quote($uid) . " AND m.student=0 AND r.alias='ta' AND c.state=1";
-
-        switch ($type) {
-            case 'all':
-                $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
-					FROM $this->_tbl AS c
+        $joinClause = " FROM $this->_tbl AS c
 					JOIN #__courses_members AS m ON m.course_id=c.id
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
 					WHERE m.user_id=" . $this->_db->quote($uid);
+
+        $query2 = $selectFields . $joinClause . " AND m.student=0 AND r.alias='manager'";
+
+        $query3 = $selectFields . $joinClause . " AND m.student=0 AND r.alias='instructor'";
+
+        $query4 = $selectFields . $joinClause . " AND m.student=1 AND c.state=1";
+
+        $query5 = $selectFields . $joinClause . " AND m.student=0 AND r.alias='ta' AND c.state=1";
+
+        switch ($type) {
+            case 'all':
+                $query = $selectFields . $joinClause;
                 break;
             case 'manager':
                 $query = $query2; //"( $query1 ) UNION ( $query2 )";
@@ -369,13 +359,7 @@ class Course extends Table
                 break;
 
             default:
-                $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title
-					FROM $this->_tbl AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $this->_db->quote($uid) . " AND r.alias=" . $this->_db->quote($type);
+                $query = $selectFields . $joinClause . " AND r.alias=" . $this->_db->quote($type);
                 break;
         }
 

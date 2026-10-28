@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\User\D1;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\User;
 
 /**
  * Plugin for automatically adding users to the d1_nation group based on IP country group lookup
  */
-class plgUserD1 extends \Hubzero\Plugin\Plugin
+class D1 extends Plugin
 {
     public function onLoginUser($user, $options = array())
     {
@@ -37,7 +40,7 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
             Log::debug('plgUserD1: [' . $username . '] is in d1_override, not in d1_nation, skipping geo check.');
 
             \Hubzero\User\Group::setMember('d1_nation', $uid, false);
-            return;
+            return true;
         }
 
         $ip = Request::ip();
@@ -52,7 +55,7 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
         // with no known country
         if ($country === '') {
             Log::debug('plgUserD1: no country for ' . $ip . ', leaving [' . $username . '] membership to group [d1_nation] unchanged.');
-            return;
+            return true;
         }
 
         if (\Hubzero\Geocode\Geocode::is_d1nation($country)) {
@@ -62,6 +65,8 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
         } else {
             Log::debug($ip . ' is in [' . $country . '], not a D1 nation, leaving [' . $username . '] membership to group [d1_nation] unchanged.');
         }
+
+        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

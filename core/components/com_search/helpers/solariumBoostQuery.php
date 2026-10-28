@@ -10,8 +10,8 @@ namespace Components\Search\Helpers;
 
 class SolariumBoostQuery
 {
-    protected $boost,
-        $query;
+    protected $boost;
+    protected $query;
 
     public function __construct($args = [])
     {

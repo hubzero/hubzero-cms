@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Copyright (c) 2004 Roman Ožana (http://www.omdesign.cz)
  *
@@ -278,13 +279,15 @@ class IcalParser
         }
 
         // process simple dates with timezone
-        if ($key === 'DTSTAMP' || $key === 'LAST-MODIFIED' || $key === 'CREATED' || $key === 'DTSTART' || $key === 'DTEND') {
+        $dateKeys = array('DTSTAMP', 'LAST-MODIFIED', 'CREATED', 'DTSTART', 'DTEND');
+        if (in_array($key, $dateKeys)) {
             if (strlen($value) == 8) {
                 $value .= 'T000000Z';
                 $allDay = true;
             }
 
-            // Checks if time contains the value Z, which indicates it is not necessary to convert a timezone since it is already in UTC
+            // Checks if time contains the value Z, which indicates it is
+            // not necessary to convert a timezone since it is already in UTC
             if (substr($value, -1) != 'Z') {
                 $value = Date::of($value, ($timezone ? : $this->timezone));
             } else {
@@ -292,7 +295,8 @@ class IcalParser
             }
         }
 
-        if ($key === 'RRULE' && preg_match_all('#(?<key>[^=;]+)=(?<value>[^;]+)#', $value, $matches, PREG_SET_ORDER)) {
+        $rrulePattern = '#(?<key>[^=;]+)=(?<value>[^;]+)#';
+        if ($key === 'RRULE' && preg_match_all($rrulePattern, $value, $matches, PREG_SET_ORDER)) {
             $middle = null;
             $value = array();
             foreach ($matches as $match) {
@@ -306,9 +310,12 @@ class IcalParser
         }
 
         //implement 4.3.11 Text ESCAPED-CHAR
-        $text_properties = array('CALSCALE', 'METHOD', 'PRODID', 'VERSION', 'CATEGORIES', 'CLASS', 'COMMENT', 'DESCRIPTION'
-            , 'LOCATION', 'RESOURCES', 'STATUS', 'SUMMARY', 'TRANSP', 'TZID', 'TZNAME', 'CONTACT', 'RELATED-TO', 'UID'
-            , 'ACTION', 'REQUEST-STATUS');
+        $text_properties = array(
+            'CALSCALE', 'METHOD', 'PRODID', 'VERSION', 'CATEGORIES', 'CLASS',
+            'COMMENT', 'DESCRIPTION', 'LOCATION', 'RESOURCES', 'STATUS', 'SUMMARY',
+            'TRANSP', 'TZID', 'TZNAME', 'CONTACT', 'RELATED-TO', 'UID', 'ACTION',
+            'REQUEST-STATUS'
+        );
         if (in_array($key, $text_properties) || strpos($key, 'X-') === 0) {
             if (is_array($value)) {
                 foreach ($value as &$var) {

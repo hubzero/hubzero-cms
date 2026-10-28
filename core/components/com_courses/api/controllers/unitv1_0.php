@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -192,7 +193,9 @@ class Unitv1_0 extends base
                 'assetgroups'    => $assetGroups,
                 'course_alias'   => $this->course->get('alias'),
                 'offering_alias' => $this->offering_alias,
-                'section_id'     => (isset($section_id) ? $section_id : $this->course->offering()->section()->get('id')),
+                'section_id'     => (isset($section_id)
+                    ? $section_id
+                    : $this->course->offering()->section()->get('id')),
                 'prerequisites'  => ''//$view->loadTemplate()
             ],
             ($id ? 200 : 201)

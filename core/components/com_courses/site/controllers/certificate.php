@@ -57,7 +57,8 @@ class Certificate extends SiteController
 
         // Path and file name
         $dir = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
-        $file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id') . '_' . User::get('id') . '.pdf';
+        $file = $dir . DS . 'certificate_' . $course->get('id') . '_' . $offering->get('id')
+            . '_' . User::get('id') . '.pdf';
 
         // If the file exists and we want to force regenerate it
         if (is_file($file) && Request::getInt('regenerate', 0)) {

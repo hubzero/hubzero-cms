@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding rate limiting table
- **/
+ *
+ */
 class Migration20150629100000ComGeosearch extends Base
 {
     /**

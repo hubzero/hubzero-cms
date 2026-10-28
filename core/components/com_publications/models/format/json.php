@@ -44,7 +44,9 @@ class JSON extends Base
             $options = array('processSections' => $options);
 
             // Deprecation warning.
-            \JLog::add('\Components\Publications\Models\Format\JSON::stringToObject() second argument should not be a boolean.', \JLog::WARNING, 'deprecated');
+            $msg = '\Components\Publications\Models\Format\JSON::stringToObject() '
+                . 'second argument should not be a boolean.';
+            \JLog::add($msg, \JLog::WARNING, 'deprecated');
         }
 
         $data = trim($data);

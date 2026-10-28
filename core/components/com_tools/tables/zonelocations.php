@@ -85,6 +85,7 @@ class ZoneLocations extends Table
      * @param   array   $filters  Filters to build SQL from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _buildQuery($filters = array())
     {
         $where = array();

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Config\Admin\Controllers;
 
 use Components\Config\Models;
@@ -138,9 +139,9 @@ class Component extends AdminController
             User::setState($this->_option . '.config.global.data', $data);
 
             // Redirect back to the edit screen.
-            App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false)
-            );
+            $url = 'index.php?option=' . $this->_option . '&view=component&component=' .
+                $option . '&tmpl=component&path=' . $model->get('component.path');
+            App::redirect(Route::url($url, false));
             return false;
         }
 
@@ -186,9 +187,9 @@ class Component extends AdminController
             // Save failed, go back to the screen and display a notice.
             Notify::error(Lang::txt('JERROR_SAVE_FAILED', $model->getError()));
 
-            App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false)
-            );
+            $url = 'index.php?option=' . $this->_option . '&view=component&component=' .
+                $option . '&tmpl=component&path=' . $model->get('component.path');
+            App::redirect(Route::url($url, false));
             return false;
         }
 
@@ -199,16 +200,16 @@ class Component extends AdminController
             case 'apply':
                 Notify::success(Lang::txt('COM_CONFIG_SAVE_SUCCESS'));
 
-                App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1', false)
-                );
+                $url = 'index.php?option=' . $this->_option . '&view=component&component=' .
+                    $option . '&tmpl=component&path=' . $model->get('component.path') . '&refresh=1';
+                App::redirect(Route::url($url, false));
                 break;
 
             case 'save':
             default:
-                App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&view=close&tmpl=component&path=' . $model->get('component.path'), false)
-                );
+                $url = 'index.php?option=' . $this->_option . '&view=close&tmpl=component&path=' .
+                    $model->get('component.path');
+                App::redirect(Route::url($url, false));
                 break;
         }
     }

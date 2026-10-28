@@ -1,13 +1,12 @@
 <?php
 
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Support plugin class for com_resources entries
@@ -20,7 +19,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
      * @param   string  $category  Element type (determines table to look in)
      * @return  boolean
      */
-    private function _canHandle($category)
+    private function canHandle($category)
     {
         if (in_array($category, array('review', 'reviewcomment'))) {
             return true;
@@ -38,19 +37,19 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
      */
     public function getReportedItem($refid, $category, $parent)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
         $database = App::get('db');
 
         if ($category == 'review') {
-            $query  = "SELECT rr.id, rr.comment as `text`, rr.created, rr.user_id as `author`,
+            $query = "SELECT rr.id, rr.comment as `text`, rr.created, rr.user_id as `author`,
 						NULL as subject, 'review' as parent_category, rr.anonymous as anon
 						FROM `#__resource_ratings` AS rr
 						WHERE rr.id=" . $database->quote($refid);
-        } else if ($category == 'reviewcomment') {
-            $query  = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`,
+        } elseif ($category == 'reviewcomment') {
+            $query = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`,
 						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon
 						FROM `#__item_comments` AS rr
 						WHERE rr.id=" . $database->quote($refid);
@@ -63,7 +62,9 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {
                     $rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
                 }
-                $rows[$key]->href = ($parent) ? Route::url('index.php?option=com_resources&id=' . $parent . '&active=reviews') : '';
+                $rows[$key]->href = ($parent)
+                    ? Route::url('index.php?option=com_resources&id=' . $parent . '&active=reviews')
+                    : '';
             }
         }
         return $rows;
@@ -84,7 +85,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
         if ($category == 'reviewcomment') {
             $pdata = $this->parent($parentid);
 
-            $refid    = $pdata->get('item_id');
+            $refid = $pdata->get('item_id');
             $category = 'review';
         }
 
@@ -114,7 +115,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
      */
     public function getTitle($category, $parentid)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -123,11 +124,11 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
         switch ($category) {
             case 'review':
                 return Lang::txt('PLG_SUPPORT_RESOURCES_REVIEW_OF', $parentid);
-            break;
+                break;
 
             case 'reviewcomment':
                 return Lang::txt('PLG_SUPPORT_RESOURCES_COMMENT_OF', $parentid);
-            break;
+                break;
         }
     }
 
@@ -140,7 +141,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
      */
     public function onReportItem($refid, $category)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -170,7 +171,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
      */
     public function releaseReportedItem($refid, $parent, $category)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -201,7 +202,7 @@ class plgSupportResources extends \Hubzero\Plugin\Plugin
      */
     public function deleteReportedItem($referenceid, $parentid, $category, $message)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 

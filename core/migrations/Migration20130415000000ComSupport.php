@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +21,8 @@ class Migration20130415000000ComSupport extends Base
     {
         if (!$this->db->tableHasField('#__support_tickets', 'closed')) {
             // Add a unique index on grade book and asset_id field to forms table
-            $query = "ALTER TABLE `#__support_tickets` ADD `closed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00' AFTER `created`";
+            $query = "ALTER TABLE `#__support_tickets` ADD `closed` DATETIME  NOT NULL  DEFAULT '0000-00-00"
+                . "00:00:00' AFTER `created`";
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -47,7 +49,8 @@ class Migration20130415000000ComSupport extends Base
             }
 
             foreach ($closedTickets as $ticket => $closed) {
-                $query = "UPDATE `#__support_tickets` SET `closed`=" . $this->db->Quote($closed) . " WHERE id=" . $this->db->Quote($ticket);
+                $query = "UPDATE `#__support_tickets` SET `closed`=" . $this->db->Quote($closed)
+                    . " WHERE id=" . $this->db->Quote($ticket);
 
                 $this->db->setQuery($query);
                 $this->db->query();

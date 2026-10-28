@@ -157,14 +157,13 @@ class Process
             if (!self::isAlive($pid, $started)) {
                 return true;
             }
-        }
-        // Same host but no recorded start time (it could not be read when the
-        // work was claimed — a momentarily unreadable /proc/<pid>/stat, or a host
-        // with no readable /proc). The pid-reuse-safe check is impossible, so do
-        // NOT assume the worker is dead: that would reclaim a live run and execute
-        // it twice. Reclaim only if the pid is provably gone; otherwise fall
-        // through to the bounded time cutoff below.
-        elseif ($sameHost && self::pidExists($pid) === false) {
+        } elseif ($sameHost && self::pidExists($pid) === false) {
+            // Same host but no recorded start time (it could not be read when the
+            // work was claimed — a momentarily unreadable /proc/<pid>/stat, or a host
+            // with no readable /proc). The pid-reuse-safe check is impossible, so do
+            // NOT assume the worker is dead: that would reclaim a live run and execute
+            // it twice. Reclaim only if the pid is provably gone; otherwise fall
+            // through to the bounded time cutoff below.
             return true;
         }
 

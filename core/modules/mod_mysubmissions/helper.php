@@ -25,7 +25,7 @@ class Helper extends Module
      * @param   object   $row  Resource
      * @return  boolean  True if step completed
      */
-    public function step_type_check($row)
+    public function stepTypeCheck($row)
     {
         return ($row->id ? true : false);
     }
@@ -36,7 +36,7 @@ class Helper extends Module
      * @param   object   $row  Resource
      * @return  boolean  True if step completed
      */
-    public function step_compose_check($row)
+    public function stepComposeCheck($row)
     {
         return ($row->id ? true : false);
     }
@@ -47,7 +47,7 @@ class Helper extends Module
      * @param   object   $row  Resource
      * @return  boolean  True if step completed
      */
-    public function step_attach_check($row)
+    public function stepAttachCheck($row)
     {
         if ($row->id) {
             $total = $row->children()->total();
@@ -63,7 +63,7 @@ class Helper extends Module
      * @param   object   $row  Resource
      * @return  boolean  True if step completed
      */
-    public function step_authors_check($row)
+    public function stepAuthorsCheck($row)
     {
         if ($row->id) {
             $contributors = $row->authors()->total();
@@ -80,7 +80,7 @@ class Helper extends Module
      * @param   object   $row  Resource
      * @return  boolean  True if step completed
      */
-    public function step_tags_check($row)
+    public function stepTagsCheck($row)
     {
         $tags = $row->tags();
 
@@ -97,7 +97,7 @@ class Helper extends Module
      * @param   object   $row  Resource
      * @return  boolean  True if step completed
      */
-    public function step_review_check($row)
+    public function stepReviewCheck($row)
     {
         return false;
     }

@@ -173,7 +173,8 @@ class Memcached extends None
      */
     public function has($key)
     {
-        return $this->engine->get($this->id($key)) !== false || $this->engine->getResultCode() != \Memcached::RES_NOTFOUND;
+        return $this->engine->get($this->id($key)) !== false ||
+            $this->engine->getResultCode() != \Memcached::RES_NOTFOUND;
     }
 
     /**

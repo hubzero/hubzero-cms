@@ -629,7 +629,7 @@ class File extends Base
                             . "if(d&&d.ready&&d.url){window.location=d.url;}else{setTimeout(p,8000);}"
                             . "}).catch(function(){setTimeout(p,15000);});}setTimeout(p,8000);})();"
                         );
-                    } else if ($bstate === 'failed') {
+                    } elseif ($bstate === 'failed') {
                         $label    = Lang::txt('COM_PUBLICATIONS_BUNDLE_BTN_UNAVAILABLE');
                         $disabled = 1;
                         $pop      = '<p class="warning">' . Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE') . '</p>';
@@ -1602,9 +1602,8 @@ class File extends Base
             }
         } elseif ($max > 0 && $counter > $max) {
             $status->setError(Lang::txt('Maximum ' . $max . ' files allowed'));
-        }
-        // Check allowed formats
-        elseif (!self::checkAllowed($attachments, $params->allowed_ext)) {
+        } elseif (!self::checkAllowed($attachments, $params->allowed_ext)) {
+            // Check allowed formats
             if ($counter && !empty($params->allowed_ext)) {
                 $error = Lang::txt('Error: wrong file type. Allowed file type(s): ');
                 foreach ($params->allowed_ext as $ext) {
@@ -1615,9 +1614,8 @@ class File extends Base
             } else {
                 $status->setError(Lang::txt('File format not allowed'));
             }
-        }
-        // Check required formats
-        elseif (!self::checkRequired($attachments, $params->required_ext)) {
+        } elseif (!self::checkRequired($attachments, $params->required_ext)) {
+            // Check required formats
             $status->setError(Lang::txt('Missing a file of required format'));
         }
 

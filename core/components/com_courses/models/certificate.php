@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,6 +27,7 @@ class Certificate extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Certificate';
 
     /**
@@ -33,6 +35,7 @@ class Certificate extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'certificate';
 
     /**
@@ -40,6 +43,7 @@ class Certificate extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_properties = null;
 
     /**
@@ -47,6 +51,7 @@ class Certificate extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_base = null;
 
     /**
@@ -64,21 +69,23 @@ class Certificate extends Base
             $this->_tbl = new $cls($this->_db);
 
             if (!($this->_tbl instanceof Table)) {
-                $this->_logError(
-                    __CLASS__ . '::' . __FUNCTION__ . '(); ' . Lang::txt('Table class must be an instance of Hubzero\\Database\\Table.')
+                $errorMsg = Lang::txt(
+                    'Table class must be an instance of Hubzero\\Database\\Table.'
                 );
-                throw new \LogicException(Lang::txt('Table class must be an instance of Hubzero\\Database\\Table.'));
+                $logMsg = __CLASS__ . '::' . __FUNCTION__ . '(); ' . $errorMsg;
+                $this->_logError($logMsg);
+                throw new \LogicException($errorMsg);
             }
 
             if ($course_id) {
                 $this->_tbl->load(array('course_id' => $course_id));
-            } else if (is_numeric($oid) || is_string($oid)) {
+            } elseif (is_numeric($oid) || is_string($oid)) {
                 // Make sure $oid isn't empty
                 // This saves a database call
                 if ($oid) {
                     $this->_tbl->load($oid);
                 }
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -90,7 +97,7 @@ class Certificate extends Base
      * @param   mixed  $oid ID (int) or alias (string)
      * @return  object \Components\Courses\Models\Certificate
      */
-    static function &getInstance($oid = 0, $course_id = 0)
+    public static function &getInstance($oid = 0, $course_id = 0)
     {
         static $instances;
 
@@ -115,7 +122,8 @@ class Certificate extends Base
         $path = $this->path('system');
 
         if (file_exists($path)) {
-            if (file_exists($path . DS . $this->get('filename', 'certificate.pdf'))) {
+            $filename = $this->get('filename', 'certificate.pdf');
+            if (file_exists($path . DS . $filename)) {
                 return true;
             }
         }
@@ -138,7 +146,8 @@ class Certificate extends Base
 
         try {
             if (!$this->exists()) {
-                $this->setError(Lang::txt('No pages exist for nonexistent certificate.'));
+                $msg = Lang::txt('No pages exist for nonexistent certificate.');
+                $this->setError($msg);
                 return false;
             }
 
@@ -203,7 +212,9 @@ class Certificate extends Base
         natsort($images);
 
         $base  = $this->path('web');
-        $token = hash('sha256', \App::get('session')->getId() . ':' . \Config::get('secret'));
+        $sessionId = \App::get('session')->getId();
+        $secret = \Config::get('secret');
+        $token = hash('sha256', $sessionId . ':' . $secret);
 
         $idx = 0;
         foreach ($images as $img) {
@@ -222,7 +233,10 @@ class Certificate extends Base
     public function path($type = '')
     {
         if (!$this->_base) {
-            $this->_base = DS . trim($this->config('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'certificates' . DS . $this->get('id');
+            $path = $this->config('uploadpath', '/site/courses');
+            $uploadPath = DS . trim($path, DS);
+            $this->_base = $uploadPath . DS . $this->get('course_id')
+                . DS . 'certificates' . DS . $this->get('id');
         }
 
         switch ($type) {
@@ -233,8 +247,10 @@ class Certificate extends Base
             break;
 
             case 'web':
-                $base = str_replace('administrator', '', trim(\Request::base(true), '/'));
-                return rtrim($base, '/') . substr(PATH_APP, strlen(PATH_ROOT)) . $this->_base;
+                $reqBase = trim(\Request::base(true), '/');
+                $base = str_replace('administrator', '', $reqBase);
+                $appPath = substr(PATH_APP, strlen(PATH_ROOT));
+                return rtrim($base, '/') . $appPath . $this->_base;
             break;
 
             default:
@@ -255,7 +271,9 @@ class Certificate extends Base
     public function properties()
     {
         if (!$this->_properties) {
-            $this->_properties = json_decode($this->get('properties', '{width:900,height:694,elements:[]}'));
+            $default = '{width:900,height:694,elements:[]}';
+            $props = $this->get('properties', $default);
+            $this->_properties = json_decode($props);
             if (!$this->_properties) {
                 $this->_properties = new \stdClass();
                 $this->_properties->width    = 900;
@@ -300,7 +318,14 @@ class Certificate extends Base
             'height' => ($h * $mm)
         );
 
-        $pdf = new CertificatePdf(PDF_PAGE_ORIENTATION, PDF_UNIT, $size, true, 'UTF-8', false);
+        $pdf = new CertificatePdf(
+            PDF_PAGE_ORIENTATION,
+            PDF_UNIT,
+            $size,
+            true,
+            'UTF-8',
+            false
+        );
         $pdf->img_file = $img;
 
         $pdf->AddPage('L', array($size['height'], $size['width']));
@@ -342,8 +367,12 @@ class Certificate extends Base
 
             $pdf->SetFont('Helvetica', '', 30);
 
-            $pdf->SetXY($element->x * $size['width'], $element->y * $size['height']);
-            $pdf->Cell($element->w * $size['width'], ($element->h * $size['height']), $val, '', 1, 'C');
+            $posX = $element->x * $size['width'];
+            $posY = $element->y * $size['height'];
+            $pdf->SetXY($posX, $posY);
+            $cellW = $element->w * $size['width'];
+            $cellH = $element->h * $size['height'];
+            $pdf->Cell($cellW, $cellH, $val, '', 1, 'C');
         }
 
         if (!$path) {
@@ -383,7 +412,10 @@ class Certificate extends Base
         if (is_dir($path)) {
             // Attempt to delete the file
             if (!\Filesystem::deleteDirectory($path)) {
-                $this->setError(Lang::txt('Unable to remove upload directory and files for certificate.'));
+                $msg = Lang::txt(
+                    'Unable to remove upload directory and files for certificate.'
+                );
+                $this->setError($msg);
                 return false;
             }
         }

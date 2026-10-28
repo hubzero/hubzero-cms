@@ -20,14 +20,14 @@ class Ftp implements AdapterInterface
     /**
      * FTP Transfer mode
      *
-     * @var int
+     * @public int
      */
     protected $transferMode = FTP_BINARY;
 
     /**
      * List of configurable items
      *
-     * @var array
+     * @public array
      */
     protected $configurable = array(
         'host',
@@ -311,7 +311,9 @@ class Ftp implements AdapterInterface
         }
 
         if (!$this->connection) {
-            throw new RuntimeException(sprintf('Could not connect to host: %s, port: %s', $this->getHost(), $this->getPort()));
+            throw new RuntimeException(sprintf('Could not connect to host: %s, port: %s', $this->
+                getHost(), $this->
+                getPort()));
         }
 
         $this->login();
@@ -328,7 +330,9 @@ class Ftp implements AdapterInterface
     protected function setConnectionPassiveMode()
     {
         if (!ftp_pasv($this->getConnection(), $this->passive)) {
-            throw new RuntimeException(sprintf('Could not set passive mode for connection: %s::%s', $this->getHost(), $this->getPort()));
+            throw new RuntimeException(sprintf('Could not set passive mode for connection: %s::%s', $this->
+                getHost(), $this->
+                getPort()));
         }
     }
 
@@ -368,8 +372,10 @@ class Ftp implements AdapterInterface
 
         if (!$isLoggedIn) {
             $this->disconnect();
-
-            throw new RuntimeException(sprintf('Could not login with connection: %s::%s, username: %s', $this->getHost(), $this->getPort(), $this->getUsername()));
+            throw new RuntimeException(sprintf('Could not login with connection: %s::%s, username: %s', $this->
+                getHost(), $this->
+                getPort(), $this->
+                getUsername()));
         }
     }
 
@@ -701,7 +707,8 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn',
+        '.git', 'CVS', '.DS_Store', '__MACOSX'))
     {
         $listing = ftp_rawlist($this->getConnection(), '-lna ' . $path, $recursive);
 
@@ -715,7 +722,8 @@ class Ftp implements AdapterInterface
      * @param   string  $prefix
      * @return  array   Directory listing
      */
-    protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+    protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = array('.svn', '.git',
+        'CVS', '.DS_Store', '__MACOSX'))
     {
         $base = $prefix;
 
@@ -767,8 +775,9 @@ class Ftp implements AdapterInterface
     protected function normalizeObject($item, $base)
     {
         $item = preg_replace('#\s+#', ' ', trim($item), 7);
-        list($permissions, /* $number */, /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);
-
+        list($permissions,
+            /* $number */,
+            /* $owner */, /* $group */, $size, /* $month */, /* $day */, /* $time*/, $name) = explode(' ', $item, 9);
         $type = $this->detectType($permissions);
         $path = empty($base) ? $name : $base . $this->separator . $name;
 

@@ -20,6 +20,7 @@ class Guard
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_observers = array();
 
     /**
@@ -27,6 +28,7 @@ class Guard
      *
      * @var  mixed
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_state = null;
 
     /**
@@ -34,6 +36,7 @@ class Guard
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_methods = array();
 
     /**
@@ -49,6 +52,7 @@ class Guard
      * @param   object  $app
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct(Container $app)
     {
         $this->app = $app;
@@ -89,7 +93,11 @@ class Guard
 
             // Make sure we haven't already attached this array as an observer
             foreach ($this->_observers as $check) {
-                if (is_array($check) && $check['event'] == $observer['event'] && $check['handler'] == $observer['handler']) {
+                if (
+                    is_array($check) &&
+                    $check['event'] == $observer['event'] &&
+                    $check['handler'] == $observer['handler']
+                ) {
                     return;
                 }
             }
@@ -195,7 +203,10 @@ class Guard
                 $plugin = new $className($this, (array) $plugin);
             } else {
                 // Bail here if the plugin can't be created
-                $this->app['log.debug']->error($this->app['language']->txts('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', $className));
+                $this->app['log.debug']->error($this->app['language']->txts(
+                    'JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN',
+                    $className
+                ));
                 continue;
             }
 

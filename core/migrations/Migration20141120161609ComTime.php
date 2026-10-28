@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for changing time to track start and end times of entries
- **/
+ *
+ */
 class Migration20141120161609ComTime extends Base
 {
     /**
@@ -39,8 +41,11 @@ class Migration20141120161609ComTime extends Base
                     $this->callback('progress', 'init', array('Updating existing start dates to include time:'));
 
                     foreach ($results as $result) {
-                        $date  = with(new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset')))->toSql();
-                        $query = "UPDATE `#__time_records` SET `date` = " . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
+                        $date = with(
+                            new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset'))
+                        )->toSql();
+                        $query = "UPDATE `#__time_records` SET `date` = "
+                            . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
                         $this->db->setQuery($query);
                         $this->db->query();
 
@@ -74,8 +79,9 @@ class Migration20141120161609ComTime extends Base
 
                 foreach ($results as $result) {
                     // Using PHP date because we're just doing a relative calculation
-                    $date  = date('Y-m-d H:i:s', strtotime($result->date) + $result->time * 3600);
-                    $query = "UPDATE `#__time_records` SET `end` = " . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
+                    $date = date('Y-m-d H:i:s', strtotime($result->date) + $result->time * 3600);
+                    $query = "UPDATE `#__time_records` SET `end` = "
+                        . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
                     $this->db->setQuery($query);
                     $this->db->query();
 

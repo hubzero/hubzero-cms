@@ -187,7 +187,10 @@ class Media extends SiteController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(Lang::txt(
+                'COM_BLOG_ERROR_UPLOADING_FILE_TOO_BIG',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit)
+            ));
 
             return $this->displayTask();
         }

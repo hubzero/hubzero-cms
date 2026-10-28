@@ -1,5 +1,6 @@
 <?php
 
+
 use Hubzero\Content\Migration\Base;
 
 // no direct access
@@ -7,7 +8,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indexes to the `#__auth_link` table.
- **/
+ *
+ */
 class Migration20200917000000AuthLinkIndex extends Base
 {
     /**

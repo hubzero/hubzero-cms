@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -74,7 +75,9 @@ class Hosttypes extends AdminController
         );
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
-        $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
+        $filters['start'] = ($filters['limit'] != 0
+            ? (floor($filters['start'] / $filters['limit']) * $filters['limit'])
+            : 0);
 
         // Get the middleware database
         $mwdb = Utils::getMWDBO();
@@ -142,6 +145,7 @@ class Hosttypes extends AdminController
      * @param   mixed    $value
      * @return  integer
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _refs($value)
     {
         $refs = 0;

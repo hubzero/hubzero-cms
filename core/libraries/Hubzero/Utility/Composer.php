@@ -90,6 +90,7 @@ class Composer
      *
      * @return  void
      **/
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _init()
     {
         //Set environment up for composer
@@ -111,7 +112,8 @@ class Composer
         }
 
         if (!self::$composer) {
-            self::$composer = self::$factory->createComposer(self::$io, PATH_APP . '/composer.json', false, PATH_APP, true);
+            self::$composer = self::$factory->createComposer(self::$io, PATH_APP .
+                '/composer.json', false, PATH_APP, true);
         }
         return true;
     }
@@ -121,6 +123,7 @@ class Composer
      *
      * @return  object  Composer\Factory object in use
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getFactory()
     {
         self::_init();
@@ -132,6 +135,7 @@ class Composer
      *
      * @return  object  Composer\Composer object representing this composer instance
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getComposer()
     {
         self::_init();
@@ -144,6 +148,7 @@ class Composer
      *
      * @return  boolean Indicates success or failure
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _resetComposer()
     {
         self::$composer = null;
@@ -162,6 +167,7 @@ class Composer
      *
      * @return  object  Composer\IO object in use
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getIO()
     {
         self::_init();
@@ -173,6 +179,7 @@ class Composer
      *
      * @return  object  Composer\Repository\RepositoryManager in use
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getRepositoryManager()
     {
         self::_init();
@@ -187,6 +194,7 @@ class Composer
      *
      * @return  object  Composer\Repository\RepositoryInterface containing the local repository
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getLocalRepository()
     {
         self::_init();
@@ -201,6 +209,7 @@ class Composer
      *
      * @return  array   Array of Composer\Repository\RepositoryInterfaces containing remote packages
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getRemoteRepositories()
     {
         self::_init();
@@ -215,6 +224,7 @@ class Composer
      *
      * @return  object  Composer\Installer object in use
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getInstaller()
     {
         self::_init();
@@ -229,6 +239,7 @@ class Composer
      *
      * @return  object  Composer\EventDispatcher\EventDispatcher in use
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getDispatcher()
     {
         self::_init();
@@ -243,6 +254,7 @@ class Composer
      *
      * @return  object  Composer\Json\JsonFile in use
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getComposerJson()
     {
         self::_init();
@@ -259,6 +271,7 @@ class Composer
      * @param   string  $command    Command message being dispatched
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _dispatch($command)
     {
         $dispatcher = self::_getDispatcher();
@@ -270,9 +283,11 @@ class Composer
      * Require a package/version by manipulating the composer.json file
      *
      * @param       string  $packageName    The package name in the form of vendor/package
-     * @param       string  $constraint     The version constraint string - see https://getcomposer.org/doc/articles/versions.md
+     * @param       string  $constraint     The version constraint string
+     *                                      See: https://getcomposer.org/doc/articles/versions.md
      * @return  boolean Indicates if the operation succeeded
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _requirePackage($packageName, $constraint = 'dev-master')
     {
         if (empty($packageName)) {
@@ -295,6 +310,7 @@ class Composer
      * @param       string  $apackageName   The package name in the form of vendor/pacakage
      * @return  boolean Indicates if the operation succeeded
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _unrequirePackage($packageName)
     {
         if (empty($packageName)) {
@@ -318,6 +334,7 @@ class Composer
      * @param       array   $packages   List of packages to be updated
      * @return  boolean Indicates success or failure
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _updatePackage($packageName)
     {
         self::_init();
@@ -341,6 +358,7 @@ class Composer
      *
      * @return  object  Composer\Config object in use by composer
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _getConfig()
     {
         self::_init();
@@ -362,7 +380,8 @@ class Composer
      * Install a package as a specific version
      *
      * @param       string  $packageName    Name of the package to install
-     * @param       string  $constraint     Version constraint string - see https://getcomposer.org/doc/articles/versions.md
+     * @param       string  $constraint     Version constraint string
+     *                                      See: https://getcomposer.org/doc/articles/versions.md
      * @return  boolean Indicates success or frailure
      */
     public static function installPackage($packageName, $constraint = 'dev-master')
@@ -426,7 +445,8 @@ class Composer
     /**
      * Get a list of available packages
      *
-     * @return  array   Array of packages that are available in remote repositories but have no locally installed version
+     * @return  array   Array of packages that are available in remote repositories but have no
+     * locally installed version
      */
     public static function getAvailablePackages()
     {
@@ -498,8 +518,9 @@ class Composer
     /**
      * Find available packages matching the given constraints
      *
-     * @param       string  $packageName    Name of the package to be found
-     * @param       string  $versionConstraint  Version constraint for package - see https://getcomposer.org/doc/articles/versions.md
+     * @param       string  $packageName        Name of the package to be found
+     * @param       string  $versionConstraint  Version constraint for package
+     *                                          See: https://getcomposer.org/doc/articles/versions.md
      * @return  mixed       Composer\Package\PackageInterface or null
      */
     public static function findRemotePackages($packageName, $versionConstraint)
@@ -511,8 +532,9 @@ class Composer
     /**
      * Find an installed package matching given the constraints
      *
-     * @param       string  $packageName    Name of the package to be found
-     * @param       string  $versionConstraint  Version constraint for package - see https://getcomposer.org/doc/articles/versions.md
+     * @param       string  $packageName        Name of the package to be found
+     * @param       string  $versionConstraint  Version constraint for package
+     *                                          See: https://getcomposer.org/doc/articles/versions.md
      * @return  mixed       Composer\Package\PackageInterface or null
      */
     public static function findLocalPackages($packageName, $versionConstraint = null)

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding pdf file handler
- **/
+ *
+ */
 class Migration20160108151435PlgHandlersPdf extends Base
 {
     /**

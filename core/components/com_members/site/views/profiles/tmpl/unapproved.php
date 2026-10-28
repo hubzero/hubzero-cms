@@ -16,6 +16,7 @@ defined('_HZEXEC_') or die();
 
 <section class="main section">
     <p>
-        <?php echo Lang::txt('COM_MEMBERS_PENDING_APPROVAL_MESSAGE', Route::url('index.php?option=com_support&task=new')); ?>
+        <?php echo Lang::txt('COM_MEMBERS_PENDING_APPROVAL_MESSAGE', Route::url('index
+            . php?option=com_support&task=new')); ?>
     </p>
 </section>

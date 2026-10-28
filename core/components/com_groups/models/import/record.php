@@ -235,9 +235,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
         // Either passed in the raw data or gotten from the title match
         if (isset($this->raw->gidNumber) && $this->raw->gidNumber > 1) {
             $this->record->entry = Group::oneOrNew($this->raw->gidNumber);
-        } else if (isset($this->raw->id) && $this->raw->id > 1) {
+        } elseif (isset($this->raw->id) && $this->raw->id > 1) {
             $this->record->entry = Group::oneOrNew($this->raw->id);
-        } else if (isset($this->raw->cn) && $this->raw->cn) {
+        } elseif (isset($this->raw->cn) && $this->raw->cn) {
             $entry = Group::oneByCn($this->raw->cn);
             if (!$entry) {
                 $entry = Group::blank();
@@ -315,7 +315,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 // Uh-oh. Notify the user.
                 array_push($this->record->notices, Lang::txt('Group aliases (CNs) for existing groups cannot be changed at this time.'));
             }
-        } else if (isset($this->raw->cn) && $this->raw->cn) {
+        } elseif (isset($this->raw->cn) && $this->raw->cn) {
             $this->record->entry->set('cn', $this->raw->cn);
         }
 

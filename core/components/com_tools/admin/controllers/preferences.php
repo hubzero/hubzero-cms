@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -142,7 +143,18 @@ class Preferences extends AdminController
                 $selected = $class->id;
             }
         }
-        $this->view->classes = Html::select('genericlist', $options, 'fields[class_id]', '', 'value', 'text', $selected, 'class_id', false, false);
+        $this->view->classes = Html::select(
+            'genericlist',
+            $options,
+            'fields[class_id]',
+            '',
+            'value',
+            'text',
+            $selected,
+            'class_id',
+            false,
+            false
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {

@@ -39,6 +39,18 @@ class Checkbox extends Field
         // Initialize JavaScript field attributes.
         $onclick = $this->element['onclick'] ? ' onclick="' . (string) $this->element['onclick'] . '"' : '';
 
-        return '<input type="checkbox" name="' . $this->name . '" id="' . $this->id . '"' . ' value="' . htmlspecialchars((string) $this->element['value'], ENT_COMPAT, 'UTF-8') . '"' . $class . $checked . $disabled . $onclick . '/>';
+        return '<input type="checkbox" name="' .
+            $this->name .
+            '" id="' .
+            $this->id .
+            '"' .
+            ' value="' .
+            htmlspecialchars((string) $this->element['value'], ENT_COMPAT, 'UTF-8') .
+            '"' .
+            $class .
+            $checked .
+            $disabled .
+            $onclick .
+            '/>';
     }
 }

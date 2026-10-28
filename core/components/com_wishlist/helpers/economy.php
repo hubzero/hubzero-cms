@@ -28,6 +28,7 @@ class Economy extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_db = null;
 
     /**
@@ -52,7 +53,8 @@ class Economy extends Obj
         if (!$wishid) {
             return null;
         }
-        $sql = "SELECT DISTINCT uid FROM `#__users_transactions` WHERE category='wish' AND referenceid=$wishid AND type='hold'";
+        $sql = "SELECT DISTINCT uid FROM `#__users_transactions`"
+            . " WHERE category='wish' AND referenceid=$wishid AND type='hold'";
         $this->_db->setQuery($sql);
         return $this->_db->loadObjectList();
     }
@@ -69,7 +71,8 @@ class Economy extends Obj
         if (!$wishid or !$uid) {
             return null;
         }
-        $sql = "SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND referenceid='$wishid' AND type='hold' AND uid='$uid'";
+        $sql = "SELECT SUM(amount) FROM `#__users_transactions`"
+            . " WHERE category='wish' AND referenceid='$wishid' AND type='hold' AND uid='$uid'";
         $this->_db->setQuery($sql);
         return $this->_db->loadResult();
     }
@@ -115,6 +118,7 @@ class Economy extends Obj
      * @param   number   $points  Points to distribute
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distribute_points($wishid, $type = 'grant', $points = 0)
     {
         if (!$wishid) {
@@ -149,10 +153,11 @@ class Economy extends Obj
                     }
                     $BTLO = new Teller($owner);
                     if ($wish->assigned && $wish->assigned == $owner) {
-                        //$BTLO->deposit($mainshare, Lang::txt('Bonus for fulfilling assigned wish').' #'.$wishid.' '.Lang::txt('on list').' #'.$wish->wishlist, 'wish', $wishid);
+                        // Old code removed: deposit mainshare for assigned wish owner
                         $mainshare += $commonshare;
                     } else {
-                        $BTLO->deposit($commonshare, Lang::txt('Bonus for fulfilling wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+                        $msg = Lang::txt('Bonus for fulfilling wish #%s on list #%s', $wishid, $wish->wishlist);
+                        $BTLO->deposit($commonshare, $msg, 'wish', $wishid);
                     }
                 }
             } else {
@@ -164,7 +169,8 @@ class Economy extends Obj
                 $o = User::getInstance($wish->assigned);
                 if (is_object($o) && $o->get('id')) {
                     $BTLM = new Teller($wish->assigned);
-                    $BTLM->deposit($mainshare, Lang::txt('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+                    $msg = Lang::txt('Bonus for fulfilling assigned wish #%s on list #%s', $wishid, $wish->wishlist);
+                    $BTLM->deposit($mainshare, $msg, 'wish', $wishid);
                 }
             }
 
@@ -185,7 +191,8 @@ class Economy extends Obj
                         $BTL->credit_adjustment($adjusted);
 
                         // withdraw bonus amount
-                        $BTL->withdraw($hold, Lang::txt('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist), 'wish', $wishid);
+                        $msg = Lang::txt('Bonus payment for granted wish #%s on list #%s', $wishid, $wish->wishlist);
+                        $BTL->withdraw($hold, $msg, 'wish', $wishid);
                     }
                 }
             }
@@ -201,7 +208,8 @@ class Economy extends Obj
             $o = User::getInstance($wish->proposed_by);
             if (is_object($o) && $o->get('id')) {
                 $BTLA = new Teller($wish->proposed_by);
-                $BTLA->deposit($wish->ranking, Lang::txt('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist), 'wish', $wishid);
+                $msg = Lang::txt('Your wish #%s on list #%s was granted', $wishid, $wish->wishlist);
+                $BTLA->deposit($wish->ranking, $msg, 'wish', $wishid);
             }
         }
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving data from #__xprofiles to #__user_profiles
+  *
  **/
 class Migration20160513140417ComMembers extends Base
 {
@@ -113,8 +115,10 @@ class Migration20160513140417ComMembers extends Base
                         $access   = (int)$fields[$field]['access'];
                     }
 
-                    $query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`, `ordering`, `access`)
-							SELECT `uidNumber`, '$field', `$field`, $ordering, $access FROM `#__xprofiles` WHERE `$field` != '' AND `$field` IS NOT NULL;";
+                    $query = "INSERT INTO `#__user_profiles` "
+                        . "(`user_id`, `profile_key`, `profile_value`, `ordering`, `access`) "
+                        . "SELECT `uidNumber`, '$field', `$field`, $ordering, $access "
+                        . "FROM `#__xprofiles` WHERE `$field` != '' AND `$field` IS NOT NULL;";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -132,8 +136,10 @@ class Migration20160513140417ComMembers extends Base
                         $access   = (int)$fields[$field]['access'];
                     }
 
-                    $query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`, `ordering`, `access`)
-							SELECT `uidNumber`, '$field', `$field`, $ordering, $access FROM `#__xprofiles_$field` WHERE `$field` != '' AND `$field` IS NOT NULL;";
+                    $query = "INSERT INTO `#__user_profiles` "
+                        . "(`user_id`, `profile_key`, `profile_value`, `ordering`, `access`) "
+                        . "SELECT `uidNumber`, '$field', `$field`, $ordering, $access "
+                        . "FROM `#__xprofiles_$field` WHERE `$field` != '' AND `$field` IS NOT NULL;";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -165,8 +171,10 @@ class Migration20160513140417ComMembers extends Base
 
                     $id = $address->uidNumber;
 
-                    $query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, `profile_value`, `ordering`, `access`)
-							VALUES ($id, 'address', " . $this->db->quote(json_encode($a)) . ", $ordering, $access);";
+                    $query = "INSERT INTO `#__user_profiles` "
+                        . "(`user_id`, `profile_key`, `profile_value`, `ordering`, `access`) "
+                        . "VALUES ($id, 'address', "
+                        . $this->db->quote(json_encode($a)) . ", $ordering, $access);";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

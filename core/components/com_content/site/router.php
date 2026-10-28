@@ -249,7 +249,7 @@ class Router extends Base
             if (preg_match('#[^0-9]#', $id)) {
                 if ($vars['view'] == 'article') {
                     $query = 'SELECT id FROM `#__content` WHERE alias = ' . $db->Quote($id);
-                } else if ($vars['view'] == 'category') {
+                } elseif ($vars['view'] == 'category') {
                     $query = 'SELECT id FROM `#__categories` WHERE alias = ' . $db->Quote($id);
                 } else {
                     $vars['id'] = (int)$id;

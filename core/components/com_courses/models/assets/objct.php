@@ -44,14 +44,19 @@ class Objct extends Content
         if (preg_match('/<iframe(.*?)src="([^"]+)"([^>]*)>(.*?)<\/iframe>/si', $object, $matches)) {
             if (stristr($matches[2], 'youtube')) {
                 $this->asset['title'] = 'New YouTube video';
-            } else if (stristr($matches[2], 'vimeo')) {
+            } elseif (stristr($matches[2], 'vimeo')) {
                 $this->asset['title'] = 'New Vimeo video';
-            } else if (stristr($matches[2], 'blip')) {
+            } elseif (stristr($matches[2], 'blip')) {
                 $this->asset['title'] = 'New Blip.tv video';
-            } else if (stristr($matches[2], 'kaltura')) {
+            } elseif (stristr($matches[2], 'kaltura')) {
                 $this->asset['title'] = 'New Kaltura video';
             }
-        } elseif (preg_match('/\<script[\s]+(type="text\/javascript")?[\s]*src="http[s]*\:\/\/cdnapi(sec)?\.kaltura\.com/is', $object)) {
+        } elseif (
+            preg_match(
+                '/\<script[\s]+(type="text\/javascript")?[\s]*src="http[s]*\:\/\/cdnapi(sec)?\.kaltura\.com/is',
+                $object
+            )
+        ) {
             $this->asset['title'] = 'New Kaltura video';
         } else {
             return array('error' => 'Content did not match the pre-defined filter for an object');

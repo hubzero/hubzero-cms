@@ -499,9 +499,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
                     ? Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
                     : Lang::txt('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
             }
-        }
-        // Assign todo
-        elseif ($task == 'assign') {
+        } elseif ($task == 'assign') {
+            // Assign todo
             $changed = $objTD->assigned_to == $assigned ? 0 : 1;
             if ($changed) {
                 $objTD->assigned_to = $assigned;
@@ -516,9 +515,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
                         : Lang::txt('PLG_PROJECTS_TODO_TODO_REASSIGNED');
                 }
             }
-        }
-        // Complete todo
-        else if ($task == 'changestate') {
+        } elseif ($task == 'changestate') {
+            // Complete todo
             $changed = $objTD->state == $state ? 0 : 1;
             if ($changed) {
                 $objTD->state = $state;

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing articles_popular module
- **/
+ *
+ */
 class Migration20190109000000ModArticlesPopular extends Base
 {
     /**

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,7 +20,9 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Return the alias and name for this category of content
@@ -62,13 +65,17 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         // Build the query
-        $c_count  = " SELECT count(DISTINCT c.id)";
-        $c_fields = " SELECT c.id, c.title, c.alias, c.created, b.path, CONCAT(c.introtext, c.fulltext) AS text, CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, NULL AS fsection, b.alias AS category, 'content' AS section, NULL AS subsection";
-        $c_from   = " FROM #__content AS c INNER JOIN #__categories AS b ON b.id=c.catid";
+        $c_count = " SELECT count(DISTINCT c.id)";
+        $c_fields = " SELECT c.id, c.title, c.alias, c.created, b.path, "
+            . "CONCAT(c.introtext, c.fulltext) AS text, "
+            . "CONCAT('index.php?option=com_content&task=view&id=', c.id) AS href, "
+            . "NULL AS fsection, b.alias AS category, 'content' AS section, NULL AS subsection";
+        $c_from = " FROM #__content AS c INNER JOIN #__categories AS b ON b.id=c.catid";
 
-        $c_where = "c.publish_up > " . $database->quote($period->cStartDate) . " AND c.publish_up < " . $database->quote($period->cEndDate) . " AND c.state='1'";
+        $c_where = "c.publish_up > " . $database->quote($period->cStartDate)
+            . " AND c.publish_up < " . $database->quote($period->cEndDate) . " AND c.state='1'";
 
-        $order_by  = " ORDER BY publish_up DESC, title";
+        $order_by = " ORDER BY publish_up DESC, title";
         $order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
         if ($limit) {
@@ -123,10 +130,15 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
             $row->href = Route::url($row->href);
         }
 
-        $html  = "\t" . '<li>' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+        $html = "\t" . '<li>' . "\n";
+        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+            . stripslashes($row->title) . '</a></p>' . "\n";
         if ($row->text) {
-            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
+            $text = \Hubzero\Utility\Str::truncate(
+                \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)),
+                200
+            );
+            $html .= "\t\t" . '<p>' . $text . '</p>' . "\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";
@@ -142,7 +154,7 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
      * @param   boolean  $startnew  Reset the array?
      * @return  array
      */
-    private function _recursiveMenuLookup($id, $startnew = true)
+    private function recursiveMenuLookup($id, $startnew = true)
     {
         static $aliases = array();
 
@@ -151,12 +163,14 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
         }
 
         $database = App::get('db');
-        $database->setQuery("SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1");
+        $database->setQuery(
+            "SELECT alias, parent FROM `#__menu` WHERE id=" . $database->quote($id) . " LIMIT 1"
+        );
         $level = $database->loadRow();
 
         $aliases[] = $level[0];
         if ($level[1]) {
-            $a = $this->_recursiveMenuLookup($level[1], false);
+            $a = $this->recursiveMenuLookup($level[1], false);
         }
 
         return $aliases;

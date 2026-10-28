@@ -34,7 +34,7 @@ $this->js();
              ->set('url', $this->url)
              ->set('cls', 'odd')
              ->display();
-    } else if ($this->depth <= 1 && !$this->params->get('access-review-comment')) { ?>
+    } elseif ($this->depth <= 1 && !$this->params->get('access-review-comment')) { ?>
         <div class="no-reviews">
             <?php if ($this->obj->isManager()) { ?>
             <div class="instructions">
@@ -96,17 +96,30 @@ $this->js();
                         if (!$reply->get('anonymous')) {
                             $name = $this->escape(stripslashes($reply->creator->get('name')));
                             if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                $name = '<a href="' . Route::url($reply->creator->link()) . '">' . $this->escape(stripslashes($reply->creator->get('name'))) . '</a>';
+                                $name = '<a href="'
+                                    . Route::url($reply->creator->link())
+                                    . '">'
+                                    . $this->escape(stripslashes($reply->creator->get('name')))
+                                    . '</a>';
                             }
                         }
                         ?>
                     <blockquote cite="c<?php echo $reply->get('id'); ?>">
                         <p>
                             <strong><?php echo $name; ?></strong>
+                            <?php
+                            $replyDatetime = $reply->created();
+                            $replyTime = $reply->created('time');
+                            $replyDate = $reply->created('date');
+                            ?>
                             <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-                            <span class="time"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('time'); ?></time></span>
+                            <span class="time">
+                                <time datetime="<?php echo $replyDatetime; ?>"><?php echo $replyTime; ?></time>
+                            </span>
                             <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-                            <span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
+                            <span class="date">
+                                <time datetime="<?php echo $replyDatetime; ?>"><?php echo $replyDate; ?></time>
+                            </span>
                         </p>
                         <p><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($reply->get('content')), 300)); ?></p>
                     </blockquote>
@@ -133,10 +146,19 @@ $this->js();
                     ?>
                     <p class="warning">
                         <?php echo Lang::txt('PLG_COURSES_REVIEWS_NOTE_EDITING_COMMENT_POSTED'); ?> <br />
+                        <?php
+                        $commentDatetime = $comment->created();
+                        $commentTime = $comment->created('time');
+                        $commentDate = $comment->created('date');
+                        ?>
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-                        <span class="time"><time datetime="<?php echo $comment->created(); ?>"><?php echo $comment->created('time'); ?></time></span>
+                        <span class="time">
+                            <time datetime="<?php echo $commentDatetime; ?>"><?php echo $commentTime; ?></time>
+                        </span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo $comment->created(); ?>"><?php echo $comment->created('date'); ?></time></span>
+                        <span class="date">
+                            <time datetime="<?php echo $commentDatetime; ?>"><?php echo $commentDate; ?></time>
+                        </span>
                     </p>
                     <?php
                     if ($comment->get('parent')) {
@@ -150,41 +172,61 @@ $this->js();
                     <fieldset class="rating">
                         <legend><?php echo Lang::txt('PLG_COURSES_REVIEWS_FORM_RATING'); ?>:</legend>
 
-                        <input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($comment->get('rating') == 5) {
-                            echo ' checked="checked"';
-                                                                                                                } ?> />
+                        <input class="option"
+                            id="review_rating_5"
+                            name="comment[rating]"
+                            type="radio"
+                            value="5"<?php if ($comment->get('rating') == 5) {
+                                echo ' checked="checked"';
+                                     } ?> />
                         <label for="review_rating_5">
                             &#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
                         </label>
 
-                        <input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($comment->get('rating') == 4) {
-                            echo ' checked="checked"';
-                                                                                                                } ?> />
+                        <input class="option"
+                            id="review_rating_4"
+                            name="comment[rating]"
+                            type="radio"
+                            value="4"<?php if ($comment->get('rating') == 4) {
+                                echo ' checked="checked"';
+                                     } ?> />
                         <label for="review_rating_4">
                             &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
                         </label>
 
-                        <input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($comment->get('rating') == 3) {
-                            echo ' checked="checked"';
-                                                                                                                } ?> />
+                        <input class="option"
+                            id="review_rating_3"
+                            name="comment[rating]"
+                            type="radio"
+                            value="3"<?php if ($comment->get('rating') == 3) {
+                                echo ' checked="checked"';
+                                     } ?> />
                         <label for="review_rating_3">
                             &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
                         </label>
 
-                        <input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($comment->get('rating') == 2) {
-                            echo ' checked="checked"';
-                                                                                                                } ?> />
+                        <input class="option"
+                            id="review_rating_2"
+                            name="comment[rating]"
+                            type="radio"
+                            value="2"<?php if ($comment->get('rating') == 2) {
+                                echo ' checked="checked"';
+                                     } ?> />
                         <label for="review_rating_2">
                             &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
                         </label>
 
-                        <input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($comment->get('rating') == 1) {
-                            echo ' checked="checked"';
-                                                                                                                } ?> />
+                        <input class="option"
+                            id="review_rating_1"
+                            name="comment[rating]"
+                            type="radio"
+                            value="1"<?php if ($comment->get('rating') == 1) {
+                                echo ' checked="checked"';
+                                     } ?> />
                         <label for="review_rating_1">
                             &#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
@@ -193,32 +235,54 @@ $this->js();
                     <div class="clear"></div>
                 <?php } ?>
 
+                    <?php
+                    $commentsLabel = Lang::txt('PLG_COURSES_REVIEWS_YOUR_COMMENTS');
+                    $requiredLabel = Lang::txt('PLG_COURSES_REVIEWS_REQUIRED');
+                    $editorContent = $this->escape(stripslashes($comment->get('content')));
+                    $editorHtml = $this->editor(
+                        'comment[content]',
+                        $editorContent,
+                        35,
+                        20,
+                        'commentcontent',
+                        array('class' => 'minimal no-footer')
+                    );
+                    ?>
                     <label>
-                        <?php echo Lang::txt('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
-                        <?php echo $this->editor('comment[content]', $this->escape(stripslashes((string) $comment->get('content'))), 35, 20, 'commentcontent', array('class' => 'minimal no-footer')); ?>
+                        <?php echo $commentsLabel; ?>: <span class="required"><?php echo $requiredLabel; ?></span>
+                        <?php echo $editorHtml; ?>
                     </label>
 
 
                     <label class="comment-anonymous-label">
                         <?php if ($this->params->get('comments_anon', 1)) { ?>
-                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($comment->get('anonymous')) {
-                                echo ' checked="checked"';
-                                                                                                                            } ?> />
+                            <input class="option"
+                                type="checkbox"
+                                name="comment[anonymous]"
+                                id="comment-anonymous"
+                                value="1"<?php if ($comment->get('anonymous')) {
+                                    echo ' checked="checked"';
+                                         } ?> />
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_ANONYMOUSLY'); ?>
                         <?php } else { ?>
-                            &nbsp; <input class="option" type="hidden" name="comment[anonymous]" id="comment-anonymous" value="0" />
+                            &nbsp; <input class="option" type="hidden" name="comment[anonymous]" id="comment-anonymous"
+                            value="0" />
                         <?php } ?>
                     </label>
 
                     <p class="submit">
-                        <input type="submit" name="submit" value="<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
+                        <input type="submit"
+                            name="submit"
+                            value="<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>"/>
                     </p>
 
                     <input type="hidden" name="comment[id]" value="<?php echo $comment->get('id'); ?>" />
                     <input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
                     <input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
                     <input type="hidden" name="comment[parent]" value="<?php echo $comment->get('parent'); ?>" />
-                    <input type="hidden" name="comment[created_by]" value="<?php echo ($comment->get('id')) ? $comment->get('created_by') : User::get('id'); ?>" />
+                    <input type="hidden"
+                        name="comment[created_by]"
+                        value="<?php echo ($comment->get('id')) ? $comment->get('created_by') : User::get('id'); ?>"/>
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="action" value="save" />
 

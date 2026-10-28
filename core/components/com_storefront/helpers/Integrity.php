@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,9 +30,11 @@ class Integrity
             $return->status = 'error';
             // If there are no options, no multiple SKUs can be published
             if (empty($options)) {
-                $return->errors[] = 'There is already another SKU published for this product. A product without product options can only have one SKU.';
+                $return->errors[] = 'There is already another SKU published for this product. ' .
+                    'A product without product options can only have one SKU.';
             } else {
-                $return->errors[] = 'There is already a SKU with the identical set of options. Each SKU must have a unique set of options.';
+                $return->errors[] = 'There is already a SKU with the identical set of options. ' .
+                    'Each SKU must have a unique set of options.';
             }
         }
 
@@ -55,10 +58,13 @@ class Integrity
 
         // Check if there are other collections that have the same alias
         try {
-            $conflictingCollectionId = \Components\Storefront\Models\Collection::findActiveCollectionByAlias($collection->getAlias());
+            $conflictingCollectionId = \Components\Storefront\Models\Collection::findActiveCollectionByAlias(
+                $collection->getAlias()
+            );
             if ($conflictingCollectionId && $conflictingCollectionId != $collection->getId()) {
                 $return->status = 'error';
-                $return->errors[] = 'There is already another collection published with the same alias. Alias must be unique.';
+                $return->errors[] = 'There is already another collection published with the same alias. ' .
+                    'Alias must be unique.';
             }
         } catch (\Exception $e) {
             // No conflicting product found (hence, the Exception), good to go.

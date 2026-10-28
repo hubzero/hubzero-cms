@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding project tool tables
+  *
  **/
 class Migration20150401110000ComProjects extends Base
 {
@@ -112,15 +114,32 @@ class Migration20150401110000ComProjects extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "INSERT INTO `#__project_tool_statuses` (`id`, `status`, `status_about`, `next`, `next_admin`, `next_about`, `next_actor`, `wait_time`, `options`)
-			VALUES
-				(1,'created','','upload your code and request install','wait for develper to upload code','You need to upload your code into the tool <a href=\"{app-source}\">repository</a>. When your code is ready for install, notify administrator via this screen.',0,'','{\"option-message\":\"1\",\"option-cancel\":\"1\"}'),
-				(2,'deleted','','','','',2,'',''),
-				(3,'uploaded','','wait for admin to install latest code','install developer code','Administrator need to intsall your uploaded code. You will get notified when the code is installed.',1,'24hrs','{\"option-message\":\"1\"}'),
-				(4,'installed','','test installed code','wait for develper to test code','Test your code to make sure it is working as expected. Make further changes and request install if needed, or let administrator know the tool is working properly.',0,'','{\"option-message\":\"1\"}'),
-				(5,'broken','','fix the code','wait for develper to fix code','There is a problem with your code that needs to be fixed before it can be installed.',0,'','{\"option-message\":\"1\"}'),
-				(7,'working','','','','The tool is working and can now be published. If you need administrator to install an update, request install via this screen.',2,'','{\"option-message\":\"1\"}'),
-				(8,'retired','','','','You tool is retired. ',2,'','{\"option-message\":\"1\"}');";
+            $query = "INSERT INTO `#__project_tool_statuses` "
+                . "(`id`, `status`, `status_about`, `next`, `next_admin`, `next_about`, "
+                . "`next_actor`, `wait_time`, `options`) VALUES "
+                . "(1,'created','','upload your code and request install',"
+                . "'wait for develper to upload code',"
+                . "'You need to upload your code into the tool "
+                . "<a href=\"{app-source}\">repository</a>. When your code is ready for install, "
+                . "notify administrator via this screen.',0,'',"
+                . "'{\"option-message\":\"1\",\"option-cancel\":\"1\"}'), "
+                . "(2,'deleted','','','','',2,'',''), "
+                . "(3,'uploaded','','wait for admin to install latest code',"
+                . "'install developer code','Administrator need to intsall your uploaded code. "
+                . "You will get notified when the code is installed.',1,'24hrs',"
+                . "'{\"option-message\":\"1\"}'), "
+                . "(4,'installed','','test installed code','wait for develper to test code',"
+                . "'Test your code to make sure it is working as expected. Make further changes "
+                . "and request install if needed, or let administrator know the tool is working "
+                . "properly.',0,'','{\"option-message\":\"1\"}'), "
+                . "(5,'broken','','fix the code','wait for develper to fix code',"
+                . "'There is a problem with your code that needs to be fixed before it can be "
+                . "installed.',0,'','{\"option-message\":\"1\"}'), "
+                . "(7,'working','','','','The tool is working and can now be published. "
+                . "If you need administrator to install an update, request install via this "
+                . "screen.',2,'','{\"option-message\":\"1\"}'), "
+                . "(8,'retired','','','','You tool is retired. ',2,'',"
+                . "'{\"option-message\":\"1\"}');";
             $this->db->setQuery($query);
             $this->db->query();
         }

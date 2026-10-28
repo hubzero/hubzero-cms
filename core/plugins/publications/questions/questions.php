@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for questions
@@ -19,6 +18,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -92,7 +92,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
         $this->filters['tag']    = $this->publication->isTool() ? 'tool:' . $identifier : 'publication:' . $identifier;
         $this->filters['rawtag'] = $this->publication->isTool() ? 'tool:' . $identifier : 'publication:' . $identifier;
 
-        $this->count = $this->_find()->count();
+        $this->count = $this->find()->count();
 
         $arr['count'] = $this->count;
         $arr['name']  = 'questions';
@@ -105,16 +105,16 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
         if ($rtrn == 'all' || $rtrn == 'html') {
             switch (strtolower(Request::getWord('action', 'browse'))) {
                 case 'save':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
 
                 case 'new':
-                    $arr['html'] = $this->_new();
+                    $arr['html'] = $this->new();
                     break;
 
                 case 'browse':
                 default:
-                    $arr['html'] = $this->_browse();
+                    $arr['html'] = $this->browse();
                     break;
             }
         }
@@ -137,7 +137,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
      *
      * @return  object
      */
-    private function _find()
+    private function find()
     {
         $records = \Components\Answers\Models\Question::all()
             ->including(['responses', function ($response) {
@@ -185,7 +185,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _browse()
+    private function browse()
     {
         switch ($this->filters['sortby']) {
             case 'rewards':
@@ -201,7 +201,7 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
         }
 
         // Get results
-        $results = $this->_find()
+        $results = $this->find()
             ->limit($this->params->get('display_limit', 10))
             ->order($order, $this->filters['sort_Dir'])
             ->paginated()
@@ -225,11 +225,16 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
      * @param   object  $row
      * @return  string
      */
-    private function _new($row = null)
+    private function new($row = null)
     {
         // Login required
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=' . $this->_name, false, true), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' .
+                    $this->option .
+                    '&id=' .
+                    $this->publication->id .
+                    '&active=' .
+                    $this->_name, false, true), 'server');
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -274,11 +279,11 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _save()
+    private function save()
     {
         // Login required
         if (User::isGuest()) {
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Check for request forgeries
@@ -322,20 +327,20 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
             // Is it an actual number?
             if (!is_numeric($reward)) {
                 $this->setError(Lang::txt('COM_ANSWERS_REWARD_MUST_BE_NUMERIC'));
-                return $this->_new($row);
+                return $this->new($row);
             }
 
             // Are they offering more than they can afford?
             if ($reward > $funds) {
                 $this->setError(Lang::txt('COM_ANSWERS_INSUFFICIENT_FUNDS'));
-                return $this->_new($row);
+                return $this->new($row);
             }
         }
 
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->_new($row);
+            return $this->new($row);
         }
 
         // Hold the reward for this question if we're banking
@@ -348,7 +353,8 @@ class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
         $row->tag($tags);
 
         // Add the tag to link to the publication
-        $identifier = $this->publication->get('alias') ? $this->publication->get('alias') : $this->publication->get('id');
+        $identifier = $this->publication->get('alias') ?
+            $this->publication->get('alias') : $this->publication->get('id');
         $tag = $this->publication->isTool() ?  'tool:' . $identifier : 'publication:' . $identifier;
 
         $row->addTag($tag, User::get('id'), ($this->publication->isTool() ? 0 : 1));

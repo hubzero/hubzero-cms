@@ -87,7 +87,8 @@ class Version extends Table
             return false;
         }
 
-        $query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new) . " WHERE publication_id=" . $this->_db->quote($pid);
+        $query  = "UPDATE $this->_tbl SET $update = " . $this->_db->quote($new)
+            . " WHERE publication_id=" . $this->_db->quote($pid);
         $query .= $where ? " AND " . $where : "";
         if ($version == 'default' or $version == 'current' or $version == 'main') {
             $query .= " AND main=1 ";
@@ -230,13 +231,15 @@ class Version extends Table
             return true;
         }
         if ($version == 'dev') {
-            $query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 3 LIMIT 1 ";
+            $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
+                . $this->_db->quote($pid) . " AND state = 3 LIMIT 1 ";
             $this->_db->setQuery($query);
             $result = $this->_db->loadResult();
             return $result ? true : false;
         }
         if (is_numeric($version)) {
-            $query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($version) . " LIMIT 1 ";
+            $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
+                . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($version) . " LIMIT 1 ";
             $this->_db->setQuery($query);
             $result = $this->_db->loadResult();
             return $result ? true : false;
@@ -272,7 +275,8 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT id FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND main = 1 LIMIT 1 ";
+        $query  = "SELECT id FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND main = 1 LIMIT 1 ";
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
@@ -288,7 +292,8 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT version_number FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+        $query  = "SELECT version_number FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
@@ -304,7 +309,8 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ";
+        $query  = "SELECT COUNT(*) FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND state = 1 ";
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
@@ -336,7 +342,8 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query  = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
+        $query  = "SELECT * FROM $this->_tbl WHERE publication_id="
+            . $this->_db->quote($pid) . " AND state = 1 ORDER BY version_number DESC LIMIT 1 ";
         $this->_db->setQuery($query);
         $result = $this->_db->loadObjectList();
         return $result ? $result[0] : false;
@@ -354,7 +361,9 @@ class Version extends Table
         if ($pid === null || $version_number == 1) {
             return false;
         }
-        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote(--$version_number) . " AND state = 1";
+        $prevVersion = --$version_number;
+        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND version_number=" . $this->_db->quote($prevVersion) . " AND state = 1";
         $this->_db->setQuery($query);
         return $this->_db->loadObject();
     }
@@ -371,7 +380,9 @@ class Version extends Table
         if ($pid === null) {
             return false;
         }
-        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote(++$version_number) . " AND state = 1";
+        $nextVersion = ++$version_number;
+        $query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND version_number=" . $this->_db->quote($nextVersion) . " AND state = 1";
         $this->_db->setQuery($query);
         return $this->_db->loadObject();
     }
@@ -413,7 +424,8 @@ class Version extends Table
         $query  = "SELECT COUNT(*)";
         $query .= " FROM $this->_tbl AS v ";
         $query .= " JOIN #__publications AS p ON p.id=v.publication_id ";
-        $query .= " WHERE v.main=1 AND v.title LIKE " . $this->_db->quote($title . '%') . " AND p.project_id = " . $this->_db->quote($projectid) . " AND v.state != 2";
+        $query .= " WHERE v.main=1 AND v.title LIKE " . $this->_db->quote($title . '%')
+            . " AND p.project_id = " . $this->_db->quote($projectid) . " AND v.state != 2";
 
         $this->_db->setQuery($query);
         $result = $this->_db->loadResult();
@@ -598,10 +610,14 @@ class Version extends Table
         }
 
         if ($otherReason == '') {
-            $query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($selectedReason) . " WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($verNumber);
+            $reason = $selectedReason;
         } else {
-            $query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($otherReason) . " WHERE publication_id=" . $this->_db->quote($pid) . " AND version_number=" . $this->_db->quote($verNumber);
+            $reason = $otherReason;
         }
+
+        $query = "UPDATE $this->_tbl SET unpublished_reason = " . $this->_db->quote($reason)
+            . " WHERE publication_id=" . $this->_db->quote($pid)
+            . " AND version_number=" . $this->_db->quote($verNumber);
 
         $this->_db->setQuery($query);
         $this->_db->query();

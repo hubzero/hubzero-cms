@@ -6,19 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for related course
  */
-class plgCoursesRelated extends \Hubzero\Plugin\Plugin
+class PlgCoursesRelated extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var    boolean
+     * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -31,7 +31,7 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
     {
         $instructors = $course->instructors();
         if (count($instructors) <= 0) {
-            return;
+            return '';
         }
 
         $ids = array();
@@ -41,28 +41,31 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 
         $database = App::get('db');
 
-        $query  = "SELECT DISTINCT c.*
-					FROM `#__courses` AS c
-					JOIN `#__courses_members` AS m ON m.course_id=c.id AND m.student=0
-					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-					WHERE r.alias='instructor'
-					AND m.user_id IN (" . implode(",", $ids) . ")
-					AND m.student=0
-					AND c.state=1
-					AND c.id !=" . $database->Quote($course->get('id')) . " LIMIT " . (int) $this->params->get('display_limit', 3);
+        $query = "SELECT DISTINCT c.*
+                    FROM `#__courses` AS c
+                    JOIN `#__courses_members` AS m ON m.course_id=c.id AND m.student=0
+                    LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
+                    WHERE r.alias='instructor'
+                    AND m.user_id IN (" . implode(",", $ids) . ")
+                    AND m.student=0
+                    AND c.state=1
+                    AND c.id !=" . $database->Quote($course->get('id')) . "
+                    LIMIT " . (int) $this->params->get('display_limit', 3);
 
         $database->setQuery($query);
         if ($courses = $database->loadObjectList()) {
             $view = $this->view('default', 'overview');
-            $view->option     = Request::getCmd('option', 'com_courses');
+            $view->option = Request::getCmd('option', 'com_courses');
             $view->controller = Request::getWord('controller', 'course');
-            $view->course     = $course;
-            $view->name       = $this->_name;
-            $view->courses    = $courses;
-            $view->ids        = $ids;
+            $view->course = $course;
+            $view->name = $this->_name;
+            $view->courses = $courses;
+            $view->ids = $ids;
 
             // Return the output
             return $view->loadTemplate();
         }
+
+        return '';
     }
 }

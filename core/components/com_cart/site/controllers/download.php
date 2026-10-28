@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -77,18 +78,17 @@ class Download extends ComponentController
 
         // Error if needed
         if ($tStatus !== 'completed') {
+            // Transaction not completed
             $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_TRANSACTION_NOT_COMPLETED'), 'error'));
             $this->messageTask($messages);
             return;
-        }
-        // Transaction requested doesn't belong to the user
-        elseif ($cartUser != $currentUser) {
+        } elseif ($cartUser != $currentUser) {
+            // Transaction requested doesn't belong to the user
             $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
             $this->messageTask($messages);
             return;
-        }
-        // The SKU requested is not in the transaction
-        elseif (!array_key_exists($sId, $transactionItems)) {
+        } elseif (!array_key_exists($sId, $transactionItems)) {
+            // The SKU requested is not in the transaction
             $messages = array(array(Lang::txt('COM_CART_DOWNLOAD_NOT_AUTHORIZED'), 'error'));
             $this->messageTask($messages);
             return;
@@ -112,8 +112,13 @@ class Download extends ComponentController
         // Check if there is a limit on how many times the product can be downloaded
 
         // Get the number of downloads allowed
-        if (isset($sku['meta']['downloadLimit']) && $sku['meta']['downloadLimit'] && is_numeric($sku['meta']['downloadLimit'])) {
-            $sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads` WHERE `uId` = {$currentUser} AND `sId` = {$sId} AND `dStatus` > 0";
+        if (
+            isset($sku['meta']['downloadLimit'])
+            && $sku['meta']['downloadLimit']
+            && is_numeric($sku['meta']['downloadLimit'])
+        ) {
+            $sql = "SELECT COUNT(`dId`) FROM `#__cart_downloads`
+                WHERE `uId` = {$currentUser} AND `sId` = {$sId} AND `dStatus` > 0";
             $db->setQuery($sql);
             $downloadsCount = $db->loadResult();
 
@@ -176,7 +181,11 @@ class Download extends ComponentController
 
         // Figure out if the EULA was accepted
         $itemTransactionInfoMeta = $transactionExistingItems[$sId]['transactionInfo']->tiMeta;
-        $eulaAccepted = ($itemTransactionInfoMeta && property_exists($itemTransactionInfoMeta, 'eulaAccepted') && $itemTransactionInfoMeta->eulaAccepted) ? true : false;
+        $eulaAccepted = (
+            $itemTransactionInfoMeta
+            && property_exists($itemTransactionInfoMeta, 'eulaAccepted')
+            && $itemTransactionInfoMeta->eulaAccepted
+        ) ? true : false;
 
         if ($eulaAccepted) {
             $sql = "INSERT INTO `#__cart_meta` SET

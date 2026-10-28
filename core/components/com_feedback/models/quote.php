@@ -120,7 +120,8 @@ class Quote extends Relational
     {
         $config = \Component::params('com_feedback');
 
-        return ($root ? PATH_APP : substr(PATH_APP, strlen(PATH_ROOT))) . DS . trim($config->get('uploadpath', '/site/quotes'), DS);
+        $basePath = $root ? PATH_APP : substr(PATH_APP, strlen(PATH_ROOT));
+        return $basePath . DS . trim($config->get('uploadpath', '/site/quotes'), DS);
     }
 
     /**

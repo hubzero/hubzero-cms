@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -76,6 +77,7 @@ class UsersCategoriesv2_0 extends ApiController
      * @param   integer  $currentUserId
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _instantiateUsersCategories($categoriesIds, $currentUserId)
     {
         $usersCategories = array_map(function ($categoryId) use ($currentUserId) {
@@ -96,6 +98,7 @@ class UsersCategoriesv2_0 extends ApiController
      * @param   array  $usersCategories
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _saveUsersCategories($usersCategories)
     {
         $errors = array();
@@ -164,6 +167,7 @@ class UsersCategoriesv2_0 extends ApiController
      * @param   array  $usersCategories
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _destroyUsersCategories($usersCategories)
     {
         $errors = array();
@@ -185,6 +189,7 @@ class UsersCategoriesv2_0 extends ApiController
      * @param   integer  $userId
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _requiresMatchingUser($currentUserId, $userId)
     {
         if ((int) $currentUserId !== (int) $userId) {

@@ -168,7 +168,8 @@ class Verb
         }
 
         // Validation test - database version
-        // if any of the results' database version number(s) do not match the database(s)'s version number(s), re-compute
+        // if any of the results' database version number(s) do not match
+        // the database(s)'s version number(s), re-compute
 
         foreach (explode(',', $verb['databases']) as $db) {
             $dbInfo = $redis->hgetall($db);

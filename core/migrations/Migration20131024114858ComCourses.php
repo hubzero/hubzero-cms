@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +25,8 @@ class Migration20131024114858ComCourses extends Base
         $query = "";
 
         if (!$this->db->tableHasField('#__courses_members', 'first_visit')) {
-            $query = "ALTER TABLE `#__courses_members` ADD `first_visit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__courses_members` ADD `first_visit` datetime "
+                . "NOT NULL DEFAULT '0000-00-00 00:00:00';";
         }
 
         if (!empty($query)) {

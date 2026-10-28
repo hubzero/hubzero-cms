@@ -181,9 +181,8 @@ class Query
         // just return the same array if there is nothing to change
         if ($numColumns == 1 || !is_array($articles) || $count <= $numColumns) {
             $return = $articles;
-        }
-        // we need to re-order the intro articles array
-        else {
+        } else {
+            // we need to re-order the intro articles array
             // we need to preserve the original array keys
             $keys = array_keys($articles);
 

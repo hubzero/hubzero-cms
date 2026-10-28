@@ -28,10 +28,21 @@ class Autocompleter extends AbstractHelper
      * @return  string
      * @throws  \InvalidArgumentException  If wrong type passed
      */
-    public function __invoke($what = null, $name = null, $value = null, $id = null, $class = null, $size = null, $wsel = false, $type = 'multi', $dsabl = false)
-    {
+    public function __invoke(
+        $what = null,
+        $name = null,
+        $value = null,
+        $id = null,
+        $class = null,
+        $size = null,
+        $wsel = false,
+        $type = 'multi',
+        $dsabl = false
+    ) {
         if (!in_array($what, array('tags', 'members', 'groups'))) {
-            throw new \InvalidArgumentException(__METHOD__ . '(); ' . \Lang::txt('Autocompleter for "%s" not supported.', $what));
+            throw new \InvalidArgumentException(__METHOD__ .
+                '(); ' .
+                \Lang::txt('Autocompleter for "%s" not supported.', $what));
         }
 
         $id = ($id ?: str_replace(array('[', ']'), '', $name));
@@ -47,7 +58,9 @@ class Autocompleter extends AbstractHelper
                 }
                 break;
             default:
-                throw new \InvalidArgumentException(__METHOD__ . '(); ' . \Lang::txt('Autocompleter type "%s" not supported.', $type));
+                throw new \InvalidArgumentException(__METHOD__ .
+                    '(); ' .
+                    \Lang::txt('Autocompleter type "%s" not supported.', $type));
             break;
         }
 

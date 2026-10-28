@@ -24,11 +24,11 @@ class Owner extends Relational
      *
      * @var  int
      **/
-    const ROLE_COLLABORATOR = 0;
-    const ROLE_MANAGER      = 1;
-    const ROLE_INVITEE      = 2;
-    const ROLE_AUTHOR       = 3;
-    const ROLE_REVIEWER     = 5;
+    public const ROLE_COLLABORATOR = 0;
+    public const ROLE_MANAGER      = 1;
+    public const ROLE_INVITEE      = 2;
+    public const ROLE_AUTHOR       = 3;
+    public const ROLE_REVIEWER     = 5;
 
     /**
      * The table namespace

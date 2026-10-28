@@ -253,9 +253,9 @@ class Answers extends AdminController
         }
 
         // Redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&qid=' . Request::getInt('qid', 0), false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&qid=' . Request::getInt('qid', 0);
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -285,7 +285,7 @@ class Answers extends AdminController
 
             Notify::warning(Lang::txt('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action));
             return $this->cancelTask();
-        } else if (count($id) > 1) {
+        } elseif (count($id) > 1) {
             Notify::warning(Lang::txt('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'));
             return $this->cancelTask();
         }
@@ -307,7 +307,7 @@ class Answers extends AdminController
         // Set message
         if ($publish == '1') {
             $message = Lang::txt('COM_ANSWERS_ANSWER_ACCEPTED');
-        } else if ($publish == '0') {
+        } elseif ($publish == '0') {
             $message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
         }
 

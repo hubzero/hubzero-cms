@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
@@ -161,7 +162,14 @@ class Manage extends AdminController
                 $result[$i] = $item;
             }
 
-            \Hubzero\Utility\Arr::sortObjects($result, $filters['sort'], $filters['sort_Dir'] == 'desc' ? -1 : 1, true, $lang->getLocale());
+            $sortDir = $filters['sort_Dir'] == 'desc' ? -1 : 1;
+            \Hubzero\Utility\Arr::sortObjects(
+                $result,
+                $filters['sort'],
+                $sortDir,
+                true,
+                $lang->getLocale()
+            );
 
             $total = count($result);
 

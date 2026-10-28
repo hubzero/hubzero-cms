@@ -23,21 +23,21 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
     /**
      * Store object
      *
-     * @var  object
+     * @public object
      */
     private $storage;
 
     /**
      * Array to hold config
      *
-     * @var  array
+     * @public array
      */
     private $config = [];
 
     /**
      * Array to hold client data
      *
-     * @var  array
+     * @public array
      */
     private $clientData;
 
@@ -114,12 +114,18 @@ class ClientCredentials implements GrantTypeInterface, ClientAssertionTypeInterf
 
             // check storage if client is public client
             if (!$this->storage->isPublicClient($clientData['client_id'])) {
-                $response->setError(400, 'invalid_client', 'This client is invalid or must authenticate using a client secret');
+                setError(
+                    400,
+                    'invalid_client',
+                    'This client is invalid or must authenticate using a client secret'
+                );
                 return false;
             }
-        }
-        // if we do have a secret lets verify them
-        elseif ($this->storage->checkClientCredentials($clientData['client_id'], $clientData['client_secret']) === false) {
+        } elseif (
+            $this->
+            storage->
+            checkClientCredentials($clientData['client_id'], $clientData['client_secret']) === false
+        ) {// if we do have a secret lets verify them
             $response->setError(400, 'invalid_client', 'The client credentials are invalid');
             return false;
         }

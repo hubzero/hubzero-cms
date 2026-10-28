@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Update plugin for support tickets
@@ -24,7 +22,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
         $sconfig = Component::params('com_support');
 
-        $open   = 0;
+        $open = 0;
         $status = $this->params->get('support_ticket_closed', 0);
         $status = ($status == '-1' ? 0 : $status);
         if ($status) {
@@ -36,7 +34,9 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
         }
 
         $slc = "SELECT id, login, email, name FROM `#__support_tickets` AS t";
-        $upd = "UPDATE `#__support_tickets` AS t SET t.`open`=" . $database->quote($open) . ", t.`status`=" . $database->quote($status) . ", t.`closed`=" . $database->quote(Date::toSql());
+        $upd = "UPDATE `#__support_tickets` AS t SET t.`open`=" . $database->quote($open);
+        $upd .= ", t.`status`=" . $database->quote($status);
+        $upd .= ", t.`closed`=" . $database->quote(Date::toSql());
 
         $where = array();
 
@@ -67,7 +67,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
                     $group = $g->get('gidNumber');
                 }
             }
-            $where[] = "t.`group_id`=" . $database->quote((int)$group);
+            $where[] = "t.`group_id`=" . $database->quote((int) $group);
         }
 
         // Only tickets for specified owners?
@@ -187,11 +187,12 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
             }
 
             if ($op) {
-                $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) " . $op . $database->quote($timestamp->toSql());
+                $where[] = "(SELECT MAX(c.`created`) FROM `#__support_comments` AS c WHERE c.`ticket`=t.`id`) "
+                    . $op . $database->quote($timestamp->toSql());
             }
         }
 
-        if (count($where)  > 0) {
+        if (count($where) > 0) {
             $slc .= " WHERE " . implode(" AND ", $where);
             $upd .= " WHERE " . implode(" AND ", $where);
         }
@@ -215,7 +216,7 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
         // If we're sending a message...
         if ($message_id && !empty($tickets)) {
             Lang::load('com_support') ||
-            Lang::load('com_support', Component::path('com_support') . DS . 'site');
+                Lang::load('com_support', Component::path('com_support') . DS . 'site');
 
             include_once Component::path('com_support') . DS . 'models' . DS . 'message.php';
             include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
@@ -225,8 +226,8 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
             // Make sure we have a message to send
             if ($message->message) {
                 $from = array(
-                    'name'      => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
-                    'email'     => Config::get('mailfrom'),
+                    'name' => Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT'),
+                    'email' => Config::get('mailfrom'),
                     'multipart' => md5(date('U'))
                 );
 
@@ -246,21 +247,21 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
                 $comment->set('comment', $message->message);
 
                 foreach ($tickets as $submitter) {
-                    $name  = null;
+                    $name = null;
                     $email = null;
 
                     if ($submitter->login) {
                         // Get the user's account
                         $user = User::getInstance($submitter->login);
                         if (is_object($user) && $user->get('id')) {
-                            $name  = $user->get('name');
+                            $name = $user->get('name');
                             $email = $user->get('email');
                         }
                     }
 
                     $email = $email ?: $submitter->email;
-                    $name  = $name  ?: $submitter->name;
-                    $name  = $name  ?: $email;
+                    $name = $name ?: $submitter->name;
+                    $name = $name ?: $email;
 
                     if (!$email) {
                         continue;
@@ -286,16 +287,16 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
 
                     $eview = new \Hubzero\Mail\View(array(
                         'base_path' => Component::path('com_support') . DS . 'site',
-                        'name'      => 'emails',
-                        'layout'    => 'comment_plain'
+                        'name' => 'emails',
+                        'layout' => 'comment_plain'
                     ));
-                    $eview->option     = 'com_support';
+                    $eview->option = 'com_support';
                     $eview->controller = 'tickets';
-                    $eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
-                    $eview->boundary   = $from['multipart'];
-                    $eview->comment    = $comment;
-                    $eview->config     = $sconfig;
-                    $eview->ticket     = $row;
+                    $eview->delimiter = '~!~!~!~!~!~!~!~!~!~!';
+                    $eview->boundary = $from['multipart'];
+                    $eview->comment = $comment;
+                    $eview->config = $sconfig;
+                    $eview->ticket = $row;
 
                     $plain = $eview->loadTemplate(false);
                     $plain = str_replace("\n", "\r\n", $plain);
@@ -309,10 +310,10 @@ class plgUpdateSupport extends \Hubzero\Plugin\Plugin
                     // Build message
                     $message = new \Hubzero\Mail\Message();
                     $message->setSubject($subject)
-                            ->addFrom($from['email'], $from['name'])
-                            ->addTo($email, $name)
-                            ->addHeader('X-Component', 'com_support')
-                            ->addHeader('X-Component-Object', 'support_ticket_comment');
+                        ->addFrom($from['email'], $from['name'])
+                        ->addTo($email, $name)
+                        ->addHeader('X-Component', 'com_support')
+                        ->addHeader('X-Component-Object', 'support_ticket_comment');
 
                     $message->addPart($plain, 'text/plain');
 

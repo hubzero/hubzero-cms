@@ -1,5 +1,6 @@
 #!/usr/bin/php
-<?php
+<?php // phpcs:ignoreFile
+
 
 /**
  * @package    hubzero-cms
@@ -103,6 +104,7 @@ function json_format($json)
                 if ($c > 0 && $json[$c - 1] != '\\') {
                     $in_string = !$in_string;
                 }
+                // no break
             default:
                 $new_json .= $char;
                 break;

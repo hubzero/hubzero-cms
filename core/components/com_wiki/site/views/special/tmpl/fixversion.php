@@ -82,7 +82,9 @@ $rows = $pages->rows();
                             <?php echo $row->get('version_id'); ?>
                         </td>
                         <td>
-                            <time datetime="<?php echo $version->get('created'); ?>"><?php echo $version->get('created'); ?></time>
+                            <time datetime="<?php echo $version->get('created'); ?>">
+                                <?php echo $version->get('created'); ?>
+                            </time>
                         </td>
                         <td>
                             <?php echo $row->get('id'); ?>

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,6 +18,7 @@ defined('_HZEXEC_') or die();
  * The collections component only pulls public collections. This allows
  * default collections to be renamed and publicly displayed, whereas
  * previously they would be filtered out by the component.
+  *
  **/
 class Migration20140630084843ComCollections extends Base
 {

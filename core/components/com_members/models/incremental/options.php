@@ -61,10 +61,11 @@ class Options
             return true;
         }
 
-        $dbh->setQuery(
-            'SELECT 1 FROM `#__xgroups_members` xme WHERE xme.gidNumber = ' . $cur['test_group'] . ' AND xme.uidNumber = ' . $uid . '
-			UNION SELECT 1 FROM #__xgroups_managers xma WHERE xma.gidNumber = ' . $cur['test_group'] . ' AND xma.uidNumber = ' . $uid . ' LIMIT 1'
-        );
+        $sql = 'SELECT 1 FROM `#__xgroups_members` xme '
+            . 'WHERE xme.gidNumber = ' . $cur['test_group'] . ' AND xme.uidNumber = ' . $uid
+            . ' UNION SELECT 1 FROM #__xgroups_managers xma '
+            . 'WHERE xma.gidNumber = ' . $cur['test_group'] . ' AND xma.uidNumber = ' . $uid . ' LIMIT 1';
+        $dbh->setQuery($sql);
         return (bool)$dbh->loadResult();
     }
 

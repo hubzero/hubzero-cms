@@ -22,6 +22,7 @@ class Timezones extends Element
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Timezones';
 
     /**
@@ -67,7 +68,11 @@ class Timezones extends Element
             Builder\Select::option(4.5, $lang->txt('UTC__04_30__KABUL')),
             Builder\Select::option(5, $lang->txt('UTC__05_00__EKATERINBURG__ISLAMABAD__KARACHI__TASHKENT')),
             Builder\Select::option(5.5, $lang->txt('UTC__05_30__BOMBAY__CALCUTTA__MADRAS__NEW_DELHI__COLOMBO')),
-            Builder\Select::option(5.75, $lang->txt('UTC__05_45__KATHMANDU')), Builder\Select::option(6, $lang->txt('UTC__06_00__ALMATY__DHAKA')),
+            Builder\Select::option(
+                5.75,
+                $lang->txt('UTC__05_45__KATHMANDU')
+            ),
+                Builder\Select::option(6, $lang->txt('UTC__06_00__ALMATY__DHAKA')),
             Builder\Select::option(6.5, $lang->txt('UTC__06_30__YAGOON')),
             Builder\Select::option(7, $lang->txt('UTC__07_00__BANGKOK__HANOI__JAKARTA__PHNOM_PENH')),
             Builder\Select::option(8, $lang->txt('UTC__08_00__BEIJING__PERTH__SINGAPORE__HONG_KONG')),
@@ -79,7 +84,10 @@ class Timezones extends Element
             Builder\Select::option(11, $lang->txt('UTC__11_00__MAGADAN__SOLOMON_ISLANDS__NEW_CALEDONIA')),
             Builder\Select::option(11.5, $lang->txt('UTC__11_30__NORFOLK_ISLAND')),
             Builder\Select::option(12, $lang->txt('UTC__12_00__AUCKLAND__WELLINGTON__FIJI__KAMCHATKA')),
-            Builder\Select::option(12.75, $lang->txt('UTC__12_45__CHATHAM_ISLAND')), Builder\Select::option(13, $lang->txt('UTC__13_00__TONGA')),
+            Builder\Select::option(
+                12.75,
+                $lang->txt('UTC__12_45__CHATHAM_ISLAND')
+            ), Builder\Select::option(13, $lang->txt('UTC__13_00__TONGA')),
             Builder\Select::option(14, $lang->txt('UTC__14_00__KIRIBATI'))
         );
 

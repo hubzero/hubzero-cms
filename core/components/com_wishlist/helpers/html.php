@@ -70,7 +70,7 @@ class Html
                     $output = Lang::txt('COM_WISHLIST_CRITICAL');
                     break;
             }
-        } else if ($category == 'effort') {
+        } elseif ($category == 'effort') {
             switch ($rawnum) {
                 case 0:
                     $output = Lang::txt('COM_WISHLIST_TWOMONTHS');

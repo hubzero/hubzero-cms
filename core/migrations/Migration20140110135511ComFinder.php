@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -270,8 +271,10 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `idx_title` (`title`),
 					  KEY `idx_md5` (`md5sum`),
 					  KEY `idx_url` (`url`(75)),
-					  KEY `idx_published_list` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`list_price`),
-					  KEY `idx_published_sale` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`sale_price`)
+					  KEY `idx_published_list` (`published`,`state`,`access`,
+					      `publish_start_date`,`publish_end_date`,`list_price`),
+					  KEY `idx_published_sale` (`published`,`state`,`access`,
+					      `publish_start_date`,`publish_end_date`,`sale_price`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
                 $this->db->setQuery($query);
                 $this->db->query();

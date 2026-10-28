@@ -24,8 +24,10 @@ class FootNote extends Macro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.';
-        $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes when no args (footnote text) are given.</p>';
+        $txt['wiki'] = 'Add a footnote, or explicitly display collected footnotes ' .
+            'when no args (footnote text) are given.';
+        $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes ' .
+            'when no args (footnote text) are given.</p>';
         return $txt['html'];
     }
 
@@ -48,7 +50,15 @@ class FootNote extends Macro
         $note = $this->args;
 
         if ($note) {
-            $p = new Parser('Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain);
+            $p = new Parser(
+                'Footnotes',
+                $this->option,
+                $this->scope,
+                $this->pagename,
+                $this->pageid,
+                $this->filepath,
+                $this->domain
+            );
 
             $note = $p->parse(trim($note));
 
@@ -75,9 +85,13 @@ class FootNote extends Macro
             $wm->footnotes_notes[] = $note;
             $wm->footnotes[] = $footnote;
 
-            return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+            return '<sup id="fndef-' . $i . '"><a href="#fnref-' . $i . '">' .
+                '&#91;' . $i . '&#93;</a></sup>';
         } else {
-            $letters = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+            $letters = array(
+                'A','B','C','D','E','F','G','H','I','J','K','L','M',
+                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+            );
 
             $html  = '<ol class="footnotes">';
             foreach ($wm->footnotes as $i => $footnote) {
@@ -87,7 +101,7 @@ class FootNote extends Macro
                     foreach ($footnote->refs as $key => $ref) {
                         $html .= '<sup><a href="#' . $ref . '">' . strtolower($letters[$key]) . '</a></sup> ';
                     }
-                } else if (count($footnote->refs) == 1) {
+                } elseif (count($footnote->refs) == 1) {
                     $html .= '<a href="#' . $footnote->refs[0] . '">^</a> ';
                 }
                 $html .= '<span id="fnref-' . ($i + 1) . '"></span>' . substr($footnote->content, 3);

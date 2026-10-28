@@ -8,6 +8,11 @@
 
 namespace Components\Storefront\Models;
 
+
+// No direct access
+defined('_HZEXEC_') or die();
+
+
 use Components\Storefront\Models\Course;
 use Components\Storefront\Models\Warehouse;
 use Exception;
@@ -23,9 +28,9 @@ require_once __DIR__ . DS . 'Warehouse.php';
 class Product
 {
     // Product data container
-    var $data;
+    public $data;
     // SKUs container
-    var $skus;
+    public $skus;
 
     /**
      * Constructor
@@ -60,9 +65,11 @@ class Product
         //$warehouse = new Warehouse();
         //$productInfo = $warehouse->getProductInfo($pId, true);
 
-        $sql =  "SELECT p.*,
-				IF((p.`publish_up` IS null OR p.`publish_up` = '0000-00-00 00:00:00' OR p.`publish_up` <= NOW())
-				AND (p.`publish_down` IS null OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
+        $sql = "SELECT p.*,
+				IF((p.`publish_up` IS null OR p.`publish_up` = '0000-00-00 00:00:00'
+				OR p.`publish_up` <= NOW())
+				AND (p.`publish_down` IS null OR p.`publish_down` = '0000-00-00 00:00:00'
+				OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
 				pt.ptName, pt.ptModel";
         $sql .= " FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId
@@ -179,7 +186,9 @@ class Product
         $type = ($type == 'include' ? 0 : 1);
 
         $db = \App::get('db');
-        $db->setQuery("SELECT * FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id) . " AND `exclude`=" . $db->quote($type));
+        $sql = "SELECT * FROM `#__storefront_product_access_groups`";
+        $sql .= " WHERE `pId`=" . $db->quote($id) . " AND `exclude`=" . $db->quote($type);
+        $db->setQuery($sql);
 
         $accessgroups = array();
         foreach ($db->loadObjectList() as $row) {
@@ -225,7 +234,11 @@ class Product
         foreach ($prev as $group) {
             // Clear old record
             if (!in_array($group, $groups)) {
-                $db->setQuery("DELETE FROM `#__storefront_product_access_groups` WHERE `pId`=" . $db->quote($id) . " AND `agId`=" . $db->quote($group) . " AND `exclude`=" . $db->quote($type));
+                $sql = "DELETE FROM `#__storefront_product_access_groups`";
+                $sql .= " WHERE `pId`=" . $db->quote($id);
+                $sql .= " AND `agId`=" . $db->quote($group);
+                $sql .= " AND `exclude`=" . $db->quote($type);
+                $db->setQuery($sql);
                 if (!$db->query()) {
                     return false;
                 }
@@ -239,7 +252,11 @@ class Product
             }
 
             // Insert new record
-            $db->setQuery("INSERT INTO `#__storefront_product_access_groups` (`id`, `pId`, `agId`, `exclude`) VALUES (null," . $db->quote($id) .  "," . $db->quote($group) . "," . $db->quote($type) . ")");
+            $sql = "INSERT INTO `#__storefront_product_access_groups`";
+            $sql .= " (`id`, `pId`, `agId`, `exclude`) VALUES (null,";
+            $sql .= $db->quote($id) . "," . $db->quote($group) . ",";
+            $sql .= $db->quote($type) . ")";
+            $db->setQuery($sql);
             if (!$db->query()) {
                 return false;
             }
@@ -260,7 +277,8 @@ class Product
         if (!isset($this->data->collections)) {
             if ($this->getId()) {
                 $db = \App::get('db');
-                $sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $db->quote($this->getId());
+                $sql = "SELECT `cId` FROM `#__storefront_product_collections`";
+                $sql .= " WHERE `pId` = " . $db->quote($this->getId());
                 $db->setQuery($sql);
                 $collections = $db->loadColumn();
                 $this->setCollections($collections);
@@ -462,7 +480,9 @@ class Product
     public function setAlias($pAlias)
     {
         // Check if the alias is valid
-        $badAliasException = new \Exception('Bad product alias. Alias should be a non-empty non-numeric alphanumeric string.');
+        $msg = 'Bad product alias. Alias should be a non-empty ';
+        $msg .= 'non-numeric alphanumeric string.';
+        $badAliasException = new \Exception($msg);
         if (preg_match("/^[0-9a-zA-Z]+[\-_0-9a-zA-Z]*$/i", $pAlias)) {
             if (is_numeric($pAlias)) {
                 throw $badAliasException;
@@ -876,12 +896,15 @@ class Product
             throw new \Exception(Lang::txt('No product name set'));
         }
 
-        // Check if the alias is used by another product (only if gets published, allow duplicates for unpublished items)
+        // Check if the alias is used by another product
+        // (only if gets published, allow duplicates for unpublished items)
         $warehouse = new Warehouse();
         if ($this->getAlias() && $this->getActiveStatus()) {
             $otherProduct = $warehouse->checkProduct($this->getAlias(), true);
             if ($otherProduct->status > 0 && $otherProduct->pId != $this->getId()) {
-                throw new \Exception(Lang::txt('There is another product with the same alias. Alias cannot be set.'));
+                $msg = 'There is another product with the same alias. ';
+                $msg .= 'Alias cannot be set.';
+                throw new \Exception(Lang::txt($msg));
             }
         }
 
@@ -969,7 +992,9 @@ class Product
             $deleteSql .= ", " . $db->quote($activeCllId);
         }
         $deleteSql .= ')';
-        $sql = "DELETE FROM `#__storefront_product_collections` WHERE `pId` = " . $db->quote($pId) . " AND `pcId` NOT IN {$deleteSql}";
+        $sql = "DELETE FROM `#__storefront_product_collections`";
+        $sql .= " WHERE `pId` = " . $db->quote($pId);
+        $sql .= " AND `pcId` NOT IN {$deleteSql}";
         $db->setQuery($sql);
         $db->query();
 
@@ -977,7 +1002,8 @@ class Product
         $images = $this->getImages();
 
         // First delete all old references
-        $sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'product' AND `imgObjectId` = " . $db->quote($pId);
+        $sql = "DELETE FROM `#__storefront_images`";
+        $sql .= " WHERE `imgObject` = 'product' AND `imgObjectId` = " . $db->quote($pId);
         $db->setQuery($sql);
         $db->query();
 
@@ -1017,7 +1043,8 @@ class Product
             $db->execute();
         }
 
-        // Finally, since the product updates can potentially affect other elements of the storefront, update dependencies
+        // Finally, since product updates can potentially affect other elements
+        // of the storefront, update dependencies
         $this->updateDependencies();
 
         return true;
@@ -1059,7 +1086,9 @@ class Product
         }
 
         // Delete images from database
-        $sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'product' AND `imgObjectId` = " . $db->quote($this->getId());
+        $sql = "DELETE FROM `#__storefront_images`";
+        $sql .= " WHERE `imgObject` = 'product' AND `imgObjectId` = ";
+        $sql .= $db->quote($this->getId());
         $db->setQuery($sql);
         $db->query();
 
@@ -1114,7 +1143,9 @@ class Product
         }
 
         if ($skusDisabled) {
-            $this->addMessage('Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.');
+            $msg = 'Some SKUs were unpublished because of the recent update. ';
+            $msg .= 'Check each SKU to fix the issues.';
+            $this->addMessage($msg);
         }
     }
 
@@ -1170,7 +1201,8 @@ class Product
     {
         $db = \App::get('db');
 
-        $sql  = 'SELECT `pmKey`, `pmValue` FROM `#__storefront_product_meta` WHERE `pId` = ' . $db->quote($this->getId());
+        $sql = 'SELECT `pmKey`, `pmValue` FROM `#__storefront_product_meta`';
+        $sql .= ' WHERE `pId` = ' . $db->quote($this->getId());
         $db->setQuery($sql);
         $meta = $db->loadObjectList('pmKey');
 

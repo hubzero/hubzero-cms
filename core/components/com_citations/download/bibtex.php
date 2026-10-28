@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,6 +21,7 @@ class Bibtex extends Downloadable
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_mime = 'application/x-bibtex';
 
     /**
@@ -27,6 +29,7 @@ class Bibtex extends Downloadable
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_extension = 'bib';
 
     /**

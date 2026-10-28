@@ -91,7 +91,9 @@ class Pipeline extends AdminController
         $filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
         // In case limit has been changed, adjust limitstart accordingly
-        $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
+        $filters['start'] = ($filters['limit'] != 0
+            ? (floor($filters['start'] / $filters['limit']) * $filters['limit'])
+            : 0);
 
         // Get a record count
         $total = Tool::getToolCount($filters, true);
@@ -186,7 +188,7 @@ class Pipeline extends AdminController
             if ($resource && $resource->get('id')) {
                 if ($row->state == 7 || $row->state == 8) { // published
                     $resource->set('published', Entry::STATE_PUBLISHED);
-                } else if ($row->state == 9) { // abandoned
+                } elseif ($row->state == 9) { // abandoned
                     $resource->set('published', Entry::STATE_TRASHED);
                 } else {
                     $resource->set('published', Entry::STATE_UNPUBLISHED);
@@ -275,7 +277,9 @@ class Pipeline extends AdminController
 
                 if ($results) {
                     $title   = $results[0]->title ? $results[0]->title : $resource->title;
-                    $pubyear = $results[0]->released ? trim(Date::of($results[0]->released)->toLocal($yearFormat)) : date('Y');
+                    $pubyear = $results[0]->released
+                    ? trim(Date::of($results[0]->released)->toLocal($yearFormat))
+                    : date('Y');
                 } else {
                     // Skip if version not found
                     continue;

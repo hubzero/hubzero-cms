@@ -12,6 +12,7 @@ use Hubzero\Base\Obj;
 
 /**
  * Menu node class
+ *
  */
 class Node extends Obj
 {

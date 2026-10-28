@@ -267,9 +267,8 @@ class Entriesv1_1 extends ApiController
                             $grp = \Hubzero\User\Group::getInstance($group);
                             if ($grp) {
                                 $groups[$g] = $grp->get('gidNumber');
-                            }
-                            // Group not found
-                            else {
+                            } else {
+                                // Group not found
                                 unset($groups[$g]);
                             }
                         }

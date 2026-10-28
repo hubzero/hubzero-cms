@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Cron plugin for projects
  */
@@ -100,7 +97,13 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
 
         // Get all projects
         $obj = new \Components\Projects\Tables\Project($database);
-        $projects = $obj->getRecords(array('active' => true), 'admin', 0, 0, ($pconfig->get('confirm_step', 0) ? 3 : 2)); //$obj->getValidProjects(array(), array(), $pconfig, false, 'alias');
+        $projects = $obj->getRecords(
+            array('active' => true),
+            'admin',
+            0,
+            0,
+            ($pconfig->get('confirm_step', 0) ? 3 : 2)
+        );
 
         if (!$projects) {
             return true;

@@ -1,27 +1,26 @@
 <?php
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
-require_once Component::path('com_courses') . DS . 'models' . DS . 'gradepolicies.php';
-require_once Component::path('com_courses') . DS . 'models' . DS . 'gradebook.php';
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for user progress
  */
-class plgCoursesProgress extends \Hubzero\Plugin\Plugin
+class PlgCoursesProgress extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -57,15 +56,15 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         // Check to see if user is member and plugin access requires members
         if (!$course->offering()->section()->access('view')) {
             $view = new \Hubzero\Plugin\View(array(
-                'folder'  => 'courses',
+                'folder' => 'courses',
                 'element' => 'outline',
-                'name'    => 'shared',
-                'layout'  => '_not_enrolled'
+                'name' => 'shared',
+                'layout' => '_not_enrolled'
             ));
 
             $view->set('course', $course)
-                 ->set('option', 'com_courses')
-                 ->set('message', 'You must be enrolled to utilize the progress feature.');
+                ->set('option', 'com_courses')
+                ->set('message', 'You must be enrolled to utilize the progress feature.');
 
             $response->set('html', $view->__toString());
             return $response;
@@ -73,15 +72,15 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
         $this->member = $course->offering()->section()->member(User::get('id'));
         $this->course = $course;
-        $this->base   = $course->offering()->link();
-        $this->db     = App::get('db');
+        $this->base = $course->offering()->link();
+        $this->db = App::get('db');
 
         // Instantiate a vew
         $this->view = $this->view('student', 'report');
-        $this->view->course  = $course;
-        $this->view->member  = $this->member;
-        $this->view->option  = 'com_courses';
-        $this->view->base    = $this->base;
+        $this->view->course = $course;
+        $this->view->member = $this->member;
+        $this->view->option = 'com_courses';
+        $this->view->base = $this->base;
 
         switch (Request::getWord('action')) {
             case 'assessmentdetails':
@@ -174,7 +173,11 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
         require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
-        $this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId($this->db, $asset_id, $this->course->offering()->section()->get('id'));
+        $this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId(
+            $this->db,
+            $asset_id,
+            $this->course->offering()->section()->get('id')
+        );
 
         $this->css('assessmentdetails.css');
         $this->js('assessmentdetails');
@@ -201,12 +204,18 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         $start = Request::getInt('limitstart', 0);
 
         // Get all section members
-        $members      = $this->course->offering()->section()->members(array('student' => 1, 'limit' => $limit, 'start' => $start));
-        $member_ids   = array();
-        $mems         = array();
-        $grades       = null;
-        $progress     = null;
-        $passing      = null;
+        $members = $this->course->offering()->section()->members(
+            array(
+                'student' => 1,
+                'limit' => $limit,
+                'start' => $start
+            )
+        );
+        $member_ids = array();
+        $mems = array();
+        $grades = null;
+        $progress = null;
+        $passing = null;
         $recognitions = null;
 
         if (count($members) > 0) {
@@ -214,17 +223,17 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
                 $lst = User::getInstance($m->get('user_id'))->get('lastvisitDate');
                 $member_ids[] = $m->get('id');
                 $mems[] = array(
-                    'id'        => $m->get('id'),
-                    'user_id'   => $m->get('user_id'),
-                    'name'      => User::getInstance($m->get('user_id'))->get('name'),
-                    'thumb'     => ltrim(User::getInstance($m->get('user_id'))->picture(0, true), DS),
-                    'full'      => ltrim(User::getInstance($m->get('user_id'))->picture(0, false), DS),
-                    'enrolled'  => (($m->get('enrolled') && $m->get('enrolled') != '0000-00-00 00:00:00')
-                                        ? Date::of($m->get('enrolled'))->format('M j, Y')
-                                        : 'unknown'),
+                    'id' => $m->get('id'),
+                    'user_id' => $m->get('user_id'),
+                    'name' => User::getInstance($m->get('user_id'))->get('name'),
+                    'thumb' => ltrim(User::getInstance($m->get('user_id'))->picture(0, true), DS),
+                    'full' => ltrim(User::getInstance($m->get('user_id'))->picture(0, false), DS),
+                    'enrolled' => (($m->get('enrolled') && $m->get('enrolled') != '0000-00-00 00:00:00')
+                        ? Date::of($m->get('enrolled'))->format('M j, Y')
+                        : 'unknown'),
                     'lastvisit' => (($lst && $lst != '0000-00-00 00:00:00')
-                                        ? Date::of($lst)->format('M j, Y')
-                                        : 'never')
+                        ? Date::of($lst)->format('M j, Y')
+                        : 'never')
                 );
             }
 
@@ -232,18 +241,18 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             $this->course->offering()->gradebook()->refresh($member_ids);
 
             // Get the grades
-            $grades       = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
-            $progress     = $this->course->offering()->gradebook()->progress($member_ids);
-            $passing      = $this->course->offering()->gradebook()->passing($member_ids);
+            $grades = $this->course->offering()->gradebook()->grades(array('unit', 'course'));
+            $progress = $this->course->offering()->gradebook()->progress($member_ids);
+            $passing = $this->course->offering()->gradebook()->passing($member_ids);
             $recognitions = $this->course->offering()->gradebook()->isEligibleForRecognition($member_ids);
         }
 
         echo json_encode(
             array(
-                'members'      => $mems,
-                'grades'       => $grades,
-                'progress'     => $progress,
-                'passing'      => $passing,
+                'members' => $mems,
+                'grades' => $grades,
+                'progress' => $progress,
+                'passing' => $passing,
                 'recognitions' => $recognitions
             )
         );
@@ -265,24 +274,30 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         }
 
         // Get the grading policy
-        $gradePolicy = new \Components\Courses\Models\GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+        $gradePolicy = new \Components\Courses\Models\GradePolicies(
+            $this->course->offering()->section()->get('grade_policy_id'),
+            $this->course->offering()->section()->get('id')
+        );
         $policy = new stdClass();
-        $policy->description     = $gradePolicy->get('description');
-        $policy->exam_weight     = $gradePolicy->get('exam_weight') * 100;
-        $policy->quiz_weight     = $gradePolicy->get('quiz_weight') * 100;
+        $policy->description = $gradePolicy->get('description');
+        $policy->exam_weight = $gradePolicy->get('exam_weight') * 100;
+        $policy->quiz_weight = $gradePolicy->get('quiz_weight') * 100;
         $policy->homework_weight = $gradePolicy->get('homework_weight') * 100;
-        $policy->threshold       = $gradePolicy->get('threshold') * 100;
-        $policy->editable        = false;
+        $policy->threshold = $gradePolicy->get('threshold') * 100;
+        $policy->editable = false;
 
         if ($this->course->config()->get('section_grade_policy', true)) {
             $policy->editable = true;
-        } else if ($this->course->offering()->access('manage') && $this->course->offering()->section()->get('is_default')) {
+        } elseif (
+            $this->course->offering()->access('manage')
+            && $this->course->offering()->section()->get('is_default')
+        ) {
             $policy->editable = true;
         }
 
         // Get our units
         $unitsObj = $this->course->offering()->units();
-        $units    = array();
+        $units = array();
         foreach ($unitsObj as $u) {
             $units[] = array('id' => $u->get('id'), 'title' => $u->get('title'));
         }
@@ -293,9 +308,9 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         echo json_encode(
             array(
                 'gradepolicy' => $policy,
-                'units'       => $units,
+                'units' => $units,
                 'members_cnt' => $members_cnt,
-                'course_id'   => $this->course->get('id')
+                'course_id' => $this->course->get('id')
             )
         );
 
@@ -317,32 +332,33 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
         // Get all section members
         $members = $this->course->offering()->section()->members(array('student' => 1));
-        $mems    = array();
+        $mems = array();
 
         foreach ($members as $m) {
             $mems[] = array('id' => $m->get('id'), 'name' => User::getInstance($m->get('user_id'))->get('name'));
         }
 
         // Refresh the grades
-        // @FIXME: commenting this out for the time being...no need to refresh grades on both the progress and gradebook views
+        // @FIXME: commenting this out for the time being...
+        // no need to refresh grades on both the progress and gradebook views
         //$this->course->offering()->gradebook()->refresh();
 
         // Get the grades
         $grades = $this->course->offering()->gradebook()->grades();
 
         // Get the assets
-        $asset  = new \Components\Courses\Tables\Asset(App::get('db'));
+        $asset = new \Components\Courses\Tables\Asset(App::get('db'));
         $assets = $asset->find(
             array(
                 'w' => array(
-                    'course_id'   => $this->course->get('id'),
-                    'section_id'  => $this->course->offering()->section()->get('id'),
+                    'course_id' => $this->course->get('id'),
+                    'section_id' => $this->course->offering()->section()->get('id'),
                     'offering_id' => $this->course->offering()->get('id'),
-                    'graded'      => true,
-                    'state'       => 1,
+                    'graded' => true,
+                    'state' => 1,
                     'asset_scope' => 'asset_group'
                 ),
-                'order_by'  => 'title',
+                'order_by' => 'title',
                 'order_dir' => 'ASC'
             )
         );
@@ -352,10 +368,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             'offering',
             $this->course->offering()->get('id'),
             array(
-                'asset_type'    => 'gradebook',
+                'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
-                'graded'        => true,
-                'state'         => 1
+                'graded' => true,
+                'state' => 1
             )
         );
 
@@ -367,9 +383,9 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
         echo json_encode(
             array(
-                'assets'    => $assets,
-                'members'   => $mems,
-                'grades'    => $grades,
+                'assets' => $assets,
+                'members' => $mems,
+                'grades' => $grades,
                 'canManage' => (($this->course->access('manage')) ? true : false)
             )
         );
@@ -393,18 +409,18 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         $stats = $this->course->offering()->gradebook()->summaryStats();
 
         // Get the assets
-        $asset  = new \Components\Courses\Tables\Asset(App::get('db'));
+        $asset = new \Components\Courses\Tables\Asset(App::get('db'));
         $assets = $asset->find(
             array(
                 'w' => array(
-                    'course_id'   => $this->course->get('id'),
-                    'section_id'  => $this->course->offering()->section()->get('id'),
+                    'course_id' => $this->course->get('id'),
+                    'section_id' => $this->course->offering()->section()->get('id'),
                     'offering_id' => $this->course->offering()->get('id'),
-                    'graded'      => true,
-                    'state'       => 1,
+                    'graded' => true,
+                    'state' => 1,
                     'asset_scope' => 'asset_group'
                 ),
-                'order_by'  => 'title',
+                'order_by' => 'title',
                 'order_dir' => 'ASC'
             )
         );
@@ -414,10 +430,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             'offering',
             $this->course->offering()->get('id'),
             array(
-                'asset_type'    => 'gradebook',
+                'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
-                'graded'        => true,
-                'state'         => 1
+                'graded' => true,
+                'state' => 1
             )
         );
 
@@ -429,7 +445,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 
         echo json_encode(
             array(
-                'stats'  => $stats,
+                'stats' => $stats,
                 'assets' => $assets
             )
         );
@@ -460,18 +476,18 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         $grades = $this->course->offering()->gradebook()->grades();
 
         // Get the assets
-        $asset  = new \Components\Courses\Tables\Asset(App::get('db'));
+        $asset = new \Components\Courses\Tables\Asset(App::get('db'));
         $assets = $asset->find(
             array(
                 'w' => array(
-                    'course_id'   => $this->course->get('id'),
-                    'section_id'  => $this->course->offering()->section()->get('id'),
+                    'course_id' => $this->course->get('id'),
+                    'section_id' => $this->course->offering()->section()->get('id'),
                     'offering_id' => $this->course->offering()->get('id'),
-                    'graded'      => true,
-                    'state'       => 1,
+                    'graded' => true,
+                    'state' => 1,
                     'asset_scope' => 'asset_group'
                 ),
-                'order_by'  => 'title',
+                'order_by' => 'title',
                 'order_dir' => 'ASC'
             )
         );
@@ -481,10 +497,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             'offering',
             $this->course->offering()->get('id'),
             array(
-                'asset_type'    => 'gradebook',
+                'asset_type' => 'gradebook',
                 'asset_subtype' => 'auxiliary',
-                'graded'        => true,
-                'state'         => 1
+                'graded' => true,
+                'state' => 1
             )
         );
 
@@ -494,7 +510,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             return strcasecmp($a->title, $b->title);
         });
 
-        $section  = $this->course->offering()->section()->get('alias');
+        $section = $this->course->offering()->section()->get('alias');
         $filename = $this->course->get('alias') . '.' . $section . '.gradebook.csv';
 
         // Set content type headers
@@ -503,7 +519,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         header("Pragma: no-cache");
         header("Expires: 0");
 
-        $row   = array();
+        $row = array();
         $row[] = 'Student Name';
         $row[] = 'Student Email';
         foreach ($assets as $a) {
@@ -512,11 +528,13 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         echo implode(',', $row) . "\n";
 
         foreach ($members as $m) {
-            $row   = array();
+            $row = array();
             $row[] = User::getInstance($m->get('user_id'))->get('name');
             $row[] = User::getInstance($m->get('user_id'))->get('email');
             foreach ($assets as $a) {
-                $row[] = (isset($grades[$m->get('id')]['assets'][$a->id]['score'])) ? $grades[$m->get('id')]['assets'][$a->id]['score'] : '-';
+                $row[] = (isset($grades[$m->get('id')]['assets'][$a->id]['score']))
+                    ? $grades[$m->get('id')]['assets'][$a->id]['score']
+                    : '-';
             }
             echo implode(',', $row) . "\n";
         }
@@ -544,7 +562,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         }
 
         $protected = 'site' . DS . 'protected';
-        $tmp       = $protected . DS . 'tmp';
+        $tmp = $protected . DS . 'tmp';
 
         // We're going to temporarily house this in PATH_APP/site/protected/tmp
         if (!Filesystem::exists($protected)) {
@@ -571,8 +589,8 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         $asset_ids = explode('-', $asset_ids);
 
         // Set up our zip archive
-        $zip       = new ZipArchive();
-        $path      = PATH_APP . DS . $tmp . DS . time() . '.responses.zip';
+        $zip = new ZipArchive();
+        $path = PATH_APP . DS . $tmp . DS . time() . '.responses.zip';
         $zip->open($path, ZipArchive::CREATE);
 
         // Loop through the assets
@@ -591,7 +609,14 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
                 continue;
             }
 
-            if ($details = \Components\Courses\Models\FormReport::getLetterResponsesForAssetId($this->db, $asset_id, true, $this->course->offering()->section()->get('id'))) {
+            if (
+                $details = \Components\Courses\Models\FormReport::getLetterResponsesForAssetId(
+                    $this->db,
+                    $asset_id,
+                    true,
+                    $this->course->offering()->section()->get('id')
+                )
+            ) {
                 $output = implode(',', $details['headers']) . "\n";
                 if (isset($details['responses']) && count($details['responses']) > 0) {
                     foreach ($details['responses'] as $response) {
@@ -640,7 +665,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         }
 
         // Now, also make sure either section managers can edit, or user is a course manager
-        if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage')) {
+        if (
+            !$this->course->config()->get('section_grade_policy', true)
+            && !$this->course->offering()->access('manage')
+        ) {
             echo json_encode(array('success' => false));
             exit();
         }
@@ -711,7 +739,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         }
 
         // Now, also make sure either section managers can edit, or user is a course manager
-        if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage')) {
+        if (
+            !$this->course->config()->get('section_grade_policy', true)
+            && !$this->course->offering()->access('manage')
+        ) {
             echo json_encode(array('success' => false));
             exit();
         }
@@ -767,7 +798,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             exit();
         }
 
-        $db    = App::get('db');
+        $db = App::get('db');
         $grade = new \Components\Courses\Tables\GradeBook($db);
         $grade->loadByUserAndAssetId($member_id, $asset_id);
 
@@ -812,7 +843,7 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
             exit();
         }
 
-        $db    = App::get('db');
+        $db = App::get('db');
         $grade = new \Components\Courses\Tables\GradeBook($db);
         $grade->loadByUserAndAssetId($member_id, $asset_id);
 
@@ -853,7 +884,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         }
 
         // Now, also make sure either section managers can edit, or user is a course manager
-        if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage')) {
+        if (
+            !$this->course->config()->get('section_grade_policy', true)
+            && !$this->course->offering()->access('manage')
+        ) {
             // Redirect with message
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
@@ -866,8 +900,8 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         // Get the grading policy id
         $gpId = $this->course->offering()->section()->get('grade_policy_id');
 
-        $exam_weight     = Request::getInt('exam-weight') / 100;
-        $quiz_weight     = Request::getInt('quiz-weight') / 100;
+        $exam_weight = Request::getInt('exam-weight') / 100;
+        $quiz_weight = Request::getInt('quiz-weight') / 100;
         $homework_weight = Request::getInt('homework-weight') / 100;
 
         if (($exam_weight + $quiz_weight + $homework_weight) != 1) {
@@ -951,7 +985,10 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         }
 
         // Now, also make sure either section managers can edit, or user is a course manager
-        if (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage')) {
+        if (
+            !$this->course->config()->get('section_grade_policy', true)
+            && !$this->course->offering()->access('manage')
+        ) {
             // Redirect with message
             App::redirect(
                 Route::url($this->base . '&active=progress', false),
@@ -980,15 +1017,15 @@ class plgCoursesProgress extends \Hubzero\Plugin\Plugin
         if (Request::getInt('no_html', false)) {
             $gp = new \Components\Courses\Models\GradePolicies(1);
             $policy = new \stdClass();
-            $policy->description     = $gp->get('description');
-            $policy->exam_weight     = $gp->get('exam_weight') * 100;
-            $policy->quiz_weight     = $gp->get('quiz_weight') * 100;
+            $policy->description = $gp->get('description');
+            $policy->exam_weight = $gp->get('exam_weight') * 100;
+            $policy->quiz_weight = $gp->get('quiz_weight') * 100;
             $policy->homework_weight = $gp->get('homework_weight') * 100;
-            $policy->threshold       = $gp->get('threshold') * 100;
+            $policy->threshold = $gp->get('threshold') * 100;
             echo json_encode(
                 array(
-                    'success'     => true,
-                    'message'     => 'Scoring policy successfully restored to the default configuration!',
+                    'success' => true,
+                    'message' => 'Scoring policy successfully restored to the default configuration!',
                     'gradepolicy' => $policy
                 )
             );

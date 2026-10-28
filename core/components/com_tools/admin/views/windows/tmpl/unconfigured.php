@@ -16,11 +16,13 @@ Html::behavior('tooltip');
 ?>
 
 <?php
+
     $this->view('_submenu')
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <p class="warning"><?php echo Lang::txt('COM_TOOLS_WINDOWS_CONFIGURATION_REQUIRED'); ?></p>
 

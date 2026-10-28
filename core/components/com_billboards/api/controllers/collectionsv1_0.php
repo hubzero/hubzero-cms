@@ -95,7 +95,8 @@ class Collectionsv1_0 extends ApiController
 
             if (is_file(PATH_APP . DS . $image)) {
                 $image_info   = pathinfo($image);
-                $retina_image = $image_info['dirname'] . DS . $image_info['filename'] . "@2x." . $image_info['extension'];
+                $retina_image = $image_info['dirname'] . DS . $image_info['filename']
+                    . "@2x." . $image_info['extension'];
                 if (file_exists(PATH_APP . DS . $retina_image)) {
                     $billboard->set('retina_background_img', $retina_image);
                 }

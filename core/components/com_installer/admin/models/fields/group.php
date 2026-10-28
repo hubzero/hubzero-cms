@@ -36,7 +36,9 @@ class Group extends Field
         $options = array();
 
         foreach ($this->element->children() as $option) {
-            $options[] = Html::select('option', (string)$option->attributes()->value, Lang::txt(trim((string) $option)));
+            $optVal = (string) $option->attributes()->value;
+            $optLabel = Lang::txt(trim((string) $option));
+            $options[] = Html::select('option', $optVal, $optLabel);
         }
 
         $folders = Extension::all()
@@ -52,7 +54,16 @@ class Group extends Field
             $options[] = Html::select('option', $folder, $folder);
         }
 
-        $return = Html::select('genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
+        $return = Html::select(
+            'genericlist',
+            $options,
+            $this->name,
+            $onchange,
+            'value',
+            'text',
+            $this->value,
+            $this->id
+        );
 
         return $return;
     }

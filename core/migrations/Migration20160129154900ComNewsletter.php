@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indexes to Newsletter tables
- **/
+ *
+ */
 class Migration20160129154900ComNewsletter extends Base
 {
     /**
@@ -23,7 +25,8 @@ class Migration20160129154900ComNewsletter extends Base
     {
         if ($this->db->tableExists('#__newsletter_mailing_recipient_actions')) {
             if (!$this->db->tableHasKey('#__newsletter_mailing_recipient_actions', 'idx_mailingid')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipient_actions` ADD INDEX `idx_mailingid` (`mailingid`);";
+                $query = "ALTER TABLE `#__newsletter_mailing_recipient_actions` ADD INDEX `idx_mailingid` "
+                    . "(`mailingid`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -16,14 +16,14 @@ class Base
     /**
      * Fields available in this log and their default visibility
      *
-     * @var  array
+     * @public array
      **/
     protected static $fields = array();
 
     /**
      * If dates/times are present, how are they formatted
      *
-     * @var  string
+     * @public string
      **/
     protected static $dateFormat = null;
 
@@ -117,17 +117,15 @@ class Base
                 }
                 $i++;
             }
-        }
+        } elseif ($field == 'all') {
         // All fields either on or off
-        else if ($field == 'all') {
             foreach (static::$fields as $f => $s) {
                 static::$fields[$f] = $status;
             }
 
             return (($status) ? 'Showing ' : 'Hiding ') . 'all fields';
-        }
+        } elseif (strpos($field, ',')) {
         // Toggling comma-separated list of fields
-        else if (strpos($field, ',')) {
             $fields = explode(',', $field);
             $valid  = array();
 
@@ -147,15 +145,13 @@ class Base
             }
 
             return $return;
-        }
+        } elseif (isset(static::$fields[$field])) {
         // Toggling single field
-        else if (isset(static::$fields[$field])) {
             static::$fields[$field] = $status;
 
             return (($status) ? 'Showing ' : 'Hiding ') . $field;
-        }
+        } else {
         // Who knows what's going on here!
-        else {
             return false;
         }
     }

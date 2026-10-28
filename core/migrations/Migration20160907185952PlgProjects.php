@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Project Info, renaming Project blog, updating ordering
- **/
+ *
+ */
 class Migration20160907185952PlgProjects extends Base
 {
     /**
@@ -21,11 +22,13 @@ class Migration20160907185952PlgProjects extends Base
         $this->addPluginEntry('projects', 'info');
 
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`='feed' WHERE `folder`='projects' AND `element`='blog' AND `type`='plugin'";
+            $query = "UPDATE `#__extensions` SET `element`='feed' WHERE `folder`='projects' AND `element`='blog' "
+                . "AND `type`='plugin'";
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "SELECT * FROM `#__extensions` WHERE `folder`='projects' AND `type`='plugin' ORDER BY `ordering` ASC";
+            $query = "SELECT * FROM `#__extensions` WHERE `folder`='projects' AND `type`='plugin' ORDER BY "
+                . "`ordering` ASC";
             $this->db->setQuery($query);
             $plugins = $this->db->loadObjectList();
 
@@ -43,7 +46,8 @@ class Migration20160907185952PlgProjects extends Base
                     $num = 2;
                 }
 
-                $query = "UPDATE `#__extensions` SET `ordering`=" . $num . " WHERE `extension_id`=" . $plugin->extension_id;
+                $query = "UPDATE `#__extensions` SET `ordering`=" . $num
+                    . " WHERE `extension_id`=" . $plugin->extension_id;
                 $this->db->setQuery($query);
                 $this->db->query();
 
@@ -60,7 +64,8 @@ class Migration20160907185952PlgProjects extends Base
         $this->deletePluginEntry('projects', 'info');
 
         if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`='blog' WHERE `folder`='projects' AND `element`='feed' AND `type`='plugin'";
+            $query = "UPDATE `#__extensions` SET `element`='blog' WHERE `folder`='projects' AND `element`='feed' "
+                . "AND `type`='plugin'";
             $this->db->setQuery($query);
             $this->db->query();
         }

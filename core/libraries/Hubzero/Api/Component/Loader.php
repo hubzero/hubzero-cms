@@ -65,7 +65,12 @@ class Loader extends Base
                 // If no version is specified, try to determine the most
                 // recent version from the available controllers
                 if (!$version) {
-                    $files = glob(PATH_COMPONENT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controller . 'v*.php');
+                    $files = glob(PATH_COMPONENT .
+                        DIRECTORY_SEPARATOR .
+                        'controllers' .
+                        DIRECTORY_SEPARATOR .
+                        $controller .
+                        'v*.php');
 
                     if (!empty($files)) {
                         natsort($files);
@@ -77,8 +82,16 @@ class Loader extends Base
                     $controller .= 'v' . str_replace('.', '_', $version);
                 }
 
-                $path       = PATH_COMPONENT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controller . '.php';
-                $controllerClass = '\\Components\\' . ucfirst(substr($option, 4)) . '\\Api\\Controllers\\' . ucfirst($controller);
+                $path       = PATH_COMPONENT .
+                    DIRECTORY_SEPARATOR .
+                    'controllers' .
+                    DIRECTORY_SEPARATOR .
+                    $controller .
+                    '.php';
+                $controllerClass = '\\Components\\' .
+                    ucfirst(substr($option, 4)) .
+                    '\\Api\\Controllers\\' .
+                    ucfirst($controller);
 
                 // Include the file
                 if (file_exists($path)) {

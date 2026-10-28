@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,17 +35,17 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  integer
      **/
-    const STATE_ARCHIVED = 3;
-    const STATE_PENDING  = 5;
+    public const STATE_ARCHIVED = 3;
+    public const STATE_PENDING  = 5;
 
     /**
      * Privacy constants
      *
      * @var  integer
      **/
-    const PRIVACY_PRIVATE = 1;
-    const PRIVACY_PUBLIC  = 0;
-    const PRIVACY_OPEN    = -1;
+    public const PRIVACY_PRIVATE = 1;
+    public const PRIVACY_PUBLIC  = 0;
+    public const PRIVACY_OPEN    = -1;
 
     /**
      * Default order by for model
@@ -217,7 +218,8 @@ class Project extends Relational implements \Hubzero\Search\Searchable
      */
     public function automaticCreatedByUser($data)
     {
-        return (isset($data['created_by_user']) && $data['created_by_user'] ? (int)$data['created_by_user'] : (int)User::get('id'));
+        $createdBy = isset($data['created_by_user']) && $data['created_by_user'];
+        return $createdBy ? (int)$data['created_by_user'] : (int)User::get('id');
     }
 
     /**
@@ -582,7 +584,8 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     public function picture($size = 'thumb', $realpath = false)
     {
         $src  = '';
-        $path = PATH_APP . DS . trim($this->config()->get('imagepath', '/site/projects'), DS) . DS . $this->get('alias') . DS . 'images';
+        $imagepath = trim($this->config()->get('imagepath', '/site/projects'), DS);
+        $path = PATH_APP . DS . $imagepath . DS . $this->get('alias') . DS . 'images';
 
         if ($size == 'thumb') {
             // Does a thumb exist?

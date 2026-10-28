@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Media\Admin;
 
 if (!\User::authorise('core.manage', 'com_media')) {

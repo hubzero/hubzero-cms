@@ -24,20 +24,26 @@ class Twitter extends Macro
     {
         $txt = array();
         $txt['wiki'] = "Embeds a Twitter Feed into the page";
-        $txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero), or a Twitter widget ID(see below), followed by a comma(,) and then the number of tweets to display.</p>
-						<p>A Twitter widget may be set up by going to <a href="https://www.twitter.com/settings/widgets">Twitter\'s widget configuration page</a>.  After setting a widget up, the widget ID can be found as an 18 digit number in the URL of the settings, or within the HTML in the text box labeled "Copy and paste the code into the HTML of your site" as the item data-widget-id="####".</p>
-						<p>Examples:</p>
-						<ul>
-							<li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>
-						</ul>
-						<p>Displays:</p>
-						<a class="twitter-timeline"
-							href="https://twitter.com/"
-							data-widget-id="346714310770302976"
-							data-screen-name="hubzeroplatform"
-							data-tweet-limit="2"
-							data-chrome=""
-							>Loading Tweets...</a>';
+        $txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero), ' .
+            'or a Twitter widget ID(see below), followed by a comma(,) and then the number of ' .
+            'tweets to display.</p>
+            <p>A Twitter widget may be set up by going to ' .
+            '<a href="https://www.twitter.com/settings/widgets">Twitter\'s widget configuration ' .
+            'page</a>. After setting a widget up, the widget ID can be found as an 18 digit ' .
+            'number in the URL of the settings, or within the HTML in the text box labeled ' .
+            '"Copy and paste the code into the HTML of your site" as the item data-widget-id="####".</p>
+            <p>Examples:</p>
+            <ul>
+                <li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>
+            </ul>
+            <p>Displays:</p>
+            <a class="twitter-timeline"
+                href="https://twitter.com/"
+                data-widget-id="346714310770302976"
+                data-screen-name="hubzeroplatform"
+                data-tweet-limit="2"
+                data-chrome=""
+                >Loading Tweets...</a>';
 
         return $txt['html'];
     }
@@ -77,9 +83,8 @@ class Twitter extends Macro
         // pass already configured widget
         if ($widgetId) {
             $atts = array('data-widget-id="' . $widgetId . '"');
-        }
-        // no widget id, set up the screen name to show tweets from
-        else {
+        } else {
+            // no widget id, set up the screen name to show tweets from
             $atts[] = 'href="https://twitter.com/' . $screenName . '"';
             $atts[] = 'data-screen-name="' . $screenName . '"';
         }
@@ -93,7 +98,10 @@ class Twitter extends Macro
             $atts[] = 'data-tweet-limit="' . $args[1] . '"';
         }
 
-        \Document::addScript(\Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/twitter/twitter.js?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js'));
+        $jsPath = 'core/plugins/content/formathtml/macros/macro-assets/twitter/twitter.js';
+        \Document::addScript(
+            \Request::root() . $jsPath . '?t=' . filemtime(__DIR__ . '/macro-assets/twitter/twitter.js')
+        );
 
         // output embeded timeline
         return '<a class="twitter-timeline" ' . implode(' ', $atts) . '>Loading Tweets...</a>';

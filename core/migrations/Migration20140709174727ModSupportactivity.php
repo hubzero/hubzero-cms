@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding mod_supportactivity
- **/
+ *
+ */
 class Migration20140709174727ModSupportactivity extends Base
 {
     /**
@@ -41,8 +43,12 @@ class Migration20140709174727ModSupportactivity extends Base
                 $params = json_encode($params);
             }
 
-            $query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
-            $query .= " VALUES ('{$name}', 'module', '{$element}', '', 1, {$enabled}, 1, 0, '', " . $this->db->quote($params) . ", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
+            $query = "INSERT INTO `#__extensions` "
+                . "(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, "
+                . "`protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, "
+                . "`checked_out`, `checked_out_time`, `ordering`, `state`)";
+            $query .= " VALUES ('{$name}', 'module', '{$element}', '', 1, {$enabled}, 1, 0, '', "
+                . $this->db->quote($params) . ", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
             $this->db->setQuery($query);
             $this->db->query();
         }

@@ -170,7 +170,10 @@ class CartOrders
 
         $db = \App::get('db');
 
-        $sql = "INSERT INTO `#__activity_logs` SET `created` = NOW(), `created_by` = " .  User::get('id') . ", `description` = 'Order updated', `action` = 'updated', `scope` = 'cart.order', `scope_id` = {$tId}, `details` = " . $db->quote(json_encode($orderChanges)) . "";
+        $sql = "INSERT INTO `#__activity_logs` SET `created` = NOW(), ";
+        $sql .= "`created_by` = " . User::get('id') . ", `description` = 'Order updated', ";
+        $sql .= "`action` = 'updated', `scope` = 'cart.order', `scope_id` = {$tId}, ";
+        $sql .= "`details` = " . $db->quote(json_encode($orderChanges)) . "";
         $db->setQuery($sql);
         $db->query();
     }
@@ -187,7 +190,8 @@ class CartOrders
 
         $db = \App::get('db');
 
-        $sql = "SELECT * FROM `#__activity_logs` WHERE `action` = 'updated' AND `scope` = 'cart.order' AND `scope_id` = {$tId} ORDER BY `created` DESC";
+        $sql = "SELECT * FROM `#__activity_logs` WHERE `action` = 'updated' ";
+        $sql .= "AND `scope` = 'cart.order' AND `scope_id` = {$tId} ORDER BY `created` DESC";
         $db->setQuery($sql);
         $db->query();
 

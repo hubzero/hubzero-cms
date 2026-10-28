@@ -53,7 +53,9 @@ class ManyShiftsToMany extends ManyToMany
         parent::mediate();
 
         // Add this where clause in mediation as it's really a factor of the join itself
-        $this->related->whereEquals($this->associativeTable . '.' . $this->shifter, strtolower($this->model->getModelName()));
+        $this->related->whereEquals($this->associativeTable .
+            '.' .
+            $this->shifter, strtolower($this->model->getModelName()));
 
         return $this;
     }
@@ -72,8 +74,14 @@ class ManyShiftsToMany extends ManyToMany
         $associativeLocal = $this->associativeLocal;
         $shifter          = $this->shifter;
         $model            = $this->model;
-
-        return $this->getConstrainedKeys(function ($related) use ($count, $associativeTable, $associativeLocal, $shifter, $model, $operator) {
+        return $this->getConstrainedKeys(function ($related) use (
+            $count,
+            $associativeTable,
+            $associativeLocal,
+            $shifter,
+            $model,
+            $operator
+) {
             $related->whereEquals($associativeTable . '.' . $shifter, strtolower($model->getModelName()))
                     ->group($shifter)
                     ->group($associativeLocal)
@@ -89,7 +97,8 @@ class ManyShiftsToMany extends ManyToMany
      **/
     protected function getConnectionData()
     {
-        return [$this->associativeLocal => $this->model->getPkValue(), $this->shifter => strtolower($this->model->getModelName())];
+        return [$this->associativeLocal => $this->model->getPkValue(),
+            $this->shifter => strtolower($this->model->getModelName())];
     }
 
     /**

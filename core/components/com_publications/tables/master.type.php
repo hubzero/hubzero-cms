@@ -253,6 +253,7 @@ class MasterType extends Table
      * @param   array   $filters  Filters to build query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = "FROM $this->_tbl AS c";

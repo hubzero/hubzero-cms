@@ -2,8 +2,6 @@
 
 namespace Plugins\Projects\Files\Helpers;
 
-// @phpcs:disable PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration
-
 /**
  * Inline HTML diff generator for PHP DiffLib.
  *
@@ -63,9 +61,8 @@ class HubInline extends \Diff_Renderer_Html_Array
                         $html .= '<td class="Left">' . $line . '</td>';
                         $html .= '</tr>';
                     }
-                }
-                // Added lines only on the right side
-                elseif ($change['tag'] == 'insert') {
+                } elseif ($change['tag'] == 'insert') {
+                    // Added lines only on the right side
                     foreach ($change['changed']['lines'] as $no => $line) {
                         $toLine = $change['changed']['offset'] + $no + 1;
                         $html .= '<tr>';
@@ -74,9 +71,8 @@ class HubInline extends \Diff_Renderer_Html_Array
                         $html .= '<td class="Right"><ins>' . $line . '</ins>&nbsp;</td>';
                         $html .= '</tr>';
                     }
-                }
-                // Show deleted lines only on the left side
-                elseif ($change['tag'] == 'delete') {
+                } elseif ($change['tag'] == 'delete') {
+                    // Show deleted lines only on the left side
                     foreach ($change['base']['lines'] as $no => $line) {
                         $fromLine = $change['base']['offset'] + $no + 1;
                         $html .= '<tr>';
@@ -85,9 +81,8 @@ class HubInline extends \Diff_Renderer_Html_Array
                         $html .= '<td class="Left"><del>' . $line . '</del>&nbsp;</td>';
                         $html .= '</tr>';
                     }
-                }
-                // Show modified lines on both sides
-                elseif ($change['tag'] == 'replace') {
+                } elseif ($change['tag'] == 'replace') {
+                    // Show modified lines on both sides
                     foreach ($change['base']['lines'] as $no => $line) {
                         $fromLine = $change['base']['offset'] + $no + 1;
                         $html .= '<tr>';

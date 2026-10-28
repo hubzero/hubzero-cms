@@ -165,7 +165,9 @@ class Info extends Obj
             $output = preg_replace('#(\w),(\w)#', '\1, \2', $output);
             $output = preg_replace('#<hr />#', '', $output);
             $output = str_replace('<div class="center">', '', $output);
-            $output = preg_replace('#<tr class="h">(.*)<\/tr>#', '<thead><tr class="h">$1</tr></thead><tbody>', $output);
+            $pattern = '#<tr class="h">(.*)<\/tr>#';
+            $replacement = '<thead><tr class="h">$1</tr></thead><tbody>';
+            $output = preg_replace($pattern, $replacement, $output);
             $output = str_replace('</table>', '</tbody></table>', $output);
             $output = str_replace('</div>', '', $output);
 
@@ -188,41 +190,47 @@ class Info extends Obj
 
             $app = '/' . basename(PATH_APP) . '/';
 
-            $this->_addDirectory($app . 'components', PATH_APP . '/components');
-            $this->_addDirectory($app . 'config', PATH_APP . '/config');
+            $this->addDirectory($app . 'components', PATH_APP . '/components');
+            $this->addDirectory($app . 'config', PATH_APP . '/config');
 
-            $this->_addDirectory($app . $cparams->get('image_path'), PATH_APP . '/' . $cparams->get('image_path'));
+            $this->addDirectory($app . $cparams->get('image_path'), PATH_APP . '/' . $cparams->get('image_path'));
 
             $image_folders = Filesystem::directories(PATH_APP . '/' . $cparams->get('image_path'));
             // List all images folders
             foreach ($image_folders as $folder) {
-                $this->_addDirectory($app . $cparams->get('image_path') . $folder, PATH_APP . '/' . $cparams->get('image_path') . '/' . $folder);
+                $imagePath = $cparams->get('image_path');
+                $this->addDirectory(
+                    $app . $imagePath . $folder,
+                    PATH_APP . '/' . $imagePath . '/' . $folder
+                );
             }
 
-            $this->_addDirectory($app . 'language', PATH_APP . '/language');
+            $this->addDirectory($app . 'language', PATH_APP . '/language');
             // List all site languages
             $site_langs = Filesystem::directories(PATH_APP . '/language');
             foreach ($site_langs as $slang) {
-                $this->_addDirectory($app . 'language/' . $slang, PATH_APP . '/language/' . $slang);
+                $this->addDirectory($app . 'language/' . $slang, PATH_APP . '/language/' . $slang);
             }
 
-            $this->_addDirectory($app . 'libraries', PATH_APP . '/libraries');
+            $this->addDirectory($app . 'libraries', PATH_APP . '/libraries');
 
-            //$this->_addDirectory('media', PATH_APP . '/media');
-            $this->_addDirectory($app . 'modules', PATH_APP . '/modules');
-            $this->_addDirectory($app . 'plugins', PATH_APP . '/plugins');
+            //$this->addDirectory('media', PATH_APP . '/media');
+            $this->addDirectory($app . 'modules', PATH_APP . '/modules');
+            $this->addDirectory($app . 'plugins', PATH_APP . '/plugins');
 
             $plugin_groups = Filesystem::directories(PATH_APP . '/plugins');
             foreach ($plugin_groups as $folder) {
-                $this->_addDirectory($app . 'plugins' . $folder, PATH_APP . '/plugins' . $folder);
+                $this->addDirectory($app . 'plugins' . $folder, PATH_APP . '/plugins' . $folder);
             }
 
-            $this->_addDirectory($app . 'templates', PATH_APP . '/templates');
-            $this->_addDirectory($app . 'cache/site', PATH_APP . '/app/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
-            $this->_addDirectory($app . 'cache/admin', PATH_APP . '/app/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
+            $this->addDirectory($app . 'templates', PATH_APP . '/templates');
+            $this->addDirectory($app . 'cache/site', PATH_APP . '/app/cache/site', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
+            $this->addDirectory($app . 'cache/admin', PATH_APP . '/app/cache/admin', 'COM_SYSTEM_INFO_CACHE_DIRECTORY');
 
-            $this->_addDirectory(Config::get('log_path', PATH_APP . '/app/log'), Config::get('log_path', PATH_APP . '/app/log'), 'COM_SYSTEM_INFO_LOG_DIRECTORY');
-            $this->_addDirectory(Config::get('tmp_path', PATH_APP . '/app/tmp'), Config::get('tmp_path', PATH_APP . '/app/tmp'), 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
+            $logPath = Config::get('log_path', PATH_APP . '/app/log');
+            $this->addDirectory($logPath, $logPath, 'COM_SYSTEM_INFO_LOG_DIRECTORY');
+            $tmpPath = Config::get('tmp_path', PATH_APP . '/app/tmp');
+            $this->addDirectory($tmpPath, $tmpPath, 'COM_SYSTEM_INFO_TEMP_DIRECTORY');
         }
         return $this->directories;
     }
@@ -235,7 +243,7 @@ class Info extends Obj
      * @param   string  $message
      * @return  void
      */
-    private function _addDirectory($name, $path, $message = '')
+    private function addDirectory($name, $path, $message = '')
     {
         $this->directories[$name] = array(
             'writable' => is_writable($path),

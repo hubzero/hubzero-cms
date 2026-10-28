@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -384,6 +385,7 @@ class Attachments extends SiteController
      * @param      string $subdir  Sub directory of $listdir
      * @return     string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
@@ -414,6 +416,7 @@ class Attachments extends SiteController
      * @param   string   $filename  File name
      * @return  integer
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getChildType($filename)
     {
         $ftype = strtolower(Filesystem::extension($filename));
@@ -461,6 +464,7 @@ class Attachments extends SiteController
      * @param   boolean  $allowAuthors  Allow tool authors?
      * @return  boolean  True if user has access, False if not
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _checkAccess($toolid, $allowAuthors = false)
     {
         // allow to view if admin
@@ -495,6 +499,7 @@ class Attachments extends SiteController
      * @param   integer  $assetId    Asset id to check against
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

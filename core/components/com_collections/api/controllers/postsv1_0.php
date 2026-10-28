@@ -169,7 +169,12 @@ class Postsv1_0 extends ApiController
                         $a = new stdClass();
                         $a->title       = ltrim($asset->get('filename'), '/');
                         $a->description = $asset->get('description');
-                        $a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), '/'));
+                        if ($asset->get('type') == 'link') {
+                            $a->url = $asset->get('filename');
+                        } else {
+                            $route = $href . $entry->get('id') . '&task=download&file=' . $a->title;
+                            $a->url = $base . ltrim(Route::url($route), '/');
+                        }
 
                         $obj->assets[] = $a;
                     }
@@ -344,7 +349,12 @@ class Postsv1_0 extends ApiController
                 $a = new stdClass();
                 $a->title       = ltrim($asset->get('filename'), '/');
                 $a->description = $asset->get('description');
-                $a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $post->get('id') . '&task=download&file=' . $a->title), '/'));
+                if ($asset->get('type') == 'link') {
+                    $a->url = $asset->get('filename');
+                } else {
+                    $route = $href . $post->get('id') . '&task=download&file=' . $a->title;
+                    $a->url = $base . ltrim(Route::url($route), '/');
+                }
 
                 $obj->assets[] = $a;
             }
@@ -420,7 +430,12 @@ class Postsv1_0 extends ApiController
                 $a = new stdClass();
                 $a->title       = ltrim($asset->get('filename'), '/');
                 $a->description = $asset->get('description');
-                $a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $entry->get('id') . '&task=download&file=' . $a->title), '/'));
+                if ($asset->get('type') == 'link') {
+                    $a->url = $asset->get('filename');
+                } else {
+                    $route = $href . $entry->get('id') . '&task=download&file=' . $a->title;
+                    $a->url = $base . ltrim(Route::url($route), '/');
+                }
 
                 $obj->assets[] = $a;
             }
@@ -599,7 +614,12 @@ class Postsv1_0 extends ApiController
                 $a = new stdClass();
                 $a->title       = ltrim($asset->get('filename'), '/');
                 $a->description = $asset->get('description');
-                $a->url         = ($asset->get('type') == 'link' ? $asset->get('filename') : $base . ltrim(Route::url($href . $row->get('id') . '&task=download&file=' . $a->title), '/'));
+                if ($asset->get('type') == 'link') {
+                    $a->url = $asset->get('filename');
+                } else {
+                    $route = $href . $row->get('id') . '&task=download&file=' . $a->title;
+                    $a->url = $base . ltrim(Route::url($route), '/');
+                }
 
                 $obj->assets[] = $a;
             }

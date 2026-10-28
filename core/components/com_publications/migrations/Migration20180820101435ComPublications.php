@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +11,6 @@ use Hubzero\Content\Migration\Base;
 use Components\Publications\Models\Publication;
 
 include Component::path('com_publications') . '/models/publication.php';
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for creating links in the SFTP directory
@@ -36,9 +35,14 @@ class Migration20180820101435ComPublications extends Base
         $this->db->query();
         $versionCount = $this->db->loadResult();
         while ($offset < $versionCount) {
-            $query = "SELECT `v`.`doi`, `v`.`id`, `v`.`version_number`, `v`.`publication_id`, `v`.`state`, `p`.`master_type`, `t`.`alias` FROM `#__publication_versions` v";
-            $query .= " JOIN `#__publications` p ON `v`.`publication_id` = `p`.`id` JOIN `#__publication_master_types` t ON `p`.`master_type` = `t`.`id`";
-            $query .= " WHERE `v`.`state` = 1 AND `v`.`published_up` < NOW() AND `t`.`alias` NOT IN ('series', 'databases') LIMIT {$offset}, {$this->limit};";
+            $query = "SELECT `v`.`doi`, `v`.`id`, `v`.`version_number`, "
+                . "`v`.`publication_id`, `v`.`state`, `p`.`master_type`, "
+                . "`t`.`alias` FROM `#__publication_versions` v";
+            $query .= " JOIN `#__publications` p ON `v`.`publication_id` = `p`.`id` "
+                . "JOIN `#__publication_master_types` t ON `p`.`master_type` = `t`.`id`";
+            $query .= " WHERE `v`.`state` = 1 AND `v`.`published_up` < NOW() "
+                . "AND `t`.`alias` NOT IN ('series', 'databases') "
+                . "LIMIT {$offset}, {$this->limit};";
 
             $this->db->setQuery($query);
             $this->db->query();
@@ -50,7 +54,7 @@ class Migration20180820101435ComPublications extends Base
                 $doi = $publication['doi'];
                 $versionNum = $publication['version_number'];
                 $this->removeLink($pubId, $versionId, $versionNum, $doi);
-                if (is_dir($this->_linkPath())) {
+                if (is_dir($this->linkPath())) {
                     $this->createLink($pubId, $versionId, $versionNum, $doi);
                 }
             }
@@ -63,14 +67,16 @@ class Migration20180820101435ComPublications extends Base
      **/
     public function down()
     {
-        if (is_dir($this->_linkPath())) {
+        if (is_dir($this->linkPath())) {
             $versionQuery = "SELECT count(*) FROM `#__publication_versions` WHERE `state` = 1";
             $this->db->setQuery($versionQuery);
             $this->db->query();
             $versionCount = $this->db->loadResult();
             $offset = 0;
             while ($offset < $versionCount) {
-                $query = "SELECT `doi`, `publication_id`, `id`, `version_number`, `state` FROM `#__publication_versions` WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
+                $query = "SELECT `doi`, `publication_id`, `id`, `version_number`, "
+                    . "`state` FROM `#__publication_versions` "
+                    . "WHERE `state` = 1 LIMIT {$offset}, {$this->limit};";
 
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -108,8 +114,11 @@ class Migration20180820101435ComPublications extends Base
 
         $tarname = $bundleName . '.zip';
         $fileName = $bundleWithVersion . '.zip';
-        $tarPath = '..' . '/' . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/' . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/' . $tarname;
-        $linkPath = $this->_linkPath();
+        $tarPath = '..' . '/'
+            . str_pad($pubId, 5, "0", STR_PAD_LEFT) . '/'
+            . str_pad($versionId, 5, "0", STR_PAD_LEFT) . '/'
+            . $tarname;
+        $linkPath = $this->linkPath();
         if ($linkPath !== false) {
             chdir($linkPath);
         }
@@ -150,7 +159,7 @@ class Migration20180820101435ComPublications extends Base
         }
 
         $tarname = $bundleWithVersion . '.zip';
-        $linkPath = $this->_linkPath();
+        $linkPath = $this->linkPath();
         $link = $linkPath . '/' . $tarname;
         if ($link == false) {
             return false;
@@ -166,7 +175,7 @@ class Migration20180820101435ComPublications extends Base
      *
      * @return  mixed   string if sftp path provided, false if not
      */
-    private function _linkPath()
+    private function linkPath()
     {
         $sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
         if (!is_dir($sftpPath)) {

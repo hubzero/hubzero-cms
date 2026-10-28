@@ -24,6 +24,7 @@ class Content extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name      = 'content';
 
     /**
@@ -31,6 +32,7 @@ class Content extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parentname    = 'content';
 
     /**
@@ -38,6 +40,7 @@ class Content extends Base
      *
      * @var     string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest  = null;
 
     /**
@@ -45,6 +48,7 @@ class Content extends Base
      *
      * @var     integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockId = 0;
 
     /**

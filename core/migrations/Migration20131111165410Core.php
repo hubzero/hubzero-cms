@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for stats setup
+  *
  **/
 class Migration20131111165410Core extends Base
 {
@@ -62,10 +64,10 @@ class Migration20131111165410Core extends Base
                 if ($k == 'period' && $v == '15') {
                     $found[] = 'period';
                     $params[$k] = '14';
-                } else if ($k == 'chart_path' && $v == '/site/usage/chart_resources/') {
+                } elseif ($k == 'chart_path' && $v == '/site/usage/chart_resources/') {
                     $found[] = 'chart_path';
                     $params[$k] = '/site/stats/chart_resources/';
-                } else if ($k == 'map_path' && $v == '/site/usage/resource_maps/') {
+                } elseif ($k == 'map_path' && $v == '/site/usage/resource_maps/') {
                     $found[] = 'map_path';
                     $params[$k] = '/site/stats/resource_maps/';
                 }
@@ -87,7 +89,8 @@ class Migration20131111165410Core extends Base
         if ($this->db->tableExists('#__extensions')) {
             $params = json_encode($params);
 
-            $query = 'UPDATE `#__extensions` SET params = ' . $this->db->quote($params) . ' WHERE folder = "resources" AND element = "usage"';
+            $query = 'UPDATE `#__extensions` SET params = ' . $this->db->quote($params)
+                . ' WHERE folder = "resources" AND element = "usage"';
             $this->db->setQuery($query);
             $this->db->query();
         } else {
@@ -98,7 +101,8 @@ class Migration20131111165410Core extends Base
 
             $params = $p;
 
-            $query = 'UPDATE `#__plugins` SET params = ' . $this->db->quote($params) . ' WHERE folder = "resources" AND element = "usage"';
+            $query = 'UPDATE `#__plugins` SET params = ' . $this->db->quote($params)
+                . ' WHERE folder = "resources" AND element = "usage"';
             $this->db->setQuery($query);
             $this->db->query();
         }

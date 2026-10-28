@@ -51,7 +51,14 @@ class ContentLanguage
             $db->setQuery($query->toString());
             self::$items = $db->loadObjectList();
             if ($all) {
-                array_unshift(self::$items, new Obj(array('value' => '*', 'text' => $translate ? Lang::alt('JALL', 'language') : 'JALL_LANGUAGE')));
+                array_unshift(
+                    self::$items,
+                    new Obj(array('value' => '*',
+                    'text' => $translate ? Lang::alt(
+                        'JALL',
+                        'language'
+                    ) : 'JALL_LANGUAGE'))
+                );
             }
 
             // Detect errors

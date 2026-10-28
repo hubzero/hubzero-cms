@@ -22,6 +22,7 @@ class Log extends Model
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Projects\\Tables\\ToolLog';
 
     /**
@@ -59,7 +60,7 @@ class Log extends Model
 
         if (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         } else {
             $key = $oid;
@@ -158,9 +159,13 @@ class Log extends Model
             $log .= strtolower(Lang::txt('PLG_PROJECTS_TOOLS_DEV_AREA_ACCESS'));
             $log .= ' ' . Lang::txt('PLG_PROJECTS_TOOLS_CHANGED');
             $log .= ' ' . Lang::txt('PLG_PROJECTS_TOOLS_FROM') . ' ';
-            $log .= $old->get('opendev') ? Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_SHARED') : Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_RESTRICTED');
+            $log .= $old->get('opendev')
+                ? Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_SHARED')
+                : Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_RESTRICTED');
             $log .= ' ' . Lang::txt('PLG_PROJECTS_TOOLS_TO') . ' ';
-            $log .= $new->get('opendev') == 1 ? Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_SHARED') : Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_RESTRICTED');
+            $log .= $new->get('opendev') == 1
+                ? Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_SHARED')
+                : Lang::txt('PLG_PROJECTS_TOOLS_ACCESS_RESTRICTED');
             $log .= "\n";
         }
 

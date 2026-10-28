@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -104,6 +105,7 @@ class Tool
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_list_keys = array('version');
 
     /**
@@ -111,6 +113,7 @@ class Tool
      *
      * @var boolean
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_updateAll = false;
 
     /**
@@ -118,7 +121,8 @@ class Tool
      *
      * @var array
      */
-    static $_propertyattrmap = array(
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected static $_propertyattrmap = array(
         'toolname' => 'toolName',
         'title' => 'cn',
         'version' => 'member'
@@ -129,6 +133,7 @@ class Tool
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_updatedkeys = array();
 
     /**
@@ -260,6 +265,7 @@ class Tool
      *
      * @return   boolean Return description (if any) ...
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function _sql_create()
     {
         $db = \App::get('db');
@@ -268,7 +274,9 @@ class Tool
             return false;
         }
         if (is_numeric($this->id)) {
-            $query = "INSERT INTO #__tool (id,toolname,title) VALUES (" . $db->Quote($this->id) . "," . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
+            $query = "INSERT INTO #__tool (id,toolname,title) VALUES (" .
+                $db->Quote($this->id) . "," . $db->Quote($this->toolname) . "," .
+                $db->Quote($this->title) . ");";
 
             $db->setQuery($query);
 
@@ -278,7 +286,8 @@ class Tool
                 return true;
             }
         } else {
-            $query = "INSERT INTO #__tool (toolname,title) VALUES (" . $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
+            $query = "INSERT INTO #__tool (toolname,title) VALUES (" .
+                $db->Quote($this->toolname) . "," . $db->Quote($this->title) . ");";
 
             $db->setQuery($query);
 
@@ -297,7 +306,7 @@ class Tool
 
                 $this->id = $result;
                 return true;
-            } else if ($result !== false) {
+            } elseif ($result !== false) {
                 $this->id = $db->insertid();
                 return true;
             }
@@ -331,6 +340,7 @@ class Tool
      *
      * @return  boolean
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function _sql_read()
     {
         $db = \App::get('db');
@@ -341,10 +351,12 @@ class Tool
         }
 
         if (is_numeric($this->toolname)) {
-            $query = "SELECT id,toolname,title,registered,registered_by,state_changed,ticketid,published,state,priority FROM #__tool WHERE id=" .
+            $query = "SELECT id,toolname,title,registered,registered_by,state_changed," .
+                "ticketid,published,state,priority FROM #__tool WHERE id=" .
                 $db->Quote($this->toolname) . ";";
         } else {
-            $query = "SELECT id,toolname,title,registered,registered_by,state_changed,ticketid,published,state,priority FROM #__tool WHERE " .
+            $query = "SELECT id,toolname,title,registered,registered_by,state_changed," .
+                "ticketid,published,state,priority FROM #__tool WHERE " .
                 " toolname=" . $db->Quote($this->toolname) . ";";
         }
 
@@ -421,6 +433,7 @@ class Tool
      * @param     boolean $all Parameter description (if any) ...
      * @return   boolean Return description (if any) ...
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function _sql_update($all = false)
     {
         $db = \App::get('db');
@@ -593,6 +606,7 @@ class Tool
      *
      * @return   boolean Return description (if any) ...
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function _sql_delete()
     {
         if (!isset($this->toolname) && !isset($this->id)) {
@@ -794,6 +808,7 @@ class Tool
      * @param     integer $level Parameter description (if any) ...
      * @return   void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();
@@ -1041,7 +1056,7 @@ class Tool
         if (isset($filters['limit'])) {
             if ($filters['limit'] == 'all') {
                 $limit = '18446744073709551615';
-            } else if (intval($filters['limit']) == $filters['limit'] && $filters['limit'] > 0) {
+            } elseif (intval($filters['limit']) == $filters['limit'] && $filters['limit'] > 0) {
                 $limit = $filters['limit'];
             }
         }
@@ -1171,7 +1186,7 @@ class Tool
      * @param     boolean $admin Parameter description (if any) ...
      * @return   object Return description (if any) ...
      */
-    static function getToolCount($filters = array(), $admin = false)
+    public static function getToolCount($filters = array(), $admin = false)
     {
         $db = \App::get('db');
 
@@ -1192,7 +1207,7 @@ class Tool
      * @param   boolean  $admin
      * @return  array
      */
-    static function getToolSummaries($filters = array(), $admin = false)
+    public static function getToolSummaries($filters = array(), $admin = false)
     {
         $db = \App::get('db');
 
@@ -1287,15 +1302,16 @@ class Tool
 
         if (empty($clause1) && empty($clause2)) {
             return false;
-        } else if (empty($clause1)) {
+        } elseif (empty($clause1)) {
             $clause = " $clause2 ";
-        } else if (empty($clause2)) {
+        } elseif (empty($clause2)) {
             $clause = " $clause1 ";
         } else {
             $clause = " $clause1 AND $clause2 ";
         }
 
-        $query = 'SELECT r.id FROM `#__tool` as t LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE ' . "$clause ;";
+        $query = 'SELECT r.id FROM `#__tool` as t ' .
+            'LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE ' . "$clause ;";
 
         $db->setQuery($query);
 
@@ -1314,7 +1330,8 @@ class Tool
     {
         $db = \App::get('db');
 
-        $query = "SELECT t.id FROM `#__tool` AS t WHERE LOWER(t.toolname)=LOWER(" . $db->Quote($tool['toolname']) . ") ";
+        $query = "SELECT t.id FROM `#__tool` AS t " .
+            "WHERE LOWER(t.toolname)=LOWER(" . $db->Quote($tool['toolname']) . ") ";
 
         if ($id) {
             $query .= " AND id != " . $db->Quote($id);
@@ -1328,7 +1345,7 @@ class Tool
 
         if ($result || (in_array($tool['toolname'], array('test', 'shortname', 'hub', 'tool')) && !$id)) {
             $err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME_EXISTS');
-        } else if ((!preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) || is_numeric($tool['toolname'])) && !$id) {
+        } elseif ((!preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) || is_numeric($tool['toolname'])) && !$id) {
             $err['toolname'] = Lang::txt('COM_TOOLS_ERR_TOOLNAME');
         }
 
@@ -1377,7 +1394,7 @@ class Tool
 
         if (empty($tool['version'])) {
             $err['version'] = Lang::txt('COM_TOOLS_ERR_VERSION_BLANK');
-        } else if (!preg_match("#^[_0-9a-zA-Z.:-]+$#i", $tool['version'])) {
+        } elseif (!preg_match("#^[_0-9a-zA-Z.:-]+$#i", $tool['version'])) {
             $err['version'] = Lang::txt('COM_TOOLS_ERR_VERSION_ILLEGAL');
         }
 
@@ -1387,8 +1404,8 @@ class Tool
 
         if ($tool['exec'] == '@GROUP' && empty($tool['membergroups'])) {
             $err['membergroups'] = Lang::txt('COM_TOOLS_ERR_GROUPS_EMPTY');
-        } else if (empty($tool['membergroups']) or $tool['exec'] != '@GROUP') {
-        } else if ($tool['exec'] == '@GROUP') {
+        } elseif (empty($tool['membergroups']) or $tool['exec'] != '@GROUP') {
+        } elseif ($tool['exec'] == '@GROUP') {
         }
 
         if (empty($tool['code'])) {
@@ -1409,9 +1426,13 @@ class Tool
                 }
             }
 
-            // Finally, make sure that the current user is either in the apps group, or on the dev team
-            // If the user were neither in apps, nor on the dev team, they would immediately lose access to the tool after saving
-            if (!Component::params('com_tools')->get('access-manage-component') && !in_array(User::get('username'), $devs)) {
+            // Finally, make sure that the current user is either in the apps group,
+            // or on the dev team. If the user were neither in apps, nor on the dev team,
+            // they would immediately lose access to the tool after saving
+            if (
+                !Component::params('com_tools')->get('access-manage-component') &&
+                !in_array(User::get('username'), $devs)
+            ) {
                 $err['developers'] =  Lang::txt('COM_TOOLS_ERR_TEAM_CREATER_NOT_DEVELOPER');
             }
         }
@@ -1440,7 +1461,9 @@ class Tool
                 $grp = Group::getInstance($groupName);
                 if (!is_object($grp) || !$grp->get('gidNumber')) {
                     if ($groupName != ($group_prefix . strtolower($tool['toolname']))) {
-                        $err['membergroups' . $k] = 'Group name ' . $groupName . ' is not valid and is not ' . $group_prefix . strtolower($tool['toolname']);
+                        $err['membergroups' . $k] = 'Group name ' . $groupName .
+                            ' is not valid and is not ' .
+                            $group_prefix . strtolower($tool['toolname']);
                     }
                 }
             }
@@ -1483,7 +1506,10 @@ class Tool
         } elseif (!preg_match('#^[_0-9a-zA-Z.:-]+$#i', $newversion)) {
             $err = Lang::txt('COM_TOOLS_ERR_VERSION_ILLEGAL');
         } else {
-            $query = "SELECT v.id FROM `#__tool` AS t, `#__tool_version` AS v WHERE v.toolid=t.id AND t.id=" . $db->Quote($id) . " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") AND v.state!='3' LIMIT 1;";
+            $query = "SELECT v.id FROM `#__tool` AS t, `#__tool_version` AS v " .
+                "WHERE v.toolid=t.id AND t.id=" . $db->Quote($id) .
+                " AND LOWER(v.version)=LOWER(" . $db->Quote($newversion) . ") " .
+                "AND v.state!='3' LIMIT 1;";
 
             $db->setQuery($query);
 
@@ -1512,9 +1538,9 @@ class Tool
 
         if (!$license['text']) {
             $err = Lang::txt('COM_TOOLS_ERR_LICENSE_EMPTY');
-        } else if ($bingo) {
+        } elseif ($bingo) {
             $err = Lang::txt('COM_TOOLS_ERR_LICENSE_DEFAULTS');
-        } else if (!$license['authorize'] && $code == '@OPEN') {
+        } elseif (!$license['authorize'] && $code == '@OPEN') {
             $err = Lang::txt('COM_TOOLS_ERR_LICENSE_AUTH_MISSING');
         } else {
             $result = 1;
@@ -1658,7 +1684,8 @@ class Tool
     {
         $db = \App::get('db');
 
-        $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+        // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+        $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
         $query .= "WHERE g.toolid = " . $db->quote($toolid) . " AND g.role=0";
 
@@ -1669,11 +1696,16 @@ class Tool
     /**
      * Returns the list of groups to which the launching of a tool is restricted
      *
-     * @FIXME: This should really be a part of the above function, getToolGroups.  The problem seems to be related to the #__tool_groups table.
-     *       If there is a tool that was at one point restricted to a group, but it isn't anymore, there remains a #__tool_groups entry.
-     *       The above function will grab that restriction and undoly say that the tool is restricted to a group.  The solution seems to be
-     *       removing the #__tool_groups entry if the tool is changed to no longer be restricted to a group.  At the moment, this function also
-     *       checks to ensure that toolaccess='@GROUP' from the #__tool_version table
+     * @FIXME: This should really be a part of the above function, getToolGroups.
+     *         The problem seems to be related to the #__tool_groups table.
+     *         If there is a tool that was at one point restricted to a group,
+     *         but it isn't anymore, there remains a #__tool_groups entry.
+     *         The above function will grab that restriction and undoly say
+     *         that the tool is restricted to a group. The solution seems to be
+     *         removing the #__tool_groups entry if the tool is changed to
+     *         no longer be restricted to a group. At the moment, this function
+     *         also checks to ensure that toolaccess='@GROUP' from the
+     *         #__tool_version table
      *
      * @param   string  $toolid    is the tool id
      * @param   string  $instance  is the tool version instance
@@ -1685,7 +1717,9 @@ class Tool
 
         $query  = "SELECT tv.toolname, tg.cn ";
         $query .= "FROM `#__tool_groups` AS tg, `#__tool_version` AS tv ";
-        $query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->quote($toolid) . " AND role=0 AND tv.instance=" . $db->quote($instance) . " AND tv.toolaccess='@GROUP'";
+        $query .= "WHERE tg.toolid = tv.toolid AND tg.toolid=" . $db->quote($toolid) .
+            " AND role=0 AND tv.instance=" . $db->quote($instance) .
+            " AND tv.toolaccess='@GROUP'";
 
         $db->setQuery($query);
         return $db->loadObjectList();
@@ -1800,8 +1834,9 @@ class Tool
         $db = \App::get('db');
         $filter = self::xbuildQuery($filters, $admin);
 
-        $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
-                . " FROM $filter";
+        $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, " .
+            "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup" .
+            " FROM $filter";
         if (isset($filters['start']) && isset($filters['limit'])) {
             $sql .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
         }

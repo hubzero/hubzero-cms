@@ -22,7 +22,7 @@ class Wallet
      *
      * @var  object
      */
-    private $_provider;
+    private $provider;
 
     /**
      * Constructor
@@ -39,10 +39,15 @@ class Wallet
             throw new ProviderNotFoundException(\Lang::txt('Invalid badges provider of "%s".', $provider));
         }
 
-        $this->_provider = new $cls($requestType);
+        $this->provider = new $cls($requestType);
 
-        if (!($this->_provider instanceof ProviderInterface)) {
-            throw new InvalidProviderException(\Lang::txt('Invalid badges provider of "%s". Provider must implement ProviderInterface', $provider));
+        if (!($this->provider instanceof ProviderInterface)) {
+            InvalidProviderException(
+                \Lang::txt(
+                    'Invalid badges provider of "%s". Provider must implement ProviderInterface',
+                    $provider
+                )
+            );
         }
     }
 
@@ -53,6 +58,6 @@ class Wallet
      */
     public function getProvider()
     {
-        return $this->_provider;
+        return $this->provider;
     }
 }

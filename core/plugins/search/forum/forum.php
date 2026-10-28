@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Search forum entries
+ */
+/**
  */
 class plgSearchForum extends \Hubzero\Plugin\Plugin
 {
@@ -52,7 +55,9 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
             $viewlevels = implode(',', User::getAuthorisedViewLevels());
 
             if ($gids) {
-                $addtl_where[] = '(f.access IN (0,' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . join(',', $gids) . ')))';
+                $gidList = join(',', $gids);
+                $addtl_where[] = '(f.access IN (0,' . $viewlevels . ') '
+                    . 'OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . $gidList . ')))';
             } else {
                 $addtl_where[] = '(f.access IN (0,' . $viewlevels . '))';
             }
@@ -72,32 +77,45 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $rows = new \Components\Search\Models\Basic\Result\Sql(
-            "SELECT
-				f.title,
-				coalesce(f.comment, '') AS description, f.scope_id, s.alias as sect, c.alias as cat, CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END as `thread`,
-				(CASE
-					WHEN f.scope_id > 0 AND f.scope='group' THEN concat('index.php?option=com_groups&cn=', g.cn, '&active=forum')
-					ELSE concat('index.php?option=com_forum&section=', coalesce(concat(s.alias, '&category=', coalesce(concat(c.alias, '&thread='), ''))), CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END)
-				END) AS `link`,
-				$weight AS `weight`,
-				f.created AS `date`,
-				concat(s.alias, ', ', c.alias) AS `section`
-			FROM `#__forum_posts` f
-			LEFT JOIN `#__forum_categories` AS c
-				ON c.id = f.category_id
-			LEFT JOIN `#__forum_sections` AS s
-				ON s.id = c.section_id
-			LEFT JOIN `#__xgroups` AS g
-				ON g.gidNumber = f.scope_id AND f.scope='group'
-			WHERE
-				f.state = 1 AND
-				f.scope != 'course' AND
-				$weight > 0" .
-                ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-                " AND (g.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
-			ORDER BY $weight DESC"
-        );
+        $threadCase = "CASE WHEN f.parent > 0 THEN f.parent ELSE f.id END";
+        $groupLink = "concat('index.php?option=com_groups&cn=', g.cn, '&active=forum')";
+        $forumLinkInner = "coalesce(concat(s.alias, '&category=', coalesce(concat(c.alias, '&thread='), '')))";
+        $forumLink = "concat('index.php?option=com_forum&section=', " . $forumLinkInner . ", " . $threadCase . ")";
+
+        $sql = "SELECT
+                f.title,
+                coalesce(f.comment, '') AS description,
+                f.scope_id,
+                s.alias as sect,
+                c.alias as cat,
+                {$threadCase} as `thread`,
+                (CASE
+                    WHEN f.scope_id > 0 AND f.scope='group' THEN {$groupLink}
+                    ELSE {$forumLink}
+                END) AS `link`,
+                $weight AS `weight`,
+                f.created AS `date`,
+                concat(s.alias, ', ', c.alias) AS `section`
+            FROM `#__forum_posts` f
+            LEFT JOIN `#__forum_categories` AS c
+                ON c.id = f.category_id
+            LEFT JOIN `#__forum_sections` AS s
+                ON s.id = c.section_id
+            LEFT JOIN `#__xgroups` AS g
+                ON g.gidNumber = f.scope_id AND f.scope='group'
+            WHERE
+                f.state = 1 AND
+                f.scope != 'course' AND
+                $weight > 0";
+
+        if ($addtl_where) {
+            $sql .= ' AND ' . join(' AND ', $addtl_where);
+        }
+
+        $sql .= " AND (g.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
+            ORDER BY $weight DESC";
+
+        $rows = new \Components\Search\Models\Basic\Result\Sql($sql);
         foreach ($rows->to_associative() as $row) {
             if (!$row) {
                 continue;
@@ -231,14 +249,18 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
                         $path = '';
                     }
                 } elseif ($scope == 'course') {
-                    $sql = "SELECT #__courses_offerings.alias AS offering, #__courses.alias AS course FROM #__courses_offerings
-					LEFT JOIN #__courses
-					ON #__courses_offerings.course_id = #__courses.id
-					WHERE #__courses_offerings.id = {$scope_id};";
+                    $sql = "SELECT #__courses_offerings.alias AS offering,
+                        #__courses.alias AS course
+                        FROM #__courses_offerings
+                        LEFT JOIN #__courses
+                        ON #__courses_offerings.course_id = #__courses.id
+                        WHERE #__courses_offerings.id = {$scope_id};";
 
                     $course = $db->setQuery($sql)->query()->loadAssoc();
 
-                    $path = '/courses/' . $course['course'] . '/' . $course['offering'] . '/discussions/' . $row->category . '/' . $row->category_id . '?thread=' . $id;
+                    $path = '/courses/' . $course['course'] . '/' . $course['offering']
+                        . '/discussions/' . $row->category . '/' . $row->category_id
+                        . '?thread=' . $id;
                 } else {
                     $path = '';
                 }
@@ -246,13 +268,11 @@ class plgSearchForum extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($state == 1 && $access == 1 && $scope == 'site') {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($state == 1 && $access == 2 && $scope == 'site') {
+                } elseif ($state == 1 && $access == 2 && $scope == 'site') {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

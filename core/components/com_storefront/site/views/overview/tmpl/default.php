@@ -49,9 +49,8 @@ if ($customLandingPage && is_numeric($customLandingPage)) {
     </section>
 
     <?php
-}
-// Use default view
-else {
+} else {
+    // Use default view
     ?>
 
     <header id="content-header">
