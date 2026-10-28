@@ -30,6 +30,8 @@ class Mysql extends PdoDriver
 			$options['extras'] = [];
 		}
 
+		$options['extras'][\PDO::MYSQL_ATTR_INIT_COMMAND] = "SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'";
+
 		// Check if we're trying to make an SSL connection
 		if (isset($options['ssl_ca']) && $options['ssl_ca'] && $options['host'] != 'localhost')
 		{
