@@ -314,6 +314,9 @@ class Utils
 		include_once dirname(__DIR__) . DS . 'tables' . DS . 'group.php';
 		include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
 
+		// The API does not load the component's strings; the site does
+		Lang::load('com_tools', dirname(__DIR__) . DS . 'site');
+
 		//instantiate objects
 		$access = new stdClass();
 		$access->error = new stdClass();
@@ -323,7 +326,7 @@ class Utils
 		if (!$tool)
 		{
 			$access->valid = 0;
-			$access->error->message = 'No tool provided.';
+			$access->error->message = Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
 			\Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return $access;
 		}
@@ -348,7 +351,7 @@ class Utils
 		if (!$toolVersion->toolid)
 		{
 			$access->valid = 0;
-			$access->error->message = 'Unable to load the tool';
+			$access->error->message = Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
 			\Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
 			return $access;
 		}
@@ -408,7 +411,7 @@ class Utils
 			if (!$indevgroup && !$admin)
 			{
 				$access->valid = 0;
-				$access->error->message = 'The development version of this tool may only be accessed by members of it\'s development group.';
+				$access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP');
 				\Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
 			}
 			else
@@ -430,7 +433,7 @@ class Utils
 				if (!$ingroup && !$admin)
 				{
 					$access->valid = 0;
-					$access->error->message = 'This tool may only be accessed by members of it\'s access control groups.';
+					$access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP');
 					\Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
 				}
 				else
@@ -465,7 +468,7 @@ class Utils
 		else
 		{
 			$access->valid = 0;
-			$access->error->message = 'This tool version is not published.';
+			$access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_VERSION_UNPUBLISHED');
 			\Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
 		}
 

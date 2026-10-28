@@ -1791,233 +1791,28 @@ class Sessions extends SiteController
 		}
 	}
 
-	/**
-	 * Check export controls
-	 * Is the user in a country that has access to this tool?
-	 *
-	 * @param   string   $exportcontrol  Control [us, d1, pu]
-	 * @return  boolean  False if user does NOT have access
-	 */
-	private function _getToolExportControl($exportcontrol)
-	{
-		$exportcontrol = strtolower($exportcontrol == null ? '' : $exportcontrol);
-
-		$ip = Request::ip();
-
-		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
-
-		if (empty($country) && in_array($exportcontrol, array('us', 'd1', 'pu')))
-		{
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN'));
-			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
-			return false;
-		}
-
-		if (\Hubzero\Geocode\Geocode::is_e1nation($country))
-		{
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1'));
-			Log::debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
-			return false;
-		}
-
-		switch ($exportcontrol)
-		{
-			case 'us':
-				if ($country != 'us' && !\Hubzero\Geocode\Geocode::is_iplocation($ip, 'pu'))
-				{
-					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY'));
-					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
-					return false;
-				}
-			break;
-
-			case 'd1':
-				if (\Hubzero\Geocode\Geocode::is_d1nation($country))
-				{
-					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE'));
-					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
-					return false;
-				}
-			break;
-
-			case 'pu':
-				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol))
-				{
-					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY'));
-					Log::debug("mw::_getToolExportControl($exportcontrol) FAILED PURDUE export control check");
-					return false;
-				}
-			break;
-		}
-
-		return true;
-	}
 
 	/**
-	 * Get the access level for this user and tool
+	 * Can the current user run this tool?
 	 *
-	 * @param   string   $tool   Tool name
-	 * @param   string   $login  Username
-	 * @return  boolean  True if the user has access
+	 * The rules (development and access groups, publication state, export
+	 * control) live in Utils::getToolAccess(), which the API uses too, so the
+	 * website and the API cannot disagree about who may launch a tool.
+	 *
+	 * @param   string  $tool   Tool instance name
+	 * @param   string  $login  Username; the current user when empty
+	 * @return  bool
 	 */
 	private function _getToolAccess($tool, $login='')
 	{
-		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
-		include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
+		$access = Utils::getToolAccess($tool, $login);
 
-		// Ensure we have a tool
-		if (!$tool)
+		if (!$access->valid)
 		{
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-			Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
+			$this->setError($access->error->message);
 			return false;
 		}
 
-		// Ensure we have a login
-		if ($login == '')
-		{
-			$login = User::get('username');
-			if ($login == '')
-			{
-				Log::debug("mw::_getToolAccess($tool,$login) FAILED null user check");
-				return false;
-			}
-		}
-
-		$tv = new \Components\Tools\Tables\Version($this->database);
-
-		$tv->loadFromInstance($tool);
-
-		if (empty($tv->id))
-		{
-			Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
-			return false;
-		}
-
-		$tg = new \Components\Tools\Tables\Group($this->database);
-		$this->database->setQuery("SELECT * FROM " . $tg->getTableName() . " WHERE toolid=" . $tv->toolid);
-		$toolgroups = $this->database->loadObjectList();
-		if (empty($toolgroups))
-		{
-			//Log::debug("mw::_getToolAccess($tool,$login) WARNING: no tool member groups");
-		}
-
-		$xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members');
-		if (empty($xgroups))
-		{
-			//Log::debug("mw::_getToolAccess($tool,$login) WARNING: user not in any groups");
-		}
-
-		// Check if the user is in any groups for this app
-		$ingroup = false;
-		$groups = array();
-		$indevgroup = false;
-		if ($xgroups)
-		{
-			foreach ($xgroups as $xgroup)
-			{
-				$groups[] = $xgroup->cn;
-			}
-			if ($toolgroups)
-			{
-				foreach ($toolgroups as $toolgroup)
-				{
-					if (in_array($toolgroup->cn, $groups))
-					{
-						$ingroup = true;
-						if ($toolgroup->role == 1)
-						{
-							$indevgroup = true;
-						}
-					}
-				}
-			}
-		}
-
-		$admin = false;
-		$ctconfig = Component::params('com_tools');
-		if ($ctconfig->get('admingroup') != '' && in_array($ctconfig->get('admingroup'), $groups))
-		{
-			$admin = true;
-		}
-
-		$tisPublished = ($tv->state == 1);
-		$tisDev = ($tv->state == 3);
-		$tisGroupControlled = ($tv->toolaccess == '@GROUP');
-
-		if ($tisDev)
-		{
-			if ($indevgroup)
-			{
-				//Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
-				return true;
-			}
-			else if ($admin)
-			{
-				//Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
-				return true;
-			}
-			else
-			{
-				Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
-				$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP'));
-				return false;
-			}
-		}
-		else if ($tisPublished)
-		{
-			$exportAllowed = $this->_getToolExportControl($tv->exportControl);
-			if ($tisGroupControlled)
-			{
-				if ($ingroup)
-				{
-					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ACCESS GROUP)");
-					return true;
-				}
-				else if ($admin)
-				{
-					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
-					return true;
-				}
-				else
-				{
-					Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
-					$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP'));
-					return false;
-				}
-			}
-			else
-			{
-				if (!$exportAllowed)
-				{
-					Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
-					return false;
-				}
-				else if ($admin)
-				{
-					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN ADMIN GROUP)");
-					return true;
-				}
-				else if ($indevgroup)
-				{
-					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED (USER IN DEVELOPMENT GROUP)");
-					return true;
-				}
-				else
-				{
-					//Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS GRANTED");
-					return true;
-				}
-			}
-		}
-		else
-		{
-			Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");
-			$this->setError(Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_VERSION_UNPUBLISHED'));
-			return false;
-		}
-
-		return false;
+		return true;
 	}
 }
