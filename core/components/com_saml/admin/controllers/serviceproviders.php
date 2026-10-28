@@ -265,17 +265,32 @@ class Serviceproviders extends AdminController
 					Notify::error(Lang::txt('COM_SAML_ERROR_UNKNOWN_ATTRIBUTE_SOURCE', $entry['source']));
 					return $this->editTask($row);
 				}
+
+				// The same goes for the gates passed when there are no gates
+				if ($entry['source'] == 'groups:allowed' && !$groups)
+				{
+					Notify::error(Lang::txt('COM_SAML_ERROR_GROUPS_ALLOWED_WITHOUT_GROUPS'));
+					return $this->editTask($row);
+				}
 			}
 		}
 
-		foreach ($groups as $cn)
+		// Stored by each group's own cn: lookup also accepts a gidNumber or
+		// another case, and the cn is what is released to the SP
+		foreach ($groups as $i => $cn)
 		{
-			if (!\Hubzero\User\Group::getInstance($cn))
+			$group = \Hubzero\User\Group::getInstance($cn);
+
+			if (!$group)
 			{
 				Notify::error(Lang::txt('COM_SAML_ERROR_UNKNOWN_GROUP', $cn));
 				return $this->editTask($row);
 			}
+
+			$groups[$i] = $group->get('cn');
 		}
+		$groups = array_values(array_unique($groups));
+		$row->set('allowed_groups', $groups ? json_encode($groups) : null);
 
 		// The entity ID is uniquely indexed; catch the collision here rather
 		// than letting the query layer throw a fatal

@@ -304,13 +304,57 @@ class ServiceProvider extends Relational
 
 		foreach ($allowed as $cn)
 		{
-			if ($this->userIsInGroup($cn, $user->get('id')))
+			if ($this->isInGroup($cn, $user->get('id')))
 			{
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * Membership already looked up, by user ID and group cn
+	 *
+	 * @var  array
+	 */
+	protected $membership = array();
+
+	/**
+	 * userIsInGroup(), asked once per group and user
+	 *
+	 * The access check and the 'allowed' release policy ask about the same
+	 * groups during one sign-on, and each map entry naming a group source
+	 * asks again.
+	 *
+	 * @param   string   $cn
+	 * @param   integer  $userId
+	 * @return  boolean
+	 */
+	protected function isInGroup($cn, $userId)
+	{
+		if (!isset($this->membership[$userId][$cn]))
+		{
+			$this->membership[$userId][$cn] = (bool) $this->userIsInGroup($cn, $userId);
+		}
+
+		return $this->membership[$userId][$cn];
+	}
+
+	/**
+	 * The group's own cn, for an allowed_groups entry
+	 *
+	 * Group lookup also resolves a gidNumber or a cn in another case, so an
+	 * entry may not be spelled the way the group is.
+	 *
+	 * @param   string  $cn
+	 * @return  string|null  Null when no such group exists
+	 */
+	protected function groupCn($cn)
+	{
+		$group = \Hubzero\User\Group::getInstance($cn);
+
+		return $group ? $group->get('cn') : null;
 	}
 
 	/**
@@ -374,46 +418,52 @@ class ServiceProvider extends Relational
 
 		foreach ($allowed as $cn)
 		{
-			if ($this->userIsInGroup($cn, $user->get('id')))
+			if ($this->isInGroup($cn, $user->get('id')))
 			{
-				$released[] = $cn;
+				// Released by the group's own cn, as the 'all' policy is
+				$released[$this->groupCn($cn) ?: $cn] = true;
 			}
 		}
 
-		return $released;
+		return array_keys($released);
 	}
 
 	/**
-	 * cn's of the HUB groups the user is a confirmed member or manager of
+	 * cn's of the live, visible HUB groups the user is a confirmed member or
+	 * manager of
 	 *
-	 * Applicants and invitees are left out: membership that has only been
-	 * requested, or offered and not accepted, must not be reported to an SP
-	 * as held. Helper::getGroups() is asked directly rather than going
-	 * through User::groups(), which caches its result in a method static
-	 * that is not keyed by user.
+	 * Left out: applicants and invitees (membership requested or offered but
+	 * not held); groups awaiting approval or unpublished (not groups the hub
+	 * considers live); hidden groups (whose membership the hub keeps from its
+	 * own members, so it is not an SP's to learn); and project and course
+	 * groups, which are not this SP's business even though either may still
+	 * gate access through allowed_groups.
 	 *
 	 * @param   integer  $userId
 	 * @return  array
 	 */
 	protected function confirmedGroups($userId)
 	{
-		$cns = array();
+		$db = \App::get('db');
+		$userId = (int) $userId;
 
-		foreach (array('members', 'managers') as $role)
-		{
-			// The third argument restricts this to HUB and partner groups:
-			// project and course membership is not this SP's business, even
-			// though either may still gate access through allowed_groups
-			foreach (\Hubzero\User\Helper::getGroups($userId, $role, 1) as $group)
-			{
-				if (!empty($group->cn) && !in_array($group->cn, $cns))
-				{
-					$cns[] = $group->cn;
-				}
-			}
-		}
+		$db->setQuery(
+			"SELECT DISTINCT g.cn
+			FROM `#__xgroups` AS g
+			INNER JOIN (
+				SELECT gidNumber FROM `#__xgroups_members` WHERE uidNumber=" . $userId . "
+				UNION
+				SELECT gidNumber FROM `#__xgroups_managers` WHERE uidNumber=" . $userId . "
+			) AS m ON m.gidNumber=g.gidNumber
+			WHERE g.type IN (1, 3)
+			AND g.published=1
+			AND g.approved=1
+			AND g.discoverability=0
+			AND g.cn!=''
+			ORDER BY g.cn"
+		);
 
-		return $cns;
+		return array_values(array_filter((array) $db->loadColumn()));
 	}
 
 	/**
