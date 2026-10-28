@@ -89,3 +89,10 @@
 	.com_kb .search-results-for a {
 		margin-left: 0.5em;
 	}
+	.com_kb .articles-group-title {
+		margin: 1.25em 0 0.25em 0;
+		font-size: 1.1em;
+	}
+	.com_kb .articles-group-title + .articles {
+		margin-top: 0;
+	}

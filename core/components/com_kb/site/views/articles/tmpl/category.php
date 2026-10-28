@@ -109,9 +109,52 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 
 				$articles = $articles->paginated();
 
-				if ($articles->count() > 0) { ?>
+				// A search across every category lists its matches by category,
+				// so a reader sees at a glance where the hits are. Browsing
+				// stays one list in the chosen order.
+				$grouped = ($search && !$this->category->get('id'));
+				$groups  = array();
+
+				foreach ($articles as $row)
+				{
+					$category = $this->category;
+
+					if (!$this->category->get('id'))
+					{
+						foreach ($categories as $cat)
+						{
+							if ($cat->get('id') == $row->get('category'))
+							{
+								$category = $cat;
+								break;
+							}
+						}
+					}
+
+					$row->set('calias', $category->get('path'));
+					$row->set('ctitle', $category->get('title'));
+
+					$key = $grouped ? (int) $category->get('id') : 0;
+
+					if (!isset($groups[$key]))
+					{
+						$groups[$key] = array('category' => $category, 'rows' => array());
+					}
+					$groups[$key]['rows'][] = $row;
+				}
+
+				foreach ($groups as $group) { ?>
+				<?php if ($grouped) { ?>
+					<h3 class="articles-group-title">
+						<?php if ($group['category']->get('id')) { ?>
+							<a href="<?php echo Route::url($group['category']->link() . $carry); ?>"><?php echo $this->escape(stripslashes($group['category']->get('title'))); ?></a>
+						<?php } else { ?>
+							<?php echo Lang::txt('COM_KB_ARTICLES'); ?>
+						<?php } ?>
+					</h3>
+				<?php } ?>
 				<table class="articles entries">
-					<caption class="sr-only"><?php echo Lang::txt('COM_KB_ARTICLES'); ?></caption>
+					<caption class="sr-only"><?php echo $this->escape(stripslashes($group['category']->get('title'))) ?: Lang::txt('COM_KB_ARTICLES'); ?></caption>
 					<thead class="sr-only">
 						<tr>
 							<th scope="col"><?php echo Lang::txt('COM_KB_COL_ID'); ?></th>
@@ -120,26 +163,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 						</tr>
 					</thead>
 					<tbody>
-					<?php foreach ($articles as $row)
-					{
-						if (!$this->category->get('id'))
-						{
-							foreach ($categories as $cat)
-							{
-								if ($cat->get('id') == $row->get('category'))
-								{
-									$row->set('ctitle', $cat->get('title'));
-									$row->set('calias', $cat->get('path'));
-									break;
-								}
-							}
-						}
-						else
-						{
-							$row->set('calias', $this->category->get('path'));
-							$row->set('ctitle', $this->category->get('title'));
-						}
-						?>
+					<?php foreach ($group['rows'] as $row) { ?>
 						<tr>
 							<td>
 								<span class="entry-identifier icon-file"><?php echo $row->get('id'); ?></span>
@@ -150,7 +174,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
 									<span class="entry-snippet"><?php echo $snippet; ?></span>
 								<?php } ?>
 								<span class="entry-details">
-									<?php if ($this->catid <= 0) { echo Lang::txt('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle','')  ?? ''))); } ?>
+									<?php if ($this->catid <= 0 && !$grouped) { echo Lang::txt('COM_KB_IN_CATEGORY', $this->escape(stripslashes($row->get('ctitle','')  ?? ''))); } ?>
 									<?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>
 									<span class="entry-time-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
 									<span class="entry-time"><?php echo $row->modified('time'); ?></span>
