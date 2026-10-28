@@ -457,6 +457,32 @@ class Geocode
 	}
 
 	/**
+	 * An address as the IPv4 integer the ip tables are keyed by
+	 *
+	 * Unwraps IPv4-mapped IPv6 addresses (::ffff:1.2.3.4), which dual-stack
+	 * proxies hand on for IPv4 clients.
+	 *
+	 * @param   string     $ip
+	 * @return  int|false  False when the address has no IPv4 form
+	 */
+	protected static function ipv4Long($ip)
+	{
+		$ip = trim((string) $ip);
+
+		if (stripos($ip, '::ffff:') === 0 && filter_var(substr($ip, 7), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		{
+			$ip = substr($ip, 7);
+		}
+
+		if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		{
+			return false;
+		}
+
+		return ip2long($ip);
+	}
+
+	/**
 	 * Get the country based on IP address
 	 *
 	 * @param   string  $ip  IP address to look up
@@ -472,14 +498,17 @@ class Geocode
 				return $country;
 			}
 
-			// Convert the dotted quad IP address to long:
-			$n_ip = ip2long($ip);
+			// The ranges are IPv4; an address with no IPv4 form has no country
+			if (($n_ip = self::ipv4Long($ip)) === false)
+			{
+				return $country;
+			}
 			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry"
 				. " INNER JOIN (SELECT MAX(ipFROM) AS start FROM ipcountry"
 				. " WHERE ipFROM <= " . $gdb->quote($n_ip) . ") s ON (ipFROM = s.start)"
 				. " WHERE ipTO >= " . $gdb->quote($n_ip);
 			$gdb->setQuery($sql);
-			$country = stripslashes($gdb->loadResult());
+			$country = stripslashes((string) $gdb->loadResult());
 		}
 		return $country;
 	}
@@ -553,8 +582,11 @@ class Geocode
 				return $iplocation;
 			}
 
-			// Convert the dotted quad IP address to long:
-			$n_ip = ip2long($ip);
+			// The ranges are IPv4; an address with no IPv4 form matches nothing
+			if (($n_ip = self::ipv4Long($ip)) === false)
+			{
+				return $iplocation;
+			}
 
 			$sql = "SELECT COUNT(*) FROM iplocation WHERE ipfrom <= " .  $gdb->quote($n_ip) . " AND ipto >= " . $gdb->quote($n_ip) . " AND LOWER(location) = " .  $gdb->quote(strtolower($location));
 			$gdb->setQuery($sql);

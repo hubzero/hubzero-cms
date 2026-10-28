@@ -344,11 +344,12 @@ class Utils
 		//load tool version
 		$toolVersion = new \Components\Tools\Tables\Version($database);
 		$toolVersion->loadFromInstance($tool);
-		if (empty($toolVersion))
+		// The table object always exists; whether a row loaded is in its id
+		if (!$toolVersion->toolid)
 		{
 			$access->valid = 0;
 			$access->error->message = 'Unable to load the tool';
-			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
+			\Log::debug("mw::_getToolAccess($tool,$login) FAILED null tool version check");
 			return $access;
 		}
 
@@ -396,7 +397,6 @@ class Utils
 		}
 
 		//get access settings
-		$exportAllowed = self::getToolExportAccess($toolVersion->exportControl);
 		$isToolPublished = ($toolVersion->state == 1);
 		$isToolDev = ($toolVersion->state == 3);
 		$isGroupControlled = ($toolVersion->toolaccess == '@GROUP');
@@ -419,6 +419,10 @@ class Utils
 		//check for published tools
 		else if ($isToolPublished)
 		{
+			// Only a published tool is export controlled, so only it pays
+			// for the geo lookups
+			$exportAllowed = self::getToolExportAccess($toolVersion->exportControl);
+
 			//are we checking for a group controlled tool
 			if ($isGroupControlled)
 			{
@@ -434,7 +438,7 @@ class Utils
 					if (!$exportAllowed->valid)
 					{
 						$access->valid = 0;
-						$access->error->message = 'Export Access Denied';
+						$access->error->message = $exportAllowed->error->message;
 						\Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
 					}
 					else
@@ -448,7 +452,7 @@ class Utils
 				if (!$exportAllowed->valid)
 				{
 					$access->valid = 0;
-					$access->error->message = 'Export Access Denied';
+					$access->error->message = $exportAllowed->error->message;
 					\Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (EXPORT DENIED)");
 				}
 				else
