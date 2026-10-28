@@ -27,28 +27,28 @@ abstract class Cart
      *
      * @var  object
      */
-    var $_db = null;
+    public $_db = null;
 
     /**
      * Cart ID
      *
      * @var  int
      */
-    var $crtId = null;
+    public $crtId = null;
 
     /**
      * Debug mode
      *
      * @var  bool
      */
-    var $debug = false;
+    public $debug = false;
 
     /**
      * Warehouse Model
      *
      * @var warehouse
      */
-    var $warehouse = null;
+    public $warehouse = null;
 
     /**
      * Salt
@@ -404,9 +404,8 @@ abstract class Cart
         // Get the quantity already in the cart (if appending or simply syncing)
         if ($mode == 'add' || $mode == 'sync') {
             $skuCartInfo = $this->getCartItem($sId);
-        }
-        // If setting, ignore the current cart value
-        else {
+        } else {
+            // If setting, ignore the current cart value
             $skuCartInfo = new \stdClass();
             $skuCartInfo->crtiQty = 0;
         }
@@ -508,9 +507,8 @@ abstract class Cart
         // add to the existing qty value
         if ($mode == 'add') {
             $sql .= ", `crtiQty` = `crtiQty` + {$qty}";
-        }
-        // set new qty value
-        elseif ($mode == 'set') {
+        } elseif ($mode == 'set') {
+            // set new qty value
             $sql .= ", `crtiQty` = {$qty}";
         }
         // keep the qty value if syncing

@@ -21,7 +21,10 @@ class Request
      *
      * @var object
      */
-    private $terms, $term_ar, $tags, $object_tags = array();
+    private $terms;
+    private $term_ar;
+    private $tags;
+    private $object_tags = array();
 
     /**
      * Short description for 'get_terms'

@@ -6,10 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\System\Massmail\Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Register the System - Mass Mail plugin, which keeps the mass-mail delivery

@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Resources Plugin class for questions and answers
  */

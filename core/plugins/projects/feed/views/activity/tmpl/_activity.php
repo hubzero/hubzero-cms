@@ -315,7 +315,7 @@ if (!$this->activity->log->get('anonymous')) {
                                     title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
                                     data-confirm="<?php echo Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'); ?>"><?php
                                     echo Lang::txt('JACTION_DELETE');
-                                ?></button>
+                                    ?></button>
                             </li>
                         <?php } ?>
                     </ul>

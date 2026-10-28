@@ -463,9 +463,8 @@ class Html
                     $msg = Lang::txt('COM_PUBLICATIONS_STATUS_MSG_PRIVATE');
                     break;
             }
-        }
-        // Show message to publication owners
-        elseif ($publication->access('manage')) {
+        } elseif ($publication->access('manage')) {
+            // Show message to publication owners
             if ($publication->project()->isProvisioned() == 0) {
                 $project  = Lang::txt('COM_PUBLICATIONS_FROM_PROJECT');
                 $project .= $publication->access('owner')
@@ -1034,9 +1033,8 @@ class Html
                     $pub_size = self::computeDiskUsage($row->path('content'), PATH_APP, false);
                     $pub_size = $pub_size + self::computeDiskUsage($row->path('data'), PATH_APP, false);
                     $used += $pub_size;
-                }
-                // Otherwise, we'll count the size of everything in the entire publication directory
-                else {
+                } else {
+                    // Otherwise, we'll count the size of everything in the entire publication directory
                     $used = $used + self::computeDiskUsage($path, PATH_APP, false);
                 }
             }

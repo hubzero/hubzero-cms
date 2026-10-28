@@ -79,7 +79,7 @@ class Cloud extends \Hubzero\Base\Obj
      * @param   string   $scope
      * @return  object
      */
-    static function getInstance($scope_id = 0, $scope = '')
+    public static function getInstance($scope_id = 0, $scope = '')
     {
         static $instances;
 

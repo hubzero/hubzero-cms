@@ -1,16 +1,16 @@
 <?php
 
-use Hubzero\Facades\Html;
-use Hubzero\Facades\Lang;
-use Hubzero\Facades\Request;
-use Hubzero\Facades\Route;
-use Hubzero\Facades\User;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\User;
 
 // No direct access
 defined('_HZEXEC_') or die();

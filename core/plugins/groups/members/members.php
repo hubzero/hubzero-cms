@@ -12,7 +12,7 @@ namespace Plugins\Groups\Members;
 require_once __DIR__ . '/helpers/roleorder.php';
 
 use Plugins\Groups\Members\Helpers\RoleOrder;
-use \Components\Groups\Models\Role;
+use Components\Groups\Models\Role;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\App;

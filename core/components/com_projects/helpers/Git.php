@@ -852,9 +852,8 @@ class Git extends Obj
                     );
                 }
             }
-        }
-        // Repeat sync
-        else {
+        } else {
+            // Repeat sync
             // Collect
             $since   = $synced != 1 ? ' --since=' . escapeshellarg($synced) : '';
             $where   = $localDir ? '  --all -- ' . escapeshellarg($localDir) . ' ' : ' --all ';

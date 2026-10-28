@@ -138,10 +138,8 @@ class File extends Macro
 
                 $ret = true;
             }
-        }
-        // Check for file existence
-        else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
-
+        } else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
+            // Check for file existence
             // Get resource by ID
             $attach = \Components\Wiki\Models\Attachment::oneByFilename($file, $this->pageid);
             if ($attach->filename) {
@@ -461,8 +459,7 @@ class File extends Macro
                     $attr['alt']  = '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
                     $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
                     $attr['alt'] .= '</a>';
-                }
-                else
+                } else
                 {
                     $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
                     $attr['alt']  = (isset($attr['alt'])) ? $attr['alt'] : '';

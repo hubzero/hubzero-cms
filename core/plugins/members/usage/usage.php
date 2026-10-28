@@ -383,9 +383,7 @@ class Usage extends Plugin
         // Column identifier, not a value - constrain to the known stat columns.
 
         if (!in_array($user_type, array('tool_users', 'andmore_users', 'total_users'), true)) {
-
             $user_type = 'total_users';
-
         }
 
 

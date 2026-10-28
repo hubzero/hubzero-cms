@@ -45,10 +45,9 @@ if ($this->row->log->get('created_by') == User::get('id')) {
     $name = 'You';
 
     $online = true;
-}
-// Someone else
-// Is it not anonymous?
-else if (!$this->row->log->get('anonymous')) {
+} else if (!$this->row->log->get('anonymous')) {
+    // Someone else
+    // Is it not anonymous?
     // Get their full name
     $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
 

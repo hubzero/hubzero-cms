@@ -290,11 +290,7 @@ class Links extends Plugin
 
         if (!$vid || !$cite['type'] || !$cite['title']) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
-        }
-        // The version has to be one of this project's publications, and an
-        // existing citation (cite[id] names any row on the hub) one already
-        // attached to that version -- otherwise this rewrote any citation.
-        elseif (
+        } elseif (
             !$this->_versionOfProject($vid)
             || (!$new && !Association::all()
                 ->whereEquals('cid', (int) $cite['id'])
@@ -302,6 +298,9 @@ class Links extends Plugin
                 ->whereEquals('oid', (int) $vid)
                 ->total())
         ) {
+            // The version has to be one of this project's publications, and an
+            // existing citation (cite[id] names any row on the hub) one already
+            // attached to that version -- otherwise this rewrote any citation.
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
         } else {
             $citation = \Components\Citations\Models\Citation::blank()->set($cite);

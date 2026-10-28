@@ -37,7 +37,7 @@ class Xml extends SiteController
         $from       = Request::getString('from');
         if ($from) {
             try {
-            $from = Date::of($from)->toSql();
+                $from = Date::of($from)->toSql();
             } catch (\Exception $e) {
                 $from    = '';
                 $badDate = 'from';
@@ -46,7 +46,7 @@ class Xml extends SiteController
         $until      = Request::getString('until');
         if ($until) {
             try {
-            $until = Date::of($until)->toSql();
+                $until = Date::of($until)->toSql();
             } catch (\Exception $e) {
                 $until   = '';
                 $badDate = $badDate ?: 'until';

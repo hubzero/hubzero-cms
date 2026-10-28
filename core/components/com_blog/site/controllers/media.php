@@ -205,11 +205,9 @@ class Media extends SiteController
         // Perform the upload
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
             $this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING'));
-        }
-
-        // Virus scan (only a stored file; the refusal used to read only
-        // "Error uploading", the same words as a failed upload)
-        elseif (!Filesystem::isSafe($path . DS . $file['name'])) {
+        } elseif (!Filesystem::isSafe($path . DS . $file['name'])) {
+            // Virus scan (only a stored file; the refusal used to read only
+            // "Error uploading", the same words as a failed upload)
             Filesystem::delete($path . DS . $file['name']);
 
             $this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));

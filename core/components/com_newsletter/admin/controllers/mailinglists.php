@@ -769,13 +769,11 @@ class Mailinglists extends AdminController
                 foreach ($matches as $match) {
                     $parsedEmails[] = $match[1];
                 }
-            }
-            // check to see if line contains comma
-            else if (strstr($emailLine, ',')) {
+            } else if (strstr($emailLine, ',')) {
+                // check to see if line contains comma
                 $parsedEmails = array_merge($parsedEmails, explode(',', $emailLine));
-            }
-            // or contains a tab
-            else if (strstr($emailLine, "\t")) {
+            } else if (strstr($emailLine, "\t")) {
+                // or contains a tab
                 $parsedEmails = array_merge($parsedEmails, explode("\t", $emailLine));
             } else {
                 $parsedEmails[] = $emailLine;

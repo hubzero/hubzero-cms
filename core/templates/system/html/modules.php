@@ -1,14 +1,14 @@
 <?php
 
-use Hubzero\Facades\App;
-use Hubzero\Facades\Html;
-use Hubzero\Facades\Lang;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Facades\App;
+use Hubzero\Facades\Html;
+use Hubzero\Facades\Lang;
 
 /*
  * none (output raw module content)

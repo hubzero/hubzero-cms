@@ -376,9 +376,8 @@ class Utils
             } else {
                 $access->valid = 1;
             }
-        }
-        //check for published tools
-        else if ($isToolPublished) {
+        } else if ($isToolPublished) {
+            //check for published tools
             // Only a published tool is export controlled, so only it pays
             // for the geo lookups
             $exportAllowed = self::getToolExportAccess($toolVersion->exportControl);
@@ -408,9 +407,8 @@ class Utils
                     $access->valid = 1;
                 }
             }
-        }
-        //not published tool
-        else {
+        } else {
+            //not published tool
             $access->valid = 0;
             $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_VERSION_UNPUBLISHED');
             Log::debug("mw::_getToolAccess($tool,$login): UNPUBLISHED TOOL ACCESS DENIED (TOOL NOT PUBLISHED)");

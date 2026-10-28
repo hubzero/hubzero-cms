@@ -1,14 +1,14 @@
 <?php
 
-use Hubzero\Facades\Lang;
-use Hubzero\Facades\Pathway;
-use Hubzero\Facades\Route;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Pathway;
+use Hubzero\Facades\Route;
 
 defined('_HZEXEC_') or die();
 
@@ -49,9 +49,8 @@ if (!$this->page) {
         // If they're a course level manager
         if ($this->offering->access('manage')) {
             $authorized = true;
-        }
-        // If they're a section manager and the page is a section page
-        else if ($this->offering->access('manage', 'section') && $this->page->get('section_id')) {
+        } else if ($this->offering->access('manage', 'section') && $this->page->get('section_id')) {
+            // If they're a section manager and the page is a section page
             $authorized = true;
         }
     }

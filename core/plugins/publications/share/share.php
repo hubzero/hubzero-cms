@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Publication Plugin class for showing social sharing options
  */

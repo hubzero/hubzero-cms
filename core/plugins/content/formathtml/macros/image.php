@@ -180,9 +180,8 @@ Examples:
 
                 $ret = true;
             }
-        }
-        // Check for file existence
-        else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
+        } else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
+            // Check for file existence
             $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : ''; //$file;
 
             $ret = true;

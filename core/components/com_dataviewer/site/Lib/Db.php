@@ -343,11 +343,12 @@ class Db
             // number/datetime/numrange values are placed into the SQL by this builder
             // (it adds the quotes itself), so allow at most one leading operator and
             // then a plain number, date or "a to b" range - nothing else
-            if (in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
-            && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val']))
-            {
-            continue;
-            }
+                if (
+                    in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
+                    && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val'])
+                ) {
+                    continue;
+                }
                 if ($val['fieldtype'] == 'number' || $val['fieldtype'] == 'datetime') {
                     $val['val'] = strtolower($val['val']);
                     if (strstr($val['val'], 'to')) {
@@ -455,11 +456,12 @@ class Db
             // number/datetime/numrange values are placed into the SQL by this builder
             // (it adds the quotes itself), so allow at most one leading operator and
             // then a plain number, date or "a to b" range - nothing else
-            if (in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
-            && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val']))
-            {
-            continue;
-            }
+                if (
+                    in_array($val['fieldtype'], array('number', 'datetime', 'numrange'), true)
+                    && !preg_match('/^\s*(<=|>=|<|>|!=|=|!)?\s*[0-9a-z.,:\/ +-]*$/i', (string) $val['val'])
+                ) {
+                    continue;
+                }
                 $val['val'] = strtolower($val['val']);
                 if ($val['fieldtype'] == 'number' || $val['fieldtype'] == 'datetime') {
                     if (strstr($val['val'], 'to')) {

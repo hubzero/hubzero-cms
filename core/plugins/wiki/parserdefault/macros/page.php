@@ -10,6 +10,7 @@ namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
 use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 

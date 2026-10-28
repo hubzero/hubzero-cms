@@ -6,10 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Components\Massmail\Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Time-series table of mass-mail delivery activity, appended once per cron tick

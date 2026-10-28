@@ -6,15 +6,18 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Cron\Massmail;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Component;
+use Hubzero\Facades\Lang;
 
 /**
  * Cron plugin that feeds queued mass-mail messages to Postfix under a rate
  * budget. The heavy lifting lives in the component's Sender helper; this is a
  * thin wrapper that honors the master "sending enabled" switch.
  */
-class plgCronMassmail extends \Hubzero\Plugin\Plugin
+class Massmail extends Plugin
 {
     /**
      * Return a list of events
@@ -25,7 +28,7 @@ class plgCronMassmail extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(

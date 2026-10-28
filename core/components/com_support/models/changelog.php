@@ -322,9 +322,8 @@ class Changelog extends Obj
                     // Move on - nothing else we can do here
                     continue;
                 }
-            }
-            // Make sure it's a valid e-mail address
-            else if (Validate::email($acc)) {
+            } else if (Validate::email($acc)) {
+                // Make sure it's a valid e-mail address
                 $this->log['cc'][] = $acc;
             }
         }

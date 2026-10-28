@@ -607,13 +607,12 @@ $router->rules('parse')->append('content', function ($uri) {
         if (isset($item)) {
             $item->query['view'] = 'article';
         }
-    }
-    // Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
-    // or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
-    // (An empty path is the bare index.php: never match it against an article,
-    // or an article saved with an empty alias captures every POST to
-    // index.php -- the login module's included -- before the 'post' rule runs.)
-    elseif ($count == 1 && $segments[0] !== '') {
+    } elseif ($count == 1 && $segments[0] !== '') {
+        // Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
+        // or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
+        // (An empty path is the bare index.php: never match it against an article,
+        // or an article saved with an empty alias captures every POST to
+        // index.php -- the login module's included -- before the 'post' rule runs.)
         // First, do query
         $query  = "SELECT con.`id`, cat.`alias`, cat.`path` FROM `#__content` AS con";
         $query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";

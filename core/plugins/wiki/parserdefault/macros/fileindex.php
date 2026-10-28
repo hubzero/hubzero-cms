@@ -13,6 +13,7 @@ use Hubzero\Facades\Component;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
+
 // No direct access
 defined('_HZEXEC_') or die();
 

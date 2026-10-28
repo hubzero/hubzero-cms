@@ -698,11 +698,10 @@ class Threadsv1r0 extends ApiController
                 }
             } elseif ($row->get('scope') != 'site') {
                 throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
-            }
-            // A site category's access is a view level. (A group category's is
-            // the group plugin's own scale -- 5 is "members" -- which the
-            // membership test above already stands for.)
-            elseif (!in_array($category->get('access'), User::getAuthorisedViewLevels())) {
+            } elseif (!in_array($category->get('access'), User::getAuthorisedViewLevels())) {
+                // A site category's access is a view level. (A group category's is
+                // the group plugin's own scale -- 5 is "members" -- which the
+                // membership test above already stands for.)
                 throw new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 403);
             }
         }

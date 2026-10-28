@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Plugin class for displaying a wiki editor toolbar
  */
