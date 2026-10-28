@@ -52,33 +52,45 @@ $this->css('introduction.css', 'system')
 				<tbody>
 				<?php
 				$cls = 'even';
-				if (count($this->apps) > 0)
+				$shown = 0;
+				foreach ($this->apps as $project)
 				{
-					foreach ($this->apps as $project)
+					// Live tools for everyone; tool admins also see the ones
+					// stalled in the pipeline, so they can be put right
+					if (!$project->live && !$this->isToolAdmin)
 					{
-						// Everyone sees published tools; admins also see the ones
-						// still marked installed, updated or approved
-						if ($project->tool_state == 7
-						 || ($this->isAdmin && in_array($project->tool_state, array(4, 5, 6))))
-						{
-							$status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
-							?>
-					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even';
-echo $cls; ?>">
+						continue;
+					}
+					$shown++;
+
+					$status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
+
+					// Tool admins see the pipeline state of anything not marked published
+					$pipeline = '';
+					if ($this->isToolAdmin && $project->tool_state != \Components\Tools\Models\Orm\Tool::STATUS_PUBLISHED)
+					{
+						\Components\Tools\Helpers\Html::getStatusName($project->tool_state, $pipeline);
+					}
+					?>
+					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even'; echo $cls; ?>">
 						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50)); ?></a></td>
 						<td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape($project->toolname); ?></a></td>
-						<td><span class="<?php echo $status; ?>-code"><?php echo $status; ?></span></td>
+						<td>
+							<span class="<?php echo $this->escape($status); ?>-code"><?php echo $status; ?></span>
+							<?php if ($pipeline) { ?>
+								<br /><span class="pipeline-state"><?php echo Lang::txt('COM_TOOLS_PIPELINE_STATE_STALE', $this->escape($pipeline), $project->live ? Lang::txt('COM_TOOLS_PIPELINE_LIVE') : Lang::txt('COM_TOOLS_PIPELINE_NOT_LIVE')); ?></span>
+							<?php } ?>
+						</td>
 					</tr>
-							<?php
-						}
-					}
-				} else {
-				?>
-					<tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even';
-echo $cls; ?>">
+					<?php
+				}
+				if (!$shown)
+				{
+					?>
+					<tr class="odd">
 						<td colspan="3"><?php echo Lang::txt('COM_TOOLS_NONE'); ?></td>
 					</tr>
-				<?php
+					<?php
 				}
 				?>
 				</tbody>

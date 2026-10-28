@@ -102,8 +102,9 @@ class Tools extends SiteController
 		// Get the tool list
 		$this->view->apps = $model->getApplicationTools();
 
-		// Tools that have not reached the published state are only listed for admins
-		$this->view->isAdmin = (bool) $this->config->get('access-admin-component', false);
+		// Tool admins also see tools stalled in the pipeline, marked with
+		// their state, so drift can be put right
+		$this->view->isToolAdmin = $this->isToolAdmin();
 
 		// Get the forge image
 		$this->view->image = \Hubzero\Document\Assets::getComponentImage($this->_option, 'forge.png', 1);
@@ -237,6 +238,37 @@ class Tools extends SiteController
 		header("HTTP/1.1 404 Not Found");
 		ob_end_flush();
 		exit;
+	}
+
+	/**
+	 * Does the current user administer tools?
+	 *
+	 * The rule the pipeline and resources controllers use: members of the
+	 * component's admin group when one is set, otherwise site administrators.
+	 *
+	 * @return  bool
+	 */
+	protected function isToolAdmin()
+	{
+		if (User::isGuest())
+		{
+			return false;
+		}
+
+		if (($admingroup = strtolower(trim($this->config->get('admingroup', '')))))
+		{
+			foreach ((array) \Hubzero\User\Helper::getGroups(User::get('id')) as $group)
+			{
+				if (strtolower($group->cn) == $admingroup)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		return User::authorise('core.admin', $this->_option);
 	}
 
 	/**
