@@ -8,6 +8,7 @@
 namespace Plugins\Members\Account\Tests;
 
 use Hubzero\Test\Basic;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use ReflectionClass;
 
 require_once dirname(__DIR__) . DS . 'account.php';
@@ -51,7 +52,7 @@ class TestMember
  * Plugin with the webdav mount pointed at a temporary directory and the path
  * helpers exposed, so they can be exercised without a hub
  */
-class TestPlugin extends \plgMembersAccount
+class TestPlugin extends \Plugins\Members\Account\Account
 {
 	/**
 	 * Stand-in for /webdav/home
@@ -59,6 +60,16 @@ class TestPlugin extends \plgMembersAccount
 	 * @var  string
 	 */
 	public $base = null;
+
+	/**
+	 * The member the plugin is acting for
+	 *
+	 * Declared protected on the plugin; widened here so the test can set it
+	 * without a dispatcher, which is all newInstanceWithoutConstructor leaves.
+	 *
+	 * @var  object
+	 */
+	public $member = null;
 
 	/**
 	 * {@inheritdoc}
@@ -101,6 +112,9 @@ class TestPlugin extends \plgMembersAccount
  * is an attempt to make the plugin follow a link out of the member's own home
  * and into another account.
  */
+#[CoversMethod(\Plugins\Members\Account\Account::class, 'sshDirectory')]
+#[CoversMethod(\Plugins\Members\Account\Account::class, 'authorizedKeysPath')]
+#[CoversMethod(\Plugins\Members\Account\Account::class, 'writeAuthorizedKeys')]
 class SshKeyPathTest extends Basic
 {
 	/**
@@ -212,7 +226,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A member without a .ssh directory gets one, with restrictive permissions.
 	 *
-	 * @covers  plgMembersAccount::sshDirectory
 	 * @return  void
 	 */
 	public function testCreatesMissingSshDirectory()
@@ -231,7 +244,6 @@ class SshKeyPathTest extends Basic
 	 * A .ssh symlinked into another account is refused, and that account's
 	 * authorized_keys file is left alone.
 	 *
-	 * @covers  plgMembersAccount::sshDirectory
 	 * @return  void
 	 */
 	public function testRejectsSshDirectorySymlinkedIntoAnotherAccount()
@@ -248,7 +260,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * The same, by relative path: nothing may resolve outside the member's home.
 	 *
-	 * @covers  plgMembersAccount::sshDirectory
 	 * @return  void
 	 */
 	public function testRejectsSshDirectorySymlinkedByRelativePath()
@@ -267,7 +278,6 @@ class SshKeyPathTest extends Basic
 	 * the is_link() test this would fall through to mkdir() and be reported as
 	 * a plain "create folder failed".
 	 *
-	 * @covers  plgMembersAccount::sshDirectory
 	 * @return  void
 	 */
 	public function testDanglingSshSymlinkIsRejected()
@@ -286,7 +296,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A home directory that is itself a symlink is refused.
 	 *
-	 * @covers  plgMembersAccount::sshDirectory
 	 * @return  void
 	 */
 	public function testRejectsSymlinkedHomeDirectory()
@@ -302,7 +311,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A username that isn't a plain name is refused before a path is built.
 	 *
-	 * @covers  plgMembersAccount::sshDirectory
 	 * @return  void
 	 */
 	public function testRejectsUnsafeUsernames()
@@ -319,7 +327,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A symlinked authorized_keys file is refused.
 	 *
-	 * @covers  plgMembersAccount::authorizedKeysPath
 	 * @return  void
 	 */
 	public function testRejectsSymlinkedAuthorizedKeys()
@@ -337,7 +344,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A hard link can reach a file outside the account, so it is refused too.
 	 *
-	 * @covers  plgMembersAccount::authorizedKeysPath
 	 * @return  void
 	 */
 	public function testRejectsHardLinkedAuthorizedKeys()
@@ -358,7 +364,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A directory where authorized_keys belongs is refused.
 	 *
-	 * @covers  plgMembersAccount::authorizedKeysPath
 	 * @return  void
 	 */
 	public function testRejectsAuthorizedKeysDirectory()
@@ -376,7 +381,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * A regular authorized_keys file is accepted.
 	 *
-	 * @covers  plgMembersAccount::authorizedKeysPath
 	 * @return  void
 	 */
 	public function testAcceptsRegularAuthorizedKeys()
@@ -392,7 +396,6 @@ class SshKeyPathTest extends Basic
 	 * Writing the key leaves the right content, restrictive permissions and no
 	 * temporary files behind.
 	 *
-	 * @covers  plgMembersAccount::writeAuthorizedKeys
 	 * @return  void
 	 */
 	public function testWritesKeyWithRestrictivePermissions()
@@ -410,7 +413,6 @@ class SshKeyPathTest extends Basic
 	/**
 	 * Emptying the key file works: it used to be a special case.
 	 *
-	 * @covers  plgMembersAccount::writeAuthorizedKeys
 	 * @return  void
 	 */
 	public function testWritesEmptyKey()
@@ -428,7 +430,6 @@ class SshKeyPathTest extends Basic
 	 * A symlink planted after the path was validated still can't divert the
 	 * write: rename() replaces the link instead of following it.
 	 *
-	 * @covers  plgMembersAccount::writeAuthorizedKeys
 	 * @return  void
 	 */
 	public function testWriteReplacesSymlinkPlantedAfterValidation()
