@@ -8,6 +8,7 @@
 namespace Components\Support\Site\Controllers;
 
 use Components\Support\Helpers\ACL;
+use Components\Support\Helpers\Notifier;
 use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
@@ -1813,7 +1814,6 @@ class Tickets extends SiteController
 			App::abort(500, $rowc->getError());
 		}
 
-		Event::trigger('support.onTicketUpdate', array($row, $rowc));
 
 		if ($tmp = Request::getInt('tmp_dir'))
 		{
@@ -1832,274 +1832,19 @@ class Tickets extends SiteController
 
 		// Only do the following if a comment was posted
 		// otherwise, we're only recording a changelog
-		if ($rowc->get('comment')
-		 || $row->get('owner') != $old->get('owner')
-		 || $row->get('group_id') != $old->get('group_id')
-		 || $rowc->attachments->count() > 0)
+		// Listeners, e-mail, the record of who was told, and the activity log
+		foreach (Notifier::ticketUpdated($row, $rowc, $old, array(
+			'email_submitter' => Request::getInt('email_submitter', 0) == 1,
+			'email_owner'     => Request::getInt('email_owner', 0) == 1,
+			'email_terse'     => Request::getInt('email_terse', 0) == 1,
+			'option'          => $this->_option,
+			'controller'      => $this->_controller,
+			'acl'             => $this->acl,
+		)) as $error)
 		{
-			// Send e-mail to ticket submitter?
-			if (Request::getInt('email_submitter', 0) == 1)
-			{
-				// Is the comment private? If so, we do NOT send e-mail to the
-				// submitter regardless of the above setting
-				if (!$rowc->isPrivate())
-				{
-					# Users can submit a ticket while not logged in and without a (valid) username.
-					# In that case the submitter relation won't resolve to a real account, so fall
-					# back to the e-mail address stored on the ticket itself.
-					if ($row->submitter->get('id'))
-					{
-						$rowc->addTo(array(
-							'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
-							'name'  => $row->submitter->get('name'),
-							'email' => $row->submitter->get('email'),
-							'id'    => $row->submitter->get('id')
-						));
-					}
-					elseif ($row->email)
-					{
-						$rowc->addTo($row->email);
-					}
-				}
-			}
-
-			// Send e-mail to ticket owner?
-			if (Request::getInt('email_owner', 0) == 1)
-			{
-				if ($old->get('owner') && $row->get('owner') != $old->get('owner'))
-				{
-					$rowc->addTo(array(
-						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_PRIOR_OWNER'),
-						'name'  => $old->assignee->get('name'),
-						'email' => $old->assignee->get('email'),
-						'id'    => $old->assignee->get('id')
-					));
-				}
-				if ($row->get('owner'))
-				{
-					$rowc->addTo(array(
-						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-						'name'  => $row->assignee->get('name'),
-						'email' => $row->assignee->get('email'),
-						'id'    => $row->assignee->get('id')
-					));
-				}
-				elseif ($row->get('group_id'))
-				{
-					$group = \Hubzero\User\Group::getInstance($row->get('group_id'));
-
-					if ($group)
-					{
-						foreach ($group->get('managers') as $manager)
-						{
-							$manager = User::getInstance($manager);
-
-							if (!$manager || !$manager->get('id'))
-							{
-								continue;
-							}
-
-							$rowc->addTo(array(
-								'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
-								'name'  => $manager->get('name'),
-								'email' => $manager->get('email'),
-								'id'    => $manager->get('id')
-							));
-						}
-					}
-				}
-			}
-
-			// Add any CCs to the e-mail list
-			foreach ($rowc->changelog()->get('cc') as $cc)
-			{
-				$rowc->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
-			}
-
-			// Message people watching this ticket,
-			// but ONLY if the comment was NOT marked private
-			foreach ($row->watchers as $watcher)
-			{
-				$this->acl->setUser($watcher->user_id);
-				if (!$rowc->isPrivate() || ($rowc->isPrivate() && $this->acl->check('read', 'private_comments')))
-				{
-					$rowc->addTo($watcher->user_id, 'watcher');
-				}
-			}
-			$this->acl->setUser(User::get('id'));
-
-			$recipients = array(
-				['support.tickets', 1]
-			);
-
-			if (count($rowc->to()))
-			{
-				$this->config->set('email_terse', Request::getInt('email_terse', 0));
-
-				$allowEmailResponses = $this->config->get('email_processing');
-				if ($this->config->get('email_terse'))
-				{
-					$allowEmailResponses = false;
-				}
-				if ($allowEmailResponses)
-				{
-					try
-					{
-						$encryptor = new \Hubzero\Mail\Token();
-					}
-					catch (Exception $e)
-					{
-						$allowEmailResponses = false;
-					}
-				}
-
-				// Build e-mail components
-				$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
-
-				$from = array(
-					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
-					'email'     => Config::get('mailfrom'),
-					'multipart' => md5(date('U'))  // Html email
-				);
-
-				$message = array();
-
-				// Plain text email
-				$eview = new \Hubzero\Mail\View(array(
-					'name'   => 'emails',
-					'layout' => 'comment_plain'
-				));
-				$eview->option     = $this->_option;
-				$eview->controller = $this->_controller;
-				$eview->comment    = $rowc;
-				$eview->ticket     = $row;
-				$eview->config     = $this->config;
-				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
-
-				$message['plaintext'] = $eview->loadTemplate(false);
-				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
-
-				// HTML email
-				$eview->setLayout('comment_html');
-
-				$message['multipart'] = $eview->loadTemplate();
-				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-
-				$message['attachments'] = array();
-				if (!$this->config->get('email_terse'))
-				{
-					foreach ($rowc->attachments as $attachment)
-					{
-						if ($attachment->size() < 2097152)
-						{
-							$message['attachments'][] = $attachment->path();
-						}
-					}
-				}
-
-				foreach ($rowc->to('ids') as $to)
-				{
-					$recipients[] = ['user', $to['id']];
-
-					if ($allowEmailResponses)
-					{
-						// The reply-to address contains the token
-						$token = $encryptor->buildEmailToken(1, 1, $to['id'], $id);
-						$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
-					}
-
-					// Get the user's email address
-					if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
-					{
-						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
-					}
-
-					// Watching should be anonymous
-					if ($to['role'] == 'watcher')
-					{
-						continue;
-					}
-					$rowc->changelog()->notified(
-						$to['role'],
-						$to['name'],
-						$to['email']
-					);
-				}
-
-				foreach ($rowc->to('emails') as $to)
-				{
-					if ($allowEmailResponses)
-					{
-						$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-
-						$email = array(
-							$to['email'],
-							'htc-' . $token . strstr(Config::get('mailfrom'), '@')
-						);
-
-						// In this case each item in email in an array, 1- To, 2:reply to address
-						Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
-					}
-					else
-					{
-						// email is just a plain 'ol string
-						Utilities::sendEmail($to['email'], $subject, $message, $from);
-					}
-
-					// Watching should be anonymous
-					if ($to['role'] == 'watcher')
-					{
-						continue;
-					}
-					$rowc->changelog()->notified(
-						$to['role'],
-						$to['name'],
-						$to['email']
-					);
-				}
-			}
-			else
-			{
-				// Force entry to private if no comment or attachment was made
-				if (!$rowc->get('comment') && $rowc->attachments->count() <= 0)
-				{
-					$rowc->set('access', 1);
-				}
-			}
-
-			// Were there any changes?
-			if (count($rowc->changelog()->get('notifications')) > 0 || $access != $rowc->get('access'))
-			{
-				if (!$rowc->save())
-				{
-					App::abort(500, $rowc->getError());
-				}
-			}
-
-			$desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
-			if ($rowc->get('comment'))
-			{
-				$desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
-			}
-
-			Event::trigger('system.logActivity', [
-				'activity' => [
-					'action'      => 'created',
-					'scope'       => 'support.ticket.comment',
-					'scope_id'    => $rowc->get('id'),
-					'description' => $desc,
-					'details'     => array(
-						'id'      => $row->get('id'),
-						'summary' => $row->get('summary'),
-						'url'     => Route::url($row->link()),
-						'comment' => $rowc->get('id')
-					)
-				],
-				'recipients' => $recipients
-			]);
+			$this->setError($error);
 		}
 
-		// Display the ticket with changes, new comment
 		App::redirect(
 			Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=ticket&id=' . $id),
 			($this->getError() ? $this->getError() :  null),

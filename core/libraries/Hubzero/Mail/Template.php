@@ -29,7 +29,9 @@ class Template extends Html
 	{
 		if (!isset($params['template']))
 		{
-			if (App::isAdmin())
+			// Mail from the admin, the API or the command line has no active site
+			// template; use the site's default one, as the site itself would
+			if (App::isAdmin() || !App::has('template'))
 			{
 				$db = App::get('db');
 				$db->setQuery("SELECT s.`template`, e.protected FROM `#__template_styles` AS s INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` WHERE s.`client_id`=0 AND s.`home`=1");

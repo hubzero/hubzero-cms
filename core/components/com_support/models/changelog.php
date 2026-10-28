@@ -167,6 +167,8 @@ class Changelog extends Obj
 		{
 			$this->_log['cc'] = array();
 		}
+
+		$this->normalize();
 	}
 
 	/**
@@ -187,6 +189,41 @@ class Changelog extends Obj
 	public function lists()
 	{
 		return $this->_log;
+	}
+
+	/**
+	 * One shape for the log's entries, however they arrived
+	 *
+	 * diff() and notified() build entries as objects and the e-mail views
+	 * read them as objects, but a log parsed back from storage held arrays,
+	 * so a comment re-read before its notifications went out broke the
+	 * e-mail.
+	 *
+	 * @return  void
+	 */
+	private function normalize()
+	{
+		foreach (array('changes', 'notifications') as $type)
+		{
+			if (!isset($this->_log[$type]) || !is_array($this->_log[$type]))
+			{
+				$this->_log[$type] = array();
+				continue;
+			}
+
+			foreach ($this->_log[$type] as $key => $entry)
+			{
+				if (is_array($entry))
+				{
+					$this->_log[$type][$key] = (object) $entry;
+				}
+			}
+		}
+
+		if (!isset($this->_log['cc']) || !is_array($this->_log['cc']))
+		{
+			$this->_log['cc'] = array();
+		}
 	}
 
 	/**
@@ -239,14 +276,16 @@ class Changelog extends Obj
 				$clog[] = '<ul class="' . $type . '">';
 				foreach ($log as $items)
 				{
+					$items = (object) $items;
+
 					// Logged values are stored as submitted (severity, category, cc addresses)
-					if ($type == 'changes' && $items['before'] != $items['after'])
+					if ($type == 'changes' && $items->before != $items->after)
 					{
-						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $this->_esc($items['field']), $this->_esc($items['before']), $this->_esc($items['after'])) . '</li>';
+						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $this->_esc($items->field), $this->_esc($items->before), $this->_esc($items->after)) . '</li>';
 					}
 					else if ($type == 'notifications')
 					{
-						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $this->_esc($items['role']), $this->_esc($items['name']), $this->_esc($items['address'])) . '</li>';
+						$clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $this->_esc($items->role), $this->_esc($items->name), $this->_esc($items->address)) . '</li>';
 					}
 				}
 				$clog[] = '</ul>';

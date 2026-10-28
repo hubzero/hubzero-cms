@@ -8,6 +8,7 @@
 namespace Components\Support\Admin\Controllers;
 
 use Components\Support\Helpers\ACL;
+use Components\Support\Helpers\Notifier;
 use Components\Support\Helpers\Utilities;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Comment;
@@ -575,7 +576,6 @@ class Tickets extends AdminController
 			throw new Exception($comment->getError(), 500);
 		}
 
-		Event::trigger('support.onTicketUpdate', array($ticket, $comment));
 
 		if ($tmp = Request::getInt('tmp_dir'))
 		{
@@ -597,219 +597,16 @@ class Tickets extends AdminController
 
 		// Only do the following if a comment was posted or ticket was reassigned
 		// otherwise, we're only recording a changelog
-		if ($comment->get('comment')
-		 || $ticket->get('owner') != $old->get('owner')
-		 || $ticket->get('group_id') != $old->get('group_id')
-		 || $comment->attachments->count() > 0)
-		{
-			// Send e-mail to ticket submitter?
-			if (Request::getInt('email_submitter', 0) == 1)
-			{
-				// Is the comment private? If so, we do NOT send e-mail to the
-				// submitter regardless of the above setting
-				if (!$comment->isPrivate())
-				{
-					$comment->addTo(array(
-						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
-						'name'  => $ticket->submitter->get('name', $ticket->get('name')),
-						'email' => $ticket->submitter->get('email', $ticket->get('email')),
-						'id'    => $ticket->submitter->get('id')
-					));
-				}
-			}
+		// Listeners, e-mail, the record of who was told, and the activity log
+		Notifier::ticketUpdated($ticket, $comment, $old, array(
+			'email_submitter' => Request::getInt('email_submitter', 0) == 1,
+			'email_owner'     => Request::getInt('email_owner', 0) == 1,
+			'email_terse'     => Request::getInt('email_terse', 0) == 1,
+			'option'          => $this->_option,
+			'controller'      => $this->_controller,
+			'acl'             => $this->acl,
+		));
 
-			// Send e-mail to ticket owner?
-			if (Request::getInt('email_owner', 0) == 1)
-			{
-				if ($old->get('owner') && $ticket->get('owner') != $old->get('owner'))
-				{
-					$comment->addTo(array(
-						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_PRIOR_OWNER'),
-						'name'  => $old->assignee->get('name'),
-						'email' => $old->assignee->get('email'),
-						'id'    => $old->assignee->get('id')
-					));
-				}
-				if ($ticket->get('owner'))
-				{
-					$comment->addTo(array(
-						'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-						'name'  => $ticket->assignee->get('name'),
-						'email' => $ticket->assignee->get('email'),
-						'id'    => $ticket->assignee->get('id')
-					));
-				}
-				elseif ($ticket->get('group_id'))
-				{
-					$group = \Hubzero\User\Group::getInstance($ticket->get('group_id'));
-
-					if ($group)
-					{
-						foreach ($group->get('managers') as $manager)
-						{
-							$manager = User::getInstance($manager);
-
-							if (!$manager || !$manager->get('id'))
-							{
-								continue;
-							}
-
-							$comment->addTo(array(
-								'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_GROUPMANAGER'),
-								'name'  => $manager->get('name'),
-								'email' => $manager->get('email'),
-								'id'    => $manager->get('id')
-							));
-						}
-					}
-				}
-			}
-
-			// Add any CCs to the e-mail list
-			foreach ($comment->changelog()->get('cc') as $cc)
-			{
-				$comment->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
-			}
-
-			// Message people watching this ticket,
-			// but ONLY if the comment was NOT marked private
-			$this->acl = ACL::getACL();
-			foreach ($ticket->watchers as $watcher)
-			{
-				$this->acl->setUser($watcher->user_id);
-				if (!$comment->isPrivate() || ($comment->isPrivate() && $this->acl->check('read', 'private_comments')))
-				{
-					$comment->addTo($watcher->user_id, 'watcher');
-				}
-			}
-			$this->acl->setUser(User::get('id'));
-
-			if (count($comment->to()))
-			{
-				// Build e-mail components
-				$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
-
-				$from = array(
-					'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
-					'email'     => Config::get('mailfrom'),
-					'multipart' => md5(date('U'))  // Html email
-				);
-
-				// Plain text email
-				$eview = new \Hubzero\Mail\View(array(
-					'base_path' => dirname(dirname(__DIR__)) . DS . 'site',
-					'name'      => 'emails',
-					'layout'    => 'comment_plain'
-				));
-				$eview->option     = $this->_option;
-				$eview->controller = $this->_controller;
-				$eview->comment    = $comment;
-				$eview->ticket     = $ticket;
-				$eview->config     = $this->config;
-				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
-
-				$message['plaintext'] = $eview->loadTemplate(false);
-				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
-
-				// HTML email
-				$eview->setLayout('comment_html');
-
-				$message['multipart'] = $eview->loadTemplate();
-				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-
-				$message['attachments'] = array();
-				if (!$this->config->get('email_terse'))
-				{
-					foreach ($comment->attachments as $attachment)
-					{
-						if ($attachment->size() < 2097152)
-						{
-							$message['attachments'][] = $attachment->path();
-						}
-					}
-				}
-
-				// Send e-mail to admin?
-				foreach ($comment->to('ids') as $to)
-				{
-					if ($allowEmailResponses)
-					{
-						// The reply-to address contains the token
-						$token = $encryptor->buildEmailToken(1, 1, $to['id'], $id);
-						$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
-					}
-
-					// Get the user's email address
-					if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
-					{
-						$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
-					}
-
-					// Watching should be anonymous
-					if ($to['role'] == 'watcher')
-					{
-						continue;
-					}
-					$comment->changelog()->notified(
-						$to['role'],
-						$to['name'],
-						$to['email']
-					);
-				}
-
-				foreach ($comment->to('emails') as $to)
-				{
-					if ($allowEmailResponses)
-					{
-						$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-
-						$email = array(
-							$to['email'],
-							'htc-' . $token . strstr(Config::get('mailfrom'), '@')
-						);
-
-						// In this case each item in email in an array, 1- To, 2:reply to address
-						Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
-					}
-					else
-					{
-						// Email is just a plain 'ol string
-						Utilities::sendEmail($to['email'], $subject, $message, $from);
-					}
-
-					// Watching should be anonymous
-					if ($to['role'] == 'watcher')
-					{
-						continue;
-					}
-					$comment->changelog()->notified(
-						$to['role'],
-						$to['name'],
-						$to['email']
-					);
-				}
-			}
-			else
-			{
-				// Force entry to private if no comment or attachment was made
-				if (!$comment->get('comment') && $comment->attachments->count() <= 0)
-				{
-					$comment->set('access', 1);
-				}
-			}
-
-			// Were there any changes?
-			if (count($comment->changelog()->get('notifications')) > 0 || $access != $comment->get('access'))
-			{
-				// Save the data
-				if (!$comment->save())
-				{
-					throw new Exception($comment->getError(), 500);
-				}
-			}
-		}
-
-		// output messsage and redirect
 		if ($this->getTask() != 'apply')
 		{
 			$filters = Request::getString('filters', '');

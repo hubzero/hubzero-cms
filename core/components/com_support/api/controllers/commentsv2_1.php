@@ -10,6 +10,7 @@ namespace Components\Support\Api\Controllers;
 use Components\Support\Models\Comment;
 use Components\Support\Models\Ticket;
 use Components\Support\Models\Status;
+use Components\Support\Helpers\Notifier;
 use Hubzero\Component\ApiController;
 use Hubzero\Utility\Date;
 use Component;
@@ -363,6 +364,8 @@ class Commentsv2_1 extends ApiController
 		}
 
 		$ticket = Ticket::oneOrFail($ticket_id);
+		// As it was, for whoever is told about the change
+		$before = clone $ticket;
 
 		// The same gates as v2.0: commenting needs a ticket the caller may
 		// read; changing the ticket's own fields (owner, status, ...) is what
@@ -494,142 +497,21 @@ class Commentsv2_1 extends ApiController
 		// There's now a ticket and a comment, lets add attachments
 		\Components\Support\Helpers\Utilities::addAttachments($ticket->get('id'), $comment->get('id'));
 
+		// Anyone CC'd on this call joins the record before notifications go out
+		$comment->changelog()->cced(Request::getString('cc', ''));
+
+		// Listeners (Slack), e-mail, the record of who was told, and the activity log
+		Notifier::ticketUpdated($ticket, $comment, $before, array(
+			'email_submitter' => Request::getBool('email_submitter', false),
+			'email_owner'     => Request::getBool('email_owner', false),
+			'email_terse'     => Request::getBool('email_terse', false),
+		));
+
 		$msg = new stdClass;
 		$msg->id = $comment->get('id');
-		$msg->notified = $comment->get('changelog');
+		$msg->notified = $comment->changelog()->get('notifications');
 
 		$this->send($msg, 200, 'OK');
-		/*
-		$changlog->notifications = array();
-		if (Request::get('email_owner'))
-		{
-			$comment->addTo(array(
-				'role'  => Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-				'name'  => $ticket->get_owner->get('name'),
-				'email' => $ticket->get_owner->get('email'),
-				'id'    => $ticket->get_owner->get('id')
-			));
-			$changelog->notifications[] = json_encode(array('role'=>'Ticket owner', 'address'=>$ticket->get_owner()->get('email'), 'name'=>$ticket->get_owner()->get('name')));
-		}
-
-		// Add any CCs to the e-mail list
-		$cc = Request::get('cc', null);
-		if ($cc)
-		{
-			$cc = explode(',', $cc);
-			foreach ($cc)
-			{
-				$comment->addTo($cc, Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
-			}
-			$changelog->cc = json_encode($cc);
-		}
-
-		// Check if the notify list has eny entries
-		if (count($comment->to()))
-		{
-			include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php';
-
-			$allowEmailResponses = $ticket->config('email_processing');
-			if ($allowEmailResponses)
-			{
-				try
-				{
-					$encryptor = new \Hubzero\Mail\Token();
-				}
-				catch (Exception $e)
-				{
-					$allowEmailResponses = false;
-				}
-			}
-
-			$subject = Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
-
-			$from = array(
-				'name'      => Lang::txt('COM_SUPPORT_EMAIL_FROM', Config::get('sitename')),
-				'email'     => Config::get('mailfrom'),
-				'multipart' => md5(date('U'))
-			);
-
-			$message = array();
-
-			// Plain text email
-			$eview = new \Hubzero\Mail\View(array(
-				'base_path' => dirname(dirname(__DIR__)) . '/site',
-				'name'      => 'emails',
-				'layout'    => 'comment_plain'
-			));
-			$eview->option     = 'com_support';
-			$eview->controller = 'tickets';
-			$eview->comment    = $comment;
-			$eview->ticket     = $ticket;
-			$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
-
-			$message['plaintext'] = $eview->loadTemplate(false);
-			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
-
-			// HTML email
-			$eview->setLayout('comment_html');
-			$message['multipart'] = $eview->loadTemplate();
-
-			// Send e-mail to admin?
-			foreach ($comment->to('ids') as $to)
-			{
-				if ($allowEmailResponses)
-				{
-					// The reply-to address contains the token
-					$token = $encryptor->buildEmailToken(1, 1, $to['id'], $ticket->get('id'));
-					$from['replytoemail'] = 'htc-' . $token . strstr(Config::get('mailfrom'), '@');
-				}
-
-				// Get the user's email address
-				if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support')))
-				{
-					$this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
-				}
-				$comment->changelog()->notified(
-					$to['role'],
-					$to['name'],
-					$to['email']
-				);
-			}
-
-			foreach ($comment->to('emails') as $to)
-			{
-				if ($allowEmailResponses)
-				{
-					$token = $encryptor->buildEmailToken(1, 1, -9999, $ticket->get('id'));
-
-					$email = array(
-						$to['email'],
-						'htc-' . $token . strstr(Config::get('mailfrom'), '@')
-					);
-
-					// In this case each item in email in an array, 1- To, 2:reply to address
-					\Components\Support\Helpers\Utilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
-				}
-				else
-				{
-					// email is just a plain 'ol string
-					\Components\Support\Helpers\Utilities::sendEmail($to['email'], $subject, $message, $from);
-				}
-
-				$comment->changelog()->notified(
-					$to['role'],
-					$to['name'],
-					$to['email']
-				);
-			}
-		}
-		$comment->set('changelog', json_encode($changelog));
-		$comment->save();
-		$ticket->save();
-
-		$msg = new stdClass;
-		$msg->id  = $comment->get('id');
-		$msg->notified = $comment->get('changelog');
-
-		$this->send($msg, 200, 'OK');
-		*/
 	}
 
 	/**
