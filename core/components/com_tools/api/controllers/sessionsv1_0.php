@@ -41,8 +41,9 @@ class Sessionsv1_0 extends ApiController
 		//instantiate database object
 		$database = \App::get('db');
 
-		//get list of tools
-		$tools = \Components\Tools\Models\Tool::getAllTools();
+		// Administrators get the full inventory; everyone else the published,
+		// non-private tools and their published revisions
+		$tools = \Components\Tools\Models\Tool::getAllTools(User::authorise('core.admin'));
 
 		//get the supported tag
 		$rconfig = Component::params('com_resources');

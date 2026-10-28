@@ -1728,25 +1728,74 @@ class Tool
 	}
 
 	/**
-	 * Get all tools
+	 * Every tool with its revisions, one entry per tool alias
 	 *
-	 * @return  array
+	 * By default only published, non-private tools and their published
+	 * revisions, with the access level of the newest published revision.
+	 * With $all, every tool resource (unpublished ones too) and every
+	 * revision, for administrators keeping an inventory; a tool with no
+	 * revisions is listed with an empty list rather than dropped.
+	 *
+	 * Rows are read one per resource and revision and assembled here, so the
+	 * result is deterministic, works under ONLY_FULL_GROUP_BY and is not cut
+	 * short by group_concat_max_len.
+	 *
+	 * @param   bool   $all  Include unpublished and private tools and every revision
+	 * @return  array  Objects with alias, published, access and versions (comma-separated)
 	 */
-	public static function getAllTools()
+	public static function getAllTools($all = false)
 	{
 		$db = \App::get('db');
-		$sql = "SELECT r.alias, r.published, v.toolaccess AS access, GROUP_CONCAT(v.revision SEPARATOR ',') AS versions
-				FROM `#__resources` AS r INNER JOIN `#__tool_version` AS v
-				ON
-				r.alias=v.toolname
-				WHERE
-				r.type=7
-				AND r.standalone=1
-				AND r.alias!=''
-				GROUP BY r.alias";
 
-		$db->setQuery($sql);
-		return $db->loadObjectList();
+		$where = "r.type=7 AND r.standalone=1 AND r.alias!=''";
+		$join  = "LEFT JOIN `#__tool_version` AS v ON v.toolname=r.alias";
+		if (!$all)
+		{
+			$where .= " AND r.published=1 AND r.access!=4";
+			$join   = "INNER JOIN `#__tool_version` AS v ON v.toolname=r.alias AND v.state=1";
+		}
+
+		// Published resources first, so where two share an alias the
+		// published one is the one kept; newest revision first within each
+		$db->setQuery(
+			"SELECT r.id, r.alias, r.published, v.revision, v.toolaccess
+			FROM `#__resources` AS r $join
+			WHERE $where
+			ORDER BY r.alias, (r.published=1) DESC, r.id, v.revision DESC"
+		);
+
+		$tools = array();
+		foreach ((array) $db->loadObjectList() as $row)
+		{
+			if (!isset($tools[$row->alias]))
+			{
+				$tools[$row->alias] = (object) array(
+					'id'        => $row->id,
+					'alias'     => $row->alias,
+					'published' => $row->published,
+					'access'    => $row->toolaccess,
+					'revisions' => array()
+				);
+			}
+
+			$tool = $tools[$row->alias];
+
+			// Only the resource kept for this alias contributes revisions
+			if ($tool->id != $row->id || $row->revision === null)
+			{
+				continue;
+			}
+
+			$tool->revisions[] = (int) $row->revision;
+		}
+
+		foreach ($tools as $tool)
+		{
+			$tool->versions = implode(',', array_unique($tool->revisions));
+			unset($tool->id, $tool->revisions);
+		}
+
+		return array_values($tools);
 	}
 
 	/**
