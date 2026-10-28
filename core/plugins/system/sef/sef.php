@@ -7,8 +7,6 @@
  */
 
 // no direct access
-defined('_HZEXEC_') or die;
-
 /**
  * SEF Plugin
  */
@@ -33,7 +31,8 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
         $buffer = preg_replace_callback($regex, array('plgSystemSef', 'route'), $buffer);
         $this->checkBuffer($buffer);
 
-        $protocols = '[a-zA-Z0-9]+:'; //To check for all unknown protocals (a protocol must contain at least one alpahnumeric fillowed by :
+        $protocols = '[a-zA-Z0-9]+:';
+        //To check for all unknown protocals (a protocol must contain at least one alpahnumeric fillowed by :
         $regex  = '#(src|href|poster)="(?!/|' . $protocols . '|\#|\')([^"]*)"#m';
         $buffer = preg_replace($regex, "$1=\"$base\$2\"", $buffer);
         $this->checkBuffer($buffer);
@@ -54,12 +53,14 @@ class plgSystemSef extends \Hubzero\Plugin\Plugin
         $this->checkBuffer($buffer);
 
         // OBJECT <param name="xx", value="yy"> -- fix it only inside the <param> tag
-        $regex  = '#(<param\s+)name\s*=\s*"(movie|src|url)"[^>]\s*value\s*=\s*"(?!/|' . $protocols . '|\#|\')([^"]*)"#m';
+        $regex  = '#(<param\s+)name\s*=\s*"(movie|src|url)"[^>]\s*value\s*=\s*"(?!/|' . $protocols
+            . '|\#|\')([^"]*)"#m';
         $buffer = preg_replace($regex, '$1name="$2" value="' . $base . '$3"', $buffer);
         $this->checkBuffer($buffer);
 
         // OBJECT <param value="xx", name="yy"> -- fix it only inside the <param> tag
-        $regex  = '#(<param\s+[^>]*)value\s*=\s*"(?!/|' . $protocols . '|\#|\')([^"]*)"\s*name\s*=\s*"(movie|src|url)"#m';
+        $regex  = '#(<param\s+[^>]*)value\s*=\s*"(?!/|' . $protocols
+            . '|\#|\')([^"]*)"\s*name\s*=\s*"(movie|src|url)"#m';
         $buffer = preg_replace($regex, '<param value="' . $base . '$2" name="$3"', $buffer);
         $this->checkBuffer($buffer);
 

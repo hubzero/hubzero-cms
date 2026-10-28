@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,21 +13,22 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for messages
  */
-class plgMembersMessages extends \Hubzero\Plugin\Plugin
+class PlgMembersMessages extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @return array   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -47,11 +49,11 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @param   string  $option  Component name
-     * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -188,7 +190,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
         if ($unreadMessages > 0) {
             $title = $unreadMessages . ' unread message(s).';
             $link = Route::url($member->link() . '&active=messages');
-            $arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><strong>Messages Alert</strong>{$title}</span></a>";
+            $arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\">"
+                . "<span><strong>Messages Alert</strong>{$title}</span></a>";
         }
 
         // Return data
@@ -198,10 +201,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Show inbox
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  string
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return string
      */
     public function inbox($database, $option, $member)
     {
@@ -219,7 +222,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 0,
                 'int'
             ),
-            'state'  => 0,
+            'state' => 0,
             'filter' => Request::getString('filter', '')
         );
 
@@ -249,10 +252,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Show archived messages
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  string
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return string
      */
     public function archive($database, $option, $member)
     {
@@ -270,7 +273,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 0,
                 'int'
             ),
-            'state'  => 1,
+            'state' => 1,
             'filter' => Request::getString('filter', '')
         );
 
@@ -300,10 +303,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Show trashed messages
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  string
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return string
      */
     public function trash($database, $option, $member)
     {
@@ -321,7 +324,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 0,
                 'int'
             ),
-            'state'  => 2,
+            'state' => 2,
             'filter' => Request::getString('filter', '')
         );
 
@@ -351,10 +354,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Show sent messages
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  string
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return string
      */
     public function sent($database, $option, $member)
     {
@@ -395,10 +398,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Show a form for settings
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  string
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return string
      */
     public function settings($database, $option, $member)
     {
@@ -467,10 +470,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Create a message
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  string
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return string
      */
     private function create($database, $option, $member)
     {
@@ -497,11 +500,11 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * View a message
      *
-     * @param   object   $database  Database
-     * @param   string   $option    Name of the component
-     * @param   object   $member    Current member
-     * @param   integer  $mid       Message ID
-     * @return  string
+     * @param  object  $database Database
+     * @param  string  $option   Name of the component
+     * @param  object  $member   Current member
+     * @param  integer $mid      Message ID
+     * @return string
      */
     public function message($database, $option, $member, $mid)
     {
@@ -540,16 +543,16 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Move message to archive
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function sendtoarchive($database, $option, $member)
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids  = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', array());
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -579,27 +582,38 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
 
-            Notify::success(Lang::txt('You have successfully moved <b><u>%s</u></b> message(s) to your archive.', count($mids)));
+            Notify::success(
+                Lang::txt(
+                    'You have successfully moved <b><u>%s</u></b> message(s) to your archive.',
+                    count($mids)
+                )
+            );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit, false));
+        return App::redirect(
+            Route::url(
+                $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'archive')
+                . '&start=' . $start . '&limit=' . $limit,
+                false
+            )
+        );
     }
 
     /**
      * Move message to inbox
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function sendtoinbox($database, $option, $member)
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids  = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', array());
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -623,27 +637,38 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
 
-            Notify::success(Lang::txt('You have successfully moved <b><u>%s</u></b> message(s) to your inbox.', count($mids)));
+            Notify::success(
+                Lang::txt(
+                    'You have successfully moved <b><u>%s</u></b> message(s) to your inbox.',
+                    count($mids)
+                )
+            );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
+        return App::redirect(
+            Route::url(
+                $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
+                . '&start=' . $start . '&limit=' . $limit,
+                false
+            )
+        );
     }
 
     /**
      * Mark messages as "trashed"
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function sendtotrash($database, $option, $member)
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids  = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', array());
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -674,21 +699,32 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
 
-            Notify::success(Lang::txt('You have successfully moved <b><u>%s</u></b> message(s) to your trash.', count($mids)));
+            Notify::success(
+                Lang::txt(
+                    'You have successfully moved <b><u>%s</u></b> message(s) to your trash.',
+                    count($mids)
+                )
+            );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit, false));
+        return App::redirect(
+            Route::url(
+                $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'trash')
+                . '&start=' . $start . '&limit=' . $limit,
+                false
+            )
+        );
     }
 
     /**
      * Delete "trashed" messages
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function emptytrash($database, $option, $member)
     {
@@ -704,16 +740,16 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Delete a message
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function delete($database, $option, $member)
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $mids  = Request::getArray('mid', array());
+        $mids = Request::getArray('mid', array());
 
         if (count($mids) > 0) {
             // Check for request forgeries
@@ -731,27 +767,38 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
 
-            Notify::success(Lang::txt('You have successfully deleted <b><u>%s</u></b> message(s).', count($mids)));
+            Notify::success(
+                Lang::txt(
+                    'You have successfully deleted <b><u>%s</u></b> message(s).',
+                    count($mids)
+                )
+            );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
+        return App::redirect(
+            Route::url(
+                $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
+                . '&start=' . $start . '&limit=' . $limit,
+                false
+            )
+        );
     }
 
     /**
      * Mark messages as read
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function markasread($database, $option, $member)
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $ids   = Request::getArray('mid', array());
+        $ids = Request::getArray('mid', array());
 
         if (count($ids) > 0) {
             // Check for request forgeries
@@ -770,27 +817,38 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
 
-            Notify::success(Lang::txt('You have successfully marked <b><u>%s</u></b> message(s) as read.', count($ids)));
+            Notify::success(
+                Lang::txt(
+                    'You have successfully marked <b><u>%s</u></b> message(s) as read.',
+                    count($ids)
+                )
+            );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
+        return App::redirect(
+            Route::url(
+                $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
+                . '&start=' . $start . '&limit=' . $limit,
+                false
+            )
+        );
     }
 
     /**
      * Mark messages as unread
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function markasunread($database, $option, $member)
     {
         $limit = Request::getInt('limit', Config::get('list_limit'));
         $start = Request::getInt('limitstart', 0);
-        $ids   = Request::getArray('mid', array());
+        $ids = Request::getArray('mid', array());
 
         if (count($ids) > 0) {
             // Check for request forgeries
@@ -805,21 +863,32 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
 
-            Notify::success(Lang::txt('You have successfully marked <b><u>%s</u></b> message(s) as unread.', count($ids)));
+            Notify::success(
+                Lang::txt(
+                    'You have successfully marked <b><u>%s</u></b> message(s) as unread.',
+                    count($ids)
+                )
+            );
         } else {
             Notify::warning(Lang::txt('No messages selected.'));
         }
 
-        return App::redirect(Route::url($member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit, false));
+        return App::redirect(
+            Route::url(
+                $member->link() . '&active=messages&task=' . Request::getWord('activetab', 'inbox')
+                . '&start=' . $start . '&limit=' . $limit,
+                false
+            )
+        );
     }
 
     /**
      * Save settings
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  void
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return void
      */
     public function savesettings($database, $option, $member)
     {
@@ -853,7 +922,12 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
                         // Save
                         if (!$notify->save()) {
-                            $this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
+                            $this->setError(
+                                Lang::txt(
+                                    'PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED',
+                                    $notify->get('method')
+                                )
+                            );
                         }
                     }
                 }
@@ -877,8 +951,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 }
             }
         } else {
-            // This creates a single entry to let the system know that the user has explicitly chosen "none" for all options
-            // It ensures we can know the difference between someone who has never changed their settings (thus, no database entries)
+            // This creates a single entry to let the system know that the user
+            // has explicitly chosen "none" for all options
+            // It ensures we can know the difference between someone who has never changed
+            // their settings (thus, no database entries)
             // and someone who purposely wants everything turned off.
             $notify = Hubzero\Message\Notify::blank();
             $notify->set('uid', $member->get('id'));
@@ -894,7 +970,12 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
                 $notify->set('priority', 1);
 
                 if (!$notify->save()) {
-                    $this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED', $notify->get('method')));
+                    $this->setError(
+                        Lang::txt(
+                            'PLG_MEMBERS_MESSAGES_ERROR_NOTIFY_FAILED',
+                            $notify->get('method')
+                        )
+                    );
                 }
             }
         }
@@ -908,10 +989,10 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Send a message
      *
-     * @param   object  $database  Database
-     * @param   string  $option    Name of the component
-     * @param   object  $member    Current member
-     * @return  mixed
+     * @param  object $database Database
+     * @param  string $option   Name of the component
+     * @param  object $member   Current member
+     * @return mixed
      */
     public function send($database, $option, $member)
     {
@@ -933,10 +1014,8 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
             // User ID
             if (is_numeric($mbr)) {
                 $email_users[] = $mbr;
-            }
-            // Some Name (###)
-            else if (preg_match("/\((\d+)\)/", $mbr, $matches)) {
-                preg_match("/\((\d+)\)/", $mbr, $matches);
+            } elseif (preg_match("/\((\d+)\)/", $mbr, $matches)) {
+                // Some Name (###)
                 $email_users[] = $matches[1];
             } else {
                 // Username?
@@ -971,11 +1050,22 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
         // Build the "from" data for the e-mail
         $from = array();
-        $from['name']  = $member->get('name');
+        $from['name'] = $member->get('name');
         $from['email'] = $member->get('email');
 
-        // Send the message
-        if (!Event::trigger('xmessage.onSendMessage', array('member_message', $subject, $message, $from, $email_users, $option))) {
+        if (
+            !Event::trigger(
+                'xmessage.onSendMessage',
+                array(
+                'member_message',
+                $subject,
+                $message,
+                $from,
+                $email_users,
+                $option
+                )
+            )
+        ) {
             $this->setError(Lang::txt('PLG_MEMBERS_MESSAGES_ERROR_MSG_USER_FAILED'));
         }
 
@@ -990,11 +1080,11 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
     /**
      * Build a select list of methods
      *
-     * @param   array   $notimethods  Methods
-     * @param   string  $name         Field name
-     * @param   array   $values       Option values
-     * @param   array   $ids          Option IDs
-     * @return  string
+     * @param  array  $notimethods Methods
+     * @param  string $name        Field name
+     * @param  array  $values      Option values
+     * @param  array  $ids         Option IDs
+     * @return string
      */
     public static function selectMethod($notimethods, $name, $values = array(), $ids = array())
     {
@@ -1002,10 +1092,11 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
         $i = 0;
         foreach ($notimethods as $notimethod) {
             $out .= '<td>' . "\n";
-            $out .= "\t" . '<input type="checkbox" name="settings[' . $name . '][]" class="opt-' . $notimethod . '" value="' . $notimethod . '"';
+            $out .= "\t" . '<input type="checkbox" name="settings[' . $name . '][]"'
+                . ' class="opt-' . $notimethod . '" value="' . $notimethod . '"';
             $out .= (in_array($notimethod, $values))
-                          ? ' checked="checked"'
-                          : '';
+                ? ' checked="checked"'
+                : '';
             $out .= ' />' . "\n";
             $out .= "\t" . '<input type="hidden" name="ids[' . $name . '][' . $notimethod . ']" value="';
             if (isset($ids[$notimethod])) {

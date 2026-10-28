@@ -27,7 +27,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
      * @param      string $category Element type (determines table to look in)
      * @return     boolean
      */
-    private function _canHandle($category)
+    private function canHandle($category)
     {
         if (in_array($category, array('answer', 'question', 'answercomment'))) {
             return true;
@@ -46,7 +46,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
     public function getReportedItem($refid, $category, $parent)
     {
         $refid = (int) $refid;
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -106,7 +106,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
     public function getParentId($parentid, $category)
     {
         $parentid = (int) $parentid;
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -153,7 +153,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
     public function getTitle($category, $parentid)
     {
         $parentid = (int) $parentid;
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -182,7 +182,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
     public function onReportItem($refid, $category)
     {
         $refid = (int) $refid;
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -219,7 +219,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
     public function releaseReportedItem($refid, $parent, $category)
     {
         $refid = (int) $refid;
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -262,7 +262,7 @@ class plgSupportAnswers extends \Hubzero\Plugin\Plugin
     {
         $referenceid = (int) $referenceid;
         $parentid = (int) $parentid;
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 

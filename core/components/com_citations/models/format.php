@@ -57,7 +57,9 @@ class Format extends Relational
     public static function getDefault($fallbackDefault = 'IEEE')
     {
         $config = Component::params('com_citations');
-        $defaultFormat = !empty($config->get('default_citation_format')) ? $config->get('default_citation_format') : $fallbackDefault;
+        $defaultFormat = !empty($config->get('default_citation_format'))
+            ? $config->get('default_citation_format')
+            : $fallbackDefault;
         $format = self::blank();
         $format->whereEquals('style', $defaultFormat)->limit(1);
         return $format->row();

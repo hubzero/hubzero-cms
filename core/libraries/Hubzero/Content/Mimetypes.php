@@ -737,17 +737,19 @@ class Mimetypes
     /**
      * Retrieve the corresponding MIME type, if one exists
      *
-     * @param   string  $file  File Name (relative location such as "image_test.jpg" or full "http://site.com/path/to/image_test.jpg")
+     * @param   string  $file  File Name (relative location such as "image_test.jpg" or
+     *                         full "http://site.com/path/to/image_test.jpg")
      * @return  string  The type of the file passed in the argument
      */
     public function getMimeType($file = null, $fast = false)
     {
         if (is_file($file)) {
-            $extension = $this->_getExtension($file);
+            $extension = $this->extractExtension($file);
 
             // Attempts to retrieve file info from FINFO
             // If FINFO functions are not available then try to retrieve MIME type from pre-defined MIMEs
-            // If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type function
+            // If MIME type doesn't exist, then try (as a last resort) to use the (deprecated) mime_content_type
+            // function
             // If all else fails, just return application/octet-stream
             if ($fast || !function_exists('finfo_open') || in_array($extension, array('docx', 'pptx', 'xlsx'))) {
                 if (array_key_exists($extension, $this->mimeTypes)) {
@@ -767,7 +769,7 @@ class Mimetypes
                 return $MIMEType;
             }
         } else {
-            $extension = $this->_getExtension($file);
+            $extension = $this->extractExtension($file);
             if (array_key_exists($extension, $this->mimeTypes)) {
                 return $this->mimeTypes[$extension];
             }
@@ -798,7 +800,7 @@ class Mimetypes
      * @param   string  $file  The full file name
      * @return  string  The file extension
      */
-    private function _getExtension($file = null)
+    private function extractExtension($file = null)
     {
         if (!is_null($file)) {
             $dot = strrpos($file, '.') + 1;

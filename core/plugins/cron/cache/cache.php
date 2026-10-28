@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Cron plugin for handling/cleaning cached data
  */
@@ -19,6 +16,7 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
      *
      * @var  string
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_path = null;
 
     /**

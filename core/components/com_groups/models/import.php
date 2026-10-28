@@ -19,6 +19,8 @@ include_once __DIR__ . DS . 'import' . DS . 'record.php';
 
 /**
  * Member importer
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Import extends Base
 {
@@ -194,7 +196,7 @@ class Import extends Base
 
                 $record->$field = $val;
             }
-        } else if (is_object($raw)) {
+        } elseif (is_object($raw)) {
             foreach (get_object_vars($raw) as $key => $val) {
                 $val = trim($val);
                 $val = Sanitize::cleanMsChar($val);

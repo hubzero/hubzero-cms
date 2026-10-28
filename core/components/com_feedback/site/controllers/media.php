@@ -87,7 +87,8 @@ class Media extends SiteController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('COM_FEEDBACKI_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $formattedSize = \Hubzero\Utility\Number::formatBytes($sizeLimit);
+            $this->setError(Lang::txt('COM_FEEDBACKI_ERROR_UPLOADING_FILE_TOO_BIG', $formattedSize));
             return $this->displayTask();
         }
 
@@ -205,7 +206,10 @@ class Media extends SiteController
         $this->view
             ->set('title', $this->_title)
             ->set('webpath', $this->config->get('uploadpath', '/site/quotes'))
-            ->set('default_picture', $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif'))
+            ->set(
+                'default_picture',
+                $this->config->get('defaultpic', '/core/components/com_feedback/site/assets/img/contributor.gif')
+            )
             ->set('path', $dir)
             ->set('file', $file)
             ->set('file_path', $path)

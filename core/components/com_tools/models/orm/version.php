@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,8 +21,8 @@ class Version extends Relational
     /**
      * Status constants
      */
-    const STATUS_DEV = 3;
-    const STATUS_CURRENT = 1;
+    public const STATUS_DEV = 3;
+    public const STATUS_CURRENT = 1;
 
     /**
      * The table namespace
@@ -70,7 +71,7 @@ class Version extends Relational
 
         if ($revision == 'current') {
             $query->whereEquals('state', self::STATUS_CURRENT);
-        } else if ($revision == 'dev') {
+        } elseif ($revision == 'dev') {
             $query->whereEquals('state', self::STATUS_DEV);
         } else {
             $query->whereEquals('revision', $revision);

@@ -19,6 +19,7 @@ use User;
 
 /**
  * API controller class for Group Plugins
+ *
  */
 class Pluginsv1_0 extends ApiController
 {

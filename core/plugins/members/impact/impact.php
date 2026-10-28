@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,49 +13,51 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for author's impact
  */
-class plgMembersImpact extends \Hubzero\Plugin\Plugin
+class PlgMembersImpact extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Publication areas
      *
-     * @var  array
+     * @var array
      */
-    private $_areas = null;
+    private $areas = null;
 
     /**
      * Publication stats
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_stats = null;
 
     /**
      * Publication categories
      *
-     * @var  array
+     * @var array
      */
-    private $_cats  = null;
+    private $cats = null;
 
     /**
      * Record count
      *
-     * @var  integer
+     * @var integer
      */
-    private $_total = null;
+    private $total = null;
 
     /**
      * Constructor
      *
-     * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
-     * @return  void
+     * @param  object &$subject Event observer
+     * @param  array  $config   Optional config values
+     * @return void
      */
     public function __construct(&$subject, $config)
     {
@@ -64,19 +67,19 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
         $path = \Component::path('com_publications');
 
-        require_once $path . DS . 'tables' . DS . 'logs.php';
-        require_once $path . DS . 'tables' . DS . 'publication.php';
-        require_once $path . DS . 'tables' . DS . 'author.php';
-        require_once $path . DS . 'tables' . DS . 'category.php';
-        require_once $path . DS . 'helpers' . DS . 'html.php';
+        include_once $path . DS . 'tables' . DS . 'logs.php';
+        include_once $path . DS . 'tables' . DS . 'publication.php';
+        include_once $path . DS . 'tables' . DS . 'author.php';
+        include_once $path . DS . 'tables' . DS . 'category.php';
+        include_once $path . DS . 'helpers' . DS . 'html.php';
     }
 
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @return array   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -84,16 +87,19 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
         $areas = array();
 
         //if this is the logged in user show them
-        if (($user->get('id') == $member->get('id') && $this->params->get('show_impact', 0) == 1) || $this->params->get('show_impact', 0) == 2) {
+        if (
+            ($user->get('id') == $member->get('id') && $this->params->get('show_impact', 0) == 1)
+            || $this->params->get('show_impact', 0) == 2
+        ) {
             // Check if user has any publications
             $pubLog = new \Components\Publications\Tables\Log($this->_database);
             $this->_stats = $pubLog->getAuthorStats($member->get('id'), 0, false);
 
             if ($this->_stats) {
                 $areas['impact'] = Lang::txt('PLG_MEMBERS_IMPACT');
-                $areas['icon']   = 'f012';
-                $areas['icon-class']   = 'icon-signal';
-                $areas['menu']   = $this->params->get('display_tab', 1);
+                $areas['icon'] = 'f012';
+                $areas['icon-class'] = 'icon-signal';
+                $areas['menu'] = $this->params->get('display_tab', 1);
             }
         }
 
@@ -103,11 +109,11 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @param   string  $option  Component name
-     * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -125,12 +131,12 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
         }
 
         $arr = array(
-            'html'     => '',
+            'html' => '',
             'metadata' => ''
         );
 
         if ($returnhtml) {
-            require_once \Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
+            include_once \Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
 
             $this->_option = $option;
 
@@ -155,9 +161,10 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
     /**
      * View entries
      *
-     * @param   integer  $uid
-     * @return  string
+     * @param  integer  $uid
+     * @return string
      */
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($uid = 0)
     {
         // Build the final HTML
@@ -173,9 +180,9 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
         $view->totals = $pubLog->getTotals($uid);
 
         // Output HTML
-        $view->option    = $this->_option;
-        $view->database  = $this->_database;
-        $view->uid       = $uid;
+        $view->option = $this->_option;
+        $view->database = $this->_database;
+        $view->uid = $uid;
         $view->pubconfig = Component::params('com_publications');
 
         if ($this->getError()) {
@@ -187,7 +194,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
     /**
      * Return a list of categories
      *
-     * @return  array
+     * @return array
      */
     public function &onMembersContributionsAreas()
     {
@@ -195,22 +202,22 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
         //if ($this->params->get('contributions', 0) == 1)
         //{
-            $areas = array(
-                'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
-            );
+        $areas = array(
+            'impact' => Lang::txt('PLG_MEMBERS_IMPACT_PUBLICATIONS')
+        );
         //}
 
-            $this->_areas = $areas;
+        $this->areas = $areas;
 
-            return $areas;
+        return $areas;
     }
 
     /**
      * Build SQL for returning the count of the number of contributions
      *
-     * @param   string  $user_id   Field to join on user ID
-     * @param   string  $username  Field to join on username
-     * @return  string
+     * @param  string $user_id  Field to join on user ID
+     * @param  string $username Field to join on username
+     * @return string
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
@@ -226,13 +233,13 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
     /**
      * Return either a count or an array of the member's contributions
      *
-     * @param   object   $member      Current member
-     * @param   string   $option      Component name
-     * @param   integer  $limit       Number of record to return
-     * @param   integer  $limitstart  Record return start
-     * @param   string   $sort        Field to sort records on
-     * @param   array    $areas       Areas to return data for
-     * @return  array
+     * @param  object  $member     Current member
+     * @param  string  $option     Component name
+     * @param  integer $limit      Number of record to return
+     * @param  integer $limitstart Record return start
+     * @param  string  $sort       Field to sort records on
+     * @param  array   $areas      Areas to return data for
+     * @return array
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -252,14 +259,14 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
                 return array();
             } else {
                 $uidNumber = $member->get('id');
-                $username  = $member->get('username');
+                $username = $member->get('username');
             }
         } else {
             if (!$member->uidNumber) {
                 return array();
             } else {
                 $uidNumber = $member->uidNumber;
-                $username  = $member->username;
+                $username = $member->username;
             }
         }
 
@@ -270,8 +277,8 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
         // Build query
         $filters = array(
             'sortby' => $sort,
-            'limit'  => $limit,
-            'start'  => $limitstart,
+            'limit' => $limit,
+            'start' => $limitstart,
             'author' => $uidNumber
         );
 
@@ -292,9 +299,14 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
             if ($rows) {
                 foreach ($rows as $key => $row) {
                     if ($row->alias) {
-                        $sef = Route::url('index.php?option=com_publications&alias=' . $row->alias . '&v=' . $row->version_number);
+                        $sef = Route::url(
+                            'index.php?option=com_publications&alias=' . $row->alias . '&v='
+                            . $row->version_number
+                        );
                     } else {
-                        $sef = Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number);
+                        $sef = Route::url(
+                            'index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number
+                        );
                     }
                     $rows[$key]->href = $sef;
                     $rows[$key]->text = $rows[$key]->abstract;
@@ -310,29 +322,34 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
     /**
      * Static method for formatting results
      *
-     * @param   object  $row  Database row
-     * @return  string  HTML
+     * @param  object $row Database row
+     * @return string  HTML
      */
     public static function out($row)
     {
         $database = App::get('db');
-        $thedate  = Date::of($row->published_up)->toLocal('d M Y');
+        $thedate = Date::of($row->published_up)->toLocal('d M Y');
 
         // Get version authors
         $pa = new \Components\Publications\Tables\Author($database);
         $authors = $pa->getAuthors($row->version_id);
 
-        $html  = "\t" . '<li class="resource">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+        $html = "\t" . '<li class="resource">' . "\n";
+        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title)
+            . '</a></p>' . "\n";
         $html .= "\t\t" . '<p class="details">' . $thedate . ' <span>|</span> ' . stripslashes($row->cat_name);
         if ($authors) {
-            $html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";
+            $html .= ' <span>|</span>' . Lang::txt('PLG_MEMBERS_IMPACT_CONTRIBUTORS') . ': '
+                . \Components\Publications\Helpers\Html::showContributors($authors, false, true) . "\n";
         }
         if ($row->doi) {
             $html .= ' <span>|</span> doi:' . $row->doi . "\n";
         }
-        if (!$row->project_provisioned && ((isset($row->project_private) && $row->project_private != 1) || $row->author == true)) {
-            $url  = 'index.php?option=com_projects&alias=' . $row->project_alias;
+        if (
+            !$row->project_provisioned && ((isset($row->project_private) && $row->project_private != 1)
+            || $row->author == true)
+        ) {
+            $url = 'index.php?option=com_projects&alias=' . $row->project_alias;
             $url .= $row->author == true ? '&active=publications&pid=' . $row->id : '';
             $html .= ' <span>|</span> Project: ';
             $html .= '<a href="';

@@ -13,7 +13,7 @@ namespace Components\Resources\Import\Iterators;
  */
 class Csv implements \Iterator
 {
-    const ROW_LENGTH = 0;
+    public const ROW_LENGTH = 0;
 
     private $file;
     private $delimiter;

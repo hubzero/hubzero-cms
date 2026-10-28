@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing articles_latest module
- **/
+ *
+ */
 class Migration20190109000000ModArticlesLatest extends Base
 {
     /**

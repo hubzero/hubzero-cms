@@ -62,8 +62,19 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
 
                             //display link if we are authorized
                         if ($editAuthorized) {
-                            $editLink = Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->userid);
-                            echo '<a href="' . $editLink . '" title="' . Lang::txt('JACTION_EDIT') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
+                            $editLink = Route::url('index
+                                . php?option=com_members&controller=members&task=edit&id='
+                                . $row->userid);
+                            echo '<a href="'
+                                . $editLink
+                                . '" title="'
+                                . Lang::txt('JACTION_EDIT')
+                                . '">'
+                                . $this->escape($user->get('name'))
+                                . ' ['
+                                . $this->escape($user->get('username'))
+                                . ']'
+                                . '</a>';
                         } else {
                             echo $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']';
                         }

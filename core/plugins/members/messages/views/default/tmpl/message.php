@@ -1,16 +1,18 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
 defined('_HZEXEC_') or die();
 
 $this->css()
-     ->js();
+    ->js();
 ?>
 <div class="hub-mail">
     <table class="hub-message">
@@ -27,11 +29,17 @@ $this->css()
             <tr>
                 <th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_FROM'); ?></th>
                 <td><?php
+
                 if (substr($this->xmessage->get('type'), -8) == '_message') {
                     $from = Lang::txt('JANONYMOUS');
                     if (!$this->xmessage->anonymous) {
                         $u = $this->xmessage->creator;
-                        $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
+                        $from = '<a href="'
+                            . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id'))
+                            . '">'
+                            . $u->get('name')
+                            . '</a>'
+                            . "\n";
                     }
                 } else {
                     $from = Lang::txt('PLG_MEMBERS_MESSAGES_SYSTEM', $this->xmessage->get('component'));
@@ -43,6 +51,7 @@ $this->css()
                 <th><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SUBJECT'); ?></th>
                 <td>
                     <?php
+
                         $subject = stripslashes($this->xmessage->get('subject'));
                     if ($this->xmessage->get('component') == 'support') {
                         $fg = explode(' ', $subject);

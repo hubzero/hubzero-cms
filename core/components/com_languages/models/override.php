@@ -33,7 +33,8 @@ class Override extends Obj
      */
     public function path($client, $language)
     {
-        return PATH_APP . DS . 'bootstrap' . DS . $client . DS . 'language' . DS . 'overrides' . DS . $language . '.override.ini';
+        return PATH_APP . DS . 'bootstrap' . DS . $client . DS . 'language'
+            . DS . 'overrides' . DS . $language . '.override.ini';
     }
 
     /**
@@ -269,7 +270,8 @@ class Override extends Obj
      * Method for parsing ini files
      *
      * @param   string  $filename  Path and name of the ini file to parse
-     * @return  array   Array of strings found in the file, the array indices will be the keys. On failure an empty array will be returned
+     * @return  array   Array of strings found in the file, the array indices will be the keys.
+     *                  On failure an empty array will be returned
      */
     public static function parseFile($filename)
     {
@@ -325,11 +327,12 @@ class Override extends Obj
 
         $site_languages  = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'Site');
         $admin_languages = Lang::getKnownLanguages(PATH_CORE . DS . 'bootstrap' . DS . 'Administrator');
+        $langKey = 'COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM';
         foreach ($site_languages as $tag => $language) {
-            $languages[$tag . '0'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JSITE'));
+            $languages[$tag . '0'] = Lang::txt($langKey, $language['name'], Lang::txt('JSITE'));
         }
         foreach ($admin_languages as $tag => $language) {
-            $languages[$tag . '1'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JADMINISTRATOR'));
+            $languages[$tag . '1'] = Lang::txt($langKey, $language['name'], Lang::txt('JADMINISTRATOR'));
         }
 
         // Overwrite core languages with any installed ones
@@ -338,10 +341,10 @@ class Override extends Obj
 
         // Create a single array of them
         foreach ($site_languages as $tag => $language) {
-            $languages[$tag . '0'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JSITE'));
+            $languages[$tag . '0'] = Lang::txt($langKey, $language['name'], Lang::txt('JSITE'));
         }
         foreach ($admin_languages as $tag => $language) {
-            $languages[$tag . '1'] = Lang::txt('COM_LANGUAGES_VIEW_OVERRIDES_LANGUAGES_BOX_ITEM', $language['name'], Lang::txt('JADMINISTRATOR'));
+            $languages[$tag . '1'] = Lang::txt($langKey, $language['name'], Lang::txt('JADMINISTRATOR'));
         }
 
         // Sort it by language tag and by client after that

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,6 +19,7 @@ require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Software_Auditor extends BaseAuditor
 {
     /**
@@ -55,8 +57,12 @@ class Software_Auditor extends BaseAuditor
                     // Check if the limit is reached
                     if ($skuDownloadCount >= $skuDownloadLimit) {
                         $this->setResponseStatus('error');
-                        $this->setResponseNotice('You have reached the maximum number of allowed downloads for this product.');
-                        $this->setResponseError(': you have reached the maximum number of allowed downloads for this product.');
+                        $this->setResponseNotice(
+                            'You have reached the maximum number of allowed downloads for this product.'
+                        );
+                        $this->setResponseError(
+                            ': you have reached the maximum number of allowed downloads for this product.'
+                        );
                     }
                 }
                 return $this->getResponse();
@@ -74,8 +80,14 @@ class Software_Auditor extends BaseAuditor
                 // Check if the limit is reached
                 if ($skuDownloadCount >= $skuDownloadLimit) {
                     $this->setResponseStatus('error');
-                    $this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
-                    $this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
+                    $this->setResponseNotice(
+                        'This product has reached the maximum number of allowed downloads '
+                        . 'and cannot be downloaded.'
+                    );
+                    $this->setResponseError(
+                        ': this product has reached the maximum number of allowed downloads '
+                        . 'and cannot be downloaded.'
+                    );
                 }
             }
             return $this->getResponse();
@@ -89,8 +101,14 @@ class Software_Auditor extends BaseAuditor
             // Check if the limit is reached
             if ($productDownloadCount >= $productDownloadLimit) {
                 $this->setResponseStatus('error');
-                $this->setResponseNotice('This product has reached the maximum number of allowed downloads and cannot be downloaded.');
-                $this->setResponseError(': this product has reached the maximum number of allowed downloads and cannot be downloaded.');
+                $this->setResponseNotice(
+                    'This product has reached the maximum number of allowed downloads '
+                    . 'and cannot be downloaded.'
+                );
+                $this->setResponseError(
+                    ': this product has reached the maximum number of allowed downloads '
+                    . 'and cannot be downloaded.'
+                );
             }
         }
         return $this->getResponse();

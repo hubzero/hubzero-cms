@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,6 +39,7 @@ class Tool extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Projects\\Tables\\Tool';
 
     /**
@@ -45,14 +47,14 @@ class Tool extends Model
      *
      * @var object
      */
-    private $_entry = null;
+    private $entry = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_entries = null;
+    private $entries = null;
 
     /**
      * Registry
@@ -342,6 +344,7 @@ class Tool extends Model
      * @param   string  $as   What data to return
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _date($key, $as = '')
     {
         if ($this->get($key) == '0000-00-00 00:00:00') {

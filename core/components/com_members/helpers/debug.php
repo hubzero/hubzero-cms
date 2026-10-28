@@ -124,7 +124,7 @@ class Debug
      *
      * @return  array  An array of Option elements.
      */
-    static function getLevelsOptions()
+    public static function getLevelsOptions()
     {
         // Build the filter options.
         $options = array();

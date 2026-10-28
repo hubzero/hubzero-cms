@@ -90,89 +90,89 @@ class Conditions extends Obj
     public function getConditions()
     {
         $conditions = new stdClass();
-        $conditions->owner = $this->_expression(
+        $conditions->owner = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false),
-                $this->_operator('LIKE \'%$1%\'', 'contains', false),
-                $this->_operator('LIKE \'$1%\'', 'starts with', false),
-                $this->_operator('LIKE \'%$1\'', 'ends with', false),
-                $this->_operator('NOT LIKE \'%$1%\'', 'does not contain', false),
-                $this->_operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->_operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false),
+                $this->operator('LIKE \'%$1%\'', 'contains', false),
+                $this->operator('LIKE \'$1%\'', 'starts with', false),
+                $this->operator('LIKE \'%$1\'', 'ends with', false),
+                $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
+                $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
             ),
             'text'
         );
 
         // Groups
         $items = array(
-            $this->_value('*', Lang::txt('(any of mine)'), true)
+            $this->value('*', Lang::txt('(any of mine)'), true)
         );
 
         if ($xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'members')) {
             foreach ($xgroups as $xgroup) {
                 $xgroup->description = trim($xgroup->description) ?: $xgroup->cn;
-                $items[] = $this->_value($xgroup->cn, stripslashes($xgroup->description), false);
+                $items[] = $this->value($xgroup->cn, stripslashes($xgroup->description), false);
             }
         }
-        $conditions->group = $this->_expression(
+        $conditions->group = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false),
-                $this->_operator('LIKE \'%$1%\'', 'contains', false),
-                $this->_operator('LIKE \'$1%\'', 'starts with', false),
-                $this->_operator('LIKE \'%$1\'', 'ends with', false),
-                $this->_operator('NOT LIKE \'%$1%\'', 'does not contain', false),
-                $this->_operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->_operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false),
+                $this->operator('LIKE \'%$1%\'', 'contains', false),
+                $this->operator('LIKE \'$1%\'', 'starts with', false),
+                $this->operator('LIKE \'%$1\'', 'ends with', false),
+                $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
+                $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
             ),
             $items
         );
-        $conditions->login = $this->_expression(
+        $conditions->login = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false),
-                $this->_operator('LIKE \'%$1%\'', 'contains', false),
-                $this->_operator('LIKE \'$1%\'', 'starts with', false),
-                $this->_operator('LIKE \'%$1\'', 'ends with', false),
-                $this->_operator('NOT LIKE \'%$1%\'', 'does not contain', false),
-                $this->_operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->_operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false),
+                $this->operator('LIKE \'%$1%\'', 'contains', false),
+                $this->operator('LIKE \'$1%\'', 'starts with', false),
+                $this->operator('LIKE \'%$1\'', 'ends with', false),
+                $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
+                $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
             ),
             'text'
         );
-        $conditions->id = $this->_expression(
+        $conditions->id = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false),
-                $this->_operator('lt', 'less than', false),
-                $this->_operator('gt', 'grater than', false),
-                $this->_operator('lt=', 'less than or equal to', false),
-                $this->_operator('gt=', 'greater than or equal to', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false),
+                $this->operator('lt', 'less than', false),
+                $this->operator('gt', 'grater than', false),
+                $this->operator('lt=', 'less than or equal to', false),
+                $this->operator('gt=', 'greater than or equal to', false)
             ),
             'text'
         );
-        $conditions->report = $this->_expression(
+        $conditions->report = $this->expression(
             array(
-                $this->_operator('=', 'is', false),
-                $this->_operator('!=', 'is not', false),
-                $this->_operator('LIKE \'%$1%\'', 'contains', true),
-                $this->_operator('LIKE \'$1%\'', 'starts with', false),
-                $this->_operator('LIKE \'%$1\'', 'ends with', false),
-                $this->_operator('NOT LIKE \'%$1%\'', 'does not contain', false),
-                $this->_operator('NOT LIKE \'$1%\'', 'does not start with', false),
-                $this->_operator('NOT LIKE \'%$1\'', 'does not end with', false)
+                $this->operator('=', 'is', false),
+                $this->operator('!=', 'is not', false),
+                $this->operator('LIKE \'%$1%\'', 'contains', true),
+                $this->operator('LIKE \'$1%\'', 'starts with', false),
+                $this->operator('LIKE \'%$1\'', 'ends with', false),
+                $this->operator('NOT LIKE \'%$1%\'', 'does not contain', false),
+                $this->operator('NOT LIKE \'$1%\'', 'does not start with', false),
+                $this->operator('NOT LIKE \'%$1\'', 'does not end with', false)
             ),
             'text'
         );
-        $conditions->open = $this->_expression(
+        $conditions->open = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false)
             ),
             array(
-                $this->_value('1', 'open', true),
-                $this->_value('0', 'closed', false)
+                $this->value('1', 'open', true),
+                $this->value('0', 'closed', false)
             )
         );
 
@@ -181,56 +181,56 @@ class Conditions extends Obj
             ->rows();
 
         $items = array();
-        $items[] = $this->_value(0, 'open: New', true);
+        $items[] = $this->value(0, 'open: New', true);
         if (count($status) > 0) {
             $switched = false;
             foreach ($status as $anode) {
                 if (!$anode->open && !$switched) {
-                    $items[] = $this->_value(-1, 'closed: No resolution', false);
+                    $items[] = $this->value(-1, 'closed: No resolution', false);
                     $switched = true;
                 }
-                $items[] = $this->_value($anode->id, ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title), false);
+                $items[] = $this->value($anode->id, ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title), false);
             }
         }
-        $conditions->status = $this->_expression(
+        $conditions->status = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false)
             ),
             $items
         );
-        $conditions->created = $this->_expression(
+        $conditions->created = $this->expression(
             array(
-                $this->_operator('=', 'on', true),
-                $this->_operator('lt', 'before', false),
-                $this->_operator('gt', 'after', false)
+                $this->operator('=', 'on', true),
+                $this->operator('lt', 'before', false),
+                $this->operator('gt', 'after', false)
             ),
             'text'
         );
-        $conditions->closed = $this->_expression(
+        $conditions->closed = $this->expression(
             array(
-                $this->_operator('=', 'on', true),
-                $this->_operator('lt', 'before', false),
-                $this->_operator('gt', 'after', false)
+                $this->operator('=', 'on', true),
+                $this->operator('lt', 'before', false),
+                $this->operator('gt', 'after', false)
             ),
             'text'
         );
-        $conditions->tag = $this->_expression(
+        $conditions->tag = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false)
             ),
             'text'
         );
-        $conditions->type = $this->_expression(
+        $conditions->type = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false)
             ),
             array(
-                $this->_value('0', 'user submitted', true),
-                $this->_value('1', 'automatic', false),
-                $this->_value('3', 'tool', false)
+                $this->value('0', 'user submitted', true),
+                $this->value('1', 'automatic', false),
+                $this->value('3', 'tool', false)
             )
         );
 
@@ -243,13 +243,13 @@ class Conditions extends Obj
                 if ($severity == 'normal') {
                     $sel = true;
                 }
-                $items[] = $this->_value($severity, Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . $severity), $sel);
+                $items[] = $this->value($severity, Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . $severity), $sel);
             }
         }
-        $conditions->severity = $this->_expression(
+        $conditions->severity = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false)
             ),
             $items
         );
@@ -260,13 +260,13 @@ class Conditions extends Obj
             $items = array();
             foreach ($categories as $anode) {
                 $sel = false;
-                $items[] = $this->_value($anode->alias, stripslashes($anode->title), $sel);
+                $items[] = $this->value($anode->alias, stripslashes($anode->title), $sel);
             }
         }
-        $conditions->category = $this->_expression(
+        $conditions->category = $this->expression(
             array(
-                $this->_operator('=', 'is', true),
-                $this->_operator('!=', 'is not', false)
+                $this->operator('=', 'is', true),
+                $this->operator('!=', 'is not', false)
             ),
             $items
         );
@@ -280,7 +280,7 @@ class Conditions extends Obj
      * @param    mixed $values    Either a string or array
      * @return   object
      */
-    private function _expression($operators, $values)
+    private function expression($operators, $values)
     {
         $obj = new stdClass();
         $obj->operators = $operators;
@@ -297,7 +297,7 @@ class Conditions extends Obj
      * @param    boolean $sel   Operator selected?
      * @return   object
      */
-    private function _operator($val = '=', $label = 'is', $sel = false)
+    private function operator($val = '=', $label = 'is', $sel = false)
     {
         $obj = new stdClass();
         $obj->val   = $val;
@@ -315,8 +315,8 @@ class Conditions extends Obj
      * @param    boolean $sel   Operator selected?
      * @return   object
      */
-    private function _value($val = '=', $label = 'is', $sel = false)
+    private function value($val = '=', $label = 'is', $sel = false)
     {
-        return $this->_operator($val, $label, $sel);
+        return $this->operator($val, $label, $sel);
     }
 }

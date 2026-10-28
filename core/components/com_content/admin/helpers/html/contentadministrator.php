@@ -22,7 +22,7 @@ abstract class ContentAdministrator
      * @param   bool   $canChange
      * @return  string
      */
-    static function featured($value, $i, $canChange = true)
+    public static function featured($value, $i, $canChange = true)
     {
         // Array of image, task, title, action
         $states = array(
@@ -42,7 +42,9 @@ abstract class ContentAdministrator
         $state = Arr::getValue($states, (int) $value, $states[1]);
         $html  = \Html::asset('image', 'admin/' . $state[0], Lang::txt($state[2]), null, true);
         if ($canChange) {
-            $html = '<a href="#" class="state ' . ($value ? 'yes' : 'no') . '" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="' . Lang::txt($state[3]) . '">' . $html . '</a>';
+            $html = '<a href="#" class="state ' . ($value ? 'yes' : 'no') . '" '
+                . 'onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" '
+                . 'title="' . Lang::txt($state[3]) . '">' . $html . '</a>';
         }
 
         return $html;

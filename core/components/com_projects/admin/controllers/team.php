@@ -114,7 +114,9 @@ class Team extends AdminController
         }
 
         // In case limit has been changed, adjust limitstart accordingly
-        $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
+        $filters['start'] = ($filters['limit'] != 0
+            ? (floor($filters['start'] / $filters['limit']) * $filters['limit'])
+            : 0);
 
         $team  = $model->team($filters, true);
 
@@ -228,7 +230,15 @@ class Team extends AdminController
 
         if ($groups) {
             // Save new authors from group
-            $g_added = $objO->saveOwners($this->model->get('id'), User::get('id'), 0, $groups, $role, $status = 1, $native = 0);
+            $g_added = $objO->saveOwners(
+                $this->model->get('id'),
+                User::get('id'),
+                0,
+                $groups,
+                $role,
+                $status = 1,
+                $native = 0
+            );
 
             if ($objO->getError()) {
                 Notify::error($objO->getError());
@@ -376,8 +386,9 @@ class Team extends AdminController
      */
     public function cancelTask()
     {
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&project=' . Request::getInt('project', 0), false)
-        );
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&project=' . Request::getInt('project', 0);
+        App::redirect(Route::url($url, false));
     }
 }

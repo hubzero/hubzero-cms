@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -199,8 +200,12 @@ class Pages extends AdminController
             return $this->editTask($row);
         }
 
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&course=' . $fields['course_id']
+            . '&offering=' . $fields['offering_id'];
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $fields['course_id'] . '&offering=' . $fields['offering_id'], false),
+            Route::url($url, false),
             Lang::txt('COM_COURSES_ITEM_SAVED')
         );
     }
@@ -219,7 +224,11 @@ class Pages extends AdminController
         $ids = Request::getArray('id', array());
         $ids = (!is_array($ids) ? array($ids) : $ids);
 
-        $rtrn = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0) . '&offering=' . Request::getInt('offering', 0), false);
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&course=' . Request::getInt('course', 0)
+            . '&offering=' . Request::getInt('offering', 0);
+        $rtrn = Route::url($url, false);
 
         // Ensure we have an ID to work with
         if (empty($ids)) {
@@ -267,8 +276,12 @@ class Pages extends AdminController
      */
     public function cancelTask()
     {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&course=' . Request::getInt('course', 0)
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . Request::getInt('course', 0) . '&offering=' . Request::getInt('offering', 0), false)
+            Route::url($url, false)
         );
     }
 
@@ -277,7 +290,7 @@ class Pages extends AdminController
      *
      * @return  void
      */
-    private function _buildUploadPath($listdir = 0)
+    private function buildUploadPath($listdir = 0)
     {
         $course_id = Request::getInt('course', 0);
 
@@ -307,7 +320,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Get media config
         $mediaConfig = \Component::params('com_media');
@@ -349,7 +362,8 @@ class Pages extends AdminController
         }
 
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $pattern = '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/';
+            $max = preg_replace($pattern, '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
             echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)));
             return;
         }
@@ -373,7 +387,8 @@ class Pages extends AdminController
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            $msg = Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
+            echo json_encode(array('error' => $msg));
             return;
         }
 
@@ -435,7 +450,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '', 'post');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Are we creating a new folder?
         $foldername = Request::getString('foldername', '', 'post');
@@ -479,7 +494,11 @@ class Pages extends AdminController
             $sizeLimit = $sizeLimit * 1024 * 1024;
 
             if ($file['size'] > $sizeLimit) {
-                $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+                $msg = Lang::txt(
+                    'COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG',
+                    \Hubzero\Utility\Number::formatBytes($sizeLimit)
+                );
+                $this->setError($msg);
                 return $this->displayTask();
             }
 
@@ -542,7 +561,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Incoming directory to delete
         $folder = trim(Request::getString('delFolder', ''), DS);
@@ -587,7 +606,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Incoming file to delete
         $file = basename(Request::getString('delFile', ''));
@@ -626,10 +645,10 @@ class Pages extends AdminController
         $this->view->subdir = Request::getString('subdir', '');
 
         // Build the path
-        $this->view->path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
+        $this->view->path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
 
         // Get list of directories
-        $dirs = $this->_recursiveListDir($this->view->path);
+        $dirs = $this->recursiveListDir($this->view->path);
 
         $folders   = array();
         $folders[] = Html::select('option', '/');
@@ -679,7 +698,7 @@ class Pages extends AdminController
         $this->view->subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
+        $path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
 
         $folders = array();
         $docs    = array();
@@ -732,7 +751,7 @@ class Pages extends AdminController
      * @param   string  $base  Directory to scan
      * @return  array
      */
-    private function _recursiveListDir($base)
+    private function recursiveListDir($base)
     {
         static $filelist = array();
         static $dirlist  = array();
@@ -743,7 +762,7 @@ class Pages extends AdminController
                 if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
-                    $subdirlist = $this->_recursiveListDir($subbase);
+                    $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
             closedir($dh);
@@ -769,8 +788,10 @@ class Pages extends AdminController
 
         $row = new Tables\Page($this->database);
         $row->load($uid);
-        $row->move($inc, 'course_id=' . $this->database->Quote($row->course_id) . ' AND offering_id=' . $this->database->Quote($row->offering_id));
-        $row->reorder('course_id=' . $this->database->Quote($row->course_id) . ' AND offering_id=' . $this->database->Quote($row->offering_id));
+        $where = 'course_id=' . $this->database->Quote($row->course_id)
+            . ' AND offering_id=' . $this->database->Quote($row->offering_id);
+        $row->move($inc, $where);
+        $row->reorder($where);
 
         $this->cancelTask();
     }
@@ -818,17 +839,21 @@ class Pages extends AdminController
             }
         }
 
+        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false);
         if ($this->getErrors()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                $url,
                 implode('<br />', $this->getErrors()),
                 'error'
             );
         } else {
             // Output messsage and redirect
+            $msg = $state
+                ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num)
+                : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num);
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                ($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num))
+                $url,
+                $msg
             );
         }
     }

@@ -34,7 +34,7 @@ $this->css();
             if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder')) {
                 $handle = 'doi:' . (isset($v->doi_shoulder) ? $v->doi_shoulder : $this->tconfig->get('doi_shoulder')) . '/' . strtoupper($v->doi);
                 $handle = '<a href="' . $this->tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
-            } else if (isset($v->doi_label) && $v->doi_label) {
+            } elseif (isset($v->doi_label) && $v->doi_label) {
                 $handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
                 $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
             }

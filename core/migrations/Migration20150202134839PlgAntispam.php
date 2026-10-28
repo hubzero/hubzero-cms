@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to move existing antispam plugins and add a couple more
+  *
  **/
 class Migration20150202134839PlgAntispam extends Base
 {
@@ -27,9 +29,14 @@ class Migration20150202134839PlgAntispam extends Base
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
-                $this->db->setQuery("SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND `element`=" . $this->db->quote($plg));
+                $query = "SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' "
+                    . "AND `folder`='content' AND `element`=" . $this->db->quote($plg);
+                $this->db->setQuery($query);
                 if ($id = $this->db->loadResult()) {
-                    $this->db->setQuery("UPDATE `#__extensions` SET `folder`='antispam', `name`=" . $this->db->quote('plg_antispam_' . $plg) . " WHERE `extension_id`=" . $this->db->quote($id));
+                    $query = "UPDATE `#__extensions` SET `folder`='antispam', `name`="
+                        . $this->db->quote('plg_antispam_' . $plg)
+                        . " WHERE `extension_id`=" . $this->db->quote($id);
+                    $this->db->setQuery($query);
                     $this->db->query();
                 } else {
                     $this->addPluginEntry('antispam', $plg, 0);
@@ -37,7 +44,9 @@ class Migration20150202134839PlgAntispam extends Base
             }
 
             // Get the params from the old antispam plugin. We need the badwords list for the 'blacklist' plugin.
-            $this->db->setQuery("SELECT params FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND `element`='antispam'");
+            $query = "SELECT params FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' "
+                . "AND `element`='antispam'";
+            $this->db->setQuery($query);
             $params = $this->db->loadResult();
         }
 
@@ -100,9 +109,14 @@ class Migration20150202134839PlgAntispam extends Base
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
-                $this->db->setQuery("SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' AND `folder`='antispam' AND `element`=" . $this->db->quote($plg));
+                $query = "SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' "
+                    . "AND `folder`='antispam' AND `element`=" . $this->db->quote($plg);
+                $this->db->setQuery($query);
                 if ($id = $this->db->loadResult()) {
-                    $this->db->setQuery("UPDATE `#__extensions` SET `folder`='content', `name`=" . $this->db->quote('plg_content_' . $plg) . " WHERE `extension_id`=" . $this->db->quote($id));
+                    $query = "UPDATE `#__extensions` SET `folder`='content', `name`="
+                        . $this->db->quote('plg_content_' . $plg)
+                        . " WHERE `extension_id`=" . $this->db->quote($id);
+                    $this->db->setQuery($query);
                     $this->db->query();
                 } else {
                     $this->addPluginEntry('content', $plg, 0);

@@ -20,6 +20,7 @@ class Link extends Button
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Link';
 
     /**
@@ -68,6 +69,7 @@ class Link extends Button
      * @param   object  $url  Button definition
      * @return  string  JavaScript command string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCommand($url)
     {
         return $url;

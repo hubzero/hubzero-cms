@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving KB categories to #__categories
- **/
+ *
+ */
 class Migration20151001185523ComKb extends Base
 {
     /**
@@ -63,7 +65,8 @@ class Migration20151001185523ComKb extends Base
                 $this->db->setQuery($query);
                 if ($max = $this->db->loadResult()) {
                     $max = intval($max);
-                    $query = "UPDATE `#__categories` SET `rgt`=" . $this->db->quote($max + 1) . " WHERE `extension`='system' AND `title`='ROOT'";
+                    $query = "UPDATE `#__categories` SET `rgt`=" . $this->db->quote($max + 1) . " WHERE "
+                        . "`extension`='system' AND `title`='ROOT'";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -81,7 +84,8 @@ class Migration20151001185523ComKb extends Base
 
                     $article->category = (isset($par[$key]) ? $par[$key] : 0);
 
-                    $query = "UPDATE `#__faq` SET `category`=" . $this->db->quote($article->category) . " WHERE `id`=" . $this->db->quote($article->id);
+                    $query = "UPDATE `#__faq` SET `category`=" . $this->db->quote($article->category)
+                        . " WHERE `id`=" . $this->db->quote($article->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -120,7 +124,8 @@ class Migration20151001185523ComKb extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                $query = "UPDATE `#__kb_votes` SET `type`=" . $this->db->quote('article') . " WHERE `type`=" . $this->db->quote('entry');
+                $query = "UPDATE `#__kb_votes` SET `type`=" . $this->db->quote('article')
+                    . " WHERE `type`=" . $this->db->quote('entry');
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -169,7 +174,8 @@ class Migration20151001185523ComKb extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                $query = "UPDATE `#__faq_helpful_log` SET `type`=" . $this->db->quote('entry') . " WHERE `type`=" . $this->db->quote('article');
+                $query = "UPDATE `#__faq_helpful_log` SET `type`=" . $this->db->quote('entry')
+                    . " WHERE `type`=" . $this->db->quote('article');
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -216,7 +222,8 @@ class Migration20151001185523ComKb extends Base
             foreach ($articles as $article) {
                 $article->section = (isset($par[$article->category]) ? $par[$article->category] : 0);
 
-                $query = "UPDATE `#__faq` SET `section`=" . $this->db->quote($article->section) . " AND `category`=0 WHERE `id`=" . $this->db->quote($article->id);
+                $query = "UPDATE `#__faq` SET `section`=" . $this->db->quote($article->section)
+                    . " AND `category`=0 WHERE `id`=" . $this->db->quote($article->id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -277,12 +284,17 @@ class Migration20151001185523ComKb extends Base
         $id = 0;
 
         if ($this->db->tableExists('#__faq_categories')) {
-            $query = "INSERT INTO `#__faq_categories` (`id`, `title`, `alias`, `description`, `section`, `state`, `access`, `asset_id`)
-					VALUES (NULL, " . $this->db->quote($tbl->title) . ", " . $this->db->quote($tbl->alias) . ", " . $this->db->quote($tbl->description) . ", " . $this->db->quote($tbl->parent_id) . ", " . $this->db->quote($tbl->published) . ", " . $this->db->quote($tbl->access) . ", NULL)";
+            $query = "INSERT INTO `#__faq_categories` "
+                . "(`id`, `title`, `alias`, `description`, `section`, `state`, `access`, `asset_id`) VALUES (NULL, "
+                . $this->db->quote($tbl->title) . ", " . $this->db->quote($tbl->alias) . ", "
+                . $this->db->quote($tbl->description) . ", " . $this->db->quote($tbl->parent_id) . ", "
+                . $this->db->quote($tbl->published) . ", " . $this->db->quote($tbl->access) . ", NULL)";
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "SELECT id FROM `#__faq_categories` WHERE `title`=" . $this->db->quote($tbl->title) . " AND `alias`=" . $this->db->quote($tbl->alias) . " AND `section`=" . $this->db->quote($tbl->parent_id) . " LIMIT 1";
+            $query = "SELECT id FROM `#__faq_categories` WHERE `title`=" . $this->db->quote($tbl->title) . " AND "
+                . "`alias`=" . $this->db->quote($tbl->alias) . " AND `section`="
+                . $this->db->quote($tbl->parent_id) . " LIMIT 1";
             $this->db->setQuery($query);
             $id = $this->db->loadResult();
         }

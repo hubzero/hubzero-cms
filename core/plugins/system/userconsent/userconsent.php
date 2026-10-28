@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin checking for getting user consent to monitor
  */
@@ -40,7 +37,7 @@ class plgSystemUserconsent extends \Hubzero\Plugin\Plugin
                     Request::setVar('option', 'com_users');
                     Request::setVar('view', 'userconsent');
                 }
-            } else if (App::isAdmin()) {
+            } elseif (App::isAdmin()) {
                 $exceptions = [
                     'com_login.grantconsent'
                 ];

@@ -25,6 +25,7 @@ class Plugin extends Obj
      * @var  object
      * @deprecated
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_subject = null;
 
     /**
@@ -39,6 +40,7 @@ class Plugin extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = null;
 
     /**
@@ -46,6 +48,7 @@ class Plugin extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_type = null;
 
     /**
@@ -61,6 +64,7 @@ class Plugin extends Obj
      *
      * @var  boolean
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = false;
 
     /**
@@ -77,6 +81,7 @@ class Plugin extends Obj
      * @param   array   $config   Optional configurations to be used
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($subject, $config)
     {
         // Set the subject to observe
@@ -125,8 +130,20 @@ class Plugin extends Obj
 
         $lang = \App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP .
+                DS .
+                'plugins' .
+                DS .
+                $this->_type .
+                DS .
+                $this->_name, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE .
+                DS .
+                'plugins' .
+                DS .
+                $this->_type .
+                DS .
+                $this->_name, null, false, true);
     }
 
     /**
@@ -141,7 +158,11 @@ class Plugin extends Obj
         $database = \App::get('db');
 
         // load the params from databse
-        $sql = "SELECT params FROM `#__extensions` WHERE folder=" . $database->quote($folder) . " AND element=" . $database->quote($name) . " AND enabled=1";
+        $sql = "SELECT params FROM `#__extensions` WHERE folder=" .
+            $database->quote($folder) .
+            " AND element=" .
+            $database->quote($name) .
+            " AND enabled=1";
         $database->setQuery($sql);
         $result = $database->loadResult();
 

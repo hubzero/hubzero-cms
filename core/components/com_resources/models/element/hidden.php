@@ -21,6 +21,7 @@ class Hidden extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Hidden';
 
     /**
@@ -49,12 +50,15 @@ class Hidden extends Base
 
                     $k++;
                 }
-            } else if (is_object($element->options)) {
+            } elseif (is_object($element->options)) {
                 $val = $element->options->value;
             }
         }
 
-        return '<input type="hidden" name="' . $control_name . '[' . $name . ']" id="' . $control_name . '-' . $name . '" value="' . $val . '" class="' . $class . '" />';
+        $inputName = $control_name . '[' . $name . ']';
+        $inputId = $control_name . '-' . $name;
+        return '<input type="hidden" name="' . $inputName . '" id="' . $inputId
+            . '" value="' . $val . '" class="' . $class . '" />';
     }
 
     /**
@@ -94,8 +98,12 @@ class Hidden extends Base
                 }
 
                 $html[] = '<tr>';
-                $html[] = '<td><label for="' . $control_name . '-' . $name . '-label-' . $k . '">' . Lang::txt('COM_RESOURCES_VALUE') . '</label></td>';
-                $html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="' . $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
+                $labelId = $control_name . '-' . $name . '-label-' . $k;
+                $optName = $control_name . '[' . $name . '][options][' . $k . '][label]';
+                $optLabel = Lang::txt('COM_RESOURCES_VALUE');
+                $html[] = '<td><label for="' . $labelId . '">' . $optLabel . '</label></td>';
+                $html[] = '<td><input type="text" size="35" name="' . $optName . '" id="'
+                    . $labelId . '" value="' . $option->label . '" /></td>';
                 $html[] = '</tr>';
 
                 $k++;

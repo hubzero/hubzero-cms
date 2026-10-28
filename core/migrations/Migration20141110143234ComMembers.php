@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding default member organization types
- **/
+ *
+ */
 class Migration20141110143234ComMembers extends Base
 {
     /**
@@ -40,7 +42,8 @@ class Migration20141110143234ComMembers extends Base
                 );
 
                 foreach ($types as $alias => $title) {
-                    $query = "INSERT INTO `#__xorganization_types` (`id`, `type`, `title`) VALUES (NULL, " . $this->db->quote($alias) . "," . $this->db->quote($title) . ")";
+                    $query = "INSERT INTO `#__xorganization_types` (`id`, `type`, `title`) "
+                        . "VALUES (NULL, " . $this->db->quote($alias) . "," . $this->db->quote($title) . ")";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

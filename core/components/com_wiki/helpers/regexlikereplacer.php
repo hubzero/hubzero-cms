@@ -8,6 +8,7 @@
 
 /**
  * Class to replace regex matches with a string similar to that used in preg_replace()
+ *
  */
 class RegexlikeReplacer extends Replacer
 {
@@ -16,7 +17,7 @@ class RegexlikeReplacer extends Replacer
      *
      * @var unknown
      */
-    var $r;
+    public $r;
 
     /**
      * Short description for '__construct'
@@ -26,7 +27,7 @@ class RegexlikeReplacer extends Replacer
      * @param      unknown $r Parameter description (if any) ...
      * @return     void
      */
-    function __construct($r)
+    public function __construct($r)
     {
         $this->r = $r;
     }
@@ -39,7 +40,7 @@ class RegexlikeReplacer extends Replacer
      * @param      array $matches Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    function replace($matches)
+    public function replace($matches)
     {
         $pairs = array();
         foreach ($matches as $i => $match) {

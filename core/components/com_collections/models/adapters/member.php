@@ -20,6 +20,7 @@ class Member extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_members',
     );

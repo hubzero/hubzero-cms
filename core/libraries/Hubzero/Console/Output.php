@@ -423,9 +423,8 @@ class Output
                         break;
                 }
             }
-        }
-        // If string, parse for predefined formatting key words
-        elseif (is_string($styles)) {
+        } elseif (is_string($styles)) {
+            // If string, parse for predefined formatting key words
             switch ($styles) {
                 case 'warning':
                     $style['color'] = '43';

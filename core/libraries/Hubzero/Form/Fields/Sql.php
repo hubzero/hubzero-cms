@@ -36,7 +36,10 @@ class Sql extends Select
 
         // Initialize some field attributes.
         $key       = $this->element['key_field']   ? (string) $this->element['key_field']   : 'value';
-        $value     = $this->element['value_field'] ? (string) $this->element['value_field'] : (string) $this->element['name'];
+        $value     = $this->
+            element['value_field'] ? (string) $this->
+            element['value_field'] : (string) $this->
+            element['name'];
         $translate = $this->element['translate']   ? (string) $this->element['translate']   : false;
         $query     = (string) $this->element['query'];
 

@@ -22,49 +22,49 @@ class Tools extends Base
      *
      * @var string
      */
-    var $jobs     = 'unavailable';
+    public $jobs     = 'unavailable';
 
     /**
      * Average wall time
      *
      * @var string
      */
-    var $avg_wall = 'unavailable';
+    public $avg_wall = 'unavailable';
 
     /**
      * Total wall time
      *
      * @var string
      */
-    var $tot_wall = 'unavailable';
+    public $tot_wall = 'unavailable';
 
     /**
      * Average CPU time
      *
      * @var mixed
      */
-    var $avg_cpu  = 'unavailable';
+    public $avg_cpu  = 'unavailable';
 
     /**
      * Total CPU time
      *
      * @var mixed
      */
-    var $tot_cpu  = 'unavailable';
+    public $tot_cpu  = 'unavailable';
 
     /**
      * Average execution time
      *
      * @var string
      */
-    var $avg_exec = 'unavailable';
+    public $avg_exec = 'unavailable';
 
     /**
      * Total execution time
      *
      * @var string
      */
-    var $tot_exec = 'unavailable';
+    public $tot_exec = 'unavailable';
 
     /**
      * Constructor
@@ -120,14 +120,16 @@ class Tools extends Base
             }
             if ($this->avg_exec != 'unavailable') {
                 $html .= '  <tr>' . "\n";
-                $html .= '   <th scope="row"><abbr title="Average">Avg.</abbr> <abbr title="execution">exec.</abbr> time:</th>' . "\n";
+                $thLabel = '<abbr title="Average">Avg.</abbr> '
+                    . '<abbr title="execution">exec.</abbr> time:';
+                $html .= '   <th scope="row">' . $thLabel . '</th>' . "\n";
                 $html .= '   <td>' . $this->valfmt($this->avg_exec) . '</td>' . "\n";
                 $html .= '  </tr>' . "\n";
             }
             $html .= ' </tbody>' . "\n";
             $html .= '</table>' . "\n";
         }
-        $html .= $this->display_substats();
+        $html .= $this->displaySubstats();
 
         return $html;
     }

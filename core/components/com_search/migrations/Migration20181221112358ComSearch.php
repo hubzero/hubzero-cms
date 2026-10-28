@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +22,9 @@ class Migration20181221112358ComSearch extends Base
 {
     public function up()
     {
-        if ($this->db->tableExists('#__solr_search_searchcomponents') && !$this->db->tableHasField('#__solr_search_searchcomponents', 'custom')) {
-            $query = "ALTER TABLE `#__solr_search_searchcomponents` ADD COLUMN `custom` VARCHAR(254) NULL;";
+        $tableName = '#__solr_search_searchcomponents';
+        if ($this->db->tableExists($tableName) && !$this->db->tableHasField($tableName, 'custom')) {
+            $query = "ALTER TABLE `$tableName` ADD COLUMN `custom` VARCHAR(254) NULL;";
             $this->db->setQuery($query);
             $this->db->query();
             $searchComponents = SearchComponent::all()->rows();
@@ -36,8 +38,9 @@ class Migration20181221112358ComSearch extends Base
 
     public function down()
     {
-        if ($this->db->tableExists('#__solr_search_searchcomponents') && $this->db->tableHasField('#__solr_search_searchcomponents', 'custom')) {
-            $query = "ALTER TABLE `#__solr_search_searchcomponents` DROP COLUMN `custom`;";
+        $tableName = '#__solr_search_searchcomponents';
+        if ($this->db->tableExists($tableName) && $this->db->tableHasField($tableName, 'custom')) {
+            $query = "ALTER TABLE `$tableName` DROP COLUMN `custom`;";
             $this->db->setQuery($query);
             $this->db->query();
         }

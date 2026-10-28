@@ -1,5 +1,7 @@
 <?php
 
+
+// phpcs:disable PSR1.Methods.CamelCapsMethodName
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,7 +9,6 @@
  */
 
 // No direct access
-defined('_HZEXEC_') or die();
 
 
 class SimpleCIDR

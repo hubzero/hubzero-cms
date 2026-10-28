@@ -26,6 +26,7 @@ class Entry extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Projects\\Tables\\Todo';
 
     /**
@@ -33,6 +34,7 @@ class Entry extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_projects.todo.details';
 
     /**
@@ -40,42 +42,42 @@ class Entry extends Model
      *
      * @var object
      */
-    private $_comment = null;
+    private $comment = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_comments = null;
+    private $comments = null;
 
     /**
      * Comment count
      *
      * @var integer
      */
-    private $_comments_count = null;
+    private $commentsCount = null;
 
     /**
      * User
      *
      * @var object
      */
-    private $_creator = null;
+    private $creator = null;
 
     /**
      * Hubzero\User\User
      *
      * @var object
      */
-    private $_owner = null;
+    private $owner = null;
 
     /**
      * Hubzero\User\User
      *
      * @var object
      */
-    private $_closer = null;
+    private $closer = null;
 
     /**
      * Constructor
@@ -92,7 +94,7 @@ class Entry extends Model
         if ($oid) {
             if (is_numeric($oid)) {
                 $this->_tbl->load($oid);
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -104,7 +106,7 @@ class Entry extends Model
      * @param   mixed   $oid   ID (int) or alias (string)
      * @return  object  Entry
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -114,7 +116,7 @@ class Entry extends Model
 
         if (is_object($oid)) {
             $key = $oid->id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'];
         } else {
             $key = $oid;
@@ -213,6 +215,7 @@ class Entry extends Model
      * @param   string  $as   What data to return
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _date($key, $as = '')
     {
         if ($this->get($key) == $this->_db->getNullDate()) {
@@ -246,17 +249,17 @@ class Entry extends Model
      */
     public function creator($property = null, $default = null)
     {
-        if (!($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
+        if (!($this->creator instanceof \Hubzero\User\User)) {
+            $this->creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
         }
         if ($property) {
             $property = ($property == 'uidNumber') ? 'id' : $property;
             if ($property == 'picture') {
-                return $this->_creator->pcture();
+                return $this->creator->pcture();
             }
-            return $this->_creator->get($property, $default);
+            return $this->creator->get($property, $default);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**
@@ -272,16 +275,16 @@ class Entry extends Model
      */
     public function owner($property = null, $default = null)
     {
-        if (!($this->_owner instanceof \Hubzero\User\User)) {
-            $this->_owner = \User::getInstance($this->get('assigned_to'));
+        if (!($this->owner instanceof \Hubzero\User\User)) {
+            $this->owner = \User::getInstance($this->get('assigned_to'));
         }
         if ($property) {
             if ($property == 'picture') {
-                return $this->_owner->picture();
+                return $this->owner->picture();
             }
-            return $this->_owner->get($property, $default);
+            return $this->owner->get($property, $default);
         }
-        return $this->_owner;
+        return $this->owner;
     }
 
     /**
@@ -297,16 +300,16 @@ class Entry extends Model
      */
     public function closer($property = null, $default = null)
     {
-        if (!($this->_closer instanceof \Hubzero\User\User)) {
-            $this->_closer = \User::getInstance($this->get('closed_by'));
+        if (!($this->closer instanceof \Hubzero\User\User)) {
+            $this->closer = \User::getInstance($this->get('closed_by'));
         }
         if ($property) {
             if ($property == 'picture') {
-                return $this->_closer->picture();
+                return $this->closer->picture();
             }
-            return $this->_closer->get($property, $default);
+            return $this->closer->get($property, $default);
         }
-        return $this->_closer;
+        return $this->closer;
     }
 
     /**
@@ -323,23 +326,23 @@ class Entry extends Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear) {
-                    $this->_comments_count = 0;
+                if (!isset($this->commentsCount) || !is_numeric($this->commentsCount) || $clear) {
+                    $this->commentsCount = 0;
 
-                    if (!$this->_comments) {
+                    if (!$this->comments) {
                         $c = $this->comments('list', $filters);
                     }
-                    foreach ($this->_comments as $com) {
-                        $this->_comments_count++;
+                    foreach ($this->comments as $com) {
+                        $this->commentsCount++;
                     }
                 }
-                return $this->_comments_count;
+                return $this->commentsCount;
             break;
 
             case 'list':
             case 'results':
             default:
-                if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear) {
+                if (!($this->comments instanceof \Hubzero\Base\ItemList) || $clear) {
                     if ($results = $tbl->getComments($this->get('id'), 'todo')) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Comment($result);
@@ -351,9 +354,9 @@ class Entry extends Model
                     } else {
                         $results = array();
                     }
-                    $this->_comments = new \Hubzero\Base\ItemList($results);
+                    $this->comments = new \Hubzero\Base\ItemList($results);
                 }
-                return $this->_comments;
+                return $this->comments;
             break;
         }
     }

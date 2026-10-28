@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -130,18 +131,21 @@ class Polls extends SiteController
         $pList = array();
         foreach ($ps as $k => $p) {
             $pList[$k] = $p;
-            $pList[$k]->set('url', Route::url('index.php?option=com_poll&id=' . $p->get('id') . ':' . $p->get('alias')));
+            $url = 'index.php?option=com_poll&id=' . $p->get('id') . ':' . $p->get('alias');
+            $pList[$k]->set('url', Route::url($url));
         }
 
         array_unshift($pList, Html::select('option', '', Lang::txt('COM_POLL_SELECT_POLL'), 'url', 'title'));
 
         // dropdown output
+        $onchange = "if (this.options[selectedIndex].value != '') "
+            . "{document.location.href=this.options[selectedIndex].value}";
         $lists = array(
             'polls' => Html::select(
                 'genericlist',
                 $pList,
                 'id',
-                'class="inputbox" size="1" onchange="if (this.options[selectedIndex].value != \'\') {document.location.href=this.options[selectedIndex].value}"',
+                'class="inputbox" size="1" onchange="' . $onchange . '"',
                 'url',
                 'title',
                 Route::url('index.php?option=com_poll&id=' . $poll->get('id') . ':' . $poll->get('alias'))
@@ -298,7 +302,7 @@ class Polls extends SiteController
 
             if (App::isAdmin() && $forceSsl >= 1) {
                 $secure = true;
-            } else if (App::isSite() && $forceSsl == 2) {
+            } elseif (App::isSite() && $forceSsl == 2) {
                 $secure = true;
             }
 

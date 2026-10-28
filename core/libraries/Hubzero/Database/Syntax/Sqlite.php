@@ -23,7 +23,10 @@ class Sqlite extends Mysql
      **/
     public function buildInsert()
     {
-        return 'INSERT ' . (($this->ignore) ? 'OR IGNORE ' : '') . 'INTO ' . $this->connection->quoteName($this->insert);
+        return 'INSERT ' .
+            (($this->ignore) ? 'OR IGNORE ' : '') .
+            'INTO ' .
+            $this->connection->quoteName($this->insert);
     }
 
     /**
@@ -40,7 +43,8 @@ class Sqlite extends Mysql
     public function setJoin($table, $leftKey, $rightKey, $type = 'inner')
     {
         if (in_array($type, ['right', 'full', 'full outer'])) {
-            throw new UnsupportedSyntaxException('RIGHT and FULL OUTER JOINs are not currently supported for SQLite', 500);
+            throw new UnsupportedSyntaxException('RIGHT and 
+                FULL OUTER JOINs are not currently supported for SQLite', 500);
         }
 
         parent::setJoin($table, $leftKey, $rightKey, $type);
@@ -58,7 +62,8 @@ class Sqlite extends Mysql
     public function setRawJoin($table, $raw, $type = 'inner')
     {
         if (in_array($type, ['right', 'full', 'full outer'])) {
-            throw new UnsupportedSyntaxException('RIGHT and FULL OUTER JOINs are not currently supported for SQLite', 500);
+            throw new UnsupportedSyntaxException('RIGHT and 
+                FULL OUTER JOINs are not currently supported for SQLite', 500);
         }
 
         parent::setRawJoin($table, $raw, $type);
@@ -94,9 +99,8 @@ class Sqlite extends Mysql
                 // @FIXME: should we try to normalize types too?
                 $results[$field->name] = $field->type;
             }
-        }
+        } else {
         // If we want the whole field data object add that to the list
-        else {
             foreach ($data as $field) {
                 $results[$field->name] =
                 [

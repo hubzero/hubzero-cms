@@ -8,6 +8,7 @@
 
 /**
  * Answers plugin for members
+ *
  */
 class plgAnswersMembers extends \Hubzero\Plugin\Plugin
 {
@@ -15,6 +16,7 @@ class plgAnswersMembers extends \Hubzero\Plugin\Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $_autoloadLanguage = true;
 

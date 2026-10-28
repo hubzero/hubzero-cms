@@ -14,13 +14,14 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for script files
  */
-class plgHandlersScript extends Plugin
+class PlgHandlersScript extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

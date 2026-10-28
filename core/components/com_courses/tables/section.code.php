@@ -100,6 +100,7 @@ class SectionCode extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS c";
@@ -109,7 +110,7 @@ class SectionCode extends Table
         if (isset($filters['redeemed'])) {
             if ($filters['redeemed'] > 0) {
                 $where[] = "c.redeemed_by > 0";
-            } else if ($filters['redeemed'] == 0) {
+            } elseif ($filters['redeemed'] == 0) {
                 $where[] = "c.redeemed_by = 0";
             }
         }

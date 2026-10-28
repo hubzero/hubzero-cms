@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to fix index naming conventions in middleware tables
- **/
+ *
+ */
 class Migration20160906100300ComTools extends Base
 {
     public function up()
@@ -23,67 +25,111 @@ class Migration20160906100300ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('view') && $mwdb->tableHasField('view', 'viewid') && !$mwdb->tableHasKey('view', 'PRIMARY')) {
+        if (
+            $mwdb->tableExists('view')
+            && $mwdb->tableHasField('view', 'viewid')
+            && !$mwdb->tableHasKey('view', 'PRIMARY')
+        ) {
             $query = "ALTER TABLE `view` ADD PRIMARY KEY (`viewid`)";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('view') && $mwdb->tableHasField('view', 'viewid') && $mwdb->tableHasKey('view', 'viewid')) {
+        if (
+            $mwdb->tableExists('view')
+            && $mwdb->tableHasField('view', 'viewid')
+            && $mwdb->tableHasKey('view', 'viewid')
+        ) {
             $query = "DROP INDEX `viewid` ON `view`;";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('sessionpriv') && $mwdb->tableHasField('sessionpriv', 'privid') && !$mwdb->tableHasKey('sessionpriv', 'PRIMARY')) {
+        if (
+            $mwdb->tableExists('sessionpriv')
+            && $mwdb->tableHasField('sessionpriv', 'privid')
+            && !$mwdb->tableHasKey('sessionpriv', 'PRIMARY')
+        ) {
             $query = "ALTER TABLE `sessionpriv` ADD PRIMARY KEY (`privid`)";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('sessionpriv') && $mwdb->tableHasField('sessionpriv', 'privid') && $mwdb->tableHasKey('sessionpriv', 'privid')) {
+        if (
+            $mwdb->tableExists('sessionpriv')
+            && $mwdb->tableHasField('sessionpriv', 'privid')
+            && $mwdb->tableHasKey('sessionpriv', 'privid')
+        ) {
             $query = "DROP INDEX `privid` ON `sessionpriv`;";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('session') && $mwdb->tableHasField('session', 'sessnum') && !$mwdb->tableHasKey('session', 'PRIMARY')) {
+        if (
+            $mwdb->tableExists('session')
+            && $mwdb->tableHasField('session', 'sessnum')
+            && !$mwdb->tableHasKey('session', 'PRIMARY')
+        ) {
             $query = "ALTER TABLE `session` ADD PRIMARY KEY (`sessnum`)";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('session') && $mwdb->tableHasField('session', 'sessnum') && $mwdb->tableHasKey('session', 'sessnum')) {
+        if (
+            $mwdb->tableExists('session')
+            && $mwdb->tableHasField('session', 'sessnum')
+            && $mwdb->tableHasKey('session', 'sessnum')
+        ) {
             $query = "DROP INDEX `sessnum` ON `session`;";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('joblog') && $mwdb->tableHasField('joblog', 'sessnum') && !$mwdb->tableHasKey('joblog', 'idx_sessnum')) {
+        if (
+            $mwdb->tableExists('joblog')
+            && $mwdb->tableHasField('joblog', 'sessnum')
+            && !$mwdb->tableHasKey('joblog', 'idx_sessnum')
+        ) {
             $query = "ALTER TABLE `joblog` ADD KEY idx_sessnum (`sessnum`)";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('joblog') && $mwdb->tableHasField('joblog', 'sessnum') && $mwdb->tableHasKey('joblog', 'sessnum')) {
+        if (
+            $mwdb->tableExists('joblog')
+            && $mwdb->tableHasField('joblog', 'sessnum')
+            && $mwdb->tableHasKey('joblog', 'sessnum')
+        ) {
             $query = "DROP INDEX `sessnum` ON `joblog`;";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('joblog') && $mwdb->tableHasField('joblog', 'event') && !$mwdb->tableHasKey('joblog', 'idx_event')) {
+        if (
+            $mwdb->tableExists('joblog')
+            && $mwdb->tableHasField('joblog', 'event')
+            && !$mwdb->tableHasKey('joblog', 'idx_event')
+        ) {
             $query = "ALTER TABLE `joblog` ADD KEY idx_event (`event`)";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('joblog') && $mwdb->tableHasField('joblog', 'event') && $mwdb->tableHasKey('joblog', 'event')) {
+        if (
+            $mwdb->tableExists('joblog')
+            && $mwdb->tableHasField('joblog', 'event')
+            && $mwdb->tableHasKey('joblog', 'event')
+        ) {
             $query = "DROP INDEX `event` ON `joblog`;";
             $mwdb->setQuery($query);
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('job') && $mwdb->tableHasField('job', 'jobid') && !$mwdb->tableHasKey('job', 'uidx_jobid')) {
+        if (
+            $mwdb->tableExists('job')
+            && $mwdb->tableHasField('job', 'jobid')
+            && !$mwdb->tableHasKey('job', 'uidx_jobid')
+        ) {
             $query = "ALTER TABLE `job` ADD UNIQUE KEY uidx_jobid (`jobid`)";
             $mwdb->setQuery($query);
             $mwdb->query();
@@ -119,7 +165,11 @@ class Migration20160906100300ComTools extends Base
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('domainclass') && $mwdb->tableHasField('domainclass', 'class') && !$mwdb->tableHasKey('domainclass', 'idx_class')) {
+        if (
+            $mwdb->tableExists('domainclass')
+            && $mwdb->tableHasField('domainclass', 'class')
+            && !$mwdb->tableHasKey('domainclass', 'idx_class')
+        ) {
             $query = "ALTER TABLE `domainclass` ADD KEY idx_class (`class`) USING BTREE";
             $mwdb->setQuery($query);
             $mwdb->query();
@@ -131,7 +181,11 @@ class Migration20160906100300ComTools extends Base
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('domainclass') && $mwdb->tableHasField('domainclass', 'class') && !$mwdb->tableHasKey('domainclass', 'idx_domain_class')) {
+        if (
+            $mwdb->tableExists('domainclass')
+            && $mwdb->tableHasField('domainclass', 'class')
+            && !$mwdb->tableHasKey('domainclass', 'idx_domain_class')
+        ) {
             $query = "ALTER TABLE `domainclass` ADD KEY idx_domain_class (`domain`,`class`) USING BTREE";
             $mwdb->setQuery($query);
             $mwdb->query();

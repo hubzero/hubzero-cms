@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing billboards module
- **/
+ *
+ */
 class Migration20190109000000ModBillboards extends Base
 {
     /**

@@ -98,7 +98,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
             'sort_Dir' => 'desc'
         );
 
-        $this->count = $this->_find()->count();
+        $this->count = $this->find()->count();
 
         // Load component language file
         Lang::load('com_answers') ||
@@ -108,16 +108,16 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
         if ($rtrn == 'all' || $rtrn == 'html') {
             switch (strtolower(Request::getWord('action', 'browse'))) {
                 case 'save':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
 
                 case 'new':
-                    $arr['html'] = $this->_new();
+                    $arr['html'] = $this->new();
                     break;
 
                 case 'browse':
                 default:
-                    $arr['html'] = $this->_browse();
+                    $arr['html'] = $this->browse();
                     break;
             }
         }
@@ -140,7 +140,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
      *
      * @return  object
      */
-    private function _find()
+    private function find()
     {
         $records = \Components\Answers\Models\Question::all()
             ->including(['responses', function ($response) {
@@ -188,7 +188,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _browse()
+    private function browse()
     {
         switch ($this->filters['sortby']) {
             case 'rewards':
@@ -204,7 +204,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
         }
 
         // Get results
-        $results = $this->_find()
+        $results = $this->find()
             ->limit($this->params->get('display_limit', 10))
             ->order($order, $this->filters['sort_Dir'])
             ->paginated()
@@ -228,7 +228,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
      * @param   object  $row
      * @return  string
      */
-    private function _new($row = null)
+    private function new($row = null)
     {
         // Login required
         if (User::isGuest()) {
@@ -290,11 +290,11 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _save()
+    private function save()
     {
         // Login required
         if (User::isGuest()) {
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Check for request forgeries
@@ -364,7 +364,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->_new($row);
+            return $this->new($row);
         }
 
         // Hold the reward for this question if we're banking

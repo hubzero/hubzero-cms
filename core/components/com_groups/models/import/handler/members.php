@@ -41,7 +41,7 @@ class Members extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->members) && $raw->members != '') {
-            $record->members = (array)$this->_multiValueField($raw->members);
+            $record->members = (array)$this->multiValueField($raw->members);
 
             foreach ($record->members as $i => $gid) {
                 $gid = trim($gid, '"');
@@ -124,7 +124,7 @@ class Members extends Obj
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
      * @return  array
      */
-    private function _multiValueField($data, $delim = ',|;')
+    private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
             $data = array_map('trim', preg_split("/($delim)/", $data));

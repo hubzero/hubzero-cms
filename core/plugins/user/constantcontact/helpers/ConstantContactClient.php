@@ -154,7 +154,10 @@ class ConstantContactClient
             $message = 'Token refresh failed';
             if ($e->hasResponse()) {
                 $body = json_decode((string) $e->getResponse()->getBody(), true);
-                $message .= ': ' . ($body['error_description'] ?? $body['error'] ?? (string) $e->getResponse()->getBody());
+                $detail = $body['error_description']
+                    ?? $body['error']
+                    ?? (string) $e->getResponse()->getBody();
+                $message .= ': ' . $detail;
             }
             throw new \RuntimeException($message, 0, $e);
         }
@@ -217,7 +220,10 @@ class ConstantContactClient
             if ($e->hasResponse()) {
                 $code = $e->getResponse()->getStatusCode();
                 $body = json_decode((string) $e->getResponse()->getBody(), true);
-                $message .= " ({$code}): " . ($body['error_message'] ?? $body[0]['error_message'] ?? (string) $e->getResponse()->getBody());
+                $errorBody = $body['error_message']
+                    ?? $body[0]['error_message']
+                    ?? (string) $e->getResponse()->getBody();
+                $message .= " ({$code}): " . $errorBody;
             }
             throw new \RuntimeException($message, 0, $e);
         }
@@ -328,7 +334,10 @@ class ConstantContactClient
             if ($e->hasResponse()) {
                 $code = $e->getResponse()->getStatusCode();
                 $body = json_decode((string) $e->getResponse()->getBody(), true);
-                $message .= " ({$code}): " . ($body['error_message'] ?? $body[0]['error_message'] ?? (string) $e->getResponse()->getBody());
+                $errorBody = $body['error_message']
+                    ?? $body[0]['error_message']
+                    ?? (string) $e->getResponse()->getBody();
+                $message .= " ({$code}): " . $errorBody;
             }
             throw new \RuntimeException($message, 0, $e);
         }

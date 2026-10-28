@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -46,7 +47,8 @@ class Migration20140702130951ComAnswers extends Base
         }
 
         if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('itemcomment', 'answercomment')";
+            $query = "SELECT referenceid FROM `#__abuse_reports` "
+                . "WHERE state=0 AND category IN ('itemcomment', 'answercomment')";
             $this->db->setQuery($query);
             if ($ids = $this->db->loadColumn()) {
                 $ids = array_map('intval', $ids);

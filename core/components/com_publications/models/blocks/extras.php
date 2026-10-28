@@ -21,6 +21,7 @@ class Extras extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name          = 'extras';
 
     /**
@@ -28,6 +29,7 @@ class Extras extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parentname    = 'content';
 
     /**
@@ -35,6 +37,7 @@ class Extras extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest      = null;
 
     /**
@@ -42,6 +45,7 @@ class Extras extends Base
   *
   * @var        integer
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockId       = 0;
 
     /**

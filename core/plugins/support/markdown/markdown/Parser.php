@@ -36,7 +36,7 @@ abstract class Parser
         '\\', // backslash
     ];
 
-    private $_depth = 0;
+    private $depth = 0;
 
 
     /**
@@ -110,24 +110,24 @@ abstract class Parser
 
     // block parsing
 
-    private $_blockTypes;
+    private $blockTypes;
 
     /**
      * @return array a list of block element types available.
      */
     protected function blockTypes()
     {
-        if ($this->_blockTypes === null) {
+        if ($this->blockTypes === null) {
             // detect block types via "identify" functions
             $reflection = new \ReflectionClass($this);
-            $this->_blockTypes = array_filter(array_map(function ($method) {
+            $this->blockTypes = array_filter(array_map(function ($method) {
                 $name = $method->getName();
                 return strncmp($name, 'identify', 8) === 0 ? strtolower(substr($name, 8)) : false;
             }, $reflection->getMethods(ReflectionMethod::IS_PROTECTED)));
 
-            sort($this->_blockTypes);
+            sort($this->blockTypes);
         }
-        return $this->_blockTypes;
+        return $this->blockTypes;
     }
 
     /**
@@ -156,11 +156,11 @@ abstract class Parser
      */
     protected function parseBlocks($lines)
     {
-        if ($this->_depth >= $this->maximumNestingLevel) {
+        if ($this->depth >= $this->maximumNestingLevel) {
             // maximum depth is reached, do not parse input
             return [['text', implode("\n", $lines)]];
         }
-        $this->_depth++;
+        $this->depth++;
 
         $blocks = [];
 
@@ -176,7 +176,7 @@ abstract class Parser
             }
         }
 
-        $this->_depth--;
+        $this->depth--;
 
         return $blocks;
     }
@@ -251,7 +251,7 @@ abstract class Parser
     /**
      * @var array the set of inline markers to use in different contexts.
      */
-    private $_inlineMarkers = [];
+    private $inlineMarkers = [];
 
     /**
      * Returns a map of inline markers to the corresponding parser methods.
@@ -295,19 +295,19 @@ abstract class Parser
      */
     protected function prepareMarkers($text)
     {
-        $this->_inlineMarkers = [];
+        $this->inlineMarkers = [];
         foreach ($this->inlineMarkers() as $marker => $method) {
             if (strpos($text, $marker) !== false) {
                 $m = $marker[0];
                 // put the longest marker first
-                if (isset($this->_inlineMarkers[$m])) {
-                    reset($this->_inlineMarkers[$m]);
-                    if (strlen($marker) > strlen(key($this->_inlineMarkers[$m]))) {
-                        $this->_inlineMarkers[$m] = array_merge([$marker => $method], $this->_inlineMarkers[$m]);
+                if (isset($this->inlineMarkers[$m])) {
+                    reset($this->inlineMarkers[$m]);
+                    if (strlen($marker) > strlen(key($this->inlineMarkers[$m]))) {
+                        $this->inlineMarkers[$m] = array_merge([$marker => $method], $this->inlineMarkers[$m]);
                         continue;
                     }
                 }
-                $this->_inlineMarkers[$m][$marker] = $method;
+                $this->inlineMarkers[$m][$marker] = $method;
             }
         }
     }
@@ -320,13 +320,13 @@ abstract class Parser
      */
     protected function parseInline($text)
     {
-        if ($this->_depth >= $this->maximumNestingLevel) {
+        if ($this->depth >= $this->maximumNestingLevel) {
             // maximum depth is reached, do not parse input
             return [['text', $text]];
         }
-        $this->_depth++;
+        $this->depth++;
 
-        $markers = implode('', array_keys($this->_inlineMarkers));
+        $markers = implode('', array_keys($this->inlineMarkers));
 
         $paragraph = [];
 
@@ -340,7 +340,7 @@ abstract class Parser
             $text = $found;
 
             $parsed = false;
-            foreach ($this->_inlineMarkers[$text[0]] as $marker => $method) {
+            foreach ($this->inlineMarkers[$text[0]] as $marker => $method) {
                 if (strncmp($text, $marker, strlen($marker)) === 0) {
                     // parse the marker
                     array_unshift($this->context, $method);
@@ -361,7 +361,7 @@ abstract class Parser
 
         $paragraph[] = ['text', $text];
 
-        $this->_depth--;
+        $this->depth--;
 
         return $paragraph;
     }

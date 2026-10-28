@@ -188,7 +188,7 @@ class Tickets extends SiteController
 					INNER JOIN `#__support_tickets` AS s ON s.owner = a.id
 					WHERE a.block = '0' AND s.type=" . $this->database->quote($this->view->type) . " AND s.group_id=0
 					ORDER BY a.name";
-        } else if ($this->view->group) {
+        } elseif ($this->view->group) {
             $query = "SELECT a.username, a.name, a.id
 					FROM `#__users` AS a
 					INNER JOIN `#__xgroups_members` AS gm ON gm.uidNumber=a.id
@@ -284,7 +284,7 @@ class Tickets extends SiteController
 				AND type=" . $this->view->type; // . " AND open=1";
         if ($this->view->group == '_none_') {
             $sql .= " AND `group_id`=0";
-        } else if ($this->view->group) {
+        } elseif ($this->view->group) {
             $gidNumber = 0;
             if ($group = \Hubzero\User\Group::getInstance($this->view->group)) {
                 $gidNumber = $group->get('gidNumber');
@@ -337,7 +337,7 @@ class Tickets extends SiteController
 				AND t.type=" . $this->database->quote($this->view->type) . " AND t.open=0";
         if ($this->view->group == '_none_') {
             $sql .= " AND t.`group_id`=0";
-        } else if ($this->view->group) {
+        } elseif ($this->view->group) {
             $gidNumber = 0;
             if ($group = \Hubzero\User\Group::getInstance($this->view->group)) {
                 $gidNumber = $group->get('gidNumber');
@@ -1388,9 +1388,8 @@ class Tickets extends SiteController
                 if ($watch == 'stop') {
                     $row->stopWatching(User::get('id'));
                 }
-            }
-            // Not already watching
-            else {
+            } else {
+                // Not already watching
                 // Start watching?
                 if ($watch == 'start') {
                     $row->watch(User::get('id'));

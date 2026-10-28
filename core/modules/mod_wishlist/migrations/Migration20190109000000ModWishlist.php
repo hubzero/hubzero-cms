@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing wishlist module
- **/
+ *
+ */
 class Migration20190109000000ModWishlist extends Base
 {
     /**

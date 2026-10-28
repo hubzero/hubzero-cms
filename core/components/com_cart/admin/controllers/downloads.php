@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -346,13 +347,17 @@ class Downloads extends AdminController
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Transfer-Encoding: binary');
-        header('Content-Disposition: attachment; filename=cart-downloads-' . $date . '(' . $dateFrom . '-' . $dateTo . ').csv');
+        $filename = 'cart-downloads-' . $date . '(' . $dateFrom . '-' . $dateTo . ').csv';
+        header('Content-Disposition: attachment; filename=' . $filename);
         header('Expires: 0'); // Proxies
         header('Pragma: no-cache'); // HTTP 1.0
 
         $output = fopen("php://output", "w");
 
-        $row = array('Downloaded', 'Product', 'SKU', 'User', 'Username', 'User ID', 'User Details', 'EULA', 'IP', 'Status');
+        $row = array(
+            'Downloaded', 'Product', 'SKU', 'User', 'Username',
+            'User ID', 'User Details', 'EULA', 'IP', 'Status'
+        );
         fputcsv($output, $row);
 
         // flush to get the headers to the browser and give the user the download dialog immediately
@@ -403,7 +408,10 @@ class Downloads extends AdminController
                 }
 
                 // ouput to stream
-                fputcsv($output, array($row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username, $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status));
+                fputcsv($output, array(
+                    $row->dDownloaded, $row->pName, $row->sSku, $row->dName, $row->username,
+                    $row->uId, $metaUserInfoCsv, $metaEula, $row->dIp, $status
+                ));
                 // flush up to 5000 lines of output to browser
                 flush();
             }
@@ -462,7 +470,8 @@ class Downloads extends AdminController
         $date = date('d-m-Y');
 
         header("Content-Type: text/csv");
-        header("Content-Disposition: attachment; filename=cart-downloads-sku-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv");
+        $filename = "cart-downloads-sku-" . $date . "(" . $dateFrom . '-' . $dateTo . ").csv";
+        header("Content-Disposition: attachment; filename=" . $filename);
         // Disable caching
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0

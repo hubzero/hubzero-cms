@@ -14,13 +14,14 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for audio files
  */
-class plgHandlersAudio extends Plugin
+class PlgHandlersAudio extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -91,7 +92,7 @@ class plgHandlersAudio extends Plugin
         // Create view
         $view = $this->view('view', 'audio');
         $view->file = $file;
-        $view->ext  = $ext;
+        $view->ext = $ext;
 
         return $view;
     }

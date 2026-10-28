@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -71,7 +72,9 @@ class Categoriesv2_1 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "created",
-     *      "description":   "A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31",
+     *      "description":   "A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after
+     *                        the specified date. A time window can be specified adding a
+     *                        second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31",
      *      "type":          "string|integer",
      *      "required":      false,
      *      "default":       null,
@@ -79,7 +82,9 @@ class Categoriesv2_1 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "modified",
-     *      "description":   "A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31",
+     *      "description":   "A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after
+     *                        the specified date. A time window can be specified adding a
+     *                        second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31",
      *      "type":          "string|integer",
      *      "required":      false,
      *      "default":       null,
@@ -222,9 +227,9 @@ class Categoriesv2_1 extends ApiController
 
             if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $val, $regs)) {
                 // Time already matches pattern so do nothing.
-            } else if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {
+            } elseif (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {
                 $val .= ' 00:00:00';
-            } else if (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs)) {
+            } elseif (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs)) {
                 $val .= '-01 00:00:00';
             } else {
                 // Not an acceptable time

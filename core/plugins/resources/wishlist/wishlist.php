@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Resources Plugin class for wishlist items
@@ -19,6 +17,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -107,7 +106,9 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
                 && $model->standalone == 1
                 && $model->published == 1
             ) {
-                $rtitle = ($model->istool()) ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->alias : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->id;
+                $rtitle = ($model->istool())
+                    ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $model->alias
+                    : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $model->id;
 
                 $wishlist->set('category', $cat);
                 $wishlist->set('referenceid', $refid);
@@ -136,10 +137,10 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
                 }
                 if (isset($owners['individuals']) && in_array(User::get('id'), $owners['individuals'])) {
                     $admin = 2;
-                } else if (isset($owners['advisory']) && in_array(User::get('id'), $owners['advisory'])) {
+                } elseif (isset($owners['advisory']) && in_array(User::get('id'), $owners['advisory'])) {
                     $admin = 3;
                 }
-            } else if (!$wishlist->public && $rtrn != 'metadata') {
+            } elseif (!$wishlist->public && $rtrn != 'metadata') {
                 // not authorized
                 App::abort(403, Lang::txt('ALERTNOTAUTH'));
                 return;
@@ -258,8 +259,18 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 
                 $entries
                     ->select($entries->getTableName() . '.*')
-                    ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'positive')
-                    ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'negative');
+                    ->select(
+                        "(SELECT COUNT(*) FROM `" . $vote->getTableName()
+                            . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid="
+                            . $entries->getTableName() . ".id)",
+                        'positive'
+                    )
+                    ->select(
+                        "(SELECT COUNT(*) FROM `" . $vote->getTableName()
+                            . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid="
+                            . $entries->getTableName() . ".id)",
+                        'negative'
+                    );
 
                 // list sorting
                 if ($filters['sortby']) {
@@ -290,7 +301,11 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
                             break;
                         case 'bonus':
                             $entries
-                                ->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)", 'bonus')
+                                ->select(
+                                    "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish'"
+                                        . " AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)",
+                                    'bonus'
+                                )
                                 ->order('status', 'asc')
                                 ->order('bonus', 'desc')
                                 ->order('positive', 'desc')
@@ -311,9 +326,13 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
                     ->start($filters['start'])
                     ->rows();
 
-                $title = ($admin) ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
+                $title = ($admin)
+                    ?  Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED')
+                    : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
                 if (is_array($wishlist->items) && count($wishlist->items) > 0 && $items > $filters['limit']) {
-                    $title .= ' (<a href="' . Route::url('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . Lang::txt('PLG_RESOURCES_WISHLIST_VIEW_ALL') . '</a>)';
+                    $title .= ' (<a href="' . Route::url('index.php?option=' . $option . '&task=wishlist&category='
+                        . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">'
+                        . Lang::txt('PLG_RESOURCES_WISHLIST_VIEW_ALL') . '</a>)';
                 } else {
                     $title .= ' (' . $items . ')';
                 }

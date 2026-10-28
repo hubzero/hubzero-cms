@@ -13,8 +13,8 @@ namespace Hubzero\Database;
  */
 class Log
 {
-    const HZPATH   = '/var/log/hubzero-cms';
-    const FILENAME = 'sql.log';
+    public const HZPATH   = '/var/log/hubzero-cms';
+    public const FILENAME = 'sql.log';
 
     /**
      * Logs queries to hubzero sql log

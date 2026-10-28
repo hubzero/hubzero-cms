@@ -10,7 +10,9 @@
 defined('_HZEXEC_') or die();
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css'));
+$this->addStyleSheet(
+    $this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css')
+);
 
 // Load theme
 $theme = $this->params->get('theme');
@@ -30,21 +32,28 @@ $cls = array(
 );
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
+    class="<?php echo implode(' ', $cls); ?>">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
 
         <jdoc:include type="head" />
 
-        <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/login.js?v=<?php echo filemtime(__DIR__ . '/js/login.js'); ?>"></script>
+        <script type="text/javascript"
+            src="<?php echo $this->baseurl . '/templates/' . $this->template
+                . '/js/login.js?v=' . filemtime(__DIR__ . '/js/login.js'); ?>"></script>
 
         <!--[if lt IE 9]>
-            <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
+            <script type="text/javascript"
+                src="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/js/html5.js?v=' . filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
         <![endif]-->
 
         <!--[if IE 9]>
-            <link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
+            <link type="text/css" rel="stylesheet"
+                href="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/css/browser/ie9.css?v=' . filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
         <![endif]-->
     </head>
     <body id="login-body">

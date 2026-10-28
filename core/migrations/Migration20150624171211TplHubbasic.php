@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +27,8 @@ class Migration20150624171211TplHubbasic extends Base
             $this->db->setQuery($query);
             if ($template = $this->db->loadResult()) {
                 if ($template == 'hubbasic') {
-                    $query = "UPDATE `#__template_styles` SET `home`=1 WHERE `client_id`=0 AND `template`=" . $this->db->quote('hubbasic2013');
+                    $query = "UPDATE `#__template_styles` SET `home`=1 "
+                        . "WHERE `client_id`=0 AND `template`=" . $this->db->quote('hubbasic2013');
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

@@ -35,10 +35,13 @@ class Helper extends Module
         }
 
         $query = "SELECT a.* FROM (
-					(SELECT c.id, c.ticket, c.created, (CASE WHEN `comment` != '' THEN 'comment' ELSE 'change' END) AS 'category' FROM `#__support_comments` AS c)
-					UNION
-					(SELECT '0' AS id, t.id AS ticket, t.created, 'ticket' AS 'category' FROM `#__support_tickets` AS t)
-				) AS a $where ORDER BY a.created DESC LIMIT 0, " . $this->params->get('limit', 25);
+                    (SELECT c.id, c.ticket, c.created,
+                        (CASE WHEN `comment` != '' THEN 'comment' ELSE 'change' END) AS 'category'
+                        FROM `#__support_comments` AS c)
+                    UNION
+                    (SELECT '0' AS id, t.id AS ticket, t.created, 'ticket' AS 'category'
+                        FROM `#__support_tickets` AS t)
+                ) AS a $where ORDER BY a.created DESC LIMIT 0, " . $this->params->get('limit', 25);
 
         $database->setQuery($query);
         $this->results = $database->loadObjectList();

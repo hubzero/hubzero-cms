@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for modules table changes
- **/
+ *
+ */
 class Migration20130924000011ComModules extends Base
 {
     /**
@@ -50,12 +52,18 @@ class Migration20130924000011ComModules extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__modules', 'language') && $this->db->tableHasField('#__modules', 'client_id')) {
+        if (
+            !$this->db->tableHasField('#__modules', 'language')
+            && $this->db->tableHasField('#__modules', 'client_id')
+        ) {
             $query = "ALTER TABLE `#__modules` ADD COLUMN `language` CHAR(7) NOT NULL AFTER `client_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasKey('#__modules', 'idx_language') && $this->db->tableHasField('#__modules', 'language')) {
+        if (
+            !$this->db->tableHasKey('#__modules', 'idx_language')
+            && $this->db->tableHasField('#__modules', 'language')
+        ) {
             $query = "ALTER TABLE `#__modules` ADD INDEX `idx_language` (`language`);";
             $this->db->setQuery($query);
             $this->db->query();
@@ -76,7 +84,8 @@ class Migration20130924000011ComModules extends Base
             $this->db->query();
         }
         if ($this->db->tableHasField('#__modules', 'checked_out')) {
-            $query = "ALTER TABLE `#__modules` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__modules` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT NULL "
+                . "DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -85,13 +94,21 @@ class Migration20130924000011ComModules extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__modules', 'publish_up') && $this->db->tableHasField('#__modules', 'checked_out_time')) {
-            $query = "ALTER TABLE `#__modules` ADD COLUMN `publish_up` datetime NOT NULL default '0000-00-00 00:00:00' AFTER `checked_out_time`;";
+        if (
+            !$this->db->tableHasField('#__modules', 'publish_up')
+            && $this->db->tableHasField('#__modules', 'checked_out_time')
+        ) {
+            $query = "ALTER TABLE `#__modules` ADD COLUMN `publish_up` datetime NOT NULL default '0000-00-00"
+                . "00:00:00' AFTER `checked_out_time`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if (!$this->db->tableHasField('#__modules', 'publish_down') && $this->db->tableHasField('#__modules', 'publish_up')) {
-            $query = "ALTER TABLE `#__modules` ADD COLUMN `publish_down` datetime NOT NULL default '0000-00-00 00:00:00' AFTER `publish_up`;";
+        if (
+            !$this->db->tableHasField('#__modules', 'publish_down')
+            && $this->db->tableHasField('#__modules', 'publish_up')
+        ) {
+            $query = "ALTER TABLE `#__modules` ADD COLUMN `publish_down` datetime NOT NULL default '0000-00-00"
+                . "00:00:00' AFTER `publish_up`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -147,7 +164,7 @@ class Migration20130924000011ComModules extends Base
 
                     if ($r->module == 'mod_breadcrumbs') {
                         $array['showHere'] = 0;
-                    } else if ($r->module == 'mod_newsflash') {
+                    } elseif ($r->module == 'mod_newsflash') {
                         $query = "UPDATE `#__modules` SET `module` = 'mod_articles_news' WHERE `id` = {$r->id};";
                         $this->db->setQuery($query);
                         $this->db->query();
@@ -160,7 +177,8 @@ class Migration20130924000011ComModules extends Base
                         $array['cachemode']    = "itemid";
                     }
 
-                    $query = "UPDATE `#__modules` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE `id` = {$r->id};";
+                    $query = "UPDATE `#__modules` SET `params` = " . $this->db->Quote(json_encode($array)) . ""
+                        . "WHERE `id` = {$r->id};";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

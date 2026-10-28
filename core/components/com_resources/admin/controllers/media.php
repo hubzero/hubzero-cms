@@ -288,7 +288,7 @@ class Media extends AdminController
         $path = Utilities::buildUploadPath($listdir);//, $subdir);
 
         // Get list of directories
-        $dirs = $this->_recursiveListDir($path);
+        $dirs = $this->recursiveListDir($path);
 
         $folders   = array();
         $folders[] = \Html::select('option', '/');
@@ -391,7 +391,7 @@ class Media extends AdminController
      * @param   string  $base  Directory to scan
      * @return  array
      */
-    private function _recursiveListDir($base)
+    private function recursiveListDir($base)
     {
         static $filelist = array();
         static $dirlist  = array();
@@ -402,7 +402,7 @@ class Media extends AdminController
                 if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
-                    $subdirlist = $this->_recursiveListDir($subbase);
+                    $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
             closedir($dh);

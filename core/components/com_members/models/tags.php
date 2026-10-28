@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Models;
 
 use Components\Tags\Models\Cloud;
@@ -22,5 +23,6 @@ class Tags extends Cloud
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'xprofiles';
 }

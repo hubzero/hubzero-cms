@@ -222,16 +222,21 @@ class Collection extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS b";
-        $query .= " INNER JOIN `#__collections_items` AS im ON im.type=" . $this->_db->quote('collection') . " AND im.object_id=b.id";
-        $query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type=" . $this->_db->quote('collection') . " AND f.following_id=b.id";
+        $query .= " INNER JOIN `#__collections_items` AS im ON im.type="
+            . $this->_db->quote('collection') . " AND im.object_id=b.id";
+        $query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type="
+            . $this->_db->quote('collection') . " AND f.following_id=b.id";
         if (isset($filters['user_id']) && $filters['user_id']) {
-            $query .= " AND f.follower_type='member' AND f.follower_id=" . $this->_db->quote($filters['user_id']);
+            $query .= " AND f.follower_type='member' AND f.follower_id="
+                . $this->_db->quote($filters['user_id']);
         }
         if (isset($filters['object_type']) && $filters['object_type'] == 'group') {
-            $query .= " LEFT JOIN `#__xgroups` AS g ON g.gidNumber=b.object_id AND b.object_type=" . $this->_db->quote('group');
+            $query .= " LEFT JOIN `#__xgroups` AS g ON g.gidNumber=b.object_id AND b.object_type="
+                . $this->_db->quote('group');
         }
 
         $where = array();
@@ -243,7 +248,7 @@ class Collection extends Table
                 if (is_array($filters['collection_id'])) {
                     $filters['collection_id'] = array_map('intval', $filters['collection_id']);
                     $where[] = "b.id NOT IN (" . implode(',', $filters['collection_id']) . ")";
-                } else if ($filters['collection_id'] > 0) {
+                } elseif ($filters['collection_id'] > 0) {
                     $where[] = "b.id != " . $this->_db->quote(intval($filters['collection_id']));
                 }
             }
@@ -256,7 +261,7 @@ class Collection extends Table
             if (is_array($filters['access'])) {
                 $filters['access'] = array_map('intval', $filters['access']);
                 $where[] = "b.access IN (" . implode(',', $filters['access']) . ")";
-            } else if ($filters['access'] >= 0) {
+            } elseif ($filters['access'] >= 0) {
                 $where[] = "b.access=" . $this->_db->quote(intval($filters['access']));
             }
         }
@@ -346,12 +351,16 @@ class Collection extends Table
                     if (is_array($filters['access'])) {
                         $filters['access'] = array_map('intval', $filters['access']);
                         $access = "AND i.access IN (" . implode(',', $filters['access']) . ")";
-                    } else if ($filters['access'] >= 0) {
+                    } elseif ($filters['access'] >= 0) {
                         $access = "AND i.access=" . $this->_db->quote(intval($filters['access']));
                     }
                 }
 
-                $query = "SELECT DISTINCT b.*, im.id AS item_id, im.positive AS likes, f.following_id AS following, (SELECT COUNT(*) FROM `#__collections_items` AS i INNER JOIN `#__collections_posts` AS s ON s.item_id=i.id WHERE s.collection_id=b.id AND i.state=1 $access) AS posts";
+                $query = "SELECT DISTINCT b.*, im.id AS item_id, im.positive AS likes, "
+                    . "f.following_id AS following, "
+                    . "(SELECT COUNT(*) FROM `#__collections_items` AS i "
+                    . "INNER JOIN `#__collections_posts` AS s ON s.item_id=i.id "
+                    . "WHERE s.collection_id=b.id AND i.state=1 $access) AS posts";
                 if (isset($filters['object_type']) && $filters['object_type'] == 'group') {
                     $query .= ", g.cn AS group_alias";
                 }

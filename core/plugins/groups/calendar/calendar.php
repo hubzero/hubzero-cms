@@ -1315,7 +1315,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
         $eventsRespondent->position_description = '';
         if (isset($register['position_other']) && $register['position_other'] != '') {
             $eventsRespondent->position_description = $register['position_other'];
-        } else if (isset($register['position'])) {
+        } elseif (isset($register['position'])) {
             $eventsRespondent->position_description = $register['position'];
         }
 

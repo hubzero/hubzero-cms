@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Tags plugin class for groups
@@ -19,6 +17,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
      *
      * @var    boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -57,7 +56,7 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
         if (User::isGuest()) {
             $from = '';
             $discoverability = " AND a.discoverability=0 ";
-        } else if (User::authorise('core.view', 'com_groups')) {
+        } elseif (User::authorise('core.view', 'com_groups')) {
             // user in role that can view all groups (admin)
             $from = '';
             $discoverability = "";
@@ -74,16 +73,19 @@ class plgTagsGroups extends \Hubzero\Plugin\Plugin
         // Build the query
         $f_count = "SELECT COUNT(f.gidNumber) FROM (SELECT a.gidNumber, COUNT(DISTINCT t.tagid) AS uniques ";
 
-        $f_fields = "SELECT a.gidNumber AS id, a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS ftext, a.type AS state, a.created,
-						a.created_by, NULL AS modified, NULL AS publish_up,
-						NULL AS publish_down, CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section, COUNT(DISTINCT t.tagid) AS uniques,
-						a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
+        $f_fields = "SELECT a.gidNumber AS id,
+             a.description AS title, a.cn AS alias, NULL AS itext, a.public_desc AS ftext, a.type AS state, a.created,
+                        a.created_by, NULL AS modified, NULL AS publish_up,
+                        NULL AS publish_down,
+                             CONCAT('index.php?option=com_groups&cn=', a.cn) AS href, 'groups' AS section,
+                             COUNT(DISTINCT t.tagid) AS uniques,
+                        a.params, NULL AS rcount, NULL AS data1, NULL AS data2, NULL AS data3 ";
         $f_from = " FROM #__xgroups AS a $from
-						JOIN #__tags_object AS t
-						WHERE (a.type=1 OR a.type=3) $discoverability
-						AND a.gidNumber=t.objectid
-						AND t.tbl='groups'
-						AND t.tagid IN ($ids)";
+                        JOIN #__tags_object AS t
+                        WHERE (a.type=1 OR a.type=3) $discoverability
+                        AND a.gidNumber=t.objectid
+                        AND t.tbl='groups'
+                        AND t.tagid IN ($ids)";
         $f_from .= " GROUP BY a.gidNumber HAVING uniques=" . count($tags);
         $order_by  = " ORDER BY ";
 

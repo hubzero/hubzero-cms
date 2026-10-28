@@ -27,7 +27,13 @@ $acos = [
 
 <tr>
     <td class="align-center">
-        <input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" class="checkbox-toggle" />
+        <input
+            type="checkbox"
+            name="id[]"
+            id="cb<?php echo $i;?>"
+            value="<?php echo $row->id ?>"
+            class="checkbox-toggle"
+        />
     </td>
     <td class="align-center">
         <?php echo $row->id; ?>

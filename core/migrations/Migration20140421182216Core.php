@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +22,12 @@ class Migration20140421182216Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__users_password_history') && $this->db->tableHasField('#__users_password_history', 'passhash')) {
-            $query = "ALTER TABLE `#__users_password_history` CHANGE `passhash` `passhash` CHAR(127) NOT NULL  DEFAULT ''";
+        if (
+            $this->db->tableExists('#__users_password_history')
+            && $this->db->tableHasField('#__users_password_history', 'passhash')
+        ) {
+            $query = "ALTER TABLE `#__users_password_history` "
+                . "CHANGE `passhash` `passhash` CHAR(127) NOT NULL  DEFAULT ''";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -33,8 +38,12 @@ class Migration20140421182216Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_password_history') && $this->db->tableHasField('#__users_password_history', 'passhash')) {
-            $query = "ALTER TABLE `#__users_password_history` CHANGE `passhash` `passhash` CHAR(32) NOT NULL  DEFAULT ''";
+        if (
+            $this->db->tableExists('#__users_password_history')
+            && $this->db->tableHasField('#__users_password_history', 'passhash')
+        ) {
+            $query = "ALTER TABLE `#__users_password_history` "
+                . "CHANGE `passhash` `passhash` CHAR(32) NOT NULL  DEFAULT ''";
             $this->db->setQuery($query);
             $this->db->query();
         }

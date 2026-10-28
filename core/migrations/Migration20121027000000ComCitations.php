@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding missing fields to citations
- **/
+ *
+ */
 class Migration20121027000000ComCitations extends Base
 {
     /**
@@ -55,7 +57,8 @@ class Migration20121027000000ComCitations extends Base
                 $query .= "ALTER TABLE `#__citations` ADD `params` text;\n";
             }
             if (!$this->db->tableHasKey('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher')) {
-                $query .= "CREATE FULLTEXT INDEX ftidx_title_isbn_doi_abstract_author_publisher ON `#__citations` (title,isbn,doi,abstract,author,publisher);\n";
+                $query .= "CREATE FULLTEXT INDEX ftidx_title_isbn_doi_abstract_author_publisher "
+                    . "ON `#__citations` (title,isbn,doi,abstract,author,publisher);\n";
             }
 
             if (!empty($query)) {

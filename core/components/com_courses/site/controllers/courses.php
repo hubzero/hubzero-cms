@@ -25,7 +25,7 @@ use User;
 class Courses extends SiteController
 {
     // Max number of courses to return to the Intro view
-    const INTRO_COURSE_LIMIT = 12;
+    public const INTRO_COURSE_LIMIT = 12;
 
     /**
      * Execute a task
@@ -37,7 +37,8 @@ class Courses extends SiteController
         if ($section_id = Request::getInt('section', 0, 'get')) {
             $section = Models\Section::getInstance($section_id);
             if ($section->exists()) {
-                $offering = Models\Offering::getInstance($section->get('offering_id'));
+                $offeringId = $section->get('offering_id');
+                $offering = Models\Offering::getInstance($offeringId);
                 $offering->section($section->get('alias'));
 
                 App::redirect(
@@ -59,6 +60,7 @@ class Courses extends SiteController
      * @param   array  $course_pages  List of roup pages
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildPathway($course_pages = array())
     {
         if (Pathway::count() <= 0) {
@@ -80,13 +82,15 @@ class Courses extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildTitle()
     {
         //set title used in view
         $this->_title = Lang::txt(strtoupper($this->_option));
 
         if ($this->_task && $this->_task != 'intro') {
-            $this->_title .= ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+            $key = strtoupper($this->_option . '_' . $this->_task);
+            $this->_title .= ': ' . Lang::txt($key);
         }
 
         //set title of browser window
@@ -123,7 +127,9 @@ class Courses extends SiteController
         ), true);
 
         // Output HTML
-        $this->view->more_courses = (count($all_courses) > count($this->view->popularcourses));
+        $allCoursesCount = count($all_courses);
+        $popularCoursesCount = count($this->view->popularcourses);
+        $this->view->more_courses = ($allCoursesCount > $popularCoursesCount);
         $this->view->config   = $this->config;
         $this->view->database = $this->database;
         $this->view->title    = $this->_title;
@@ -152,7 +158,8 @@ class Courses extends SiteController
                 $this->view->filters['group_id'] = $group->get('gidNumber');
             }
         }
-        if (!in_array($this->view->filters['sortby'], array('alias', 'title', 'popularity'))) {
+        $validSorts = array('alias', 'title', 'popularity');
+        if (!in_array($this->view->filters['sortby'], $validSorts)) {
             $this->view->filters['sortby'] = 'title';
         }
         switch ($this->view->filters['sortby']) {
@@ -168,11 +175,16 @@ class Courses extends SiteController
                 break;
         }
         // Filters for returning results
-        $this->view->filters['limit']  = Request::getInt('limit', Config::get('list_limit'));
-        $this->view->filters['limit']  = ($this->view->filters['limit']) ? $this->view->filters['limit'] : 'all';
+        $limit = Request::getInt('limit', Config::get('list_limit'));
+        $this->view->filters['limit']  = $limit ? $limit : 'all';
         $this->view->filters['start']  = Request::getInt('limitstart', 0);
         $this->view->filters['index']  = strtolower(Request::getWord('index', ''));
-        if ($this->view->filters['index'] && !in_array($this->view->filters['index'], array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'))) {
+        $validIndexes = array(
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+        );
+        $index = $this->view->filters['index'];
+        if ($index && !in_array($index, $validIndexes)) {
             $this->view->filters['index'] = '';
         }
         $this->view->filters['tag'] = Request::getString('tag', '');
@@ -233,6 +245,7 @@ class Courses extends SiteController
      * @param   integer  $assetId
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, false);
@@ -249,14 +262,27 @@ class Courses extends SiteController
             }
 
             // Admin
-            $this->config->set('access-admin-' . $assetType, User::authorise('core.admin', $asset));
-            $this->config->set('access-manage-' . $assetType, User::authorise('core.manage', $asset));
+            $adminKey = 'access-admin-' . $assetType;
+            $this->config->set($adminKey, User::authorise('core.admin', $asset));
+            $manageKey = 'access-manage-' . $assetType;
+            $this->config->set($manageKey, User::authorise('core.manage', $asset));
             // Permissions
-            $this->config->set('access-create-' . $assetType, User::authorise('core.create' . $at, $asset));
-            $this->config->set('access-delete-' . $assetType, User::authorise('core.delete' . $at, $asset));
-            $this->config->set('access-edit-' . $assetType, User::authorise('core.edit' . $at, $asset));
-            $this->config->set('access-edit-state-' . $assetType, User::authorise('core.edit.state' . $at, $asset));
-            $this->config->set('access-edit-own-' . $assetType, User::authorise('core.edit.own' . $at, $asset));
+            $createKey = 'access-create-' . $assetType;
+            $createAction = 'core.create' . $at;
+            $this->config->set($createKey, User::authorise($createAction, $asset));
+            $deleteKey = 'access-delete-' . $assetType;
+            $deleteAction = 'core.delete' . $at;
+            $this->config->set($deleteKey, User::authorise($deleteAction, $asset));
+            $editKey = 'access-edit-' . $assetType;
+            $editAction = 'core.edit' . $at;
+            $this->config->set($editKey, User::authorise($editAction, $asset));
+            $editStateKey = 'access-edit-state-' . $assetType;
+            $editStateAction = 'core.edit.state' . $at;
+            $hasEditState = User::authorise($editStateAction, $asset);
+            $this->config->set($editStateKey, $hasEditState);
+            $editOwnKey = 'access-edit-own-' . $assetType;
+            $editOwnAction = 'core.edit.own' . $at;
+            $this->config->set($editOwnKey, User::authorise($editOwnAction, $asset));
         }
     }
 }

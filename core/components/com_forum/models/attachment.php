@@ -182,7 +182,10 @@ class Attachment extends Relational
 
         if (!is_dir($destination)) {
             if (!Filesystem::makeDirectory($destination)) {
-                $this->addError(Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': ' . substr($destination, strlen(PATH_ROOT)));
+                $this->addError(
+                    Lang::txt('COM_FORUM_UNABLE_TO_CREATE_UPLOAD_PATH') . ': '
+                    . substr($destination, strlen(PATH_ROOT))
+                );
                 return false;
             }
         }
@@ -226,7 +229,8 @@ class Attachment extends Relational
      */
     public function path()
     {
-        return $this->getUploadDir() . DS . $this->get('parent') . DS . $this->get('post_id') . DS . $this->get('filename');
+        return $this->getUploadDir() . DS . $this->get('parent') . DS . $this->get('post_id')
+            . DS . $this->get('filename');
     }
 
     /**

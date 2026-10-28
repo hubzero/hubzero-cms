@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,6 +20,7 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
      *
      * @var    boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -60,7 +62,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				FROM `#__wiki_pages` AS w
 				INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
 				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
-				WHERE v.approved=1 AND wl.scope='resource' AND w.scope !='group' AND wl.scope_id=" . $database->quote($resource->id);
+				WHERE v.approved=1 AND wl.scope='resource' AND w.scope !='group'
+                AND wl.scope_id=" . $database->quote($resource->id);
 
         // Build the query that checks resource parents
         $sql2 = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,
@@ -68,7 +71,8 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 				FROM `#__resource_types` AS rt, `#__resources` AS r
 				JOIN `#__resource_assoc` AS a ON r.id=a.parent_id
 				LEFT JOIN `#__resource_types` AS t ON r.logical_type=t.id
-				WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id AND r.type!=8 ";
+				WHERE r.published=1 AND a.child_id=" . $database->quote($resource->id) . " AND r.type=rt.id
+                AND r.type!=8 ";
 
         $sql3 = "";
 
@@ -98,23 +102,27 @@ class plgResourcesRelated extends \Hubzero\Plugin\Plugin
                     $x = "(w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR";
                 }
 
-                $sql1 .= "AND (w.access!=1 OR (w.access=1 AND ($x w.created_by=" . $database->quote(User::get('id')) . "))) ";
+                $sql1 .= "AND (w.access!=1 OR (w.access=1 AND ($x w.created_by="
+                    . $database->quote(User::get('id')) . "))) ";
 
                 $x = "";
                 if (count($groups)) {
                     $x = "r.group_owner IN ($c) OR";
                 }
 
-                $sql2 .= "AND (r.access!=1 OR (r.access=1 AND ($x r.created_by=" . $database->quote(User::get('id')) . "))) ";
+                $sql2 .= "AND (r.access!=1 OR (r.access=1 AND ($x r.created_by="
+                    . $database->quote(User::get('id')) . "))) ";
             }
 
             if (!!$g) {
                 $sql3 .= " UNION (SELECT DISTINCT w.id, w.title, w.pagename AS alias, v.pagetext AS introtext,
-						NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.scope_id,	w.rating, w.times_rated, w.ranking, 'Topic' AS section
+						NULL AS type, NULL AS published, NULL AS publish_up, w.scope, w.scope_id,	w.rating,
+                        w.times_rated, w.ranking, 'Topic' AS section
 						FROM `#__wiki_pages` AS w
 						INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
 						INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
-						WHERE v.approved=1 AND wl.scope='resource' AND w.scope ='group' AND wl.scope_id=" . $database->quote($resource->id) .
+						WHERE v.approved=1 AND wl.scope='resource' AND w.scope ='group'
+                        AND wl.scope_id=" . $database->quote($resource->id) .
                         "AND w.scope_id in ($g))";
             }
         } else {

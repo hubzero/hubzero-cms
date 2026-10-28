@@ -23,21 +23,21 @@ class Collection extends Base
      *
      * @var object
      */
-    private $_obj = null;
+    private $obj = null;
 
     /**
      * File path
      *
      * @var string
      */
-    private $_image = null;
+    private $image = null;
 
     /**
      * URL
      *
      * @var string
      */
-    private $_baselink = null;
+    private $baselink = null;
 
     /**
      * Constructor
@@ -47,23 +47,25 @@ class Collection extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_obj = new Models\Collection($oid);
+        $this->obj = new Models\Collection($oid);
 
-        switch ($this->_obj->get('object_type')) {
+        switch ($this->obj->get('object_type')) {
             case 'group':
-                $group = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
+                $group = \Hubzero\User\Group::getInstance($this->obj->get('object_id'));
                 if (!$group) {
                     $group = new \Hubzero\User\Group();
-                    $group->set('gidNumber', $this->_obj->get('object_id'));
-                    $group->set('cn', $this->_obj->get('object_id'));
-                    $group->set('alias', $this->_obj->get('object_id'));
+                    $group->set('gidNumber', $this->obj->get('object_id'));
+                    $group->set('cn', $this->obj->get('object_id'));
+                    $group->set('alias', $this->obj->get('object_id'));
                 }
-                $this->_baselink = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->_obj->get('alias');
+                $this->baselink = 'index.php?option=com_groups&cn=' . $group->get('cn')
+                    . '&active=collections&scope=' . $this->obj->get('alias');
                 break;
 
             case 'member':
             default:
-                $this->_baselink = 'index.php?option=com_members&id=' . $this->_obj->get('object_id') . '&active=collections&task=' . $this->_obj->get('alias');
+                $this->baselink = 'index.php?option=com_members&id=' . $this->obj->get('object_id')
+                    . '&active=collections&task=' . $this->obj->get('alias');
                 break;
         }
     }
@@ -80,10 +82,10 @@ class Collection extends Base
      */
     public function creator($property = null)
     {
-        switch ($this->_obj->get('object_type')) {
+        switch ($this->obj->get('object_type')) {
             case 'group':
                 if (!isset($this->_creator) || !is_object($this->_creator)) {
-                    $this->_creator = \Hubzero\User\Group::getInstance($this->_obj->get('object_id'));
+                    $this->_creator = \Hubzero\User\Group::getInstance($this->obj->get('object_id'));
                 }
                 if ($property) {
                     switch ($property) {
@@ -103,7 +105,7 @@ class Collection extends Base
             case 'member':
             default:
                 if (!isset($this->_creator) || !is_object($this->_creator)) {
-                    $this->_creator = \User::getInstance($this->_obj->get('created_by'));
+                    $this->_creator = \User::getInstance($this->obj->get('created_by'));
                 }
                 if ($property) {
                     switch ($property) {
@@ -130,7 +132,7 @@ class Collection extends Base
      */
     public function image()
     {
-        return $this->_image;
+        return $this->image;
     }
 
     /**
@@ -140,7 +142,7 @@ class Collection extends Base
      */
     public function alias()
     {
-        return $this->_obj->get('alias');
+        return $this->obj->get('alias');
     }
 
     /**
@@ -150,7 +152,7 @@ class Collection extends Base
      */
     public function title()
     {
-        return $this->_obj->get('title');
+        return $this->obj->get('title');
     }
 
     /**
@@ -163,16 +165,16 @@ class Collection extends Base
     {
         switch (strtolower(trim($what))) {
             case 'follow':
-                return $this->_baselink . '/follow';
+                return $this->baselink . '/follow';
             break;
 
             case 'unfollow':
-                return $this->_baselink . '/unfollow';
+                return $this->baselink . '/unfollow';
             break;
 
             case 'base':
             default:
-                return $this->_baselink;
+                return $this->baselink;
             break;
         }
     }

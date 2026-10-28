@@ -63,10 +63,16 @@ class Collaborator extends Table
         $record = $this->getCollaboratorByName($name);
 
         if (empty($record)) {
-            $query = "INSERT INTO $this->_tbl (id, name, orcid, access_token, acquisition_date) VALUES (" . $this->_db->quote($name) . "," . $this->_db->quote($orcid) . "," . $this->_db->quote($accessToken) . "," . $this->_db->quote(date('Y-m-d H:i:s')) . ")";
+            $query = "INSERT INTO $this->_tbl (id, name, orcid, access_token, acquisition_date) VALUES ("
+                . $this->_db->quote($name) . ","
+                . $this->_db->quote($orcid) . ","
+                . $this->_db->quote($accessToken) . ","
+                . $this->_db->quote(date('Y-m-d H:i:s')) . ")";
         } else {
             if (empty($record->orcid) && empty($record->access_token)) {
-                $query = "UPDATE $this->_tbl SET orcid=" . $this->_db->quote($orcid) . " AND access_token=" . $this->_db->quote($accessToken) . " WHERE name=" . $this->_db->quote($name);
+                $query = "UPDATE $this->_tbl SET orcid=" . $this->_db->quote($orcid)
+                    . " AND access_token=" . $this->_db->quote($accessToken)
+                    . " WHERE name=" . $this->_db->quote($name);
             }
         }
 

@@ -6,20 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * Short description for 'WordLevelDiff'
  *
  * Long description (if any) ...
+ *
+ * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  */
 class WordLevelDiff extends MappedDiff
 {
     /**
      * Description for 'AX_LINE_LENGTH'
      */
-    const MAX_LINE_LENGTH = 10000;
+    public const MAX_LINE_LENGTH = 10000;
 
     /**
      * Short description for 'WordLevelDiff'

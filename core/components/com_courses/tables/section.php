@@ -112,10 +112,15 @@ class Section extends Table
         }
         $this->alias = preg_replace("/[^a-zA-Z0-9\-_]/", '', $this->alias);
 
-        $this->_db->setQuery("SELECT id FROM `#__courses_offering_sections` WHERE `offering_id`=" . $this->_db->quote($this->offering_id) . " AND `alias`=" . $this->_db->quote($this->alias));
+        $this->_db->setQuery(
+            "SELECT id FROM `#__courses_offering_sections` WHERE `offering_id`="
+            . $this->_db->quote($this->offering_id) . " AND `alias`=" . $this->_db->quote($this->alias)
+        );
         $id = $this->_db->loadResult();
         if ($id && $id != $this->id) {
-            $this->setError(Lang::txt('A section with the alias "%s" already exists for the specified offering.', $this->alias));
+            $this->setError(
+                Lang::txt('A section with the alias "%s" already exists for the specified offering.', $this->alias)
+            );
             return false;
         }
 
@@ -146,7 +151,7 @@ class Section extends Table
      * @param   array   $filters
      * @return  string  Database query
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS os";
         $query .= " INNER JOIN #__courses_offerings AS o ON o.id=os.offering_id";
@@ -182,17 +187,21 @@ class Section extends Table
         if (isset($filters['available']) && $filters['available']) {
             $now = Date::toSql();
 
-            $where[] = "(os.publish_up IS NULL OR os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= " . $this->_db->quote($now) . ")";
-            $where[] = "(os.publish_down IS NULL OR os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->quote($now) . ")";
+            $where[] = "(os.publish_up IS NULL OR os.publish_up = '0000-00-00 00:00:00' OR os.publish_up <= "
+                . $this->_db->quote($now) . ")";
+            $where[] = "(os.publish_down IS NULL OR os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= "
+                . $this->_db->quote($now) . ")";
         }
 
         if (isset($filters['started'])) {
             $now = Date::toSql();
 
             if ($filters['started'] === true) {
-                $where[] = "(os.start_date IS NULL OR os.start_date = '0000-00-00 00:00:00' OR os.start_date <= " . $this->_db->quote($now) . ")";
-            } else if ($filters['started'] === false) {
-                $where[] = "(os.start_date IS NOT NULL AND os.start_date != '0000-00-00 00:00:00' AND os.start_date > " . $this->_db->quote($now) . ")";
+                $where[] = "(os.start_date IS NULL OR os.start_date = '0000-00-00 00:00:00' OR os.start_date <= "
+                    . $this->_db->quote($now) . ")";
+            } elseif ($filters['started'] === false) {
+                $where[] = "(os.start_date IS NOT NULL AND os.start_date != '0000-00-00 00:00:00' "
+                    . "AND os.start_date > " . $this->_db->quote($now) . ")";
             }
         }
 
@@ -200,9 +209,11 @@ class Section extends Table
             $now = Date::toSql();
 
             if ($filters['ended'] === true) {
-                $where[] = "(os.end_date IS NOT NULL AND os.end_date != '0000-00-00 00:00:00' AND os.end_date < " . $this->_db->quote($now) . ")";
-            } else if ($filters['ended'] === false) {
-                $where[] = "(os.end_date IS NULL OR os.end_date = '0000-00-00 00:00:00' OR os.end_date >= " . $this->_db->quote($now) . ")";
+                $where[] = "(os.end_date IS NOT NULL AND os.end_date != '0000-00-00 00:00:00' AND os.end_date < "
+                    . $this->_db->quote($now) . ")";
+            } elseif ($filters['ended'] === false) {
+                $where[] = "(os.end_date IS NULL OR os.end_date = '0000-00-00 00:00:00' OR os.end_date >= "
+                    . $this->_db->quote($now) . ")";
             }
         }
 
@@ -222,7 +233,7 @@ class Section extends Table
     public function count($filters = array())
     {
         $query  = "SELECT COUNT(os.id)";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -237,7 +248,7 @@ class Section extends Table
     public function find($filters = array())
     {
         $query  = "SELECT os.*";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (!isset($filters['sort']) || $filters['sort'] == '') {
             $filters['sort'] = 'os.title';

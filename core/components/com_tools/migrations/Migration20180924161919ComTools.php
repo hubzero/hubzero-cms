@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,6 @@ defined('_HZEXEC_') or die();
 /**
  * Migration to add primary key to host table
  **/
-
 class Migration20180924161919ComTools extends Base
 {
     /**

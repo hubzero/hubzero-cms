@@ -23,6 +23,7 @@ class Helper
      * @param   object   $func  Anonymous function
      * @return  boolean
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function iterate_profiles($func)
     {
         $db = \App::get('db');
@@ -48,6 +49,7 @@ class Helper
      * @param   string  $email  Email address to look up
      * @return  mixed   False if not found, string if found
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_by_email($email)
     {
         if (empty($email)) {
@@ -84,7 +86,8 @@ class Helper
         // Get the default picture
         // We need to do this here as it may be needed by the Gravatar service
         if (!$dffull) {
-            $dffull = '/core/components/com_members/site/assets/img/profile.gif'; //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
+            $dffull = '/core/components/com_members/site/assets/img/profile.gif';
+            //ltrim($config->get('defaultpic', '/components/com_members/site/assets/img/profile.gif'), DS);
         }
         if (!$dfthumb) {
             if ($thumbit) {
@@ -95,7 +98,7 @@ class Helper
         // lets make sure we have a profile object
         if ($member instanceof User) {
             return $member->picture($anonymous, $thumbit, $serveFile);
-        } else if (is_numeric($member) || is_string($member)) {
+        } elseif (is_numeric($member) || is_string($member)) {
             $member = Profile::getInstance($member);
         }
 
@@ -110,7 +113,11 @@ class Helper
                 if (!$member->get('picture')) {
                     // Do we auto-generate a picture?
                     if ($config->get('identicon')) {
-                        $path = PATH_APP . DS . trim($config->get('webpath', '/site/members'), DS) . DS . self::niceidformat($member->get('uidNumber'));
+                        $path = PATH_APP .
+                            DS .
+                            trim($config->get('webpath', '/site/members'), DS) .
+                            DS .
+                            self::niceidformat($member->get('uidNumber'));
 
                         if (!is_dir($path)) {
                             \App::get('filesystem')->makeDirectory($path);
@@ -120,18 +127,27 @@ class Helper
                             $identicon = new Identicon();
 
                             // Create a profile image
-                            $imageData = $identicon->getImageData($member->get('email'), 200, $config->get('identicon_color', null));
+                            $imageData = $identicon->
+                                getImageData($member->
+                                get('email'), 200, $config->
+                                get('identicon_color', null));
                             file_put_contents($path . DS . 'identicon.png', $imageData);
 
                             // Create a thumbnail image
-                            $imageData = $identicon->getImageData($member->get('email'), 50, $config->get('identicon_color', null));
+                            $imageData = $identicon->
+                                getImageData($member->
+                                get('email'), 50, $config->
+                                get('identicon_color', null));
                             file_put_contents($path . DS . 'identicon_thumb.png', $imageData);
 
                             // Save image to profile
                             $member->set('picture', 'identicon.png');
                             // Update directly. Using update() method can cause unexpected data loss in some cases.
                             $database = \App::get('db');
-                            $database->setQuery("UPDATE `#__xprofiles` SET picture=" . $database->quote($member->get('picture')) . " WHERE uidNumber=" . $member->get('uidNumber'));
+                            $database->setQuery("UPDATE `#__xprofiles` SET picture=" .
+                                $database->quote($member->get('picture')) .
+                                " WHERE uidNumber=" .
+                                $member->get('uidNumber'));
                             $database->query();
                             //$member->update();
                         }
@@ -164,7 +180,15 @@ class Helper
                         return $protocol
                                 . '://www.gravatar.com/avatar/' . htmlspecialchars($hash) . '?'
                                 . (!$thumbit ? 's=300&' : '')
-                                . 'd=' . urlencode(str_replace('/administrator', '', rtrim(\App::get('request')->base(), '/')) . '/' . $dfthumb);
+                                .
+                                    'd=' .
+                                    urlencode(str_replace(
+                                        '/administrator',
+                                        '',
+                                        rtrim(\App::get('request')->base(), '/')
+                                    ) .
+                                    '/' .
+                                    $dfthumb);
                     }
                 }
             }

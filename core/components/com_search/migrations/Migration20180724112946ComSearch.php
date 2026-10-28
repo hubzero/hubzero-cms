@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +17,8 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20180724112946ComSearch extends Base
 {
-    static $filtersTable = '#__solr_search_filters';
-    static $filterOptionsTable = '#__solr_search_filter_options';
+    protected static $filtersTable = '#__solr_search_filters';
+    protected static $filterOptionsTable = '#__solr_search_filter_options';
 
     /**
      * Up

@@ -592,9 +592,8 @@ class Sync extends \Hubzero\Base\Obj
                             if ($updated = $this->model->repo()->rename($params)) {
                                 $output .= '>> renamed item locally: ' . $filename . "\n";
                             }
-                        }
-                        // Move
-                        elseif ($remote['status'] == 'W') {
+                        } elseif ($remote['status'] == 'W') {
+                            // Move
                             // Params for repo call
                             $target = dirname($filename) == '.' ? '' : dirname($filename);
                             $params = array(

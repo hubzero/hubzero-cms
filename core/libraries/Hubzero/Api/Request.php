@@ -16,27 +16,27 @@ class Request
     /**
      * Description for 'suppress_response_codes'
      *
-     * @var  boolean
+     * @public boolean
      */
     public $suppress_response_codes = false;
 
     /**
      * Description for 'accepts'
      *
-     * @var  string
+     * @public string
      */
     public $accepts = "text/plain";
 
     /**
      * Description for 'method'
      *
-     * @var  string
+     * @public string
      */
     private $method = 'GET';
     /**
      * Description for 'path'
      *
-     * @var  string
+     * @public string
      */
     private $scheme = 'http';
     private $username = '';
@@ -53,14 +53,14 @@ class Request
 
     private $body = '';
 
-    private $_server = array();
-    private $_get = array();
-    private $_post = array();
-    private $_files = array();
-    private $_cookie = array();
-    private $_session = array();
-    private $_request = array();
-    private $_env = array();
+    private $server = array();
+    private $get = array();
+    private $post = array();
+    private $files = array();
+    private $cookie = array();
+    private $session = array();
+    private $request = array();
+    private $env = array();
 
     /**
      * Short description for 'getHeaderField'
@@ -70,7 +70,7 @@ class Request
      * @param      string $header Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    function getHeaderField($header)
+    public function getHeaderField($header)
     {
         $header = strtoupper($header);
 
@@ -94,16 +94,17 @@ class Request
      *
      * @return     void
      */
-    function __construct($options = array())
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function __construct($options = array())
     {
         if (($options == '_SERVER') || (in_array('_SERVER', $options))) {
             $this->set('request', '_SERVER');
 
             if (isset($_GET['format'])) {
                 $this->accepts = $this->_parse_accept($_GET['format']);
-            } else if (isset($_POST['format'])) {
+            } elseif (isset($_POST['format'])) {
                 $this->accepts = $this->_parse_accept($_POST['format']);
-            } else if (isset($_SERVER['HTTP_ACCEPT'])) {
+            } elseif (isset($_SERVER['HTTP_ACCEPT'])) {
                 $this->accepts = $_SERVER['HTTP_ACCEPT'];
             }
 
@@ -139,7 +140,7 @@ class Request
         }
     }
 
-    function import($what = array('all'), $where = '_SYSTEM')
+    public function import($what = array('all'), $where = '_SYSTEM')
     {
         if ($where != '_SYSTEM') {
             return false;
@@ -148,7 +149,8 @@ class Request
         $what = (array) $what;
 
         if (in_array('all', $what)) {
-            $what = array_merge($what, array('method', 'request', 'version', 'headers', 'body', 'hostname', 'scheme', 'postdata'));
+            $what = array_merge($what, array('method', 'request', 'version', 'headers', 'body', 'hostname', 'scheme',
+                'postdata'));
         }
 
         foreach ($what as $item) {
@@ -187,6 +189,7 @@ class Request
                     } else {
                         $this->set('scheme', 'http');
                     }
+                    // fall through
                 case 'postdata':
                     $this->set('postdata', $_POST);
                     break;
@@ -194,7 +197,7 @@ class Request
         }
     }
 
-    function export($what = 'all', $where = '_SYSTEM')
+    public function export($what = 'all', $where = '_SYSTEM')
     {
         if ($where != '_SYSTEM') {
             return false;
@@ -263,11 +266,10 @@ class Request
                     $_SERVER['REQUEST_METHOD'] = $this->get('method');
                     break;
                 case 'get':
-                    {
-                        // can add variables to scope, so keep these braces to block out scope
-                        parse_str($this->get('query'), $_GET);
-                        parse_str($this->get('query'), $_REQUEST); // @FIXME: quick hack, will break when _POST support added
-                }
+                    // can add variables to scope, so keep these braces to block out scope
+                    parse_str($this->get('query'), $_GET);
+                    parse_str($this->get('query'), $_REQUEST);
+                    // @FIXME: quick hack, will break when _POST support added
                     break;
                 case 'postdata':
                     $_POST = $this->get('postdata');
@@ -326,7 +328,7 @@ class Request
      *
      * @return     string Return description (if any) ...
      */
-    function getMethod()
+    public function getMethod()
     {
         return $this->method;
     }
@@ -338,7 +340,7 @@ class Request
      *
      * @return     boolean Return description (if any) ...
      */
-    function getSuppressResponseCodes()
+    public function getSuppressResponseCodes()
     {
         return $this->suppress_response_codes;
     }
@@ -351,7 +353,8 @@ class Request
      * @param      unknown $input Parameter description (if any) ...
      * @return     mixed Return description (if any) ...
      */
-    function _parse_accept($input)
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore,PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    protected function _parse_accept($input)
     {
         static $_types = array(
             'xml' => 'application/xml',
@@ -425,20 +428,18 @@ class Request
                 return !empty($request) ? $request : $default;
 
             case 'queryvars': // @FIXME: this work should be cached
-            {
                 // can add variables to scope, so keep these braces to block out scope
                 parse_str($this->get('query'), $queryvars);
 
                 return $queryvars;
-            }
             case 'postdata':
-                return $this->_post;
+                return $this->post;
             case 'sbs':
                 if (empty($this->method)) {
                     return false;
                 }
 
-                $sbs = oauth_get_sbs($this->method, $this->get('request'), $this->_post);
+                $sbs = oauth_get_sbs($this->method, $this->get('request'), $this->post);
                 return $sbs;
 
             default:
@@ -478,9 +479,9 @@ class Request
 
             case 'postdata':
                 if ($value === null) {
-                    unset($this->_post[$key]);
+                    unset($this->post[$key]);
                 } else {
-                    $this->_post[$key] = $value;
+                    $this->post[$key] = $value;
                 }
         }
     }
@@ -537,10 +538,9 @@ class Request
                 $this->body = $value;
                 break;
             case 'postdata':
-                $this->_post = $value;
+                $this->post = $value;
                 break;
             case 'request':
-            {
                 if (is_string($value)) {
                     if ($value == '_SERVER') {
                         $u = $_SERVER['SCRIPT_URI'];
@@ -566,7 +566,7 @@ class Request
                     $this->query = '';
                     $this->fragment = '';
                 }
-            }
+                break;
         }
     }
 

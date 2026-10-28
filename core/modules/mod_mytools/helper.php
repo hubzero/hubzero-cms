@@ -26,7 +26,7 @@ class Helper extends Module
      * @param   array  $lst  List of tools
      * @return  array  List of tools
      */
-    private function _getToollist($lst = null)
+    private function getToollist($lst = null)
     {
         require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
@@ -95,7 +95,7 @@ class Helper extends Module
      * @param   string  $txt  Text to convert quotes in
      * @return  string
      */
-    private function _prepText($txt)
+    private function prepText($txt)
     {
         // the result lands in title="" attributes and link text
         return htmlspecialchars(stripslashes((string) $txt), ENT_QUOTES, 'UTF-8');
@@ -126,16 +126,17 @@ class Helper extends Module
                 // Make sure we have some info before attempting to display it
                 if (!empty($tool->caption)) {
                     // Prep the text for XHTML output
-                    $tool->caption = $this->_prepText($tool->caption);
-                    $tool->desc    = $this->_prepText($tool->desc);
+                    $tool->caption = $this->prepText($tool->caption);
+                    $tool->desc    = $this->prepText($tool->desc);
 
                     // Get the tool's name without any revision attachments
                     // e.g. "qclab" instead of "qclab_r53"
                     $toolname = $tool->toolname ? $tool->toolname : $tool->name;
 
                     // from sep 28-07 version (svn revision) number is supplied at the end of the invoke command
-                    //$url = 'index.php?option=com_mw&task=invoke&sess='.$tool->name.'&version='.$tool->revision;
-                    $url = Route::url('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
+                    $invokeUrl = 'index.php?option=com_tools&controller=sessions&task=invoke&app='
+                        . $tool->toolname . '&version=' . $tool->revision;
+                    $url = Route::url($invokeUrl);
 
                     $cls = '';
                     // Build the HTML
@@ -146,7 +147,7 @@ class Helper extends Module
                         if (in_array($tool->name, $favs)) {
                             $cls = 'favd';
                         }
-                    } else if ($type = "favs") {
+                    } elseif ($type = "favs") {
                         $cls = 'favds';
                     }
                     if ($this->supportedtag) {
@@ -158,16 +159,25 @@ class Helper extends Module
                     $html .= '>' . "\n";
 
                     // Tool info link
-                    $html .= "\t\t\t" . ' <a href="' . Route::url('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname) . '" class="tooltips" title="' . $tool->caption . ' :: ' . $tool->desc . '">' . $tool->caption . '</a>' . "\n";
+                    $pipelineUrl = Route::url(
+                        'index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname
+                    );
+                    $tooltipTitle = $tool->caption . ' :: ' . $tool->desc;
+                    $html .= "\t\t\t" . ' <a href="' . $pipelineUrl . '" class="tooltips" title="'
+                        . $tooltipTitle . '">' . $tool->caption . '</a>' . "\n";
 
                     // Only add the "favorites" button to the all tools list
                     if ($type == 'all'  || $type == 'favs') {
-                        $html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="' . Lang::txt('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption) . '">' . $tool->caption . '</a>' . "\n";
+                        $favTitle = Lang::txt('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption);
+                        $html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="'
+                            . $favTitle . '">' . $tool->caption . '</a>' . "\n";
                     }
 
                     // Launch tool link
                     if ($this->can_launch && $tool->middleware != 'download') {
-                        $html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
+                        $launchTitle = Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption);
+                        $html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="'
+                            . $launchTitle . '">' . $launchTitle . '</a>' . "\n";
                     }
                     $html .= "\t\t" . ' </li>' . "\n";
                 }
@@ -235,7 +245,7 @@ class Helper extends Module
             $favs = explode(',', $this->fav);
             $favs = array_map('trim', $favs);
 
-            $this->favtools = ($this->fav) ? $this->_getToollist($favs) : array();
+            $this->favtools = ($this->fav) ? $this->getToollist($favs) : array();
         } else {
             // Get a list of recent tools
             $rt = new \Components\Tools\Tables\Recent($database);
@@ -258,9 +268,9 @@ class Helper extends Module
             $this->favs = $favs;
 
             // Get a list of applications that the user might invoke.
-            $this->rectools = $this->_getToollist($recent);
-            $this->favtools = $this->_getToollist($favs);
-            $this->alltools = $this->_getToollist();
+            $this->rectools = $this->getToollist($recent);
+            $this->favtools = $this->getToollist($favs);
+            $this->alltools = $this->getToollist();
         }
 
         require $this->getLayoutPath();

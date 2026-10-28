@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -94,7 +95,9 @@ class Units extends AdminController
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $limit = $this->view->filters['limit'];
+        $start = $this->view->filters['start'];
+        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
 
         $this->view->filters['count'] = true;
 
@@ -205,8 +208,11 @@ class Units extends AdminController
         }
 
         // Output messsage and redirect
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
+            Route::url($url, false),
             Lang::txt('COM_COURSES_ITEM_SAVED')
         );
     }
@@ -227,8 +233,11 @@ class Units extends AdminController
         }
 
         if (!$id) {
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller
+                . '&offering=' . Request::getInt('offering', 0);
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
+                Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
                 'error'
             );
@@ -236,10 +245,13 @@ class Units extends AdminController
         }
 
         $unit = \Components\Courses\Models\Unit::getInstance($id);
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . $unit->get('offering_id');
         if (!$unit->copy()) {
             // Redirect back to the courses page
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $unit->get('offering_id'), false),
+                Route::url($url, false),
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $unit->getError(),
                 'error'
             );
@@ -248,7 +260,7 @@ class Units extends AdminController
 
         // Redirect back to the courses page
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $unit->get('offering_id'), false),
+            Route::url($url, false),
             Lang::txt('COM_COURSES_ITEM_COPIED')
         );
     }
@@ -302,8 +314,11 @@ class Units extends AdminController
         }
 
         // Redirect back to the courses page
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
+            Route::url($url, false),
             Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
         );
     }
@@ -322,10 +337,16 @@ class Units extends AdminController
         $ids = (!is_array($ids) ? array($ids) : $ids);
 
         // Check for an ID
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         if (count($ids) < 1) {
+            $msg = $state == 1
+                ? Lang::txt('COM_COURSES_SELECT_PUBLISH')
+                : Lang::txt('COM_COURSES_SELECT_UNPUBLISH');
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-                ($state == 1 ? Lang::txt('COM_COURSES_SELECT_PUBLISH') : Lang::txt('COM_COURSES_SELECT_UNPUBLISH')),
+                Route::url($url, false),
+                $msg,
                 'error'
             );
             return;
@@ -354,7 +375,7 @@ class Units extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
+            Route::url($url, false),
             $message
         );
     }
@@ -384,8 +405,11 @@ class Units extends AdminController
             $unit->store();
         }
 
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
+            Route::url($url, false)
         );
     }
 
@@ -396,8 +420,11 @@ class Units extends AdminController
      */
     public function cancelTask()
     {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
+            Route::url($url, false)
         );
     }
 }

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for removing unnecessary ticket severity level
- **/
+ *
+ */
 class Migration20151215155336ComSupport extends Base
 {
     /**
@@ -19,7 +20,8 @@ class Migration20151215155336ComSupport extends Base
     public function up()
     {
         if ($this->db->tableExists('#__support_tickets')) {
-            $query = "UPDATE `#__support_tickets` SET `severity`=" . $this->db->quote('minor') . " WHERE `severity`=" . $this->db->quote('trivial');
+            $query = "UPDATE `#__support_tickets` SET `severity`=" . $this->db->quote('minor')
+                . " WHERE `severity`=" . $this->db->quote('trivial');
             $this->db->setQuery($query);
             $this->db->query();
         }

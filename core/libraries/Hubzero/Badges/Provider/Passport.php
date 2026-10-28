@@ -20,21 +20,21 @@ class Passport implements ProviderInterface
      *
      * @var  string
      */
-    const PASSPORT_API_ENDPOINT = 'https://api.openpassport.org/1.0.0/';
+    public const PASSPORT_API_ENDPOINT = 'https://api.openpassport.org/1.0.0/';
 
     /**
      * API claim URL
      *
      * @var  string
      */
-    const PASSPORT_CLAIM_URL    = 'https://www.openpassport.org/MyBadges/Pending';
+    public const PASSPORT_CLAIM_URL    = 'https://www.openpassport.org/MyBadges/Pending';
 
     /**
      * API denied URL
      *
      * @var  string
      */
-    const PASSPORT_DENIED_URL   = 'https://www.openpassport.org/MyBadges/Denied';
+    public const PASSPORT_DENIED_URL   = 'https://www.openpassport.org/MyBadges/Denied';
 
     /**
      * Credentials
@@ -77,18 +77,24 @@ class Passport implements ProviderInterface
     public function setCredentials($passportCredentials)
     {
         $this->credentials = $passportCredentials;
-
-        $this->request = new \OAuth($this->credentials->client_id, $this->credentials->client_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
-
+        $this->
+            request = new \OAuth($this->
+            credentials->
+            client_id, $this->
+            credentials->
+            client_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
         $params['username'] = $this->credentials->username;
         $params['password'] = $this->credentials->password;
         $params['client_id'] = $this->credentials->client_id;
         $params['client_secret'] = $this->credentials->client_secret;
         $params['grant_type'] = 'password';
         $userAgent = $_SERVER['HTTP_USER_AGENT'];
-
-        $this->request->fetch('https://www.openpassport.org/oauth/token', $params, OAUTH_HTTP_METHOD_POST, array('user-agent' => $userAgent));
-
+        $this->request->fetch(
+            'https://www.openpassport.org/oauth/token',
+            $params,
+            OAUTH_HTTP_METHOD_POST,
+            array('user-agent' => $userAgent)
+        );
         $access = json_decode($this->request->getLastResponse());
         $this->credentials->access_token = $access->access_token;
     }
@@ -176,13 +182,19 @@ class Passport implements ProviderInterface
         if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
             $this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
             try {
-                $this->request->fetch(self::PASSPORT_API_ENDPOINT . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type' => 'application/json'));
+                $this->request->fetch(
+                    self::PASSPORT_API_ENDPOINT .
+                    "assertions/",
+                    $assertionsData,
+                    OAUTH_HTTP_METHOD_POST,
+                    array('Content-Type' => 'application/json')
+                );
             } catch (Exception $e) {
                 throw new Exception('Badge grant request failed.');
             }
 
             $assertion = json_decode($this->request->getLastResponse());
-        } else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
+        } elseif ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
             curl_setopt($this->request, CURLOPT_URL, self::PASSPORT_API_ENDPOINT . "assertions/");
             curl_setopt($this->request, CURLOPT_POSTFIELDS, $assertionsData);
             curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
@@ -265,7 +277,7 @@ class Passport implements ProviderInterface
             }
 
             $response = json_decode($this->request->getLastResponse());
-        } else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
+        } elseif ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
             curl_setopt($this->request, CURLOPT_POST, false);
             curl_setopt($this->request, CURLOPT_URL, $url);
             curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);

@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 use Components\Citations\Models\Citation;
 
 /**
@@ -20,6 +19,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -387,6 +387,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
      * @param   string  $string
      * @return  string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _cleanText($string)
     {
         $translations = get_html_translation_table(HTML_ENTITIES);

@@ -1,5 +1,7 @@
 <?php
 
+// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace, PSR2.Classes.PropertyDeclaration.Underscore, PSR2.Methods.MethodDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +28,7 @@ class Project extends Base
      */
     protected $_segments = array(
         'option' => 'com_projects',
-        'alias'  => '',
+        'alias' => '',
         'active' => 'notes'
     );
 
@@ -79,7 +81,7 @@ class Project extends Base
             case 'base':
                 unset($segments['pagename']);
                 return $this->_base . '?' . (string) $this->_build($segments);
-            break;
+                break;
 
             case 'pdf':
             case 'new':
@@ -131,7 +133,7 @@ class Project extends Base
     {
         return array(
             'option' => $this->_segments['option'],
-            'alias'  => $this->_segments['alias'],
+            'alias' => $this->_segments['alias'],
             'active' => $this->_segments['active'],
             'action' => $task
         );

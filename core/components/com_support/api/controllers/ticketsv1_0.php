@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -147,7 +148,7 @@ class Ticketsv1_0 extends ApiController
      * @param   string  $val  Timestamp or word [month, year, week, day]
      * @return  string
      */
-    private function _toTimestamp($val = null)
+    private function toTimestamp($val = null)
     {
         if ($val) {
             $val = strtolower($val);
@@ -155,7 +156,7 @@ class Ticketsv1_0 extends ApiController
             if (strstr($val, ',')) {
                 $vals = explode(',', $val);
                 foreach ($vals as $i => $v) {
-                    $vales[$i] = $this->_toTimestamp(trim($v));
+                    $vales[$i] = $this->toTimestamp(trim($v));
                 }
                 return $vals;
             }
@@ -177,12 +178,13 @@ class Ticketsv1_0 extends ApiController
                     break;
 
                 default:
-                    if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $val, $regs)) {
+                    $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+                    if (preg_match($pattern, $val, $regs)) {
                         // Time already matches pattern so do nothing.
                         //$stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-                    } else if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {
+                    } elseif (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})/", $val, $regs)) {
                         $val .= ' 00:00:00';
-                    } else if (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs)) {
+                    } elseif (preg_match("/([0-9]{4})-([0-9]{2})/", $val, $regs)) {
                         $val .= '-01 00:00:00';
                     } else {
                         // Not an acceptable time
@@ -260,8 +262,8 @@ class Ticketsv1_0 extends ApiController
             'tag'        => Request::getWord('tag', ''),
         );
 
-        $filters['opened'] = $this->_toTimestamp(Request::getString('opened', ''));
-        $filters['closed'] = $this->_toTimestamp(Request::getString('closed', ''));
+        $filters['opened'] = $this->toTimestamp(Request::getString('opened', ''));
+        $filters['closed'] = $this->toTimestamp(Request::getString('closed', ''));
 
         $response = new stdClass();
         $response->success = true;
@@ -333,7 +335,12 @@ class Ticketsv1_0 extends ApiController
                 }
                 $response->tickets[$i]->status->id = $status;
 
-                $response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), '/'));
+                $ticketRoute = Route::url(
+                    'index.php?option=com_support&controller=tickets&task=tickets&id='
+                    . $response->tickets[$i]->id
+                );
+                $response->tickets[$i]->url = str_replace('/api', '', rtrim(Request::base(), '/')
+                    . '/' . ltrim($ticketRoute, '/'));
 
                 $i++;
             }
@@ -490,13 +497,21 @@ class Ticketsv1_0 extends ApiController
         $response->status->title = $ticket->status->get('text');
         $response->status->id    = $ticket->get('status');
 
-        foreach (array('created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop) {
+        $props = array(
+            'created', 'severity', 'os', 'browser', 'ip',
+            'hostname', 'uas', 'referrer', 'open', 'closed'
+        );
+        foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
         }
 
         $response->report = $ticket->get('report');
 
-        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), '/'));
+        $ticketRoute = Route::url(
+            'index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id
+        );
+        $response->url = str_replace('/api', '', rtrim(Request::base(), '/')
+            . '/' . ltrim($ticketRoute, '/'));
 
         $response->comments = array();
         foreach ($ticket->comments as $comment) {

@@ -8,8 +8,14 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$formUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=members'
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm">
+<form action="<?php echo $formUrl; ?>" method="post" id="hubForm">
     <div class="explaination">
         <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_REMOVE_EXPLANATION'); ?></p>
     </div>

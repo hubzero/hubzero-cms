@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing quickicon module
- **/
+ *
+ */
 class Migration20190109000000ModQuickicon extends Base
 {
     /**

@@ -249,7 +249,7 @@ class Handler
         if ($classAlt != $space && class_exists($classAlt) && method_exists($classAlt, 'edit')) {
             $object = $classAlt::newWithoutHandlers($this->db);
             return $object->edit($asset);
-        } else if ($class != $space && class_exists($class) && method_exists($class, 'edit')) {
+        } elseif ($class != $space && class_exists($class) && method_exists($class, 'edit')) {
             $object = $class::newWithoutHandlers($this->db);
             return $object->edit($asset);
         } else {

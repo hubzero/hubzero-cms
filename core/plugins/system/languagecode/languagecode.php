@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die;
-
 /**
  * Language Code plugin class.
  */
@@ -49,20 +46,30 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
             }
 
             // Replace codes in <link hreflang="" /> attributes
-            preg_match_all(chr(1) . '(<link.*\s+hreflang=")([0-9a-z\-]*)(".*\s+rel="alternate".*/>)' . chr(1) . 'i', $body, $matches);
+            preg_match_all(
+                chr(1) . '(<link.*\s+hreflang=")([0-9a-z\-]*)(".*\s+rel="alternate".*/>)' . chr(1) . 'i',
+                $body,
+                $matches
+            );
             foreach ($matches[2] as $match) {
                 $new_code = $this->params->get(strtolower($match));
                 if ($new_code) {
-                    $patterns[] = chr(1) . '(<link.*\s+hreflang=")(' . $match . ')(".*\s+rel="alternate".*/>)' . chr(1) . 'i';
+                    $patterns[] = chr(1) . '(<link.*\s+hreflang=")(' . $match . ')(".*\s+rel="alternate".*/>)'
+                                . chr(1) . 'i';
                     $replace[] = '${1}' . $new_code . '${3}';
                 }
             }
 
-            preg_match_all(chr(1) . '(<link.*\s+rel="alternate".*\s+hreflang=")([0-9A-Za-z\-]*)(".*/>)' . chr(1) . 'i', $body, $matches);
+            preg_match_all(
+                chr(1) . '(<link.*\s+rel="alternate".*\s+hreflang=")([0-9A-Za-z\-]*)(".*/>)' . chr(1) . 'i',
+                $body,
+                $matches
+            );
             foreach ($matches[2] as $match) {
                 $new_code = $this->params->get(strtolower($match));
                 if ($new_code) {
-                    $patterns[] = chr(1) . '(<link.*\s+rel="alternate".*\s+hreflang=")(' . $match . ')(".*/>)' . chr(1) . 'i';
+                    $patterns[] = chr(1) . '(<link.*\s+rel="alternate".*\s+hreflang=")(' . $match . ')(".*/>)'
+                                . chr(1) . 'i';
                     $replace[] = '${1}' . $new_code . '${3}';
                 }
             }
@@ -114,7 +121,11 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
 			<field
 				name="' . strtolower($tag) . '"
 				type="text"
-				description="' . htmlspecialchars(Lang::txt('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']), ENT_COMPAT, 'UTF-8') . '"
+				description="' . htmlspecialchars(
+                    Lang::txt('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']),
+                    ENT_COMPAT,
+                    'UTF-8'
+                ) . '"
 				translate_description="false"
 				label="' . $tag . '"
 				translate_label="false"

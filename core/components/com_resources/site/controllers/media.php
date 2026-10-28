@@ -351,7 +351,7 @@ class Media extends SiteController
      * @param   string  $base  Directory to scan
      * @return  array
      */
-    private function _recursiveListDir($base)
+    private function recursiveListDir($base)
     {
         static $filelist = array();
         static $dirlist  = array();
@@ -367,7 +367,7 @@ class Media extends SiteController
                 ) {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
-                    $subdirlist = $this->_recursiveListDir($subbase);
+                    $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
             closedir($dh);
@@ -440,7 +440,8 @@ class Media extends SiteController
             // If we have a positive value and its less then our ten second threshold
             // add viewing time to total watched time
             if ($time_viewed < 10 && $time_viewed > 0) {
-                $trackingInformation->set('total_viewing_time', $trackingInformation->get('total_viewing_time') + $time_viewed);
+                $totalViewing = $trackingInformation->get('total_viewing_time') + $time_viewed;
+                $trackingInformation->set('total_viewing_time', $totalViewing);
             }
 
             // Set the new current position
@@ -495,7 +496,9 @@ class Media extends SiteController
             }
 
             // Check to see if we need to set a new farthest position
-            if ($trackingInformationDetailed->get('current_position') > $trackingInformationDetailed->get('farthest_position')) {
+            $isFurther = $trackingInformationDetailed->get('current_position')
+                > $trackingInformationDetailed->get('farthest_position');
+            if ($isFurther) {
                 $trackingInformationDetailed->set('farthest_position', $time);
                 $trackingInformationDetailed->set('farthest_position_timestamp', Date::toSql());
             }

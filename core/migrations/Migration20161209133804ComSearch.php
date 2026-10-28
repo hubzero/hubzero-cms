@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for replacing the indexqueue table
- **/
+ *
+ */
 class Migration20161209133804ComSearch extends Base
 {
     /**

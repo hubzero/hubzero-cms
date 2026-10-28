@@ -74,7 +74,8 @@ class Subtitle extends Handler
             return array('error' => 'File is empty');
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
+            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
             return array('error' => "File is too large. Max file upload size is $max");
         }
 
@@ -172,7 +173,7 @@ class Subtitle extends Handler
         file_put_contents(PATH_APP . DS . $jsonFile, json_encode($manifest, JSON_PRETTY_PRINT));
 
         //parse subtitle file
-        $lines = self::_parseSubtitleFile($target_path);
+        $lines = self::parseSubtitleFile($target_path);
 
         // make transcript file
         $transcript = '';
@@ -185,7 +186,8 @@ class Subtitle extends Handler
         $transcript = preg_replace("/\\[([^\\]]*)\\]/ux", "\n\n[$1]", $transcript);
 
         // add title to transcript
-        $transcript  = $manifest->presentation->title . PHP_EOL . str_repeat('==', 20) . PHP_EOL . ltrim($transcript, PHP_EOL);
+        $transcript = $manifest->presentation->title . PHP_EOL
+            . str_repeat('==', 20) . PHP_EOL . ltrim($transcript, PHP_EOL);
 
         // Create our asset table object
         $assetObj = new Tables\Asset($this->db);
@@ -217,7 +219,9 @@ class Subtitle extends Handler
         $cconfig = Component::params('com_courses');
 
         // Build the upload path if it doesn't exist
-        $uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
+        $uploadPath = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS);
+        $uploadDirectory = $uploadPath . DS . $this->asset['course_id']
+            . DS . $this->assoc['asset_id'] . DS;
 
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
@@ -240,7 +244,10 @@ class Subtitle extends Handler
         $offering_alias = Request::getCmd('offering', '');
         $course         = new \Components\Courses\Models\Course($course_id);
 
-        $url = Route::url('index.php?option=com_courses&controller=offering&gid=' . $course->get('alias') . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id'));
+        $url = Route::url(
+            'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias')
+            . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id')
+        );
 
         // build return info
         $return_info = array(
@@ -262,11 +269,11 @@ class Subtitle extends Handler
     }
 
     /**
-     * [_parseSubtitleFile description]
+     * [parseSubtitleFile description]
      * @param  [type] $file [description]
      * @return [type]       [description]
      */
-    private function _parseSubtitleFile($file)
+    private function parseSubtitleFile($file)
     {
         define('SRT_STATE_SUBNUMBER', 0);
         define('SRT_STATE_TIME', 1);

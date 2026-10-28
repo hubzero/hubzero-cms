@@ -1,5 +1,6 @@
 <?php
 
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -84,26 +85,27 @@ switch ($avg) {
 }
 
 $this->css('
-	.review-bar-5star {
-		"width: ' . ($total ? round($distribution[5] / $total, 2) * 100 : 0) . '%;
-	}
-	.review-bar-4star {
-		"width: ' . ($total ? round($distribution[4] / $total, 2) * 100 : 0) . '%;
-	}
-	.review-bar-3star {
-		"width: ' . ($total ? round($distribution[3] / $total, 2) * 100 : 0) . '%;
-	}
-	.review-bar-2star {
-		"width: ' . ($total ? round($distribution[2] / $total, 2) * 100 : 0) . '%;
-	}
-	.review-bar-1star {
-		"width: ' . ($total ? round($distribution[1] / $total, 2) * 100 : 0) . '%;
-	}
+    .review-bar-5star {
+        "width: ' . ($total ? round($distribution[5] / $total, 2) * 100 : 0) . '%;
+    }
+    .review-bar-4star {
+        "width: ' . ($total ? round($distribution[4] / $total, 2) * 100 : 0) . '%;
+    }
+    .review-bar-3star {
+        "width: ' . ($total ? round($distribution[3] / $total, 2) * 100 : 0) . '%;
+    }
+    .review-bar-2star {
+        "width: ' . ($total ? round($distribution[2] / $total, 2) * 100 : 0) . '%;
+    }
+    .review-bar-1star {
+        "width: ' . ($total ? round($distribution[1] / $total, 2) * 100 : 0) . '%;
+    }
 ');
 ?>
 <div class="reviews-summary">
     <p class="avgrating <?php echo $cls; ?>">
-        <strong><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?></span> (<?php echo $total; ?>)</strong>
+        <strong><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?>
+        </span> (<?php echo $total;?>)</strong>
     </p>
     <table class="reviews-distribution">
         <caption><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_DISTRIBUTION'); ?></caption>

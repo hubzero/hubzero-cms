@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,11 +30,11 @@ class Publication extends Relational
      *     STATE_PUBLISHED   = 1;
      *     STATE_DELETED     = 2;
      **/
-    const STATE_DRAFT       = 3;
-    const STATE_POSTED      = 4;  // Posted for review
-    const STATE_PENDING     = 5;  // Pending publishing
-    const STATE_ARCHIVED    = 6;
-    const STATE_WORKED      = 7;  // Pending author changes
+    public const STATE_DRAFT       = 3;
+    public const STATE_POSTED      = 4;  // Posted for review
+    public const STATE_PENDING     = 5;  // Pending publishing
+    public const STATE_ARCHIVED    = 6;
+    public const STATE_WORKED      = 7;  // Pending author changes
 
     /**
      * Fields and their validation criteria

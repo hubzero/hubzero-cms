@@ -15,7 +15,7 @@ use Hubzero\Search\Adapters;
  */
 class Query
 {
-    var $adapter;
+    public $adapter;
 
     /**
      * Set the adapter

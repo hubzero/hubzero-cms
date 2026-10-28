@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,6 +21,7 @@ class Group extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_groups',
     );
@@ -113,7 +115,8 @@ class Group extends Base
                 break;
 
             case 'abuse':
-                return 'index.php?option=com_support&task=reportabuse&category=forum&id=' . $this->get('post') . '&parent=' . $this->get('parent');
+                return 'index.php?option=com_support&task=reportabuse&category=forum&id='
+                    . $this->get('post') . '&parent=' . $this->get('parent');
             break;
 
             case 'permalink':

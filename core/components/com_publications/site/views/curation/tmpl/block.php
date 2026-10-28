@@ -40,12 +40,21 @@ $cls = trim($cls);
                     <div class="block-info"><?php echo $about; ?></div>
                 </div>
 
-                <?php echo $this->pub->curation()->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->title); ?>
+                <
+                    ?php echo $this->pub->curation()->drawChecker($props, $curatorStatus, Route
+                    ::url($this->pub->link('edit')), $this->manifest->title); ?>
 
                 <div class="block-subject">
                     <h5 class="element-title"><?php echo $this->escape($this->manifest->label); ?></h5>
 
-                    <?php echo $this->pub->curation()->drawCurationNotice($curatorStatus, $props, 'curator', 'element' . $this->active); ?>
+                    <?php
+                    echo $this->pub->curation()->drawCurationNotice(
+                        $curatorStatus,
+                        $props,
+                        'curator',
+                        'element' . $this->active
+                    );
+                    ?>
 
                     <?php echo $this->content; ?>
                 </div>

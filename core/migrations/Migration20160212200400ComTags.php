@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding objects and substitutes columns to tags table
- **/
+ *
+ */
 class Migration20160212200400ComTags extends Base
 {
     /**
@@ -31,7 +33,8 @@ class Migration20160212200400ComTags extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                $query = "UPDATE `#__tags` AS t SET t.`objects`=(SELECT COUNT(*) FROM `#__tags_object` AS o WHERE o.tagid=t.id)";
+                $query = "UPDATE `#__tags` AS t SET t.`objects`=(SELECT COUNT(*) FROM `#__tags_object` AS o WHERE "
+                    . "o.tagid=t.id)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -45,7 +48,8 @@ class Migration20160212200400ComTags extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                $query = "UPDATE `#__tags` AS t SET t.`substitutes`=(SELECT COUNT(*) FROM `#__tags_substitute` AS o WHERE o.tag_id=t.id)";
+                $query = "UPDATE `#__tags` AS t SET t.`substitutes`=(SELECT COUNT(*) FROM `#__tags_substitute` AS "
+                    . "o WHERE o.tag_id=t.id)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

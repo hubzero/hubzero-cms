@@ -23,6 +23,7 @@ class Help extends Base implements CommandInterface
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_commands = array();
 
     /**
@@ -129,7 +130,7 @@ class Help extends Base implements CommandInterface
                         }
                     }
                 }
-            } else if (is_dir($cur . DS . $file)) {
+            } elseif (is_dir($cur . DS . $file)) {
                 $this->getCommands($root, ((!empty($dir)) ? $dir . DS : '') . $file);
             }
         }
@@ -215,7 +216,12 @@ class Help extends Base implements CommandInterface
 
             foreach ($methods as $method) {
                 // We're assuming here that all public methods are available to be called
-                if ($method->isPublic() && !$method->isConstructor() && $method->name != 'execute' && $method->name != 'help') {
+                if (
+                    $method->isPublic() &&
+                    !$method->isConstructor() &&
+                    $method->name != 'execute' &&
+                    $method->name != 'help'
+                ) {
                     $this->output->addLine(
                         $method->name,
                         array(

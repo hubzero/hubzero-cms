@@ -1,5 +1,6 @@
 <?php
 
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +17,12 @@ if (!$unit) :
 endif;
 
 if (!$this->course->offering()->access('view')) : ?>
-    <p class="info"><?php echo Lang::txt('Access to the "Syllabus" section of this course is restricted to members only. You must be a member to view the content.'); ?></p>
+    <p class="info"><?php
+        echo Lang::txt(
+            'Access to the "Syllabus" section of this course is restricted'
+            . ' to members only. You must be a member to view the content.'
+                    );
+                    ?></p>
 <?php else : ?>
     <?php echo $this->escape($unit->get('title')); ?>
 <?php endif;

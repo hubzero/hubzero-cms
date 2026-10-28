@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for getting rid of show_pdf_icon in extension params
- **/
+ *
+ */
 class Migration20130517101308ComContent extends Base
 {
     /**
@@ -22,12 +24,18 @@ class Migration20130517101308ComContent extends Base
     public function up()
     {
         if ($this->db->tableExists('#__components')) {
-            $query  = "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=\n','') WHERE `option` = 'com_content';";
-            $query .= "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE `option` = 'com_content';";
-            $query .= "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=1\n','') WHERE `option` = 'com_content';";
-            $query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=\n','') WHERE `link` LIKE '%com_content%';";
-            $query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE `link` LIKE '%com_content%';";
-            $query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=1\n','') WHERE `link` LIKE '%com_content%';";
+            $query = "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=\n','') WHERE `option` "
+                . "= 'com_content';";
+            $query .= "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE "
+                . "`option` = 'com_content';";
+            $query .= "UPDATE `#__components` SET `params` = REPLACE(`params`,'show_pdf_icon=1\n','') WHERE "
+                . "`option` = 'com_content';";
+            $query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=\n','') WHERE `link` LIKE "
+                . "'%com_content%';";
+            $query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=0\n','') WHERE `link` LIKE "
+                . "'%com_content%';";
+            $query .= "UPDATE `#__menu` SET `params` = REPLACE(`params`,'show_pdf_icon=1\n','') WHERE `link` LIKE "
+                . "'%com_content%';";
 
             $this->db->setQuery($query);
             $this->db->query();
@@ -41,7 +49,8 @@ class Migration20130517101308ComContent extends Base
                     $params = json_decode($r->params);
                     unset($params->show_pdf_icon);
 
-                    $query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
+                    $query = "UPDATE `#__extensions` SET `params` = " . $this->db->quote(json_encode($params))
+                        . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -56,7 +65,8 @@ class Migration20130517101308ComContent extends Base
                     $params = json_decode($r->params);
                     unset($params->show_pdf_icon);
 
-                    $query = "UPDATE `#__menu` SET `params` = " . $this->db->quote(json_encode($params)) . " WHERE `id` = " . $this->db->quote($r->id);
+                    $query = "UPDATE `#__menu` SET `params` = " . $this->db->quote(json_encode($params))
+                        . " WHERE `id` = " . $this->db->quote($r->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

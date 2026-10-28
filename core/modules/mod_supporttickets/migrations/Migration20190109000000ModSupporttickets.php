@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing supporttickets module
- **/
+ *
+ */
 class Migration20190109000000ModSupporttickets extends Base
 {
     /**

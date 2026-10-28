@@ -23,6 +23,7 @@ class Following extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Collections\\Tables\\Following';
 
     /**
@@ -30,14 +31,14 @@ class Following extends Model
      *
      * @var object
      */
-    private $_following = null;
+    private $followingObj = null;
 
     /**
      * Follower
      *
      * @var object
      */
-    private $_follower = null;
+    private $followerObj = null;
 
     /**
      * Constructor
@@ -59,7 +60,7 @@ class Following extends Model
             if ($oid) {
                 $this->_tbl->load($oid, $following_type, $follower_id, $follower_type);
             }
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }
@@ -73,8 +74,12 @@ class Following extends Model
      * @param   string   $follower_type   [member, group]
      * @return  object
      */
-    static function &getInstance($oid = null, $following_type = null, $follower_id = 0, $follower_type = 'member')
-    {
+    public static function &getInstance(
+        $oid = null,
+        $following_type = null,
+        $follower_id = 0,
+        $follower_type = 'member'
+    ) {
         static $instances;
 
         if (!isset($instances)) {
@@ -98,10 +103,10 @@ class Following extends Model
      */
     public function follower()
     {
-        if (!$this->_follower) {
-            $this->_follower = $this->_adapter('follower');
+        if (!$this->followerObj) {
+            $this->followerObj = $this->adapter('follower');
         }
-        return $this->_follower;
+        return $this->followerObj;
     }
 
     /**
@@ -112,10 +117,10 @@ class Following extends Model
      */
     public function following()
     {
-        if (!$this->_following) {
-            $this->_following = $this->_adapter('following');
+        if (!$this->followingObj) {
+            $this->followingObj = $this->adapter('following');
         }
-        return $this->_following;
+        return $this->followingObj;
     }
 
     /**
@@ -124,7 +129,7 @@ class Following extends Model
      * @param   string  $what  Key name [following, follower]
      * @return  object
      */
-    private function _adapter($key = 'following')
+    private function adapter($key = 'following')
     {
         $scope = strtolower($this->get($key . '_type'));
         $cls = __NAMESPACE__ . '\\Following\\' . ucfirst($scope);

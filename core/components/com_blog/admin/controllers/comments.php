@@ -273,9 +273,9 @@ class Comments extends AdminController
             return $this->editTask($row);
         }
 
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller .
+            '&entry_id=' . $fields['entry_id'];
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -329,8 +329,8 @@ class Comments extends AdminController
     public function cancelTask()
     {
         // Set the redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . Request::getInt('entry_id', 0), false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller .
+            '&entry_id=' . Request::getInt('entry_id', 0);
+        App::redirect(Route::url($url, false));
     }
 }

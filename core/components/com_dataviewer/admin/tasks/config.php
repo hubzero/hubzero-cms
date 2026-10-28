@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -59,9 +60,12 @@ function dv_config()
 <br />
 
 
-<div id="db-conf-editor" style="height: 400px; width: 900px; display: inline-block;"><?php echo $dv_conf_text; ?></div>
+<div id="db-conf-editor" style="height: 400px; width: 900px; display: inline-block;">
+    <?php echo $dv_conf_text; ?>
+</div>
 
-<div style="height: 400px; width: 400px; display: inline-block; vertical-align: top; margin-left: 30px; border: 1px solid #DDD; background: #FAFAFA; padding: 5px;">
+<div style="height: 400px; width: 400px; display: inline-block; vertical-align: top;
+    margin-left: 30px; border: 1px solid #DDD; background: #FAFAFA; padding: 5px;">
 
 <pre style="font-size: 0.8em; line-height: 1em; white-space: pre">
 <strong>Set ACL: specify users and groups.</strong>
@@ -107,10 +111,19 @@ e.g. make the data views publicly accessible
 </div>
 
 <br />
-<input id="db-config-update" type="button" value="Update" style="color: red; font-weight: bold; font-size: 1.2em;" />
-<input id="db-config-view" data-link="/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>&db=<?php echo $db_id; ?>&task=config_current" type="button" value="View Combined Config" style="color: blue; font-weight: bold; font-size: 1.2em;" />
+<input id="db-config-update" type="button" value="Update"
+    style="color: red; font-weight: bold; font-size: 1.2em;" />
+    <?php
+    $configLink = '/administrator/index.php?option=com_' . $conf['com_name']
+    . '&db=' . $db_id . '&task=config_current';
+    ?>
+<input id="db-config-view" data-link="<?php echo $configLink; ?>" type="button"
+    value="View Combined Config" style="color: blue; font-weight: bold; font-size: 1.2em;" />
 
-<form id="db-conf-update-form" method="post" action="/administrator/index.php?option=com_<?php echo $conf['com_name']; ?>&task=config_update">
+    <?php
+    $formAction = '/administrator/index.php?option=com_' . $conf['com_name'] . '&task=config_update';
+    ?>
+<form id="db-conf-update-form" method="post" action="<?php echo $formAction; ?>">
     <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
     <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
     <input name="update" type="hidden" value="true" />

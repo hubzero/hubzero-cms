@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing fields in a few middleware tables
- **/
+ *
+ */
 class Migration20141009171309ComTools extends Base
 {
     /**
@@ -38,8 +40,13 @@ class Migration20141009171309ComTools extends Base
             $mwdb->query();
         }
 
-        if ($mwdb->tableExists('zones') && $mwdb->tableHasField('zones', 'title') && $mwdb->tableHasField('zones', 'zone')) {
-            $query = "ALTER TABLE `zones` CHANGE COLUMN `title` `title` VARCHAR(255) NULL DEFAULT NULL AFTER `zone`";
+        if (
+            $mwdb->tableExists('zones')
+            && $mwdb->tableHasField('zones', 'title')
+            && $mwdb->tableHasField('zones', 'zone')
+        ) {
+            $query = "ALTER TABLE `zones` "
+                . "CHANGE COLUMN `title` `title` VARCHAR(255) NULL DEFAULT NULL AFTER `zone`";
             $mwdb->setQuery($query);
             $mwdb->query();
         }

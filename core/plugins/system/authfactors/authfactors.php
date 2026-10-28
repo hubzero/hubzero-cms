@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin checking auth factors after routing
  */
@@ -41,7 +38,7 @@ class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
                     // log out so we start over
                     $logout = 'logout' . ucfirst(App::get('client')->alias);
                     self::$logout();
-                } else if ($status === null) {
+                } elseif ($status === null) {
                     // If not a guest, but no factor verification has been completed,
                     // procede with auth factor checks as applicable
                     $factors = 'factors' . ucfirst(App::get('client')->alias);

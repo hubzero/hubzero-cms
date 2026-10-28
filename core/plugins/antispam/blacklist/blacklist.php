@@ -6,8 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die;
+
 
 /**
  * Antispam plugin for a Black Listed word detector
@@ -24,10 +23,13 @@ class plgAntispamBlackList extends \Hubzero\Plugin\Plugin
     {
         include_once __DIR__ . DS . 'Detector.php';
 
-        $words = $this->params->get('badwords', 'viagra, xanax, phentermine, ringtones, tramadol, hydrocodone, levitra, '
-                . 'ambien, vicodin, fioricet, diazepam, accarat, casino, '
-                . 'fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
-                . 'porno, videosex, hentai, kasino, kasinos, poker');
+        $words = $this->params->get(
+            'badwords',
+            'viagra, xanax, phentermine, ringtones, tramadol, hydrocodone, '
+            . 'levitra, ambien, vicodin, fioricet, diazepam, accarat, casino, '
+            . 'ambien, vicodin, fioricet, diazepam, accarat, casino, fuck, crap, shit, asshole, cunt, fucker, fuckers, '
+            . 'motherfucker, fucking, milf, cocksucker, porno, videosex, hentai, kasino, kasinos, poker'
+        );
 
         $words = explode(',', $words);
         $words = array_map('trim', $words);

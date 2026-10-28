@@ -35,7 +35,8 @@ class Utilities
         $state = Arr::getValue($states, (int) $value, $states[0]);
         $html  = '<span class="state ' . $state[0] . '"><span>' . Lang::txt($state[2]) . '</span></span>';
         if ($canChange) {
-            $html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="' . Lang::txt($state[3]) . '">' . $html . '</a>';
+            $html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="'
+                . Lang::txt($state[3]) . '">' . $html . '</a>';
         }
 
         return $html;
@@ -64,7 +65,7 @@ class Utilities
      *
      * @return  array
      */
-    static function getStateOptions()
+    public static function getStateOptions()
     {
         // Build the filter options.
         $options = array();

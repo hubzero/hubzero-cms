@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,8 @@ use Components\Events\Models\Orm\Event as CalEvent;
 
 /**
  * Search events
+ */
+/**
  */
 class plgSearchEvents extends \Hubzero\Plugin\Plugin
 {

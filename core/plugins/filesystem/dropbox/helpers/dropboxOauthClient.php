@@ -21,7 +21,11 @@ class DropboxOauthClient
      * $redirectUri    Dropbox Application redirect URI   @var string
      * $state          OAuth state                        @var string
      **/
-    protected $client, $clientId, $clientSecret, $redirectUri, $state;
+    protected $client;
+    protected $clientId;
+    protected $clientSecret;
+    protected $redirectUri;
+    protected $state;
 
     /**
      * Initialize Dropbox OAuth Client

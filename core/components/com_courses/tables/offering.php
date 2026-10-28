@@ -173,7 +173,7 @@ class Offering extends Table
 
         if (isset($filters['course_alias']) && $filters['course_alias']) {
             $where[] = "c.alias=" . $this->_db->quote($filters['course_alias']);
-        } else if (isset($filters['course_id'])) { // && $filters['course_id'])
+        } elseif (isset($filters['course_id'])) { // && $filters['course_id'])
             $where[] = "c.id=" . $this->_db->quote(intval($filters['course_id']));
         }
 
@@ -190,7 +190,7 @@ class Offering extends Table
             if (is_array($filters['state'])) {
                 $filters['state'] = array_map('intval', $filters['state']);
                 $where[] = "ci.state IN (" . implode(',', $filters['state']) . ")";
-            } else if ($filters['state'] >= 0) {
+            } elseif ($filters['state'] >= 0) {
                 $where[] = "ci.state=" . $this->_db->quote(intval($filters['state']));
             }
         }

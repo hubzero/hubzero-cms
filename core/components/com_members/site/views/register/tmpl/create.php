@@ -19,16 +19,26 @@ $this->css('register.css');
     <div class="grid">
         <div class="col span-half">
             <div class="<?php echo $this->getError() ? 'error' : 'success'; ?>-message">
-                <p><?php echo $this->getError() ? Lang::txt('COM_MEMBERS_REGISTER_ERROR_OCCURRED') : Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED'); ?></p>
+                <p>
+                    <?php echo $this->getError() ? Lang::txt('COM_MEMBERS_REGISTER_ERROR_OCCURRED') :
+                    Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED'); ?>
+                </p>
             </div>
         </div><!-- / .col span-half -->
         <div class="col span-half omega">
             <?php if ($this->getError()) { ?>
                 <p class="error"><?php echo $this->getError(); ?></p>
-            <?php } else if ($this->xprofile->get('activation') < 0) { ?>
+            <?php } elseif ($this->xprofile->get('activation') < 0) { ?>
                 <div class="account-activation">
                     <div class="instructions">
-                        <p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_CREATED_MESSAGE', $this->sitename, \Hubzero\Utility\Str::obfuscate($this->xprofile->get('email'))); ?></p>
+                        <?php
+                        $createdMsg = Lang::txt(
+                            'COM_MEMBERS_REGISTER_ACCOUNT_CREATED_MESSAGE',
+                            $this->sitename,
+                            \Hubzero\Utility\Str::obfuscate($this->xprofile->get('email'))
+                        );
+                        ?>
+                        <p><?php echo $createdMsg; ?></p>
                         <ol>
                             <li><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_FIND_EMAIL'); ?></li>
                             <li><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_ACTIVATE'); ?></li>
@@ -37,7 +47,13 @@ $this->css('register.css');
                         </ol>
                     </div>
                     <div class="notes">
-                        <p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_NOTE', Route::url('index.php?option=com_support')); ?></p>
+                        <?php
+                        $val = Lang::txt(
+                            'COM_MEMBERS_REGISTER_ACCOUNT_INSTRUCT_NOTE',
+                            Route::url('index.php?option=com_support')
+                        );
+                        ?>
+                        <p><?php echo $val; ?></p>
                     </div>
                 </div>
             <?php } ?>

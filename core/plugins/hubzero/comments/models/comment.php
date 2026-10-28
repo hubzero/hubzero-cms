@@ -22,14 +22,14 @@ class Comment extends ItemComment
      *
      * @var  integer
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * URL for this entry
      *
      * @var string
      */
-    private $_base = null;
+    private $base = null;
 
     /**
      * Get a list of files
@@ -50,10 +50,13 @@ class Comment extends ItemComment
      */
     public function link($type = '')
     {
-        if (!isset($this->_base)) {
-            $this->_base = $this->get('url', 'index.php?option=com_' . $this->get('item_type') . '&id=' . $this->get('item_id') . '&active=comments');
+        if (!isset($this->base)) {
+            $this->base = $this->get(
+                'url',
+                'index.php?option=com_' . $this->get('item_type') . '&id=' . $this->get('item_id') . '&active=comments'
+            );
         }
-        $link = $this->_base;
+        $link = $this->base;
 
         // check for page slug  (remove for now)
         $slug = '';
@@ -87,7 +90,8 @@ class Comment extends ItemComment
 
             case 'abuse':
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('parent');
+                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' .
+                    $this->get('id') . '&parent=' . $this->get('parent');
                 break;
 
             case 'permalink':

@@ -69,7 +69,13 @@ class Database extends Base implements CommandInterface
         $filename = tempnam($home, "{$hostname}.mysql.dump." . $now->format('Y.m.d') . ".sql.");
 
         // Build command
-        $cmd = "mysqldump -u " . Config::get('user') . " -p'" . Config::get('password') . "' " . Config::get('db') . " --routines {$exclude} > {$filename}";
+        $cmd = "mysqldump -u " .
+            Config::get('user') .
+            " -p'" .
+            Config::get('password') .
+            "' " .
+            Config::get('db') .
+            " --routines {$exclude} > {$filename}";
 
         exec($cmd);
 
@@ -114,7 +120,13 @@ class Database extends Base implements CommandInterface
 
         // Craft the command to be executed
         $infile = escapeshellarg($infile);
-        $cmd    = "mysql -u " . Config::get('user') . " -p'" . Config::get('password') . "' -D " . Config::get('db') . " < {$infile}";
+        $cmd    = "mysql -u " .
+            Config::get('user') .
+            " -p'" .
+            Config::get('password') .
+            "' -D " .
+            Config::get('db') .
+            " < {$infile}";
 
         $this->output->addLine('Loading data from ' . $infile . '...');
 

@@ -64,6 +64,7 @@ class Base extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _includeScripts()
     {
         // No need in some controllers
@@ -88,6 +89,7 @@ class Base extends SiteController
      * @param   string  $type
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setNotification($message, $type = 'success')
     {
         // If message is set push to notifications
@@ -102,6 +104,7 @@ class Base extends SiteController
      * @param   string  $type
      * @return  mixed   message if they exist
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getNotifications($type = 'success')
     {
         // Get messages in queue
@@ -126,6 +129,7 @@ class Base extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _login()
     {
         $task = (isset($this->_task) && !empty($this->_task))
@@ -135,7 +139,10 @@ class Base extends SiteController
             ? $this->_msg
             : Lang::txt('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task), 'server');
+        $defaultUrl = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task
+        );
+        $rtrn = Request::getString('REQUEST_URI', $defaultUrl, 'server');
 
         // A posted action can't be replayed by the GET that follows login,
         // so return to the project (or the projects page) instead
@@ -158,6 +165,7 @@ class Base extends SiteController
      * @param   string  $layout
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _showError($layout = 'default')
     {
         // Need to be project creator
@@ -175,6 +183,7 @@ class Base extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
         $active  = isset($this->active) ? $this->active : null;
@@ -234,6 +243,7 @@ class Base extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
         $group_tasks = array('start', 'setup', 'view');
@@ -311,9 +321,11 @@ class Base extends SiteController
                             break;
 
                         default:
+                            $url = 'index.php?option=' . $this->_option
+                                . '&alias=' . $alias . '&active=' . $active;
                             Pathway::append(
                                 ucfirst(Lang::txt('COM_PROJECTS_TAB_' . strtoupper($this->active))),
-                                Route::url('index.php?option=' . $this->_option . '&alias=' . $alias . '&active=' . $active)
+                                Route::url($url)
                             );
                             break;
                     }
@@ -375,6 +387,7 @@ class Base extends SiteController
      * @param  int     $owner    Project owner ID if project owner
      * @return void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _logActivity($pid = 0, $section = 'general', $layout = '', $action = '', $owner = 0)
     {
         // Is logging enabled?
@@ -410,6 +423,7 @@ class Base extends SiteController
      * @param   integer  $managers_only
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _notifyTeam($managers_only = 0)
     {
         // Is messaging turned on?
@@ -467,7 +481,8 @@ class Base extends SiteController
 
                 // Creator
                 if ($member->userid == $this->model->get('created_by_user')) {
-                    $subject_active  = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED') . ' ' . $this->model->get('alias') . '!';
+                    $subject_active = Lang::txt('COM_PROJECTS_EMAIL_SUBJECT_CREATOR_CREATED')
+                        . ' ' . $this->model->get('alias') . '!';
                 }
 
                 // Send HUB message
@@ -495,7 +510,8 @@ class Base extends SiteController
                 $message['multipart'] = $eview->loadTemplate();
                 $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-                Helpers\Html::email($member->invited_email, Config::get('sitename') . ': ' . $subject_pending, $message, $from);
+                $subject = Config::get('sitename') . ': ' . $subject_pending;
+                Helpers\Html::email($member->invited_email, $subject, $message, $from);
             }
         }
     }

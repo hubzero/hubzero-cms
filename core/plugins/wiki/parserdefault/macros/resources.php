@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class that will insert a linked title to a resource
@@ -30,7 +28,8 @@ class ResourcesMacro extends WikiMacro
     {
         $txt = array();
         $txt['wiki'] = 'This macro will insert a linked title to a resource. It can be passed either an ID or alias.';
-        $txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed either an ID or alias.</p>';
+        $txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed '
+            . 'either an ID or alias.</p>';
         return $txt['html'];
     }
 
@@ -135,7 +134,11 @@ class ResourcesMacro extends WikiMacro
         if ($d) {
             while (false !== ($entry = $d->read())) {
                 $img_file = $entry;
-                if (is_file(PATH_APP . $path . DS . $alias . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html') {
+                if (
+                    is_file(PATH_APP . $path . DS . $alias . DS . $img_file)
+                    && substr($entry, 0, 1) != '.'
+                    && strtolower($entry) !== 'index.html'
+                ) {
                     if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) {
                         $images[] = $img_file;
                     }
@@ -156,7 +159,16 @@ class ResourcesMacro extends WikiMacro
                 if (is_file(PATH_APP . $path . DS . $alias . DS . $tn) && $k < $num) {
                     $k++;
 
-                    $html .= '<a rel="lightbox" href="' . $path . DS . $alias . DS . $images[$i] . '" title="Screenshot #' . $k . '">';
+                    $html
+                        .= '<a rel="lightbox" href="'
+                        . $path
+                        . DS
+                        . $alias
+                        . DS
+                        . $images[$i]
+                        . '" title="Screenshot #'
+                        . $k
+                        . '">';
                     $html .= '<img src="' . $path . DS . $alias . DS . $tn . '" alt="Screenshot #' . $k . '" /></a>';
                 }
             }

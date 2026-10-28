@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mytickets module
- **/
+ *
+ */
 class Migration20190109000000ModMyTickets extends Base
 {
     /**

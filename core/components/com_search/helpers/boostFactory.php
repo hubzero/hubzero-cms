@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,9 +24,9 @@ use Date;
 
 class BoostFactory
 {
-    var $map = null;
+    protected $map = null;
 
-    var $userHelper = null;
+    protected $userHelper = null;
 
     public function __construct($args = [])
     {

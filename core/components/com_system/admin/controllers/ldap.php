@@ -117,7 +117,13 @@ class Ldap extends AdminController
         } elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0])) {
             Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
         } elseif (isset($result['success'])) {
-            Notify::info(Lang::txt('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
+            Notify::info(Lang::txt(
+                'COM_SYSTEM_LDAP_GROUPS_EXPORTED',
+                $result['added'],
+                $result['modified'],
+                $result['deleted'],
+                $result['unchanged']
+            ));
         }
 
         $this->cancelTask();
@@ -146,7 +152,13 @@ class Ldap extends AdminController
         } elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0])) {
             Notify::warning(Lang::txt('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])));
         } elseif (isset($result['success'])) {
-            Notify::info(Lang::txt('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']));
+            Notify::info(Lang::txt(
+                'COM_SYSTEM_LDAP_USERS_EXPORTED',
+                $result['added'],
+                $result['modified'],
+                $result['deleted'],
+                $result['unchanged']
+            ));
         }
 
         $this->cancelTask();

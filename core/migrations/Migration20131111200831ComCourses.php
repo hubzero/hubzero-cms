@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for courses badges cleanup
+  *
  **/
 class Migration20131111200831ComCourses extends Base
 {
@@ -21,11 +23,17 @@ class Migration20131111200831ComCourses extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__courses_offering_badges') && !$this->db->tableExists('#__courses_offering_section_badges')) {
+        if (
+            $this->db->tableExists('#__courses_offering_badges')
+            && !$this->db->tableExists('#__courses_offering_section_badges')
+        ) {
             $query = "RENAME TABLE `#__courses_offering_badges` TO `#__courses_offering_section_badges`";
             $this->db->setQuery($query);
             $this->db->query();
-        } else if ($this->db->tableExists('#__courses_offering_badges') && $this->db->tableExists('#__courses_offering_section_badges')) {
+        } elseif (
+            $this->db->tableExists('#__courses_offering_badges')
+            && $this->db->tableExists('#__courses_offering_section_badges')
+        ) {
             $query = "DROP TABLE `#__courses_offering_badges`";
             $this->db->setQuery($query);
             $this->db->query();
@@ -37,38 +45,62 @@ class Migration20131111200831ComCourses extends Base
             $this->db->query();
         }
 
-        if ($this->db->tableHasField('#__courses_offering_section_badges', 'offering_id') && !$this->db->tableHasField('#__courses_offering_section_badges', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_offering_section_badges` CHANGE `offering_id` `section_id` INT(11) NOT NULL";
+        if (
+            $this->db->tableHasField('#__courses_offering_section_badges', 'offering_id')
+            && !$this->db->tableHasField('#__courses_offering_section_badges', 'section_id')
+        ) {
+            $query = "ALTER TABLE `#__courses_offering_section_badges` "
+                . "CHANGE `offering_id` `section_id` INT(11) NOT NULL";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_offering_section_badges', 'provider_name') && $this->db->tableHasField('#__courses_offering_section_badges', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_offering_section_badges` ADD `provider_name` VARCHAR(255) NOT NULL DEFAULT 'passport' AFTER `section_id`";
+        if (
+            !$this->db->tableHasField('#__courses_offering_section_badges', 'provider_name')
+            && $this->db->tableHasField('#__courses_offering_section_badges', 'section_id')
+        ) {
+            $query = "ALTER TABLE `#__courses_offering_section_badges` ADD `provider_name` "
+                . "VARCHAR(255) NOT NULL DEFAULT 'passport' AFTER `section_id`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_offering_section_badges', 'provider_badge_id') && $this->db->tableHasField('#__courses_offering_section_badges', 'badge_id')) {
-            $query = "ALTER TABLE `#__courses_offering_section_badges` CHANGE `badge_id` `provider_badge_id` INT(11) NOT NULL";
+        if (
+            !$this->db->tableHasField('#__courses_offering_section_badges', 'provider_badge_id')
+            && $this->db->tableHasField('#__courses_offering_section_badges', 'badge_id')
+        ) {
+            $query = "ALTER TABLE `#__courses_offering_section_badges` "
+                . "CHANGE `badge_id` `provider_badge_id` INT(11) NOT NULL";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_offering_section_badges', 'criteria_id') && $this->db->tableHasField('#__courses_offering_section_badges', 'img_url')) {
-            $query = "ALTER TABLE `#__courses_offering_section_badges` ADD `criteria_id` INT(11) NOT NULL AFTER `img_url`";
+        if (
+            !$this->db->tableHasField('#__courses_offering_section_badges', 'criteria_id')
+            && $this->db->tableHasField('#__courses_offering_section_badges', 'img_url')
+        ) {
+            $query = "ALTER TABLE `#__courses_offering_section_badges` "
+                . "ADD `criteria_id` INT(11) NOT NULL AFTER `img_url`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_offering_section_badges', 'published') && $this->db->tableHasField('#__courses_offering_section_badges', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_offering_section_badges` ADD `published` INT(1) NOT NULL DEFAULT '0' AFTER `section_id`";
+        if (
+            !$this->db->tableHasField('#__courses_offering_section_badges', 'published')
+            && $this->db->tableHasField('#__courses_offering_section_badges', 'section_id')
+        ) {
+            $query = "ALTER TABLE `#__courses_offering_section_badges` "
+                . "ADD `published` INT(1) NOT NULL DEFAULT '0' AFTER `section_id`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_member_badges', 'section_badge_id') && $this->db->tableHasField('#__courses_member_badges', 'member_id')) {
-            $query = "ALTER TABLE `#__courses_member_badges` ADD `section_badge_id` INT(11) NOT NULL AFTER `member_id`";
+        if (
+            !$this->db->tableHasField('#__courses_member_badges', 'section_badge_id')
+            && $this->db->tableHasField('#__courses_member_badges', 'member_id')
+        ) {
+            $query = "ALTER TABLE `#__courses_member_badges` "
+                . "ADD `section_badge_id` INT(11) NOT NULL AFTER `member_id`";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -79,14 +111,22 @@ class Migration20131111200831ComCourses extends Base
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_member_badges', 'validation_token') && $this->db->tableHasField('#__courses_member_badges', 'action_on')) {
-            $query = "ALTER TABLE `#__courses_member_badges` ADD `validation_token` VARCHAR(20) NULL DEFAULT NULL AFTER `action_on`";
+        if (
+            !$this->db->tableHasField('#__courses_member_badges', 'validation_token')
+            && $this->db->tableHasField('#__courses_member_badges', 'action_on')
+        ) {
+            $query = "ALTER TABLE `#__courses_member_badges` "
+                . "ADD `validation_token` VARCHAR(20) NULL DEFAULT NULL AFTER `action_on`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if (!$this->db->tableHasField('#__courses_member_badges', 'criteria_id') && $this->db->tableHasField('#__courses_member_badges', 'validation_token')) {
-            $query = "ALTER TABLE `#__courses_member_badges` ADD `criteria_id` INT(11)  NULL  DEFAULT NULL  AFTER `validation_token`";
+        if (
+            !$this->db->tableHasField('#__courses_member_badges', 'criteria_id')
+            && $this->db->tableHasField('#__courses_member_badges', 'validation_token')
+        ) {
+            $query = "ALTER TABLE `#__courses_member_badges` "
+                . "ADD `criteria_id` INT(11)  NULL  DEFAULT NULL  AFTER `validation_token`";
             $this->db->setQuery($query);
             $this->db->query();
         }

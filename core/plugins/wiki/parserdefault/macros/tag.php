@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for dipslaying a tag
@@ -51,7 +49,13 @@ class TagMacro extends WikiMacro
             // Did we get a result from the database?
             if ($a) {
                 // Build and return the link
-                return '<a href="' . Route::url('index.php?option=com_tags&tag=' . $tag) . '">' . stripslashes($a) . '</a>';
+                return '<a href="'
+                    . Route::url('index
+                    . php?option=com_tags&tag='
+                    . $tag)
+                    . '">'
+                    . stripslashes($a)
+                    . '</a>';
             } else {
                 // Return error message
                 return '(' . $tag . ' not found)';

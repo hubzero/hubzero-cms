@@ -19,7 +19,7 @@ class PdfFormDeployment
      *
      * @var constant
      **/
-    const CRUMB_LEN = 20;
+    public const CRUMB_LEN = 20;
 
     /**
      * Array of result view types
@@ -122,7 +122,13 @@ class PdfFormDeployment
         $rv = array();
 
         $dbh = self::getDbh();
-        $dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed, (SELECT name FROM #__users WHERE id = user_id) AS userName FROM #__courses_form_deployments WHERE form_id = ' . (int)$formId);
+        $dbh->setQuery(
+            'SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, '
+            . 'results_open AS resultsOpen, time_limit AS timeLimit, crumb, '
+            . 'results_closed AS resultsClosed, '
+            . '(SELECT name FROM #__users WHERE id = user_id) AS userName '
+            . 'FROM #__courses_form_deployments WHERE form_id = ' . (int)$formId
+        );
 
         foreach ($dbh->loadAssocList() as $depData) {
             $dep = new self();
@@ -242,11 +248,12 @@ class PdfFormDeployment
             return false;
         }
 
-        if ($this->id && !isset($resp[$this->id . '.' . $member_id . '.' . $attempt])) {
-            $resp[$this->id . '.' . $member_id . '.' . $attempt] = new PdfFormRespondent($this->id, $member_id, $attempt);
+        $key = $this->id . '.' . $member_id . '.' . $attempt;
+        if ($this->id && !isset($resp[$key])) {
+            $resp[$key] = new PdfFormRespondent($this->id, $member_id, $attempt);
         }
 
-        return $resp[$this->id . '.' . $member_id . '.' . $attempt];
+        return $resp[$key];
     }
 
     /**
@@ -288,7 +295,12 @@ class PdfFormDeployment
     {
         $dep = new self();
         $dbh = self::getDbh();
-        $dbh->setQuery('SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, results_open AS resultsOpen, time_limit AS timeLimit, crumb, results_closed AS resultsClosed, allowed_attempts AS allowedAttempts FROM #__courses_form_deployments WHERE ' . $where);
+        $dbh->setQuery(
+            'SELECT id, form_id AS formId, start_time AS startTime, end_time AS endTime, '
+            . 'results_open AS resultsOpen, time_limit AS timeLimit, crumb, '
+            . 'results_closed AS resultsClosed, allowed_attempts AS allowedAttempts '
+            . 'FROM #__courses_form_deployments WHERE ' . $where
+        );
 
         if (!($res = $dbh->loadAssoc())) {
             throw new \Hubzero\Error\Exception\RuntimeException("no such deployment", 404);
@@ -476,7 +488,9 @@ class PdfFormDeployment
      **/
     public function genNewCrumb()
     {
-        $this->crumb = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(self::CRUMB_LEN + 1)), 0, self::CRUMB_LEN));
+        $randomBytes = openssl_random_pseudo_bytes(self::CRUMB_LEN + 1);
+        $encoded = substr(base64_encode($randomBytes), 0, self::CRUMB_LEN);
+        $this->crumb = str_replace(array('/', '+'), array('-', '-'), $encoded);
     }
 
     /**
@@ -588,8 +602,10 @@ class PdfFormDeployment
         $dbh = self::getDbh();
 
         if (is_null($id)) {
+            $columns = 'form_id, start_time, end_time, results_open, results_closed, '
+                . 'time_limit, crumb, user_id, allowed_attempts';
             $dbh->setQuery(
-                'INSERT INTO `#__courses_form_deployments`(form_id, start_time, end_time, results_open, results_closed, time_limit, crumb, user_id, allowed_attempts) VALUES (' .
+                'INSERT INTO `#__courses_form_deployments`(' . $columns . ') VALUES (' .
                     (int)$this->formId . ', ' .
                     ($this->startTime ? $dbh->quote($this->startTime) : 'NULL') . ', ' .
                     ($this->endTime   ? $dbh->quote($this->endTime) : 'NULL') . ', ' .

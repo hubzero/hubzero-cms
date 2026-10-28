@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding 'action_browse' column to #__user_profile_fields
- **/
+ *
+ */
 class Migration20160522113201ComMembers extends Base
 {
     /**
@@ -27,8 +29,8 @@ class Migration20160522113201ComMembers extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                //$query = "UPDATE `#__user_profile_fields` SET `action_browse`=0 WHERE `name` IN ('orgtype', 'countryresident', 'countryorigin', 'url', 'phone', 'orcid', 'gender', 'race', 'disability', 'reason', 'tags', 'address', 'hispanic');";
-                $query = "UPDATE `#__user_profile_fields` SET `action_browse`=1 WHERE `name` IN ('organization', 'bio');";
+                $query = "UPDATE `#__user_profile_fields` SET `action_browse`=1"
+                    . " WHERE `name` IN ('organization', 'bio');";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -47,12 +47,14 @@ class CategoryEdit extends Select
         if ($this->element['parent'] || Request::getCmd('option') == 'com_categories') {
             $oldCat = Request::getInt('id', 0);
             $oldParent = $this->form->getValue($name, 0);
-            $extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) Request::getCmd('extension', 'com_content');
-        } else // For items the old category is the category they are in when opened or 0 if new.
-        {
+            $extElement = $this->element['extension'];
+            $extension = $extElement ? (string) $extElement : (string) Request::getCmd('extension', 'com_content');
+        } else {
+            // For items the old category is the category they are in when opened or 0 if new.
             $thisItem = Request::getInt('id', 0);
             $oldCat = $this->form->getValue($name, 0);
-            $extension = $this->element['extension'] ? (string) $this->element['extension'] : (string) Request::getCmd('option', 'com_content');
+            $extElement = $this->element['extension'];
+            $extension = $extElement ? (string) $extElement : (string) Request::getCmd('option', 'com_content');
         }
 
         $db = App::get('db');
@@ -145,14 +147,15 @@ class CategoryEdit extends Select
                     unset($options[$i]);
                 }
             }
-        }
-        // If you have an existing category id things are more complex.
-        else {
+        } else {
+            // If you have an existing category id things are more complex.
             // If you are only allowed to edit in this category but not edit.state, you should not get any
             // option to change the category parent for a category or the category for a content item,
             // but you should be able to save in that category.
             foreach ($options as $i => $option) {
-                if (\User::authorise('core.edit.state', $extension . '.category.' . $oldCat) != true && !isset($oldParent)) {
+                $catAsset = $extension . '.category.' . $oldCat;
+                $canEditState = \User::authorise('core.edit.state', $catAsset);
+                if ($canEditState != true && !isset($oldParent)) {
                     if ($option->value != $oldCat) {
                         unset($options[$i]);
                     }

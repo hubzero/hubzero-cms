@@ -14,9 +14,13 @@ $action = $this->action;
 $isEnabled = $this->isEnabled;
 $updateValue = $isEnabled ? '0' : '1';
 $token = Session::getFormToken();
-$action = Route::url(
-    "index.php?option=$this->option&controller=$this->controller&task=update&id=$id&action=$action&value=$updateValue&$token=1"
-);
+$actionUrl = 'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=update&id=' . $id
+    . '&action=' . $action
+    . '&value=' . $updateValue
+    . '&' . $token . '=1';
+$action = Route::url($actionUrl);
 
 if ($isEnabled) {
     $alt = Lang::txt('JYES');

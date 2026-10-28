@@ -56,7 +56,13 @@ $acluserIDs = array();
 
             ?>
     <li id="acluser_<?php echo $aclusername->user_id; ?>">
-        <a class="state trash" data-parent="acluser_<?php echo $aclusername->user_id; ?>" href="#" onclick="HUB.ResourcesACL.removeUser('acluser_<?php echo $aclusername->user_id; ?>');return false;"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></a>
+            <?php $uid = $aclusername->user_id; ?>
+        <a class="state trash"
+           data-parent="acluser_<?php echo $uid; ?>"
+           href="#"
+           onclick="HUB.ResourcesACL.removeUser('acluser_<?php echo $uid; ?>');return false;">
+            <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
+        </a>
             <?php echo $this->escape(stripslashes($name)); ?> (<?php echo $aclusername->user_id; ?>)
 
 
@@ -75,7 +81,10 @@ $acluserIDs = array();
 
 
 
-        <input type="hidden" name="<?php echo $aclusername->user_id; ?>_name" value="<?php echo $this->escape($name); ?>" />
+        <input type="hidden"
+               name="<?php echo $aclusername->user_id; ?>_name"
+               value="<?php echo $this->escape($name); ?>"
+               />
     </li>
             <?php
         }

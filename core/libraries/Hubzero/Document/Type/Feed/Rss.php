@@ -159,7 +159,7 @@ class Rss extends Renderer
             $feed .= "		<item>\n";
             $feed .= "			<title>" . $this->escape(strip_tags($data->items[$i]->title)) . "</title>\n";
             $feed .= "			<link>" . $this->_escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</link>\n";
-            $feed .= "			<description><![CDATA[" . str_replace(']]>', ']]]]><![CDATA[>', $this->_unwrapCdata((string) $this->_relToAbs($data->items[$i]->description))) . "]]></description>\n";
+            $feed .= "			<description><![CDATA[" . str_replace(']]>', ']]]]><![CDATA[>', $this->_unwrapCdata((string) $this->relToAbs($data->items[$i]->description))) . "]]></description>\n";
 
             if (empty($data->items[$i]->guid) === true) {
                 $feed .= "			<guid isPermaLink=\"true\">" . $this->_escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</guid>\n";
@@ -251,7 +251,7 @@ class Rss extends Renderer
      *
      * @return  string
      */
-    private function _relToAbs($text)
+    private function relToAbs($text)
     {
         $base = \App::get('request')->base();
         $text = preg_replace("/(href|src)=\"(?!http|ftp|https)([^\"]*)\"/", "$1=\"$base\$2\"", $text);

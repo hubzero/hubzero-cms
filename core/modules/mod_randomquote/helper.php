@@ -50,7 +50,11 @@ class Helper extends Module
         ));*/
 
         if ($quote) {
-            $this->quote_to_show = ($quotesrc == 'miniquote') ? stripslashes($quote->get('miniquote')) : stripslashes($quote->get('short_quote'));
+            if ($quotesrc == 'miniquote') {
+                $this->quote_to_show = stripslashes($quote->get('miniquote'));
+            } else {
+                $this->quote_to_show = stripslashes($quote->get('short_quote'));
+            }
         } else {
             $this->quote_to_show = '';
         }

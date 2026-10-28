@@ -21,7 +21,8 @@ Toolbar::help('host');
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">
@@ -29,11 +30,20 @@ Toolbar::help('host');
 
                 <div class="input-wrap">
                     <label for="field-hostname"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</label><br />
-                    <input type="text" name="fields[hostname]" id="field-hostname" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->hostname == null ? '' : $this->row->hostname)); ?>" />
+                    <?php $hostnameVal = $this->escape(
+                        stripslashes($this->row->hostname == null ? '' : $this->row->hostname)
+                    ); ?>
+                    <input type="text" name="fields[hostname]" id="field-hostname"
+                        size="30" maxlength="255" value="<?php echo $hostnameVal; ?>" />
                 </div>
                 <div class="input-wrap">
-                    <label for="field-service_host"><?php echo Lang::txt('COM_TOOLS_FIELD_SERVICE_HOST'); ?>:</label><br />
-                    <input type="text" name="fields[service_host]" id="field-service_host" size="30" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->service_host == null ? '' : $this->row->service_host)); ?>" />
+                    <label for="field-service_host">
+                        <?php echo Lang::txt('COM_TOOLS_FIELD_SERVICE_HOST'); ?>:</label><br />
+                    <?php $serviceHostVal = $this->escape(
+                        stripslashes($this->row->service_host == null ? '' : $this->row->service_host)
+                    ); ?>
+                    <input type="text" name="fields[service_host]" id="field-service_host"
+                        size="30" maxlength="255" value="<?php echo $serviceHostVal; ?>" />
                 </div>
 
                 <div class="input-wrap">
@@ -60,9 +70,9 @@ Toolbar::help('host');
                         if ($this->zones) {
                             foreach ($this->zones as $zone) {
                                 ?>
-                                    <option<?php if ($zone->id == $this->row->zone_id) {
-                                        echo ' selected="selected"';
-                                           } ?> value="<?php echo $zone->id; ?>"><?php echo $this->escape(stripslashes($zone->zone)); ?></option>
+                                    <?php $sel = ($zone->id == $this->row->zone_id) ? ' selected="selected"' : ''; ?>
+                                    <option<?php echo $sel; ?> value="<?php echo $zone->id; ?>">
+                                        <?php echo $this->escape(stripslashes($zone->zone)); ?></option>
                                     <?php
                             }
                         }
@@ -117,7 +127,8 @@ Toolbar::help('host');
         </div>
     </div>
 
-    <input type="hidden" name="fields[status]" value="<?php echo ($this->row->status) ? $this->row->status : 'check'; ?>" />
+    <?php $statusVal = ($this->row->status) ? $this->row->status : 'check'; ?>
+    <input type="hidden" name="fields[status]" value="<?php echo $statusVal; ?>" />
     <input type="hidden" name="fields[id]" value="<?php echo $this->row->hostname; ?>" />
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

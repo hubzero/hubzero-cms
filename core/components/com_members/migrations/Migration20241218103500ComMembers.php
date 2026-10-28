@@ -8,9 +8,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for fixing members names that are malformed
  **/
@@ -39,9 +36,12 @@ class Migration20241218103500ComMembers extends Base
     */
 
 
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function cleanUnicode_ProperNames()
     {
-        $query = 'SELECT id FROM #__users where surname REGEXP "\\\\p{C}" OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" OR name REGEXP "\\\\p{C}"';
+        $query = 'SELECT id FROM #__users where surname REGEXP "\\\\p{C}" '
+            . 'OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" '
+            . 'OR name REGEXP "\\\\p{C}"';
         $this->db->setQuery($query);
         $results = $this->db->loadColumn();
 
@@ -55,7 +55,9 @@ class Migration20241218103500ComMembers extends Base
         }
 
 
-        $query = 'SELECT uidNumber FROM #__xprofiles where surname REGEXP "\\\\p{C}" OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" OR name REGEXP "\\\\p{C}"';
+        $query = 'SELECT uidNumber FROM #__xprofiles where surname REGEXP "\\\\p{C}" '
+            . 'OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" '
+            . 'OR name REGEXP "\\\\p{C}"';
         $this->db->setQuery($query);
         $results = $this->db->loadColumn();
 
@@ -69,6 +71,7 @@ class Migration20241218103500ComMembers extends Base
         }
     }
 
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function cleanInvaldChars_ProperNames()
     {
         foreach (array('#__users', '#__xprofiles') as $table) {
@@ -108,7 +111,8 @@ class Migration20241218103500ComMembers extends Base
 
     public function rebuildName()
     {
-        $query = "UPDATE #__users SET givenName='unknown' WHERE TRIM(name)='' AND TRIM(givenName)='' AND TRIM(middleName)='' AND TRIM(surname)='';";
+        $query = "UPDATE #__users SET givenName='unknown' WHERE TRIM(name)='' "
+            . "AND TRIM(givenName)='' AND TRIM(middleName)='' AND TRIM(surname)='';";
         $this->db->setQuery($query);
         $this->db->execute();
 
@@ -146,7 +150,8 @@ class Migration20241218103500ComMembers extends Base
             $this->db->execute();
         }
 
-        $query = "SELECT uidNumber,name FROM #__xprofiles where TRIM(surname)='' AND TRIM(givenName)='' AND TRIM(middleName)=''";
+        $query = "SELECT uidNumber,name FROM #__xprofiles where TRIM(surname)='' "
+            . "AND TRIM(givenName)='' AND TRIM(middleName)=''";
         $this->db->setQuery($query);
         $results = $this->db->loadAssocList();
 

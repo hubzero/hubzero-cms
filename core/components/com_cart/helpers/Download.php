@@ -85,7 +85,8 @@ class CartDownload
 
         $db = \App::get('db');
 
-        $sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.id AS uidNumber, x.name AS dName, x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
+        $sql  = 'SELECT d.*, INET_NTOA(d.dIp) AS dIp, x.id AS uidNumber, x.name AS dName, ';
+        $sql .= 'x.username, s.sSku, p.pId, p.pName FROM `#__cart_downloads` d ';
         $sql .= ' LEFT JOIN `#__users` x ON (d.uId = x.id)';
         $sql .= ' LEFT JOIN `#__storefront_skus` s ON (s.sId = d.sId)';
         $sql .= ' LEFT JOIN `#__storefront_products` p ON (s.pId = p.pId)';
@@ -174,7 +175,8 @@ class CartDownload
         if (!empty($dids)) {
             // Get the meta for all returned objects
             // Build a (potentially) long SQL statement to get metadata
-            $sql = "SELECT `scope_id`, `mtKey`, `mtValue` FROM `#__cart_meta` WHERE `scope` = 'download' AND `scope_id` IN ({$dids})";
+            $sql = "SELECT `scope_id`, `mtKey`, `mtValue` FROM `#__cart_meta` ";
+            $sql .= "WHERE `scope` = 'download' AND `scope_id` IN ({$dids})";
             $db->setQuery($sql);
             $db->execute();
             $metas = $db->loadAssocList();

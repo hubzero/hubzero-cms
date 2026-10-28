@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for defaulting the option to Basic search
+  *
  **/
 class Migration20160606162915ComSearch extends Base
 {
@@ -28,7 +29,8 @@ class Migration20160606162915ComSearch extends Base
                 $parameters->engine = 'basic';
                 $parameters = json_encode($parameters);
 
-                $query = "UPDATE #__extensions SET params=" . $this->db->quote($parameters) . " WHERE extension_id=" . $result['extension_id'] . ";";
+                $query = "UPDATE #__extensions SET params=" . $this->db->quote($parameters) . " WHERE "
+                    . "extension_id=" . $result['extension_id'] . ";";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

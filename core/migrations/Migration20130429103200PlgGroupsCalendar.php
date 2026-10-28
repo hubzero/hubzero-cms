@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for new group calendar plugin
- **/
+ *
+ */
 class Migration20130429103200PlgGroupsCalendar extends Base
 {
     /**
@@ -52,7 +54,8 @@ class Migration20130429103200PlgGroupsCalendar extends Base
 
         if ($this->db->tableExists('#__xgroups_events')) {
             // move group events to events table
-            $query .= "INSERT INTO `#__events`(scope, scope_id, title, content, state, created, created_by, publish_up, publish_down)
+            $query .= "INSERT INTO `#__events`(scope, scope_id, title, content, state, "
+                . "created, created_by, publish_up, publish_down)
 						SELECT
 							'group',
 							gidNumber AS scope_id,

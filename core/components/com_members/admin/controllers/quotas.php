@@ -157,7 +157,22 @@ class Quotas extends AdminController
             }
         }
 
-        $classes = Html::select('genericlist', $options, 'fields[class_id]', 'data-href="' . Route::url('index.php?option=' . $this->_option . '&controller=quotas&task=getClassValues&class_id=', false) . '"', 'value', 'text', $selected, 'class_id', false, false);
+        $dataHref = Route::url(
+            'index.php?option=' . $this->_option . '&controller=quotas&task=getClassValues&class_id=',
+            false
+        );
+        $classes = Html::select(
+            'genericlist',
+            $options,
+            'fields[class_id]',
+            'data-href="' . $dataHref . '"',
+            'value',
+            'text',
+            $selected,
+            'class_id',
+            false,
+            false
+        );
 
         $du = $this->getQuotaUsageTask('array', $row->get('id'));
 
@@ -486,9 +501,9 @@ class Quotas extends AdminController
      */
     public function cancelClassTask()
     {
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses', false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=displayClasses';
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -573,7 +588,9 @@ class Quotas extends AdminController
                     }
                 }
 
-                $used = (isset($info['softspace']) && $info['softspace'] != 0) ? bcdiv($info['space'], $info['softspace'], 6) : 0;
+                $used = (isset($info['softspace']) && $info['softspace'] != 0)
+                    ? bcdiv($info['space'], $info['softspace'], 6)
+                    : 0;
                 $percent = round($used * 100);
 
                 $success = true;
@@ -622,8 +639,10 @@ class Quotas extends AdminController
 
         if (empty($qfile)) {
             // Output message and redirect
+            $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=import';
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=import', false),
+                Route::url($url, false),
                 Lang::txt('COM_MEMBERS_QUOTA_NO_CONF_TEXT'),
                 'warning'
             );
@@ -724,8 +743,10 @@ class Quotas extends AdminController
 
             if (!$class->get('id')) {
                 // Output message and redirect
+                $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    . '&task=import';
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=import', false),
+                    Route::url($url, false),
                     Lang::txt('COM_MEMBERS_QUOTA_MISSING_DEFAULT_CLASS'),
                     'error'
                 );

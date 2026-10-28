@@ -15,9 +15,6 @@ use Spatie\Dropbox\Client as DropboxClient;
 use Hubzero\Utility\Arr;
 use Hubzero\Session;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Plugin class for dropbox filesystem connectivity
  */
@@ -52,6 +49,7 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
      * @param   array   $params  Client application data
      * @return  void
      **/
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function _getAccessToken($params)
     {
         $oauthClient = new DropboxOauthClient();
@@ -69,6 +67,7 @@ class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
      * @param   array   $state  OAuth state
      * @return  void
      **/
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function _setLocalOauthData($state)
     {
         $connectionId = Request::getInt('connection', 0);

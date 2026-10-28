@@ -66,7 +66,7 @@ class Blog extends Table
 
         $query = "SELECT m.*, (SELECT COUNT(*) FROM " . $pc->getTableName() . " AS c
 			WHERE c.itemid=m.id AND c.tbl='blog')
-			AS comments, u.name " . $this->_buildQuery($projectid, $filters, $id);
+			AS comments, u.name " . $this->buildQuery($projectid, $filters, $id);
 
         $this->_db->setQuery($query);
         return $this->_db->loadObjectList();
@@ -103,7 +103,7 @@ class Blog extends Table
      * @param   integer  $id
      * @return  string
      */
-    private function _buildQuery($projectid = 0, $filters = array(), $id = 0)
+    private function buildQuery($projectid = 0, $filters = array(), $id = 0)
     {
         if (!$projectid) {
             return false;
@@ -154,7 +154,7 @@ class Blog extends Table
             return false;
         }
         $filters['limit'] = 0;
-        $query = "SELECT COUNT(*) " . $this->_buildQuery($projectid, $filters);
+        $query = "SELECT COUNT(*) " . $this->buildQuery($projectid, $filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();

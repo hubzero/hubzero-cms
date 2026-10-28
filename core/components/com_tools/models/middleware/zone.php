@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,6 +24,7 @@ class Zone extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Tools\\Tables\\Zones';
 
     /**
@@ -30,6 +32,7 @@ class Zone extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_cache = array(
         'locations.count' => null,
         'locations.list'  => null,
@@ -42,7 +45,7 @@ class Zone extends Base
      * @param      mixed  $oid Zone ID or name
      * @return     object
      */
-    static function &getInstance($oid = null)
+    public static function &getInstance($oid = null)
     {
         static $instances;
 
@@ -126,7 +129,10 @@ class Zone extends Base
             // Return the web path to the image
             $path .= '/' . $file;
             if (file_exists($path)) {
-                $path = \Route::url('index.php?option=com_tools&app=zones&task=assets&version=' . $this->get('id') . '&file=' . $file);
+                $path = \Route::url(
+                    'index.php?option=com_tools&app=zones&task=assets&version=' .
+                    $this->get('id') . '&file=' . $file
+                );
             }
             return $path;
         }

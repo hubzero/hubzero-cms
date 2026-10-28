@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,10 +34,10 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      * PUBLISHED   = 1
      * DELETED     = 2
      **/
-    const STATE_DRAFT   = 3;
-    const STATE_READY   = 4;
-    const STATE_PENDING = 5;
-    const STATE_WIP     = 7;
+    public const STATE_DRAFT   = 3;
+    public const STATE_READY   = 4;
+    public const STATE_PENDING = 5;
+    public const STATE_WIP     = 7;
 
     /**
      * The table namespace
@@ -487,6 +488,7 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      * @param   string  $as   What data to return
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _date($key, $as = '')
     {
         if (!$this->get($key) || $this->get($key) == '0000-00-00 00:00:00') {
@@ -530,7 +532,12 @@ class Version extends Relational implements \Hubzero\Search\Searchable
         $vid = Str::pad($this->get('id'), 5);
         $sec = $this->get('secret');
 
-        return PATH_APP . '/' . trim(\Component::params('com_publications')->get('webpath', '/site/publications'), '/') . '/' . $pid . '/' . $vid . '/' . $sec;
+        $webpath = trim(
+            \Component::params('com_publications')->get('webpath', '/site/publications'),
+            '/'
+        );
+
+        return PATH_APP . '/' . $webpath . '/' . $pid . '/' . $vid . '/' . $sec;
     }
 
     /**
@@ -611,12 +618,18 @@ class Version extends Relational implements \Hubzero\Search\Searchable
     public function link($type = '')
     {
         $base  = 'index.php?option=com_publications';
-        $base .= $this->publication->get('alias') ? '&alias=' . $this->publication->get('alias') : '&id=' . $this->get('publication_id');
+        $base .= $this->publication->get('alias')
+            ? '&alias=' . $this->publication->get('alias')
+            : '&id=' . $this->get('publication_id');
 
         if (strpos($type, 'edit') !== false) {
-            $base = $this->publication->project->isProvisioned()
-                ? 'index.php?option=com_publications&task=submit'
-                : 'index.php?option=com_projects&alias=' . $this->publication->project->get('alias') . '&active=publications';
+            if ($this->publication->project->isProvisioned()) {
+                $base = 'index.php?option=com_publications&task=submit';
+            } else {
+                $projectAlias = $this->publication->project->get('alias');
+                $base = 'index.php?option=com_projects&alias=' . $projectAlias
+                    . '&active=publications';
+            }
         }
 
         switch (strtolower($type)) {
@@ -625,11 +638,13 @@ class Version extends Relational implements \Hubzero\Search\Searchable
                 break;
 
             case 'thumb':
-                $link = 'index.php?option=com_publications&id=' . $this->get('publication_id') . '&v=' . $this->get('id') . '&media=Image:thumb';
+                $link = 'index.php?option=com_publications&id=' . $this->get('publication_id')
+                    . '&v=' . $this->get('id') . '&media=Image:thumb';
                 break;
 
             case 'masterimage':
-                $link = 'index.php?option=com_publications&id=' . $this->get('publication_id') . '&v=' . $this->get('id') . '&media=Image:master';
+                $link = 'index.php?option=com_publications&id=' . $this->get('publication_id')
+                    . '&v=' . $this->get('id') . '&media=Image:master';
                 break;
 
             case 'serve':

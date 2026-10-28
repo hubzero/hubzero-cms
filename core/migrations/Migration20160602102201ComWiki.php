@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating SQL view with renamed wiki tables
- **/
+ *
+ */
 class Migration20160602102201ComWiki extends Base
 {
     /**
@@ -45,9 +47,12 @@ class Migration20160602102201ComWiki extends Base
         $this->db->setQuery($query);
         $this->db->query();
 
-        $query = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER VIEW `#__wiki_contributors_view`
-			AS SELECT `m`.`uidNumber` AS `uidNumber`,count(`w`.`id`) AS `count`
-			FROM (`#__xprofiles` `m` left join `#__wiki_page` `w` on(((`w`.`access` <> 1) and ((`w`.`created_by` = `m`.`uidNumber`) or ((`m`.`username` <> _utf8'') and (`w`.`authors` like concat(_utf8'%',`m`.`username`,_utf8'%'))))))) where ((`m`.`public` = 1) and (`w`.`id` is not null)) group by `m`.`uidNumber`;";
+        $query = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER "
+            . "VIEW `#__wiki_contributors_view` AS SELECT `m`.`uidNumber` AS `uidNumber`,count(`w`.`id`) AS `count` "
+            . "FROM (`#__xprofiles` `m` left join `#__wiki_page` `w` on(((`w`.`access` <> 1) "
+            . "and ((`w`.`created_by` = `m`.`uidNumber`) or ((`m`.`username` <> _utf8'') "
+            . "and (`w`.`authors` like concat(_utf8'%',`m`.`username`,_utf8'%'))))))) "
+            . "where ((`m`.`public` = 1) and (`w`.`id` is not null)) group by `m`.`uidNumber`;";
         $this->db->setQuery($query);
         $this->db->query();
     }

@@ -168,7 +168,9 @@ class Groups extends AdminController
         $db = App::get('db');
 
         foreach ($options as $key => $option) {
-            $db->setQuery("UPDATE `#__xgroups_memberoption` SET `optionvalue`=" . $db->quote($option) . " WHERE `id`=" . $db->quote($key));
+            $sql = "UPDATE `#__xgroups_memberoption` SET `optionvalue`=" . $db->quote($option)
+                . " WHERE `id`=" . $db->quote($key);
+            $db->setQuery($sql);
             $db->query();
         }
 

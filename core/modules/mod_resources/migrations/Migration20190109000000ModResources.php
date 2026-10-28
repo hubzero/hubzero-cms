@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing resources module
- **/
+ *
+ */
 class Migration20190109000000ModResources extends Base
 {
     /**

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -86,7 +87,8 @@ function query_gen(&$dd)
             if (isset($col_info[$rec['Field']])) {
                 $dd['cols'][$dd['table'] . '.' . $rec['Field']] = $col_info[$rec['Field']];
             } else {
-                $dd['cols'][$dd['table'] . '.' . $rec['Field']] = array('label' => ucwords(str_replace('_', ' ', $rec['Field'])));
+                $label = ucwords(str_replace('_', ' ', $rec['Field']));
+                $dd['cols'][$dd['table'] . '.' . $rec['Field']] = array('label' => $label);
             }
         }
     } elseif (isset($dd['col_info']) && $dd['col_info'] == 'override') {
@@ -103,7 +105,8 @@ function query_gen(&$dd)
         $tables = implode("', '", $tables);
 
         $link = isset($dd['db']) ? get_db($dd['db']) : get_db();
-        $sql = "SELECT CONCAT(Table_name, '.', DB_column_name) AS col, Column_info FROM Columns_Info WHERE Table_name IN ('" . $tables . "')";
+        $sql = "SELECT CONCAT(Table_name, '.', DB_column_name) AS col, Column_info "
+            . "FROM Columns_Info WHERE Table_name IN ('" . $tables . "')";
         $result = mysqli_query($link, $sql);
 
         $col_info = array();
@@ -116,7 +119,8 @@ function query_gen(&$dd)
         foreach ($dd['cols'] as $id => $prop) {
             if (isset($col_info[$id])) {
                 if (isset($col_info[$id]['label'])) {
-                    $dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br><hr>'));
+                    $allowedTags = '<br><hr>';
+                    $dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], $allowedTags));
                 }
 
                 if (isset($col_info[$id]['unit'])) {
@@ -142,7 +146,8 @@ function query_gen(&$dd)
         $tables = implode("', '", $tables);
 
         $link = isset($dd['db']) ? get_db($dd['db']) : get_db();
-        $sql = "SELECT CONCAT(Table_name, '.', DB_column_name) AS col, Column_info FROM Columns_Info WHERE Table_name IN ('" . $tables . "')";
+        $sql = "SELECT CONCAT(Table_name, '.', DB_column_name) AS col, Column_info "
+            . "FROM Columns_Info WHERE Table_name IN ('" . $tables . "')";
         $result = mysqli_query($link, $sql);
 
         $col_info = array();
@@ -155,7 +160,8 @@ function query_gen(&$dd)
         foreach ($dd['cols'] as $id => $prop) {
             if (isset($col_info[$id])) {
                 if (isset($col_info[$id]['label']) && !isset($dd['cols'][$id]['label'])) {
-                    $dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br><hr>'));
+                    $allowedTags = '<br><hr>';
+                    $dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], $allowedTags));
                 }
 
                 if (isset($col_info[$id]['unit']) && !isset($dd['cols'][$id]['unit'])) {
@@ -179,9 +185,11 @@ function query_gen(&$dd)
         }
 
         if (isset($conf['field_type']) && $conf['field_type'] === 'polygon') {
-            $conf['raw'] = "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(AsText($id), '),(', ';'), ' ', ','), 'POLYGON((', ''), '))', ''), ';', '; ')";
+            $conf['raw'] = "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(AsText($id), "
+                . "'),(', ';'), ' ', ','), 'POLYGON((', ''), '))', ''), ';', '; ')";
             $dd['cols'][$id]['truncate'] = 'truncate';
-            $dd['cols'][$id]['width'] = isset($dd['cols'][$id]['width']) ? $dd['cols'][$id]['width'] : '200';
+            $width = isset($dd['cols'][$id]['width']) ? $dd['cols'][$id]['width'] : '200';
+            $dd['cols'][$id]['width'] = $width;
         }
 
         $expr = $id;
@@ -249,12 +257,25 @@ function query_gen(&$dd)
         $search_str = mysqli_real_escape_string($escLink, Request::getString('sSearch_' . $i, ''));
 
         if ($searchable === 'true' && $search_str !== '') {
+            $colExpr = '`' . $col_id . '`';
             if ($col['aggr']) {
-                $having_filter[$col_id] = array('val' => $search_str, 'col' => '`' . $col_id . '`', 'fieldtype' => $fieldtype);
+                $having_filter[$col_id] = array(
+                    'val' => $search_str,
+                    'col' => $colExpr,
+                    'fieldtype' => $fieldtype
+                );
             } elseif ($col['raw']) {
-                $where_filter[$col_id] = array('val' => $search_str, 'col' => $col['expr'], 'fieldtype' => $fieldtype);
+                $where_filter[$col_id] = array(
+                    'val' => $search_str,
+                    'col' => $col['expr'],
+                    'fieldtype' => $fieldtype
+                );
             } else {
-                $where_filter[$col_id] = array('val' => $search_str, 'col' => $col_id, 'fieldtype' => $fieldtype);
+                $where_filter[$col_id] = array(
+                    'val' => $search_str,
+                    'col' => $col_id,
+                    'fieldtype' => $fieldtype
+                );
             }
         }
     }
@@ -275,13 +296,32 @@ function query_gen(&$dd)
             $filter_str = mysqli_real_escape_string($escLink, isset($filter[1]) ? $filter[1] : '');
             $fieldtype = isset($filter[2]) ? $filter[2] : 'string';
             $filter_type = isset($filter[3]) ? $filter[3] : 'exact';
+            $colExpr = '`' . $col_id . '`';
 
             if ($col['aggr']) {
-                $having_filter[$col_id] = array('val' => $filter_str, 'col' => '`' . $col_id . '`', 'fieldtype' => $fieldtype, 'filtered_view' => true, 'filter_type' => $filter_type);
+                $having_filter[$col_id] = array(
+                    'val' => $filter_str,
+                    'col' => $colExpr,
+                    'fieldtype' => $fieldtype,
+                    'filtered_view' => true,
+                    'filter_type' => $filter_type
+                );
             } elseif ($col['raw']) {
-                $where_filter[$col_id] = array('val' => $filter_str, 'col' => $col['expr'], 'fieldtype' => $fieldtype, 'filtered_view' =>  true, 'filter_type' => $filter_type);
+                $where_filter[$col_id] = array(
+                    'val' => $filter_str,
+                    'col' => $col['expr'],
+                    'fieldtype' => $fieldtype,
+                    'filtered_view' => true,
+                    'filter_type' => $filter_type
+                );
             } else {
-                $where_filter[$col_id] = array('val' => $filter_str, 'col' => $col_id, 'fieldtype' => $fieldtype, 'filtered_view' =>  true, 'filter_type' => $filter_type);
+                $where_filter[$col_id] = array(
+                    'val' => $filter_str,
+                    'col' => $col_id,
+                    'fieldtype' => $fieldtype,
+                    'filtered_view' => true,
+                    'filter_type' => $filter_type
+                );
             }
         }
     }

@@ -120,8 +120,10 @@ class Stats extends Table
 
                 // Get publication release count by month
                 if (!isset($stats[date('M', strtotime("-" . $a . " month"))]['pub']['new'])) {
-                    $new = $objP->getPubStats($validProjectIds, 'released', date('Y-m', strtotime("-" . $a . " month")));
-                    $stats[date('M', strtotime("-" . $a . " month"))]['pub']['new'] = $new ? $new : 0;
+                    $month = date('Y-m', strtotime("-" . $a . " month"));
+                    $new = $objP->getPubStats($validProjectIds, 'released', $month);
+                    $monthKey = date('M', strtotime("-" . $a . " month"));
+                    $stats[$monthKey]['pub']['new'] = $new ? $new : 0;
                 }
             }
         }
@@ -186,9 +188,18 @@ class Stats extends Table
             'setup'     => $tbl->getCount(array('exclude' => $exclude, 'setup' => 1), true),
             'active'    => $tbl->getCount(array('exclude' => $exclude, 'active' => 1), true),
             'public'    => $tbl->getCount(array('exclude' => $exclude, 'private' => '0'), true),
-            'sponsored' => $tbl->getCount(array('exclude' => $exclude, 'reviewer' => 'sponsored'), true),
-            'sensitive' => $tbl->getCount(array('exclude' => $exclude, 'reviewer' => 'sensitive'), true),
-            'new'       => $tbl->getCount(array('exclude' => $exclude, 'created' => date('Y-m', time()), 'all' => 1), true)
+            'sponsored' => $tbl->getCount(
+                array('exclude' => $exclude, 'reviewer' => 'sponsored'),
+                true
+            ),
+            'sensitive' => $tbl->getCount(
+                array('exclude' => $exclude, 'reviewer' => 'sensitive'),
+                true
+            ),
+            'new'       => $tbl->getCount(
+                array('exclude' => $exclude, 'created' => date('Y-m', time()), 'all' => 1),
+                true
+            )
         );
         $active = $stats['general']['active'] ? $stats['general']['active'] : 1;
         $total  = $stats['general']['total'] ? $stats['general']['total'] : 1;

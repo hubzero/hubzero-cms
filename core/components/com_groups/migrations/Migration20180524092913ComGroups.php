@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding custom fields
- **/
+ *
+ */
 class Migration20180524092913ComGroups extends Base
 {
     /**

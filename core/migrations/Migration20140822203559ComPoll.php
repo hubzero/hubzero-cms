@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding potentially missing alias field on polls table
+  *
  **/
 class Migration20140822203559ComPoll extends Base
 {
@@ -21,7 +23,10 @@ class Migration20140822203559ComPoll extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__polls') && !$this->db->tableHasField('#__polls', 'alias')) {
+        if (
+            $this->db->tableExists('#__polls')
+            && !$this->db->tableHasField('#__polls', 'alias')
+        ) {
             $query = "ALTER TABLE `#__polls` ADD `alias` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`";
             $this->db->setQuery($query);
             $this->db->query();
@@ -34,7 +39,8 @@ class Migration20140822203559ComPoll extends Base
                 foreach ($polls as $poll) {
                     $alias = preg_replace("/[^a-zA-Z0-9]/", '', $poll->title);
                     $alias = strtolower($alias);
-                    $query = "UPDATE `#__polls` SET `alias` = " . $this->db->quote($alias) . " WHERE `id` = '{$poll->id}'";
+                    $query = "UPDATE `#__polls` SET `alias` = " . $this->db->quote($alias)
+                        . " WHERE `id` = '{$poll->id}'";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

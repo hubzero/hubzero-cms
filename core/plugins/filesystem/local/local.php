@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 require_once __DIR__ . DS . 'LocalAdapter.php';
 
 /**
@@ -24,7 +21,8 @@ class plgFilesystemLocal extends \Hubzero\Plugin\Plugin
      **/
     public static function init($params = [])
     {
-        $path = rtrim($params['path'] ?? '', '/') . '/' . (isset($params['subdir']) ? trim($params['subdir'], '/') : '');
+        $path = rtrim($params['path'] ?? '', '/') . '/'
+            . (isset($params['subdir']) ? trim($params['subdir'], '/') : '');
         return new LocalAdapter($path);
     }
 }

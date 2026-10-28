@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for refactoring the blacklist table
+  *
  **/
 class Migration20161212181802ComSearch extends Base
 {

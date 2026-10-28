@@ -18,7 +18,7 @@ use Lang;
 class Option
 {
     // Data container
-    var $data;
+    public $data;
     private $db;
 
     /**
@@ -267,7 +267,9 @@ class Option
         }
 
         if ($skusDisabled) {
-            $this->addMessage('Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.');
+            $this->addMessage(
+                'Some SKUs were unpublished because of the recent update. Check each SKU to fix the issues.'
+            );
         }
     }
 

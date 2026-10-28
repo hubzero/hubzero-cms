@@ -81,7 +81,8 @@ class File extends Handler
             return array('error' => 'File is empty');
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
+            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
             return array('error' => "File is too large. Max file upload size is $max");
         }
 
@@ -117,7 +118,9 @@ class File extends Handler
         $cconfig = Component::params('com_courses');
 
         // Build the upload path if it doesn't exist
-        $uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
+        $uploadPath = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS);
+        $uploadDirectory = $uploadPath . DS . $this->asset['course_id']
+            . DS . $this->assoc['asset_id'] . DS;
 
         // Make sure upload directory exists and is writable
         if (!is_dir($uploadDirectory)) {
@@ -159,7 +162,10 @@ class File extends Handler
         $offering_alias = Request::getCmd('offering', '');
         $course         = new \Components\Courses\Models\Course($course_id);
 
-        $url = Route::url('index.php?option=com_courses&controller=offering&gid=' . $course->get('alias') . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id'));
+        $url = Route::url(
+            'index.php?option=com_courses&controller=offering&gid=' . $course->get('alias')
+            . '&offering=' . $offering_alias . '&asset=' . $assetObj->get('id')
+        );
         $url = rtrim(str_replace('/api', '', Request::root()), '/') . '/' . ltrim($url, '/');
 
         $return_info = array(

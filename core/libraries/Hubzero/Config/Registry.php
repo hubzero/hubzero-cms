@@ -162,7 +162,9 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         }
 
         if (!strpos($path, $this->separator)) {
-            return (isset($this->data->$path) && $this->data->$path !== null && $this->data->$path !== '') ? $this->data->$path : $default;
+            return (isset($this->data->$path) &&
+                $this->data->$path !== null &&
+                $this->data->$path !== '') ? $this->data->$path : $default;
         }
 
         // Explode the registry path into an array
@@ -245,7 +247,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         // Get the old value if exists so we can return it
         if (is_object($node)) {
             $node->{$nodes[$i]} = $value;
-        } else if (is_array($node)) {
+        } elseif (is_array($node)) {
             $node[$nodes[$i]] = $value;
         }
 
@@ -293,7 +295,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
     {
         if (is_array($data) || is_object($data)) {
             $this->bind($this->data, $data);
-        } else if (!empty($data) && is_string($data)) {
+        } elseif (!empty($data) && is_string($data)) {
             // See if it's a file or a string
             if (is_file($data) && is_readable($data)) {
                 $data = $this->read($data);

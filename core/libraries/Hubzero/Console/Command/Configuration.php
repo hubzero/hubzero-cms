@@ -47,7 +47,7 @@ class Configuration extends Base implements CommandInterface
 
                 if (is_string($option) && !empty($option)) {
                     $options[$option] = $this->output->getResponse("What do you want your {$option} to be?");
-                } else if (empty($option)) {
+                } elseif (empty($option)) {
                     $this->output->error("Please specify what option you want to set.");
                 } else {
                     $this->output->error("The {$option} option is not currently supported.");

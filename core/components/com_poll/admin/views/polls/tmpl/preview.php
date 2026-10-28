@@ -31,7 +31,13 @@
                 if ($option->get('text') != '') {
                     ?>
                     <tr>
-                        <td><input type="radio" name="poll" value="<?php echo $this->escape($option->get('text')); ?>"></td>
+                        <td>
+                            <input
+                                type="radio"
+                                name="poll"
+                                value="<?php echo $this->escape($option->get('text')); ?>"
+                            >
+                        </td>
                         <td class="poll"><?php echo $this->escape($option->get('text')); ?></td>
                     </tr>
                     <?php

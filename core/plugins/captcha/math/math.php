@@ -46,7 +46,7 @@ class plgCaptchaMath extends \Hubzero\Plugin\Plugin
             'operand2' => rand($lower, $upper)
         );
         $problem['sum'] = $problem['operand1'] + $problem['operand2'];
-        $problem['key'] = $this->_generateHash($problem['sum'], date('j'));
+        $problem['key'] = $this->generateHash($problem['sum'], date('j'));
 
         // Build the fields
         $html  = '<div class="form-group">' . "\n";
@@ -73,7 +73,7 @@ class plgCaptchaMath extends \Hubzero\Plugin\Plugin
         // matched when it happened to be all digits (about 1 in 10)
         $key    = Request::getString('captcha_krhash', '');
         $answer = Request::getInt('captcha_answer', 0);
-        $answer = $this->_generateHash($answer, date('j'));
+        $answer = $this->generateHash($answer, date('j'));
 
         return ($key !== '' && hash_equals($answer, $key));
     }
@@ -85,7 +85,7 @@ class plgCaptchaMath extends \Hubzero\Plugin\Plugin
      * @param   string  $day    Current day
      * @return  string
      */
-    private function _generateHash($input, $day)
+    private function generateHash($input, $day)
     {
         // Add date:
         $input .= $day . date('ny');

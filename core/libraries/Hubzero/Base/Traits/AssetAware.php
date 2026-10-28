@@ -112,9 +112,9 @@ trait AssetAware
     {
         if ($this instanceof Plugin) {
             return 'plg_' . $this->_type . '_' . $this->_name;
-        } else if ($this instanceof ControllerInterface) {
+        } elseif ($this instanceof ControllerInterface) {
             return \Request::getCmd('option', $this->_option);
-        } else if ($this instanceof Module) {
+        } elseif ($this instanceof Module) {
             return $this->module->module;
         }
 

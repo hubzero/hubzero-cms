@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die;
 
 /**
  * Pagenavigation plugin class.
+ *
  */
 class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
 {
@@ -97,8 +99,10 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
             }
 
             $xwhere = ' AND (a.state = 1 OR a.state = -1)' .
-                ' AND (publish_up IS NULL OR publish_up = ' . $db->quote($nullDate) . ' OR publish_up <= ' . $db->quote($now) . ')' .
-                ' AND (publish_down IS NULL OR publish_down = ' . $db->quote($nullDate) . ' OR publish_down >= ' . $db->quote($now) . ')';
+                ' AND (publish_up IS NULL OR publish_up = ' . $db->quote($nullDate) .
+                ' OR publish_up <= ' . $db->quote($now) . ')' .
+                ' AND (publish_down IS NULL OR publish_down = ' . $db->quote($nullDate) .
+                ' OR publish_down >= ' . $db->quote($now) . ')';
 
             // Array of articles in same category correctly ordered.
             $query = $db->getQuery();
@@ -122,7 +126,10 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
             $query->from('#__content AS a');
             $query->leftJoin('#__categories AS cc ON cc.id = a.catid');
             // TODO: Fix where clause
-            $query->where('a.catid = ' . (int)$row->catid . ' AND a.state = ' . (int)$row->state . ($canPublish ? '' : ' AND a.access = ' . (int)$row->access) . $xwhere);
+            $whereClause = 'a.catid = ' . (int)$row->catid . ' AND a.state = ' . (int)$row->state;
+            $whereClause .= $canPublish ? '' : ' AND a.access = ' . (int)$row->access;
+            $whereClause .= $xwhere;
+            $query->where($whereClause);
             $query->order($orderby);
             if (App::isSite() && App::get('language.filter')) {
                 $query->where('a.language', 'in', '(' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
@@ -162,13 +169,23 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
             }
 
             if ($row->prev) {
-                $row->prev = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->prev->slug, $row->prev->catslug, $row->prev->language));
+                $prevRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $row->prev->slug,
+                    $row->prev->catslug,
+                    $row->prev->language
+                );
+                $row->prev = Route::url($prevRoute);
             } else {
                 $row->prev = '';
             }
 
             if ($row->next) {
-                $row->next = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($row->next->slug, $row->next->catslug, $row->next->language));
+                $nextRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $row->next->slug,
+                    $row->next->catslug,
+                    $row->next->language
+                );
+                $row->next = Route::url($nextRoute);
             } else {
                 $row->next = '';
             }
@@ -177,16 +194,18 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
             if ($row->prev || $row->next) {
                 $html = '<ul class="pagenav">';
                 if ($row->prev) {
+                    $prevText = Lang::txt('JGLOBAL_LT') . $pnSpace . Lang::txt('JPREV');
                     $html .= '
 						<li class="pagenav-prev">
-							<a href="' . $row->prev . '" rel="prev">' . Lang::txt('JGLOBAL_LT') . $pnSpace . Lang::txt('JPREV') . '</a>
+							<a href="' . $row->prev . '" rel="prev">' . $prevText . '</a>
 						</li>';
                 }
 
                 if ($row->next) {
+                    $nextText = Lang::txt('JNEXT') . $pnSpace . Lang::txt('JGLOBAL_GT');
                     $html .= '
 						<li class="pagenav-next">
-							<a href="' . $row->next . '" rel="next">' . Lang::txt('JNEXT') . $pnSpace . Lang::txt('JGLOBAL_GT') . '</a>
+							<a href="' . $row->next . '" rel="next">' . $nextText . '</a>
 						</li>';
                 }
                 $html .= '</ul>';

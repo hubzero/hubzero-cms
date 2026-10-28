@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding 'derivatives' field to publication licenses
+  *
  **/
 class Migration20170725133700ComMembers extends Base
 {
@@ -23,7 +25,8 @@ class Migration20170725133700ComMembers extends Base
     {
         if ($this->db->tableExists('#__user_profile_fields')) {
             if (!$this->db->tableHasField('#__user_profile_fields', 'placeholder')) {
-                $query = "ALTER TABLE `#__user_profile_fields` ADD COLUMN `placeholder` varchar(255) NOT NULL default 0;";
+                $query = "ALTER TABLE `#__user_profile_fields` ADD COLUMN `placeholder` varchar(255) NOT NULL "
+                    . "default 0;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
-
 /**
  * Resource map generator in XML+RDFa format
  *
@@ -72,7 +70,13 @@ class ResourceMapGenerator
         $database = \App::get('db');
         $pub = new \Components\Publications\Tables\Publication($database);
         $publication = $pub->getPublication($this->id);
-        $this->resourceSite = \Components\Publications\Helpers\Html::buildPubPath($this->id, $publication->version_id, '', $publication->secret, 1);
+        $this->resourceSite = \Components\Publications\Helpers\Html::buildPubPath(
+            $this->id,
+            $publication->version_id,
+            '',
+            $publication->secret,
+            1
+        );
     }
 
     /**
@@ -219,11 +223,8 @@ class ResourceMapGenerator
                 }
 
                 $imageData = getimagesize(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
-                if (is_array($imageData)) {
-                    $xmlwriter->writeElement('exif:width', $imageData[0]);
-                    $xmlwriter->writeElement('exif:height', $imageData[1]);
-                }
-
+                $xmlwriter->writeElement('exif:width', $imageData[0]);
+                $xmlwriter->writeElement('exif:height', $imageData[1]);
                 break;
             default:
         }
@@ -389,7 +390,7 @@ class ResourceMapGenerator
 
         if (empty($id)) {
             return;
-        } else if (!self::idExists($id)) {
+        } elseif (!self::idExists($id)) {
             return;
         }
 

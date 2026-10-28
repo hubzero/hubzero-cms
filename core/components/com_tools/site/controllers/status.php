@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -59,7 +60,8 @@ class Status extends SiteController
     public function statusTask()
     {
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt(strtoupper($this->_option . '_' . $this->_task));
         Document::setTitle($this->view->title);
 
         // Create a Table object
@@ -88,6 +90,7 @@ class Status extends SiteController
      * @param   string  $assetId    Asset id to check against
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

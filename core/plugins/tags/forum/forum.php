@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Tags plugin class for forum entries
@@ -19,6 +17,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -27,7 +26,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
      * @param   integer  $uid  User ID
      * @return  array
      */
-    private function _getGroupIds($uid = 0)
+    private function getGroupIds($uid = 0)
     {
         $dbh = App::get('db');
         $dbh->setQuery(
@@ -66,7 +65,7 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
         $addtl_where = array();
 
-        $gids = $this->_getGroupIds((int)User::get('id', 0));
+        $gids = $this->getGroupIds((int)User::get('id', 0));
 
         if (!User::authorise('core.view', 'com_forum')) {
             $addtl_where[] = 'e.scope_id IN (0' . ($gids ? ',' . join(',', $gids) : '') . ')';
@@ -74,7 +73,8 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
             $viewlevels = '0,' . implode(',', User::getAuthorisedViewLevels());
 
             if ($gids) {
-                $addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,' . join(',', $gids) . ')))';
+                $addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5)
+                    AND e.scope_id IN (0, ' . join(',', $gids) . ')))';
             } else {
                 $addtl_where[] = '(e.access IN (' . $viewlevels . '))';
             }
@@ -82,18 +82,26 @@ class plgTagsForum extends \Hubzero\Plugin\Plugin
 
         // Build the query
         $e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-        $e_fields = "SELECT e.id, e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, e.created_by, e.modified, e.created AS publish_up, NULL AS publish_down,
-					(CASE WHEN e.scope_id > 0 AND e.scope='group' THEN
-						concat('/groups/', g.cn, concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END))
-					ELSE
-						concat('/forum/', coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END)
-					END) AS href,
-					'forum' AS section, COUNT(DISTINCT t.tagid) AS uniques, CONCAT(e.thread, ':', e.parent) AS params, e.scope AS rcount, c.alias AS data1, s.alias AS data2, e.scope_id AS data3 "; //e.last_activity AS rcount, c.alias AS data1, s.alias AS data2, g.cn AS data3
+        $e_fields = "SELECT e.id,
+             e.title, e.id AS alias, e.comment AS itext, e.comment AS ftext, e.state, e.created, e.created_by,
+                    e.modified, e.created AS publish_up, NULL AS publish_down,
+                    (CASE WHEN e.scope_id > 0 AND e.scope='group' THEN
+                        concat('/groups/',
+                             g.cn, concat('/forum/', coalesce(concat(s.alias, '/',
+                             coalesce(concat(c.alias, '/'), ''))), CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END))
+                    ELSE
+                        concat('/forum/',
+                             coalesce(concat(s.alias, '/', coalesce(concat(c.alias, '/'), ''))),
+                             CASE WHEN e.parent > 0 THEN e.parent ELSE e.id END)
+                    END) AS href,
+                    'forum' AS section,
+                         COUNT(DISTINCT t.tagid) AS uniques, CONCAT(e.thread, ':', e.parent) AS params,
+                         e.scope AS rcount, c.alias AS data1, s.alias AS data2, e.scope_id AS data3 ";
         $e_from  = " FROM #__forum_posts AS e
-		 			LEFT JOIN #__forum_categories c ON c.id = e.category_id
-					LEFT JOIN #__forum_sections s ON s.id = c.section_id
-					LEFT JOIN #__xgroups g ON g.gidNumber = e.scope_id
-					LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
+                     LEFT JOIN #__forum_categories c ON c.id = e.category_id
+                    LEFT JOIN #__forum_sections s ON s.id = c.section_id
+                    LEFT JOIN #__xgroups g ON g.gidNumber = e.scope_id
+                    LEFT JOIN #__tags_object AS t ON t.objectid=e.id AND t.tbl='forum' AND t.tagid IN ($ids)";
         $e_where  = " WHERE e.state=1 AND e.parent=0" . ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '');
         $e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
         $order_by  = " ORDER BY ";

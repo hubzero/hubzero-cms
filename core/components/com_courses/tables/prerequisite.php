@@ -52,7 +52,8 @@ class Prerequisites extends Table
      **/
     public function loadAllByScope($scope, $scope_id, $section_id)
     {
-        $query = "SELECT * FROM `{$this->_tbl}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}' AND `section_id` = '{$section_id}' ORDER BY `requisite_id` ASC";
+        $query = "SELECT * FROM `{$this->_tbl}` WHERE `item_scope` = '{$scope}' AND `item_id` = '{$scope_id}'"
+            . " AND `section_id` = '{$section_id}' ORDER BY `requisite_id` ASC";
 
         $this->_db->setQuery($query);
         $results = $this->_db->loadObjectList();

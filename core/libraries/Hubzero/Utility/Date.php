@@ -19,10 +19,10 @@ use DateTime;
  */
 class Date extends DateTime
 {
-    const DAY_ABBR = "\x021\x03";
-    const DAY_NAME = "\x022\x03";
-    const MONTH_ABBR = "\x023\x03";
-    const MONTH_NAME = "\x024\x03";
+    public const DAY_ABBR = "\x021\x03";
+    public const DAY_NAME = "\x022\x03";
+    public const MONTH_ABBR = "\x023\x03";
+    public const MONTH_NAME = "\x024\x03";
 
     /**
      * The format string to be applied when using the __toString() magic method.
@@ -55,13 +55,19 @@ class Date extends DateTime
      */
     protected static $offsets = array(
         '-12' => 'Etc/GMT-12', '-11' => 'Pacific/Midway', '-10' => 'Pacific/Honolulu', '-9.5' => 'Pacific/Marquesas',
-        '-9' => 'US/Alaska', '-8' => 'US/Pacific', '-7' => 'US/Mountain', '-6' => 'US/Central', '-5' => 'US/Eastern', '-4.5' => 'America/Caracas',
-        '-4' => 'America/Barbados', '-3.5' => 'Canada/Newfoundland', '-3' => 'America/Buenos_Aires', '-2' => 'Atlantic/South_Georgia',
-        '-1' => 'Atlantic/Azores', '0' => 'Europe/London', '1' => 'Europe/Amsterdam', '2' => 'Europe/Istanbul', '3' => 'Asia/Riyadh',
-        '3.5' => 'Asia/Tehran', '4' => 'Asia/Muscat', '4.5' => 'Asia/Kabul', '5' => 'Asia/Karachi', '5.5' => 'Asia/Calcutta',
-        '5.75' => 'Asia/Katmandu', '6' => 'Asia/Dhaka', '6.5' => 'Indian/Cocos', '7' => 'Asia/Bangkok', '8' => 'Australia/Perth',
+        '-9' => 'US/Alaska', '-8' => 'US/Pacific', '-7' => 'US/Mountain', '-6' => 'US/Central', '-5' => 'US/Eastern',
+            '-4.5' => 'America/Caracas',
+        '-4' => 'America/Barbados', '-3.5' => 'Canada/Newfoundland', '-3' => 'America/Buenos_Aires',
+            '-2' => 'Atlantic/South_Georgia',
+        '-1' => 'Atlantic/Azores', '0' => 'Europe/London', '1' => 'Europe/Amsterdam', '2' => 'Europe/Istanbul',
+            '3' => 'Asia/Riyadh',
+        '3.5' => 'Asia/Tehran', '4' => 'Asia/Muscat', '4.5' => 'Asia/Kabul', '5' => 'Asia/Karachi',
+            '5.5' => 'Asia/Calcutta',
+        '5.75' => 'Asia/Katmandu', '6' => 'Asia/Dhaka', '6.5' => 'Indian/Cocos', '7' => 'Asia/Bangkok',
+            '8' => 'Australia/Perth',
         '8.75' => 'Australia/West', '9' => 'Asia/Tokyo', '9.5' => 'Australia/Adelaide', '10' => 'Australia/Brisbane',
-        '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk', '12' => 'Pacific/Auckland',
+        '10.5' => 'Australia/Lord_Howe', '11' => 'Pacific/Kosrae', '11.5' => 'Pacific/Norfolk',
+            '12' => 'Pacific/Auckland',
         '12.75' => 'Pacific/Chatham', '13' => 'Pacific/Tongatapu', '14' => 'Pacific/Kiritimati'
     );
 
@@ -70,6 +76,7 @@ class Date extends DateTime
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tz;
 
     /**
@@ -82,6 +89,7 @@ class Date extends DateTime
      * @throws  Exception
      */
     #[\ReturnTypeWillChange]
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($datetime = 'now', $timezone = null, $ignoreDst = false)
     {
         // Create the base GMT and server time zone objects.
@@ -112,6 +120,7 @@ class Date extends DateTime
      * @param   string  $name  The name of the property.
      * @return  mixed   A value if the property name is valid, null otherwise.
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __get($name)
     {
         $value = null;
@@ -166,10 +175,14 @@ class Date extends DateTime
                 break;
 
             default:
-				// phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
                 $trace = debug_backtrace();
                 trigger_error(
-                    'Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
+                    'Undefined property via __get(): ' .
+                        $name .
+                        ' in ' .
+                        $trace[0]['file'] .
+                        ' on line ' .
+                        $trace[0]['line'],
                     E_USER_NOTICE
                 );
         }
@@ -183,6 +196,7 @@ class Date extends DateTime
      *
      * @return  string  The date as a formatted string.
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return (string) parent::format(self::$format);
@@ -550,6 +564,7 @@ class Date extends DateTime
      * @param   number  $timestamp  Date to convert
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _ago($timestamp, $current_time = null)
     {
         // Store the current time
@@ -569,7 +584,8 @@ class Date extends DateTime
         $lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
 
         // Determine which period we should use, based on the number of seconds lapsed.
-        // If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
+        // If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we
+        // moveon
         // Go from decades backwards to seconds
         for ($val = count($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1); $val--) {
             // Do nothing...

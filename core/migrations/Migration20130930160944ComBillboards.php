@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding billboards component
- **/
+ *
+ */
 class Migration20130930160944ComBillboards extends Base
 {
     /**
@@ -46,17 +48,60 @@ class Migration20130930160944ComBillboards extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
-						VALUES (1,'Powered by HUBzero','Powered by HUBzero','HUBzero is a platform used to create dynamic web sites for scientific research and educational activities. With HUBzero, you can easily publish your research software and related educational materials on the web.','Learn more &rsaquo;','http://hubzero.org/about','learnmore','relative','slideone.png','15px','poweredbyhubzero','',1,1,0,'0000-00-00 00:00:00');
+            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
+                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
+                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
+                . "`checked_out`, `checked_out_time`) VALUES "
+                . "(1,'Powered by HUBzero','Powered by HUBzero',"
+                . "'HUBzero is a platform used to create dynamic web sites for scientific research "
+                . "and educational activities. With HUBzero, you can easily publish your research "
+                . "software and related educational materials on the web.',"
+                . "'Learn more &rsaquo;','http://hubzero.org/about','learnmore','relative',"
+                . "'slideone.png','15px','poweredbyhubzero','',1,1,0,'0000-00-00 00:00:00')";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-						INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
-						VALUES (1,'Interactive simulation tools','Interactive simulation tools','The signature service of a hub is its ability to deliver interactive, graphical simulation tools through an ordinary web browser. In the world of portals and cyber-environments, this capability is completely unique.','Learn more &rsaquo;','http://hubzero.org/tour/features/#tools','learnmore','bottomright','slidetwo.png','0 0 0 225px','interactivesimulationtools','',1,2,0,'0000-00-00 00:00:00');
+            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
+                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
+                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
+                . "`checked_out`, `checked_out_time`) VALUES "
+                . "(1,'Interactive simulation tools','Interactive simulation tools',"
+                . "'The signature service of a hub is its ability to deliver interactive, graphical "
+                . "simulation tools through an ordinary web browser. In the world of portals and "
+                . "cyber-environments, this capability is completely unique.',"
+                . "'Learn more &rsaquo;','http://hubzero.org/tour/features/#tools','learnmore',"
+                . "'bottomright','slidetwo.png','0 0 0 225px','interactivesimulationtools','',"
+                . "1,2,0,'0000-00-00 00:00:00')";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-						INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
-						VALUES (1,'Electronic library of resources','Electronic library of resources','Each hub is a place for users to come together and share information. One important way to accomplish this is by encouraging all users to upload their own tools, presentations, and other materials onto the hub.<br />','Learn more &rsaquo;','/contribute','learnmore','relative','slidethree.png','0 0 0 190px','electroniclibraryofresources','#electroniclibraryofresources h3 {\r\nline-height:2em;\r\n}',1,3,0,'0000-00-00 00:00:00');
+            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
+                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
+                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
+                . "`checked_out`, `checked_out_time`) VALUES "
+                . "(1,'Electronic library of resources','Electronic library of resources',"
+                . "'Each hub is a place for users to come together and share information. "
+                . "One important way to accomplish this is by encouraging all users to upload "
+                . "their own tools, presentations, and other materials onto the hub.<br />',"
+                . "'Learn more &rsaquo;','/contribute','learnmore','relative','slidethree.png',"
+                . "'0 0 0 190px','electroniclibraryofresources',"
+                . "'#electroniclibraryofresources h3 {\r\nline-height:2em;\r\n}',1,3,0,"
+                . "'0000-00-00 00:00:00')";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-						INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, `learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, `background_img`, `padding`, `alias`, `css`, `published`, `ordering`, `checked_out`, `checked_out_time`)
-						VALUES (1,'User groups for collaboration','User groups for collaboration','Groups are an easy way to share content and conversation, either privately or with the world. Many times, a group already exist for a specific interest or topic. If you can\'t find one you like, feel free to start your own.','Learn more &rsaquo;','/groups','learnmore','bottomright','slidefour.png','0 0 0 170px','usergroupsforcollaboration','#usergroupsforcollaboration h3 {\r\nline-height:2em;\r\n}',1,4,0,'0000-00-00 00:00:00');";
+            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
+                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
+                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
+                . "`checked_out`, `checked_out_time`) VALUES "
+                . "(1,'User groups for collaboration','User groups for collaboration',"
+                . "'Groups are an easy way to share content and conversation, either privately or "
+                . "with the world. Many times, a group already exist for a specific interest or "
+                . "topic. If you can\\'t find one you like, feel free to start your own.',"
+                . "'Learn more &rsaquo;','/groups','learnmore','bottomright','slidefour.png',"
+                . "'0 0 0 170px','usergroupsforcollaboration',"
+                . "'#usergroupsforcollaboration h3 {\r\nline-height:2em;\r\n}',1,4,0,"
+                . "'0000-00-00 00:00:00')";
             $this->db->setQuery($query);
             $this->db->query();
         }

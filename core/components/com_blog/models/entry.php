@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
@@ -116,7 +117,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00') {
                 return false;
             }
-            return $data['publish_down'] >= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it begins');
+            return $data['publish_down'] >= $data['publish_up']
+                ? false
+                : Lang::txt('The entry cannot end before it begins');
         });
     }
 
@@ -472,7 +475,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $path = __DIR__ . '/adapters/' . $scope . '.php';
 
                 if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id')));
+                    throw new \InvalidArgumentException(
+                        Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id'))
+                    );
                 }
 
                 include_once $path;

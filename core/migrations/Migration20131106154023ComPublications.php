@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding publication version fulltext key
- **/
+ *
+ */
 class Migration20131106154023ComPublications extends Base
 {
     /**
@@ -22,7 +24,8 @@ class Migration20131106154023ComPublications extends Base
     public function up()
     {
         if (!$this->db->tableHasKey('#__publication_versions', 'idx_fulltxt_title_description_abstract')) {
-            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT KEY `idx_fulltxt_title_description_abstract` (`title`, `description`, `abstract`);";
+            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT KEY "
+                . "`idx_fulltxt_title_description_abstract` (`title`, `description`, `abstract`);";
 
             $this->db->setQuery($query);
             $this->db->query();

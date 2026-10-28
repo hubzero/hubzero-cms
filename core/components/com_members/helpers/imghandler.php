@@ -85,6 +85,7 @@ class ImgHandler extends Obj
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_MEMORY_TO_ALLOCATE = '100M';
 
     /**
@@ -161,7 +162,7 @@ class ImgHandler extends Obj
                     $origHeight = $height;
                     $height = $width / $cropRatioComputed;
                     $offsetY = ($origHeight - $height) / 2;
-                } else if ($ratioComputed > $cropRatioComputed) {
+                } elseif ($ratioComputed > $cropRatioComputed) {
                     // Image is too wide so we will crop off the left and right sides
                     $origWidth = $width;
                     $width = $height * $cropRatioComputed;
@@ -215,7 +216,8 @@ class ImgHandler extends Obj
                 $outputFunction   = 'ImagePng';
                 $mime             = 'image/png'; // We need to convert GIFs to PNGs
                 $doSharpen        = false;
-                $quality          = round(10 - ($quality / 10)); // We are converting the GIF to a PNG and PNG needs a compression level of 0 (no compression) through 9
+                // GIF to PNG: PNG needs compression level 0 (no compression) through 9
+                $quality          = round(10 - ($quality / 10));
                 break;
 
             case 'image/x-png':
@@ -223,7 +225,8 @@ class ImgHandler extends Obj
                 $creationFunction = 'ImageCreateFromPng';
                 $outputFunction   = 'ImagePng';
                 $doSharpen        = false;
-                $quality          = round(10 - ($quality / 10)); // PNG needs a compression level of 0 (no compression) through 9
+                // PNG needs a compression level of 0 (no compression) through 9
+                $quality          = round(10 - ($quality / 10));
                 break;
 
             default:
@@ -250,9 +253,15 @@ class ImgHandler extends Obj
                 $background = false;
 
                 if (strlen($color) == 6) {
-                    $background = imagecolorallocate($dst, hexdec($color[0] . $color[1]), hexdec($color[2] . $color[3]), hexdec($color[4] . $color[5]));
-                } else if (strlen($color) == 3) {
-                    $background = imagecolorallocate($dst, hexdec($color[0] . $color[0]), hexdec($color[1] . $color[1]), hexdec($color[2] . $color[2]));
+                    $r = hexdec($color[0] . $color[1]);
+                    $g = hexdec($color[2] . $color[3]);
+                    $b = hexdec($color[4] . $color[5]);
+                    $background = imagecolorallocate($dst, $r, $g, $b);
+                } elseif (strlen($color) == 3) {
+                    $r = hexdec($color[0] . $color[0]);
+                    $g = hexdec($color[1] . $color[1]);
+                    $b = hexdec($color[2] . $color[2]);
+                    $background = imagecolorallocate($dst, $r, $g, $b);
                 }
                 if ($background) {
                     imagefill($dst, 0, 0, $background);

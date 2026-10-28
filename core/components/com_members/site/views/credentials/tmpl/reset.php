@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 </header>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=com_members&controller=credentials&task=resetting'); ?>" method="post" name="hubForm" id="hubForm">
+    <?php $formAction = Route::url('index.php?option=com_members&controller=credentials&task=resetting'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="hubForm" id="hubForm">
         <div class="explaination">
             <p class="info">
                 <?php echo Lang::txt(

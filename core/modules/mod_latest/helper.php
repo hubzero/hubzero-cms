@@ -92,7 +92,12 @@ class Helper extends Module
                 switch ($article_grouping) {
                     case 'year':
                     case 'month_year':
-                        $list = self::groupByDate($list, $article_grouping, $article_grouping_direction, $params->get('month_year_format', 'F Y'));
+                        $list = self::groupByDate(
+                            $list,
+                            $article_grouping,
+                            $article_grouping_direction,
+                            $params->get('month_year_format', 'F Y')
+                        );
                         break;
                     case 'author':
                     case 'category_title':
@@ -295,7 +300,12 @@ class Helper extends Module
 
             if ($access || in_array($item->access, User::getAuthorisedViewLevels())) {
                 // We know that user has the privilege to view the article
-                $item->link = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language));
+                $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $item->slug,
+                    $item->catslug,
+                    $item->language
+                );
+                $item->link = Route::url($articleRoute);
             } else {
                 // Angie Fixed Routing
                 $menu = \App::get('menu');
@@ -319,8 +329,16 @@ class Helper extends Module
             }
 
             if ($item->catid) {
-                $item->displayCategoryLink  = Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid));
-                $item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $item->category_title . '</a>' : '';
+                $categoryRoute = \Components\Content\Site\Helpers\Route::getCategoryRoute(
+                    $item->catid
+                );
+                $item->displayCategoryLink = Route::url($categoryRoute);
+                if ($show_category) {
+                    $item->displayCategoryTitle = '<a href="' . $item->displayCategoryLink . '">' .
+                        $item->category_title . '</a>';
+                } else {
+                    $item->displayCategoryTitle = '';
+                }
             } else {
                 $item->displayCategoryTitle = $show_category ? $item->category_title : '';
             }

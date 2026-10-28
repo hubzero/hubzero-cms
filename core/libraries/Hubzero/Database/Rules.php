@@ -34,7 +34,7 @@ class Rules
                     if ($error = call_user_func_array($rules[$k], [$data])) {
                         $errors[] = $error;
                     }
-                } else if (strpos($rules[$k], '|')) {
+                } elseif (strpos($rules[$k], '|')) {
                     $rule = explode('|', $rules[$k]);
                 } else {
                     $rule = array($rules[$k]);

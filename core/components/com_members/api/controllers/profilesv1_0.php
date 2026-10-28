@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
@@ -146,7 +147,8 @@ class Profilesv1_0 extends ApiController
                 $obj->middleName   = $entry->get('middleName');
                 $obj->surname      = $entry->get('surname');
                 $obj->organization = $entry->get('organization');
-                $obj->uri          = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id')), '/'));
+                $entryUrl = Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id'));
+                $obj->uri          = str_replace('/api', '', $base . '/' . ltrim($entryUrl, '/'));
 
                 $response->members[] = $obj;
             }
@@ -571,7 +573,8 @@ class Profilesv1_0 extends ApiController
      */
     private function getResourceFromAppname($appname, $database)
     {
-        $sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
+        $sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv "
+            . "WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
         $database->setQuery($sql);
         return $database->loadObject();
     }

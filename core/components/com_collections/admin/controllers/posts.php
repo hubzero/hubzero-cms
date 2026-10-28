@@ -271,8 +271,8 @@ class Posts extends AdminController
         $tmpl = ($tmpl ? '&tmpl=' . $tmpl : '');
 
         // Set the redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $item_id . $collection_id . $tmpl, false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . $item_id . $collection_id . $tmpl;
+        App::redirect(Route::url($url, false));
     }
 }

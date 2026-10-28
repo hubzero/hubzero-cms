@@ -20,34 +20,35 @@ abstract class Model extends Obj
      *
      * @var  integer
      */
-    const APP_STATE_UNPUBLISHED = 0;
+    public const APP_STATE_UNPUBLISHED = 0;
 
     /**
      * Published state
      *
      * @var  integer
      */
-    const APP_STATE_PUBLISHED   = 1;
+    public const APP_STATE_PUBLISHED   = 1;
 
     /**
      * Deleted state
      *
      * @var  integer
      */
-    const APP_STATE_DELETED     = 2;
+    public const APP_STATE_DELETED     = 2;
 
     /**
      * Flagged state
      *
      * @var  integer
      */
-    const APP_STATE_FLAGGED     = 3;
+    public const APP_STATE_FLAGGED     = 3;
 
     /**
      * Table class name
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = null;
 
     /**
@@ -55,6 +56,7 @@ abstract class Model extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl = null;
 
     /**
@@ -62,6 +64,7 @@ abstract class Model extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db = null;
 
     /**
@@ -70,6 +73,7 @@ abstract class Model extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = null;
 
     /**
@@ -78,6 +82,7 @@ abstract class Model extends Obj
      * @param   mixed  $oid  Integer (ID), string (alias), object or array
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($oid = null)
     {
         $this->_db = $this->initDbo();
@@ -99,7 +104,7 @@ abstract class Model extends Obj
                 if ($oid) {
                     $this->_tbl->load($oid);
                 }
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -116,7 +121,7 @@ abstract class Model extends Obj
     {
         if (isset($this->_tbl->$property)) {
             return $this->_tbl->$property;
-        } else if (isset($this->_tbl->{'__' . $property})) {
+        } elseif (isset($this->_tbl->{'__' . $property})) {
             return $this->_tbl->{'__' . $property};
         }
         return $default;
@@ -269,7 +274,7 @@ abstract class Model extends Obj
                     }
                 }
             }
-        } else if (is_array($data)) {
+        } elseif (is_array($data)) {
             $res = $this->_tbl->bind($data);
 
             if ($res) {
@@ -282,9 +287,18 @@ abstract class Model extends Obj
             }
         } else {
             $this->_logError(
-                __CLASS__ . '::' . __FUNCTION__ . '(); ' . \Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
+                __CLASS__ .
+                    '::' .
+                    __FUNCTION__ .
+                    '(); ' .
+                    \Lang::txt('Data must be of type object or array. Type given was %s', gettype($data))
             );
-            throw new \InvalidArgumentException(\Lang::txt('Data must be of type object or array. Type given was %s', gettype($data)));
+            InvalidArgumentException(
+                \Lang::txt(
+                    'Data must be of type object or array. Type given was %s',
+                    gettype($data)
+                )
+            );
         }
 
         return $res;
@@ -296,6 +310,7 @@ abstract class Model extends Obj
      * @param   string  $message  Message to log
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _logError($message)
     {
         return $this->_log('error', $message);
@@ -307,6 +322,7 @@ abstract class Model extends Obj
      * @param   string  $message  Message to log
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _logDebug($message)
     {
         return $this->_log('debug', $message);
@@ -319,6 +335,7 @@ abstract class Model extends Obj
      * @param   string  $message  Message to log
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _log($type, $message)
     {
         if (!$message) {
@@ -441,6 +458,7 @@ abstract class Model extends Obj
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return $this->toString();
@@ -453,9 +471,8 @@ abstract class Model extends Obj
      */
     public function toString($ignore = array('_db'))
     {
-        return $this->_print_r($this, $ignore);
+        return $this->print_r($this, $ignore);
     }
-
 
     /**
      * Special print_r to strip out any vars passed in $ignore
@@ -466,7 +483,8 @@ abstract class Model extends Obj
      * @param   array    $refChain  Reference chain
      * @return  string
      */
-    private function _print_r($subject, $ignore = array(), $depth = 1, $refChain = array())
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    private function print_r($subject, $ignore = array(), $depth = 1, $refChain = array())
     {
         $str = '';
 
@@ -500,7 +518,7 @@ abstract class Model extends Obj
                         $str .= $key;
                     }
                     $str .= '] => ';
-                    $str .= $this->_print_r($val, $ignore, $depth + 1, $refChain);
+                    $str .= $this->print_r($val, $ignore, $depth + 1, $refChain);
                 }
             }
             $str .= str_repeat(" ", ($depth - 1) * 4) . ")\n";
@@ -511,7 +529,7 @@ abstract class Model extends Obj
             foreach ($subject as $key => $val) {
                 if (is_array($ignore) && !in_array($key, $ignore, 1)) {
                     $str .= str_repeat(" ", $depth * 4) . '[' . $key . '] => ';
-                    $str .= $this->_print_r($val, $ignore, $depth + 1, $refChain);
+                    $str .= $this->print_r($val, $ignore, $depth + 1, $refChain);
                 }
             }
             $str .= str_repeat(" ", ($depth - 1) * 4) . ")\n";
@@ -549,6 +567,7 @@ abstract class Model extends Obj
      * @param   array   $parameters
      * @return  mixed
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __call($method, $parameters)
     {
         throw new \BadMethodCallException(sprintf(__CLASS__ . '; Method [%s] does not exist.', $method));

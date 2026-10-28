@@ -26,6 +26,7 @@ class Asset extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_tbl_name = '\\Components\\Collections\\Tables\\Asset';
 
     /**
@@ -33,6 +34,7 @@ class Asset extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_size = null;
 
     /**
@@ -40,6 +42,7 @@ class Asset extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_dimensions = null;
 
     /**
@@ -58,7 +61,7 @@ class Asset extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $this->_tbl->load($oid, $item_id);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }
@@ -70,7 +73,7 @@ class Asset extends Base
      * @param   integer  $item_id  ID of the item asset is attached
      * @return  object
      */
-    static function &getInstance($oid = null, $item_id = null)
+    public static function &getInstance($oid = null, $item_id = null)
     {
         static $instances;
 
@@ -80,9 +83,9 @@ class Asset extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid . '_' . $item_id;
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $key = $oid->id . '_' . $item_id;
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'] . '_' . $item_id;
         }
 

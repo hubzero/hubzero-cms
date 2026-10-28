@@ -22,6 +22,7 @@ class Geo extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Geo Location';
 
     /**
@@ -29,6 +30,7 @@ class Geo extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_script = false;
 
     /**
@@ -43,14 +45,20 @@ class Geo extends Base
      */
     public function fetchTooltip($label, $description, &$element, $control_name = '', $name = '')
     {
-        $output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
+        $labelId = $control_name . '-' . $name . '-lbl';
+        $labelFor = $control_name . '-' . $name;
+        $output = '<label id="' . $labelId . '" for="' . $labelFor . '"';
         if ($description) {
-            $output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($description) . '">';
+            $output .= ' class="hasTip" title="' . Lang::txt($label) . '::'
+                . Lang::txt($description) . '">';
         } else {
             $output .= '>';
         }
-        $output .= Lang::txt($label) . ' <span class="hint">' . Lang::txt('(street, city, state/province postal-code, country)') . '</span>';
-        $output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
+        $hintText = Lang::txt('(street, city, state/province postal-code, country)');
+        $output .= Lang::txt($label) . ' <span class="hint">' . $hintText . '</span>';
+        $isRequired = isset($element->required) && $element->required;
+        $requiredSpan = ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+        $output .= $isRequired ? $requiredSpan : '';
         $output .= '</label>';
 
         return $output;
@@ -69,17 +77,18 @@ class Geo extends Base
     {
         if (!$this->_script) {
             Document::addScript('//maps.google.com/maps/api/js?sensor=false');
-            Document::addScript(\Request::base(true) . '/core/components/com_resources/models/element/assets/js/geo.js');
+            $geoJs = '/core/components/com_resources/models/element/assets/js/geo.js';
+            Document::addScript(\Request::base(true) . $geoJs);
             $this->_script = true;
         }
 
         $size  = (isset($element->size)  ? 'size="' . $element->size . '"' : '');
         $class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
 
-        $address = $this->_getValue('value', $value);
-        $lat = $this->_getValue('lat', $value);
+        $address = $this->getValue('value', $value);
+        $lat = $this->getValue('lat', $value);
         $lat = (trim($lat)) ? $lat : '0.0';
-        $lng = $this->_getValue('lng', $value);
+        $lng = $this->getValue('lng', $value);
         $lng = (trim($lng)) ? $lng : '0.0';
 
         $value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
@@ -90,9 +99,16 @@ class Geo extends Base
         // htmlspecialchars_decode is not compatible with PHP 4
         $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-        $html  = '<input type="text" name="' . $control_name . '[' . $name . '][value]" id="' . $control_name . '-' . $name . '" value="' . $address . '" ' . $class . ' ' . $size . ' />';
-        $html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lat]" id="' . $control_name . '-' . $name . '-lat" value="' . $lat . '" />';
-        $html .= '<input type="hidden" name="' . $control_name . '[' . $name . '][lng]" id="' . $control_name . '-' . $name . '-lng" value="' . $lng . '" />';
+        $inputName = $control_name . '[' . $name . '][value]';
+        $inputId = $control_name . '-' . $name;
+        $html  = '<input type="text" name="' . $inputName . '" id="' . $inputId
+            . '" value="' . $address . '" ' . $class . ' ' . $size . ' />';
+        $latName = $control_name . '[' . $name . '][lat]';
+        $html .= '<input type="hidden" name="' . $latName . '" id="' . $inputId
+            . '-lat" value="' . $lat . '" />';
+        $lngName = $control_name . '[' . $name . '][lng]';
+        $html .= '<input type="hidden" name="' . $lngName . '" id="' . $inputId
+            . '-lng" value="' . $lng . '" />';
 
         return $html;
     }
@@ -104,7 +120,7 @@ class Geo extends Base
      * @param   string  $text Data
      * @return  string
      */
-    private function _getValue($tag, $text)
+    private function getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";
         preg_match($pattern, $text, $matches);
@@ -119,7 +135,7 @@ class Geo extends Base
      */
     public function display($value)
     {
-        return trim($this->_getValue('value', $value));
+        return trim($this->getValue('value', $value));
     }
 
     /**

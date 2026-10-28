@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +42,10 @@ class Import extends SiteController
     {
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                    . base64_encode(Route::url('index.php?option=' . $this->_option . '&task=import', false, true))
+                ),
                 Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
                 'warning'
             );
@@ -108,7 +112,8 @@ class Import extends SiteController
         $this->importer->cleanup();
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_controller));
 
         //call the plugins
         $this->view->accepted_files = Event::trigger('citation.onImportAcceptedFiles', array());
@@ -192,7 +197,9 @@ class Import extends SiteController
         $group = Request::getString('group');
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&task=import_review' . ($group ? '&group=' . $group : ''))
+            Route::url(
+                'index.php?option=' . $this->_option . '&task=import_review' . ($group ? '&group=' . $group : '')
+            )
         );
     }
 
@@ -225,7 +232,8 @@ class Import extends SiteController
         $this->_buildPathway();
 
         // Instantiate a new view
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         if (!empty($citations_require_attention) && is_array($citations_require_attention)) {
             $citationRequiredIds = array_map(function ($value) {
                 return $value['duplicate'];
@@ -380,7 +388,8 @@ class Import extends SiteController
         );
 
         // Instantiate a new view
-        $this->view->title     = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': '
+            . Lang::txt(strtoupper($this->_option) . '_' . strtoupper($this->_task));
         $this->view->config    = $this->config;
         $this->view->database  = $this->database;
         $this->view->filters   = $filters;
@@ -418,6 +427,7 @@ class Import extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -439,6 +449,7 @@ class Import extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->_option));

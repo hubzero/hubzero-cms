@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing some dated references to topics, rather than wiki
- **/
+ *
+ */
 class Migration20131017133750ComWiki extends Base
 {
     /**
@@ -42,12 +44,17 @@ class Migration20131017133750ComWiki extends Base
                 $pagetext = preg_replace('/(topic)/', 'wiki', $pagetext);
                 $pagehtml = preg_replace('/(topic)/', 'wiki', $pagehtml);
 
-                $this->db->setQuery("UPDATE `#__wiki_version` SET `pagetext`=" . $this->db->quote($pagetext) . ", `pagehtml`=" . $this->db->quote($pagehtml) . " WHERE `pageid`=" . $result->pageid . " AND `version`=" . $result->version);
+                $query = "UPDATE `#__wiki_version` SET `pagetext`=" . $this->db->quote($pagetext)
+                    . ", `pagehtml`=" . $this->db->quote($pagehtml)
+                    . " WHERE `pageid`=" . $result->pageid . " AND `version`=" . $result->version;
+                $this->db->setQuery($query);
                 $this->db->query();
 
                 $title = preg_replace('/(Topic)/', 'Wiki', $result->title);
 
-                $this->db->setQuery("UPDATE `#__wiki_page` SET `title`=" . $this->db->quote($title) . " WHERE `id`=" . $result->pageid);
+                $query = "UPDATE `#__wiki_page` SET `title`=" . $this->db->quote($title)
+                    . " WHERE `id`=" . $result->pageid;
+                $this->db->setQuery($query);
                 $this->db->query();
             }
         }

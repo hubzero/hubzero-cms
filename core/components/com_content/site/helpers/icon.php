@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +24,9 @@ class HtmlIcon
      */
     public static function create($category, $params)
     {
-        $url = 'index.php?option=com_content&task=article.add&return=' . base64_encode(urlencode(Request::current(true))) . '&a_id=0&catid=' . $category->id;
+        $return = base64_encode(urlencode(Request::current(true)));
+        $url = 'index.php?option=com_content&task=article.add&return=' . $return
+            . '&a_id=0&catid=' . $category->id;
 
         $button =  '<a class="icon-add" href="' . Route::url($url) . '">' . Lang::txt('JNEW') . '</a>';
 
@@ -50,15 +53,22 @@ class HtmlIcon
 
             $base     = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;
-            $link     = $base . Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language), false);
-            $url      = 'index.php?option=com_mailto&tmpl=component&template=' . $template . '&link=' . Components\Mailto\Site\Helpers\Mailto::addLink($link);
+            $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                $article->slug,
+                $article->catid,
+                $article->language
+            );
+            $link     = $base . Route::url($articleRoute, false);
+            $url      = 'index.php?option=com_mailto&tmpl=component&template=' . $template
+                . '&link=' . Components\Mailto\Site\Helpers\Mailto::addLink($link);
 
             $status = 'width=400,height=350,menubar=yes,resizable=yes';
 
             $attribs['title']   = Lang::txt('JGLOBAL_EMAIL');
             $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
 
-            $output = '<a class="icon-email" href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
+            $output = '<a class="icon-email" href="' . Route::url($url) . '" '
+                . Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
         }
 
         return $output;
@@ -102,12 +112,15 @@ class HtmlIcon
             $checkoutUser = User::getInstance($article->checked_out);
             $button  = Html::asset('icon', 'lock');
             $date    = Date::of($article->checked_out_time)->toLocal();
-            $tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT') . ' :: ' . Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name) . ' <br /> ' . $date;
+            $tooltip = Lang::txt('JLIB_HTML_CHECKED_OUT') . ' :: '
+                . Lang::txt('COM_CONTENT_CHECKED_OUT_BY', $checkoutUser->name) . ' <br /> ' . $date;
 
-            return '<span class="hasTip" title="' . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') . '">' . $button . '</span>';
+            return '<span class="hasTip" title="' . htmlspecialchars($tooltip, ENT_COMPAT, 'UTF-8') . '">'
+                . $button . '</span>';
         }
 
-        $url = 'index.php?option=com_content&task=article.edit&a_id=' . $article->id . '&return=' . base64_encode(urlencode(Request::current(true)));
+        $return = base64_encode(urlencode(Request::current(true)));
+        $url = 'index.php?option=com_content&task=article.edit&a_id=' . $article->id . '&return=' . $return;
         $cls = $article->state ? 'icon-edit edit' : 'icon-edit edit unpublished';
         if (strtotime($article->publish_up) > strtotime(Date::of('now'))) {
             $cls = 'icon-edit edit unpublished';
@@ -130,7 +143,8 @@ class HtmlIcon
 
         $button = '<a class="' . $cls . '" href="' . Route::url($url) . '">' . $text . '</a>';
 
-        $output = '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_EDIT_ITEM') . ' :: ' . $overlib . '">' . $button . '</span>';
+        $output = '<span class="hasTip" title="' . Lang::txt('COM_CONTENT_EDIT_ITEM') . ' :: ' . $overlib . '">'
+            . $button . '</span>';
 
         return $output;
     }
@@ -143,20 +157,28 @@ class HtmlIcon
      * @param   array   $attribs
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function print_popup($article, $params, $attribs = array())
     {
-        $url  = Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language);
+        $url  = Components\Content\Site\Helpers\Route::getArticleRoute(
+            $article->slug,
+            $article->catid,
+            $article->language
+        );
         $url .= '&tmpl=component&print=1&layout=default';
 
-        $status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
+        $status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,'
+            . 'width=640,height=480,directories=no,location=no';
 
-        $text = Lang::txt('JGLOBAL_ICON_SEP') . '&#160;' . Lang::txt('JGLOBAL_PRINT') . '&#160;' . Lang::txt('JGLOBAL_ICON_SEP');
+        $text = Lang::txt('JGLOBAL_ICON_SEP') . '&#160;' . Lang::txt('JGLOBAL_PRINT')
+            . '&#160;' . Lang::txt('JGLOBAL_ICON_SEP');
 
         $attribs['title']   = Lang::txt('JGLOBAL_PRINT');
         $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
         $attribs['rel']     = 'nofollow';
 
-        return '<a href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs) . '>' . $text . '</a>';
+        return '<a href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs)
+            . '>' . $text . '</a>';
     }
 
     /**
@@ -167,9 +189,11 @@ class HtmlIcon
      * @param   array   $attribs
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function print_screen($article, $params, $attribs = array())
     {
-        $text = Lang::txt('JGLOBAL_ICON_SEP') . '&#160;' . Lang::txt('JGLOBAL_PRINT') . '&#160;' . Lang::txt('JGLOBAL_ICON_SEP');
+        $text = Lang::txt('JGLOBAL_ICON_SEP') . '&#160;' . Lang::txt('JGLOBAL_PRINT')
+            . '&#160;' . Lang::txt('JGLOBAL_ICON_SEP');
 
         return '<a href="#" onclick="window.print();return false;">' . $text . '</a>';
     }

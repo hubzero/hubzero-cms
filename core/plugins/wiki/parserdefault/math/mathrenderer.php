@@ -40,12 +40,10 @@
  * @see       References to other sections (if any)...
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Output PNG file
  */
+
 define('MW_MATH_PNG', 0);
 
 /**
@@ -74,64 +72,66 @@ define('MW_MATH_MODERN', 4);
 define('MW_MATH_MATHML', 5);
 
 /**
- * Contain everything related to <math> </math> parsing
- *
- * Takes LaTeX fragments, sends them to a helper program (texvc) for rendering
- * to rasterized PNG and HTML and MathML approximations. An appropriate
- * rendering form is picked and returned.
- *
- * Based off code by Tomasz Wegrzanowski, with additions by Brion Vibber (2003, 2004)
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+
+/**
+ * Math Renderer
+ * Renders TeX using standard tools
  */
 class MathRenderer
 {
     /**
-     * Description for 'mode'
+     * Operation mode
      *
-     * @var integer
+     * @var  integer
      */
-    var $mode = MW_MATH_MODERN;
+    public $mode = MW_MATH_MODERN;
 
     /**
-     * Description for 'tex'
+     * TeX string
      *
-     * @var string
+     * @var  string
      */
-    var $tex = '';
+    public $tex = '';
 
     /**
-     * Description for 'inputhash'
+     * Input hash
      *
-     * @var string
+     * @var  string
      */
-    var $inputhash = '';
+    public $inputhash = '';
 
     /**
-     * Description for 'hash'
+     * Hash
      *
-     * @var string
+     * @var  string
      */
-    var $hash = '';
+    public $hash = '';
 
     /**
-     * Description for 'html'
+     * HTML output
      *
-     * @var string
+     * @var  string
      */
-    var $html = '';
+    public $html = '';
 
     /**
-     * Description for 'mathml'
+     * MathML output
      *
-     * @var string
+     * @var  string
      */
-    var $mathml = '';
+    public $mathml = '';
 
     /**
-     * Description for 'conservativeness'
+     * Conservativeness
      *
-     * @var integer
+     * @var  integer
      */
-    var $conservativeness = 0;
+    public $conservativeness = 0;
 
     /**
      * Constructor
@@ -165,7 +165,7 @@ class MathRenderer
      * @param      integer $mode chmod
      * @return     boolean False if errors, True on success
      */
-    private function _makePath($path, $mode = 0777)
+    private function makePath($path, $mode = 0777)
     {
         if (file_exists($path)) {
             return true;
@@ -220,18 +220,18 @@ class MathRenderer
             return;
         }
 
-        if (!$this->_recall()) {
+        if (!$this->recall()) {
             // Ensure that the temp and output directories are available before continuing...
             if (!file_exists($tmpDirectory)) {
-                if (!$this->_makePath($tmpDirectory)) {
-                    return $this->_error('math_bad_tmpdir');
+                if (!$this->makePath($tmpDirectory)) {
+                    return $this->error('math_bad_tmpdir');
                 }
             } elseif (!is_dir($tmpDirectory) || !is_writable($tmpDirectory)) {
-                return $this->_error('math_bad_tmpdir');
+                return $this->error('math_bad_tmpdir');
             }
             // Ensure we have the texvc executable
             if (function_exists('is_executable') && !is_executable($texvc)) {
-                return $this->_error('math_notexvc');
+                return $this->error('math_notexvc');
             }
             $cmd = $texvc . ' ' .
                     escapeshellarg($tmpDirectory) . ' ' .
@@ -269,7 +269,7 @@ class MathRenderer
             */
 
             if (strlen($contents) == 0) {
-                return $this->_error('math_unknown_error1');
+                return $this->error('math_unknown_error1');
             }
 
             $retval = substr($contents, 0, 1);
@@ -277,7 +277,7 @@ class MathRenderer
             if (($retval == 'C') || ($retval == 'M') || ($retval == 'L')) {
                 if ($retval == 'C') {
                     $this->conservativeness = 2;
-                } else if ($retval == 'M') {
+                } elseif ($retval == 'M') {
                     $this->conservativeness = 1;
                 } else {
                     $this->conservativeness = 0;
@@ -288,21 +288,21 @@ class MathRenderer
 
                 $this->html = substr($outdata, 0, $i);
                 $this->mathml = substr($outdata, $i + 1);
-            } else if (($retval == 'c') || ($retval == 'm') || ($retval == 'l')) {
+            } elseif (($retval == 'c') || ($retval == 'm') || ($retval == 'l')) {
                 $this->html = substr($contents, 33);
                 if ($retval == 'c') {
                     $this->conservativeness = 2;
-                } else if ($retval == 'm') {
+                } elseif ($retval == 'm') {
                     $this->conservativeness = 1;
                 } else {
                     $this->conservativeness = 0;
                 }
                 $this->mathml = null;
-            } else if ($retval == 'X') {
+            } elseif ($retval == 'X') {
                 //$this->html = null;
                 $this->mathml = substr($contents, 33);
                 $this->conservativeness = 0;
-            } else if ($retval == '+') {
+            } elseif ($retval == '+') {
                 //$this->html = null;
                 //$this->mathml = null;
                 $this->conservativeness = 0;
@@ -310,16 +310,16 @@ class MathRenderer
                 $errbit = htmlspecialchars(substr($contents, 1));
                 switch ($retval) {
                     case 'E':
-                        $errmsg = $this->_error('math_lexing_error', $errbit);
+                        $errmsg = $this->error('math_lexing_error', $errbit);
                         break;
                     case 'S':
-                        $errmsg = $this->_error('math_syntax_error', $errbit);
+                        $errmsg = $this->error('math_syntax_error', $errbit);
                         break;
                     case 'F':
-                        $errmsg = $this->_error('math_unknown_function', $errbit);
+                        $errmsg = $this->error('math_unknown_function', $errbit);
                         break;
                     default:
-                        $errmsg = $this->_error('math_unknown_error2', $errbit);
+                        $errmsg = $this->error('math_unknown_error2', $errbit);
                 }
             }
 
@@ -332,25 +332,25 @@ class MathRenderer
             }
 
             if (!preg_match("/^[a-f0-9]{32}$/", $this->hash)) {
-                return $this->_error('math_unknown_error3');
+                return $this->error('math_unknown_error3');
             }
 
             if (!file_exists("$tmpDirectory/{$this->hash}.png")) {
-                return $this->_error('math_image_error');
+                return $this->error('math_image_error');
             }
 
-            $hashpath = $this->_getHashPath();
+            $hashpath = $this->getHashPath();
 
             if (!file_exists($hashpath)) {
-                if (!$this->_makePath($hashpath)) {
-                    return $this->_error('math_bad_output');
+                if (!$this->makePath($hashpath)) {
+                    return $this->error('math_bad_output');
                 }
             } elseif (!is_dir($hashpath) || !is_writable($hashpath)) {
-                return $this->_error('math_bad_output');
+                return $this->error('math_bad_output');
             }
 
             if (!rename("$tmpDirectory/{$this->hash}.png", "$hashpath/{$this->hash}.png")) {
-                return $this->_error('math_output_error');
+                return $this->error('math_output_error');
             }
 
             // Now save it back to the DB:
@@ -359,8 +359,8 @@ class MathRenderer
 
             $wm = \Components\Wiki\Models\Formula::oneByInputhash($md5_sql);
             if (!$wm->get('id')) {
-                $wm->set('inputhash', $this->_encodeBlob($md5_sql));
-                $wm->set('outputhash', $this->_encodeBlob($outmd5_sql));
+                $wm->set('inputhash', $this->encodeBlob($md5_sql));
+                $wm->set('outputhash', $this->encodeBlob($outmd5_sql));
                 $wm->set('conservativeness', (int)$this->conservativeness);
                 $wm->set('html', (string)$this->html);
                 $wm->set('mathml', (string)$this->mathml);
@@ -371,7 +371,7 @@ class MathRenderer
             }
         }
 
-        return $this->_doRender();
+        return $this->doRender();
     }
 
     /**
@@ -381,7 +381,7 @@ class MathRenderer
      * @param      string $append Data to append
      * @return     string HTML
      */
-    private function _error($msg, $append = '')
+    private function error($msg, $append = '')
     {
         $mf = htmlspecialchars('math_failure');
         $errmsg = htmlspecialchars($msg);
@@ -394,22 +394,24 @@ class MathRenderer
      *
      * @return     boolean True if image exists
      */
-    private function _recall()
+    private function recall()
     {
         $this->md5 = md5($this->tex);
 
-        $wm = \Components\Wiki\Models\Formula::oneByInputhash($this->_encodeBlob($this->md5));
+        $wm = \Components\Wiki\Models\Formula::oneByInputhash($this->encodeBlob($this->md5));
 
         if ($wm->get('id')) {
             // Tailing 0x20s can get dropped by the database, add it back on if necessary:
-            //$xhash = $wm->outputhash; //$this->_decodeBlob($wm->outputhash); //unpack('H32md5', $this->_decodeBlob($wm->outputhash) . "                ");
+            // Tailing 0x20s can get dropped by the database, add it back on if necessary:
+            //$xhash = $wm->outputhash; //$this->decodeBlob($wm->outputhash);
+            //unpack('H32md5', $this->decodeBlob($wm->outputhash) . "                ");
             $this->hash = $wm->get('outputhash');
 
             $this->conservativeness = $wm->get('conservativeness');
             $this->html   = $wm->get('html');
             $this->mathml = $wm->get('mathml');
 
-            if (file_exists($this->_getHashPath() . DS . "{$this->hash}.png")) {
+            if (file_exists($this->getHashPath() . DS . "{$this->hash}.png")) {
                 return true;
             }
         }
@@ -423,7 +425,7 @@ class MathRenderer
      *
      * @return     string
      */
-    private function _doRender()
+    private function doRender()
     {
         if ($this->mode == MW_MATH_MATHML && $this->mathml != '') {
             return '<math xmlns="http://www.w3.org/1998/Math/MathML">' . $this->mathml . '</math>';
@@ -433,7 +435,7 @@ class MathRenderer
             || (($this->mode == MW_MATH_SIMPLE) && ($this->conservativeness != 2))
             || (($this->mode == MW_MATH_MODERN || $this->mode == MW_MATH_MATHML) && ($this->conservativeness == 0))
         ) {
-            return $this->_linkToMathImage();
+            return $this->linkToMathImage();
         } else {
             return '<span class="texhtml">' . $this->html . '</span>';
         }
@@ -444,9 +446,21 @@ class MathRenderer
      *
      * @return     string HTML
      */
-    private function _linkToMathImage()
+    private function linkToMathImage()
     {
-        $url = DS . 'app' . DS . trim($this->config->get('mathpath', '/site/wiki/math'), DS) . DS . substr($this->hash, 0, 1) . DS . substr($this->hash, 1, 1) . DS . substr($this->hash, 2, 1) . DS . "{$this->hash}.png";
+        $url = DS
+            . 'app'
+            . DS
+            . trim($this->config->get('mathpath', '/site/wiki/math'), DS)
+            . DS
+            . substr($this->hash, 0, 1)
+            . DS
+            . substr($this->hash, 1, 1)
+            . DS
+            . substr($this->hash, 2, 1)
+            . DS
+            . "{$this->hash}
+            . png";
 
         return '<img src="' . $url . '" class="tex" alt="' . htmlspecialchars($this->tex) . '" />';
     }
@@ -456,9 +470,24 @@ class MathRenderer
      *
      * @return     string
      */
-    private function _getHashPath()
+    private function getHashPath()
     {
-        $path = PATH_APP . DS . trim($this->config->get('mathpath', '/site/wiki/math'), DS) . DS . substr($this->hash, 0, 1) . DS . substr($this->hash, 1, 1) . DS . substr($this->hash, 2, 1);
+        $path = PATH_APP . DS . trim(
+            $this->config->get('mathpath', '/site/wiki/math'),
+            DS
+        ) . DS . substr(
+            $this->hash,
+            0,
+            1
+        ) . DS . substr(
+            $this->hash,
+            1,
+            1
+        ) . DS . substr(
+            $this->hash,
+            2,
+            1
+        );
         return $path;
     }
 
@@ -468,7 +497,7 @@ class MathRenderer
      * @param      string $b Blob to encode
      * @return     string
      */
-    private function _encodeBlob($b)
+    private function encodeBlob($b)
     {
         return $b;
     }
@@ -479,7 +508,7 @@ class MathRenderer
      * @param      string $b Blob to decode
      * @return     string
      */
-    private function _decodeBlob($b)
+    private function decodeBlob($b)
     {
         return $b;
     }

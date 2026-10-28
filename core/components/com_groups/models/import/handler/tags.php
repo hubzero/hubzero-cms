@@ -39,7 +39,7 @@ class Tags extends Obj
     public function bind($raw, $record, $mode = 'UPDATE')
     {
         if (isset($raw->interests)) {
-            $record->tags = $this->_multiValueField($raw->interests);
+            $record->tags = $this->multiValueField($raw->interests);
         }
 
         return $record;
@@ -90,7 +90,7 @@ class Tags extends Obj
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
      * @return  array
      */
-    private function _multiValueField($data, $delim = ',|;')
+    private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
             $data = array_map('trim', preg_split("/($delim)/", $data));

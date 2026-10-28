@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -104,7 +105,11 @@ class Order extends ComponentController
         // Get transaction info
         $tInfo = Cart::getTransactionFacts($tId);
 
-        if (empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
+        if (
+            empty($tInfo->info->tStatus)
+            || $tInfo->info->tiCustomerStatus != 'unconfirmed'
+            || $tInfo->info->tStatus != 'completed'
+        ) {
             Notify::error('Error processing your order...');
 
             App::redirect(
@@ -167,7 +172,8 @@ class Order extends ComponentController
 
         if ($this->completeOrder($transaction)) {
             // redirect to thank you page
-            $redirect_url = Route::url('index.php?option=' . 'com_cart') . '/order/complete/?custom=' . $token . '-' . $transaction->info->tId;
+            $redirect_url = Route::url('index.php?option=' . 'com_cart')
+                . '/order/complete/?custom=' . $token . '-' . $transaction->info->tId;
 
             App::redirect(
                 $redirect_url
@@ -182,7 +188,8 @@ class Order extends ComponentController
      */
     public function postbackTask()
     {
-        // some payment providers (Dummy, PayPal will do the postback, need to call the plugins and handle appropriately)
+        // some payment providers (Dummy, PayPal will do the postback,
+        // need to call the plugins and handle appropriately)
 
         $test = false;
         // TESTING ***********************

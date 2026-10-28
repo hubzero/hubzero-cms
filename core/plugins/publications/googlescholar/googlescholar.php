@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for adding Google Scholar metadata to the document
@@ -78,7 +76,8 @@ class plgPublicationsGooglescholar extends \Hubzero\Plugin\Plugin
             if (!$contributor->organization) {
                 $contributor->organization = $contributor->p_organization;
             }
-            $contributor->organization = stripslashes(trim($contributor->organization ? $contributor->organization : ''));
+            $contributor->organization = stripslashes(trim($contributor->organization ?
+                $contributor->organization : ''));
 
             Document::setMetaData('citation_author', $view->escape($name));
 

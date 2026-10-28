@@ -128,15 +128,32 @@ class Helper extends Module
                     $query->where('a.id', '!=', (int) $id);
                     $query->where('a.state', '=', 1);
                     $query->where('a.access', 'IN', '(' . $groups . ')');
-                    $concat_string = $query->concatenate(array('","', ' REPLACE(a.metakey, ", ", ",")', ' ","'));
-                    // TODO: Fix the where clauses below. Not sure how to break the params out to work with the new where clause
-                    $query->where('(' . $concat_string . ' LIKE "%' . implode('%" OR ' . $concat_string . ' LIKE "%', $likes) . '%")'); //remove single space after commas in keywords)
-                    $query->where('(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) . ' OR a.publish_up <= ' . $db->quote($now) . ')');
-                    $query->where('(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) . ' OR a.publish_down >= ' . $db->quote($now) . ')');
+                    $concat_string = $query->concatenate(
+                        array('","', ' REPLACE(a.metakey, ", ", ",")', ' ","')
+                    );
+                    // TODO: Fix the where clauses below. Not sure how to break
+                    // the params out to work with the new where clause
+                    // remove single space after commas in keywords
+                    $likeConditions = implode(
+                        '%" OR ' . $concat_string . ' LIKE "%',
+                        $likes
+                    );
+                    $query->where('(' . $concat_string . ' LIKE "%' . $likeConditions . '%")');
+                    $query->where(
+                        '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) .
+                        ' OR a.publish_up <= ' . $db->quote($now) . ')'
+                    );
+                    $query->where(
+                        '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) .
+                        ' OR a.publish_down >= ' . $db->quote($now) . ')'
+                    );
 
                     // Filter by language
                     if (\App::get('language.filter')) {
-                        $query->where('a.language in (' . $db->quote(Lang::getTag()) . ',' . $db->quote('*') . ')');
+                        $query->where(
+                            'a.language in (' . $db->quote(Lang::getTag()) . ',' .
+                            $db->quote('*') . ')'
+                        );
                     }
 
                     $db->setQuery($query);
@@ -146,7 +163,12 @@ class Helper extends Module
                     if (count($temp)) {
                         foreach ($temp as $row) {
                             if ($row->cat_state == 1) {
-                                $row->route = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($row->slug, $row->catslug, $row->language));
+                                $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
+                                    $row->slug,
+                                    $row->catslug,
+                                    $row->language
+                                );
+                                $row->route = Route::url($articleRoute);
                                 $related[] = $row;
                             }
                         }

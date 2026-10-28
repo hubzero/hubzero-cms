@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,13 +16,14 @@ require_once Component::path('com_projects') . DS . 'tables' . DS . 'database.ve
 /**
  * Projects - Databases plugin
  */
-class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
+class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -36,6 +38,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @var  string
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_option = 'com_projects';
 
     /**
@@ -43,6 +46,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @var  array
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_msg = null;
 
     /**
@@ -67,7 +71,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $area = array();
 
         // Check if plugin is restricted to certain projects
-        $projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : array();
+        // Check if plugin is restricted to certain projects
+        $projects = $this->params->get('restricted')
+            ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted'))
+            : array();
 
         if (!empty($projects) && $alias) {
             if (!in_array($alias, $projects)) {
@@ -81,11 +88,11 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         }
 
         $area = array(
-            'name'    => 'databases',
-            'title'   => 'Databases',
+            'name' => 'databases',
+            'title' => 'Databases',
             'submenu' => 'Assets',
-            'show'    => true,
-            'icon'    => 'f001'
+            'show' => true,
+            'icon' => 'f001'
         );
 
         return $area;
@@ -122,6 +129,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  boolean
      */
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _checkConfig()
     {
         if (isset($this->_configured)) {
@@ -130,19 +138,19 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
         try {
             // Check if the plugin parameters the two mysql accounts are properly set
-            $db_opt_rw['driver']   = 'mysql';
-            $db_opt_rw['host']     = $this->params->get('db_host');
-            $db_opt_rw['user']     = $this->params->get('db_user');
+            $db_opt_rw['driver'] = 'mysql';
+            $db_opt_rw['host'] = $this->params->get('db_host');
+            $db_opt_rw['user'] = $this->params->get('db_user');
             $db_opt_rw['password'] = $this->params->get('db_password');
-            $db_opt_rw['prefix']   = '';
-            $db_rw = Hubzero\Database\Driver::getInstance($db_opt_rw);
+            $db_opt_rw['prefix'] = '';
+            $db_rw = \Hubzero\Database\Driver::getInstance($db_opt_rw);
 
-            $db_opt_ro['driver']   = 'mysql';
-            $db_opt_ro['host']     = $this->params->get('db_host');
-            $db_opt_ro['user']     = $this->params->get('db_ro_user');
+            $db_opt_ro['driver'] = 'mysql';
+            $db_opt_ro['host'] = $this->params->get('db_host');
+            $db_opt_ro['user'] = $this->params->get('db_ro_user');
             $db_opt_ro['password'] = $this->params->get('db_ro_password');
-            $db_opt_ro['prefix']   = '';
-            $db_ro = Hubzero\Database\Driver::getInstance($db_opt_ro);
+            $db_opt_ro['prefix'] = '';
+            $db_ro = \Hubzero\Database\Driver::getInstance($db_opt_ro);
 
             if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0) {
                 $this->_configured = false;
@@ -167,10 +175,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
     public function onProject($model, $action = 'view', $areas = null, $params = array())
     {
         $arr = array(
-            'html'     => '',
+            'html' => '',
             'metadata' => '',
-            'message'  => '',
-            'error'    => ''
+            'message' => '',
+            'error' => ''
         );
 
         // Get this area details
@@ -195,12 +203,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $this->_config = $model->config();
         $this->gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
 
-        $repoName   = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
+        $repoName = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
         $this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
-        $this->_database   = \App::get('db');
-        $this->_uid        = User::get('id');
-        $this->subdir      = trim(urldecode(Request::getString('subdir', '')), DS);
+        $this->_database = \App::get('db');
+        $this->_uid = User::get('id');
+        $this->subdir = trim(urldecode(Request::getString('subdir', '')), DS);
 
         if (!$this->repo->exists()) {
             // Default to local repo (will redirect to add repo page in the future)
@@ -223,7 +231,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         }
 
         $this->_database = App::get('db');
-        $this->_uid      = User::get('id');
+        $this->_uid = User::get('id');
 
         // Publishing?
         if ($action == 'browser') {
@@ -274,28 +282,28 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
     public function select()
     {
         // Incoming
-        $props  = Request::getString('p', '');
-        $ajax   = Request::getInt('ajax', 0);
-        $pid    = Request::getInt('pid', 0);
-        $vid    = Request::getInt('vid', 0);
+        $props = Request::getString('p', '');
+        $ajax = Request::getInt('ajax', 0);
+        $pid = Request::getInt('pid', 0);
+        $vid = Request::getInt('vid', 0);
         $filter = urldecode(Request::getString('filter', ''));
 
         // Parse props for curation
-        $parts   = explode('-', $props);
-        $block   = isset($parts[0]) ? $parts[0] : 'content';
-        $step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+        $parts = explode('-', $props);
+        $block = isset($parts[0]) ? $parts[0] : 'content';
+        $step = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 
         // Provisioned project?
-        $prov   = $this->model->isProvisioned() ? 1 : 0;
+        $prov = $this->model->isProvisioned() ? 1 : 0;
 
         // Output HTML
         $view = new \Hubzero\Plugin\View(
             array(
-                'folder'  => 'projects',
+                'folder' => 'projects',
                 'element' => 'databases',
-                'name'    => 'selector',
-                'layout'  => 'default'
+                'name' => 'selector',
+                'layout' => 'default'
             )
         );
 
@@ -306,13 +314,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             // Output error
             $view = new \Hubzero\Plugin\View(
                 array(
-                    'folder'  => 'projects',
+                    'folder' => 'projects',
                     'element' => 'files',
-                    'name'    => 'error'
+                    'name' => 'error'
                 )
             );
 
-            $view->title  = '';
+            $view->title = '';
             $view->option = $this->_option;
             $view->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
             return $view->loadTemplate();
@@ -339,16 +347,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
         }
 
-        $view->option   = $this->_option;
+        $view->option = $this->_option;
         $view->database = $this->_database;
-        $view->model    = $this->model;
-        $view->uid      = $this->_uid;
-        $view->ajax     = $ajax;
-        $view->element  = $element;
-        $view->block    = $block;
-        $view->step     = $step;
-        $view->props    = $props;
-        $view->filter   = $filter;
+        $view->model = $this->model;
+        $view->uid = $this->_uid;
+        $view->ajax = $ajax;
+        $view->element = $element;
+        $view->block = $block;
+        $view->step = $step;
+        $view->props = $props;
+        $view->filter = $filter;
 
         // Get databases to choose from
         $objPD = new \Components\Projects\Tables\Database($this->_database);
@@ -360,10 +368,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         }
 
         $arr = array(
-            'html'     => $view->loadTemplate(),
+            'html' => $view->loadTemplate(),
             'metadata' => '',
-            'msg'      => '',
-            'referer'  => ''
+            'msg' => '',
+            'referer' => ''
         );
 
         return $arr;
@@ -377,8 +385,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
     public function browser()
     {
         // Incoming
-        $ajax      = Request::getInt('ajax', 0);
-        $primary   = Request::getInt('primary', 1);
+        $ajax = Request::getInt('ajax', 0);
+        $primary = Request::getInt('primary', 1);
         $versionid = Request::getInt('versionid', 0);
 
         if (!$ajax) {
@@ -399,15 +407,15 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         // Output HTML
         $view = new \Hubzero\Plugin\View(
             array(
-                'folder'  => 'projects',
+                'folder' => 'projects',
                 'element' => 'databases',
-                'name'    => 'browser'
+                'name' => 'browser'
             )
         );
 
         // Get current attachments
         $pContent = new \Components\Publications\Tables\Attachment($this->_database);
-        $role  = $primary ? '1' : '0';
+        $role = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
         $view->attachments = $pContent->getAttachments(
@@ -416,14 +424,14 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         );
 
         // Output HTML
-        $view->params    = $this->model->params;
-        $view->option    = $this->_option;
-        $view->database  = $this->_database;
-        $view->model     = $this->model;
-        $view->uid       = $this->_uid;
-        $view->config    = $this->_config;
-        $view->title     = $this->_area['title'];
-        $view->primary   = $primary;
+        $view->params = $this->model->params;
+        $view->option = $this->_option;
+        $view->database = $this->_database;
+        $view->model = $this->model;
+        $view->uid = $this->_uid;
+        $view->config = $this->_config;
+        $view->title = $this->_area['title'];
+        $view->primary = $primary;
         $view->versionid = $versionid;
 
         // Get messages and errors
@@ -432,10 +440,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         }
 
         $arr = array(
-            'html'     => $view->loadTemplate(),
+            'html' => $view->loadTemplate(),
             'metadata' => '',
-            'msg'      => '',
-            'referer'  => ''
+            'msg' => '',
+            'referer' => ''
         );
 
         return $arr;
@@ -446,6 +454,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_list()
     {
         // Get project path
@@ -455,7 +464,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $objPD = new \Components\Projects\Tables\Database($this->_database);
 
         // Get database list
-        $list  = $objPD->getList($this->model->get('id'));
+        $list = $objPD->getList($this->model->get('id'));
 
         $list_u = array();
         foreach ($list as $l) {
@@ -484,13 +493,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             array(
                 'folder' => 'projects',
                 'element' => 'databases',
-                'name'   => 'list'
+                'name' => 'list'
             )
         );
-        $view->model      = $this->model;
-        $view->option     = $this->_option;
+        $view->model = $this->model;
+        $view->option = $this->_option;
         $view->dataviewer = $this->dataviewer;
-        $view->list       = $list_u;
+        $view->list = $list_u;
 
         return array('html' => $view->loadTemplate());
     }
@@ -500,6 +509,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_create()
     {
         // Check permission
@@ -509,16 +519,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         }
         // Set params
         $params = array(
-            'subdir'               => $this->subdir,
-            'filter'               => 'csv',
-            'sortby'               => Request::getString('sortby', 'name'),
-            'sortdir'              => Request::getString('sortdir', 'ASC'),
-            'showFullMetadata'     => true,
-            'showUntracked'        => true,
-            'showAll'              => true,
-            'getPubConnections'    => false,
-            'versionTracking'      => $this->model->params->get('versionTracking', '0'),
-            'recursive'            => true,
+            'subdir' => $this->subdir,
+            'filter' => 'csv',
+            'sortby' => Request::getString('sortby', 'name'),
+            'sortdir' => Request::getString('sortdir', 'ASC'),
+            'showFullMetadata' => true,
+            'showUntracked' => true,
+            'showAll' => true,
+            'getPubConnections' => false,
+            'versionTracking' => $this->model->params->get('versionTracking', '0'),
+            'recursive' => true,
         );
 
         // Incoming
@@ -540,7 +550,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $objPD = new \Components\Projects\Tables\Database($this->_database);
 
         // Get database list
-        $used_files  = $objPD->getUsedItems($this->model->get('id'));
+        $used_files = $objPD->getUsedItems($this->model->get('id'));
 
         $files = array();
         foreach ($list as $l) {
@@ -556,14 +566,14 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             array(
                 'folder' => 'projects',
                 'element' => 'databases',
-                'name'   => 'create'
+                'name' => 'create'
             )
         );
 
-        $view->model  = $this->model;
+        $view->model = $this->model;
         $view->option = $this->_option;
-        $view->files  = $files;
-        $view->msg    = null;
+        $view->files = $files;
+        $view->msg = null;
 
         if ($error) {
             $view->setError($error);
@@ -574,10 +584,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
         if ($objPD->loadRecord($db_id)) {
             $view->db_id = $db_id;
-            $view->dir   = $objPD->source_dir;
-            $view->file  = $objPD->source_file;
+            $view->dir = $objPD->source_dir;
+            $view->file = $objPD->source_file;
             $view->title = $objPD->title;
-            $view->desc  = $objPD->description;
+            $view->desc = $objPD->description;
         }
 
         return array('html' => $view->loadTemplate());
@@ -588,11 +598,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_preview_data()
     {
         // Incoming
         $file = Request::getString('file', '');
-        $dir  = Request::getString('dir', '');
+        $dir = Request::getString('dir', '');
 
         if (!$file) {
             echo json_encode(array('status' => 'failed', 'msg' => Lang::txt('PLG_PROJECTS_DATABASES_INVALID_FILE')));
@@ -642,16 +653,18 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
             $table['repo'] = array(
                 'prj_alias' => $this->model->get('alias'),
-                'wd'        => trim($dir, '/'),
-                'base'      => '/projects/' . $this->model->get('alias') . '/files/?action=download&subdir=' . trim($dir, '/'),
-                'sub_dirs'  => $sub_dirs
+                'wd' => trim($dir, '/'),
+                'wd' => trim($dir, '/'),
+                'base' => '/projects/' . $this->model->get('alias')
+                    . '/files/?action=download&subdir=' . trim($dir, '/'),
+                'sub_dirs' => $sub_dirs
             );
 
             // Check if expert mode CSV
-            $expert_mode  = false;
-            $col_labels   = fgetcsv($handle);
-            $col_prop     = fgetcsv($handle);
-            $data_start   = fgetcsv($handle);
+            $expert_mode = false;
+            $col_labels = fgetcsv($handle);
+            $col_prop = fgetcsv($handle);
+            $data_start = fgetcsv($handle);
 
             if (isset($data_start[0]) && $data_start[0] == 'DATASTART') {
                 $expert_mode = true;
@@ -675,14 +688,22 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
                         $col_vals[] = $val;
 
-                        $type_info[$i]['type'] = isset($type_info[$i]['type']) ? $type_info[$i]['type'] : false;
+                        $type_info[$i]['type'] = isset($type_info[$i]['type'])
+                            ? $type_info[$i]['type']
+                            : false;
                         if (isset($type_info[$i]['max_len'])) {
-                            $type_info[$i]['max_len'] = $type_info[$i]['max_len'] > strlen($val) ? $type_info[$i]['max_len'] : strlen($val);
+                            $type_info[$i]['max_len'] = $type_info[$i]['max_len'] > strlen($val)
+                                ? $type_info[$i]['max_len']
+                                : strlen($val);
                         } else {
                             $type_info[$i]['max_len'] = strlen($val);
                         }
 
-                        $type_info[$i]['type'] = $this->_guess_data_type($val, $type_info[$i]['type'], $type_info[$i]['max_len']);
+                        $type_info[$i]['type'] = $this->_guess_data_type(
+                            $val,
+                            $type_info[$i]['type'],
+                            $type_info[$i]['max_len']
+                        );
                     }
 
                     if ($count < $limit) {
@@ -779,6 +800,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   integer  $max_len
      * @return  string
      */
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
     protected function _guess_data_type($data, $type, $max_len)
     {
         $data = trim($data);
@@ -833,6 +855,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_create_database()
     {
         // Check permission
@@ -845,16 +868,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         Request::checkToken(['get', 'post']);
 
         // Incoming
-        $file  = Request::getString('file', '');
-        $dir   = Request::getString('dir', '');
+        $file = Request::getString('file', '');
+        $dir = Request::getString('dir', '');
         $title = Request::getString('title', '');
-        $desc  = Request::getString('desc', '');
+        $desc = Request::getString('desc', '');
         $db_id = Request::getString('db_id', '');
-        $hash  = Request::getString('hash', \Hubzero\Utility\Date::of()->toUnix());
-        $dd    = Request::getString('dd', '');
-        $d     = json_decode($dd, true);
+        $hash = Request::getString('hash', \Hubzero\Utility\Date::of()->toUnix());
+        $dd = Request::getString('dd', '');
+        $d = json_decode($dd, true);
 
-        $db    = $this->get_ds_db($this->model->get('id'));
+        $db = $this->get_ds_db($this->model->get('id'));
         $table = array();
 
         // Add new or Recreate
@@ -865,7 +888,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $repo_base = '/projects/' . $this->model->get('alias') . '/files/?action=download&subdir=' . trim($dir, '/');
+        $repo_base = '/projects/' . $this->model->get('alias');
+        $repo_base .= '/files/?action=download&subdir=' . trim($dir, '/');
 
         // Get project path
         $path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
@@ -902,9 +926,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         if (file_exists($targetReal) && ($handle = fopen($targetReal, "r")) !== false) {
             // Check if expert mode CSV
             $expert_mode = false;
-            $col_labels  = fgetcsv($handle);
-            $col_prop    = fgetcsv($handle);
-            $data_start  = fgetcsv($handle);
+            $col_labels = fgetcsv($handle);
+            $col_prop = fgetcsv($handle);
+            $data_start = fgetcsv($handle);
 
             if (isset($data_start[0]) && $data_start[0] == 'DATASTART') {
                 $expert_mode = true;
@@ -989,11 +1013,11 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
                 $db->query();
             }
 
-            $dd['project']   = $this->model->get('id');
-            $dd['database']  = 'prj_db_' . $this->model->get('id');
-            $dd['table']     = $table['name'];
-            $dd['title']     = $title;
-            $dd['pk']        = $table['name'] . '.__ds_rec_id';
+            $dd['project'] = $this->model->get('id');
+            $dd['database'] = 'prj_db_' . $this->model->get('id');
+            $dd['table'] = $table['name'];
+            $dd['title'] = $title;
+            $dd['pk'] = $table['name'] . '.__ds_rec_id';
             $dd['repo_base'] = $repo_base;
             $dd = json_encode($dd);
 
@@ -1008,26 +1032,30 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
                     exit;
                 }
 
-                $objPD->title           = $title;
+                $objPD->title = $title;
                 $objPD->source_revision = $hash;
-                $objPD->description     = $desc;
+                $objPD->description = $desc;
                 $objPD->data_definition = $dd;
-                $objPD->updated         = Date::toSql();
-                $objPD->updated_by      = $this->_uid;
-                $msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_DATABASE') . ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
+                $objPD->updated = Date::toSql();
+                $objPD->updated_by = $this->_uid;
+                $objPD->updated_by = $this->_uid;
+                $msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_DATABASE') . ' "' . $title . '"';
+                $msg .= Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
             } else {
-                $objPD->project         = $this->model->get('id');
-                $objPD->database_name   = $table['name'];
-                $objPD->title           = $title;
-                $objPD->source_file     = $file;
-                $objPD->source_dir      = $dir;
+                $objPD->project = $this->model->get('id');
+                $objPD->database_name = $table['name'];
+                $objPD->title = $title;
+                $objPD->source_file = $file;
+                $objPD->source_dir = $dir;
                 $objPD->source_revision = $hash;
-                $objPD->description     = $desc;
+                $objPD->description = $desc;
                 $objPD->data_definition = $dd;
-                $objPD->created         = Date::toSql();
-                $objPD->created_by      = $this->_uid;
+                $objPD->created = Date::toSql();
+                $objPD->created_by = $this->_uid;
 
-                $msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED_DATABASE') . ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
+                $objPD->created_by = $this->_uid;
+                $msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED_DATABASE') . ' "' . $title . '"';
+                $msg .= Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
             }
 
             // Store new/update record
@@ -1043,7 +1071,13 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
                     str_replace("'", "\'", $msg),
                     $objPD->id,
                     'databases',
-                    Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases'),
+                    $objPD->id,
+                    'databases',
+                    Route::url(
+                        'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias')
+                        . '&active=databases'
+                    ),
+                    'databases',
                     'databases',
                     1
                 );
@@ -1052,7 +1086,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
+        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI'])
+            . "/projects/" . $this->model->get('alias') . "/databases/";
 
         echo json_encode(array('status' => 'success', 'data' => $url));
 
@@ -1070,6 +1105,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   integer  $id  Database ID
      * @return  void
      */
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
     public function _save_csv($id)
     {
         $db = $this->get_ds_db($this->model->get('id'));
@@ -1078,16 +1114,16 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $objPD = new \Components\Projects\Tables\Database($this->_database);
 
         // Get project path
-        $path  = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
+        $path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
         $path .= DS;
 
         if ($objPD->loadRecord($id)) {
             $db = $this->get_ds_db($objPD->project);
             $table = $objPD->database_name;
             $title = $objPD->title;
-            $file  = $objPD->source_file;
-            $dir   = ($objPD->source_dir != '') ? $objPD->source_dir . DS : '';
-            $dd    = json_decode($objPD->data_definition, true);
+            $file = $objPD->source_file;
+            $dir = ($objPD->source_dir != '') ? $objPD->source_dir . DS : '';
+            $dd = json_decode($objPD->data_definition, true);
 
             $header = array();
             $field_list = array();
@@ -1100,7 +1136,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
                 unset($prop['idx']);
                 unset($prop['styles']);
 
-                $header[1][] = rtrim(ltrim(str_replace('","', "\",\r\n\"", json_encode($prop)), '{'), '}');
+                $header[1][] = rtrim(
+                    ltrim(str_replace('","', "\",\r\n\"", json_encode($prop)), '{'),
+                    '}'
+                );
             }
 
             $header[2] = array('DATASTART');
@@ -1148,12 +1187,18 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             $objPD->source_revision = $hash;
             $objPD->store();
 
-            $msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_FILE') . ' "' . $file . '"' . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
+            $msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_FILE') . ' "' . $file . '"'
+                . Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
             $this->model->recordActivity(
                 str_replace("'", "\'", $msg),
                 $file,
                 'files',
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files'),
+                $file,
+                'files',
+                Route::url(
+                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files'
+                ),
+                'files',
                 'files',
                 1
             );
@@ -1166,6 +1211,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_delete()
     {
         // Require POST to prevent accidental deletion by crawlers
@@ -1205,18 +1251,25 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             }
 
             // Record project activity
-            $msg = Lang::txt('PLG_PROJECTS_DATABASES_REMOVED_DATABASE') . ' "' . $title . '"' . Lang::txt('PLG_PROJECTS_DATABASES_FROM_PROJECT');
+            $msg = Lang::txt('PLG_PROJECTS_DATABASES_REMOVED_DATABASE') . ' "' . $title . '"';
+            $msg .= Lang::txt('PLG_PROJECTS_DATABASES_FROM_PROJECT');
             $this->model->recordActivity(
                 str_replace("'", "\'", $msg),
                 $id,
                 'databases',
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases'),
+                $id,
+                'databases',
+                Route::url(
+                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases'
+                ),
+                'databases',
                 'databases',
                 1
             );
         }
 
-        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
+        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI'])
+            . "/projects/" . $this->model->get('alias') . "/databases/";
 
         // Pass success message
         if (!empty($this->_msg)) {
@@ -1233,6 +1286,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_update()
     {
         // Check permission
@@ -1245,8 +1299,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         Request::checkToken();
 
         // Incoming
-        $id          = Request::getString('db_id', '');
-        $title       = Request::getString('db_title', '');
+        $id = Request::getString('db_id', '');
+        $title = Request::getString('db_title', '');
         $description = Request::getString('db_description', '');
 
         // Get project database object
@@ -1257,9 +1311,9 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
             if ($title != '' && $objPD->project == $this->model->get('id')) {
                 // Setting title and description
-                $objPD->title           = $title;
-                $dd['title']            = $title;
-                $objPD->description     = $description;
+                $objPD->title = $title;
+                $dd['title'] = $title;
+                $objPD->description = $description;
                 $objPD->data_definition = json_encode($dd);
                 $objPD->store();
 
@@ -1267,7 +1321,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             }
         }
 
-        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->model->get('alias') . "/databases/";
+        $url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI'])
+            . "/projects/" . $this->model->get('alias') . "/databases/";
 
         // Pass success message
         if (!empty($this->_msg)) {
@@ -1289,6 +1344,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   string   $base_path   File-repository base path
      * @return  integer
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function clone_database($identifier = 0, $project = null, $base_path = null)
     {
         if (!$identifier || $project == null) {
@@ -1296,7 +1352,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             return false;
         }
 
-        $db    = App::get('db');
+        $db = App::get('db');
         $ds_db = $this->get_ds_db($project->get('id'));
 
         // Load database record
@@ -1309,12 +1365,12 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $dd = json_decode($objPD->data_definition, true);
 
         // Get last version
-        $objPDV  = new \Components\Projects\Tables\DatabaseVersion($db);
+        $objPDV = new \Components\Projects\Tables\DatabaseVersion($db);
         $version = $objPDV->getMaxVersion($objPD->database_name) + 1;
 
         // Start cloning
         $orig_table = $dd['table'];
-        $new_table  = $orig_table . '_' . $version;
+        $new_table = $orig_table . '_' . $version;
 
         $dd['table'] = $new_table;
 
@@ -1325,7 +1381,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         }
 
         $dd['cols'] = $new_cols;
-        $dd['pk']   = $new_table . '.__ds_rec_id';
+        $dd['pk'] = $new_table . '.__ds_rec_id';
 
         if ($base_path != null) {
             $dd['repo_base'] = $base_path;
@@ -1334,8 +1390,8 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         $dd = json_encode($dd);
 
         // Make new version record
-        $objPDV->database_name   = $objPD->database_name;
-        $objPDV->version         = $version;
+        $objPDV->database_name = $objPD->database_name;
+        $objPDV->version = $version;
         $objPDV->data_definition = $dd;
 
         $objPDV->store();
@@ -1361,6 +1417,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   integer  $version     Database version
      * @return  bool
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function remove_database($identifier = 0, $project = null, $version = null)
     {
         if (!$identifier || $project == null) {
@@ -1373,7 +1430,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
             return false;
         }
 
-        $db    =  App::get('db');
+        $db = App::get('db');
         $ds_db = $this->get_ds_db($project->get('id'));
 
         // Load database record
@@ -1404,6 +1461,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   string  $id
      * @return  object
      */
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function get_ds_db($id)
     {
         $opt = array();
@@ -1411,20 +1469,20 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
         // Create database if it doesn't exist
         $sql = "CREATE DATABASE IF NOT EXISTS " . 'prj_db_' . $id;
 
-        $opt['driver']   = 'mysql';
-        $opt['host']     = $this->params->get('db_host');
-        $opt['user']     = $this->params->get('db_user');
+        $opt['driver'] = 'mysql';
+        $opt['host'] = $this->params->get('db_host');
+        $opt['user'] = $this->params->get('db_user');
         $opt['password'] = $this->params->get('db_password');
-        $opt['prefix']   = '';
+        $opt['prefix'] = '';
 
-        $db = Hubzero\Database\Driver::getInstance($opt);
+        $db = \Hubzero\Database\Driver::getInstance($opt);
 
         $db->setQuery($sql);
         $db->query();
 
         $opt['database'] = 'prj_db_' . $id;
 
-        $db = Hubzero\Database\Driver::getInstance($opt);
+        $db = \Hubzero\Database\Driver::getInstance($opt);
 
         return $db;
     }

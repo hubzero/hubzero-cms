@@ -19,9 +19,9 @@ class Oauth
     /**
      * API endpoint constants
      **/
-    const HOSTNAME  = 'scistarter.com';
-    const AUTHORIZE = 'authorize';
-    const TOKEN     = 'token';
+    public const HOSTNAME  = 'scistarter.com';
+    public const AUTHORIZE = 'authorize';
+    public const TOKEN     = 'token';
 
     /**
      * The http tranport object

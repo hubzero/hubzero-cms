@@ -26,14 +26,17 @@ $this->js('d3.js', 'system')
 
 $dbh = App::get('db');
 $dbh->setQuery(
-    'SELECT *, (SELECT group_concat(resource_type_id) FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types
-	FROM `#__tags` t
-	INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id
-	ORDER BY raw_tag'
+    'SELECT *, (SELECT group_concat(resource_type_id)'
+    . ' FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types'
+    . ' FROM `#__tags` t'
+    . ' INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id'
+    . ' ORDER BY raw_tag'
 );
 $fas = $dbh->loadAssocList();
 $dbh->setQuery(
-    'SELECT DISTINCT id, type FROM `#__resource_types` WHERE category = (SELECT id FROM `#__resource_types` WHERE type = \'Main Types\') AND contributable ORDER BY type'
+    'SELECT DISTINCT id, type FROM `#__resource_types`'
+    . ' WHERE category = (SELECT id FROM `#__resource_types` WHERE type = \'Main Types\')'
+    . ' AND contributable ORDER BY type'
 );
 $types = $dbh->loadAssocList('id');
 ?>
@@ -43,7 +46,10 @@ $types = $dbh->loadAssocList('id');
     }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+?>
+<form action="<?php echo $formAction; ?>" method="post" id="item-form" name="adminForm">
     <div class="grid">
         <div class="col span8">
             <div id="fas">
@@ -55,58 +61,118 @@ $types = $dbh->loadAssocList('id');
                     <legend><span><?php echo Lang::txt('COM_TAGS_GROUP'); ?></span></legend>
 
                     <div class="input-wrap">
-                        <label for="name-<?php echo $fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_GROUP_NAME'); ?>:</label>
-                        <input type="text" name="name-<?php echo $fa['id']; ?>" id="name-<?php echo $fa['id']; ?>" value="<?php echo str_replace('"', '&quot;', $fa['raw_tag']); ?>" />
+                        <label for="name-<?php echo $fa['id']; ?>">
+                            <?php echo Lang::txt('COM_TAGS_GROUP_NAME'); ?>:
+                        </label>
+                        <?php
+                        $nameVal = str_replace('"', '&quot;', $fa['raw_tag']);
+                        ?>
+                        <input type="text"
+                            name="name-<?php echo $fa['id']; ?>"
+                            id="name-<?php echo $fa['id']; ?>"
+                            value="<?php echo $nameVal; ?>" />
                     </div>
 
                     <fieldset>
                         <legend><?php echo Lang::txt('COM_TAGS_GROUP_RESOURCE_TYPES'); ?>:</legend>
 
                         <div class="input-wrap">
-                            <select id="types-<?php echo $fa['id']; ?>" name="types-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($types); ?>">
+                            <?php $typeCount = count($types); ?>
+                            <select
+                                id="types-<?php echo $fa['id']; ?>"
+                                name="types-<?php echo $fa['id']; ?>[]"
+                                multiple="multiple"
+                                size="<?php echo $typeCount; ?>">
                                 <?php foreach ($types as $type) : ?>
-                                    <option value="<?php echo $type['id']; ?>" <?php if (isset($type_ids[$type['id']])) {
-                                        echo 'selected="selected" ';
-                                                   } ?>><?php echo $type['type']; ?></option>
+                                    <?php $selAttr = isset($type_ids[$type['id']]) ? ' selected="selected"' : ''; ?>
+                                    <option value="<?php echo $type['id']; ?>"<?php echo $selAttr; ?>>
+                                        <?php echo $type['type']; ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
 
-                            <label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="optional" <?php if (is_null($fa['mandatory_depth'])) {
-                                echo 'checked="checked" ';
-                                                                       } ?>/> <?php echo Lang::txt('COM_TAGS_OPTIONAL'); ?></label><br />
-                            <label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="mandatory" <?php if (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2) {
-                                echo 'checked="checked" ';
-                                                                       } ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label><br />
-                            <label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['mandatory_depth'] > 1) {
-                                echo 'checked="checked" ';
-                                                                       } ?>/> <?php echo Lang::txt('COM_TAGS_MANDATORY'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>:</label><br />
-                            <input type="text" class="option" name="mandatory-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['mandatory_depth'] > 1) {
-                                echo $fa['mandatory_depth'];
-                                                                                    } ?>" />
+                            <?php
+                            $optChecked   = is_null($fa['mandatory_depth']) ? ' checked="checked"' : '';
+                            $mandChecked  = (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2)
+                                ? ' checked="checked"' : '';
+                            $depthChecked = ($fa['mandatory_depth'] > 1) ? ' checked="checked"' : '';
+                            $optLabel     = Lang::txt('COM_TAGS_OPTIONAL');
+                            $mandLabel    = Lang::txt('COM_TAGS_MANDATORY');
+                            $untilLabel   = Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH');
+                            $depthVal     = ($fa['mandatory_depth'] > 1) ? $fa['mandatory_depth'] : '';
+                            ?>
+                            <label>
+                                <input type="radio"
+                                    name="mandatory-<?php echo $fa['id']; ?>"
+                                    value="optional"<?php echo $optChecked; ?> />
+                                <?php echo $optLabel; ?>
+                            </label><br />
+                            <label>
+                                <input type="radio"
+                                    name="mandatory-<?php echo $fa['id']; ?>"
+                                    value="mandatory"<?php echo $mandChecked; ?> />
+                                <?php echo $mandLabel; ?>
+                            </label><br />
+                            <label>
+                                <input type="radio"
+                                    name="mandatory-<?php echo $fa['id']; ?>"
+                                    value="depth"<?php echo $depthChecked; ?> />
+                                <?php echo $mandLabel; ?>
+                            </label>
+                            <label><?php echo $untilLabel; ?>:</label><br />
+                            <input type="text"
+                                class="option"
+                                name="mandatory-depth-<?php echo $fa['id']; ?>"
+                                value="<?php echo $depthVal; ?>" />
                         </div>
                     </fieldset>
 
                     <fieldset>
                         <legend><?php echo Lang::txt('COM_TAGS_GROUP_SELECTION_TYPE'); ?>:</legend>
                         <div class="input-wrap">
-                            <label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="multiple" <?php if (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2) {
-                                echo 'checked="checked" ';
-                                                                      } ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_MULTI_SELECT'); ?></label><br />
-                            <label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="single" <?php if (is_null($fa['multiple_depth'])) {
-                                echo 'checked="checked" ';
-                                                                      } ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT_RADIO'); ?> </label><br />
-                            <label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['multiple_depth'] > 1) {
-                                echo 'checked="checked" ';
-                                                                      } ?>/> <?php echo Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT'); ?></label> <label><?php echo Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>: </label><br />
-
-                            <input type="text" name="multiple-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['multiple_depth'] > 1) {
-                                echo $fa['multiple_depth'];
-                                                                    } ?>" />
+                            <?php
+                            $multiChecked  = (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2)
+                                ? ' checked="checked"' : '';
+                            $singleChecked = is_null($fa['multiple_depth']) ? ' checked="checked"' : '';
+                            $sdepthChecked = ($fa['multiple_depth'] > 1) ? ' checked="checked"' : '';
+                            $multiLabel    = Lang::txt('COM_TAGS_GROUP_MULTI_SELECT');
+                            $singleLabel   = Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT_RADIO');
+                            $sdepthLabel   = Lang::txt('COM_TAGS_GROUP_SINGLE_SELECT');
+                            $suntilLabel   = Lang::txt('COM_TAGS_GROUP_UNTIL_DEPTH');
+                            $multiVal      = ($fa['multiple_depth'] > 1) ? $fa['multiple_depth'] : '';
+                            ?>
+                            <label>
+                                <input type="radio"
+                                    name="multiple-<?php echo $fa['id']; ?>"
+                                    value="multiple"<?php echo $multiChecked; ?> />
+                                <?php echo $multiLabel; ?>
+                            </label><br />
+                            <label>
+                                <input type="radio"
+                                    name="multiple-<?php echo $fa['id']; ?>"
+                                    value="single"<?php echo $singleChecked; ?> />
+                                <?php echo $singleLabel; ?>
+                            </label><br />
+                            <label>
+                                <input type="radio"
+                                    name="multiple-<?php echo $fa['id']; ?>"
+                                    value="depth"<?php echo $sdepthChecked; ?> />
+                                <?php echo $sdepthLabel; ?>
+                            </label>
+                            <label><?php echo $suntilLabel; ?>: </label><br />
+                            <input type="text"
+                                name="multiple-depth-<?php echo $fa['id']; ?>"
+                                value="<?php echo $multiVal; ?>" />
                         </div>
                     </fieldset>
 
                     <div class="input-wrap">
-                        <button class="delete-group" id="delete-<?php echo $i; //$fa['id']; ?>" rel="group-<?php echo $i; //$fa['id']; ?>"><?php echo Lang::txt('COM_TAGS_DELETE_GROUP'); ?></button>
+                        <button
+                            class="delete-group"
+                            id="delete-<?php echo $i; //$fa['id']; ?>"
+                            rel="group-<?php echo $i; //$fa['id']; ?>">
+                            <?php echo Lang::txt('COM_TAGS_DELETE_GROUP'); ?>
+                        </button>
                     </div>
                 </fieldset>
                 <?php

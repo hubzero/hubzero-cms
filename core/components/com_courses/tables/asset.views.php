@@ -33,6 +33,7 @@ class AssetViews extends Table
      * @param      array $filters Filters to construct query from
      * @return     string SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $select = array();

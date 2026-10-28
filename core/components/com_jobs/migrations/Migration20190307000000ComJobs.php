@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -81,7 +82,8 @@ class Migration20190307000000ComJobs extends Base
                     $this->db->tableExists($table)
                     && $this->db->tableHasField($table, $field)
                 ) {
-                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
+                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` ";
+                    $query .= "DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
 
                     $this->db->setQuery($query);
                     $this->db->query();

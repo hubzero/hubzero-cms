@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
@@ -155,7 +156,8 @@ class Profilesv1_1 extends ApiController
                     $obj->hubtype = 'member';
                     $obj->id = 'member-' . $entry->get('id');
                     $obj->title = $entry->get('name');
-                    $obj->url = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id')), '/'));
+                    $entryUrl = Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id'));
+                    $obj->url = str_replace('/api', '', $base . '/' . ltrim($entryUrl, '/'));
 
                     // @TODO: Add more fields to the SOLR core.
                     $fields = $entry->profiles()->rows()->toObject();
@@ -188,7 +190,8 @@ class Profilesv1_1 extends ApiController
                     $obj->middleName   = $entry->get('middleName');
                     $obj->surname      = $entry->get('surname');
                     $obj->organization = $entry->get('organization');
-                    $obj->uri          = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id')), '/'));
+                    $entryUrl = Route::url('index.php?option=' . $this->_option . '&id=' . $entry->get('id'));
+                    $obj->uri          = str_replace('/api', '', $base . '/' . ltrim($entryUrl, '/'));
 
                     $response->members[] = $obj;
                 }
@@ -685,7 +688,8 @@ class Profilesv1_1 extends ApiController
      */
     private function getResourceFromAppname($appname, $database)
     {
-        $sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
+        $sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv "
+            . "WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
         $database->setQuery($sql);
         return $database->loadObject();
     }

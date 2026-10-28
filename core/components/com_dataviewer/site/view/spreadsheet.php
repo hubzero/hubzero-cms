@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:ignoreFile PSR1.Files.SideEffects.FoundWithSymbols
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -66,7 +68,8 @@ function view($dd = false)
 
     $dv_conf['settings']['view']['id'] = $dd['dv_id'];
     $dv_conf['settings']['view']['type'] = 'spreadsheet';
-    $dv_conf['settings']['data_url'] = "index.php?option=com_$com_name&task=data&db=" . $dd['db_id']['id'] . '&dv=' . $dd['dv_id'];
+    $dv_conf['settings']['data_url'] = "index.php?option=com_$com_name&task=data&db="
+        . $dd['db_id']['id'] . '&dv=' . $dd['dv_id'];
     $dv_conf['settings']['view_url'] = "/dataviewer/view/{$dd['db_id']['id']}/{$dd['dv_id']}/";
 
 
@@ -102,7 +105,9 @@ function view($dd = false)
         }
 
         // overrides
-        $dv_conf['settings']['limit'] = (isset($dd['display_limit'])) ? $dd['display_limit'] : $dv_conf['settings']['limit'];
+        $dv_conf['settings']['limit'] = (isset($dd['display_limit']))
+            ? $dd['display_limit']
+            : $dv_conf['settings']['limit'];
         $dv_conf['settings']['hide_data'] = isset($dd['hide_data']);
         $dv_conf['settings']['serverside'] = (isset($dd['serverside']) && $dd['serverside']) ? true : false;
 
@@ -139,7 +144,12 @@ function view($dd = false)
                 foreach ($arr as $a) {
                     $a = trim($a);
                     $lbl = isset($dd['cols'][$a]['label']) ? $dd['cols'][$a]['label'] : $a;
-                    $group_by .= '<div class="dv_customizer_group_by_item_div" style="padding: 3px; margin: 5px; border: 1px #EEE solid;"><input type="checkbox" checked="checked" class="dv_customizer_group_by_item" value="' . $a . '" /> &nbsp;<label style="cursor: pointer;">' . str_replace('<br />', ' ', $lbl) . '</label></div>';
+                    $group_by .= '<div class="dv_customizer_group_by_item_div"'
+                        . ' style="padding: 3px; margin: 5px; border: 1px #EEE solid;">'
+                        . '<input type="checkbox" checked="checked"'
+                        . ' class="dv_customizer_group_by_item" value="' . $a . '" />'
+                        . ' &nbsp;<label style="cursor: pointer;">'
+                        . str_replace('<br />', ' ', $lbl) . '</label></div>';
                 }
             }
         }
@@ -166,7 +176,10 @@ function view($dd = false)
         if (isset($dd['return']) && isset($dd['return']['raw'])) {
             $return = $dd['return']['raw'];
         } elseif (isset($dd['return'])) {
-            $return = '<span id="dv_return_link" style="font-size: 1.1em; margin-left: 10px; padding-top: 12px;"><a href="' . $dd['return']['url'] . '"><strong>' . $dd['return']['label'] . '</strong></a></span>';
+            $return = '<span id="dv_return_link"'
+                . ' style="font-size: 1.1em; margin-left: 10px; padding-top: 12px;">'
+                . '<a href="' . $dd['return']['url'] . '"><strong>'
+                . $dd['return']['label'] . '</strong></a></span>';
         }
 
         // Filtered Views
@@ -192,7 +205,9 @@ function view($dd = false)
                 <i class="icon-table"></i>
                 <?php print $dd['title']; ?>
             </h2>
-            &nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;"><?php print $return; ?></h4>
+            &nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;">
+                <?php print $return; ?>
+            </h4>
         </div>
         <div id="dv-spreadsheet-toolbar" class="ui-corner-top">
             <?php if (!isset($dd['top_menu']['download']['show']) || $dd['top_menu']['download']['show'] != false) : ?>
@@ -202,7 +217,12 @@ function view($dd = false)
             </button>
             <?php endif; ?>
 
-            <?php if (!isset($dd['top_menu']['fullscreen']['show']) || $dd['top_menu']['fullscreen']['show'] != false) : ?>
+            <?php
+            if (
+                !isset($dd['top_menu']['fullscreen']['show'])
+                || $dd['top_menu']['fullscreen']['show'] != false
+            ) :
+                ?>
             <button id="dv-btn-fullscreen" class="btn btn-mini" title="Fullscreen" data-screen-mode=''>
                 <i class="icon-fullscreen"> </i >
                 <span class="lbl">Fullscreen</span>
@@ -216,13 +236,15 @@ function view($dd = false)
             </button>
             <?php endif; ?>
 
-            <button id="dv-btn-filter-clear-all" class="btn btn-mini" title="Click this to clear all the column filters and the global search">
+            <button id="dv-btn-filter-clear-all" class="btn btn-mini"
+                title="Click this to clear all the column filters and the global search">
                 <i class="icon-remove-circle"> </i >
                 <span class="lbl">Clear Filters</span>
             </button>
 
             <?php if (!isset($dd['top_menu']['no_wrap']['show']) || $dd['top_menu']['no_wrap']['show'] != false) : ?>
-            <button id="dv-btn-no-wrap" class="btn btn-mini" title="Disable text wrapping for all cells." data-current="normal">
+            <button id="dv-btn-no-wrap" class="btn btn-mini"
+                title="Disable text wrapping for all cells." data-current="normal">
                 <i class="icon-text-width"> </i >
                 <span class="lbl">No-Wrap</span>
             </button>
@@ -243,7 +265,8 @@ function view($dd = false)
             <?php endif; ?>
 
             <?php if (isset($dd['customizer'])) : ?>
-            <button id="dv-customizer-btn" class="btn btn-mini" title="Enables users to select a sub-set of columns to view.">
+            <button id="dv-customizer-btn" class="btn btn-mini"
+                title="Enables users to select a sub-set of columns to view.">
                 <i class="icon-edit"> </i >
                 <span class="lbl">Customize DataView</span>
             </button>
@@ -251,7 +274,8 @@ function view($dd = false)
         </div>
 
         <div style="display: none;">
-            <span id="dv_top_toolbar" class="ui-corner-top" style="padding: 3px 5px 3px 3px; margin: 0; border-style: inset; border-bottom-width: 0px;">
+            <span id="dv_top_toolbar" class="ui-corner-top"
+                style="padding: 3px 5px 3px 3px; margin: 0; border-style: inset; border-bottom-width: 0px;">
                 <?php if ($help_file) : ?>
                 <button id="dv_show_help">Help</button>
                 <?php endif; ?>
@@ -261,18 +285,24 @@ function view($dd = false)
                 <?php if (isset($dd['customizer']) && $show_customizer) : ?>
                 <input type="checkbox" id="" class="dv_panel_btn" /><label for="dv-customizer-btn"></label>
                 <?php elseif (isset($dd['customizer'])) : ?>
-                <input type="checkbox" id="dv-customizer-btn" class="dv_panel_btn" /><label for="dv-customizer-btn">Customize View</label>
+                <input type="checkbox" id="dv-customizer-btn" class="dv_panel_btn" />
+                <label for="dv-customizer-btn">Customize View</label>
                 <?php endif; ?>
             </span>
         </div>
 
             <?php if (isset($dd['custom_charts']) || isset($dd['charts_list'])) : ?>
-        <div id="dv_charts_panel" style="display: none; clear: both; width: 860px; height: 380px; padding: 5px 10px 10px 5px; margin-top: 0; border: 1px solid #DDD; background: #EEE;" class="ui-corner-bottom dv_top_pannel">
-            <button id="dv_pdcharts_download_btn" class="btn btn-mini btn-success" title="Download chart as an image"  style="float: right; z-index: 1; margin: 3px;">
+        <div id="dv_charts_panel"
+            style="display: none; clear: both; width: 860px; height: 380px; padding: 5px 10px 10px 5px;
+                margin-top: 0; border: 1px solid #DDD; background: #EEE;"
+            class="ui-corner-bottom dv_top_pannel">
+            <button id="dv_pdcharts_download_btn" class="btn btn-mini btn-success"
+                title="Download chart as an image"  style="float: right; z-index: 1; margin: 3px;">
                 <i class="icon-download"> </i >
                 <span class="lbl">Download Chart</span>
             </button>
-            <button id="dv_pdcharts_draw_btn" class="btn btn-mini btn-info" title="Reload charts" style="float: right; z-index: 1; margin: 3px;">
+            <button id="dv_pdcharts_draw_btn" class="btn btn-mini btn-info"
+                title="Reload charts" style="float: right; z-index: 1; margin: 3px;">
                 <i class="icon-repeat"> </i >
                 <span class="lbl">Reload</span>
             </button>
@@ -292,32 +322,52 @@ function view($dd = false)
                     ?>
                 </select>
 
-                <div id="dv_chart_desc" class=" ui-widget-content ui-corner-all" style="margin-top: 10px; font-size: 0.9em; border-style: inset; padding: 2px; overflow: auto; height: 340px;"></div>
+                <div id="dv_chart_desc" class=" ui-widget-content ui-corner-all"
+                    style="margin-top: 10px; font-size: 0.9em; border-style: inset; padding: 2px;
+                        overflow: auto; height: 340px;">
+                </div>
                 <?php endif; ?>
                 </div>
             </div>
-            <div id="dv_charts_preview_chart" style="height:100%; width:auto; margin-left: 248px;" class="ui-widget-content ui-corner-all">
+            <div id="dv_charts_preview_chart" style="height:100%; width:auto; margin-left: 248px;"
+                class="ui-widget-content ui-corner-all">
             </div>
         </div>
             <?php endif; ?>
 
             <?php if (isset($dd['show_maps'])) : ?>
-        <div id="dv_maps_panel" style="position: relative; display: none; clear: both; width: 800px; height: 300px; padding: 3px 5px 3px 5px; margin-top: 0;" class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
-            <button class="btn btn-inverse btn-mini" title="Click here to reload the map" id="dv_map_reload" style="float: left;">
+        <div id="dv_maps_panel"
+            style="position: relative; display: none; clear: both; width: 800px; height: 300px;
+                padding: 3px 5px 3px 5px; margin-top: 0;"
+            class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
+            <button class="btn btn-inverse btn-mini" title="Click here to reload the map"
+                id="dv_map_reload" style="float: left;">
                 <i class="icon-refresh"></i > Reload Map
             </button>
             <div style="float: right;">
-                <button data-format="kml" class="btn btn-inverse btn-mini dv-btn-download" style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in KML format">
+                <button data-format="kml" class="btn btn-inverse btn-mini dv-btn-download"
+                    style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406);
+                        background-repeat: repeat-x;"
+                    title="Export location data in KML format">
                     <i class="icon-download"></i > KML
                 </button>
-                <button data-format="kmz" class="btn btn-inverse btn-mini dv-btn-download" style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in KMZ format">
+                <button data-format="kmz" class="btn btn-inverse btn-mini dv-btn-download"
+                    style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406);
+                        background-repeat: repeat-x;"
+                    title="Export location data in KMZ format">
                     <i class="icon-download"></i > KMZ
                 </button>
-                <button data-format="shp" class="btn btn-inverse btn-mini dv-btn-download" style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406); background-repeat: repeat-x;" title="Export location data in SHP format">
+                <button data-format="shp" class="btn btn-inverse btn-mini dv-btn-download"
+                    style="background: #FAA732; background-image: linear-gradient(to bottom, #FBB450, #F89406);
+                        background-repeat: repeat-x;"
+                    title="Export location data in SHP format">
                     <i class="icon-download"></i > SHP
                 </button>
             </div>
-            <div id="dv_maps_canvas" style="position: absolute; top: 30px; bottom: 8px; left: 5px; right: 8px;" class="ui-widget-content ui-corner-all"></div>
+            <div id="dv_maps_canvas"
+                style="position: absolute; top: 30px; bottom: 8px; left: 5px; right: 8px;"
+                class="ui-widget-content ui-corner-all">
+            </div>
         </div>
             <?php endif; ?>
 
@@ -348,18 +398,29 @@ function view($dd = false)
                     }
                 }
                 ?>
-        <div id="dv_customizer_panel" style="display: none; clear: both;  padding: 5px 10px 10px 5px; margin-top: 0;" class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
-            <div id="dv_customizer_content" style="height:100%; width:auto;" class="ui-widget-content ui-corner-all">
-                <div id="dv_customizer_group_by" title="Customizer Group Rows" style="display: none; width: 500px; height: 350px;">
+        <div id="dv_customizer_panel"
+            style="display: none; clear: both;  padding: 5px 10px 10px 5px; margin-top: 0;"
+            class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
+            <div id="dv_customizer_content" style="height:100%; width:auto;"
+                class="ui-widget-content ui-corner-all">
+                <div id="dv_customizer_group_by" title="Customizer Group Rows"
+                    style="display: none; width: 500px; height: 350px;">
                     <p>You can use this option to group rows of the views by certain fields to reduce duplicate rows</p>
                     <div id="dv_customizer_group_by_list"><?php print $group_by; ?></div>
                 </div>
                 <p id="dv_customizer_title_container" style="padding-left: 10px;">
-                    New Title: <input id="dv_customizer_view_title" value="<?php print $dd['title']; ?>" type="text" style="width: 550px;" />
+                    New Title: <input id="dv_customizer_view_title"
+                        value="<?php print $dd['title']; ?>" type="text" style="width: 550px;" />
                     &nbsp;&nbsp;
-                    <input id="dv_customizer_group_by_btn" data-view-url="<?php print $dv_conf['settings']['view_url']; ?>" value="Group By [Reduce Duplicates]" type="button" style="display: none; padding: 2px;" />
+                    <input id="dv_customizer_group_by_btn"
+                        data-view-url="<?php print $dv_conf['settings']['view_url']; ?>"
+                        value="Group By [Reduce Duplicates]" type="button"
+                        style="display: none; padding: 2px;" />
                     &nbsp;&nbsp;
-                    <input id="dv_customizer_launch_view_btn" data-view-url="<?php print $dv_conf['settings']['view_url']; ?>" value="Launch Custom View" type="button" style="display: none; padding: 2px;" />
+                    <input id="dv_customizer_launch_view_btn"
+                        data-view-url="<?php print $dv_conf['settings']['view_url']; ?>"
+                        value="Launch Custom View" type="button"
+                        style="display: none; padding: 2px;" />
                 </p>
                 <table border="0">
                     <tr id="dv_customizer_lists_top">
@@ -392,7 +453,10 @@ function view($dd = false)
         <div id="more_information" style="display: none; min-width: 300px;"></div>
             <?php if ($help_file) : ?>
         <div id="dv_help_dialog" style="display: none;">
-            <iframe src="<?php print $help_file; ?>" id="modalIframeId" width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" title="Help">IFRAMES not supported by the browser</iframe>
+            <iframe src="<?php print $help_file; ?>" id="modalIframeId" width="100%" height="100%"
+                marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" title="Help">
+                IFRAMES not supported by the browser
+            </iframe>
             </div>
         </div>
             <?php endif; ?>
@@ -414,7 +478,9 @@ function view($dd = false)
                 $title = '';
                 $filter_msg = '';
                 if ($dv_conf['settings']['serverside']) {
-                    $filter_msg = "  \n\nThe dropdown list only shows a limited number of available options.  \n\nIf you don't see what you want on the list, please enter a filter text in the text box and then press Enter to bring up more results to match your text.";
+                    $filter_msg = "  \n\nThe dropdown list only shows a limited number of available options."
+                        . "  \n\nIf you don't see what you want on the list, please enter a filter text"
+                        . " in the text box and then press Enter to bring up more results to match your text.";
                 } else {
                     $filter_msg = "	\n\nClick on the search box to list all the entries in the column";
                 }
@@ -427,14 +493,18 @@ function view($dd = false)
                         $filter_hint .= "  \n\nFollowing filter options are also supported,";
                         $filter_hint .= "	\nRange filtering - ( e.g. 15.7 to 25 )";
                         $filter_hint .= "	\nLess than, greater than ( e.g. <100 ), (e.g. >25)";
-                        $filter_hint .= "	\nLess than or equal, greater than or equal ( e.g. <=-12.5 ), (e.g. >=0.3)";
-                        $filter_hint .= "	\nEqual, not equal and ignore pattern ( e.g. =-2.55 ), ( e.g. !=-2.55 ), ( e.g. !55 )";
+                        $filter_hint .= "	\nLess than or equal, greater than or equal"
+                            . " ( e.g. <=-12.5 ), (e.g. >=0.3)";
+                        $filter_hint .= "	\nEqual, not equal and ignore pattern"
+                            . " ( e.g. =-2.55 ), ( e.g. !=-2.55 ), ( e.g. !55 )";
                     } elseif ($d_arr['field_types'][$id] == 'datetime') {
                         $filter_hint = "Enter a date to filter this column by.";
                         $filter_hint .= "	\nRange filtering - ( e.g. 2011-01-25 to 2011-03-25 )";
                         $filter_hint .= "	\nLess than, greater than ( e.g. <2011-03-25 ), (e.g. >2011-01-25)";
-                        $filter_hint .= "	\nLess than or equal, greater than or equal ( e.g. <=2011-03-25 ), (e.g. >=2010-03-25)";
-                        $filter_hint .= "	\nEqual, not equal and ignore pattern ( e.g. =2009-01-17 ), ( e.g. !=2009-01-17 ), ( e.g. !2009-01 )";
+                        $filter_hint .= "	\nLess than or equal, greater than or equal"
+                            . " ( e.g. <=2011-03-25 ), (e.g. >=2010-03-25)";
+                        $filter_hint .= "	\nEqual, not equal and ignore pattern"
+                            . " ( e.g. =2009-01-17 ), ( e.g. !=2009-01-17 ), ( e.g. !2009-01 )";
                     } else {
                         $filter_hint = "Enter a word or a phrase to filter this column by.";
                         $filter_hint .= "  \n\nFollowing filter options are also supported,";
@@ -448,11 +518,17 @@ function view($dd = false)
                 $title = $filter_hint . $filter_msg;
 
                 if (isset($conf['type']) && $conf['type'] == 'image') {
-                    print '<th><input title="' . $title . '" type="text" placeholder="' . $label . '" disabled=disabled /></th>';
+                    print '<th><input title="' . $title . '" type="text" placeholder="' . $label
+                        . '" disabled=disabled /></th>';
                 } elseif (isset($filted_view[$id])) {
-                    print '<th><input type="text" placeholder="' . $filted_view[$id] . '" disabled=disabled style="background: yellow;" /></th>';
+                    print '<th><input type="text" placeholder="' . $filted_view[$id]
+                        . '" disabled=disabled style="background: yellow;" /></th>';
                 } else {
-                    print '<th><input title="' . $title . '" type="text" placeholder="' . $label . '" class="search_init" style="background: #FFF;" /><span class="dv-col-clear-filter" style="margin-left: -15px; color: #FFF; cursor: pointer;"><i class="icon-remove-sign"></i></span></th>';
+                    print '<th><input title="' . $title . '" type="text" placeholder="' . $label
+                        . '" class="search_init" style="background: #FFF;" />'
+                        . '<span class="dv-col-clear-filter"'
+                        . ' style="margin-left: -15px; color: #FFF; cursor: pointer;">'
+                        . '<i class="icon-remove-sign"></i></span></th>';
                 }
             }
 
@@ -498,7 +574,11 @@ function view($dd = false)
         </script>
 
         <form style="display: none;" id="dv-spreadsheet-dl" method="POST"
-            action="<?php print $dv_conf['settings']['data_url']; ?>&nolimit=true<?php print $custom_view_url . $custom_field_url; ?>">
+            action="<?php
+            print $dv_conf['settings']['data_url'];
+            ?>&nolimit=true<?php
+            print $custom_view_url . $custom_field_url;
+?>">
         </form>
     </div>
         <?php

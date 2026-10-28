@@ -288,9 +288,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
                         if ($view->authorized == 'manager' || $view->authorized == 'admin') {
                             $view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
                             $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter) : $view->groupusers;
-                        } else if ($view->q) {
+                        } elseif ($view->q) {
                             $view->groupusers = $group->search('members', $view->q);
-                        } else if ($view->role_filter) {
+                        } elseif ($view->role_filter) {
                             $view->groupusers = \Hubzero\User\Group\Helper::search_roles($group, $view->role_filter);
                         } else {
                             $view->groupusers = array();

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing twitterfeed module
- **/
+ *
+ */
 class Migration20190109000000ModTwitterFeed extends Base
 {
     /**

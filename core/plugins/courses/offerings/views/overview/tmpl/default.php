@@ -1,5 +1,6 @@
 <?php
 
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,9 @@ $this->css();
 ?>
 <?php if ($this->course->access('edit', 'course')) { ?>
 <div class="manager-options">
-    <a class="icon-add btn btn-secondary" id="add-offering" href="<?php echo Route::url($this->course->link() . '&task=newoffering'); ?>">
+    <a class="icon-add btn btn-secondary"
+        id="add-offering"
+        href="<?php echo Route::url($this->course->link() . '&task=newoffering'); ?>">
         <?php echo Lang::txt('PLG_COURSES_OFFERINGS_NEW_OFFERING'); ?>
     </a>
     <span><strong><?php echo Lang::txt('PLG_COURSES_OFFERINGS_NEW_OFFERING_EXPLANATION'); ?></strong></span>
@@ -65,7 +68,7 @@ $this->css();
                         <a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
                             <?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
                         </a>
-                    <?php } else if ($offering->student(User::get('id'))->get('student')) { ?>
+                    <?php } elseif ($offering->student(User::get('id'))->get('student')) { ?>
                         <a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
                             <?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
                         </a>
@@ -140,7 +143,7 @@ $this->css();
                         <a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
                             <?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
                         </a>
-                    <?php } else if ($section->isMember()) { ?>
+                    <?php } elseif ($section->isMember()) { ?>
                         <a class="access btn" href="<?php echo Route::url($offering->link('enter')); ?>">
                             <?php echo Lang::txt('PLG_COURSES_OFFERINGS_ACCESS_COURSE'); ?>
                         </a>

@@ -1,9 +1,13 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/**
  */
 
 namespace Components\Storefront\Site;
@@ -17,12 +21,13 @@ defined('_HZEXEC_') or die();
  */
 class Router extends Base
 {
-/**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Querystring
- */
-    function build(&$query)
+    /**
+     * Turn querystring parameters into an SEF route
+     *
+     * @param   array  &$query  Querystring
+     * @return  array
+     */
+    public function build(&$query)
     {
         $segments = array();
 
@@ -33,13 +38,13 @@ class Router extends Base
         return $segments;
     }
 
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route
- * @return array
- */
-    function parse(&$segments)
+    /**
+     * Parse a SEF route
+     *
+     * @param   array  $segments  Exploded route
+     * @return  array
+     */
+    public function parse(&$segments)
     {
         $vars = array();
 

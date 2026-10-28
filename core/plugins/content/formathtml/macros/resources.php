@@ -31,8 +31,10 @@ class Resources extends Macro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'This macro will insert a linked title to a resource. It can be passed wither an ID or alias.';
-        $txt['html'] = '<p>This macro will insert a linked title to a resource. It can be passed wither an ID or alias.</p>';
+        $txt['wiki'] = 'This macro will insert a linked title to a resource. ' .
+            'It can be passed wither an ID or alias.';
+        $txt['html'] = '<p>This macro will insert a linked title to a resource. ' .
+            'It can be passed wither an ID or alias.</p>';
         return $txt['html'];
     }
 
@@ -154,9 +156,11 @@ class Resources extends Macro
 
                 if (is_file(PATH_APP . $path . DS . $alias . DS . $tn) && $k < $num) {
                     $k++;
+                    $imgPath = $path . DS . $alias . DS . $images[$i];
+                    $tnPath = $path . DS . $alias . DS . $tn;
 
-                    $html .= '<a rel="lightbox" href="' . $path . DS . $alias . DS . $images[$i] . '" title="Screenshot #' . $k . '">';
-                    $html .= '<img src="' . $path . DS . $alias . DS . $tn . '" alt="Screenshot #' . $k . '" /></a>';
+                    $html .= '<a rel="lightbox" href="' . $imgPath . '" title="Screenshot #' . $k . '">';
+                    $html .= '<img src="' . $tnPath . '" alt="Screenshot #' . $k . '" /></a>';
                 }
             }
         }

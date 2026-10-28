@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script fixing dashboard migration stuff.
- **/
+ *
+ */
 class Migration20141202211549PlgMembersDashboard extends Base
 {
     /**
@@ -42,7 +44,8 @@ class Migration20141202211549PlgMembersDashboard extends Base
 
         if ($this->db->tableExists('#__modules')) {
             // get top 6 modules
-            $sql = "SELECT id FROM `#__modules` WHERE `position`='memberDashboard' AND `published`=1 AND `client_id`=0 ORDER BY `ordering` LIMIT 6;";
+            $sql = "SELECT id FROM `#__modules` WHERE `position`='memberDashboard' "
+                . "AND `published`=1 AND `client_id`=0 ORDER BY `ordering` LIMIT 6;";
             $this->db->setQuery($sql);
             $modules = $this->db->loadColumn();
 

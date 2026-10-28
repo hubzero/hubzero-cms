@@ -67,10 +67,14 @@ class Helper extends Module
         $disable_https       = $this->params->get('disable_https', false);
         $exact_url           = $this->params->get('exact_url', true);
         if (!$exact_url) {
-            $this->url = filter_var(\Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITIZE_URL);
+            $this->url = filter_var(
+                \Hubzero\Utility\Uri::getInstance()->toString(),
+                FILTER_SANITIZE_URL
+            );
         } else {
             if (!$disable_https) {
-                $this->url = (!empty($_SERVER['HTTPS'])) ? 'https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] : 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+                $protocol = (!empty($_SERVER['HTTPS'])) ? 'https://' : 'http://';
+                $this->url = $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             } else {
                 $this->url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             }
@@ -110,22 +114,36 @@ class Helper extends Module
             }
 
             if ($this->enable_anti_spam) {
-                if (!isset($this->posted['anti_spam_answer']) || ($this->posted['anti_spam_answer'] != $this->anti_spam_a)) {
+                $spamAnswer = isset($this->posted['anti_spam_answer'])
+                    ? $this->posted['anti_spam_answer']
+                    : null;
+                if ($spamAnswer != $this->anti_spam_a) {
                     $this->error = Lang::txt('MOD_RAPID_CONTACT_INVALID_ANTIPSAM_ANSWER');
                 }
             }
             if ($this->posted['email'] === '') {
                 $this->error = $this->no_email;
             }
-            if (!preg_match("#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$#i", $this->posted['email'])) {
+            $emailPattern = "#^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$#i";
+            if (!preg_match($emailPattern, $this->posted['email'])) {
                 $this->error = $this->invalid_email;
             }
 
             if ($this->error == '') {
-                $this->posted['name'] = (isset($this->posted['name']) && Sanitize::clean($this->posted['name'])) ? Sanitize::clean($this->posted['name']) : $this->posted['email'];
+                if (isset($this->posted['name']) && Sanitize::clean($this->posted['name'])) {
+                    $this->posted['name'] = Sanitize::clean($this->posted['name']);
+                } else {
+                    $this->posted['name'] = $this->posted['email'];
+                }
 
                 $mySubject  = Sanitize::clean($this->posted['subject']);
-                $myMessage  = Lang::txt('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], Request::getString('HTTP_REFERER', '', 'SERVER'), Config::get('sitename'));
+                $myMessage  = Lang::txt(
+                    'MOD_RAPID_CONTACT_MESSAGE_FROM',
+                    $this->posted['name'],
+                    $this->posted['email'],
+                    Request::getString('HTTP_REFERER', '', 'SERVER'),
+                    Config::get('sitename')
+                );
                 $myMessage .= "\n\n" . Sanitize::clean($this->posted['message']);
 
                 $mailSender = new Message();

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,6 +35,7 @@ class GradeBook extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\GradeBook';
 
     /**
@@ -41,6 +43,7 @@ class GradeBook extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'gradebook';
 
     /**
@@ -91,7 +94,7 @@ class GradeBook extends Base
 
         // Get the grades themselves
         $filters = array('member_id' => $member_id, 'scope' => $scope);
-        $results = $this->_grades($filters);
+        $results = $this->fetchGrades($filters);
 
         $grades = array();
 
@@ -138,14 +141,14 @@ class GradeBook extends Base
             $filters['section_id'] = $this->course->offering()->section()->get('id');
         }
 
-        $results = $this->_grades($filters);
+        $results = $this->fetchGrades($filters);
         $grades  = array();
 
         // Restructure data
         foreach ($results as $r) {
             if ($r->override) {
                 $grades[$r->scope_id][] = $r->override;
-            } else if (!is_null($r->score)) {
+            } elseif (!is_null($r->score)) {
                 $grades[$r->scope_id][] = $r->score;
             }
         }
@@ -188,8 +191,12 @@ class GradeBook extends Base
         $sectionParams  = new Registry($this->course->offering()->section()->get('params'));
 
         $progress_calculation = $this->course->config()->get('progress_calculation', 'all');
-        $progress_calculation = ($offeringParams->get('progress_calculation', false)) ? $offeringParams->get('progress_calculation') : $progress_calculation;
-        $progress_calculation = ($sectionParams->get('progress_calculation', false)) ? $sectionParams->get('progress_calculation') : $progress_calculation;
+        $progress_calculation = ($offeringParams->get('progress_calculation', false))
+            ? $offeringParams->get('progress_calculation')
+            : $progress_calculation;
+        $progress_calculation = ($sectionParams->get('progress_calculation', false))
+            ? $sectionParams->get('progress_calculation')
+            : $progress_calculation;
 
         $filters = array(
             'section_id' => $this->course->offering()->section()->get('id'),
@@ -204,7 +211,7 @@ class GradeBook extends Base
             case 'graded':
                 // Get count of graded items taken
                 $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
-                $grades  = $this->_grades($filters);
+                $grades  = $this->fetchGrades($filters);
 
                 $views = array();
                 foreach ($grades as $g) {
@@ -290,7 +297,8 @@ class GradeBook extends Base
                     $counts[$unit_id] = $counts[$unit_id] ? $counts[$unit_id] : 1; // Enforce 1. Can't divide by zero.
                 }
 
-                $progress[$member_id][$unit_id]['percentage_complete'] = round((array_sum($unit) / $counts[$unit_id]) * 100, 2);
+                $percentage = round((array_sum($unit) / $counts[$unit_id]) * 100, 2);
+                $progress[$member_id][$unit_id]['percentage_complete'] = $percentage;
             }
         }
 
@@ -383,11 +391,12 @@ class GradeBook extends Base
         }
 
         // Get a grade policy object
-        $gradePolicy = new GradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
+        $section = $course->offering()->section();
+        $gradePolicy = new GradePolicies($section->get('grade_policy_id'), $section->get('id'));
 
         // Calculate course grades, start by getting all grades
         $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
-        $results = $this->_grades($filters);
+        $results = $this->fetchGrades($filters);
         $grades  = array();
         $scores  = array();
 
@@ -397,11 +406,11 @@ class GradeBook extends Base
             }
 
             // Check for overrides
-            if ($grade->override) {
-                $grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = array('score' => $grade->override, 'weighting' => $grade->grade_weight);
-            } else {
-                $grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = array('score' => $grade->score, 'weighting' => $grade->grade_weight);
-            }
+            $gradeData = array(
+                'score' => $grade->override ? $grade->override : $grade->score,
+                'weighting' => $grade->grade_weight
+            );
+            $grades[$grade->member_id][$grade->unit_id][$grade->scope_id] = $gradeData;
         }
 
         if (count($grades) > 0) {
@@ -415,8 +424,11 @@ class GradeBook extends Base
 
                 // Loop through units and compute scores
                 foreach ($values as $unit_id => $val) {
-                    // We're processing this unit/member, thus it doesn't need to be cleared - so remove it from the list of potentials
-                    if (isset($unit_ids[$unit_id]) && ($key = array_search($member_id, $unit_ids[$unit_id])) !== false) {
+                    // We're processing this unit/member, thus it doesn't need to
+                    // be cleared - so remove it from the list of potentials
+                    $searchKey = array_search($member_id, $unit_ids[$unit_id] ?? []);
+                    if (isset($unit_ids[$unit_id]) && $searchKey !== false) {
+                        $key = $searchKey;
                         unset($unit_ids[$unit_id][$key]);
                     }
 
@@ -450,93 +462,103 @@ class GradeBook extends Base
                         }
                     }
 
-                    if ($scores[$member_id]['units'][$unit_id]['exam_count'] > 0) {
-                        $scores[$member_id]['units'][$unit_id]['exam_score']  = $scores[$member_id]['units'][$unit_id]['exam_sum'] / $scores[$member_id]['units'][$unit_id]['exam_count'];
-                        $scores[$member_id]['units'][$unit_id]['exam_weight'] = ($gradePolicy->get('exam_weight') > 0) ? $gradePolicy->get('exam_weight') : 0;
+                    // Use reference for cleaner code
+                    $unitScores = &$scores[$member_id]['units'][$unit_id];
+
+                    if ($unitScores['exam_count'] > 0) {
+                        $unitScores['exam_score'] = $unitScores['exam_sum'] / $unitScores['exam_count'];
+                        $examWeight = $gradePolicy->get('exam_weight');
+                        $unitScores['exam_weight'] = ($examWeight > 0) ? $examWeight : 0;
                     } else {
-                        $scores[$member_id]['units'][$unit_id]['exam_score']  = null;
-                        $scores[$member_id]['units'][$unit_id]['exam_weight'] = null;
+                        $unitScores['exam_score']  = null;
+                        $unitScores['exam_weight'] = null;
                     }
 
-                    if ($scores[$member_id]['units'][$unit_id]['quiz_count'] > 0) {
-                        $scores[$member_id]['units'][$unit_id]['quiz_score']  = $scores[$member_id]['units'][$unit_id]['quiz_sum'] / $scores[$member_id]['units'][$unit_id]['quiz_count'];
-                        $scores[$member_id]['units'][$unit_id]['quiz_weight'] = ($gradePolicy->get('quiz_weight') > 0) ? $gradePolicy->get('quiz_weight') : 0;
+                    if ($unitScores['quiz_count'] > 0) {
+                        $unitScores['quiz_score'] = $unitScores['quiz_sum'] / $unitScores['quiz_count'];
+                        $quizWeight = $gradePolicy->get('quiz_weight');
+                        $unitScores['quiz_weight'] = ($quizWeight > 0) ? $quizWeight : 0;
                     } else {
-                        $scores[$member_id]['units'][$unit_id]['quiz_score']  = null;
-                        $scores[$member_id]['units'][$unit_id]['quiz_weight'] = null;
+                        $unitScores['quiz_score']  = null;
+                        $unitScores['quiz_weight'] = null;
                     }
 
-                    if ($scores[$member_id]['units'][$unit_id]['homework_count'] > 0) {
-                        $scores[$member_id]['units'][$unit_id]['homework_score']  = $scores[$member_id]['units'][$unit_id]['homework_sum'] / $scores[$member_id]['units'][$unit_id]['homework_count'];
-                        $scores[$member_id]['units'][$unit_id]['homework_weight'] = ($gradePolicy->get('homework_weight') > 0) ? $gradePolicy->get('homework_weight') : 0;
+                    if ($unitScores['homework_count'] > 0) {
+                        $hwSum = $unitScores['homework_sum'];
+                        $hwCount = $unitScores['homework_count'];
+                        $unitScores['homework_score'] = $hwSum / $hwCount;
+                        $hwWeight = $gradePolicy->get('homework_weight');
+                        $unitScores['homework_weight'] = ($hwWeight > 0) ? $hwWeight : 0;
                     } else {
-                        $scores[$member_id]['units'][$unit_id]['homework_score']  = null;
-                        $scores[$member_id]['units'][$unit_id]['homework_weight'] = null;
+                        $unitScores['homework_score']  = null;
+                        $unitScores['homework_weight'] = null;
                     }
 
-                    $numerator = array_sum(
-                        array(
-                                        $scores[$member_id]['units'][$unit_id]['exam_score']     * $gradePolicy->get('exam_weight'),
-                                        $scores[$member_id]['units'][$unit_id]['quiz_score']     * $gradePolicy->get('quiz_weight'),
-                                        $scores[$member_id]['units'][$unit_id]['homework_score'] * $gradePolicy->get('homework_weight')
-                                    )
-                    );
+                    $examPart = $unitScores['exam_score'] * $gradePolicy->get('exam_weight');
+                    $quizPart = $unitScores['quiz_score'] * $gradePolicy->get('quiz_weight');
+                    $hwPart = $unitScores['homework_score'] * $gradePolicy->get('homework_weight');
+                    $numerator = array_sum(array($examPart, $quizPart, $hwPart));
 
-                    $denominator = array_sum(
-                        array(
-                                        $scores[$member_id]['units'][$unit_id]['exam_weight'],
-                                        $scores[$member_id]['units'][$unit_id]['quiz_weight'],
-                                        $scores[$member_id]['units'][$unit_id]['homework_weight']
-                                    )
-                    );
+                    $denominator = array_sum(array(
+                        $unitScores['exam_weight'],
+                        $unitScores['quiz_weight'],
+                        $unitScores['homework_weight']
+                    ));
 
                     if ($denominator) {
-                        $scores[$member_id]['units'][$unit_id]['unit_weighted'] = $numerator / $denominator;
+                        $unitScores['unit_weighted'] = $numerator / $denominator;
                     } else {
-                        $scores[$member_id]['units'][$unit_id]['unit_weighted'] = null;
+                        $unitScores['unit_weighted'] = null;
                     }
                 }
 
                 // Now calculate overall course scores
-                if ($scores[$member_id]['course_exam_count'] > 0) {
-                    $scores[$member_id]['course_exam_score']  = $scores[$member_id]['course_exam_sum'] / $scores[$member_id]['course_exam_count'];
-                    $scores[$member_id]['course_exam_weight'] = ($gradePolicy->get('exam_weight') > 0) ? $gradePolicy->get('exam_weight') : 0;
+                // Use reference for cleaner code
+                $memberScores = &$scores[$member_id];
+
+                if ($memberScores['course_exam_count'] > 0) {
+                    $examSum = $memberScores['course_exam_sum'];
+                    $examCount = $memberScores['course_exam_count'];
+                    $memberScores['course_exam_score'] = $examSum / $examCount;
+                    $examWeight = $gradePolicy->get('exam_weight');
+                    $memberScores['course_exam_weight'] = ($examWeight > 0) ? $examWeight : 0;
                 } else {
-                    $scores[$member_id]['course_exam_score']  = null;
-                    $scores[$member_id]['course_exam_weight'] = null;
+                    $memberScores['course_exam_score']  = null;
+                    $memberScores['course_exam_weight'] = null;
                 }
 
-                if ($scores[$member_id]['course_quiz_count'] > 0) {
-                    $scores[$member_id]['course_quiz_score']  = $scores[$member_id]['course_quiz_sum'] / $scores[$member_id]['course_quiz_count'];
-                    $scores[$member_id]['course_quiz_weight'] = ($gradePolicy->get('quiz_weight') > 0) ? $gradePolicy->get('quiz_weight') : 0;
+                if ($memberScores['course_quiz_count'] > 0) {
+                    $quizSum = $memberScores['course_quiz_sum'];
+                    $quizCount = $memberScores['course_quiz_count'];
+                    $memberScores['course_quiz_score'] = $quizSum / $quizCount;
+                    $quizWeight = $gradePolicy->get('quiz_weight');
+                    $memberScores['course_quiz_weight'] = ($quizWeight > 0) ? $quizWeight : 0;
                 } else {
-                    $scores[$member_id]['course_quiz_score']  = null;
-                    $scores[$member_id]['course_quiz_weight'] = null;
+                    $memberScores['course_quiz_score']  = null;
+                    $memberScores['course_quiz_weight'] = null;
                 }
 
-                if ($scores[$member_id]['course_homework_count'] > 0) {
-                    $scores[$member_id]['course_homework_score']  = $scores[$member_id]['course_homework_sum'] / $scores[$member_id]['course_homework_count'];
-                    $scores[$member_id]['course_homework_weight'] = ($gradePolicy->get('homework_weight') > 0) ? $gradePolicy->get('homework_weight') : 0;
+                if ($memberScores['course_homework_count'] > 0) {
+                    $hwSum = $memberScores['course_homework_sum'];
+                    $hwCount = $memberScores['course_homework_count'];
+                    $memberScores['course_homework_score'] = $hwSum / $hwCount;
+                    $hwWeight = $gradePolicy->get('homework_weight');
+                    $memberScores['course_homework_weight'] = ($hwWeight > 0) ? $hwWeight : 0;
                 } else {
-                    $scores[$member_id]['course_homework_score']  = null;
-                    $scores[$member_id]['course_homework_weight'] = null;
+                    $memberScores['course_homework_score']  = null;
+                    $memberScores['course_homework_weight'] = null;
                 }
 
-                $numerator = array_sum(
-                    array(
-                                    $scores[$member_id]['course_exam_score']     * $gradePolicy->get('exam_weight'),
-                                    $scores[$member_id]['course_quiz_score']     * $gradePolicy->get('quiz_weight'),
-                                    $scores[$member_id]['course_homework_score'] * $gradePolicy->get('homework_weight')
-                                )
-                );
+                $examPart = $memberScores['course_exam_score'] * $gradePolicy->get('exam_weight');
+                $quizPart = $memberScores['course_quiz_score'] * $gradePolicy->get('quiz_weight');
+                $hwPart = $memberScores['course_homework_score'] * $gradePolicy->get('homework_weight');
+                $numerator = array_sum(array($examPart, $quizPart, $hwPart));
 
-                $denominator = array_sum(
-                    array(
-                                    $scores[$member_id]['course_exam_weight'],
-                                    $scores[$member_id]['course_quiz_weight'],
-                                    $scores[$member_id]['course_homework_weight']
-                                )
-                );
+                $denominator = array_sum(array(
+                    $memberScores['course_exam_weight'],
+                    $memberScores['course_quiz_weight'],
+                    $memberScores['course_homework_weight']
+                ));
 
                 if ($denominator) {
                     $scores[$member_id]['course_weighted'] = $numerator / $denominator;
@@ -588,12 +610,16 @@ class GradeBook extends Base
         $filters = array('scope' => 'course', 'scope_id' => $this->course->get('id'));
 
         // Get a grade policy object
-        $gradePolicy = new GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+        $sectionObj = $this->course->offering()->section();
+        $gradePolicy = new GradePolicies(
+            $sectionObj->get('grade_policy_id'),
+            $sectionObj->get('id')
+        );
 
         // If section only, add appropriate joins to limit by section
         if ($section) {
             // Only compute section
-            $filters['section_id'] = $this->course->offering()->section()->get('id');
+            $filters['section_id'] = $sectionObj->get('id');
         }
 
         // Add the member_id to the query if it's set
@@ -723,7 +749,7 @@ class GradeBook extends Base
         if (!isset($grades)) {
             // Get count of graded items taken
             $filters = array('member_id' => $member_id, 'scope' => 'asset', 'graded' => true);
-            $grades = $this->_grades($filters);
+            $grades = $this->fetchGrades($filters);
         }
 
         // Restructure data
@@ -758,9 +784,16 @@ class GradeBook extends Base
             foreach ($member_id as $m) {
                 $passing = $this->passing(true, $m);
 
-                $examWeightPredicate = ($exam_weight == 0 || ($exam_weight > 0 && isset($counts[$m]['exam']) && $totals['exam'] == $counts[$m]['exam']));
-                $quizWeightPredicate = ($quiz_weight == 0 || ($quiz_weight > 0 && isset($counts[$m]['quiz']) && $totals['quiz'] == $counts[$m]['quiz']));
-                $homeworkWeightPredicate = ($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework']));
+                $examComplete = isset($counts[$m]['exam']) && $totals['exam'] == $counts[$m]['exam'];
+                $examWeightPredicate = ($exam_weight == 0 || ($exam_weight > 0 && $examComplete));
+
+                $quizComplete = isset($counts[$m]['quiz']) && $totals['quiz'] == $counts[$m]['quiz'];
+                $quizWeightPredicate = ($quiz_weight == 0 || ($quiz_weight > 0 && $quizComplete));
+
+                $hwComplete = isset($counts[$m]['homework'])
+                    && $totals['homework'] == $counts[$m]['homework'];
+                $homeworkWeightPredicate = ($homework_weight == 0 || ($homework_weight > 0 && $hwComplete));
+
                 $passingPredicate = isset($passing[$m]) && $passing[$m];
 
                 // Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
@@ -803,14 +836,16 @@ class GradeBook extends Base
                         $cconfig = \Component::params('com_courses');
 
                         // Tell the badge provider that they've earned the badge
-                        $request_type   = $cconfig->get('badges_request_type', 'oauth');
-                        $badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($sb->get('provider_name')), $request_type);
+                        $request_type = $cconfig->get('badges_request_type', 'oauth');
+                        $walletProvider = strtoupper($sb->get('provider_name'));
+                        $badgesHandler = new \Hubzero\Badges\Wallet($walletProvider, $request_type);
                         $badgesProvider = $badgesHandler->getProvider();
 
+                        $providerName = $sb->get('provider_name');
                         $credentials = new \stdClass();
-                        $credentials->consumer_key    = $this->config()->get($sb->get('provider_name') . '_consumer_key');
-                        $credentials->consumer_secret = $this->config()->get($sb->get('provider_name') . '_consumer_secret');
-                        $credentials->clientId        = $this->config()->get($sb->get('provider_name') . '_client_id');
+                        $credentials->consumer_key = $this->config()->get($providerName . '_consumer_key');
+                        $credentials->consumer_secret = $this->config()->get($providerName . '_consumer_secret');
+                        $credentials->clientId = $this->config()->get($providerName . '_client_id');
                         $badgesProvider->setCredentials($credentials);
 
                         $dbo = \App::get('db');
@@ -818,9 +853,12 @@ class GradeBook extends Base
                         $memberTbl->loadByMemberId($m);
                         $user_id = $memberTbl->get('user_id');
 
-                        $data               = new \stdClass();
-                        $data->id           = $sb->get('provider_badge_id');
-                        $data->evidenceUrl  = rtrim(\Request::root(), '/') . '/courses/badge/' . $sb->get('id') . '/validation/' . $badge->get('validation_token');
+                        $data = new \stdClass();
+                        $data->id = $sb->get('provider_badge_id');
+                        $evidenceUrl = rtrim(\Request::root(), '/')
+                            . '/courses/badge/' . $sb->get('id')
+                            . '/validation/' . $badge->get('validation_token');
+                        $data->evidenceUrl = $evidenceUrl;
                         $users              = array();
                         $users[]            = \User::getInstance($user_id)->get('email');
 
@@ -839,7 +877,7 @@ class GradeBook extends Base
      *
      * @return array
      **/
-    private function _grades($filters = array())
+    private function fetchGrades($filters = array())
     {
         static $grades;
         $key = serialize($filters);

@@ -16,9 +16,12 @@ require_once __DIR__ . DS . 'SocketWriteRead.php';
 /**
  * Akismet anti-comment spam service
  *
- * The class in this package allows use of the {@link http://akismet.com Akismet} anti-comment spam service in any PHP5 application.
+ * The class in this package allows use of the {@link http://akismet.com Akismet} anti-comment spam service in
+ * any PHP5 application.
  * This service performs a number of checks on submitted data and returns whether or not the data is likely to be spam.
- * Please note that in order to use this class, you must have a vaild {@link http://wordpress.com/api-keys/ WordPress API key}.  They are free for non/small-profit types and getting one will only take a couple of minutes.
+ * Please note that in order to use this class, you must have a vaild
+ * {@link http://wordpress.com/api-keys/ WordPress API key}.  They are free for non/small-profit types and getting
+ * one will only take a couple of minutes.
  * For commercial use, please {@link http://akismet.com/commercial/ visit the Akismet commercial licensing page}.
  * Please be aware that this class is PHP5 only.  Attempts to run it under PHP4 will most likely fail.
  * See the Akismet class documentation page linked to below for usage information.
@@ -106,7 +109,7 @@ class Provider extends AbstractService
      *
      * @var string
      */
-    public $apiKey  = null;
+    public $apiKey = null;
 
     /**
      * Akismet server
@@ -176,7 +179,12 @@ class Provider extends AbstractService
         // and http://wiki.coggeshall.org/37.html
         // Otherwise the user_ip appears as the IP address of the PHP4 server passing the requests to the
         // PHP5 one...
-        $this->set('user_ip', ($_SERVER['REMOTE_ADDR'] != getenv('SERVER_ADDR') ? $_SERVER['REMOTE_ADDR'] : getenv('HTTP_X_FORWARDED_FOR')));
+        $this->set(
+            'user_ip',
+            ($_SERVER['REMOTE_ADDR'] != getenv('SERVER_ADDR')
+                ? $_SERVER['REMOTE_ADDR']
+                : getenv('HTTP_X_FORWARDED_FOR'))
+        );
 
         if ($properties !== null) {
             $this->setProperties($properties);
@@ -197,7 +205,11 @@ class Provider extends AbstractService
         }
 
         // Check to see if the key is valid
-        $response = $this->_sendRequest('key=' . $this->apiKey . '&blog=' . $this->url, $this->akismetServer, '/' . $this->akismetVersion . '/verify-key');
+        $response = $this->sendRequest(
+            'key=' . $this->apiKey . '&blog=' . $this->url,
+            $this->akismetServer,
+            '/' . $this->akismetVersion . '/verify-key'
+        );
 
         if (!$response || !is_array($response) || !isset($response[1])) {
             // Service unavailable?
@@ -215,9 +227,9 @@ class Provider extends AbstractService
      * @param     string $path
      * @return    string
      */
-    private function _sendRequest($request, $host, $path)
+    private function sendRequest($request, $host, $path)
     {
-        $http_request  = "POST " . $path . " HTTP/1.0\r\n";
+        $http_request = "POST " . $path . " HTTP/1.0\r\n";
         $http_request .= "Host: " . $host . "\r\n";
         $http_request .= "Content-Type: application/x-www-form-urlencoded; charset=utf-8\r\n";
         $http_request .= "Content-Length: " . strlen($request) . "\r\n";
@@ -236,12 +248,12 @@ class Provider extends AbstractService
      *
      * @return  string
      */
-    private function _getQueryString()
+    private function getQueryString()
     {
         $this->set('comment_content', $this->getValue());
 
         foreach ($_SERVER as $key => $value) {
-            if (!in_array($key, $this->_ignore['server'])) {
+            if (!in_array($key, $this->ignore['server'])) {
                 if ($key == 'REMOTE_ADDR') {
                     $this->set($key, $this->get('user_ip'));
                 } else {
@@ -253,7 +265,7 @@ class Provider extends AbstractService
         $query_string = '';
 
         foreach ($this->getProperties() as $key => $data) {
-            if (!is_array($data) && !in_array($key, $this->_ignore['querystring'])) {
+            if (!is_array($data) && !in_array($key, $this->ignore['querystring'])) {
                 $query_string .= $key . '=' . urlencode(stripslashes($data)) . '&';
             }
         }
@@ -263,7 +275,8 @@ class Provider extends AbstractService
 
     /**
      * Tests for spam.
-     * Uses the web service provided by {@link http://www.akismet.com Akismet} to see whether or not the submitted comment is spam.  Returns a boolean value.
+     * Uses the web service provided by {@link http://www.akismet.com Akismet} to see whether or not the submitted
+     * comment is spam.  Returns a boolean value.
      *
      * @param    array  $data  Content to test
      * @return   bool   True if the comment is spam, false if not
@@ -277,7 +290,11 @@ class Provider extends AbstractService
             return false;
         }
 
-        $response = $this->_sendRequest('blog=' . \Request::base() . '&' . $this->_getQueryString(), $this->apiKey . '.rest.akismet.com', '/' . $this->akismetVersion . '/comment-check');
+        $response = $this->sendRequest(
+            'blog=' . \Request::base() . '&' . $this->getQueryString(),
+            $this->apiKey . '.rest.akismet.com',
+            '/' . $this->akismetVersion . '/comment-check'
+        );
 
         if (!$response || !is_array($response) || !isset($response[1])) {
             // Service unavailable?
@@ -285,7 +302,10 @@ class Provider extends AbstractService
         }
 
         if ($response[1] == 'invalid' && !$this->isKeyValid()) {
-            throw new Exception('The API key passed to the Akismet adapter is invalid. Please obtain a valid one from http://wordpress.com/api-keys/');
+            throw new Exception(
+                'The API key passed to the Akismet adapter is invalid. '
+                . 'Please obtain a valid one from http://wordpress.com/api-keys/'
+            );
         }
 
         return ($response[1] == 'true');
@@ -293,23 +313,33 @@ class Provider extends AbstractService
 
     /**
      * Submit spam that is incorrectly tagged as ham.
-     * Using this function will make you a good citizen as it helps Akismet to learn from its mistakes.  This will improve the service for everybody.
+     * Using this function will make you a good citizen as it helps Akismet to learn from its mistakes.
+     * This will improve the service for everybody.
      *
      * @return  void
      */
     public function submitSpam()
     {
-        $this->_sendRequest($this->_getQueryString(), $this->apiKey . '.' . $this->akismetServer, '/' . $this->akismetVersion . '/submit-spam');
+        $this->sendRequest(
+            $this->getQueryString(),
+            $this->apiKey . '.' . $this->akismetServer,
+            '/' . $this->akismetVersion . '/submit-spam'
+        );
     }
 
     /**
      * Submit ham that is incorrectly tagged as spam.
-     * Using this function will make you a good citizen as it helps Akismet to learn from its mistakes.  This will improve the service for everybody.
+     * Using this function will make you a good citizen as it helps Akismet to learn from its mistakes.
+     * This will improve the service for everybody.
      *
      * @return  void
      */
     public function submitHam()
     {
-        $this->_sendRequest($this->_getQueryString(), $this->apiKey . '.' . $this->akismetServer, '/' . $this->akismetVersion . '/submit-ham');
+        $this->sendRequest(
+            $this->getQueryString(),
+            $this->apiKey . '.' . $this->akismetServer,
+            '/' . $this->akismetVersion . '/submit-ham'
+        );
     }
 }

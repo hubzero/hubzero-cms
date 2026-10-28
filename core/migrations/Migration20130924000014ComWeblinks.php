@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for weblinks table changes
- **/
+ *
+ */
 class Migration20130924000014ComWeblinks extends Base
 {
     /**
@@ -32,17 +34,26 @@ class Migration20130924000014ComWeblinks extends Base
                 $this->db->query();
             }
             if ($this->db->tableHasField('#__weblinks', 'alias')) {
-                $query = "ALTER TABLE `#__weblinks` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
+                $query = "ALTER TABLE `#__weblinks` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET "
+                    . "'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if ($this->db->tableHasField('#__weblinks', 'published') && !$this->db->tableHasField('#__weblinks', 'state')) {
-                $query = "ALTER TABLE `#__weblinks` CHANGE COLUMN `published` `state` tinyint (1) NOT NULL DEFAULT '0';";
+            if (
+                $this->db->tableHasField('#__weblinks', 'published')
+                && !$this->db->tableHasField('#__weblinks', 'state')
+            ) {
+                $query = "ALTER TABLE `#__weblinks` CHANGE COLUMN `published` `state` tinyint (1) NOT NULL DEFAULT "
+                    . "'0';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasField('#__weblinks', 'access') && $this->db->tableHasField('#__weblinks', 'approved')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN  `access` INT(11) NOT NULL DEFAULT '1' AFTER `approved`;";
+            if (
+                !$this->db->tableHasField('#__weblinks', 'access')
+                && $this->db->tableHasField('#__weblinks', 'approved')
+            ) {
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN  `access` INT(11) NOT NULL DEFAULT '1' AFTER "
+                    . "`approved`;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -52,7 +63,8 @@ class Migration20130924000014ComWeblinks extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__weblinks', 'created')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `created` datetime NOT NULL DEFAULT '0000-00-00 "
+                    . "00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -67,7 +79,8 @@ class Migration20130924000014ComWeblinks extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__weblinks', 'modified')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `modified` datetime NOT NULL DEFAULT '0000-00-00"
+                    . "00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -92,22 +105,26 @@ class Migration20130924000014ComWeblinks extends Base
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__weblinks', 'featured')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if link is featured.';";
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' "
+                    . "COMMENT 'Set if link is featured.';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__weblinks', 'xreference')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.';";
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `xreference` varchar(50) NOT NULL COMMENT 'A "
+                    . "reference to enable linkages to external data sets.';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__weblinks', 'publish_up')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `publish_up` datetime NOT NULL DEFAULT '0000-00-00 "
+                    . "00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
             if (!$this->db->tableHasField('#__weblinks', 'publish_down')) {
-                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+                $query = "ALTER TABLE `#__weblinks` ADD COLUMN `publish_down` datetime NOT NULL DEFAULT "
+                    . "'0000-00-00 00:00:00';";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -116,42 +133,67 @@ class Migration20130924000014ComWeblinks extends Base
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_access') && $this->db->tableHasField('#__weblinks', 'access')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_access')
+                && $this->db->tableHasField('#__weblinks', 'access')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_access` (`access`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_checkout') && $this->db->tableHasField('#__weblinks', 'checked_out')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_checkout')
+                && $this->db->tableHasField('#__weblinks', 'checked_out')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_checkout` (`checked_out`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_state') && $this->db->tableHasField('#__weblinks', 'state')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_state')
+                && $this->db->tableHasField('#__weblinks', 'state')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_state` (`state`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_catid') && $this->db->tableHasField('#__weblinks', 'catid')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_catid')
+                && $this->db->tableHasField('#__weblinks', 'catid')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_catid` (`catid`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_createdby') && $this->db->tableHasField('#__weblinks', 'created_by')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_createdby')
+                && $this->db->tableHasField('#__weblinks', 'created_by')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_createdby` (`created_by`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_featured_catid') && $this->db->tableHasField('#__weblinks', 'featured') && $this->db->tableHasField('#__weblinks', 'catid')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_featured_catid')
+                && $this->db->tableHasField('#__weblinks', 'featured')
+                && $this->db->tableHasField('#__weblinks', 'catid')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_featured_catid` (`featured`,`catid`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_language') && $this->db->tableHasField('#__weblinks', 'language')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_language')
+                && $this->db->tableHasField('#__weblinks', 'language')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_language` (`language`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
-            if (!$this->db->tableHasKey('#__weblinks', 'idx_xreference') && $this->db->tableHasField('#__weblinks', 'xreference')) {
+            if (
+                !$this->db->tableHasKey('#__weblinks', 'idx_xreference')
+                && $this->db->tableHasField('#__weblinks', 'xreference')
+            ) {
                 $query = "ALTER TABLE `#__weblinks` ADD KEY `idx_xreference` (`xreference`);";
                 $this->db->setQuery($query);
                 $this->db->query();

@@ -91,13 +91,15 @@ class Pagination
         if ($instance->limit < 0) {
             $instance->limit = \Config::get('list_limit');
         }
-
-        $instance->start = ($instance->limit != 0 ? (int)(floor($instance->start / $instance->limit) * $instance->limit) : 0);
-
+        $instance->
+            start = ($instance->
+            limit != 0 ? (int)(floor($instance->
+            start / $instance->
+            limit) * $instance->
+            limit) : 0);
         if ($instance->start < 0) {
             $instance->start = 0;
         }
-
 
         \User::setState($namespace . '.start', $instance->start);
         \User::setState($namespace . '.limit', $instance->limit);

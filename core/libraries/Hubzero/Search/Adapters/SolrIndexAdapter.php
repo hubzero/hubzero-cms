@@ -20,19 +20,19 @@ use Filesystem;
  */
 class SolrIndexAdapter implements IndexInterface
 {
-    var $logPath = null;
+    public $logPath = null;
 
-    var $connection = null;
+    public $connection = null;
 
-    var $query = null;
+    public $query = null;
 
-    var $bufferAdd = null;
+    public $bufferAdd = null;
 
-    var $commitWithin = null;
+    public $commitWithin = null;
 
-    var $overwrite = null;
+    public $overwrite = null;
 
-    var $logs = null;
+    public $logs = null;
 
     /**
      * __construct - Constructor for adapter, sets config and established connection
@@ -138,7 +138,6 @@ class SolrIndexAdapter implements IndexInterface
             return false;
         }
     }
-
 
     /**
      * index - Stores a document within an index

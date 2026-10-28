@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
-
 /**
  * Wiki parser class
  * converts wiki syntax to HTML
@@ -618,9 +616,8 @@ class WikiParser
                 $this->_randomString(),
                 '<span id="' . htmlspecialchars((string) ltrim($href, '=#'), ENT_QUOTES, 'UTF-8') . '"></span>'
             ));
-        }
-        // Are we jumping to an anchor?
-        else if (substr($href, 0, 1) == '#') {
+        } elseif (substr($href, 0, 1) == '#') {
+            // Are we jumping to an anchor?
             // Fall back to href text (minus the #) if title was stripped to empty
             if (trim($title) === '') {
                 $title = ltrim($href, '#');
@@ -642,9 +639,8 @@ class WikiParser
             $pagename = array_pop($bits);
             // scope is everything leading up to the last piece
             $scope = implode('/', $bits);
-        }
-        // Only one part. pagename = URL
-        else {
+        } else {
+            // Only one part. pagename = URL
             $pagename = end($bits);
         }
 
@@ -887,11 +883,10 @@ class WikiParser
 
             if ('' == $line) {
                 $output[] = $txt;
-            } else if ('{{{}}}' == $line) {
+            } elseif ('{{{}}}' == $line) {
                 $output[] = '';
-            }
-            // pre blocks must start a line
-            else if ('{{{' == substr($line, 0, 3) || '<pre>{{{' == substr($line, 0, 8)) {
+            } elseif ('{{{' == substr($line, 0, 3) || '<pre>{{{' == substr($line, 0, 8)) {
+                // pre blocks must start a line
                 if ($codestate == self::CS_NONE) {
                     // Is there a processor declaration on the same line?
                     if (strlen($line) > strlen('{{{')) {
@@ -902,9 +897,8 @@ class WikiParser
                             }
                             $processor = "\n" . $subline;
                         }
-                    }
-                    // Does the next line contain a processor declaration?
-                    else if (isset($lines[$i + 1])) {
+                    } elseif (isset($lines[$i + 1])) {
+                        // Does the next line contain a processor declaration?
                         $next = trim($lines[$i + 1]);
                         if (substr($next, 0, strlen('#!wiki')) == '#!wiki') {
                             $admon = true;
@@ -916,23 +910,21 @@ class WikiParser
                             ? $prfx . '{admonition ' . $random . '}' . $processor
                             : $prfx . '<pre ' . $random . '>' . $processor;
                     $codestate = self::CS_CODE;
-                }
-                // We're already in a code block, so we have nested {{{ }}}
-                else {
+                } else {
+                    // We're already in a code block, so we have nested {{{ }}}
                     $output[] = substr($txt, $indent); //$txt;
                     $codestate = self::CS_CODE_SUB; // Nested code tags
                     $level++;
                 }
-            }
-            // pre blocks must end a line
-            else if ('}}}' == substr($line, 0, strlen('}}}'))) {
+            } elseif ('}}}' == substr($line, 0, strlen('}}}'))) {
+                // pre blocks must end a line
                 if ($codestate == self::CS_CODE_SUB) {
                     $output[] = substr($txt, $indent);//$txt;
                     $level--;
                     if (!$level) {
                         $codestate = self::CS_CODE;
                     }
-                } else if ($codestate == self::CS_CODE) {
+                } elseif ($codestate == self::CS_CODE) {
                     $output[] = ($admon)
                             ? '{/admonition ' . $random . '}'
                             : '</pre ' . $random . '>';
@@ -946,9 +938,8 @@ class WikiParser
                 if ($codestate == self::CS_NONE) {
                     // Convert inline `code`
                     $txt = $this->_code($txt);
-                }
-                // IN a code block
-                else {
+                } else {
+                    // IN a code block
                     // Strip indention
                     //$txt = substr($txt, $indent);
                 }
@@ -1915,10 +1906,9 @@ class WikiParser
                     if (strlen($arr[$i]) == 4) {
                         $arr[$i - 1] .= "'";
                         $arr[$i] = "'''";
-                    }
-                    // If there are more than 5 apostrophes in a row, assume they're all
-                    // text except for the last 5.
-                    else if (strlen($arr[$i]) > 5) {
+                    } elseif (strlen($arr[$i]) > 5) {
+                        // If there are more than 5 apostrophes in a row, assume they're all
+                        // text except for the last 5.
                         $arr[$i - 1] .= str_repeat("'", strlen($arr[$i]) - 5);
                         $arr[$i] = "'''''";
                     }
@@ -1926,9 +1916,9 @@ class WikiParser
                     // We are not counting sequences of five apostrophes.
                     if (strlen($arr[$i]) == 2) {
                         $numitalics++;
-                    } else if (strlen($arr[$i]) == 3) {
+                    } elseif (strlen($arr[$i]) == 3) {
                         $numbold++;
-                    } else if (strlen($arr[$i]) == 5) {
+                    } elseif (strlen($arr[$i]) == 5) {
                         $numitalics++;
                         $numbold++;
                     }
@@ -1953,7 +1943,7 @@ class WikiParser
                             if ($firstspace == -1) {
                                 $firstspace = $i;
                             }
-                        } else if ($x2 == ' ') {
+                        } elseif ($x2 == ' ') {
                             if ($firstsingleletterword == -1) {
                                 $firstsingleletterword = $i;
                             }
@@ -1970,16 +1960,14 @@ class WikiParser
                 if ($firstsingleletterword > -1) {
                     $arr[$firstsingleletterword] = "''";
                     $arr[$firstsingleletterword - 1] .= "'";
-                }
-                // If not, but there's a multi-letter word, use that one.
-                else if ($firstmultiletterword > -1) {
+                } elseif ($firstmultiletterword > -1) {
+                    // If not, but there's a multi-letter word, use that one.
                     $arr[$firstmultiletterword] = "''";
                     $arr[$firstmultiletterword - 1] .= "'";
-                }
-                // ... otherwise use the first one that has neither.
-                // (notice that it is possible for all three to be -1 if, for example,
-                // there is only one pentuple-apostrophe in the line)
-                else if ($firstspace > -1) {
+                } elseif ($firstspace > -1) {
+                    // ... otherwise use the first one that has neither.
+                    // (notice that it is possible for all three to be -1 if, for example,
+                    // there is only one pentuple-apostrophe in the line)
                     $arr[$firstspace] = "''";
                     $arr[$firstspace - 1] .= "'";
                 }
@@ -2191,7 +2179,7 @@ class WikiParser
                 if (!$catts) {
                     if ($suffixLength == 0 && $prefixLength > 0) {
                         $catts .= ' style="text-align:right;"';
-                    } else if ($suffixLength > 0 && $prefixLength == 0) {
+                    } elseif ($suffixLength > 0 && $prefixLength == 0) {
                         $catts .= ' style="text-align:left;"';
                     }
                     /*else if ($suffixLength > 0 && $prefixLength > 0 && $suffixLength == $prefixLength)
@@ -2243,22 +2231,20 @@ class WikiParser
                     if ($isFirstRow && $hasTheadRow) {
                         // First row header cells are column headers
                         $catts = ' scope="col"' . $catts;
-                    } else if ($allTh && strpos($catts, 'colspan') !== false) {
+                    } elseif ($allTh && strpos($catts, 'colspan') !== false) {
                         // Section divider row spanning all columns - use td to avoid
                         // invalid scope="colgroup" without actual <colgroup> elements
                         $ctyp = 'd';
-                    } else if ($j === 0 && !$allTh) {
+                    } elseif ($j === 0 && !$allTh) {
                         // First cell in a data row is a row header
                         $catts = ' scope="row"' . $catts;
                     }
-                }
-                // Promote cells in header row to <th> when hasTheadRow
-                else if ($ctyp === 'd' && $isFirstRow && $hasTheadRow) {
+                } elseif ($ctyp === 'd' && $isFirstRow && $hasTheadRow) {
+                    // Promote cells in header row to <th> when hasTheadRow
                     $ctyp = 'h';
                     $catts = ' scope="col"' . $catts;
-                }
-                // Promote first cell in data rows to row header when table has a header row
-                else if ($ctyp === 'd' && $j === 0 && !$isFirstRow && $hasTheadRow) {
+                } elseif ($ctyp === 'd' && $j === 0 && !$isFirstRow && $hasTheadRow) {
+                    // Promote first cell in data rows to row header when table has a header row
                     $ctyp = 'h';
                     $catts = ' scope="row"' . $catts;
                 }
@@ -2340,14 +2326,14 @@ class WikiParser
 
         if ('*' == $char) {
             $result .= '<ul><li>';
-        } else if ('#' == $char) {
+        } elseif ('#' == $char) {
             $result .= '<ol><li>';
-        } else if (is_numeric($char)) {
+        } elseif (is_numeric($char)) {
             $result .= '<ol style="counter-reset: item ' . (intval($char) - 1) . ';"><li>';
             $this->mDTopen = true;
-        } else if (':' == $char) {
+        } elseif (':' == $char) {
             $result .= '<dl><dd>';
-        } else if (';' == $char) {
+        } elseif (';' == $char) {
             $result .= '<dl><dt>';
             $this->mDTopen = true;
         } else {
@@ -2367,7 +2353,7 @@ class WikiParser
     {
         if ('*' == $char || '#' == $char || is_numeric($char)) {
             return '</li><li>';
-        } else if (':' == $char || ';' == $char) {
+        } elseif (':' == $char || ';' == $char) {
             $close = '</dd>';
             if ($this->mDTopen) {
                 $close = '</dt>';
@@ -2393,9 +2379,9 @@ class WikiParser
     {
         if ('*' == $char) {
             $text = '</li></ul>';
-        } else if ('#' == $char || is_numeric($char)) {
+        } elseif ('#' == $char || is_numeric($char)) {
             $text = '</li></ol>';
-        } else if (':' == $char) {
+        } elseif (':' == $char) {
             if ($this->mDTopen) {
                 $this->mDTopen = false;
                 $text = '</dt></dl>';
@@ -2636,7 +2622,7 @@ class WikiParser
                     } else {
                         $inBlockElem = true;
                     }
-                } else if (!$inBlockElem && !$this->mInPre) {
+                } elseif (!$inBlockElem && !$this->mInPre) {
                     if (isset($t[0]) && ' ' == $t[0] and ($this->mLastSection == 'pre' or trim($t) != '')) {
                         // pre
                         if ($this->mLastSection != 'pre') {
@@ -2666,7 +2652,7 @@ class WikiParser
                                 $output .= $paragraphStack;
                                 $paragraphStack = false;
                                 $this->mLastSection = 'p';
-                            } else if ($this->mLastSection != 'p') {
+                            } elseif ($this->mLastSection != 'p') {
                                 $output .= $this->_closeParagraph() . '<p>';
                                 $this->mLastSection = 'p';
                             }

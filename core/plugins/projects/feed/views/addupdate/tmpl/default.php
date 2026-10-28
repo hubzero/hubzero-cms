@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +29,10 @@ if (!$this->model->access('content')) {
                 <input type="hidden" name="parent_activity" value="0" />
                 <?php echo Html::input('token'); ?>
 
-                <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SHARE_WITH_TEAM'); ?>" id="blog-submit" class="btn" />
+                <input type="submit"
+                    value="<?php echo Lang::txt('COM_PROJECTS_SHARE_WITH_TEAM'); ?>"
+                    id="blog-submit"
+                    class="btn"/>
             </p>
         </fieldset>
     </form>

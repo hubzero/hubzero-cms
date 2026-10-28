@@ -75,7 +75,7 @@ class Attachment extends Relational
      *
      * @var array
      */
-    private $_dimensions = null;
+    private $dimensions = null;
 
     /**
      * Ensure no invalid characters
@@ -161,11 +161,11 @@ class Attachment extends Relational
      */
     public function width()
     {
-        if (!$this->_dimensions) {
-            $this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
+        if (!$this->dimensions) {
+            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
         }
 
-        return $this->_dimensions[0];
+        return $this->dimensions[0];
     }
 
     /**
@@ -175,11 +175,11 @@ class Attachment extends Relational
      */
     public function height()
     {
-        if (!$this->_dimensions) {
-            $this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
+        if (!$this->dimensions) {
+            $this->dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->path()) : array(0, 0);
         }
 
-        return $this->_dimensions[1];
+        return $this->dimensions[1];
     }
 
     /**

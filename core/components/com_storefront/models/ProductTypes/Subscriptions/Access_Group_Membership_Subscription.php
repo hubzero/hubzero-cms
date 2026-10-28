@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,6 +9,7 @@
 
 require_once __DIR__ . '/BaseSubscription.php';
 
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Access_Group_Membership_Subscription extends BaseSubscription
 {
     /**
@@ -28,6 +30,7 @@ class Access_Group_Membership_Subscription extends BaseSubscription
      * @return  void
      * @throws  Exception
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _getExpiration()
     {
         // This will get expiration from the correct place

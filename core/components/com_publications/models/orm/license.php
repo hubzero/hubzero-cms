@@ -158,13 +158,12 @@ class License extends Relational
         // Select the primary key and ordering values from the table.
         $query = self::all();
 
-        // If the movement delta is negative move the row up.
         if ($delta < 0) {
+            // If the movement delta is negative move the row up.
             $query->where('ordering', '<', (int) $this->get('ordering'));
             $query->order('ordering', 'desc');
-        }
-        // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
+        } elseif ($delta > 0) {
+            // If the movement delta is positive move the row down.
             $query->where('ordering', '>', (int) $this->get('ordering'));
             $query->order('ordering', 'asc');
         }

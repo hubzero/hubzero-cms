@@ -8,9 +8,11 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$threadId = (isset($this->thread) ? $this->thread : 't')
+    . (isset($this->parent) ? $this->parent : '0');
 ?>
-<?php if (isset($this->comments) && count($this->comments)) : ?>
-<ol class="comments" id="<?php echo (isset($this->thread) ? $this->thread : 't') . (isset($this->parent) ? $this->parent : '0'); ?>">
+<ol class="comments" id="<?php echo $threadId; ?>">
     <?php
         $cls = 'odd';
     if (isset($this->cls)) {
@@ -35,4 +37,3 @@ defined('_HZEXEC_') or die();
     }
     ?>
 </ol>
-<?php endif; ?>

@@ -170,7 +170,7 @@ class Group extends Obj
      *
      * @var  array
      */
-    static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
+    public static $_list_keys = array('members', 'managers', 'applicants', 'invitees');
 
     /**
      * List of updated keys
@@ -313,7 +313,7 @@ class Group extends Obj
                 }
 
                 $this->__set('gidNumber', $result);
-            } else if ($result !== false) {
+            } elseif ($result !== false) {
                 $this->__set('gidNumber', $db->insertid());
             } else {
                 return false;
@@ -931,7 +931,7 @@ class Group extends Obj
      * @param   string  $func
      * @return  boolean
      */
-    static function iterate($func)
+    public static function iterate($func)
     {
         $db = \App::get('db');
 
@@ -1008,7 +1008,7 @@ class Group extends Obj
      * @param   array  $filters
      * @return  mixed
      */
-    static function find($filters = array())
+    public static function find($filters = array())
     {
         $db = \App::get('db');
 

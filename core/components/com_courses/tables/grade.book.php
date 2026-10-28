@@ -38,7 +38,8 @@ class GradeBook extends Table
         $db = $this->_db;
         $query  = 'SELECT *';
         $query .= ' FROM ' . $this->_tbl;
-        $query .= ' WHERE `scope` = "asset" AND `member_id` = ' . $db->quote($member_id) . ' AND `scope_id` = ' . $db->quote($asset_id);
+        $query .= ' WHERE `scope` = "asset" AND `member_id` = ' . $db->quote($member_id)
+            . ' AND `scope_id` = ' . $db->quote($asset_id);
         $db->setQuery($query);
 
         if ($result = $db->loadAssoc()) {
@@ -55,6 +56,7 @@ class GradeBook extends Table
      * @param      array $filters Filters to construct query from
      * @return     string SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS gb";
@@ -213,7 +215,8 @@ class GradeBook extends Table
         );
 
         // Query for existing data
-        $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN (" . implode(',', $member_id) . ") AND `scope` IN ('asset')";
+        $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN ("
+            . implode(',', $member_id) . ") AND `scope` IN ('asset')";
         $this->_db->setQuery($query);
         $results = $this->_db->loadObjectList();
 
@@ -246,7 +249,8 @@ class GradeBook extends Table
                 }
 
                 include_once dirname(__DIR__) . DS . 'models' . DS . 'formDeployment.php';
-                $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $course->offering()->section()->get('id'));
+                $sectionId = $course->offering()->section()->get('id');
+                $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $sectionId);
 
                 $results = $dep->getResults('member_id', $member_id);
 
@@ -258,8 +262,9 @@ class GradeBook extends Table
                             $key = $u . '.' . $asset->id;
                             if (!array_key_exists($key, $existing_grades)) {
                                 $inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}', NULL)";
-                            } else if (!is_null($existing_grades[$key]['score'])) {
-                                $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                            } elseif (!is_null($existing_grades[$key]['score'])) {
+                                $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL "
+                                    . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                             }
                         }
                         break;
@@ -268,13 +273,17 @@ class GradeBook extends Table
                     case 'expired':
                         foreach ($member_id as $u) {
                             $score    = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
-                            $finished = (isset($results[$u]['finished'])) ? '\'' . $results[$u]['finished'] . '\'' : 'NULL';
+                            $finished = (isset($results[$u]['finished']))
+                                ? '\'' . $results[$u]['finished'] . '\''
+                                : 'NULL';
 
                             $key = $u . '.' . $asset->id;
                             if (!array_key_exists($key, $existing_grades)) {
                                 $inserts[] = "('{$u}', '{$score}', 'asset', '{$asset->id}', {$finished})";
-                            } else if ($existing_grades[$key]['score'] != $score) {
-                                $updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$score}', `score_recorded` = {$finished} WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                            } elseif ($existing_grades[$key]['score'] != $score) {
+                                $updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$score}', "
+                                    . "`score_recorded` = {$finished} "
+                                    . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                             }
                         }
                         break;
@@ -286,22 +295,28 @@ class GradeBook extends Table
 
                             // Form is active and they have completed it!
                             if ($resp->getEndTime() && $resp->getEndTime() != '') {
-                                $score = (isset($results[$u]['score'])) ? '\'' . $results[$u]['score'] . '\'' : 'NULL';
+                                $score = (isset($results[$u]['score']))
+                                    ? '\'' . $results[$u]['score'] . '\''
+                                    : 'NULL';
 
                                 $key = $u . '.' . $asset->id;
                                 if (!array_key_exists($key, $existing_grades)) {
-                                    $inserts[] = "('{$u}', {$score}, 'asset', '{$asset->id}', '" . $results[$u]['finished'] . "')";
-                                } else if ($existing_grades[$key]['score'] != $score) {
-                                    $updates[] = "UPDATE `#__courses_grade_book` SET `score` = {$score}, `score_recorded` = '" . $results[$u]['finished'] . "' WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                                    $inserts[] = "('{$u}', {$score}, 'asset', '{$asset->id}', '"
+                                        . $results[$u]['finished'] . "')";
+                                } elseif ($existing_grades[$key]['score'] != $score) {
+                                    $updates[] = "UPDATE `#__courses_grade_book` SET `score` = {$score}, "
+                                        . "`score_recorded` = '" . $results[$u]['finished'] . "' "
+                                        . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                                 }
-                            }
-                            // Form is active and they haven't finished it yet!
-                            else {
+                            } else {
+                                // Form is active and they haven't finished it yet!
                                 $key = $u . '.' . $asset->id;
                                 if (!array_key_exists($key, $existing_grades)) {
                                     $inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}', NULL)";
-                                } else if (!is_null($existing_grades[$key]['score'])) {
-                                    $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL, `score_recorded` = NULL WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                                } elseif (!is_null($existing_grades[$key]['score'])) {
+                                    $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL, "
+                                        . "`score_recorded` = NULL "
+                                        . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                                 }
                             }
                         }
@@ -311,7 +326,8 @@ class GradeBook extends Table
 
             // Build query and run
             if (count($inserts) > 0) {
-                $query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`, `score_recorded`) VALUES\n";
+                $query  = "INSERT INTO `#__courses_grade_book` "
+                    . "(`member_id`, `score`, `scope`, `scope_id`, `score_recorded`) VALUES\n";
                 $query .= implode(",\n", $inserts);
 
                 $this->_db->setQuery($query);
@@ -327,7 +343,8 @@ class GradeBook extends Table
             }
 
             if (count($deletes) > 0) {
-                $query = "DELETE FROM `#__courses_grade_book` WHERE `scope` = 'asset' AND `scope_id` IN (" . implode(',', $deletes) . ")";
+                $query = "DELETE FROM `#__courses_grade_book` "
+                    . "WHERE `scope` = 'asset' AND `scope_id` IN (" . implode(',', $deletes) . ")";
 
                 $this->_db->setQuery($query);
                 $this->_db->query();
@@ -355,12 +372,14 @@ class GradeBook extends Table
             }
 
             // Query for existing data
-            $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN (" . implode(',', $member_ids) . ") AND `scope` IN ('course', 'unit')";
+            $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN ("
+                . implode(',', $member_ids) . ") AND `scope` IN ('course', 'unit')";
             $this->_db->setQuery($query);
             $results = $this->_db->loadObjectList();
 
             foreach ($results as $r) {
-                $existing_grades[$r->member_id . '.' . $r->scope . '.' . $r->scope_id] = array('id' => $r->id, 'score' => $r->score);
+                $key = $r->member_id . '.' . $r->scope . '.' . $r->scope_id;
+                $existing_grades[$key] = array('id' => $r->id, 'score' => $r->score);
             }
         }
 
@@ -379,18 +398,25 @@ class GradeBook extends Table
                     if (array_key_exists($member_id . '.unit.' . $unit_id, $existing_grades)) {
                         $key = $member_id . '.unit.' . $unit_id;
 
-                        if ((is_null($existing_grades[$key]['score']) && !is_null($unit['unit_weighted'])) || $existing_grades[$key]['score'] != $unit['unit_weighted']) {
-                            $updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$unit['unit_weighted']}' WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                        $scoreNull = is_null($existing_grades[$key]['score']);
+                        $unitNull = !is_null($unit['unit_weighted']);
+                        $scoreMismatch = $existing_grades[$key]['score'] != $unit['unit_weighted'];
+                        if (($scoreNull && $unitNull) || $scoreMismatch) {
+                            $updates[] = "UPDATE `#__courses_grade_book` "
+                                . "SET `score` = '{$unit['unit_weighted']}' "
+                                . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                         }
                     } else {
-                        $inserts[] = "('{$member_id}', " . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '{$unit_id}')";
+                        $inserts[] = "('{$member_id}', "
+                            . $this->_db->quote($unit['unit_weighted']) . ", 'unit', '{$unit_id}')";
                     }
-                } else if (is_null($unit['unit_weighted'])) {
+                } elseif (is_null($unit['unit_weighted'])) {
                     if (array_key_exists($member_id . '.unit.' . $unit_id, $existing_grades)) {
                         $key = $member_id . '.unit.' . $unit_id;
 
                         if (!is_null($existing_grades[$key]['score'])) {
-                            $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                            $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL "
+                                . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                         }
                     } else {
                         $inserts[] = "('{$member_id}', NULL, 'unit', '{$unit_id}')";
@@ -402,18 +428,25 @@ class GradeBook extends Table
                 if (array_key_exists($member_id . '.course.' . $course_id, $existing_grades)) {
                     $key = $member_id . '.course.' . $course_id;
 
-                    if ((is_null($existing_grades[$key]['score']) && !is_null($member['course_weighted'])) || $existing_grades[$key]['score'] != $member['course_weighted']) {
-                        $updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$member['course_weighted']}' WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                    $scoreNull = is_null($existing_grades[$key]['score']);
+                    $courseNull = !is_null($member['course_weighted']);
+                    $scoreMismatch = $existing_grades[$key]['score'] != $member['course_weighted'];
+                    if (($scoreNull && $courseNull) || $scoreMismatch) {
+                        $updates[] = "UPDATE `#__courses_grade_book` "
+                            . "SET `score` = '{$member['course_weighted']}' "
+                            . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                     }
                 } else {
-                    $inserts[] = "('{$member_id}', " . $this->_db->quote($member['course_weighted']) . ", 'course', '{$course_id}')";
+                    $inserts[] = "('{$member_id}', "
+                        . $this->_db->quote($member['course_weighted']) . ", 'course', '{$course_id}')";
                 }
-            } else if (is_null($member['course_weighted'])) {
+            } elseif (is_null($member['course_weighted'])) {
                 if (array_key_exists($member_id . '.course.' . $course_id, $existing_grades)) {
                     $key = $member_id . '.course.' . $course_id;
 
                     if (!is_null($existing_grades[$key]['score'])) {
-                        $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
+                        $updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL "
+                            . "WHERE `id` = '" . $existing_grades[$key]['id'] . "'";
                     }
                 } else {
                     $inserts[] = "('{$member_id}', NULL, 'course', '{$course_id}')";

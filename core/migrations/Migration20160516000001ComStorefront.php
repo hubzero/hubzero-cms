@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add SKU restrictions by users
+  *
  **/
 class Migration20160516000001ComStorefront extends Base
 {
@@ -21,7 +23,10 @@ class Migration20160516000001ComStorefront extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__storefront_skus') && !$this->db->tableHasField('#__storefront_skus', 'sRestricted')) {
+        if (
+            $this->db->tableExists('#__storefront_skus')
+            && !$this->db->tableHasField('#__storefront_skus', 'sRestricted')
+        ) {
             $query = "ALTER TABLE `#__storefront_skus` ADD `sRestricted` tinyint(1) DEFAULT '0'";
             $this->db->setQuery($query);
             $this->db->query();
@@ -45,7 +50,10 @@ class Migration20160516000001ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_skus') && $this->db->tableHasField('#__storefront_skus', 'sRestricted')) {
+        if (
+            $this->db->tableExists('#__storefront_skus')
+            && $this->db->tableHasField('#__storefront_skus', 'sRestricted')
+        ) {
             $query = "ALTER TABLE `#__storefront_skus` DROP COLUMN `sRestricted`";
             $this->db->setQuery($query);
             $this->db->query();

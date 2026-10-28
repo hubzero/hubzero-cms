@@ -271,7 +271,7 @@ class Events extends AdminController
             }
             if ($start_hrs > 12) {
                 $start_hrs -= 12;
-            } else if ($start_hrs == 0) {
+            } elseif ($start_hrs == 0) {
                 $start_hrs = 12;
             }
 
@@ -281,7 +281,7 @@ class Events extends AdminController
             }
             if ($end_hrs > 12) {
                 $end_hrs -= 12;
-            } else if ($end_hrs == 0) {
+            } elseif ($end_hrs == 0) {
                 $end_hrs = 12;
             }
         }

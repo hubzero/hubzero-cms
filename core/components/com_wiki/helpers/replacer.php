@@ -9,6 +9,7 @@
 /**
  * Base class for "replacers", objects used in preg_replace_callback() and
  * StringUtils::delimiterReplaceCallback()
+ *
  */
 class Replacer
 {
@@ -19,7 +20,7 @@ class Replacer
      *
      * @return     mixed Return description (if any) ...
      */
-    function cb()
+    public function cb()
     {
         return array(&$this, 'replace');
     }

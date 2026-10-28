@@ -71,7 +71,7 @@ class Page extends Model
         // load object
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
 
@@ -120,7 +120,7 @@ class Page extends Model
             // return version object
             if ($vid == null || $vid == 0 || $vid == 'current') {
                 $version = $this->versions()->first();
-            } else if (is_numeric($vid)) {
+            } elseif (is_numeric($vid)) {
                 $version = $this->versions()->fetch('version', $vid);
             }
         }

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing resourcemenu module
- **/
+ *
+ */
 class Migration20190109000000ModResourcemenu extends Base
 {
     /**

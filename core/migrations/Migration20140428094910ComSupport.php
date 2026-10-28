@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating support attachments column
- **/
+ *
+ */
 class Migration20140428094910ComSupport extends Base
 {
     /**
@@ -37,7 +39,8 @@ class Migration20140428094910ComSupport extends Base
     {
         // add comment ID
         if ($this->db->tableHasField('#__support_attachments', 'comment_id')) {
-            $query = "ALTER TABLE `#__support_attachments` MODIFY COLUMN `comment_id` int(11) unsigned NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__support_attachments` "
+                . "MODIFY COLUMN `comment_id` int(11) unsigned NOT NULL DEFAULT '0';";
 
             $this->db->setQuery($query);
             $this->db->query();

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for un-installing com_feedaggregator and associated extensions
- **/
+ *
+ */
 class Migration20190228000000ComFeedaggregator extends Base
 {
     /**

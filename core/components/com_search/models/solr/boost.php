@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,8 +43,8 @@ class Boost extends Relational
 
     protected $table = '#__solr_search_boosts';
 
-    protected $map,
-        $userHelper;
+    protected $map;
+    protected $userHelper;
 
     public function __construct($args = [])
     {

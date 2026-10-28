@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +27,8 @@ class Economy extends Obj
      *
      * @var object
      */
-    var $_db = null;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db = null;
 
     /**
      * Constructor
@@ -63,6 +65,7 @@ class Economy extends Obj
      * @param      string $type Point calculation type
      * @return     boolean False if errors, true on success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distribute_points($con, $type = 'royalty')
     {
         if (!is_object($con)) {

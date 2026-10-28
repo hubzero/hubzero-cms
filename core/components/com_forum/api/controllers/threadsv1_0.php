@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -100,7 +101,11 @@ class Threadsv1_0 extends ApiController
                     ->whereIn('access', $filters['access'])
                     ->total();
 
-                $obj->url        = str_replace('/api', '', $base . '/' . ltrim(Route::url($section->link('base')), '/'));
+                $obj->url        = str_replace(
+                    '/api',
+                    '',
+                    $base . '/' . ltrim(Route::url($section->link('base')), '/')
+                );
 
                 $response->sections[] = $obj;
             }

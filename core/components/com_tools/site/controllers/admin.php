@@ -54,7 +54,7 @@ class Admin extends SiteController
         if ($i === null) {
             // Default, return the last message
             $message = end($this->_messages);
-        } else if (!array_key_exists($i, $this->_messages)) {
+        } elseif (!array_key_exists($i, $this->_messages)) {
             // If $i has been specified but does not exist, return false
             return false;
         } else {
@@ -293,7 +293,7 @@ class Admin extends SiteController
                         $txt = new \Hubzero\Config\Registry($hztv->params);
                         $txt->set('commitHash', $commitHash);
                         $hztv->params = $txt->toString();
-                    } else if ($commitHashRequired) {
+                    } elseif ($commitHashRequired) {
                         $this->setError(Lang::txt('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
                     }
                 }
@@ -446,7 +446,7 @@ class Admin extends SiteController
             // bad format
             $result = false;
             $this->setError(Lang::txt('COM_TOOLS_ERR_MISSING_REVISION_OR_BAD_FORMAT'));
-        } else if (count($tools) > 0 && $status['revision']) {
+        } elseif (count($tools) > 0 && $status['revision']) {
             // check for duplicate revision
             foreach ($tools as $t) {
                 if ($t->revision == $status['revision']) {

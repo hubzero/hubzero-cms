@@ -333,8 +333,10 @@ class Articles extends AdminController
         }
 
         // Set the redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . ($cid ? '&section=' . $cid : '');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&section=' . $cid : ''), false),
+            Route::url($url, false),
             $message
         );
     }

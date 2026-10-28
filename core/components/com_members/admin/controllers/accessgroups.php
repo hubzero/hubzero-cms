@@ -172,10 +172,12 @@ class Accessgroups extends AdminController
         // Get core.admin rules from the root asset
         $rules = Access::getAssetRules('root.1')->getData('core.admin');
 
-        // Get the value for the current group (will be true (allowed), false (denied), or null (inherit)
+        // Get the value for the current group
+        // (will be true (allowed), false (denied), or null (inherit)
         $groupSuperAdmin = $rules['core.admin']->allow($row->get('id'));
 
-        // We only need to change the $groupSuperAdmin if the parent is true or false. Otherwise, the value set in the rule takes effect.
+        // We only need to change the $groupSuperAdmin if the parent is true or
+        // false. Otherwise, the value set in the rule takes effect.
         if ($parentSuperAdmin === false) {
             // If parent is false (Denied), effective value will always be false
             $groupSuperAdmin = false;
@@ -203,7 +205,9 @@ class Accessgroups extends AdminController
                 $otherGroups = array_diff($myGroups, array($fields['id']));
                 $otherSuperAdmin = false;
                 foreach ($otherGroups as $otherGroup) {
-                    $otherSuperAdmin = ($otherSuperAdmin) ? $otherSuperAdmin : Access::checkGroup($otherGroup, 'core.admin');
+                    $otherSuperAdmin = ($otherSuperAdmin)
+                        ? $otherSuperAdmin
+                        : Access::checkGroup($otherGroup, 'core.admin');
                 }
 
                 // If we would not otherwise have super admin permissions
@@ -298,7 +302,8 @@ class Accessgroups extends AdminController
                 }
 
                 // Trigger the onUserAfterDeleteGroup event.
-                Event::trigger('user.onUserAfterDeleteGroup', array($data, true, $this->getError()));
+                $afterData = array($data, true, $this->getError());
+                Event::trigger('user.onUserAfterDeleteGroup', $afterData);
 
                 $i++;
             }

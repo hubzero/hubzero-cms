@@ -248,9 +248,9 @@ class Versions extends AdminController
         }
 
         // Redirect to listing
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $version->get('page_id'), false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&pageid=' . $version->get('page_id');
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -389,8 +389,8 @@ class Versions extends AdminController
      */
     public function cancelTask()
     {
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . Request::getInt('pageid', 0), false)
-        );
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&pageid=' . Request::getInt('pageid', 0);
+        App::redirect(Route::url($url, false));
     }
 }

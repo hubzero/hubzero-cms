@@ -21,21 +21,21 @@ class Member extends Base
      *
      * @var  object
      */
-    private $_obj = null;
+    private $obj = null;
 
     /**
      * File path
      *
      * @var  string
      */
-    private $_image = null;
+    private $image = null;
 
     /**
      * URL
      *
      * @var  string
      */
-    private $_baselink = null;
+    private $baselink = null;
 
     /**
      * Constructor
@@ -45,9 +45,9 @@ class Member extends Base
      */
     public function __construct($oid = null)
     {
-        $this->_obj = \Components\Members\Models\Member::oneOrNew($oid);
+        $this->obj = \Components\Members\Models\Member::oneOrNew($oid);
 
-        $this->_baselink = $this->_obj->link() . '&active=collections';
+        $this->baselink = $this->obj->link() . '&active=collections';
     }
 
     /**
@@ -57,10 +57,10 @@ class Member extends Base
      */
     public function image()
     {
-        if (!isset($this->_image)) {
-            $this->_image = $this->_obj->picture(0);
+        if (!isset($this->image)) {
+            $this->image = $this->obj->picture(0);
         }
-        return $this->_image;
+        return $this->image;
     }
 
     /**
@@ -70,7 +70,7 @@ class Member extends Base
      */
     public function alias()
     {
-        return $this->_obj->get('username');
+        return $this->obj->get('username');
     }
 
     /**
@@ -80,7 +80,7 @@ class Member extends Base
      */
     public function title()
     {
-        return $this->_obj->get('name');
+        return $this->obj->get('name');
     }
 
     /**
@@ -92,16 +92,16 @@ class Member extends Base
     {
         switch (strtolower(trim($what))) {
             case 'follow':
-                return $this->_baselink . '&task=follow';
+                return $this->baselink . '&task=follow';
             break;
 
             case 'unfollow':
-                return $this->_baselink . '&task=unfollow';
+                return $this->baselink . '&task=unfollow';
             break;
 
             case 'base':
             default:
-                return $this->_baselink;
+                return $this->baselink;
             break;
         }
     }

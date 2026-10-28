@@ -178,9 +178,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
                 if (isset($bits[0]) && trim($bits[0])) {
                     if ($bits[0] == 'new') {
                         $action = 'newsection';
-                    } else if ($bits[0] == 'settings' || $bits[0] == 'savesettings') {
+                    } elseif ($bits[0] == 'settings' || $bits[0] == 'savesettings') {
                         $action = $bits[0];
-                    } else if ($bits[0] == 'unsubscribe') {
+                    } elseif ($bits[0] == 'unsubscribe') {
                         $action = 'unsubscribe';
                     } else {
                         Request::setVar('section', $bits[0]);
@@ -190,9 +190,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
                 if (isset($bits[1]) && trim($bits[1])) {
                     if ($bits[1] == 'edit') {
                         $action = 'editsection';
-                    } else if ($bits[1] == 'delete') {
+                    } elseif ($bits[1] == 'delete') {
                         $action = 'deletesection';
-                    } else if ($bits[1] == 'new') {
+                    } elseif ($bits[1] == 'new') {
                         $action = 'editcategory';
                     } else {
                         Request::setVar('category', $bits[1]);
@@ -203,9 +203,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
                 if (isset($bits[2]) && trim($bits[2])) {
                     if ($bits[2] == 'edit') {
                         $action = 'editcategory';
-                    } else if ($bits[2] == 'delete') {
+                    } elseif ($bits[2] == 'delete') {
                         $action = 'deletecategory';
-                    } else if ($bits[2] == 'new') {
+                    } elseif ($bits[2] == 'new') {
                         $action = 'editthread';
                     } else {
                         Request::setVar('thread', $bits[2]);
@@ -216,7 +216,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
                 if (isset($bits[3]) && trim($bits[3])) {
                     if ($bits[3] == 'edit') {
                         $action = 'editthread';
-                    } else if ($bits[3] == 'delete') {
+                    } elseif ($bits[3] == 'delete') {
                         $action = 'deletethread';
                     } else {
                         Request::setVar('post', $bits[3]);
@@ -2029,7 +2029,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
                 ->row();
 
             $sendEmail = $usersCategory->isNew() ? 0 : 1;
-        } else if ($memberoptions) {
+        } elseif ($memberoptions) {
             $groupId = $this->group->get('gidNumber');
             $usersGroupSettings = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $groupId,

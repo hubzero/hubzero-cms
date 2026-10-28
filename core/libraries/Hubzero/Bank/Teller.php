@@ -52,6 +52,7 @@ class Teller extends Obj
      * @param   integer  $user_id  User ID
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($user_id)
     {
         $this->uid      = $user_id;
@@ -86,6 +87,7 @@ class Teller extends Obj
      *
      * @return  integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function credit_summary()
     {
         return $this->credit;
@@ -188,6 +190,7 @@ class Teller extends Obj
      * @param   integer  $amount  Amount to credit
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function credit_adjustment($amount)
     {
         $amount = intval($amount);
@@ -214,6 +217,7 @@ class Teller extends Obj
      * @param   number   $amount  Amount to subtract from balance
      * @return  boolean  True if they have enough credit
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _creditCheck($amount)
     {
         $b = $this->balance;
@@ -235,6 +239,7 @@ class Teller extends Obj
      * @param   integer  $amount  Amount to check
      * @return  integer
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _amountCheck($amount)
     {
         $amount = intval($amount);
@@ -256,6 +261,7 @@ class Teller extends Obj
      * @param   integer  $ref     ID of item transaction references
      * @return  boolean  True on success
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _save($type, $amount, $desc, $cat, $ref)
     {
         if (!$this->_saveBalance($type)) {
@@ -275,6 +281,7 @@ class Teller extends Obj
      * @param   string   $type  Record type (inserting or updating)
      * @return  boolean  True on success
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _saveBalance($type)
     {
         if ($type == 'creation') {
@@ -309,6 +316,7 @@ class Teller extends Obj
      * @param   integer  $ref     ID of item transaction references
      * @return  boolean  True on success
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _saveTransaction($type, $amount, $desc, $cat, $ref)
     {
         $transaction = Transaction::blank()->set(array(

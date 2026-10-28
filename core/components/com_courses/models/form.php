@@ -133,10 +133,11 @@ class PdfForm
         $dbh = self::getDbh();
 
         $dbh->setQuery(
-            'SELECT pf.id, title, pf.created, (SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = pf.id) AS updated
-			FROM `#__courses_forms` pf
-			WHERE title IS NOT null AND title != \'\' AND active = 1
-			ORDER BY title'
+            'SELECT pf.id, title, pf.created, '
+            . '(SELECT MAX(created) FROM `#__courses_form_questions` WHERE form_id = pf.id) AS updated '
+            . 'FROM `#__courses_forms` pf '
+            . 'WHERE title IS NOT null AND title != \'\' AND active = 1 '
+            . 'ORDER BY title'
         );
 
         return $dbh->loadAssocList();
@@ -365,7 +366,12 @@ class PdfForm
                 $im->readImage($this->fname . '[' . ($this->pages) . ']');
                 $im->setImageFormat('png');
                 $im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
-                $im->cropImage(max($widths), $crop[$this->pages]['height'], $crop[$this->pages]['x'], $crop[$this->pages]['y']);
+                $im->cropImage(
+                    max($widths),
+                    $crop[$this->pages]['height'],
+                    $crop[$this->pages]['x'],
+                    $crop[$this->pages]['y']
+                );
                 $im->borderImage('white', 15, 15);
                 // paintTransparentImage() was deprecated at some point in favor of transparentPaintImage()
                 if (method_exists($im, 'transparentPaintImage')) {
@@ -392,7 +398,10 @@ class PdfForm
 
         if (!isset($_FILES[$name])) {
             $pdf->errors[] = 'Upload not posted (server error)';
-        } else if ((is_array($_FILES[$name]['error']) && $_FILES[$name]['error'][0]) || (!is_array($_FILES[$name]['error']) && $_FILES[$name]['error'])) {
+        } elseif (
+            (is_array($_FILES[$name]['error']) && $_FILES[$name]['error'][0])
+            || (!is_array($_FILES[$name]['error']) && $_FILES[$name]['error'])
+        ) {
             switch ($_FILES[$name]['error']) {
                 case UPLOAD_ERR_INI_SIZE:
                 case UPLOAD_ERR_FORM_SIZE:
@@ -413,7 +422,8 @@ class PdfForm
                     $pdf->errors[] = 'Upload failed for mysterious reasons';
             }
         } else {
-            $pdf->fname = (is_array($_FILES[$name]['tmp_name'])) ? $_FILES[$name]['tmp_name'][0] : $_FILES[$name]['tmp_name'];
+            $tmpName = $_FILES[$name]['tmp_name'];
+            $pdf->fname = is_array($tmpName) ? $tmpName[0] : $tmpName;
         }
 
         return $pdf;
@@ -428,11 +438,16 @@ class PdfForm
     public function setTitle($title)
     {
         $dbh = self::getDbh();
-        $dbh->setQuery('UPDATE `#__courses_forms` SET title = ' . $dbh->quote(stripslashes($title)) . ' WHERE id = ' . $this->getId());
+        $quotedTitle = $dbh->quote(stripslashes($title));
+        $dbh->setQuery(
+            'UPDATE `#__courses_forms` SET title = ' . $quotedTitle . ' WHERE id = ' . $this->getId()
+        );
         $dbh->query();
 
         if ($id = $this->getAssetId()) {
-            $dbh->setQuery('UPDATE `#__courses_assets` SET title = ' . $dbh->Quote(stripslashes($title)) . ' WHERE id = ' . $id);
+            $dbh->setQuery(
+                'UPDATE `#__courses_assets` SET title = ' . $quotedTitle . ' WHERE id = ' . $id
+            );
             $dbh->query();
         }
 
@@ -448,7 +463,10 @@ class PdfForm
     public function setAssetId($asset_id)
     {
         $dbh = self::getDbh();
-        $dbh->setQuery('UPDATE `#__courses_forms` SET `asset_id` = ' . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId());
+        $dbh->setQuery(
+            'UPDATE `#__courses_forms` SET `asset_id` = '
+            . $dbh->quote($asset_id) . ' WHERE id = ' . $this->getId()
+        );
         $dbh->query();
 
         return $this;
@@ -505,11 +523,36 @@ class PdfForm
 
         foreach ($pages as $pageNum => $page) {
             foreach ($page as $groupNum => $group) {
-                $dbh->setQuery('INSERT INTO `#__courses_form_questions` (form_id, page, top_dist, left_dist, height, width, version) VALUES (' . $fid . ', ' . ((int)$pageNum) . ', ' . ((int)$group['top']) . ', ' . ((int)$group['left']) . ', ' . ((int)$group['height']) . ', ' . ((int)$group['width']) . ', ' . $version . ')');
+                $questionValues = sprintf(
+                    '(%d, %d, %d, %d, %d, %d, %d)',
+                    $fid,
+                    (int)$pageNum,
+                    (int)$group['top'],
+                    (int)$group['left'],
+                    (int)$group['height'],
+                    (int)$group['width'],
+                    $version
+                );
+                $dbh->setQuery(
+                    'INSERT INTO `#__courses_form_questions` '
+                    . '(form_id, page, top_dist, left_dist, height, width, version) '
+                    . 'VALUES ' . $questionValues
+                );
                 $dbh->query();
                 $groupId = $dbh->insertid();
                 foreach ($group['answers'] as $answer) {
-                    $dbh->setQuery('INSERT INTO `#__courses_form_answers` (question_id, top_dist, left_dist, correct) VALUES (' . $groupId . ', ' . ((int)$answer['top']) . ', ' . ((int)$answer['left']) . ', ' . ($answer['correct'] == 'true' ? 1 : 0) . ')');
+                    $correct = ($answer['correct'] == 'true' ? 1 : 0);
+                    $answerValues = sprintf(
+                        '(%d, %d, %d, %d)',
+                        $groupId,
+                        (int)$answer['top'],
+                        (int)$answer['left'],
+                        $correct
+                    );
+                    $dbh->setQuery(
+                        'INSERT INTO `#__courses_form_answers` '
+                        . '(question_id, top_dist, left_dist, correct) VALUES ' . $answerValues
+                    );
                     $dbh->query();
                 }
             }
@@ -533,12 +576,17 @@ class PdfForm
             $date = date('Y-m-d H:i:s', strtotime($date));
         }
 
+        $versionClause = $version
+            ? (int)$version
+            : '(SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $dbh->setQuery(
-            'SELECT pfa.id AS answer_id, question_id, page, correct, pfa.left_dist AS a_left, pfa.top_dist AS a_top, pfq.left_dist AS q_left, pfq.top_dist AS q_top, height, width
-			FROM `#__courses_form_questions` pfq
-			LEFT JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id
-			WHERE form_id = ' . $fid . ' AND version = ' . ($version ? (int)$version : '(SELECT MAX(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')') . '
-			ORDER BY page, question_id'
+            'SELECT pfa.id AS answer_id, question_id, page, correct, '
+            . 'pfa.left_dist AS a_left, pfa.top_dist AS a_top, '
+            . 'pfq.left_dist AS q_left, pfq.top_dist AS q_top, height, width '
+            . 'FROM `#__courses_form_questions` pfq '
+            . 'LEFT JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id '
+            . 'WHERE form_id = ' . $fid . ' AND version = ' . $versionClause . ' '
+            . 'ORDER BY page, question_id'
         );
 
         $rv = array();
@@ -581,11 +629,12 @@ class PdfForm
         $dbh = self::getDBH();
         $fid = $this->getId();
 
+        $maxVersionSubquery = '(SELECT max(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
         $dbh->setQuery(
-            'SELECT pfq.id, pfa.id AS answer_id
-			FROM `#__courses_form_questions` pfq
-			INNER JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id AND pfa.correct
-			WHERE form_id = ' . $fid . ' AND version = (SELECT max(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')'
+            'SELECT pfq.id, pfa.id AS answer_id '
+            . 'FROM `#__courses_form_questions` pfq '
+            . 'INNER JOIN `#__courses_form_answers` pfa ON pfa.question_id = pfq.id AND pfa.correct '
+            . 'WHERE form_id = ' . $fid . ' AND version = ' . $maxVersionSubquery
         );
 
         $rv = array();
@@ -617,10 +666,13 @@ class PdfForm
         $dbh = self::getDBH();
         $fid = $this->getId();
 
+        $maxVersionSubquery = '(SELECT max(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ')';
+        $answersSubquery = '(SELECT 1 FROM `#__courses_form_answers` WHERE question_id = pfq.id LIMIT 1)';
         $dbh->setQuery(
-            'SELECT COUNT(*)
-			FROM `#__courses_form_questions` pfq
-			WHERE form_id = ' . $fid . ' AND version = (SELECT max(version) FROM `#__courses_form_questions` WHERE form_id = ' . $fid . ') AND (SELECT 1 FROM `#__courses_form_answers` WHERE question_id = pfq.id LIMIT 1)'
+            'SELECT COUNT(*) FROM `#__courses_form_questions` pfq '
+            . 'WHERE form_id = ' . $fid . ' '
+            . 'AND version = ' . $maxVersionSubquery . ' '
+            . 'AND ' . $answersSubquery
         );
 
         return $dbh->loadResult();

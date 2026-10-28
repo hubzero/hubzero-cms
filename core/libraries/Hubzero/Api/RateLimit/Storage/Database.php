@@ -16,7 +16,7 @@ class Database implements StorageInterface
     /**
      * Database object
      *
-     * @var  object
+     * @public object
      */
     private $db;
 
@@ -63,10 +63,41 @@ class Database implements StorageInterface
      * @param   string  $created        Created date string
      * @return  void
      */
-    public function createRateLimitData($applicationId, $userId, $ip, $limitShort, $limitLong, $countShort, $countLong, $expiresShort, $expiresLong, $created)
-    {
-        $sql = "INSERT INTO `#__developer_rate_limit` (`application_id`, `uidNumber`, `ip`, `limit_short`, `limit_long`, `count_short`, `count_long`, `expires_short`, `expires_long`, `created`)
-				VALUES (" . $this->db->quote($applicationId) . ", " . $this->db->quote($userId) . ", " . $this->db->quote($ip) . ", " . $this->db->quote($limitShort) . ", " . $this->db->quote($limitLong) . ", " . $this->db->quote($countShort) . ", " . $this->db->quote($countLong) . ", " . $this->db->quote($expiresShort) . ", " . $this->db->quote($expiresLong) . ", " . $this->db->quote($created) . ")";
+    public function createRateLimitData(
+        $applicationId,
+        $userId,
+        $ip,
+        $limitShort,
+        $limitLong,
+        $countShort,
+        $countLong,
+        $expiresShort,
+        $expiresLong,
+        $created
+    ) {
+        $sql = "INSERT INTO `#__developer_rate_limit` (`application_id`, `uidNumber`, `ip`, `limit_short`, 
+            `limit_long`, `count_short`, `count_long`, `expires_short`, `expires_long`, `created`)
+				VALUES (" .
+                    $this->db->quote($applicationId) .
+                    ", " .
+                    $this->db->quote($userId) .
+                    ", " .
+                    $this->db->quote($ip) .
+                    ", " .
+                    $this->db->quote($limitShort) .
+                    ", " .
+                    $this->db->quote($limitLong) .
+                    ", " .
+                    $this->db->quote($countShort) .
+                    ", " .
+                    $this->db->quote($countLong) .
+                    ", " .
+                    $this->db->quote($expiresShort) .
+                    ", " .
+                    $this->db->quote($expiresLong) .
+                    ", " .
+                    $this->db->quote($created) .
+                    ")";
         $this->db->setQuery($sql);
         $this->db->query();
 

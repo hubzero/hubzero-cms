@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding date columns to gradebook
+  *
  **/
 class Migration20140815153140ComCourses extends Base
 {
@@ -42,7 +44,8 @@ class Migration20140815153140ComCourses extends Base
         }
 
         // Get deployments
-        $query = "SELECT cfd.`id`, `asset_id` FROM `#__courses_form_deployments` AS cfd, `#__courses_forms` AS cf WHERE `form_id` = cf.`id`";
+        $query = "SELECT cfd.`id`, `asset_id` FROM `#__courses_form_deployments` AS cfd, "
+            . "`#__courses_forms` AS cf WHERE `form_id` = cf.`id`";
         $this->db->setQuery($query);
         $deployments = $this->db->loadObjectList();
 
@@ -64,8 +67,10 @@ class Migration20140815153140ComCourses extends Base
                 if ($results && count($results) > 0) {
                     foreach ($results as $result) {
                         if (isset($result->finished)) {
-                            $query = "UPDATE `#__courses_grade_book` SET `score_recorded` = '" . $result->finished . "'";
-                            $query .= " WHERE `member_id` = " . (int)$result->member_id . " AND `scope` = 'asset' AND `scope_id` = " . (int)$deployment->asset_id;
+                            $query = "UPDATE `#__courses_grade_book` SET `score_recorded` = '"
+                                . $result->finished . "'";
+                            $query .= " WHERE `member_id` = " . (int)$result->member_id
+                                . " AND `scope` = 'asset' AND `scope_id` = " . (int)$deployment->asset_id;
                             $this->db->setQuery($query);
                             $this->db->query();
                         }
@@ -80,13 +85,19 @@ class Migration20140815153140ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_grade_book') && $this->db->tableHasField('#__courses_grade_book', 'score_recorded')) {
+        if (
+            $this->db->tableExists('#__courses_grade_book')
+            && $this->db->tableHasField('#__courses_grade_book', 'score_recorded')
+        ) {
             $query = "ALTER TABLE `#__courses_grade_book` DROP `score_recorded`";
             $this->db->setQuery($query);
             $this->db->query();
         }
 
-        if ($this->db->tableExists('#__courses_grade_book') && $this->db->tableHasField('#__courses_grade_book', 'override_recorded')) {
+        if (
+            $this->db->tableExists('#__courses_grade_book')
+            && $this->db->tableHasField('#__courses_grade_book', 'override_recorded')
+        ) {
             $query = "ALTER TABLE `#__courses_grade_book` DROP `override_recorded`";
             $this->db->setQuery($query);
             $this->db->query();

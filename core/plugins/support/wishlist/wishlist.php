@@ -1,13 +1,14 @@
 <?php
 
+
+
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Support plugin class for com_wishlist entries
@@ -20,7 +21,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
      * @param   string  $category  Element type (determines table to look in)
      * @return  boolean
      */
-    private function _canHandle($category)
+    private function canHandle($category)
     {
         if (in_array($category, array('wish', 'wishcomment'))) {
             return true;
@@ -38,18 +39,20 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
      */
     public function getReportedItem($refid, $category, $parent)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
         $database = App::get('db');
 
         if ($category == 'wish') {
-            $query  = "SELECT ws.id, ws.about as `text`, ws.proposed AS created, ws.proposed_by as `author`, ws.subject as `subject`, 'wish' as parent_category, ws.anonymous as anon
+            $query = "SELECT ws.id, ws.about as `text`, ws.proposed AS created, ws.proposed_by as `author`, "
+                . "ws.subject as `subject`, 'wish' as parent_category, ws.anonymous as anon
 						FROM `#__wishlist_item` AS ws
 						WHERE ws.id=" . $database->quote($refid);
-        } else if ($category == 'wishcomment') {
-            $query  = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`, NULL as `subject`, rr.category as parent_category, rr.anonymous as anon
+        } elseif ($category == 'wishcomment') {
+            $query = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`, "
+                . "NULL as `subject`, rr.category as parent_category, rr.anonymous as anon
 						FROM `#__item_comments` AS rr
 						WHERE rr.id=" . $database->quote($refid);
         }
@@ -62,7 +65,9 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {
                     $rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
                 }
-                $rows[$key]->href = ($parent) ? Route::url('index.php?option=com_wishlist&task=wishlist&id=' . $parent) : '';
+                $rows[$key]->href = ($parent)
+                    ? Route::url('index.php?option=com_wishlist&task=wishlist&id=' . $parent)
+                    : '';
                 if ($rows[$key]->parent_category == 'wishcomment') {
                     $rows[$key]->href = Route::url('index.php?option=com_wishlist&task=wish&wishid=' . $parent);
                 }
@@ -87,7 +92,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
         if ($category == 'wishcomment') {
             $pdata = $this->parent($parentid);
 
-            $refid    = $pdata->get('item_id');
+            $refid = $pdata->get('item_id');
             $category = 'wish';
             /*$category = $pdata->get('category');
             $refid    = $pdata->get('referenceid');
@@ -135,7 +140,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
      */
     public function getTitle($category, $parentid)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -144,11 +149,11 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
         switch ($category) {
             case 'wish':
                 return Lang::txt('PLG_SUPPORT_WISHLIST_WISH_OF', $parentid);
-            break;
+                break;
 
             case 'wishcomment':
                 return Lang::txt('PLG_SUPPORT_WISHLIST_COMMENT_OF', $parentid);
-            break;
+                break;
         }
     }
 
@@ -161,7 +166,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
      */
     public function onReportItem($refid, $category)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -196,7 +201,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
      */
     public function releaseReportedItem($refid, $parent, $category)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -232,7 +237,7 @@ class plgSupportWishlist extends \Hubzero\Plugin\Plugin
      */
     public function deleteReportedItem($referenceid, $parentid, $category, $message)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 

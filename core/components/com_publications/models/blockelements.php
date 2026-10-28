@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ class BlockElements extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_db = null;
 
     /**
@@ -32,6 +34,7 @@ class BlockElements extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_elements = array();
 
     /**
@@ -39,6 +42,7 @@ class BlockElements extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_path = array();
 
     /**
@@ -89,8 +93,16 @@ class BlockElements extends Obj
      * @param   integer  $order
      * @return  object
      */
-    public function drawElement($name, $elementId = 0, $manifest = null, $master = null, $pub = null, $status = null, $viewname = 'edit', $order = 0)
-    {
+    public function drawElement(
+        $name,
+        $elementId = 0,
+        $manifest = null,
+        $master = null,
+        $pub = null,
+        $status = null,
+        $viewname = 'edit',
+        $order = 0
+    ) {
         // Load attachment type
         $element = $this->loadElement($name);
 

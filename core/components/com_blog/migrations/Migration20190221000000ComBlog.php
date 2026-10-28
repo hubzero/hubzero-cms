@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 use Hubzero\Content\Migration\Base;
 
 // No direct access
@@ -69,7 +70,8 @@ class Migration20190221000000ComBlog extends Base
                     $this->db->tableExists($table)
                     && $this->db->tableHasField($table, $field)
                 ) {
-                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
+                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` " .
+                        "DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
 
                     $this->db->setQuery($query);
                     $this->db->query();

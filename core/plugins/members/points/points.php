@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,21 +13,22 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for points
  */
-class plgMembersPoints extends \Hubzero\Plugin\Plugin
+class PlgMembersPoints extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @return array   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
@@ -47,11 +49,11 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @param   string  $option  Component name
-     * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -122,10 +124,10 @@ class plgMembersPoints extends \Hubzero\Plugin\Plugin
      *
      * Method is called after user data is deleted from the database
      *
-     * @param   array    $user     Holds the user data
-     * @param   boolean  $success  True if user was succesfully stored in the database
-     * @param   string   $msg      Message
-     * @return  boolean
+     * @param  array   $user    Holds the user data
+     * @param  boolean $success True if user was succesfully stored in the database
+     * @param  string  $msg     Message
+     * @return boolean
      */
     public function onMemberAfterDelete($user, $success, $msg)
     {

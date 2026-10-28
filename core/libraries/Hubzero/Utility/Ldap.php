@@ -207,7 +207,8 @@ class Ldap
 
         $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, " .
                 " p.gidNumber, u.homeDirectory, u.loginShell, " .
-                " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, " .
+                " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, 
+                    " .
                 " pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag " .
                 " FROM #__users AS u " .
                 " LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id " .
@@ -223,7 +224,11 @@ class Ldap
             if (!trim($dbinfo['cn']) && $dbinfo['uid']) {
                 $dbinfo['cn'] = $dbinfo['uid'];
 
-                $query = "UPDATE `#__users` SET `name`=" . $db->quote($dbinfo['uid']) . " WHERE `id`=" . $db->quote($dbinfo['uidNumber']) . ";";
+                $query = "UPDATE `#__users` SET `name`=" .
+                    $db->quote($dbinfo['uid']) .
+                    " WHERE `id`=" .
+                    $db->quote($dbinfo['uidNumber']) .
+                    ";";
                 $db->setQuery($query);
                 $db->query();
             }
@@ -234,8 +239,10 @@ class Ldap
 
             // If user has been de-identified or is a temporary auth_link account
             // treat as if database entry does not exist (eg, delete from LDAP)
-
-            if ((is_numeric($dbinfo['uid']) && $dbinfo['uid'] <= 0) || (substr($dbinfo['uid'], 0, 13) === "anonUsername_")) {
+            if (
+                (is_numeric($dbinfo['uid']) &&
+                $dbinfo['uid'] <= 0) || (substr($dbinfo['uid'], 0, 13) === "anonUsername_")
+            ) {
                 $dbinfo = null;
             }
         }
@@ -272,7 +279,7 @@ class Ldap
             foreach ($dbinfo as $key => $value) {
                 if (is_array($value) && $value != array()) {
                     $entry[$key] = $value;
-                } else if (!is_array($value) && $value != '') {
+                } elseif (!is_array($value) && $value != '') {
                     $entry[$key] = $value;
                 }
             }
@@ -444,7 +451,10 @@ class Ldap
         $dbinfo = $db->loadAssoc();
 
         if (!empty($dbinfo)) {
-            $query = "SELECT DISTINCT(u.username) AS memberUid FROM `#__xgroups_members` AS gm, `#__users` AS u WHERE gm.gidNumber = " . $db->quote($dbinfo['gidNumber']) . " AND gm.uidNumber=u.id;";
+            $query = "SELECT DISTINCT(u.username) AS memberUid FROM `#__xgroups_members` AS gm, 
+                `#__users` AS u WHERE gm.gidNumber = " .
+                $db->quote($dbinfo['gidNumber']) .
+                " AND gm.uidNumber=u.id;";
             $db->setQuery($query);
             $dbinfo['memberUid'] = $db->loadColumn();
         }
@@ -476,7 +486,7 @@ class Ldap
             foreach ($dbinfo as $key => $value) {
                 if (is_array($value) && $value != array()) {
                     $entry[$key] = $value;
-                } else if (!is_array($value) && $value != '') {
+                } elseif (!is_array($value) && $value != '') {
                     $entry[$key] = $value;
                 }
             }
@@ -845,7 +855,7 @@ class Ldap
 
                     if (array_key_exists('gid', $attr)) {
                         $gids[] = "gid=" . $attr['gid'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
-                    } else if (array_key_exists('cn', $attr)) {
+                    } elseif (array_key_exists('cn', $attr)) {
                         $gids[] = "cn=" . $attr['cn'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
                     }
 
@@ -994,8 +1004,8 @@ class Ldap
 
         // Negative numbers exist as usernames for placeholders, these aren't in ldap
         // In fact we can't even search for them without causing an error
-        $query = "SELECT username FROM `#__users` where (username not REGEXP '^-?\d+$' and username REGEXP '^[a-zA-Z]')";
-
+        $query = "SELECT username FROM `#__users` where (username not REGEXP '^-?\d+$' and 
+            username REGEXP '^[a-zA-Z]')";
         $db->setQuery($query);
 
         $result = $db->loadColumn();

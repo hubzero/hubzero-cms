@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * HUBzero plugin class for displaying a wiki editor toolbar
@@ -54,8 +52,19 @@ class plgEditorWikiToolbar extends \Hubzero\Plugin\Plugin
      * @param   array    $params   Associative array of editor parameters.
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = array()
+    ) {
         if (empty($id)) {
             $id = $name;
         }
@@ -90,6 +99,7 @@ class plgEditorWikiToolbar extends \Hubzero\Plugin\Plugin
         }
 
         $content = preg_replace('/^((?:<|&lt;)!-- \{FORMAT:(?:.*)\} --(?:>|&gt;))/i', '', $content);
-        return '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" ' . implode(' ', $atts) . '>' . $content . '</textarea>' . "\n";
+        return '<textarea id="' . $id . '" name="' . $name . '" cols="' . $col . '" rows="' . $row . '" '
+            . implode(' ', $atts) . '>' . $content . '</textarea>' . "\n";
     }
 }

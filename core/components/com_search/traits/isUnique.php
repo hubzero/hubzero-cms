@@ -8,6 +8,7 @@
 
 namespace Components\Search\Traits;
 
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 trait isUnique
 {
     public function isUnique()

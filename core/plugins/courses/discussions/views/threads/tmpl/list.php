@@ -10,9 +10,17 @@
 defined('_HZEXEC_') or die();
 
 if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
-    $stick = $this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&thread=' . $this->post->get('thread') . '&action=sticky&sticky=';
+    $stick = $this->base
+        . '&unit='
+        . $this->unit
+        . '&b='
+        . $this->lecture
+        . '&thread='
+        . $this->post->get('thread')
+        . '&action=sticky&sticky=';
     ?>
-    <div class="sticky-thread-controls<?php echo ($this->post->get('sticky')) ? ' stuck' : ''; ?>" data-thread="<?php echo $this->post->get('thread'); ?>">
+    <div class="sticky-thread-controls<?php echo ($this->post->get('sticky')) ? ' stuck' : ''; ?>"
+        data-thread="<?php echo $this->post->get('thread'); ?>">
         <p>
             <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($stick . ($this->post->get('sticky') ? 0 : 1)); ?>" class="sticky-toggle"
                 data-stick-href="<?php echo Route::url($stick . '1'); ?>"

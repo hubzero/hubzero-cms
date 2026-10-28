@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Blog\Models;
 
 use Hubzero\Base\Obj;
@@ -28,6 +29,7 @@ class Archive extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_config;
 
     /**
@@ -35,6 +37,7 @@ class Archive extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_adapter;
 
     /**
@@ -57,7 +60,7 @@ class Archive extends Obj
      * @param   integer  $scope_id  Scope ID if scope is member or group
      * @return  object
      */
-    static function &getInstance($scope = 'site', $scope_id = 0)
+    public static function &getInstance($scope = 'site', $scope_id = 0)
     {
         static $instances;
 
@@ -190,6 +193,7 @@ class Archive extends Obj
      * @return  object
      * @since   1.3.1
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _adapter()
     {
         if (!$this->_adapter) {

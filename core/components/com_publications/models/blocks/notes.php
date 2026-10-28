@@ -21,6 +21,7 @@ class Notes extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name              = 'notes';
 
     /**
@@ -28,6 +29,7 @@ class Notes extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parentname        = 'description';
 
     /**
@@ -35,6 +37,7 @@ class Notes extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest          = null;
 
     /**
@@ -42,6 +45,7 @@ class Notes extends Base
   *
   * @var        integer
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockId           = 0;
 
     /**
@@ -70,7 +74,10 @@ class Notes extends Base
                         'name'      => 'metadata',
                         'type'      => 'metadata',
                         'label'     => 'Release Notes',
-                        'about'     => '<p>Version release notes usually include statements about version limitations and/or differences with previous versions, as well as any miscellaneous information that couldn\'t fit elsewhere.</p>',
+                        'about'     => '<p>Version release notes usually include statements about '
+                            . 'version limitations and/or differences with previous versions, '
+                            . 'as well as any miscellaneous information that couldn\'t fit '
+                            . 'elsewhere.</p>',
                         'adminTips' => '',
                         'params'    => array (
                             'required'      => 0,

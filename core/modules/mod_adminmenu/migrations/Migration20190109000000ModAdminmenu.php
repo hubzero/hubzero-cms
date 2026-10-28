@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Admin menu module
- **/
+ *
+ */
 class Migration20190109000000ModAdminmenu extends Base
 {
     /**

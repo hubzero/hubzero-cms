@@ -25,6 +25,7 @@ class Element extends Obj
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = null;
 
     /**
@@ -32,6 +33,7 @@ class Element extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parent = null;
 
     /**
@@ -103,7 +105,9 @@ class Element extends Obj
             $output .= '>';
         }
         $output .= $label;
-        $output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
+        $isRequired = isset($element->required) && $element->required;
+        $requiredSpan = ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+        $output .= $isRequired ? $requiredSpan : '';
         $output .= '</label>';
 
         return $output;

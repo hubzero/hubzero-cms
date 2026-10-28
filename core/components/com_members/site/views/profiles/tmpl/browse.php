@@ -166,7 +166,7 @@ foreach ($this->fields as $field) {
                         foreach ($q['value'] as $key => $val) {
                             $qs[$i][] = '&q[' . $q['field'] . '][]=' . $val;
                         }
-                    } else if ($q['field'] == 'search') {
+                    } elseif ($q['field'] == 'search') {
                         $qs[$i] = '&' . $q['field'] . '=' . $q['value'];
                     } else {
                         $qs[$i] = '&q[' . $q['field'] . ']=' . $q['value'];
@@ -238,7 +238,7 @@ foreach ($this->fields as $field) {
                             <h3 class="members-search-prompt-title"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE'); ?></h3>
                             <p class="members-search-prompt-body"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH'); ?></p>
                         </div>
-                    <?php } else if ($this->rows->count() > 0) {
+                    <?php } elseif ($this->rows->count() > 0) {
                         $cols = 2;
 
                         $cls = ''; //'even';

@@ -16,9 +16,9 @@ class CharacterClass
     /**
      * List of character classes
      *
-     * @var  array
+     * @public array
      */
-    static $classes = null;
+    public static $classes = null;
 
     /**
      * Populate the list of character classes
@@ -27,13 +27,18 @@ class CharacterClass
      */
     private static function init()
     {
-        $classes[] = array('id' => '1', 'name' => 'uppercase', 'regex' => '[A-Z]',                                       'flag' => '1');
-        $classes[] = array('id' => '2', 'name' => 'numeric',   'regex' => '[0-9]',                                       'flag' => '1');
-        $classes[] = array('id' => '3', 'name' => 'lowercase', 'regex' => '[a-z]',                                       'flag' => '1');
-        $classes[] = array('id' => '4', 'name' => 'special',   'regex' => '[!"\'(),-.:;?[`{}#$%&*+<=>@^_|~\]\/\\\]',     'flag' => '1');
-        $classes[] = array('id' => '5', 'name' => 'nonalpha',  'regex' => '[!"\'(),\-.:;?[`{}#$%&*+<=>@^_|~\]\/\\\0-9]', 'flag' => '0');
-        $classes[] = array('id' => '6', 'name' => 'alpha',     'regex' => '[A-Za-z]',                                    'flag' => '0');
-
+        $classes[] = array('id' => '1',
+            'name' => 'uppercase', 'regex' => '[A-Z]',                                       'flag' => '1');
+        $classes[] = array('id' => '2',
+            'name' => 'numeric',   'regex' => '[0-9]',                                       'flag' => '1');
+        $classes[] = array('id' => '3',
+            'name' => 'lowercase', 'regex' => '[a-z]',                                       'flag' => '1');
+        $classes[] = array('id' => '4',
+            'name' => 'special',   'regex' => '[!"\'(),-.:;?[`{}#$%&*+<=>@^_|~\]\/\\\]',     'flag' => '1');
+        $classes[] = array('id' => '5',
+            'name' => 'nonalpha',  'regex' => '[!"\'(),\-.:;?[`{}#$%&*+<=>@^_|~\]\/\\\0-9]', 'flag' => '0');
+        $classes[] = array('id' => '6',
+            'name' => 'alpha',     'regex' => '[A-Za-z]',                                    'flag' => '0');
         self::$classes = $classes;
     }
 

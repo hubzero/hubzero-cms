@@ -1,5 +1,7 @@
 <?php
 
+
+// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,7 +34,7 @@ function prettyPrint($json)
         }
         if ($char === '"' && $prev_char != '\\') {
             $in_quotes = !$in_quotes;
-        } else if (! $in_quotes) {
+        } elseif (! $in_quotes) {
             switch ($char) {
                 case '}':
                 case ']':
@@ -44,6 +46,7 @@ function prettyPrint($json)
                 case '{':
                 case '[':
                     $level++;
+                    // no break - fall through
 
                 case ',':
                     $ends_line_level = $level;
@@ -74,7 +77,8 @@ function prettyPrint($json)
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formUrl = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <tbody>

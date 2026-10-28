@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\User\Us;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\User;
 
 /**
  * Plugin for automatically adding users to the location_us group based on IP country lookup
  */
-class plgUserUs extends \Hubzero\Plugin\Plugin
+class Us extends Plugin
 {
     public function onLoginUser($user, $options = array())
     {
@@ -42,14 +45,14 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
                 $group->update();
             }
 
-            return;
+            return true;
         }
 
         $gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
 
         if (!$gdb) {
             Log::debug('plgUserUs: geo database unavailable, skipping group update for [' . User::get('username') . '].');
-            return;
+            return true;
         }
 
         $gdb->setQuery(
@@ -80,6 +83,8 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
                 $group->update();
             }
         }
+
+        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

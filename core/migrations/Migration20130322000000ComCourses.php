@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for tracking when course form entries are submitted
+  *
  **/
 class Migration20130322000000ComCourses extends Base
 {
@@ -21,7 +23,8 @@ class Migration20130322000000ComCourses extends Base
         $query = '';
 
         if (!$this->db->tableHasField('#__courses_form_respondent_progress', 'submitted')) {
-            $query .= "ALTER TABLE `#__courses_form_respondent_progress` ADD `submitted` DATETIME  NULL  AFTER `answer_id`;";
+            $query .= "ALTER TABLE `#__courses_form_respondent_progress` ADD `submitted` "
+                . "DATETIME NULL AFTER `answer_id`;";
         }
 
         if (!empty($query)) {

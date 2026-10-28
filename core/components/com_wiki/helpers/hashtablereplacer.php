@@ -8,6 +8,7 @@
 
 /**
  * Class to perform replacement based on a simple hashtable lookup
+ *
  */
 class HashtableReplacer extends Replacer
 {
@@ -16,7 +17,8 @@ class HashtableReplacer extends Replacer
      *
      * @var array
      */
-    var $table, $index;
+    public $table;
+    public $index;
 
     /**
      * Short description for '__construct'
@@ -27,7 +29,7 @@ class HashtableReplacer extends Replacer
      * @param      integer $index Parameter description (if any) ...
      * @return     void
      */
-    function __construct($table, $index = 0)
+    public function __construct($table, $index = 0)
     {
         $this->table = $table;
         $this->index = $index;
@@ -41,7 +43,7 @@ class HashtableReplacer extends Replacer
      * @param      array $matches Parameter description (if any) ...
      * @return     array Return description (if any) ...
      */
-    function replace($matches)
+    public function replace($matches)
     {
         return $this->table[$matches[$this->index]];
     }

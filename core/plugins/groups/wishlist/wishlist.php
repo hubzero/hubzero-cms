@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Groups Plugin class for wishlist
+ *
  */
 class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 {
@@ -18,6 +20,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $_autoloadLanguage = true;
 
@@ -39,11 +42,12 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
+        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
         $lang = \App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . $pluginPath, null, false, true);
     }
 
     /**
@@ -117,7 +121,8 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $groupUrl = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active;
+                $url = Route::url($groupUrl, false, true);
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -133,7 +138,8 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $msg = Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active));
+                $arr['html'] = '<p class="info">' . $msg . '</p>';
                 return $arr;
             }
         }
@@ -199,12 +205,13 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
         // Get list owners
         $owners = $wishlist->getOwners();
 
-        //if user is guest and wishlist isnt public
-        //if (!$wishlist->public && User::isGuest())
-        //{
-        //  $arr['html'] = '<p class="warning">' . Lang::txt('The Group Wishlist is not a publicly viewable list.') . '</p>';
-        //  return $arr;
-        //}
+        // if user is guest and wishlist isnt public
+        // if (!$wishlist->public && User::isGuest())
+        // {
+        //     $msg = Lang::txt('The Group Wishlist is not a publicly viewable list.');
+        //     $arr['html'] = '<p class="warning">' . $msg . '</p>';
+        //     return $arr;
+        // }
 
         // Authorize admins & list owners
         if (User::authorise($option, 'manage')) {
@@ -214,7 +221,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
         //authorized based on wishlist
         if (in_array(User::get('id'), $owners['individuals'])) {
             $admin = 2;
-        } else if (in_array(User::get('id'), $owners['advisory'])) {
+        } elseif (in_array(User::get('id'), $owners['advisory'])) {
             $admin = 3;
         }
 
@@ -330,10 +337,19 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
             // Select vote totals
             $vote = \Components\Wishlist\Models\Vote::blank();
 
+            $voteTable = $vote->getTableName();
+            $entriesTable = $entries->getTableName();
+            $positiveSubquery = "(SELECT COUNT(*) FROM `" . $voteTable . "` AS v "
+                . "WHERE v.helpful='yes' AND v.category='wish' "
+                . "AND v.referenceid=" . $entriesTable . ".id)";
+            $negativeSubquery = "(SELECT COUNT(*) FROM `" . $voteTable . "` AS v "
+                . "WHERE v.helpful='no' AND v.category='wish' "
+                . "AND v.referenceid=" . $entriesTable . ".id)";
+
             $entries
-                ->select($entries->getTableName() . '.*')
-                ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'positive')
-                ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'negative');
+                ->select($entriesTable . '.*')
+                ->select($positiveSubquery, 'positive')
+                ->select($negativeSubquery, 'negative');
 
             // list sorting
             if ($filters['sortby']) {
@@ -363,8 +379,11 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
                             ->order('proposed', 'desc');
                         break;
                     case 'bonus':
+                        $bonusSubquery = "(SELECT SUM(amount) FROM `#__users_transactions` "
+                            . "WHERE category='wish' AND type='hold' "
+                            . "AND referenceid=" . $entriesTable . ".id)";
                         $entries
-                            ->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)", 'bonus')
+                            ->select($bonusSubquery, 'bonus')
                             ->order('status', 'asc')
                             ->order('bonus', 'desc')
                             ->order('positive', 'desc')

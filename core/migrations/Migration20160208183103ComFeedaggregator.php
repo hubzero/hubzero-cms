@@ -34,7 +34,8 @@ class Migration20160208183103ComFeedaggregator extends Base
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
                 $dt = \Date::of(date("F j, Y, g:i a", $row->created))->toSql();
-                $query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE `id`=" . $this->db->quote($row->id) . ";";
+                $query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE "
+                    . "`id`=" . $this->db->quote($row->id) . ";";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -60,7 +61,8 @@ class Migration20160208183103ComFeedaggregator extends Base
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
                 $dt = \Date::of($row->created)->toUnix();
-                $query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE `id`=" . $this->db->quote($row->id) . ";";
+                $query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE "
+                    . "`id`=" . $this->db->quote($row->id) . ";";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

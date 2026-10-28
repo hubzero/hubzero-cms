@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Google Drive filesystem plugin
- **/
+ *
+ */
 class Migration20170203204306PlgFilesystemGoogledrive extends Base
 {
     /**
@@ -26,7 +27,8 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
             $results = $this->db->loadObjectList();
 
             if (count($results) < 1) {
-                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES ('googledrive','Google Drive')";
+                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES"
+                    . "('googledrive','Google Drive')";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

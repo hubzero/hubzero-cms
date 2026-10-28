@@ -19,6 +19,8 @@ require_once __DIR__ . DS . 'category' . DS . 'archive.php';
 
 /**
  * Group page archive model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Archive extends Obj
 {
@@ -67,7 +69,7 @@ class Archive extends Obj
      * @param   string $key Instance Key
      * @return  object \Components\Groups\Models\PageArchive
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 
@@ -124,7 +126,7 @@ class Archive extends Obj
             case 'tree':
                 $tree = array();
                 if ($results = $this->pages('list', $filters, $clear)) {
-                    $tree = $this->_buildTree($results);
+                    $tree = $this->buildTree($results);
                 }
                 return $tree;
             case 'list':
@@ -169,7 +171,7 @@ class Archive extends Obj
      * @param  [type] $results [description]
      * @return [type]          [description]
      */
-    private function _buildTree($pages)
+    private function buildTree($pages)
     {
         // vars to hold the tree array
         $tmpTree = array();

@@ -175,7 +175,8 @@ class BillBoards extends AdminController
             }
 
             // Build the upload path if it doesn't exist
-            $image_location  = $this->config->get('image_location', 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards');
+            $defaultLocation = 'app' . DS . 'site' . DS . 'media' . DS . 'images' . DS . 'billboards';
+            $image_location  = $this->config->get('image_location', $defaultLocation);
             $uploadDirectory = PATH_ROOT . DS . trim($image_location, DS) . DS;
 
             // Make sure upload directory exists and is writable

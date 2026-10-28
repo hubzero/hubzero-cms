@@ -1,5 +1,6 @@
 <?php
 
+
 /*------------------------------------------------------------------------------
 ** File:        IPv6Net.php
 ** Description: PHP class for an IPv6 subnet.
@@ -343,7 +344,10 @@ class IPv6Net
             if ($this->ipv4 && $this->net_mask_bits != 0) {
                 $this->net_mask_bits += 96;
             }
-            $this->net_mask_long = gmp_mul(gmp_sub(gmp_pow(2, $this->net_mask_bits), 1), gmp_pow(2, 128 - $this->net_mask_bits));
+            $this->net_mask_long = gmp_mul(
+                gmp_sub(gmp_pow(2, $this->net_mask_bits), 1),
+                gmp_pow(2, 128 - $this->net_mask_bits)
+            );
             //          echo gmp_strval($this->net_mask_long, 2)."<br />\n";
             $this->net_mask = $this->inet_gmpton($this->net_mask_long);
         } else {

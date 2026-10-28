@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 use Hubzero\Search\Query;
 use Hubzero\Search\Index;
 use Components\Search\Models\Solr\QueueDB;
@@ -93,15 +90,14 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
                 // Also TODO: use local time?
                 $component->set('indexed', Date::of()->toSql());
                 $component->set('indexed_records', $component->getSearchCount());
-            }
-            // If the indexing process threw an error:
-            elseif (isset($recordsIndexed['error'])) {
+            } elseif (isset($recordsIndexed['error'])) {
+                // If the indexing process threw an error:
                 // TODO: log me
                 $error = $recordsIndexed['error'];
-            }
-            // If the indexing process returns null, or an in-process count,
-            // or it's still running:
-            else {
+            } else {
+                // If the indexing process returns null, or an in-process count,
+                // or it's still running:
+
                 // as in the searchable controller:
                 if (isset($recordsIndexed['offset'])) {
                     $component->set('indexed_records', $recordsIndexed['offset']);
@@ -203,4 +199,4 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
             $index->delete($item->id);
         }
     }
-} //end plgCronSearch
+}

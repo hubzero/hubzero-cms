@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing courses references to user_id that should really be member_id
+  *
  **/
 class Migration20130905195600ComCourses extends Base
 {
@@ -37,7 +39,8 @@ class Migration20130905195600ComCourses extends Base
                             break;
 
                         case 'unit':
-                            $query = "SELECT `course_id` FROM `#__courses_units` AS cu, `#__courses_offerings` AS co WHERE cu.offering_id = co.id AND cu.id = '{$r->scope_id}'";
+                            $query = "SELECT `course_id` FROM `#__courses_units` AS cu, `#__courses_offerings` AS "
+                                . "co WHERE cu.offering_id = co.id AND cu.id = '{$r->scope_id}'";
                             $this->db->setQuery($query);
                             $course_id = $this->db->loadResult();
                             break;
@@ -66,7 +69,10 @@ class Migration20130905195600ComCourses extends Base
             }
         }
 
-        if ($this->db->tableHasField('#__courses_grade_book', 'user_id') && !$this->db->tableHasField('#__courses_grade_book', 'member_id')) {
+        if (
+            $this->db->tableHasField('#__courses_grade_book', 'user_id')
+            && !$this->db->tableHasField('#__courses_grade_book', 'member_id')
+        ) {
             $query = "ALTER TABLE `#__courses_grade_book` CHANGE `user_id` `member_id` INT(11) NOT NULL";
             $this->db->setQuery($query);
             $this->db->query();
@@ -84,7 +90,8 @@ class Migration20130905195600ComCourses extends Base
                 $id = $this->db->loadResult();
 
                 if ($id) {
-                    $query = "UPDATE `#__courses_asset_views` SET `course_id` = '{$id}' WHERE `asset_id` = '{$r->asset_id}'";
+                    $query = "UPDATE `#__courses_asset_views` SET `course_id` = '{$id}' WHERE `asset_id` ="
+                        . "'{$r->asset_id}'";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -144,7 +151,10 @@ class Migration20130905195600ComCourses extends Base
             }
         }
 
-        if ($this->db->tableHasField('#__courses_form_respondents', 'user_id') && !$this->db->tableHasField('#__courses_form_respondents', 'member_id')) {
+        if (
+            $this->db->tableHasField('#__courses_form_respondents', 'user_id')
+            && !$this->db->tableHasField('#__courses_form_respondents', 'member_id')
+        ) {
             $query = "ALTER TABLE `#__courses_form_respondents` CHANGE `user_id` `member_id` INT(11) NOT NULL";
             $this->db->setQuery($query);
             $this->db->query();

@@ -52,7 +52,10 @@ class Helper extends Module
         $database = \App::get('db');
 
         foreach ($queries as $key => $state) {
-            $database->setQuery("SELECT COUNT(*) FROM `#__wishlist_item` WHERE wishlist=" . $database->quote($wishlist) . " AND status=" . $state);
+            $database->setQuery(
+                "SELECT COUNT(*) FROM `#__wishlist_item` WHERE wishlist=" .
+                $database->quote($wishlist) . " AND status=" . $state
+            );
             $this->$key = $database->loadResult();
         }
 

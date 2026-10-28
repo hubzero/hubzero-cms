@@ -359,7 +359,8 @@ class Batchcreate extends AdminController
 
                 // Version properties
                 $item['version'] = new Tables\Version($this->database);
-                $item['version']->title         = isset($node->title) && trim($node->title) ? trim($node->title) : $title;
+                $nodeTitle = isset($node->title) && trim($node->title) ? trim($node->title) : $title;
+                $item['version']->title         = $nodeTitle;
                 $item['version']->abstract      = isset($node->synopsis) ? trim($node->synopsis) : '';
                 $item['version']->description   = isset($node->abstract) ? trim($node->abstract) : '';
                 $item['version']->version_label = isset($node->version) ? trim($node->version) : '1.0';
@@ -464,10 +465,15 @@ class Batchcreate extends AdminController
                 }
             }
             if ($i > 0) {
-                $output = '<p class="success">' . Lang::txt('COM_PUBLICATIONS_BATCH_SUCCESS_CREATED') . ' ' .  $i . ' ' . Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
+                $successMsg = Lang::txt('COM_PUBLICATIONS_BATCH_SUCCESS_CREATED');
+                $recordsMsg = Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S');
+                $output = '<p class="success">' . $successMsg . ' ' . $i . ' ' . $recordsMsg . '</p>';
             }
             if ($i != count($items)) {
-                $output = '<p class="error">' . Lang::txt('COM_PUBLICATIONS_BATCH_FAILED_CREATED') . ' ' .  (count($items) - $i) . ' ' . Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S') . '</p>';
+                $failedMsg = Lang::txt('COM_PUBLICATIONS_BATCH_FAILED_CREATED');
+                $recordsMsg = Lang::txt('COM_PUBLICATIONS_BATCH_RECORDS_S');
+                $failedCount = count($items) - $i;
+                $output = '<p class="error">' . $failedMsg . ' ' . $failedCount . ' ' . $recordsMsg . '</p>';
             }
 
             $output .= $out;

@@ -26,6 +26,7 @@ class Publication extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'publication';
 
     /**
@@ -33,6 +34,7 @@ class Publication extends Base
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_connector = array('path');
 
     /**
@@ -61,7 +63,13 @@ class Publication extends Base
         }
 
         // Log path
-        $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath($pub->id, $pub->version_id, '', 'logs', 0);
+        $configs->logPath = \Components\Publications\Helpers\Html::buildPubPath(
+            $pub->id,
+            $pub->version_id,
+            '',
+            'logs',
+            0
+        );
 
         // replace current attachments?
         $configs->replace = Request::getInt('replace_current', 0, 'post');
@@ -112,25 +120,33 @@ class Publication extends Base
                     continue;
                 }
                 //$publication = new \Components\Publications\Models\Publication($attach->object_id, 'default');
-                $publication = new \Components\Publications\Models\Publication($version->publication_id, $version->version_number);
+                $publication = new \Components\Publications\Models\Publication(
+                    $version->publication_id,
+                    $version->version_number
+                );
 
                 $itemUrl = Route::url($publication->link() . '&v=' . $version->version_number);
 
-                $title = $publication->title ? $publication->title . ' (v' . $version->version_label . ')' : $configs->title;
+                $title = $publication->title
+                    ? $publication->title . ' (v' . $version->version_label . ')'
+                    : $configs->title;
                 $title = $title ? $title : $attach->path;
 
                 $description = '';
                 if ($publication->get('abstract')) {
-                    $description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('abstract')), 300) . "\n";
-                } else if ($publication->get('description')) {
-                    $description = \Hubzero\Utility\Str::truncate(stripslashes($publication->get('description')), 300) . "\n";
+                    $abstract = stripslashes($publication->get('abstract'));
+                    $description = \Hubzero\Utility\Str::truncate($abstract, 300) . "\n";
+                } elseif ($publication->get('description')) {
+                    $desc = stripslashes($publication->get('description'));
+                    $description = \Hubzero\Utility\Str::truncate($desc, 300) . "\n";
                 }
 
                 $pop = Lang::txt('View link') . ' ' . $title;
 
                 $html .= '<li>';
                 $html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-                $html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" rel="noopener" target="_blank" class="link-type">' . $title . '</a></p>';
+                $html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" ';
+                $html .= 'rel="noopener" target="_blank" class="link-type">' . $title . '</a></p>';
                 $html .= '<p>' . $description . '</p>';
                 $html .= '</li>';
             }
@@ -214,7 +230,8 @@ class Publication extends Base
 
             $title = $configs->title ? $configs->title : Lang::txt('View publication');
 
-            $html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, NULL, $title, 'rel="external"', $disabled, $pop);
+            $html = \Components\Publications\Helpers\Html::primaryButton(
+                $class, $url, $label, NULL, $title, 'rel="external"', $disabled, $pop);
         }
         elseif ($role == 2 && $attachments)
         {
@@ -361,7 +378,17 @@ class Publication extends Base
             $title = $row->title;
             $desc  = strip_tags($row->description);
 
-            if ($this->addAttachment($identifier, $title, $pub, $configs, User::get('id'), $elementId, $element, $ordering)) {
+            $attached = $this->addAttachment(
+                $identifier,
+                $title,
+                $pub,
+                $configs,
+                User::get('id'),
+                $elementId,
+                $element,
+                $ordering
+            );
+            if ($attached) {
                 $i++;
             }
         }
@@ -403,17 +430,28 @@ class Publication extends Base
         $version = new \Components\Publications\Tables\Version($db);
         $version->load($id);
 
-        $path = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_publications&id=' . $id), '/');
+        $baseUrl = rtrim(Request::base(), '/') . '/';
+        $pubLink = Route::url('index.php?option=com_publications&id=' . $id);
+        $path = $baseUrl . ltrim($pubLink, '/');
 
         if ($version) {
             $title = $version->title . ' (v' . $version->version_label . ')';
 
-            $path = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_publications&id=' . $version->publication_id . '&v=' . $version->version_number), '/');
+            $versionLink = 'index.php?option=com_publications&id=' . $version->publication_id;
+            $versionLink .= '&v=' . $version->version_number;
+            $path = $baseUrl . ltrim(Route::url($versionLink), '/');
         }
 
         $objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
 
-        if ($objPA->loadElementAttachment($pub->version_id, array('path' => $path), $elementId, $this->_name, $element->role)) {
+        $loaded = $objPA->loadElementAttachment(
+            $pub->version_id,
+            array('path' => $path),
+            $elementId,
+            $this->_name,
+            $element->role
+        );
+        if ($loaded) {
             // Link already attached
             $this->setError(Lang::txt('The publication is already attached'));
             return true;
@@ -554,9 +592,8 @@ class Publication extends Base
             }
         } elseif ($max > 0 && $counter > $max) {
             $status->setError(Lang::txt('Maximum ' . $max . ' attachment(s) allowed'));
-        }
-        // Check allowed formats
-        elseif (!self::checkAllowed($attachments, $allowed)) {
+        } elseif (!self::checkAllowed($attachments, $allowed)) {
+            // Check allowed formats
             if ($counter && !empty($accept)) {
                 $error = Lang::txt('Error: unacceptable URL. URL should start with: ');
                 foreach ($params->allowed_ext as $ext) {

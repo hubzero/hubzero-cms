@@ -45,14 +45,19 @@ class Toolbar extends Facade
             $icon = 'icon-48-' . preg_replace('#\.[^.]*$#', '', $icon);
         }
 
-        $html = '<div class="pagetitle ' . htmlspecialchars(implode(' ', $icons)) . '"><h2>' . $title . '</h2></div>';
-
+        $html = '<div class="pagetitle ' . htmlspecialchars(implode(' ', $icons)) . '
+            "><h2>' . $title . '
+            </h2></div>';
         $app = static::getApplication();
 
         $app->set('ComponentTitle', $html);
 
         if ($app->has('document')) {
-            $app->get('document')->setTitle($app->get('config')->get('sitename') . ' - ' . $app->get('language')->txt('JADMINISTRATION') . ' - ' . $title);
+            $app->get('document')->setTitle($app->get('config')->get('sitename') .
+                ' - ' .
+                $app->get('language')->txt('JADMINISTRATION') .
+                ' - ' .
+                $title);
         }
     }
 
@@ -142,9 +147,18 @@ class Toolbar extends Facade
      * @param   string  $alt        An override for the alt text.
      * @return  void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function media_manager($directory = '', $alt = 'JTOOLBAR_UPLOAD')
     {
-        static::getRoot()->appendButton('Popup', 'upload', $alt, \Route::url('index.php?option=com_media&tmpl=component&task=popupUpload&folder=' . $directory), 800, 520);
+        static::getRoot()->appendButton(
+            'Popup',
+            'upload',
+            $alt,
+            \Hubzero\Facades\Route::url('index.php?option=com_media&tmpl=component&task=popupUpload&folder=' .
+            $directory),
+            800,
+            520
+        );
     }
 
     /**
@@ -415,14 +429,33 @@ class Toolbar extends Facade
      * @param   string  $onClose    Called on close
      * @return  void
      */
-    public static function preferences($component, $height = '550', $width = '875', $alt = 'JToolbar_Options', $path = '', $onClose = '')
-    {
+    public static function preferences(
+        $component,
+        $height = '550',
+        $width = '875',
+        $alt = 'JToolbar_Options',
+        $path = '',
+        $onClose = ''
+    ) {
         $component = urlencode($component == null ? '' : $component);
         $path = urlencode($path);
         $top  = 0;
         $left = 0;
-
-        static::getRoot()->appendButton('Popup', 'options', $alt, \Route::url('index.php?option=com_config&view=component&component=' . $component . '&path=' . $path . '&tmpl=component'), $width, $height, $top, $left, $onClose);
+        static::getRoot()->appendButton(
+            'Popup',
+            'options',
+            $alt,
+            \Hubzero\Facades\Route::url('index.php?option=com_config&view=component&component=' .
+            $component .
+            '&path=' .
+            $path .
+            '&tmpl=component'),
+            $width,
+            $height,
+            $top,
+            $left,
+            $onClose
+        );
     }
 
     /**
@@ -435,8 +468,13 @@ class Toolbar extends Facade
      * @param   boolean  $list  True to allow use of lists
      * @return  void
      */
-    public static function confirm($msg = '', $name = 'delete', $task = 'remove', $alt = 'JTOOLBAR_DELETE', $list = true)
-    {
+    public static function confirm(
+        $msg = '',
+        $name = 'delete',
+        $task = 'remove',
+        $alt = 'JTOOLBAR_DELETE',
+        $list = true
+    ) {
         static::getRoot()->appendButton('Confirm', $msg, $name, $alt, $task, $list);
     }
 }

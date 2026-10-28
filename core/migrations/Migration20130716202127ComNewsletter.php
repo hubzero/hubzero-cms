@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding newletter features
+  *
  **/
 class Migration20130716202127ComNewsletter extends Base
 {
@@ -70,24 +72,114 @@ class Migration20130716202127ComNewsletter extends Base
             $this->db->query();
 
             // insert default templates
-            $query = "INSERT INTO `#__newsletter_templates` (`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, `secondary_title_color`, `secondary_text_color`, `deleted`)
-				       VALUES (0, 'Default HTML Email Template', '<html>\n	<head>\n		<title>{{TITLE}}</title>\n	</head>\n	<body>\n		<table width=\"100%\" border=\"0\" cellspacing=\"0\">\n			<tr>\n				<td align=\"center\">\n					\n					<table width=\"700\" border=\"0\" cellpadding=\"20\" cellspacing=\"0\">\n						<tr class=\"display-browser\">\n							<td colspan=\"2\" style=\"font-size:10px;padding:0 0 5px 0;\" align=\"center\">\n								Email not displaying correctly? <a href=\"{{LINK}}\">View in a Web Browser</a>\n							</td>\n						</tr>\n						<tr>\n							<td colspan=\"2\" style=\"background:#000000;\">\n								<h1 style=\"color:#FFFFFF;\">HUB Campaign Template</h1>\n								<h3 style=\"color:#888888;\">{{TITLE}}</h3>\n							</td>\n						<tr>\n							<td width=\"500\" valign=\"top\" style=\"font-size:14px;color:#222222;border-left:1px solid #000000;\">\n								<span style=\"display:block;color:#CCCCCC;margin-bottom:20px;\">Issue {{ISSUE}}</span>\n								{{PRIMARY_STORIES}}\n							</td>\n							<td width=\"200\" valign=\"top\" style=\"font-size:12px;color:#555555;border-left:1px solid #AAAAAA;border-right:1px solid #000000;\">\n								{{SECONDARY_STORIES}}\n							</td>\n						</tr>\n						<tr>\n							<td colspan=\"2\" align=\"center\" style=\"background:#000000;color:#FFFFFF;\">\n								Copyright &copy; {{COPYRIGHT}} HUB. All Rights reserved.\n							</td>\n						</tr>\n					</table>\n				\n				</td>\n			</tr>\n		</table>\n	</body>\n</html>	', '', '', '', '', 0);";
+            $htmlTemplate = '<html>\n'
+                . '	<head>\n'
+                . '		<title>{{TITLE}}</title>\n'
+                . '	</head>\n'
+                . '	<body>\n'
+                . '		<table width="100%" border="0" cellspacing="0">\n'
+                . '			<tr>\n'
+                . '				<td align="center">\n'
+                . '					\n'
+                . '					<table width="700" border="0" cellpadding="20" cellspacing="0">\n'
+                . '						<tr class="display-browser">\n'
+                . '							<td colspan="2" style="font-size:10px;padding:0 0 5px 0;" align="center">\n'
+                . '								Email not displaying correctly? '
+                . '<a href="{{LINK}}">View in a Web Browser</a>\n'
+                . '							</td>\n'
+                . '						</tr>\n'
+                . '						<tr>\n'
+                . '							<td colspan="2" style="background:#000000;">\n'
+                . '								<h1 style="color:#FFFFFF;">HUB Campaign Template</h1>\n'
+                . '								<h3 style="color:#888888;">{{TITLE}}</h3>\n'
+                . '							</td>\n'
+                . '						<tr>\n'
+                . '							<td width="500" valign="top" '
+                . 'style="font-size:14px;color:#222222;border-left:1px solid #000000;">\n'
+                . '								<span style="display:block;color:#CCCCCC;margin-bottom:20px;">'
+                . 'Issue {{ISSUE}}</span>\n'
+                . '								{{PRIMARY_STORIES}}\n'
+                . '							</td>\n'
+                . '							<td width="200" valign="top" '
+                . 'style="font-size:12px;color:#555555;border-left:1px solid #AAAAAA;'
+                . 'border-right:1px solid #000000;">\n'
+                . '								{{SECONDARY_STORIES}}\n'
+                . '							</td>\n'
+                . '						</tr>\n'
+                . '						<tr>\n'
+                . '							<td colspan="2" align="center" style="background:#000000;color:#FFFFFF;">\n'
+                . '								Copyright &copy; {{COPYRIGHT}} HUB. All Rights reserved.\n'
+                . '							</td>\n'
+                . '						</tr>\n'
+                . '					</table>\n'
+                . '				\n'
+                . '				</td>\n'
+                . '			</tr>\n'
+                . '		</table>\n'
+                . '	</body>\n'
+                . '</html>	';
 
-            $query .= "INSERT INTO `#__newsletter_templates` (`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, `secondary_title_color`, `secondary_text_color`, `deleted`)
-				       VALUES
-					(0, 'Default Plain Text Email Template', 'View In Browser - {{LINK}}\n=====================================\n{{TITLE}} - {{ISSUE}}\n=====================================\n\n{{PRIMARY_STORIES}}\n\n--------------------------------------------------\n\n{{SECONDARY_STORIES}}\n\n--------------------------------------------------\n\nUnsubscribe - {{UNSUBSCRIBE_LINK}}\nCopyright - {{COPYRIGHT}}', NULL, NULL, NULL, NULL, 0);";
+            $query = "INSERT INTO `#__newsletter_templates` "
+                . "(`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, "
+                . "`secondary_title_color`, `secondary_text_color`, `deleted`) "
+                . "VALUES (0, 'Default HTML Email Template', "
+                . $this->db->quote($htmlTemplate) . ", '', '', '', '', 0);";
 
             $this->db->setQuery($query);
             $this->db->query();
 
-            //add newsletter cron jobs
-            $query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
-						SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n'
-						FROM DUAL WHERE NOT EXISTS (SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
+            $plainTemplate = 'View In Browser - {{LINK}}\n'
+                . '=====================================\n'
+                . '{{TITLE}} - {{ISSUE}}\n'
+                . '=====================================\n'
+                . '\n'
+                . '{{PRIMARY_STORIES}}\n'
+                . '\n'
+                . '--------------------------------------------------\n'
+                . '\n'
+                . '{{SECONDARY_STORIES}}\n'
+                . '\n'
+                . '--------------------------------------------------\n'
+                . '\n'
+                . 'Unsubscribe - {{UNSUBSCRIBE_LINK}}\n'
+                . 'Copyright - {{COPYRIGHT}}';
 
-            $query .= "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
-						SELECT 'Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, ''
-						FROM DUAL WHERE NOT EXISTS (SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
+            $query = "INSERT INTO `#__newsletter_templates` "
+                . "(`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, "
+                . "`secondary_title_color`, `secondary_text_color`, `deleted`) "
+                . "VALUES (0, 'Default Plain Text Email Template', "
+                . $this->db->quote($plainTemplate) . ", NULL, NULL, NULL, NULL, 0);";
+
+            $this->db->setQuery($query);
+            $this->db->query();
+
+            // add newsletter cron jobs
+            $params1 = 'newsletter_queue_limit=2\n'
+                . 'support_ticketreminder_severity=all\n'
+                . 'support_ticketreminder_group=\n\n';
+
+            $query = "INSERT INTO `#__cron_jobs` "
+                . "(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, "
+                . "`created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) "
+                . "SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', "
+                . "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', "
+                . "'2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, "
+                . $this->db->quote($params1) . " "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
+
+            $this->db->setQuery($query);
+            $this->db->query();
+
+            $query = "INSERT INTO `#__cron_jobs` "
+                . "(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, "
+                . "`created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) "
+                . "SELECT 'Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', "
+                . "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', "
+                . "'2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, '' "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `title` FROM `#__cron_jobs` "
+                . "WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
 
             $this->db->setQuery($query);
             $this->db->query();

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,6 +24,7 @@ class User extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_members',
     );
@@ -32,6 +34,7 @@ class User extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'user';
 
     /**
@@ -193,9 +196,11 @@ class User extends Base
                 stripslashes((string) $this->_item->get('name')),
                 'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
             );
+            $url = 'index.php?option=' . $this->get('option') . '&active=wishlist&category='
+                . $this->get('category') . '&rid=' . $this->get('referenceid');
             Pathway::append(
                 Lang::txt('Wishlist'),
-                'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
+                $url
             );
         } else {
             Pathway::append(

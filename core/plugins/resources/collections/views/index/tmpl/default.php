@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
 defined('_HZEXEC_') or die();
-
 ?>
-<p><a class="btn primary" href="#collectionForm" id="add-collection"><?php echo Lang::txt('PLG_RESOURCES_COLLECTIONS_ADD', $this->type->type);?></a></p>
+<?php $addLabel = Lang::txt('PLG_RESOURCES_COLLECTIONS_ADD', $this->type->type); ?>
+<p><a class="btn primary"
+    href="#collectionForm"
+    id="add-collection"><?php echo $addLabel; ?></a></p>
 
 <form action="<?php echo Route::url($this->resource->link());?>"  method="post" id="collectionForm" class="full hide">
     <fieldset>
@@ -21,8 +22,14 @@ defined('_HZEXEC_') or die();
                     <label for="pid">
                         <?php echo Lang::txt('PLG_RESOURCES_COLLECTIONS_SELECT', $this->type->type); ?>
                     </label>
+                    <?php
+                    $placeholder = Lang::txt(
+                        'PLG_RESOURCES_COLLECTIONS_SELECT_PLACEHOLDER',
+                        $this->type->type
+                    );
+                    ?>
                     <select name="pid" id="pid">
-                        <option value="" selected><?php echo Lang::txt('PLG_RESOURCES_COLLECTIONS_SELECT_PLACEHOLDER', $this->type->type);?></option>
+                        <option value="" selected><?php echo $placeholder; ?></option>
                         <?php foreach ($this->resources as $entry) : ?>
                             <option value="<?php echo $entry->id;?>"><?php echo $this->escape($entry->title); ?></option>
                         <?php endforeach; ?>

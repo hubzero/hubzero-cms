@@ -127,12 +127,16 @@ class Helper extends Module
         }
 
         // Closed tickets
-        /*$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`, MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(c.created) AS closed
+        /*$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`,
+                MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened,
+                UNIX_TIMESTAMP(c.created) AS closed
                 FROM `#__support_comments` AS c
                 LEFT JOIN `#__support_tickets` AS t ON c.ticket=t.id
                 WHERE t.report!=''
                 AND type=0 AND open=0";*/
-        $sql = "SELECT t.id AS ticket, t.closed, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
+        $sql = "SELECT t.id AS ticket, t.closed, YEAR(t.closed) AS `year`,
+                MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened,
+                UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
 				AND t.type=0 AND t.open=0";

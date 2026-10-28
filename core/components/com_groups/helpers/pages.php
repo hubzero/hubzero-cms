@@ -484,7 +484,10 @@ class Pages
         $db = \App::get('db');
 
         // get person who has page checkedout
-        $sql = "SELECT * FROM `#__xgroups_pages_checkout` WHERE `userid`<>" . User::get('id') . " AND `pageid`=" . $db->quote((int) $pageid) . " ORDER BY `when` LIMIT 1";
+        $sql = "SELECT * FROM `#__xgroups_pages_checkout`"
+            . " WHERE `userid`<>" . User::get('id')
+            . " AND `pageid`=" . $db->quote((int) $pageid)
+            . " ORDER BY `when` LIMIT 1";
         $db->setQuery($sql);
         return $db->loadObject();
     }
@@ -504,7 +507,10 @@ class Pages
 
         // mark page as checked out
         $sql = "INSERT INTO `#__xgroups_pages_checkout` (`pageid`,`userid`,`when`)
-			    VALUES(" . $db->quote((int) $pageid) . "," . $db->quote((int) User::get('id')) . ", " . $db->quote(Date::toSql()) . ");";
+			    VALUES("
+            . $db->quote((int) $pageid) . ","
+            . $db->quote((int) User::get('id')) . ", "
+            . $db->quote(Date::toSql()) . ");";
         $db->setQuery($sql);
         $db->query();
     }
@@ -596,7 +602,8 @@ class Pages
             $layout = ($version === null) ? '_view_notapproved' : '_view_unpublished';
 
             // show unpublished or no version layout
-            if ($authorized == 'manager' || Permissions::userHasPermissionForGroupAction($group, 'group.pages')) {
+            $hasPagePermission = Permissions::userHasPermissionForGroupAction($group, 'group.pages');
+            if ($authorized == 'manager' || $hasPagePermission) {
                 $view->setLayout($layout);
                 $view->group   = $group;
                 $view->page    = $page;
@@ -624,7 +631,9 @@ class Pages
 
         // parse old wiki content
         //$content = self::parseWiki($group, $version->get('content'), $fullparse = true);
-        $content = $version->get('content', '<p class="warning">' . Lang::txt('COM_GROUPS_PAGES_PAGE_NO_CONTENT') . '</p>');
+        $noContentMsg = '<p class="warning">'
+            . Lang::txt('COM_GROUPS_PAGES_PAGE_NO_CONTENT') . '</p>';
+        $content = $version->get('content', $noContentMsg);
 
         // parse php tags and modules
         $content = self::parse($group, $page, $content);
@@ -656,7 +665,7 @@ class Pages
     public static function parseWiki($group, $content, $fullparse = true)
     {
         // do we have wiki content that needs parsing?
-        if (self::_isWiki($content)) {
+        if (self::isWiki($content)) {
             // create path
             $path = Component::params('com_groups')->get('uploadpath');
 
@@ -689,7 +698,7 @@ class Pages
      * @param  [type]  $content [description]
      * @return boolean          [description]
      */
-    private static function _isWiki($content)
+    private static function isWiki($content)
     {
         // trim content
         $content = trim($content);
@@ -705,12 +714,17 @@ class Pages
         }
 
         // If wiki bold syntax is found (highly unlikely HTML content will contain this string)
-        if (preg_match('/\'\'\'(.*?)\'\'\'/i', $content) || preg_match('/===(.*?)===/i', $content)) {
+        if (
+            preg_match('/\'\'\'(.*?)\'\'\'/i', $content)
+            || preg_match('/===(.*?)===/i', $content)
+        ) {
             return true;
         }
 
         // If no HTML tags found ...
-        if (!preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content)) {
+        $htmlPattern = '/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>'
+            . '|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is';
+        if (!preg_match($htmlPattern, $content)) {
             return true;
         }
         return false;

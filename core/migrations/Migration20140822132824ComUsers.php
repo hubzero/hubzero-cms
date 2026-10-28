@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for putting group-less members into the default group
+  *
  **/
 class Migration20140822132824ComUsers extends Base
 {
@@ -34,7 +36,10 @@ class Migration20140822132824ComUsers extends Base
             $group_id = $this->getParams('com_users')->get('new_usertype');
 
             if (!isset($group_id) || !is_numeric($group_id)) {
-                $this->setError('Failed to retrieve a proper new user type. Please ensure one has been set.', 'warning');
+                $this->setError(
+                    'Failed to retrieve a proper new user type. Please ensure one has been set.',
+                    'warning'
+                );
                 return;
             }
 

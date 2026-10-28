@@ -57,7 +57,10 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias) . " AND event_id=" . $this->_db->quote(intval($event_id)));
+        $this->_db->setQuery(
+            "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->quote($alias)
+                . " AND event_id=" . $this->_db->quote(intval($event_id))
+        );
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
         } else {
@@ -77,7 +80,10 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC LIMIT 1");
+        $this->_db->setQuery(
+            "SELECT * FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id))
+                . " ORDER BY ordering ASC LIMIT 1"
+        );
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
         } else {
@@ -97,7 +103,10 @@ class Page extends Table
         if ($event_id === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT title, alias, id FROM $this->_tbl WHERE event_id=" . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC");
+        $this->_db->setQuery(
+            "SELECT title, alias, id FROM $this->_tbl WHERE event_id="
+                . $this->_db->quote(intval($event_id)) . " ORDER BY ordering ASC"
+        );
         return $this->_db->loadObjectList();
     }
 
@@ -131,12 +140,16 @@ class Page extends Table
         switch ($move) {
             case 'orderup':
             case 'orderuppage':
-                $sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id) . " AND ordering < " . intval($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+                $sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id)
+                    . " AND ordering < " . intval($this->ordering)
+                    . " ORDER BY ordering DESC LIMIT 1";
                 break;
 
             case 'orderdown':
             case 'orderdownpage':
-                $sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id) . " AND ordering > " . intval($this->ordering) . " ORDER BY ordering LIMIT 1";
+                $sql = "SELECT * FROM $this->_tbl WHERE event_id=" . intval($this->event_id)
+                    . " AND ordering > " . intval($this->ordering)
+                    . " ORDER BY ordering LIMIT 1";
                 break;
         }
         $this->_db->setQuery($sql);

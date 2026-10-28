@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating form info to correspond to code changes
- **/
+ *
+ */
 class Migration20130830175756ComCourses extends Base
 {
     /**
@@ -22,8 +24,10 @@ class Migration20130830175756ComCourses extends Base
     public function up()
     {
         $queries   = array();
-        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 30, 50) WHERE `type` = 'form' AND `url` LIKE '/courses/form/complete?crumb=%'";
-        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 22) WHERE `type` = 'form' AND `url` LIKE '/courses/form/layout/%'";
+        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 30, 50) "
+            . "WHERE `type` = 'form' AND `url` LIKE '/courses/form/complete?crumb=%'";
+        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 22) "
+            . "WHERE `type` = 'form' AND `url` LIKE '/courses/form/layout/%'";
 
         foreach ($queries as $query) {
             $this->db->setQuery($query);

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for for adding time plugin for support
- **/
+ *
+ */
 class Migration20140505160720PlgSupportTime extends Base
 {
     /**

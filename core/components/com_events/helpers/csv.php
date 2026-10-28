@@ -101,7 +101,10 @@ class Csv
     {
         $database = \App::get('db');
         $ee = new \Components\Events\Tables\Event($database);
-        $fields = array('name', 'registered', 'affiliation', 'email', 'telephone', 'arrival', 'departure', 'disability', 'dietary', 'dinner');
+        $fields = array(
+            'name', 'registered', 'affiliation', 'email', 'telephone',
+            'arrival', 'departure', 'disability', 'dietary', 'dinner'
+        );
 
         header('Content-type: text/comma-separated-values');
         header('Content-disposition: attachment; filename="eventrsvp.csv"');

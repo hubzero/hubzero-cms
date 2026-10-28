@@ -1,13 +1,12 @@
 <?php
 
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Support plugin class for transfer
@@ -19,6 +18,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -48,11 +48,11 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
         }
 
         // Collectors
-        $author    = '';
-        $subject   = '';
-        $body      = '';
-        $tags      = '';
-        $owner     = ''; // Name of group owning the item
+        $author = '';
+        $subject = '';
+        $body = '';
+        $tags = '';
+        $owner = ''; // Name of group owning the item
         $anonymous = 0;
 
         // get needed scripts
@@ -70,10 +70,10 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
                 $row = \Components\Support\Models\Ticket::oneOrNew($from_id);
 
                 if ($row->get('id')) {
-                    $author  = $row->get('login');
+                    $author = $row->get('login');
                     $subject = \Hubzero\Utility\Str::truncate($row->get('report'), 200); // max 200 characters
-                    $body    = $row->get('summary');
-                    $owner   = $row->get('group');
+                    $body = $row->get('summary');
+                    $owner = $row->get('group');
 
                     // If we are de-activating original item
                     if ($deactivate) {
@@ -93,10 +93,10 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
                 $row = \Components\Answers\Models\Question::oneOrNew($from_id);
 
                 if ($row->get('id')) {
-                    $author     = $row->get('created_by');
-                    $subject    = \Hubzero\Utility\Str::truncate($row->get('subject'), 200); // max 200 characters
-                    $body       = $row->get('question');
-                    $anonymous  = $row->get('anonymous');
+                    $author = $row->get('created_by');
+                    $subject = \Hubzero\Utility\Str::truncate($row->get('subject'), 200); // max 200 characters
+                    $body = $row->get('question');
+                    $anonymous = $row->get('anonymous');
 
                     // If we are de-activating original item
                     if ($deactivate) {
@@ -116,9 +116,9 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
                 $row = \Components\Wishlist\Models\Wish::oneOrFail($from_id);
 
                 if ($row->get('id')) {
-                    $author    = $row->get('proposed_by');
-                    $subject   = \Hubzero\Utility\Str::truncate($row->get('subject'), 200); // max 200 characters
-                    $body      = $row->get('about');
+                    $author = $row->get('proposed_by');
+                    $subject = \Hubzero\Utility\Str::truncate($row->get('subject'), 200); // max 200 characters
+                    $body = $row->get('about');
                     $anonymous = $row->get('anonymous');
 
                     // If we are de-activating original item
@@ -135,10 +135,12 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
                     // Get owner
                     $nativegroups = $wishlist->getOwnergroups($admingroup, 1);
-                    $owner = (count($nativegroups) > 0 && $nativegroups[0] != $admingroup) ? $nativegroups[0] : ''; // tool group
+                    $owner = (count($nativegroups) > 0 && $nativegroups[0] != $admingroup)
+                        ? $nativegroups[0]
+                        : ''; // tool group
 
                     if (isset($wishlist->resource) && isset($wishlist->resource->alias)) {
-                        $tags  = $wishlist->resource->type == 7 ? 'tool:' : 'resource:';
+                        $tags = $wishlist->resource->type == 7 ? 'tool:' : 'resource:';
                         $tags .= $wishlist->resource->alias ? $wishlist->resource->alias : $wishlist->referenceid;
                     }
                 } else {
@@ -295,7 +297,11 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
         }
 
         $database = App::get('db');
-        $database->setQuery('SELECT t.objectid FROM `#__tags_object` as t LEFT JOIN `#__tags` as tt ON tt.id = t.tagid WHERE t.tbl="resources" AND (tt.raw_tag=' . $database->quote($tag) . ' OR tt.tag=' . $database->quote($tag) . ')');
+        $database->setQuery(
+            'SELECT t.objectid FROM `#__tags_object` as t LEFT JOIN `#__tags` as tt ON tt.id = t.tagid '
+            . 'WHERE t.tbl="resources" AND (tt.raw_tag=' . $database->quote($tag)
+            . ' OR tt.tag=' . $database->quote($tag) . ')'
+        );
         return $database->loadResult();
     }
 
@@ -313,7 +319,10 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
         }
 
         $database = App::get('db');
-        $database->setQuery('SELECT r.id FROM `#__resources` as r LEFT JOIN `#__xgroups` as g ON g.cn = r.alias WHERE g.cn=' . $database->quote($groupname));
+        $database->setQuery(
+            'SELECT r.id FROM `#__resources` as r LEFT JOIN `#__xgroups` as g ON g.cn = r.alias '
+            . 'WHERE g.cn=' . $database->quote($groupname)
+        );
         return $database->loadResult();
     }
 }

@@ -30,7 +30,7 @@ class Router extends Base
         if (isset($query['task'])) {
             if ($query['task'] == 'article') {
                 unset($query['task']);
-            } else if ($query['task'] == 'vote') {
+            } elseif ($query['task'] == 'vote') {
                 $segments[] = $query['task'];
                 unset($query['task']);
             }

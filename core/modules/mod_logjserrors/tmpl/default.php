@@ -48,7 +48,13 @@ jQuery(function($) {
                     else if (k == 'plugins') {
                         var plg = [];
                         for (var idx = 0; idx < val[k].length; ++idx) {
-                            plg.push(val[k][idx].name + ' ' + val[k][idx].description + (val[k][idx].version ? ' ' + val[k][idx].version : ''));
+                            plg.push(
+                            val[k][idx].name + ' '
+                            + val[k][idx].description
+                            + (val[k][idx].version
+                                ? ' ' + val[k][idx].version
+                                : '')
+                        );
                         }
                         pod[k] = plg;
                     }

@@ -28,7 +28,7 @@ class Css extends AbstractHelper
      */
     public function __invoke($stylesheet = '', $extension = null, $element = null)
     {
-        $extension = $extension ?: $this->_extension();
+        $extension = $extension ?: $this->extension();
 
         if ($element) {
             $extension = 'plg_' . $extension . '_' . $element;
@@ -53,7 +53,7 @@ class Css extends AbstractHelper
      *
      * @return  string
      */
-    private function _extension()
+    private function extension()
     {
         if ($this->getView() instanceof PluginView) {
             return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();

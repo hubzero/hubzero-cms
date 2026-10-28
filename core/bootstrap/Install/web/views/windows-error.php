@@ -11,7 +11,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
 ?>
 <!DOCTYPE html>
 <html lang="en">

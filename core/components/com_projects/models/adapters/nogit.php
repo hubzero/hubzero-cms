@@ -25,14 +25,14 @@ class Nogit extends Models\Adapter
      *
      * @var  string
      */
-    private $_name = 'nogit';
+    private $name = 'nogit';
 
     /**
      * Full path to repository
      *
      * @var  string
      */
-    private $_path = null;
+    private $path = null;
 
     /**
      * Constructor
@@ -47,8 +47,8 @@ class Nogit extends Models\Adapter
         $configs = Component::params('com_projects');
 
         // Set repo path
-        $this->_path = $path;
-        $this->_nogit = new Helpers\Nogit($this->_path);
+        $this->path = $path;
+        $this->_nogit = new Helpers\Nogit($this->path);
 
         $this->set('remote', $remote);
     }
@@ -61,7 +61,7 @@ class Nogit extends Models\Adapter
      */
     public function count($params = array())
     {
-        $cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
+        $cmd  = 'cd ' . escapeshellarg($this->path) . ' && ';
         $cmd .= 'find . \( -path "./.git" -or -name ".gitignore" \) -prune -o -type f -print | wc -l';
         return shell_exec($cmd);
     }
@@ -107,7 +107,7 @@ class Nogit extends Models\Adapter
                 continue;
             }
             // Load basic file metadata
-            $file = new Models\File($item, $this->_path);
+            $file = new Models\File($item, $this->path);
             if ($this->_shouldSkipFile($file)) {
                 continue;
             }
@@ -144,6 +144,13 @@ class Nogit extends Models\Adapter
         return $this->_list($items, $params);
     }
 
+    /**
+     * Check if file should be skipped
+     *
+     * @param   object  $file  Models\File
+     * @return  bool
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _shouldSkipFile($file)
     {
         $fileName = $file->get('name');
@@ -191,6 +198,7 @@ class Nogit extends Models\Adapter
      * @param   array  $folders
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _list($items, $params, $folders = array())
     {
         $dirPath  = isset($params['subdir']) ? $params['subdir'] : null;
@@ -270,7 +278,9 @@ class Nogit extends Models\Adapter
             return false;
         }
 
-        $this->_nogit->call("mv ./" . escapeshellarg($fromFile->get('localPath')) . " ./" . escapeshellarg($toFile->get('localPath')));
+        $fromPath = escapeshellarg($fromFile->get('localPath'));
+        $toPath = escapeshellarg($toFile->get('localPath'));
+        $this->_nogit->call("mv ./" . $fromPath . " ./" . $toPath);
         return true;
     }
 
@@ -352,6 +362,7 @@ class Nogit extends Models\Adapter
      * @param   string  $property
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _file($file, $dirPath, $property = null)
     {
         if (isset($this->_files[$file->get('localPath')])) {
@@ -412,7 +423,7 @@ class Nogit extends Models\Adapter
      */
     public function getDiskUsage($params = array())
     {
-        $path    = isset($params['path']) ? $params['path'] : $this->_path;
+        $path    = isset($params['path']) ? $params['path'] : $this->path;
 
         $used = 0;
         if ($path && is_dir($path)) {

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,7 +36,8 @@ class Migration20141028094100ComPublications extends Base
             && $this->db->tableHasField('#__publication_versions', 'description')
             && !$this->db->tableHasKey('#__publication_versions', 'ftidx_abstract_description')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT INDEX `ftidx_abstract_description` (`abstract` ASC, `description` ASC)";
+            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT INDEX `ftidx_abstract_description` "
+                . "(`abstract` ASC, `description` ASC)";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -46,7 +48,8 @@ class Migration20141028094100ComPublications extends Base
             && $this->db->tableHasField('#__publication_versions', 'abstract')
             && $this->db->tableHasField('#__publication_versions', 'description')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT INDEX `ftidx_title_abstract_description` (`title` ASC, `abstract` ASC, `description` ASC)";
+            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT INDEX `ftidx_title_abstract_description` "
+                . "(`title` ASC, `abstract` ASC, `description` ASC)";
             $this->db->setQuery($query);
             $this->db->query();
         }

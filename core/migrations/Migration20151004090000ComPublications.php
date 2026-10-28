@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +27,7 @@ class Migration20151004090000ComPublications extends Base
 
             $queries[] = "INSERT INTO `#__publication_blocks` (`block`, `label`, `title`, `status`,
 						 `minimum`, `maximum`, `ordering`, `params`, `manifest`)
-				SELECT 'citations','Citations','Publication Citations',1,'default=1',0,1,7,''
+				SELECT 'citations','Citations','Publication Citations',1,1,0,7,'',''
 				FROM DUAL WHERE NOT EXISTS (SELECT `block` FROM `#__publication_blocks` WHERE `block` = 'citations');";
 
             $queries[] = "UPDATE `#__publication_blocks` SET ordering='8' WHERE block='notes';\n";

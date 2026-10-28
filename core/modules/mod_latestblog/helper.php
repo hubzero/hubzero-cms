@@ -43,7 +43,8 @@ class Helper extends Module
             'access'   => User::getAuthorisedViewLevels()
         );
         if ($filters['scope'] == 'both' || $filters['scope'] == 'group') {
-            $filters['limit'] = ($filters['limit'] * 5);  // Since some groups May have private entries, we need to up the limit to try and catch more
+            // Since some groups May have private entries, we need to up the limit to try and catch more
+            $filters['limit'] = ($filters['limit'] * 5);
         }
         if ($filters['scope'] == 'both') {
             $filters['scope'] = '';

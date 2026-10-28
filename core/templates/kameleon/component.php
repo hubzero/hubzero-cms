@@ -10,7 +10,10 @@
 defined('_HZEXEC_') or die();
 
 // Load base styles
-$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css?v=' . filemtime(__DIR__ . '/css/component.css'));
+$this->addStyleSheet(
+    $this->baseurl . '/templates/' . $this->template
+        . '/css/component.css?v=' . filemtime(__DIR__ . '/css/component.css')
+);
 
 // Load theme
 $theme = $this->params->get('theme');
@@ -19,7 +22,10 @@ if ($theme == 'custom') {
     $this->addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
 }
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js?v=' . filemtime(__DIR__ . '/js/component.js'));
+$this->addScript(
+    $this->baseurl . '/templates/' . $this->template
+        . '/js/component.js?v=' . filemtime(__DIR__ . '/js/component.js')
+);
 
 $browser = new \Hubzero\Browser\Detector();
 
@@ -32,7 +38,8 @@ $cls = array(
 );
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
+    class="<?php echo implode(' ', $cls); ?>">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <jdoc:include type="head" />

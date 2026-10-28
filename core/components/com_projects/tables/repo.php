@@ -51,7 +51,9 @@ class Repo extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM $this->_tbl WHERE project_id=" . $this->_db->quote($projectid) . " AND name=" . $this->_db->quote($name) . " LIMIT 1";
+        $query  = "SELECT * FROM $this->_tbl "
+            . "WHERE project_id=" . $this->_db->quote($projectid)
+            . " AND name=" . $this->_db->quote($name) . " LIMIT 1";
 
         $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {

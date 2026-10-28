@@ -1,5 +1,8 @@
 <?php
 
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * Allow saving of hipaa compliance checkbox
  */
-class plgProjectsHipaacompliant extends \Hubzero\Plugin\Plugin
+class PlgProjectsHipaacompliant extends \Hubzero\Plugin\Plugin
 {
     /**
      * Event call to return data for a specific project
@@ -38,8 +41,8 @@ class plgProjectsHipaacompliant extends \Hubzero\Plugin\Plugin
         }
 
         $compliant = Request::getInt('hipaacompliant', 0, 'post');
-        $pid       = Request::getInt('pid', 0);
-        $version   = Request::getVar('version', 'dev');
+        $pid = Request::getInt('pid', 0);
+        $version = Request::getVar('version', 'dev');
 
         if ($pid && $version) {
             // Load publication
@@ -67,13 +70,16 @@ class plgProjectsHipaacompliant extends \Hubzero\Plugin\Plugin
                 if (!$pub->group_owner || !in_array($pub->access, array(4, 5))) {
                     App::redirect(
                         Route::url($pub->link('editbase')),
-                        Lang::txt('If materials are marked as containing potentially sensitive data, the Publication must be private to a group.'),
+                        Lang::txt(
+                            'If materials are marked as containing potentially sensitive data, '
+                            . 'the Publication must be private to a group.'
+                        ),
                         'warning'
                     );
                 }
             }
 
-            $params = new \Hubzero\Config\Registry($pub->version->params);
+            $params = new Registry($pub->version->params);
             $params->set('hipaacompliant', $compliant);
 
             $pub->version->params = $params->toString();

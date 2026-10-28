@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -89,8 +90,10 @@ class Serials extends AdminController
     public function cancelTask()
     {
         // Set the redirect
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0), false)
+            Route::url($url, false)
         );
     }
 
@@ -118,8 +121,10 @@ class Serials extends AdminController
             $type = $deletedMessage->type;
         }
 
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=dispaly&sId=' . $sId;
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&sId=' . $sId, false),
+            Route::url($url, false),
             $msg,
             $type
         );
@@ -219,7 +224,9 @@ class Serials extends AdminController
                 $this->view->setError('Could not read the file.');
             }
         } else {
-            $this->view->setError('No file or bad file was uploaded. Please make sure you upload the CSV formated file.');
+            $this->view->setError(
+                'No file or bad file was uploaded. Please make sure you upload the CSV formated file.'
+            );
         }
 
         // Output the HTML

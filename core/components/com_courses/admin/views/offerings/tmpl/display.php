@@ -162,19 +162,19 @@ Html::behavior('tooltip');
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
                             </span>
                         </a>
-                        <?php } else if ($row->get('state') == 2) { ?>
+                        <?php } elseif ($row->get('state') == 2) { ?>
                         <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
                             <span class="state trash">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
                             </span>
                         </a>
-                        <?php } else if ($row->get('state') == 3) { ?>
+                        <?php } elseif ($row->get('state') == 3) { ?>
                         <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
                             <span class="state pending">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
                             </span>
                         </a>
-                        <?php } else if ($row->get('state') == 0) { ?>
+                        <?php } elseif ($row->get('state') == 0) { ?>
                         <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
                             <span class="state unpublish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>

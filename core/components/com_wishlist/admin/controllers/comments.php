@@ -325,7 +325,10 @@ class Comments extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            Notify::error($state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+            $msg = $state
+                ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH')
+                : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH');
+            Notify::error($msg);
             return $this->cancelTask();
         }
 
@@ -412,8 +415,8 @@ class Comments extends AdminController
         $wish = Request::getInt('wish', 0);
 
         // Set the redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false)
-        );
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller . '&wish=' . $wish;
+        App::redirect(Route::url($url, false));
     }
 }

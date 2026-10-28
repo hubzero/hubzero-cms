@@ -50,8 +50,14 @@ $link = $base . '/' . trim($sef, '/');
     <table class="tbl-message" width="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
-                <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-                    <?php echo Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBERS_EXPLANATION', $link, $this->member->get('name') . ' (' . $this->member->get('username') . ')'); ?>
+                <td align="left"
+                    valign="bottom"
+                    style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+                    <?php echo Lang::txt(
+                        'PLG_CRON_RESOURCES_EMAIL_MEMBERS_EXPLANATION',
+                        $link,
+                        $this->member->get('name') . ' (' . $this->member->get('username') . ')'
+                    ); ?>
                 </td>
             </tr>
         </tbody>
@@ -69,10 +75,12 @@ $link = $base . '/' . trim($sef, '/');
     <!-- End Spacer -->
 
 <?php foreach ($this->rows as $row) { ?>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; font-size: 0.9em; line-height: 1.6em;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="border-collapse: collapse; font-size: 0.9em; line-height: 1.6em;">
         <tbody>
             <tr>
-                <td style="padding: 5px; font-size: 1.2em; font-weight: bold; text-align: left; vertical-align: middle;" align="left">
+                <td style="padding: 5px; font-size: 1.2em; font-weight: bold; text-align: left; vertical-align: middle;"
+                    align="left">
                     <a href="<?php echo $base . Route::urlForClient('site', $row->link()); ?>">
                         <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                     </a>
@@ -108,13 +116,16 @@ $link = $base . '/' . trim($sef, '/');
                     $content = '';
                     if ($row->get('introtext')) {
                         $content = $row->get('introtext');
-                    } else if ($row->get('fulltxt')) {
+                    } elseif ($row->get('fulltxt')) {
                         $content = $row->get('fulltxt');
                         $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
                         $content = trim($content);
                     }
 
-                    echo \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
+                    echo \Hubzero\Utility\Str::truncate(
+                        strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))),
+                        300
+                    );
                     ?>
                 </td>
             </tr>
@@ -136,7 +147,8 @@ $link = $base . '/' . trim($sef, '/');
     <table class="tbl-message" width="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
-                <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px;">
+                <td align="left" valign="bottom"
+                    style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px;">
                     <a href="<?php echo $base . Route::urlForClient('site', 'index.php?option=com_resources'); ?>">
                         <?php echo Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBERS_MORE', Config::get('sitename')); ?>
                     </a>

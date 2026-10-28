@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing Geocode - Oiorest plugin
+  *
  **/
 class Migration20250125152250PlgGeocodeOiorest extends Base
 {

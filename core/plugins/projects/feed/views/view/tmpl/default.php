@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +26,10 @@ $this->css()
         ->display();
 ?>
 
-<div id="latest_activity" class="infofeed" data-frequency="60" data-base="<?php echo Route::url($this->model->link() . '&active=feed'); ?>">
+<div id="latest_activity"
+    class="infofeed"
+    data-frequency="60"
+    data-base="<?php echo Route::url($this->model->link() . '&active=feed'); ?>">
     <?php
     // Display item list
     $this->view('default', 'activity')

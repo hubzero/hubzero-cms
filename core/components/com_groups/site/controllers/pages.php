@@ -572,11 +572,9 @@ class Pages extends Base
                 $child->set('state', $state);
                 $child->store(false);
             }
-        }
-
-        // if deleting lets set the first childs parent
-        // to be the deleted pages parents
-        else if ($state == 2) {
+        } elseif ($state == 2) {
+            // if deleting lets set the first childs parent
+            // to be the deleted pages parents
             // update the first childs parent
             if ($firstChild = $children->first()) {
                 $firstChild->set('parent', $page->get('parent'));

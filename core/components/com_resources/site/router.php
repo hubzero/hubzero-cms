@@ -26,7 +26,11 @@ class Router extends Base
     {
         $segments = array();
 
-        if (!empty($query['task']) && in_array($query['task'], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder', 'access'))) {
+        $createTasks = array(
+            'new', 'draft', 'start', 'retract', 'delete',
+            'discard', 'remove', 'reorder', 'access'
+        );
+        if (!empty($query['task']) && in_array($query['task'], $createTasks)) {
             if (!empty($query['task'])) {
                 if ($query['task'] == 'start') {
                     $query['task'] = 'draft';
@@ -82,11 +86,16 @@ class Router extends Base
             return $vars;
         }
 
+        $createTasks = array(
+            'new', 'draft', 'start', 'retract', 'delete',
+            'discard', 'remove', 'reorder', 'access'
+        );
+
         if (is_numeric($segments[0])) {
             $vars['id'] = $segments[0];
         } elseif (in_array($segments[0], array('browse', 'license', 'sourcecode', 'plugin'))) {
             $vars['task'] = $segments[0];
-        } elseif (in_array($segments[0], array('new', 'draft', 'start', 'retract', 'delete', 'discard', 'remove', 'reorder', 'access'))) {
+        } elseif (in_array($segments[0], $createTasks)) {
             $vars['task'] = $segments[0];
             $vars['controller'] = 'create';
             if (isset($segments[1])) {

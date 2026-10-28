@@ -64,7 +64,11 @@ class JobApplication extends Table
         $query  = "SELECT A.* FROM `$this->_tbl` as A ";
         $query .= $jid ? "" : " JOIN `#__jobs_openings` as J ON J.id=A.jid ";
         $query .= " WHERE A.uid=" . $this->_db->quote($uid) . " ";
-        $query .=  $jid ? "AND A.jid=" . $this->_db->quote($jid) . " " : "AND J.code=" . $this->_db->quote($jobcode) . " ";
+        if ($jid) {
+            $query .= "AND A.jid=" . $this->_db->quote($jid) . " ";
+        } else {
+            $query .= "AND J.code=" . $this->_db->quote($jobcode) . " ";
+        }
         $query .= " LIMIT 1";
         $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {

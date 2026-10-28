@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for related content
@@ -19,6 +17,7 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -65,8 +64,16 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         // Build the query that checks topic pages
-        $sql1 = "SELECT v.id, v.page_id AS pageid, MAX(v.version) AS version, w.title, w.pagename AS alias, v.pagetext AS abstract,
-					NULL AS category, NULL AS published, NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'wiki' AS class, 'Topic' AS section
+        $sql1 = "SELECT v.id,
+                v.page_id AS pageid,
+                MAX(v.version) AS version,
+                w.title,
+                w.pagename AS alias,
+                v.pagetext AS abstract,
+					NULL AS category,
+                 
+                    NULL AS published, 
+                    NULL AS publish_up, w.scope, w.rating, w.times_rated, w.ranking, 'wiki' AS class, 'Topic' AS section
 				FROM `#__wiki_pages` AS w
 				INNER JOIN `#__wiki_versions` AS v ON w.id=v.page_id
 				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
@@ -92,9 +99,15 @@ class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
                 $c = implode(',', $cns);
 
                 if (!empty($groups)) {
-                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" . $database->quote('group') . " AND w.scope_id IN ($g)) OR w.created_by=" . $database->quote(User::get('id')) . "))) ";
+                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND ((w.scope=" .
+                    $database->quote('group') .
+                    " AND w.scope_id IN ($g)) OR w.created_by=" .
+                    $database->quote(User::get('id')) .
+                    "))) ";
                 } else {
-                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND w.created_by=" . $database->quote(User::get('id')) . ")) ";
+                    $sql1 .= "AND (w.access!=1 OR (w.access=1 AND w.created_by=" .
+                    $database->quote(User::get('id')) .
+                    ")) ";
                 }
             }
         } else {

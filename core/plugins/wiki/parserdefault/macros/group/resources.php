@@ -33,12 +33,13 @@ class Resources extends GroupMacro
     {
         $txt = array();
         $txt['html']  = '<p>Displays group resources.</p>';
-        $txt['html'] .= '<p>Examples:</p>
-							<ul>
-								<li><code>[[Group.Resources()]]</code></li>
-								<li><code>[[Group.Resources(3)]]</code> - Displays the 3 latest group resources</li>
-								<li><code>[[Group.Resources(type=teachingmaterials, 5)]]</code> - Displays the 5 latest group teachingmaterials resources.</li>
-							</ul>';
+        $txt['html'] .= '<p>Examples:</p>'
+            . '<ul>'
+            . '<li><code>[[Group.Resources()]]</code></li>'
+            . '<li><code>[[Group.Resources(3)]]</code> - Displays the 3 latest group resources</li>'
+            . '<li><code>[[Group.Resources(type=teachingmaterials, 5)]]</code> '
+            . '- Displays the 5 latest group teachingmaterials resources.</li>'
+            . '</ul>';
         return $txt['html'];
     }
 
@@ -58,23 +59,32 @@ class Resources extends GroupMacro
         $args = $this->getArgs();
 
         // get details
-        $type  = $this->_getType($args, 'all');
-        $limit = $this->_getLimit($args, 5);
-        $class = $this->_getClass($args);
+        $type  = $this->getType($args, 'all');
+        $limit = $this->getLimit($args, 5);
+        $class = $this->getClass($args);
 
         require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
         //get resources
-        $groupResources = $this->_getResources($type, $limit);
+        $groupResources = $this->getResources($type, $limit);
 
         $html = '<div class="resources ' . $class . '">';
 
         foreach ($groupResources as $resource) {
             $resourceLink     = \Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
-            $resourceTypeLink = \Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=resources&area=' . $resource->type->get('alias'));
+            $resourceTypeLink = \Route::url('index
+                . php?option=com_groups&cn='
+                . $this->group->get('cn')
+                . '&active=resources&area='
+                . $resource->type->get('alias'));
 
             $html .= '<a href="' . $resourceLink . '"><strong>' . $resource->get('title') . '</strong></a>';
-            $html .= '<p class="category"> in: <a href="' . $resourceTypeLink . '">' . $resource->type->get('type') . '</a></p>';
+            $html
+                .= '<p class="category"> in: <a href="'
+                . $resourceTypeLink
+                . '">'
+                . $resource->type->get('type')
+                . '</a></p>';
             $html .= '<p>' . \Hubzero\Utility\Str::truncate($resource->get('introtext')) . '</p>';
         }
 
@@ -90,7 +100,7 @@ class Resources extends GroupMacro
      * @param   integer  $limit
      * @return  array
      */
-    private function _getResources($type = 'all', $limit = 5)
+    private function getResources($type = 'all', $limit = 5)
     {
         // Build query
         $filters = array();
@@ -147,7 +157,7 @@ class Resources extends GroupMacro
      * @param   integer  $default  Default return value
      * @return  mixed
      */
-    private function _getLimit(&$args, $default = 5)
+    private function getLimit(&$args, $default = 5)
     {
         foreach ($args as $k => $arg) {
             if (is_numeric($arg) && $arg > 0 && $arg < 50) {
@@ -167,7 +177,7 @@ class Resources extends GroupMacro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getClass(&$args)
+    private function getClass(&$args)
     {
         foreach ($args as $k => $arg) {
             if (preg_match('/class=([\w-]*)/', $arg, $matches)) {
@@ -184,7 +194,7 @@ class Resources extends GroupMacro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getType(&$args)
+    private function getType(&$args)
     {
         foreach ($args as $k => $arg) {
             if (preg_match('/type=([\w]*)/', $arg, $matches)) {

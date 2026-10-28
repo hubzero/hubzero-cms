@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing events_latest module
- **/
+ *
+ */
 class Migration20190109000000ModEventsLatest extends Base
 {
     /**

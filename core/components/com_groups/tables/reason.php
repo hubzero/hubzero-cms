@@ -39,7 +39,9 @@ class Reason extends Table
         if ($uid === null || $gid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid) . " AND gidNumber=" . $this->_db->quote($gid) . " LIMIT 1");
+        $query = "SELECT * FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid)
+            . " AND gidNumber=" . $this->_db->quote($gid) . " LIMIT 1";
+        $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {
             return $this->bind($result);
         } else {
@@ -60,7 +62,9 @@ class Reason extends Table
         if ($uid === null || $gid === null) {
             return false;
         }
-        $this->_db->setQuery("DELETE FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid) . " AND gidNumber=" . $this->_db->quote($gid));
+        $query = "DELETE FROM $this->_tbl WHERE uidNumber=" . $this->_db->quote($uid)
+            . " AND gidNumber=" . $this->_db->quote($gid);
+        $this->_db->setQuery($query);
         if (!$this->_db->query()) {
             $this->setError($this->_db->getErrorMsg());
         }

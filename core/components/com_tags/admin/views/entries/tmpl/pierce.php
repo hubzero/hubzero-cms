@@ -19,7 +19,8 @@ Toolbar::cancel();
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<?php $pierceAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $pierceAction; ?>" method="post" name="adminForm" class="editform" id="item-form">
     <p class="warning"><?php echo Lang::txt('COM_TAGS_PIERCED_EXPLANATION'); ?></p>
 
     <div class="grid">
@@ -31,7 +32,10 @@ Toolbar::cancel();
                     <ul>
                         <?php
                         foreach ($this->tags as $tag) {
-                            echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects()->total() . ')</li>' . "\n";
+                            $rawTag = $this->escape(stripslashes($tag->get('raw_tag')));
+                            $normTag = $this->escape($tag->get('tag'));
+                            $total = $tag->objects()->total();
+                            echo '<li>' . $rawTag . ' (' . $normTag . ' - ' . $total . ')</li>' . "\n";
                         }
                         ?>
                     </ul>
@@ -51,7 +55,11 @@ Toolbar::cancel();
                             array('tags', 'newtag', 'newtag')
                         )
                     );
-                    echo (count($tf)) ? implode("\n", $tf) : '<input type="text" name="newtag" id="newtag" size="25" value="" />';
+                    if (count($tf)) {
+                        echo implode("\n", $tf);
+                    } else {
+                        echo '<input type="text" name="newtag" id="newtag" size="25" value="" />';
+                    }
                     ?>
                 </div>
             </fieldset>

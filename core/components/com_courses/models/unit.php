@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,6 +32,7 @@ class Unit extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Unit';
 
     /**
@@ -38,6 +40,7 @@ class Unit extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'unit';
 
     /**
@@ -59,6 +62,7 @@ class Unit extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_asset = null;
 
     /**
@@ -66,6 +70,7 @@ class Unit extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_assets = null;
 
     /**
@@ -73,6 +78,7 @@ class Unit extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_siblings = null;
 
     /**
@@ -94,7 +100,7 @@ class Unit extends Base
                 if ($oid) {
                     $this->_tbl->load($oid, $offering_id);
                 }
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -107,7 +113,7 @@ class Unit extends Base
      * @param   integer $offering_id Offering the unit is linked to
      * @return  object  \Components\Courses\Models\Unit
      */
-    static function &getInstance($oid = null, $offering_id = null)
+    public static function &getInstance($oid = null, $offering_id = null)
     {
         static $instances;
 
@@ -133,9 +139,9 @@ class Unit extends Base
     {
         if (isset($this->_tbl->$property)) {
             return $this->_tbl->$property;
-        } else if (isset($this->_tbl->{'__' . $property})) {
+        } elseif (isset($this->_tbl->{'__' . $property})) {
             return $this->_tbl->{'__' . $property};
-        } else if (in_array($property, self::$_section_keys)) {
+        } elseif (in_array($property, self::$_section_keys)) {
             $tbl = new Tables\SectionDate($this->_db);
             $tbl->load($this->get('id'), 'unit', $this->get('section_id'));
 
@@ -255,7 +261,7 @@ class Unit extends Base
         if ($idx !== null) {
             if (is_numeric($idx)) {
                 return $this->assetgroups->fetch($idx);
-            } else if (is_string($idx)) {
+            } elseif (is_string($idx)) {
                 $idx = strtolower(trim($idx));
 
                 foreach ($this->assetgroups as $group) {

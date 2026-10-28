@@ -83,7 +83,8 @@ class Log extends Table
             $n      = array_pop($bits);
             $subnet = trim(implode('.', $bits)) . '.';
 
-            $query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE " . $this->_db->quote($subnet . '%');
+            $query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE "
+                . $this->_db->quote($subnet . '%');
             $this->_db->setQuery($query);
             return $this->_db->loadResult();
         }
@@ -129,8 +130,15 @@ class Log extends Table
      * @param   string   $category
      * @return  boolean
      */
-    public function logParsed($pid = null, $vid = null, $year = null, $month = null, $count = 0, $type = 'view', $category = '')
-    {
+    public function logParsed(
+        $pid = null,
+        $vid = null,
+        $year = null,
+        $month = null,
+        $count = 0,
+        $type = 'view',
+        $category = ''
+    ) {
         if (!$pid || !$vid || !$year || !$month || !$count) {
             return false;
         }
@@ -324,63 +332,81 @@ class Log extends Table
 			ORDER BY VV.published_up ASC limit 1) AS first_published ";
 
         if ($lastmonth) {
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_support ";
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0)  FROM $this->_tbl as L
-				WHERE L.publication_id=V.publication_id) AS total_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_views ";
             $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
-				WHERE L.publication_id=V.publication_id) AS total_primary ";
-        } else {
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_support ";
-
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_support ";
-
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_support ";
-
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_primary ";
-            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-				AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_support ";
-
-            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0)  FROM $this->_tbl as L
-				WHERE L.publication_id=V.publication_id) AS total_views ";
-            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
-				WHERE L.publication_id=V.publication_id) AS total_primary ";
+                WHERE L.publication_id=V.publication_id
+                AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_primary ";
             $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
-				WHERE L.publication_id=V.publication_id) AS total_support ";
+                WHERE L.publication_id=V.publication_id
+                AND year='$thisYearNum' AND month='$pastMonthNum') AS monthly_support ";
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id) AS total_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id) AS total_primary ";
+        } else {
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_primary ";
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_support ";
+
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_primary ";
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_support ";
+
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_primary ";
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_support ";
+
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_primary ";
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id
+                AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_support ";
+
+            $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id) AS total_views ";
+            $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id) AS total_primary ";
+            $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+                WHERE L.publication_id=V.publication_id) AS total_support ";
         }
 
-        $query .= " FROM #__publications as C, #__projects as P, #__publication_categories AS t, #__publication_versions as V ";
-        $query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.status=1 AND A.user_id='$uid' ";
+        $query .= " FROM #__publications as C, #__projects as P, "
+            . "#__publication_categories AS t, #__publication_versions as V ";
+        $query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id "
+            . "AND A.status=1 AND A.user_id='$uid' ";
 
         if ($lastmonth) {
             $query .= " JOIN $this->_tbl as L ON L.publication_id = V.publication_id AND L.year='$thisYearNum'
 						AND L.month='$pastMonthNum' AND L.page_views > 0  ";
         }
 
-        $query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND P.id=C.project_id AND C.id=V.publication_id AND C.category = t.id AND
-					V.main=1 AND V.state=1 AND V.published_up < '" . Date::toSql() . "'";
+        $query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND P.id=C.project_id "
+            . "AND C.id=V.publication_id AND C.category = t.id AND V.main=1 AND V.state=1 "
+            . "AND V.published_up < '" . Date::toSql() . "'";
         $query .= " GROUP BY V.publication_id ";
 
         $query .= $lastmonth ? " ORDER BY L.page_views DESC, V.id ASC " :  "ORDER BY V.title ASC ";
@@ -424,11 +450,13 @@ class Log extends Table
 
         if ($type == 'author') {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
-            $query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id=" . $this->_db->quote($id);
+            $query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id "
+                . "AND A.user_id=" . $this->_db->quote($id);
 
             $query .= " WHERE (A.role!='submitter' OR (A.role IS NULL)) AND ";
         } else {
-            $query .= " JOIN #__publications as P ON P.id = L.publication_id AND P.project_id=" . $this->_db->quote($id);
+            $query .= " JOIN #__publications as P ON P.id = L.publication_id "
+                . "AND P.project_id=" . $this->_db->quote($id);
             $query .= " JOIN #__publication_versions as V ON V.publication_id=L.publication_id ";
 
             $query .= " WHERE ";
@@ -563,33 +591,45 @@ class Log extends Table
 					t.url_alias as cat_url, t.name as cat_name, t.alias as cat_alias,
 					S.users, S.downloads ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_support ";
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_views ";
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_primary ";
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$thisYearNum' AND month='$thisMonthNum') AS thismonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_support ";
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_views ";
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_primary ";
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastYearNum' AND month='$pastMonthNum') AS lastmonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_support ";
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_views ";
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_primary ";
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastTwoYear' AND month='$pastTwoMonth') AS twomonth_support ";
 
-        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_views ";
-        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_primary ";
-        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L WHERE L.publication_id=V.publication_id
-			AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_support ";
+        $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_views ";
+        $query .= ", (SELECT COALESCE(SUM(L.primary_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_primary ";
+        $query .= ", (SELECT COALESCE(SUM(L.support_accesses) , 0) FROM $this->_tbl as L
+            WHERE L.publication_id=V.publication_id
+            AND year='$pastThreeYear' AND month='$pastThreeMonth') AS threemonth_support ";
 
         $query .= ", (SELECT COALESCE(SUM(L.page_views) , 0)  FROM $this->_tbl as L
 			WHERE L.publication_id=V.publication_id) AS total_views ";
@@ -603,7 +643,8 @@ class Log extends Table
 			ORDER BY VV.published_up ASC limit 1) AS first_published ";
 
         $query .= " FROM #__publications as C, #__publication_categories AS t, #__publication_versions as V ";
-        $query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id AND period='14' AND datetime='" . $dthis . "-01 00:00:00' ";
+        $query .= " LEFT JOIN #__publication_stats as S ON S.publication_id = V.publication_id"
+            . " AND period='14' AND datetime='" . $dthis . "-01 00:00:00' ";
 
         $query .= " WHERE C.id=V.publication_id AND V.state=1 AND C.category = t.id
 					AND V.main=1 AND V.published_up < '" . Date::toSql() . "' AND C.project_id=$projectid";

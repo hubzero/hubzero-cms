@@ -157,7 +157,7 @@ class Uri
                     // To build the entire URI we need to prepend the protocol, and the http host
                     // to the URI string.
                     $theURI = 'http' . $https . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-                } else if (!empty($_SERVER['HTTP_HOST'])) {
+                } elseif (!empty($_SERVER['HTTP_HOST'])) {
                     // Since we do not have REQUEST_URI to work with, we will assume we are
                     // running on IIS and will therefore need to work some magic with the SCRIPT_NAME and
                     // QUERY_STRING environment variables.

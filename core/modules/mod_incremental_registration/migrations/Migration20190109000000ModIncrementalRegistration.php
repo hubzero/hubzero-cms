@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing incremental_registration module
- **/
+ *
+ */
 class Migration20190109000000ModIncrementalRegistration extends Base
 {
     /**

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +13,9 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script to update 'file' column for migration entries. Files were renamed as their timestamps were incorrect (too many characters)
+ * Migration script to update 'file' column for migration entries.
+ * Files were renamed as their timestamps were incorrect (too many characters)
+  *
  **/
 class Migration20150827120311Core extends Base
 {
@@ -45,9 +48,13 @@ class Migration20150827120311Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__migrations') && $this->db->tableHasField('#__migrations', 'file')) {
+        if (
+            $this->db->tableExists('#__migrations')
+            && $this->db->tableHasField('#__migrations', 'file')
+        ) {
             foreach ($this->files as $old => $renamed) {
-                $query = "UPDATE `#__migrations` SET `file`=" . $this->db->quote($renamed) . " WHERE `file`=" . $this->db->quote($old);
+                $query = "UPDATE `#__migrations` SET `file`=" . $this->db->quote($renamed)
+                    . " WHERE `file`=" . $this->db->quote($old);
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -59,9 +66,13 @@ class Migration20150827120311Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__migrations') && $this->db->tableHasField('#__migrations', 'file')) {
+        if (
+            $this->db->tableExists('#__migrations')
+            && $this->db->tableHasField('#__migrations', 'file')
+        ) {
             foreach ($this->files as $old => $renamed) {
-                $query = "UPDATE `#__migrations` SET `file`=" . $this->db->quote($old) . " WHERE `file`=" . $this->db->quote($renamed);
+                $query = "UPDATE `#__migrations` SET `file`=" . $this->db->quote($old)
+                    . " WHERE `file`=" . $this->db->quote($renamed);
                 $this->db->setQuery($query);
                 $this->db->query();
             }

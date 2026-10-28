@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +35,8 @@ class Migration20141113222151ComCourses extends Base
         }
 
         // Find all assets with >1 associations
-        $query = "SELECT `asset_id`, count(asset_id) AS count FROM `#__courses_asset_associations` GROUP BY `asset_id` HAVING count > 1";
+        $query = "SELECT `asset_id`, count(asset_id) AS count FROM `#__courses_asset_associations` "
+            . "GROUP BY `asset_id` HAVING count > 1";
         $this->db->setQuery($query);
         $assetIds = $this->db->loadObjectList();
 
@@ -42,7 +44,8 @@ class Migration20141113222151ComCourses extends Base
             require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 
             foreach ($assetIds as $aa) {
-                $query = "SELECT * FROM `#__courses_asset_associations` WHERE `asset_id` = " . (int)$aa->asset_id . " ORDER BY `id` DESC LIMIT " . (int)($aa->count - 1);
+                $query = "SELECT * FROM `#__courses_asset_associations` WHERE `asset_id` = "
+                    . (int)$aa->asset_id . " ORDER BY `id` DESC LIMIT " . (int)($aa->count - 1);
                 $this->db->setQuery($query);
                 $toChange = $this->db->loadObjectList();
 
@@ -59,39 +62,43 @@ class Migration20141113222151ComCourses extends Base
                             $query .= " WHERE cag.id = " . $this->db->quote($a->scope_id);
                             $this->db->setQuery($query);
                             $offering = $this->db->loadResult();
-                        } else if ($a->scope == 'offering') {
+                        } elseif ($a->scope == 'offering') {
                             $offering = $a->scope_id;
                         }
 
                         $asset->copy(false);
 
-                        $query = "UPDATE `#__courses_asset_associations` SET `asset_id` = " . $this->db->quote($asset->get('id')) . " WHERE `id` = " . $this->db->quote($a->id);
+                        $query = "UPDATE `#__courses_asset_associations` SET `asset_id` = "
+                            . $this->db->quote($asset->get('id')) . " WHERE `id` = " . $this->db->quote($a->id);
                         $this->db->setQuery($query);
                         $this->db->query();
 
                         if ($offering) {
                             // Update gradebook entries
-                            $query  = "UPDATE `#__courses_grade_book` AS g LEFT JOIN `#__courses_members` AS m ON g.member_id = m.id";
-                            $query .= " SET `scope_id` = " . (int)$asset->get('id');
-                            $query .= " WHERE `scope_id` = " . (int)$oldAssetId;
-                            $query .= " AND `scope` = 'asset'";
-                            $query .= " AND m.offering_id = " . (int)$offering;
+                            $query = "UPDATE `#__courses_grade_book` AS g "
+                                . "LEFT JOIN `#__courses_members` AS m ON g.member_id = m.id"
+                                . " SET `scope_id` = " . (int)$asset->get('id')
+                                . " WHERE `scope_id` = " . (int)$oldAssetId
+                                . " AND `scope` = 'asset'"
+                                . " AND m.offering_id = " . (int)$offering;
                             $this->db->setQuery($query);
                             $this->db->query();
 
                             // Update asset_unity
-                            $query  = "UPDATE `#__courses_asset_unity` AS u LEFT JOIN `#__courses_members` AS m ON u.member_id = m.id";
-                            $query .= " SET `asset_id` = " . (int)$asset->get('id');
-                            $query .= " WHERE `asset_id` = " . (int)$oldAssetId;
-                            $query .= " AND m.offering_id = " . (int)$offering;
+                            $query = "UPDATE `#__courses_asset_unity` AS u "
+                                . "LEFT JOIN `#__courses_members` AS m ON u.member_id = m.id"
+                                . " SET `asset_id` = " . (int)$asset->get('id')
+                                . " WHERE `asset_id` = " . (int)$oldAssetId
+                                . " AND m.offering_id = " . (int)$offering;
                             $this->db->setQuery($query);
                             $this->db->query();
 
                             // Update asset_views
-                            $query  = "UPDATE `#__courses_asset_views` AS v LEFT JOIN `#__courses_members` AS m ON v.viewed_by = m.id";
-                            $query .= " SET `asset_id` = " . (int)$asset->get('id');
-                            $query .= " WHERE `asset_id` = " . (int)$oldAssetId;
-                            $query .= " AND m.offering_id = " . (int)$offering;
+                            $query = "UPDATE `#__courses_asset_views` AS v "
+                                . "LEFT JOIN `#__courses_members` AS m ON v.viewed_by = m.id"
+                                . " SET `asset_id` = " . (int)$asset->get('id')
+                                . " WHERE `asset_id` = " . (int)$oldAssetId
+                                . " AND m.offering_id = " . (int)$offering;
                             $this->db->setQuery($query);
                             $this->db->query();
                         }

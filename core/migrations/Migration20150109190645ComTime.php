@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating tables for code refactoring based on new models
- **/
+ *
+ */
 class Migration20150109190645ComTime extends Base
 {
     /**
@@ -59,7 +61,8 @@ class Migration20150109190645ComTime extends Base
 
             if ($liaisons && count($liaisons) > 0) {
                 foreach ($liaisons as $liaison) {
-                    $query = "INSERT INTO `#__time_liaisons` (`user_id`) VALUES (" . $this->db->quote($liaison->user_id) . ")";
+                    $query = "INSERT INTO `#__time_liaisons` (`user_id`) VALUES ("
+                        . $this->db->quote($liaison->user_id) . ")";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

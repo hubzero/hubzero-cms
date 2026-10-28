@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Models;
 
 use Hubzero\User\User;
@@ -564,8 +565,9 @@ class Member extends User implements \Hubzero\Search\Searchable
         $obj->id      = $this->searchId();
         $obj->title   = $this->get('name');
 
-        $base = rtrim(Request::base(), '/');
-        $obj->url = rtrim(Request::root(), '/') . Route::urlForClient('site', 'index.php?option=com_members' . '&id=' . $this->get('id'));
+        $baseUrl = rtrim(Request::root(), '/');
+        $memberUrl = Route::urlForClient('site', 'index.php?option=com_members&id=' . $this->get('id'));
+        $obj->url = $baseUrl . $memberUrl;
 
         // @TODO: Add more fields to the SOLR core.
         $fields = $this->profiles()

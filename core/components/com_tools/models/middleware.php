@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,6 +30,7 @@ class Middleware extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_cache = array(
         'zones.count' => null,
         'zones.list'  => null,
@@ -42,6 +44,7 @@ class Middleware extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_config = null;
 
     /**

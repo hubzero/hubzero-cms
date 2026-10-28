@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,6 +23,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php';
  *
  * @FIXME: break into multiple controllers based on entity type
  */
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Jobsv1_0 extends ApiController
 {
     /**

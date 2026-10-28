@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +27,8 @@ $itemDropdownClass = $handlers ? ' hasMultiple' : '';
 $itemFileNameShort = Html::shortenFileName($this->itemFileName, 60);
 $itemMimeType = $this->itemMimeType;
 
-$linkUrl = Route::url($model->link('files') . "&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
+$linkUrl = Route::url($model->link('files') .
+"&action=download&connection=$this->connectionId$this->subdirPath&asset=$urlEncodedItemName");
 $linkTarget = '';
 
 if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0) {
@@ -65,7 +68,8 @@ if ($itemMimeType && strpos($itemMimeType, 'application/vnd.google') === 0) {
 
 <div class="file-action-dropdown<?php echo $itemDropdownClass; ?>">
     <?php if ($linkUrl) : ?>
-        <a href="<?php echo $linkUrl; ?>" class="preview file:<?php echo $urlEncodedItemName; ?>" <?php echo $linkTarget; ?>>
+        <a href="<?php echo $linkUrl; ?>"
+            class="preview file:<?php echo $urlEncodedItemName; ?>" <?php echo $linkTarget; ?>>
     <?php endif; ?>
             <?php echo str_replace('&amp;#8230;', '&#8230;', $this->escape($itemFileNameShort)); ?>
     <?php if ($linkUrl) : ?>

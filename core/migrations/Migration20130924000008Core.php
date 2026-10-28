@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -46,7 +47,8 @@ class Migration20130924000008Core extends Base
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query  = "INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `access`, `ordering`)";
+            $query  = "INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,"
+                . "`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `access`, `ordering`)";
             $query .= " VALUES ";
             $query .= "(1, 'en-GB', 'English (UK)', 'English (UK)', 'en', 'en', '', '', '', 1, 1, 1);";
 

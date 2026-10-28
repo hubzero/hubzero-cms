@@ -137,10 +137,12 @@ class Version extends Table
             return false;
         }
 
-        $query = "SELECT v.id FROM `#__tool_version` as v JOIN `#__resources` as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
+        $query = "SELECT v.id FROM `#__tool_version` as v "
+            . "JOIN `#__resources` as r ON r.alias = v.toolname "
+            . "WHERE r.id=" . $this->_db->quote($rid);
         if ($version == 'dev') {
             $query .= " AND v.state=3 LIMIT 1";
-        } else if ($version == 'current') {
+        } elseif ($version == 'current') {
             $query .= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
         } else {
             $query .= " AND v.version=" . $this->_db->quote($version) . " LIMIT 1";
@@ -162,7 +164,8 @@ class Version extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->quote($alias) . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
+        $query = "SELECT * FROM $this->_tbl as v WHERE v.toolname=" . $this->_db->quote($alias)
+            . " AND state='1' ORDER BY v.revision DESC LIMIT 1";
 
         $this->_db->setQuery($query);
         if ($result = $this->_db->loadAssoc()) {
@@ -180,6 +183,7 @@ class Version extends Table
      * @param   string   $version  Version (dev, current, or specific number)
      * @return  mixed    False on error, object on success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function load_version($toolid = null, $version = 'dev')
     {
         if ($toolid === null) {
@@ -188,7 +192,7 @@ class Version extends Table
         $query = "SELECT * FROM $this->_tbl WHERE toolid=" . $this->_db->quote($toolid) . " AND ";
         if (!$version or $version == 'dev') {
             $query .= "state='3'";
-        } else if ($version == 'current') {
+        } elseif ($version == 'current') {
             $query .= "state='1'";
         } else {
             $query .= "version=" . $this->_db->quote($version);
@@ -215,7 +219,7 @@ class Version extends Table
             $query = "UPDATE `#__tool_version` SET unpublished=" . $this->_db->quote(Date::toSql()) . " WHERE ";
             if ($toolname) {
                 $query .= "toolname=" . $this->_db->quote($toolname) . " ";
-            } else if ($vid) {
+            } elseif ($vid) {
                 $query .= "id=" . $this->_db->quote($vid) . " ";
             }
             $query .= "AND state='1'";
@@ -278,7 +282,7 @@ class Version extends Table
         $query = "SELECT id FROM `#__tool_version` WHERE toolid=" . $this->_db->quote($this->toolid);
         if (!$version or $version == 'dev') {
             $query .= " AND state='3'";
-        } else if ($version == 'current') {
+        } elseif ($version == 'current') {
             $query .= " AND state='1'";
         } else {
             $query .= " AND version=" . $this->_db->quote($version);
@@ -343,11 +347,14 @@ class Version extends Table
 
         $objA = new \Components\Tools\Tables\Author($this->_db);
 
-        $query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
-        $query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+        $query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, ";
+        $query .= "d.versionid, d.doi, d.doi_shoulder ";
+        $query .= "FROM `#__tool_version` as v ";
+        $query .= "LEFT JOIN `#__doi_mapping` as d ";
+        $query .= "ON d.alias = v.toolname AND d.local_revision=v.revision ";
         if ($toolid) {
             $query .= "WHERE v.toolid = " . $this->_db->quote($toolid) . " ";
-        } else if ($toolname) {
+        } elseif ($toolname) {
             $query .= "WHERE v.toolname = " . $this->_db->quote($toolname) . " ";
         }
         if (($toolname or $toolid) && $exclude_dev) {
@@ -387,30 +394,35 @@ class Version extends Table
     public function getVersionInfo($id, $revision = '', $toolname = '', $instance = '')
     {
         // data comes from mysql
-        $query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, d.versionid, d.doi, d.doi_shoulder ";
-        $query .= "FROM `#__tool_version` as v LEFT JOIN `#__doi_mapping` as d ON d.alias = v.toolname AND d.local_revision=v.revision ";
+        $query  = "SELECT v.*, d.local_revision, d.doi_label, d.rid, d.alias, ";
+        $query .= "d.versionid, d.doi, d.doi_shoulder ";
+        $query .= "FROM `#__tool_version` as v ";
+        $query .= "LEFT JOIN `#__doi_mapping` as d ";
+        $query .= "ON d.alias = v.toolname AND d.local_revision=v.revision ";
         if ($id) {
             $query .= "WHERE v.id = " . $this->_db->quote($id) . " ";
-        } else if (($revision || $revision === null) && $toolname) {
+        } elseif (($revision || $revision === null) && $toolname) {
             $query .= "WHERE v.toolname=" . $this->_db->quote($toolname) . " ";
             if ($revision == 'current') {
                 // Adding state=0 to account for retired tools
                 $query .= "AND v.state IN (1, 0) ORDER BY v.state DESC, v.revision DESC LIMIT 1 ";
-            } else if ($revision == 'dev') {
+            } elseif ($revision == 'dev') {
                 $query .= "AND v.state=3 LIMIT 1";
-            } else if ($revision === null) {
+            } elseif ($revision === null) {
                 $query .= "AND v.revision IS NULL ";
             } else {
                 $query .= "AND v.revision = " . $this->_db->quote($revision) . " ";
             }
-        } else if ($instance) {
+        } elseif ($instance) {
             $query .= "WHERE v.instance=" . $this->_db->quote($instance) . " ";
         }
         $this->_db->setQuery($query);
         $data = $this->_db->loadObjectList();
         if ($data) {
             foreach ($data as $i => $datum) {
-                $this->_db->setQuery("SELECT `hostreq` FROM `#__tool_version_hostreq` WHERE `tool_version_id`=" . $this->_db->quote($datum->id));
+                $hostreqQuery = "SELECT `hostreq` FROM `#__tool_version_hostreq` "
+                    . "WHERE `tool_version_id`=" . $this->_db->quote($datum->id);
+                $this->_db->setQuery($hostreqQuery);
                 $data[$i]->hostreq = $this->_db->loadColumn();
             }
         }
@@ -457,17 +469,24 @@ class Version extends Table
             $revision                = $resource->revision;
             $resource->versionid     = ($revision && $thistool) ? $thistool->id : 0;
             $resource->version       = ($revision && $thistool) ? $thistool->version : 1;
-            $resource->tool          = ($revision && $thistool) ? $thistool->instance : $resource->alias . '_r' . $revision;
+            $resource->tool          = ($revision && $thistool)
+                ? $thistool->instance : $resource->alias . '_r' . $revision;
             $resource->toolpublished = ($revision && $thistool) ? $thistool->state : 1;
             $resource->license       = ($revision && $thistool) ? $thistool->license : '';
-            $resource->title         = ($revision && $thistool) ? stripslashes($thistool->title) : $resource->title;
-            $resource->introtext     = ($revision && $thistool && isset($thistool->description)) ? stripslashes($thistool->description) : $resource->introtext;
-            $resource->fulltxt       = ($revision && $thistool && isset($thistool->fulltxt)) ? $thistool->fulltxt : $resource->fulltxt;
-            $resource->toolsource    = ($thistool && isset($thistool->codeaccess) && $thistool->codeaccess == '@OPEN') ? 1 : 0;
+            $resource->title         = ($revision && $thistool)
+                ? stripslashes($thistool->title) : $resource->title;
+            $resource->introtext     = ($revision && $thistool && isset($thistool->description))
+                ? stripslashes($thistool->description) : $resource->introtext;
+            $resource->fulltxt       = ($revision && $thistool && isset($thistool->fulltxt))
+                ? $thistool->fulltxt : $resource->fulltxt;
+            $resource->toolsource    = (
+                $thistool && isset($thistool->codeaccess) && $thistool->codeaccess == '@OPEN'
+            ) ? 1 : 0;
             $resource->doi           = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
             $resource->doi_label     = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
-            $resource->doi_shoulder  = ($thistool && isset($thistool->doi_shoulder)) ? $thistool->doi_shoulder : '';
-        } else if (!$curtool) {
+            $resource->doi_shoulder  = ($thistool && isset($thistool->doi_shoulder))
+                ? $thistool->doi_shoulder : '';
+        } elseif (!$curtool) {
             $resource->revision      = 1;
             $revision                 = $resource->revision;
             $resource->version       = 1;
@@ -513,9 +532,9 @@ class Version extends Table
 
         if (!$license['text']) {
             $error = Lang::txt('ERR_LICENSE_EMPTY');
-        } else if ($bingo) {
+        } elseif ($bingo) {
             $error = Lang::txt('ERR_LICENSE_DEFAULTS');
-        } else if (!$license['authorize'] && $code == '@OPEN') {
+        } elseif (!$license['authorize'] && $code == '@OPEN') {
             $error = Lang::txt('ERR_LICENSE_AUTH_MISSING');
         } else {
             $result = 1;
@@ -552,7 +571,7 @@ class Version extends Table
 
         if ($checker or (in_array($tool['toolname'], array('test','shortname','hub','tool')) && !$id)) {
             $err['toolname'] = Lang::txt('ERR_TOOLNAME_EXISTS');
-        } else if (preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' && !$id) {
+        } elseif (preg_match('#^[a-zA-Z0-9]{3,15}$#', $tool['toolname']) == '' && !$id) {
             $err['toolname'] = Lang::txt('ERR_TOOLNAME');
         }
 
@@ -580,7 +599,7 @@ class Version extends Table
 
         if ($checker) {  // check if title exists for other tools
             $err['title'] = Lang::txt('ERR_TITLE_EXISTS');
-        } else if ($tool['title'] == '') {
+        } elseif ($tool['title'] == '') {
             $err['title'] = Lang::txt('ERR_TITLE');
         }
 
@@ -602,9 +621,9 @@ class Version extends Table
         if ($tool['exec'] == '@GROUP' && $tool['membergroups'] == '') {
             $err['membergroups'] = Lang::txt('ERR_GROUPS_EMPTY');
             $tool['membergroups'] = array();
-        } else if ($tool['membergroups'] == '' or $tool['exec'] != '@GROUP') {
+        } elseif ($tool['membergroups'] == '' or $tool['exec'] != '@GROUP') {
             $tool['membergroups'] = array();
-        } else if ($tool['exec'] == '@GROUP') {
+        } elseif ($tool['exec'] == '@GROUP') {
             $tool['membergroups'] = $tgObj->writeMemberGroups($tool['membergroups'], $id, $this->_db, $error_g);
             if ($error_g) {
                 $err['membergroups'] = $error_g;
@@ -668,10 +687,10 @@ class Version extends Table
         if ($required && !$newversion) { // was left blank
             $result = 0;
             $error = Lang::txt('ERR_VERSION_BLANK');
-        } else if ($toolhelper->check_validInput($newversion)) { // illegal characters
+        } elseif ($toolhelper->check_validInput($newversion)) { // illegal characters
             $result = 0;
             $error = Lang::txt('ERR_VERSION_ILLEGAL');
-        } else if ($required) {
+        } elseif ($required) {
             $this->getToolVersions('', $versions, $toolname, 1);
 
             if ($versions) {
@@ -713,7 +732,9 @@ class Version extends Table
      */
     public function getCurrentVersionProperty($toolname, $property)
     {
-        $query  = "SELECT " . $property . " FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($toolname) . " AND state=1 ORDER BY revision DESC LIMIT 1";
+        $query  = "SELECT " . $property . " FROM `#__tool_version` "
+            . "WHERE toolname=" . $this->_db->quote($toolname)
+            . " AND state=1 ORDER BY revision DESC LIMIT 1";
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
@@ -727,7 +748,9 @@ class Version extends Table
      */
     public function getDevVersionProperty($toolname, $property)
     {
-        $query  = "SELECT " . $property . " FROM `#__tool_version` WHERE toolname=" . $this->_db->quote($toolname) . " AND state=3 ORDER BY revision DESC LIMIT 1";
+        $query  = "SELECT " . $property . " FROM `#__tool_version` "
+            . "WHERE toolname=" . $this->_db->quote($toolname)
+            . " AND state=3 ORDER BY revision DESC LIMIT 1";
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }

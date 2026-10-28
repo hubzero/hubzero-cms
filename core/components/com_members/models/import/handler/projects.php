@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
@@ -53,7 +54,7 @@ class Projects extends Obj
         }
 
         if (isset($raw->projects) && $raw->projects != '') {
-            $record->projects = (array)$this->_multiValueField($raw->projects);
+            $record->projects = (array)$this->multiValueField($raw->projects);
 
             foreach ($record->projects as $i => $pid) {
                 $pid = trim($pid, '"');
@@ -170,7 +171,7 @@ class Projects extends Obj
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
      * @return  array
      */
-    private function _multiValueField($data, $delim = ',|;')
+    private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
             $data = array_map('trim', preg_split("/($delim)/", $data));

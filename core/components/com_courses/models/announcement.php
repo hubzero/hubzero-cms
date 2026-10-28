@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,6 +28,7 @@ class Announcement extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Announcement';
 
     /**
@@ -34,6 +36,7 @@ class Announcement extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_courses.announcement.content';
 
     /**
@@ -41,6 +44,7 @@ class Announcement extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'announcement';
 
     /**
@@ -52,7 +56,7 @@ class Announcement extends Base
      * @param   integer $oid ID (int)
      * @return  object
      */
-    static function &getInstance($oid = 0)
+    public static function &getInstance($oid = 0)
     {
         static $instances;
 
@@ -75,9 +79,9 @@ class Announcement extends Base
      */
     public function published($as = '')
     {
-        $dt = ($this->get('publish_up') && $this->get('publish_up') != '0000-00-00 00:00:00')
-            ? $this->get('publish_up')
-            : $this->get('created');
+        $publishUp = $this->get('publish_up');
+        $hasPublishDate = $publishUp && $publishUp != '0000-00-00 00:00:00';
+        $dt = $hasPublishDate ? $publishUp : $this->get('created');
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($dt)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
@@ -119,11 +123,10 @@ class Announcement extends Base
                     );
 
                     $content = $this->get('content');
-                    $this->importPlugin('content')->trigger('onContentPrepare', array(
-                        $this->_context,
-                        &$this,
-                        &$config
-                    ));
+                    $this->importPlugin('content')->trigger(
+                        'onContentPrepare',
+                        array($this->_context, &$this, &$config)
+                    );
 
                     $this->set('content_parsed', $this->get('content'));
                     $this->set('content', $content);
@@ -140,7 +143,9 @@ class Announcement extends Base
             case 'raw':
             default:
                 $content = $this->get('content');
-                $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content == null ? '' : $content);
+                $pattern = '/^(<!-- \{FORMAT:.*\} -->)/i';
+                $replacement = $content == null ? '' : $content;
+                $content = preg_replace($pattern, '', $replacement);
                 $content = html_entity_decode($content);
                 break;
         }

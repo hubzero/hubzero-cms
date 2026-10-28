@@ -754,10 +754,9 @@ class Html
                     $admingroup = Component::params('com_tools')->get('admingroup');
                     if ($admingroup && in_array($admingroup, $groups)) {
                         $ingroup = true;
-                    }
-                    // Not in the admin group
-                    // Check if they're in the tool's group
-                    else {
+                    } else {
+                        // Not in the admin group
+                        // Check if they're in the tool's group
                         if ($toolgroups) {
                             foreach ($toolgroups as $toolgroup) {
                                 if (in_array($toolgroup->cn, $groups)) {
@@ -771,7 +770,7 @@ class Html
                 if (!User::isGuest() && !$ingroup && $toolgroups) { // see if tool is restricted to a group and if current user is in that group
                     $pop = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
                     $html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
-                } else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
+                } elseif ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
                     //if (User::isGuest()) {
                         // Not logged-in = show message
                         //$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
@@ -893,7 +892,7 @@ class Html
 
                         if (substr($firstChild->path, 0, 16) == 'https://doi.org/') {
                             $mesg  = substr($firstChild->path, 16);
-                        } else if (
+                        } elseif (
                             substr($firstChild->path, 0, 7) == 'http://'
                             || substr($firstChild->path, 0, 8) == 'https://'
                             || substr($firstChild->path, 0, 6) == 'ftp://'
@@ -905,7 +904,7 @@ class Html
                             || substr($firstChild->path, 0, 6) == 'mms://'
                         ) {
                             $mesg  = Lang::txt('COM_RESOURCES_VIEW_LINK');
-                        } else if (substr($firstChild->path, 0, 1) == '/') {
+                        } elseif (substr($firstChild->path, 0, 1) == '/') {
                             $mesg  = Lang::txt('COM_RESOURCES_VIEW_LINK');
                         }
                         break;
@@ -1150,18 +1149,17 @@ class Html
         if (substr($path, 0, 16) == 'https://doi.org/') {
             $type = 'DOI';
             $fs = '';
-        } else if ((substr($path, 0, 18) == 'https://vimeo.com/') ||  (substr($path, 0, 25) == 'https://player.vimeo.com/')) {
+        } elseif ((substr($path, 0, 18) == 'https://vimeo.com/') ||  (substr($path, 0, 25) == 'https://player.vimeo.com/')) {
             $type = 'Vimeo';
             $fs = '';
-        } else if ((substr($path, 0, 20) == 'https://youtube.com/') ||  (substr($path, 0, 24) == 'https://www.youtube.com/') ||  (substr($path, 0, 17) == 'https://youtu.be/')) {
+        } elseif ((substr($path, 0, 20) == 'https://youtube.com/') ||  (substr($path, 0, 24) == 'https://www.youtube.com/') ||  (substr($path, 0, 17) == 'https://youtu.be/')) {
             $type = 'YouTube';
             $fs = '';
-        } else if (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path)) {
+        } elseif (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path)) {
             // No caption needed for web URLs
             return '';
-        }
-        // Check if the path has the extension (e.g. Databases don't)
-        elseif (strrpos($path, '.') === false) {
+        } elseif (strrpos($path, '.') === false) {
+            // Check if the path has the extension (e.g. Databases don't)
             // no caption
             return '';
         } else {

@@ -80,7 +80,13 @@ class Timezone extends Groupedlist
 
                 // Only add options where a locale exists.
                 if (!empty($locale)) {
-                    $groups[$group][$zone] = Dropdown::option($zone, str_replace('_', ' ', $locale), 'value', 'text', false);
+                    $groups[$group][$zone] = Dropdown::option(
+                        $zone,
+                        str_replace('_', ' ', $locale),
+                        'value',
+                        'text',
+                        false
+                    );
                 }
             }
         }

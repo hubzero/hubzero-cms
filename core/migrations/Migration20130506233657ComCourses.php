@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for grade policy changes
- **/
+ *
+ */
 class Migration20130506233657ComCourses extends Base
 {
     /**
@@ -39,8 +41,11 @@ class Migration20130506233657ComCourses extends Base
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
 
             // Insert default row
-            $query .= "INSERT INTO `#__courses_grade_policies` (`id`, `description`, `threshold`, `exam_weight`, `quiz_weight`, `homework_weight`)
-						VALUES (1, 'An average exam score of 70% or greater is required to pass the class.  Quizzes and homeworks do not count toward the final score.', 0.70, 1.00, 0.00, 0.00);";
+            $description = 'An average exam score of 70% or greater is required to pass the class.  '
+                . 'Quizzes and homeworks do not count toward the final score.';
+            $query .= "INSERT INTO `#__courses_grade_policies` "
+                . "(`id`, `description`, `threshold`, `exam_weight`, `quiz_weight`, `homework_weight`) "
+                . "VALUES (1, " . $this->db->quote($description) . ", 0.70, 1.00, 0.00, 0.00);";
         }
 
         if (!empty($query)) {

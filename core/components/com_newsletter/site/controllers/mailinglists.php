@@ -35,6 +35,7 @@ class Mailinglists extends SiteController
      * @param   object  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildTitle($newsletter = null)
     {
         //default if no campaign
@@ -65,6 +66,7 @@ class Mailinglists extends SiteController
      * @param   object  $newsletter  Newsletter object for adding campaign name pathway
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _buildPathway($newsletter = null)
     {
         //add 'newlsetters' item to pathway
@@ -74,17 +76,20 @@ class Mailinglists extends SiteController
 
         //add campaign
         if (is_object($newsletter) && $newsletter->id) {
-            Pathway::append(Lang::txt($newsletter->name), 'index.php?option=' . $this->_option . '&id=' . $newsletter->id);
+            $url = 'index.php?option=' . $this->_option . '&id=' . $newsletter->id;
+            Pathway::append(Lang::txt($newsletter->name), $url);
         }
 
         //if we are unsubscribing
         if ($this->_task == 'unsubscribe') {
-            Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=unsubscribe');
+            $url = 'index.php?option=' . $this->_option . '&task=unsubscribe';
+            Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), $url);
         }
 
         //if we are subscribing
         if ($this->_task == 'subscribe') {
-            Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), 'index.php?option=' . $this->_option . '&task=subscribe');
+            $url = 'index.php?option=' . $this->_option . '&task=subscribe';
+            Pathway::append(Lang::txt('COM_NEWSLETTER_SUBSCRIBE'), $url);
         }
     }
 
@@ -125,7 +130,7 @@ class Mailinglists extends SiteController
                 ->set('redirect', $redirect)
                 ->setLayout('enter_email')
                 ->display();
-        } else if (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0) {
+        } elseif (User::isGuest() && count(User::oneByEmail($email)->toArray()) > 0) {
             //build return url and redirect url
             $return   = Route::url('index.php?option=com_newsletter&task=subscribe');
             $redirect = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return));
@@ -325,7 +330,7 @@ class Mailinglists extends SiteController
                 $memail->set('status', 'unsubscribed');
                 $memail->set('confirmed', 0);
                 $memail->set('date_confirmed', null);
-            } else if ($mylist->status != 'active') {
+            } elseif ($mylist->status != 'active') {
                 //set as active
                 $memail->set('status', 'inactive');
 
@@ -514,10 +519,14 @@ class Mailinglists extends SiteController
         $sql = '';
         if ($mailing->lid == '-1') {
             if (!User::isGuest()) {
-                $sql = "UPDATE `#__users` SET `sendEmail`=0 WHERE `id`=" . $this->database->quote(User::get('id'));
+                $sql = "UPDATE `#__users` SET `sendEmail`=0 WHERE `id`="
+                    . $this->database->quote(User::get('id'));
             } else {
                 //build return url and redirect url
-                $return = Route::url('index.php?option=com_newsletter&task=unsubscribe&e=' . urlencode($email) . '&t=' . $token);
+                $return = Route::url(
+                    'index.php?option=com_newsletter&task=unsubscribe&e='
+                    . urlencode($email) . '&t=' . $token
+                );
 
                 //inform user and redirect
                 App::redirect(
@@ -547,8 +556,11 @@ class Mailinglists extends SiteController
         }
 
         //insert unsubscribe reason
+        $mid = $this->database->quote($mailing->lid);
+        $recipientEmail = $this->database->quote($recipient->email);
+        $reasonQuoted = $this->database->quote($reason);
         $sql = "INSERT INTO `#__newsletter_mailinglist_unsubscribes` (mid,email,reason)
-				VALUES (" . $this->database->quote($mailing->lid) . "," . $this->database->quote($recipient->email) . "," . $this->database->quote($reason) . ")";
+				VALUES (" . $mid . "," . $recipientEmail . "," . $reasonQuoted . ")";
         $this->database->setQuery($sql);
         $this->database->query();
 

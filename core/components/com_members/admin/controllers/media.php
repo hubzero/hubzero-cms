@@ -80,7 +80,8 @@ class Media extends AdminController
 
         // make sure file is not empty
         if ($file['size'] > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
+            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
             $this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
             return $this->displayTask($id);
         }

@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 //-------------------------------------------------------------
 //  Div style diff formatter. Highlights blocks that have
 //  changed following a format like this:
@@ -23,6 +20,9 @@ defined('_HZEXEC_') or die();
  * Short description for 'DivDiffFormatter'
  *
  * Long description (if any) ...
+ *
+ * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class DivDiffFormatter extends DiffFormatter
 {

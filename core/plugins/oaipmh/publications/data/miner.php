@@ -299,7 +299,7 @@ class Miner extends Obj implements Provider
 
             if ($masterType == 1) {
                 $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($masterType, $record->publication_id, $record->version_id, $record->secret, $attachments, true);
-            } else if ($masterType == 7) {
+            } elseif ($masterType == 7) {
                 $files = \Components\Publications\Helpers\Html::getdatabaseFiles($record->publication_id, $record->version_id);
 
                 $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($masterType, $record->publication_id, $record->version_id, $record->secret, $attachments, true);

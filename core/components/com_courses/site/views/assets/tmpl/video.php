@@ -29,7 +29,7 @@ if (isset($manifest) && is_file($manifest)) {
     } else {
         $type = (isset($manifest->presentation->slides)) ? 'hubpresenter' : 'html5';
     }
-} else if (in_array(substr($this->model->get('url'), -3), array('mov', 'mp4', 'm4v', 'ogg', 'ogv', 'webm'))) {
+} elseif (in_array(substr($this->model->get('url'), -3), array('mov', 'mp4', 'm4v', 'ogg', 'ogv', 'webm'))) {
     $type = 'standalone';
 } else {
     $type = 'none';
@@ -761,7 +761,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         $thumb = '';
                                     if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->thumb)) {
                                         $thumb = $content_folder . DS . $slide->thumb;
-                                    } else if (!is_array($slide->media) && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->media)) {
+                                    } elseif (!is_array($slide->media) && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->media)) {
                                         $thumb = $content_folder . DS . $slide->media;
                                     }
                                     ?>

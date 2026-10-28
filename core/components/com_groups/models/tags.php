@@ -14,6 +14,8 @@ require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Groups Tagging class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Tags extends Cloud
 {

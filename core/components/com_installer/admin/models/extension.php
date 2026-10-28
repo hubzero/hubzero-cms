@@ -198,7 +198,9 @@ class Extension extends Relational
                 break;
 
             case 'plugin':
-                $path = DS . 'plugins' . DS . $this->get('folder') . DS . $this->get('element') . DS . $this->get('element') . '.xml';
+                $folder = $this->get('folder');
+                $element = $this->get('element');
+                $path = DS . 'plugins' . DS . $folder . DS . $element . DS . $element . '.xml';
                 break;
 
             case 'module':
@@ -219,7 +221,9 @@ class Extension extends Relational
 
             case 'language':
                 $client = \Hubzero\Base\ClientManager::client($this->get('client_id'));
-                $path = DS . 'bootstrap' . DS . $client->name . DS . 'language' . DS . $this->get('element') . DS . $this->get('element') . '.xml';
+                $element = $this->get('element');
+                $path = DS . 'bootstrap' . DS . $client->name . DS . 'language';
+                $path .= DS . $element . DS . $element . '.xml';
                 break;
         }
 

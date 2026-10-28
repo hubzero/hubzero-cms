@@ -6,19 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for course offerings
  */
-class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
+class PlgCoursesOfferings extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -26,13 +26,13 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
      *
      * @param   object  $course  Current course
      * @param   string  $active  Current active area
-     * @return  array
+     * @return  object|null
      */
     public function onCourseView($course, $active = null)
     {
         // Check that there are any offerings to show
         if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() <= 0) {
-            return;
+            return null;
         }
 
         // Can this plugin respond, based on the current access settings?
@@ -70,7 +70,7 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
         }
 
         if (!$respond) {
-            return;
+            return null;
         }
 
         // Prepare response
@@ -82,9 +82,9 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
         if ($response->get('name') == $active) {
             $view = $this->view('default', 'overview');
             $view->set('option', Request::getCmd('option', 'com_courses'))
-                 ->set('controller', Request::getWord('controller', 'course'))
-                 ->set('course', $course)
-                 ->set('name', $this->_name);
+                ->set('controller', Request::getWord('controller', 'course'))
+                ->set('course', $course)
+                ->set('name', $this->_name);
 
             $response->set('html', $view->loadTemplate());
         }

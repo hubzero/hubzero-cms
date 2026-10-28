@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -175,7 +176,8 @@ class Media extends AdminController
             'directory'  => str_replace(PATH_APP, '', $path),
             'ticket'     => $ticket,
             'comment_id' => $comment,
-            'html'       => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+            // Entities have to be encoded or IE 8 goes nuts
+            'html'       => str_replace('>', '&gt;', $view->loadTemplate())
         ));
     }
 
@@ -225,7 +227,9 @@ class Media extends AdminController
         }
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit))
+            );
             return $this->displayTask();
         }
 
@@ -256,9 +260,8 @@ class Media extends AdminController
         // Upload new files
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $filename)) {
             $this->setError(Lang::txt('ERROR_UPLOADING'));
-        }
-        // File was uploaded
-        else {
+        } else {
+            // File was uploaded
             $fle = $path . DS . $filename;
 
             if (!Filesystem::isSafe($file)) {

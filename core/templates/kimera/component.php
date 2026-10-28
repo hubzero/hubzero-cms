@@ -21,19 +21,25 @@ $cls = array(
 );
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
+    class="<?php echo implode(' ', $cls); ?>">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/component.css?v=<?php echo filemtime(__DIR__ . '/css/component.css'); ?>" />
+        <link rel="stylesheet" type="text/css" media="all"
+            href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/component.css?v=<?php
+                echo filemtime(__DIR__ . '/css/component.css'); ?>" />
 
         <jdoc:include type="head" />
 
         <!--[if IE 9]>
-            <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+            <link rel="stylesheet" type="text/css" media="screen"
+                href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
         <![endif]-->
         <!--[if lt IE 9]>
-            <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
-            <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+            <script type="text/javascript"
+                src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
+            <link rel="stylesheet" type="text/css" media="screen"
+                href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
         <![endif]-->
     </head>
     <body id="component-body">

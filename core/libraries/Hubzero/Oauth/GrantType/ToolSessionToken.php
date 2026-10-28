@@ -79,7 +79,12 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
         }
 
         // validate tool session data
-        if (!$userId = $this->storage->validateToolSessionData($toolData['toolSessionId'], $toolData['toolSessionToken'])) {
+        if (
+            !$userId = $this->storage->validateToolSessionData(
+                $toolData['toolSessionId'],
+                $toolData['toolSessionToken']
+            )
+        ) {
             $response->setError(401, 'tool_session_authentication_invalid', 'Unable to find valid tool session data.');
             return false;
         }

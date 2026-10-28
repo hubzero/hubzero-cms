@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updates to member dashboard features
- **/
+ *
+ */
 class Migration20140508120000PlgMembersDashboard extends Base
 {
     /**
@@ -22,7 +24,10 @@ class Migration20140508120000PlgMembersDashboard extends Base
     public function up()
     {
         if (!$this->db->tableExists('#__xprofiles_dashboard_preferences') && $this->db->tableExists('#__myhub')) {
-            $this->db->setQuery("SELECT extension_id, params FROM `#__extensions` WHERE `folder` = 'members' AND `element` = 'dashboard' LIMIT 1");
+            $this->db->setQuery(
+                "SELECT extension_id, params FROM `#__extensions` "
+                . "WHERE `folder` = 'members' AND `element` = 'dashboard' LIMIT 1"
+            );
             $dashboardPlugin = $this->db->loadObject();
             $params = json_decode($dashboardPlugin->params);
 
@@ -61,7 +66,9 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 }
             }
 
-            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote('"' . json_encode($params) . '"') . " WHERE `extension_id`=" . $this->db->quote($dashboardPlugin->extension_id);
+            $query = "UPDATE `#__extensions` SET `params`="
+                . $this->db->quote('"' . json_encode($params) . '"')
+                . " WHERE `extension_id`=" . $this->db->quote($dashboardPlugin->extension_id);
             $this->db->setQuery($query);
             $this->db->query();
 
@@ -100,13 +107,15 @@ class Migration20140508120000PlgMembersDashboard extends Base
                     }
                 }
 
-                $newpreferences[] = "(" . $preference->uid . ",'" . json_encode($newPrefCols) . "','" . $preference->modified . "')";
+                $newpreferences[] = "(" . $preference->uid . ",'"
+                    . json_encode($newPrefCols) . "','" . $preference->modified . "')";
             }
 
             // if we have some prefs to move over
             if (count($newpreferences) > 0) {
                 foreach ($newpreferences as $pref) {
-                    $query = "INSERT INTO `#__xprofiles_dashboard_preferences`(uidNumber,preferences,modified) VALUES " . $pref;
+                    $query = "INSERT INTO `#__xprofiles_dashboard_preferences` "
+                        . "(uidNumber,preferences,modified) VALUES " . $pref;
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

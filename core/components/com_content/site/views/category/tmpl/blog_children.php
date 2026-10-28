@@ -24,7 +24,12 @@ $class = ' class="first"';
                 <li<?php echo $class; ?>>
                     <?php $class = ''; ?>
                     <span class="item-title">
-                        <a href="<?php echo Route::url(Components\Content\Site\Helpers\Route::getCategoryRoute($child->id)); ?>">
+                        <?php
+                        $catUrl = Route::url(
+                            \Components\Content\Site\Helpers\Route::getCategoryRoute($child->id)
+                        );
+                        ?>
+                        <a href="<?php echo $catUrl; ?>">
                             <?php echo $this->escape($child->title); ?>
                         </a>
                     </span>

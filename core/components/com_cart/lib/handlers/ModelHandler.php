@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,13 +12,13 @@ defined('_HZEXEC_') or die();
 class Model_Handler
 {
     // Database instance
-    var $db = null;
+    public $db = null;
 
     // Item info
-    var $item;
+    public $item;
 
-    var $crtId;
-    var $tId;
+    public $crtId;
+    public $tId;
 
     /**
      * Constructor

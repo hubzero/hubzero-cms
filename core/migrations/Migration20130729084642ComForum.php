@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding more details to asset views table
- **/
+ *
+ */
 class Migration20130729084642ComForum extends Base
 {
     /**
@@ -22,12 +24,14 @@ class Migration20130729084642ComForum extends Base
     public function up()
     {
         if (!$this->db->tableHasField('#__forum_sections', 'ordering')) {
-            $query = "ALTER TABLE `#__forum_sections` ADD `ordering` INT(11)  NOT NULL  DEFAULT '0'  AFTER `object_id`;";
+            $query = "ALTER TABLE `#__forum_sections` ADD `ordering` INT(11)  NOT NULL  DEFAULT '0'  AFTER "
+                . "`object_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if (!$this->db->tableHasField('#__forum_categories', 'ordering')) {
-            $query = "ALTER TABLE `#__forum_categories` ADD `ordering` INT(11)  NOT NULL  DEFAULT '0'  AFTER `object_id`;";
+            $query = "ALTER TABLE `#__forum_categories` ADD `ordering` INT(11)  NOT NULL  DEFAULT '0'  AFTER "
+                . "`object_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }

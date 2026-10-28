@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access.
-defined('_HZEXEC_') or die();
 
 /**
  * Based on code by Brion Vibber <brion@pobox.com>
@@ -35,7 +33,10 @@ function codepointToUtf8($codepoint)
         return chr($codepoint >> 12 & 0x0f | 0xe0) . chr($codepoint >> 6 & 0x3f | 0x80) . chr($codepoint & 0x3f | 0x80);
     }
     if ($codepoint < 0x110000) {
-        return chr($codepoint >> 18 & 0x07 | 0xf0) . chr($codepoint >> 12 & 0x3f | 0x80) . chr($codepoint >> 6 & 0x3f | 0x80) . chr($codepoint & 0x3f | 0x80);
+        return chr($codepoint >> 18 & 0x07 | 0xf0)
+            . chr($codepoint >> 12 & 0x3f | 0x80)
+            . chr($codepoint >> 6 & 0x3f | 0x80)
+            . chr($codepoint & 0x3f | 0x80);
     }
 
     echo "Asked for code outside of range ($codepoint)\n";

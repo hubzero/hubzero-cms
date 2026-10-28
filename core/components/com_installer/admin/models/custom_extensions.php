@@ -19,6 +19,7 @@ use Date;
 /**
  * Extension model
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Custom_extensions extends Relational
 {
     /**

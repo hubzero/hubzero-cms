@@ -13,7 +13,14 @@ defined('_HZEXEC_') or die;
     <?php if ($link) : ?>
         <a href="<?php echo $link; ?>">
     <?php endif; ?>
-            <?php echo Html::asset('image', $image->folder . '/' . $image->name, $image->name, array('width' => $image->width, 'height' => $image->height)); ?>
+            <?php
+            echo Html::asset(
+                'image',
+                $image->folder . '/' . $image->name,
+                $image->name,
+                array('width' => $image->width, 'height' => $image->height)
+            );
+            ?>
     <?php if ($link) : ?>
         </a>
     <?php endif; ?>

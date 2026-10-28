@@ -42,7 +42,22 @@ class Email extends Field
         // Initialize JavaScript field attributes.
         $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
-        return '<input type="text" name="' . $this->name . '" class="validate-email' . $class . '" id="' . $this->id . '"' . ' value="'
-            . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '"' . $size . $disabled . $readonly . $onchange . $maxLength . '/>';
+        return '<input type="text" name="' .
+            $this->name .
+            '" class="validate-email' .
+            $class .
+            '" id="' .
+            $this->id .
+            '"' .
+            ' value="'
+            .
+                htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
+                '"' .
+                $size .
+                $disabled .
+                $readonly .
+                $onchange .
+                $maxLength .
+                '/>';
     }
 }

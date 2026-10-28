@@ -25,7 +25,12 @@ if ($this->getError()) { ?>
                         <span class="day"><?php echo Date::of($event->publish_up)->toLocal('d'); ?></span>
                     </div>
                     <div class="event-title">
-                        <a href="<?php echo Route::url('index.php?option=com_events&task=details&id=' . $event->id); ?>">
+                        <?php
+                        $eventUrl = Route::url(
+                            'index.php?option=com_events&task=details&id=' . $event->id
+                        );
+                        ?>
+                        <a href="<?php echo $eventUrl; ?>">
                             <?php echo $this->escape(html_entity_decode(stripslashes($event->title))); ?>
                         </a>
                     </div>
@@ -40,6 +45,14 @@ if ($this->getError()) { ?>
         <?php } ?>
     </div>
     <p class="more">
-        <a href="<?php echo Route::url('index.php?option=com_events&year=' . Date::of('now')->format('Y') . '&month=' . Date::of('now')->format('m')); ?>"><?php echo Lang::txt('MOD_EVENTS_LATEST_MORE'); ?></a>
+        <?php
+        $eventsUrl = Route::url(
+            'index.php?option=com_events&year=' . Date::of('now')->format('Y')
+            . '&month=' . Date::of('now')->format('m')
+        );
+        ?>
+        <a href="<?php echo $eventsUrl; ?>">
+            <?php echo Lang::txt('MOD_EVENTS_LATEST_MORE'); ?>
+        </a>
     </p>
 <?php }

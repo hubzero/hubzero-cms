@@ -444,7 +444,7 @@ class Migration
                         continue;
                     }
                     // If the last run was the same direction as is currently being run, we shouldn't run it again
-                    else if ($row && $row->direction == $direction) {
+                    elseif ($row && $row->direction == $direction) {
                         // Lastly, check status as well
                         if (!$hasStatus || ($hasStatus && $row->status == 'success')) {
                             if ($dryrun) {
@@ -497,7 +497,7 @@ class Migration
             // Check if we're making a dry run, or only logging changes
             if ($dryrun) {
                 $this->log("Would run {$direction}() {$scope}/{$file}", 'success');
-            } else if ($logOnly) {
+            } elseif ($logOnly) {
                 $this->recordMigration($file, $scope, $hash, $direction);
                 $this->log("Marking as run: {$direction}() in {$scope}/{$file}", 'success');
             } else {
@@ -516,15 +516,15 @@ class Migration
                                     $this->log("Error: running {$direction}() resulted in a fatal error in {$scope}/{$file}: {$error['message']}", 'error');
                                     $this->recordMigration($file, $scope, $hash, $direction, 'fatal');
                                     return false;
-                                } else if ($error['type'] == 'warning') {
+                                } elseif ($error['type'] == 'warning') {
                                     // Just a warning...display message and carry on (my wayward son)
                                     $this->log("Warning: running {$direction}() resulted in a non-fatal error in {$scope}/{$file}: {$error['message']}", 'warning');
                                     $status = 'warning';
                                     continue;
-                                } else if ($error['type'] == 'info') {
+                                } elseif ($error['type'] == 'info') {
                                     // Informational error (is that a real thing?)
                                     $this->log("Info: running {$direction}() noted this in {$scope}/{$file}: {$error['message']}", 'info');
-                                } else if ($error['type'] == 'skipped') {
+                                } elseif ($error['type'] == 'skipped') {
                                     // Migration chose to skip - will retry on next run
                                     $this->log("Skipped {$direction}() in {$scope}/{$file}: {$error['message']}", 'info');
                                     $status = 'skipped';

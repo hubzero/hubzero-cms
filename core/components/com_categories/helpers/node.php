@@ -218,6 +218,7 @@ class Node extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parent = null;
 
     /**
@@ -225,6 +226,7 @@ class Node extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_children = array();
 
     /**
@@ -232,6 +234,7 @@ class Node extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_path = array();
 
     /**
@@ -239,6 +242,7 @@ class Node extends Obj
      *
      * @var  integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_leftSibling = null;
 
     /**
@@ -246,6 +250,7 @@ class Node extends Obj
      *
      * @var  integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_rightSibling = null;
 
     /**
@@ -253,6 +258,7 @@ class Node extends Obj
      *
      * @var  boolean
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_allChildrenloaded = false;
 
     /**
@@ -260,6 +266,7 @@ class Node extends Obj
      *
      * @var
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_constructor = null;
 
     /**

@@ -13,9 +13,12 @@ use Exception;
 /**
  * Utility class used by Akismet
  *
- * This class is used by Akismet to do the actual sending and receiving of data.  It opens a connection to a remote host, sends some data and the reads the response and makes it available to the calling program.
- * The code that makes up this class originates in the Akismet WordPress plugin, which is {@link http://akismet.com/download/ available on the Akismet website}.
- * N.B. It is not necessary to call this class directly to use the Akismet class.  This is included here mainly out of a sense of completeness.
+ * This class is used by Akismet to do the actual sending and receiving of data.  It opens a connection to a remote
+ * host, sends some data and the reads the response and makes it available to the calling program.
+ * The code that makes up this class originates in the Akismet WordPress plugin, which is
+ * {@link http://akismet.com/download/ available on the Akismet website}.
+ * N.B. It is not necessary to call this class directly to use the Akismet class.
+ * This is included here mainly out of a sense of completeness.
  *
  * @package  akismet
  * @version  0.1
@@ -84,12 +87,12 @@ class SocketWriteRead
      */
     public function __construct($host, $port, $request, $responseLength = 1160)
     {
-        $this->host           = $host;
-        $this->port           = $port;
-        $this->request        = $request;
+        $this->host = $host;
+        $this->port = $port;
+        $this->request = $request;
         $this->responseLength = $responseLength;
-        $this->errorNumber    = 0;
-        $this->errorString    = '';
+        $this->errorNumber = 0;
+        $this->errorString = '';
     }
 
     /**
@@ -104,7 +107,10 @@ class SocketWriteRead
         $fs = @fsockopen($this->host, $this->port, $this->errorNumber, $this->errorString, 3);
 
         if ($this->errorNumber != 0) {
-            throw new Exception('Error connecting to host: ' . $this->host . ' Error number: ' . $this->errorNumber . ' Error message: ' . $this->errorString);
+            throw new Exception(
+                'Error connecting to host: ' . $this->host . ' Error number: ' .
+                $this->errorNumber . ' Error message: ' . $this->errorString
+            );
         }
 
         if ($fs !== false) {

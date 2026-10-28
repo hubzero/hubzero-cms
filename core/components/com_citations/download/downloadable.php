@@ -18,6 +18,7 @@ abstract class Downloadable
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_mime = '';
 
     /**
@@ -25,6 +26,7 @@ abstract class Downloadable
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_extension = '';
 
     /**

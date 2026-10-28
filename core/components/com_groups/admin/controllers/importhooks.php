@@ -184,7 +184,7 @@ class ImportHooks extends AdminController
         // Is this a new record?
         if ($isNew) {
             // Create folder for files
-            $this->_createImportFilespace($hook);
+            $this->createImportFilespace($hook);
         }
 
         // If we have a file
@@ -287,7 +287,7 @@ class ImportHooks extends AdminController
      * @param   object   $hook  \Hubzero\Content\Import\Model\Hook
      * @return  boolean
      */
-    private function _createImportFilespace(Hook $hook)
+    private function createImportFilespace(Hook $hook)
     {
         // upload path
         $uploadPath = $hook->fileSpacePath();

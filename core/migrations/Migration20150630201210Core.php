@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for ensuring system route plugins are in the correct order
- **/
+ *
+ */
 class Migration20150630201210Core extends Base
 {
     /**
@@ -54,7 +55,8 @@ class Migration20150630201210Core extends Base
                 }
 
                 if (isset($result)) {
-                    $query = "UPDATE `#__extensions` SET `ordering` = " . $orderIdx . " WHERE `extension_id` = " . $this->db->quote($result->extension_id);
+                    $query = "UPDATE `#__extensions` SET `ordering` = " . $orderIdx
+                        . " WHERE `extension_id` = " . $this->db->quote($result->extension_id);
                     $this->db->setQuery($query);
                     $this->db->query();
                     $orderIdx++;
@@ -70,7 +72,8 @@ class Migration20150630201210Core extends Base
 
             // That leaves everything else, which we'll keep in their same relative order
             foreach ($system as $plugin) {
-                $query = "UPDATE `#__extensions` SET `ordering` = " . $orderIdx . " WHERE `extension_id` = " . $this->db->quote($plugin->extension_id);
+                $query = "UPDATE `#__extensions` SET `ordering` = " . $orderIdx
+                    . " WHERE `extension_id` = " . $this->db->quote($plugin->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
                 $orderIdx++;

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing members names that dont have individual names filled in.
- **/
+ *
+ */
 class Migration20141110232014ComMembers extends Base
 {
     /**
@@ -57,10 +59,10 @@ class Migration20141110232014ComMembers extends Base
 
                 if ($count == 1) {
                     $firstname = $words[0];
-                } else if ($count == 2) {
+                } elseif ($count == 2) {
                     $firstname = $words[0];
                     $lastname  = $words[1];
-                } else if ($count == 3) {
+                } elseif ($count == 3) {
                     $firstname  = $words[0];
                     $middlename = $words[1];
                     $lastname   = $words[2];
@@ -84,9 +86,11 @@ class Migration20141110232014ComMembers extends Base
             $lastname   = trim($lastname);
 
             // update name
-            $query = "UPDATE `#__xprofiles`
-				  SET `name` = " . $this->db->quote($name) . ", `givenName` = " . $this->db->quote($firstname) . ", `middleName` = " . $this->db->quote($middlename) . ", `surname` = " . $this->db->quote($lastname) . "
-				  WHERE `uidNumber`=" . $profile->uidNumber;
+            $query = "UPDATE `#__xprofiles` SET `name` = " . $this->db->quote($name)
+                . ", `givenName` = " . $this->db->quote($firstname)
+                . ", `middleName` = " . $this->db->quote($middlename)
+                . ", `surname` = " . $this->db->quote($lastname)
+                . " WHERE `uidNumber`=" . $profile->uidNumber;
             $this->db->setQuery($query);
             $this->db->query();
         }

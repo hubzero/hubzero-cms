@@ -9,7 +9,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$eventLink = 'http://' . $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn') . DS . 'calendar' . DS . 'details' . DS . $this->event->id;
+$eventLink = 'http://'
+    . $_SERVER['HTTP_HOST']
+    . DS
+    . 'groups'
+    . DS
+    . $this->group->get('cn')
+    . DS
+    . 'calendar'
+    . DS
+    . 'details'
+    . DS
+    . $this->event->id;
 
 $message  = 'Thank you for registering for the "' . $this->event->title . '" event. (' . $eventLink . ')';
 $message .= "\n\n" . '-------------------------------------------------------------------' . "\n\n";
@@ -50,7 +61,10 @@ if ($this->params->get('show_address', 1) == 1) {
     }
 }
 
-if ($this->params->get('show_position', 1) == 1 && (isset($this->register['position']) || isset($this->register['position_other']))) {
+if (
+    $this->params->get('show_position', 1) == 1 && (isset($this->register['position']) ||
+    isset($this->register['position_other']))
+) {
     $message .= 'Current position: ';
     $message .= ($this->register['position']) ? $this->register['position'] : $this->register['position_other'];
     $message .= "\n\n";

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +26,10 @@ us in our effort to keep <?php echo $hubname;?> free for a broad user base and l
         <li>
             Are you using <?php echo $hubname;?> for education? If so how?
             <ul>
-                <li>As part of a formal course? Which course? Which educational institution? How often do you use <?php echo $hubname;?> in the course per semester?</li>
+                <li>
+                    As part of a formal course? Which course? Which educational institution?
+                    How often do you use <?php echo $hubname;?> in the course per semester?
+                </li>
                 <li>Which professor leads the class? Are you the professor?</li>
             </ul>
         </li>
@@ -40,12 +44,18 @@ us in our effort to keep <?php echo $hubname;?> free for a broad user base and l
         <li>
             Are you using <?php echo $hubname;?> for research? If so how? Please let us know some details.
             <ul>
-                <li>Have you published research results while using <?php echo $hubname;?> resources? If so, can you share your research citations with us (just copy and paste the citations below)</li>
+                <li>
+                    Have you published research results while using <?php echo $hubname;?> resources?
+                    If so, can you share your research citations with us (just copy and paste the citations below)
+                </li>
                 <li>Do you have a Google Scholar, ResearcherID, ScopusID, ORCID, or ResearchGateID?</li>
             </ul>
         </li>
 
-        <li>Have your usage pattern and intent changed over time? Has it evolved from the primary usage of one set of resources to another set?</li>
+        <li>
+            Have your usage pattern and intent changed over time?
+            Has it evolved from the primary usage of one set of resources to another set?
+        </li>
 
         <li>
             Other web presence:

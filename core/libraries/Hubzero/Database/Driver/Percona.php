@@ -48,7 +48,10 @@ class Percona extends Mysql
             ));
         }
 
-        $this->setQuery('ALTER TABLE ' . str_replace('#__', $this->tablePrefix, $this->quote($table, false)) . " ENGINE = " . $this->quote($engine));
+        $this->setQuery('ALTER TABLE ' .
+            str_replace('#__', $this->tablePrefix, $this->quote($table, false)) .
+            " ENGINE = " .
+            $this->quote($engine));
 
         return $this->db->query();
     }

@@ -56,8 +56,12 @@ class Util
         }
 
         $path = self::normalizePath($path);
-
-        if (PATH_ROOT != '' && strpos($path, self::normalizePath(PATH_ROOT)) !== 0 && strpos($path, self::normalizePath(PATH_CORE)) !== 0) {
+        if (
+            PATH_ROOT != '' && strpos(
+                $path,
+                self::normalizePath(PATH_ROOT)
+            ) !== 0 && strpos($path, self::normalizePath(PATH_CORE)) !== 0
+        ) {
             // Don't translate
             throw new PathViolationException('Snooping out of bounds @ ' . $path);
         }
@@ -85,11 +89,10 @@ class Util
 
         if (empty($path)) {
             $path = PATH_ROOT;
-        }
+        } elseif ($ds == '\\' && $path[0] == '\\' && $path[1] == '\\') {
         // Remove double slashes and backslashes and convert all slashes
         // and backslashes to DIRECTORY_SEPARATOR. If dealing with a UNC
         // path don't forget to prepend the path with a backslash.
-        else if ($ds == '\\' && $path[0] == '\\' && $path[1] == '\\') {
             $path = "\\" . preg_replace('#[/\\\\]+#', $ds, $path);
         } else {
             $path = preg_replace('#[/\\\\]+#', $ds, $path);

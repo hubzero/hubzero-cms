@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing site Hubbasicadmin template
+  *
  **/
 class Migration20150624164611TplHubbasicadmin extends Base
 {
@@ -26,7 +28,8 @@ class Migration20150624164611TplHubbasicadmin extends Base
             $this->db->setQuery($query);
             if ($template = $this->db->loadResult()) {
                 if ($template == 'hubbasicadmin') {
-                    $query = "UPDATE `#__template_styles` SET `home`=1 WHERE `client_id`=1 AND `template`=" . $this->db->quote('kameleon');
+                    $query = "UPDATE `#__template_styles` SET `home`=1 "
+                        . "WHERE `client_id`=1 AND `template`=" . $this->db->quote('kameleon');
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

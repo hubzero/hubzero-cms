@@ -29,7 +29,8 @@ $tblColor = '#ffffff';
         }
         body {
             width: 100% !important;
-            font-family: 'Helvetica Neue', Helvetica, Verdana, Arial, sans-serif !important;
+            font-family: 'Helvetica Neue', Helvetica, Verdana, Arial,
+                sans-serif !important;
             background-color: <?php echo $bgColor; ?> !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -41,12 +42,18 @@ $tblColor = '#ffffff';
             text-rendering: optimizeLegibility;
             height: 100%;
         }
-        <?php /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */ ?>
+        <?php
+        /* Prevent Webkit and Windows Mobile platforms from changing default
+           font sizes, while not breaking desktop design. */
+        ?>
         <?php /* Force Hotmail to display emails at full width */ ?>
         .ExternalClass {
             width: 100%;
         }
-        <?php /* Force Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */?>
+        <?php
+        /* Force Hotmail to display normal line spacing.
+           More on that: http://www.emailonacid.com/forum/viewthread/43/ */
+        ?>
         .ExternalClass,
         .ExternalClass p,
         .ExternalClass span,
@@ -67,9 +74,13 @@ $tblColor = '#ffffff';
 
         <?php
         /* Some sensible defaults for images
-        1. "-ms-interpolation-mode: bicubic" works to help ie properly resize images in IE. (if you are resizing them using the width and height attributes)
+        1. "-ms-interpolation-mode: bicubic" works to help ie properly resize images in IE.
+           (if you are resizing them using the width and height attributes)
         2. "border:none" removes border when linking images.
-        3. Updated the common Gmail/Hotmail image display fix: Gmail and Hotmail unwantedly adds in an extra space below images when using non IE browsers. You may not always want all of your images to be block elements. Apply the "image_fix" class to any image you need to fix.
+        3. Updated the common Gmail/Hotmail image display fix: Gmail and Hotmail unwantedly
+           adds in an extra space below images when using non IE browsers. You may not always
+           want all of your images to be block elements. Apply the "image_fix" class to any
+           image you need to fix.
 
         Bring inline: Yes.
         */
@@ -86,7 +97,10 @@ $tblColor = '#ffffff';
             display: block !important;
         }
 
-        <?php /* Yahoo paragraph fix: removes the proper spacing or the paragraph (p) tag. To correct we set the top/bottom margin to 1em in the head of the document. */ ?>
+        <?php
+        /* Yahoo paragraph fix: removes the proper spacing or the paragraph (p) tag.
+           To correct we set the top/bottom margin to 1em in the head of the document. */
+        ?>
         p {
             margin: 1em 0;
         }
@@ -207,7 +221,8 @@ $tblColor = '#ffffff';
     </head>
     <body bgcolor="<?php echo $bgColor; ?>">
         <!-- Start Body Wrapper Table -->
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" id="backgroundTable" bgcolor="<?php echo $bgColor; ?>">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0"
+            id="backgroundTable" bgcolor="<?php echo $bgColor; ?>">
             <tbody>
                 <tr>
                     <td bgcolor="<?php echo $bgColor; ?>" align="center">
@@ -217,10 +232,12 @@ $tblColor = '#ffffff';
                             <tbody>
                                 <tr>
                                     <td bgcolor="<?php echo $tblColor; ?>" width="10"></td>
-                                    <td class="tbl-body" bgcolor="<?php echo $tblColor; ?>" width="650" align="left">
+                                    <td class="tbl-body" bgcolor="<?php echo $tblColor; ?>"
+                                        width="650" align="left">
 
                                         <!-- Start Header Spacer -->
-                                        <table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                        <table class="tbl-spacer" width="100%"
+                                            cellpadding="0" cellspacing="0" border="0">
                                             <tbody>
                                                 <tr>
                                                     <td height="30"></td>
@@ -234,7 +251,8 @@ $tblColor = '#ffffff';
                                         <!-- End content -->
 
                                         <!-- Start Footer Spacer -->
-                                        <table class="tbl-spacer" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                        <table class="tbl-spacer" width="100%"
+                                            cellpadding="0" cellspacing="0" border="0">
                                             <tbody>
                                                 <tr>
                                                     <td height="30"><div>----</div></td>
@@ -244,11 +262,25 @@ $tblColor = '#ffffff';
                                         <!-- End Footer Spacer -->
 
                                         <!-- Start Footer -->
-                                        <table class="tbl-footer" width="100%" cellpadding="0" cellspacing="0" border="0">
+                                        <table class="tbl-footer" width="100%"
+                                            cellpadding="0" cellspacing="0" border="0">
                                             <tbody>
                                             <tr>
                                                 <td align="left" valign="bottom">
-                                                    <span><?php echo Config::get('sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo Request::base(); ?>"><?php echo Request::base(); ?></a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+                                                    <span><?php
+                                                        echo Config::get('sitename');
+                                                    ?> sent this email because you were added
+                                                    to the list of recipients on
+                                                    <a href="<?php echo Request::base(); ?>"><?php
+                                                        echo Request::base();
+                                                    ?></a>. Visit our
+                                                    <a href="<?php
+                                                        echo Request::base();
+                                                    ?>/legal/privacy">Privacy Policy</a> and
+                                                    <a href="<?php
+                                                        echo Request::base();
+                                                    ?>/support">Support Center</a>
+                                                    if you have any questions.</span>
                                                 </td>
                                             </tr>
                                             </tbody>

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -106,9 +107,12 @@ class Publicationsv1_0 extends ApiController
 
                 $obj->authors       = $pa->getAuthors($entry->get('version_id'));
 
-                $obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
-                $obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('version')), '/'));
-                $obj->manageUri     = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('editversion')), '/'));
+                $thumbRoute = $base . '/' . ltrim(Route::url($entry->link('thumb')), '/');
+                $obj->thumbUrl      = str_replace('/api', '', $thumbRoute);
+                $versionRoute = $base . '/' . ltrim(Route::url($entry->link('version')), '/');
+                $obj->uri           = str_replace('/api', '', $versionRoute);
+                $editRoute = $base . '/' . ltrim(Route::url($entry->link('editversion')), '/');
+                $obj->manageUri     = str_replace('/api', '', $editRoute);
                 $obj->project       = $entry->project()->get('alias');
 
                 $response->publications[] = $obj;

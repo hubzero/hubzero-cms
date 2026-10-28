@@ -45,9 +45,9 @@ class Query
     /**
      * The database query type constants
      **/
-    const ROW    = 'loadObject';
-    const ROWS   = 'loadObjectList';
-    const COLUMN = 'loadColumn';
+    public const ROW    = 'loadObject';
+    public const ROWS   = 'loadObjectList';
+    public const COLUMN = 'loadColumn';
 
     /**
      * The elements of a basic select statement

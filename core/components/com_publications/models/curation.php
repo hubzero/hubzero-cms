@@ -46,79 +46,79 @@ class Curation extends Obj
      *
      * @var  object
      */
-    var $_db = null;
+    public $_db = null;
 
     /**
      * Publication
      *
      * @var  object
      */
-    var $_pub = null;
+    public $_pub = null;
 
     /**
      * Publication model
      *
      * @var  object
      */
-    var $_model = null;
+    public $_model = null;
 
     /**
      * Curation manifest
      *
      * @var  string
      */
-    var $_manifest = null;
+    public $_manifest = null;
 
     /**
      * Blocks
      *
      * @var  object
      */
-    var $_blocks = array();
+    public $_blocks = array();
 
     /**
      * Total blocks
      *
      * @var  int
      */
-    var $_blockcount = 0;
+    public $_blockcount = 0;
 
     /**
      * Current block
      *
      * @var  object
      */
-    var $_block = array();
+    public $_block = array();
 
     /**
      * Current block name
      *
      * @var  string
      */
-    var $_blockname = null;
+    public $_blockname = null;
 
     /**
      * Current block blockId
      *
      * @var  string
      */
-    var $_blockorder = null;
+    public $_blockorder = null;
 
     /**
      * Progress
      *
      * @var  object
      */
-    var $_progress = null;
+    public $_progress = null;
 
     /**
      * Message
      *
      * @var  string
      */
-    var $_message = null;
+    public $_message = null;
 
-    var $readmeFileName = 'hubREADME.txt';
+    public $readmeFileName = 'hubREADME.txt';
 
     /**
      * Constructor

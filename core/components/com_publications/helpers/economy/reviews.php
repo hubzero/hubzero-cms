@@ -25,6 +25,7 @@ class Reviews extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_db = null;
 
     /**
@@ -75,6 +76,7 @@ class Reviews extends Obj
      * @param   string  $type    Point calculation type
      * @return  mixed   False if errors, integer on success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function calculate_marketvalue($review, $type = 'royalty')
     {
         if (!is_object($review)) {
@@ -103,6 +105,7 @@ class Reviews extends Obj
      * @param   string   $type    Point calculation type
      * @return  boolean  False if errors, true on success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function distribute_points($review, $type = 'royalty')
     {
         if (!is_object($review)) {

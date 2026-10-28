@@ -1753,9 +1753,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
                     $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_SAVING_NEW_VERSION'));
                 }
             }
-        }
-        // Need to ask for new version label
-        else {
+        } else {
+            // Need to ask for new version label
             $view = new \Hubzero\Plugin\View(
                 array(
                     'folder'  => 'projects',

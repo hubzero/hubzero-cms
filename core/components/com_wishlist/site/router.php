@@ -85,7 +85,7 @@ class Router extends Base
             $vars['task'] = 'wishlist';
             $vars['id'] = $segments[0];
             return $vars;
-        } else if (!intval($segments[0]) && empty($segments[1])) {
+        } elseif (!intval($segments[0]) && empty($segments[1])) {
             // some general task
             $vars['task'] = $segments[0];
             return $vars;

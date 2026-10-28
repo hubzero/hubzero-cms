@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,8 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for adding created, creator, modified,
  * and modifier info to tags table
- **/
+ *
+ */
 class Migration20140709144527ComTags extends Base
 {
     /**
@@ -37,7 +39,9 @@ class Migration20140709144527ComTags extends Base
             $this->db->setQuery($query);
             if ($rows = $this->db->loadObjectList()) {
                 foreach ($rows as $row) {
-                    $query = "UPDATE `#__tags` SET `created`=" . $this->db->quote($row->timestamp) . ", `created_by`=" . $this->db->quote($row->actorid) . " WHERE `id`=" . $this->db->quote($row->tag_id);
+                    $query = "UPDATE `#__tags` SET `created`=" . $this->db->quote($row->timestamp)
+                        . ", `created_by`=" . $this->db->quote($row->actorid)
+                        . " WHERE `id`=" . $this->db->quote($row->tag_id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

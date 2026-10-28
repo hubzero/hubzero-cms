@@ -18,6 +18,7 @@ class ClientManager
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected static $_clients = null;
 
     /**

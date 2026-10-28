@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -81,7 +82,9 @@ class Versions extends AdminController
         $filters['sortby'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
         // In case limit has been changed, adjust limitstart accordingly
-        $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
+        $filters['start'] = ($filters['limit'] != 0
+            ? (floor($filters['start'] / $filters['limit']) * $filters['limit'])
+            : 0);
 
         if (!$filters['id']) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
@@ -271,7 +274,11 @@ class Versions extends AdminController
 
         if ($this->getTask() == 'apply') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version'], false)
+                Route::url(
+                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                        . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version'],
+                    false
+                )
             );
             return;
         }
@@ -395,7 +402,11 @@ class Versions extends AdminController
         Notify::success(Lang::txt('COM_TOOLS_ITEM_DELETED'));
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0), false)
+            Route::url(
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    . '&tmpl=component&task=displayZones&version=' . Request::getInt('version', 0),
+                false
+            )
         );
     }
 }

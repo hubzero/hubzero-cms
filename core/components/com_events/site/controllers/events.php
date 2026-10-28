@@ -707,7 +707,7 @@ class Events extends SiteController
         $row->contact_info = stripslashes(strip_tags($row->contact_info));
         if (substr($row->contact_info, 0, strlen('mailto:')) == 'mailto:') {
             $row->contact_info = '<a href="mailto:' . $this->obfuscate(substr($row->contact_info, strlen('mailto:'))) . '">' . $this->obfuscate(substr($row->contact_info, strlen('mailto:'))) . '</a>';
-        } else if (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $row->contact_info)) {
+        } elseif (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $row->contact_info)) {
             $row->contact_info = '<a href="mailto:' . $this->obfuscate($row->contact_info) . '">' . $this->obfuscate($row->contact_info) . '</a>';
         }
         //$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
@@ -1487,7 +1487,7 @@ class Events extends SiteController
             }
             if ($start_hrs > 12) {
                 $start_hrs -= 12;
-            } else if ($start_hrs == 0) {
+            } elseif ($start_hrs == 0) {
                 $start_hrs = 12;
             }
             if (strlen($start_mins) == 1) {
@@ -1501,7 +1501,7 @@ class Events extends SiteController
             }
             if ($end_hrs > 12) {
                 $end_hrs -= 12;
-            } else if ($end_hrs == 0) {
+            } elseif ($end_hrs == 0) {
                 $end_hrs = 12;
             }
 
@@ -1511,7 +1511,7 @@ class Events extends SiteController
             }
             if ($registerby_hrs > 12) {
                 $registerby_hrs -= 12;
-            } else if ($registerby_hrs == 0) {
+            } elseif ($registerby_hrs == 0) {
                 $registerby_hrs = 12;
             }
             if (strlen($registerby_mins) == 1) {
@@ -1830,7 +1830,7 @@ class Events extends SiteController
             $mins = intval($mins);
             if ($hrs != 12 && $start_pm) {
                 $hrs += 12;
-            } else if ($hrs == 12 && !$start_pm) {
+            } elseif ($hrs == 12 && !$start_pm) {
                 $hrs = 0;
             }
             if ($hrs < 10) {
@@ -1846,7 +1846,7 @@ class Events extends SiteController
             $mins = intval($mins);
             if ($hrs != 12 && $end_pm) {
                 $hrs += 12;
-            } else if ($hrs == 12 && !$end_pm) {
+            } elseif ($hrs == 12 && !$end_pm) {
                 $hrs = 0;
             }
             if ($hrs < 10) {

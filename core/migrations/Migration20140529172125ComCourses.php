@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for making sure manual grade entries are of the proper type and subtype
+  *
  **/
 class Migration20140529172125ComCourses extends Base
 {
@@ -34,7 +36,8 @@ class Migration20140529172125ComCourses extends Base
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
-                $query = "UPDATE `#__courses_assets` SET `type` = 'gradebook', `subtype` = 'auxiliary' WHERE `id` = '{$result->id}'";
+                $query = "UPDATE `#__courses_assets` SET `type` = 'gradebook', `subtype` = 'auxiliary' "
+                    . "WHERE `id` = '{$result->id}'";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

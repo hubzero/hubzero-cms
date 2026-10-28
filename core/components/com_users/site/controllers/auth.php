@@ -255,7 +255,7 @@ class Auth extends SiteController
                 );
 
                 $multiAuth = true;
-            } else if ($p->name == 'hubzero') {
+            } elseif ($p->name == 'hubzero') {
                 $remember_me_default = $pparams->get('remember_me_default', 0);
                 $this->site_display  = $pparams->get('display_name', Config::get('sitename'));
                 $local               = true;
@@ -614,7 +614,10 @@ class Auth extends SiteController
         $plugin       = Plugin::byType('authentication', $hzad->authenticator);
         $pparams      = new Registry($plugin->params);
         $refl         = new \ReflectionClass("plgAuthentication{$plugin->name}");
-        $display_name = $pparams->get('display_name', $refl->hasMethod('onGetLinkDescription') ? $refl->getMethod('onGetLinkDescription')->invoke(null) : ucfirst($plugin->name));
+        $defaultName = $refl->hasMethod('onGetLinkDescription')
+            ? $refl->getMethod('onGetLinkDescription')->invoke(null)
+            : ucfirst($plugin->name);
+        $display_name = $pparams->get('display_name', $defaultName);
 
         // Look for conflicts - first check in the hub accounts
         $profile_conflicts = \Hubzero\User\User::all()
@@ -629,7 +632,9 @@ class Auth extends SiteController
         if ($profile_conflicts) {
             foreach ($profile_conflicts as $auser) {
                 $auth_link  = \Hubzero\Auth\Link::find_by_user_id($auser->id);
-                $dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
+                $dname = (is_object($auth_link) && $auth_link->auth_domain_name)
+                    ? $auth_link->auth_domain_name
+                    : 'hubzero';
                 $conflict[] = array(
                     'auth_domain_name' => $dname,
                     'name'  => $auser->name,
@@ -716,7 +721,8 @@ class Auth extends SiteController
                     // No Link method is available
                     Notify::error(Lang::txt('Linked accounts are not currently available for this provider.'));
 
-                    App::redirect(Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account', false));
+                    $url = 'index.php?option=com_members&id=' . $user->get('id') . '&active=account';
+                    App::redirect(Route::url($url, false));
                 }
             }
         } else {
@@ -776,7 +782,8 @@ class Auth extends SiteController
             } else {
                 $params = new \Hubzero\Config\Registry('');
                 $template = App::get('template')->template;
-                $inifile = App::get('template')->path . DS .  'html' . DS . 'com_user' . DS . 'logout' . DS . 'config.ini';
+                $inifile = App::get('template')->path . DS . 'html' . DS . 'com_user'
+                    . DS . 'logout' . DS . 'config.ini';
                 if (file_exists($inifile)) {
                     $params->parse(file_get_contents($inifile));
                 }
@@ -813,7 +820,8 @@ class Auth extends SiteController
             // Build logout image if enabled
             if ($params->get('image_' . $type) != -1) {
                 $image = '/images/stories/' . $params->get('image_' . $type);
-                $image = '<img src="' . $image  . '" align="' . $params->get('image_' . $type . '_align') . '" hspace="10" alt="" />';
+                $image = '<img src="' . $image  . '" align="'
+                    . $params->get('image_' . $type . '_align') . '" hspace="10" alt="" />';
             }
 
             // Get the return URL
@@ -905,7 +913,8 @@ class Auth extends SiteController
                 }
 
                 // Redirect to user third party signout view
-                // Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
+                // Only do this for PUCAS for the time being (it's the one that
+                // doesn't lose session info after hub logout)
                 if ($auth_domain_name == 'pucas') {
                     // Get plugin params
                     $plugin = Plugin::byType('authentication', $auth_domain_name);
@@ -914,10 +923,14 @@ class Auth extends SiteController
                     $auto_logoff = $pparams->get('auto_logoff', false);
 
                     if ($auto_logoff) {
-                        App::redirect(Route::url('index.php?option=com_users&task=user.logout&authenticator=' . $auth_domain_name, false));
+                        $url = 'index.php?option=com_users&task=user.logout&authenticator='
+                            . $auth_domain_name;
+                        App::redirect(Route::url($url, false));
                         return;
                     } else {
-                        App::redirect(Route::url('index.php?option=com_users&view=endsinglesignon&authenticator=' . $auth_domain_name, false));
+                        $url = 'index.php?option=com_users&view=endsinglesignon&authenticator='
+                            . $auth_domain_name;
+                        App::redirect(Route::url($url, false));
                         return;
                     }
                 }

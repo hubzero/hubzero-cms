@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -279,11 +280,16 @@ class Windows extends AdminController
                 $sessionsArray = explode("|", $s);
 
                 if (count($sessionsArray) == 4) {
-                    $sessions[] = array("sessionid" => $sessionsArray[0], "status" => $sessionsArray[2], "opaquedata" => $sessionsArray[3]);
+                    $sessions[] = array(
+                        "sessionid" => $sessionsArray[0],
+                        "status" => $sessionsArray[2],
+                        "opaquedata" => $sessionsArray[3]
+                    );
                 }
                 //else
                 //{
-                    //$sessions[] = array("sessionid" => $sessionsArray[0], "status" => "cannot parse", "opaquedata" => "cannot parse");
+                    //$sessions[] = array("sessionid" => $sessionsArray[0],
+                    //    "status" => "cannot parse", "opaquedata" => "cannot parse");
                 //}
             }
 
@@ -399,7 +405,11 @@ class Windows extends AdminController
 
         // Redirect back to the listing
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=sessions', false),
+            Route::url(
+                'index.php?option=' . $this->_option
+                    . '&controller=' . $this->_controller . '&task=sessions',
+                false
+            ),
             Lang::txt('COM_TOOLS_SESSIONS_TERMINATED')
         );
     }

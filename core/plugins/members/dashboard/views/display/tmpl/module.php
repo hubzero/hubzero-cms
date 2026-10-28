@@ -1,9 +1,11 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -31,9 +33,14 @@ $view->module = $this->module;
 $view->params = $params->toArray();
 $view->fields = $fields->getFieldset('basic');
 $settingsHtml = trim($view->loadTemplate());
+
+$moduleClass = 'module '
+    . strtolower($this->module->module) . ' '
+    . $params->get('moduleclass_sfx')
+    . '  draggable sortable';
 ?>
 
-<div class="module <?php echo strtolower($this->module->module) . ' ' . $params->get('moduleclass_sfx'); ?>  draggable sortable"
+<div class="<?php echo $moduleClass; ?>"
      data-row="<?php echo $this->module->positioning->row; ?>"
      data-col="<?php echo $this->module->positioning->col; ?>"
      data-sizex="<?php echo $this->module->positioning->size_x; ?>"
@@ -64,6 +71,7 @@ $settingsHtml = trim($view->loadTemplate());
             <?php echo $settingsHtml; ?>
             <div class="module-content">
                 <?php
+
                 if ($this->admin) {
                     echo '<div class="custom">' . Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_ADMIN_CONTENT') . '</div>';
                 } elseif ($this->module->module == 'mod_custom') {

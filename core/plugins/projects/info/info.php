@@ -1,5 +1,8 @@
 <?php
 
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * Projects Info plugin
  */
-class plgProjectsInfo extends \Hubzero\Plugin\Plugin
+class PlgProjectsInfo extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -30,12 +33,12 @@ class plgProjectsInfo extends \Hubzero\Plugin\Plugin
     public function &onProjectAreas($alias = null)
     {
         $area = array(
-            'name'    => $this->_name,
-            'alias'   => null,
-            'title'   => Lang::txt('PLG_PROJECTS_INFO'),
+            'name' => $this->_name,
+            'alias' => null,
+            'title' => Lang::txt('PLG_PROJECTS_INFO'),
             'submenu' => null,
-            'show'    => true,
-            'icon'    => 'f05a'
+            'show' => true,
+            'icon' => 'f05a'
         );
         return $area;
     }
@@ -53,7 +56,7 @@ class plgProjectsInfo extends \Hubzero\Plugin\Plugin
         $returnhtml = true;
 
         $arr = array(
-            'html'     => '',
+            'html' => '',
             'metadata' => ''
         );
 

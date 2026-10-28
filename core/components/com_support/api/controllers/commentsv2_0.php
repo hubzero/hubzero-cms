@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -324,7 +325,12 @@ class Commentsv2_0 extends ApiController
                 'email' => $ticket->get_owner->get('email'),
                 'id'    => $ticket->get_owner->get('id')
             ));
-            $changelog->notifications[] = json_encode(array('role'=>'Ticket owner', 'address'=>$ticket->get_owner()->get('email'), 'name'=>$ticket->get_owner()->get('name')));
+            $notifData = array(
+                'role' => 'Ticket owner',
+                'address' => $ticket->get_owner()->get('email'),
+                'name' => $ticket->get_owner()->get('name')
+            );
+            $changelog->notifications[] = json_encode($notifData);
         }
 
         // Add any CCs to the e-mail list
@@ -397,9 +403,20 @@ class Commentsv2_0 extends ApiController
                 }
 
                 // Get the user's email address
-                if (!Event::trigger('xmessage.onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support')))
+                $eventArgs = array(
+                    'support_reply_submitted',
+                    $subject,
+                    $message,
+                    $from,
+                    array($to['id']),
+                    'com_support'
+                );
+                if (!Event::trigger('xmessage.onSendMessage', $eventArgs))
                 {
-                    $this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+                    $errorTarget = $to['name'] . '(' . $to['role'] . ')';
+                    $this->setError(
+                        Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $errorTarget)
+                    );
                 }
                 $comment->changelog()->notified(
                     $to['role'],

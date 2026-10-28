@@ -2,12 +2,9 @@
 
 use Hubzero\Content\Migration\Base;
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 class Migration20240206000000PopulateStartingEmailSubscriptions extends Base
 {
-    static $tableName = '#__email_subscriptions';
+    public static $tableName = '#__email_subscriptions';
 
     // truncate existing table, insert two records according to its current schema
     public function up()

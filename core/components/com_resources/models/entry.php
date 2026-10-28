@@ -420,7 +420,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         if ($idx == 'tool') {
             if ($this->isTool() && $this->revision == 'dev') {
                 $contributors = $this->authors()->ordered()->rows();
-            } else if ($this->isTool()) {
+            } elseif ($this->isTool()) {
                 $db = App::get('db');
                 $sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization, t.*, a.role"
                      . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
@@ -1738,9 +1738,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $grp = \Hubzero\User\Group::getInstance($group);
                 if ($grp) {
                     $groups[$g] = $grp->get('gidNumber');
-                }
-                // Group not found
-                else {
+                } else {
+                    // Group not found
                     unset($groups[$g]);
                 }
             }

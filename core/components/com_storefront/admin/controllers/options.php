@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -193,8 +194,10 @@ class Options extends AdminController
 
         if ($redirect) {
             // Redirect
+            $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                . '&task=display&ogId=' . $fields['ogId'];
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $fields['ogId'], false),
+                Route::url($url, false),
                 Lang::txt('COM_STOREFRONT_OPTION_SAVED')
             );
             return;
@@ -248,8 +251,10 @@ class Options extends AdminController
 
                 // Make sure we have ID(s) to work with
                 if (empty($oIds)) {
+                    $url = 'index.php?option=' . $this->_option . '&controller='
+                        . $this->_controller . '&task=dispaly&id=' . $ogId;
                     App::redirect(
-                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $ogId, false),
+                        Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error'
                     );
@@ -280,8 +285,10 @@ class Options extends AdminController
                                 }
                             }
                         } catch (\Exception $e) {
+                            $url = 'index.php?option=' . $this->_option . '&controller='
+                                . $this->_controller . '&task=dispaly&id=' . $ogId;
                             App::redirect(
-                                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $ogId, false),
+                                Route::url($url, false),
                                 $e->getMessage(),
                                 $type
                             );
@@ -294,8 +301,10 @@ class Options extends AdminController
                 }
 
                 // Set the redirect
+                $url = 'index.php?option=' . $this->_option . '&controller='
+                    . $this->_controller . '&task=dispaly&ogId=' . $ogId;
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&ogId=' . $ogId, false),
+                    Route::url($url, false),
                     $msg,
                     $type
                 );
@@ -344,9 +353,12 @@ class Options extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
+            $msg = ($state == 1
+                ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
+                : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                ($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+                $msg,
                 'error'
             );
             return;
@@ -379,8 +391,10 @@ class Options extends AdminController
         }
 
         // Redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=display&ogId=' . $ogId;
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $ogId, false),
+            Route::url($url, false),
             $message
         );
     }
@@ -396,8 +410,10 @@ class Options extends AdminController
         $ogId = $fields['ogId'];
 
         // Set the redirect
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=display&ogId=' . $ogId;
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display&ogId=' . $ogId, false)
+            Route::url($url, false)
         );
     }
 }

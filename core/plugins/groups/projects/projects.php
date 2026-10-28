@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Groups Plugin class for projects
+ *
  */
 class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 {
@@ -18,6 +20,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $_autoloadLanguage = true;
 
@@ -53,10 +56,11 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
+        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . $pluginPath, null, false, true);
     }
 
     /**
@@ -161,7 +165,8 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $groupUrl = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active;
+                $url = Route::url($groupUrl, false, true);
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -172,8 +177,10 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
             }
 
             //check to see if user is member and plugin access requires members
-            if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members' && $authorized != 'admin') {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+            $notMember = !in_array(User::get('id'), $members);
+            if ($notMember && $group_plugin_acl == 'members' && $authorized != 'admin') {
+                $msg = Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active));
+                $arr['html'] = '<p class="info">' . $msg . '</p>';
                 return $arr;
             }
 
@@ -232,8 +239,15 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
         // Project-group sync
         if ($projects) {
             foreach ($projects as $project) {
-                $this->model->table('Owner')->reconcileGroups($project->id, $project->owned_by_group, $project->sync_group);
-                $this->model->table('Owner')->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+                $this->model->table('Owner')->reconcileGroups(
+                    $project->id,
+                    $project->owned_by_group,
+                    $project->sync_group
+                );
+                $this->model->table('Owner')->sysGroup(
+                    $project->alias,
+                    $this->_config->get('group_prefix', 'pr-')
+                );
             }
         }
     }
@@ -284,6 +298,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      * @param   string  $which  The type of entries to display
      * @return  string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($which = 'owned')
     {
         $which = strtolower($which);
@@ -327,6 +342,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
         $filters = array(
@@ -374,6 +390,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _update()
     {
         // Check for request forgeries

@@ -38,7 +38,16 @@ class Client extends Field
         }
         $options[] = Html::select('option', '0', Lang::txt('JSITE'));
         $options[] = Html::select('option', '1', Lang::txt('JADMINISTRATOR'));
-        $return = Html::select('genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
+        $return = Html::select(
+            'genericlist',
+            $options,
+            $this->name,
+            $onchange,
+            'value',
+            'text',
+            $this->value,
+            $this->id
+        );
         return $return;
     }
 }

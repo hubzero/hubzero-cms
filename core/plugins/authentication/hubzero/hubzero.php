@@ -20,6 +20,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -126,7 +127,13 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
                 $password_rules = \Hubzero\Password\Rule::all()
                     ->whereEquals('enabled', 1)
                     ->rows();
-                $msg = \Hubzero\Password\Rule::verify($credentials['password'], $password_rules, $result->username, null, false);
+                $msg = \Hubzero\Password\Rule::verify(
+                    $credentials['password'],
+                    $password_rules,
+                    $result->username,
+                    null,
+                    false
+                );
                 if (is_array($msg) && !empty($msg[0])) {
                     App::get('session')->set('badpassword', '1');
                 }

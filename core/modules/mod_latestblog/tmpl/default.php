@@ -26,7 +26,9 @@ $c = 0;
                         <?php } ?>
                         <div class="entry-content">
                             <h4>
-                                <a href="<?php echo Route::url($post->link()); ?>"><?php echo $this->escape(stripslashes($post->get('title'))); ?></a>
+                                <a href="<?php echo Route::url($post->link()); ?>">
+                                    <?php echo $this->escape(stripslashes($post->get('title'))); ?>
+                                </a>
                             </h4>
                             <?php if ($this->params->get('details', 1)) { ?>
                                 <dl class="entry-meta">
@@ -46,7 +48,13 @@ $c = 0;
                                         </time>
                                     </dd>
                                     <dd class="author">
-                                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $post->get('created_by')); ?>">
+                                        <?php
+                                        $memberUrl = Route::url(
+                                            'index.php?option=com_members&id='
+                                            . $post->get('created_by')
+                                        );
+                                        ?>
+                                        <a href="<?php echo $memberUrl; ?>">
                                             <?php echo $this->escape(stripslashes($post->creator->get('name'))); ?>
                                         </a>
                                     </dd>
@@ -77,9 +85,15 @@ $c = 0;
                                 <div class="entry-body">
                                     <?php
                                     if ($this->pullout && $c == 0) {
-                                        echo \Hubzero\Utility\Str::truncate(strip_tags($post->content), $this->params->get('pulloutlimit', 500));
+                                        echo \Hubzero\Utility\Str::truncate(
+                                            strip_tags($post->content),
+                                            $this->params->get('pulloutlimit', 500)
+                                        );
                                     } else {
-                                        echo \Hubzero\Utility\Str::truncate(strip_tags($post->content), $this->params->get('charlimit', 100));
+                                        echo \Hubzero\Utility\Str::truncate(
+                                            strip_tags($post->content),
+                                            $this->params->get('charlimit', 100)
+                                        );
                                     }
                                     ?>
                                 </div>

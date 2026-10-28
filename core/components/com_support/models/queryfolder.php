@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -203,7 +204,8 @@ class QueryFolder extends Relational
 
                     switch ($f->get('alias')) {
                         case 'common':
-                            $j = ($iscore == 1 ? Query::populateDefaults('common', $f->id) : Query::populateDefaults('commonnotacl', $f->id));
+                            $type = ($iscore == 1 ? 'common' : 'commonnotacl');
+                            $j = Query::populateDefaults($type, $f->id);
                             break;
 
                         case 'mine':

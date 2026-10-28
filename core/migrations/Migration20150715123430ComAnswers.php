@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +23,8 @@ class Migration20150715123430ComAnswers extends Base
     public function up()
     {
         if ($this->db->tableExists('#__assets')) {
-            $rules = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"2":1},"core.delete":[],"core.edit":{"2":1},"core.edit.state":[],"core.edit.own":[]}';
+            $rules = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"2":1},'
+                . '"core.delete":[],"core.edit":{"2":1},"core.edit.state":[],"core.edit.own":[]}';
 
             $query = "SELECT id FROM `#__assets` WHERE `name` = 'com_answers' LIMIT 1";
             $this->db->setQuery($query);
@@ -40,7 +42,8 @@ class Migration20150715123430ComAnswers extends Base
                 $tbl->saveAsLastChildOf($parent);
             } else {
                 // Set the first zone as default
-                $query = "UPDATE `#__assets` SET `rules` = " . $this->db->quote($rules) . " WHERE `id` = " . $this->db->quote($id);
+                $query = "UPDATE `#__assets` SET `rules` = " . $this->db->quote($rules)
+                    . " WHERE `id` = " . $this->db->quote($id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -53,7 +56,8 @@ class Migration20150715123430ComAnswers extends Base
     public function down()
     {
         if ($this->db->tableExists('#__assets')) {
-            $rules = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.view":[],"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
+            $rules = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.view":[],"core.create":[],'
+                . '"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
 
             $query = "SELECT id FROM `#__assets` WHERE `name` = 'com_answers' LIMIT 1";
             $this->db->setQuery($query);
@@ -71,7 +75,8 @@ class Migration20150715123430ComAnswers extends Base
                 $tbl->saveAsLastChildOf($parent);
             } else {
                 // Set the first zone as default
-                $query = "UPDATE `#__assets` SET `rules` = " . $this->db->quote($rules) . " WHERE `id` = " . $this->db->quote($id);
+                $query = "UPDATE `#__assets` SET `rules` = " . $this->db->quote($rules)
+                    . " WHERE `id` = " . $this->db->quote($id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }

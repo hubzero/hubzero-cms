@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +23,8 @@ class Migration20160401212121PlgTools extends Base
     public function up()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `element`=" . $this->db->quote('novnc') . " AND `folder`=" . $this->db->quote('tools');
+            $query = "SELECT * FROM `#__extensions` WHERE `element`=" . $this->db->quote('novnc')
+                . " AND `folder`=" . $this->db->quote('tools');
             $this->db->setQuery($query);
             $result = $this->db->loadObject();
 
@@ -38,12 +40,14 @@ iOS, safari 1.0
 Windows, msie 10.0
 Windows, ie 10.0');
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
+                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString())
+                    . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            $query = "SELECT * FROM `#__extensions` WHERE `element`=" . $this->db->quote('java') . " AND `folder`=" . $this->db->quote('tools');
+            $query = "SELECT * FROM `#__extensions` WHERE `element`=" . $this->db->quote('java')
+                . " AND `folder`=" . $this->db->quote('tools');
             $this->db->setQuery($query);
             $result = $this->db->loadObject();
 
@@ -58,7 +62,8 @@ Windows, ie 10.0');
 *, mozilla 5.0
 iOS, Safari 9999.9');
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
+                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString())
+                    . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }

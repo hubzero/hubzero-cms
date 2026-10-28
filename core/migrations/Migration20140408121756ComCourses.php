@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indices
- **/
+ *
+ */
 class Migration20140408121756ComCourses extends Base
 {
     /**
@@ -29,8 +31,11 @@ class Migration20140408121756ComCourses extends Base
             $path = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
 
             if (is_dir($path)) {
-                if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php')) {
-                    require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php';
+                if (
+                    file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php')
+                ) {
+                    require_once PATH_CORE . DS . 'components' . DS . 'com_courses'
+                        . DS . 'models' . DS . 'course.php';
 
                     // Loop through all files and separate them into arrays of images, folders, and other
                     $dirIterator = new DirectoryIterator($path);

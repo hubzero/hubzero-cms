@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +13,6 @@ use Hubzero\Content\Migration\Base;
  * Migration script for com_tools to specify display ranges assigned to a hub,
  * i.e., the range used on an execution host.
  **/
-
 class Migration20180703151011ComTools extends Base
 {
     /**

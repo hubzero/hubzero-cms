@@ -106,7 +106,7 @@ class Router extends Base
                         $vars['task'] = $segments[2];
                     }
                 }
-            } else if ($segments[1] == 'oauth') {
+            } elseif ($segments[1] == 'oauth') {
                 $vars['controller'] = 'oauth';
 
                 if (isset($segments[2])) {

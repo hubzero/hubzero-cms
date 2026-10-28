@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Menu module
- **/
+ *
+ */
 class Migration20190109000000ModMenu extends Base
 {
     /**

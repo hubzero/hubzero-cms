@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Support plugin class for wiki comments
@@ -20,7 +18,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
      * @param   string  $category  Element type (determines table to look in)
      * @return  boolean
      */
-    private function _canHandle($category)
+    private function canHandle($category)
     {
         if (in_array($category, array('wiki', 'wikicomment'))) {
             return true;
@@ -38,13 +36,14 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
      */
     public function getReportedItem($refid, $category, $parent)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
         require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
-        $query  = "SELECT rc.id, rc.page_id AS entry_id, rc.chtml as `text`, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
+        $query = "SELECT rc.id, rc.page_id AS entry_id, rc.chtml as `text`, rc.created_by as author, "
+            . "rc.created, NULL as subject, rc.anonymous as anon, 'wiki' AS parent_category
 					FROM `#__wiki_comments` AS rc
 					WHERE rc.id=" . (int) $refid;
 
@@ -76,7 +75,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
      */
     public function onReportItem($refid, $category)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -99,7 +98,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
      */
     public function releaseReportedItem($refid, $parent, $category)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 
@@ -123,7 +122,7 @@ class plgSupportWiki extends \Hubzero\Plugin\Plugin
      */
     public function deleteReportedItem($refid, $parent, $category, $message)
     {
-        if (!$this->_canHandle($category)) {
+        if (!$this->canHandle($category)) {
             return null;
         }
 

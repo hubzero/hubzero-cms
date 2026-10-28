@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -130,7 +131,8 @@ class Migration20120101000001Core extends Base
 				  `resource_id` INT(11) NOT NULL ,
 				  PRIMARY KEY (`id`) ,
 				  UNIQUE INDEX `id` (`id` ASC) ,
-				  UNIQUE INDEX `jos_document_resource_rel_document_id_resource_id_uidx` (`document_id` ASC, `resource_id` ASC) )
+				  UNIQUE INDEX `jos_document_resource_rel_document_id_resource_id_uidx` (`document_id` ASC,
+				  `resource_id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
             $this->db->setQuery($query);

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +30,8 @@ class Migration20160629140839ComStorefront extends Base
 
             if (!$id) {
                 $this->db->setQuery(
-                    "INSERT INTO `#__storefront_product_types` (`ptId`, `ptName`, `ptModel`) VALUES (NULL, 'Software Download', 'software')"
+                    "INSERT INTO `#__storefront_product_types` (`ptId`, `ptName`, `ptModel`) "
+                    . "VALUES (NULL, 'Software Download', 'software')"
                 );
                 $this->db->query();
             }

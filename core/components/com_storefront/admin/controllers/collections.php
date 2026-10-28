@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -168,7 +169,8 @@ class Collections extends AdminController
             }
             $collection->setType('category');
 
-            // Make sure there are no integrity issues TODO: move the integrity check to the collection verify method (same as SKU)
+            // Make sure there are no integrity issues
+            // TODO: move the integrity check to the collection verify method (same as SKU)
             $collection->save();
         } catch (\Exception $e) {
             \Notify::error($e->getMessage());
@@ -252,8 +254,10 @@ class Collections extends AdminController
                             $collection = new Collection($cId);
                             $collection->delete();
                         } catch (\Exception $e) {
+                            $url = 'index.php?option=' . $this->_option . '&controller='
+                                . $this->_controller . '&task=dispaly';
                             App::redirect(
-                                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+                                Route::url($url, false),
                                 $e->getMessage(),
                                 $type
                             );
@@ -266,8 +270,10 @@ class Collections extends AdminController
                 }
 
                 // Set the redirect
+                $url = 'index.php?option=' . $this->_option . '&controller='
+                    . $this->_controller . '&task=dispaly';
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+                    Route::url($url, false),
                     $msg,
                     $type
                 );
@@ -308,9 +314,12 @@ class Collections extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
+            $msg = ($state == 1
+                ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
+                : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                ($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+                $msg,
                 'error'
             );
             return;

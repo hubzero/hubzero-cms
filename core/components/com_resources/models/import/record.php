@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,14 +27,14 @@ include_once dirname(__DIR__) . DS . 'elements.php';
  */
 class Record extends Obj
 {
-    const TITLE_MATCH = 10;
+    public const TITLE_MATCH = 10;
 
     public $raw;
     public $record;
-    private $_mode;
-    private $_options;
-    private $_database;
-    private $_user;
+    private $mode;
+    private $options;
+    private $database;
+    private $user;
 
     /**
      * Resource Import Record Constructor
@@ -48,12 +49,12 @@ class Record extends Obj
 
         // store our incoming data
         $this->raw      = $raw;
-        $this->_options = $options;
-        $this->_mode    = $mode;
+        $this->options = $options;
+        $this->mode    = $mode;
 
         // create core objects
-        $this->_database = \App::get('db');
-        $this->_user     = \User::getInstance();
+        $this->database = \App::get('db');
+        $this->user     = \User::getInstance();
 
         // create resource objects
         $this->record               = new stdClass();
@@ -83,7 +84,7 @@ class Record extends Obj
 
         if ($cache === null) {
             // Lookup the fields for this table only once.
-            $fields = $this->_database->getTableColumns($this->record->resource->getTableName(), false);
+            $fields = $this->database->getTableColumns($this->record->resource->getTableName(), false);
 
             $cache = $fields;
         }
@@ -101,7 +102,7 @@ class Record extends Obj
         // wrap type mapping in separate try catch to allow resource
         // data to still be mapped even if there is no id.
         try {
-            $this->_mapTypeData();
+            $this->mapTypeData();
         } catch (Exception $e) {
             array_push($this->record->errors, $e->getMessage());
         }
@@ -109,16 +110,16 @@ class Record extends Obj
         // wrap in try catch to avoid breaking in middle of import
         try {
             // map resource data
-            $this->_mapResourceData();
+            $this->mapResourceData();
 
             // map child resource data
-            $this->_mapChildData();
+            $this->mapChildData();
 
             // map contributors
-            $this->_mapContributorData();
+            $this->mapContributorData();
 
             // map tags
-            $this->_mapTagsData();
+            $this->mapTagsData();
         } catch (Exception $e) {
             array_push($this->record->errors, $e->getMessage());
         }
@@ -140,12 +141,19 @@ class Record extends Obj
         }
 
         // check custom field if we have that on
-        if ($this->_options['requiredfields'] && isset($this->record->type->id)) {
-            $resourcesElements = new \Components\Resources\Models\Elements((array) $this->record->custom, $this->record->type->customFields);
+        if ($this->options['requiredfields'] && isset($this->record->type->id)) {
+            $resourcesElements = new \Components\Resources\Models\Elements(
+                (array) $this->record->custom,
+                $this->record->type->customFields
+            );
             foreach ($resourcesElements->getSchema()->fields as $field) {
                 $value = $resourcesElements->get($field->label);
                 if ($field->required && (!isset($value) || $value == '')) {
-                    array_push($this->record->errors, Lang::txt('COM_RESOURCES_IMPORT_RECORD_MODEL_MISSING_REQUIREDCUSTOMFIELDS', $field->label));
+                    $errorMsg = Lang::txt(
+                        'COM_RESOURCES_IMPORT_RECORD_MODEL_MISSING_REQUIREDCUSTOMFIELDS',
+                        $field->label
+                    );
+                    array_push($this->record->errors, $errorMsg);
                 }
             }
         }
@@ -171,16 +179,16 @@ class Record extends Obj
         // wrap in try catch to avoid break mid import
         try {
             // save resource
-            $this->_saveResourceData();
+            $this->saveResourceData();
 
             // save child resource data
-            $this->_saveChildData();
+            $this->saveChildData();
 
             // save contributors
-            $this->_saveContributorData();
+            $this->saveContributorData();
 
             // save tags
-            $this->_saveTagsData();
+            $this->saveTagsData();
         } catch (Exception $e) {
             array_push($this->record->errors, $e->getMessage());
         }
@@ -194,7 +202,7 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _mapTypeData()
+    private function mapTypeData()
     {
         // make sure we have a type
         if (!isset($this->raw->type)) {
@@ -215,15 +223,17 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _mapResourceData()
+    private function mapResourceData()
     {
         // do we want to do a title match?
-        if ($this->_options['titlematch'] == 1 && isset($this->record->type->id)) {
-            $sql = 'SELECT id, title, LEVENSHTEIN( title, ' . $this->_database->quote($this->raw->title) . ' ) as titleDiff
-			        FROM `#__resources`
-			        WHERE `type`=' . $this->record->type->id . ' HAVING titleDiff < ' . self::TITLE_MATCH;
-            $this->_database->setQuery($sql);
-            $results = $this->_database->loadObjectList('id');
+        if ($this->options['titlematch'] == 1 && isset($this->record->type->id)) {
+            $quotedTitle = $this->database->quote($this->raw->title);
+            $sql = 'SELECT id, title, LEVENSHTEIN( title, ' . $quotedTitle . ' ) as titleDiff
+                    FROM `#__resources`
+                    WHERE `type`=' . $this->record->type->id
+                    . ' HAVING titleDiff < ' . self::TITLE_MATCH;
+            $this->database->setQuery($sql);
+            $results = $this->database->loadObjectList('id');
 
             // did we get more then one result?
             if (count($results) > 1) {
@@ -238,9 +248,15 @@ class Record extends Obj
                 $this->raw->id = $resource->id;
 
                 // add a notice with link to resource matched
-                $resourceLink = rtrim(str_replace('administrator', '', \Request::base()), DS) . DS . 'resources' . DS . $resource->id;
-                $link = '<a rel="noopener" target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
-                array_push($this->record->notices, Lang::txt('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
+                $baseUrl = rtrim(str_replace('administrator', '', \Request::base()), DS);
+                $resourceLink = $baseUrl . DS . 'resources' . DS . $resource->id;
+                $link = '<a rel="noopener" target="_blank" href="' . $resourceLink . '">'
+                    . $resourceLink . '</a>';
+                $matchNotice = Lang::txt(
+                    'COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE',
+                    $link
+                );
+                array_push($this->record->notices, $matchNotice);
             }
         }
 
@@ -251,7 +267,7 @@ class Record extends Obj
         } else {
             $this->raw->standalone = 1;
             $this->raw->created    = \Date::toSql();
-            $this->raw->created_by = $this->_user->get('id');
+            $this->raw->created_by = $this->user->get('id');
 
             // publish up/down
             if (!isset($this->raw->publish_up)) {
@@ -264,21 +280,21 @@ class Record extends Obj
 
         // set modified date/user
         $this->raw->modified    = \Date::toSql();
-        $this->raw->modified_by = $this->_user->get('id');
+        $this->raw->modified_by = $this->user->get('id');
 
         // set status
-        if (isset($this->_options['status'])) {
-            $this->raw->published = (int) $this->_options['status'];
+        if (isset($this->options['status'])) {
+            $this->raw->published = (int) $this->options['status'];
         }
 
         // set group
-        if (isset($this->_options['group'])) {
-            $this->raw->group_owner = $this->_options['group'];
+        if (isset($this->options['group'])) {
+            $this->raw->group_owner = $this->options['group'];
         }
 
         // set access
-        if (isset($this->_options['access'])) {
-            $this->raw->access = (int) $this->_options['access'];
+        if (isset($this->options['access'])) {
+            $this->raw->access = (int) $this->options['access'];
         }
 
         $raw = (array)$this->raw;
@@ -314,14 +330,18 @@ class Record extends Obj
 
         // bind custom fields to types custom fields
         if ($this->record->type->id) {
-            $resourcesElements = new \Components\Resources\Models\Elements((array) $this->raw->custom_fields, $this->record->type->customFields);
-            $customFieldsHtml  = $resourcesElements->toDatabaseHtml();
+            $resourcesElements = new \Components\Resources\Models\Elements(
+                (array) $this->raw->custom_fields,
+                $this->record->type->customFields
+            );
+            $customFieldsHtml = $resourcesElements->toDatabaseHtml();
 
             // add all custom fields to custom object
             foreach ($resourcesElements->getSchema()->fields as $field) {
                 $fieldLabel = $field->label;
-                $fieldName  = $field->name;
-                $value      = (isset($this->raw->custom_fields->$fieldName)) ? $this->raw->custom_fields->$fieldName : null;
+                $fieldName = $field->name;
+                $customFields = $this->raw->custom_fields;
+                $value = isset($customFields->$fieldName) ? $customFields->$fieldName : null;
 
                 if ($field->type == 'hidden') {
                     $value = (isset($field->options[0])) ? $field->options[0]->value : $value;
@@ -342,7 +362,7 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _saveResourceData()
+    private function saveResourceData()
     {
         // save main resource
         if (!$this->record->resource->save()) {
@@ -355,7 +375,7 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _mapChildData()
+    private function mapChildData()
     {
         // do we have an array of child resources?
         if (isset($this->raw->children) && is_array($this->raw->children)) {
@@ -375,10 +395,10 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _saveChildData()
+    private function saveChildData()
     {
         // if we updating we want to completely replace
-        if ($this->_mode == 'UPDATE' && $this->record->resource->id) {
+        if ($this->mode == 'UPDATE' && $this->record->resource->id) {
             // remove any existing files
             $children = $this->record->resource->children()->rows();
 
@@ -408,16 +428,17 @@ class Record extends Obj
             }
 
             // delete all child resources
+            $quotedId = $this->database->quote($this->record->resource->id);
             $sql = "DELETE FROM `#__resources` WHERE `id` IN (
-						SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $this->_database->quote($this->record->resource->id) .
-                    ")";
-            $this->_database->setQuery($sql);
-            $this->_database->query();
+                    SELECT child_id FROM `#__resource_assoc` WHERE `parent_id`=" . $quotedId
+                    . ")";
+            $this->database->setQuery($sql);
+            $this->database->query();
 
             // delete all child resource associations
-            $sql = "DELETE FROM `#__resource_assoc` WHERE `parent_id`=" . $this->_database->quote($this->record->resource->id);
-            $this->_database->setQuery($sql);
-            $this->_database->query();
+            $sql = "DELETE FROM `#__resource_assoc` WHERE `parent_id`=" . $quotedId;
+            $this->database->setQuery($sql);
+            $this->database->query();
         }
 
         // loop through each child
@@ -444,7 +465,7 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _mapContributorData()
+    private function mapContributorData()
     {
         // get any contributors
         $contributors = (isset($this->raw->contributors)) ? $this->raw->contributors : new stdClass();
@@ -478,7 +499,10 @@ class Record extends Obj
             if ($this->record->resource->id) {
                 if (isset($contributor->authorid)) {
                     // Do we already have a relationship by authorid?
-                    $resourceContributor = Author::oneByRelationship($this->record->resource->id, $contributor->authorid);
+                    $resourceContributor = Author::oneByRelationship(
+                        $this->record->resource->id,
+                        $contributor->authorid
+                    );
                 }
 
                 if (!$resourceContributor && isset($contributor->name)) {
@@ -501,10 +525,15 @@ class Record extends Obj
                 }
             }
 
+            $contribName = isset($contributor->name) ? $contributor->name : '';
+            $contribOrg = isset($contributor->organization) ? $contributor->organization : '';
+            $hasValidRole = isset($contributor->role)
+                && in_array($contributor->role, $existingRoles);
+            $contribRole = $hasValidRole ? $contributor->role : '';
             $resourceContributor->set(array(
-                'name'         => (isset($contributor->name) ? $contributor->name : ''),
-                'organization' => (isset($contributor->organization) ? $contributor->organization : ''),
-                'role'         => (isset($contributor->role) && in_array($contributor->role, $existingRoles) ? $contributor->role : ''),
+                'name'         => $contribName,
+                'organization' => $contribOrg,
+                'role'         => $contribRole,
                 'subtable'     => 'resources'
             ));
 
@@ -517,20 +546,25 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _saveContributorData()
+    private function saveContributorData()
     {
         // if we updating we want to completely replace
-        if ($this->_mode == 'UPDATE' && $this->record->resource->id) {
+        if ($this->mode == 'UPDATE' && $this->record->resource->id) {
             // delete all child resource associations
-            $sql = "DELETE FROM `#__author_assoc` WHERE `subtable`='resources' AND `subid`=" . $this->_database->quote($this->record->resource->id);
-            $this->_database->setQuery($sql);
-            $this->_database->query();
+            $quotedId = $this->database->quote($this->record->resource->id);
+            $sql = "DELETE FROM `#__author_assoc` "
+                . "WHERE `subtable`='resources' AND `subid`=" . $quotedId;
+            $this->database->setQuery($sql);
+            $this->database->query();
         }
 
         // create new author assoc for resource
         foreach ($this->record->contributors as $contributor) {
             $contributor->set('subid', $this->record->resource->id);
-            $contributor->set('authorid', ($contributor->authorid == '') ? $contributor->getUserId($contributor->name) : $contributor->authorid);
+            $authorId = ($contributor->authorid == '')
+                ? $contributor->getUserId($contributor->name)
+                : $contributor->authorid;
+            $contributor->set('authorid', $authorId);
             $contributor->save();
         }
     }
@@ -540,7 +574,7 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _mapTagsData()
+    private function mapTagsData()
     {
         if (isset($this->raw->tags)) {
             $tags = $this->raw->tags;
@@ -560,7 +594,7 @@ class Record extends Obj
      *
      * @return  void
      */
-    private function _saveTagsData()
+    private function saveTagsData()
     {
         $ntags = array();
         $admintags = array();
@@ -571,15 +605,15 @@ class Record extends Obj
         foreach ($this->record->tags as $tag) {
             if (substr($tag, 0, 6) == 'admin:') {
                 $admintags[] = substr($tag, 6);
-            } else if ($tag[0] == ':') {
+            } elseif ($tag[0] == ':') {
                 $ntags[] = substr($tag, 1);
             } else {
                 $admintags[] = $tag;
             }
         }
 
-        $resourcesTags->setTags($admintags, $this->_user->get('id'), 1, 1);
-        $resourcesTags->setTags($ntags, $this->_user->get('id'), 0, 1);
+        $resourcesTags->setTags($admintags, $this->user->get('id'), 1, 1);
+        $resourcesTags->setTags($ntags, $this->user->get('id'), 0, 1);
     }
 
     /**

@@ -65,7 +65,10 @@ class Awards
         $this->uid = is_integer($profile) ? $profile : (int)$this->profile->get('uidNumber');
         self::getDbh();
         do {
-            $columns = array('opted_out', 'name', 'orgtype', 'organization', 'countryresident', 'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability');
+            $columns = array(
+                'opted_out', 'name', 'orgtype', 'organization', 'countryresident',
+                'countryorigin', 'gender', 'url', 'reason', 'race', 'phone', 'picture', 'disability'
+            );
 
             foreach ($columns as $key => $val) {
                 // Make sure the column exists
@@ -76,9 +79,13 @@ class Awards
             }
 
             if (!empty($columns)) {
-                self::$dbh->setQuery('SELECT ' . implode(', ', $columns) . ' FROM `#__profile_completion_awards` WHERE user_id = ' . $this->uid);
+                $sql = 'SELECT ' . implode(', ', $columns)
+                    . ' FROM `#__profile_completion_awards` WHERE user_id = ' . $this->uid;
+                self::$dbh->setQuery($sql);
                 if (!($this->awards = self::$dbh->loadAssoc())) {
-                    self::$dbh->setQuery('INSERT INTO `#__profile_completion_awards` (user_id) VALUES (' . $this->uid . ')');
+                    $sql = 'INSERT INTO `#__profile_completion_awards` (user_id) VALUES ('
+                        . $this->uid . ')';
+                    self::$dbh->setQuery($sql);
                     self::$dbh->execute();
                 }
             } else {
@@ -94,7 +101,10 @@ class Awards
      */
     public function optOut()
     {
-        self::$dbh->setQuery('UPDATE `#__profile_completion_awards` SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP WHERE user_id = ' . $this->uid);
+        $sql = 'UPDATE `#__profile_completion_awards` '
+            . 'SET opted_out = opted_out + 1, last_bothered = CURRENT_TIMESTAMP '
+            . 'WHERE user_id = ' . $this->uid;
+        self::$dbh->setQuery($sql);
         self::$dbh->execute();
     }
 
@@ -157,13 +167,19 @@ class Awards
             }
         }
 
-        self::$dbh->setQuery('SELECT SUM(amount) AS amount FROM `#__users_transactions` WHERE type = \'deposit\' AND category = \'registration\' AND uid = ' . $this->uid);
+        $sql = 'SELECT SUM(amount) AS amount FROM `#__users_transactions` '
+            . "WHERE type = 'deposit' AND category = 'registration' AND uid = " . $this->uid;
+        self::$dbh->setQuery($sql);
         $prior = self::$dbh->loadResult();
         self::$dbh->setQuery($completeSql . ' WHERE user_id = ' . $this->uid);
         self::$dbh->execute();
 
         if ($alreadyComplete) {
-            self::$dbh->setQuery('SELECT COALESCE((SELECT balance FROM `#__users_transactions` WHERE uid = ' . $this->uid . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = ' . $this->uid . ')), 0)');
+            $sql = 'SELECT COALESCE('
+                . '(SELECT balance FROM `#__users_transactions` WHERE uid = ' . $this->uid
+                . ' AND id = (SELECT MAX(id) FROM `#__users_transactions` WHERE uid = '
+                . $this->uid . ')), 0)';
+            self::$dbh->setQuery($sql);
             $newAmount = self::$dbh->loadResult() + $alreadyComplete;
 
             $BTL = new Teller($this->uid);

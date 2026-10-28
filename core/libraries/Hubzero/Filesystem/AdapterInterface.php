@@ -105,7 +105,8 @@ interface AdapterInterface
      *
      * @param   string   $path     The path of the folder to read.
      * @param   string   $filter   A filter for file names.
-     * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to specify the maximum depth.
+     * @param   mixed    $recurse  True to recursively search into sub-folders, or an integer to
+     *                             specify the maximum depth.
      * @param   boolean  $full     True to return the full path to the file.
      * @param   array    $exclude  Array with names of files which should not be shown in the result.
      * @return  array

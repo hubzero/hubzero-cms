@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php';
 
 /**
  * API controller class for Wiki Pages
+ *
  */
 class Pagesv1_0 extends ApiController
 {
@@ -223,7 +225,8 @@ class Pagesv1_0 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "version_id",
-     *      "description":   "Optional revision ID. If none specified, page will default to most current approved revision.",
+     *      "description":   "Optional revision ID. If none specified, page will default to most
+     *                        current approved revision.",
      *      "type":          "integer",
      *      "required":      false,
      *      "default":       0
@@ -264,7 +267,8 @@ class Pagesv1_0 extends ApiController
         unset($response->version->page_id);
         unset($response->version_id);
 
-        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link()), '/'));
+        $response->url = str_replace('/api', '', rtrim(Request::base(), '/'))
+            . '/' . ltrim(Route::url($page->link()), '/');
 
         $this->send($response);
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +20,9 @@ function controller_exec()
             $group = $conf['access_limit_to_group'];
             Toolbar::title('Databases', 'databases');
             Toolbar::preferences('com_databases', '200');
-            $err_str =  "<p class=\"error\">Not authorized, access is limited to \"<em>$group</em>\"</p>. <h3>Use the Databases component parameters to change this</h3>";
+            $err_str = '<p class="error">Not authorized, access is limited to '
+                . "\"<em>$group</em>\"</p>. "
+                . '<h3>Use the Databases component parameters to change this</h3>';
         }
 
         print $err_str;

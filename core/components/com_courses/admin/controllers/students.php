@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -77,7 +78,9 @@ class Students extends AdminController
         }*/
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $limit = $this->view->filters['limit'];
+        $start = $this->view->filters['start'];
+        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
         //$this->view->filters['role'] = 'student';
 
         //$this->view->filters['count'] = true;
@@ -171,7 +174,8 @@ class Students extends AdminController
             $course_id  = $this->view->offering->get('course_id');
             $section_id = $this->view->offering->section()->get('id');
 
-            $model = \Components\Courses\Models\Student::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
+            // $course_id, $offering, $section_id
+            $model = \Components\Courses\Models\Student::getInstance($id, null, null, null);
         }
 
         $this->view->row = $model;
@@ -242,8 +246,13 @@ class Students extends AdminController
             $fields['course_id'] = $offeringObj->get('course_id');
             //$section_id = $offeringObj->section()->get('id');
 
-            //$model = \Components\Courses\Models\Member::getInstance($fields['user_id'], $fields['course_id'], $offering, $section_id);
-            $model = \Components\Courses\Models\Member::getInstance($fields['user_id'], $fields['course_id'], null, null);
+            // $offering, $section_id
+            $model = \Components\Courses\Models\Member::getInstance(
+                $fields['user_id'],
+                $fields['course_id'],
+                null,
+                null
+            );
 
             // Is there an existing record and are they a student?
             if ($model->exists() && !$model->get('student')) {
@@ -284,8 +293,12 @@ class Students extends AdminController
         // Are we redirecting?
         if ($redirect) {
             // Output messsage and redirect
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller
+                . '&offering=' . $fields['offering_id']
+                . '&section=' . $fields['section_id'];
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'], false),
+                Route::url($url, false),
                 ($c > 0 ? Lang::txt('COM_COURSES_STUDENTS_SAVED', $c) : null)
             );
             return;
@@ -318,7 +331,8 @@ class Students extends AdminController
         if (!empty($ids)) {
             foreach ($ids as $id) {
                 // Load the student record
-                $model = \Components\Courses\Models\Student::getInstance($id, null, null, null); //, $offering->get('course_id'), $offering_id, $section_id);
+                // $offering->get('course_id'), $offering_id, $section_id
+                $model = \Components\Courses\Models\Student::getInstance($id, null, null, null);
 
                 // Ensure we found the course info
                 if (!$model->exists()) {
@@ -327,7 +341,11 @@ class Students extends AdminController
 
                 // Delete course
                 if (!$model->delete()) {
-                    \Notify::error(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT', $model->get('user_id'), $model->get('section_id')));
+                    \Notify::error(Lang::txt(
+                        'COM_COURSES_ERROR_UNABLE_TO_REMOVE_STUDENT',
+                        $model->get('user_id'),
+                        $model->get('section_id')
+                    ));
                     continue;
                 }
 
@@ -336,8 +354,11 @@ class Students extends AdminController
         }
 
         // Redirect back to the courses page
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . ($offering_id ? '&offering=' . $offering_id : '')
+            . ($section_id ? '&section=' . $section_id : '');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false),
+            Route::url($url, false),
             ($num > 0 ? Lang::txt('COM_COURSES_STUDENTS_REMOVED', $num) : null)
         );
     }
@@ -352,8 +373,11 @@ class Students extends AdminController
         $offering_id = Request::getInt('offering', 0);
         $section_id  = Request::getInt('section', 0);
 
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . ($offering_id ? '&offering=' . $offering_id : '')
+            . ($section_id ? '&section=' . $section_id : '');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false)
+            Route::url($url, false)
         );
     }
 

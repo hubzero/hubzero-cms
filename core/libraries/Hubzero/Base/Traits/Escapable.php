@@ -20,6 +20,7 @@ trait Escapable
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_escape = 'htmlspecialchars';
 
     /**
@@ -27,6 +28,7 @@ trait Escapable
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_charset = 'UTF-8';
 
     /**

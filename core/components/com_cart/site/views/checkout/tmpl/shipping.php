@@ -47,27 +47,55 @@ if (!empty($this->notifications)) {
 
                         <label for="shippingToFirst">
                             <?php echo Lang::txt('First name:'); ?>
-                            <input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo $this->escape(Request::getString('shippingToFirst', User::get('givenName'), 'post')); ?>" />
+                            <?php
+                            $firstVal = $this->escape(
+                                Request::getString('shippingToFirst', User::get('givenName'), 'post')
+                            );
+                            ?>
+                            <input type="text"
+                                name="shippingToFirst"
+                                id="shippingToFirst"
+                                value="<?php echo $firstVal; ?>" />
                         </label>
 
                         <label for="shippingToLast">
                             <?php echo Lang::txt('Last name:'); ?>
-                            <input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo $this->escape(Request::getString('shippingToLast', User::get('surname'), 'post')); ?>" />
+                            <?php
+                            $lastVal = $this->escape(
+                                Request::getString('shippingToLast', User::get('surname'), 'post')
+                            );
+                            ?>
+                            <input type="text"
+                                name="shippingToLast"
+                                id="shippingToLast"
+                                value="<?php echo $lastVal; ?>" />
                         </label>
 
                         <label for="shippingAddress">
                             <?php echo Lang::txt('Shipping address:'); ?>
-                            <input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo $this->escape(Request::getString('shippingAddress', false, 'post')); ?>" />
+                            <?php $addrVal = $this->escape(Request::getString('shippingAddress', false, 'post')); ?>
+                            <input type="text"
+                                name="shippingAddress"
+                                id="shippingAddress"
+                                value="<?php echo $addrVal; ?>" />
                         </label>
 
                         <label for="shippingCity">
                             <?php echo Lang::txt('City:'); ?>
-                            <input type="text" name="shippingCity" id="shippingCity" value="<?php echo $this->escape(Request::getString('shippingCity', false, 'post')); ?>" />
+                            <?php $cityVal = $this->escape(Request::getString('shippingCity', false, 'post')); ?>
+                            <input type="text"
+                                name="shippingCity"
+                                id="shippingCity"
+                                value="<?php echo $cityVal; ?>" />
                         </label>
 
                         <label for="shippingZip">
                             <?php echo Lang::txt('Zip:'); ?>
-                            <input type="text" name="shippingZip" id="shippingZip" value="<?php echo $this->escape(Request::getString('shippingZip', false, 'post')); ?>" />
+                            <?php $zipVal = $this->escape(Request::getString('shippingZip', false, 'post')); ?>
+                            <input type="text"
+                                name="shippingZip"
+                                id="shippingZip"
+                                value="<?php echo $zipVal; ?>" />
                         </label>
 
                         <label for="shippingState">
@@ -95,7 +123,11 @@ if (!empty($this->notifications)) {
                         </fieldset>
 
                         <p class="submit">
-                            <input type="submit" value="<?php echo Lang::txt('Next'); ?>" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
+                            <input type="submit"
+                                value="<?php echo Lang::txt('Next'); ?>"
+                                name="submitShippingInfo"
+                                id="submitShippingInfo"
+                                class="btn" />
                         </p>
                     </fieldset>
                 </form>
@@ -113,7 +145,11 @@ if (!empty($this->notifications)) {
                         echo $address->saCity . ', ' . $address->saState . ' ' . $address->saZip;
                         echo '</p>';
 
-                        echo '<a href="' . Route::url('index.php?option=com_cart&controller=checkout/shipping/select/' . $address->saId) . '">';
+                        $selectUrl = Route::url(
+                            'index.php?option=com_cart&controller=checkout/shipping/select/'
+                            . $address->saId
+                        );
+                        echo '<a href="' . $selectUrl . '">';
                         echo Lang::txt('Ship to this address');
                         echo '</a>';
 

@@ -140,7 +140,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
                         $link  = Route::url($member->link() . '&active=account#password');
 
                         $arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
-                    } else if ($passinfo['diff'] < 0) {
+                    } elseif ($passinfo['diff'] < 0) {
                         $title = 'Your password has expired!';
                         $link  = Route::url($member->link() . '&active=account#password');
 
@@ -638,7 +638,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
         if ($diff > $hzup->shadowWarning) {
             $message_style = 'info';
-        } else if ($diff <= $hzup->shadowWarning && $diff > 0) {
+        } elseif ($diff <= $hzup->shadowWarning && $diff > 0) {
             $message_style = 'warning';
         } else {
             $message_style = 'error';

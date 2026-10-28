@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Dropbox filesystem plugin
- **/
+ *
+ */
 class Migration20170207025659PlgFilesystemDropbox extends Base
 {
     /**
@@ -26,7 +27,8 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
             $results = $this->db->loadObjectList();
 
             if (count($results) < 1) {
-                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES ('dropbox','Dropbox')";
+                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES"
+                    . "('dropbox','Dropbox')";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

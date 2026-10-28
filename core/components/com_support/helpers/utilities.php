@@ -63,7 +63,16 @@ class Utilities
                         $file = basename($path);
                         $size = getimagesize($path);
                         $width = ($size[0] > 650 ? 650 : $size[0]);
-                        $contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img width="' . $width . '" src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
+                        $pattern = '/<a class="img" data\-filename="'
+                            . str_replace('.', '\.', $file)
+                            . '" href="(.*?)"\>(.*?)<\/a>/i';
+                        $replacement = '<img width="' . $width . '" src="'
+                            . $message->getEmbed($path) . '" alt="" />';
+                        $contents['multipart'] = preg_replace(
+                            $pattern,
+                            $replacement,
+                            $contents['multipart']
+                        );
                     } else {
                         $message->addAttachment($path);
                     }
@@ -151,7 +160,12 @@ class Utilities
         $filters['sortdir']    = trim(Request::getState('com_support.tickets.sortdir', 'filter_order_Dir', 'DESC'));
 
         // Paging vars
-        $filters['limit']      = Request::getState('com_support.tickets.limit', 'limit', Config::get('list_limit'), 'int');
+        $filters['limit']      = Request::getState(
+            'com_support.tickets.limit',
+            'limit',
+            Config::get('list_limit'),
+            'int'
+        );
         $filters['start']      = Request::getState('com_support.tickets.limitstart', 'limitstart', 0, 'int');
 
         // Incoming
@@ -215,7 +229,7 @@ class Utilities
                     if (isset($pieces[1])) {
                         if ($pieces[1] == 'me') {
                             $pieces[1] = User::get('username');
-                        } else if ($pieces[1] == 'none') {
+                        } elseif ($pieces[1] == 'none') {
                             $pieces[1] = 'none';
                         }
                     }

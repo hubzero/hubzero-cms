@@ -21,6 +21,7 @@ class Radio extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Radio boxes';
 
     /**
@@ -61,7 +62,9 @@ class Radio extends Base
             $output .= '>';
         }
         $output .= $label;
-        $output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
+        $isRequired = isset($element->required) && $element->required;
+        $requiredSpan = ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+        $output .= $isRequired ? $requiredSpan : '';
         $output .= '</legend>';
 
         $html[] = $output;
@@ -82,8 +85,11 @@ class Radio extends Base
                     $sel .= ($option->value == $value ? ' checked="checked"' : '');
                 }
 
-                $html[] = '<label for="' . $control_name . '-' . $name . $option->value . '">';
-                $html[] = '<input class="option" type="radio" name="' . $control_name . '[' . $name . ']" id="' . $control_name . '-' . $name . $option->value . '" value="' . $option->value . '"' . $sel . ' />';
+                $inputId = $control_name . '-' . $name . $option->value;
+                $inputName = $control_name . '[' . $name . ']';
+                $html[] = '<label for="' . $inputId . '">';
+                $html[] = '<input class="option" type="radio" name="' . $inputName
+                    . '" id="' . $inputId . '" value="' . $option->value . '"' . $sel . ' />';
                 $html[] = $option->label . '</label>';
 
                 $k++;
@@ -112,15 +118,21 @@ class Radio extends Base
         $html[] = '<table class="admintable" id="' . $name . '">';
         $html[] = '<tfoot>';
         $html[] = '<tr>';
-        $html[] = '<td colspan="2" class="option-button"><button data-rel="' . $name . '" class="add-custom-option"><span>' . Lang::txt('COM_RESOURCES_NEW_OPTION') . '</span></button></td>';
+        $btnText = Lang::txt('COM_RESOURCES_NEW_OPTION');
+        $html[] = '<td colspan="2" class="option-button"><button data-rel="' . $name
+            . '" class="add-custom-option"><span>' . $btnText . '</span></button></td>';
         $html[] = '</tr>';
         $html[] = '</tfoot>';
         $html[] = '<tbody>';
         if (isset($element->options) && is_array($element->options)) {
             foreach ($element->options as $option) {
                 $html[] = '<tr>';
-                $html[] = '<td><label for="' . $control_name . '-' . $name . '-label-' . $k . '">' . Lang::txt('COM_RESOURCES_OPTION') . '</label></td>';
-                $html[] = '<td><input type="text" size="35" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="' . $control_name . '-' . $name . '-label-' . $k . '" value="' . $option->label . '" /></td>';
+                $labelId = $control_name . '-' . $name . '-label-' . $k;
+                $optName = $control_name . '[' . $name . '][options][' . $k . '][label]';
+                $optLabel = Lang::txt('COM_RESOURCES_OPTION');
+                $html[] = '<td><label for="' . $labelId . '">' . $optLabel . '</label></td>';
+                $html[] = '<td><input type="text" size="35" name="' . $optName . '" id="'
+                    . $labelId . '" value="' . $option->label . '" /></td>';
                 $html[] = '</tr>';
 
                 $k++;

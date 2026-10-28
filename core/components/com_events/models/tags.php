@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
  * @package    hubzero-cms

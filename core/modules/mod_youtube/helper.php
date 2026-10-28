@@ -113,7 +113,7 @@ class Helper extends Module
 			");
         } else {
             // load feed
-            $feed = $this->_feed($youtube_url, $this->params);
+            $feed = $this->feed($youtube_url, $this->params);
             if (!$feed) {
                 $this->html = '<p class="error">' . Lang::txt('MOD_YOUTUBE_ERROR_PARSING_FEED') . '</p>';
                 require $this->getLayoutPath();
@@ -174,10 +174,17 @@ class Helper extends Module
             foreach ($entries as $entry) {
                 if ($counter <= $num_videos) {
                     $media = $entry['media$group'];
+                    $entryLink = $entry['link'][0]['href'];
+                    $thumbUrl = $media['media$thumbnail'][3]['url'];
+                    $entryTitle = $entry['title']['$t'];
+                    $duration = $this->formatTime($media['yt$duration']['seconds']);
+
                     $html .= "<li>";
-                    $html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entry['link'][0]['href']}\"><img src=\"{$media['media$thumbnail'][3]['url']}\" alt=\"\" /></a>";
-                    $html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entry['link'][0]['href']}\">{$entry['title']['$t']}</a>";
-                    $html .= "<br /><span class=\"entry-duration\">" . $this->_formatTime($media['yt$duration']['seconds']) . "</span>";
+                    $html .= "<a class=\"entry-thumb\" rel=\"external\" href=\"{$entryLink}\">" .
+                        "<img src=\"{$thumbUrl}\" alt=\"\" /></a>";
+                    $html .= "<a class=\"entry-title\" rel=\"external\" href=\"{$entryLink}\">" .
+                        "{$entryTitle}</a>";
+                    $html .= "<br /><span class=\"entry-duration\">" . $duration . "</span>";
                     $html .= "</li>";
                 }
                 $counter++;
@@ -186,8 +193,12 @@ class Helper extends Module
 
             //show the view more link based on params
             if ($show_link) {
+                $moreTitle = Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE');
+                $moreText = Lang::txt('MOD_YOUTUBE_MORE_VIDEOS');
+
                 if ($alt_link != '') {
-                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$alt_link}\">" . Lang::txt('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
+                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle .
+                        "\" href=\"{$alt_link}\">" . $moreText . "</a></p><br class=\"clear\" />";
                 } else {
                     switch ($type) {
                         case 'playlists':
@@ -200,7 +211,8 @@ class Helper extends Module
                             $link = "http://www.youtube.com/results?search_query=" . $content;
                             break;
                     }
-                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . Lang::txt('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$link}\">" . Lang::txt('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
+                    $html .= "<p class=\"more\"><a rel=\"external\" title=\"" . $moreTitle .
+                        "\" href=\"{$link}\">" . $moreText . "</a></p><br class=\"clear\" />";
                 }
             }
 
@@ -217,7 +229,7 @@ class Helper extends Module
      * @param   object  $params
      * @return  object
      */
-    private function _feed($url, $params)
+    private function feed($url, $params)
     {
         // var to hold feed
         $feed = null;
@@ -268,7 +280,7 @@ class Helper extends Module
      * @param   integer  $seconds  Time to format
      * @return  string
      */
-    private function _formatTime($seconds)
+    private function formatTime($seconds)
     {
         $minutes = floor($seconds / 60);
         $seconds = $seconds % 60;

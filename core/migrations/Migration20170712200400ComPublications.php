@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding 'derivatives' field to publication licenses
- **/
+ *
+ */
 class Migration20170712200400ComPublications extends Base
 {
     /**
@@ -23,11 +25,13 @@ class Migration20170712200400ComPublications extends Base
     {
         if ($this->db->tableExists('#__publication_licenses')) {
             if (!$this->db->tableHasField('#__publication_licenses', 'derivatives')) {
-                $query = "ALTER TABLE `#__publication_licenses` ADD COLUMN `derivatives` tinyint(2) NOT NULL default 0;";
+                $query = "ALTER TABLE `#__publication_licenses` ADD COLUMN `derivatives` tinyint(2) NOT NULL "
+                    . "default 0;";
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                $query = "UPDATE `#__publication_licenses` SET `derivatives`=1 WHERE `name` IN ('cc', 'standard', 'cc0', 'cc40-by-nc-sa', 'cc40-by-sa')";
+                $query = "UPDATE `#__publication_licenses` SET `derivatives`=1 WHERE `name` IN ('cc', 'standard',"
+                    . "'cc0', 'cc40-by-nc-sa', 'cc40-by-sa')";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

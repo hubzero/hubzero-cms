@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ class Code extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\SectionCode';
 
     /**
@@ -32,6 +34,7 @@ class Code extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'section_code';
 
     /**
@@ -39,6 +42,7 @@ class Code extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_redeemer = null;
 
     /**
@@ -57,7 +61,7 @@ class Code extends Base
 
             if (is_numeric($oid) || is_string($oid)) {
                 $this->_tbl->load($oid, $section_id);
-            } else if (is_object($oid) || is_array($oid)) {
+            } elseif (is_object($oid) || is_array($oid)) {
                 $this->bind($oid);
             }
         }
@@ -72,7 +76,7 @@ class Code extends Base
      * @param      mixed $oid ID (int) or alias (string)
      * @return     object \Components\Courses\Models\Offering
      */
-    static function &getInstance($oid = null, $section_id = null)
+    public static function &getInstance($oid = null, $section_id = null)
     {
         static $instances;
 
@@ -84,9 +88,9 @@ class Code extends Base
 
         if (is_numeric($oid) || is_string($oid)) {
             $key = $oid . ($section_id ? '_' . $section_id : '');
-        } else if (is_object($oid)) {
+        } elseif (is_object($oid)) {
             $key = $oid->get('id') . ($section_id ? '_' . $section_id : '');
-        } else if (is_array($oid)) {
+        } elseif (is_array($oid)) {
             $key = $oid['id'] . ($section_id ? '_' . $section_id : '');
         }
 

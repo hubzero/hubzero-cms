@@ -38,8 +38,18 @@ $this->css()
                 <legend><?php echo Lang::txt('COM_TAGS_DETAILS'); ?></legend>
 
                 <label for="field-raw_tag">
-                    <?php echo Lang::txt('COM_TAGS_FIELD_TAG'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <input type="text" name="fields[raw_tag]" id="field-raw_tag" data-error="<?php echo Lang::txt('COM_TAGS_FIELD_TAG_BLANK'); ?>" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>" size="38" />
+                    <?php echo Lang::txt('COM_TAGS_FIELD_TAG'); ?>
+                    <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    <?php $rawTagVal = $this->escape(stripslashes($this->tag->get('raw_tag'))); ?>
+                    <?php $tagError = Lang::txt('COM_TAGS_FIELD_TAG_BLANK'); ?>
+                    <input
+                        type="text"
+                        name="fields[raw_tag]"
+                        id="field-raw_tag"
+                        data-error="<?php echo $tagError; ?>"
+                        value="<?php echo $rawTagVal; ?>"
+                        size="38"
+                    />
                 </label>
 
                 <?php // The save handler drops fields[admin] for anyone without
@@ -55,12 +65,22 @@ $this->css()
 
                 <label for="field-description">
                     <?php echo Lang::txt('COM_TAGS_FIELD_DESCRIPTION'); ?>
-                    <textarea name="fields[description]" id="field-description" rows="7" cols="35"><?php echo $this->escape(stripslashes($this->tag->get('description'))); ?></textarea>
+                    <?php $descVal = $this->escape(stripslashes($this->tag->get('description'))); ?>
+                    <textarea
+                        name="fields[description]"
+                        id="field-description"
+                        rows="7"
+                        cols="35"><?php echo $descVal; ?></textarea>
                 </label>
 
                 <label for="field-substitutions">
                     <?php echo Lang::txt('COM_TAGS_FIELD_ALIAS'); ?>
-                    <textarea name="fields[substitutions]" id="field-substitutions" rows="5" cols="35"><?php echo $this->escape(stripslashes($this->tag->substitutes)); ?></textarea>
+                    <?php $subsVal = $this->escape(stripslashes($this->tag->substitutes)); ?>
+                    <textarea
+                        name="fields[substitutions]"
+                        id="field-substitutions"
+                        rows="5"
+                        cols="35"><?php echo $subsVal; ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
                 </label>
 
@@ -80,7 +100,8 @@ $this->css()
             </fieldset>
             <p class="submit">
                 <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_TAGS_SUBMIT'); ?>" />
-                <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+                <?php $cancelUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+                <a class="btn btn-secondary" href="<?php echo $cancelUrl; ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             </p>

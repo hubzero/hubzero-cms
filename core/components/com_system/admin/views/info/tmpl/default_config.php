@@ -34,10 +34,16 @@ defined('_HZEXEC_') or die();
                             foreach ($value as $ky => $val) {
                                 if (is_array($val)) {
                                     foreach ($val as $k => $v) {
-                                        echo htmlspecialchars($k, ENT_QUOTES) . ' = ' . htmlspecialchars($v, ENT_QUOTES) . '<br />';
+                                        echo htmlspecialchars($k, ENT_QUOTES)
+                                            . ' = '
+                                            . htmlspecialchars($v, ENT_QUOTES)
+                                            . '<br />';
                                     }
                                 } else {
-                                    echo htmlspecialchars($ky, ENT_QUOTES) . ' = ' . htmlspecialchars($val, ENT_QUOTES) . '<br />';
+                                    echo htmlspecialchars($ky, ENT_QUOTES)
+                                        . ' = '
+                                        . htmlspecialchars($val, ENT_QUOTES)
+                                        . '<br />';
                                 }
                             }
                         } else {

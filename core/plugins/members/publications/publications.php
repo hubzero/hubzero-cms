@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,42 +13,43 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for publications
  */
-class plgMembersPublications extends \Hubzero\Plugin\Plugin
+class PlgMembersPublications extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Resource areas
      *
-     * @var  array
+     * @var array
      */
-    private $_areas = null;
+    private $areas = null;
 
     /**
      * Types
      *
-     * @var  array
+     * @var array
      */
-    private $_cats  = null;
+    private $cats  = null;
 
     /**
      * Record count
      *
-     * @var  integer
+     * @var integer
      */
-    private $_total = null;
+    private $total = null;
 
     /**
      * Constructor
      *
-     * @param   object  &$subject  Event observer
-     * @param   array   $config    Optional config values
-     * @return  void
+     * @param  object &$subject Event observer
+     * @param  array  $config   Optional config values
+     * @return void
      */
     public function __construct(&$subject, $config)
     {
@@ -61,7 +63,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
     /**
      * Return a list of categories
      *
-     * @return  array
+     * @return array
      */
     public function onMembersContributionsAreas()
     {
@@ -75,9 +77,9 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
     /**
      * Build SQL for returning the count of the number of contributions
      *
-     * @param   string  $user_id   Field to join on user ID
-     * @param   string  $username  Field to join on username
-     * @return  string
+     * @param  string $user_id  Field to join on user ID
+     * @param  string $username Field to join on username
+     * @return string
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
@@ -92,13 +94,13 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
     /**
      * Return either a count or an array of the member's contributions
      *
-     * @param   object   $member      Current member
-     * @param   string   $option      Component name
-     * @param   integer  $limit       Number of record to return
-     * @param   integer  $limitstart  Record return start
-     * @param   string   $sort        Field to sort records on
-     * @param   array    $areas       Areas to return data for
-     * @return  array
+     * @param  object  $member     Current member
+     * @param  string  $option     Component name
+     * @param  integer $limit      Number of record to return
+     * @param  integer $limitstart Record return start
+     * @param  string  $sort       Field to sort records on
+     * @param  array   $areas      Areas to return data for
+     * @return array
      */
     public function onMembersContributions($member, $option, $limit, $limitstart, $sort, $areas = null)
     {
@@ -157,7 +159,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
         }
 
         // Get categories
-        $categories = $this->_cats;
+        $categories = $this->cats;
         if (!$categories) {
             $categories = Components\Publications\Models\Orm\Category::all()
                 ->whereEquals('state', Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
@@ -196,8 +198,8 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
     /**
      * Include needed libraries and push scripts and CSS to the document
      *
-     * @param   array  $filters
-     * @return  object
+     * @param  array $filters
+     * @return object
      */
     public static function allWithFilters($filters = array())
     {
@@ -316,8 +318,8 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
     /**
      * Static method for formatting results
      *
-     * @param   object  $row  Database row
-     * @return  string  HTML
+     * @param  object $row Database row
+     * @return string  HTML
      */
     public static function out($row)
     {
@@ -354,11 +356,13 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
 
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
-        $view = new Hubzero\Component\View(array(
+        $view = new Hubzero\Component\View(
+            array(
             'base_path' => Component::path('com_publications') . '/site',
             'name'      => 'browse',
             'layout'    => 'item'
-        ));
+            )
+        );
         $view->set('line', $row)
             ->set('option', 'com_publications')
             ->set('config', $config)
@@ -372,7 +376,7 @@ class plgMembersPublications extends \Hubzero\Plugin\Plugin
     /**
      * Include needed libraries and push scripts and CSS to the document
      *
-     * @return  void
+     * @return void
      */
     public static function documents()
     {

@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Usage plugin class for partners
@@ -19,6 +17,7 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
      *
      * @var    boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -59,10 +58,17 @@ class plgUsagePartners extends \Hubzero\Plugin\Plugin
         // Set some vars
         $thisyear = date("Y");
 
-        $o = \Components\Usage\Helpers\Helper::options($db, $enddate, $thisyear, $monthsReverse, 'check_for_regiondata');
+        $o = \Components\Usage\Helpers\Helper::options(
+            $db,
+            $enddate,
+            $thisyear,
+            $monthsReverse,
+            'check_for_regiondata'
+        );
 
         // Build HTML
-        $html  = '<form method="post" action="' . Route::url('index.php?option=' . $option . '&task=' . $task) . '">' . "\n";
+        $html  = '<form method="post" action="' .
+                Route::url('index.php?option=' . $option . '&task=' . $task) . '">' . "\n";
         $html .= "\t" . '<fieldset class="filters">' . "\n";
         $html .= "\t\t" . '<label>' . "\n";
         $html .= "\t\t\t" . Lang::txt('COM_USAGE_SHOW_DATA_FOR') . ': ' . "\n";

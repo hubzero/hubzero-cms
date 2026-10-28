@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mymessages module
- **/
+ *
+ */
 class Migration20190109000000ModMyMessages extends Base
 {
     /**

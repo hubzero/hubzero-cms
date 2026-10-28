@@ -19,7 +19,7 @@ class Menuitem extends Groupedlist
     /**
      * The form field type.
      *
-     * @var  string
+     * @public string
      */
     public $type = 'Menuitem';
 
@@ -55,11 +55,13 @@ class Menuitem extends Groupedlist
 
             // Build the options array.
             foreach ($items as $link) {
-                $groups[$menuType][] = Dropdown::option($link->value, $link->text, 'value', 'text', in_array($link->type, $disable));
+                $groups[$menuType][] = Dropdown::option($link->
+                    value, $link->
+                    text, 'value', 'text', in_array($link->
+                    type, $disable));
             }
-        }
+        } else {
         // Build groups for all menu types.
-        else {
             // Build the groups arrays.
             foreach ($items as $menu) {
                 // Initialize the group.

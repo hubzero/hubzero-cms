@@ -33,33 +33,41 @@ if ($this->message) { ?>
     <p class="info"><?php echo nl2br($this->message); ?></p>
 <?php } ?>
 
-<nav class="time-periods" aria-label="<?php echo Lang::txt('PLG_USAGE_PERIOD_NAV'); ?>">
+<?php
+    $baseUrl = 'index.php?option=com_usage&task=' . $this->element;
+    $prior12Url = Route::url($baseUrl . '&period=prior12');
+    $monthUrl   = Route::url($baseUrl . '&period=month');
+    $qtrUrl     = Route::url($baseUrl . '&period=qtr');
+    $yearUrl    = Route::url($baseUrl . '&period=year');
+    $fiscalUrl  = Route::url($baseUrl . '&period=fiscal');
+?>
+<nav class="time-periods">
     <ul>
         <li<?php if ($this->period == 12) {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=prior12'); ?>"<?php if ($this->period == 12) {
-           echo ' aria-current="page"';
-           } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_PRIOR12'); ?></span></a></li>
+           } ?>><a href="<?php echo $prior12Url; ?>"><span><?php
+            echo Lang::txt('PLG_USAGE_PERIOD_PRIOR12');
+?></span></a></li>
         <li<?php if ($this->period == 1) {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=month'); ?>"<?php if ($this->period == 1) {
-           echo ' aria-current="page"';
-           } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_MONTH'); ?></span></a></li>
+           } ?>><a href="<?php echo $monthUrl; ?>"><span><?php
+            echo Lang::txt('PLG_USAGE_PERIOD_MONTH');
+?></span></a></li>
         <li<?php if ($this->period == 3) {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=qtr'); ?>"<?php if ($this->period == 3) {
-           echo ' aria-current="page"';
-           } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_QTR'); ?></span></a></li>
+           } ?>><a href="<?php echo $qtrUrl; ?>"><span><?php
+            echo Lang::txt('PLG_USAGE_PERIOD_QTR');
+?></span></a></li>
         <li<?php if ($this->period == 0) {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=year'); ?>"<?php if ($this->period == 0) {
-           echo ' aria-current="page"';
-           } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_YEAR'); ?></span></a></li>
+           } ?>><a href="<?php echo $yearUrl; ?>"><span><?php
+            echo Lang::txt('PLG_USAGE_PERIOD_YEAR');
+?></span></a></li>
         <li<?php if ($this->period == 13) {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&period=fiscal'); ?>"<?php if ($this->period == 13) {
-           echo ' aria-current="page"';
-           } ?>><span><?php echo Lang::txt('PLG_USAGE_PERIOD_FISCAL'); ?></span></a></li>
+           } ?>><a href="<?php echo $fiscalUrl; ?>"><span><?php
+            echo Lang::txt('PLG_USAGE_PERIOD_FISCAL');
+?></span></a></li>
     </ul>
 </nav>
 
@@ -75,9 +83,13 @@ if ($this->message) { ?>
     $currentVisit->value = 0;
     $currentVisit->datetime = $datetime;
 
+    $quotedDatetime = $db->quote($datetime . '-00');
     $sql = "SELECT value, valfmt, datetime
 			FROM `summary_user_vals`
-			WHERE rowid=" . $db->quote($id) . " AND period=" . $db->quote($period) . " AND datetime<=" . $db->quote($datetime . '-00') . " AND colid=" . $db->quote($id) . "
+			WHERE rowid=" . $db->quote($id)
+            . " AND period=" . $db->quote($period)
+            . " AND datetime<=" . $quotedDatetime
+            . " AND colid=" . $db->quote($id) . "
 			ORDER BY datetime ASC";
     $db->setQuery($sql);
     $results = $db->loadObjectList();
@@ -89,7 +101,11 @@ if ($this->message) { ?>
 
         foreach ($results as $result) {
             $highest = $result->value > $highest ? $result->value : $highest;
-            $visits[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->value . "]";
+            $visits[] = "[new Date('"
+                . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                . "'),"
+                . $result->value
+                . "]";
         }
 
         $currentVisit = end($results);
@@ -104,7 +120,10 @@ if ($this->message) { ?>
 
     $sql = "SELECT value, valfmt, datetime
 			FROM `summary_user_vals`
-			WHERE rowid=" . $db->quote($id) . " AND period=" . $db->quote($period) . " AND datetime<=" . $db->quote($datetime . '-00') . " AND colid=" . $db->quote(1) . "
+			WHERE rowid=" . $db->quote($id)
+            . " AND period=" . $db->quote($period)
+            . " AND datetime<=" . $quotedDatetime
+            . " AND colid=" . $db->quote(1) . "
 			ORDER BY datetime ASC";
     $db->setQuery($sql);
     $results = $db->loadObjectList();
@@ -114,7 +133,11 @@ if ($this->message) { ?>
     if ($results) {
         foreach ($results as $result) {
             $highest = $result->value > $highest ? $result->value : $highest;
-            $downloads[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->value . "]";
+            $downloads[] = "[new Date('"
+                . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                . "'),"
+                . $result->value
+                . "]";
         }
 
         $currentDownload = end($results);
@@ -145,7 +168,13 @@ if ($this->message) { ?>
                 $residence    = array();
                 $organization = array();
 
-                $sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid=" . $db->quote(1) . " AND period=" . $db->quote($period) . " AND datetime=" . $db->quote($currentVisit->datetime) . " ORDER BY colid";
+                $sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid="
+                    . $db->quote(1)
+                    . " AND period="
+                    . $db->quote($period)
+                    . " AND datetime="
+                    . $db->quote($currentVisit->datetime)
+                    . " ORDER BY colid";
                 $db->setQuery($sql);
                 $results = $db->loadObjectList();
                 if ($results) {
@@ -254,8 +283,9 @@ if ($this->message) { ?>
                                 <li id="users-visits-res-<?php echo strtolower($res['column']); ?>">
                                     <span class="item-label"><?php echo $res['column']; ?></span>
                                     <span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-                                    <span class="bar-container" role="presentation">
-                                        <span class="bar-value" aria-hidden="true"></span>
+                                    <span class="bar-container">
+                                        <span class="bar-value"
+                                            title="<?php echo number_format($res['value']); ?>%"></span>
                                     </span>
                                 </li>
                             <?php } ?>
@@ -281,8 +311,9 @@ if ($this->message) { ?>
                                 <li id="users-visits-org-<?php echo strtolower($res['column']); ?>">
                                     <span class="item-label"><?php echo $res['column']; ?></span>
                                     <span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-                                    <span class="bar-container" role="presentation">
-                                        <span class="bar-value" aria-hidden="true"></span>
+                                    <span class="bar-container">
+                                        <span class="bar-value"
+                                            title="<?php echo number_format($res['value']); ?>%;"></span>
                                     </span>
                                 </li>
                             <?php } ?>
@@ -304,7 +335,13 @@ if ($this->message) { ?>
                 $residence = array();
                 $organization = array();
 
-                $sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid=" . $db->quote(4) . " AND period=" . $db->quote($period) . " AND datetime=" . $db->quote($currentDownload->datetime) . " ORDER BY colid";
+                $sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid="
+                    . $db->quote(4)
+                    . " AND period="
+                    . $db->quote($period)
+                    . " AND datetime="
+                    . $db->quote($currentDownload->datetime)
+                    . " ORDER BY colid";
                 $db->setQuery($sql);
                 $results = $db->loadObjectList();
                 if ($results) {
@@ -413,8 +450,9 @@ if ($this->message) { ?>
                                 <li id="users-downloads-res-<?php echo strtolower($res['column']); ?>">
                                     <span class="item-label"><?php echo $res['column']; ?></span>
                                     <span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-                                    <span class="bar-container" role="presentation">
-                                        <span class="bar-value" aria-hidden="true"></span>
+                                    <span class="bar-container">
+                                        <span class="bar-value"
+                                            title="<?php echo number_format($res['value']); ?>%;"></span>
                                     </span>
                                 </li>
                             <?php } ?>
@@ -440,8 +478,9 @@ if ($this->message) { ?>
                                 <li id="users-downloads-org-<?php echo strtolower($res['column']); ?>">
                                     <span class="item-label"><?php echo $res['column']; ?></span>
                                     <span class="item-value"><?php echo number_format($res['value']); ?>%</span>
-                                    <span class="bar-container" role="presentation">
-                                        <span class="bar-value" aria-hidden="true"></span>
+                                    <span class="bar-container">
+                                        <span class="bar-value"
+                                            title="<?php echo number_format($res['value']); ?>%;"></span>
                                     </span>
                                 </li>
                             <?php } ?>
@@ -478,7 +517,11 @@ if ($this->message) { ?>
             $results = $db->loadObjectList();
             if ($results) {
                 foreach ($results as $result) {
-                    $simusers[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->value . "]";
+                    $simusers[] = "[new Date('"
+                        . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                        . "'),"
+                        . $result->value
+                        . "]";
                 }
 
                 $currentSimuser = end($results);
@@ -509,7 +552,11 @@ if ($this->message) { ?>
             $results = $db->loadObjectList();
             if ($results) {
                 foreach ($results as $result) {
-                    $simjobs[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->value . "]";
+                    $simjobs[] = "[new Date('"
+                        . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                        . "'),"
+                        . $result->value
+                        . "]";
                 }
 
                 $currentSimjob = end($results);
@@ -525,13 +572,19 @@ if ($this->message) { ?>
     </div>
     <div class="usage-stats" aria-live="polite">
         <?php
-        $datetime = ($currentSimjob->datetime >= $currentSimuser->datetime ? $currentSimjob->datetime : $currentSimuser->datetime);
+        $datetime = ($currentSimjob->datetime >= $currentSimuser->datetime ? $currentSimjob->datetime :
+        $currentSimuser->datetime);
 
         $db->setQuery(
             "SELECT a.label,b.value,b.valfmt,a.plot,a.id
 			FROM `summary_simusage` AS a
 			INNER JOIN `summary_simusage_vals` AS b
-			WHERE a.id=b.rowid AND b.period = " . $db->quote($period) . " AND b.datetime = " . $db->quote($datetime) . " AND a.id > 2
+			WHERE a
+			    . id=b
+			    . rowid AND b
+			    . period = " . $db->quote($period) . " AND b
+			    . datetime = " . $db->quote($datetime) . " AND a
+			    . id > 2
 			ORDER BY a.id"
         );
         $results = $db->loadObjectList();
@@ -542,7 +595,21 @@ if ($this->message) { ?>
                     <div class="col span3 usage-stat<?php if ($i == 3 || $i == 7) {
                         echo ' omega';
                                                     } ?>">
-                        <span class="usage-value" id="simulation-<?php echo preg_replace('/[^a-z0-9\-_]/', '', strtolower($result->label)); ?>"><?php echo plgUsageOverview::formatValue($result->value, $result->valfmt); ?></span>
+                        <?php
+                            $simId = preg_replace(
+                                '/[^a-z0-9\-_]/',
+                                '',
+                                strtolower($result->label)
+                            );
+                            $simValue = plgUsageOverview::formatValue(
+                                $result->value,
+                                $result->valfmt
+                            );
+                        ?>
+                        <span
+                            class="usage-value"
+                            id="simulation-<?php echo $simId; ?>"
+                        ><?php echo $simValue; ?></span>
                         <span class="usage-label"><?php echo $result->label; ?></span>
                     </div>
                     <?php if ($i == 3 || $i == 7) {
@@ -605,7 +672,16 @@ if ($this->message) { ?>
                         chart_sim_jobs.highlight(0, item.dataIndex);
                     }
 
-                    $.getJSON("<?php echo Route::url('index.php?option=com_usage&task=' . $this->element . '&action=getUsageForDate&period=' . $period . '&datetime=', false); ?>" + yyyy + "-" + mm, function(data){
+                    var jsonUrl = "<?php
+                        echo Route::url(
+                            'index.php?option=com_usage&task='
+                            . $this->element
+                            . '&action=getUsageForDate&period='
+                            . $period . '&datetime=',
+                            false
+                        );
+                        ?>";
+                    $.getJSON(jsonUrl + yyyy + "-" + mm, function(data){
                         if (data) {
                             var tmp = null;
 
@@ -704,7 +780,9 @@ if ($this->message) { ?>
                         max: new Date('<?php echo $to; ?>'),
                         tickFormatter: function (val, axis) {
                             var d = new Date(val);
-                            //return month_short[d.getUTCMonth()] + ' ' + d.getFullYear();//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+                            //return month_short[d.getUTCMonth()] + ' ' + d
+                                . getFullYear();//d
+                                . getUTCDate() + "/" + (d.getUTCMonth() + 1);
                             return (d.getUTCMonth() + 1) + "/" + d.getUTCFullYear().toString().substr(2,2);
                         }//,
                         //zoomRange: [0.1, 1],

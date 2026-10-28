@@ -137,17 +137,17 @@ if (substr($base, -13) == 'administrator') {
                     $status = '';
                     if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
                         $status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' ' . Date::of($row->created)->toLocal('M d, Y');
-                    } else if ($row->state == 2) {
+                    } elseif ($row->state == 2) {
                         $status  = '<span class="deleted">' . Lang::txt('Deleted') . '</span> ';
-                    } else if ($row->setup_stage < $setup_complete) {
+                    } elseif ($row->setup_stage < $setup_complete) {
                         $status = '<span class="setup">' . Lang::txt('Setup in progress') . '</span>';
-                    } else if ($row->state == 0) {
+                    } elseif ($row->state == 0) {
                         $status = '<span class="inactive">' . Lang::txt('Inactive/Suspended') . '</span> ';
-                    } else if ($row->state == 3) {
+                    } elseif ($row->state == 3) {
                         $status = '<span class="archived">' . Lang::txt('Archived') . '</span> ';
-                    } else if ($row->state == 4) {
+                    } elseif ($row->state == 4) {
                         $status = '<span class="rejected">' . Lang::txt('Rejected') . '</span> ';
-                    } else if ($row->state == 5) {
+                    } elseif ($row->state == 5) {
                         $status = '<span class="pending">' . Lang::txt('Pending approval') . '</span> ';
                     }
 

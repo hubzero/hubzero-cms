@@ -33,7 +33,7 @@ class Migration extends Scaffolding
 
                 if (!$table = $this->arguments->getOpt(5)) {
                     $this->output->error('Please specify the table for which a migration is being created');
-                } else if (!in_array($table, $tables)) {
+                } elseif (!in_array($table, $tables)) {
                     $this->output->error('Table does not exist');
                 }
 
@@ -68,8 +68,13 @@ class Migration extends Scaffolding
         // Extension
         $extension = null;
         if ($this->arguments->getOpt('e') || $this->arguments->getOpt('extension')) {
-            $extension = ($this->arguments->getOpt('e')) ? $this->arguments->getOpt('e') : $this->arguments->getOpt('extension');
-
+            $extension = ($this->
+                arguments->
+                getOpt('e')) ? $this->
+                arguments->
+                getOpt('e') : $this->
+                arguments->
+                getOpt('extension');
             if ($extension != 'core' && !$this->isValidExtension($extension, $base) && !$this->arguments->getOpt('i')) {
                 $this->output->error("Error: the extension provided ({$extension}) does not appear to be valid.");
             }

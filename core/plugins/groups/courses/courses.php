@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Members Plugin class for courses
+ *
  */
 class plgGroupsCourses extends \Hubzero\Plugin\Plugin
 {
@@ -18,6 +20,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $_autoloadLanguage = true;
 
@@ -39,11 +42,12 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
+        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . $pluginPath, null, false, true);
     }
 
     /**

@@ -2209,7 +2209,7 @@ class Resources extends SiteController
 
                 App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND'));
             }
-        } else if (strpos($resource_path, '/') !== false) {
+        } elseif (strpos($resource_path, '/') !== false) {
             // Not using a protected directory, we
             // need the base to be the directory the main
             // file is in so we can download supporting peer

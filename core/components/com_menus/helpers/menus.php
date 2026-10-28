@@ -27,6 +27,7 @@ class Menus
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected static $_filter = array('option', 'view', 'layout');
 
     /**
@@ -107,15 +108,22 @@ class Menus
     /**
      * Get a list of menu links for one or all menus.
      *
-     * @param   string  $menuType   An option menu to filter the list on, otherwise all menu links are returned as a grouped array.
+     * @param   string  $menuType   An option menu to filter the list on, otherwise
+     *                              all menu links are returned as a grouped array.
      * @param   int     $parentId   An optional parent ID to pivot results around.
-     * @param   int     $mode       An optional mode. If parent ID is set and mode=2, the parent and children are excluded from the list.
+     * @param   int     $mode       An optional mode. If parent ID is set and mode=2,
+     *                              the parent and children are excluded from the list.
      * @param   array   $published  An optional array of states
      * @param   array   $languages
      * @return  mixed
      */
-    public static function getMenuLinks($menuType = null, $parentId = 0, $mode = 0, $published = array(), $languages = array())
-    {
+    public static function getMenuLinks(
+        $menuType = null,
+        $parentId = 0,
+        $mode = 0,
+        $published = array(),
+        $languages = array()
+    ) {
         $db = App::get('db');
         $query = $db->getQuery();
 

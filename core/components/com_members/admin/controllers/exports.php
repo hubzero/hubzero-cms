@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Models\Member;
@@ -278,7 +279,7 @@ class Exports extends AdminController
 
                 if (is_array($val)) {
                     $val = implode(';', $val);
-                } else if ($val != null) {
+                } elseif ($val != null) {
                     if (strstr($val, '{')) {
                         $v = json_decode((string)$val, true);
 

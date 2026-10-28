@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -72,8 +73,13 @@ function modChrome_outline($module, &$params, &$attribs)
         $browser = new \Hubzero\Browser\Detector();
 
         $doc = App::get('document');
-        $doc->addStyleDeclaration(".mod-preview-info { padding: 2px 4px 2px 4px; border: 1px solid black; position: absolute; background-color: white; color: red;}");
-        $doc->addStyleDeclaration(".mod-preview-wrapper { background-color:#eee; border: 1px dotted black; color:#700;}");
+        $doc->addStyleDeclaration(
+            ".mod-preview-info { padding: 2px 4px 2px 4px; border: 1px solid black; "
+            . "position: absolute; background-color: white; color: red;}"
+        );
+        $doc->addStyleDeclaration(
+            ".mod-preview-wrapper { background-color:#eee; border: 1px dotted black; color:#700;}"
+        );
         if ($browser->name() == 'ie') {
             if ($browser->major() <= 7) {
                 $doc->addStyleDeclaration(".mod-preview-info {filter: alpha(opacity=80);}");
@@ -107,7 +113,9 @@ function modChrome_sliders($module, &$params, &$attribs)
         if ($params->get('automatic_title', '0') == '0') {
             echo Html::sliders('panel', $module->title, 'module' . $module->id);
         } elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle')) {
-            echo Html::sliders('panel', call_user_func_array(array('mod' . $module->name . 'Helper','getTitle'), array($params, $module)), 'module' . $module->id);
+            $callback = array('mod' . $module->name . 'Helper', 'getTitle');
+            $title = call_user_func_array($callback, array($params, $module));
+            echo Html::sliders('panel', $title, 'module' . $module->id);
         } else {
             echo Html::sliders('panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'module' . $module->id);
         }
@@ -125,7 +133,9 @@ function modChrome_tabs($module, &$params, &$attribs)
         if ($params->get('automatic_title', '0') == '0') {
             echo Html::tabs('panel', $module->title, 'module' . $module->id);
         } elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle')) {
-            echo Html::tabs('panel', call_user_func_array(array('mod' . $module->name . 'Helper', 'getTitle'), array($params)), 'module' . $module->id);
+            $callback = array('mod' . $module->name . 'Helper', 'getTitle');
+            $title = call_user_func_array($callback, array($params));
+            echo Html::tabs('panel', $title, 'module' . $module->id);
         } else {
             echo Html::tabs('panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'module' . $module->id);
         }

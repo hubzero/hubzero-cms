@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\User\D1;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Log;
+use Hubzero\Facades\User;
 
 /**
  * Plugin for automatically adding users to the d1_nation group based on IP country group lookup
  */
-class plgUserD1 extends \Hubzero\Plugin\Plugin
+class D1 extends Plugin
 {
     public function onLoginUser($user, $options = array())
     {
@@ -40,7 +43,7 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
                 $nation->update();
             }
 
-            return;
+            return true;
         }
 
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -49,7 +52,7 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
 
         if (!$gdb) {
             Log::debug('plgUserD1: geo database unavailable, skipping group update for [' . User::get('username') . '].');
-            return;
+            return true;
         }
 
         $gdb->setQuery(
@@ -61,7 +64,7 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
         $countrygroup = $gdb->loadResult();
 
         if (!$countrygroup) {
-            return;
+            return true;
         }
 
         if ($countrygroup == 'D1') {
@@ -78,6 +81,8 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
         } else {
             Log::debug($ip . ' has countrygroup [' . $countrygroup . '], leaving [' . User::get('username') . '] membership to group [d1_nation] unchanged.');
         }
+
+        return true;
     }
 
     public function onAfterDeleteUser($user, $success, $msg)

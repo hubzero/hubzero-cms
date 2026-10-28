@@ -170,9 +170,12 @@ class Categories extends AdminController
         }
 
         // Log change
+        $action = (isset($fields['id']) && $fields['id'])
+            ? 'group_pagecategory_updated'
+            : 'group_pagecategory_created';
         Log::log(array(
             'gidNumber' => $this->group->get('gidNumber'),
-            'action'    => (isset($fields['id']) && $fields['id']) ? 'group_pagecategory_updated' : 'group_pagecategory_created',
+            'action'    => $action,
             'comments'  => array(
                 'id'    => $row->get('id'),
                 'title' => $row->get('title'),
@@ -251,8 +254,11 @@ class Categories extends AdminController
      */
     public function cancelTask()
     {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&gid=' . Request::getString('gid', '');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . Request::getString('gid', ''), false)
+            Route::url($url, false)
         );
     }
 
@@ -263,8 +269,10 @@ class Categories extends AdminController
      */
     public function manageTask()
     {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=manage&task=edit&id=' . Request::getString('gid', '');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=manage&task=edit&id=' . Request::getString('gid', ''), false)
+            Route::url($url, false)
         );
     }
 }

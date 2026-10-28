@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * XMessage plugin class for email
@@ -70,7 +68,9 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
 
         // In case a different reply to email address is specified
         if (array_key_exists('replytoemail', $from)) {
-            $replytoname = (isset($from['replytoname']) && $from['replytoname'] != '') ? $from['replytoname'] : $from['name'];
+            $replytoname = (isset($from['replytoname']) && $from['replytoname'] != '')
+                ? $from['replytoname']
+                : $from['name'];
 
             if (preg_match('/[А-Яа-яЁё]/u', $replytoname)) {
                 $replytoname = $from['replytoemail'];
@@ -109,7 +109,8 @@ class plgXMessageEmail extends \Hubzero\Plugin\Plugin
                     if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path)) {
                         $file = basename($path);
                         $m['multipart'] = preg_replace(
-                            '/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i',
+                            '/<a class="img" data\-filename="' . str_replace('.', '\.', $file)
+                            . '" href="(.*?)"\>(.*?)<\/a>/i',
                             '<img src="' . $message->getEmbed($path) . '" alt="" />',
                             $m['multipart']
                         );

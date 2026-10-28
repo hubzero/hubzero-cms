@@ -22,9 +22,9 @@ require_once __DIR__ . '/Local/Result.php';
  */
 class Local
 {
-    const LEARN_SPAM   = 0;
-    const LEARN_HAM    = 1;
-    const LEARN_FORGET = 2;
+    public const LEARN_SPAM = 0;
+    public const LEARN_HAM = 1;
+    public const LEARN_FORGET = 2;
 
     protected $learnTypes = array(
         self::LEARN_SPAM,
@@ -33,7 +33,7 @@ class Local
     );
 
     protected $hostname = 'localhost';
-    protected $port     = '783';
+    protected $port = '783';
 
     protected $socketPath;
     protected $socket;
@@ -89,8 +89,8 @@ class Local
      */
     protected function exec($cmd, $message, array $additionalHeaders = array())
     {
-        $socket        = $this->getSocket();
-        $message      .= "\r\n";
+        $socket = $this->getSocket();
+        $message .= "\r\n";
         $contentLength = strlen($message);
 
         if (!empty($this->maxSize)) {
@@ -101,7 +101,7 @@ class Local
             }
         }
 
-        $cmd  = $cmd . ' SPAMC/' . $this->protocolVersion . "\r\n";
+        $cmd = $cmd . ' SPAMC/' . $this->protocolVersion . "\r\n";
         $cmd .= "Content-length: {$contentLength}\r\n";
 
         if ($this->enableZlib && function_exists('gzcompress')) {
@@ -154,7 +154,7 @@ class Local
         $message = '';
 
         while (true) {
-            $buffer   = fgets($socket, 128);
+            $buffer = fgets($socket, 128);
             $headers .= $buffer;
             if ($buffer == "\r\n" || feof($socket)) {
                 break;
@@ -189,7 +189,7 @@ class Local
          */
         if (preg_match('/SPAMD\/(\d\.\d) (\d+) (.*)/', $header, $matches)) {
             $result->protocolVersion = $matches[1];
-            $result->responseCode    = $matches[2];
+            $result->responseCode = $matches[2];
             $result->responseMessage = $matches[3];
 
             if ($result->responseCode != 0) {
@@ -217,15 +217,15 @@ class Local
                 $result->isSpam = true :
                 $result->isSpam = false;
 
-            $result->score    = (float)$matches[2];
-            $result->thresold = (float)$matches[3];
+            $result->score = (float) $matches[2];
+            $result->thresold = (float) $matches[3];
         } else {
             /**
              * In PROCESS method with protocol version before 1.3, SpamAssassin
              * won't return the 'Spam:' field in the response header. In this case,
              * it is necessary to check for the X-Spam-Status: header in the
              * processed message headers.
-            */
+             */
             if (
                 preg_match(
                     '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
@@ -237,8 +237,8 @@ class Local
                     $result->isSpam = true :
                     $result->isSpam = false;
 
-                $result->score    = (float)$matches[2];
-                $result->thresold = (float)$matches[3];
+                $result->score = (float) $matches[2];
+                $result->thresold = (float) $matches[3];
             }
         }
 
@@ -385,14 +385,14 @@ class Local
         if ($learnType == self::LEARN_SPAM) {
             $additionalHeaders = array(
                 'Message-class' => 'spam',
-                'Set'           => 'local'
+                'Set' => 'local'
             );
-        } else if ($learnType == self::LEARN_HAM) {
+        } elseif ($learnType == self::LEARN_HAM) {
             $additionalHeaders = array(
                 'Message-class' => 'ham',
-                'Set'           => 'local'
+                'Set' => 'local'
             );
-        } else if ($learnType == self::LEARN_FORGET) {
+        } elseif ($learnType == self::LEARN_FORGET) {
             $additionalHeaders = array(
                 'Remove' => 'local'
             );
@@ -417,7 +417,7 @@ class Local
     {
         $additionalHeaders = array(
             'Message-class' => 'spam',
-            'Set'           => 'local,remote'
+            'Set' => 'local,remote'
         );
 
         return $this->exec('TELL', $message, $additionalHeaders)->didSet;
@@ -433,7 +433,7 @@ class Local
     {
         $additionalHeaders = array(
             'Message-class' => 'ham',
-            'Set'           => 'local,remote'
+            'Set' => 'local,remote'
         );
 
         return $this->exec('TELL', $message, $additionalHeaders)->didSet;

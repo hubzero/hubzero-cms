@@ -103,7 +103,7 @@ class Announcement extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         $query =  " FROM $this->_tbl AS a";
 
@@ -130,15 +130,18 @@ class Announcement extends Table
 
         if (isset($filters['published'])) {
             $now = \Date::toSql();
-            $where[] = "(a.`publish_up` IS NULL OR a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= " . $this->_db->quote($now) . ")";
-            $where[] = "(a.`publish_down` IS NULL OR a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= " . $this->_db->quote($now) . ")";
+            $where[] = "(a.`publish_up` IS NULL OR a.`publish_up` = '0000-00-00 00:00:00' OR a.`publish_up` <= "
+                . $this->_db->quote($now) . ")";
+            $where[] = "(a.`publish_down` IS NULL OR a.`publish_down` = '0000-00-00 00:00:00' OR a.`publish_down` >= "
+                . $this->_db->quote($now) . ")";
         }
 
         if (isset($filters['search']) && $filters['search']) {
             if (is_numeric($filters['search'])) {
                 $where[] = "a.`id`=" . $this->_db->quote(intval($filters['search']));
             } else {
-                $where[] = "(LOWER(a.content) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+                $where[] = "(LOWER(a.content) LIKE "
+                    . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
             }
         }
 
@@ -158,7 +161,7 @@ class Announcement extends Table
     public function count($filters = array())
     {
         $query  = "SELECT COUNT(*)";
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -173,7 +176,7 @@ class Announcement extends Table
     public function find($filters = [])
     {
         $query  = "SELECT a.*";
-        $query .= $this->_buildQuery($filters);
+        $query .= $this->buildQuery($filters);
 
         $query .= " ORDER BY a.sticky DESC, a.created DESC";
 

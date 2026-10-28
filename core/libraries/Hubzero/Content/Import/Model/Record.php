@@ -22,7 +22,7 @@ class Record extends Obj
      *
      * @var  integer
      */
-    const TITLE_MATCH = 10;
+    public const TITLE_MATCH = 10;
 
     /**
      * Raw record data
@@ -43,6 +43,7 @@ class Record extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_mode;
 
     /**
@@ -50,6 +51,7 @@ class Record extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_options;
 
     /**
@@ -57,6 +59,7 @@ class Record extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_database;
 
     /**
@@ -64,6 +67,7 @@ class Record extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_user;
 
     /**
@@ -74,6 +78,7 @@ class Record extends Obj
      * @param   string  $mode     Operation mode (update|patch)
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($raw, $options = array(), $mode = 'UPDATE')
     {
         // Store our incoming data
@@ -137,6 +142,7 @@ class Record extends Obj
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __toString()
     {
         return $this->toString();

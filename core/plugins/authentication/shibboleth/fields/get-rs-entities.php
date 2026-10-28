@@ -49,12 +49,17 @@ $rv = [];
 // select entities having the saml attribute indicating that they are research & scholarship category members
 // being members ourselves, we can get attributes about users released fromt these entities
 foreach (
-    $xp->xpath('//base:EntityDescriptor[
-	base:Extensions/
-		mdattr:EntityAttributes/
-			saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/
-				saml:AttributeValue[text()="http://id.incommon.org/category/research-and-scholarship" or text()="http://refeds.org/category/research-and-scholarship"]
-	]') as $entity
+    $xp->xpath(
+        '//base:EntityDescriptor['
+        . 'base:Extensions/'
+        . 'mdattr:EntityAttributes/'
+        . 'saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/'
+        . 'saml:AttributeValue['
+        . 'text()="http://id.incommon.org/category/research-and-scholarship" or '
+        . 'text()="http://refeds.org/category/research-and-scholarship"'
+        . ']'
+        . ']'
+    ) as $entity
 ) {
     // easier to work with as an array, the SimpleXMLElement class is bizarre
     $entity = (array)$entity;

@@ -19,7 +19,7 @@ require_once __DIR__ . '/Remote/Result.php';
  */
 class Remote
 {
-    protected $server  = 'http://spamcheck.postmarkapp.com/filter';
+    protected $server = 'http://spamcheck.postmarkapp.com/filter';
     protected $verbose = false;
 
     /**
@@ -59,26 +59,32 @@ class Remote
                 $result->isSpam = false;
             }
 
-            $result->score    = (float)$matches[2];
-            $result->thresold = (float)$matches[3];
+            $result->score = (float) $matches[2];
+            $result->thresold = (float) $matches[3];
         } else {
             // In PROCESS method with protocol version before 1.3, SpamAssassin
             // won't return the 'Spam:' field in the response header. In this case,
             // it is necessary to check for the X-Spam-Status: header in the
             // processed message headers.
-            if (preg_match('/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/', $report->message, $matches)) {
+            if (
+                preg_match(
+                    '/X-Spam-Status: (Yes|No)\, score=(\d+\.\d)required=(\d+\.\d)/',
+                    $report->message,
+                    $matches
+                )
+            ) {
                 if ($matches[1] == 'Yes') {
                     $result->isSpam = true;
                 } else {
                     $result->isSpam = false;
                 }
 
-                $result->score    = (float)$matches[2];
-                $result->thresold = (float)$matches[3];
+                $result->score = (float) $matches[2];
+                $result->thresold = (float) $matches[3];
             }
         }
 
-        $result->report  = $report->message;
+        $result->report = $report->message;
         $result->message = $message;
 
         return $result;
@@ -110,7 +116,7 @@ class Remote
 
         $json = array(
             'options' => ($this->verbose ? 'long' : 'short'),
-            'email'   => $message,
+            'email' => $message,
         );
 
         $ch = curl_init();
@@ -121,8 +127,8 @@ class Remote
         curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
 
         $result = curl_exec($ch);
-        $error  = curl_error($ch);
-        $code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         if (!$result) {

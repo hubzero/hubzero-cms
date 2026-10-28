@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,6 +22,8 @@ use Components\Search\Models\Solr\SearchComponent;
 use Components\Search\Models\Solr\Blacklist;
 use Hubzero\Search\Index;
 
+/**
+ */
 class plgSearchSolr extends \Hubzero\Plugin\Plugin
 {
     /**

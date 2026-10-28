@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,6 @@ defined('_HZEXEC_') or die();
 /**
  * Migration to fix old weber publish settings
  **/
-
 class Migration20181211163219ComTools extends Base
 {
     /**
@@ -35,7 +35,9 @@ class Migration20181211163219ComTools extends Base
 
                 $params = '{"github":"","publishType":"weber="}';
 
-                $query = "UPDATE `#__tool_version` SET `params`=" . $this->db->quote($params) . " WHERE `id`=" . $this->db->quote($row->id);
+                $query = "UPDATE `#__tool_version` SET `params`="
+                    . $this->db->quote($params)
+                    . " WHERE `id`=" . $this->db->quote($row->id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }

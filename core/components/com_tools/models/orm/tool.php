@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,16 +25,16 @@ class Tool extends Relational
     /**
      * Status constants
      */
-    const STATUS_UNPUBLISHED = 0;
-    const STATUS_REGISTERED  = 1;
-    const STATUS_CREATED     = 2;
-    const STATUS_UPLOADED    = 3;
-    const STATUS_INSTALLED   = 4;
-    const STATUS_UPDATED     = 5;
-    const STATUS_APPROVED    = 6;
-    const STATUS_PUBLISHED   = 7;
-    const STATUS_RETIRED     = 8;
-    const STATUS_ABANDONED   = 9;
+    public const STATUS_UNPUBLISHED = 0;
+    public const STATUS_REGISTERED  = 1;
+    public const STATUS_CREATED     = 2;
+    public const STATUS_UPLOADED    = 3;
+    public const STATUS_INSTALLED   = 4;
+    public const STATUS_UPDATED     = 5;
+    public const STATUS_APPROVED    = 6;
+    public const STATUS_PUBLISHED   = 7;
+    public const STATUS_RETIRED     = 8;
+    public const STATUS_ABANDONED   = 9;
 
     /**
      * The table namespace
@@ -100,7 +101,8 @@ class Tool extends Relational
      **/
     public function automaticRegisteredBy($data)
     {
-        return (isset($data['registered_by']) && $data['registered_by'] ? (int)$data['registered_by'] : (int)User::get('id'));
+        return (isset($data['registered_by']) && $data['registered_by'] ?
+            (int)$data['registered_by'] : (int)User::get('id'));
     }
 
     /**

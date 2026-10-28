@@ -1,5 +1,6 @@
 <?php
 
+
 namespace cebe\markdown;
 
 use cebe\markdown\block\TableTrait;
@@ -69,7 +70,12 @@ class MarkdownExtra extends Markdown
 
     protected function identifyReference($line)
     {
-        return ($line[0] === ' ' || $line[0] === '[') && preg_match('/^ {0,3}\[(.+?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*(' . $this->_specialAttributesRegex . ')?\s*$/', $line);
+        return ($line[0] === ' ' || $line[0] === '[')
+            && preg_match(
+                '/^ {0,3}\[(.+?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*('
+                . $this->_specialAttributesRegex . ')?\s*$/',
+                $line
+            );
     }
 
     /**
@@ -77,7 +83,15 @@ class MarkdownExtra extends Markdown
      */
     protected function consumeReference($lines, $current)
     {
-        while (isset($lines[$current]) && preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*(' . $this->_specialAttributesRegex . ')?\s*$/', $lines[$current], $matches)) {
+        while (
+            isset($lines[$current])
+            && preg_match(
+                '/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*('
+                . $this->_specialAttributesRegex . ')?\s*$/',
+                $lines[$current],
+                $matches
+            )
+        ) {
             $label = strtolower($matches[1]);
 
             $this->references[$label] = [
@@ -87,7 +101,10 @@ class MarkdownExtra extends Markdown
                 $this->references[$label]['title'] = $matches[3];
             } else {
                 // title may be on the next line
-                if (isset($lines[$current + 1]) && preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
+                if (
+                    isset($lines[$current + 1])
+                    && preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)
+                ) {
                     $this->references[$label]['title'] = $matches[1];
                     $current++;
                 }
@@ -228,7 +245,9 @@ class MarkdownExtra extends Markdown
         }
         $attributes = $this->renderAttributes($block);
         return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
-            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+            . (empty($block['title']) ? '' : ' title="'
+                . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8')
+                . '"')
             . $attributes . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
 
@@ -244,7 +263,9 @@ class MarkdownExtra extends Markdown
         $attributes = $this->renderAttributes($block);
         return '<img src="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
             . ' alt="' . htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"'
-            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+            . (empty($block['title']) ? '' : ' title="'
+                . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8')
+                . '"')
             . $attributes . ($this->html5 ? '>' : ' />');
     }
 }

@@ -76,8 +76,12 @@ if (!empty($this->notifications)) {
             echo '<div class="col span6 omega orderSummary">';
 
             if (!empty($this->transactionInfo)) {
-                $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-                $discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
+                $orderTotal = $this->transactionInfo->tiSubtotal
+                    + $this->transactionInfo->tiShipping
+                    - $this->transactionInfo->tiDiscounts
+                    - $this->transactionInfo->tiShippingDiscount;
+                $discount = $this->transactionInfo->tiDiscounts
+                    + $this->transactionInfo->tiShippingDiscount;
 
                 echo '<h2>Order summary:</h2>';
 
@@ -147,7 +151,10 @@ if (!empty($this->notifications)) {
         ?>
 
         <?php
-        $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
+        $orderTotal = $this->transactionInfo->tiSubtotal
+            + $this->transactionInfo->tiShipping
+            - $this->transactionInfo->tiDiscounts
+            - $this->transactionInfo->tiShippingDiscount;
 
         if ($orderTotal > 0) {
             $buttonLabel = 'Proceed to payment';

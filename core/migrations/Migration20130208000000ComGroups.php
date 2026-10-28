@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +24,10 @@ class Migration20130208000000ComGroups extends Base
         if ($this->db->tableHasField('#__xgroups', 'access')) {
             $query .= "ALTER TABLE `#__xgroups` DROP `access`;\n";
         }
-        if ($this->db->tableHasField('#__xgroups', 'privacy') && !$this->db->tableHasField('#__xgroups', 'discoverability')) {
+        if (
+            $this->db->tableHasField('#__xgroups', 'privacy')
+            && !$this->db->tableHasField('#__xgroups', 'discoverability')
+        ) {
             $query .= "ALTER TABLE `#__xgroups` CHANGE `privacy` `discoverability` TINYINT(3);\n";
         }
         if (!$this->db->tableHasField('#__xgroups', 'approved')) {
@@ -43,7 +47,10 @@ class Migration20130208000000ComGroups extends Base
         if ($this->db->tableHasField('#__xgroups', 'approved')) {
             $query .= "ALTER TABLE `#__xgroups` DROP `approved`;\n";
         }
-        if (!$this->db->tableHasField('#__xgroups', 'privacy') && $this->db->tableHasField('#__xgroups', 'discoverability')) {
+        if (
+            !$this->db->tableHasField('#__xgroups', 'privacy')
+            && $this->db->tableHasField('#__xgroups', 'discoverability')
+        ) {
             $query .= "ALTER TABLE `#__xgroups` CHANGE `discoverability` `privacy` TINYINT(3);\n";
         }
         if (!$this->db->tableHasField('#__xgroups', 'access')) {

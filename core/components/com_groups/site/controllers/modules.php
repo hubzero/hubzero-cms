@@ -57,7 +57,9 @@ class Modules extends Base
         }
 
         // Check authorization
-        if ($this->group->published == 2 || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'))) {
+        $isUnauthorized = $this->group->published == 2
+            || ($this->_authorize() != 'manager' && !$this->_authorizedForTask('group.pages'));
+        if ($isUnauthorized) {
             $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -72,7 +74,9 @@ class Modules extends Base
      */
     public function displayTask()
     {
-        App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages#modules'));
+        $url = 'index.php?option=com_groups&cn=' . $this->group->get('cn')
+            . '&controller=pages#modules';
+        App::redirect(Route::url($url));
     }
 
     /**
@@ -278,7 +282,10 @@ class Modules extends Base
             Helpers\Pages::sendApproveNotification('module', $this->module);
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules');
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn')
+            . '&controller=pages#modules'
+        );
 
         // Log activity
         $recipients = array(
@@ -383,7 +390,10 @@ class Modules extends Base
         }
 
         //inform user & redirect
-        $url = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules');
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn')
+            . '&controller=modules'
+        );
 
         if ($return = Request::getString('return', '', 'get')) {
             $decoded = base64_decode($return);
@@ -401,13 +411,14 @@ class Modules extends Base
             $recipients[] = ['user', $recipient];
         }
 
+        $activityAction = ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED'));
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => ($state == 2 ? 'deleted' : 'updated'),
                 'scope'       => 'group.module',
                 'scope_id'    => $module->get('id'),
                 'description' => Lang::txt(
-                    'COM_GROUPS_ACTIVITY_MODULE_' . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
+                    'COM_GROUPS_ACTIVITY_MODULE_' . $activityAction,
                     $module->get('title'),
                     '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>'
                 ),

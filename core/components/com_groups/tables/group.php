@@ -33,6 +33,7 @@ class Group extends Table
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetName()
     {
         $k = $this->_tbl_key;
@@ -44,6 +45,7 @@ class Group extends Table
      *
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetTitle()
     {
         return $this->title;
@@ -56,6 +58,7 @@ class Group extends Table
      * @param   integer  $id     The id for the asset
      * @return  integer  The id of the asset's parent
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetParentId($table = null, $id = null)
     {
         // Initialise variables.
@@ -80,7 +83,7 @@ class Group extends Table
         if ($assetId) {
             return $assetId;
         } else {
-            return parent::_getAssetParentId($table, $id);
+            return parent::getAssetParentId($table, $id);
         }
     }
 
@@ -158,28 +161,28 @@ class Group extends Table
      * @param   array   $filters
      * @return  string  database query
      */
-    private function _buildMembersQuery($filters = array())
+    private function buildMembersQuery($filters = array())
     {
         /*$query = "FROM (
-            (" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
-            (" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
-            (" . $this->_groupTable('member', 'm', $filters) . ") UNION
-            (" . $this->_groupTable('manager', 'n', $filters) . ")
+            (" . $this->groupTable('invitee', 'i', $filters) . ") UNION
+            (" . $this->groupTable('applicant', 'a', $filters) . ") UNION
+            (" . $this->groupTable('member', 'm', $filters) . ") UNION
+            (" . $this->groupTable('manager', 'n', $filters) . ")
         ) AS v";*/
         $query = "FROM (
-			(" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
-			(" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
-			(" . $this->_groupTable('member', 'm', $filters) . ")
+			(" . $this->groupTable('invitee', 'i', $filters) . ") UNION
+			(" . $this->groupTable('applicant', 'a', $filters) . ") UNION
+			(" . $this->groupTable('member', 'm', $filters) . ")
 		) AS v";
 
         $where = array();
 
         if (isset($filters['status']) && $filters['status']) {
             $query = "FROM (
-				(" . $this->_groupTable('invitee', 'i', $filters) . ") UNION
-				(" . $this->_groupTable('applicant', 'a', $filters) . ") UNION
-				(" . $this->_groupTable('member', 'm', $filters) . ") UNION
-				(" . $this->_groupTable('manager', 'n', $filters) . ")
+				(" . $this->groupTable('invitee', 'i', $filters) . ") UNION
+				(" . $this->groupTable('applicant', 'a', $filters) . ") UNION
+				(" . $this->groupTable('member', 'm', $filters) . ") UNION
+				(" . $this->groupTable('manager', 'n', $filters) . ")
 			) AS v";
 
             $where[] = "v.`role`=" . $this->_db->quote($filters['status']);
@@ -210,7 +213,7 @@ class Group extends Table
      * @param   array   $filters  Filters to build query from
      * @return  string
      */
-    private function _groupTable($role = 'member', $tbl = 'm', $filters = array())
+    private function groupTable($role = 'member', $tbl = 'm', $filters = array())
     {
         $query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role
 					FROM `#__xgroups_{$role}s` AS {$tbl} JOIN `#__users` AS u ON {$tbl}.uidNumber=u.id";
@@ -231,7 +234,7 @@ class Group extends Table
     public function countMembers($filters = array())
     {
         $query  = "SELECT COUNT(DISTINCT v.username) ";
-        $query .= $this->_buildMembersQuery($filters);
+        $query .= $this->buildMembersQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -248,7 +251,7 @@ class Group extends Table
         $results = array();
 
         $query  = "SELECT v.* ";
-        $query .= $this->_buildMembersQuery($filters);
+        $query .= $this->buildMembersQuery($filters);
 
         if (!isset($filters['sort']) || !$filters['sort']) {
             $filters['sort'] = 'name';

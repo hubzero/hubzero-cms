@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding params field to asset groups
+  *
  **/
 class Migration20140130105700ComAnswers extends Base
 {
@@ -38,7 +40,8 @@ class Migration20140130105700ComAnswers extends Base
                 }
             }
 
-            $query = "ALTER TABLE `#__answers_questions` CHANGE `created_by` `created_by` int(11) NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__answers_questions` "
+                . "CHANGE `created_by` `created_by` int(11) NOT NULL DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -60,7 +63,8 @@ class Migration20140130105700ComAnswers extends Base
                 }
             }
 
-            $query = "ALTER TABLE `#__answers_responses` CHANGE `created_by` `created_by` int(11) NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__answers_responses` "
+                . "CHANGE `created_by` `created_by` int(11) NOT NULL DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }

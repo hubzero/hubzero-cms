@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding params field to asset groups
- **/
+ *
+ */
 class Migration20130916080500ComWiki extends Base
 {
     /**
@@ -22,11 +24,13 @@ class Migration20130916080500ComWiki extends Base
     public function up()
     {
         if (!$this->db->tableHasField('#__wiki_page', 'created')) {
-            $query = "ALTER TABLE `#__wiki_page` ADD `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `created_by`;";
+            $query = "ALTER TABLE `#__wiki_page` ADD `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' "
+                . "AFTER `created_by`;";
             $this->db->setQuery($query);
             $this->db->query();
 
-            $query = "UPDATE `#__wiki_page` AS p SET p.`created` = (SELECT v.created FROM `#__wiki_version` AS v WHERE v.pageid=p.id ORDER BY v.version ASC LIMIT 1);";
+            $query = "UPDATE `#__wiki_page` AS p SET p.`created` = (SELECT v.created FROM `#__wiki_version` AS v "
+                . "WHERE v.pageid=p.id ORDER BY v.version ASC LIMIT 1);";
             $this->db->setQuery($query);
             $this->db->query();
         }

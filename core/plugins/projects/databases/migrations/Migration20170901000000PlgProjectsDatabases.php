@@ -1,12 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Content\Migration\Base;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -14,7 +13,7 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing projects databases table
  **/
-class Migration20170901000000PlgProjectsDatabases extends Base
+class Migration20170901000000PlgProjectsDatabases extends \Hubzero\Content\Migration\Base
 {
     /**
      * Up

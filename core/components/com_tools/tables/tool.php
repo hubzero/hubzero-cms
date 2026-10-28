@@ -167,8 +167,9 @@ class Tool extends Table
      */
     public function getTools($filters = array(), $admin = false)
     {
-        $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
-                . " FROM " . $this->buildQuery($filters, $admin);
+        $sql = "SELECT f.id, f.toolname, f.registered, f.published, f.state_changed, "
+            . "f.priority, f.ticketid, f.state as state, v.title, v.version, g.cn as devgroup"
+            . " FROM " . $this->buildQuery($filters, $admin);
         if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0) {
             $sql .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
@@ -214,7 +215,10 @@ class Tool extends Table
         if ($toolid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT r.id FROM `#__tool` as t LEFT JOIN `#__resources` as r ON r.alias = t.toolname WHERE t.id=" . $this->_db->quote($toolid));
+        $query = "SELECT r.id FROM `#__tool` as t "
+            . "LEFT JOIN `#__resources` as r ON r.alias = t.toolname "
+            . "WHERE t.id=" . $this->_db->quote($toolid);
+        $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
 
@@ -231,10 +235,12 @@ class Tool extends Table
             return false;
         }
 
-        $query = "SELECT v.instance FROM `#__tool_version` as v JOIN `#__resources` as r ON r.alias = v.toolname WHERE r.id=" . $this->_db->quote($rid);
+        $query = "SELECT v.instance FROM `#__tool_version` as v "
+            . "JOIN `#__resources` as r ON r.alias = v.toolname "
+            . "WHERE r.id=" . $this->_db->quote($rid);
         if ($version == 'dev') {
             $query .= " AND v.state=3 LIMIT 1";
-        } else if ($version == 'current') {
+        } elseif ($version == 'current') {
             $query .= " AND v.state=1 ORDER BY revision DESC LIMIT 1";
         } else {
             $query .= " AND v.version=" . $this->_db->quote($version) . " LIMIT 1";
@@ -255,7 +261,10 @@ class Tool extends Table
         if ($rid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT t.id FROM `#__tool` as t JOIN `#__resources` as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1");
+        $query = "SELECT t.id FROM `#__tool` as t "
+            . "JOIN `#__resources` as r ON r.alias = t.toolname "
+            . "WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1";
+        $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
 
@@ -270,7 +279,10 @@ class Tool extends Table
         if ($rid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT t.toolname FROM `#__tool` as t JOIN `#__resources` as r ON r.alias = t.toolname WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1");
+        $query = "SELECT t.toolname FROM `#__tool` as t "
+            . "JOIN `#__resources` as r ON r.alias = t.toolname "
+            . "WHERE r.id=" . $this->_db->quote($rid) . " LIMIT 1";
+        $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
 
@@ -301,7 +313,8 @@ class Tool extends Table
         if ($toolid === null or $ticketid === null) {
             return false;
         }
-        $query = "UPDATE `#__tool` SET ticketid=" . $this->_db->quote($ticketid) . " WHERE id=" . $this->_db->quote($toolid);
+        $query = "UPDATE `#__tool` SET ticketid=" . $this->_db->quote($ticketid)
+            . " WHERE id=" . $this->_db->quote($toolid);
         $this->_db->setQuery($query);
         if ($this->_db->query()) {
             return true;
@@ -352,20 +365,25 @@ class Tool extends Table
      */
     public function getToolInfo($toolid, $toolname = '')
     {
-        $query  = "SELECT t.id, t.toolname, t.published, t.state, t.priority, t.registered, t.registered_by, t.ticketid, t.state_changed, r.id as rid, g.cn as devgroup";
+        $query  = "SELECT t.id, t.toolname, t.published, t.state, t.priority, t.registered, ";
+        $query .= "t.registered_by, t.ticketid, t.state_changed, r.id as rid, g.cn as devgroup";
         $query .= ", r.created as rcreated, r.modified as rmodified, r.fulltxt as rfulltxt";
-        /*$query .= ", (SELECT COUNT(*) FROM #__support_comments AS sc LEFT JOIN #__tool_statusviews AS v ON v.ticketid=sc.ticket WHERE sc.ticket=t.ticketid AND
-         (UNIX_TIMESTAMP(sc.created)-UNIX_TIMESTAMP(t.state_changed))>=10 AND sc.access=0 AND sc.comment!='' AND sc.created_by!='".User::get('username')."'
-         AND (UNIX_TIMESTAMP(v.viewed)-UNIX_TIMESTAMP(sc.created))<= v.elapsed AND v.uid=".User::get('id').") AS comments ";*/
+        /*$query .= ", (SELECT COUNT(*) FROM #__support_comments AS sc LEFT JOIN #__tool_statusviews AS v
+         ON v.ticketid=sc.ticket WHERE sc.ticket=t.ticketid AND
+         (UNIX_TIMESTAMP(sc.created)-UNIX_TIMESTAMP(t.state_changed))>=10 AND sc.access=0 AND sc.comment!=''
+         AND sc.created_by!='".User::get('username')."'
+         AND (UNIX_TIMESTAMP(v.viewed)-UNIX_TIMESTAMP(sc.created))<= v.elapsed
+         AND v.uid=".User::get('id').") AS comments ";*/
         $query .= ", (SELECT COUNT(*) FROM #__tool) AS ntools ";
-        $query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=0 AND state!='9' AND state!='8') AS ntoolsdev ";
+        $query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=0 ";
+        $query .= "AND state!='9' AND state!='8') AS ntoolsdev ";
         $query .= ", (SELECT COUNT(*) FROM #__tool WHERE published=1) AS ntoolspublished ";
         $query .= "FROM #__tool as t LEFT JOIN #__resources as r ON r.alias = t.toolname ";
         $query .= "JOIN #__tool_groups AS g ON t.id=g.toolid AND g.role=1 ";
         $query .= "LEFT JOIN #__xgroups AS xg ON g.cn=xg.cn ";
         if ($toolid) {
             $query .= "WHERE t.id = " . $this->_db->quote($toolid);
-        } else if ($toolname) {
+        } elseif ($toolname) {
             $query .= "WHERE t.toolname = " . $this->_db->quote($toolname);
         }
 
@@ -415,7 +433,8 @@ class Tool extends Table
      */
     public function getToolGroups($toolid, $groups = array())
     {
-        $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g "; // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+        // @FIXME cn should be unique, this was a workaround for a nanohub data bug
+        $query  = "SELECT DISTINCT g.cn FROM `#__tool_groups` AS g ";
         $query .= "JOIN `#__xgroups` AS xg ON g.cn=xg.cn ";
         $query .= "WHERE g.toolid = " . $this->_db->quote($toolid) . " AND g.role=0 ";
 
@@ -486,9 +505,13 @@ class Tool extends Table
         $status = array(
             'resourceid'    => isset($toolinfo[0]->rid) ? $toolinfo[0]->rid : 0,
             'resource_created' => isset($toolinfo[0]->rcreated) ? $toolinfo[0]->rcreated : '',
-            'resource_modified' => (isset($toolinfo[0]) && isset($toolinfo[0]->rmodified) && $toolinfo[0]->rmodified
-                && $toolinfo[0]->rmodified != '0000-00-00 00:00:00' && isset($version[0]) && $version[0]->fulltxt != '') ? 1 : 0,
-            'fulltxt'      => isset($version[0]->fulltxt) ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
+            'resource_modified' => (
+                isset($toolinfo[0]) && isset($toolinfo[0]->rmodified)
+                && $toolinfo[0]->rmodified && $toolinfo[0]->rmodified != '0000-00-00 00:00:00'
+                && isset($version[0]) && $version[0]->fulltxt != ''
+            ) ? 1 : 0,
+            'fulltxt'       => isset($version[0]->fulltxt)
+                ? $version[0]->fulltxt : $toolinfo[0]->rfulltxt,
             'toolname'      => isset($toolinfo[0]->toolname) ? $toolinfo[0]->toolname : '',
             'toolid'        => isset($toolinfo[0]->id) ? $toolinfo[0]->id : 0,
             'title'         => isset($version[0]->title) ? $version[0]->title : '',
@@ -507,20 +530,30 @@ class Tool extends Table
             'authors'       => $authors,
             'developers'    => $developers,
             'devgroup'      => isset($toolinfo[0]->devgroup) ? $toolinfo[0]->devgroup : '',
-            'membergroups'  => (isset($version[0]->toolaccess) && $version[0]->toolaccess == '@GROUP') ? $this->getToolGroups($toolinfo[0]->id) : array(),
+            'membergroups'  => (isset($version[0]->toolaccess) && $version[0]->toolaccess == '@GROUP')
+                ? $this->getToolGroups($toolinfo[0]->id) : array(),
             'ntools'        => isset($toolinfo[0]->ntools) ? $toolinfo[0]->ntools : 0,
             'ntoolsdev'     => isset($toolinfo[0]->ntoolsdev) ? $toolinfo[0]->ntoolsdev : 0,
-            'ntools_published' => isset($toolinfo[0]->ntoolspublished) ? $toolinfo[0]->ntoolspublished : 0,
+            'ntools_published' => isset($toolinfo[0]->ntoolspublished)
+                ? $toolinfo[0]->ntoolspublished : 0,
             'newmessages'   => isset($toolinfo[0]->comments) ? $toolinfo[0]->comments : 0,
-            'changed'       => (isset($toolinfo[0]->state_changed) && $toolinfo[0]->state_changed && $toolinfo[0]->state_changed != '0000-00-00 00:00:00') ? $toolinfo[0]->state_changed : $toolinfo[0]->registered,
+            'changed'       => (
+                isset($toolinfo[0]->state_changed)
+                && $toolinfo[0]->state_changed
+                && $toolinfo[0]->state_changed != '0000-00-00 00:00:00'
+            ) ? $toolinfo[0]->state_changed : $toolinfo[0]->registered,
             'registered_by' => isset($toolinfo[0]->registered_by) ? $toolinfo[0]->registered_by : '',
             'registered'    => isset($toolinfo[0]->registered) ? $toolinfo[0]->registered : '',
             'ticketid'      => isset($toolinfo[0]->ticketid) ? $toolinfo[0]->ticketid : '',
             'mw'            => isset($version[0]->mw) ? $version[0]->mw : $mw,
-            'vncCommand'    => isset($version[0]->vnc_command) ? $version[0]->vnc_command :  $invokedir . DS . $toolinfo[0]->toolname . DS . 'invoke',
-            'vncGeometry'   => (isset($version[0]->vnc_geometry) && $version[0]->vnc_geometry != '') ? $version[0]->vnc_geometry : $vnc,
+            'vncCommand'    => isset($version[0]->vnc_command)
+                ? $version[0]->vnc_command
+                : $invokedir . DS . $toolinfo[0]->toolname . DS . 'invoke',
+            'vncGeometry'   => (isset($version[0]->vnc_geometry) && $version[0]->vnc_geometry != '')
+                ? $version[0]->vnc_geometry : $vnc,
             'license'       => isset($version[0]->license) ? $version[0]->license : '',
-            'hostreq'       => (isset($version[0]->hostreq) ? implode(', ', $version[0]->hostreq) : $hostreq),
+            'hostreq'       => isset($version[0]->hostreq)
+                ? implode(', ', $version[0]->hostreq) : $hostreq,
             'params'        => isset($version[0]->params) ? $version[0]->params : '',
             'repohost'      => $params->get('repohost'),
             'github'        => $params->get('github'),
@@ -542,7 +575,8 @@ class Tool extends Table
             $current = $objV->getVersionInfo('', 'current', $toolinfo[0]->toolname);
         }
 
-        $status['currenttool']     = isset($current[0]->instance) ? $current[0]->instance : $status['toolname'] . $dev_suffix;
+        $status['currenttool']     = isset($current[0]->instance)
+            ? $current[0]->instance : $status['toolname'] . $dev_suffix;
         $status['currentrevision'] = isset($current[0]->revision) ? $current[0]->revision : $status['revision'];
         $status['currentversion']  = isset($current[0]->version) ? $current[0]->version : $status['version'];
 

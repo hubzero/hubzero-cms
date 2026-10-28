@@ -124,7 +124,7 @@ $this->css('browse.css');
                         } else {
                             echo Lang::txt('COM_COURSES_SEARCH_FOR_IN', $this->escape($this->filters['search']));
                         }
-                    } else if ($this->filters['tag'] != '') {
+                    } elseif ($this->filters['tag'] != '') {
                         echo Lang::txt('COM_COURSES_COURSES_WITH', $this->escape($this->filters['tag']));
                     } else {
                         echo Lang::txt('COM_COURSES');

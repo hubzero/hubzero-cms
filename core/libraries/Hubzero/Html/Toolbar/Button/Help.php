@@ -20,6 +20,7 @@ class Help extends Button
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Help';
 
     /**
@@ -44,10 +45,26 @@ class Help extends Button
         ) {
             $url = \Route::url('index.php?option=com_help&component=' . \Request::getCmd('option') . '&page=' . $url);
         } else {
-            $url = $this->_getCommand($ref = $type, $com = false, $override = false, $component = \Request::getCmd('option'));
+            $url = $this->_getCommand(
+                $ref = $type,
+                $com = false,
+                $override = false,
+                $component = \Request::getCmd('option')
+            );
         }
 
-        $html  = '<a href="' . $url . '" data-title="' . $text . '" data-message="' . $msg . '" data-width="' . $width . '" data-height="' . $height . '" rel="help" class="toolbar toolbar-popup">' . "\n";
+        $html  = '<a href="' .
+            $url .
+            '" data-title="' .
+            $text .
+            '" data-message="' .
+            $msg .
+            '" data-width="' .
+            $width .
+            '" data-height="' .
+            $height .
+            '" rel="help" class="toolbar toolbar-popup">' .
+            "\n";
         $html .= '<span class="' . $class . '">' . "\n";
         $html .= $text . "\n";
         $html .= '</span>' . "\n";
@@ -75,6 +92,7 @@ class Help extends Button
      * @param   string   $component  Name of component to get Help (null for current component)
      * @return  string   JavaScript command string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCommand($ref, $com, $override, $component)
     {
         // Get Help URL

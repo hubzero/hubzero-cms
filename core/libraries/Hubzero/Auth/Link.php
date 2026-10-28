@@ -236,6 +236,7 @@ class Link extends Relational
      * @param   integer  $id
      * @return  mixed    Object on success, False on failure
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_by_id($id)
     {
         $row = self::oneOrNew($id);
@@ -256,6 +257,7 @@ class Link extends Relational
      * @param   string  $username
      * @return  mixed   Object on success, False on failure
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_or_create($type, $authenticator, $domain, $username)
     {
         $hzad = Domain::find_or_create($type, $authenticator, $domain);
@@ -294,6 +296,7 @@ class Link extends Relational
      * @param   integer  $user_id  ID of user to return accounts for
      * @return  array    Array of auth link entries for the given user_id
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_by_user_id($user_id = null)
     {
         if (empty($user_id)) {
@@ -323,6 +326,7 @@ class Link extends Relational
      * @param   integer  $user_id  USer ID
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_trusted_emails($user_id)
     {
         if (empty($user_id) || !is_numeric($user_id)) {
@@ -347,6 +351,7 @@ class Link extends Relational
      * @param   integer  $user_id  User ID
      * @return  boolean
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function delete_by_user_id($user_id = null)
     {
         if (empty($user_id)) {
@@ -374,6 +379,7 @@ class Link extends Relational
      * @param   array   $exclude
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function find_by_email($email, $exclude = array())
     {
         if (empty($email)) {

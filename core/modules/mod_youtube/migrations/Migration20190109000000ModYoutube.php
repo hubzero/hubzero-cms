@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing youtube module
- **/
+ *
+ */
 class Migration20190109000000ModYoutube extends Base
 {
     /**

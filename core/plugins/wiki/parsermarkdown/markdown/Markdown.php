@@ -22,13 +22,11 @@ class Markdown extends Parser
         parseInlineHtml as private;
     }
     use block\ListTrait {
-        // Check Ul List before headline
         identifyUl as protected identifyBUl;
         consumeUl as protected consumeBUl;
     }
     use block\QuoteTrait;
     use block\RuleTrait {
-        // Check Hr before checking lists
         identifyHr as protected identifyAHr;
         consumeHr as protected consumeAHr;
     }

@@ -16,7 +16,12 @@ $required = $this->pub->curation('blocks', $this->master->blockId, 'elements', $
 $elName   = 'element' . $this->elementId;
 
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
+$coming = $this->pub->_curationModel->isComing(
+    $this->master->block,
+    $this->master->blockId,
+    $this->active,
+    $this->elementId
+);
 $coming = $this->collapse ? $coming : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
 $max    = $this->manifest->params->max;
@@ -36,7 +41,12 @@ if (!empty($this->pub->config('accessdoc')) && ($this->elementId == 2)) {
 }
 
 // Get curator status
-$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->blockId, $this->elementId, 'author');
+$curatorStatus = $this->pub->_curationModel->getCurationStatus(
+    $this->pub,
+    $this->master->blockId,
+    $this->elementId,
+    'author'
+);
 
 // Get attachment model
 $modelAttach = new \Components\Publications\Models\Attachments($this->database);
@@ -64,9 +74,11 @@ $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : 
 $updated  = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete)
         || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
-$handlerOptions = (count($this->attachments ? $this->attachments : [])) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : null;
+$handlerOptions = (count($this->attachments ? $this->attachments : [])) > 0 && $useHandles ?
+$modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : null;
 
-$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' .
+$this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 
 ?>
 
@@ -91,7 +103,9 @@ if ($coming) {
                 <?php echo $this->manifest->label; ?> <?php if ((count($this->attachments ? $this->attachments : []))) {
                     echo '(' . (count($this->attachments ? $this->attachments : [])) . ')';
                 } ?>
-                <span class="element-options"><a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a></span>
+                <span class="element-options">
+                    <a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a>
+                </span>
             </h5>
         </div>
         <div class="block-aside-omega"></div>
@@ -190,7 +204,11 @@ if ($coming) {
             <?php if ($curatorStatus->status == 3 && !$complete) { ?>
                 <p class="warning"><?php
                     echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM');
-                    echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : '';
+                    echo $curatorStatus->authornotice ? ' '
+                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON')
+                        . ':"'
+                        . $curatorStatus->authornotice
+                        . '"' : '';
                 ?></p>
             <?php } ?>
         </div><!-- / .block-subject -->
@@ -209,7 +227,11 @@ if ($coming) {
 
                 if ($shorten) {
                     $about = \Hubzero\Utility\Str::truncate($aboutText, 200, array('html' => true));
-                    $about .= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
+                    $about .= ' <a href="#more-'
+                        . $elName
+                        . '" class="more-content">'
+                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_READ_MORE')
+                        . '</a>';
                     $about .= ' <div class="hidden">';
                     $about .= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
                     $about .= ' </div>';
@@ -229,7 +251,10 @@ if ($coming) {
                         echo '<span class="element-error">' . $this->status->getError() . '</span>';
                     } ?>
                     <span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-                        <input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+                        <input type="button"
+                            value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>"
+                            id="<?php echo $elName; ?>-apply"
+                            class="save-element btn icon-next"/>
                     </span>
                 </p>
             </div>

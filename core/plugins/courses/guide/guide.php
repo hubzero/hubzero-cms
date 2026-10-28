@@ -6,27 +6,35 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Utility\Date;
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for intro guide
  */
-class plgCoursesGuide extends \Hubzero\Plugin\Plugin
+class PlgCoursesGuide extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+
+    /**
+     * View object
+     *
+     * @var object
+     */
+    public $view = null;
 
     /**
      * Event call after course outline
      *
      * @param   object  $course    Current course
      * @param   object  $offering  Current offering
-     * @return  void
+     * @return  string|null
      */
     public function onCourseAfterOutline($course, $offering)
     {
@@ -75,8 +83,8 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
         $tmpl = Request::getWord('tmpl', null);
         if (!isset($tmpl) || $tmpl != 'component') {
             $this->css()
-                 ->js('jquery.fancybox', 'system')
-                 ->js('guide.overlay');
+                ->js('jquery.fancybox', 'system')
+                ->js('guide.overlay');
         }
 
         if (!($active = Request::getString('active'))) {
@@ -96,12 +104,12 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
             }
 
             $this->view = $this->view('default', $this->_name);
-            $this->view->option     = Request::getCmd('option', 'com_courses');
+            $this->view->option = Request::getCmd('option', 'com_courses');
             $this->view->controller = Request::getWord('controller', 'course');
-            $this->view->course     = $course;
-            $this->view->offering   = $offering;
-            $this->view->config     = $this->params;
-            $this->view->plugin     = $this->_name;
+            $this->view->course = $course;
+            $this->view->offering = $offering;
+            $this->view->config = $this->params;
+            $this->view->plugin = $this->_name;
 
             switch ($action) {
                 case 'mark':
@@ -131,6 +139,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _default()
     {
         $this->view->setLayout('overlay');
@@ -141,6 +150,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _mark()
     {
         $this->view->setLayout('mark');
@@ -155,11 +165,11 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
                 $lifetime = time() + 365 * 24 * 60 * 60;
 
                 \Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
-                    'first_visit' => Date::toSql()
+                    'first_visit' => Date::of()->toSql()
                 ));
             }
         }
-        $member->set('first_visit', Date::toSql());
+        $member->set('first_visit', Date::of()->toSql());
         $member->store();
     }
 }

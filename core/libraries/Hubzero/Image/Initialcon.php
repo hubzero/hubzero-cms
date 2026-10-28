@@ -175,8 +175,7 @@ class Initialcon
         /*if ($tb[0] >= -1)
         {
             $tb['x'] = abs($tb[0] + 1) * -1;
-        }
-        else
+        }         else
         {
             $tb['x'] = abs($tb[0] + 2);
         }

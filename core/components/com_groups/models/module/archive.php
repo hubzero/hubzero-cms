@@ -19,6 +19,8 @@ require_once __DIR__ . DS . 'menu.php';
 
 /**
  * Group module archive model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Archive extends Obj
 {
@@ -66,7 +68,7 @@ class Archive extends Obj
      * @param   string $key Instance Key
      * @return  object \Components\Groups\Models\Module\Archive
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 

@@ -626,7 +626,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : Monday 23 Juillet 2003
                     $newdate = self::getLongDayName($numero_jour) . '&nbsp;' . $jour_fr . '&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : Monday, July 23 2003
                     $newdate = self::getLongDayName($numero_jour) . ',&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $jour_fr . '&nbsp;' . $annee;
                 } else {
@@ -639,7 +639,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : 23 Juillet 2003
                     $newdate = $jour_fr . '&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : July 23, 2003
                     $newdate = self::getMonthName($mois_0) . '&nbsp;' . $jour_fr . ',&nbsp;' . $annee;
                 } else {
@@ -652,7 +652,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : 23 Juillet
                     $newdate = $jour_fr . '&nbsp;' . self::getMonthName($mois_0);
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : Juillet, 23
                     $newdate = self::getMonthName($mois_0) . ',&nbsp;' . $jour_fr;
                 } else {
@@ -665,7 +665,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : Juillet 2003
                     $newdate = self::getMonthName($mois_0) . '&nbsp;' . $annee;
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : Juillet 2003
                     $newdate = self::getMonthName($mois_0) . '&nbsp;' . $annee;
                 } else {
@@ -678,7 +678,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : 23/07/2003
                     $newdate = $jour_fr . '/' . $mois_0 . '/' . $annee;
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : 07/23/2003
                     $newdate = $mois_0 . '/' . $jour_fr . '/' . $annee;
                 } else {
@@ -691,7 +691,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : 23/07
                     $newdate = $jour_fr . '/' . $mois_0;
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : 07/23
                     $newdate = $mois_0 . '/' . $jour_fr;
                 } else {
@@ -704,7 +704,7 @@ class Html
                 if ($format_type == 0) {
                     // Fr style : 07/2003
                     $newdate = $mois_0 . '/' . $annee;
-                } else if ($format_type == 1) {
+                } elseif ($format_type == 1) {
                     // Us style : 07/2003
                     $newdate = $mois_0 . '/' . $annee;
                 } else {

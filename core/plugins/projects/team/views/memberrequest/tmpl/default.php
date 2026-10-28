@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,8 +37,13 @@ $i = 1;
                 <p class="submitarea">
                     <input type="hidden" name="confirm" value="1" />
                     <?php echo Html::input('token'); ?>
-                    <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_MEMBERREQUEST'); ?>" class="btn" />
-                    <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>" />
+                    <input type="submit"
+                        value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_MEMBERREQUEST'); ?>"
+                        class="btn"/>
+                    <input type="reset"
+                        id="cancel-action"
+                        class="btn btn-cancel"
+                        value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>"/>
                 </p>
             </fieldset>
         </form>

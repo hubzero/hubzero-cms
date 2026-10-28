@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <?php
 // Extension package names for each OS
 $extPackages = [

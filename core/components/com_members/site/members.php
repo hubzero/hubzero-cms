@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Site;
 
 include_once dirname(__DIR__) . DS . 'helpers' . DS . 'imghandler.php';

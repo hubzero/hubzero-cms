@@ -201,7 +201,8 @@ class Input
         } else {
             $value = (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : '');
 
-            return self::text($name . 'disabled', (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : ''), $options) .
+            return self::text($name .
+                'disabled', (0 !== (int) $value ? with(new Date($value))->format('Y-m-d H:i:s') : ''), $options) .
                    self::hidden($name, $value, $options);
         }
     }

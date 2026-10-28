@@ -11,8 +11,9 @@ Html::behavior('framework', true);
 Html::behavior('modal');
 
 // Add js
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/core.js?v=' . filemtime(__DIR__ . '/js/core.js'));
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
+$jsBase = $this->baseurl . '/templates/' . $this->template;
+$this->addScript($jsBase . '/js/core.js?v=' . filemtime(__DIR__ . '/js/core.js'));
+$this->addScript($jsBase . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'));
 
 $active = '';
 if ($menu->getActive()) {
@@ -32,7 +33,9 @@ if ($isFrontPage) {
     $bodyClass = 'page-home';
 
     // Add homepage-specific stuff
-    //$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/pages/home.js?v=' . filemtime(__DIR__ . '/js/pages/home.js'));
+    // $this->addScript(
+    //     $jsBase . '/js/pages/home.js?v=' . filemtime(__DIR__ . '/js/pages/home.js')
+    // );
 }
 
 $browser = new \Hubzero\Browser\Detector();
@@ -45,14 +48,17 @@ $cls = array(
 $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
+<html dir="<?php echo $this->direction; ?>"
+      lang="<?php echo $this->language; ?>"
+      class="<?php echo implode(' ', $cls); ?>">
 <head>
     <?php if ($this->countModules('html-head')) : ?>
         <jdoc:include type="modules" name="html-head" />
     <?php endif; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/less/main.css" />
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/less/main.css" />
 
     <jdoc:include type="head" />
 </head>
@@ -90,47 +96,129 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 
                     <nav class="nav">
                         <?php // main navigation bar ?>
-                        <nav role="navigation" aria-label="Primary navigation" title="Primary navigation" class="main-nav">
+                        <nav role="navigation" aria-label="Primary navigation"
+                             title="Primary navigation" class="main-nav">
                             <jdoc:include type="modules" name="user3" />
                         </nav>
 
                         <nav class="subnav">
                             <ul>
-                                <li><a class="search-trigger" role="button" href="/search" title="Open site search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 244.487 244.487"><path d="M241.877 230.131l-72.929-72.929c13.973-16.67 22.465-38.004 22.465-61.061 0-52.204-43.503-95.707-95.707-95.707S0 43.938 0 96.142s43.503 95.707 95.707 95.707c22.621 0 43.573-8.179 60.104-21.682l72.145 72.145c1.74 1.74 3.48 1.74 6.96 1.74s5.22 0 6.96-1.74c3.482-3.48 3.482-8.7.001-12.181zm-146.17-55.683c-43.503 0-78.305-34.802-78.305-78.305s34.802-78.305 78.305-78.305 78.305 34.802 78.305 78.305-34.802 78.305-78.305 78.305z"/></svg><span class="vh">Search</span></a></li>
+                                <?php
+                                // Search icon SVG path data
+                                $searchSvg = 'M241.877 230.131l-72.929-72.929c13.973-16.67 '
+                                    . '22.465-38.004 22.465-61.061 0-52.204-43.503-95.707-95.707'
+                                    . '-95.707S0 43.938 0 96.142s43.503 95.707 95.707 95.707c'
+                                    . '22.621 0 43.573-8.179 60.104-21.682l72.145 72.145c1.74 '
+                                    . '1.74 3.48 1.74 6.96 1.74s5.22 0 6.96-1.74c3.482-3.48 '
+                                    . '3.482-8.7.001-12.181zm-146.17-55.683c-43.503 0-78.305'
+                                    . '-34.802-78.305-78.305s34.802-78.305 78.305-78.305 '
+                                    . '78.305 34.802 78.305 78.305-34.802 78.305-78.305 78.305z';
+                                ?>
+                                <li>
+                                    <a class="search-trigger" role="button"
+                                       href="/search" title="Open site search">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 244.487 244.487">
+                                            <path d="<?php echo $searchSvg; ?>"/>
+                                        </svg>
+                                        <span class="vh">Search</span>
+                                    </a>
+                                </li>
                                 <?php if (!User::isGuest()) { ?>
+                                    <?php
+                                    $userId = User::get('id');
+                                    $profileUrl = Route::url(
+                                        'index.php?option=com_members&id=' . $userId
+                                    );
+                                    $dashboardUrl = Route::url(
+                                        'index.php?option=com_members&id=' . $userId
+                                        . '&active=dashboard'
+                                    );
+                                    $profileEditUrl = Route::url(
+                                        'index.php?option=com_members&id=' . $userId
+                                        . '&active=profile'
+                                    );
+                                    $logoutUrl = Route::url(
+                                        'index.php?option=com_users&view=logout'
+                                    );
+                                    $userName = stripslashes(User::get('name'));
+                                    $userLogin = stripslashes(User::get('username'));
+                                    ?>
                                     <li>
                                         <div class="menu-button-links user-account">
-                                            <button type="button" class="" id="menubutton" aria-haspopup="true" aria-controls="menu2">
-                                                    <span class="user-image">
-                                                        <img src="<?php echo User::picture(); ?>" alt="<?php echo User::get('name'); ?>" />
-                                                    </span>
+                                            <button type="button" class="" id="menubutton"
+                                                    aria-haspopup="true" aria-controls="menu2">
+                                                <span class="user-image">
+                                                    <img src="<?php echo User::picture(); ?>"
+                                                         alt="<?php echo User::get('name'); ?>" />
+                                                </span>
                                             </button>
 
-                                            <ul id="menu2" role="menu" aria-labelledby="menubutton" class="account-details">
+                                            <ul id="menu2" role="menu"
+                                                aria-labelledby="menubutton"
+                                                class="account-details">
                                                 <li role="none">
-                                                    <a role="menuitem" class="user-name" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="cf"><?php echo stripslashes(User::get('name')) . ' (' . stripslashes(User::get('username')) . ')'; ?><br>
-                                                        <span><?php echo User::get('email'); ?></span></a>
+                                                    <a role="menuitem" class="user-name cf"
+                                                       href="<?php echo $profileUrl; ?>">
+                                                        <?php
+                                                        echo $userName . ' (' . $userLogin . ')';
+                                                        ?>
+                                                        <br>
+                                                        <span><?php
+                                                            echo User::get('email');
+                                                        ?></span>
+                                                    </a>
                                                 </li>
                                                 <li role="none" class="sub" id="account-dashboard">
-                                                    <a role="menuitem" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>"><span><?php echo Lang::txt('TPL_ACCOUNT_DASHBOARD'); ?></span></a>
+                                                    <a role="menuitem"
+                                                       href="<?php echo $dashboardUrl; ?>">
+                                                        <span><?php
+                                                            echo Lang::txt('TPL_ACCOUNT_DASHBOARD');
+                                                        ?></span>
+                                                    </a>
                                                 </li>
                                                 <li role="none" class="sub" id="account-profile">
-                                                    <a role="menuitem" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'); ?>"><span><?php echo Lang::txt('TPL_ACCOUNT_PROFILE'); ?></span></a>
+                                                    <a role="menuitem"
+                                                       href="<?php echo $profileEditUrl; ?>">
+                                                        <span><?php
+                                                            echo Lang::txt('TPL_ACCOUNT_PROFILE');
+                                                        ?></span>
+                                                    </a>
                                                 </li>
                                                 <li role="none" class="sub" id="account-logout">
-                                                    <a role="menuitem" href="<?php echo Route::url('index.php?option=com_users&view=logout'); ?>"><span><?php echo Lang::txt('TPL_LOGOUT'); ?></span></a>
+                                                    <a role="menuitem"
+                                                       href="<?php echo $logoutUrl; ?>">
+                                                        <span><?php
+                                                            echo Lang::txt('TPL_LOGOUT');
+                                                        ?></span>
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </div>
                                     </li>
                                 <?php } else { ?>
                                     <li>
-                                        <a href="<?php echo Route::url('index.php?option=com_users&view=login'); ?>" title="<?php echo Lang::txt('TPL_LOGIN'); ?>" class="user-account-link loggedout"><?php echo Lang::txt('TPL_LOGIN'); ?></a>
+                                        <?php
+                                        $loginUrl = Route::url(
+                                            'index.php?option=com_users&view=login'
+                                        );
+                                        ?>
+                                        <a href="<?php echo $loginUrl; ?>"
+                                           title="<?php echo Lang::txt('TPL_LOGIN'); ?>"
+                                           class="user-account-link loggedout">
+                                            <?php echo Lang::txt('TPL_LOGIN'); ?>
+                                        </a>
                                     </li>
                                 <?php } ?>
                                 <?php if ($this->countModules('helppane') && $tplSettingDisplayHelp) : ?>
+                                    <?php
+                                    // set module REPORTPROBLEMS parameter to work with .helpme
+                                    $supportUrl = Route::url('index.php?option=com_support');
+                                    ?>
                                     <li class="subnav-helpme helpme">
-                                        <a class=" nav-btn" href="<?php echo Route::url('index.php?option=com_support'); ?>" title="<?php echo Lang::txt('Help'); ?>"><!-- set module REPORTPROBLEMS parameter to have it work with .helpme -->
+                                        <a class="nav-btn"
+                                           href="<?php echo $supportUrl; ?>"
+                                           title="<?php echo Lang::txt('Help'); ?>">
                                             <span><?php echo Lang::txt('Help'); ?></span>
                                         </a>
                                     </li>
@@ -139,7 +227,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
                         </nav>
                     </nav>
 
-                    <nav class="mobile-menu" role="navigation" aria-label="Mobile navigation" title="Mobile navigation">
+                    <nav class="mobile-menu" role="navigation"
+                         aria-label="Mobile navigation" title="Mobile navigation">
                         <button><span>Menu</span></button>
                     </nav>
                 </div>
@@ -191,7 +280,8 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
 </div>
 
 <section class="dialog-backdrop">
-    <div id="big-search" class="template-panel" aria-label="search popup" role="dialog" aria-modal="true" aria-labelledby="search-label">
+    <div id="big-search" class="template-panel" aria-label="search popup"
+         role="dialog" aria-modal="true" aria-labelledby="search-label">
         <div class="inner">
             <h2 class="vh" id="search-label">Search</h2>
             <jdoc:include type="modules" name="search" />

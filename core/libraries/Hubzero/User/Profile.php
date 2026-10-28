@@ -410,7 +410,7 @@ class Profile extends Obj
      * @param   mixed    $user  Integer (ID) or string (username)
      * @return  boolean  True on success, False on error
      */
-    private function _sql_load($user)
+    private function sql_load($user)
     {
         $db = \App::get('db');
 
@@ -468,7 +468,7 @@ class Profile extends Obj
      * @param   integer  $authorid  Author ID
      * @return  boolean  True on success, False on error
      */
-    private function _sql_author_load($authorid)
+    private function sql_author_load($authorid)
     {
         static $_propertyauthormap = array(
             'uidNumber'    => 'id',
@@ -517,7 +517,7 @@ class Profile extends Obj
      * @param   object  $registration
      * @return  boolean
      */
-    private function _xregistration_load($registration)
+    private function xregistration_load($registration)
     {
         static $_propertyregmap = array('username' => 'login', 'name' => 'name', 'email' => 'email', 'orcid' => 'orcid', 'orgtype' => 'orgtype', 'organization' => 'org', 'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin', 'gender' => 'sex', 'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption', 'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone', 'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role', 'givenName' => 'givenName', 'middleName' => 'middleName', 'surname' => 'surname');
 
@@ -612,15 +612,15 @@ class Profile extends Obj
         }
 
         if ($storage == 'mysql') {
-            return $this->_sql_load($user);
+            return $this->sql_load($user);
         }
 
         if ($storage == 'author') {
-            return $this->_sql_author_load($user);
+            return $this->sql_author_load($user);
         }
 
         if ($storage == 'xregistration') {
-            return $this->_xregistration_load($user);
+            return $this->xregistration_load($user);
         }
 
         return true;

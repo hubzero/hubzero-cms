@@ -123,46 +123,46 @@ namespace Hubzero\Component\Tests {
     // Guard the helper components so this file loads; the test self-skips in setUp().
     if (class_exists(AbstractComponent::class)) {
 
-    class EnabledInertiaComponent extends AbstractComponent implements InertiaComponentInterface
-    {
-        use UsesInertiaComponent {
-            registerInertia as private registerInertiaDefaults;
-        }
-
-        public bool $registered = false;
-
-        public function registerInertia(InertiaService $inertia): void
+        class EnabledInertiaComponent extends AbstractComponent implements InertiaComponentInterface
         {
-            $this->registerInertiaDefaults($inertia);
-            $this->registered = true;
-            $inertia->share('marker', 'enabled');
+            use UsesInertiaComponent {
+                registerInertia as private registerInertiaDefaults;
+            }
+
+            public bool $registered = false;
+
+            public function registerInertia(InertiaService $inertia): void
+            {
+                $this->registerInertiaDefaults($inertia);
+                $this->registered = true;
+                $inertia->share('marker', 'enabled');
+            }
+
+            protected function execute(): void
+            {
+            }
         }
 
-        protected function execute(): void
+        class DisabledInertiaComponent extends AbstractComponent implements InertiaComponentInterface
         {
+            use UsesInertiaComponent;
+
+            public bool $registered = false;
+
+            public function inertiaEnabled(): bool
+            {
+                return false;
+            }
+
+            public function registerInertia(InertiaService $inertia): void
+            {
+                $this->registered = true;
+            }
+
+            protected function execute(): void
+            {
+            }
         }
-    }
-
-    class DisabledInertiaComponent extends AbstractComponent implements InertiaComponentInterface
-    {
-        use UsesInertiaComponent;
-
-        public bool $registered = false;
-
-        public function inertiaEnabled(): bool
-        {
-            return false;
-        }
-
-        public function registerInertia(InertiaService $inertia): void
-        {
-            $this->registered = true;
-        }
-
-        protected function execute(): void
-        {
-        }
-    }
 
     } // end class_exists(AbstractComponent) guard
 

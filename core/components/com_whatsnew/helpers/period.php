@@ -20,14 +20,14 @@ class Period
      *
      * @var  string
      */
-    private $_period = null;
+    private $period = null;
 
     /**
      * Container for storing overloaded data
      *
      * @var  array
      */
-    private $_data = array();
+    private $data = array();
 
     /**
      * Constructor
@@ -51,7 +51,7 @@ class Period
      */
     public function __set($property, $value)
     {
-        $this->_data[$property] = $value;
+        $this->data[$property] = $value;
     }
 
     /**
@@ -62,8 +62,8 @@ class Period
      */
     public function __get($property)
     {
-        if (isset($this->_data[$property])) {
-            return $this->_data[$property];
+        if (isset($this->data[$property])) {
+            return $this->data[$property];
         }
     }
 
@@ -74,7 +74,7 @@ class Period
      */
     public function setPeriod($period)
     {
-        $this->_period = trim((string) $period);
+        $this->period = trim((string) $period);
 
         return $this;
     }
@@ -86,11 +86,11 @@ class Period
      */
     public function process()
     {
-        if (!$this->_period) {
+        if (!$this->period) {
             return;
         }
 
-        $this->period = $this->_period;
+        $this->period = $this->period;
 
         // Determine last week and last month date
         switch ($this->period) {

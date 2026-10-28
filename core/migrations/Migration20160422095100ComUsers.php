@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding 'access' and 'registerIP' columns to users table
- **/
+ *
+ */
 class Migration20160422095100ComUsers extends Base
 {
     /**
@@ -47,30 +49,38 @@ class Migration20160422095100ComUsers extends Base
                     }
                 }
 
-                $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET u.`access`=" . $this->db->quote($public) . " WHERE x.`public`=1";
+                $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET "
+                    . "u.`access`=" . $this->db->quote($public) . " WHERE x.`public`=1";
                 $this->db->setQuery($query);
                 $this->db->query();
 
-                $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET u.`access`=" . $this->db->quote($private) . " WHERE x.`public`=0";
+                $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET "
+                    . "u.`access`=" . $this->db->quote($private) . " WHERE x.`public`=0";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
         }
 
         if (!$this->db->tableHasField('#__users', 'registerIP')) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `registerIP` VARCHAR(40) NOT NULL DEFAULT '' AFTER `registerDate`;";
+            $query = "ALTER TABLE `#__users` ADD COLUMN `registerIP` VARCHAR(40) NOT NULL DEFAULT '' AFTER "
+                . "`registerDate`;";
             $this->db->setQuery($query);
             $this->db->query();
 
             if ($this->db->tableExists('#__xprofiles') && $this->db->tableHasField('#__xprofiles', 'regIP')) {
-                $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET u.`registerIP`=x.`regIP`";
+                $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET "
+                    . "u.`registerIP`=x.`regIP`";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
         }
 
-        if ($this->db->tableHasField('#__users', 'sendEmail') && $this->db->tableHasField('#__xprofiles', 'mailPreferenceOption')) {
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET u.`sendEmail`=x.`mailPreferenceOption`";
+        if (
+            $this->db->tableHasField('#__users', 'sendEmail')
+            && $this->db->tableHasField('#__xprofiles', 'mailPreferenceOption')
+        ) {
+            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` SET "
+                . "u.`sendEmail`=x.`mailPreferenceOption`";
             $this->db->setQuery($query);
             $this->db->query();
         }

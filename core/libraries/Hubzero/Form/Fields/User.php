@@ -79,18 +79,38 @@ class User extends Field
             $html[] = '<div class="input-modal">';
             $html[] = '<span class="input-cell">';
         }
-        $html[] = '	<input type="text" id="' . $this->id . '_name"' . ' value="' . htmlspecialchars($model->get('name'), ENT_COMPAT, 'UTF-8') . '" disabled="disabled"' . $attr . ' />';
+        $html[] = '	<input type="text" id="' .
+            $this->id .
+            '_name"' .
+            ' value="' .
+            htmlspecialchars($model->get('name'), ENT_COMPAT, 'UTF-8') .
+            '" disabled="disabled"' .
+            $attr .
+            ' />';
 
         // Create the user select button.
         if ($this->element['readonly'] != 'true') {
             $html[] = '</span><span class="input-cell">';
-            $html[] = '		<a class="button modal_' . $this->id . '" title="' . App::get('language')->txt('JLIB_FORM_CHANGE_USER') . '"' . ' href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
+            $html[] = '		<a class="button modal_' .
+                $this->id .
+                '" title="' .
+                App::get('language')->txt('JLIB_FORM_CHANGE_USER') .
+                '"' .
+                ' href="' .
+                $link .
+                '" rel="{handler: \'iframe\', size: {x: 800, y: 500}}">';
             $html[] = '			' . App::get('language')->txt('JLIB_FORM_CHANGE_USER') . '</a>';
             $html[] = '</span></div>';
         }
 
         // Create the real field, hidden, that stored the user id.
-        $html[] = '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . (int) $this->value . '" />';
+        $html[] = '<input type="hidden" id="' .
+            $this->id .
+            '_id" name="' .
+            $this->name .
+            '" value="' .
+            (int) $this->value .
+            '" />';
 
         return implode("\n", $html);
     }

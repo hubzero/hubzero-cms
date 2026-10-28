@@ -70,7 +70,7 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
             $plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'assets' . DS . 'css' . DS . 'autocompleter.css';
             if (file_exists(PATH_APP . $templatecss)) {
                 $scripts .= $base . substr(PATH_APP, strlen(PATH_ROOT)) . $templatecss . '?v=' . filemtime(PATH_APP . $templatecss);
-            } else if (file_exists(PATH_CORE . $templatecss)) {
+            } elseif (file_exists(PATH_CORE . $templatecss)) {
                 $scripts .= $base . '/core' . $templatecss . '?v=' . filemtime(PATH_CORE . $templatecss);
             } else {
                 $scripts .= $base . '/core' . $plugincss . '?v=' . filemtime(PATH_CORE . $plugincss);

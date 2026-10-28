@@ -28,119 +28,119 @@ class Translator extends Obj
     /**
      * List of languages
      *
-     * @var  array
+     * @public array
      */
     protected static $languages = array();
 
     /**
      * javascript strings
      *
-     * @var  array
+     * @public array
      */
     protected static $jsStrings = array();
 
     /**
      * Application client
      *
-     * @var  string
+     * @public string
      */
     protected $client = 'site';
 
     /**
      * Debug language, If true, highlights if string isn't found.
      *
-     * @var  boolean
+     * @public boolean
      */
     protected $debug = false;
 
     /**
      * The default language, used when a language file in the requested language does not exist.
      *
-     * @var  string
+     * @public string
      */
     protected $default = 'en-GB';
 
     /**
      * An array of orphaned text.
      *
-     * @var  array
+     * @public array
      */
     protected $orphans = array();
 
     /**
      * Array holding the language metadata.
      *
-     * @var  array
+     * @public array
      */
     protected $metadata = null;
 
     /**
      * Array holding the language locale or boolean null if none.
      *
-     * @var  array|boolean
+     * @public array|boolean
      */
     protected $locale = null;
 
     /**
      * The language to load.
      *
-     * @var  string
+     * @public string
      */
     protected $lang = null;
 
     /**
      * A nested array of language files that have been loaded
      *
-     * @var  array
+     * @public array
      */
     protected $paths = array();
 
     /**
      * List of language files that are in error state
      *
-     * @var  array
+     * @public array
      */
     protected $errorfiles = array();
 
     /**
      * Translations
      *
-     * @var  array
+     * @public array
      */
     protected $strings = null;
 
     /**
      * An array of used text, used during debugging.
      *
-     * @var  array
+     * @public array
      */
     protected $used = array();
 
     /**
      * Counter for number of loads.
      *
-     * @var  integer
+     * @public integer
      */
     protected $counter = 0;
 
     /**
      * An array used to store overrides.
      *
-     * @var  array
+     * @public array
      */
     protected $override = array();
 
     /**
      * Name of the transliterator function for this language.
      *
-     * @var  string
+     * @public string
      */
     protected $transliterator = null;
 
     /**
      * A list of callback functions for this language.
      *
-     * @var  array
+     * @public array
      */
     protected $callbacks = array(
         'pluralSuffixes'       => null,
@@ -436,7 +436,8 @@ class Translator extends Obj
     /**
      * Returns a lower limit integer for length of search words
      *
-     * @return  integer  The lower limit integer for length of search words (3 if no value was set for a specific language).
+     * @return  integer  The lower limit integer for length of search words (3 if no value was set
+     * for a specific language).
      */
     public function getLowerLimitSearchWord()
     {
@@ -473,7 +474,8 @@ class Translator extends Obj
     /**
      * Returns an upper limit integer for length of search words
      *
-     * @return  integer  The upper limit integer for length of search words (20 if no value was set for a specific language).
+     * @return  integer  The upper limit integer for length of search words (20 if no value was set
+     * for a specific language).
      */
     public function getUpperLimitSearchWord()
     {
@@ -664,7 +666,8 @@ class Translator extends Obj
             }
 
             if (is_array($strings) && count($strings)) {
-                // Do not bother with ksort here.  Since the originals were sorted, PHP will already have chosen the best heap.
+                // Do not bother with ksort here.  Since the originals were sorted, PHP will already have chosen the
+                // bestheap.
                 $this->strings = array_merge($this->strings, $this->override);
                 $result = true;
             }
@@ -792,7 +795,8 @@ class Translator extends Obj
             restore_error_handler();
         }
 
-        // Ini files are processed in the "RAW" mode of parse_ini_string, leaving escaped quotes untouched - lets postprocess them
+        // Ini files are processed in the "RAW" mode of parse_ini_string, leaving escaped quotes untouched - lets
+        // postprocessthem
         $strings = str_replace('\"', '"', $strings);
 
         return is_array($strings) ? $strings : array();
@@ -1035,7 +1039,11 @@ class Translator extends Obj
         $result = null;
 
         if (!is_file("$path/$file")) {
-            $path = self::getLanguagePath(PATH_CORE . DS . 'bootstrap' . DS . ucfirst(\App::get('client')->name), $lang);
+            $path = self::getLanguagePath(PATH_CORE .
+                DS .
+                'bootstrap' .
+                DS .
+                ucfirst(\App::get('client')->name), $lang);
         }
 
         if (is_file("$path/$file")) {
@@ -1223,11 +1231,18 @@ class Translator extends Obj
                 $browserLang = substr($browserLang, 0, strcspn($browserLang, ';'));
                 $primary_browserLang = substr($browserLang, 0, 2);
                 foreach ($systemLangs as $systemLang) {
-                    // Take off 3 letters iso code languages as they can't match browsers' languages and default them to en
+                    // Take off 3 letters iso code languages as they can't match browsers' languages and default them
+                    // toen
                     $Jinstall_lang = $systemLang->lang_code;
 
                     if (strlen($Jinstall_lang) < 6) {
-                        if (strtolower($browserLang) == strtolower(substr($systemLang->lang_code, 0, strlen($browserLang)))) {
+                        if (
+                            strtolower($browserLang) == strtolower(substr(
+                                $systemLang->lang_code,
+                                0,
+                                strlen($browserLang)
+                            ))
+                        ) {
                             return $systemLang->lang_code;
                         } elseif ($primary_browserLang == substr($systemLang->lang_code, 0, 2)) {
                             $primaryDetectedLang = $systemLang->lang_code;
@@ -1260,7 +1275,8 @@ class Translator extends Obj
                 $languages[$key] = array();
                 $knownLangs = self::getKnownLanguages(PATH_APP . DS . 'bootstrap' . DS . $this->client);
                 foreach ($knownLangs as $metadata) {
-                    // Take off 3 letters iso code languages as they can't match browsers' languages and default them to en
+                    // Take off 3 letters iso code languages as they can't match browsers' languages and default them
+                    // toen
                     $languages[$key][] = new Object(array('lang_code' => $metadata['tag']));
                 }
             } else {
@@ -1303,8 +1319,13 @@ class Translator extends Obj
      * @param   integer  $client          Client ID
      * @return  array    List of system languages
      */
-    public static function getList($actualLanguage, $basePath = PATH_APP, $caching = false, $installed = false, $client = null)
-    {
+    public static function getList(
+        $actualLanguage,
+        $basePath = PATH_APP,
+        $caching = false,
+        $installed = false,
+        $client = null
+    ) {
         $list = array();
 
         $langs = self::getKnownLanguages($basePath);
@@ -1362,7 +1383,10 @@ class Translator extends Obj
                 $args[0] = $this->translate(
                     $string,
                     array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
-                    array_key_exists('interpretBackSlashes', $args[$count - 1]) ? $args[$count - 1]['interpretBackSlashes'] : true
+                    array_key_exists(
+                        'interpretBackSlashes',
+                        $args[$count - 1]
+                    ) ? $args[$count - 1]['interpretBackSlashes'] : true
                 );
             } else {
                 $args[0] = $this->translate($string);
@@ -1407,7 +1431,10 @@ class Translator extends Obj
                 $args[0] = $this->translate(
                     $key,
                     array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
-                    array_key_exists('interpretBackSlashes', $args[$count - 1]) ? $args[$count - 1]['interpretBackSlashes'] : true
+                    array_key_exists(
+                        'interpretBackSlashes',
+                        $args[$count - 1]
+                    ) ? $args[$count - 1]['interpretBackSlashes'] : true
                 );
             } else {
                 $args[0] = $this->translate($key);
@@ -1426,7 +1453,8 @@ class Translator extends Obj
      * Translates a string into the current language.
      *
      * Examples:
-     * <?php echo Lang::alt("JALL","language");?> it will generate a 'All' string in English but a "Toutes" string in French
+     * <?php echo Lang::alt("JALL","language");?> it will generate a 'All' string in English but a "Toutes" string in
+     * French
      * <?php echo Lang::alt("JALL","module");?> it will generate a 'All' string in English but a "Tous" string in French
      *
      * @param   string   $string                The string to translate.

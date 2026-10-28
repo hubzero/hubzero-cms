@@ -57,10 +57,9 @@ class Router extends Base
                 if (\App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
                 }
-            }
-            // /groups/list
-            // /groups/create
-            else {
+            } else {
+                // /groups/list
+                // /groups/create
                 $vars['task'] = $segments[0];
             }
 
@@ -70,9 +69,8 @@ class Router extends Base
                 // /groups/{id|cn}/delete
                 if (in_array($segments[1], array('read', 'update', 'delete'))) {
                     $vars['task'] = $segments[1];
-                }
-                // /groups/{id|cn}/{plugin}
-                else {
+                } else {
+                    // /groups/{id|cn}/{plugin}
                     $vars['controller'] = 'plugins';
                     $vars['active']     = $segments[1];
                     // Only a GET falls back to the index; a POST/PUT/DELETE keeps
@@ -102,10 +100,9 @@ class Router extends Base
                                     $vars['task'] = $segments[3];
                                 }
                             }
-                        }
-                        // /groups/{id|cn}/{plugin}/list
-                        // /groups/{id|cn}/{plugin}/create
-                        else {
+                        } else {
+                            // /groups/{id|cn}/{plugin}/list
+                            // /groups/{id|cn}/{plugin}/create
                             $vars['task'] = $segments[2];
                         }
                     }

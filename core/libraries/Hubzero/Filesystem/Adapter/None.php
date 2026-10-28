@@ -201,7 +201,8 @@ class None implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'))
+    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = array('.svn',
+        '.git', 'CVS', '.DS_Store', '__MACOSX'))
     {
         return array();
     }

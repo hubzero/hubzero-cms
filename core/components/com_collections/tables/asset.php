@@ -66,7 +66,10 @@ class Asset extends Table
             $this->created_by = User::get('id');
             $this->state      = 1;
 
-            $this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE item_id=" . $this->_db->quote($this->item_id) . " ORDER BY ordering DESC LIMIT 1");
+            $query = "SELECT ordering FROM $this->_tbl "
+                . "WHERE item_id=" . $this->_db->quote($this->item_id)
+                . " ORDER BY ordering DESC LIMIT 1";
+            $this->_db->setQuery($query);
 
             $this->ordering = (int) $this->_db->loadResult() + 1;
         }
@@ -176,6 +179,7 @@ class Asset extends Table
      * @param   array   $filters  Filters to construct query from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildQuery($filters = array())
     {
         $query  = " FROM $this->_tbl AS a";
@@ -195,8 +199,9 @@ class Asset extends Table
             $where[] = "a.filename=" . $this->_db->quote($filters['filename']);
         }
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(a.filename) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-					OR LOWER(a.description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $searchTerm = '%' . strtolower($filters['search']) . '%';
+            $where[] = "(LOWER(a.filename) LIKE " . $this->_db->quote($searchTerm)
+                . " OR LOWER(a.description) LIKE " . $this->_db->quote($searchTerm) . ")";
         }
         if (isset($filters['created_by'])) {
             $where[] = "a.created_by=" . $this->_db->quote(intval($filters['created_by']));

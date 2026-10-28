@@ -32,6 +32,7 @@ class Sql extends SearchResult
      *
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_sql()
     {
         return $this->sql;
@@ -43,6 +44,7 @@ class Sql extends SearchResult
      * @return  object
      * @throws  SearchPluginError
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function to_associative()
     {
         $db = \App::get('db');

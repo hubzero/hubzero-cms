@@ -2,9 +2,6 @@
 
 use Hubzero\Content\Migration\Base;
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 class Migration20231222155500CreateHashStoredProc extends Base
 {
     public static $campaign = '#__campaign';

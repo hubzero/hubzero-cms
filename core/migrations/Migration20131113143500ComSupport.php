@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,7 +43,8 @@ class Migration20131113143500ComSupport extends Base
             $this->db->query();
 
             if (!$this->db->tableHasKey('#__support_acl_aros', 'idx_model_foreign_key')) {
-                $query = "ALTER TABLE `#__support_acl_aros` ADD INDEX `idx_model_foreign_key` (`model`, `foreign_key`);";
+                $query = "ALTER TABLE `#__support_acl_aros` "
+                    . "ADD INDEX `idx_model_foreign_key` (`model`, `foreign_key`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

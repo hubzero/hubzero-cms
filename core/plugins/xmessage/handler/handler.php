@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * XMessage plugin class for handling message routing
@@ -19,6 +17,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -83,8 +82,19 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
      * @param   integer  $anonymous          Anonymous value in message
      * @return  mixed    True if no errors else error message
      */
-    public function onSendMessage($type, $subject, $message, $from = array(), $to = array(), $component = '', $element = null, $description = '', $group_id = 0, $bypassGroupsCheck = false, $anonymous = 0)
-    {
+    public function onSendMessage(
+        $type,
+        $subject,
+        $message,
+        $from = array(),
+        $to = array(),
+        $component = '',
+        $element = null,
+        $description = '',
+        $group_id = 0,
+        $bypassGroupsCheck = false,
+        $anonymous = 0
+    ) {
         // Do we have a message?
         if (!$message) {
             return false;
@@ -131,7 +141,10 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
         }
 
         // Store the message in the database
-        $xmessage->set('message', (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message);
+        $xmessage->set(
+            'message',
+            (is_array($message) && isset($message['plaintext'])) ? $message['plaintext'] : $message
+        );
 
         // Outlook 2016 Windows 10 Desktop client fails to parse some
         // encoded multi-line subject fields. In particular with the
@@ -205,7 +218,8 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
                 $recipient->set('mid', $xmessage->get('id'));
                 $recipient->set('created', Date::toSql());
                 $recipient->set('expires', Date::of(time() + (168 * 24 * 60 * 60))->toSql());
-                $recipient->set('actionid', 0); //(is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
+                $recipient->set('actionid', 0);
+                // (is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
                 // Get the user's methods for being notified
                 $notify = Hubzero\Message\Notify::blank();
@@ -216,7 +230,10 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
                     continue;
                 }
 
-                if ($mconfig->get('user_messaging', 1) == 1 && ($type == 'member_message' || $type == 'group_message')) {
+                if (
+                    $mconfig->get('user_messaging', 1) == 1
+                    && ($type == 'member_message' || $type == 'group_message')
+                ) {
                     $pgroups = \Hubzero\User\Helper::getGroups($user->get('id'), 'all', 1);
                     $profilesgroups = array();
                     if (!empty($pgroups)) {
@@ -246,7 +263,11 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
                             }
                         } else {
                             if (!Event::trigger('onMessage', array($from, $xmessage, $user, $action))) {
-                                $this->setError(Lang::txt('PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE', $uid, $action));
+                                $this->setError(Lang::txt(
+                                    'PLG_XMESSAGE_HANDLER_ERROR_UNABLE_TO_MESSAGE',
+                                    $uid,
+                                    $action
+                                ));
                             }
                         }
                     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +15,14 @@ use Hubzero\User\Group;
 
 /**
  * Search blog entries
+ *
  */
 class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 {
     /**
-     * Description for 'IRST_CLASS_CHILDREN'
+     * Description for 'FIRST_CLASS_CHILDREN'
      */
-    const FIRST_CLASS_CHILDREN = false;
+    public const FIRST_CLASS_CHILDREN = false;
 
     /**
      * Build search query and add it to the $results
@@ -53,11 +55,14 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
 				be.title,
 				be.content AS description,
 				(CASE WHEN be.scope_id > 0 AND be.scope='group' THEN
-					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=',
+						extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				WHEN be.scope='member' AND be.scope_id > 0 THEN
-					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
+					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=',
+						extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				ELSE
-					concat('index.php?option=com_blog&year=', extract(year from be.created), '&month=', extract(month from be.created), '&alias=', be.alias)
+					concat('index.php?option=com_blog&year=', extract(year from be.created),
+						'&month=', extract(month from be.created), '&alias=', be.alias)
 				END) AS link,
 				$weight AS weight,
 				'Blog Entry' AS section,
@@ -85,9 +90,11 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
         if (!empty($id_map)) {
             $comments = new \Components\Search\Models\Basic\Result\Sql(
                 "SELECT
-				CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
+				CASE WHEN bc.anonymous THEN 'Anonymous Comment'
+					ELSE concat('Comment by ', u.name) END AS title,
 				bc.content AS description,
-				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=',
+					extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
 				bc.created AS date,
 				'Comments' AS section,
 				bc.entry_id
@@ -189,13 +196,11 @@ class plgSearchBlogs extends \Hubzero\Plugin\Plugin
                 // Public condition
                 if ($row->state == 1 && $row->access == 1) {
                     $access_level = 'public';
-                }
-                // Registered condition
-                elseif ($row->state == 1 && $row->access == 2) {
+                } elseif ($row->state == 1 && $row->access == 2) {
+                    // Registered condition
                     $access_level = 'registered';
-                }
-                // Default private
-                else {
+                } else {
+                    // Default private
                     $access_level = 'private';
                 }
 

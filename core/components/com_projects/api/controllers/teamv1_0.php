@@ -23,6 +23,7 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
 /**
  * API controller for the project team
  */
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Teamv1_0 extends ApiController
 {
     /**

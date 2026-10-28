@@ -36,7 +36,8 @@ class Cachehandler extends Select
 
         // Convert to name => name array.
         foreach (Manager::getStores() as $store) {
-            $options[] = Dropdown::option($store, App::get('language')->txt('JLIB_FORM_VALUE_CACHE_' . $store), 'value', 'text');
+            $options[] = Dropdown::option($store, App::get('language')->txt('JLIB_FORM_VALUE_CACHE_' .
+                $store), 'value', 'text');
         }
 
         $options = array_merge(parent::getOptions(), $options);

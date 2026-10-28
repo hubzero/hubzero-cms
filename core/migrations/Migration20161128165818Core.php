@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add `parent` column to activity_logs and `starred` to activity_recipients
- **/
+ *
+ */
 class Migration20161128165818Core extends Base
 {
     /**
@@ -28,7 +30,10 @@ class Migration20161128165818Core extends Base
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__activity_logs', 'parent') && !$this->db->tableHasKey('#__activity_logs', 'idx_parent')) {
+            if (
+                $this->db->tableHasField('#__activity_logs', 'parent')
+                && !$this->db->tableHasKey('#__activity_logs', 'idx_parent')
+            ) {
                 $query = "ALTER TABLE `#__activity_logs` ADD INDEX `idx_parent` (`parent`)";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -48,7 +53,10 @@ class Migration20161128165818Core extends Base
                 $this->db->query();
             }
 
-            if ($this->db->tableHasField('#__activity_recipients', 'starred') && !$this->db->tableHasKey('#__activity_recipients', 'idx_starred')) {
+            if (
+                $this->db->tableHasField('#__activity_recipients', 'starred')
+                && !$this->db->tableHasKey('#__activity_recipients', 'idx_starred')
+            ) {
                 $query = "ALTER TABLE `#__activity_recipients` ADD INDEX `idx_starred` (`starred`)";
                 $this->db->setQuery($query);
                 $this->db->query();

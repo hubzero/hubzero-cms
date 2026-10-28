@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add `username` column to storefront_permissions table
- **/
+ *
+ */
 class Migration20170920165818ComStorefront extends Base
 {
     /**
@@ -73,7 +75,8 @@ class Migration20170920165818ComStorefront extends Base
             }
 
             if (!$this->db->tableHasKey('#__storefront_permissions', 'single entry per item')) {
-                $query = "ALTER TABLE `#__storefront_permissions` ADD INDEX `single entry per item` (`scope`, `scope_id`, `uid`)";
+                $query = "ALTER TABLE `#__storefront_permissions` ADD INDEX `single entry per item` (`scope`,"
+                    . "`scope_id`, `uid`)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

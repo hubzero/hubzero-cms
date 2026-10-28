@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -243,8 +244,10 @@ class Optiongroups extends AdminController
 
                 // Make sure we have ID(s) to work with
                 if (empty($ogIds)) {
+                    $url = 'index.php?option=' . $this->_option . '&controller='
+                        . $this->_controller . '&task=dispaly';
                     App::redirect(
-                        Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+                        Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error'
                     );
@@ -275,8 +278,10 @@ class Optiongroups extends AdminController
                                 }
                             }
                         } catch (\Exception $e) {
+                            $url = 'index.php?option=' . $this->_option . '&controller='
+                                . $this->_controller . '&task=dispaly';
                             App::redirect(
-                                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+                                Route::url($url, false),
                                 $e->getMessage(),
                                 $type
                             );
@@ -289,8 +294,10 @@ class Optiongroups extends AdminController
                 }
 
                 // Set the redirect
+                $url = 'index.php?option=' . $this->_option . '&controller='
+                    . $this->_controller . '&task=dispaly';
                 App::redirect(
-                    Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly', false),
+                    Route::url($url, false),
                     $msg,
                     $type
                 );
@@ -336,9 +343,12 @@ class Optiongroups extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
+            $msg = ($state == 1
+                ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH')
+                : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH'));
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                ($state == 1 ? Lang::txt('COM_STOREFRONT_SELECT_PUBLISH') : Lang::txt('COM_STOREFRONT_SELECT_UNPUBLISH')),
+                $msg,
                 'error'
             );
             return;

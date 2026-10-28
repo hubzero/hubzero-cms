@@ -62,7 +62,8 @@ class JobStats extends Table
             return false;
         }
 
-        $query  = "SELECT * FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " ORDER BY ";
+        $query  = "SELECT * FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid);
+        $query .= " AND category=" . $this->_db->quote($category) . " ORDER BY ";
         $query .= $type == 'shared' ? "lastshared" : "lastviewed";
         $query .= " DESC LIMIT 1";
 
@@ -155,7 +156,8 @@ class JobStats extends Table
         } else {
             $query .= " MAX(p.total_shared) AS times ";
         }
-        $query .= " FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid) . " AND category=" . $this->_db->quote($category) . " AND ";
+        $query .= " FROM `$this->_tbl` WHERE itemid=" . $this->_db->quote($itemid);
+        $query .= " AND category=" . $this->_db->quote($category) . " AND ";
 
         switch ($when) {
             case 'thisweek':
@@ -260,7 +262,9 @@ class JobStats extends Table
             $this->setError(Lang::txt('Missing argument'));
             return false;
         }
-        $this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE itemid =" . $this->_db->quote($itemid) . " AND category =" . $this->_db->quote($category));
+        $query = "DELETE FROM `$this->_tbl` WHERE itemid =" . $this->_db->quote($itemid);
+        $query .= " AND category =" . $this->_db->quote($category);
+        $this->_db->setQuery($query);
         $this->_db->query();
     }
 }

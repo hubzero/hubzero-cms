@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving group blog file/image uploads to subfolder in groups uploads.
- **/
+ *
+ */
 class Migration20140805223444PlgGroupsBlog extends Base
 {
     /**
@@ -53,7 +55,10 @@ class Migration20140805223444PlgGroupsBlog extends Base
             if (!is_dir($newBlogUploadFolder)) {
                 // create uploads folder
                 if (!\App::get('filesystem')->makeDirectory($newBlogUploadFolder)) {
-                    $this->setError('Failed to create blog uploads folder. Try running again with elevated privileges.', 'warning');
+                    $this->setError(
+                        'Failed to create blog uploads folder. Try running again with elevated privileges.',
+                        'warning'
+                    );
                     return false;
                 }
             }
@@ -66,7 +71,10 @@ class Migration20140805223444PlgGroupsBlog extends Base
                 $from = $currentBlogUploadFolder . DS . $blogFile;
                 $to   = $newBlogUploadFolder . DS . $blogFile;
                 if (!\App::get('filesystem')->move($from, $to)) {
-                    $this->setError('Failed to move files to blog uploads folder. Try running again with elevated privileges.', 'warning');
+                    $this->setError(
+                        'Failed to move files to blog uploads folder. Try running again with elevated privileges.',
+                        'warning'
+                    );
                     return false;
                 }
             }
@@ -80,7 +88,10 @@ class Migration20140805223444PlgGroupsBlog extends Base
 
             // Delete original folder
             if (!$res) {
-                $this->setError('Failed to delete original blog uploads folder. Try running again with elevated privileges.', 'warning');
+                $this->setError(
+                    'Failed to delete original blog uploads folder. Try running again with elevated privileges.',
+                    'warning'
+                );
                 return false;
             }
         }

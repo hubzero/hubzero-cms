@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +20,11 @@ defined('_HZEXEC_') or die();
                 <div class="block-info">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LOCKED'); ?>
                     <?php if ($this->pub->isPublished()) {
-                        echo ' <a href="' . Route::url($this->pub->link('edit')) . '/?action=newversion">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')) . '</a>';
+                        echo ' <a href="'
+                            . Route::url($this->pub->link('edit'))
+                            . '/?action=newversion">'
+                            . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION'))
+                            . '</a>';
                     } ?>
                     </p>
                 </div>

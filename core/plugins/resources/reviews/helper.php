@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Helper class for reviews
  */
@@ -124,8 +121,11 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
         $row->set('created_by', $__isNew ? User::get('id') : $__owner);
 
         // Perform some text cleaning, etc.
-        $row->set('content', \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->get('content'))));
-        $row->set('anonymous', ($row->get('anonymous') == 1 || $row->get('anonymous') == '1') ? $row->get('anonymous') : 0);
+        $row->set('content', \Hubzero\Utility\Sanitize::stripImages(
+            \Hubzero\Utility\Sanitize::clean($row->get('content'))
+        ));
+        $row->set('anonymous', ($row->get('anonymous') == 1 || $row->get('anonymous') == '1')
+            ? $row->get('anonymous') : 0);
         $row->set('state', $row->isNew() ? 1 : $row->get('state'));
 
         // Save the data
@@ -358,7 +358,9 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
         if ($row->isNew()) {
             $row->set('state', \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED);
         }
-        $row->set('comment', \Hubzero\Utility\Sanitize::stripImages(\Hubzero\Utility\Sanitize::clean($row->get('comment'))));
+        $row->set('comment', \Hubzero\Utility\Sanitize::stripImages(
+            \Hubzero\Utility\Sanitize::clean($row->get('comment'))
+        ));
         $row->set('anonymous', ($row->get('anonymous') ? 1 : 0));
 
         // Save the data
@@ -404,7 +406,12 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
         );
 
         // Send message
-        if (!Event::trigger('xmessage.onSendMessage', array('resources_new_comment', $subject, $message, $from, $users, $this->_option))) {
+        if (
+            !Event::trigger(
+                'xmessage.onSendMessage',
+                array('resources_new_comment', $subject, $message, $from, $users, $this->_option)
+            )
+        ) {
             $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));
         }
     }

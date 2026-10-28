@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,6 +25,7 @@ class Blank extends SearchResult
      * @return  void
      * @throws  Exception  Exception description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function to_associative()
     {
         throw new Exception('empty result -> to_associative');

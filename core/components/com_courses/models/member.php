@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,6 +27,7 @@ class Member extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Member';
 
     /**
@@ -33,6 +35,7 @@ class Member extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'manager';
 
     /**
@@ -40,6 +43,7 @@ class Member extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_badge = null;
 
     /**
@@ -47,6 +51,7 @@ class Member extends Base
      *
      * @var object
      **/
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_prerequisites = null;
 
     /**
@@ -66,7 +71,7 @@ class Member extends Base
 
         if (is_numeric($uid) || is_string($uid)) {
             $this->_tbl->load($uid, $cid, $oid, $sid);
-        } else if (is_object($uid) || is_array($uid)) {
+        } elseif (is_object($uid) || is_array($uid)) {
             $this->bind($uid);
         }
 
@@ -89,7 +94,7 @@ class Member extends Base
      * @param   string $sid Section ID
      * @return  object \Components\Courses\Models\Member
      */
-    static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
+    public static function &getInstance($uid = null, $cid = 0, $oid = 0, $sid = 0)
     {
         static $instances;
 
@@ -182,7 +187,8 @@ class Member extends Base
      */
     public function generateToken()
     {
-        $chars = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9); //,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+        // Characters available for token generation (digits only)
+        $chars = array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
         $sn = '';
         $max = count($chars) - 1;
         for ($i = 0; $i < 20; $i++) {

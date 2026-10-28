@@ -18,6 +18,7 @@ class Iterator implements \Countable, \Iterator
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_pos = 0;
 
     /**
@@ -25,6 +26,7 @@ class Iterator implements \Countable, \Iterator
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_total = 0;
 
     /**
@@ -32,6 +34,7 @@ class Iterator implements \Countable, \Iterator
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_data = array();
 
     /**
@@ -89,9 +92,8 @@ class Iterator implements \Countable, \Iterator
             $this->_pos = $key;
             // Get current item
             $res = $this->current();
-        }
-        // Is it a string?
-        else if (is_string($key)) {
+        } elseif (is_string($key)) {
+            // Is it a string?
             $key = strtolower(trim($key));
             switch ($key) {
                 // First record

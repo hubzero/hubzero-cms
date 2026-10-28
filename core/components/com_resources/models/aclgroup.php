@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2023 The Regents of the University of California.
@@ -92,7 +93,9 @@ class AclGroup extends Relational
     public static function listGroups($resource_id)
     {
         $database = App::get('db');
-        $sql = "SELECT r.id AS resource_id, g.gidNumber AS group_id, g.cn AS name FROM `#__resources` AS r, `#__resource_acl_group` AS a, `#__xgroups` AS g WHERE r.id=? AND a.resource_id=r.id AND g.gidNumber=a.group_id;";
+        $sql = "SELECT r.id AS resource_id, g.gidNumber AS group_id, g.cn AS name "
+            . "FROM `#__resources` AS r, `#__resource_acl_group` AS a, `#__xgroups` AS g "
+            . "WHERE r.id=? AND a.resource_id=r.id AND g.gidNumber=a.group_id;";
         $database->prepare($sql)->bind(array($resource_id));
         $aclgroups = $database->loadObjectList();
         return $aclgroups;
@@ -124,7 +127,8 @@ class AclGroup extends Relational
         }
 
         if ($binds !== array()) {
-            $sql = "DELETE FROM #__resource_acl_group WHERE resource_id = ? AND group_id IN (" . implode(',', $binds) . ");";
+            $sql = "DELETE FROM #__resource_acl_group "
+                . "WHERE resource_id = ? AND group_id IN (" . implode(',', $binds) . ");";
             $database->prepare($sql)->bind($values);
             $database->execute();
         }

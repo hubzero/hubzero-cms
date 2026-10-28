@@ -54,23 +54,21 @@ class Router extends Base
             if (($segments[0] == 'currentuser') && (\App::get('request')->method() == 'GET')) {
                 $vars['id'] = $segments[0];
                 $vars['task'] = 'read';
-            } else if (is_numeric($segments[0])) {
+            } elseif (is_numeric($segments[0])) {
                 $vars['id'] = $segments[0];
                 if (isset($segments[1])) {
                     $vars['task'] = $segments[1];
-                } else if (\App::get('request')->method() == 'GET') {
+                } elseif (\App::get('request')->method() == 'GET') {
                     $vars['task'] = 'read';
                 }
-            } else if ($segments[0] == 'tools') {
+            } elseif ($segments[0] == 'tools') {
                 $vars['controller'] = $segments[0];
                 $vars['task'] = 'index';
                 if (isset($segments[1])) {
                     $vars['task'] = $segments[1];
                 }
-            }
-
-            // Added this for mentions API
-            else if ($segments[0] == 'mentions') {
+            } elseif ($segments[0] == 'mentions') {
+                // Added this for mentions API
                 $vars['controller'] = $segments[0];
                 $vars['task'] = 'index';
                 if (isset($segments[1])) {

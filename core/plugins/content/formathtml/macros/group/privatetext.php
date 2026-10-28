@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -39,11 +40,13 @@ class Privatetext extends GroupMacro
     public function description()
     {
         $txt = array();
-        $txt['html']  = '<p>Display private content. Note: Content wrapped in this macro will <strong>only</strong> be displayed to logged-in members of the group.</p>';
+        $txt['html']  = '<p>Display private content. Note: Content wrapped in this macro will ' .
+            '<strong>only</strong> be displayed to logged-in members of the group.</p>';
         $txt['html'] .= '<p>Examples:</p>
-							<ul>
-								<li><code>[[Group.Privatetext(start)]]Only members can see this[[Group.Privatetext(end)]]</code></li>
-							</ul>';
+            <ul>
+                <li><code>[[Group.Privatetext(start)]]Only members can see this' .
+                '[[Group.Privatetext(end)]]</code></li>
+            </ul>';
 
         return $txt['html'];
     }

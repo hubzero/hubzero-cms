@@ -24,21 +24,28 @@ $cls = array(
 );
 ?>
 <!DOCTYPE html>
-<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo implode(' ', $cls); ?>">
+<html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>"
+    class="<?php echo implode(' ', $cls); ?>">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width" />
 
-        <link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(__DIR__ . '/css/error.css'); ?>" />
+        <link type="text/css" rel="stylesheet"
+            href="<?php echo $this->baseurl . '/templates/' . $this->template
+                . '/css/error.css?v=' . filemtime(__DIR__ . '/css/error.css'); ?>" />
 
         <title><?php echo Lang::txt('TPL_KAMELEON_ERROR_OCCURRED') . ' - ' . $code; ?></title>
 
         <!--[if lt IE 9]>
-            <script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js?v=<?php echo filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
+            <script type="text/javascript"
+                src="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/js/html5.js?v=' . filemtime(__DIR__ . '/js/html5.js'); ?>"></script>
         <![endif]-->
 
         <!--[if IE 9]>
-            <link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css?v=<?php echo filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
+            <link type="text/css" rel="stylesheet"
+                href="<?php echo $this->baseurl . '/templates/' . $this->template
+                    . '/css/browser/ie9.css?v=' . filemtime(__DIR__ . '/css/browser/ie9.css'); ?>" />
         <![endif]-->
     </head>
     <body id="error-body">
@@ -48,8 +55,12 @@ $cls = array(
 
         <div id="wrap">
             <nav role="navigation" class="main-navigation">
-                <a class="btn dashboard" href="<?php echo Route::url('index.php'); ?>"><?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?></a>
-                <a class="btn help" href="<?php echo Route::url('index.php?option=com_help'); ?>"><?php echo Lang::txt('TPL_KAMELEON_HELP'); ?></a>
+                <a class="btn dashboard" href="<?php echo Route::url('index.php'); ?>">
+                    <?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?>
+                </a>
+                <a class="btn help" href="<?php echo Route::url('index.php?option=com_help'); ?>">
+                    <?php echo Lang::txt('TPL_KAMELEON_HELP'); ?>
+                </a>
             </nav><!-- / .main-navigation -->
 
             <main id="component-content">
@@ -73,7 +84,12 @@ $cls = array(
         <footer id="footer">
             <section class="basement">
                 <p class="copyright">
-                    <?php echo Lang::txt('TPL_KAMELEON_COPYRIGHT', Request::root(), Config::get('sitename'), date("Y")); ?>
+                    <?php echo Lang::txt(
+                        'TPL_KAMELEON_COPYRIGHT',
+                        Request::root(),
+                        Config::get('sitename'),
+                        date("Y")
+                    ); ?>
                 </p>
                 <p class="promotion">
                     <?php echo Lang::txt('TPL_KAMELEON_POWERED_BY', HVERSION); ?>

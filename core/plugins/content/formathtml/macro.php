@@ -102,7 +102,7 @@ class Macro
                 if ($r->inNamespace()) {
                     // It is! This makes things easy.
                     $this->_name = strtolower($r->getShortName());
-                } else if (preg_match('/(.*)Macro/i', get_class($this), $r)) {
+                } elseif (preg_match('/(.*)Macro/i', get_class($this), $r)) {
                     $this->_name = strtolower($r[1]);
                 } else {
                     throw new RuntimeException(__CLASS__ . '::__construct(); Can\'t get or parse class name.');

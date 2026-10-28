@@ -22,6 +22,7 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -155,10 +156,14 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
             $accountIsOk = true;
             if (!isset($account->user_id) || $account->user_id <= 0) {
                 $accountIsOk = false;
-                $error_message = $response->error_message = Lang::txt('PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_UID');
+                $error_message = $response->error_message = Lang::txt(
+                    'PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_UID'
+                );
             } elseif (!isset($account->email) || !$account->email) {
                 $accountIsOk = false;
-                $error_message = $response->error_message = Lang::txt('PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_EMAIL');
+                $error_message = $response->error_message = Lang::txt(
+                    'PLG_AUTHENTICATION_SCISTARTER_AUTHENTICATION_FAILED_NO_EMAIL'
+                );
             }
 
             // Make sure we have a Scistarter account
@@ -166,7 +171,9 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
                 $username = (string) $account->email;
 
                 // Create the hubzero auth link
-                $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+                $method = (Component::params('com_members')->get('allowUserRegistration', false))
+                ? 'find_or_create'
+                : 'find';
                 $hzal = \Hubzero\Auth\Link::$method('authentication', 'scistarter', null, $username);
 
                 if ($hzal === false) {
@@ -301,7 +308,10 @@ class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
                     $hzal->set('user_id', User::get('id'));
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "scistarter", null, %s) returned false', $username));
+                    Log::error(sprintf(
+                        'Hubzero\Auth\Link::find_or_create("authentication", "scistarter", null, %s) returned false',
+                        $username
+                    ));
                 }
             }
         } else {

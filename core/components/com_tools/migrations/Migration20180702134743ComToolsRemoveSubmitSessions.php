@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,9 +17,9 @@ defined('_HZEXEC_') or die();
  */
 class Migration20180702134743ComToolsRemoveSubmitSessions extends Base
 {
-    static $submitTable = '#__tool_submit_sessions';
-    static $migrationsTable = '#__migrations';
-    static $previousMigrationFile = 'Migration20180618142613ComToolsSubmitSessions.php';
+    protected static $submitTable = '#__tool_submit_sessions';
+    protected static $migrationsTable = '#__migrations';
+    protected static $previousMigrationFile = 'Migration20180618142613ComToolsSubmitSessions.php';
 
     public function up()
     {

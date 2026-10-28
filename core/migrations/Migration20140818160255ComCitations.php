@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -100,7 +101,8 @@ class Migration20140818160255ComCitations extends Base
 
         // new full text index for searching
         if (!$this->db->tableHasKey('#__citations', 'ftidx_search')) {
-            $query = "ALTER TABLE `#__citations` ADD FULLTEXT ftidx_search (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`);";
+            $query = "ALTER TABLE `#__citations` "
+                . "ADD FULLTEXT ftidx_search (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`);";
             $this->db->setQuery($query);
             $this->db->query();
         }

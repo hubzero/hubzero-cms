@@ -41,7 +41,8 @@ class Html
      */
     public static function mkt($stime)
     {
-        if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) {
+        $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+        if ($stime && preg_match($pattern, $stime, $regs)) {
             $stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
         return $stime;
@@ -86,10 +87,12 @@ class Html
         );
 
         // Determine which period we should use, based on the number of seconds lapsed.
-        // If the difference divided by the seconds is more than 1, we use that. Eg 1 year / 1 decade = 0.1, so we move on
+        // If the difference divided by the seconds is more than 1, we use that.
+        // Eg 1 year / 1 decade = 0.1, so we move on
         // Go from decades backwards to seconds
         for (
-            $val = count($lengths) - 1; ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1);
+            $val = count($lengths) - 1;
+            ($val >= 0) && (($number = $difference / $lengths[$val]) <= 1);
             $val--
         ) {
         }
@@ -194,7 +197,8 @@ class Html
     public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '')
     {
         //$title = str_replace('"', '&quot;', $title);
-        $html  = '<span id="test-document"><a class="' . $class . '" href="' . $href . '" title="' . htmlentities($title) . '" ' . $action . '>' . $msg . '</a>';
+        $html  = '<span id="test-document"><a class="' . $class . '" href="' . $href . '" title="'
+            . htmlentities($title) . '" ' . $action . '>' . $msg . '</a>';
         $html .= $xtra;
         $html .= '</span>' . "\n";
         return $html;
@@ -216,11 +220,18 @@ class Html
 
         $toolnum = ($status['state'] != 9) ? Lang::txt('COM_TOOLS_THIS_TOOL') . '  ' : '';
         if (!$status['published'] && self::toolActive($status['state'])) {
-            $toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF') . ' ' . $status['ntoolsdev'] . ' ' . strtolower(Lang::txt('COM_TOOLS_TOOLS')) . ' ' . strtolower(Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT')) . ' ' . Lang::txt('COM_TOOLS_ON') . ' ' . $sitename;
-        } else if ($status['published'] && self::toolActive($status['state'])) {
-            $toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF') . ' ' . $status['ntools_published'] . ' ' . strtolower(Lang::txt('COM_TOOLS_TOOLS')) . ' ' . strtolower(Lang::txt('COM_TOOLS_PUBLISHED')) . ' ' . Lang::txt('COM_TOOLS_ON') . ' ' . $sitename;
-        } else if ($status['state'] == 8) {
-            $toolnum .= Lang::txt('COM_TOOLS_WAS_ONCE_PUBLISHED') . ' ' . Lang::txt('COM_TOOLS_ON') . ' ' . $sitename . ' ' . Lang::txt('COM_TOOLS_NOW_RETIRED');
+            $toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF') . ' ' . $status['ntoolsdev'] . ' '
+                . strtolower(Lang::txt('COM_TOOLS_TOOLS')) . ' '
+                . strtolower(Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT')) . ' '
+                . Lang::txt('COM_TOOLS_ON') . ' ' . $sitename;
+        } elseif ($status['published'] && self::toolActive($status['state'])) {
+            $toolnum .= Lang::txt('COM_TOOLS_IS_ONE_OF') . ' ' . $status['ntools_published'] . ' '
+                . strtolower(Lang::txt('COM_TOOLS_TOOLS')) . ' '
+                . strtolower(Lang::txt('COM_TOOLS_PUBLISHED')) . ' '
+                . Lang::txt('COM_TOOLS_ON') . ' ' . $sitename;
+        } elseif ($status['state'] == 8) {
+            $toolnum .= Lang::txt('COM_TOOLS_WAS_ONCE_PUBLISHED') . ' ' . Lang::txt('COM_TOOLS_ON')
+                . ' ' . $sitename . ' ' . Lang::txt('COM_TOOLS_NOW_RETIRED');
         }
 
         return $toolnum;
@@ -475,12 +486,15 @@ class Html
         switch ($access) {
             case '@GROUP':
                 if (count($groups) > 0) {
-                    $toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
+                    $toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO')
+                        . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS') . ' ';
                     foreach ($groups as $group) {
                         $toolaccess .= ($group != end($groups)) ? $group->cn . ', ' : $group->cn;
                     }
                 } else {
-                    $toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . Lang::txt('COM_TOOLS_UNSPECIFIED') . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS');
+                    $toolaccess = Lang::txt('COM_TOOLS_RESTRICTED') . ' ' . Lang::txt('COM_TOOLS_TO')
+                        . ' ' . Lang::txt('COM_TOOLS_UNSPECIFIED') . ' '
+                        . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS');
                 }
                 break;
 
@@ -580,7 +594,7 @@ class Html
 
             if (strtolower($active_stage) == strtolower($stages[$i])) {
                 $html .= ' class="active"';
-            } else if (count($key) == 0 or $i > $key[0]) {
+            } elseif (count($key) == 0 or $i > $key[0]) {
                 $html .= ' class="future"';
             }
 
@@ -710,6 +724,7 @@ class Html
      * @param      unknown $pee Parameter description (if any) ...
      * @return     unknown Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function txt_unpee($pee)
     {
         $pee = str_replace("\t", '', $pee);

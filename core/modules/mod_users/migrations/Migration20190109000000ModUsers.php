@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing users module
- **/
+ *
+ */
 class Migration20190109000000ModUsers extends Base
 {
     /**

@@ -23,7 +23,8 @@ class Migration20180924164848ComEvents extends Base
     {
         if ($this->db->tableExists('#__events_config')) {
             if (!$this->db->tableHasField('#__events_config', 'id')) {
-                $query = "ALTER TABLE `#__events_config` ADD `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
+                $query = "ALTER TABLE `#__events_config` ADD `id` INT(11) UNSIGNED "
+                    . "NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -130,11 +130,16 @@ class Componentlayout extends Field
 
             // Add a Use Global option if useglobal="true" in XML file
             if ($this->element['useglobal'] == 'true') {
-                $groups[$lang->txt('JOPTION_FROM_STANDARD')]['items'][] = Dropdown::option('', $lang->txt('JGLOBAL_USE_GLOBAL'));
+                $groups[$lang->
+                    txt('JOPTION_FROM_STANDARD')]['items'][] = Dropdown::option('', $lang->
+                    txt('JGLOBAL_USE_GLOBAL'));
             }
 
             // Add the layout options from the component path.
-            if (is_dir($component_path) && ($component_layouts = $filesystem->files($component_path, '^[^_]*\.xml$', false, true))) {
+            if (
+                is_dir($component_path) &&
+                ($component_layouts = $filesystem->files($component_path, '^[^_]*\.xml$', false, true))
+            ) {
                 // Create the group for the component
                 $groups['_'] = array();
                 $groups['_']['id'] = $this->id . '__';
@@ -161,7 +166,9 @@ class Componentlayout extends Field
                     // Add an option to the component group
                     $value = $filesystem->name($file);
                     $component_layouts[$i] = $value;
-                    $text = isset($menu['option']) ? $lang->txt($menu['option']) : (isset($menu['title']) ? $lang->txt($menu['title']) : $value);
+                    $text = isset($menu['option']) ? $lang->
+                        txt($menu['option']) : (isset($menu['title']) ? $lang->
+                        txt($menu['title']) : $value);
                     $groups['_']['items'][] = Dropdown::option('_:' . $value, $text);
                 }
             }
@@ -188,7 +195,10 @@ class Componentlayout extends Field
                     $template_path = Util::normalizePath($template->path . '/html/' . $extn . '/' . $view);
 
                     // Add the layout options from the template path.
-                    if (is_dir($template_path) && ($files = $filesystem->files($template_path, '^[^_]*\.php$', false, true))) {
+                    if (
+                        is_dir($template_path) &&
+                        ($files = $filesystem->files($template_path, '^[^_]*\.php$', false, true))
+                    ) {
                         // Files with corresponding XML files are alternate menu items, not alternate layout files
                         // so we need to exclude these files from the list.
                         $xml_files = $filesystem->files($template_path, '^[^_]*\.xml$', false, true);
@@ -197,7 +207,10 @@ class Componentlayout extends Field
                         }
                         foreach ($files as $i => $file) {
                             // Remove layout files that exist in the component folder or that have XML files
-                            if (in_array($filesystem->name($file), $component_layouts) || in_array($filesystem->name($file), $xml_files)) {
+                            if (
+                                in_array($filesystem->name($file), $component_layouts) ||
+                                in_array($filesystem->name($file), $xml_files)
+                            ) {
                                 unset($files[$i]);
                             }
                         }
@@ -211,10 +224,19 @@ class Componentlayout extends Field
                             foreach ($files as $file) {
                                 // Add an option to the template group
                                 $value = $filesystem->name($file);
-                                $text = $lang->hasKey($key = strtoupper('TPL_' . $template->name . '_' . $extn . '_' . $view . '_LAYOUT_' . $value))
+                                $text = $lang->hasKey($key = strtoupper('TPL_' .
+                                    $template->name .
+                                    '_' .
+                                    $extn .
+                                    '_' .
+                                    $view .
+                                    '_LAYOUT_' .
+                                    $value))
                                     ? $lang->txt($key)
                                     : $value;
-                                $groups[$template->name]['items'][] = Dropdown::option($template->element . ':' . $value, $text);
+                                $groups[$template->name]['items'][] = Dropdown::option($template->element .
+                                    ':' .
+                                    $value, $text);
                             }
                         }
                     }

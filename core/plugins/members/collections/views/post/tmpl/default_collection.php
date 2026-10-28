@@ -1,5 +1,7 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,13 +34,16 @@ if ($this->row instanceof \Components\Collections\Models\Collection) {
             <tbody>
                 <tr>
                     <td>
-                        <strong><?php echo $collection->count('file'); ?></strong> <span class="post-type file"><?php echo Lang::txt('files'); ?></span>
+                        <strong><?php echo $collection->count('file'); ?>
+                        </strong> <span class="post-type file"><?php echo Lang::txt('files');?></span>
                     </td>
                     <td>
-                        <strong><?php echo $collection->count('collection'); ?></strong> <span class="post-type collection"><?php echo Lang::txt('collections'); ?></span>
+                        <strong><?php echo $collection->count('collection'); ?>
+                        </strong> <span class="post-type collection"><?php echo Lang::txt('collections');?></span>
                     </td>
                     <td>
-                        <strong><?php echo $collection->count('link'); ?></strong> <span class="post-type link"><?php echo Lang::txt('links'); ?></span>
+                        <strong><?php echo $collection->count('link'); ?>
+                        </strong> <span class="post-type link"><?php echo Lang::txt('links');?></span>
                     </td>
                 </tr>
             </tbody>

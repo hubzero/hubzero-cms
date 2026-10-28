@@ -144,7 +144,8 @@ class GoogleAuthenticator implements GoogleAuthenticatorInterface
      * @param string $hostname
      * @param string $secret
      *
-     * @deprecated deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
+     * @deprecated deprecated as of 2.1 and will be removed in 3.0.
+     *             Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
      */
     public function getUrl($user, $hostname, $secret)
     {

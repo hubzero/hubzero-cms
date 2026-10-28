@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Oaipmh\Models\Schemas;
 
 use Components\Oaipmh\Models\Xml\Response;
@@ -110,6 +111,9 @@ class QualifiedDC extends DublinCore
         $this->response->end(); // End header
 
         if ($metadata) {
+            $schemaLoc = self::$ns . ' ' . self::$schema
+                . ' http://purl.org/net/oclcterms'
+                . ' http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd';
             $this->response
                 ->element('metadata')
                     ->element('oai_qdc:qualifieddc')
@@ -117,7 +121,7 @@ class QualifiedDC extends DublinCore
                         ->attr('xmlns:dcterms', 'http://purl.org/dc/terms/')
                         ->attr('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
                         ->attr('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-                        ->attr('xsi:schemaLocation', self::$ns . ' ' . self::$schema . ' http://purl.org/net/oclcterms http://worldcat.org/xmlschemas/oclcterms/1.4/oclcterms-1.4.xsd');
+                        ->attr('xsi:schemaLocation', $schemaLoc);
 
             $dcs = array(
                 'title'   => array(
@@ -193,7 +197,8 @@ class QualifiedDC extends DublinCore
                             $res = $val;
                         }
 
-                        $this->response->element(($term ? 'dcterms:' . $term : 'dc:' . $dc), $this->prepare($res))->end();
+                        $tag = $term ? 'dcterms:' . $term : 'dc:' . $dc;
+                        $this->response->element($tag, $this->prepare($res))->end();
                     }
                 } elseif (!empty($result->$dc)) {
                     if ($dc == 'date') {

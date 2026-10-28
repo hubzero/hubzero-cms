@@ -153,7 +153,8 @@ class Session extends Table
 
         $query = "SELECT COUNT(*) FROM $mv->_tbl AS v JOIN $this->_tbl AS s
 				  ON v.sessnum = s.sessnum
-				  WHERE v.viewuser=" . $this->_db->quote($username) . " AND s.username=" . $this->_db->quote($username) . " $a
+				  WHERE v.viewuser=" . $this->_db->quote($username)
+            . " AND s.username=" . $this->_db->quote($username) . " $a
 				  ORDER BY s.start";
 
         $this->_db->setQuery($query);

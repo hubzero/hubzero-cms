@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,8 @@ defined('_HZEXEC_') or die;
 
 /**
  * Vote plugin.
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class plgContentVote extends \Hubzero\Plugin\Plugin
 {
@@ -59,16 +62,20 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
                 $uri = Hubzero\Utility\Uri::getInstance();
                 $uri->setQuery($uri->getQuery() . '&hitcount=0');
 
-                $html .= '<form method="post" action="' . htmlspecialchars($uri->toString()) . '">';
+                $action = htmlspecialchars($uri->toString());
+                $html .= '<form method="post" action="' . $action . '">';
                 $html .= '<div class="content_vote">';
                 $html .= Lang::txt('PLG_VOTE_POOR');
-                $html .= '<input type="radio" title="' . Lang::txt('PLG_VOTE_VOTE', '1') . '" name="user_rating" value="1" />';
-                $html .= '<input type="radio" title="' . Lang::txt('PLG_VOTE_VOTE', '2') . '" name="user_rating" value="2" />';
-                $html .= '<input type="radio" title="' . Lang::txt('PLG_VOTE_VOTE', '3') . '" name="user_rating" value="3" />';
-                $html .= '<input type="radio" title="' . Lang::txt('PLG_VOTE_VOTE', '4') . '" name="user_rating" value="4" />';
-                $html .= '<input type="radio" title="' . Lang::txt('PLG_VOTE_VOTE', '5') . '" name="user_rating" value="5" checked="checked" />';
+                for ($i = 1; $i <= 5; $i++) {
+                    $title = Lang::txt('PLG_VOTE_VOTE', $i);
+                    $checked = ($i == 5) ? ' checked="checked"' : '';
+                    $html .= '<input type="radio" title="' . $title . '"';
+                    $html .= ' name="user_rating" value="' . $i . '"' . $checked . ' />';
+                }
                 $html .= Lang::txt('PLG_VOTE_BEST');
-                $html .= '&#160;<input class="button" type="submit" name="submit_vote" value="' . Lang::txt('PLG_VOTE_RATE') . '" />';
+                $rateLabel = Lang::txt('PLG_VOTE_RATE');
+                $html .= '&#160;<input class="button" type="submit" name="submit_vote"';
+                $html .= ' value="' . $rateLabel . '" />';
                 $html .= '<input type="hidden" name="task" value="article.vote" />';
                 $html .= '<input type="hidden" name="hitcount" value="0" />';
                 $html .= '<input type="hidden" name="url" value="' .  htmlspecialchars($uri->toString()) . '" />';

@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 class PublicationUsageHelper
 {
@@ -16,6 +15,7 @@ class PublicationUsageHelper
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db;
 
     /**
@@ -23,6 +23,7 @@ class PublicationUsageHelper
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_publication;
 
     /**
@@ -30,6 +31,7 @@ class PublicationUsageHelper
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_logsTable = '#__publication_logs';
 
     /**
@@ -37,6 +39,7 @@ class PublicationUsageHelper
      *
      * @var int
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_versionId;
 
     /**
@@ -44,6 +47,7 @@ class PublicationUsageHelper
      *
      * @var int
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_publicationId;
 
     /**
@@ -88,6 +92,7 @@ class PublicationUsageHelper
      * @param    string   $column   Name of column to sum
      * @return   string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateColumnSumQuery($column)
     {
         $publicationId = $this->_getPublicationId();
@@ -107,6 +112,7 @@ class PublicationUsageHelper
      * @param    string   $query   Query to execute
      * @return   mixed
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _runQuery($query)
     {
         $this->_db->setQuery($query);
@@ -119,6 +125,7 @@ class PublicationUsageHelper
      *
      * @return   int
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getPublicationId()
     {
         if (!isset($this->_publicationId)) {
@@ -134,6 +141,7 @@ class PublicationUsageHelper
      *
      * @return   int
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getVersionId()
     {
         if (!isset($this->_versionId)) {

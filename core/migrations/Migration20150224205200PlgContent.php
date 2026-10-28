@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for forcing preferred settings for content handlers and jQuery plugins
+  *
  **/
 class Migration20150224205200PlgContent extends Base
 {
@@ -22,7 +24,8 @@ class Migration20150224205200PlgContent extends Base
     public function up()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND `element`='jquery' LIMIT 1;";
+            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
+                . "`element`='jquery' LIMIT 1;";
             $this->db->setQuery($query);
             if ($plugin = $this->db->loadObject()) {
                 $params = new \Hubzero\Config\Registry($plugin->params);
@@ -34,24 +37,30 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('activateSite', 1);
                 $params->set('noconflictSite', 0);
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
+                $query = "UPDATE `#__extensions` SET `params`="
+                    . $this->db->quote($params->toString())
+                    . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND `element`='formatwiki' LIMIT 1;";
+            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND "
+                . "`element`='formatwiki' LIMIT 1;";
             $this->db->setQuery($query);
             if ($plugin = $this->db->loadObject()) {
                 $params = new \Hubzero\Config\Registry($plugin->params);
                 $params->set('applyFormat', 1);
                 $params->set('convertFormat', 1);
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
+                $query = "UPDATE `#__extensions` SET `params`="
+                    . $this->db->quote($params->toString())
+                    . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND `element`='formathtml' LIMIT 1;";
+            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND "
+                . "`element`='formathtml' LIMIT 1;";
             $this->db->setQuery($query);
             if ($plugin = $this->db->loadObject()) {
                 $params = new \Hubzero\Config\Registry($plugin->params);
@@ -59,7 +68,9 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('convertFormat', 0);
                 $params->set('sanitizeBefore', 0);
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
+                $query = "UPDATE `#__extensions` SET `params`="
+                    . $this->db->quote($params->toString())
+                    . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
                 $this->db->setQuery($query);
                 $this->db->query();
 

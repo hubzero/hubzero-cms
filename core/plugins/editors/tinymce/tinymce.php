@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die;
 
 /**
  * TinyMCE Editor Plugin
@@ -19,11 +18,13 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Base path for editor files
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
 
     /**
@@ -91,14 +92,19 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
             // If URL, just pass it to $content_css
             if (strpos($content_css_custom, 'http') !== false) {
                 $content_css = 'content_css : "' . $content_css_custom . '",';
-            }
-            // If it is not a URL, assume it is a file name in the current template folder
-            else {
-                $content_css = 'content_css : "' . Request::root() . 'app/templates/' . $template . '/css/' . $content_css_custom . '",';
+            } else {
+                $content_css = 'content_css : "' . Request::root() . 'app/templates/' . $template
+                    . '/css/' . $content_css_custom . '",';
 
-                // Issue warning notice if the file is not found (but pass name to $content_css anyway to avoid TinyMCE error
-                if (!file_exists($templates_path . '/' . $template . '/css/' . $content_css_custom)) {
-                    Notify::warning(sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom));
+                // Issue warning notice if the file is not found
+                // but pass name to $content_css anyway to avoid TinyMCE error
+                if (
+                    !file_exists($templates_path . '/' . $template . '/css/'
+                    . $content_css_custom)
+                ) {
+                    Notify::warning(
+                        sprintf(Lang::txt('PLG_TINY_ERR_CUSTOMCSSFILENOTPRESENT'), $content_css_custom)
+                    );
                 }
             }
         } else {
@@ -116,7 +122,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
                         $content_css = 'content_css : "' . Request::root() . 'core/templates/system/css/editor.css",';
                     }
                 } else {
-                    $content_css = 'content_css : "' . Request::root() . 'core/templates/' . $template . '/css/editor.css",';
+                    $content_css = 'content_css : "' . Request::root() . 'core/templates/' . $template
+                        . '/css/editor.css",';
                 }
             }
         }
@@ -353,7 +360,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 
         if ($advimage) {
             $plugins[] = 'advimage';
-            $elements[] = 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style]';
+            $elements[] = 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align'
+                . '|onmouseover|onmouseout|name|style]';
         }
 
         // advlink
@@ -518,7 +526,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 					remove_script_host : false,
 					document_base_url : \"" . Request::root() . "\",
 					//Templates
-					template_external_list_url :  \"" . Request::root() . "core/plugins/editors/tinymce/assets/templates/template_list.js\",
+					template_external_list_url :  \"" . Request::root()
+                        . "core/plugins/editors/tinymce/assets/templates/template_list.js\",
 					// Layout
 					$content_css
 					// Advanced theme
@@ -579,7 +588,8 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
      */
     public function onSave($editor)
     {
-        return 'if (tinyMCE.get("' . $editor . '").isHidden()) {tinyMCE.get("' . $editor . '").show()}; tinyMCE.get("' . $editor . '").save();';
+        return 'if (tinyMCE.get("' . $editor . '").isHidden()) {tinyMCE.get("' . $editor . '").show()};'
+            . ' tinyMCE.get("' . $editor . '").save();';
     }
 
     /**
@@ -596,10 +606,14 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
 			function jInsertEditorText(text, editor) {
 				if (isBrowserIE()) {
 					if (window.parent.tinyMCE) {
-						window.parent.tinyMCE.selectedInstance.selection.moveToBookmark(window.parent.global_ie_bookmark);
+						window.parent.tinyMCE.selectedInstance.selection.moveToBookmark(
+							window.parent.global_ie_bookmark
+						);
 					}
 				}
-				tinyMCE.execInstanceCommand(editor, 'mceInsertContent',false,text);
+				tinyMCE.execInstanceCommand(
+					editor, 'mceInsertContent', false, text
+				);
 			}
 
 			var global_ie_bookmark = false;
@@ -630,8 +644,18 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
      * @param   string   An optional ID for the textarea. If not supplied the name is used.
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null)
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null
+    ) {
         if (empty($id)) {
             $id = $name;
         }
@@ -645,9 +669,11 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
             $height .= 'px';
         }
 
-        $editor  = '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" style="width: ' . $width . '; height:' . $height . ';" class="mce_editable">' . $content . "</textarea>\n" .
-        $this->_displayButtons($id, $buttons, $asset, $author) .
-        $this->_toogleButton($id);
+        $editor  = '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row
+            . '" style="width: ' . $width . '; height:' . $height . ';" class="mce_editable">'
+            . $content . "</textarea>\n" .
+        $this->displayButtons($id, $buttons, $asset, $author) .
+        $this->toggleButton($id);
 
         return $editor;
     }
@@ -656,7 +682,7 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _displayButtons($name, $buttons, $asset, $author)
+    private function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior
         Html::behavior('modal', 'a.modal-button');
@@ -681,11 +707,12 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
                 if ($button->get('name')) {
                     $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
                     $href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
-                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"' : 'onclick="IeCursorFix(); return false;"';
+                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"'
+                        : 'onclick="IeCursorFix(); return false;"';
                     $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
                     $return .= '<div class="button2-left"><div class="' . $button->get('name')
-                        . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options')
-                        . '">' . $button->get('text') . "</a></div></div>\n";
+                        . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="'
+                        . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
                 }
             }
 
@@ -699,10 +726,12 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    private function _toogleButton($name)
+    private function toggleButton($name)
     {
         $return  = "\n<div class=\"toggle-editor\">\n";
-        $return .= '<button class="btn button" onclick="tinyMCE.execCommand(\'mceToggleEditor\', false, \'' . $name . '\');return false;" title="' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '">' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '</button>';
+        $return .= '<button class="btn button" onclick="tinyMCE.execCommand(\'mceToggleEditor\', false, \''
+            . $name . '\');return false;" title="' . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '">'
+            . Lang::txt('PLG_TINY_BUTTON_TOGGLE_EDITOR') . '</button>';
         $return .= "</div>\n";
 
         return $return;

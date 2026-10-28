@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +32,10 @@ class Migration20140730153624ComUsers extends Base
                 $params->set('new_usertype', $id);
                 $this->saveParams('com_users', $params);
             } else {
-                $this->setError('Failed to convert new user type paramter of "' . $user_type . '" to an ID.', 'warning');
+                $this->setError(
+                    'Failed to convert new user type paramter of "' . $user_type . '" to an ID.',
+                    'warning'
+                );
                 return false;
             }
         }

@@ -6,13 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * Short description for 'class'
  *
  * Long description (if any) ...
+ *
  */
 class MappedDiff extends WikiDiff
 {
@@ -27,8 +25,10 @@ class MappedDiff extends WikiDiff
      *
      * @param   array  $from_lines          An array of strings. (Typically these are lines from a file.)
      * @param   array  $to_lines Parameter  An array of strings.
-     * @param   array  $mapped_from_lines   This array should have the same size number of elements as $from_lines.
-     *                                      The elements in $mapped_from_lines and $mapped_to_lines are what is actually compared when computing the diff.
+     * @param   array  $mapped_from_lines   This array should have the same size number of elements as
+     *                                      $from_lines. The elements in $mapped_from_lines and
+     *                                      $mapped_to_lines are what is actually compared when
+     *                                      computing the diff.
      * @param   array  $mapped_to_lines     This array should have the same number of elements as $to_lines.
      * @return  void
      */

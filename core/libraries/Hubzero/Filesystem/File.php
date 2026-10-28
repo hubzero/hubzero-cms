@@ -238,8 +238,8 @@ class File extends Entity
         }
 
         // We can save a stream or string...so see which it is
-        $method = (is_resource($this->contents) && get_resource_type($this->contents) == 'stream') ? 'putStream' : 'put';
-
+        $method = (is_resource($this->contents) &&
+            get_resource_type($this->contents) == 'stream') ? 'putStream' : 'put';
         if (!$this->$method($this->contents)) {
             return false;
         }

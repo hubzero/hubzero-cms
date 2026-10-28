@@ -20,6 +20,7 @@ class Text extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Single-line text box';
 
     /**
@@ -42,6 +43,9 @@ class Text extends Base
          */
         $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-        return '<span class="field-wrap"><input type="text" name="' . $control_name . '[' . $name . ']" id="' . $control_name . '-' . $name . '" value="' . $value . '" ' . $class . ' ' . $size . ' /></span>';
+        $inputName = $control_name . '[' . $name . ']';
+        $inputId = $control_name . '-' . $name;
+        return '<span class="field-wrap"><input type="text" name="' . $inputName . '" id="'
+            . $inputId . '" value="' . $value . '" ' . $class . ' ' . $size . ' /></span>';
     }
 }

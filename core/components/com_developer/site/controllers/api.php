@@ -27,7 +27,7 @@ class Api extends SiteController
      */
     public function displayTask()
     {
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $this->view->display();
     }
@@ -40,7 +40,7 @@ class Api extends SiteController
     public function docsTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // generate documentation
         $generator = new Generator(!Config::get('debug'));
@@ -48,7 +48,7 @@ class Api extends SiteController
         // render view
         $this->view
             ->set('documentation', $generator->output('array'))
-            ->set('tokens', $this->_getUserTokens())
+            ->set('tokens', $this->getUserTokens())
             ->display();
     }
 
@@ -60,7 +60,7 @@ class Api extends SiteController
     public function endpointTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         $active = Request::getString('active', '');
 
@@ -76,7 +76,7 @@ class Api extends SiteController
         $this->view
             ->set('active', $active)
             ->set('documentation', $documentation)
-            ->set('tokens', $this->_getUserTokens())
+            ->set('tokens', $this->getUserTokens())
             ->display();
     }
 
@@ -88,7 +88,7 @@ class Api extends SiteController
     public function consoleTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // render view
         $this->view->display();
@@ -102,7 +102,7 @@ class Api extends SiteController
     public function statusTask()
     {
         // build pathway
-        $this->_buildPathway();
+        $this->buildPathway();
 
         // render view
         $this->view->display();
@@ -113,7 +113,7 @@ class Api extends SiteController
      *
      * @return  void
      */
-    private function _buildPathway()
+    private function buildPathway()
     {
         // create breadcrumbs
         if (Pathway::count() <= 0) {
@@ -141,7 +141,7 @@ class Api extends SiteController
      *
      * @return  array
      */
-    private function _getUserTokens()
+    private function getUserTokens()
     {
         $tokens = array();
 

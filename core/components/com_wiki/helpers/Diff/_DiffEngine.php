@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * Class used internally by Diff to actually compute the diffs.
  *
@@ -29,22 +26,24 @@ defined('_HZEXEC_') or die();
  * Line length limits for robustness added by Tim Starling, 2005-08-31
  *
  * @author Geoffrey T. Dairiki, Tim Starling
+ * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class _DiffEngine
 {
     /**
      * Description for 'AX_XREF_LENGTH'
      */
-    const MAX_XREF_LENGTH =  10000;
-    var $xchanged = null;
-    var $ychanged = null;
-    var $yv = null;
-    var $xv = null;
-    var $yind = null;
-    var $xind = null;
-        var $in_seq = null;
-    var $seq = null;
-    var $lcs = null;
+    public const MAX_XREF_LENGTH = 10000;
+    public $xchanged = null;
+    public $ychanged = null;
+    public $yv = null;
+    public $xv = null;
+    public $yind = null;
+    public $xind = null;
+    public $in_seq = null;
+    public $seq = null;
+    public $lcs = null;
 
     /**
      * Short description for 'diff'
@@ -259,7 +258,7 @@ class _DiffEngine
                         $this->in_seq[$this->seq[$k]] = false;
                         $this->seq[$k] = $y;
                         $this->in_seq[$y] = 1;
-                    } else if (empty($this->in_seq[$y])) {
+                    } elseif (empty($this->in_seq[$y])) {
                         $k = $this->_lcs_pos($y);
                         USE_ASSERTS && assert($k > 0);
                         $ymids[$k] = $ymids[$k - 1];

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding fields to support attachements
- **/
+ *
+ */
 class Migration20140410085610ComSupport extends Base
 {
     /**
@@ -31,7 +33,8 @@ class Migration20140410085610ComSupport extends Base
 
         // add created
         if (!$this->db->tableHasField('#__support_attachments', 'created')) {
-            $query = "ALTER TABLE `#__support_attachments` ADD COLUMN `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
+            $query = "ALTER TABLE `#__support_attachments` "
+                . "ADD COLUMN `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
 
             $this->db->setQuery($query);
             $this->db->query();

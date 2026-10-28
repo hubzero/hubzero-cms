@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access.
-defined('_HZEXEC_') or die();
 
 /**
  * XHTML sanitizer for MediaWiki
@@ -345,6 +343,7 @@ include_once __DIR__ . DS . 'utfnormalutil.php';
 
 /**
  * XHTML sanitizer for MediaWiki
+ *
  * @addtogroup Parser
  */
 class Sanitizer
@@ -352,12 +351,12 @@ class Sanitizer
     /**
      * Description for 'ONE'
      */
-    const NONE = 0;
+    public const NONE = 0;
 
     /**
      * Description for 'NITIAL_NONLETTER'
      */
-    const INITIAL_NONLETTER = 1;
+    public const INITIAL_NONLETTER = 1;
 
     /**
      * Cleans up HTML, removes dangerous tags and attributes, and
@@ -471,18 +470,18 @@ class Sanitizer
                         // Keep track for later
                         if (isset($tabletags[$t]) && !in_array('table', $tagstack)) {
                             $badtag = 1;
-                        } else if (in_array($t, $tagstack) && !isset($htmlnest[$t])) {
+                        } elseif (in_array($t, $tagstack) && !isset($htmlnest[$t])) {
                             $badtag = 1;
                         // Is it a self closed htmlpair ? (bug 5487)
-                        } else if ($brace == '/>' && isset($htmlpairs[$t])) {
+                        } elseif ($brace == '/>' && isset($htmlpairs[$t])) {
                             $badtag = 1;
                         } elseif (isset($htmlsingleonly[$t])) {
                             // Hack to force empty tag for uncloseable elements
                             $brace = '/>';
-                        } else if (isset($htmlsingle[$t])) {
+                        } elseif (isset($htmlsingle[$t])) {
                             // Hack to not close $htmlsingle tags
                             $brace = null;
-                        } else if (isset($tabletags[$t]) && in_array($t, $tagstack)) {
+                        } elseif (isset($tabletags[$t]) && in_array($t, $tagstack)) {
                             // New table tag but forgot to close the previous one
                             $text .= "<$t>";
                         } else {

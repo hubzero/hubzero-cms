@@ -76,9 +76,8 @@ class TwitterMacro extends WikiMacro
         // pass already configured widget
         if ($widgetId) {
             $atts = array('data-widget-id="' . $widgetId . '"');
-        }
-        // no widget id, set up the screen name to show tweets from
-        else {
+        } else {
+            // no widget id, set up the screen name to show tweets from
             $atts[] = 'href="https://twitter.com/' . $screenName . '"';
             $atts[] = 'data-screen-name="' . $screenName . '"';
         }

@@ -39,7 +39,10 @@ class FilesystemServiceProvider extends ServiceProvider
                     'root'     => $app['config']->get('ftp_root'),
                 ));
             } else {
-                $adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
+                $adapter = new Local($app['config']->get(
+                    'virus_scanner',
+                    "clamscan -i --no-summary --block-encrypted"
+                ));
             }
 
             $filesystem = new Filesystem($adapter);

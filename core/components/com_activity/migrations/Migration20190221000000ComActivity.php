@@ -1,40 +1,38 @@
 <?php
 
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for changing DATETIME fields default to NULL for com_activity
  **/
+
 class Migration20190221000000ComActivity extends Base
 {
     /**
      * List of tables and their datetime fields
      *
-     * @var  array
+     * @var array
      **/
     public static $tables = array(
-        '#__activity_digests' => array(
-            'sent'
-        ),
-        '#__activity_logs' => array(
-            'created'
-        ),
-        '#__activity_recipients' => array(
-            'created',
-            'viewed'
-        ),
-        '#__activity_subscriptions' => array(
-            'created'
-        )
+    '#__activity_digests' => array(
+    'sent'
+    ),
+    '#__activity_logs' => array(
+    'created'
+    ),
+    '#__activity_recipients' => array(
+    'created',
+    'viewed'
+    ),
+    '#__activity_subscriptions' => array(
+    'created'
+    )
     );
 
     /**
@@ -73,7 +71,8 @@ class Migration20190221000000ComActivity extends Base
                     $this->db->tableExists($table)
                     && $this->db->tableHasField($table, $field)
                 ) {
-                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
+                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` "
+                        . "DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'";
 
                     $this->db->setQuery($query);
                     $this->db->query();

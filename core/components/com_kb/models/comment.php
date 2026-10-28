@@ -24,7 +24,7 @@ class Comment extends Relational
     /**
      * Database state constants
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * The table namespace
@@ -52,7 +52,7 @@ class Comment extends Relational
      *
      * @var  string
      */
-    private $_base = 'index.php?option=com_kb';
+    private $base = 'index.php?option=com_kb';
 
     /**
      * Fields to be parsed
@@ -169,7 +169,7 @@ class Comment extends Relational
      */
     public function link($type = '')
     {
-        $link  = $this->_base;
+        $link  = $this->base;
         if (!$this->get('section')) {
             $article = Article::oneOrFail($this->get('entry_id'));
 
@@ -183,7 +183,7 @@ class Comment extends Relational
         switch (strtolower($type)) {
             case 'component':
             case 'base':
-                return $this->_base;
+                return $this->base;
             break;
 
             case 'article':
@@ -203,11 +203,12 @@ class Comment extends Relational
                 break;
 
             case 'vote':
-                $link  = $this->_base . '&task=vote&category=comment&id=' . $this->get('id');
+                $link  = $this->base . '&task=vote&category=comment&id=' . $this->get('id');
                 break;
 
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=kb&id=' . $this->get('id') . '&parent=' . $this->get('entry_id');
+                $link = 'index.php?option=com_support&task=reportabuse&category=kb&id='
+                    . $this->get('id') . '&parent=' . $this->get('entry_id');
                 break;
 
             case 'permalink':

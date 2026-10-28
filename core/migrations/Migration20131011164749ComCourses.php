@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +22,12 @@ class Migration20131011164749ComCourses extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__courses_asset_groups') && $this->db->tableHasField('#__courses_asset_groups', 'description')) {
-            $query = "ALTER TABLE `#__courses_asset_groups` CHANGE `description` `description` TEXT  CHARACTER SET utf8  NOT NULL";
+        if (
+            $this->db->tableExists('#__courses_asset_groups')
+            && $this->db->tableHasField('#__courses_asset_groups', 'description')
+        ) {
+            $query = "ALTER TABLE `#__courses_asset_groups` CHANGE `description` `description` TEXT  CHARACTER SET "
+                . "utf8  NOT NULL";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -33,8 +38,12 @@ class Migration20131011164749ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_asset_groups') && $this->db->tableHasField('#__courses_asset_groups', 'description')) {
-            $query = "ALTER TABLE `#__courses_asset_groups` CHANGE `description` `description` VARCHAR(255)  CHARACTER SET utf8  NOT NULL  DEFAULT ''";
+        if (
+            $this->db->tableExists('#__courses_asset_groups')
+            && $this->db->tableHasField('#__courses_asset_groups', 'description')
+        ) {
+            $query = "ALTER TABLE `#__courses_asset_groups` CHANGE `description` `description` VARCHAR(255) "
+                . "CHARACTER SET utf8  NOT NULL  DEFAULT ''";
             $this->db->setQuery($query);
             $this->db->query();
         }

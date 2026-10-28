@@ -186,9 +186,8 @@ class Types extends AdminController
 
             // Output the HTML
             $this->view->display();
-        }
-        //Actual deletion page
-        else {
+        } else {
+            // Actual deletion page
             // Check for request forgeries
             Request::checkToken();
 
@@ -230,10 +229,13 @@ class Types extends AdminController
                 $this->view->display();
 
                 return;
-            }
-            // Delete and redirect to the main type page
-            else {
-                $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
+            } else {
+                // Delete and redirect to the main type page
+                $url = Route::url(
+                    'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+                    . '&task=edit&id=' . $id,
+                    false
+                );
 
                 $manifest   = new stdClass();
                 $manifest->blocks = new stdClass();
@@ -300,7 +302,11 @@ class Types extends AdminController
             $row->curation
         );
 
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=edit&id=' . $id,
+            false
+        );
 
         $manifest   = new stdClass();
         $manifest->blocks = new stdClass();
@@ -434,7 +440,11 @@ class Types extends AdminController
             return;
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=edit&id=' . $id,
+            false
+        );
 
         if (!trim($curation) || $this->isJson(trim($curation))) {
             $row->curation = trim($curation);
@@ -537,7 +547,11 @@ class Types extends AdminController
             $row->curation
         );
 
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id, false);
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=edit&id[]=' . $id,
+            false
+        );
 
         $objC = new \Components\Publications\Models\Curation($row->curation);
         $manifest = $objC->_manifest;
@@ -555,19 +569,28 @@ class Types extends AdminController
                             // Type params?
                             if ($bpName == 'typeParams') {
                                 foreach ($bpValue as $tpName => $tpValue) {
-                                    if (is_array($manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName->$tpName)) {
-                                        $pval = trim($tpValue) ? explode(',', trim($tpValue)) : array();
+                                    $blockEl = $manifest->blocks->$blockId->elements->$elementId;
+                                    $typeParam = $blockEl->$dataLabel->$bpName->$tpName;
+                                    if (is_array($typeParam)) {
+                                        $pval = trim($tpValue)
+                                            ? explode(',', trim($tpValue))
+                                            : array();
                                     } else {
                                         $pval = trim($tpValue);
                                     }
-                                    $manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName->$tpName = $pval;
+                                    $blockEl->$dataLabel->$bpName->$tpName = $pval;
                                 }
-                            } elseif (is_array($manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName)) {
-                                $pval = trim($bpValue) ? explode(',', trim($bpValue)) : array();
-                                $manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName = $pval;
                             } else {
-                                $pval = trim($bpValue);
-                                $manifest->blocks->$blockId->elements->$elementId->$dataLabel->$bpName = $pval;
+                                $blockEl = $manifest->blocks->$blockId->elements->$elementId;
+                                if (is_array($blockEl->$dataLabel->$bpName)) {
+                                    $pval = trim($bpValue)
+                                        ? explode(',', trim($bpValue))
+                                        : array();
+                                    $blockEl->$dataLabel->$bpName = $pval;
+                                } else {
+                                    $pval = trim($bpValue);
+                                    $blockEl->$dataLabel->$bpName = $pval;
+                                }
                             }
                         }
                     } else {
@@ -658,9 +681,10 @@ class Types extends AdminController
         $row = new \Components\Publications\Tables\MasterType($database);
 
         // Load object
+        $listUrl = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
         if (!$id || !$row->load($id)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url($listUrl, false),
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice'
             );
@@ -672,7 +696,7 @@ class Types extends AdminController
             $row->curation
         );
 
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false);
+        $url = Route::url($listUrl . '&task=edit&id=' . $id, false);
 
         $manifest = new stdClass();
         if ($neworder && !empty($order)) {
@@ -783,7 +807,11 @@ class Types extends AdminController
         // Initiate extended database class
         $row = new \Components\Publications\Tables\MasterType($database);
 
-        $url = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false);
+        $url = Route::url(
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=edit&id=' . $fields['id'],
+            false
+        );
 
         // Load record
         if ($fields['id']) {

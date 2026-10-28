@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing group_id value for tool tickets
+  *
  **/
 class Migration20170731200400ComTools extends Base
 {
@@ -50,12 +52,14 @@ class Migration20170731200400ComTools extends Base
             $tools = $this->db->loadObjectList();
 
             foreach ($tools as $tool) {
-                $query = "SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`=" . $this->db->quote($prefix . $tool->toolname);
+                $query = "SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`="
+                    . $this->db->quote($prefix . $tool->toolname);
                 $this->db->setQuery($query);
                 $gidNumber = $this->db->loadResult();
 
                 if ($gidNumber) {
-                    $query = "UPDATE `#__support_tickets` SET `group_id`=" . $this->db->quote($gidNumber) . " WHERE `id`=" . $this->db->quote($tool->ticketid);
+                    $query = "UPDATE `#__support_tickets` SET `group_id`="
+                        . $this->db->quote($gidNumber) . " WHERE `id`=" . $this->db->quote($tool->ticketid);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

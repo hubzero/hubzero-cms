@@ -132,7 +132,7 @@ class Collection extends ItemList
                 if (!array_key_exists($type, $extensions) || $extensions[$type] < $constraint) {
                     return false;
                 }
-            } else if (is_callable($constraint)) {
+            } elseif (is_callable($constraint)) {
                 if (call_user_func_array($constraint, [$extensions, $files]) === false) {
                     return false;
                 }
@@ -271,7 +271,7 @@ class Collection extends ItemList
                     fclose($tmpSrc);
                     fclose($fileSrc);
                     $zip->addFile($tmpFilePath, $structure ? $entity->getPath() : $entity->getFileName());
-                } else if ($entity->isDir() && $structure) {
+                } elseif ($entity->isDir() && $structure) {
                     $zip->addEmptyDir($entity->getPath());
                 }
 

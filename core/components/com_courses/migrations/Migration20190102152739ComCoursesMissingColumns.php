@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,9 +8,6 @@
  */
 
 use Hubzero\Content\Migration\Base;
-
-// no direct access
-defined('_HZEXEC_') or die();
 
 $componentPath = Component::path('com_courses');
 
@@ -24,19 +22,24 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
  */
 class Migration20190102152739ComCoursesMissingColumns extends Base
 {
-    static $assetsTable = '#__courses_assets';
-    static $assetsColumns = [
+    public static $assetsTable = '#__courses_assets';
+
+    public static $assetsColumns = [
          ['name' => 'grade_weight', 'type' => 'varchar(255)'],
          ['name' => 'graded', 'type' => 'tinyint(2)'],
          ['name' => 'subtype', 'type' => 'varchar(255)', 'restriction' => 'NOT NULL ', 'default' => "'file'"],
     ];
-    static $offeringSectionsTable = '#__courses_offering_sections';
-    static $offeringSectionsColumns = [
+
+    public static $offeringSectionsTable = '#__courses_offering_sections';
+
+    public static $offeringSectionsColumns = [
          ['name' => 'enrollment', 'type' => 'tinyint(2)'],
          ['name' => 'is_default', 'type' => 'tinyint(2)', 'restriction' => 'NOT NULL ', 'default' => 0],
     ];
-    static $pagesTable = '#__courses_pages';
-    static $pagesColumns = [
+
+    public static $pagesTable = '#__courses_pages';
+
+    public static $pagesColumns = [
          ['name' => 'section_id', 'type' => 'int(11)'],
     ];
 
@@ -47,7 +50,10 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $this->_queryIfTableExists($assetsTable, $assetsTableQuery);
 
         $offeringSectionsTable = self::$offeringSectionsTable;
-        $offeringSectionsTableQuery = $this->_generateSafeAddColumns($offeringSectionsTable, self::$offeringSectionsColumns);
+        $offeringSectionsTableQuery = $this->_generateSafeAddColumns(
+            $offeringSectionsTable,
+            self::$offeringSectionsColumns
+        );
         $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
         $pagesTable = self::$pagesTable;
@@ -62,7 +68,10 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $this->_queryIfTableExists($assetsTable, $assetsTableQuery);
 
         $offeringSectionsTable = self::$offeringSectionsTable;
-        $offeringSectionsTableQuery = $this->_generateSafeDropColumns($offeringSectionsTable, self::$offeringSectionsColumns);
+        $offeringSectionsTableQuery = $this->_generateSafeDropColumns(
+            $offeringSectionsTable,
+            self::$offeringSectionsColumns
+        );
         $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
         $pagesTable = self::$pagesTable;
@@ -70,6 +79,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         $this->_queryIfTableExists($pagesTable, $pagesTableQuery);
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateSafeAddColumns($table, $columns)
     {
         $query = $this->_generateSafeAlterTableColumnOperation(
@@ -81,6 +91,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         return $query;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _safeAddColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
@@ -94,6 +105,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         return $addColumnStatement;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateSafeDropColumns($table, $columns)
     {
         $query = $this->_generateSafeAlterTableColumnOperation(
@@ -105,6 +117,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         return $query;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _safeDropColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
@@ -118,6 +131,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         return $dropColumnStatement;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
     {
         $query = "ALTER TABLE $table ";
@@ -131,6 +145,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
         return $query;
     }
 
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _queryIfTableExists($tableName, $query)
     {
         if ($this->db->tableExists($tableName)) {

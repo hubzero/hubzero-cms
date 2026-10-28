@@ -27,7 +27,9 @@ class Html
             $MYREQUEST['SORT2'] = $MYREQUEST['SORT2'] == 'A' ? 'D' : 'A';
         }
 
-        return "<a class=\"sortable\" href=\"$MY_SELF_WO_SORT$extra&amp;SORT1=$key&amp;SORT2=" . $MYREQUEST['SORT2'] . "\">$name</a>";
+        $sort2 = $MYREQUEST['SORT2'];
+        $url = "{$MY_SELF_WO_SORT}{$extra}&amp;SORT1={$key}&amp;SORT2={$sort2}";
+        return "<a class=\"sortable\" href=\"{$url}\">{$name}</a>";
     }
 
     /**

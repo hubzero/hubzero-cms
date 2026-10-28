@@ -28,7 +28,7 @@ class Helper extends Module
      * @param   string  $type    Type
      * @return  string
      */
-    static function getReturnURL($params, $type)
+    public static function getReturnURL($params, $type)
     {
         $url = null;
         if ($itemid =  $params->get($type)) {
@@ -74,7 +74,7 @@ class Helper extends Module
      *
      * @return  string
      */
-    static function getType()
+    public static function getType()
     {
         return (!User::isGuest()) ? 'logout' : 'login';
     }

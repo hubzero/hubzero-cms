@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,10 +19,10 @@ use Notify;
 
 class RecordProcessingHelper
 {
-    protected $controller,
-        $errorMessageHelper,
-        $app,
-        $notify;
+    protected $controller;
+    protected $errorMessageHelper;
+    protected $app;
+    protected $notify;
 
     public function __construct($args = [])
     {

@@ -21,42 +21,42 @@ class Provider
      *
      * @var  mixed
      */
-    private $_provider = null;
+    private $provider = null;
 
     /**
      * Consumer data
      *
      * @var  string
      */
-    private $_consumer_data = null;
+    private $consumer_data = null;
 
     /**
      * Token data
      *
      * @var  string
      */
-    private $_token_data = null;
+    private $token_data = null;
 
     /**
      * Request token path
      *
      * @var  string
      */
-    private $_request_token_path = null;
+    private $request_token_path = null;
 
     /**
      * Access token path
      *
      * @var  string
      */
-    private $_access_token_path = null;
+    private $access_token_path = null;
 
     /**
      * Authorize path
      *
      * @var  string
      */
-    private $_authorize_path = null;
+    private $authorize_path = null;
 
     /**
      * Set request token path
@@ -66,7 +66,7 @@ class Provider
      */
     public function setRequestTokenPath($path)
     {
-        $this->_request_token_path = trim($path, '/');
+        $this->request_token_path = trim($path, '/');
     }
 
     /**
@@ -77,7 +77,7 @@ class Provider
      */
     public function setAccessTokenPath($path)
     {
-        $this->_access_token_path = trim($path, '/');
+        $this->access_token_path = trim($path, '/');
     }
 
     /**
@@ -88,7 +88,7 @@ class Provider
      */
     public function setAuthorizePath($path)
     {
-        $this->_authorize_path = trim($path, '/');
+        $this->authorize_path = trim($path, '/');
     }
 
     /**
@@ -103,11 +103,11 @@ class Provider
             throw new \Exception('OAuthProvider class not found.', 500);
         }
 
-        $this->_provider = new OAuthProvider($params);
+        $this->provider = new OAuthProvider($params);
 
-        $this->_provider->consumerHandler(array($this,'consumerHandler'));
-        $this->_provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
-        $this->_provider->tokenHandler(array($this, 'tokenHandler'));
+        $this->provider->consumerHandler(array($this,'consumerHandler'));
+        $this->provider->timestampNonceHandler(array($this,'timestampNonceHandler'));
+        $this->provider->tokenHandler(array($this, 'tokenHandler'));
     }
 
     /**
@@ -133,9 +133,9 @@ class Provider
 
         $path = trim($parts['path'], '/');
 
-        if ($path == $this->_request_token_path) {
-            $this->_provider->isRequestTokenEndpoint(true);
-        } else if ($path == $this->_access_token_path) {
+        if ($path == $this->request_token_path) {
+            $this->provider->isRequestTokenEndpoint(true);
+        } else if ($path == $this->access_token_path) {
             $header = '';
 
             if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -160,15 +160,15 @@ class Provider
                 || !strpos($header, 'x_auth_username')
                 || !strpos($header, 'x_auth_password')
             ) {
-                $this->_provider->is2LeggedEndpoint(true);
-                //$this->_provider->addRequiredParameter ('x_auth_mode');
-                //$this->_provider->addRequiredParameter ('x_auth_username');
-                //$this->_provider->addRequiredParameter ('x_auth_password');
+                $this->provider->is2LeggedEndpoint(true);
+                //$this->provider->addRequiredParameter ('x_auth_mode');
+                //$this->provider->addRequiredParameter ('x_auth_username');
+                //$this->provider->addRequiredParameter ('x_auth_password');
             }
         }
 
         try {
-            $this->_provider->checkOAuthRequest($uri, $method);
+            $this->provider->checkOAuthRequest($uri, $method);
 
             return true;
         } catch (OAuthException $E) {
@@ -176,31 +176,31 @@ class Provider
 
         // No attempt was made to sign this, let it pass as such
         if (
-            ($this->_provider->consumer_key === null)
-            && ($this->_provider->consumer_secret === null)
-            && ($this->_provider->nonce === null)
-            && ($this->_provider->token === null)
-            && ($this->_provider->token_secret === null)
-            && ($this->_provider->timestamp === null)
-            && ($this->_provider->version === null)
-            && ($this->_provider->signature_method === null)
-            && ($this->_provider->callback === null)
-            && (empty($this->_provider->signature))
+            ($this->provider->consumer_key === null)
+            && ($this->provider->consumer_secret === null)
+            && ($this->provider->nonce === null)
+            && ($this->provider->token === null)
+            && ($this->provider->token_secret === null)
+            && ($this->provider->timestamp === null)
+            && ($this->provider->version === null)
+            && ($this->provider->signature_method === null)
+            && ($this->provider->callback === null)
+            && (empty($this->provider->signature))
         ) {
             return true;
         }
 
         // request to authorize path can have token and callback params, but are unsigned
-        if ($path == $this->_authorize_path) {
+        if ($path == $this->authorize_path) {
             if (
-                ($this->_provider->consumer_key === null)
-                && ($this->_provider->consumer_secret === null)
-                && ($this->_provider->nonce === null)
-                && ($this->_provider->token_secret === null)
-                && ($this->_provider->timestamp === null)
-                && ($this->_provider->version === null)
-                && ($this->_provider->signature_method === null)
-                && (empty($this->_provider->signature))
+                ($this->provider->consumer_key === null)
+                && ($this->provider->consumer_secret === null)
+                && ($this->provider->nonce === null)
+                && ($this->provider->token_secret === null)
+                && ($this->provider->timestamp === null)
+                && ($this->provider->version === null)
+                && ($this->provider->signature_method === null)
+                && (empty($this->provider->signature))
             ) {
                 return true;
             }
@@ -211,15 +211,15 @@ class Provider
         // request signed without token is allowed to pass
         if ($message == "oauth_problem=token_rejected") {
             if (
-                ($this->_provider->consumer_key !== null)
-                && ($this->_provider->consumer_secret !== null)
-                && ($this->_provider->nonce !== null)
-                && (empty($this->_provider->token))
-                && (empty($this->_provider->token_secret))
-                && ($this->_provider->timestamp !== null)
-                && ($this->_provider->version !== null)
-                && ($this->_provider->signature_method !== null)
-                && (!empty($this->_provider->signature))
+                ($this->provider->consumer_key !== null)
+                && ($this->provider->consumer_secret !== null)
+                && ($this->provider->nonce !== null)
+                && (empty($this->provider->token))
+                && (empty($this->provider->token_secret))
+                && ($this->provider->timestamp !== null)
+                && ($this->provider->version !== null)
+                && ($this->provider->signature_method !== null)
+                && (!empty($this->provider->signature))
             ) {
                 return true;
             }
@@ -253,7 +253,7 @@ class Provider
      */
     public function getToken()
     {
-        return $this->_provider->token;
+        return $this->provider->token;
     }
 
     /**
@@ -263,7 +263,7 @@ class Provider
      */
     public function getConsumerKey()
     {
-        return $this->_provider->consumer_key;
+        return $this->provider->consumer_key;
     }
 
     /**
@@ -273,7 +273,7 @@ class Provider
      */
     public function getConsumerData()
     {
-        return $this->_consumer_data;
+        return $this->consumer_data;
     }
 
     /**
@@ -283,7 +283,7 @@ class Provider
      */
     public function getTokenData()
     {
-        return $this->_token_data;
+        return $this->token_data;
     }
 
     /**
@@ -307,7 +307,7 @@ class Provider
             return OAUTH_ERR_INTERNAL_ERROR;
         }
 
-        $db->setQuery("SELECT * FROM `#__oauthp_consumers` WHERE token=" . $db->quote($this->_provider->consumer_key) . " LIMIT 1;");
+        $db->setQuery("SELECT * FROM `#__oauthp_consumers` WHERE token=" . $db->quote($this->provider->consumer_key) . " LIMIT 1;");
 
         $result = $db->loadObject();
 
@@ -323,8 +323,8 @@ class Provider
             return OAUTH_CONSUMER_KEY_REFUSED;
         }
 
-        $this->_consumer_data = $result;
-        $this->_provider->consumer_secret = $result->secret;
+        $this->consumer_data = $result;
+        $this->provider->consumer_secret = $result->secret;
 
         return OAUTH_OK;
     }
@@ -341,7 +341,7 @@ class Provider
      */
     public function timestampNonceHandler()
     {
-        $timediff = abs(time() - $this->_provider->timestamp);
+        $timediff = abs(time() - $this->provider->timestamp);
 
         if ($timediff > 600) {
             return OAUTH_BAD_TIMESTAMP;
@@ -356,9 +356,9 @@ class Provider
         $db->setQuery(
             "INSERT INTO `#__oauthp_nonces` (nonce,stamp,created) "
                 . " VALUES (" .
-                $db->quote($this->_provider->nonce) .
+                $db->quote($this->provider->nonce) .
                 "," .
-                $db->quote($this->_provider->timestamp) .
+                $db->quote($this->provider->timestamp) .
                 ", UTC_TIMESTAMP());"
         );
 
@@ -394,7 +394,7 @@ class Provider
             return OAUTH_ERR_INTERNAL_ERROR;
         }
 
-        $db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($this->_provider->token) . " LIMIT 1;");
+        $db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($this->provider->token) . " LIMIT 1;");
 
         $result = $db->loadObject();
 
@@ -411,13 +411,13 @@ class Provider
         }
 
         if ($result->user_id == '0') { // check verifier on request tokens
-            if (!hash_equals((string) $result->verifier, (string) $this->_provider->verifier)) {
+            if (!hash_equals((string) $result->verifier, (string) $this->provider->verifier)) {
                 return OAUTH_VERIFIER_INVALID;
             }
         }
 
-        $this->_token_data = $result;
-        $this->_provider->token_secret = $result->token_secret;
+        $this->token_data = $result;
+        $this->provider->token_secret = $result->token_secret;
 
         return OAUTH_OK;
     }

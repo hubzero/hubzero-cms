@@ -149,6 +149,7 @@ class Inflector
      * @param   string  $word  the word to check
      * @return  bool    if the word is countable
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function is_countable($word)
     {
         return ! (in_array(strtolower(strval($word)), static::$uncountable_words));

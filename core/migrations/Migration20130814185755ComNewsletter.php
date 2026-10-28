@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +34,8 @@ class Migration20130814185755ComNewsletter extends Base
 					PRIMARY KEY (`id`)
 				  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-        $query .= "UPDATE `#__cron_jobs` SET `params`='' WHERE `plugin`='newsletter' AND `event`='processMailings' AND `params` LIKE '%newsletter_queue_limit=2\n%';";
+        $query .= "UPDATE `#__cron_jobs` SET `params`='' WHERE `plugin`='newsletter' "
+            . "AND `event`='processMailings' AND `params` LIKE '%newsletter_queue_limit=2\n%';";
 
         if (!empty($query)) {
             $this->db->setQuery($query);

@@ -106,13 +106,16 @@ class Attachment extends Obj
     {
         $filename = $this->automaticFilename($data);
 
-        if (file_exists($this->getUploadDir() . ($this->get('subdir') ? DS . $this->get('subdir') : '') . DS . $filename)) {
+        $subdir = $this->get('subdir') ? DS . $this->get('subdir') : '';
+        $path = $this->getUploadDir() . $subdir . DS . $filename;
+
+        if (file_exists($path)) {
             $ext = strrchr($filename, '.');
             $prefix = substr($filename, 0, -strlen($ext));
 
             $i = 1;
 
-            while (is_file($this->getUploadDir() . ($this->get('subdir') ? DS . $this->get('subdir') : '') . DS . $filename)) {
+            while (is_file($this->getUploadDir() . $subdir . DS . $filename)) {
                 $filename = $prefix . ++$i . $ext;
             }
         }

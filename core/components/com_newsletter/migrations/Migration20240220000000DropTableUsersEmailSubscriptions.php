@@ -6,13 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
-
 use Hubzero\Content\Migration\Base;
 
 class Migration20240220000000DropTableUsersEmailSubscriptions extends Base
 {
-    static $tableName = '#__users_email_subscriptions';
+    public static $tableName = '#__users_email_subscriptions';
 
     // users_email_subscriptions table should not be present in core implementation
     public function up()

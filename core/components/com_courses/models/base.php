@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,13 +27,14 @@ abstract class Base extends Model
      *
      * @var integer
      */
-    const APP_STATE_DRAFT = 3;
+    public const APP_STATE_DRAFT = 3;
 
     /**
      * Entry scope
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = null;
 
     /**
@@ -40,6 +42,7 @@ abstract class Base extends Model
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_creator = null;
 
     /**
@@ -48,7 +51,8 @@ abstract class Base extends Model
      *
      * @var array
      */
-    static $_section_keys = array(
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    public static $_section_keys = array(
         //'section_id',
         'publish_up',
         'publish_down'
@@ -59,6 +63,7 @@ abstract class Base extends Model
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_config = null;
 
     /**

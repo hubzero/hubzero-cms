@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,12 +13,12 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 
 class BaseAuditor
 {
-    var $type;
-    var $pId;
-    var $crtId;
-    var $uId;
-    var $response;
-    var $sId;
+    public $type;
+    public $pId;
+    public $crtId;
+    public $uId;
+    public $response;
+    public $sId;
 
     public function __construct($type, $pId = null, $crtId = null)
     {

@@ -247,7 +247,12 @@ class Accesslevels extends AdminController
                 $row = Viewlevel::oneOrNew($id);
 
                 if (in_array($row->get('id'), $levelsInUse)) {
-                    Notify::warning(Lang::txt('COM_MEMBERS_ERROR_VIEW_LEVEL_IN_USE', $row->get('id'), $row->get('title')));
+                    $msg = Lang::txt(
+                        'COM_MEMBERS_ERROR_VIEW_LEVEL_IN_USE',
+                        $row->get('id'),
+                        $row->get('title')
+                    );
+                    Notify::warning($msg);
                     continue;
                 }
 

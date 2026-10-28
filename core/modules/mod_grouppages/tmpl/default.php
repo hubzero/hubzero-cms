@@ -48,12 +48,22 @@ foreach ($this->unapprovedModules as $unapprovedModule) {
                             ?>
                         </td>
                         <td>
-                            <a class="page" href="<?php echo Route::url('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=pages'); ?>">
+                            <?php
+                            $pagesUrl = Route::url(
+                                'index.php?option=com_groups&gid='
+                                . $group->get('cn') . '&controller=pages'
+                            );
+                            $modulesUrl = Route::url(
+                                'index.php?option=com_groups&gid='
+                                . $group->get('cn') . '&controller=modules'
+                            );
+                            ?>
+                            <a class="page" href="<?php echo $pagesUrl; ?>">
                                 <?php echo (isset($row['pages'])) ? $row['pages'] : 0; ?>
                             </a>
                         </td>
                         <td>
-                            <a class="module" href="<?php echo Route::url('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=modules'); ?>">
+                            <a class="module" href="<?php echo $modulesUrl; ?>">
                                 <?php echo (isset($row['modules'])) ? $row['modules'] : 0; ?>
                             </a>
                         </td>

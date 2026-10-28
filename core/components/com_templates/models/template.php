@@ -143,7 +143,10 @@ class Template extends Relational
     public function transformXml()
     {
         if (!$this->xmldata) {
-            $filePath = Filesystem::cleanPath(($this->get('protected') ? PATH_CORE : PATH_APP) . '/templates/' . $this->get('element') . '/templateDetails.xml');
+            $basePath = $this->get('protected') ? PATH_CORE : PATH_APP;
+            $filePath = Filesystem::cleanPath(
+                $basePath . '/templates/' . $this->get('element') . '/templateDetails.xml'
+            );
 
             $this->xmldata = new Obj();
 
@@ -172,8 +175,12 @@ class Template extends Relational
                     $meta['name']         = (string) $xml->name;
 
                     // Check if we're a language. If so use metafile.
-                    $meta['type']         = $xml->getName() == 'metafile' ? 'language' : (string) $xml->attributes()->type;
-                    $meta['creationDate'] = ((string) $xml->creationDate) ? (string) $xml->creationDate : Lang::txt('Unknown');
+                    $meta['type'] = $xml->getName() == 'metafile'
+                        ? 'language'
+                        : (string) $xml->attributes()->type;
+                    $meta['creationDate'] = ((string) $xml->creationDate)
+                        ? (string) $xml->creationDate
+                        : Lang::txt('Unknown');
                     $meta['author']       = ((string) $xml->author) ? (string) $xml->author : Lang::txt('Unknown');
                     $meta['copyright']    = (string) $xml->copyright;
                     $meta['authorEmail']  = (string) $xml->authorEmail;

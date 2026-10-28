@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +29,8 @@ class Migration20141121144051ComCollections extends Base
             if ($articles = $this->db->loadObjectList()) {
                 foreach ($articles as $article) {
                     $article->url = rtrim($article->url, '&');
-                    $query = "UPDATE `#__collections_items` SET `url`=" . $this->db->quote($article->url) . " WHERE `id`=" . $this->db->quote($article->id);
+                    $query = "UPDATE `#__collections_items` SET `url`=" . $this->db->quote($article->url)
+                        . " WHERE `id`=" . $this->db->quote($article->id);
                     $this->db->setQuery($query);
                     $this->db->query();
                 }

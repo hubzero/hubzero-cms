@@ -18,7 +18,7 @@ use Lang;
 class OptionGroup
 {
     // Data container
-    var $data;
+    public $data;
     private $db;
 
     /**

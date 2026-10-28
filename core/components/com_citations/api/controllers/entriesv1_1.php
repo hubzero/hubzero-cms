@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -96,9 +97,15 @@ class Entriesv1_1 extends ApiController
         $filters['year_start']      = Request::getInt('year_start', $earliest_year);
         $filters['year_end']        = Request::getInt('year_end', date("Y"));
         $filters['filter']          = Request::getString('filter', '');
-        $filters['reftype']         = Request::getArray('reftype', array('research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1));
-        $filters['geo']             = Request::getArray('geo', array('us' => 1, 'na' => 1,'eu' => 1, 'as' => 1));
-        $filters['aff']             = Request::getArray('aff', array('university' => 1, 'industry' => 1, 'government' => 1));
+        $filters['reftype']         = Request::getArray('reftype', array(
+            'research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1
+        ));
+        $filters['geo']             = Request::getArray('geo', array(
+            'us' => 1, 'na' => 1, 'eu' => 1, 'as' => 1
+        ));
+        $filters['aff']             = Request::getArray('aff', array(
+            'university' => 1, 'industry' => 1, 'government' => 1
+        ));
         $filters['startuploaddate'] = Request::getString('startuploaddate', '0000-00-00');
         $filters['enduploaddate']   = Request::getString('enduploaddate', '0000-00-00');
         $filters['scope']           = 'all';

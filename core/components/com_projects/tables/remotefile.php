@@ -224,8 +224,13 @@ class RemoteFile extends Table
      * @param   array    $connections
      * @return  mixed    False if error, Object on success
      */
-    public function checkRemoteRecord($projectid = null, $service = 'google', $uid = 0, $item = array(), $connections = array())
-    {
+    public function checkRemoteRecord(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $item = array(),
+        $connections = array()
+    ) {
         if (!$projectid || empty($item)) {
             return false;
         }
@@ -297,8 +302,16 @@ class RemoteFile extends Table
      * @param   array    $remote
      * @return  mixed    False if error, Object on success
      */
-    public function updateSyncRecord($projectid = null, $service = '', $uid = 0, $type = 'file', $id = null, $filename = null, $local = array(), $remote = array())
-    {
+    public function updateSyncRecord(
+        $projectid = null,
+        $service = '',
+        $uid = 0,
+        $type = 'file',
+        $id = null,
+        $filename = null,
+        $local = array(),
+        $remote = array()
+    ) {
         if (!$projectid || (!$id && !$filename)) {
             return false;
         }
@@ -357,8 +370,23 @@ class RemoteFile extends Table
      * @param   string   $remote_author
      * @return  mixed    False if error, Object on success
      */
-    public function updateRecord($projectid = null, $service = '', $id = null, $local_path = '', $type = 'file', $uid = 0, $parentId = 0, $title = '', $remote_md5 = '', $local_md5 = '', $converted = '', $remote_format = '', $local_format = '', $remote_modified = '', $remote_author = '')
-    {
+    public function updateRecord(
+        $projectid = null,
+        $service = '',
+        $id = null,
+        $local_path = '',
+        $type = 'file',
+        $uid = 0,
+        $parentId = 0,
+        $title = '',
+        $remote_md5 = '',
+        $local_md5 = '',
+        $converted = '',
+        $remote_format = '',
+        $local_format = '',
+        $remote_modified = '',
+        $remote_author = ''
+    ) {
         if (!$projectid || !$id) {
             return false;
         }

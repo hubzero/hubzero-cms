@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,7 +8,6 @@
  */
 
 // No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * User plugin for hub users
@@ -160,7 +160,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
         if (App::isAdmin() && $forceSsl >= 1) {
             $secure = true;
-        } else if (App::isSite() && $forceSsl == 2) {
+        } elseif (App::isSite() && $forceSsl == 2) {
             $secure = true;
         }
 
@@ -227,7 +227,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
                     $quota->set('hard_files', $class->get('hard_files'));
                     $quota->save();
                 }
-            } else if ($quota->get('class_id')) {
+            } elseif ($quota->get('class_id')) {
                 // Here, we're checking to make sure their class matches their actual quota values
                 $class = Components\Members\Models\Quota\Category::oneOrNew($quota->get('class_id'));
 
@@ -292,7 +292,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
                     $params = Component::params('com_members');
                     $params->set('homedir', $hubHomeDir);
 
-                    $query = "UPDATE `#__extensions` SET `params` = " . $db->quote($params->toString()) . " WHERE `type`='component' AND `element`=" . $db->quote('com_members');
+                    $query = "UPDATE `#__extensions` SET `params` = " . $db->quote($params->toString())
+                        . " WHERE `type`='component' AND `element`=" . $db->quote('com_members');
                     $db->setQuery($query);
                     $db->query();
                 }
@@ -303,15 +304,25 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
             $xprofile->set('gidNumber', $params->get('gidNumber', '100'));
             $xprofile->set('gid', $params->get('gid', 'users'));
             $xprofile->set('uidNumber', $user['id']);
-            $xprofile->set('homeDirectory', isset($user['homeDirectory']) ? $user['homeDirectory'] : $hubHomeDir . DS . $user['username']);
-            $xprofile->set('loginShell', isset($user['loginShell']) && $user['loginShell'] ? $user['loginShell'] : '/bin/bash');
-            $xprofile->set('ftpShell', isset($user['ftpShell']) && $user['ftpShell'] ? $user['ftpShell'] : '/usr/lib/sftp-server');
+            $xprofile->set('homeDirectory', isset($user['homeDirectory']) ? $user['homeDirectory']
+                : $hubHomeDir . DS . $user['username']);
+            $xprofile->set(
+                'loginShell',
+                isset($user['loginShell']) && $user['loginShell'] ? $user['loginShell'] : '/bin/bash'
+            );
+            $xprofile->set(
+                'ftpShell',
+                isset($user['ftpShell']) && $user['ftpShell'] ? $user['ftpShell'] : '/usr/lib/sftp-server'
+            );
             $xprofile->set('name', $user['name']);
             $xprofile->set('email', $user['email']);
             $xprofile->set('username', $user['username']);
             $xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
             //$xprofile->set('emailConfirmed', '3');
-            $xprofile->set('emailConfirmed', isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31) - 1));
+            $xprofile->set(
+                'emailConfirmed',
+                isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31) - 1)
+            );
             $xprofile->set('public', $params->get('privacy', 0));
 
             if (isset($_SERVER['REMOTE_HOST'])) {
@@ -351,10 +362,10 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 
                 if ($count == 1) {
                     $firstname = $words[0];
-                } else if ($count == 2) {
+                } elseif ($count == 2) {
                     $firstname = $words[0];
                     $lastname  = $words[1];
-                } else if ($count == 3) {
+                } elseif ($count == 3) {
                     $firstname  = $words[0];
                     $middlename = $words[1];
                     $lastname   = $words[2];
@@ -417,7 +428,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
             if (!$xprofile->get('ftpShell')) {
                 $xprofile->set('ftpShell', '/usr/lib/sftp-server');
 
-                // This isn't right, but we're using an empty shell as an indicator that we should also update default privacy
+                // This isn't right, but we're using an empty shell as an indicator
+                // that we should also update default privacy
                 $xprofile->set('public', $params->get('privacy', 0));
 
                 $update = true;
@@ -464,7 +476,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
                 $result = '/bin/bash';
             }
 
-            $query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result) . " WHERE `id`=" . $db->quote($user['id']);
+            $query = "UPDATE `#__users` SET `loginShell` = " . $db->quote($result)
+                . " WHERE `id`=" . $db->quote($user['id']);
             $db->setQuery($query);
             $db->query();
 
@@ -482,7 +495,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
                 $result = '/bin/bash';
             }
 
-            $query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result) . " WHERE `id`=" . $db->quote($user['id']);
+            $query = "UPDATE `#__users` SET `ftpShell` = " . $db->quote($result)
+                . " WHERE `id`=" . $db->quote($user['id']);
             $db->setQuery($query);
             $db->query();
 

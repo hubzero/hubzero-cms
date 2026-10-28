@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -67,19 +68,26 @@ class AutoGroups extends Field
 
         $script   = array("jQuery(document).ready(function ($) {");
         $script[] = "var " . $this->id . '_autogroupsobject = AutoGroups.initialize({';
-        $script[] = implode(',', array("id:\"" . $this->id . "\"", "autogroups:" . $value, "strings:" . trim(json_encode($strings))));
+        $script[] = implode(',', array(
+            "id:\"" . $this->id . "\"",
+            "autogroups:" . $value,
+            "strings:" . trim(json_encode($strings))
+        ));
         $script[] = "})";
         $script[] = '});';
 
         Document::addScriptDeclaration(implode('', $script) . "\n");
 
         $html = array();
-        $html[] = '<label for="' . $this->id . '-domain">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_OPTIONS_DOMAIN_LABEL') . '</label>';
+        $html[] = '<label for="' . $this->id . '-domain">'
+            . Lang::txt('PLG_USER_DOMAINRESTRICTION_OPTIONS_DOMAIN_LABEL') . '</label>';
         $html[] = '<input type="text" id="' . $this->id . '-domain" />';
-        $html[] = '<label for="' . $this->id . '-groups">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_OPTIONS_GROUPS_LABEL') . '</label>';
+        $html[] = '<label for="' . $this->id . '-groups">'
+            . Lang::txt('PLG_USER_DOMAINRESTRICTION_OPTIONS_GROUPS_LABEL') . '</label>';
         $html[] = Html::access('usergroup', $this->id . '-groups', '', 'multiple="multiple"', array()) . '<br />';
         $html[] = '<button id="' . $this->id . '-save">' . Lang::txt('PLG_USER_DOMAINRESTRICTION_ADD') . '</button>';
-        $html[] = '<input id="' . $this->id . '" name="' . $this->name . '" type="hidden" value="' . base64_encode($value) . '"/>';
+        $html[] = '<input id="' . $this->id . '" name="' . $this->name
+            . '" type="hidden" value="' . base64_encode($value) . '"/>';
         $html[] = '<br style="clear:both" />';
         $html[] = '<ul id="' . $this->id . '-list">';
         $html[] = '</ul>';

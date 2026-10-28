@@ -17,22 +17,26 @@ defined('_HZEXEC_') or die();
         <style>
         @font-face {
     font-family: Alegreya-Regular;
-    src: url('<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>fonts/Alegreya/Alegreya-Regular.ttf');
+    <?php $cssPath = PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>
+    src: url('<?php echo $cssPath; ?>fonts/Alegreya/Alegreya-Regular.ttf');
 }
 
 @font-face {
     font-family: Alegreya-Bold;
-    src: url('<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>fonts/Alegreya/Alegreya-Bold.ttf');
+    <?php $cssPath = PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>
+    src: url('<?php echo $cssPath; ?>fonts/Alegreya/Alegreya-Bold.ttf');
 }
 
 @font-face {
     font-family: Asset;
-    src: url('<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>fonts/Asset/Asset.ttf');
+    <?php $cssPath = PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>
+    src: url('<?php echo $cssPath; ?>fonts/Asset/Asset.ttf');
 }
 
 @font-face {
     font-family: PinyonScript-Regular;
-    src: url('<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>fonts/Pinyon_Script/PinyonScript-Regular.ttf');
+    <?php $cssPath = PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>
+    src: url('<?php echo $cssPath; ?>fonts/Pinyon_Script/PinyonScript-Regular.ttf');
 }
 
 body {
@@ -40,7 +44,8 @@ body {
     margin: 0;
     padding: 0;
     padding-top: 4em;
-    background: #c00 url(<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>texture.jpg) repeat center center fixed;
+    <?php $cssPath = PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>
+    background: #c00 url(<?php echo $cssPath; ?>texture.jpg) repeat center center fixed;
 }
 
 p {
@@ -49,7 +54,8 @@ p {
 }
 
 #border-top, #border-bottom {
-    background: url(<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>border.png) repeat-x left top;
+    <?php $cssPath = PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>
+    background: url(<?php echo $cssPath; ?>border.png) repeat-x left top;
     height: 61px;
     margin: 0;
     padding: 0;
@@ -105,10 +111,17 @@ p.signature {
 
         <p id="certification"><?php echo $this->escape($this->course->get('title')); ?></p>
 
-        <p>On the <span id="date_day">[[date_day]]</span> Day of <span id="date_month">[[date_month]]</span> In the Year <span id="date_year">[[date_year]]</span></p>
+        <p>
+            On the <span id="date_day">[[date_day]]</span>
+            Day of <span id="date_month">[[date_month]]</span>
+            In the Year <span id="date_year">[[date_year]]</span>
+        </p>
         <p>At: <span id="location">[[location]]</span>.</p>
         <p class="signed">Signed,</p>
-        <p class="signature"><span>&nbsp;</span><img src="<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>signature.png" height="100" width="208" /></p>
+        <p class="signature"><span>&nbsp;</span><img
+            src="<?php echo PATH_CORE . DS . 'components/com_courses/admin/views/certificates/tmpl/'; ?>signature.png"
+            height="100"
+            width="208" /></p>
 
         <div id="border-bottom"><span>&nbsp;</span></div>
     </body>

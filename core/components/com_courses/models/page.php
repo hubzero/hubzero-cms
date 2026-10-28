@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,6 +28,7 @@ class Page extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Page';
 
     /**
@@ -34,6 +36,7 @@ class Page extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_courses.page.content';
 
     /**
@@ -41,6 +44,7 @@ class Page extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'page';
 
     /**
@@ -64,14 +68,18 @@ class Page extends Base
                         'scope'    => Request::getString('gid', ''),
                         'pagename' => $this->get('url'),
                         'pageid'   => '',
-                        'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),
+                        'filepath' => $this->buildFilePath(),
                         'domain'   => $this->get('course_id')
                     );
                     if ($this->get('offering_id')) {
-                        $config['scope'] = Course::getInstance($this->get('course_id'))->get('alias') . DS . Offering::getInstance($this->get('offering_id'))->get('alias') . DS . 'pages';
+                        $courseAlias = Course::getInstance($this->get('course_id'))->get('alias');
+                        $offeringAlias = Offering::getInstance($this->get('offering_id'))->get('alias');
+                        $config['scope'] = $courseAlias . DS . $offeringAlias . DS . 'pages';
                     }
                     if ($this->get('section_id')) {
-                        $config['filepath'] = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'sections' . DS . $this->get('section_id') . DS . 'pagefiles';
+                        $uploadPath = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS);
+                        $config['filepath'] = $uploadPath . DS . $this->get('course_id') . DS . 'sections'
+                            . DS . $this->get('section_id') . DS . 'pagefiles';
                     }
 
                     $content = $this->get('content');
@@ -105,6 +113,21 @@ class Page extends Base
             $content = Str::truncate($content, $shorten, $options);
         }
         return $content;
+    }
+
+    /**
+     * Build the file path for page files
+     *
+     * @return  string
+     */
+    protected function buildFilePath()
+    {
+        $uploadPath = DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS);
+        $path = $uploadPath . DS . $this->get('course_id') . DS . 'pagefiles';
+        if ($this->get('offering_id')) {
+            $path .= DS . $this->get('offering_id');
+        }
+        return $path;
     }
 
     /**

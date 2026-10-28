@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding publication tables
- **/
+ *
+ */
 class Migration20130829211856ComPublications extends Base
 {
     /**
@@ -160,17 +162,96 @@ class Migration20130829211856ComPublications extends Base
 				UNIQUE KEY `url_alias` (`url_alias`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Datasets','Dataset','dataset','datasets','A collection of research data','1','1','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Workshops','Event','workshop','workshops','A collection of lectures, seminars, and materials that were presented at a workshop.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Publications','Dataset','publication','publications','A publication is a paper relevant to the community that has been published in some manner.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Learning Modules','InteractiveResource','learning module','learningmodules','A combination of presentations, tools, assignments, etc. geared toward teaching a specific concept.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Animations','MovingImage','animation','animations','An animation is a Flash-based demo or short movie that illustrates some concept.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Courses','Collection','course','courses','University courses that make videos of lectures and associated teaching materials available.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Tools','Software','tool','tools','A simulation tool is software that allows users to run a specific type of calculation.','0','1','poweredby=Powered by=textarea=0\nbio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Downloads','PhysicalObject','download','downloads','A download is a type of resource that users can download and use on their own computer.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Notes','Text','note','notes','Notes are typically a category for any resource that might not fit any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Series','Collection','series','series','Series are collections of other resources, typically online presentations, that cover a specific topic.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
-            $queries[] = "INSERT INTO `#__publication_categories` (`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,`customFields`,`params`) VALUES ('Teaching Materials','Text','teaching material','teachingmaterials','Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the other categories.','0','0','bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0\npublications=Publications=textarea=0','plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1')";
+            $customFields = 'bio=Bio=textarea=0\ncredits=Credits=textarea=0'
+                . '\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0'
+                . '\nreferences=References=textarea=0\npublications=Publications=textarea=0';
+            $customFieldsTool = 'poweredby=Powered by=textarea=0\nbio=Bio=textarea=0'
+                . '\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0'
+                . '\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0'
+                . '\npublications=Publications=textarea=0';
+            $params = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1';
+            $paramsExt = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1'
+                . '\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1';
+
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Datasets','Dataset','dataset','datasets','A collection of research data',"
+                . "'1','1','$customFields','$paramsExt')";
+
+            $desc2 = 'A collection of lectures, seminars, and materials that were presented at a workshop.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Workshops','Event','workshop','workshops','$desc2',"
+                . "'0','0','$customFields','$params')";
+
+            $desc3 = 'A publication is a paper relevant to the community that has been published in some manner.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Publications','Dataset','publication','publications','$desc3',"
+                . "'0','0','$customFields','$params')";
+
+            $desc4 = 'A combination of presentations, tools, assignments, etc. '
+                . 'geared toward teaching a specific concept.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Learning Modules','InteractiveResource','learning module','learningmodules',"
+                . "'$desc4','0','0','$customFields','$params')";
+
+            $desc5 = 'An animation is a Flash-based demo or short movie that illustrates some concept.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Animations','MovingImage','animation','animations','$desc5',"
+                . "'0','0','$customFields','$params')";
+
+            $desc6 = 'University courses that make videos of lectures and associated teaching materials available.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Courses','Collection','course','courses','$desc6',"
+                . "'0','0','$customFields','$params')";
+
+            $desc7 = 'A simulation tool is software that allows users to run a specific type of calculation.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Tools','Software','tool','tools','$desc7',"
+                . "'0','1','$customFieldsTool','$params')";
+
+            $desc8 = 'A download is a type of resource that users can download and use on their own computer.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Downloads','PhysicalObject','download','downloads','$desc8',"
+                . "'0','0','$customFields','$params')";
+
+            $desc9 = 'Notes are typically a category for any resource '
+                . 'that might not fit any of the other categories.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Notes','Text','note','notes','$desc9',"
+                . "'0','0','$customFields','$params')";
+
+            $desc10 = 'Series are collections of other resources, typically online presentations, '
+                . 'that cover a specific topic.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Series','Collection','series','series','$desc10',"
+                . "'0','0','$customFields','$params')";
+
+            $desc11 = 'Supplementary materials (study notes, guides, etc.) '
+                . 'that don\'t quite fit into any of the other categories.';
+            $queries[] = "INSERT INTO `#__publication_categories` "
+                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
+                . "`customFields`,`params`) VALUES "
+                . "('Teaching Materials','Text','teaching material','teachingmaterials',"
+                . "'$desc11','0','0','$customFields','$params')";
         }
 
         if (!$this->db->tableExists('#__publication_master_types')) {
@@ -187,20 +268,27 @@ class Migration20130829211856ComPublications extends Base
 			  UNIQUE KEY `alias` (`alias`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('File(s)','files','uploaded material','1','1','1','peer_review=1')";
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('Link','links','external content','0','0','3','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('Wiki','notes','from project notes','0','0','5','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('Application','apps','simulation tool','0','0','4','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('Series','series','publication collection','0','0','6','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('Gallery','gallery','image/photo gallery','0','0','7','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` (`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`)
-						  VALUES ('Databases','databases','project database','0','0','2','')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('File(s)','files','uploaded material','1','1','1','peer_review=1')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('Link','links','external content','0','0','3','')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('Wiki','notes','from project notes','0','0','5','')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('Application','apps','simulation tool','0','0','4','')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('Series','series','publication collection','0','0','6','')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('Gallery','gallery','image/photo gallery','0','0','7','')";
+            $queries[] = "INSERT INTO `#__publication_master_types` "
+                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
+                . "VALUES ('Databases','databases','project database','0','0','2','')";
         }
 
         if (!$this->db->tableExists('#__publication_ratings')) {
@@ -302,9 +390,32 @@ class Migration20130829211856ComPublications extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-            $queries[] = "INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('custom','[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]','Custom','http://creativecommons.org/about/cc0','Custom license','3','1','0','0','0','1','/components/com_publications/assets/img/logos/license.gif')";
-            $queries[] = "INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('cc','','CC0 - Creative Commons','http://creativecommons.org/about/cc0','CC0 enables scientists, educators, artists and other creators and owners of copyright- or database-protected content to waive those interests in their works and thereby place them as completely as possible in the public domain, so that others may freely build upon, enhance and reuse the works for any purposes without restriction under copyright or database law.','2','1','0','1','1','0','/components/com_publications/assets/img/logos/cc.gif')";
-            $queries[] = "INSERT INTO `#__publication_licenses` (`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,`agreement`,`customizable`,`icon`) VALUES ('standard','All rights reserved.','Standard HUB License','http://nanohub.org','Standard HUB license.','1','0','0','0','0','0','/components/com_publications/images/logos/license.gif')";
+            $licText1 = '[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]';
+            $licIcon1 = '/components/com_publications/assets/img/logos/license.gif';
+            $queries[] = "INSERT INTO `#__publication_licenses` "
+                . "(`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,"
+                . "`agreement`,`customizable`,`icon`) VALUES "
+                . "('custom','$licText1','Custom','http://creativecommons.org/about/cc0',"
+                . "'Custom license','3','1','0','0','0','1','$licIcon1')";
+
+            $ccInfo = 'CC0 enables scientists, educators, artists and other creators and owners of '
+                . 'copyright- or database-protected content to waive those interests in their works '
+                . 'and thereby place them as completely as possible in the public domain, so that '
+                . 'others may freely build upon, enhance and reuse the works for any purposes '
+                . 'without restriction under copyright or database law.';
+            $licIcon2 = '/components/com_publications/assets/img/logos/cc.gif';
+            $queries[] = "INSERT INTO `#__publication_licenses` "
+                . "(`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,"
+                . "`agreement`,`customizable`,`icon`) VALUES "
+                . "('cc','','CC0 - Creative Commons','http://creativecommons.org/about/cc0',"
+                . "'$ccInfo','2','1','0','1','1','0','$licIcon2')";
+
+            $licIcon3 = '/components/com_publications/images/logos/license.gif';
+            $queries[] = "INSERT INTO `#__publication_licenses` "
+                . "(`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,"
+                . "`agreement`,`customizable`,`icon`) VALUES "
+                . "('standard','All rights reserved.','Standard HUB License','http://nanohub.org',"
+                . "'Standard HUB license.','1','0','0','0','0','0','$licIcon3')";
         }
 
         if (count($queries) > 0) {

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +20,7 @@ use Lang;
 
 class TypeOptionsHelper
 {
-    var $typeHelper = null;
+    protected $typeHelper = null;
 
     public function __construct($args = [])
     {

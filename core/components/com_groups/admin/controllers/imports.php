@@ -153,7 +153,7 @@ class Imports extends AdminController
         $files = array();
 
         if ($import->get('id')) {
-            if ($this->_createImportFilespace($import)) {
+            if ($this->createImportFilespace($import)) {
                 $files = Filesystem::files($import->fileSpacePath(), '.');
             }
         }
@@ -247,7 +247,7 @@ class Imports extends AdminController
         }
 
         // create folder for files
-        if (!$this->_createImportFilespace($model)) {
+        if (!$this->createImportFilespace($model)) {
             return $this->editTask();
         }
 
@@ -401,9 +401,9 @@ class Imports extends AdminController
         // Run process task on importer
         // passed the import model, array or callbacks, and test mode flag
         $resourceData = $importImporter->process($import, array(
-            'postparse'   => $this->_hooks('postparse', $import),
-            'postmap'     => $this->_hooks('postmap', $import),
-            'postconvert' => $this->_hooks('postconvert', $import)
+            'postparse'   => $this->getHooks('postparse', $import),
+            'postmap'     => $this->getHooks('postmap', $import),
+            'postconvert' => $this->getHooks('postconvert', $import)
         ), $dryRun);
 
         // Calculate execution time
@@ -466,7 +466,7 @@ class Imports extends AdminController
      * @param   object  $import  Import Model
      * @return  object  Closure
      */
-    private function _hooks($event, $import)
+    private function getHooks($event, $import)
     {
         // Array to hold callbacks
         $callbacks = array();
@@ -513,7 +513,7 @@ class Imports extends AdminController
      * @param   object  $import  \Hubzero\Content\Import\Model\Import
      * @return  boolean
      */
-    private function _createImportFilespace(\Hubzero\Content\Import\Model\Import $import)
+    private function createImportFilespace(\Hubzero\Content\Import\Model\Import $import)
     {
         // Upload path
         $uploadPath = $import->fileSpacePath();
@@ -608,7 +608,17 @@ class Imports extends AdminController
             }
 
             $example = 'Example';
-            if ($field->options->count() || in_array($field->get('type'), array('tags', 'select', 'dropdown', 'list', 'radio', 'radios', 'checkbox', 'checkboxes'))) {
+            $multiValueTypes = array(
+                'tags',
+                'select',
+                'dropdown',
+                'list',
+                'radio',
+                'radios',
+                'checkbox',
+                'checkboxes'
+            );
+            if ($field->options->count() || in_array($field->get('type'), $multiValueTypes)) {
                 $example = 'example;example;example';
             }
 

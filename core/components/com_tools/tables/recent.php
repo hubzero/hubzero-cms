@@ -40,7 +40,9 @@ class Recent extends Table
         if ($uid === null) {
             return false;
         }
-        $this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid) . " ORDER BY created DESC");
+        $query = "SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid)
+            . " ORDER BY created DESC";
+        $this->_db->setQuery($query);
         return $this->_db->loadObjectList();
     }
 }

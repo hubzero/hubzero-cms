@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing feed_youtube module
- **/
+ *
+ */
 class Migration20190109000000ModFeedYoutube extends Base
 {
     /**

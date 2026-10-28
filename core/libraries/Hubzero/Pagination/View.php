@@ -20,6 +20,7 @@ class View extends AbstractView
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'pagination';
 
     /**
@@ -27,6 +28,7 @@ class View extends AbstractView
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_layout = 'paginator';
 
     /**
@@ -35,6 +37,7 @@ class View extends AbstractView
      * @param   array  $config
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($config = array())
     {
         parent::__construct($config);

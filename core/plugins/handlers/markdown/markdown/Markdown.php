@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @copyright Copyright (c) 2014 Carsten Brandt
  * @license https://github.com/cebe/markdown/blob/master/LICENSE
@@ -21,14 +22,14 @@ class Markdown extends Parser
     use block\HtmlTrait {
         parseInlineHtml as private;
     }
+    // Check Ul List before headline
     use block\ListTrait {
-        // Check Ul List before headline
         identifyUl as protected identifyBUl;
         consumeUl as protected consumeBUl;
     }
     use block\QuoteTrait;
+    // Check Hr before checking lists
     use block\RuleTrait {
-        // Check Hr before checking lists
         identifyHr as protected identifyAHr;
         consumeHr as protected consumeAHr;
     }
@@ -54,15 +55,19 @@ class Markdown extends Parser
         '`', // backtick
         '*', // asterisk
         '_', // underscore
-        '{', '}', // curly braces
-        '[', ']', // square brackets
-        '(', ')', // parentheses
+        '{',
+        '}', // curly braces
+        '[',
+        ']', // square brackets
+        '(',
+        ')', // parentheses
         '#', // hash mark
         '+', // plus sign
         '-', // minus sign (hyphen)
         '.', // dot
         '!', // exclamation mark
-        '<', '>',
+        '<',
+        '>',
     ];
 
 
@@ -90,7 +95,7 @@ class Markdown extends Parser
             // a list may break a paragraph when it is inside of a list
             if (
                 isset($this->context[1]) && $this->context[1] === 'list' && !ctype_alpha($line[0]) && (
-                $this->identifyUl($line, $lines, $i) || $this->identifyOl($line, $lines, $i))
+                    $this->identifyUl($line, $lines, $i) || $this->identifyOl($line, $lines, $i))
             ) {
                 break;
             }

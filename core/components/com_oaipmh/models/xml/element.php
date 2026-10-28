@@ -119,7 +119,11 @@ class Element
      */
     public function attr($name, $value, $namespace = null)
     {
-        null !== $namespace ? $this->current->setAttributeNS($namespace, $name, $value) : $this->current->setAttribute($name, $value);
+        if (null !== $namespace) {
+            $this->current->setAttributeNS($namespace, $name, $value);
+        } else {
+            $this->current->setAttribute($name, $value);
+        }
 
         return $this;
     }

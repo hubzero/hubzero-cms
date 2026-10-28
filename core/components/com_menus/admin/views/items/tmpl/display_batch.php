@@ -40,11 +40,24 @@ $published = $this->filters['published'];
                         <div class="col span6">
                             <select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
                                 <option value=""><?php echo Lang::txt('JSELECT') ?></option>
-                                <?php echo Html::select('options', Html::menu('menuitems', array('published' => $published))); ?>
+                                <?php
+                                $menuItems = Html::menu('menuitems', array('published' => $published));
+                                echo Html::select('options', $menuItems);
+                                ?>
                             </select>
                         </div>
                         <div class="col span6">
-                            <?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+                            <?php
+                            echo Html::select(
+                                'radiolist',
+                                $options,
+                                'batch[move_copy]',
+                                '',
+                                'value',
+                                'text',
+                                'm'
+                            );
+                            ?>
                         </div>
                     </div>
                 </div>

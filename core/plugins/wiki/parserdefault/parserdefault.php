@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Wiki plugin class for loading the default parser
  */
@@ -19,6 +16,7 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -45,14 +43,14 @@ class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
                 return null;
             }
 
-            $config['option']   = (isset($config['option']))   ? $config['option']   : 'com_wiki';
-            $config['scope']    = (isset($config['scope']))    ? $config['scope']    : '';
+            $config['option'] = (isset($config['option'])) ? $config['option'] : 'com_wiki';
+            $config['scope'] = (isset($config['scope'])) ? $config['scope'] : '';
             $config['pagename'] = (isset($config['pagename'])) ? $config['pagename'] : '';
-            $config['pageid']   = (isset($config['pageid']))   ? $config['pageid']   : 0;
+            $config['pageid'] = (isset($config['pageid'])) ? $config['pageid'] : 0;
             $config['filepath'] = (isset($config['filepath'])) ? $config['filepath'] : '';
-            $config['domain']   = (isset($config['domain']))   ? $config['domain']   : null;
-            $config['domain_id'] = (isset($config['domain_id']))   ? $config['domain_id']   : null;
-            $config['url']      = (isset($config['url']))      ? $config['url'] : null;
+            $config['domain'] = (isset($config['domain'])) ? $config['domain'] : null;
+            $config['domain_id'] = (isset($config['domain_id'])) ? $config['domain_id'] : null;
+            $config['url'] = (isset($config['url'])) ? $config['url'] : null;
             $config['loglinks'] = (isset($config['loglinks'])) ? $config['loglinks'] : null;
 
             $this->parser = new WikiParser($config);

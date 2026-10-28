@@ -19,6 +19,8 @@ require_once dirname(__DIR__) . DS . 'tables' . DS . 'module.menu.php';
 
 /**
  * Group module model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Module extends Model
 {
@@ -57,7 +59,7 @@ class Module extends Model
 
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }

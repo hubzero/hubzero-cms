@@ -21,6 +21,7 @@ class Standard extends Button
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Standard';
 
     /**
@@ -84,6 +85,7 @@ class Standard extends Button
      * @param   boolean  $list  True is requires a list confirmation.
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCommand($name, $task, $list)
     {
         Behavior::framework();

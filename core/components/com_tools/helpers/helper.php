@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -56,6 +57,7 @@ class ContribtoolHelper
      * @param   string   $field
      * @return  integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function check_validInput($field)
     {
         if (preg_match("#^[_0-9a-zA-Z.:-]+$#i", $field) or $field == '') {
@@ -127,21 +129,31 @@ class ContribtoolHelper
      * @param   integer  $ticketid
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function record_view($database, $ticketid)
     {
         $when = Date::toSql();
 
-        $sql = "SELECT * FROM `#__tool_statusviews` WHERE ticketid=" . $database->quote($ticketid) . " AND uid=" . $database->quote(\User::get('id'));
+        $sql = "SELECT * FROM `#__tool_statusviews` WHERE ticketid=" . $database->quote($ticketid)
+            . " AND uid=" . $database->quote(\User::get('id'));
         $database->setQuery($sql);
         $found = $database->loadObjectList();
         if ($found) {
             $elapsed = strtotime($when) - strtotime($found[0]->viewed);
-            $database->setQuery("UPDATE `#__tool_statusviews` SET viewed=" . $database->quote($when) . ", elapsed=" . $database->quote($elapsed) . " WHERE ticketid=" . $database->quote($ticketid) . " AND uid=" . $database->quote(\User::get('id')));
+            $database->setQuery(
+                "UPDATE `#__tool_statusviews` SET viewed=" . $database->quote($when)
+                . ", elapsed=" . $database->quote($elapsed) . " WHERE ticketid="
+                . $database->quote($ticketid) . " AND uid=" . $database->quote(\User::get('id'))
+            );
             if (!$database->query()) {
                 return $database->getErrorMsg();
             }
         } else {
-            $database->setQuery("INSERT INTO `#__tool_statusviews` (uid, ticketid, viewed, elapsed) VALUES (" . \User::get('id') . ", " . $database->quote($ticketid) . ", " . $database->quote($when) . ", " . $database->quote(500000) . ")");
+            $database->setQuery(
+                "INSERT INTO `#__tool_statusviews` (uid, ticketid, viewed, elapsed) VALUES ("
+                . \User::get('id') . ", " . $database->quote($ticketid) . ", "
+                . $database->quote($when) . ", " . $database->quote(500000) . ")"
+            );
             if (!$database->query()) {
                 return $database->getErrorMsg();
             }

@@ -6,11 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * Copy operation
+ *
  */
 class _DiffOp_Copy extends _DiffOp
 {

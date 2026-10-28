@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 namespace Components\Members\Models\Profile;
 
 use Hubzero\Database\Relational;
@@ -23,28 +24,28 @@ class Field extends Relational
      *
      * @var  integer
      */
-    const STATE_HIDDEN = 0;
+    public const STATE_HIDDEN = 0;
 
     /**
      * Optional state
      *
      * @var  integer
      */
-    const STATE_OPTIONAL = 1;
+    public const STATE_OPTIONAL = 1;
 
     /**
      * Required state
      *
      * @var  integer
      */
-    const STATE_REQUIRED = 2;
+    public const STATE_REQUIRED = 2;
 
     /**
      * Read only state
      *
      * @var  integer
      */
-    const STATE_READONLY = 4;
+    public const STATE_READONLY = 4;
 
     /**
      * The table namespace
@@ -286,7 +287,7 @@ class Field extends Relational
 
                     if (is_array($values) && in_array($option->get('value'), $values)) {
                         $selected = true;
-                    } else if ($values == $option->get('value')) {
+                    } elseif ($values == $option->get('value')) {
                         $selected = true;
                     }
                 }
@@ -335,9 +336,15 @@ class Field extends Relational
         $xml[] = '<form>';
         $xml[] = '<fieldset name="basic">';
         foreach ($fields as $field) {
-            $f  = '<field type="' . $field->get('type') . '" name="' . htmlspecialchars($field->get('name'), ENT_COMPAT) . '" label="' . htmlspecialchars($field->get('label'), ENT_COMPAT) . '"';
-            $f .= ($field->get('description')  ? ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"' : '');
-            $f .= ($field->get('placeholder')  ? ' placeholder="' . htmlspecialchars($field->get('placeholder'), ENT_COMPAT) . '"' : '');
+            $name = htmlspecialchars($field->get('name'), ENT_COMPAT);
+            $label = htmlspecialchars($field->get('label'), ENT_COMPAT);
+            $f  = '<field type="' . $field->get('type') . '" name="' . $name . '" label="' . $label . '"';
+            if ($field->get('description')) {
+                $f .= ' description="' . htmlspecialchars($field->get('description'), ENT_COMPAT) . '"';
+            }
+            if ($field->get('placeholder')) {
+                $f .= ' placeholder="' . htmlspecialchars($field->get('placeholder'), ENT_COMPAT) . '"';
+            }
             $f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
             $f .= ($field->get('option_other') ? ' option_other="1"' : '');
             $f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');
@@ -350,7 +357,10 @@ class Field extends Relational
 
             $xml[] = $f;
             foreach ($field->options as $option) {
-                $xml[] = '<option value="' . htmlspecialchars($option->get('value'), ENT_COMPAT) . '"' . ($option->get('checked') ? ' selected="1"' : '') . '>' . htmlspecialchars($option->get('label'), ENT_COMPAT) . '</option>';
+                $val = htmlspecialchars($option->get('value'), ENT_COMPAT);
+                $lbl = htmlspecialchars($option->get('label'), ENT_COMPAT);
+                $sel = $option->get('checked') ? ' selected="1"' : '';
+                $xml[] = '<option value="' . $val . '"' . $sel . '>' . $lbl . '</option>';
             }
             $xml[] = '</field>';
         }

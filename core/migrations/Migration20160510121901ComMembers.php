@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding tables and data for profile schema
+  *
  **/
 class Migration20160510121901ComMembers extends Base
 {
@@ -45,23 +47,101 @@ class Migration20160510121901ComMembers extends Base
 
             $params = \Component::params('com_members');
 
-            $query = "INSERT INTO `#__user_profile_fields` (`id`, `type`, `name`, `label`, `placeholder`, `description`, `ordering`, `access`, `option_other`, `option_blank`, `action_create`, `action_update`, `action_edit`)
-					VALUES
-						(1,'select','organization','Organization',NULL,NULL,1,1,1,1," . self::state($params->get('registrationOrganization'), 'HHHH', 'create') . "," . self::state($params->get('registrationOrganization'), 'HHHH', 'update') . "," . self::state($params->get('registrationOrganization'), 'HHHH', 'edit') . "),
-						(2,'select','orgtype','Employment Status',NULL,NULL,2,5,0,1," . self::state($params->get('registrationEmployment'), 'HHHH', 'create') . "," . self::state($params->get('registrationEmployment'), 'HHHH', 'update') . "," . self::state($params->get('registrationEmployment'), 'HHHH', 'edit') . "),
-						(3,'country','countryresident','Residency',NULL,'Select your Country of Residency.',3,5,0,1," . self::state($params->get('registrationResidency'), 'HHHH', 'create') . "," . self::state($params->get('registrationResidency'), 'HHHH', 'update') . "," . self::state($params->get('registrationResidency'), 'HHHH', 'edit') . "),
-						(4,'country','countryorigin','Citizenship',NULL,'Select your Country of Citizenship.',4,5,0,1," . self::state($params->get('registrationCitizenship'), 'HHHH', 'create') . "," . self::state($params->get('registrationCitizenship'), 'HHHH', 'update') . "," . self::state($params->get('registrationCitizenship'), 'HHHH', 'edit') . "),
-						(5,'url','url','Website',NULL,NULL,5,1,0,0," . self::state($params->get('registrationURL'), 'HHHH', 'create') . "," . self::state($params->get('registrationURL'), 'HHHH', 'update') . "," . self::state($params->get('registrationURL'), 'HHHH', 'edit') . "),
-						(6,'text','phone','Telephone',NULL,NULL,6,5,0,0," . self::state($params->get('registrationPhone'), 'HHHH', 'create') . "," . self::state($params->get('registrationPhone'), 'HHHH', 'update') . "," . self::state($params->get('registrationPhone'), 'HHHH', 'edit') . "),
-						(7,'orcid','orcid','ORCID',NULL,'Open Researcher and Contributor ID (ORCID) provides a persistent digital identifier that distinguishes you from every other researcher and supports automated linkages between you and your professional activities ensuring that your work is recognized.',7,1,0,0," . self::state($params->get('registrationORCID'), 'HHHH', 'create') . "," . self::state($params->get('registrationORCID'), 'HHHH', 'update') . "," . self::state($params->get('registrationORCID'), 'HHHH', 'edit') . "),
-						(8,'radio','gender','Gender',NULL,NULL,8,5,0,0," . self::state($params->get('registrationSex'), 'HHHH', 'create') . "," . self::state($params->get('registrationSex'), 'HHHH', 'update') . "," . self::state($params->get('registrationSex'), 'HHHH', 'edit') . "),
-						(9,'checkboxes','race','Racial Background',NULL,NULL,9,5,0,0," . self::state($params->get('registrationRace'), 'HHHH', 'create') . "," . self::state($params->get('registrationRace'), 'HHHH', 'update') . "," . self::state($params->get('registrationRace'), 'HHHH', 'edit') . "),
-						(10,'checkboxes','disability','Disability',NULL,NULL,10,5,0,0," . self::state($params->get('registrationDisability'), 'HHHH', 'create') . "," . self::state($params->get('registrationDisability'), 'HHHH', 'update') . "," . self::state($params->get('registrationDisability'), 'HHHH', 'edit') . "),
-						(11,'select','reason','Reason',NULL,NULL,11,5,0,1," . self::state($params->get('registrationReason'), 'HHHH', 'create') . "," . self::state($params->get('registrationReason'), 'HHHH', 'update') . "," . self::state($params->get('registrationReason'), 'HHHH', 'edit') . "),
-						(12,'tags','tags','Interests',NULL,NULL,12,1,0,0," . self::state($params->get('registrationInterests'), 'HHHH', 'create') . "," . self::state($params->get('registrationInterests'), 'HHHH', 'update') . "," . self::state($params->get('registrationInterests'), 'HHHH', 'edit') . "),
-						(13,'address','address','Address',NULL,NULL,13,5,0,0," . self::state($params->get('registrationAddress'), 'HHHH', 'create') . "," . self::state($params->get('registrationAddress'), 'HHHH', 'update') . "," . self::state($params->get('registrationAddress'), 'HHHH', 'edit') . "),
-						(14,'radio','hispanic','Hispanic Heritage',NULL,NULL,14,5,0,0," . self::state($params->get('registrationHispanic'), 'HHHH', 'create') . "," . self::state($params->get('registrationHispanic'), 'HHHH', 'update') . "," . self::state($params->get('registrationHispanic'), 'HHHH', 'edit') . "),
-						(15,'editor','bio','Biography',NULL,NULL,15,1,0,0,0,0,1);";
+            // Build field value arrays for cleaner INSERT query
+            $orgCreate = self::state($params->get('registrationOrganization'), 'HHHH', 'create');
+            $orgUpdate = self::state($params->get('registrationOrganization'), 'HHHH', 'update');
+            $orgEdit = self::state($params->get('registrationOrganization'), 'HHHH', 'edit');
+
+            $empCreate = self::state($params->get('registrationEmployment'), 'HHHH', 'create');
+            $empUpdate = self::state($params->get('registrationEmployment'), 'HHHH', 'update');
+            $empEdit = self::state($params->get('registrationEmployment'), 'HHHH', 'edit');
+
+            $resCreate = self::state($params->get('registrationResidency'), 'HHHH', 'create');
+            $resUpdate = self::state($params->get('registrationResidency'), 'HHHH', 'update');
+            $resEdit = self::state($params->get('registrationResidency'), 'HHHH', 'edit');
+
+            $citCreate = self::state($params->get('registrationCitizenship'), 'HHHH', 'create');
+            $citUpdate = self::state($params->get('registrationCitizenship'), 'HHHH', 'update');
+            $citEdit = self::state($params->get('registrationCitizenship'), 'HHHH', 'edit');
+
+            $urlCreate = self::state($params->get('registrationURL'), 'HHHH', 'create');
+            $urlUpdate = self::state($params->get('registrationURL'), 'HHHH', 'update');
+            $urlEdit = self::state($params->get('registrationURL'), 'HHHH', 'edit');
+
+            $phoneCreate = self::state($params->get('registrationPhone'), 'HHHH', 'create');
+            $phoneUpdate = self::state($params->get('registrationPhone'), 'HHHH', 'update');
+            $phoneEdit = self::state($params->get('registrationPhone'), 'HHHH', 'edit');
+
+            $orcidCreate = self::state($params->get('registrationORCID'), 'HHHH', 'create');
+            $orcidUpdate = self::state($params->get('registrationORCID'), 'HHHH', 'update');
+            $orcidEdit = self::state($params->get('registrationORCID'), 'HHHH', 'edit');
+
+            $sexCreate = self::state($params->get('registrationSex'), 'HHHH', 'create');
+            $sexUpdate = self::state($params->get('registrationSex'), 'HHHH', 'update');
+            $sexEdit = self::state($params->get('registrationSex'), 'HHHH', 'edit');
+
+            $raceCreate = self::state($params->get('registrationRace'), 'HHHH', 'create');
+            $raceUpdate = self::state($params->get('registrationRace'), 'HHHH', 'update');
+            $raceEdit = self::state($params->get('registrationRace'), 'HHHH', 'edit');
+
+            $disCreate = self::state($params->get('registrationDisability'), 'HHHH', 'create');
+            $disUpdate = self::state($params->get('registrationDisability'), 'HHHH', 'update');
+            $disEdit = self::state($params->get('registrationDisability'), 'HHHH', 'edit');
+
+            $reasonCreate = self::state($params->get('registrationReason'), 'HHHH', 'create');
+            $reasonUpdate = self::state($params->get('registrationReason'), 'HHHH', 'update');
+            $reasonEdit = self::state($params->get('registrationReason'), 'HHHH', 'edit');
+
+            $intCreate = self::state($params->get('registrationInterests'), 'HHHH', 'create');
+            $intUpdate = self::state($params->get('registrationInterests'), 'HHHH', 'update');
+            $intEdit = self::state($params->get('registrationInterests'), 'HHHH', 'edit');
+
+            $addrCreate = self::state($params->get('registrationAddress'), 'HHHH', 'create');
+            $addrUpdate = self::state($params->get('registrationAddress'), 'HHHH', 'update');
+            $addrEdit = self::state($params->get('registrationAddress'), 'HHHH', 'edit');
+
+            $hispCreate = self::state($params->get('registrationHispanic'), 'HHHH', 'create');
+            $hispUpdate = self::state($params->get('registrationHispanic'), 'HHHH', 'update');
+            $hispEdit = self::state($params->get('registrationHispanic'), 'HHHH', 'edit');
+
+            $orcidDesc = 'Open Researcher and Contributor ID (ORCID) provides a persistent '
+                . 'digital identifier that distinguishes you from every other researcher '
+                . 'and supports automated linkages between you and your professional '
+                . 'activities ensuring that your work is recognized.';
+
+            $query = "INSERT INTO `#__user_profile_fields` "
+                . "(`id`, `type`, `name`, `label`, `placeholder`, `description`, "
+                . "`ordering`, `access`, `option_other`, `option_blank`, "
+                . "`action_create`, `action_update`, `action_edit`) VALUES "
+                . "(1,'select','organization','Organization',NULL,NULL,"
+                . "1,1,1,1,$orgCreate,$orgUpdate,$orgEdit),"
+                . "(2,'select','orgtype','Employment Status',NULL,NULL,"
+                . "2,5,0,1,$empCreate,$empUpdate,$empEdit),"
+                . "(3,'country','countryresident','Residency',NULL,"
+                . "'Select your Country of Residency.',3,5,0,1,$resCreate,$resUpdate,$resEdit),"
+                . "(4,'country','countryorigin','Citizenship',NULL,"
+                . "'Select your Country of Citizenship.',4,5,0,1,$citCreate,$citUpdate,$citEdit),"
+                . "(5,'url','url','Website',NULL,NULL,5,1,0,0,$urlCreate,$urlUpdate,$urlEdit),"
+                . "(6,'text','phone','Telephone',NULL,NULL,"
+                . "6,5,0,0,$phoneCreate,$phoneUpdate,$phoneEdit),"
+                . "(7,'orcid','orcid','ORCID',NULL,"
+                . $this->db->quote($orcidDesc) . ","
+                . "7,1,0,0,$orcidCreate,$orcidUpdate,$orcidEdit),"
+                . "(8,'radio','gender','Gender',NULL,NULL,"
+                . "8,5,0,0,$sexCreate,$sexUpdate,$sexEdit),"
+                . "(9,'checkboxes','race','Racial Background',NULL,NULL,"
+                . "9,5,0,0,$raceCreate,$raceUpdate,$raceEdit),"
+                . "(10,'checkboxes','disability','Disability',NULL,NULL,"
+                . "10,5,0,0,$disCreate,$disUpdate,$disEdit),"
+                . "(11,'select','reason','Reason',NULL,NULL,"
+                . "11,5,0,1,$reasonCreate,$reasonUpdate,$reasonEdit),"
+                . "(12,'tags','tags','Interests',NULL,NULL,"
+                . "12,1,0,0,$intCreate,$intUpdate,$intEdit),"
+                . "(13,'address','address','Address',NULL,NULL,"
+                . "13,5,0,0,$addrCreate,$addrUpdate,$addrEdit),"
+                . "(14,'radio','hispanic','Hispanic Heritage',NULL,NULL,"
+                . "14,5,0,0,$hispCreate,$hispUpdate,$hispEdit),"
+                . "(15,'editor','bio','Biography',NULL,NULL,15,1,0,0,0,0,1);";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -128,12 +208,15 @@ class Migration20160510121901ComMembers extends Base
                 $organizations = $this->db->loadObjectList();
 
                 if (count($organizations) > 0) {
-                    $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-							VALUES ";
+                    $query = "INSERT INTO `#__user_profile_options` "
+                        . "(`id`, `field_id`, `value`, `label`, `ordering`, `checked`) VALUES ";
 
                     $queries = array();
                     foreach ($organizations as $i => $organization) {
-                        $queries[] = "(null,1," . $this->db->quote($organization->organization) . "," . $this->db->quote($organization->organization) . "," . ($i + 1) . ",0)";
+                        $queries[] = "(null,1,"
+                            . $this->db->quote($organization->organization) . ","
+                            . $this->db->quote($organization->organization) . ","
+                            . ($i + 1) . ",0)";
                     }
 
                     $this->db->setQuery($query . implode(',', $queries) . ';');
@@ -152,12 +235,15 @@ class Migration20160510121901ComMembers extends Base
                 $types = $this->db->loadObjectList();
 
                 if (count($types) > 0) {
-                    $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-							VALUES ";
+                    $query = "INSERT INTO `#__user_profile_options` "
+                        . "(`id`, `field_id`, `value`, `label`, `ordering`, `checked`) VALUES ";
 
                     $queries = array();
                     foreach ($types as $i => $type) {
-                        $queries[] = "(null,2," . $this->db->quote($type->type) . "," . $this->db->quote($type->title) . "," . ($i + 1) . ",0)";
+                        $queries[] = "(null,2,"
+                            . $this->db->quote($type->type) . ","
+                            . $this->db->quote($type->title) . ","
+                            . ($i + 1) . ",0)";
                     }
 
                     $this->db->setQuery($query . implode(',', $queries) . ';');
@@ -176,12 +262,15 @@ class Migration20160510121901ComMembers extends Base
                 $reasons = $this->db->loadObjectList();
 
                 if (count($reasons) > 0) {
-                    $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-							VALUES ";
+                    $query = "INSERT INTO `#__user_profile_options` "
+                        . "(`id`, `field_id`, `value`, `label`, `ordering`, `checked`) VALUES ";
 
                     $queries = array();
                     foreach ($reasons as $i => $reason) {
-                        $queries[] = "(null,11," . $this->db->quote($reason->reason) . "," . $this->db->quote($reason->reason) . "," . ($i + 1) . ",0)";
+                        $queries[] = "(null,11,"
+                            . $this->db->quote($reason->reason) . ","
+                            . $this->db->quote($reason->reason) . ","
+                            . ($i + 1) . ",0)";
                     }
 
                     $this->db->setQuery($query . implode(',', $queries) . ';');
@@ -258,7 +347,9 @@ class Migration20160510121901ComMembers extends Base
 
                     $queries = array();
                     foreach ($types as $i => $type) {
-                        $queries[] = "(null," . $this->db->quote($type->name) . "," . $this->db->quote($type->label) . ")";
+                        $queries[] = "(null,"
+                            . $this->db->quote($type->name) . ","
+                            . $this->db->quote($type->label) . ")";
                     }
 
                     $this->db->setQuery($query . implode(',', $queries) . ';');

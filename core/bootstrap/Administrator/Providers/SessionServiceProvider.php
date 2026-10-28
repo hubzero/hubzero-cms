@@ -67,8 +67,10 @@ class SessionServiceProvider extends ServiceProvider
     public function boot()
     {
         if (
-            ($this->app['config']->get('session_handler') != 'database' && (time() % 2 || $this->app['session']->isNew()))
-            || ($this->app['config']->get('session_handler') == 'database' && $this->app['session']->isNew())
+            ($this->app['config']->get('session_handler') != 'database'
+                && (time() % 2 || $this->app['session']->isNew()))
+            || ($this->app['config']->get('session_handler') == 'database'
+                && $this->app['session']->isNew())
         ) {
             if ($this->app['config']->get('session_handler') == 'database' && $this->app->has('db')) {
                 $db = $this->app['db'];

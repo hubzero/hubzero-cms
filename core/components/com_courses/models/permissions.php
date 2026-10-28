@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,6 +29,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_config = null;
 
     /**
@@ -35,6 +37,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_managers = null;
 
     /**
@@ -42,6 +45,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_manager = null;
 
     /**
@@ -49,6 +53,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_students = null;
 
     /**
@@ -56,6 +61,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_student = null;
 
     /**
@@ -63,6 +69,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_course_id = null;
 
     /**
@@ -70,6 +77,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_offering_id = null;
 
     /**
@@ -77,6 +85,7 @@ class Permissions extends Obj
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_section_id = null;
 
     /**
@@ -87,8 +96,11 @@ class Permissions extends Obj
      * @param   integer $section_id  Course section ID or alias
      * @return  void
      */
-    public function __construct($course_id = null, $offering_id = null, $section_id = null)
-    {
+    public function __construct(
+        $course_id = null,
+        $offering_id = null,
+        $section_id = null
+    ) {
         $this->set('course_id', $course_id);
         $this->set('offering_id', $offering_id);
         $this->set('section_id', $section_id);
@@ -102,8 +114,11 @@ class Permissions extends Obj
      * @param   integer $section_id  Course section ID or alias
      * @return  object \Components\Courses\Models\Permissions
      */
-    static function &getInstance($course_id = null, $offering_id = null, $section_id = null)
-    {
+    public static function &getInstance(
+        $course_id = null,
+        $offering_id = null,
+        $section_id = null
+    ) {
         static $instance;
 
         if (!is_object($instance)) {
@@ -127,7 +142,7 @@ class Permissions extends Obj
     }
 
     /**
-     * Returns a property of the object or the default value if the property is not set.
+     * Returns a property of the object or the default value if not set
      *
      * @param   string $property The name of the property
      * @param   mixed  $default  The default value
@@ -150,7 +165,8 @@ class Permissions extends Obj
      */
     public function set($property, $value = null)
     {
-        $previous = isset($this->{'_' . $property}) ? $this->{'_' . $property} : null;
+        $key = '_' . $property;
+        $previous = isset($this->{$key}) ? $this->{$key} : null;
         $this->{'_' . $property} = $value;
         return $previous;
     }
@@ -176,7 +192,8 @@ class Permissions extends Obj
     {
         if (
             !isset($this->_manager)
-            || ($user_id !== null && (int) $this->_manager->get('user_id') != $user_id)
+            || ($user_id !== null
+                && (int) $this->_manager->get('user_id') != $user_id)
         ) {
             $this->_manager = null;
 
@@ -185,7 +202,12 @@ class Permissions extends Obj
             }
 
             if (!$this->_manager) {
-                $this->_manager = Manager::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('section_id'));
+                $this->_manager = Manager::getInstance(
+                    $user_id,
+                    $this->get('course_id'),
+                    $this->get('offering_id'),
+                    $this->get('section_id')
+                );
             }
         }
 
@@ -226,15 +248,29 @@ class Permissions extends Obj
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
                     if (!isset($results[$result->user_id])) {
-                        $results[$result->user_id] = new Manager($result, $this->get('id'));
+                        $results[$result->user_id] = new Manager(
+                            $result,
+                            $this->get('id')
+                        );
                     } else {
                         // Course manager takes precedence over offering manager
-                        if ($result->course_id && !$result->offering_id && !$result->section_id) {
-                            $results[$result->user_id] = new Manager($result, $this->get('id'));
-                        }
-                        // Course offering takes precedence over section manager
-                        else if ($result->course_id && $result->offering_id && !$result->section_id) {
-                            $results[$result->user_id] = new Manager($result, $this->get('id'));
+                        $isCourse = $result->course_id
+                            && !$result->offering_id
+                            && !$result->section_id;
+                        $isOffering = $result->course_id
+                            && $result->offering_id
+                            && !$result->section_id;
+                        if ($isCourse) {
+                            $results[$result->user_id] = new Manager(
+                                $result,
+                                $this->get('id')
+                            );
+                        } elseif ($isOffering) {
+                            // Course offering takes precedence over section manager
+                            $results[$result->user_id] = new Manager(
+                                $result,
+                                $this->get('id')
+                            );
                         }
                     }
                 }
@@ -255,11 +291,14 @@ class Permissions extends Obj
     public function isStudent()
     {
         return $this->config()->get('is-student');
-        /*if (!$this->access('manage', 'section') && $this->access('view', 'section'))
-        {
+        /*
+        $noManage = !$this->access('manage', 'section');
+        $canView = $this->access('view', 'section');
+        if ($noManage && $canView) {
             return true;
         }
-        return false;*/
+        return false;
+        */
     }
 
     /**
@@ -272,7 +311,8 @@ class Permissions extends Obj
     {
         if (
             !isset($this->_student)
-            || ($user_id !== null && (int) $this->_student->get('user_id') != $user_id)
+            || ($user_id !== null
+                && (int) $this->_student->get('user_id') != $user_id)
         ) {
             $this->_student = null;
 
@@ -282,7 +322,12 @@ class Permissions extends Obj
         }
 
         if (!$this->_student) {
-            $this->_student = \Components\Courses\Models\Student::getInstance($user_id, $this->get('course_id'), null, $this->get('section_id'));
+            $this->_student = \Components\Courses\Models\Student::getInstance(
+                $user_id,
+                $this->get('course_id'),
+                null,
+                $this->get('section_id')
+            );
         }
 
         return $this->_student;
@@ -321,11 +366,15 @@ class Permissions extends Obj
 
             if (($data = $tbl->find($filters))) {
                 foreach ($data as $key => $result) {
-                    $results[$result->user_id] = new \Components\Courses\Models\Student($result, $this->get('id'));
+                    $results[$result->user_id] = new Student(
+                        $result,
+                        $this->get('id')
+                    );
                 }
             }
 
-            $this->_students = $results; //new \Components\Courses\Models\Iterator($results);
+            // Previously: new \Components\Courses\Models\Iterator($results)
+            $this->_students = $results;
         }
 
         return $this->_students;
@@ -336,11 +385,12 @@ class Permissions extends Obj
      *
      * @return  void
      */
-    private function _calculate()
+    private function calculate()
     {
         // List of actions
         $actions = array(
-            'admin', 'manage', 'create', 'delete', 'edit', 'edit-state', 'edit-own', 'view'
+            'admin', 'manage', 'create', 'delete',
+            'edit', 'edit-state', 'edit-own', 'view'
         );
 
         // Are they an admin?
@@ -387,12 +437,15 @@ class Permissions extends Obj
             if ($manager->exists()) {
                 // If no specific permissions set
                 if ($manager->get('course_id') == $this->get('course_id')) {
-                    if (!$manager->get('offering_id') && !$manager->get('section_id')) {
+                    $noOffering = !$manager->get('offering_id');
+                    $noSection = !$manager->get('section_id');
+                    if ($noOffering && $noSection) {
                         if (!$manager->get('permissions')) {
                             foreach ($actions as $action) {
-                                $this->config()->set('access-' . $action . '-section', true);
-                                $this->config()->set('access-' . $action . '-offering', true);
-                                $this->config()->set('access-' . $action . '-course', true);
+                                $key = 'access-' . $action;
+                                $this->config()->set($key . '-section', true);
+                                $this->config()->set($key . '-offering', true);
+                                $this->config()->set($key . '-course', true);
                             }
                         } else {
                             // Merge permissions
@@ -408,9 +461,8 @@ class Permissions extends Obj
                     $this->config()->set('access-checked-offering', true);
                     $this->config()->set('access-checked-section', true);
                 }
-            }
-            // If they're a student
-            else if (($student = $this->student(User::get('id')))) {
+            } elseif (($student = $this->student(User::get('id')))) {
+                // If they're a student
                 if ($student->exists()) {
                     // Allow them to view content
                     $this->config()->set('is-student', true);
@@ -454,18 +506,26 @@ class Permissions extends Obj
             $manager = $this->manager(User::get('id'));
             if ($manager->exists()) {
                 // If no specific permissions set
-                if ($manager->get('course_id') == $this->get('course_id') && $manager->get('offering_id') == $this->get('offering_id')) {
+                $courseMatch = $manager->get('course_id')
+                    == $this->get('course_id');
+                $offeringMatch = $manager->get('offering_id')
+                    == $this->get('offering_id');
+                if ($courseMatch && $offeringMatch) {
                     if (!$manager->get('permissions')) {
                         // If section_id is set, then they're a section manager
-                        if ($manager->get('section_id') == $this->get('section_id')) {
+                        $sectionMatch = $manager->get('section_id')
+                            == $this->get('section_id');
+                        if ($sectionMatch) {
                             foreach ($actions as $action) {
-                                $this->config()->set('access-' . $action . '-section', true);
+                                $key = 'access-' . $action . '-section';
+                                $this->config()->set($key, true);
                             }
                         } else {
                             foreach ($actions as $action) {
-                                $this->config()->set('access-' . $action . '-section', true);
-                                $this->config()->set('access-' . $action . '-offering', true);
-                                //$this->config()->set('access-' . $action . '-course', true);
+                                $keySection = 'access-' . $action . '-section';
+                                $keyOffering = 'access-' . $action . '-offering';
+                                $this->config()->set($keySection, true);
+                                $this->config()->set($keyOffering, true);
                             }
                         }
                     } else {
@@ -475,9 +535,8 @@ class Permissions extends Obj
                     $this->config()->set('access-view-offering', true);
                     $this->config()->set('access-view-section', true);
                 }
-            }
-            // If they're a student
-            else if (($student = $this->student(User::get('id')))) {
+            } elseif (($student = $this->student(User::get('id')))) {
+                // If they're a student
                 if ($student->exists()) {
                     // Allow them to view content
                     $this->config()->set('access-view-offering', true);
@@ -504,7 +563,7 @@ class Permissions extends Obj
     public function access($action = 'view', $item = 'course')
     {
         if (!$this->config()->get('access-checked-' . $item)) {
-            $this->_calculate();
+            $this->calculate();
         }
 
         if (User::authorise('core.admin', 'com_courses')) {

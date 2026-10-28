@@ -58,6 +58,7 @@ class Processor extends Obj
      * @param   array   $config        Optional configurations
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($image_source = null, $config = array(), $isRemoteImage = false)
     {
         $this->source = $image_source;
@@ -197,7 +198,8 @@ class Processor extends Obj
     public function autoRotate()
     {
         if (!$this->checkPackageRequirements('exif')) {
-            $this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+            $this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif 
+                Orientation value.'));
             return false;
         }
 
@@ -282,9 +284,9 @@ class Processor extends Obj
             for ($y = 0; $y < $height; $y++) {
                 if ($flip_horizontal && $flip_vertical) {
                     imagecopy($new_resource, $resource, $width - $x - 1, $height - $y - 1, $x, $y, 1, 1);
-                } else if ($flip_horizontal) {
+                } elseif ($flip_horizontal) {
                     imagecopy($new_resource, $resource, $width - $x - 1, $y, $x, $y, 1, 1);
-                } else if ($flip_vertical) {
+                } elseif ($flip_vertical) {
                     imagecopy($new_resource, $resource, $x, $height - $y - 1, $x, $y, 1, 1);
                 }
             }
@@ -421,7 +423,8 @@ class Processor extends Obj
     public function getGeoLocation()
     {
         if (!$this->checkPackageRequirements('exif')) {
-            $this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+            $this->setError(\Lang::txt('You need the PHP exif library installed to rotate image based on Exif 
+                Orientation value.'));
             return false;
         }
 
@@ -469,6 +472,7 @@ class Processor extends Obj
      * @param   string   $str  Fraction to convert
      * @return  integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geo_frac2dec($str)
     {
         list($n, $d) = explode('/', $str);
@@ -486,9 +490,15 @@ class Processor extends Obj
      * @param   array   $fracs  Fractions to convert
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geo_pretty_fracs2dec($fracs)
     {
-        return $this->geo_frac2dec($fracs[0]) . '&deg; ' . $this->geo_frac2dec($fracs[1]) . '&prime; ' . $this->geo_frac2dec($fracs[2]) . '&Prime; ';
+        return $this->geo_frac2dec($fracs[0]) .
+            '&deg; ' .
+            $this->geo_frac2dec($fracs[1]) .
+            '&prime; ' .
+            $this->geo_frac2dec($fracs[2]) .
+            '&Prime; ';
     }
 
     /**
@@ -497,9 +507,13 @@ class Processor extends Obj
      * @param   array    $fracs  Fractions to convert
      * @return  integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function geo_single_fracs2dec($fracs)
     {
-        return $this->geo_frac2dec($fracs[0]) + $this->geo_frac2dec($fracs[1]) / 60 + $this->geo_frac2dec($fracs[2]) / 3600;
+        return $this->
+            geo_frac2dec($fracs[0]) + $this->
+            geo_frac2dec($fracs[1]) / 60 + $this->
+            geo_frac2dec($fracs[2]) / 3600;
     }
 
     /**
@@ -572,7 +586,8 @@ class Processor extends Obj
             }
 
             if (!is_dir($info['dirname']) && $make_paths == false) {
-                $this->setError(\Lang::txt('You must supply a valid path or allow save function to create recursive path'));
+                $this->setError(\Lang::txt('You must supply a valid path or 
+                    allow save function to create recursive path'));
                 return;
             }
 

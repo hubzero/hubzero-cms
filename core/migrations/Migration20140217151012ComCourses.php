@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding is_default column
- **/
+ *
+ */
 class Migration20140217151012ComCourses extends Base
 {
     /**
@@ -23,7 +25,8 @@ class Migration20140217151012ComCourses extends Base
     {
         if ($this->db->tableExists('#__courses_offering_sections')) {
             if (!$this->db->tableHasField('#__courses_offering_sections', 'is_default')) {
-                $query = "ALTER TABLE `#__courses_offering_sections` ADD `is_default` TINYINT(2)  NOT NULL  DEFAULT '0' AFTER `offering_id`";
+                $query = "ALTER TABLE `#__courses_offering_sections` "
+                    . "ADD `is_default` TINYINT(2)  NOT NULL  DEFAULT '0' AFTER `offering_id`";
 
                 $this->db->setQuery($query);
                 $this->db->query();

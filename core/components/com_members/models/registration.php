@@ -1,5 +1,6 @@
 <?php
 
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -538,11 +539,11 @@ class Registration
             $score = $this->scorePassword($registration['password'], $registration['login']);
             if ($score < PASS_SCORE_MEDIOCRE) {
                 $this->_invalid['password'] = 'Password strength is too weak.';
-            } else if ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
+            } elseif ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
                 // Mediocre pass
-            } else if ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
+            } elseif ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
                 // Good pass
-            } else if ($score >= PASS_SCORE_STRONG) {
+            } elseif ($score >= PASS_SCORE_STRONG) {
                 // Strong pass
             }
 
@@ -625,7 +626,7 @@ class Registration
                 if ($xid && ($allow_duplicate_emails == 0 || $allow_duplicate_emails == 2)) {
                     if ($allow_duplicate_emails == 0) {
                         $this->_invalid['email'] = 'An existing account is already using this e-mail address.';
-                    } else if ($allow_duplicate_emails == 2) {
+                    } elseif ($allow_duplicate_emails == 2) {
                         // If duplicates are only allowed in grandfathered accounts,
                         // then new accounts shouldn't be created with the same email.
                         if (($task == 'create' || $task == 'proxycreate')) {

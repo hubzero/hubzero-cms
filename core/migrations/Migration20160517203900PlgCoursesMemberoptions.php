@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing unused plg_courses_memberoptions plugin
- **/
+ *
+ */
 class Migration20160517203900PlgCoursesMemberoptions extends Base
 {
     /**

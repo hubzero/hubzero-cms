@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing google gtag module
- **/
+ *
+ */
 class Migration20220109000000ModGooglegtag extends Base
 {
     /**

@@ -82,7 +82,8 @@ class Category
      * Returns an array of categories for the given extension.
      *
      * @param   string  $extension  The extension option.
-     * @param   array   $config     An array of configuration options. By default, only published and unpublished categories are returned.
+     * @param   array   $config     An array of configuration options. By default, only published
+     *                              and unpublished categories are returned.
      * @return  array   Categories for the extension
      */
     public static function categories($extension, $config = array('filter.published' => array(0, 1)))

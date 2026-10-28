@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,7 +20,9 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Return the alias and name for this category of content
@@ -63,13 +66,16 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
 
         // Build the query
         $e_count = "SELECT count(DISTINCT e.id)";
-        $e_fields = "SELECT e.id, e.title, NULL AS alias, e.content AS itext, NULL AS ftext, e.state, e.created, e.modified, e.publish_up, NULL AS params,
-					CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href, 'events' AS section, NULL AS area, NULL AS category, NULL AS rating, NULL AS times_rated, NULL AS ranking ";
+        $e_fields = "SELECT e.id, e.title, NULL AS alias, e.content AS itext, NULL AS ftext, "
+            . "e.state, e.created, e.modified, e.publish_up, NULL AS params, "
+            . "CONCAT('index.php?option=com_events&task=details&id=', e.id) AS href, "
+            . "'events' AS section, NULL AS area, NULL AS category, "
+            . "NULL AS rating, NULL AS times_rated, NULL AS ranking ";
         $e_from = " FROM #__events AS e";
 
         $e_where = "e.created > '$period->cStartDate' AND e.created < '$period->cEndDate' AND scope='events'";
 
-        $order_by  = " ORDER BY publish_up DESC, title";
+        $order_by = " ORDER BY publish_up DESC, title";
         $order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";
 
         if (!$limit) {
@@ -113,14 +119,20 @@ class plgWhatsnewEvents extends \Hubzero\Plugin\Plugin
     public function out($row, $period)
     {
         // Start building the HTML
-        $html  = "\t" . '<li class="event">' . "\n";
-        $html .= "\t\t" . '<p class="event-date"><span class="month">' . Date::of($row->publish_up)->toLocal('M') . '</span>';
-        $html .= '<span class="day">' . Date::of($row->publish_up)->toLocal('d') . '</span> ';
-        $html .= '<span class="year">' . Date::of($row->publish_up)->toLocal('Y') . '</span></p>' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+        $html = "\t" . '<li class="event">' . "\n";
+        $html .= "\t\t" . '<p class="event-date">'
+            . '<span class="month">' . Date::of($row->publish_up)->toLocal('M') . '</span>'
+            . '<span class="day">' . Date::of($row->publish_up)->toLocal('d') . '</span> '
+            . '<span class="year">' . Date::of($row->publish_up)->toLocal('Y') . '</span></p>' . "\n";
+        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+            . stripslashes($row->title) . '</a></p>' . "\n";
         if ($row->itext) {
             $row->itext = str_replace('[[BR]]', '', $row->itext);
-            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . '</p>' . "\n";
+            $text = \Hubzero\Utility\Str::truncate(
+                \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)),
+                200
+            );
+            $html .= "\t\t" . '<p>' . $text . '</p>' . "\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +28,7 @@ class Migration20170901000000ComContent extends Base
 			  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-			  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Deprecated in HUBzero 2.0',
+			  `title_alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
 			  `introtext` mediumtext NOT NULL,
 			  `fulltext` mediumtext NOT NULL,
 			  `state` tinyint(3) NOT NULL DEFAULT '0',

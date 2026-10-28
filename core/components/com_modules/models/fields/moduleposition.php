@@ -63,7 +63,8 @@ class ModulePosition extends Text
 
         // Setup variables for display.
         $html = array();
-        $link = 'index.php?option=com_modules&amp;task=positions&amp;tmpl=component&amp;function=jSelectPosition_' . $this->id . '&amp;client_id=' . $clientId;
+        $link = 'index.php?option=com_modules&amp;task=positions&amp;tmpl=component'
+            . '&amp;function=jSelectPosition_' . $this->id . '&amp;client_id=' . $clientId;
 
         // The current user display field.
         //$html[] = '<div class="fltlft">';
@@ -74,7 +75,10 @@ class ModulePosition extends Text
 
         // The user select button.
         $html[] = '<span class="input-cell">';
-        $html[] = '<a class="button modal" title="' . Lang::txt('COM_MODULES_CHANGE_POSITION_TITLE') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . Lang::txt('COM_MODULES_CHANGE_POSITION_BUTTON') . '</a>';
+        $title = Lang::txt('COM_MODULES_CHANGE_POSITION_TITLE');
+        $btnText = Lang::txt('COM_MODULES_CHANGE_POSITION_BUTTON');
+        $html[] = '<a class="button modal" title="' . $title . '"  href="' . $link
+            . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . $btnText . '</a>';
         $html[] = '</span>';
         $html[] = '</div>';
 

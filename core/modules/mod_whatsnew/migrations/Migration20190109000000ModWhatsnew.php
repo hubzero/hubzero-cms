@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Whatsnew module
- **/
+ *
+ */
 class Migration20190109000000ModWhatsnew extends Base
 {
     /**

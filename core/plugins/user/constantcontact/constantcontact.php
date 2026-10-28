@@ -16,9 +16,9 @@ class plgUserConstantContact extends Plugin
     /**
      * Build the API client from plugin params
      *
-     * @return ConstantContactClient|null  Client or null if unconfigured
+     * @return Helpers\ConstantContactClient|null  Client or null if unconfigured
      */
-    protected function getClient(): ?ConstantContactClient
+    protected function getClient(): ?Helpers\ConstantContactClient
     {
         $clientId     = $this->params->get('ccClientId', '');
         $clientSecret = $this->params->get('ccClientSecret', '');
@@ -32,7 +32,7 @@ class plgUserConstantContact extends Plugin
 
         require_once __DIR__ . '/helpers/ConstantContactClient.php';
 
-        return new ConstantContactClient(
+        return new Helpers\ConstantContactClient(
             $clientId,
             $clientSecret,
             $accessToken,
@@ -76,10 +76,10 @@ class plgUserConstantContact extends Plugin
      * Uses the configured list ID if set, otherwise falls back to the
      * first list returned by the API (matching V1 behavior).
      *
-     * @param  ConstantContactClient $client
+     * @param  Helpers\ConstantContactClient $client
      * @return string|null
      */
-    protected function getDefaultListId(ConstantContactClient $client): ?string
+    protected function getDefaultListId(Helpers\ConstantContactClient $client): ?string
     {
         $listId = $this->params->get('ccListId', '');
         if ($listId) {

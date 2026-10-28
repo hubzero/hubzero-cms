@@ -21,6 +21,7 @@ class DataStore extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'datastore';
 
     /**
@@ -28,6 +29,7 @@ class DataStore extends Base
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_config = null;
 
     /**
@@ -53,7 +55,8 @@ class DataStore extends Base
             )
         );
 
-        $this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), false);
+        $parsedConfig = $this->_parent->parseConfig($this->_name, $configs, $savedConfig);
+        $this->_config = json_decode(json_encode($parsedConfig), false);
         return $this->_config;
     }
 

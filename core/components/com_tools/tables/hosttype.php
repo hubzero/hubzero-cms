@@ -117,14 +117,12 @@ class Hosttype extends Table
                 // If the value is null and we want to update nulls then set it.
                 if ($nulls) {
                     $val = 'NULL';
-                }
-                // If the value is null and we do not want to update nulls then ignore this field.
-                else {
+                } else {
+                    // If the value is null and we do not want to update nulls then ignore this field.
                     continue;
                 }
-            }
-            // The field is not null so we prep it for update.
-            else {
+            } else {
+                // The field is not null so we prep it for update.
                 $val = $this->_db->quote($v);
             }
 
@@ -175,12 +173,16 @@ class Hosttype extends Table
      * @param   array   $filters  Filters to build SQL from
      * @return  string  SQL
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _buildQuery($filters = array())
     {
         $where = array();
 
         if (isset($filters['search']) && $filters['search'] != '') {
-            $where[] = "(LOWER(c.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(c.description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
+            $where[] = "(LOWER(c.name) LIKE "
+                . $this->_db->quote('%' . strtolower($filters['search']) . '%')
+                . " OR LOWER(c.description) LIKE "
+                . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
         $query = "FROM $this->_tbl AS c";

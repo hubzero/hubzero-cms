@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for uninstalling mod_spotlight
+  *
  **/
 class Migration20170512162652ModSpotlight extends Base
 {

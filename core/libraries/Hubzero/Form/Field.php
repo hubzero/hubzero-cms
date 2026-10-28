@@ -341,7 +341,8 @@ abstract class Field
         $this->hidden = ((string) $element['type'] == 'hidden' || (string) $element['hidden'] == 'true');
 
         // Determine whether to translate the field label and/or description.
-        $this->translateLabel = !((string) $this->element['translate_label'] == 'false' || (string) $this->element['translate_label'] == '0');
+        $this->translateLabel = !((string) $this->element['translate_label'] == 'false' ||
+            (string) $this->element['translate_label'] == '0');
         $this->translateDescription = !((string) $this->element['translate_description'] == 'false'
             || (string) $this->element['translate_description'] == '0');
 
@@ -463,7 +464,9 @@ abstract class Field
         if (!empty($this->description)) {
             $label .= ' title="'
                 . htmlspecialchars(
-                    trim($text, ':') . '::' . ($this->translateDescription ? Lang::txt($this->description) : $this->description),
+                    trim($text, ':') .
+                        '::' .
+                        ($this->translateDescription ? Lang::txt($this->description) : $this->description),
                     ENT_COMPAT,
                     'UTF-8'
                 ) . '"';

@@ -6,19 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
- * Courses Plugin class for manager dashboard
+ * Courses Plugin class for the dashboard
  */
-class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
+class PlgCoursesDashboard extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -27,12 +27,12 @@ class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
      * @param   object   $course    Current course
      * @param   object   $offering  Name of the component
      * @param   boolean  $describe  Return plugin description only?
-     * @return  object
+     * @return  object|null
      */
     public function onCourse($course, $offering, $describe = false)
     {
         if (!$offering->access('manage', 'section')) {
-            return;
+            return null;
         }
 
         $response = with(new \Hubzero\Base\Obj())

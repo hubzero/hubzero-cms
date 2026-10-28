@@ -77,38 +77,41 @@ class Helper extends Module
 
         // Filter allowed languages
         foreach ($languages as $i => &$language) {
-            // Do not display language without frontend UI
+            $clientName = App::get('client')->name;
+            $appLangPath = PATH_APP . DS . 'bootstrap' . DS . strtolower($clientName);
+            $coreLangPath = PATH_CORE . DS . 'bootstrap' . DS . ucfirst($clientName);
             if (
-                !Lang::exists($language->lang_code, PATH_APP . DS . 'bootstrap' . DS . strtolower(App::get('client')->name))
-                && !Lang::exists($language->lang_code, PATH_CORE . DS . 'bootstrap' . DS . ucfirst(App::get('client')->name))
+                !Lang::exists($language->lang_code, $appLangPath)
+                && !Lang::exists($language->lang_code, $coreLangPath)
             ) {
+                // Do not display language without frontend UI
                 unset($languages[$i]);
-            }
-            // Do not display language without specific home menu
-            /*elseif (!isset($homes[$language->lang_code]))
-            {
-                unset($languages[$i]);
-            }*/
-            // Do not display language without authorized access level
-            elseif (isset($language->access) && $language->access && !in_array($language->access, $levels)) {
+            } elseif (isset($language->access) && $language->access && !in_array($language->access, $levels)) {
+                // Do not display language without authorized access level
                 unset($languages[$i]);
             } else {
                 $language->active = $language->lang_code == $lang->getTag();
 
                 if (App::get('language.filter')) {
-                    if (isset($associations[$language->lang_code]) && $menu->getItem($associations[$language->lang_code])) {
-                        $itemid = $associations[$language->lang_code];
+                    $langCode = $language->lang_code;
+                    $langSef = $language->sef;
+                    if (isset($associations[$langCode]) && $menu->getItem($associations[$langCode])) {
+                        $itemid = $associations[$langCode];
                         if (Config::get('sef')) {
-                            $language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
+                            $language->link = Route::url(
+                                'index.php?lang=' . $langSef . '&Itemid=' . $itemid
+                            );
                         } else {
-                            $language->link = 'index.php?lang=' . $language->sef . '&amp;Itemid=' . $itemid;
+                            $language->link = 'index.php?lang=' . $langSef . '&amp;Itemid=' . $itemid;
                         }
                     } else {
                         if (Config::get('sef')) {
-                            $itemid = isset($homes[$language->lang_code]) ? $homes[$language->lang_code]->id : $homes['*']->id;
-                            $language->link = Route::url('index.php?lang=' . $language->sef . '&Itemid=' . $itemid);
+                            $itemid = isset($homes[$langCode]) ? $homes[$langCode]->id : $homes['*']->id;
+                            $language->link = Route::url(
+                                'index.php?lang=' . $langSef . '&Itemid=' . $itemid
+                            );
                         } else {
-                            $language->link = 'index.php?lang=' . $language->sef;
+                            $language->link = 'index.php?lang=' . $langSef;
                         }
                     }
                 } else {

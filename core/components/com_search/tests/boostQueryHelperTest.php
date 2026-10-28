@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,27 +21,26 @@ use Component;
 
 class BoostQueryHelperTest extends Basic
 {
-	use canMock;
+    use canMock;
 
-	public function testGetAllQueriesInvokesOne()
-	{
-		$boosts = [1, 1, 1];
-		$factoryMock = $this->mock([
-			'class' => 'BoostQueries', 'methods' => ['one']
-		]);
-		$ormMock = $this->mock([
-			'class' => 'Boost', 'methods' => ['all' => $boosts]
-		]);
-		$helper = new Helper([
-			'boosts' => $ormMock,
-		 	'queries' => $factoryMock
-		]);
+    public function testGetAllQueriesInvokesOne()
+    {
+        $boosts = [1, 1, 1];
+        $factoryMock = $this->mock([
+            'class' => 'BoostQueries', 'methods' => ['one']
+        ]);
+        $ormMock = $this->mock([
+            'class' => 'Boost', 'methods' => ['all' => $boosts]
+        ]);
+        $helper = new Helper([
+            'boosts' => $ormMock,
+            'queries' => $factoryMock
+        ]);
 
-		$factoryMock->expects($this->once())
-			->method('one')
-			->with(['boosts' => $boosts]);
+        $factoryMock->expects($this->once())
+            ->method('one')
+            ->with(['boosts' => $boosts]);
 
-		$boostQueries = $helper->getAllQueries();
-	}
-
+        $boostQueries = $helper->getAllQueries();
+    }
 }

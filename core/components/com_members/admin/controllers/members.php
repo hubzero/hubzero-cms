@@ -450,10 +450,9 @@ class Members extends AdminController
         // (unactivated accoutns have a negative-value code, e.g.: -123456)
         if ($ec = Request::getInt('activation', 0, 'post')) {
             $user->set('activation', $ec);
-        }
-        // If the account was previously activated and we're de-activating
-        // reset the activation code.
-        elseif ($ac > 0) {
+        } elseif ($ac > 0) {
+            // If the account was previously activated and we're de-activating
+            // reset the activation code.
             $user->set('activation', Helpers\Utility::genemailconfirm());
         }
 

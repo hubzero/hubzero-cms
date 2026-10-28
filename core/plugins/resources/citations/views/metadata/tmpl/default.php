@@ -6,10 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
 defined('_HZEXEC_') or die();
 ?>
 
 <p class="citation">
-    <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_RESOURCES_CITATIONS_COUNT', count($this->citations)); ?></a>
+    <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_RESOURCES_CITATIONS_COUNT', count($this->citations));
+    ?></a>
 </p>

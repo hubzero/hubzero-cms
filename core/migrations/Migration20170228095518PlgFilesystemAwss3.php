@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding GitHub filesystem plugin
- **/
+ *
+ */
 class Migration20170228095518PlgFilesystemAwss3 extends Base
 {
     /**

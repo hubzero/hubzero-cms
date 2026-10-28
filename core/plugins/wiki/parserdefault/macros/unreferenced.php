@@ -6,12 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
- * Wiki macro class for displaying an unreferenced section message
+ * Wiki macro for unreferenced page
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class UnreferencedMacro extends WikiMacro
 {
     /**
@@ -40,6 +39,7 @@ class UnreferencedMacro extends WikiMacro
             $dt .= ' <span class="mbox-date">(' . htmlspecialchars((string) $this->args, ENT_QUOTES, 'UTF-8') . ')</span>';
         }
 
-        return '<div class="mbox-content mbox-unreferenced"><p class="mbox-text">This section <strong>does not cite any references or sources</strong>.' . $dt . '</span></p></div>';
+        return '<div class="mbox-content mbox-unreferenced"><p class="mbox-text">'
+            . 'This section <strong>does not cite any references or sources</strong>.' . $dt . '</span></p></div>';
     }
 }

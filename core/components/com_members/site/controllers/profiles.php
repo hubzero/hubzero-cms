@@ -370,9 +370,8 @@ class Profiles extends SiteController
                         }
                         //$filters['q'][] = $multi;
                     }
-                }
-                // Single-value field (select list)
-                else {
+                } else {
+                    // Single-value field (select list)
                     foreach ($field->options as $option) {
                         if ($option->get('value') == $val['value']) {
                             $val['human_value'] = $option->get('label');
@@ -494,7 +493,7 @@ class Profiles extends SiteController
                         't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int)$q['value'],
                         'inner'
                     );
-                } else if (is_array($q['value'])) {
+                } elseif (is_array($q['value'])) {
                     foreach ($q['value'] as $key => $val) {
                         $q['value'][$key] = $db->quote($val);
                     }
@@ -1156,7 +1155,7 @@ class Profiles extends SiteController
                         $preferences->jobs     = $newlimit;
                         $preferences->store();
                         $resourcemessage = 'The session limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . ' sessions.';
-                    } else if ($request === null) {
+                    } elseif ($request === null) {
                         $this->view
                             ->set('title', $title)
                             ->set('resource', $k)
@@ -1271,7 +1270,7 @@ class Profiles extends SiteController
                 ->setLayout('success')
                 ->display();
             return;
-        } else if (User::authorise('core.manage', $this->_option) && !empty($resourcemessage)) {
+        } elseif (User::authorise('core.manage', $this->_option) && !empty($resourcemessage)) {
             // Output the view
             $this->view
                 ->set('resourcemessage', $resourcemessage)

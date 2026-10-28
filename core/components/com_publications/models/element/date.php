@@ -22,6 +22,7 @@ class Date extends Base
   *
   * @var        string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Date';
 
     /**
@@ -84,12 +85,15 @@ class Date extends Base
 
             $output = '<legend id="' . $control_name . $name . '-lgd"';
             if (isset($element->description) && $element->description) {
-                $output .= ' class="hasTip" title="' . Lang::txt($label) . '::' . Lang::txt($element->description) . '">';
+                $output .= ' class="hasTip" title="' . Lang::txt($label) . '::'
+                    . Lang::txt($element->description) . '">';
             } else {
                 $output .= '>';
             }
             $output .= Lang::txt($label);
-            $output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
+            if (isset($element->required) && $element->required) {
+                $output .= ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+            }
             $output .= '</legend>';
 
             $html[] = $output;
@@ -128,7 +132,18 @@ class Date extends Base
             $options = array_reverse($options);
             array_unshift($options, \Html::select('option', '0', Lang::txt('Year...')));
 
-            $html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][year]', 'class="option"', 'value', 'text', $year, $control_name . '-' . $name . '-year');
+            $fieldName = $control_name . '[' . $name . '][year]';
+            $fieldId = $control_name . '-' . $name . '-year';
+            $html[] = \Html::select(
+                'genericlist',
+                $options,
+                $fieldName,
+                'class="option"',
+                'value',
+                'text',
+                $year,
+                $fieldId
+            );
         }
 
         if (isset($element->month) && $element->month) {
@@ -144,7 +159,18 @@ class Date extends Base
                 $options[] = \Html::select('option', $i, $this->_getMonth($i));
             }
 
-            $html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][month]', 'class="option"', 'value', 'text', $month, $control_name . '-' . $name . '-month');
+            $fieldName = $control_name . '[' . $name . '][month]';
+            $fieldId = $control_name . '-' . $name . '-month';
+            $html[] = \Html::select(
+                'genericlist',
+                $options,
+                $fieldName,
+                'class="option"',
+                'value',
+                'text',
+                $month,
+                $fieldId
+            );
         }
 
         if (isset($element->day) && $element->day) {
@@ -160,7 +186,18 @@ class Date extends Base
                 $options[] = \Html::select('option', $i, $i);
             }
 
-            $html[] = \Html::select('genericlist', $options, $control_name . '[' . $name . '][day]', 'class="option"', 'value', 'text', $day, $control_name . '-' . $name . '-day');
+            $fieldName = $control_name . '[' . $name . '][day]';
+            $fieldId = $control_name . '-' . $name . '-day';
+            $html[] = \Html::select(
+                'genericlist',
+                $options,
+                $fieldName,
+                'class="option"',
+                'value',
+                'text',
+                $day,
+                $fieldId
+            );
         }
 
         if ($c > 1) {
@@ -176,6 +213,7 @@ class Date extends Base
      * @param   integer  $month Month numerical value
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getMonth($month)
     {
         switch ($month) {
@@ -229,6 +267,7 @@ class Date extends Base
      * @param   string  $text Data
      * @return  string
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private function _getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";
@@ -294,28 +333,48 @@ class Date extends Base
         }
 
         $k = 0;
+        $idBase = $control_name . '-' . $name;
+        $nameBase = $control_name . '[' . $name . ']';
 
         $html[] = '<table class="admintable" id="' . $name . '">';
         $html[] = '<tbody>';
         $html[] = '<tr>';
-        $html[] = '<td><label for="' . $control_name . '-' . $name . '-year">' . Lang::txt('Year') . '</label></td>';
-        $html[] = '<td><input type="checkbox" name="' . $control_name . '[' . $name . '][year]" id="' . $control_name . '-' . $name . '-year" value="1" ' . (isset($element->year) && $element->year == 1 ? 'checked="checked"' : '') . ' /></td>';
+        $html[] = '<td><label for="' . $idBase . '-year">' . Lang::txt('Year') . '</label></td>';
+
+        $yearChecked = (isset($element->year) && $element->year == 1) ? 'checked="checked"' : '';
+        $html[] = '<td><input type="checkbox" name="' . $nameBase . '[year]" id="' . $idBase . '-year"'
+            . ' value="1" ' . $yearChecked . ' /></td>';
+
         if (isset($element->options) && is_array($element->options)) {
             foreach ($element->options as $option) {
-                $html[] = '<td><label for="' . $control_name . '-' . $name . '-label-' . $k . '">' . ($k == 0 ? Lang::txt('Start') : Lang::txt('End')) . '</label></td>';
-                $html[] = '<td><input type="text" size="4" name="' . $control_name . '[' . $name . '][options][' . $k . '][label]" id="' . $control_name . '-' . $name . '-label-' . $k . '" value="' . ($k == 0 ? ($option->label ? $option->label : 1950) : $option->label) . '" /></td>';
+                $labelText = ($k == 0) ? Lang::txt('Start') : Lang::txt('End');
+                $labelId = $idBase . '-label-' . $k;
+                $html[] = '<td><label for="' . $labelId . '">' . $labelText . '</label></td>';
+
+                $inputName = $nameBase . '[options][' . $k . '][label]';
+                $inputValue = ($k == 0) ? ($option->label ? $option->label : 1950) : $option->label;
+                $html[] = '<td><input type="text" size="4" name="' . $inputName . '" id="' . $labelId . '"'
+                    . ' value="' . $inputValue . '" /></td>';
 
                 $k++;
             }
         }
         $html[] = '</tr>';
         $html[] = '<tr>';
-        $html[] = '<td><label for="' . $control_name . '-' . $name . '-month">' . Lang::txt('Month') . '</label></td>';
-        $html[] = '<td colspan="3"><input type="checkbox" name="' . $control_name . '[' . $name . '][month]" id="' . $control_name . '-' . $name . '-month" value="1" ' . (isset($element->month) && $element->month == 1 ? 'checked="checked"' : '') . ' /></td>';
+        $html[] = '<td><label for="' . $idBase . '-month">' . Lang::txt('Month') . '</label></td>';
+
+        $monthChecked = (isset($element->month) && $element->month == 1) ? 'checked="checked"' : '';
+        $html[] = '<td colspan="3"><input type="checkbox" name="' . $nameBase . '[month]" id="' . $idBase . '-month"'
+            . ' value="1" ' . $monthChecked . ' /></td>';
+
         $html[] = '</tr>';
         $html[] = '<tr>';
-        $html[] = '<td><label for="' . $control_name . '-' . $name . '-day">' . Lang::txt('Day') . '</label></td>';
-        $html[] = '<td colspan="3"><input type="checkbox" name="' . $control_name . '[' . $name . '][day]" id="' . $control_name . '-' . $name . '-day" value="1" ' . (isset($element->day) && $element->day == 1 ? 'checked="checked"' : '') . ' /></td>';
+        $html[] = '<td><label for="' . $idBase . '-day">' . Lang::txt('Day') . '</label></td>';
+
+        $dayChecked = (isset($element->day) && $element->day == 1) ? 'checked="checked"' : '';
+        $html[] = '<td colspan="3"><input type="checkbox" name="' . $nameBase . '[day]" id="' . $idBase . '-day"'
+            . ' value="1" ' . $dayChecked . ' /></td>';
+
         $html[] = '</tr>';
         $html[] = '</tbody>';
         $html[] = '</table>';

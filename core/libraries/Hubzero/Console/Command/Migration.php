@@ -89,7 +89,10 @@ class Migration extends Base implements CommandInterface
         $force = false;
         if ($this->arguments->getOpt('force')) {
             if (!$this->arguments->getOpt('e') && !$this->arguments->getOpt('file')) {
-                $this->output->error('Error: You cannot specify the "force" option without specifying a specific extention or file');
+                $this->output->error(
+                    'Error: You cannot specify the "force" option without ' .
+                    'specifying a specific extention or file'
+                );
             } else {
                 $force = true;
             }
@@ -99,7 +102,10 @@ class Migration extends Base implements CommandInterface
         $logOnly = false;
         if ($this->arguments->getOpt('m')) {
             if (!$this->arguments->getOpt('e') && !$this->arguments->getOpt('file')) {
-                $this->output->error('Error: You cannot specify the "Log only (-m)" option without specifying a specific extention or file');
+                $this->output->error(
+                    'Error: You cannot specify the "Log only (-m)" option without ' .
+                    'specifying a specific extention or file'
+                );
             } else {
                 $logOnly = true;
             }
@@ -114,8 +120,13 @@ class Migration extends Base implements CommandInterface
         // Specific extension
         $extension = null;
         if ($this->arguments->getOpt('e')) {
-            if (!preg_match('/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i', $this->arguments->getOpt('e'))) {
-                $this->output->error('Error: extension should match the pattern of com_*, mod_*, tpl_*, plg_*_*, or core');
+            $pattern = '/^com_[[:alnum:]]+$|^mod_[[:alnum:]]+$|' .
+                '^plg_[[:alnum:]]+_[[:alnum:]]+$|^tpl_[[:alnum:]]+$|^core$/i';
+            if (!preg_match($pattern, $this->arguments->getOpt('e'))) {
+                $this->output->error(
+                    'Error: extension should match the pattern of ' .
+                    'com_*, mod_*, tpl_*, plg_*_*, or core'
+                );
             } else {
                 $extension = $this->arguments->getOpt('e');
             }
@@ -143,8 +154,13 @@ class Migration extends Base implements CommandInterface
         // Email results
         $email = false;
         if ($this->arguments->getOpt('email')) {
-            if (!preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,4}$/', $this->arguments->getOpt('email'))) {
-                $this->output->error('Error: ' . $this->arguments->getOpt('email') . ' does not appear to be a valid email address');
+            if (
+                !preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,
+                4}$/', $this->arguments->getOpt('email'))
+            ) {
+                $this->output->error('Error: ' .
+                    $this->arguments->getOpt('email') .
+                    ' does not appear to be a valid email address');
             } else {
                 $email = $this->arguments->getOpt('email');
             }
@@ -161,7 +177,13 @@ class Migration extends Base implements CommandInterface
                 foreach (scandir($vendorPath) as $namespace) {
                     if ($namespace != '.' && $namespace != '..' && is_dir($vendorPath . DS . $namespace)) {
                         foreach (scandir($vendorPath . DS . $namespace) as $package) {
-                            if ($package != '.' && $package != '..' && is_dir($vendorPath . DS . $namespace . DS . $package)) {
+                            if (
+                                $package != '.' && $package != '..' && is_dir($vendorPath .
+                                DS .
+                                $namespace .
+                                DS .
+                                $package)
+                            ) {
                                 $migrationPath = $vendorPath . DS . $namespace . DS . $package . DS . 'src';
                                 if (is_dir($migrationPath . DS . 'migrations')) {
                                     $migration->addSearchPath($migrationPath);
@@ -214,16 +236,34 @@ class Migration extends Base implements CommandInterface
                             $pending  = array();
                             $complete = array();
                             foreach ($migration->get('log') as $log) {
-                                if (preg_match('/would run up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches)) {
+                                if (
+                                    preg_match(
+                                        '/would run up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
+                                        $log['message'],
+                                        $matches
+                                    )
+                                ) {
                                     $pending[] = $matches[1] . $matches[2];
                                 }
                                 if (
-                                    preg_match('/completed up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches)
-                                    || preg_match('/would ignore up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i', $log['message'], $matches)
+                                    preg_match(
+                                        '/completed up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
+                                        $log['message'],
+                                        $matches
+                                    )
+                                    ||
+                                    preg_match(
+                                        '/would ignore up\(\) (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php)/i',
+                                        $log['message'],
+                                        $matches
+                                    )
                                 ) {
                                     $complete[] = $matches[1] . $matches[2];
                                 }
-                                if (preg_match('/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has not been run/i', $log['message'], $matches)) {
+                                if (
+                                    preg_match('/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has 
+                                    not been run/i', $log['message'], $matches)
+                                ) {
                                     $missed[] = $matches[1] . $matches[2];
                                 }
                             }
@@ -286,7 +326,6 @@ class Migration extends Base implements CommandInterface
         $maxFile   = 0;
         $maxUser   = 0;
         $maxScope  = 0;
-
 
         if ($history && count($history) > 0) {
             $items[] = [

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,6 +27,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var unknown
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_db  = null;
 
     /**
@@ -33,6 +35,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_tbl = 'tags';
 
     /**
@@ -40,6 +43,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var unknown
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_oid = null;
 
     /**
@@ -47,6 +51,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_tag_tbl = '#__tags';
 
     /**
@@ -54,6 +59,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_obj_tbl = '#__tags_object';
 
     /**
@@ -80,8 +86,16 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Has admin access?
      * @return     array
      */
-    public function get_tags_on_object($object_id, $offset = 0, $limit = 10, $tagger_id = null, $strength = 0, $admin = 0, $label = '')
-    {
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function get_tags_on_object(
+        $object_id,
+        $offset = 0,
+        $limit = 10,
+        $tagger_id = null,
+        $strength = 0,
+        $admin = 0,
+        $label = ''
+    ) {
         $cloud = new Cloud($object_id, $this->_tbl);
         return $cloud->tags('list', [
             'objectid' => $object_id,
@@ -102,6 +116,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $strength  Tag strength
      * @return     boolean True on success, false if errors
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function safe_tag($tagger_id, $object_id, $tag, $strength = 1, $label = '')
     {
         if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
@@ -169,6 +184,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string  $tag  Parameter description (if any) ...
      * @return     array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tags_with_objects($id = 0, $category = 0, $tag = '')
     {
         $now = Date::toSql();
@@ -244,6 +260,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      boolean $admin      Has admin access?
      * @return     boolean True on success, false if errors
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')
     {
         $cloud = new Cloud($object_id, $this->_tbl);
@@ -259,6 +276,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Has admin access?
      * @return     boolean True on success, false if errors
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_tag($tagger_id, $object_id, $tag, $admin)
     {
         $cloud = new Cloud($object_id, $this->_tbl);
@@ -271,6 +289,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $object_id Object ID
      * @return     boolean True on success, false if errors
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_all_tags($object_id)
     {
         $cloud = new Cloud($object_id, $this->_tbl);
@@ -284,6 +303,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string $tag Raw tag
      * @return     string Normalized tag
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function normalize_tag($tag)
     {
         $t = \Components\Tags\Models\Tag::blank();
@@ -296,6 +316,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string $tag Normalized tag
      * @return     mixed False if errors, integer on success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tag_id($tag)
     {
         if (!isset($tag)) {
@@ -313,6 +334,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      string $tag Raw tag
      * @return     mixed False if errors, integer on success
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_raw_tag_id($tag)
     {
         if (!isset($tag)) {
@@ -328,6 +350,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Show admin tags?
      * @return     integer
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function count_tags($admin = 0)
     {
         $t = \Components\Tags\Models\Tag::all();
@@ -345,6 +368,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $objectid  Object ID
      * @return     mixed Return description (if any) ...
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tag_cloud($showsizes = 0, $admin = 0, $objectid = null)
     {
         $cloud = new Cloud($objectid, $this->_tbl);
@@ -363,8 +387,16 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $admin     Admin tags?
      * @return     string
      */
-    public function get_tag_string($oid, $offset = 0, $limit = 0, $tagger_id = null, $strength = 0, $admin = 0, $label = '')
-    {
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function get_tag_string(
+        $oid,
+        $offset = 0,
+        $limit = 0,
+        $tagger_id = null,
+        $strength = 0,
+        $admin = 0,
+        $label = ''
+    ) {
         $cloud = new Cloud($oid, $this->_tbl);
         return $cloud->render('string');
     }
@@ -376,6 +408,7 @@ class Tags extends \Hubzero\Base\Obj
      * @param      integer $keep       Use normalized tag as array key
      * @return     array
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps, PSR2.Methods.MethodDeclaration.Underscore
     public function _parse_tags($tag_string, $keep = 0)
     {
         $newwords = array();
@@ -389,10 +422,14 @@ class Tags extends \Hubzero\Base\Obj
             // Perform tag parsing
             $tag_string = trim($tag_string);
             $raw_tags = explode(',', $tag_string);
-        } else if (is_array($tag_string)) {
+        } elseif (is_array($tag_string)) {
             $raw_tags = $tag_string;
         } else {
-            throw new \InvalidArgumentException(Lang::txt('Tag lsit must be an array or string. Type of "%s" passed.', gettype($tag_string)));
+            $errorMsg = Lang::txt(
+                'Tag lsit must be an array or string. Type of "%s" passed.',
+                gettype($tag_string)
+            );
+            throw new \InvalidArgumentException($errorMsg);
         }
 
         foreach ($raw_tags as $raw_tag) {
@@ -437,18 +474,29 @@ class Tags extends \Hubzero\Base\Obj
      * @param      array   $filterby Extra, optional filters
      * @return     array
      */
-    public function get_objects_on_tag($tag = '', $id = 0, $category = 0, $sortby = 'title', $tag2 = '', $filterby = array())
-    {
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function get_objects_on_tag(
+        $tag = '',
+        $id = 0,
+        $category = 0,
+        $sortby = 'title',
+        $tag2 = '',
+        $filterby = array()
+    ) {
         $now  = Date::toSql();
 
         if ($tag || $tag2) {
             $query  = "SELECT C.id, TA.tag, COUNT(DISTINCT TA.tag) AS uniques, V.title ";
             switch ($sortby) {
                 case 'users':
-                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs "
+                        . "WHERE rs.resid=C.id AND rs.period=14 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS users ";
                     break;
                 case 'jobs':
-                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs "
+                        . "WHERE rs.resid=C.id AND rs.period=14 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
                     break;
             }
             $query .= "FROM #__publications AS C ";
@@ -459,10 +507,14 @@ class Tags extends \Hubzero\Base\Obj
             $query  = "SELECT C.id, V.title  ";
             switch ($sortby) {
                 case 'users':
-                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=12 ORDER BY rs.datetime DESC LIMIT 1) AS users ";
+                    $query .= ", (SELECT rs.users FROM #__resource_stats AS rs "
+                        . "WHERE rs.resid=C.id AND rs.period=12 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS users ";
                     break;
                 case 'jobs':
-                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs WHERE rs.resid=C.id AND rs.period=12 ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
+                    $query .= ", (SELECT rs.jobs FROM #__resource_stats AS rs "
+                        . "WHERE rs.resid=C.id AND rs.period=12 "
+                        . "ORDER BY rs.datetime DESC LIMIT 1) AS jobs ";
                     break;
             }
             $query .= "FROM #__publications AS C ";
@@ -474,8 +526,10 @@ class Tags extends \Hubzero\Base\Obj
         if ($category) {
             $query .= "AND C.category=" . $category . " ";
         }
-        $query .= "AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
-        $query .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') AND ";
+        $query .= "AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' "
+            . "OR V.published_up <= '" . $now . "') ";
+        $query .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' "
+            . "OR V.published_down >= '" . $now . "') AND ";
 
         $query .= (!User::isGuest())
                ? "(C.access=0 OR C.access=1) "
@@ -483,13 +537,16 @@ class Tags extends \Hubzero\Base\Obj
 
         if ($tag || $tag2) {
             if ($tag && !$tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "'))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' "
+                    . "AND (TA.tag IN ('" . $tag . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
-            } else if ($tag2 && !$tag) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag2 . "'))";
+            } elseif ($tag2 && !$tag) {
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' "
+                    . "AND (TA.tag IN ('" . $tag2 . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
-            } else if ($tag && $tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
+            } elseif ($tag && $tag2) {
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' "
+                    . "AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=2";
             }
         }
@@ -658,8 +715,13 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @return     object
      */
-    public function getSuggestedTags($pubtitle = '', $typealias = '', $attached_tags = array(), $limit = 10, $tcount = 2)
-    {
+    public function getSuggestedTags(
+        $pubtitle = '',
+        $typealias = '',
+        $attached_tags = array(),
+        $limit = 10,
+        $tcount = 2
+    ) {
         $picked = '';
         $k = 1;
         if (!empty($attached_tags)) {
@@ -735,7 +797,8 @@ class Tags extends \Hubzero\Base\Obj
         $sql .= "AND tj.tbl=" . $this->_db->quote($this->_tbl) . " ";
         $sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
         $sql .= "AND V.published_up < " . $this->_db->quote(Date::toSql()) . " ";
-        $sql .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
+        $sql .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' "
+            . "OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
         $sql .= "GROUP BY tj.tagid ";
         $sql .= "ORDER BY tcount DESC ";
         $sql .= "LIMIT $limit";
@@ -841,11 +904,19 @@ class Tags extends \Hubzero\Base\Obj
                 $tag->raw_tag = stripslashes($tag->raw_tag);
                 $tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
                 $tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
+                $tagUrl = Route::url(
+                    'index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)
+                );
+                $adminClass = $tag->admin ? ' admin' : '';
+                $rawTag = stripslashes($tag->raw_tag);
                 if ($showsizes == 1) {
                     $size = $min_font_size + ($tag->count - $min_qty) * $step;
-                    $tll[$tag->tag] = "\t" . '<li' . $class . '><span data-size="' . round($size, 1) . 'em"><a class="tag' . ($tag->admin ? ' admin' : '') . '" rel="nofollow" href="' . Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+                    $tll[$tag->tag] = "\t" . '<li' . $class . '><span data-size="'
+                        . round($size, 1) . 'em"><a class="tag' . $adminClass . '" href="'
+                        . $tagUrl . '">' . $rawTag . '</a></li>' . "\n";
                 } else {
-                    $tll[$tag->tag] = "\t" . '<li' . $class . '><a class="tag' . ($tag->admin ? ' admin' : '') . '" rel="nofollow" href="' . urldecode(Route::url('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+                    $tll[$tag->tag] = "\t" . '<li' . $class . '><a class="tag' . $adminClass
+                        . '" href="' . urldecode($tagUrl) . '">' . $rawTag . '</a></li>' . "\n";
                 }
             }
             if ($sort == 'alpha') {

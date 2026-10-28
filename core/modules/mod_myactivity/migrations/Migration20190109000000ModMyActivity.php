@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing myactivity module
- **/
+ *
+ */
 class Migration20190109000000ModMyActivity extends Base
 {
     /**

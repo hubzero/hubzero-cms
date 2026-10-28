@@ -1,15 +1,13 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
 use Components\Resources\Models\Entry;
-
-defined('_HZEXEC_') or die();
 
 /**
  * Tags plugin class for resources
@@ -21,6 +19,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -95,7 +94,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
             $filters['type'] = $t['id'];
 
             // Execute a count query for each area/category
-            $database->setQuery($this->_buildPluginQuery($filters));
+            $database->setQuery($this->buildPluginQuery($filters));
             $response['children'][$k]['total'] = $database->loadResult();
             $response['total'] += $response['children'][$k]['total'];
         }
@@ -114,12 +113,12 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
             if (isset($response['children'][$areas])) {
                 $filters['type'] = $response['children'][$areas]['id'];
 
-                $database->setQuery($this->_buildPluginQuery($filters));
+                $database->setQuery($this->buildPluginQuery($filters));
                 $response['children'][$areas]['results'] = $database->loadObjectList();
             } else {
                 unset($filters['type']);
 
-                $database->setQuery($this->_buildPluginQuery($filters));
+                $database->setQuery($this->buildPluginQuery($filters));
                 $response['results'] = $database->loadObjectList();
             }
         } else {
@@ -133,10 +132,10 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
             if (isset($response['children'][$areas])) {
                 $filters['type'] = $response['children'][$areas]['id'];
 
-                $response['children'][$key]['sql'] = $this->_buildPluginQuery($filters);
+                $response['children'][$key]['sql'] = $this->buildPluginQuery($filters);
             } else {
                 unset($filters['type']);
-                $response['sql'] = $this->_buildPluginQuery($filters);
+                $response['sql'] = $this->buildPluginQuery($filters);
             }
         }
 
@@ -149,7 +148,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
      * @param   array   $filters  Options for building the query
      * @return  string  SQL
      */
-    private function _buildPluginQuery($filters = array())
+    private function buildPluginQuery($filters = array())
     {
         $database = App::get('db');
 
@@ -162,8 +161,10 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
                 $query = "SELECT count(DISTINCT r.id) ";
             }
         } else {
-            $query = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext AS itext, r.fulltxt AS ftext, r.published AS state, r.created, r.created_by, r.modified, r.publish_up, r.publish_down,
-					CONCAT('index.php?option=com_resources&id=', r.id) AS href, 'resources' AS section ";
+            $query = "SELECT DISTINCT r.id,
+                 r.title, r.alias, r.introtext AS itext, r.fulltxt AS ftext, r.published AS state, r.created,
+                    r.created_by, r.modified, r.publish_up, r.publish_down,
+                    CONCAT('index.php?option=com_resources&id=', r.id) AS href, 'resources' AS section ";
             if (isset($filters['tags'])) {
                 $query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
             }
@@ -182,7 +183,8 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
             $query .= "AND r.published=1 AND r.access<4 ";
         }
         if (isset($filters['tag'])) {
-            $query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag=" . $database->quote($filters['tag']) . " OR tg.alias=" . $database->quote($filters['tag']) . ") ";
+            $query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag=" . $database
+                ->quote($filters['tag']) . " OR tg.alias=" . $database->quote($filters['tag']) . ") ";
         }
         if (isset($filters['tags'])) {
             $ids = implode(',', $filters['tags']);

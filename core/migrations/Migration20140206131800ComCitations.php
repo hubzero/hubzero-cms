@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Add a column to store formatted citation in citations table
- **/
+ *
+ */
 class Migration20140206131800ComCitations extends Base
 {
     /**

@@ -185,7 +185,8 @@ class Items extends AdminController
         $assoc = isset($app->menu_associations) ? $app->menu_associations : 0;
         if ($assoc) {
             $query->select('COUNT(asso2.id)>1', 'association');
-            $query->joinRaw('`#__associations` AS asso', 'asso.id = ' . $a . '.id AND asso.context=\'com_menus.item\'', 'left');
+            $assoCondition = 'asso.id = ' . $a . '.id AND asso.context=\'com_menus.item\'';
+            $query->joinRaw('`#__associations` AS asso', $assoCondition, 'left');
             $query->join('`#__associations` AS asso2', 'asso2.key', 'asso.key', 'left');
             $query->group($a . '.id');
         }
@@ -284,50 +285,59 @@ class Items extends AdminController
                 case 'component':
                 default:
                     // load language
-                        $lang->load($item->get('componentname') . '.sys', PATH_APP, null, false, true)
-                    ||  $lang->load($item->get('componentname') . '.sys', Component::path($item->get('componentname')) . '/admin', null, false, true);
+                    $compName = $item->get('componentname');
+                    $compPath = Component::path($compName) . '/admin';
+                        $lang->load($compName . '.sys', PATH_APP, null, false, true)
+                    ||  $lang->load($compName . '.sys', $compPath, null, false, true);
 
-                    if (!empty($item->get('componentname'))) {
-                        $value = Lang::txt($item->get('componentname'));
+                    if (!empty($compName)) {
+                        $value = Lang::txt($compName);
                         $vars  = null;
 
                         parse_str($item->get('link'), $vars);
 
                         if (isset($vars['view'])) {
                             // Attempt to load the view xml file.
-                            $file = Component::path($item->get('componentname')) . '/site/views/' . $vars['view'] . '/metadata.xml';
+                            $file = Component::path($compName) . '/site/views/'
+                                . $vars['view'] . '/metadata.xml';
 
                             if (Filesystem::exists($file) && $xml = simplexml_load_file($file)) {
                                 // Look for the first view node off of the root node.
                                 if ($view = $xml->xpath('view[1]')) {
                                     if (!empty($view[0]['title'])) {
-                                        $vars['layout'] = isset($vars['layout']) ? $vars['layout'] : 'default';
+                                        $vars['layout'] = $vars['layout'] ?? 'default';
 
                                         // Attempt to load the layout xml file.
                                         // If Alternative Menu Item, get template folder for layout file
                                         if (strpos($vars['layout'], ':') > 0) {
                                             // Use template folder for layout file
                                             $temp = explode(':', $vars['layout']);
-                                            $file = PATH_CORE . '/templates/' . $temp[0] . '/html/' . $item->get('componentname') . '/' . $vars['view'] . '/' . $temp[1] . '.xml';
+                                            $file = PATH_CORE . '/templates/' . $temp[0] . '/html/'
+                                                . $compName . '/' . $vars['view'] . '/' . $temp[1] . '.xml';
 
                                             // Load template language file
+                                            $tplPath1 = PATH_APP . '/templates/' . $temp[0];
+                                            $tplPath2 = PATH_CORE . '/templates/' . $temp[0];
                                                 $lang->load('tpl_' . $temp[0] . '.sys', PATH_CORE, null, false, true)
-                                            ||  $lang->load('tpl_' . $temp[0] . '.sys', PATH_APP . '/templates/' . $temp[0], null, false, true)
-                                            ||  $lang->load('tpl_' . $temp[0] . '.sys', PATH_CORE . '/templates/' . $temp[0], null, false, true);
+                                            ||  $lang->load('tpl_' . $temp[0] . '.sys', $tplPath1, null, false, true)
+                                            ||  $lang->load('tpl_' . $temp[0] . '.sys', $tplPath2, null, false, true);
                                         } else {
                                             // Get XML file from component folder for standard layouts
-                                            $file = Component::path($item->get('componentname')) . '/site/views/' . $vars['view'] . '/tmpl/' . $vars['layout'] . '.xml';
+                                            $file = Component::path($compName) . '/site/views/'
+                                                . $vars['view'] . '/tmpl/' . $vars['layout'] . '.xml';
                                         }
 
                                         if (Filesystem::exists($file) && $xml = simplexml_load_file($file)) {
                                             // Look for the first view node off of the root node.
                                             if ($layout = $xml->xpath('layout[1]')) {
                                                 if (!empty($layout[0]['title'])) {
-                                                    $value .= ' » ' . Lang::txt(trim((string) $layout[0]['title']));
+                                                    $title = trim((string) $layout[0]['title']);
+                                                    $value .= ' » ' . Lang::txt($title);
                                                 }
                                             }
                                             if (!empty($layout[0]->message[0])) {
-                                                $item->set('item_type_desc', Lang::txt(trim((string) $layout[0]->message[0])));
+                                                $msg = trim((string) $layout[0]->message[0]);
+                                                $item->set('item_type_desc', Lang::txt($msg));
                                             }
                                         }
                                     }
@@ -335,7 +345,8 @@ class Items extends AdminController
                                 unset($xml);
                             } else {
                                 // Special case for absent views
-                                $value .= ' » ' . Lang::txt($item->get('componentname') . '_' . $vars['view'] . '_VIEW_DEFAULT_TITLE');
+                                $viewTitle = $compName . '_' . $vars['view'] . '_VIEW_DEFAULT_TITLE';
+                                $value .= ' » ' . Lang::txt($viewTitle);
                             }
                         }
                     } else {
@@ -478,7 +489,8 @@ class Items extends AdminController
                 // Enforce a valid type.
                 $row->set('type', 'component');
 
-                // Ensure the integrity of the component_id field is maintained, particularly when changing the menu item type.
+                // Ensure the integrity of the component_id field is maintained,
+                // particularly when changing the menu item type.
                 $args = array();
                 $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
                 parse_str($url == null ? '' : $url, $args);
@@ -935,11 +947,12 @@ class Items extends AdminController
                 $component = Component::load($type->request->option);
                 $data['component_id'] = $component->id;
 
-                User::setState('com_menus.edit.item.link', 'index.php?' . with(new \Hubzero\Utility\Uri())->buildQuery((array) $type->request));
+                $uri = new \Hubzero\Utility\Uri();
+                $link = 'index.php?' . $uri->buildQuery((array) $type->request);
+                User::setState('com_menus.edit.item.link', $link);
             }
-        }
-        // If the type is alias you just need the item id from the menu item referenced.
-        elseif ($title == 'alias') {
+        } elseif ($title == 'alias') {
+            // If the type is alias you just need the item id from the menu item referenced.
             User::setState('com_menus.edit.item.link', 'index.php?Itemid=');
         }
 
@@ -952,9 +965,11 @@ class Items extends AdminController
         //Save the data in the session.
         User::setState('com_menus.edit.item.data', $data);
 
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&controller=' . $this->_controller . '&task=edit&cid[]=' . $recordId, false)
-        );
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&controller=' . $this->_controller
+            . '&task=edit&cid[]=' . $recordId;
+        App::redirect(Route::url($url, false));
     }
 
     /**
@@ -1039,9 +1054,10 @@ class Items extends AdminController
         $append = implode('', $append);
 
         // Set the redirect
-        App::redirect(
-            Route::url('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '') . $append, false)
-        );
+        $url = 'index.php?option=' . $this->_option
+            . ($this->_controller ? '&controller=' . $this->_controller : '')
+            . $append;
+        App::redirect(Route::url($url, false));
     }
 
     /**

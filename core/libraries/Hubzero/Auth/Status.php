@@ -18,40 +18,40 @@ class Status
      *
      * @const  STATUS_SUCCESS  Successful response
      */
-    const SUCCESS = 1;
+    public const SUCCESS = 1;
 
     /**
      * Status to indicate cancellation of authentication (unused)
      *
      * @const  STATUS_CANCEL  Cancelled request (unused)
      */
-    const CANCEL = 2;
+    public const CANCEL = 2;
 
     /**
      * This is the status code returned when the authentication failed (prevent login if no success)
      *
      * @const  STATUS_FAILURE  Failed request
      */
-    const FAILURE = 4;
+    public const FAILURE = 4;
 
     /**
      * This is the status code returned when the account has expired (prevent login)
      *
      * @const  STATUS_EXPIRED  An expired account (will prevent login)
      */
-    const EXPIRED = 8;
+    public const EXPIRED = 8;
 
     /**
      * This is the status code returned when the account has been denied (prevent login)
      *
      * @const  STATUS_DENIED  Denied request (will prevent login)
      */
-    const DENIED = 16;
+    public const DENIED = 16;
 
     /**
      * This is the status code returned when the account doesn't exist (not an error)
      *
      * @const  STATUS_UNKNOWN  Unknown account (won't permit or prevent login)
      */
-    const UNKNOWN = 32;
+    public const UNKNOWN = 32;
 }

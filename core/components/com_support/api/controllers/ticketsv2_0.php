@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -351,14 +352,25 @@ class Ticketsv2_0 extends ApiController
         $response->submitter_id = $submitter->get('id');
         $response->group_id = $ticket->get('group_id');
 
-        foreach (array('status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop) {
+        $props = array(
+            'status', 'created', 'severity', 'os', 'browser',
+            'ip', 'hostname', 'uas', 'referrer', 'open', 'closed'
+        );
+        foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
         }
 
         $response->summary = $ticket->get('summary');
         $response->report  = $ticket->get('report');
 
-        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), '/'));
+        $routeUrl = Route::url(
+            'index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id
+        );
+        $response->url = str_replace(
+            '/api',
+            '',
+            rtrim(Request::base(), '/') . '/' . ltrim($routeUrl, '/')
+        );
 
         $this->send($response);
     }

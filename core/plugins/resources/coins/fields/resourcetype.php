@@ -16,6 +16,7 @@ use Lang;
 /**
  * Renders a list of resource types
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Resourcetype extends Select
 {
     /**
@@ -57,13 +58,18 @@ class Resourcetype extends Select
         // Create a read-only list (no name) with a hidden input to store the value.
         /*if ((string) $this->element['readonly'] == 'true')
         {
-            $html[] = Dropdown::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
-            $html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = Dropdown::genericlist(
+                $options, $this->_name, trim($attr), 'value', 'text', $this->value, $this->id
+            );
+            $html[] = '<input type="hidden" name="' . $this->_name . '" value="' . htmlspecialchars($this->value,
+                 ENT_COMPAT, 'UTF-8') . '" />';
         }
         // Create a regular list.
         else
         {
-            $html[] = Dropdown::genericlist($options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
+            $html[] = Dropdown::genericlist(
+                $options, $this->_name, trim($attr), 'value', 'text', $this->value, $this->id
+            );
 
             if ($this->element['option_other'])
             {
@@ -76,7 +82,12 @@ class Resourcetype extends Select
                         $found = true;
                     }
                 }
-                $html[] = '<input type="text" name="' . $this->getName($this->fieldname . '_other') . '" value="' . ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . '" placeholder="' . (empty($this->placeholder) ?  App::get('language')->txt('Other...') : htmlspecialchars($this->placeholder, ENT_COMPAT, 'UTF-8')) . '" />';
+                $html[] = '<input type="text" name="' . $this->getName($this->fieldname . '_other') . '" value="'
+                     . ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . '" placeholder="'
+                     . (empty($this->placeholder)
+                        ? App::get('language')->txt('Other...')
+                        : htmlspecialchars($this->placeholder, ENT_COMPAT, 'UTF-8'))
+                     . '" />';
             }
         }*/
         if (empty($this->value)) {
@@ -90,52 +101,60 @@ class Resourcetype extends Select
 
         foreach ($this->value as $i => $value) {
             $html[] = '<fieldset class="coinstypes">
-				<div class="input-wrap">
-					<label id="fields_params_type_0-lbl" for="fields_params_type_0">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_LABEL') . '</label><br>
-					<select id="fields_params_type_0" name="fields[params][type][0][resource]">
-						<option value="">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_SELECT') . '</option>';
+                <div class="input-wrap">
+                    <select id="fields_params_type_0" name="fields[params][type][0][resource]">
+                        <option value="">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_SELECT') . '</option>';
             foreach ($options as $option) {
-                $html[] = '<option value="' . $option->value . '"' . ($value['resource'] == $option->value ? ' selected="selected"' : '') . '>' . $option->text . '</option>';
+                $html[] = '<option value="' . $option->value . '"'
+                    . ($value['resource'] == $option->value ? ' selected="selected"' : '')
+                    . '>' . $option->text . '</option>';
             }
                         $html[] = '
-					</select>
-				<div class="input-wrap">
-				</div>
-					<label id="fields_params_genre_0-lbl" for="fields_params_genre_0">' . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
-					<select id="fields_params_genre_0" name="fields[params][type][0][genre]">
-						<option value="article"' . ($value['genre'] == 'article' ? ' selected="selected"' : '') . '>article</option>
-						<option value="book"' . ($value['genre'] == 'book' ? ' selected="selected"' : '') . '>book</option>
-						<option value="bookitem"' . ($value['genre'] == 'bookitem' ? ' selected="selected"' : '') . '>bookitem</option>
-					</select>
-				</div>
-				</fieldset>';
+                    </select>
+                <div class="input-wrap">
+                </div>
+                    <label id="fields_params_genre_0-lbl" for="fields_params_genre_0">'
+                        . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
+                    <select id="fields_params_genre_0" name="fields[params][type][0][genre]">
+                        <option value="article"'
+                            . ($value['genre'] == 'article' ? ' selected="selected"' : '') . '>article</option>
+                        <option value="book"'
+                            . ($value['genre'] == 'book' ? ' selected="selected"' : '') . '>book</option>
+                        <option value="bookitem"'
+                            . ($value['genre'] == 'bookitem' ? ' selected="selected"' : '') . '>bookitem</option>
+                    </select>
+                </div>
+                </fieldset>';
         }
 
         $html[] = '
-		<script id="plg_resources_coins" type="text/x-handlebars-template">
-			<fieldset class="coinstypes">
-				<div class="input-wrap">
-					<label id="fields_params_type_{{index}}-lbl" for="fields_params_type_{{index}}">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_LABEL') . '</label><br>
-					<select id="fields_params_type_{{index}}" name="fields[params][type][{{index}}][resource]">
-						<option value="">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_SELECT') . '</option>';
+        <script id="plg_resources_coins" type="text/x-handlebars-template">
+            <fieldset class="coinstypes">
+                <div class="input-wrap">
+                    <label id="fields_params_type_{{index}}-lbl" for="fields_params_type_{{index}}">'
+                        . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_LABEL') . '</label><br>
+                    <select id="fields_params_type_{{index}}" name="fields[params][type][{{index}}][resource]">
+                        <option value="">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_SELECT') . '</option>';
         foreach ($options as $option) {
             $html[] = '<option value="' . $option->value . '">' . $option->text . '</option>';
         }
                         $html[] = '
-					</select>
-				<div class="input-wrap">
-				</div>
-					<label id="fields_params_genre_{{index}}-lbl" for="fields_params_genre_{{index}}">' . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
-					<select id="fields_params_genre_{{index}}" name="fields[params][type][{{index}}][genre]">
-						<option value="article">article</option>
-						<option value="book">book</option>
-						<option value="bookitem">bookitem</option>
-					</select>
-				</div>
-			</fieldset>
-		</script>';
+                    </select>
+                <div class="input-wrap">
+                </div>
+                    <label id="fields_params_genre_{{index}}-lbl" for="fields_params_genre_{{index}}">'
+                        . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
+                    <select id="fields_params_genre_{{index}}" name="fields[params][type][{{index}}][genre]">
+                        <option value="article">article</option>
+                        <option value="book">book</option>
+                        <option value="bookitem">bookitem</option>
+                    </select>
+                </div>
+            </fieldset>
+        </script>';
 
-        $html[] = '<button class="button" id="add-resource-type">' . Lang::txt('PLG_RESOURCES_COINS_ADD_TYPE') . '</button>';
+        $html[] = '<button class="button" id="add-resource-type">'
+            . Lang::txt('PLG_RESOURCES_COINS_ADD_TYPE') . '</button>';
 
         /*$html[] = '
         <script id="plg_resources_coins" type="text/x-handlebars-template">
@@ -168,7 +187,9 @@ class Resourcetype extends Select
         Html::behavior('framework', true);
 
         App::get('document')->addScript(\Request::root() . 'core/assets/js/handlebars.js');
-        App::get('document')->addScript(\Request::root() . 'core/plugins/resources/coins/assets/js/params.js?v=' . filemtime(dirname(__DIR__) . '/assets/js/params.js'));
+        App::get('document')
+            ->addScript(\Request::root() . 'core/plugins/resources/coins/assets/js/params.js?v='
+                . filemtime(dirname(__DIR__) . '/assets/js/params.js'));
 
         return implode($html);
     }

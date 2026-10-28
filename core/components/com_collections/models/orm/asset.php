@@ -174,7 +174,8 @@ class Asset extends Relational
         static $path;
 
         if (!$path) {
-            $path = PATH_APP . DS . trim(Component::params('com_collections')->get('filepath', '/site/collections'), DS);
+            $filepath = Component::params('com_collections')->get('filepath', '/site/collections');
+            $path = PATH_APP . DS . trim($filepath, DS);
         }
 
         return $path;

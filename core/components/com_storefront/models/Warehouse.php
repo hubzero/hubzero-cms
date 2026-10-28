@@ -32,25 +32,25 @@ require_once __DIR__ . DS . 'Collection.php';
 class Warehouse extends \Hubzero\Base\Obj
 {
     // Product categories to look at (to define scope)
-    var $lookupCollections = null;
+    public $lookupCollections = null;
 
     // Access levels scope (what is allowed to display)
-    var $accessLevelsScope = false;
+    public $accessLevelsScope = false;
 
     // Access groups scope (what is allowed to display)
-    var $accessGroupsScope = array();
+    public $accessGroupsScope = array();
 
     // User scope (what user is trying to get the info)
-    var $userScope = false;
+    public $userScope = false;
 
     // User whitelisted SKUS for a product
-    var $userWhitelistedSkus = false;
+    public $userWhitelistedSkus = false;
 
     // Flag if the current product is not permitted to access by the uses by default
-    var $userCannotAccessProduct = false;
+    public $userCannotAccessProduct = false;
 
     // Database instance
-    var $db = null;
+    public $db = null;
 
     /**
      * Constructor method

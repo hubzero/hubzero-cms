@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,6 +25,7 @@ include_once \Component::path('com_publications') . DS . 'models' . DS . 'public
 /**
  * API controller for the project publications
  */
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Publicationsv1_0 extends ApiController
 {
     /**
@@ -155,8 +157,16 @@ class Publicationsv1_0 extends ApiController
                 $obj->status        = $entry->get('state');
                 $obj->statusName    = $entry->getStatusName();
 
-                $obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
-                $obj->uri           = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('version')), '/'));
+                $obj->thumbUrl      = str_replace(
+                    '/api',
+                    '',
+                    $base . '/' . ltrim(Route::url($entry->link('thumb')), '/')
+                );
+                $obj->uri           = str_replace(
+                    '/api',
+                    '',
+                    $base . '/' . ltrim(Route::url($entry->link('version')), '/')
+                );
 
                 $response->publications[] = $obj;
             }

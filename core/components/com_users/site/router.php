@@ -79,10 +79,10 @@ class Router extends Base
                 }
 
                 // Check to see if we have found the registration menu item.
-                //if (empty($registration) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'registration'))
-                //{
-                //  $registration = $items[$i]->id;
-                //}
+                // if (empty($registration) && !empty($items[$i]->query['view'])
+                //     && ($items[$i]->query['view'] == 'registration')) {
+                //     $registration = $items[$i]->id;
+                // }
 
                 // Check to see if we have found the profile menu item.
                 //if (empty($profile) && !empty($items[$i]->query['view']) && ($items[$i]->query['view'] == 'profile'))

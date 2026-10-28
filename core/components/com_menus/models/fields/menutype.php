@@ -69,6 +69,10 @@ class Menutype extends Select
         Html::behavior('framework');
         Html::behavior('modal');
 
+        $menuUrl = Route::url(
+            'index.php?option=com_menus&view=menutypes&tmpl=component&recordId=' . $recordId,
+            false
+        );
         Document::addScriptDeclaration("
 			jQuery(document).ready(function($){
 				$('input.modal').fancybox({
@@ -78,17 +82,19 @@ class Menutype extends Select
 					fitToView: false,
 					width: 600,
 					height: 450,
-					href: '" . Route::url('index.php?option=com_menus&view=menutypes&tmpl=component&recordId=' . $recordId, false) . "'
+					href: '" . $menuUrl . "'
 				});
 			});
 		");
 
         $html[] = '<div class="input-modal">';
         $html[] = '<span class="input-cell">';
-        $html[] = '<input type="text" id="' . $this->id . '" readonly="readonly" disabled="disabled" value="' . $value . '"' . $size . $class . ' />';
+        $html[] = '<input type="text" id="' . $this->id . '" readonly="readonly" disabled="disabled" '
+            . 'value="' . $value . '"' . $size . $class . ' />';
         $html[] = '</span><span class="input-cell">';
         $html[] = '<input type="button" class="modal" value="' . Lang::txt('JSELECT') . '" />';
-        $html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" />';
+        $escapedValue = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
+        $html[] = '<input type="hidden" name="' . $this->name . '" value="' . $escapedValue . '" />';
         $html[] = '</span>';
         $html[] = '</div>';
 

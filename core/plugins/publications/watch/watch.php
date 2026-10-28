@@ -75,11 +75,11 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
         switch ($this->action) {
             case 'subscribe':
             case 'unsubscribe':
-                $arr['html'] = $this->_subscribe();
+                $arr['html'] = $this->subscribe();
                 break;
 
             default:
-                $arr['html'] = $this->_status();
+                $arr['html'] = $this->status();
                 break;
         }
 
@@ -91,7 +91,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
      *
      * @return  string  HTML
      */
-    private function _status()
+    private function status()
     {
         $watching = \Hubzero\Item\Watch::all()
             ->whereEquals('item_id', (int)$this->publication->get('id'))
@@ -117,7 +117,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
      *
      * @return  string  HTML
      */
-    private function _subscribe()
+    private function subscribe()
     {
         // Incoming
         $confirm = Request::getInt('confirm', 0);
@@ -240,7 +240,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
 
                 // Send message
                 if ($subscriber->email) {
-                    $this->_sendEmail($subscriber, $message, $subject, $url);
+                    $this->sendEmail($subscriber, $message, $subject, $url);
                 }
             }
         }
@@ -257,7 +257,7 @@ class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
      * @param   string  $url
      * @return  bool
      */
-    private function _sendEmail($subscriber, $message, $subject, $url)
+    private function sendEmail($subscriber, $message, $subject, $url)
     {
         $eview = new \Hubzero\Mail\View(array(
             'base_path' => PATH_CORE . DS . 'components' . DS . 'com_publications' . DS . 'site',

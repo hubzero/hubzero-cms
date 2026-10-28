@@ -34,7 +34,8 @@ Event::trigger('content.onContentPrepare', array(
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-prev back btn" href="<?php echo Route::url($this->course->offering()->link() . '&active=outline'); ?>">
+            <?php $routeUrl = Route::url($this->course->offering()->link() . '&active=outline'); ?>
+            <a class="icon-prev back btn" href="<?php echo $routeUrl; ?>">
                 <?php echo Lang::txt('Back to course'); ?>
             </a>
         </p>

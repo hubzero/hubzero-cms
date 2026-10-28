@@ -11,7 +11,11 @@ defined('_HZEXEC_') or die();
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 if (!$this->tmpl) {
-    Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_ZONES') . ': ' . Lang::txt('COM_TOOLS_LOCATIONS') . ': ' . $text, 'tools.png');
+    Toolbar::title(
+        Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_ZONES')
+        . ': ' . Lang::txt('COM_TOOLS_LOCATIONS') . ': ' . $text,
+        'tools.png'
+    );
     Toolbar::save();
     Toolbar::cancel();
 }
@@ -281,7 +285,12 @@ $countries = array(
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm"
+    id="<?php echo $formId; ?>" enctype="multipart/form-data">
 <?php if ($this->tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -298,7 +307,8 @@ $countries = array(
             <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
             <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->get('id')); ?>" />
-            <input type="hidden" name="fields[zone_id]" value="<?php echo $this->escape($this->row->get('zone_id')); ?>" />
+            <input type="hidden" name="fields[zone_id]"
+                value="<?php echo $this->escape($this->row->get('zone_id')); ?>" />
 
             <input type="hidden" name="tmpl" value="<?php echo $this->escape($this->tmpl); ?>" />
             <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
@@ -308,15 +318,25 @@ $countries = array(
             <table class="admintable">
                 <tbody>
                     <tr>
-                        <th class="key"><label for="field-ipFROM"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_FROM'); ?>:</label></th>
-                        <td><input type="text" name="fields[ipFROM]" id="field-ipFROM" value="<?php echo $this->escape(stripslashes(long2ip($this->row->get('ipFROM')))); ?>" /></td>
+                        <th class="key">
+                            <label for="field-ipFROM"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_FROM'); ?>:</label></th>
+                        <td>
+                            <?php $ipFromVal = $this->escape(stripslashes(long2ip($this->row->get('ipFROM')))); ?>
+                            <input type="text" name="fields[ipFROM]" id="field-ipFROM"
+                                value="<?php echo $ipFromVal; ?>" /></td>
                     </tr>
                     <tr class="ipTOrow">
-                        <th class="key"><label for="field-ipTO"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_TO'); ?>:</label></th>
-                        <td><input type="text" name="fields[ipTO]" id="field-ipTO" value="<?php echo $this->escape(stripslashes(long2ip($this->row->get('ipTO')))); ?>" /></td>
+                        <th class="key">
+                            <label for="field-ipTO"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_TO'); ?>:</label></th>
+                        <td>
+                            <?php $ipToVal = $this->escape(stripslashes(long2ip($this->row->get('ipTO')))); ?>
+                            <input type="text" name="fields[ipTO]" id="field-ipTO"
+                                value="<?php echo $ipToVal; ?>" /></td>
                     </tr>
                     <tr>
-                        <th class="key"><label for="field-continent"><?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>
+                        <th class="key">
+                            <label for="field-continent">
+                                <?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>
                         <td>
                             <select name="fields[continent]" id="field-continent">
                                 <option value=""<?php if ($this->row->get('continent') == '') {
@@ -347,7 +367,8 @@ $countries = array(
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><label for="field-countrySHORT"><?php echo Lang::txt('Country'); ?>:</label></th>
+                        <th class="key">
+                            <label for="field-countrySHORT"><?php echo Lang::txt('Country'); ?>:</label></th>
                         <td>
                             <select name="fields[countrySHORT]" id="field-countrySHORT">
                                 <option value=""<?php if ($this->row->get('continent') == '') {
@@ -375,17 +396,28 @@ $countries = array(
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><label for="field-ipREGION"><?php echo Lang::txt('COM_TOOLS_FIELD_REGION'); ?>:</label></th>
-                        <td><input type="text" name="fields[ipREGION]" id="field-ipREGION" value="<?php echo $this->escape(stripslashes($this->row->get('ipREGION'))); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th class="key"><label for="field-ipCITY"><?php echo Lang::txt('COM_TOOLS_FIELD_CITY'); ?>:</label></th>
-                        <td><input type="text" name="fields[ipCITY]" id="field-ipCITY" value="<?php echo $this->escape(stripslashes($this->row->get('ipCITY'))); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th class="key"><label for="field-notes"><?php echo Lang::txt('COM_TOOLS_FIELD_NOTES'); ?>:</label></th>
+                        <th class="key">
+                            <label for="field-ipREGION"><?php echo Lang::txt('COM_TOOLS_FIELD_REGION'); ?>:</label></th>
                         <td>
-                            <textarea name="fields[notes]" id="field-notes" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('notes'))); ?></textarea>
+                            <?php $ipRegionVal = $this->escape(stripslashes($this->row->get('ipREGION'))); ?>
+                            <input type="text" name="fields[ipREGION]" id="field-ipREGION"
+                                value="<?php echo $ipRegionVal; ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th class="key">
+                            <label for="field-ipCITY"><?php echo Lang::txt('COM_TOOLS_FIELD_CITY'); ?>:</label></th>
+                        <td>
+                            <?php $ipCityVal = $this->escape(stripslashes($this->row->get('ipCITY'))); ?>
+                            <input type="text" name="fields[ipCITY]" id="field-ipCITY"
+                                value="<?php echo $ipCityVal; ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th class="key">
+                            <label for="field-notes"><?php echo Lang::txt('COM_TOOLS_FIELD_NOTES'); ?>:</label></th>
+                        <td>
+                            <?php $notesVal = $this->escape(stripslashes($this->row->get('notes'))); ?>
+                            <textarea name="fields[notes]" id="field-notes"
+                                rows="4" cols="35"><?php echo $notesVal; ?></textarea>
                         </td>
                     </tr>
                 </tbody>

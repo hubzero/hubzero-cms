@@ -527,9 +527,8 @@ $this->css('course.css')
                                      ->display();
 
                                 $found = true;
-                            }
-                            // If only one section...
-                            else if (count($s) == 1) {
+                            } elseif (count($s) == 1) {
+                                // If only one section...
                                 $offering->section($s[0]);
                                 ?>
                                 <p>

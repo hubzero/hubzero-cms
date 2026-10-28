@@ -20,6 +20,7 @@ abstract class AbstractHelper implements HelperInterface
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_view = null;
 
     /**

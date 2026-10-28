@@ -52,7 +52,10 @@ class Article extends Field
 
         // Setup variables for display.
         $html = array();
-        $link = Route::url('index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=jSelectArticle_' . $this->id . '&' . Session::getFormToken() . '=1');
+        $link = Route::url(
+            'index.php?option=com_content&view=articles&layout=modal&tmpl=component&function=jSelectArticle_'
+            . $this->id . '&' . Session::getFormToken() . '=1'
+        );
 
         $db = App::get('db');
         $db->setQuery(
@@ -74,12 +77,15 @@ class Article extends Field
         // The current user display field.
         $html[] = '<div class="input-modal">';
         $html[] = '  <span class="input-cell">';
-        $html[] = '    <input type="text" id="' . $this->id . '_name" value="' . $title . '" disabled="disabled" size="35" />';
+        $html[] = '    <input type="text" id="' . $this->id . '_name" value="' . $title . '" '
+            . 'disabled="disabled" size="35" />';
         $html[] = '  </span>';
 
         // The user select button.
         $html[] = '  <span class="input-cell">';
-        $html[] = '    <a class="modal button" title="' . Lang::txt('COM_CONTENT_CHANGE_ARTICLE') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . Lang::txt('COM_CONTENT_CHANGE_ARTICLE_BUTTON') . '</a>';
+        $html[] = '    <a class="modal button" title="' . Lang::txt('COM_CONTENT_CHANGE_ARTICLE')
+            . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'
+            . Lang::txt('COM_CONTENT_CHANGE_ARTICLE_BUTTON') . '</a>';
         $html[] = '  </span>';
         $html[] = '</div>';
 
@@ -96,7 +102,8 @@ class Article extends Field
             $class = ' class="required modal-value"';
         }
 
-        $html[] = '<input type="hidden" id="' . $this->id . '_id"' . $class . ' name="' . $this->name . '" value="' . $value . '" />';
+        $html[] = '<input type="hidden" id="' . $this->id . '_id"' . $class
+            . ' name="' . $this->name . '" value="' . $value . '" />';
 
         return implode("\n", $html);
     }

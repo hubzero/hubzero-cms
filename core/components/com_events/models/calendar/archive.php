@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -49,7 +50,7 @@ class Archive extends Model
      *
      * @param   $key   Instance Key
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 
@@ -174,7 +175,9 @@ class Archive extends Model
                 $dtEnd = 'DTEND:' . $publishDown->format('Ymd\THis\Z');
             }
 
-            /* 2017-04-11 Patrick: This is actually no longer true, therefore the best course of action would be to add the UTC datetime (adding a Z as a suffix)
+            /*
+             * 2017-04-11 Patrick: This is actually no longer true, therefore the best
+             * course of action would be to add the UTC datetime (adding a Z as a suffix)
             // Set eastern timezone as publish up/down date timezones
             // since all event date/times are stores relative to eastern
             // ----------------------------------------------------------------------------------
@@ -185,8 +188,10 @@ class Archive extends Model
             */
             // create now, created, and modified vars
             $now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-            $created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T' . gmdate('His', strtotime($event->get('created'))) . 'Z';
-            $modified = gmdate('Ymd', strtotime($event->get('modified'))) . 'T' . gmdate('His', strtotime($event->get('modified'))) . 'Z';
+            $created  = gmdate('Ymd', strtotime($event->get('created'))) . 'T'
+                . gmdate('His', strtotime($event->get('created'))) . 'Z';
+            $modified = gmdate('Ymd', strtotime($event->get('modified'))) . 'T'
+                . gmdate('His', strtotime($event->get('modified'))) . 'Z';
 
             // start output
             $output .= "BEGIN:VEVENT\r\n";

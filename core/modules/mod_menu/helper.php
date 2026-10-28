@@ -51,7 +51,7 @@ class Helper extends Module
      * @param   object  $params  Registry The module options.
      * @return  array
      */
-    static function getList(&$params)
+    public static function getList(&$params)
     {
         $menu = App::get('menu');
 
@@ -105,9 +105,14 @@ class Helper extends Module
                     $item->flink  = $item->link;
 
                     $item->title        = htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8', false);
-                    $item->anchor_css   = htmlspecialchars($item->params->get('menu-anchor_css', ''), ENT_COMPAT, 'UTF-8', false);
-                    $item->anchor_title = htmlspecialchars($item->params->get('menu-anchor_title', ''), ENT_COMPAT, 'UTF-8', false);
-                    $item->menu_image   = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', ''), ENT_COMPAT, 'UTF-8', false) : '';
+                    $anchorCss = $item->params->get('menu-anchor_css', '');
+                    $item->anchor_css   = htmlspecialchars($anchorCss, ENT_COMPAT, 'UTF-8', false);
+                    $anchorTitle = $item->params->get('menu-anchor_title', '');
+                    $item->anchor_title = htmlspecialchars($anchorTitle, ENT_COMPAT, 'UTF-8', false);
+                    $menuImage = $item->params->get('menu_image', '');
+                    $item->menu_image   = $menuImage
+                        ? htmlspecialchars($menuImage, ENT_COMPAT, 'UTF-8', false)
+                        : '';
 
                     // Reverted back for CMS version 2.5.6
                     switch ($item->type) {
@@ -117,7 +122,9 @@ class Helper extends Module
                             break;
 
                         case 'url':
-                            if ((strpos($item->link, 'index.php?') === 0) && (strpos($item->link, 'Itemid=') === false)) {
+                            $isInternalLink = (strpos($item->link, 'index.php?') === 0);
+                            $hasNoItemid = (strpos($item->link, 'Itemid=') === false);
+                            if ($isInternalLink && $hasNoItemid) {
                                 // If this is an internal link, ensure the Itemid is set.
                                 $item->flink = $item->link . '&Itemid=' . $item->id;
                             }
@@ -133,7 +140,9 @@ class Helper extends Module
                             break;
                     }
 
-                    if (strcasecmp(substr($item->flink, 0, 4), 'http') && (strpos($item->flink, 'index.php?') !== false)) {
+                    $isNotHttp = strcasecmp(substr($item->flink, 0, 4), 'http');
+                    $hasIndexPhp = (strpos($item->flink, 'index.php?') !== false);
+                    if ($isNotHttp && $hasIndexPhp) {
                         $item->flink = Route::url($item->flink, true, $item->params->get('secure'));
                     } else {
                         $item->flink = Route::url($item->flink);

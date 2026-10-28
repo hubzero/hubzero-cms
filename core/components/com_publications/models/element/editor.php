@@ -20,6 +20,7 @@ class Editor extends Base
   *
   * @var  string
   */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Editor';
 
     /**
@@ -47,6 +48,21 @@ class Editor extends Base
         $classes .= $editorImages == 1 ? 'images ' : '';
         $classes .= $editorMacros == 1 ? 'macros ' : '';
 
-        return '<span class="field-wrap">' . \App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => $classes)) . '</span>';
+        $fieldName = $control_name . '[' . $name . ']';
+        $fieldId = $control_name . '-' . $name;
+        $editorHtml = \App::get('editor')->display(
+            $fieldName,
+            $value,
+            '',
+            '',
+            $cols,
+            $rows,
+            false,
+            $fieldId,
+            null,
+            null,
+            array('class' => $classes)
+        );
+        return '<span class="field-wrap">' . $editorHtml . '</span>';
     }
 }

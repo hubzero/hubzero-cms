@@ -6,21 +6,20 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
-defined('_HZEXEC_') or die;
 
 /**
  * PageDown Editor Plugin
- **/
+ */
 class plgEditorPageDown extends \Hubzero\Plugin\Plugin
 {
-    const BUTTON_BAR_ID = 'wmd-button-bar';
-    const INPUT_ID = 'wmd-input';
-    const PREVIEW_ID = 'wmd-preview';
+    public const BUTTON_BAR_ID = 'wmd-button-bar';
+    public const INPUT_ID = 'wmd-input';
+    public const PREVIEW_ID = 'wmd-preview';
 
-    const CSS_DIRECTORY = 'core/plugins/editors/pagedown/assets/css';
-    const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
+    public const CSS_DIRECTORY = 'core/plugins/editors/pagedown/assets/css';
+    public const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
 
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_editorCount = 1;
 
     /*
@@ -34,11 +33,12 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         $this->_addStylesheets();
     }
 
-    /*
-     *  Adds editor scripts to the HTML document
+    /**
+     * Adds editor scripts to the HTML document
      *
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addScripts()
     {
         $scriptPaths = $this->_getScriptPaths();
@@ -48,11 +48,12 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         }
     }
 
-    /*
-     *  Adds editor stylesheets to the HTML document
+    /**
+     * Adds editor stylesheets to the HTML document
      *
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addStylesheets()
     {
         $stylesheetPaths = $this->_getStylesheetPaths();
@@ -62,11 +63,12 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         }
     }
 
-    /*
-     *  Generate paths to editor JS files
+    /**
+     * Generate paths to editor JS files
      *
      * @return  array
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getScriptPaths()
     {
         $scriptNames = [
@@ -83,11 +85,12 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         return $scriptPaths;
     }
 
-    /*
-     *  Generate paths to editor stylesheets
+    /**
+     * Generate paths to editor stylesheets
      *
      * @return  array
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getStylesheetPaths()
     {
         $stylesheetNames = [
@@ -99,13 +102,14 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         return $stylesheetPaths;
     }
 
-    /*
-     *  Generate paths to editor asset files
+    /**
+     * Generate paths to editor asset files
      *
      * @param   array    $assetFileNames    Asset file names
      * @param   string   $assetDirectory    Subdirectory within /assets
      * @return  array
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildAssetPaths($assetFileNames, $assetDirectory)
     {
         $assetPaths = array_map(function ($fileName) use ($assetDirectory) {
@@ -131,8 +135,19 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   array    $params  Associative array of editor state
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $columns, $rows, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $columns,
+        $rows,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = array()
+    ) {
         $id = empty($id) ? $name : $id;
         $columns = $columns ? $columns : 35;
         $rows = $rows ? $rows : 10;
@@ -146,12 +161,13 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         return $editorDomContent;
     }
 
-    /*
+    /**
      * Parse DOM element classes
      *
      * @param   array   $params   Editor configuration data
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseClasses(&$params)
     {
         if (!isset($params['class'])) {
@@ -166,13 +182,14 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         }
     }
 
-    /*
+    /**
      * Set a default height if needed
      *
      * @param   array   $params   Editor configuration data
      * @param   int     $rows     Number of rows for the textarea
      * @return  void
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setDefaultHeight(&$params, $rows)
     {
         if (!isset($params['height'])) {
@@ -181,7 +198,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         }
     }
 
-    /*
+    /**
      * Build editor DOM elements
      *
      * @param   string   $content  Contents of the text area
@@ -190,6 +207,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   int      $rows     Number of rows for the textarea
      * @return  string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildEditorDomElements($content, $name, $columns, $rows)
     {
         $editorDomElements = '<div>';
@@ -202,7 +220,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
         return $editorDomElements;
     }
 
-    /*
+    /**
      * Build editor textarea
      *
      * @param   string   $content  Contents of the text area
@@ -211,9 +229,11 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   int      $rows     Number of rows for the textarea
      * @return  string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTextarea($content, $name, $columns, $rows, $idPostfix)
     {
-        $textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . $idPostfix . "\" cols=\"$columns\" rows=\"$rows\">";
+        $textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . $idPostfix . "\" cols=\"$columns\""
+            . " rows=\"$rows\">";
         $textarea .= $content;
         $textarea .= '</textarea>';
 

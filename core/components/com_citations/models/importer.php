@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -421,7 +422,8 @@ class Importer extends Obj
 
                 $type = '';
                 foreach ($types as $t) {
-                    // TODO: undefined index type? I just suppressed the error b/c I'm not sure what the logic is supposed to be /SS
+                    // TODO: undefined index type? I just suppressed the
+                    // error b/c I'm not sure what the logic is supposed to be
                     if (strtolower($t['type_title']) == strtolower($crna['type'])) {
                         $type = $t['id'];
                     }

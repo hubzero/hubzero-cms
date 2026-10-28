@@ -69,7 +69,8 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
         // 2 = digest daily
         // 3 = digest weekly
         // 4 = digest monthly
-        $query = "SELECT DISTINCT(userid) FROM `#__xgroups_memberoption` WHERE `optionname` = 'receive-forum-email' and `optionvalue` > 1";
+        $query = "SELECT DISTINCT(userid) FROM `#__xgroups_memberoption` WHERE `optionname` = 'receive-forum-email'"
+            . " and `optionvalue` > 1";
         $db->setQuery($query);
         $users = $db->loadColumn();
 
@@ -83,11 +84,13 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
 
         // Loop through members and get their groups that have the digest set
         if ($users && count($users) > 0) {
-            $query = "SELECT `gidNumber` FROM `#__xgroups_memberoption` WHERE `userid` = ? AND `optionname` = 'receive-forum-email' AND `optionvalue` = ?";
+            $query = "SELECT `gidNumber` FROM `#__xgroups_memberoption` WHERE `userid` = ?"
+                . " AND `optionname` = 'receive-forum-email' AND `optionvalue` = ?";
             $db->prepare($query);
 
             foreach ($users as $user) {
-                // It's possible to receive up to three emails if the 1st were a monday and you had groups set to all three options
+                // It's possible to receive up to three emails if the 1st were a monday
+                // and you had groups set to all three options
                 // Or should we combine and overlapping emails when they fall on the same day?
                 if ($isDay) {
                     $groups = $db->bind([$user, 2])->loadColumn();

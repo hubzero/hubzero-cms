@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,7 +51,10 @@ class Handlers extends AdminController
             )
         ];
 
-        $this->view->rows = Handler::all()->paginated('limitstart')->ordered('filter_order', 'filter_order_Dir')->rows();
+        $this->view->rows = Handler::all()
+            ->paginated('limitstart')
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->rows();
 
         // Display results
         $this->view->display();

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,9 +32,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
     /**
      * Database state constants
      **/
-    const STATE_ARCHIVED = 2;
-    const STATE_DELETED = -2;
-    const STATE_UNPUBLISHED = 0;
+    public const STATE_ARCHIVED = 2;
+    public const STATE_DELETED = -2;
+    public const STATE_UNPUBLISHED = 0;
 
     /**
      * The table namespace
@@ -136,7 +137,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             if (!$data['publish_down'] || $data['publish_down'] == '0000-00-00 00:00:00') {
                 return false;
             }
-            return $data['publish_down'] >= $data['publish_up'] ? false : Lang::txt('The entry cannot end before it begins');
+            if ($data['publish_down'] >= $data['publish_up']) {
+                return false;
+            }
+            return Lang::txt('The entry cannot end before it begins');
         });
     }
 
@@ -616,9 +620,8 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if ($delta < 0) {
             $query->where('ordering', '<', (int) $this->get('ordering'));
             $query->order('ordering', 'desc');
-        }
-        // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
+        } elseif ($delta > 0) {
+            // If the movement delta is positive move the row down.
             $query->where('ordering', '>', (int) $this->get('ordering'));
             $query->order('ordering', 'asc');
         }
@@ -726,13 +729,11 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         if ($this->isPublished() == 1 && $this->get('access') == 1) {
             $access_level = 'public';
-        }
-        // Registered condition
-        elseif ($this->isPublished() == 1 && $this->get('access') == 2) {
+        } elseif ($this->isPublished() == 1 && $this->get('access') == 2) {
+            // Registered condition
             $access_level = 'registered';
-        }
-        // Default private
-        else {
+        } else {
+            // Default private
             $access_level = 'private';
         }
 
@@ -1156,9 +1157,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                 switch ($params->get('filter_field')) {
                     case 'author':
                         $db = \App::get('db');
+                        $filterLike = $db->quote('%' . $db->escape($filter, true) . '%', false);
                         $query->whereRaw(
-                            'LOWER( CASE WHEN a.created_by_alias > ' . $db->quote(' ') .
-                            ' THEN a.created_by_alias ELSE ua.name END ) LIKE ' . $db->quote('%' . $db->escape($filter, true) . '%', false) . ' '
+                            'LOWER( CASE WHEN a.created_by_alias > ' . $db->quote(' ')
+                            . ' THEN a.created_by_alias ELSE ua.name END ) LIKE ' . $filterLike . ' '
                         );
                         break;
 

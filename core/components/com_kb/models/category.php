@@ -56,7 +56,7 @@ class Category extends Relational
      *
      * @var  string
      */
-    private $_base = 'index.php?option=com_kb';
+    private $base = 'index.php?option=com_kb';
 
     /**
      * Returns all rows (unless otherwise limited)
@@ -133,7 +133,7 @@ class Category extends Relational
      */
     public function link($type = '')
     {
-        $link  = $this->_base;
+        $link  = $this->base;
         // A category built in code (the "all" pseudo-category) has an alias
         // but no stored path; without a section the router picks the wrong task
         $link .= '&section=' . ($this->get('path') ?: $this->get('alias'));
@@ -142,7 +142,7 @@ class Category extends Relational
         switch (strtolower($type)) {
             case 'component':
             case 'base':
-                return $this->_base;
+                return $this->base;
             break;
 
             case 'edit':

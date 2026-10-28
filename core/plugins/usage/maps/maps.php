@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Usage plugin class for overview
@@ -19,6 +17,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
      *
      * @var    boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -40,9 +39,10 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
      * @param      array  $location Longitude/latitude
      * @return     string
      */
-    private function get_hosts(&$db, $location)
+    private function getHosts(&$db, $location)
     {
-        $query = "SELECT DISTINCT(domain) FROM `#__xsession` WHERE ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "'";
+        $query = "SELECT DISTINCT(domain) FROM `#__xsession` WHERE ipLATITUDE = '" . $location['lat']
+                . "' AND ipLONGITUDE = '" . $location['lng'] . "'";
 
         $db->setQuery($query);
         $rows = $db->loadObjectList();
@@ -50,7 +50,7 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
         $info = '';
         if ($rows) {
             foreach ($rows as $row) {
-                $info .= '_b_' . $row->domain . '_bb_' . $this->get_count($db, $row->domain, $location);
+                $info .= '_b_' . $row->domain . '_bb_' . $this->getCount($db, $row->domain, $location);
             }
         }
         return rtrim($info, '_br_');
@@ -64,9 +64,12 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
      * @param      array  $location Longitude/latitude
      * @return     string
      */
-    private function get_count(&$db, $domain, $location)
+    private function getCount(&$db, $domain, $location)
     {
-        $query = "SELECT COUNT(DISTINCT username) FROM `#__xsession`,`#__session` WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '0' AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+        $query = "SELECT COUNT(DISTINCT username) FROM `#__xsession`,`#__session`"
+               . " WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '0'"
+               . " AND domain = '" . $domain . "' AND ipLATITUDE = '" . $location['lat'] . "'"
+               . " AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
         $db->setQuery($query);
         $users = $db->loadResult();
@@ -76,7 +79,10 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
             $info .= '_br_ - Users: ' . $users;
         }
 
-        $query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session` WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '1' AND domain = '" . $domain . "' AND bot = '0' AND ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+        $query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session`"
+                . " WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '1'"
+                . " AND domain = '" . $domain . "' AND bot = '0' AND ipLATITUDE = '" . $location['lat'] . "'"
+                . " AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
         $db->setQuery($query);
         $guests = $db->loadResult();
@@ -85,7 +91,10 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
             $info .= '_br_ - Guests: ' . $guests;
         }
 
-        $query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session` WHERE `#__xsession`.session_id=`#__session`.session_id AND  guest = '1' AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+        $query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session`"
+                . " WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '1'"
+                . " AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat'] . "'"
+                . " AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
         $db->setQuery($query);
         $bots = $db->loadResult();
@@ -109,9 +118,10 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
      * @param      array  $location Longitude/latitude
      * @return     integer
      */
-    private function checkbot(&$db, $location)
+    private function checkBot(&$db, $location)
     {
-        $query = "SELECT bot FROM `#__xsession` WHERE ipLATITUDE ='" . $location['lat'] . "' AND ipLONGITUDE = '" . $location['lng'] . "' ORDER BY bot DESC LIMIT 1";
+        $query = "SELECT bot FROM `#__xsession` WHERE ipLATITUDE ='" . $location['lat']
+                . "' AND ipLONGITUDE = '" . $location['lng'] . "' ORDER BY bot DESC LIMIT 1";
 
         $db->setQuery($query);
         $bot = $db->loadResult();
@@ -133,14 +143,18 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
         switch ($type) {
             case 'locations':
-                $query = "SELECT ipLATITUDE, ipLONGITUDE, SUM(hits) as totalhits FROM ipmap GROUP BY ipLATITUDE, ipLONGITUDE ORDER BY totalhits";
+                $query = "SELECT ipLATITUDE, ipLONGITUDE, SUM(hits) as totalhits"
+                . " FROM ipmap"
+                . " GROUP BY ipLATITUDE, ipLONGITUDE"
+                . " ORDER BY totalhits";
                 $db->setQuery($query);
                 $rows = $db->loadObjectList();
 
                 $html .= '<locations>' . "\n";
                 if ($rows) {
                     foreach ($rows as $row) {
-                        $html .= '<location lat="' . $row->ipLATITUDE . '" lng="' . $row->ipLONGITUDE . '" hits="' . $row->totalhits . '"/>' . "\n";
+                        $html .= '<location lat="' . $row->ipLATITUDE . '" lng="' . $row->ipLONGITUDE
+                                . '" hits="' . $row->totalhits . '"/>' . "\n";
                     }
                 }
                 $html .= '</locations>' . "\n";
@@ -156,13 +170,20 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
                 $local = Request::getString('local', '');
 
                 if ($local == 'us') {
-                    $query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
-                    //$query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
-                    $query = 'SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < "' . $date . '" AND (countrySHORT = "US" OR countrySHORT = "PR") GROUP BY ipLAT, ipLONG ORDER BY ips';
+                    $query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '"
+                            . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+                    // $query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."'"
+                    //        . " GROUP BY ipLAT, ipLONG ORDER BY datetime";
+                    $query = 'SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < "'
+                            . $date
+                            . '" AND (countrySHORT = "US" OR countrySHORT = "PR") GROUP BY ipLAT, ipLONG ORDER BY ips';
                 } else {
-                    $query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
-                    //$sql = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."' GROUP BY ipLAT, ipLONG ORDER BY datetime";
-                    $query = "SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < '" . $date . "' GROUP BY ipLAT, ipLONG ORDER BY ips";
+                    $query = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '"
+                            . $date . "' GROUP BY ipLAT, ipLONG ORDER BY datetime";
+                    // $sql = "SELECT DISTINCT ipLAT, ipLONG, type FROM location WHERE datetime < '".$date."'"
+                    //       . " GROUP BY ipLAT, ipLONG ORDER BY datetime";
+                    $query = "SELECT DISTINCT ipLAT, ipLONG, count(*) as ips FROM location WHERE datetime < '"
+                            . $date . "' GROUP BY ipLAT, ipLONG ORDER BY ips";
                 }
 
                 $db->setQuery($query);
@@ -171,7 +192,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
                 $html .= '<markers>' . "\n";
                 if ($rows) {
                     foreach ($rows as $row) {
-                        $html .= '<marker lat="' . $row->ipLAT . '" lng="' . $row->ipLONG . '" type="' . $row->ips . '"/>' . "\n";
+                        $html .= '<marker lat="' . $row->ipLAT . '" lng="' . $row->ipLONG
+                                . '" type="' . $row->ips . '"/>' . "\n";
                     }
                 }
                 $html .= '</markers>' . "\n";
@@ -179,7 +201,10 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
 
             case 'online':
                 $html .= '<markers>' . "\n";
-                $query = "SELECT DISTINCT ipLATITUDE, ipLONGITUDE, ipCITY, ipREGION, countrySHORT FROM `#__xsession` WHERE ipLATITUDE <> '' GROUP BY ipLATITUDE, ipLONGITUDE";
+                $query = "SELECT DISTINCT ipLATITUDE, ipLONGITUDE, ipCITY, ipREGION, countrySHORT"
+                . " FROM `#__xsession`"
+                . " WHERE ipLATITUDE <> ''"
+                . " GROUP BY ipLATITUDE, ipLONGITUDE";
 
                 $db->setQuery($query);
                 $rows = $db->loadObjectList();
@@ -191,10 +216,11 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
                         $location['lng'] = $row->ipLONGITUDE;
                         $city = '_b_' . $row->ipCITY . ', ' . $row->ipREGION . ', ' . $row->countrySHORT . '_bb_';
 
-                        $info = $this->get_hosts($db, $location);
-                        $bot = $this->checkbot($db, $location);
+                        $info = $this->getHosts($db, $location);
+                        $bot = $this->checkBot($db, $location);
 
-                        $html .= '<marker lat="' . $location['lat'] . '" lng="' . $location['lng'] . '" info = "' . $city . '_hr_' . $info . '" bot = "' . $bot . '"/>' . "\n";
+                        $html .= '<marker lat="' . $location['lat'] . '" lng="' . $location['lng'] . '"'
+                                . ' info="' . $city . '_hr_' . $info . '" bot="' . $bot . '"/>' . "\n";
                     }
                 }
                 $html .= '</markers>' . "\n";
@@ -258,7 +284,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
             $zoom = '4';
         }
 
-        // type input validation, used below in path construction and also part of error message so be careful...  Don't use getString!
+        // type input validation, used below in path construction and also part of error message so be careful...
+        // Don't use getString!
         // type can contain underscores and dashes, so use getCmd
         $type = Request::getCmd('type', 'online');
         $no_html = Request::getInt('no_html', 0);
@@ -290,7 +317,8 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
                         ->set('zoom', $zoom)
                         ->loadTemplate();
                 } else {
-                    // type is provided by client and could be anything, consider this part of input validation and not a 500 application error
+                    // type is provided by client and could be anything, consider this part of
+                    // input validation and not a 500 application error
                     App::abort(404, Lang::txt('PLG_USAGE_MAPS_TYPE_NOT_FOUND', $type));
                 }
 
@@ -298,11 +326,16 @@ class plgUsageMaps extends \Hubzero\Plugin\Plugin
             }
         }
 
-        Pathway::append(Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option . '&task=' . $task . '&type=' . $type);
+        Pathway::append(Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)), 'index.php?option=' . $option
+                . '&task=' . $task . '&type=' . $type);
 
         $html  = '<h3>' . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '</h3>' . "\n";
-        $html .= '<p><a class="map" href="' . Route::url('index.php?option=' . $option . '&task=maps&type=' . $type) . '">' . Lang::txt('PLG_USAGE_MAPS_RESET') . '</a></p>';
-        $html .= '<iframe src="' . Route::url('index.php?option=' . $option . '&task=' . $task . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom) . '" width="100%" height="600px" scrolling="no" frameborder="0" title="' . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '"></iframe>' . "\n";
+        $html .= '<p><a class="map" href="' . Route::url('index.php?option=' . $option
+                . '&task=maps&type=' . $type) . '">' . Lang::txt('PLG_USAGE_MAPS_RESET') . '</a></p>';
+        $html .= '<iframe src="' . Route::url('index.php?option=' . $option . '&task=' . $task
+                . '&type=' . $type . '&no_html=1&lat=' . $lat . '&long=' . $long . '&zoom=' . $zoom)
+                . '" width="100%" height="600px" scrolling="no" frameborder="0" title="'
+                . Lang::txt('PLG_USAGE_MAPS_' . strtoupper($type)) . '"></iframe>' . "\n";
 
         return $html;
     }

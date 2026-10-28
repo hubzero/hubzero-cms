@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -85,7 +86,9 @@ class Courses extends AdminController
         );
 
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $limit = $this->view->filters['limit'];
+        $start = $this->view->filters['start'];
+        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
 
         $model = \Components\Courses\Models\Courses::getInstance();
 
@@ -341,9 +344,12 @@ class Courses extends AdminController
             );
         } else {
             // Output messsage and redirect
+            $msg = $state
+                ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num)
+                : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num);
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-                ($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num))
+                $msg
             );
         }
     }

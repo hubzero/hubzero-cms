@@ -1127,7 +1127,7 @@ class Items extends AdminController
                     } else {
                         if ($selectedReason == 1) {
                             $verTblObj->saveUnPubReason($id, $this->model->version->version_number, Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE'));
-                        } else if ($selectedReason == 2) {
+                        } elseif ($selectedReason == 2) {
                             $verTblObj->saveUnPubReason($id, $this->model->version->version_number, Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR'));
                         }
                     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Hook to update timezone database
- **/
+ *
+ */
 class UpdateTimezoneDatabase extends Base
 {
     /**
@@ -68,19 +70,23 @@ class UpdateTimezoneDatabase extends Base
             return false;
         }
 
-        // Connecting to mysql database, need elevated permissions
+        // Connecting to mysql database requires elevated MySQL privileges
+        // The runAsRoot() method will use muse escalation if available to read
+        // protected credential files like /etc/mysql/hubmaint.cnf
         if (!$this->runAsRoot()) {
-            $return = array(
+            $return = [
                 'success' => false,
-                'message' => "Insufficient privileges to update timezone tables."
-            );
+                'message' => "Insufficient privileges to update timezone tables. "
+                    . "Try running with: sudo muse migration run"
+            ];
             return $return;
         }
 
         $this->db->select('mysql');
 
         // Run command to generate SQL
-        $sql = shell_exec("/usr/bin/mysql_tzinfo_to_sql {$zoneinfo} 2>/dev/null");
+        // Use executeWithEscalation in case zoneinfo directory requires elevated access
+        $sql = $this->executeWithEscalation("/usr/bin/mysql_tzinfo_to_sql {$zoneinfo} 2>/dev/null");
         $sql = explode(";", $sql);
 
         if (count($sql) > 0) {

@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Publications - Forks plugin
- **/
+ *
+ */
 class Migration20170623162652PlgPublicationsForks extends Base
 {
     /**

@@ -29,7 +29,7 @@ if ($this->contributors) {
         // Build the user's name and link to their profile
         if ($contributor->name) {
             $name = $this->escape(stripslashes($contributor->name));
-        } else if ($contributor->surname || $contributor->givenName) {
+        } elseif ($contributor->surname || $contributor->givenName) {
             $name = $this->escape(stripslashes($contributor->givenName)) . ' ';
             if ($contributor->middleName != null) {
                 $name .= $this->escape(stripslashes($contributor->middleName)) . ' ';
@@ -46,7 +46,8 @@ if ($this->contributors) {
         {
             $contributor->org = $contributor->xorg;
         }*/
-        $contributor->organization = $this->escape(stripslashes(trim($contributor->organization ? $contributor->organization : '')));
+        $contributor->organization = $this->escape(stripslashes(trim($contributor->organization ?
+        $contributor->organization : '')));
 
         if (!isset($contributor->authorid) && isset($contributor->uid)) {
             $contributor->authorid = $contributor->uid;
@@ -56,13 +57,17 @@ if ($this->contributors) {
         if ($contributor->authorid) {
             $profile = User::getInstance($contributor->authorid);
             if ($profile->get('id') && in_array($profile->get('access'), User::getAuthorisedViewLevels())) {
-                $link = '<a href="' . Route::url($profile->link()) . '" rel="contributor" title="' . Lang::txt('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) . '">' . $name . '</a>';
+                $link = '<a href="' .  Route::url($profile->link()) .  '" rel="contributor" title="'
+                    .  Lang::txt('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) .  '">' .  $name .  '</a>';
             }
         }
 
         $link .= ($contributor->role) ? ' (' . $this->escape($contributor->role) . ')' : '';
 
-        if (trim($contributor->organization == null ? '' : $contributor->organization) != '' && !in_array(trim($contributor->organization == null ? '' : $contributor->organization), $orgs)) {
+        if (
+            trim($contributor->organization == null ? '' : $contributor->organization) != ''
+            && !in_array(trim($contributor->organization == null ? '' : $contributor->organization), $orgs)
+        ) {
             $orgs[$i - 1] = trim($contributor->organization);
             $orgsln    .= $i . '. ' . trim($contributor->organization) . ' ';
             $orgsln_s  .= trim($contributor->organization) . ' ';
@@ -81,7 +86,8 @@ if ($this->contributors) {
     }
 
     if (count($names) > 0) {
-        $html = '<p>' . Lang::txt('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode('; ', $names) : implode('; ', $names_s))) . '</p>';
+        $html = '<p>' . Lang::txt('COM_RESOURCES_BY_AUTHORS', (count($this->contributors) > 1 ? implode('; ', $names) :
+        implode('; ', $names_s))) . '</p>';
     }
 
     if (count($orgs) > 0) {

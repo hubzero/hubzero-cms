@@ -42,8 +42,8 @@ class CategoryParent extends Select
         if ($this->element['parent']) {
             $oldCat = Request::getInt('id', 0);
             $oldParent = $this->form->getValue($name);
-        } else // For items the old category is the category they are in when opened or 0 if new.
-        {
+        } else {
+            // For items the old category is the category they are in when opened or 0 if new.
             $thisItem = Request::getInt('id', 0);
             $oldCat = $this->form->getValue($name);
         }
@@ -123,9 +123,8 @@ class CategoryParent extends Select
                     unset($options[$i]);
                 }
             }
-        }
-        // If you have an existing category id things are more complex.
-        else {
+        } else {
+            // If you have an existing category id things are more complex.
             foreach ($options as $i => $option) {
                 // If you are only allowed to edit in this category but not edit.state, you should not get any
                 // option to change the category parent for a category or the category for a content item,
@@ -135,10 +134,12 @@ class CategoryParent extends Select
                         echo 'y';
                         unset($options[$i]);
                     }
-                }
-                // However, if you can edit.state you can also move this to another category for which you have
-                // create permission and you should also still be able to save in the current category.
-                else if ((\User::authorise('core.create', $extension . '.category.' . $option->value) != true) && $option->value != $oldCat) {
+                } elseif (
+                    // However, if you can edit.state you can also move this to another category for which you have
+                    // create permission and you should also still be able to save in the current category.
+                    (\User::authorise('core.create', $extension . '.category.' . $option->value) != true)
+                    && $option->value != $oldCat
+                ) {
                     echo 'x';
                     unset($options[$i]);
                 }

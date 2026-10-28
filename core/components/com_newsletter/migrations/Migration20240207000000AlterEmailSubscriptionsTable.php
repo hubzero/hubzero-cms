@@ -2,12 +2,9 @@
 
 use Hubzero\Content\Migration\Base;
 
-// no direct access
-defined('_HZEXEC_') or die();
-
 class Migration20240207000000AlterEmailSubscriptionsTable extends Base
 {
-    static $tableName = '#__email_subscriptions';
+    public static $tableName = '#__email_subscriptions';
 
     public function up()
     {

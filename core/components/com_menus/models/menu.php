@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -158,8 +159,9 @@ class Menu extends Relational
                     ->total();
 
                 if ($checked_out) {
+                    $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
                     $this->addError(
-                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT'))
+                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $errorMsg)
                     );
                     return false;
                 }
@@ -171,8 +173,9 @@ class Menu extends Relational
                     ->total();
 
                 if ($checked_out) {
+                    $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
                     $this->addError(
-                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT'))
+                        Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $errorMsg)
                     );
                     return false;
                 }
@@ -182,7 +185,10 @@ class Menu extends Relational
                     $item->set('menutype', $this->get('menutype'));
 
                     if (!$item->save()) {
-                        $this->addError(Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $item->getError()));
+                        $error = $item->getError();
+                        $this->addError(
+                            Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $error)
+                        );
                         return false;
                     }
                 }
@@ -193,7 +199,10 @@ class Menu extends Relational
                     $module->set('params', $module->params->toString());
 
                     if (!$module->save()) {
-                        $this->addError(Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $module->getError()));
+                        $error = $module->getError();
+                        $this->addError(
+                            Lang::txt('JLIB_DATABASE_ERROR_STORE_FAILED', get_class($this), $error)
+                        );
                         return false;
                     }
                 }
@@ -224,8 +233,9 @@ class Menu extends Relational
             ->total();
 
         if ($checked_out) {
+            $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
             $this->addError(
-                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT'))
+                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $errorMsg)
             );
             return false;
         }
@@ -237,8 +247,9 @@ class Menu extends Relational
             ->total();
 
         if ($checked_out) {
+            $errorMsg = Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT');
             $this->addError(
-                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), Lang::txt('JLIB_DATABASE_ERROR_MENUTYPE_CHECKOUT'))
+                Lang::txt('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $errorMsg)
             );
             return false;
         }

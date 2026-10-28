@@ -81,7 +81,7 @@ class Calendar extends Model
         // load object
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }
@@ -91,7 +91,7 @@ class Calendar extends Model
      *
      * @param   $key   Instance Key
      */
-    static function &getInstance($key = null)
+    public static function &getInstance($key = null)
     {
         static $instances;
 

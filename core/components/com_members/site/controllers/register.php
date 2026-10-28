@@ -844,7 +844,7 @@ class Register extends SiteController
                     if ($user->get('email') == $hzal->email) {
                         $user->set('activation', 3);
                     }
-                } else if ($useractivation == 0) {
+                } elseif ($useractivation == 0) {
                     $user->set('activation', 1);
                     $user->set('access', (int)$this->config->get('privacy', 1));
                 }
@@ -1105,13 +1105,13 @@ class Register extends SiteController
         if ($score < PASS_SCORE_MEDIOCRE) {
             $cls = 'bad';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_BAD');
-        } else if ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
+        } elseif ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
             $cls = 'mediocre';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_MEDIOCRE');
-        } else if ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
+        } elseif ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
             $cls = 'good';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_GOOD');
-        } else if ($score >= PASS_SCORE_STRONG) {
+        } elseif ($score >= PASS_SCORE_STRONG) {
             $cls = 'strong';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_STRONG');
         }

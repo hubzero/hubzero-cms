@@ -45,8 +45,12 @@ class Editor extends Field
         $width = ((string) $this->element['width']) ? (string) $this->element['width'] : '100%';
         $assetField = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
         $authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
-        $asset = $this->form->getValue($assetField) ? $this->form->getValue($assetField) : (string) $this->element['asset_id'];
-
+        $asset = $this->
+            form->
+            getValue($assetField) ? $this->
+            form->
+            getValue($assetField) : (string) $this->
+            element['asset_id'];
         // Build the buttons array.
         $buttons = (string) $this->element['buttons'];
 

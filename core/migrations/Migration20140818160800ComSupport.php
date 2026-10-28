@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -51,7 +52,8 @@ class Migration20140818160800ComSupport extends Base
             }
 
             if (!$this->db->tableHasKey('#__abuse_reports', 'idx_category_referenceid')) {
-                $query = "ALTER TABLE `#__abuse_reports` ADD INDEX `idx_category_referenceid` (`category`, `referenceid`);";
+                $query = "ALTER TABLE `#__abuse_reports` "
+                    . "ADD INDEX `idx_category_referenceid` (`category`, `referenceid`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

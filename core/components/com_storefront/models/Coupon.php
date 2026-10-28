@@ -18,8 +18,8 @@ use Lang;
 class Coupon
 {
     // Database instance
-    var $db = null;
-    var $data;
+    public $db = null;
+    public $data;
 
     /**
      * Contructor
@@ -248,9 +248,10 @@ class Coupon
     /**
      * Add object
      *
-     * @param   int         object ID
-     * @param   int         limit of obejct coupon will be applied to (when purchasing multiple quantities of the same object)
-     * @return  bool        true on success
+     * @param   int   object ID
+     * @param   int   limit of object coupon will be applied to
+     *                (when purchasing multiple quantities of the same object)
+     * @return  bool  true on success
      */
     public function addObject($object, $objectLimit = 'DEFAULT')
     {

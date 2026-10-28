@@ -92,7 +92,13 @@ class Helper extends Module
                 switch ($article_grouping) {
                     case 'year':
                     case 'month_year':
-                        $list = self::groupByDate($list, $article_grouping, $article_grouping_direction, $params->get('month_year_format', 'F Y'));
+                        $monthYearFormat = $params->get('month_year_format', 'F Y');
+                        $list = self::groupByDate(
+                            $list,
+                            $article_grouping,
+                            $article_grouping_direction,
+                            $monthYearFormat
+                        );
                         break;
                     case 'author':
                     case 'category_title':
@@ -205,11 +211,14 @@ class Helper extends Module
                 foreach ($catids as $catid) {
                     $db = App::get('db');
 
-                    $vars = array($catid, implode(',', User::getAuthorisedViewLevels()));
+                    $authorisedLevels = implode(',', User::getAuthorisedViewLevels());
+                    $vars = array($catid, $authorisedLevels);
 
                     // For each category find children up to needed depth
-                    $sql = "SELECT id FROM (SELECT * FROM #__categories ORDER BY parent_id, id) cats, (SELECT @pID := ?) varInit
-							WHERE `access` IN (?) AND FIND_IN_SET(parent_id, @pID)";
+                    $sql = "SELECT id FROM "
+                        . "(SELECT * FROM #__categories ORDER BY parent_id, id) cats, "
+                        . "(SELECT @pID := ?) varInit "
+                        . "WHERE `access` IN (?) AND FIND_IN_SET(parent_id, @pID)";
                     if ($levels) {
                         $sql .= " AND level <= ?";
                         $vars[] = $levels;
@@ -302,8 +311,14 @@ class Helper extends Module
                 $categories->whereEquals('id', $item->catid);
                 $category = $categories->rows()->first();
                 $item->catslug = $item->catid . ':' . $category->alias;
-                $item->displayCategoryLink  = Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid));
-                $item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $category->title . '</a>' : '';
+                $catRoute = \Components\Content\Site\Helpers\Route::getCategoryRoute($item->catid);
+                $item->displayCategoryLink  = Route::url($catRoute);
+                if ($show_category) {
+                    $item->displayCategoryTitle = '<a href="' . $item->displayCategoryLink . '">'
+                        . $category->title . '</a>';
+                } else {
+                    $item->displayCategoryTitle = '';
+                }
             } else {
                 $item->catslug = '';
                 $item->displayCategoryTitle = '';
@@ -311,7 +326,11 @@ class Helper extends Module
 
             if ($access || in_array($item->access, $authorised)) {
                 // We know that user has the privilege to view the article
-                $item->link = \Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language);
+                $item->link = \Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $item->slug,
+                    $item->catslug,
+                    $item->language
+                );
             } else {
                 // Angie Fixed Routing
                 $menu = \App::get('menu');
@@ -353,7 +372,9 @@ class Helper extends Module
                 if ($item->catid == 0 || $item->category_access === null) {
                     $item->params->set('access-view', in_array($item->access, $authorised));
                 } else {
-                    $item->params->set('access-view', in_array($item->access, $authorised) && in_array($item->category_access, $authorised));
+                    $hasAccessView = in_array($item->access, $authorised)
+                        && in_array($item->category_access, $authorised);
+                    $item->params->set('access-view', $hasAccessView);
                 }
             }
         }

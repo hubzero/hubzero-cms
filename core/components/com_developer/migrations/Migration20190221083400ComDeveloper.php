@@ -43,7 +43,8 @@ class Migration20190221083400ComDeveloper extends Base
 
         if ($this->db->tableExists('#__developer_application_team_members')) {
             if (!$this->db->tableHasKey('#__developer_application_team_members', 'idx_application_id')) {
-                $query = "ALTER TABLE `#__developer_application_team_members` ADD INDEX `idx_application_id` (`application_id`)";
+                $query = "ALTER TABLE `#__developer_application_team_members` "
+                    . "ADD INDEX `idx_application_id` (`application_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
@@ -83,7 +84,8 @@ class Migration20190221083400ComDeveloper extends Base
             }
 
             if (!$this->db->tableHasKey('#__developer_authorization_codes', 'idx_application_id')) {
-                $query = "ALTER TABLE `#__developer_authorization_codes` ADD INDEX `idx_application_id` (`application_id`)";
+                $query = "ALTER TABLE `#__developer_authorization_codes` "
+                    . "ADD INDEX `idx_application_id` (`application_id`)";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

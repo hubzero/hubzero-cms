@@ -24,8 +24,19 @@ defined('_HZEXEC_') or die();
             foreach ($this->rows as $row) {
                 ?>
                 <li class="todos">
-                    <a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&active=todo/view/?todoid=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->content)); ?></a><br />
-                    <?php echo Lang::txt('MOD_MYTODOS_PROJECT'); ?>: <a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&active=todo'); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a>
+                    <?php
+                    $todoUrl = Route::url('index.php?option=com_projects&alias='
+                        . $row->alias . '&active=todo/view/?todoid=' . $row->id);
+                    $projUrl = Route::url('index.php?option=com_projects&alias='
+                        . $row->alias . '&active=todo');
+                    ?>
+                    <a href="<?php echo $todoUrl; ?>"><?php
+                        echo $this->escape(stripslashes($row->content));
+                    ?></a><br />
+                    <?php echo Lang::txt('MOD_MYTODOS_PROJECT'); ?>:
+                    <a href="<?php echo $projUrl; ?>"><?php
+                        echo $this->escape(stripslashes($row->title));
+                    ?></a>
                     <span></span>
                 </li>
                 <?php

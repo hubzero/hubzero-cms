@@ -106,7 +106,7 @@ Examples:
                     foreach ($footnote->refs as $key => $ref) {
                         $html .= '<sup class="tex2jax_ignore"><a href="#' . $ref . '">' . strtolower($letters[$key]) . '</a></sup> ';
                     }
-                } else if (count($footnote->refs) == 1) {
+                } elseif (count($footnote->refs) == 1) {
                     $html .= '<a href="#' . $footnote->refs[0] . '">^</a> ';
                 }
                 $html .= '<span id="fnref-' . ($i + 1) . '"></span>' . substr($footnote->content, 3);

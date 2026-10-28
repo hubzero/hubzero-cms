@@ -16,28 +16,28 @@ class Git
     /**
      * Root path of git repository
      *
-     * @var  string
+     * @public string
      **/
     private $dir;
 
     /**
      * Git working tree directory
      *
-     * @var  string
+     * @public string
      **/
     private $workTree;
 
     /**
      * Base command for all git calls
      *
-     * @var  string
+     * @public string
      **/
     private $baseCmd;
 
     /**
      * Get upstream branch name (when needing to compare master with upstream branch)
      *
-     * @var  string
+     * @public string
      **/
     private $upstream = null;
 
@@ -174,8 +174,15 @@ class Git
      * @param   bool    $count      Return count of entires
      * @return  array
      **/
-    public function log($length = null, $start = null, $upcoming = false, $installed = true, $search = null, $format = '%an: %s', $count = false)
-    {
+    public function log(
+        $length = null,
+        $start = null,
+        $upcoming = false,
+        $installed = true,
+        $search = null,
+        $format = '%an: %s',
+        $count = false
+    ) {
         $args = array();
 
         // Count trumps all, just compute and return
@@ -288,7 +295,8 @@ class Git
     {
 
         if (!$dryRun) {
-            // Move to the working tree dir (git 1.8.5 has a built in option for this...but we're still generally running 1.7.x)
+            // Move to the working tree dir (git 1.8.5 has a built in option for this...but we're still generally
+            // running1.7.x)
             chdir($this->workTree);
             $arguments = array();
 
@@ -304,12 +312,14 @@ class Git
             }
 
             // Doing some trickery here.
-            // Newer versions of git prefer you to edit the auto generated message after every merge...we don't want to do this
+            // Newer versions of git prefer you to edit the auto generated message after every merge...we don't want
+            // todo this
             // There is an option to prevent that (--no-edit), but it doesn't apply to older versions of git
-            // Thus we're going to use an env variable to prevent the behavior on newer versions, while not effecting older
+            // Thus we're going to use an env variable to prevent the behavior on newer versions, while not effecting
+            // older
             // versions that are currently unaware of the --no-edit option
 
-            // Start off by seeing if there is an autoedit env var already set
+            // Start off by seeing if there is an autoedit env public already set
             $autoedit = getenv("GIT_MERGE_AUTOEDIT");
             // Now set it to no
             putenv("GIT_MERGE_AUTOEDIT=no");
@@ -317,7 +327,7 @@ class Git
             // Now do the actual pull
             $response = $this->call('merge', $arguments);
 
-            // Now clear the var or reset it if it had been previously set
+            // Now clear the public or reset it if it had been previously set
             if ($autoedit) {
                 putenv("GIT_MERGE_AUTOEDIT={$autoedit}");
             } else {
@@ -330,10 +340,10 @@ class Git
             if (substr($response, 0, 5) == 'fatal') {
                 $return['status']  = 'fatal';
                 $return['message'] = trim(substr($response, stripos($response, 'fatal') + 6));
-            } else if (substr($response, 0, 5) == 'error') {
+            } elseif (substr($response, 0, 5) == 'error') {
                 $return['status']  = 'fatal';
                 $return['message'] = trim(substr($response, stripos($response, 'error') + 6));
-            } else if (stripos($response, 'automatic merge failed') !== false) {
+            } elseif (stripos($response, 'automatic merge failed') !== false) {
                 $return['status']  = 'fatal';
                 $return['message'] = $response;
             } else {
@@ -395,7 +405,7 @@ class Git
         if (stripos($response, 'error: failed to push some refs') !== false) {
             $return['status']  = 'fatal';
             $return['message'] = $response;
-        } else if (stripos($response, 'everything up-to-date') !== false) {
+        } elseif (stripos($response, 'everything up-to-date') !== false) {
             $return['status']  = 'success';
             $return['message'] = $response;
         } else {
@@ -558,7 +568,10 @@ class Git
      **/
     private function call($cmd, $arguments = array())
     {
-        $command  = "umask 0002 && {$this->baseCmd} {$cmd}" . ((!empty($arguments)) ? ' ' . implode(' ', $arguments) : '') . ' 2>&1';
+        $command  = "umask 0002 && {$this->baseCmd} {$cmd}" .
+            ((!empty($arguments)) ? ' ' .
+            implode(' ', $arguments) : '') .
+            ' 2>&1';
         $response = shell_exec($command);
 
         return $response;

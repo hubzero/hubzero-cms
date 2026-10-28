@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <div class="verify-content">
     <div class="warning-box">
         <h3>Why This Step?</h3>

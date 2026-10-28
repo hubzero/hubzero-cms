@@ -52,7 +52,7 @@ class Router extends Base
             if ($segments[0] == 'unityscoresave') {
                 $vars['controller'] = 'unity';
                 $vars['task']       = 'save';
-            } else if ($segments[0] == 'passport') {
+            } elseif ($segments[0] == 'passport') {
                 $vars['controller'] = 'passport';
                 $vars['task']       = 'badge';
             } else {

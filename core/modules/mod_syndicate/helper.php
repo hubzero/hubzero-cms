@@ -48,7 +48,7 @@ class Helper extends Module
      * @param   object  $params  Registry
      * @return  string
      */
-    static function getLink(&$params)
+    public static function getLink(&$params)
     {
         $data = Document::getHeadData();
 

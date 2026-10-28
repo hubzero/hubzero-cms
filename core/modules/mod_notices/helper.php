@@ -29,7 +29,7 @@ class Helper extends Module
      * @param   integer  $minute  Minute
      * @return  array
      */
-    private function _countdown($year, $month, $day, $hour, $minute)
+    private function countdown($year, $month, $day, $hour, $minute)
     {
         // Make a unix timestamp for the given date
         $the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year);
@@ -57,9 +57,10 @@ class Helper extends Module
      * @param   string   $stime  Datetime to convert
      * @return  integer
      */
-    private function _mkt($stime)
+    private function mkt($stime)
     {
-        if ($stime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $stime, $regs)) {
+        $pattern = "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/";
+        if ($stime && preg_match($pattern, $stime, $regs)) {
             $stime = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
         return $stime;
@@ -71,7 +72,7 @@ class Helper extends Module
      * @param   integer  $stime  Timestamp
      * @return  array
      */
-    private function _convert($stime)
+    private function convert($stime)
     {
         $t = array();
         $t['year']   = date('Y', $stime);
@@ -89,7 +90,7 @@ class Helper extends Module
      * @param   array   $stime  Timestamp
      * @return  string
      */
-    private function _timeto($stime)
+    private function timeto($stime)
     {
         if ($stime[0] == 0 && $stime[1] == 0 && $stime[2] == 0) {
             $o  = Lang::txt('MOD_NOTICES_IMMEDIATELY');
@@ -108,13 +109,15 @@ class Helper extends Module
      * @param   string  $text  Text to look for links
      * @return  string
      */
-    private static function _autoLinkText($text)
+    private static function autoLinkText($text)
     {
         // Replace email links
-        $text = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $text);
+        $emailPattern = '/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/';
+        $text = preg_replace($emailPattern, '<a href="mailto:$1">$1</a>', $text);
 
         // Replace url links
-        $text = preg_replace('#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#', '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
+        $urlPattern = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+        $text = preg_replace($urlPattern, '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
 
         // Return auto-linked text
         return $text;
@@ -168,7 +171,7 @@ class Helper extends Module
             // Figure out days left
 
             // make a unix timestamp for the given date
-            $the_countdown_date = $this->_mkt($stop);
+            $the_countdown_date = $this->mkt($stop);
 
             // get current unix timestamp
             $now = time() + (intval(Config::get('offset')) * 60 * 60);
@@ -199,39 +202,43 @@ class Helper extends Module
             $message          = $this->params->get('message', '');
 
             // Convert start time
-            $start = $this->_mkt($start);
-            $d = $this->_convert($start);
-            $time_start = $d['hour'] . ':' . $d['minute'] . ' ' . $d['ampm'] . ', ' . $d['month'] . ' ' . $d['day'] . ', ' . $d['year'];
+            $start = $this->mkt($start);
+            $d = $this->convert($start);
+            $time_start = $d['hour'] . ':' . $d['minute'] . ' ' . $d['ampm'] . ', '
+                . $d['month'] . ' ' . $d['day'] . ', ' . $d['year'];
 
             // Convert end time
-            $stop = $this->_mkt($stop);
-            $u = $this->_convert($stop);
-            $time_end  = $u['hour'] . ':' . $u['minute'] . ' ' . $u['ampm'] . ', ' . $u['month'] . ' ' . $u['day'] . ', ' . $u['year'];
+            $stop = $this->mkt($stop);
+            $u = $this->convert($stop);
+            $time_end  = $u['hour'] . ':' . $u['minute'] . ' ' . $u['ampm'] . ', '
+                . $u['month'] . ' ' . $u['day'] . ', ' . $u['year'];
 
             // Convert countdown-to-start time
             $d_month   = date('m', $start);
             $d_day     = date('d', $start);
             $d_hour    = date('H', $start);
-            $time_left = $this->_countdown($d['year'], $d_month, $d_day, $d_hour, $d['minute']);
-            $time_cd_tostart = $this->_timeto($time_left);
+            $time_left = $this->countdown($d['year'], $d_month, $d_day, $d_hour, $d['minute']);
+            $time_cd_tostart = $this->timeto($time_left);
 
             // Convert countdown-to-return time
             $u_month   = date('m', $stop);
             $u_day     = date('d', $stop);
             $u_hour    = date('H', $stop);
-            $time_left = $this->_countdown($u['year'], $u_month, $u_day, $u_hour, $u['minute']);
-            $time_cd_toreturn = $this->_timeto($time_left);
+            $time_left = $this->countdown($u['year'], $u_month, $u_day, $u_hour, $u['minute']);
+            $time_cd_toreturn = $this->timeto($time_left);
 
             // Parse message for tags
             $message = str_replace('<notice:start>', $time_start, $message);
             $message = str_replace('<notice:end>', $time_end, $message);
             $message = str_replace('<notice:countdowntostart>', $time_cd_tostart, $message);
             $message = str_replace('<notice:countdowntoreturn>', $time_cd_toreturn, $message);
-            $message = str_replace('<notice:timezone>', $timezone == null ? '' : $timezone, $message == null ? '' : $message);
+            $timezoneVal = $timezone == null ? '' : $timezone;
+            $messageVal = $message == null ? '' : $message;
+            $message = str_replace('<notice:timezone>', $timezoneVal, $messageVal);
 
             // auto link?
             if ($this->params->get('autolink', 1)) {
-                $message = self::_autoLinkText($message);
+                $message = self::autoLinkText($message);
             }
 
             if (!trim($message)) {

@@ -22,6 +22,7 @@ class Toolbar extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = '';
 
     /**
@@ -29,6 +30,7 @@ class Toolbar extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_bar = array();
 
     /**
@@ -36,6 +38,7 @@ class Toolbar extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_buttons = array();
 
     /**
@@ -43,6 +46,7 @@ class Toolbar extends Obj
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_buttonPath = array();
 
     /**
@@ -51,6 +55,7 @@ class Toolbar extends Obj
      * @param   string  $name  The toolbar name
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($name = 'toolbar')
     {
         $this->_name = $name;
@@ -182,12 +187,20 @@ class Toolbar extends Obj
         $buttonClass = __NAMESPACE__ . '\\Toolbar\\Button\\' . $type;
         if (!class_exists($buttonClass)) {
             $dirs = isset($this->_buttonPath) ? $this->_buttonPath : array();
-            $file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))  . '.php';
+            $file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))  .
+                '.php';
 
             if ($buttonFile = $this->find($dirs, $file)) {
                 include_once $buttonFile;
             } else {
-                throw new \InvalidArgumentException(\Lang::txt('JLIB_HTML_BUTTON_NO_LOAD', $buttonClass, $buttonFile), 500);
+                InvalidArgumentException(
+                    \Lang::txt(
+                        'JLIB_HTML_BUTTON_NO_LOAD',
+                        $buttonClass,
+                        $buttonFile
+                    ),
+                    500
+                );
             }
         }
 
@@ -205,7 +218,8 @@ class Toolbar extends Obj
      *
      * @param   mixed   $paths  An path string or array of path strings to search in
      * @param   string  $file   The file name to look for.
-     * @return  mixed   The full path and file name for the target file, or boolean false if the file is not found in any of the paths.
+     * @return  mixed   The full path and file name for the target file, or boolean false if the
+     * file is not found in any of the paths.
      */
     protected function find($paths, $file)
     {

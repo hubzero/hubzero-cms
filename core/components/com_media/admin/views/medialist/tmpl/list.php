@@ -17,7 +17,13 @@ endif;
 $tmpl = Request::getCmd('tmpl', '');
 ?>
 <div class="media-files media-list<?php echo $cls ?>" id="media-list">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&folder=' . $this->folder); ?>" method="post" id="media-form-list" name="media-form-list">
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option . '&folder=' . $this->folder
+    );
+    ?>
+    <form action="<?php echo $formAction; ?>"
+        method="post" id="media-form-list" name="media-form-list">
         <div class="manager">
             <table>
                 <thead>

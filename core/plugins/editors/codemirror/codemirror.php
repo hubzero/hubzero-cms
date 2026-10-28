@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * CodeMirror Editor Plugin.
@@ -17,6 +15,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
     /**
      * Base path for editor files
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_basePath = 'core/plugins/editors/codemirror/';
 
     /**
@@ -113,8 +112,19 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
      * @param   array    $params   Associative array of editor parameters.
      * @return  string HTML
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = array()
+    ) {
         if (empty($id)) {
             $id = $name;
         }
@@ -153,12 +163,17 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
                     break;
 
                 case 'html':
-                    $parserFile = array('parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js');
+                    $parserFile = array(
+                        'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'parsehtmlmixed.js'
+                    );
                     $styleSheet = array('xmlcolors.css', 'jscolors.css', 'csscolors.css');
                     break;
 
                 case 'php':
-                    $parserFile = array('parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', 'tokenizephp.js', 'parsephp.js', 'parsephphtmlmixed.js');
+                    $parserFile = array(
+                        'parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js',
+                        'tokenizephp.js', 'parsephp.js', 'parsephphtmlmixed.js'
+                    );
                     $styleSheet = array('xmlcolors.css', 'jscolors.css', 'csscolors.css', 'phpcolors.css');
                     break;
 
@@ -213,6 +228,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
      *
      * @return string HTML
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior
@@ -241,7 +257,8 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
                     $onclick = ($button->get('onclick')) ? 'onclick="' . $button->get('onclick') . '"' : null;
                     $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
                     $html[] = '<div class="button2-left"><div class="' . $button->get('name') . '">';
-                    $html[] = '<a ' . $modal . ' title="' . $title . '" ' . $href . ' ' . $onclick . ' rel="' . $button->get('options') . '">';
+                    $html[] = '<a ' . $modal . ' title="' . $title . '" ' . $href . ' ' . $onclick . ' rel="'
+                        . $button->get('options') . '">';
                     $html[] = $button->get('text') . '</a></div></div>';
                 }
             }

@@ -31,7 +31,11 @@ $this->css('jquery.ui.css', 'system')
         <label>
             Title:
             <?php if (!$this->readonly) : ?>
-                <input type="text" class="required" id="title" value="<?php echo str_replace('"', '&quot;', $this->title) ?>" />
+                <input
+                    type="text"
+                    class="required"
+                    id="title"
+                    value="<?php echo str_replace('"', '&quot;', $this->title) ?>" />
             <?php else : ?>
                 <?php echo $this->title ?>
             <?php endif; ?>
@@ -43,7 +47,9 @@ $this->css('jquery.ui.css', 'system')
                 $tabs = array();
                 $layout = $this->pdf->getPageLayout();
                 $this->pdf->eachPage(function ($src, $idx) use (&$tabs, $layout) {
-                    $tabs[] = '<li><a href="#page-' . $idx . '"' . ($idx == 1 ? ' class="current"' : '') . '>' . $idx . '</a></li>';
+                    $tabs[] = '<li><a
+                        href="#page-' . $idx . '"' . ($idx == 1 ? '
+                        class="current"' : '') . '>' . $idx . '</a></li>';
 
                     echo '<li id="page-' . $idx . '">';
                     echo '<img src="' . $src . '" />';
@@ -70,9 +76,16 @@ $this->css('jquery.ui.css', 'system')
 									}
 								'
                                 );
-                                echo '<div class="radio-container' . ($ans['correct'] ? ' selected' : '') . '" id="' . $answerId . '">';
+                                echo '<div
+                                    class="radio-container' . ($ans['correct'] ? ' selected' : '') . '"
+                                    id="' . $answerId . '">';
                                 echo '<button class="remove">x</button>';
-                                echo '<input name="question-saved-' . $idx . '-' . $qidx . '" value="' . $aidx . '" class="placeholder"' . ($ans['correct'] ? ' checked="checked"' : '') . ' type="radio" />';
+                                echo '<input
+                                    name="question-saved-' . $idx . '-' . $qidx . '"
+                                    value="' . $aidx . '"
+                                    class="placeholder"' . ($ans['correct'] ? '
+                                    checked="checked"' : '') . '
+                                    type="radio" />';
                                 echo '</div>';
                             }
                             ++$qidx;
@@ -86,7 +99,12 @@ $this->css('jquery.ui.css', 'system')
             <?php if (!$this->readonly) : ?>
                 <div><a href="" id="save">Save and Close</a></div>
                 <div class="new-upload-button">
-                    <input data-url="<?php echo Route::url($this->base . '&task=form.saveLayout&formId=' . $this->pdf->getId()); ?>" type="file" name="pdf" id="new-upload" />
+                    <?php
+                        $routeUrl = Route::url(
+                            $this->base . '&task=form.saveLayout&formId=' . $this->pdf->getId()
+                        );
+                    ?>
+                    <input data-url="<?php echo $routeUrl; ?>" type="file" name="pdf" id="new-upload" />
                     <span>Upload New PDF</span>
                 </div>
             <?php endif; ?>
@@ -94,7 +112,10 @@ $this->css('jquery.ui.css', 'system')
             <?php if (!$this->readonly) : ?>
                 <div class="question-info">
                     <p>
-                        <span class="questions-total"><?php echo $this->pdf->getQuestionCount() ?></span> question(s) total, <span class="questions-unsaved">0</span> changes unsaved
+                        <span class="questions-total">
+                            <?php echo $this->pdf->getQuestionCount() ?>
+                        </span> question(s) total,
+                        <span class="questions-unsaved">0</span> changes unsaved
                     </p>
                 </div>
             <?php endif; ?>

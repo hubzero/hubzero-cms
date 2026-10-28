@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing up tags indices
+  *
  **/
 class Migration20130426070126ComTags extends Base
 {
@@ -42,7 +44,8 @@ class Migration20130426070126ComTags extends Base
             $query .= "ALTER TABLE `#__tags_object` ADD KEY `idx_label_tagid` (`label`, `tagid`);\n";
         }
         if (!$this->db->tableHasKey('#__tags_object', 'idx_tbl_objectid_label_tagid')) {
-            $query .= "ALTER TABLE `#__tags_object` ADD KEY `idx_tbl_objectid_label_tagid` (`tbl`, `objectid`, `label`, `tagid`);\n";
+            $query .= "ALTER TABLE `#__tags_object` ADD KEY `idx_tbl_objectid_label_tagid` "
+                . "(`tbl`, `objectid`, `label`, `tagid`);\n";
         }
         if (!$this->db->tableHasKey('#__tags_object', 'idx_tagid')) {
             $query .= "ALTER TABLE `#__tags_object` ADD KEY `idx_tagid` (`tagid`);\n";

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for displaying a tree of page parents
@@ -22,13 +20,15 @@ class ParentsMacro extends WikiMacro
     public function description()
     {
         $txt = array();
-        $txt['wiki'] = 'Inserts a nested list of ancestor pages (parents) of the current page into the output. Accepts one parameter:
- * \'\'\'depth:\'\'\' how deep to mine for pages. Default is one level.';
-        $txt['html'] = '<p>Inserts a nested list of ancestor pages (parents) of the current page into the output. Accepts one parameter:</p>
-		<ul>
-			<li><strong>depth</strong>: how deep to mine for pages. Default is one level.</li>
-		</ul>
-		<p>Example usage: <code>[[Parents(depth=3)]]</code></p>';
+        $txt['wiki'] = 'Inserts a nested list of ancestor pages (parents) of the current page into the output. '
+            . 'Accepts one parameter:' . "\n"
+            . ' * \'\'\'depth:\'\'\' how deep to mine for pages. Default is one level.';
+        $txt['html'] = '<p>Inserts a nested list of ancestor pages (parents) of the current page into the output. '
+            . 'Accepts one parameter:</p>
+        <ul>
+            <li><strong>depth</strong>: how deep to mine for pages. Default is one level.</li>
+        </ul>
+        <p>Example usage: <code>[[Parents(depth=3)]]</code></p>';
         return $txt['html'];
     }
 
@@ -76,12 +76,12 @@ class ParentsMacro extends WikiMacro
         }
 
         // Get an array of ancestors
-        $rows = $this->_fetchPointer($depth, $this->scope);
+        $rows = $this->fetchPointer($depth, $this->scope);
 
         // Check for any results
         if ($rows && is_array($rows)) {
             // Return nested lists
-            return $this->_buildTree($rows);
+            return $this->buildTree($rows);
         }
 
         return '';
@@ -93,7 +93,7 @@ class ParentsMacro extends WikiMacro
      * @param   array  $rows  An array of objects
      * @return  string
      */
-    private function _buildTree($rows)
+    private function buildTree($rows)
     {
         $html = '';
 
@@ -106,7 +106,7 @@ class ParentsMacro extends WikiMacro
             $html .= '<li><a href="' . Route::url($row->link()) . '">';
             $html .= stripslashes($row->title);
             $html .= '</a>';
-            $html .= $this->_buildTree($rows);
+            $html .= $this->buildTree($rows);
             $html .= '</li>' . "\n";
             $html .= '</ul>';
         }
@@ -121,7 +121,7 @@ class ParentsMacro extends WikiMacro
      * @param   string   $scope  The URI path to traverse
      * @return  array
      */
-    private function _fetchPointer($depth, $scope)
+    private function fetchPointer($depth, $scope)
     {
         $uri = explode('/', $scope);
 
@@ -144,7 +144,7 @@ class ParentsMacro extends WikiMacro
             array_pop($subscope);
 
             // fetch the pointer to the current uri part
-            $pointer = $this->_getPageByAlias($uriPart, implode('/', $subscope));
+            $pointer = $this->getPageByAlias($uriPart, implode('/', $subscope));
 
             // if the page was not found then return null
             if (null == $pointer) {
@@ -168,9 +168,13 @@ class ParentsMacro extends WikiMacro
      * @param   string  $scope
      * @return  mixed
      */
-    private function _getPageByAlias($alias, $scope)
+    private function getPageByAlias($alias, $scope)
     {
-        $page = \Components\Wiki\Models\Page::oneByPath(($scope ? $scope . '/' . $alias : ''), $this->doman, $this->domain_id);
+        $page = \Components\Wiki\Models\Page::oneByPath(
+            ($scope ? $scope . '/' . $alias : ''),
+            $this->doman,
+            $this->domain_id
+        );
 
         // Check for a result
         if ($page->get('id')) {

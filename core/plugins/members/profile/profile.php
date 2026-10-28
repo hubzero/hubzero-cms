@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,29 +13,30 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for profile
  */
-class plgMembersProfile extends \Hubzero\Plugin\Plugin
+class PlgMembersProfile extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @return  array   Plugin name
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @return array   Plugin name
      */
     public function &onMembersAreas($user, $member)
     {
         $areas = array(
             'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
-            'icon'    => 'f007',
-            'icon-class'    => 'icon-user',
-            'menu'    => $this->params->get('display_tab', 1)
+            'icon' => 'f007',
+            'icon-class' => 'icon-user',
+            'menu' => $this->params->get('display_tab', 1)
         );
         return $areas;
     }
@@ -42,11 +44,11 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  Profile
-     * @param   string  $option  Component name
-     * @param   string  $areas   Plugins to return data
-     * @return  array   Return array of html
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array   Return array of html
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -63,7 +65,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
             }
         }
 
-        require_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
+        include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
         $arr = array(
             'html' => '',
@@ -72,10 +74,10 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
         // Build the final HTML
         if ($returnhtml) {
-            $this->user   = $user;
+            $this->user = $user;
             $this->member = $member;
             $this->option = $option;
-            $this->areas  = $areas;
+            $this->areas = $areas;
 
             //get task
             $this->task = Request::getCmd('action', 'view');
@@ -104,7 +106,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * View the profile page
      *
-     * @return  string
+     * @return string
      */
     private function display()
     {
@@ -118,12 +120,22 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
         $xreg = null;
 
         $fields = Components\Members\Models\Profile\Field::all()
-            ->including(['options', function ($option) {
-                $option
-                    ->select('*')
-                    ->ordered();
-            }])
-            ->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
+            ->including(
+                [
+                'options',
+                function ($option) {
+                    $option
+                        ->select('*')
+                        ->ordered();
+                }
+                ]
+            )
+
+            ->where(
+                'action_edit',
+                '!=',
+                Components\Members\Models\Profile\Field::STATE_HIDDEN
+            )
             ->ordered()
             ->rows();
 
@@ -144,7 +156,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
             // Validate profile fields
             $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
-            $form->load(Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile));
+            $form->load(
+                Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
+            );
             $form->bind(new Hubzero\Config\Registry($profile));
 
             if (!$form->validate($profile)) {
@@ -152,10 +166,10 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
                 foreach ($form->getErrors() as $key => $error) {
                     if ($error instanceof Hubzero\Form\Exception\MissingData) {
-                        $xreg->_missing[$key] = (string)$error;
+                        $xreg->_missing[$key] = (string) $error;
                     }
 
-                    $xreg->_invalid[$key] = (string)$error;
+                    $xreg->_invalid[$key] = (string) $error;
                 }
             }
 
@@ -182,9 +196,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   array    $fields   Fields filled in
-     * @param   object   $profile  Profile
-     * @return  integer
+     * @param  array  $fields  Fields filled in
+     * @param  object $profile Profile
+     * @return integer
      */
     public function getProfileCompleteness($fields, $profile)
     {
@@ -214,7 +228,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
                     if (is_array($values) && in_array($option->get('value'), $values)) {
                         $selected = true;
-                    } else if ($values == $option->get('value')) {
+                    } elseif ($values == $option->get('value')) {
                         $selected = true;
                     }
                 }
@@ -248,7 +262,10 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
                 $value = $profile->get($field->get('name'));
                 $type = gettype($value);
 
-                if (($type == 'array' && !empty($value)) || ($type == 'string' && $value != '')) {
+                if (
+                    ($type == 'array' && !empty($value))
+                    || ($type == 'string' && $value != '')
+                ) {
                     $num_filled_fields++;
                 }
             }
@@ -261,7 +278,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * Method to add a user address
      *
-     * @return  void
+     * @return void
      */
     public function addAddress()
     {
@@ -271,12 +288,12 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * Method to edit a user address
      *
-     * @param   objct  $address
-     * @return  void
+     * @param  objct $address
+     * @return void
      */
     public function editAddress($address = null)
     {
-        require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
         // get member addresses
         if (!$address) {
@@ -307,11 +324,11 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * Method to save a user address
      *
-     * @return  void
+     * @return void
      */
     public function saveAddress()
     {
-        require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
         // Check for request forgeries (the address form posts the token)
         Request::checkToken();
@@ -338,7 +355,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
         //inform and redirect
         App::redirect(
-            Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
+            Route::url(
+                'index.php?option=com_members&id=' . User::get('id') . '&active=profile'
+            ),
             Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
             'passed'
         );
@@ -347,11 +366,11 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
     /**
      * Method to delete a user address
      *
-     * @return  void
+     * @return void
      */
     public function deleteAddress()
     {
-        require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
         // Check for request forgeries
         Request::checkToken();
@@ -381,7 +400,9 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
         // inform and redirect
         App::redirect(
-            Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
+            Route::url(
+                'index.php?option=com_members&id=' . User::get('id') . '&active=profile'
+            ),
             Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
             'passed'
         );

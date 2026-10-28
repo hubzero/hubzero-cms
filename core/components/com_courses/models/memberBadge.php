@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,6 +22,7 @@ class MemberBadge extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\MemberBadge';
 
     /**
@@ -28,6 +30,7 @@ class MemberBadge extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'memberbadge';
 
     /**
@@ -70,7 +73,8 @@ class MemberBadge extends Base
     /**
      * Load by validation token
      *
-     * Validation token is a unique hash that allows us to identify a users badge evidence without exposing their user id
+     * Validation token is a unique hash that allows us to identify a users badge
+     * evidence without exposing their user id
      *
      * @param    string $token Badge assertion token
      * @return   mixed  Object on success, False on error
@@ -97,7 +101,9 @@ class MemberBadge extends Base
     {
         if (!$this->get('validation_token')) {
             // Generate validation token
-            $token = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(21)), 0, 20));
+            $randomBytes = openssl_random_pseudo_bytes(21);
+            $encoded = substr(base64_encode($randomBytes), 0, 20);
+            $token = str_replace(array('/', '+'), array('-', '-'), $encoded);
             $this->set('validation_token', $token);
         }
 

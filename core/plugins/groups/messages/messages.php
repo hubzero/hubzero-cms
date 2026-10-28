@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Groups Plugin class for messages
+ *
  */
 class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 {
@@ -18,6 +20,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var    boolean
+     * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
     protected $_autoloadLanguage = true;
 
@@ -39,11 +42,12 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
+        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
         $lang = \App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . $pluginPath, null, false, true);
     }
 
     /**
@@ -122,7 +126,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $groupUrl = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active;
+                $url = Route::url($groupUrl, false, true);
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -138,7 +143,8 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $msg = Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active));
+                $arr['html'] = '<p class="info">' . $msg . '</p>';
                 return $arr;
             }
 
@@ -174,10 +180,13 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _sent()
     {
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT'));
+        $pageTitle = Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description');
+        $pageTitle .= ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT');
+        Document::setTitle($pageTitle);
 
         // Filters for returning results
         $filters = array(
@@ -217,9 +226,12 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
     /**
      * Show a message
      *
-     * @return     string
+     * @param   string  $layout  View layout (unused, for parent compatibility)
+     * @param   string  $name    View name (unused, for parent compatibility)
+     * @return  string
      */
-    protected function _view()
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _view($layout = 'default', $name = '')
     {
         //get the message id
         $message = Request::getInt('msg', 0, 'get');
@@ -286,6 +298,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _create()
     {
         // Ensure only admins and group managers can create messages
@@ -294,7 +307,9 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
         }
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SEND'));
+        $pageTitle = Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description');
+        $pageTitle .= ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SEND');
+        Document::setTitle($pageTitle);
 
         // Instantiate a vew
         $view = $this->view('default', 'create');
@@ -329,6 +344,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      *
      * @return     mixed
      */
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _send()
     {
         // Only group managers/admins may send group messages

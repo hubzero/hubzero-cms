@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for other changes
- **/
+ *
+ */
 class Migration20130924000013Core extends Base
 {
     /**
@@ -32,7 +34,8 @@ class Migration20130924000013Core extends Base
         $this->db->query();
 
         if ($this->db->tableHasField('#__core_log_searches', 'hits')) {
-            $query = "ALTER TABLE `#__core_log_searches` CHANGE COLUMN `hits` `hits` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__core_log_searches` CHANGE COLUMN `hits` `hits` INT(10) UNSIGNED NOT NULL "
+                . "DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -98,7 +101,8 @@ class Migration20130924000013Core extends Base
             $query .= "CREATE TABLE IF NOT EXISTS `#__associations` (
 						`id` VARCHAR(50) NOT NULL COMMENT 'A reference to the associated item.',
 						`context` VARCHAR(50) NOT NULL COMMENT 'The context of the associated item.',
-						`key` CHAR(32) NOT NULL COMMENT 'The key for the association computed from an md5 on associated ids.',
+						`key` CHAR(32) NOT NULL
+							COMMENT 'The key for the association computed from an md5 on associated ids.',
 						PRIMARY KEY `idx_context_id` (`context`, `id`),
 						INDEX `idx_key` (`key`)
 						) DEFAULT CHARSET=utf8;";
@@ -153,18 +157,24 @@ class Migration20130924000013Core extends Base
         $this->db->query();
 
         if ($this->db->tableHasField('#__session', 'session_id')) {
-            $query  = "ALTER TABLE `#__session` CHANGE COLUMN `session_id` `session_id` VARCHAR(200) NOT NULL DEFAULT '' FIRST;";
+            $query = "ALTER TABLE `#__session` CHANGE COLUMN `session_id` `session_id` VARCHAR(200) NOT NULL "
+                . "DEFAULT '' FIRST;";
             $query .= "ALTER TABLE `#__session` DROP PRIMARY KEY , ADD PRIMARY KEY (`session_id`);";
             $this->db->setQuery($query);
             $this->db->query();
         }
-        if ($this->db->tableHasField('#__session', 'client_id') && $this->db->tableHasField('#__session', 'session_id')) {
-            $query = "ALTER TABLE `#__session` MODIFY COLUMN `client_id` TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER session_id;";
+        if (
+            $this->db->tableHasField('#__session', 'client_id')
+            && $this->db->tableHasField('#__session', 'session_id')
+        ) {
+            $query = "ALTER TABLE `#__session` MODIFY COLUMN `client_id` TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER "
+                . "session_id;";
             $this->db->setQuery($query);
             $this->db->query();
         }
         if ($this->db->tableHasField('#__session', 'guest') && $this->db->tableHasField('#__session', 'client_id')) {
-            $query = "ALTER TABLE `#__session` CHANGE COLUMN `guest` `guest` TINYINT(4) UNSIGNED NULL DEFAULT '1'  AFTER `client_id`;";
+            $query = "ALTER TABLE `#__session` CHANGE COLUMN `guest` `guest` TINYINT(4) UNSIGNED NULL DEFAULT '1' "
+                . "AFTER `client_id`;";
             $this->db->setQuery($query);
             $this->db->query();
         }
@@ -201,12 +211,22 @@ class Migration20130924000013Core extends Base
             $this->db->query();
 
             if ($this->db->tableExists('#__templates_menu')) {
-                $query = "INSERT INTO `#__template_styles` VALUES
-					(2, 'bluestork', '1', '0', 'Bluestork - Default', '{\"useRoundedCorners\":\"1\",\"showSiteName\":\"0\"}'),
-					(3, 'atomic', '0', '0', 'Atomic - Default', '{}'),
-					(4, 'beez_20', 0, 0, 'Beez2 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/joomla_black.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"templatecolor\":\"personal\",\"html5\":\"0\"}'),
-					(5, 'hathor', '1', '0', 'Hathor - Default', '{\"showSiteName\":\"0\",\"colourChoice\":\"\",\"boldText\":\"0\"}'),
-					(6, 'beez5', 0, 0, 'Beez5 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/sampledata\\/fruitshop\\/fruits.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"html5\":\"0\"}');";
+                $beez20Params = '{"wrapperSmall":"53","wrapperLarge":"72",'
+                    . '"logo":"images\\/joomla_black.gif","sitetitle":"Joomla!",'
+                    . '"sitedescription":"Open Source Content Management",'
+                    . '"navposition":"left","templatecolor":"personal","html5":"0"}';
+                $beez5Params = '{"wrapperSmall":"53","wrapperLarge":"72",'
+                    . '"logo":"images\\/sampledata\\/fruitshop\\/fruits.gif","sitetitle":"Joomla!",'
+                    . '"sitedescription":"Open Source Content Management",'
+                    . '"navposition":"left","html5":"0"}';
+                $query = "INSERT INTO `#__template_styles` VALUES "
+                    . "(2, 'bluestork', '1', '0', 'Bluestork - Default', "
+                    . "'{\"useRoundedCorners\":\"1\",\"showSiteName\":\"0\"}'), "
+                    . "(3, 'atomic', '0', '0', 'Atomic - Default', '{}'), "
+                    . "(4, 'beez_20', 0, 0, 'Beez2 - Default', '" . $beez20Params . "'), "
+                    . "(5, 'hathor', '1', '0', 'Hathor - Default', "
+                    . "'{\"showSiteName\":\"0\",\"colourChoice\":\"\",\"boldText\":\"0\"}'), "
+                    . "(6, 'beez5', 0, 0, 'Beez5 - Default', '" . $beez5Params . "');";
 
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -223,7 +243,9 @@ class Migration20130924000013Core extends Base
                         continue;
                     }
 
-                    $query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`) VALUES ('{$r->element}', '{$r->client_id}', '0', '" . ucfirst($r->element) . "', '{}');";
+                    $query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`,"
+                        . "`params`) VALUES ('{$r->element}', '{$r->client_id}', '0', '" . ucfirst($r->element)
+                        . "', '{}');";
                     $this->db->setQuery($query);
                     $this->db->query();
                 }
@@ -291,7 +313,8 @@ class Migration20130924000013Core extends Base
             $query .= "INSERT INTO `#__update_sites` VALUES ";
             $query .= "(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 0),";
             $query .= "(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 0),";
-            $query .= "(3, 'Accredited Joomla! Translations','collection','http://update.joomla.org/language/translationlist.xml', 1 ,0);";
+            $query .= "(3, 'Accredited Joomla!"
+                . "Translations','collection','http://update.joomla.org/language/translationlist.xml', 1 ,0);";
         }
         if (!$this->db->tableExists('#__update_sites_extensions')) {
             $query .= "CREATE TABLE `#__update_sites_extensions` (

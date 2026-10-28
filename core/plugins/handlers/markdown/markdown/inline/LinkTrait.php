@@ -63,7 +63,10 @@ trait LinkTrait
      */
     protected function parseLink($markdown)
     {
-        if (!in_array('parseLink', array_slice($this->context, 1)) && ($parts = $this->parseLinkOrImage($markdown)) !== false) {
+        if (
+            !in_array('parseLink', array_slice($this->context, 1))
+            && ($parts = $this->parseLinkOrImage($markdown)) !== false
+        ) {
             list($text, $url, $title, $offset, $key) = $parts;
             return [
                 [
@@ -122,7 +125,10 @@ trait LinkTrait
 
     protected function parseLinkOrImage($markdown)
     {
-        if (strpos($markdown, ']') !== false && preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', $markdown, $textMatches)) { // TODO improve bracket regex
+        if (
+            strpos($markdown, ']') !== false
+            && preg_match('/\[((?>[^\]\[]+|(?R))*)\]/', $markdown, $textMatches)
+        ) { // TODO improve bracket regex
             $text = $textMatches[1];
             $offset = strlen($textMatches[0]);
             $markdown = substr($markdown, $offset);
@@ -226,7 +232,13 @@ REGEXP;
             }
         }
         return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
-            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+            . (empty($block['title'])
+                ? ''
+                : ' title="' . htmlspecialchars(
+                    $block['title'],
+                    ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ) . '"')
             . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
 
@@ -241,7 +253,13 @@ REGEXP;
         }
         return '<img src="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'
             . ' alt="' . htmlspecialchars($block['text'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"'
-            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+            . (empty($block['title'])
+                ? ''
+                : ' title="' . htmlspecialchars(
+                    $block['title'],
+                    ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ) . '"')
             . ($this->html5 ? '>' : ' />');
     }
 
@@ -249,7 +267,8 @@ REGEXP;
 
     protected function identifyReference($line)
     {
-        return ($line[0] === ' ' || $line[0] === '[') && preg_match('/^ {0,3}\[(.+?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/', $line);
+        return ($line[0] === ' ' || $line[0] === '[')
+            && preg_match('/^ {0,3}\[(.+?)\]:\s*([^\s]+?)(?:\s+[\'"](.+?)[\'"])?\s*$/', $line);
     }
 
     /**
@@ -257,7 +276,10 @@ REGEXP;
      */
     protected function consumeReference($lines, $current)
     {
-        while (isset($lines[$current]) && preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/', $lines[$current], $matches)) {
+        while (
+            isset($lines[$current])
+            && preg_match('/^ {0,3}\[(.+?)\]:\s*(.+?)(?:\s+[\(\'"](.+?)[\)\'"])?\s*$/', $lines[$current], $matches)
+        ) {
             $label = strtolower($matches[1]);
 
             $this->references[$label] = [
@@ -267,7 +289,10 @@ REGEXP;
                 $this->references[$label]['title'] = $matches[3];
             } else {
                 // title may be on the next line
-                if (isset($lines[$current + 1]) && preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)) {
+                if (
+                    isset($lines[$current + 1])
+                    && preg_match('/^\s+[\(\'"](.+?)[\)\'"]\s*$/', $lines[$current + 1], $matches)
+                ) {
                     $this->references[$label]['title'] = $matches[1];
                     $current++;
                 }

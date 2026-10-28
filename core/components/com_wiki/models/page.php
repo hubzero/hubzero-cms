@@ -801,9 +801,8 @@ class Page extends Relational
                 // Is a group set?
                 if ($this->get('scope') != 'site') {
                     $this->adapter()->authorise($this);
-                }
-                // Check if they're a site admin
-                else if (User::authorise('core.manage', $option)) {
+                } elseif (User::authorise('core.manage', $option)) {
+                    // Check if they're a site admin
                     $this->config()->set('access-page-admin', true);
                     $this->config()->set('access-page-manage', true);
                     $this->config()->set('access-page-create', true);
@@ -817,9 +816,8 @@ class Page extends Relational
                     $this->config()->set('access-comment-edit', true);
 
                     $this->config()->set('access-check-done', true);
-                }
-                // No scope = Site wiki
-                else {
+                } else {
+                    // No scope = Site wiki
                     $this->config()->set('access-page-create', User::authorise('core.create', $option));
 
                     // Check permissions based on the page mode (knol/wiki)
@@ -834,7 +832,7 @@ class Page extends Relational
                                 $this->config()->set('access-page-delete', true);
                                 $this->config()->set('access-page-edit', true);
                                 $this->config()->set('access-page-modify', true);
-                            } else if ($this->param('allow_changes')) {
+                            } elseif ($this->param('allow_changes')) {
                                 $this->config()->set('access-page-modify', true); // This allows users to suggest changes
                             }
 

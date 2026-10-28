@@ -6,11 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * Wikipedia Table style diff formatter.
+ *
+ * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+ * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
 class TableDiffFormatter extends DiffFormatter
 {

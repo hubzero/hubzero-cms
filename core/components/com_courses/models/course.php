@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,6 +32,7 @@ class Course extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Courses\\Tables\\Course';
 
     /**
@@ -38,6 +40,7 @@ class Course extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'course';
 
     /**
@@ -45,6 +48,7 @@ class Course extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_offering = null;
 
     /**
@@ -52,6 +56,7 @@ class Course extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_offerings = null;
 
     /**
@@ -59,6 +64,7 @@ class Course extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_permissions = null;
 
     /**
@@ -66,6 +72,7 @@ class Course extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_manager = null;
 
     /**
@@ -73,6 +80,7 @@ class Course extends Base
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_managers = null;
 
     /**
@@ -80,6 +88,7 @@ class Course extends Base
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_students = null;
 
     /**
@@ -87,6 +96,7 @@ class Course extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_page = null;
 
     /**
@@ -94,6 +104,7 @@ class Course extends Base
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_pages = null;
 
     /**
@@ -101,6 +112,7 @@ class Course extends Base
      *
      * @var array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_plugins = array();
 
     /**
@@ -108,6 +120,7 @@ class Course extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_base = null;
 
     /**
@@ -115,6 +128,7 @@ class Course extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_certificate = null;
 
     /**
@@ -144,7 +158,7 @@ class Course extends Base
      * @param      mixed $oid Course ID (int) or alias (string)
      * @return     object \Components\Courses\Models\Course
      */
-    static function &getInstance($oid = 0)
+    public static function &getInstance($oid = 0)
     {
         static $instances;
 
@@ -196,10 +210,10 @@ class Course extends Base
     {
         // If the current offering isn't set
         //    OR the ID passed doesn't equal the current offering's ID or alias
-        if (
-            !isset($this->_offering)
-            || ($id !== null && (int) $this->_offering->get('id') != $id && (string) $this->_offering->get('alias') != $id)
-        ) {
+        $idMismatch = $id !== null
+            && (int) $this->_offering->get('id') != $id
+            && (string) $this->_offering->get('alias') != $id;
+        if (!isset($this->_offering) || $idMismatch) {
             // Reset current offering
             $this->_offering = null;
 
@@ -346,9 +360,8 @@ class Course extends Base
                         // Course manager takes precedence over offering manager
                         if ($result->course_id && !$result->offering_id && !$result->section_id) {
                             $results[$result->user_id] = new Manager($result, $this->get('id'));
-                        }
-                        // Course offering takes precedence over section manager
-                        else if ($result->course_id && $result->offering_id && !$result->section_id) {
+                        } elseif ($result->course_id && $result->offering_id && !$result->section_id) {
+                            // Course offering takes precedence over section manager
                             $results[$result->user_id] = new Manager($result, $this->get('id'));
                         }
                     }
@@ -419,7 +432,7 @@ class Course extends Base
      */
     public function add($data = null, $role_id = 0)
     {
-        $user_ids = $this->_userIds($data);
+        $user_ids = $this->userIds($data);
 
         $tbl = new Tables\Member($this->_db);
 
@@ -463,7 +476,7 @@ class Course extends Base
      */
     public function remove($data = null)
     {
-        $user_ids = $this->_userIds($data);
+        $user_ids = $this->userIds($data);
 
         if (count($user_ids) > 0) {
             $this->managers();
@@ -483,7 +496,7 @@ class Course extends Base
      * @param     array $users List of user IDs or usernames
      * @return    array List of user IDs
      */
-    private function _userIds($users)
+    private function userIds($users)
     {
         if (empty($this->_db)) {
             return false;
@@ -758,7 +771,8 @@ class Course extends Base
         );
 
         if ($file = $this->get('logo')) {
-            $path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('id') . '/' . $file;
+            $uploadPath = '/' . trim($this->config('uploadpath', '/site/courses'), '/');
+            $path = $uploadPath . '/' . $this->get('id') . '/' . $file;
             if (file_exists(PATH_APP . $path)) {
                 list($width, $height) = getimagesize(PATH_APP . $path);
                 $size['width']  = $width;

@@ -24,6 +24,7 @@ class Login extends Obj
      *
      * @var  boolean
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $__state_set = null;
 
     /**
@@ -176,6 +177,7 @@ class Login extends Obj
      * @param   string  $name   The name of the module
      * @return  array
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected static function _load($module)
     {
         static $clean;

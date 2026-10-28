@@ -61,7 +61,7 @@ if ($this->contributors) {
             $orgsln_s .= $contributor->organization . ' ';
             $k = $i;
             $i++;
-        } else if ($contributor->organization) {
+        } elseif ($contributor->organization) {
             $k = array_search($contributor->organization, $orgs) + 1;
         } else {
             $k = 0;

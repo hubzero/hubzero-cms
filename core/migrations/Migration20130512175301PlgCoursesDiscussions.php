@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for add watching table
- **/
+ *
+ */
 class Migration20130512175301PlgCoursesDiscussions extends Base
 {
     /**
@@ -24,7 +26,8 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
         if ($this->db->tableExists('#__plugins')) {
             $query = "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
         } else {
-            $query = "UPDATE `#__extensions` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
+            $query = "UPDATE `#__extensions` SET `element`='discussions' WHERE `element`='forum' AND "
+                . "`folder`='courses';";
         }
 
         $this->db->setQuery($query);
@@ -39,7 +42,8 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
         if ($this->db->tableExists('#__plugins')) {
             $query = "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
         } else {
-            $query = "UPDATE `#__extensions` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
+            $query = "UPDATE `#__extensions` SET `element`='forum' WHERE `element`='discussions' AND "
+                . "`folder`='courses';";
         }
 
         $this->db->setQuery($query);

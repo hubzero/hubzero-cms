@@ -55,7 +55,10 @@ class UserServiceProvider extends ServiceProvider
                 'path'          => PATH_APP . DS . 'site' . DS . 'members',
                 'pictureName'   => 'profile.png',
                 'thumbnailName' => 'thumb.png',
-                'fallback'      => $params->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif')
+                'fallback'      => $params->get(
+                    'defaultpic',
+                    '/core/components/com_members/site/assets/img/profile.gif'
+                )
             ];
 
             User::$pictureResolvers[] = new File($config);

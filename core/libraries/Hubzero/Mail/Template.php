@@ -33,7 +33,11 @@ class Template extends Html
             // template; use the site's default one, as the site itself would
             if (App::isAdmin() || !App::has('template')) {
                 $db = App::get('db');
-                $db->setQuery("SELECT s.`template`, e.protected FROM `#__template_styles` AS s INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` WHERE s.`client_id`=0 AND s.`home`=1");
+                $db->setQuery(
+                    "SELECT s.`template`, e.protected FROM `#__template_styles` AS s " .
+                    "INNER JOIN `#__extensions` AS e ON e.`element`=s.`template` " .
+                    "WHERE s.`client_id`=0 AND s.`home`=1"
+                );
                 $result = $db->loadObject();
             } else {
                 $result = App::get('template');
@@ -88,6 +92,7 @@ class Template extends Html
      * @param   string  $filename   The actual filename
      * @return  string  The contents of the template
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _loadTemplate($directory, $filename)
     {
         $contents = '';

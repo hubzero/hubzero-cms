@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -285,12 +286,13 @@ class Response extends Relational
                 break;
 
             case 'accept':
-                $link  = 'index.php?option=com_answers&task=accept&id=' . $this->get('question_id') . '&rid=' . $this->get('id');
-                //$link .= '&task=accept&id' . $this->get('question_id') . '&rid=' . $this->get('id');
+                $link = 'index.php?option=com_answers&task=accept&id='
+                    . $this->get('question_id') . '&rid=' . $this->get('id');
                 break;
 
             case 'report':
-                $link = 'index.php?option=com_support&task=reportabuse&category=answer&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
+                $link = 'index.php?option=com_support&task=reportabuse&category=answer&id='
+                    . $this->get('id') . '&parent=' . $this->get('question_id');
                 break;
 
             case 'permalink':

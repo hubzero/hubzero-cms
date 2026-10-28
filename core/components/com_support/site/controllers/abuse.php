@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,6 +35,7 @@ class Abuse extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -53,6 +55,7 @@ class Abuse extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
         $this->_title  = Lang::txt(strtoupper($this->_option));
@@ -70,7 +73,14 @@ class Abuse extends SiteController
     {
         // Login required
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false, true), 'server'));
+            $defaultUrl = Route::url(
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+                false,
+                true
+            );
+            $return = base64_encode(
+                Request::getString('REQUEST_URI', $defaultUrl, 'server')
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false)
             );

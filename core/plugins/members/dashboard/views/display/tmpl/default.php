@@ -1,9 +1,11 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -23,7 +25,13 @@ endif;
 <?php if ($customizable) : ?>
     <ul id="page_options">
         <li>
-            <a class="icon-add btn add-module" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard&action=add'); ?>">
+            <?php
+            $addUrl = Route::url(
+                'index.php?option=com_members&id=' . User::get('id')
+                . '&active=dashboard&action=add'
+            );
+            ?>
+            <a class="icon-add btn add-module" href="<?php echo $addUrl; ?>">
                 <?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_ADD_MODULES'); ?>
             </a>
         </li>
@@ -35,14 +43,17 @@ endif;
 </noscript>
 
 <div class="modules-container">
-    <div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>" data-userid="<?php echo User::get('id'); ?>" data-token="<?php echo Session::getFormToken(); ?>">
+    <div class="modules <?php echo ($customizable) ? 'customizable' : ''; ?>"
+        data-userid="<?php echo User::get('id'); ?>"
+        data-token="<?php echo Session::getFormToken(); ?>">
         <?php
+
         foreach ($this->modules as $module) :
             // create view object
             $this->view('module')
-                 ->set('admin', $this->admin)
-                 ->set('module', $module)
-                 ->display();
+                ->set('admin', $this->admin)
+                ->set('module', $module)
+                ->display();
         endforeach;
         ?>
     </div>

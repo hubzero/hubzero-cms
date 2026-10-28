@@ -20,20 +20,21 @@ class Server extends Obj
      *
      * @var  string
      */
-    private $_filename;
+    private $filename;
 
     /**
      * Generate Accept-Ranges header?
      *
      * @var  boolean
      */
-    private $_acceptranges;
+    private $acceptranges;
 
     /**
      * Serve with mod_xsendfile
      *
      * @var  boolean
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static $_allowxsendfle = false;
 
     /**
@@ -41,20 +42,21 @@ class Server extends Obj
      *
      * @var  string
      */
-    private $_disposition;
+    private $disposition;
 
     /**
      * Name to save file as
      *
      * @var  string
      */
-    private $_saveas;
+    private $saveas;
 
     /**
      * Content Type
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static $_contentType;
 
     /**
@@ -62,6 +64,7 @@ class Server extends Obj
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct()
     {
         $this->disposition('inline');
@@ -76,10 +79,10 @@ class Server extends Obj
     public function saveas($saveas = null)
     {
         if (!is_null($saveas)) {
-            $this->_saveas = basename($saveas);
+            $this->saveas = basename($saveas);
         }
 
-        return $this->_saveas;
+        return $this->saveas;
     }
 
     /**
@@ -91,10 +94,10 @@ class Server extends Obj
     public function filename($filename = null)
     {
         if (!is_null($filename)) {
-            $this->_filename = $filename;
+            $this->filename = $filename;
         }
 
-        return $this->_filename;
+        return $this->filename;
     }
 
     /**
@@ -158,10 +161,10 @@ class Server extends Obj
     public function acceptranges($acceptranges = null)
     {
         if (!is_null($acceptranges)) {
-            $this->_acceptranges = ($acceptranges) ? true : false;
+            $this->acceptranges = ($acceptranges) ? true : false;
         }
 
-        return $this->_acceptranges;
+        return $this->acceptranges;
     }
 
     /**
@@ -175,16 +178,16 @@ class Server extends Obj
         if (!is_null($disposition)) {
             if (strcasecmp($disposition, 'inline') == 0) {
                 $disposition = 'inline';
-            } else if (strcasecmp($disposition, 'attachment') == 0) {
+            } elseif (strcasecmp($disposition, 'attachment') == 0) {
                 $disposition = 'attachment';
             } else {
                 $disposition = 'inline';
             }
 
-            $this->_disposition = $disposition;
+            $this->disposition = $disposition;
         }
 
-        return $this->_disposition;
+        return $this->disposition;
     }
 
     /**
@@ -206,7 +209,7 @@ class Server extends Obj
      */
     public function serve()
     {
-        return self::serve_file($this->_filename, $this->_saveas, $this->_disposition, $this->_acceptranges);
+        return self::serve_file($this->filename, $this->saveas, $this->disposition, $this->acceptranges);
     }
 
     /**
@@ -218,6 +221,7 @@ class Server extends Obj
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function serve_attachment($filename, $saveas = null, $acceptranges = true)
     {
         return self::serve_file($filename, $saveas, 'attachment', $acceptranges);
@@ -231,6 +235,7 @@ class Server extends Obj
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function serve_inline($filename, $acceptranges = true)
     {
         return self::serve_file($filename, null, 'inline', $acceptranges);
@@ -245,6 +250,7 @@ class Server extends Obj
      * @param   boolean  $acceptranges  Generate Accept-Ranges header?
      * @return  boolean  True on success, False if error
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function serve_file($filename, $saveas = null, $disposition = 'inline', $acceptranges = true)
     {
         if (!self::valid($filename)) {
@@ -315,7 +321,7 @@ class Server extends Obj
                 if (($last >= $filesize) || ($last == '')) {
                     $last = $filesize - 1;
                 }
-            } else if ($last != '') { // suffix-byte-range-set
+            } elseif ($last != '') { // suffix-byte-range-set
                 $first = $filesize - $last;
                 $last  = $filesize - 1;
 
@@ -397,7 +403,6 @@ class Server extends Obj
         for ($i = 0; $i < $depth; $i++) {
             ob_end_clean();
         }
-
 
         foreach ($ranges as $range) {
             $first = $result[$range]['first'];

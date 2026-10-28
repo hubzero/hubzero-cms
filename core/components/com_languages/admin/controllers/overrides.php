@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -223,7 +224,9 @@ class Overrides extends AdminController
         }
 
         if ($this->getTask() == 'save2new') {
-            return App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit', false));
+            $url = 'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller . '&task=edit';
+            return App::redirect(Route::url($url, false));
         }
 
         // Redirect
@@ -294,7 +297,8 @@ class Overrides extends AdminController
             $files = array();
 
             foreach (array(PATH_CORE, PATH_APP) as $base) {
-                $path = $base . '/bootstrap/language/' . ($base == PATH_CORE ? ucfirst($client) : $client) . '/' . $language;
+                $clientDir = ($base == PATH_CORE ? ucfirst($client) : $client);
+                $path = $base . '/bootstrap/language/' . $clientDir . '/' . $language;
 
                 // Parse common language directory
                 if (Filesystem::exists($path)) {

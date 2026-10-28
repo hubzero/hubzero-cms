@@ -351,7 +351,8 @@ class Media extends SiteController
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            $msg = Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
+            echo json_encode(array('error' => $msg));
             return;
         }
 
@@ -417,7 +418,8 @@ class Media extends SiteController
             'file'      => $filename . '.' . $ext,
             'directory' => str_replace(PATH_APP, '', $path),
             'id'        => $listdir,
-            'html'      => str_replace('>', '&gt;', $view->loadTemplate()) // Entities have to be encoded or IE 8 goes nuts
+            // Entities have to be encoded or IE 8 goes nuts
+            'html'      => str_replace('>', '&gt;', $view->loadTemplate())
         ));
     }
 
@@ -499,9 +501,8 @@ class Media extends SiteController
         // Upload new files
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $file['name'])) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_UPLOAD'));
-        }
-        // File was uploaded
-        else {
+        } else {
+            // File was uploaded
             // Virus scan
             if (!Filesystem::isSafe($path . DS . $file['name'])) {
                 Filesystem::delete($path . DS . $file['name']);

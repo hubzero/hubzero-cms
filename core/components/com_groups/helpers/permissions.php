@@ -68,7 +68,9 @@ class Permissions
     public static function getGroupMemberRoles($uid, $gid)
     {
         $db = App::get('db');
-        $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
+        $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r,"
+            . " `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber="
+            . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
         $db->setQuery($sql);
 
         return $db->loadAssocList();

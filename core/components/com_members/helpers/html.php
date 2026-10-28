@@ -59,6 +59,7 @@ class Html
      * @param   string  $response  Normalized response code
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function propercase_singleresponse($response)
     {
         $html = '';
@@ -85,6 +86,7 @@ class Html
      * @param   array   $response_array  Response codes
      * @return  string
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function propercase_multiresponse($response_array)
     {
         $html = '';

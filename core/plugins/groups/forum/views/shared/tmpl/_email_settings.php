@@ -16,7 +16,7 @@ if (Component::params('com_groups')->get('email_forum_comments') && $this->confi
 
         if (Component::params('com_groups')->get('enable_forum_email_digest', 0)) {
             $emailSettingsMenu = '_email_settings_digest';
-        } else if (Component::params('com_groups')->get('enable_forum_email_categories', 0)) {
+        } elseif (Component::params('com_groups')->get('enable_forum_email_categories', 0)) {
             $emailSettingsMenu = '_email_settings_categories';
         } else {
             $emailSettingsMenu = '_email_settings_simple';

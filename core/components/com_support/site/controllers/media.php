@@ -423,9 +423,8 @@ class Media extends SiteController
         // Upload new files
         if (!Filesystem::upload($file['tmp_name'], $path . DS . $filename)) {
             $this->setError(Lang::txt('ERROR_UPLOADING'));
-        }
-        // File was uploaded
-        else {
+        } else {
+            // File was uploaded
             $fle = $path . DS . $filename;
 
             // Scan the file that was actually written ($fle), not the raw

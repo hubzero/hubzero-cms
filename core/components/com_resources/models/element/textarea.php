@@ -21,6 +21,7 @@ class Textarea extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'Textarea';
 
     /**
@@ -46,6 +47,22 @@ class Textarea extends Base
         // convert tags so they are safe for wysiwyg and source editors
         $value = htmlspecialchars(html_entity_decode($value, ENT_QUOTES), ENT_QUOTES);
 
-        return '<span class="field-wrap">' . App::get('editor')->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
+        $editorName = $control_name . '[' . $name . ']';
+        $editorId = $control_name . '-' . $name;
+        $editorOpts = array('class' => implode(' ', $cls));
+        $editor = App::get('editor')->display(
+            $editorName,
+            $value,
+            '',
+            '',
+            $cols,
+            $rows,
+            false,
+            $editorId,
+            null,
+            null,
+            $editorOpts
+        );
+        return '<span class="field-wrap">' . $editor . '</span>';
     }
 }

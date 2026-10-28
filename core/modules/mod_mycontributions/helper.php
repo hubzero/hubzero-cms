@@ -22,11 +22,13 @@ class Helper extends Module
      *
      * @return  array
      */
-    private function _getContributions()
+    private function getContributions()
     {
         $database = \App::get('db');
 
-        $query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
+        $query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, ";
+        $query .= "R.created, R.created_by, R.published, R.publish_up, R.standalone, ";
+        $query .= "R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
         $query .= "FROM `#__resource_types` AS rt, `#__resources` AS R ";
         $query .= "LEFT JOIN `#__author_assoc` AS aa ON aa.subid=R.id AND aa.subtable='resources' ";
         $query .= "WHERE (aa.authorid='" . User::get('id') . "' OR R.created_by=" . User::get('id') . ") ";
@@ -47,7 +49,7 @@ class Helper extends Module
      * @param   string   $limit_tools     Number of records to pull
      * @return  mixed    False if error, otherwise array
      */
-    private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools = '40')
+    private function getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools = '40')
     {
         $database = \App::get('db');
 
@@ -108,7 +110,9 @@ class Helper extends Module
 
                     if ($show_wishes) {
                         // Get open wishes
-                        require_once Component::path('com_wishlist') . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
+                        $wishlistControllerPath = Component::path('com_wishlist') . DS . 'site' .
+                            DS . 'controllers' . DS . 'wishlists.php';
+                        require_once $wishlistControllerPath;
                         require_once Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
                         $wishlist = \Components\Wishlist\Models\Wishlist::oneByReference($rid, 'resource');
@@ -158,11 +162,14 @@ class Helper extends Module
 
                         // Find support tickets on the user's contributions
                         $database->setQuery(
-                            "SELECT id, summary, category, status, severity, owner, created, login, name,
-							(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-							FROM `#__support_tickets` as st WHERE st.open=1 AND type=0 AND st.group_id='$group'
-							ORDER BY created DESC
-							LIMIT $limit"
+                            "SELECT id, summary, category, status, severity, owner,
+                            created, login, name,
+                            (SELECT COUNT(*) FROM `#__support_comments` as sc
+                            WHERE sc.ticket=st.id AND sc.access=0) as comments
+                            FROM `#__support_tickets` as st WHERE st.open=1 AND type=0
+                            AND st.group_id='$group'
+                            ORDER BY created DESC
+                            LIMIT $limit"
                         );
                         $tickets = $database->loadObjectList();
                         if ($database->getErrorNum()) {
@@ -285,10 +292,18 @@ class Helper extends Module
         $this->limit_other = intval($this->params->get('limit_other', 5));
 
         // Tools in progress
-        $this->tools = ($this->show_tools) ? $this->_getToollist($this->show_questions, $this->show_wishes, $this->show_tickets, $this->limit_tools) : array();
+        $this->tools = array();
+        if ($this->show_tools) {
+            $this->tools = $this->getToollist(
+                $this->show_questions,
+                $this->show_wishes,
+                $this->show_tickets,
+                $this->limit_tools
+            );
+        }
 
         // Other cotnributions
-        $this->contributions = $this->_getContributions();
+        $this->contributions = $this->getContributions();
 
         require $this->getLayoutPath();
     }

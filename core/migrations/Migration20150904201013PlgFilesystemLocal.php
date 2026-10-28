@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding the local filesystem plugin
- **/
+ *
+ */
 class Migration20150904201013PlgFilesystemLocal extends Base
 {
     /**

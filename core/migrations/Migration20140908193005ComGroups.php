@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding nested pages & comments
- **/
+ *
+ */
 class Migration20140908193005ComGroups extends Base
 {
     /**
@@ -63,7 +65,8 @@ class Migration20140908193005ComGroups extends Base
             // loading all of their pages
             // create a default home page if one does not exist
             foreach ($groups as $group) {
-                $query = "SELECT * FROM `#__xgroups_pages` WHERE `gidNumber`=" . $group->gidNumber . " ORDER BY ordering ASC;";
+                $query = "SELECT * FROM `#__xgroups_pages` WHERE `gidNumber`=" . $group->gidNumber . " ORDER BY "
+                    . "ordering ASC;";
                 $this->db->setQuery($query);
                 $pages = $this->db->loadObjectList();
 
@@ -80,21 +83,26 @@ class Migration20140908193005ComGroups extends Base
                 // if we dont ahve a home page we need one
                 if ($homePage == null) {
                     // create page
-                    $query = "INSERT INTO `#__xgroups_pages` (`gidNumber`, `parent`, `depth`, `lft`, `alias`, `title`, `state`, `privacy`, `home`) 
-								VALUES ({$group->gidNumber}, 0, 0, 1, 'overview', 'Overview', 1, 'default', 1);";
+                    $query = "INSERT INTO `#__xgroups_pages` "
+                        . "(`gidNumber`, `parent`, `depth`, `lft`, `alias`, `title`, `state`, "
+                        . "`privacy`, `home`) VALUES ({$group->gidNumber}, 0, 0, 1, 'overview', "
+                        . "'Overview', 1, 'default', 1);";
                     $this->db->setQuery($query);
                     $this->db->query();
 
                     $homePageId = $this->db->insertid();
 
                     // create page version
-                    $query = "INSERT INTO `#__xgroups_pages_versions` (`pageid`, `version`, `content`, `created`, `created_by`)
-								VALUES ({$homePageId}, 1, " . $this->db->quote($defaultHomePageContent) . ", NOW(), 1000);";
+                    $query = "INSERT INTO `#__xgroups_pages_versions` "
+                        . "(`pageid`, `version`, `content`, `created`, `created_by`) VALUES "
+                        . "({$homePageId}, 1, " . $this->db->quote($defaultHomePageContent)
+                        . ", NOW(), 1000);";
                     $this->db->setQuery($query);
                     $this->db->query();
                 } else {
                     // update the home page
-                    $query = "UPDATE `#__xgroups_pages` SET `parent`=0, `depth`=0, `lft`=1, `alias`='overview', `title`='Overview' WHERE `id`={$homePage->id};";
+                    $query = "UPDATE `#__xgroups_pages` SET `parent`=0, `depth`=0, `lft`=1, "
+                        . "`alias`='overview', `title`='Overview' WHERE `id`={$homePage->id};";
                     $this->db->setQuery($query);
                     $this->db->query();
 
@@ -108,7 +116,8 @@ class Migration20140908193005ComGroups extends Base
                     $right = $left + 1;
 
                     // update the left, right, parent, & depth
-                    $query = "UPDATE `#__xgroups_pages` SET `parent`={$homePageId}, `lft`= {$left}, `rgt`= {$right}, `depth`= 1 WHERE `id`= {$page->id};";
+                    $query = "UPDATE `#__xgroups_pages` SET `parent`={$homePageId}, `lft`= {$left}, "
+                        . "`rgt`= {$right}, `depth`= 1 WHERE `id`= {$page->id};";
                     $this->db->setQuery($query);
                     $this->db->query();
 

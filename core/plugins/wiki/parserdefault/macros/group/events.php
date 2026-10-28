@@ -34,10 +34,10 @@ class Events extends GroupMacro
         $txt = array();
         $txt['html']  = '<p>Displays group events.</p>';
         $txt['html'] .= '<p>Examples:</p>
-							<ul>
-								<li><code>[[Group.Events()]]</code></li>
-								<li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>
-							</ul>';
+                            <ul>
+                                <li><code>[[Group.Events()]]</code></li>
+                                <li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>
+                            </ul>';
 
         return $txt['html'];
     }
@@ -92,10 +92,10 @@ class Events extends GroupMacro
 
         //build query
         $sql = "SELECT * FROM `#__events`
-				WHERE publish_up >= UTC_TIMESTAMP()
-				AND scope=" . $database->quote('group') . "
-				AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
-				AND state=1";
+                WHERE publish_up >= UTC_TIMESTAMP()
+                AND scope=" . $database->quote('group') . "
+                AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
+                AND state=1";
 
         //add ordering
         $sql .= " ORDER BY publish_up ASC";
@@ -123,7 +123,11 @@ class Events extends GroupMacro
         if (count($events) > 0) {
             foreach ($events as $event) {
                 //build link
-                $link = \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $event->id);
+                $link = \Route::url('index
+                    . php?option=com_groups&cn='
+                    . $group->get('cn')
+                    . '&active=calendar&action=details&event_id='
+                    . $event->id);
 
                 //build date
                 $date = '';
@@ -133,7 +137,11 @@ class Events extends GroupMacro
                 if (date("z", strtotime($publishUp)) == date("z", strtotime($publishDown))) {
                     $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
                     $date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('g:i a');
-                } else if (isset($event->publish_down) && $event->publish_down && $event->publish_down != '0000-00-00 00:00:00') {
+                } elseif (
+                    isset($event->publish_down)
+                    && $event->publish_down
+                    && $event->publish_down != '0000-00-00 00:00:00'
+                ) {
                     $date  = \Date::of($publishUp)->toLocal('m/d/Y @ g:i a');
                     $date .= ' &mdash; ' . \Date::of($publishDown)->toLocal('m/d/Y @ g:i a');
                 } else {
@@ -148,13 +156,26 @@ class Events extends GroupMacro
 
                 //create list
                 $content .= '<div class="event">';
-                $content .= '<strong><a class=" title" href="' . $link . '">' . stripslashes($event->title) . '</a></strong>';
+                $content
+                    .= '<strong><a class=" title" href="'
+                    . $link
+                    . '">'
+                    . stripslashes($event->title)
+                    . '</a></strong>';
                 $content .= '<br /><span class="date">' . $date . '</span>';
                 $content .= '<br /><span class="details">' . $details . '</span>';
                 $content .= '</div><br />';
             }
         } else {
-            $content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . \Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
+            $content
+                .= '<p>Currently there are no upcoming group events
+                . Add an event by <a href="'
+                . \Route::url('index
+                . php?option=com_groups&cn='
+                . $group->get('cn')
+                . '&active=calendar&action=add')
+                . '">clicking here
+                . </a></p>';
         }
 
         return $content;

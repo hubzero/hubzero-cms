@@ -24,21 +24,21 @@ class Git extends Obj
      *
      * @var string
      */
-    private $_gitpath = null;
+    private $gitpath = null;
 
     /**
      * User ID
      *
      * @var integer
      */
-    private $_uid = null;
+    private $uid = null;
 
     /**
      * Full path to Git repo
      *
      * @var string
      */
-    private $_path = null;
+    private $path = null;
 
     /**
      * Constructor
@@ -52,13 +52,13 @@ class Git extends Obj
         $configs = Component::params('com_projects');
 
         // Set path to git
-        $this->_gitpath = $configs->get('gitpath', '/opt/local/bin/git');
+        $this->gitpath = $configs->get('gitpath', '/opt/local/bin/git');
 
         // Set repo path
-        $this->_path = $path;
+        $this->path = $path;
 
         // Set acting user
-        $this->_uid = User::get('id');
+        $this->uid = User::get('id');
     }
 
     /**
@@ -70,13 +70,13 @@ class Git extends Obj
     public function iniGit($path = null)
     {
         if (!$path) {
-            $path = $this->_path;
+            $path = $this->path;
         }
         if (!$path || !is_dir($path)) {
             return false;
         }
-        if (!$this->_path) {
-            $this->_path = $path;
+        if (!$this->path) {
+            $this->path = $path;
         }
 
         // Build .git repo
@@ -108,15 +108,15 @@ class Git extends Obj
      */
     public function callGit($call = '')
     {
-        if (!$this->_path || !is_dir($this->_path) || !$call) {
+        if (!$this->path || !is_dir($this->path) || !$call) {
             return false;
         }
 
         // cd into repo
-        chdir($this->_path);
+        chdir($this->path);
 
         // exec call
-        return $this->_exec($this->_gitpath . ' ' . $call);
+        return $this->_exec($this->gitpath . ' ' . $call);
     }
 
     /**
@@ -229,12 +229,12 @@ class Git extends Obj
     public function getGitAuthor($name = '', $email = '')
     {
         if (!$name || !$email) {
-            if (!$this->_uid) {
+            if (!$this->uid) {
                 return false;
             }
 
             // Get author profile
-            $profile = \User::getInstance($this->_uid);
+            $profile = \User::getInstance($this->uid);
 
             $name  = $profile->get('name');
             $email = $profile->get('email');
@@ -254,7 +254,7 @@ class Git extends Obj
     public function gitAdd($item = '', &$commitMsg = '', $new = true)
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
         if (!$item) {
@@ -281,7 +281,7 @@ class Git extends Obj
     public function gitDelete($item = '', $type = 'file', &$commitMsg = '')
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
         if (!$item) {
@@ -291,7 +291,7 @@ class Git extends Obj
         $deleted = 0;
 
         if ($type == 'folder') {
-            if ($item != '' && is_dir($this->_path . DS . $item)) {
+            if ($item != '' && is_dir($this->path . DS . $item)) {
                 // Make Git call
                 $out = $this->callGit('rm -r ' . escapeshellarg($item));
 
@@ -299,7 +299,7 @@ class Git extends Obj
                 $commitMsg .= 'Deleted folder ' . escapeshellarg($item) . "\n";
             }
         } elseif ($type == 'file') {
-            if ($item != '' && file_exists($this->_path . DS . $item)) {
+            if ($item != '' && file_exists($this->path . DS . $item)) {
                 // Make Git call
                 $out = $this->callGit('rm ' . escapeshellarg($item));
 
@@ -323,7 +323,7 @@ class Git extends Obj
     public function gitMove($from = '', $where = '', $type = 'file', &$commitMsg = '')
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
         if (!$from || !$where) {
@@ -332,13 +332,13 @@ class Git extends Obj
 
         $moved = 0;
 
-        if ($type == 'folder' && $from != '' && $from != $where  && is_dir($this->_path . DS . $from)) {
+        if ($type == 'folder' && $from != '' && $from != $where  && is_dir($this->path . DS . $from)) {
             // Make Git call
             $out = $this->callGit(' mv ' . escapeshellarg($from) . ' ' . escapeshellarg($where) . ' -f');
 
             $commitMsg .= 'Moved folder ' . escapeshellarg($from) . ' to ' . escapeshellarg($where) . "\n";
             $moved++;
-        } elseif ($type == 'file' && $from != '' && $from != $where  && file_exists($this->_path . DS . $from)) {
+        } elseif ($type == 'file' && $from != '' && $from != $where  && file_exists($this->path . DS . $from)) {
             // Make Git call
             $out = $this->callGit(' mv ' . escapeshellarg($from) . ' ' . escapeshellarg($where) . ' -f');
 
@@ -360,7 +360,7 @@ class Git extends Obj
     public function gitDiff($old = array(), $new = array())
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
         if (!isset($old['hash']) || !isset($new['hash']) || !isset($old['fpath']) || !isset($new['fpath'])) {
@@ -415,7 +415,7 @@ class Git extends Obj
      */
     public function gitLog($file = '', $hash = '', $return = 'date')
     {
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
 
@@ -516,7 +516,7 @@ class Git extends Obj
      */
     public function gitLogAll($subdir = '', $limit = 500)
     {
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
 
@@ -636,7 +636,7 @@ class Git extends Obj
     public function gitCheckout($item = '', $hash = '')
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
         if (!$item) {
@@ -701,8 +701,8 @@ class Git extends Obj
      **/
     public function getUntrackedFiles($subdir = '')
     {
-        $cmd  = 'cd ' . escapeshellarg(DS . trim($this->_path, DS) . DS . trim($subdir, DS)) . ' && ';
-        $cmd .= $this->_gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
+        $cmd  = 'cd ' . escapeshellarg(DS . trim($this->path, DS) . DS . trim($subdir, DS)) . ' && ';
+        $cmd .= $this->gitpath . ' clean -nd | grep -v ".' . DS . '." | cut -c 14-';
 
         $results = $this->_exec($cmd);
         $return  = [];
@@ -722,8 +722,8 @@ class Git extends Obj
      **/
     public function getUntrackedDirectories($subdir = '')
     {
-        $cmd  = 'cd ' . escapeshellarg(DS . trim($this->_path, DS) . DS . trim($subdir, DS)) . ' && ';
-        $cmd .= $this->_gitpath . ' clean -nd | grep ".' . DS . '$" | cut -c 14-';
+        $cmd  = 'cd ' . escapeshellarg(DS . trim($this->path, DS) . DS . trim($subdir, DS)) . ' && ';
+        $cmd .= $this->gitpath . ' clean -nd | grep ".' . DS . '$" | cut -c 14-';
 
         $results = $this->_exec($cmd);
         $return  = [];
@@ -774,7 +774,7 @@ class Git extends Obj
         // Go through hashes and get file names
         foreach ($collector as $filename => $gitData) {
             // File is still there - skip
-            if (is_file($this->_path . DS . $filename)) {
+            if (is_file($this->path . DS . $filename)) {
                 continue;
             }
 
@@ -1009,12 +1009,12 @@ class Git extends Obj
     public function makeEmptyFolder($dir = '', $commit = true, $commitMsg = '')
     {
         // Check for repo
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
 
         // cd into repo
-        chdir($this->_path);
+        chdir($this->path);
 
         // Create an empty file
         $this->_exec('touch ' . escapeshellarg($dir) . '/.gitignore ');
@@ -1085,7 +1085,7 @@ class Git extends Obj
         $hashes = $this->getLocalFileHistory($local_path, '--');
 
         // Binary
-        $binary = \Components\Projects\Helpers\Html::isBinary($this->_path . DS . $local_path);
+        $binary = \Components\Projects\Helpers\Html::isBinary($this->path . DS . $local_path);
 
         // Get info for each commit
         if (!empty($hashes)) {

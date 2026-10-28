@@ -12,9 +12,13 @@ defined('_HZEXEC_') or die;
 // Note. It is important to remove spaces between elements.
 $title = $item->anchor_title ? 'title="' . $item->anchor_title . '" ' : '';
 if ($item->menu_image) {
+    $imgTag = '<img src="' . $item->menu_image
+        . '" alt="' . $item->title . '" />';
     $item->params->get('menu_text', 1) ?
-        $linktype = '<img src="' . $item->menu_image . '" alt="' . $item->title . '" /><span class="image-title">' . $item->title . '</span> ' :
-        $linktype = '<img src="' . $item->menu_image . '" alt="' . $item->title . '" />';
+        $linktype = $imgTag
+            . '<span class="image-title">'
+            . $item->title . '</span> ' :
+        $linktype = $imgTag;
 } else {
     $linktype = $item->title;
 }

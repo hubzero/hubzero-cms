@@ -8,6 +8,8 @@
 
 namespace Components\Events\Tables;
 
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+
 /**
  * Events class for getting all configurations
  */
@@ -130,7 +132,10 @@ class Configs
             'fields' => ''
         );
         foreach ($config as $p => $v) {
-            $this->_db->setQuery("INSERT INTO $this->_tbl (param, value) VALUES (" . $this->_db->quote($p) . ", " . $this->_db->quote($v) . ")");
+            $this->_db->setQuery(
+                "INSERT INTO $this->_tbl (param, value) VALUES ("
+                . $this->_db->quote($p) . ", " . $this->_db->quote($v) . ")"
+            );
             if (!$this->_db->query()) {
                 return false;
             }

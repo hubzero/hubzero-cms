@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for fixing search component's default settings.
+  *
  **/
 class Migration20160729202716ComSearch extends Base
 {

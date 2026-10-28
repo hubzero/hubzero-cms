@@ -1,9 +1,10 @@
 <?php
 
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -12,21 +13,22 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for activity
  */
-class plgMembersActivity extends \Hubzero\Plugin\Plugin
+class PlgMembersActivity extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
-     * @var  boolean
+     * @var boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   object  $user    Current user
-     * @param   object  $member  Member profile
-     * @return  array
+     * @param  object $user   Current user
+     * @param  object $member Member profile
+     * @return array
      */
     public function &onMembersAreas($user, $member)
     {
@@ -45,11 +47,11 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Event call to return data for a specific member
      *
-     * @param   object  $user    User
-     * @param   object  $member  Members Profile
-     * @param   string  $option  Component name
-     * @param   string  $areas   Plugins to return data
-     * @return  array
+     * @param  object $user   User
+     * @param  object $member Members Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array
      */
     public function onMembers($user, $member, $option, $areas)
     {
@@ -124,7 +126,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Show a feed
      *
-     * @return  string
+     * @return string
      */
     protected function feedAction()
     {
@@ -249,7 +251,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Unpublish an entry
      *
-     * @return  string
+     * @return string
      */
     protected function removeAction()
     {
@@ -305,7 +307,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Stop receiving activity of a specific type
      *
-     * @return  string
+     * @return string
      */
     /*protected function unsubscribeAction()
     {
@@ -381,7 +383,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Star/unstar an entry
      *
-     * @return  string
+     * @return string
      */
     protected function starAction()
     {
@@ -442,7 +444,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Show settings form
      *
-     * @return  string
+     * @return string
      */
     protected function settingsAction()
     {
@@ -473,7 +475,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Save settings
      *
-     * @return  mixed
+     * @return mixed
      */
     protected function savesettingsAction()
     {
@@ -506,7 +508,9 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
         }
 
         // Log the activity
-        Event::trigger('system.logActivity', [
+        Event::trigger(
+            'system.logActivity',
+            [
             'activity' => [
                 'action'      => 'updated',
                 'scope'       => 'activity.settings',
@@ -516,7 +520,8 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
             'recipients' => [
                 $this->member->get('id')
             ]
-        ]);
+            ]
+        );
 
         // Redirect
         App::redirect(
@@ -528,7 +533,7 @@ class plgMembersActivity extends \Hubzero\Plugin\Plugin
     /**
      * Redirect to the login page
      *
-     * @return  void
+     * @return void
      */
     protected function loginAction()
     {

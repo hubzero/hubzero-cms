@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -46,8 +47,10 @@ function dv_list()
         print '<tr>';
         print '<td >' . ++$c . '</td>';
         print '<td >' . $db['name'] . '</td>';
-        print '<td><a href="/administrator/index.php?option=com_dataviewer&task=config&db=' . $id . '">Edit Config</a></td>';
-        print '<td><a href="/administrator/index.php?option=com_dataviewer&task=dataview_list&db=' . $id . '" target="_blank">' . 'Dataviews' . '</a></td>';
+        $configLink = '/administrator/index.php?option=com_dataviewer&task=config&db=' . $id;
+        $dvLink = '/administrator/index.php?option=com_dataviewer&task=dataview_list&db=' . $id;
+        print '<td><a href="' . $configLink . '">Edit Config</a></td>';
+        print '<td><a href="' . $dvLink . '" target="_blank">Dataviews</a></td>';
         print '</tr>';
     }
     ?>

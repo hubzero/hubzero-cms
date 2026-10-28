@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,7 +43,8 @@ class Migration20130924000010ComMessages extends Base
             $this->db->query();
         }
         if ($this->db->tableHasField('#__messages', 'folder_id')) {
-            $query = "ALTER TABLE `#__messages` CHANGE `folder_id` `folder_id` tinyint(3) UNSIGNED NOT NULL DEFAULT '0';";
+            $query = "ALTER TABLE `#__messages` CHANGE `folder_id` `folder_id` "
+                . "tinyint(3) UNSIGNED NOT NULL DEFAULT '0';";
             $this->db->setQuery($query);
             $this->db->query();
         }

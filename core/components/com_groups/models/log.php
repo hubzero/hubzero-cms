@@ -17,6 +17,8 @@ require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
 
 /**
  * Group log model class
+ *
+ * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Log extends Model
 {
@@ -51,7 +53,7 @@ class Log extends Model
         // load object
         if (is_numeric($oid)) {
             $this->_tbl->load($oid);
-        } else if (is_object($oid) || is_array($oid)) {
+        } elseif (is_object($oid) || is_array($oid)) {
             $this->bind($oid);
         }
     }

@@ -143,7 +143,8 @@ class Plugin extends Relational
     public function transformXml()
     {
         if (is_null($this->manifest)) {
-            $path = DS . 'plugins' . DS . $this->get('folder') . DS . $this->get('element') . DS . $this->get('element') . '.xml';
+            $element = $this->get('element');
+            $path = DS . 'plugins' . DS . $this->get('folder') . DS . $element . DS . $element . '.xml';
 
             $paths = array(
                 'app'  => Filesystem::cleanPath(PATH_APP . $path),
@@ -272,9 +273,8 @@ class Plugin extends Relational
         if ($delta < 0) {
             $query->where('ordering', '<', (int) $this->get('ordering'));
             $query->order('ordering', 'desc');
-        }
-        // If the movement delta is positive move the row down.
-        elseif ($delta > 0) {
+        } elseif ($delta > 0) {
+            // If the movement delta is positive move the row down.
             $query->where('ordering', '>', (int) $this->get('ordering'));
             $query->order('ordering', 'asc');
         }

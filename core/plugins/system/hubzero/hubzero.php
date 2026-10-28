@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin for hubzero
  */
@@ -40,7 +37,8 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
                 $sstr = $crypt->decrypt($str);
                 $tracker = @unserialize($sstr);
 
-                if ($tracker === false) { // old tracking cookies encrypted with UA which is too short term for a tracking cookie
+                if ($tracker === false) {
+                // old tracking cookies encrypted with UA which is too short term for a tracking cookie
                 //Create the encryption key, apply extra hardening using the user agent string
                     $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
                     $crypt = new Hubzero\Encryption\Encrypter(
@@ -113,7 +111,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
 
             if (App::isAdmin() && $forceSsl >= 1) {
                 $secure = true;
-            } else if (App::isSite() && $forceSsl == 2) {
+            } elseif (App::isSite() && $forceSsl == 2) {
                 $secure = true;
             }
 
@@ -127,7 +125,7 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
             if (User::get('id') != 0) {
                 apache_note('auth', 'session');
                 apache_note('userid', User::get('id'));
-            } else if (!empty($tracker['user_id'])) {
+            } elseif (!empty($tracker['user_id'])) {
                 apache_note('auth', 'cookie');
                 apache_note('userid', $tracker['user_id']);
                 apache_note('tracker', $tracker['rsid']);

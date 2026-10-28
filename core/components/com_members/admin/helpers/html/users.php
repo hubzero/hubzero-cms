@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
-
 /**
  * Extended Utility class for the Users component.
  */
@@ -42,8 +40,10 @@ class HtmlUsers
     public static function addNote($userId)
     {
         $title = Lang::txt('COM_MEMBERS_ADD_NOTE');
+        $url = Route::url('index.php?option=com_members&controller=notes&task=add&u_id=' . (int) $userId);
+        $notes = Lang::txt('COM_MEMBERS_NOTES');
 
-        return '<a class="state notes" href="' . Route::url('index.php?option=com_members&controller=notes&task=add&u_id=' . (int) $userId) . '" title="' . $title . '"><span>' . Lang::txt('COM_MEMBERS_NOTES') . '</span></a>';
+        return '<a class="state notes" href="' . $url . '" title="' . $title . '"><span>' . $notes . '</span></a>';
     }
 
     /**
@@ -60,8 +60,10 @@ class HtmlUsers
         }
 
         $title = Lang::txt('COM_MEMBERS_FILTER_NOTES');
+        $url = Route::url('index.php?option=com_members&controller=notes&filter_search=uid:' . (int) $userId);
+        $notes = Lang::txt('COM_MEMBERS_NOTES');
 
-        return '<a class="state filter" href="' . Route::url('index.php?option=com_members&controller=notes&filter_search=uid:' . (int) $userId) . '" title="' . $title . '"><span>' . Lang::txt('COM_MEMBERS_NOTES') . '</span></a>';
+        return '<a class="state filter" href="' . $url . '" title="' . $title . '"><span>' . $notes . '</span></a>';
     }
 
     /**
@@ -78,9 +80,14 @@ class HtmlUsers
         }
 
         $title = Lang::txts('COM_MEMBERS_N_USER_NOTES', $count);
+        $url = Route::url(
+            'index.php?option=com_members&controller=notes&tmpl=component&layout=modal&u_id=' . (int) $userId
+        );
+        $notes = Lang::txt('COM_MEMBERS_NOTES');
 
-        return '<a class="modal state notes"' .
-            ' href="' . Route::url('index.php?option=com_members&controller=notes&tmpl=component&layout=modal&u_id=' . (int) $userId) . '"' .
-            ' rel="{handler: \'iframe\', size: {x: 800, y: 450}}" title="' . $title . '"><span>' . Lang::txt('COM_MEMBERS_NOTES') . '</span></a>';
+        return '<a class="modal state notes"'
+            . ' href="' . $url . '"'
+            . ' rel="{handler: \'iframe\', size: {x: 800, y: 450}}" title="' . $title . '">'
+            . '<span>' . $notes . '</span></a>';
     }
 }

@@ -16,6 +16,7 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
      *
      * @var boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -38,45 +39,53 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
     public function status()
     {
         // Essentually, in the background, we're just going to try and make a request to check if the user is logged in
-        // If they are, we'll add their email address to the google login button, thus offering the sign out option as well
+        // If they are, we'll add their email address to the google login button,
+        // thus offering the sign out option as well
         // @FIXME: logout below is a total hack!
+
+        $appId = $this->params->get('app_id');
+        $scope = 'https://www.googleapis.com/auth/userinfo.email '
+            . 'https://www.googleapis.com/auth/userinfo.profile';
+        $logout = '<iframe src="https://accounts.google.com/logout" '
+            . 'style="display:none;">';
+
         $js = "(function() {
-					var po   = document.createElement('script');
-					po.type  = 'text/javascript';
-					po.async = true;
-					po.src   = 'https://apis.google.com/js/client:plusone.js?onload=OnLoadCallback';
-					var s    = document.getElementsByTagName('script')[0];
-					s.parentNode.insertBefore(po, s);
+            var po   = document.createElement('script');
+            po.type  = 'text/javascript';
+            po.async = true;
+            po.src   = 'https://apis.google.com/js/client:plusone.js?onload=OnLoadCallback';
+            var s    = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
 
-					OnLoadCallback = function () {
-						gapi.auth.authorize({
-							client_id     : '{$this->params->get('app_id')}',
-							immediate     : true,
-							response_type : 'token',
-							scope         : 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
-						}, function ( response ) {
-							if (response && !response.error) {
-								gapi.client.load('oauth2', 'v2', function () {
-									var request = gapi.client.oauth2.userinfo.get({
-										'userId' : 'me'
-									});
-									request.execute(function ( resp ) {
-										var google = $('#google').siblings('.sign-out');
-										google.find('.current-user').html(resp.email);
+            OnLoadCallback = function () {
+                gapi.auth.authorize({
+                    client_id     : '{$appId}',
+                    immediate     : true,
+                    response_type : 'token',
+                    scope         : '{$scope}'
+                }, function ( response ) {
+                    if (response && !response.error) {
+                        gapi.client.load('oauth2', 'v2', function () {
+                            var request = gapi.client.oauth2.userinfo.get({
+                                'userId' : 'me'
+                            });
+                            request.execute(function ( resp ) {
+                                var google = $('#google').siblings('.sign-out');
+                                google.find('.current-user').html(resp.email);
 
-										google.on('click', function ( e ) {
-											e.preventDefault();
-											$('body').append('<iframe src=\"https://accounts.google.com/logout\" style=\"display:none;\">');
-											google.animate({'margin-top': -42}, function() {
-												google.find('.current-user').html('');
-											});
-										});
-									});
-								});
-							}
-						});
-					}
-				})();";
+                                google.on('click', function ( e ) {
+                                    e.preventDefault();
+                                    $('body').append('$logout');
+                                    google.animate({'margin-top': -42}, function() {
+                                        google.find('.current-user').html('');
+                                    });
+                                });
+                            });
+                        });
+                    }
+                });
+            }
+        })();";
 
         Document::addScriptDeclaration($js);
     }
@@ -154,7 +163,9 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
         $client->setAccessType('online');
         $client->setState($view->return);
         $client->setApprovalPrompt('auto');
-        $client->setScopes('https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile');
+        $client->setScopes(
+            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+        );
 
         // Create and follow the authorization URL
         self::beginAuthorization('google');
@@ -208,7 +219,9 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
             $username = $user_profile['email'];
 
             // Create the hubzero auth link
-            $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+            $method = (Component::params('com_members')->get('allowUserRegistration', false))
+                ? 'find_or_create'
+                : 'find';
             $hzal = \Hubzero\Auth\Link::$method('authentication', 'google', null, $username);
 
             if ($hzal === false) {
@@ -326,7 +339,10 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
                     $hzal->set('email', $user_profile['email']);
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "google", null, %s) returned false', $username));
+                    Log::error(sprintf(
+                        'Hubzero\Auth\Link::find_or_create("authentication", "google", null, %s) returned false',
+                        $username
+                    ));
                 }
             }
         } else {
@@ -347,9 +363,12 @@ class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/google/assets/css/google.css');
+        Document::addStylesheet(
+            Request::root(false) . 'core/plugins/authentication/google/assets/css/google.css'
+        );
 
-        $html = '<a class="google account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=google' . $return) . '">';
+        $html = '<a class="google account" href="'
+            . Route::url('index.php?option=com_users&view=login&authenticator=google' . $return) . '">';
             $html .= '<div class="signin">';
                 $html .= Lang::txt('PLG_AUTHENTICATION_GOOGLE_SIGN_IN');
             $html .= '</div>';

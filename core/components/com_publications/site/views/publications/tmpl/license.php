@@ -9,7 +9,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$text = $this->publication->version->get('license_text') ? $this->publication->version->get('license_text') : $this->publication->license()->text;
+$text = $this->publication->version->get('license_text')
+    ? $this->publication->version->get('license_text')
+    : $this->publication->license()->text;
 $text = preg_replace("/\r\n/", "\r", trim($text));
 
 ?>

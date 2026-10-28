@@ -25,7 +25,10 @@ $this->css();
 
 <section class="main section">
     <div class="section-inner">
-        <h3><?php echo Lang::txt('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo Lang::txt('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
+        <h3>
+            <?php echo Lang::txt('COM_FEEDBACK_HAVE_AN_OPINION'); ?>
+            <span><?php echo Lang::txt('COM_FEEDBACK_CAST_A_VOTE'); ?></span>
+        </h3>
 
         <?php if (Module::isEnabled('mod_poll')) { ?>
             <div class="introtext">

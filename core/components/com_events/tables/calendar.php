@@ -50,7 +50,7 @@ class Calendar extends Table
     public function find($filters = array())
     {
         $sql  = "SELECT * FROM {$this->_tbl}";
-        $sql .= $this->_buildQuery($filters);
+        $sql .= $this->buildQuery($filters);
 
         $this->_db->setQuery($sql);
         return $this->_db->loadObjectList();
@@ -65,7 +65,7 @@ class Calendar extends Table
     public function count($filters = array())
     {
         $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
-        $sql .= $this->_buildQuery($filters);
+        $sql .= $this->buildQuery($filters);
 
         $this->_db->setQuery($sql);
         return $this->_db->loadResult();
@@ -77,7 +77,7 @@ class Calendar extends Table
      * @param   array   $filters
      * @return  string
      */
-    private function _buildQuery($filters = array())
+    private function buildQuery($filters = array())
     {
         // var to hold conditions
         $where = array();

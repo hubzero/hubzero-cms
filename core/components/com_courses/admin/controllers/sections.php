@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -104,7 +105,9 @@ class Sections extends AdminController
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $limit = $this->view->filters['limit'];
+        $start = $this->view->filters['start'];
+        $this->view->filters['start'] = ($limit != 0 ? (floor($start / $limit) * $limit) : 0);
 
         $this->view->filters['count'] = true;
 
@@ -171,7 +174,7 @@ class Sections extends AdminController
      * @param  array $dt
      * @return array
      */
-    private function _datesToUTC($dt)
+    private function datesToUTC($dt)
     {
         if (isset($dt['publish_up']) && $dt['publish_up'] != '') {
             $dt['publish_up']   = Date::of($dt['publish_up'], Config::get('offset'))->toSql();
@@ -234,7 +237,7 @@ class Sections extends AdminController
                 $unit_down = $dt['publish_down'];
             }*/
             $dt['section_id'] = $model->get('id');
-            $dt = $this->_datesToUTC($dt);
+            $dt = $this->datesToUTC($dt);
 
             $dtmodel = new \Components\Courses\Models\Section\Date($dt['id']);
             if (!$dtmodel->bind($dt)) {
@@ -248,7 +251,7 @@ class Sections extends AdminController
 
             if (isset($dt['asset_group'])) {
                 foreach ($dt['asset_group'] as $j => $ag) {
-                    $ag = $this->_datesToUTC($ag);
+                    $ag = $this->datesToUTC($ag);
 
                     if (!isset($ag['publish_up']) || !$ag['publish_up']) {
                         $ag['publish_up'] = $dt['publish_up'];
@@ -272,7 +275,7 @@ class Sections extends AdminController
 
                     if (isset($ag['asset_group'])) {
                         foreach ($ag['asset_group'] as $k => $agt) {
-                            $agt = $this->_datesToUTC($agt);
+                            $agt = $this->datesToUTC($agt);
 
                             if (!isset($agt['publish_up']) || !$agt['publish_up']) {
                                 $agt['publish_up'] = $ag['publish_up'];
@@ -296,7 +299,7 @@ class Sections extends AdminController
 
                             if (isset($agt['asset'])) {
                                 foreach ($agt['asset'] as $z => $a) {
-                                    $a = $this->_datesToUTC($a);
+                                    $a = $this->datesToUTC($a);
 
                                     if (!isset($a['publish_up']) || !$a['publish_up']) {
                                         $a['publish_up'] = $agt['publish_up'];
@@ -325,7 +328,7 @@ class Sections extends AdminController
                     }
                     if (isset($ag['asset'])) {
                         foreach ($ag['asset'] as $z => $a) {
-                            $a = $this->_datesToUTC($a);
+                            $a = $this->datesToUTC($a);
 
                             if (!isset($a['publish_up']) || !$a['publish_up']) {
                                 $a['publish_up'] = $ag['publish_up'];
@@ -352,7 +355,7 @@ class Sections extends AdminController
             }
             if (isset($dt['asset'])) {
                 foreach ($dt['asset'] as $z => $a) {
-                    $a = $this->_datesToUTC($a);
+                    $a = $this->datesToUTC($a);
 
                     if (!isset($a['publish_up']) || !$a['publish_up']) {
                         $a['publish_up'] = $dt['publish_up'];
@@ -416,7 +419,7 @@ class Sections extends AdminController
                     $this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
                 } else if ($dimensions[0] != $dimensions[1]) {
                     $this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MUST_BE_SQUARE'));
-                } else if ($dimensions[0] < 450) {
+                } elseif ($dimensions[0] < 450) {
                     $this->setError(Lang::txt('COM_COURSES_ERROR_IMG_MIN_WIDTH'));
                 } else {
                     // Build the upload path if it doesn't exist
@@ -462,16 +465,18 @@ class Sections extends AdminController
             // If we don't already have a provider badge id set, then we're processing our initial badge creation
             if ($badgeObj->get('provider_name') && !$badgeObj->get('provider_badge_id') && $badgeObj->get('img_url')) {
                 $request_type   = $cconfig->get('badges_request_type', 'oauth');
-                $badgesHandler  = new \Hubzero\Badges\Wallet(strtoupper($badgeObj->get('provider_name')), $request_type);
+                $providerNameUpper = strtoupper($badgeObj->get('provider_name'));
+                $badgesHandler  = new \Hubzero\Badges\Wallet($providerNameUpper, $request_type);
                 $badgesProvider = $badgesHandler->getProvider();
 
                 if (is_object($badgesProvider)) {
                     $credentials = new stdClass();
-                    $credentials->client_id = $cconfig->get($badgeObj->get('provider_name') . '_consumer_key', 0);
-                    $credentials->client_secret = $cconfig->get($badgeObj->get('provider_name') . '_consumer_secret', 0);
-                    $credentials->username = $cconfig->get($badgeObj->get('provider_name') . '_username', 0);
-                    $credentials->password = $cconfig->get($badgeObj->get('provider_name') . '_password', 0);
-                    $credentials->issuerId = $cconfig->get($badgeObj->get('provider_name') . '_issuer_id', 0);
+                    $providerName = $badgeObj->get('provider_name');
+                    $credentials->client_id = $cconfig->get($providerName . '_consumer_key', 0);
+                    $credentials->client_secret = $cconfig->get($providerName . '_consumer_secret', 0);
+                    $credentials->username = $cconfig->get($providerName . '_username', 0);
+                    $credentials->password = $cconfig->get($providerName . '_password', 0);
+                    $credentials->issuerId = $cconfig->get($providerName . '_issuer_id', 0);
                     $badgesProvider->setCredentials($credentials);
 
                     $offering = \Components\Courses\Models\Offering::getInstance($model->get('offering_id'));
@@ -480,9 +485,12 @@ class Sections extends AdminController
                     $data = array();
                     $data['Name']          = $course->get('title');
                     $data['Description']   = trim($course->get('title')) . ' Badge';
-                    $data['CriteriaUrl']   = rtrim(Request::root(), '/') . '/courses/badge/' . $badgeObj->get('id') . '/criteria';
+                    $rootUrl = rtrim(Request::root(), '/');
+                    $badgeId = $badgeObj->get('id');
+                    $data['CriteriaUrl']   = $rootUrl . '/courses/badge/' . $badgeId . '/criteria';
                     $data['Version']       = '1';
-                    $data['BadgeImageUrl'] = rtrim(Request::root(), '/') . '/' . trim($badgeObj->get('img_url'), '/');
+                    $imgUrl = trim($badgeObj->get('img_url'), '/');
+                    $data['BadgeImageUrl'] = $rootUrl . '/' . $imgUrl;
 
                     if (!$credentials->client_id || !$credentials->client_secret) {
                         $this->setError(Lang::txt('COM_COURSES_ERROR_BADGE_MISSING_OPTIONS'));
@@ -520,8 +528,11 @@ class Sections extends AdminController
         }
 
         // Output messsage and redirect
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . $model->get('offering_id');
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'), false),
+            Route::url($url, false),
             Lang::txt('COM_COURSES_ITEM_SAVED')
         );
     }
@@ -590,8 +601,11 @@ class Sections extends AdminController
         }
 
         // Redirect back to the courses page
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . $offering_id;
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id, false),
+            Route::url($url, false),
             Lang::txt('COM_COURSES_ITEMS_REMOVED', $num)
         );
     }
@@ -615,8 +629,11 @@ class Sections extends AdminController
         $row->makeDefault();
 
         // Redirect back to the courses page
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
+            Route::url($url, false)
         );
     }
 
@@ -660,17 +677,22 @@ class Sections extends AdminController
             }
         }
 
+        $baseUrl = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
         if ($this->getErrors()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+                Route::url($baseUrl, false),
                 implode('<br />', $this->getErrors()),
                 'error'
             );
         } else {
             // Output messsage and redirect
+            $url = $baseUrl . '&offering=' . Request::getInt('offering', 0);
+            $message = $state
+                ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num)
+                : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num);
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false),
-                ($state ? Lang::txt('COM_COURSES_ITEMS_PUBLISHED', $num) : Lang::txt('COM_COURSES_ITEMS_UNPUBLISHED', $num))
+                Route::url($url, false),
+                $message
             );
         }
     }
@@ -682,8 +704,11 @@ class Sections extends AdminController
      */
     public function cancelTask()
     {
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=' . $this->_controller
+            . '&offering=' . Request::getInt('offering', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . Request::getInt('offering', 0), false)
+            Route::url($url, false)
         );
     }
 }

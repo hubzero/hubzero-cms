@@ -6,13 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-defined('_HZEXEC_') or die();
-
 use Hubzero\Content\Migration\Base;
 
 class Migration20240209000000RemovePageExpirationCol extends Base
 {
-    static $tableName = '#__reply_pages';
+    public static $tableName = '#__reply_pages';
 
     // next_expiration column should not be present in core implementation of table
     public function up()

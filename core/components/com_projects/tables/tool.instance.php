@@ -83,7 +83,9 @@ class ToolInstance extends Table
         }
 
         $query  = "SELECT * FROM $this->_tbl AS v WHERE ";
-        $query .= is_numeric($parent) ? "v.parent_id=" . $this->_db->quote($parent) : "v.parent_name=" . $this->_db->quote($parent);
+        $query .= is_numeric($parent)
+            ? "v.parent_id=" . $this->_db->quote($parent)
+            : "v.parent_name=" . $this->_db->quote($parent);
         if ($version == 'dev') {
             $query .= " AND v.state=3 ";
         }

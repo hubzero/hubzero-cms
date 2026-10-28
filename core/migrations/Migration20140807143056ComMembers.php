@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,6 +14,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for renaming previously added members fulltext index on givenName, middleName and surname fields
+  *
  **/
 class Migration20140807143056ComMembers extends Base
 {
@@ -60,7 +62,8 @@ class Migration20140807143056ComMembers extends Base
                 && $this->db->tableHasField('#__xprofiles', 'middleName')
                 && $this->db->tableHasField('#__xprofiles', 'surname')
             ) {
-                $query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
+                $query = "ALTER TABLE `#__xprofiles` "
+                    . "ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

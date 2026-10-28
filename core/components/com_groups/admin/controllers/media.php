@@ -41,7 +41,8 @@ class Media extends AdminController
         }
 
         //build path to the group folder
-        $this->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber');
+        $uploadPath = trim($this->config->get('uploadpath', '/site/groups'), DS);
+        $this->path = PATH_APP . DS . $uploadPath . DS . $this->group->get('gidNumber');
 
         //continue with parent execute method
         parent::execute();
@@ -187,7 +188,12 @@ class Media extends AdminController
 
             // make sure file is not empty
             if ($file['size'] > $sizeLimit) {
-                $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+                $pattern = '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/';
+                $max = preg_replace(
+                    $pattern,
+                    '$1',
+                    \Hubzero\Utility\Number::formatBytes($sizeLimit)
+                );
 
                 $this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
 
@@ -314,7 +320,7 @@ class Media extends AdminController
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');
         $path = Util::normalizePath($path);
 
-        $dirs = $this->_recursiveListDir($this->path);
+        $dirs = $this->recursiveListDir($this->path);
 
         $folders   = array();
         $folders[] = \Html::select('option', '/');
@@ -326,11 +332,16 @@ class Media extends AdminController
         sort($folders);
 
         // Create folder <select> list
+        $dataPathUrl = Route::url(
+            'index.php?option=' . $this->_option
+            . '&controller=media&gidNumber=' . $this->group->get('gidNumber')
+            . '&task=list&tmpl=component&dir='
+        );
         $dirPath = \Html::select(
             'genericlist',
             $folders,
             'dir',
-            'data-path="' . Route::url('index.php?option=' . $this->_option . '&controller=media&gidNumber=' . $this->group->get('gidNumber') . '&task=list&tmpl=component&dir=') . '" ',
+            'data-path="' . $dataPathUrl . '" ',
             'value',
             'text',
             $dir
@@ -414,7 +425,7 @@ class Media extends AdminController
      * @param   string  $base  Directory to scan
      * @return  array
      */
-    private function _recursiveListDir($base)
+    private function recursiveListDir($base)
     {
         static $filelist = array();
         static $dirlist  = array();
@@ -425,7 +436,7 @@ class Media extends AdminController
                 if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
-                    $subdirlist = $this->_recursiveListDir($subbase);
+                    $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
             closedir($dh);

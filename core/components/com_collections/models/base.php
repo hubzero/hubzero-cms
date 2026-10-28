@@ -27,6 +27,7 @@ class Base extends Model
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_creator = null;
 
     /**
@@ -89,7 +90,8 @@ class Base extends Model
         static $path;
 
         if (!$path) {
-            $path = PATH_APP . DS . trim(Component::params('com_collections')->get('filepath', '/site/collections'), DS);
+            $filepath = Component::params('com_collections')->get('filepath', '/site/collections');
+            $path = PATH_APP . DS . trim($filepath, DS);
         }
 
         return $path;

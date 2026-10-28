@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,6 +13,7 @@ include_once __DIR__ . DS . 'node.php';
 
 /**
  * Extended class for rendering nested menus
+ *
  */
 class Tree extends \Hubzero\Base\Obj
 {
@@ -174,7 +176,8 @@ class Tree extends \Hubzero\Base\Obj
         }
 
         if ($this->_current->link != null && $this->_current->target != null) {
-            echo '<a' . $linkClass . ' href="' . $this->_current->link . '" rel="noopener" target="' . $this->_current->target . '">' . $this->_current->title . '</a>';
+            echo '<a' . $linkClass . ' href="' . $this->_current->link . '" rel="noopener" target="'
+                . $this->_current->target . '">' . $this->_current->title . '</a>';
             if ($this->_current->hasChildren()) {
                 echo '<span class="toggler" aria-hidden="true"></span>';
             }

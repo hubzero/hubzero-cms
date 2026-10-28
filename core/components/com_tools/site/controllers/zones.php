@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,6 +44,7 @@ class Zones extends SiteController
      * @param   boolean  $isFile
      * @return  mixed
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private static function normalize_path($path, $isFile = false)
     {
         if (!isset($path[0]) || $path[0] != '/') {

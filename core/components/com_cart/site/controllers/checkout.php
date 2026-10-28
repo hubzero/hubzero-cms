@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -247,7 +248,12 @@ class Checkout extends ComponentController
         foreach ($items as $item) {
             $info = $item['info'];
             if ($info->sCheckoutNotes) {
-                $noteFields[$info->sId] = array('pName' => $info->pName, 'sSku' => $info->sSku, 'sCheckoutNotes' => $info->sCheckoutNotes, 'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired);
+                $noteFields[$info->sId] = array(
+                    'pName' => $info->pName,
+                    'sSku' => $info->sSku,
+                    'sCheckoutNotes' => $info->sCheckoutNotes,
+                    'sCheckoutNotesRequired' => $info->sCheckoutNotesRequired
+                );
             }
         }
         $this->view->noteFields = $noteFields;
@@ -260,7 +266,13 @@ class Checkout extends ComponentController
                 $itemNotes = Request::getString('notes-' . $sId, false, 'post');
                 if ($fieldInfo['sCheckoutNotesRequired']) {
                     if (!$itemNotes) {
-                        $errors[] = array(Lang::txt('Please add Notes/Comments for ' . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']), 'error');
+                        $errors[] = array(
+                            Lang::txt(
+                                'Please add Notes/Comments for '
+                                . $fieldInfo['pName'] . ', ' . $fieldInfo['sSku']
+                            ),
+                            'error'
+                        );
                     }
                 }
 
@@ -480,7 +492,8 @@ class Checkout extends ComponentController
     }
 
     /**
-     * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers, requires a form submission to the payment gateway
+     * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers,
+     * requires a form submission to the payment gateway
      *
      * @return  void
      */

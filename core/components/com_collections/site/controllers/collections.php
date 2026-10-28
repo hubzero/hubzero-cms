@@ -180,6 +180,7 @@ class Collections extends SiteController
      * @param   integer  $assetId
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);
@@ -212,6 +213,7 @@ class Collections extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -233,6 +235,7 @@ class Collections extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->_option));

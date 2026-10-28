@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,6 +24,7 @@ class Group extends Base
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_segments = array(
         'option' => 'com_wishlist',
     );
@@ -32,6 +34,7 @@ class Group extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_scope = 'group';
 
     /**
@@ -237,7 +240,8 @@ class Group extends Base
 
             case 'report':
             case 'reportabuse':
-                return 'index.php?option=com_support&task=reportabuse&category=wish&id=' . $this->get('wishid') . '&parent=' . $this->get('wishlist');
+                return 'index.php?option=com_support&task=reportabuse&category=wish&id='
+                    . $this->get('wishid') . '&parent=' . $this->get('wishlist');
             break;
 
             case 'permalink':

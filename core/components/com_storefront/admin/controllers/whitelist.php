@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -90,8 +91,10 @@ class Whitelist extends AdminController
     public function cancelTask()
     {
         // Set the redirect
+        $url = 'index.php?option=' . $this->_option
+            . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0);
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=skus&task=edit&id=' . Request::getInt('sId', 0), false)
+            Route::url($url, false)
         );
     }
 
@@ -114,8 +117,10 @@ class Whitelist extends AdminController
         $msg = "User(s) deleted";
         $type = 'message';
 
+        $url = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+            . '&task=dispaly&id=' . $sId;
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=dispaly&id=' . $sId, false),
+            Route::url($url, false),
             $msg,
             $type
         );

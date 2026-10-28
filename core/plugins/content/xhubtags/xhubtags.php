@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Content Plugin class for {xhub} tags
+ *
  */
 class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 {
@@ -30,9 +32,11 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
         }
 
         // Fix asset paths
-        $article->text = str_replace('src="/media/system/', 'src="/core/assets/', $article->text == null ? '' : $article->text);
-        $article->text = str_replace('src="/site', 'src="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $article->text);
-        $article->text = str_replace("src='/site", "src='" . substr(PATH_APP, strlen(PATH_ROOT)) . "/site", $article->text);
+        $text = $article->text == null ? '' : $article->text;
+        $article->text = str_replace('src="/media/system/', 'src="/core/assets/', $text);
+        $appPath = substr(PATH_APP, strlen(PATH_ROOT));
+        $article->text = str_replace('src="/site', 'src="' . $appPath . '/site', $article->text);
+        $article->text = str_replace("src='/site", "src='" . $appPath . "/site", $article->text);
 
         // simple performance check to determine whether bot should process further
         if (strpos($article->text, '{xhub') === false) {
@@ -51,23 +55,23 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
                 if (preg_match($regex, $match[0], $tag)) {
                     switch (strtolower(trim($tag[1]))) {
                         case 'include':
-                            $text = $this->_include($tag[2]);
+                            $text = $this->xhubInclude($tag[2]);
                             break;
 
                         case 'image':
-                            $text = $this->_image($tag[2]);
+                            $text = $this->image($tag[2]);
                             break;
 
                         case 'module':
-                            $text = $this->_modules($tag[2]);
+                            $text = $this->modules($tag[2]);
                             break;
 
                         case 'templatedir':
-                            $text = $this->_templateDir($tag[2]);
+                            $text = $this->templateDir($tag[2]);
                             break;
 
                         case 'getcfg':
-                            $text = $this->_getCfg($tag[2]);
+                            $text = $this->getCfg($tag[2]);
                             break;
 
                         default:
@@ -88,7 +92,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
      * @param   string  $options  Tag options (e.g. 'component="support"')
      * @return  string
      */
-    private function _modules($options)
+    private function modules($options)
     {
         $regex = "/position\s*=\s*(\"|&quot;)([^\"]+)(\"|&quot;)/i";
 
@@ -125,7 +129,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
      *
      * @return  string  Template path
      */
-    private function _templateDir()
+    private function templateDir()
     {
         return substr(App::get('template')->path, strlen(PATH_ROOT));
     }
@@ -137,7 +141,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
      * @param   string  $options  Tag options (e.g. 'component="support"')
      * @return  string
      */
-    private function _include($options)
+    private function xhubInclude($options)
     {
         $regex = "/type\s*=\s*(\"|&quot;)(script|stylesheet)(\"|&quot;)/i";
 
@@ -162,7 +166,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
         ) {
             if ($type[2] == 'script') {
                 Document::addScript($file[2]);
-            } else if ($type[2] == 'stylesheet') {
+            } elseif ($type[2] == 'stylesheet') {
                 Document::addStyleSheet($file[2], 'text/css', 'screen');
             }
 
@@ -171,13 +175,13 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 
         if ($file[2][0] == '/') {
             $filename = $file[2];
-        } else if (preg_match($regex, $options, $component)) {
-            $filename = $this->_templateDir() . '/html/' . $component[2] . '/' . $file[2]; //'templates/' . $template
+        } elseif (preg_match($regex, $options, $component)) {
+            $filename = $this->templateDir() . '/html/' . $component[2] . '/' . $file[2]; //'templates/' . $template
             if (!file_exists(PATH_ROOT . $filename)) {
                 $filename = substr(Component::path($component[2]), strlen(PATH_ROOT)) . '/' . $file[2];
             }
         } else {
-            $filename = $this->_templateDir() . '/'; //"/templates/$template/";
+            $filename = $this->templateDir() . '/'; //"/templates/$template/";
             if ($type[2] == 'script') {
                 $filename .= 'js/';
             } else {
@@ -190,10 +194,13 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
             return '';
         }
 
+        $assetUrl = Request::base(true) . '/' . ltrim($filename, '/');
+        $assetUrl .= '?v=' . filemtime(PATH_ROOT . $filename);
+
         if ($type[2] == 'script') {
-            Document::addScript(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(PATH_ROOT . $filename));
-        } else if ($type[2] == 'stylesheet') {
-            Document::addStyleSheet(Request::base(true) . '/' . ltrim($filename, '/') . '?v=' . filemtime(PATH_ROOT . $filename), 'text/css', 'screen');
+            Document::addScript($assetUrl);
+        } elseif ($type[2] == 'stylesheet') {
+            Document::addStyleSheet($assetUrl, 'text/css', 'screen');
         }
 
         return '';
@@ -205,7 +212,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
      * @param   string  $options  Tag options (e.g. 'component="support"')
      * @return  string
      */
-    private function _image($options)
+    private function image($options)
     {
         $regex = "/filename\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
@@ -223,9 +230,9 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 
         if (empty($component) && empty($module)) {
             return ''; //substr(\Hubzero\Document\Assets::getHubImage($file[2]), 1);
-        } else if (!empty($component)) {
+        } elseif (!empty($component)) {
             return substr(\Hubzero\Document\Assets::getComponentImage($component[2], $file[2]), 1);
-        } else if (!empty($module)) {
+        } elseif (!empty($module)) {
             return substr(\Hubzero\Document\Assets::getModuleImage($module[2], $file[2]), 1);
         }
 
@@ -238,7 +245,7 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
      * @param   string  $options  Variable name
      * @return  string
      */
-    private function _getCfg($options)
+    private function getCfg($options)
     {
         $options = trim($options, " \n\t\r}");
 
@@ -247,9 +254,9 @@ class plgContentXhubtags extends \Hubzero\Plugin\Plugin
 
         if ($options == 'hubShortName') {
             return $sitename;
-        } else if ($options == 'hubShortURL') {
+        } elseif ($options == 'hubShortURL') {
             return $live_site;
-        } else if ($options == 'hubHostname') {
+        } elseif ($options == 'hubHostname') {
             return Request::getHost();
         }
 

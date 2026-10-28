@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,28 +20,30 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Resource types and "all" category
      *
      * @var  array
      */
-    private $_areas = null;
+    private $areas = null;
 
     /**
      * Resource types
      *
      * @var  array
      */
-    private $_cats  = null;
+    private $cats = null;
 
     /**
      * Results total
      *
      * @var  integer
      */
-    private $_total = null;
+    private $total = null;
 
     /**
      * Constructor
@@ -104,17 +107,17 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
         // Build query
         $filters = array(
             'startdate' => $period->cStartDate,
-            'enddate'   => $period->cEndDate,
-            'sortby'    => 'date'
+            'enddate' => $period->cEndDate,
+            'sortby' => 'date'
         );
         if (count($tagids) > 0) {
             $filters['tag'] = $tagids;
         }
 
         if ($limit) {
-            if ($this->_total != null) {
+            if ($this->total != null) {
                 $total = 0;
-                $t = $this->_total;
+                $t = $this->total;
                 foreach ($t as $l) {
                     $total += $l;
                 }
@@ -135,9 +138,13 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
                 foreach ($rows as $key => $row) {
                     $rows[$key]->text = null;
                     if ($row->alias) {
-                        $rows[$key]->href = Route::url('index.php?option=com_publications&alias=' . $row->alias);
+                        $rows[$key]->href = Route::url(
+                            'index.php?option=com_publications&alias=' . $row->alias
+                        );
                     } else {
-                        $rows[$key]->href = Route::url('index.php?option=com_publications&id=' . $row->id);
+                        $rows[$key]->href = Route::url(
+                            'index.php?option=com_publications&id=' . $row->id
+                        );
                     }
                     if ($row->abstract) {
                         $rows[$key]->text = $rows[$key]->abstract;
@@ -190,16 +197,26 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
         $authors = $pa->getAuthors($row->version_id);
 
         // Start building HTML
-        $html  = "\t" . '<li class="publication">' . "\n";
-        $html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' . '" alt="" /></span>';
-        $html .= '<span class="pub-details"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>' . "\n";
-        $html .= "\t\t" . '<span class="block details">' . Date::of($row->published_up)->toLocal('d M Y') . ' <span>|</span> ' . $row->cat_name;
+        $html = "\t" . '<li class="publication">' . "\n";
+        $imgUrl = Route::url(
+            'index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id
+        ) . '/Image:thumb';
+        $html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . $imgUrl . '" alt="" /></span>';
+        $html .= '<span class="pub-details"><a href="' . $row->href . '">'
+            . stripslashes($row->title) . '</a>' . "\n";
+        $html .= "\t\t" . '<span class="block details">'
+            . Date::of($row->published_up)->toLocal('d M Y') . ' <span>|</span> ' . $row->cat_name;
         if ($authors) {
-            $html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
+            $html .= ' <span>|</span> ' . Lang::txt('PLG_WHATSNEW_PUBLICATIONS_CONTRIBUTORS') . ' '
+                . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
         }
         $html .= '</span></span></p>' . "\n";
         if ($row->text) {
-            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
+            $text = \Hubzero\Utility\Str::truncate(
+                \Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)),
+                200
+            );
+            $html .= "\t\t" . '<p>' . $text . '</p>' . "\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . trim($row->href, '/') . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,6 +17,7 @@ require_once __DIR__ . DS . 'BaseAuditor.php';
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
 require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
 
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Membership_Auditor extends BaseAuditor
 {
     /**
@@ -55,7 +57,8 @@ class Membership_Auditor extends BaseAuditor
                 // so for one SKU subscriptionMaxLen should
                 // be set to time less than actual membership length, ie if membership is sold for 1 year and
                 // cannot be renewed more than 6 month before it expires the subscriptionMaxLen must be set to 6 MONTH
-                // if it cannot be renewed more than 3 month before it expires the subscriptionMaxLen must be set to 3 MONTH
+                // if it cannot be renewed more than 3 month before it expires
+                // the subscriptionMaxLen must be set to 3 MONTH
                 // so subscriptionMaxLen = XX is actually "let renew XX time before expiration"
 
                 // Get the proper product type subscription object reference
@@ -70,8 +73,14 @@ class Membership_Auditor extends BaseAuditor
                     if (strtotime('+' . $subscriptionMaxLen) < strtotime($currentExpirationTime)) {
                         // Expiration is not allowed -- the current expiration is too far in the future
                         $this->setResponseStatus('error');
-                        $this->setResponseNotice('You already have an active subscription to this item. Subscription extension is not available at this time.');
-                        $this->setResponseError(': you already have an active subscription. Subscription extension is not available at this time.');
+                        $this->setResponseNotice(
+                            'You already have an active subscription to this item. '
+                            . 'Subscription extension is not available at this time.'
+                        );
+                        $this->setResponseError(
+                            ': you already have an active subscription. '
+                            . 'Subscription extension is not available at this time.'
+                        );
                     }
                 }
             }

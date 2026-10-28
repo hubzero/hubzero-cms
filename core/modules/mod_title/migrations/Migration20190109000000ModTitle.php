@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing admin title module
- **/
+ *
+ */
 class Migration20190109000000ModTitle extends Base
 {
     /**

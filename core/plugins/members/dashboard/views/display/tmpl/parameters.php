@@ -1,9 +1,11 @@
 <?php
 
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -25,10 +27,12 @@ if ($count < 1 || $this->admin) {
 ?>
 <div class="module-settings">
     <h4><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULES_SETTINGS', $this->escape($this->module->title)); ?></h4>
-    <form action="<?php echo Route::url('index.php?option=' . Request::getCmd('option', 'com_members')); ?>" method="post">
+    <form action="<?php echo Route::url('index.php?option=' . Request::getCmd('option', 'com_members')); ?>"
+        method="post">
         <?php $i = 0; ?>
         <?php foreach ($this->fields as $field) : ?>
             <?php
+
             if (strtolower($field->type) == 'spacer') {
                 continue;
             }
@@ -56,7 +60,8 @@ if ($count < 1 || $this->admin) {
         <?php echo Html::input('token'); ?>
 
         <div class="form-controls">
-            <button class="btn btn-success save" type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_SAVE'); ?></button>
+            <button class="btn btn-success save"
+                type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_MODULE_SETTINGS_SAVE'); ?></button>
             <button class="btn cancel" type="button"><?php echo Lang::txt('JCANCEL'); ?></button>
         </div>
     </form>

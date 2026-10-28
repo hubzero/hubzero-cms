@@ -51,8 +51,18 @@ class Plugins extends Select
             $lang = App::get('language');
             foreach ($options as $i => $item) {
                 $extension = 'plg_' . $folder . '_' . $item->value;
-                    $lang->load($extension . '.sys', PATH_APP . '/plugins/' . $folder . '/' . $item->value, null, false, true)
-                ||  $lang->load($extension . '.sys', PATH_CORE . '/plugins/' . $folder . '/' . $item->value, null, false, true);
+                    $lang->load($extension .
+                        '.sys', PATH_APP .
+                        '/plugins/' .
+                        $folder .
+                        '/' .
+                        $item->value, null, false, true)
+                ||  $lang->load($extension .
+                    '.sys', PATH_CORE .
+                    '/plugins/' .
+                    $folder .
+                    '/' .
+                    $item->value, null, false, true);
 
                 $options[$i]->text = $lang->txt($item->text);
             }

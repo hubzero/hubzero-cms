@@ -20,6 +20,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -128,7 +129,9 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
             $domain   = isset($_SERVER['SSL_CLIENT_I_DN_CN']) ? $_SERVER['SSL_CLIENT_I_DN_CN'] : '';
             $username = isset($_SERVER['SSL_CLIENT_S_DN_CN']) ? $_SERVER['SSL_CLIENT_S_DN_CN'] : '';
 
-            $method = (Component::params('com_members')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+            $method = (Component::params('com_members')->get('allowUserRegistration', false))
+                ? 'find_or_create'
+                : 'find';
             $hzal   = \Hubzero\Auth\Link::$method('authentication', 'certificate', $domain, $username);
 
             if ($hzal === false) {
@@ -219,7 +222,11 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
                     $hzal->set('email', isset($_SERVER['SSL_CLIENT_S_DN_Email']) ? $_SERVER['SSL_CLIENT_S_DN_Email'] : '');
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::find_or_create("authentication", "certificate", %s, %s) returned false', $domain, $username));
+                    Log::error(sprintf(
+                        'Hubzero\Auth\Link::find_or_create("authentication", "certificate", %s, %s) returned false',
+                        $domain,
+                        $username
+                    ));
                 }
             }
         } else {
@@ -267,9 +274,12 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
      */
     public static function onRenderOption($return = null)
     {
-        Document::addStylesheet(Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css');
+        Document::addStylesheet(
+            Request::root(false) . 'core/plugins/authentication/certificate/assets/css/certificate.css'
+        );
 
-        $html = '<a class="certificate account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
+        $html = '<a class="certificate account" href="'
+            . Route::url('index.php?option=com_users&view=login&authenticator=certificate' . $return) . '">';
             $html .= '<div class="signin">';
                 $html .= Lang::txt('PLG_AUTHENTICATION_CERTIFICATE_SIGN_IN');
             $html .= '</div>';

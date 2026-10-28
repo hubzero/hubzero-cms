@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 namespace Components\Activity\Admin\Controllers;
@@ -27,7 +27,7 @@ class Entries extends AdminController
     /**
      * Execute a task
      *
-     * @return  void
+     * @return void
      */
     public function execute()
     {
@@ -42,7 +42,7 @@ class Entries extends AdminController
     /**
      * Display a list of blog entries
      *
-     * @return  void
+     * @return void
      */
     public function displayTask()
     {
@@ -86,9 +86,13 @@ class Entries extends AdminController
                 }
 
                 for ($d; $d <= $days; $d++) {
+                    $monthStr = ($i < 10 ? '0' . $i : $i);
+                    $dayStr = ($d < 10 ? '0' . $d : $d);
+                    $dateStr = $k . '-' . $monthStr . '-' . $dayStr;
+
                     $amount = Activity::all()
-                        ->where('created', '>', $k . '-' . ($i < 10 ? '0' . $i : $i) . '-' . ($d < 10 ? '0' . $d : $d) . ' 00:00:00')
-                        ->where('created', '<', $k . '-' . ($i < 10 ? '0' . $i : $i) . '-' . ($d < 10 ? '0' . $d : $d) . ' 24:59:59')
+                        ->where('created', '>', $dateStr . ' 00:00:00')
+                        ->where('created', '<', $dateStr . ' 24:59:59')
                         ->total();
 
                     $data[$k . '-' . $i . '-' . $d] = $amount;

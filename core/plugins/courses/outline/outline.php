@@ -6,20 +6,41 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for the outline
  */
-class plgCoursesOutline extends \Hubzero\Plugin\Plugin
+class PlgCoursesOutline extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+
+    /**
+     * View object
+     *
+     * @var object
+     */
+    public $view = null;
+
+    /**
+     * Course object
+     *
+     * @var object
+     */
+    protected $course = null;
+
+    /**
+     * Offering object
+     *
+     * @var object
+     */
+    protected $offering = null;
 
     /**
      * Return data on a course view (this will be some form of HTML)
@@ -50,7 +71,10 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
         // Check to see if user is member and plugin access requires members
         $sparams = new \Hubzero\Config\Registry($course->offering()->section()->get('params'));
         if (!$course->offering()->section()->access('view') && !$sparams->get('preview', 0)) {
-            $response->set('html', '<p class="info">' . Lang::txt('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>');
+            $response->set(
+                'html',
+                '<p class="info">' . Lang::txt('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>'
+            );
             return $response;
         }
 
@@ -63,21 +87,21 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
             $action = strtolower(Request::getWord('action', ''));
 
             $this->view = $this->view('default', 'outline');
-            $this->view->option     = Request::getCmd('option', 'com_courses');
+            $this->view->option = Request::getCmd('option', 'com_courses');
             $this->view->controller = Request::getWord('controller', 'course');
-            $this->view->course     = $course;
-            $this->view->offering   = $offering;
-            $this->view->config     = $course->config();
+            $this->view->course = $course;
+            $this->view->offering = $offering;
+            $this->view->config = $course->config();
 
             switch ($action) {
                 case 'build':
-                    $this->_build();
+                    $this->buildOutline();
                     break;
 
                 default:
                     $this->js();
 
-                    $this->_display();
+                    $this->displayOutline();
                     break;
             }
 
@@ -93,7 +117,7 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    private function _display()
+    private function displayOutline()
     {
         if (($unit = Request::getString('unit', ''))) {
             $this->view->setLayout('unit');
@@ -113,9 +137,9 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
     /**
      * Show the builder interface
      *
-     * @return  string
+     * @return  void
      */
-    private function _build()
+    private function buildOutline()
     {
         if (!$this->course->access('manage')) {
             App::abort(401, Lang::txt('Not Authorized'));
@@ -135,9 +159,9 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
             $this->js('jquery.iframe-transport', 'system');
             $this->js('jquery.fileupload', 'system');
 
-            $this->view->title         = "Edit {$scope}";
-            $this->view->scope         = $scope;
-            $this->view->scope_id      = Request::getInt('scope_id');
+            $this->view->title = "Edit {$scope}";
+            $this->view->scope = $scope;
+            $this->view->scope_id = Request::getInt('scope_id');
 
             return;
         }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +14,8 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indexes to com_kb tables
- **/
+ *
+ */
 class Migration20140822161100ComKb extends Base
 {
     /**
@@ -38,19 +40,28 @@ class Migration20140822161100ComKb extends Base
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq', 'idx_section') && $this->db->tableHasField('#__faq', 'section')) {
+            if (
+                !$this->db->tableHasKey('#__faq', 'idx_section')
+                && $this->db->tableHasField('#__faq', 'section')
+            ) {
                 $query = "ALTER TABLE `#__faq` ADD INDEX `idx_section` (`section`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq', 'idx_category') && $this->db->tableHasField('#__faq', 'category')) {
+            if (
+                !$this->db->tableHasKey('#__faq', 'idx_category')
+                && $this->db->tableHasField('#__faq', 'category')
+            ) {
                 $query = "ALTER TABLE `#__faq` ADD INDEX `idx_category` (`category`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq', 'idx_alias') && $this->db->tableHasField('#__faq', 'alias')) {
+            if (
+                !$this->db->tableHasKey('#__faq', 'idx_alias')
+                && $this->db->tableHasField('#__faq', 'alias')
+            ) {
                 $query = "ALTER TABLE `#__faq` ADD INDEX `idx_alias` (`alias`);";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -58,19 +69,28 @@ class Migration20140822161100ComKb extends Base
         }
 
         if ($this->db->tableExists('#__faq_categories')) {
-            if (!$this->db->tableHasKey('#__faq_categories', 'idx_alias') && $this->db->tableHasField('#__faq_categories', 'alias')) {
+            if (
+                !$this->db->tableHasKey('#__faq_categories', 'idx_alias')
+                && $this->db->tableHasField('#__faq_categories', 'alias')
+            ) {
                 $query = "ALTER TABLE `#__faq_categories` ADD INDEX `idx_alias` (`alias`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq_categories', 'idx_section') && $this->db->tableHasField('#__faq_categories', 'section')) {
+            if (
+                !$this->db->tableHasKey('#__faq_categories', 'idx_section')
+                && $this->db->tableHasField('#__faq_categories', 'section')
+            ) {
                 $query = "ALTER TABLE `#__faq_categories` ADD INDEX `idx_section` (`section`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq_categories', 'idx_state') && $this->db->tableHasField('#__faq_categories', 'state')) {
+            if (
+                !$this->db->tableHasKey('#__faq_categories', 'idx_state')
+                && $this->db->tableHasField('#__faq_categories', 'state')
+            ) {
                 $query = "ALTER TABLE `#__faq_categories` ADD INDEX `idx_state` (`state`);";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -78,13 +98,19 @@ class Migration20140822161100ComKb extends Base
         }
 
         if ($this->db->tableExists('#__faq_comments')) {
-            if (!$this->db->tableHasKey('#__faq_comments', 'idx_entry_id') && $this->db->tableHasField('#__faq_comments', 'entry_id')) {
+            if (
+                !$this->db->tableHasKey('#__faq_comments', 'idx_entry_id')
+                && $this->db->tableHasField('#__faq_comments', 'entry_id')
+            ) {
                 $query = "ALTER TABLE `#__faq_comments` ADD INDEX `idx_entry_id` (`entry_id`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq_comments', 'idx_state') && $this->db->tableHasField('#__faq_comments', 'state')) {
+            if (
+                !$this->db->tableHasKey('#__faq_comments', 'idx_state')
+                && $this->db->tableHasField('#__faq_comments', 'state')
+            ) {
                 $query = "ALTER TABLE `#__faq_comments` ADD INDEX `idx_state` (`state`);";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -102,7 +128,10 @@ class Migration20140822161100ComKb extends Base
                 $this->db->query();
             }
 
-            if (!$this->db->tableHasKey('#__faq_helpful_log', 'idx_user_id') && $this->db->tableHasField('#__faq_helpful_log', 'user_id')) {
+            if (
+                !$this->db->tableHasKey('#__faq_helpful_log', 'idx_user_id')
+                && $this->db->tableHasField('#__faq_helpful_log', 'user_id')
+            ) {
                 $query = "ALTER TABLE `#__faq_helpful_log` ADD INDEX `idx_user_id` (`user_id`);";
                 $this->db->setQuery($query);
                 $this->db->query();
@@ -128,7 +157,8 @@ class Migration20140822161100ComKb extends Base
                 && $this->db->tableHasField('#__faq', 'params')
                 && $this->db->tableHasField('#__faq', 'fulltxt')
             ) {
-                $query = "ALTER TABLE `#__faq` ADD FULLTEXT `jos_faq_title_introtext_fulltext_ftidx` (`title`, `params`, `fulltxt`);";
+                $query = "ALTER TABLE `#__faq` "
+                    . "ADD FULLTEXT `jos_faq_title_introtext_fulltext_ftidx` (`title`, `params`, `fulltxt`);";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +26,7 @@ class Tags extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = 'tags';
 
     /**
@@ -32,6 +34,7 @@ class Tags extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parentname = null;
 
     /**
@@ -39,6 +42,7 @@ class Tags extends Base
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_manifest = null;
 
     /**
@@ -46,6 +50,7 @@ class Tags extends Base
      *
      * @var  integer
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_blockId = 0;
 
     /**
@@ -227,7 +232,8 @@ class Tags extends Base
                 'title'        => 'Publication Tags',
                 'draftHeading' => 'Add tags',
                 'draftTagline' => 'Make your publication more discoverable:',
-                'about'        => 'Tags help users find your publication. Before adding your own tags, try finding good matches in existing tag library.',
+                'about'        => 'Tags help users find your publication. Before adding your own tags, '
+                    . 'try finding good matches in existing tag library.',
                 'adminTips'    => '',
                 'elements'     => array(),
                 'params'       => array(

@@ -67,7 +67,9 @@ class Component extends Relational
     public function setup()
     {
         $this->addRule('component', function ($data) {
-            $this->connection->setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
+            $this->
+                connection->
+                setQuery("SELECT element FROM `#__extensions` AS e WHERE e.type = 'component' ORDER BY e.name ASC");
             $extensions = $this->connection->loadColumn();
             if (!in_array($data['component'], $extensions)) {
                 return Lang::txt('Component does not exist.');

@@ -193,7 +193,8 @@ class Form extends Content
 				closeBtn: false,
 				modal: true,
 				type: 'iframe',
-				href: '/courses/" . $gid . "/" . $oid . "/form.layout?formId=" . $form->getId() . "&readonly=1&tmpl=component',
+				href: '/courses/" . $gid . "/" . $oid . "/form.layout?formId="
+                    . $form->getId() . "&readonly=1&tmpl=component',
 				afterShow: function() {
 					var frameContents = $('.fancybox-iframe').contents();
 

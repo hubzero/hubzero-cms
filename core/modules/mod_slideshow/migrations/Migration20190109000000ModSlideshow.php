@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing slideshow module
- **/
+ *
+ */
 class Migration20190109000000ModSlideshow extends Base
 {
     /**

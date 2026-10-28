@@ -89,7 +89,8 @@ trait HtmlTrait
                 }
             }
         } else {
-            $tag = rtrim(substr($lines[$current], 1, min(strpos($lines[$current], '>'), strpos($lines[$current] . ' ', ' ')) - 1), '/');
+            $tag = rtrim(substr($lines[$current], 1, min(strpos($lines[$current], '>'), strpos($lines[$current]
+                . ' ', ' ')) - 1), '/');
             $level = 0;
             if (in_array($tag, $this->selfClosingHtmlElements)) {
                 $level--;

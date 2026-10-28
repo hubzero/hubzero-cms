@@ -25,6 +25,7 @@ class Element extends Obj
      *
      * @var  string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = null;
 
     /**
@@ -32,6 +33,7 @@ class Element extends Obj
      *
      * @var  object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_parent = null;
 
     /**
@@ -40,6 +42,7 @@ class Element extends Obj
      * @param   string  $parent  Element parent
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($parent = null)
     {
         $this->_parent = $parent;
@@ -95,7 +98,11 @@ class Element extends Obj
     {
         $output = '<label id="' . $control_name . $name . '-lbl" for="' . $control_name . $name . '"';
         if ($description) {
-            $output .= ' class="hasTip" title="' . \App::get('language')->txt($label) . '::' . \App::get('language')->txt($description) . '">';
+            $output .= ' class="hasTip" title="' .
+                \App::get('language')->txt($label) .
+                '::' .
+                \App::get('language')->txt($description) .
+                '">';
         } else {
             $output .= '>';
         }

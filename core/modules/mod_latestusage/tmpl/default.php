@@ -13,8 +13,16 @@ defined('_HZEXEC_') or die();
     <caption><?php echo Lang::txt('MOD_LATESTUSAGE_CAPTION'); ?></caption>
     <tfoot>
         <tr>
-            <td><a href="<?php echo Route::url('index.php?option=com_usage&task=maps&type=online'); ?>"><?php echo Lang::txt('MOD_LATESTUSAGE_WHOSONLONE'); ?></a></td>
-            <td class="more"><a href="<?php echo Route::url('index.php?option=com_usage'); ?>"><?php echo Lang::txt('MOD_LATESTUSAGE_MORE'); ?></a></td>
+            <td>
+                <a href="<?php echo Route::url('index.php?option=com_usage&task=maps&type=online'); ?>">
+                    <?php echo Lang::txt('MOD_LATESTUSAGE_WHOSONLONE'); ?>
+                </a>
+            </td>
+            <td class="more">
+                <a href="<?php echo Route::url('index.php?option=com_usage'); ?>">
+                    <?php echo Lang::txt('MOD_LATESTUSAGE_MORE'); ?>
+                </a>
+            </td>
         </tr>
     </tfoot>
     <tbody>

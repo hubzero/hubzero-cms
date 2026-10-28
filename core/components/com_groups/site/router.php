@@ -146,9 +146,10 @@ class Router extends Base
         }
 
         if (isset($segments[2])) {
-            if (isset($vars['controller']) && in_array($vars['controller'], array('pages', 'media', 'categories', 'modules'))) {
+            $pageControllers = array('pages', 'media', 'categories', 'modules');
+            if (isset($vars['controller']) && in_array($vars['controller'], $pageControllers)) {
                 $vars['task'] = $segments[2];
-            } else if ($segments[1] == 'wiki') {
+            } elseif ($segments[1] == 'wiki') {
                 if (isset($segments[3]) && preg_match('/File:|Image:/', $segments[3])) {
                     $vars['pagename'] = $segments[2];
                 } else {
@@ -176,7 +177,14 @@ class Router extends Base
                 if (isset($vars['year'])) {
                     $vars['month'] = $segments[3];
                 } else {
-                    if (in_array($vars['action'], array('events', 'editcalendar', 'deletecalendar', 'refreshcalendar', 'subscribe'))) {
+                    $calendarActions = array(
+                        'events',
+                        'editcalendar',
+                        'deletecalendar',
+                        'refreshcalendar',
+                        'subscribe'
+                    );
+                    if (in_array($vars['action'], $calendarActions)) {
                         $vars['calendar_id'] = $segments[3];
                     } else {
                         $vars['event_id'] = $segments[3];

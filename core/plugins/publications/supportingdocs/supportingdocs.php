@@ -1,13 +1,12 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for supporting docs
@@ -19,6 +18,7 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -52,8 +52,15 @@ class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
      * @param   boolean  $authorized   Whether or not authorized
      * @return  array
      */
-    public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true, $authorized = true)
-    {
+    public function onPublication(
+        $publication,
+        $option,
+        $areas,
+        $rtrn = 'all',
+        $version = 'default',
+        $extended = true,
+        $authorized = true
+    ) {
         $arr = array(
             'html'     => '',
             'metadata' => ''

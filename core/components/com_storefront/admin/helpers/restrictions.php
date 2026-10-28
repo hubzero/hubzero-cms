@@ -212,7 +212,7 @@ class RestrictionsHelper
 
         if ($uId) {
             $sql .= " AND p.uId = " . $db->quote($uId);
-        } else if ($username) {
+        } elseif ($username) {
             $sql .= " AND p.username = " . $db->quote($username);
         }
 
@@ -222,7 +222,8 @@ class RestrictionsHelper
         }
 
         $sql  = "INSERT IGNORE INTO `#__storefront_permissions`
-				SET `scope` = " . $db->quote($scope) . ", `uId` = " . $db->quote((int)$uId) . ", `scope_id` = " . $db->quote((int)$scopeId);
+				SET `scope` = " . $db->quote($scope) . ", `uId` = " . $db->quote((int)$uId) .
+                ", `scope_id` = " . $db->quote((int)$scopeId);
 
         if (!$uId && $username) {
             $sql .= ", `username` = " . $db->quote($username);
@@ -246,7 +247,8 @@ class RestrictionsHelper
         $db = App::get('db');
 
         $sql  = "UPDATE `#__storefront_permissions`
-				SET `uId` = " . $db->quote((int)$uId) . ", `username` = NULL WHERE `username` = " . $db->quote($username);
+				SET `uId` = " . $db->quote((int)$uId) .
+                ", `username` = NULL WHERE `username` = " . $db->quote($username);
 
         $db->setQuery($sql);
         $db->execute();

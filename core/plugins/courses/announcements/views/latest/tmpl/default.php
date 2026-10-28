@@ -15,7 +15,7 @@ if ($this->params->get('allowClose', 1)) {
 }
 
 $rows = $this->offering->announcements(array(
-    'limit'     => $this->params->get('display_limit', 1),
+    'limit' => $this->params->get('display_limit', 1),
     'published' => true
 ));
 
@@ -52,15 +52,17 @@ if ($rows->total() > 0) {
                         </dd>
                     </dl>
                     <?php
-                        $page = Request::getString('REQUEST_URI', '', 'server');
+                    $page = Request::getString('REQUEST_URI', '', 'server');
                     if ($page && $this->params->get('allowClose', 1)) {
                         $page .= (strstr($page, '?')) ? '&' : '?';
                         $page .= 'ancmnt' . $row->get('id') . '=closed';
                         ?>
-                            <a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>" data-duration="<?php echo $this->params->get('closeDuration', 30); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
-                                <span><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
-                            </a>
-                            <?php
+                        <a class="close" href="<?php echo $page; ?>" data-id="<?php echo $row->get('id'); ?>"
+                            data-duration="<?php echo $this->params->get('closeDuration', 30); ?>"
+                            title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE_THIS'); ?>">
+                            <span><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CLOSE'); ?></span>
+                        </a>
+                        <?php
                     }
                     ?>
                 </div>

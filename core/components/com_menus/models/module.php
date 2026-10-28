@@ -20,7 +20,7 @@ class Module extends Relational
     /**
      * Menu module name
      **/
-    const MODULE_NAME = 'mod_menu';
+    public const MODULE_NAME = 'mod_menu';
 
     /**
      * The table namespace
@@ -144,8 +144,10 @@ class Module extends Relational
             ->select('map.menuid')
             ->from(self::blank()->getTableName(), 'a');
 
-        $query->joinRaw('#__modules_menu AS map', sprintf('map.moduleid = a.id AND map.menuid IN (0, %1$d, -%1$d)', $pk), 'left');
-        $query->select('(SELECT COUNT(*) FROM #__modules_menu WHERE moduleid = a.id AND menuid < 0)', '`except`');
+        $joinCondition = sprintf('map.moduleid = a.id AND map.menuid IN (0, %1$d, -%1$d)', $pk);
+        $query->joinRaw('#__modules_menu AS map', $joinCondition, 'left');
+        $subquery = '(SELECT COUNT(*) FROM #__modules_menu WHERE moduleid = a.id AND menuid < 0)';
+        $query->select($subquery, '`except`');
 
         // Join on the asset groups table.
         $query->select('ag.title', 'access_title')

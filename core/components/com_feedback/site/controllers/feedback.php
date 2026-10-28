@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,6 +50,7 @@ class Feedback extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildPathway()
     {
         if (Pathway::count() <= 0) {
@@ -70,6 +72,7 @@ class Feedback extends SiteController
      *
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTitle()
     {
         $this->_title = Lang::txt(strtoupper($this->_option));
@@ -138,7 +141,10 @@ class Feedback extends SiteController
     public function storyTask($row = null)
     {
         if (User::isGuest()) {
-            $here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
+            $here = Route::url(
+                'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller . '&task=' . $this->_task
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
                 Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
@@ -212,7 +218,10 @@ class Feedback extends SiteController
     public function sendstoryTask()
     {
         if (User::isGuest()) {
-            $here = Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
+            $here = Route::url(
+                'index.php?option=' . $this->_option
+                . '&controller=' . $this->_controller . '&task=' . $this->_task
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($here)),
                 Lang::txt('COM_FEEDBACK_STORY_LOGIN'),
@@ -418,7 +427,8 @@ class Feedback extends SiteController
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(array('error' => Lang::txt('COM_FEEDBACK_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))));
+            $errorMsg = Lang::txt('COM_FEEDBACK_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed));
+            echo json_encode(array('error' => $errorMsg));
             return;
         }
 

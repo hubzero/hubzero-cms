@@ -14,13 +14,14 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for file Jupyter notebooks
  */
-class plgHandlersIpynb extends Plugin
+class PlgHandlersIpynb extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

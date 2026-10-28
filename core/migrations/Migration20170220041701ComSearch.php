@@ -10,6 +10,7 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating the facet table for Solr
+  *
  **/
 class Migration20170220041701ComSearch extends Base
 {
@@ -32,8 +33,8 @@ class Migration20170220041701ComSearch extends Base
             $this->db->setQuery($sql);
             $this->db->query();
 
-            $insert = "
-				INSERT INTO `jos_solr_search_facets` (`id`,`name`,`facet`,`state`,`protected`,`ordering`,`parent_id`) VALUES
+            $insert = "INSERT INTO `jos_solr_search_facets` "
+                . "(`id`,`name`,`facet`,`state`,`protected`,`ordering`,`parent_id`) VALUES
 				(1,'Content','hubtype:content',1,1,'0',0), (2,'Resources','hubtype:resource',1,1,'0',0),
 				(3,'Collections','hubtype:collection',1,1,'0',0), (4,'Members','hubtype:member',1,1,'0',0),
 				(5,'Projects','hubtype:project',1,1,'0',0), (6,'Groups','hubtype:group',1,1,'0',0), 

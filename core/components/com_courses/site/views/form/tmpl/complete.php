@@ -21,7 +21,8 @@ $timeLeft = max($realLimit * 60, 0);
 // First, see if they've already started the form
 if ($this->resp->getStartTime()) {
     // This is the time left since starting form
-    $timeLeft2 = max(($this->dep->getTimeLimit() * 60) - (strtotime(Date::of('now')) - strtotime($this->resp->getStartTime())), 0);
+    $elapsed = strtotime(Date::of('now')) - strtotime($this->resp->getStartTime());
+    $timeLeft2 = max(($this->dep->getTimeLimit() * 60) - $elapsed, 0);
 
     // Take individual time remaining...assuming it's less than actual time remaining
     if ($timeLeft2 < $timeLeft) {
@@ -45,13 +46,14 @@ if ($this->resp->getStartTime()) {
             <?php
         endif;
         $layout = $pdf->getPageLayout();
+        $view = $this;
         if ($incomplete) :
             echo '<p class="error incomplete">' . Lang::txt('COM_COURSES_SELECT_ANSWER_FOR_EACH_QUESTION') . '</p>';
         endif;
         ?>
     <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
         <ol id="pages" class="complete">
-        <?php $pdf->eachPage(function ($url, $idx) use ($layout, $progress, $incomplete) { ?>
+        <?php $pdf->eachPage(function ($url, $idx) use ($view, $layout, $progress, $incomplete) { ?>
             <li>
                 <img src="<?php echo $url ?>" alt="" />
                 <?php
@@ -59,23 +61,35 @@ if ($this->resp->getStartTime()) {
                     $qidx = 0;
                     foreach ($layout[$idx - 1] as $qid => $group) :
                         foreach ($group['answers'] as $aidx => $ans) :
-							// phpcs:ignore PHPCompatibility.FunctionDeclarations.NewClosure.ThisFoundOutsideClass
-                            $this->css('
-								#question-' . $qid . '-' . $aidx . ' {
-									top: ' . $ans['top'] . 'px;
-									left: ' . $ans['left'] . 'px;
-								}
-							');
-                            echo '<input name="question-' . $qid . '" id="question-' . $qid . '-' . $aidx . '" value="' . $ans['id'] . '" ' . ((isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id']) || (!isset($_POST['question-' . $qid]) && isset($progress[$qid]) && $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '') . 'class="placeholder" type="radio" />';
+                            $view->css(
+                                '#question-' . $qid . '-' . $aidx . ' {
+                                    top: ' . $ans['top'] . 'px;
+                                    left: ' . $ans['left'] . 'px;
+                                }'
+                            );
+                            echo '<input
+                                name="question-' . $qid . '"
+                                id="question-' . $qid . '-' . $aidx . '"
+                                value="' . $ans['id'] . '"
+                                ' . (
+                                    (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
+                                    || (!isset($_POST['question-' . $qid])
+                                        && isset($progress[$qid])
+                                        && $progress[$qid]['answer_id'] == $ans['id'])
+                                    ? '
+                                checked="checked"
+                                ' : '') . 'class="placeholder"
+                                type="radio" />';
                             if (isset($incomplete[$qid])) :
-								// phpcs:ignore PHPCompatibility.FunctionDeclarations.NewClosure.ThisFoundOutsideClass
-                                $this->css('
-									#question-' . $qid . '-incomplete-marker {
-										top: ' . $ans['top'] . 'px;
-										left: ' . ($ans['left'] - 20) . 'px;
-									}
-								');
-                                echo '<div class="incomplete-marker" id="question-' . $qid . '-incomplete-marker">*</div>';
+                                $view->css(
+                                    '#question-' . $qid . '-incomplete-marker {
+                                        top: ' . $ans['top'] . 'px;
+                                        left: ' . ($ans['left'] - 20) . 'px;
+                                    }'
+                                );
+                                echo '<div
+                                    class="incomplete-marker"
+                                    id="question-' . $qid . '-incomplete-marker">*</div>';
                             endif;
                         endforeach;
                         ++$qidx;

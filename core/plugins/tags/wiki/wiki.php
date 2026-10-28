@@ -1,13 +1,11 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Tags plugin class for wiki pages
@@ -19,6 +17,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -56,12 +55,12 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
         $filters = array();
         $filters['tags'] = $ids;
         $filters['sortby'] = ($sort) ? $sort : 'date';
-        $filters['authorized'] = $this->_authorize();
+        $filters['authorized'] = $this->authorize();
 
         $filters['select'] = 'count';
         $filters['limit']  = 'all';
 
-        $database->setQuery($this->_buildPluginQuery($filters));
+        $database->setQuery($this->buildPluginQuery($filters));
         $response['total'] = $database->loadResult();
 
         if ($areas && $areas == $response['name']) {
@@ -69,7 +68,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
             $filters['limit']      = $limit;
             $filters['limitstart'] = $limitstart;
 
-            $database->setQuery($this->_buildPluginQuery($filters));
+            $database->setQuery($this->buildPluginQuery($filters));
             $response['results'] = $database->loadObjectList();
 
             // Did we get any results?
@@ -84,7 +83,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
             $filters['select']     = 'records';
             $filters['limitstart'] = $limitstart;
 
-            $response['sql'] = $this->_buildPluginQuery($filters);
+            $response['sql'] = $this->buildPluginQuery($filters);
         }
 
         return $response;
@@ -96,7 +95,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
      * @param   array   $filters  Options for building the query
      * @return  string  SQL
      */
-    private function _buildPluginQuery($filters = array())
+    private function buildPluginQuery($filters = array())
     {
         if (isset($filters['search']) && $filters['search'] != '') {
             $searchquery = $filters['search'];
@@ -123,27 +122,34 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
                 $query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.page_id) ";
             }
         } else {
-            $query = "SELECT v.page_id AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
-						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
-						CASE
-							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=', xp.alias, '&active=notes&pagename=', w.path, '/', w.pagename)
-							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, '&active=wiki&pagename=', w.path, '/', w.pagename)
-							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
-						END AS href,
-						'wiki' AS section ";
+            $query = "SELECT v.page_id AS id,
+                 w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created,
+                        v.created_by,
+                        v.created AS modified, v.created AS publish_up, NULL AS publish_down,
+                        CASE
+                            WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=',
+                                 xp.alias, '&active=notes&pagename=', w.path, '/', w.pagename)
+                            WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=',
+                                 xg.cn, '&active=wiki&pagename=', w.path, '/', w.pagename)
+                            ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
+                        END AS href,
+                        'wiki' AS section ";
             if (isset($filters['tags'])) {
                 $query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
             }
             $query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
         }
         $query .= "FROM #__wiki_pages AS w
-					INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
-					LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'
-					LEFT JOIN `#__projects` xp ON xp.id = w.scope_id AND w.scope='project'";
+                    INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
+                    LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'
+                    LEFT JOIN `#__projects` xp ON xp.id = w.scope_id AND w.scope='project'";
         if (isset($filters['tags'])) {
             $query .= ", #__tags_object AS t ";
         }
-        $query .= "WHERE w.id=v.page_id AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))";
+        $query .= "WHERE w.id=v.page_id AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(
+            ' OR ',
+            $groupAuth
+        ) . "))";
         if (isset($filters['tags'])) {
             $ids = implode(',', $filters['tags']);
             $query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
@@ -197,7 +203,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
      *
      * @return  boolean  True if logged in
      */
-    private function _authorize()
+    private function authorize()
     {
         // Check if they are logged in
         if (User::isGuest()) {

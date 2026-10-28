@@ -42,6 +42,7 @@ class Guard
      * @param   object  $app  Container
      * @return  void
      */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct(Container $app)
     {
         $this->app = $app;
@@ -57,13 +58,13 @@ class Guard
         return $this->token;
     }
 
-
     /**
          * Clear session variables while maintaining some internal
      * session state.
      *
      * @return void
      */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     private function clear_session()
     {
         // @TODO: Ultimately I don't think any of this is necessary
@@ -91,7 +92,6 @@ class Guard
         Session::set('session.token', $session_token);
         Session::set('session.counter', $session_counter);
     }
-
 
     /**
      * Validates incoming request
@@ -141,12 +141,15 @@ class Guard
 
                 $oauthResponse->setStatusCode(403);
                 $oauthResponse->setParameter('error', 'invalid_token');
-                $oauthResponse->setParameter('error_description', 'The access token is missing user identification data');
+                $oauthResponse->setParameter(
+                    'error_description',
+                    'The access token is missing user identification data'
+                );
                 $oauthResponse->setParameter('code', $oauthResponse->getStatusCode());
                 $oauthResponse->send();
                 exit();
             }
-        } else if ($oauthResponse->getParameters('error') != array()) {
+        } elseif ($oauthResponse->getParameters('error') != array()) {
             // This request looked like OAuth2 but failed. We respond
             // immediately with an error here because the client was expecting
             // an authenticated response so returning a guest response would

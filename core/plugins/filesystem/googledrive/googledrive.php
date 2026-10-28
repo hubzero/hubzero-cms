@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 require_once \Component::path('projects') . '/models/orm/connection.php';
 
 use Masbug\Flysystem\GoogleDriveAdapter;
@@ -31,7 +28,9 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
         $pparams = Plugin::params('filesystem', 'googledrive');
 
         $app_id = isset($params['app_id']) && $params['app_id'] != '' ? $params['app_id'] : $pparams->get('app_id');
-        $app_secret = isset($params['app_secret']) && $params['app_secret'] != '' ? $params['app_secret'] : $pparams->get('app_secret');
+        $app_secret = isset($params['app_secret']) && $params['app_secret'] != ''
+            ? $params['app_secret']
+            : $pparams->get('app_secret');
 
         $client = new \Google_Client();
         $client->setClientId($app_id);
@@ -40,7 +39,6 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
         $client->setIncludeGrantedScopes(true);
-
 
         if (isset($params['app_token'])) {
             $accessToken = $params['app_token'];

@@ -47,7 +47,16 @@ class Helper extends Obj
                 if (count($mids) > 0) {
                     $recipient = Recipient::blank();
                     if (!$recipient->setState(1, $mids)) {
-                        $this->setError(Lang::txt('Unable to update recipient records %s for user %s', implode(',', $mids), $uid));
+                        setError(
+                            Lang::txt(
+                                'Unable to update recipient records %s for user %s',
+                                implode(
+                                    ',',
+                                    $mids
+                                ),
+                                $uid
+                            )
+                        );
                     }
                 }
             }
@@ -70,8 +79,17 @@ class Helper extends Obj
      * @param   integer  $group_id     Parameter description (if any) ...
      * @return  mixed    True if no errors else error message
      */
-    public function sendMessage($type, $subject, $message, $from = array(), $to = array(), $component = '', $element = null, $description = '', $group_id = 0)
-    {
+    public function sendMessage(
+        $type,
+        $subject,
+        $message,
+        $from = array(),
+        $to = array(),
+        $component = '',
+        $element = null,
+        $description = '',
+        $group_id = 0
+    ) {
         // Do we have a message?
         if (!$message) {
             return false;

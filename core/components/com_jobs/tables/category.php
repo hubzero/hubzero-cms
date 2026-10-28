@@ -89,7 +89,8 @@ class JobCategory extends Table
              return false;
         }
 
-        $query  = "UPDATE `$this->_tbl` SET ordernum=" . $this->_db->quote($ordernum) . " WHERE id=" . $this->_db->quote($id);
+        $query  = "UPDATE `$this->_tbl` SET ordernum=" . $this->_db->quote($ordernum);
+        $query .= " WHERE id=" . $this->_db->quote($id);
         $this->_db->setQuery($query);
         if (!$this->_db->query()) {
             $this->setError($this->_db->getErrorMsg());

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,24 +15,24 @@ namespace Hubzero\Facades\Tests\Mock;
  */
 class Foo
 {
-	/**
-	 * Get the registered name.
-	 *
-	 * @return  string
-	 */
-	public function bar()
-	{
-		return 'baz';
-	}
+    /**
+     * Get the registered name.
+     *
+     * @return  string
+     */
+    public function bar()
+    {
+        return 'baz';
+    }
 
-	/**
-	 * Get a count of the number of args passed
-	 *
-	 * @return  integer
-	 */
-	public function multiArg()
-	{
-		$args = func_get_args();
-		return count($args);
-	}
+    /**
+     * Get a count of the number of args passed
+     *
+     * @return  integer
+     */
+    public function multiArg()
+    {
+        $args = func_get_args();
+        return count($args);
+    }
 }

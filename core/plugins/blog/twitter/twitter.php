@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,6 +12,7 @@ defined('_HZEXEC_') or die();
 
 /**
  * Resources Plugin class for adding Twitter metadata to the document
+ *
  */
 class plgBlogTwitter extends \Hubzero\Plugin\Plugin
 {
@@ -42,7 +44,8 @@ class plgBlogTwitter extends \Hubzero\Plugin\Plugin
 
         Document::addCustomTag('<meta property="twitter:site" content="@' . $view->escape($user) . '" />');
 
-        Document::addCustomTag('<meta property="twitter:title" content="' . $view->escape(Hubzero\Utility\Str::truncate(strip_tags($model->title), 40)) . '" />');
+        $title = $view->escape(Hubzero\Utility\Str::truncate(strip_tags($model->title), 40));
+        Document::addCustomTag('<meta property="twitter:title" content="' . $title . '" />');
 
         $content = Hubzero\Utility\Str::truncate(strip_tags($model->content), 140);
         $content = str_replace(array("\n", "\t", "\r"), ' ', $content);

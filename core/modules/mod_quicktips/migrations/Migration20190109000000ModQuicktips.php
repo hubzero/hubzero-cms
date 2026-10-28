@@ -10,7 +10,8 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing quicktips module
- **/
+ *
+ */
 class Migration20190109000000ModQuicktips extends Base
 {
     /**

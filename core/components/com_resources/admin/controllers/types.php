@@ -174,7 +174,8 @@ class Types extends AdminController
                 if ($val['title']) {
                     $element = new stdClass();
                     $element->default  = (isset($val['default'])) ? $val['default'] : '';
-                    $element->name     = (isset($val['name']) && trim($val['name']) != '') ? $val['name'] : $this->_normalize(trim($val['title']));
+                    $hasName = isset($val['name']) && trim($val['name']) != '';
+                    $element->name     = $hasName ? $val['name'] : $this->normalize(trim($val['title']));
                     $element->label    = $val['title'];
                     $element->type     = (isset($val['type']) && trim($val['type']) != '') ? $val['type'] : 'text';
                     $element->required = (isset($val['required'])) ? $val['required'] : '0';
@@ -232,7 +233,7 @@ class Types extends AdminController
      * @param   boolean  $dashes  Allow dashes and underscores
      * @return  string
      */
-    private function _normalize($txt, $dashes = false)
+    private function normalize($txt, $dashes = false)
     {
         $allowed = "a-zA-Z0-9";
         if ($dashes) {

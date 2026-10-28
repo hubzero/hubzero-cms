@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,6 +25,7 @@ class Comment extends Model
      *
      * @var object
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_name = '\\Components\\Projects\\Tables\\Comment';
 
     /**
@@ -31,6 +33,7 @@ class Comment extends Model
      *
      * @var string
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_context = 'com_projects.comment.comment';
 
     /**
@@ -38,21 +41,21 @@ class Comment extends Model
      *
      * @var object
      */
-    private $_creator = null;
+    private $creator = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_comments = null;
+    private $comments = null;
 
     /**
      * Commen count
      *
      * @var integer
      */
-    private $_comments_count = null;
+    private $commentsCount = null;
 
     /**
      * Returns a reference to a blog comment model
@@ -60,7 +63,7 @@ class Comment extends Model
      * @param   mixed   $oid  ID (int) or alias (string)
      * @return  object  Comment
      */
-    static function &getInstance($oid = 0)
+    public static function &getInstance($oid = 0)
     {
         static $instances;
 
@@ -111,17 +114,17 @@ class Comment extends Model
      */
     public function creator($property = null, $default = null)
     {
-        if (!($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
+        if (!($this->creator instanceof \Hubzero\User\User)) {
+            $this->creator = \Hubzero\User\User::oneOrNew($this->get('created_by'));
         }
         if ($property) {
             $property = ($property == 'uidNumber') ? 'id' : $property;
             if ($property == 'picture') {
-                return $this->_creator->picture($this->get('anonymous'));
+                return $this->creator->picture($this->get('anonymous'));
             }
-            return $this->_creator->get($property, $default);
+            return $this->creator->get($property, $default);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**
@@ -202,31 +205,31 @@ class Comment extends Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_comments_count) || !is_numeric($this->_comments_count) || $clear) {
-                    $this->_comments_count = 0;
+                if (!isset($this->commentsCount) || !is_numeric($this->commentsCount) || $clear) {
+                    $this->commentsCount = 0;
 
-                    if (!$this->_comments) {
+                    if (!$this->comments) {
                         $c = $this->comments('list', $filters);
                     }
-                    foreach ($this->_comments as $com) {
-                        $this->_comments_count++;
+                    foreach ($this->comments as $com) {
+                        $this->commentsCount++;
                         if ($com->replies()) {
                             foreach ($com->replies() as $rep) {
-                                $this->_comments_count++;
+                                $this->commentsCount++;
                                 if ($rep->replies()) {
-                                    $this->_comments_count += $rep->replies()->total();
+                                    $this->commentsCount += $rep->replies()->total();
                                 }
                             }
                         }
                     }
                 }
-                return $this->_comments_count;
+                return $this->commentsCount;
             break;
 
             case 'list':
             case 'results':
             default:
-                if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear) {
+                if (!($this->comments instanceof \Hubzero\Base\ItemList) || $clear) {
                     if ($this->get('replies', null) !== null) {
                         $results = $this->get('replies');
                     } else {
@@ -244,9 +247,9 @@ class Comment extends Model
                     } else {
                         $results = array();
                     }
-                    $this->_comments = new \Hubzero\Base\ItemList($results);
+                    $this->comments = new \Hubzero\Base\ItemList($results);
                 }
-                return $this->_comments;
+                return $this->comments;
             break;
         }
     }

@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +15,6 @@ defined('_HZEXEC_') or die();
 /**
  * Migration to add index for job column on joblog table
  **/
-
 class Migration20181211161919ComTools extends Base
 {
     /**

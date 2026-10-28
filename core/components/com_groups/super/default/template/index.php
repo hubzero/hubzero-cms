@@ -31,8 +31,12 @@ Document::addScript($base . DS . 'assets/js/main.js');
         <div class="super-group-content-wrap">
             <div class="super-group-content group_<?php echo $this->escape($this->tab); ?>">
                 <?php
-                    $title = (isset($this->page) && $this->page->get('title')) ? $this->page->get('title') : Lang::txt('PLG_GROUPS_' . strtoupper($this->tab));
-                    $title = ($title == 'PLG_GROUPS_' . strtoupper($this->tab) ? ucfirst($this->tab) : $title);
+                    $title = (isset($this->page) && $this->page->get('title'))
+                        ? $this->page->get('title')
+                        : Lang::txt('PLG_GROUPS_' . strtoupper($this->tab));
+                    $title = ($title == 'PLG_GROUPS_' . strtoupper($this->tab)
+                        ? ucfirst($this->tab)
+                        : $title);
                 if ($title != '') :
                     ?>
                     <h2><?php echo $this->escape($title); ?></h2>

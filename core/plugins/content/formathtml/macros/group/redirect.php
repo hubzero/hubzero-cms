@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,11 +33,12 @@ class Redirect extends GroupMacro
     public function description()
     {
         return '<p>Redirects to a URL with an optional delay (in seconds).</p>
-				<p>Examples:</p>
-					<ul>
-						<li><code>[[Group.Redirect(http://google.com)]]</code></li>
-						<li><code>[[Group.Redirect(http://google.com, 5)]]</code> - Wait 5 seconds before redirecting.</li>
-					</ul>';
+            <p>Examples:</p>
+            <ul>
+                <li><code>[[Group.Redirect(http://google.com)]]</code></li>
+                <li><code>[[Group.Redirect(http://google.com, 5)]]</code> - ' .
+                'Wait 5 seconds before redirecting.</li>
+            </ul>';
     }
 
     /**
@@ -71,7 +73,10 @@ class Redirect extends GroupMacro
         }
 
         // Delayed redirect
-        return '<script type="text/javascript">setTimeout(function () { window.location.href = "' . str_replace(array("'", '"'), array('%27', '%22'), $url) . '"; }, ' . ($delay * 1000) . ');</script>
-				<p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
+        $safeUrl = str_replace(array("'", '"'), array('%27', '%22'), $url);
+        $script = '<script type="text/javascript">setTimeout(function () { window.location.href = "' .
+            $safeUrl . '"; }, ' . ($delay * 1000) . ');</script>';
+        $message = '<p class="warning">' . \Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
+        return $script . $message;
     }
 }

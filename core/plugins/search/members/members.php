@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,6 +17,8 @@ require_once __DIR__ . DS . 'contributionsorter.php';
 
 /**
  * Search members
+ */
+/**
  */
 class plgSearchMembers extends \Hubzero\Plugin\Plugin
 {
@@ -139,8 +142,8 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->get_term_ar();
-        //$weight = '(match(u.name) against (\'' . join(' ', $terms['stemmed']) . '\') + match(p.profile_key) against(\'' . join(' ', $terms['stemmed']) . '\'))';
-        $weight = '(u.name LIKE \'' . join(' ', $terms['stemmed']) . '\' OR p.profile_value LIKE \'' . join(' ', $terms['stemmed']) . '\')';
+        $stemmed = join(' ', $terms['stemmed']);
+        $weight = "(u.name LIKE '" . $stemmed . "' OR p.profile_value LIKE '" . $stemmed . "')";
 
         $addtl_where = array();
         foreach ($terms['mandatory'] as $mand) {
@@ -150,12 +153,13 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
             $addtl_where[] = "(u.name NOT LIKE '%$forb%' AND p.profile_value NOT LIKE '%$forb%')";
         }
 
-        $results->add(new \Components\Search\Models\Basic\Result\Sql(
-            "SELECT
+        $accessLevels = implode(',', User::getAuthorisedViewLevels());
+        $linkCase = "CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END";
+        $sql = "SELECT
 				u.id,
 				u.name AS title,
 				coalesce(p.profile_key, '') AS description,
-				concat('index.php?option=com_members&id=', CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END) AS link,
+				concat('index.php?option=com_members&id=', $linkCase) AS link,
 				$weight AS weight,
 				NULL AS date,
 				'Members' AS section,
@@ -165,10 +169,10 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
 				u.block=0 AND u.approved>0 AND
-				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND $weight > 0" .
+				u.access IN (" . $accessLevels . ") AND $weight > 0" .
                 ($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-            " ORDER BY $weight DESC"
-        ));
+            " ORDER BY $weight DESC";
+        $results->add(new \Components\Search\Models\Basic\Result\Sql($sql));
     }
 
     /**
@@ -195,12 +199,14 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
             $addtl_where[] = "(u.name NOT LIKE '%$forb%')";
         }
 
+        $accessLevels = implode(',', User::getAuthorisedViewLevels());
+        $linkCase = "CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END";
         $sql = new \Components\Search\Models\Basic\Result\Sql(
             "SELECT
 				u.id,
 				u.name AS title,
 				coalesce(p.profile_key, '') AS description,
-				concat('index.php?option=com_members&id=', CASE WHEN u.id > 0 THEN u.id ELSE concat('n', abs(u.id)) END) AS link,
+				concat('index.php?option=com_members&id=', $linkCase) AS link,
 				NULL AS date,
 				'Members' AS section,
 				NULL AS img_href
@@ -209,7 +215,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
 				ON u.id = p.user_id AND p.profile_key = 'bio'
 			WHERE
 				u.block=0 AND u.approved>0 AND
-				u.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ") AND " . join(' AND ', $addtl_where)
+				u.access IN (" . $accessLevels . ") AND " . join(' AND ', $addtl_where)
         );
         $assoc = $sql->to_associative();
         if (!($assoc instanceof Countable) || !count($assoc)) {
@@ -344,6 +350,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
             $href = User::getInstance($res->get('id'))->picture();
         }
 
-        return '<img src="' . $href . '" alt="' . htmlentities($res->get_title()) . '" title="' . htmlentities($res->get_title()) . '" />';
+        $title = htmlentities($res->get_title());
+        return '<img src="' . $href . '" alt="' . $title . '" title="' . $title . '" />';
     }
 }

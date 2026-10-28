@@ -164,9 +164,8 @@ class Arguments
                     }
 
                     continue;
-                }
-                // Args with a dash but no equals sign will be considered TRUE if present
-                elseif (substr($this->raw[$i], 0, 1) == '-') {
+                } elseif (substr($this->raw[$i], 0, 1) == '-') {
+                    // Args with a dash but no equals sign will be considered TRUE if present
                     // Try to catch clumped arguments (ex: -if as shorthand for -i -f)
                     if (preg_match("/^-([[:alpha:]]{2,})/", $this->raw[$i], $matches)) {
                         if (isset($matches[1])) {
@@ -180,9 +179,8 @@ class Arguments
                         $key   = preg_replace("/^([-]{1,2})/", "", $this->raw[$i]);
                         $value = true;
                     }
-                }
-                // Otherwise, we'll just save the arg as a single word and individual commands may use them
-                else {
+                } else {
+                    // Otherwise, we'll just save the arg as a single word and individual commands may use them
                     $key   = $i;
                     $value = $this->raw[$i];
                 }

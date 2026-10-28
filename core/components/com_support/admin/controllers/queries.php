@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -520,7 +521,8 @@ class Queries extends AdminController
 
                     switch ($f->get('alias')) {
                         case 'common':
-                            $j = ($iscore == 1 ? Query::populateDefaults('common', $f->get('id')) : Query::populateDefaults('commonnotacl', $f->get('id')));
+                            $type = ($iscore == 1 ? 'common' : 'commonnotacl');
+                            $j = Query::populateDefaults($type, $f->get('id'));
                             break;
 
                         case 'mine':
