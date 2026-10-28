@@ -85,9 +85,8 @@ class Router extends Base
                     } else if ($method == 'GET') {
                         $vars['task'] = 'list';
                     }
-                }
-                // Read needs to be set explicttly because read, list, and the api docblock all use GETs
-                else if ($method == 'GET') {
+                } else if ($method == 'GET') {
+                    // Read needs to be set explicttly because read, list, and the api docblock all use GETs
                     $vars['task'] = 'read';
                 }
             } else if ($segments[1] == 'list') {

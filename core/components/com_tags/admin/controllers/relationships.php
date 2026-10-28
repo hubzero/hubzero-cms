@@ -318,9 +318,8 @@ class Relationships extends AdminController
                         // co-occurring tags neither need to be added nor deleted, just remove them from the pool and carry on
                         if (isset($ex[$norm_n_tag])) {
                             unset($ex[$norm_n_tag]);
-                        }
-                        // otherwise we need to add a new relationship
-                        else {
+                        } else {
+                            // otherwise we need to add a new relationship
                             $n_tag = $this->get_tag($n_tag, false);
                             $this->database->setQuery(sprintf($sql[0], $tid, $n_tag['id']));
                             $this->database->execute();

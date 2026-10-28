@@ -1249,11 +1249,10 @@ class Sessionsv1r0 extends ApiController
             );
 
             $this->send($object);
-        }
-        // TODO: middleware helper or middleware itself seems to return true/false instead of 1/0
-        // upon failure to figure out what the middleware did, just return the status that was given
-        // even though it generally stops the session anyway
-        else {
+        } else {
+            // TODO: middleware helper or middleware itself seems to return true/false instead of 1/0
+            // upon failure to figure out what the middleware did, just return the status that was given
+            // even though it generally stops the session anyway
             $object = new stdClass();
             $object->session = array(
                 'session' => $sessionid,

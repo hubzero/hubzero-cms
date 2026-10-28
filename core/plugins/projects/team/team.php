@@ -563,17 +563,14 @@ class Team extends Plugin
                     if (count($parts) == 2) {
                         $name = $parts[0];
                         $uid = preg_replace('/[)]/', '', $parts[1]);
-                    }
-                    // By user ID
-                    elseif (intval($cid) && $uid) {
+                    } elseif (intval($cid) && $uid) {
+                        // By user ID
                         $uid = $cid;
-                    }
-                    // By username
-                    elseif (!strstr($cid, ' ') && $uid) {
+                    } elseif (!strstr($cid, ' ') && $uid) {
+                        // By username
                         $uid = $validUser->get('id');
-                    }
-                    // By email
-                    else {
+                    } else {
+                        // By email
                         // Anchored at both ends: the address is stored, and a trailing
                         // quote was enough to reach the INSERT
                         $regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-]+)+$/';

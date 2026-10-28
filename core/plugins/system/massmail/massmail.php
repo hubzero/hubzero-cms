@@ -6,8 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\System\Massmail;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * System plugin keeping the mass-mail delivery cron in lock-step with the
@@ -21,7 +22,7 @@ defined('_HZEXEC_') or die();
  * the component config is saved: enabling sending enables the cron, disabling
  * sending disables it, so the Options switch is the single control.
  */
-class plgSystemMassmail extends \Hubzero\Plugin\Plugin
+class Massmail extends Plugin
 {
     /**
      * After the component configuration is saved, sync the delivery cron's

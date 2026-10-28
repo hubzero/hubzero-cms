@@ -96,9 +96,8 @@ class Formatwiki extends Plugin
                 // Not wiki. Do nothing.
                 return;
             }
-        }
-        // No format applied
-        else {
+        } else {
+            // No format applied
             // Force apply a format?
             if ($this->params->get('applyFormat') && $this->isWiki($content)) {
                 // Are we converting the format?

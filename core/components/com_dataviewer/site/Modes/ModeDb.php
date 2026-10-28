@@ -209,19 +209,19 @@ class ModeDb
             if ($group_by !== '') {
                 $group_cols = array();
                 foreach (explode(',', $group_by) as $gb_col) {
-                $gb_col = trim($gb_col);
+                    $gb_col = trim($gb_col);
                 // accept a bare column or its "WITH ROLLUP" suffix, nothing else
-                $rollup = '';
-                if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m)) {
-                $gb_col = trim($m[1]);
-                $rollup = ' WITH ROLLUP';
-                }
-                if ($gb_col !== '' && array_key_exists($gb_col, $dd['cols'])) {
-                $group_cols[] = '`' . $gb_col . '`' . $rollup;
-                }
+                    $rollup = '';
+                    if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m)) {
+                        $gb_col = trim($m[1]);
+                        $rollup = ' WITH ROLLUP';
+                    }
+                    if ($gb_col !== '' && array_key_exists($gb_col, $dd['cols'])) {
+                        $group_cols[] = '`' . $gb_col . '`' . $rollup;
+                    }
                 }
                 if ($group_cols) {
-                $dd['group_by'] = implode(', ', $group_cols);
+                    $dd['group_by'] = implode(', ', $group_cols);
                 }
             }
 
@@ -233,9 +233,9 @@ class ModeDb
             // conf, and lib/db.php then uses the key itself both as the column
             // expression and as its backtick-quoted alias -- so anything else was
             // an injection straight into the SELECT list.
-            if (!array_key_exists($cv_col, $order_cols)) {
-            continue;
-            }
+                if (!array_key_exists($cv_col, $order_cols)) {
+                    continue;
+                }
                 $dd['cols'][$cv_col] = $order_cols[$cv_col];
             }
 

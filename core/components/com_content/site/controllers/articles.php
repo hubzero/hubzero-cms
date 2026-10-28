@@ -81,9 +81,8 @@ class Articles extends SiteController
             // Check general edit permission first.
             if (User::authorise('core.edit', $asset)) {
                 $item->params->set('access-edit', true);
-            }
-            // Now check if edit.own is available.
-            elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
+            } elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
+                // Now check if edit.own is available.
                 // Check for a valid user and that they are the owner.
                 if ($userId == $data->created_by) {
                     $item->params->set('access-edit', true);
@@ -508,9 +507,8 @@ class Articles extends SiteController
                 // Check general edit permission first.
                 if (User::authorise('core.edit', $itemAsset)) {
                     $item->params->set('access-edit', true);
-                }
-                // Now check if edit.own is available.
-                elseif (User::get('id') && User::authorise('core.edit.own', $asset)) {
+                } elseif (User::get('id') && User::authorise('core.edit.own', $asset)) {
+                    // Now check if edit.own is available.
                     // Check for a valid user and that they are the owner.
                     if (User::get('id') == $item->created_by) {
                         $item->params->set('access-edit', true);
@@ -1173,9 +1171,8 @@ class Articles extends SiteController
             if ($layout = $category->params->get('category_layout')) {
                 $this->view->setLayout($layout);
             }
-        }
-        // At this point, we are in a menu item, so we don't override the layout
-        elseif (isset($menu->query['layout'])) {
+        } elseif (isset($menu->query['layout'])) {
+            // At this point, we are in a menu item, so we don't override the layout
             // We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
             $this->view->setLayout($menu->query['layout']);
         }
@@ -1360,9 +1357,8 @@ class Articles extends SiteController
         // Check general edit permission first.
         if (User::authorise('core.edit', $asset)) {
             $item->params->set('access-edit', true);
-        }
-        // Now check if edit.own is available.
-        elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
+        } elseif (!empty($userId) && User::authorise('core.edit.own', $asset)) {
+            // Now check if edit.own is available.
             // Check for a valid user and that they are the owner.
             if ($userId == $item->created_by) {
                 $item->params->set('access-edit', true);
@@ -1490,9 +1486,8 @@ class Articles extends SiteController
 
         if (User::authorise('core.edit', $context)) {
             $authorised = true;
-        }
-        // Now check if edit.own is available.
-        elseif (User::get('id') && User::authorise('core.edit.own', $asset)) {
+        } elseif (User::get('id') && User::authorise('core.edit.own', $asset)) {
+            // Now check if edit.own is available.
             // Check for a valid user and that they are the owner.
             if (User::get('id') == $model->created_by) {
                 $authorised = true;

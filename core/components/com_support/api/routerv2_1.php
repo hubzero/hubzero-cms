@@ -1,13 +1,13 @@
 <?php
 
-use Hubzero\Facades\App;
-use Hubzero\Facades\Lang;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
 
 // The v2.1 API routes exactly as v2.0 does; the loader includes this file
 // for /api/v2.1/support/... and the one parse() implementation lives in

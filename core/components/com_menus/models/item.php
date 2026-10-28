@@ -1379,9 +1379,8 @@ class Item extends Nested
                 $this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED') . ': Reposition data');
                 return false;
             }
-        }
-        // We are moving the tree to be the last child of the root node
-        else {
+        } else {
+            // We are moving the tree to be the last child of the root node
             // Get the last root node as the reference node.
             $query = $this->getQuery()
                 ->select('id')

@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Wiki plugin class for displaying a WYSIWYG wiki editor
  */

@@ -505,10 +505,9 @@ class Customexts extends AdminController
                 } else if (preg_grep("/fatal: Authentication failed.../uis", $clone_response)) {
                     $output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE'));
                     $failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
-                }
-                // Try and determine a successful clone.  The string "cloning into" is always in the ouptut message.
-                // Ex: Cloning into '/var/www/dev/app/modules/mod_home_hero_stats'...
-                else if (preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)) {
+                } else if (preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)) {
+                    // Try and determine a successful clone.  The string "cloning into" is always in the ouptut message.
+                    // Ex: Cloning into '/var/www/dev/app/modules/mod_home_hero_stats'...
                     $output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL'));
                     $success[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
 
@@ -572,11 +571,10 @@ class Customexts extends AdminController
                         } else if (!is_null($fetch_response) && preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response)) {
                             $output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH'));
                             $failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
-                        }
-                        // muse now reports a fetch that could not reach or log in to the
-                        // remote (it used to be silent and look "up to date"); that is a
-                        // failure, not a list of incoming changes to merge.
-                        else if (!is_null($fetch_response) && preg_grep("/could not read Username/uis", $fetch_response)) {
+                        } else if (!is_null($fetch_response) && preg_grep("/could not read Username/uis", $fetch_response)) {
+                            // muse now reports a fetch that could not reach or log in to the
+                            // remote (it used to be silent and look "up to date"); that is a
+                            // failure, not a list of incoming changes to merge.
                             $output = array(Lang::txt('COM_INSTALLER_CUSTOMEXTS_MISSING_TOKEN'));
                             $failed[] = array('ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output);
                         } else if (!is_null($fetch_response) && preg_grep("/Authentication failed|Permission denied \(publickey\)|HTTP Basic: Access denied/uis", $fetch_response)) {
@@ -721,8 +719,8 @@ class Customexts extends AdminController
             // If enextion is enabled
             if ($extension->enabled == 1) {
                 $museCmd = 'removeRepo -path=' . escapeshellarg($extension->path);
-            }  // If enextion is disabled
-            else if ($extension->enabled == 0) {
+            } else if ($extension->enabled == 0) {
+                // If enextion is disabled
                 $pieces = explode("/", $extension->path);
                 $repodir = array_pop($pieces);
                 $extdir = implode("/", $pieces);

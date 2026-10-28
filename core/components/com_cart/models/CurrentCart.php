@@ -27,16 +27,16 @@ class CurrentCart extends Cart
     protected $db;
 
     // Session cart
-    var $cart = null;
+    public $cart = null;
 
     // Syncing enabled?
-    var $sync = true;
+    public $sync = true;
 
     // Cookie max age
-    var $cookieTTL = 7776000; // 60 * 60 * 24 * 90 = 90 days
+    public $cookieTTL = 7776000; // 60 * 60 * 24 * 90 = 90 days
 
-    var $cartCoupons;
-    var $tInfo;
+    public $cartCoupons;
+    public $tInfo;
 
     /**
      * Cart constructor
@@ -78,19 +78,19 @@ class CurrentCart extends Cart
                         $this->createCart();
                     }
                 }
-            } // Make sure cart is marked as unlinked is the user is not logged in
-            else {
+            } else {
+                // Make sure cart is marked as unlinked is the user is not logged in
                 $this->cart->linked = 0;
             }
-        } // If no session & cookie cart found, but user is logged in
-        elseif (!$user->get('guest')) {
+        } elseif (!$user->get('guest')) {
+            // If no session & cookie cart found, but user is logged in
             // Try to get the saved cart in the DB
             if (!$this->liftUserCart($user->id)) {
                 // If no session, no cookie, no DB cart -- create a brand new cart
                 $this->createCart();
             }
-        } // No session, no cookie -- create new cart
-        else {
+        } else {
+            // No session, no cookie -- create new cart
             $this->createCart();
         }
     }
@@ -532,9 +532,8 @@ class CurrentCart extends Cart
                 $this->db->setQuery($sql);
                 $this->db->query();
             }
-        }
-        // Set errors and status
-        else {
+        } else {
+            // Set errors and status
             $status = 0;
             $ret->errors = $errors;
         }
@@ -1189,10 +1188,9 @@ class CurrentCart extends Cart
                 foreach ($itemCouponDiscountMappings as $mappedDiscount) {
                     $itemsDiscountsTotal += $mappedDiscount;
                 }
-            }
-            // Coupon is generic, not item based and not shipping.
-            // All item coupons have been processed by this time, save to calculate total discounts
-            elseif ($couponObjectType != 'shipping') {
+            } elseif ($couponObjectType != 'shipping') {
+                // Coupon is generic, not item based and not shipping.
+                // All item coupons have been processed by this time, save to calculate total discounts
                 // Initialize the perk
                 unset($perk);
                 $perk = new \stdClass();
@@ -1240,10 +1238,8 @@ class CurrentCart extends Cart
                 foreach ($perks['generic'] as $perkDiscount) {
                     $genericDiscountsTotal += $perkDiscount->discount;
                 }
-            }
-
-            // Coupon is for shipping -- handled differently to be applied later after the shipping cost is calculated
-            elseif ($couponObjectType == 'shipping') {
+            } elseif ($couponObjectType == 'shipping') {
+                // Coupon is for shipping -- handled differently to be applied later after the shipping cost is calculated
                 // Initialize the perk
                 unset($perk);
                 $perk = new \stdClass();
@@ -1722,9 +1718,8 @@ class CurrentCart extends Cart
             $this->db->setQuery($sql);
             $this->db->query();
             $existingCnIds = array();
-        }
-        // Merge session and user carts. Not so easy.
-        else {
+        } else {
+            // Merge session and user carts. Not so easy.
             // Get a static instance of the users' cart
 
             $userCart = new UserCart($userCartId);

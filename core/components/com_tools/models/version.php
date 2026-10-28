@@ -252,7 +252,7 @@ class Version
      *
      * @var array
      */
-    static $_propertyattrmap = array(
+    public static $_propertyattrmap = array(
         'title' => 'cn',
         'description' => 'description',
         'version' => 'version',

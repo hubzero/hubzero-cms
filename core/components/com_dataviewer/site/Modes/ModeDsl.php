@@ -208,23 +208,19 @@ class ModeDsl
             $group_by = Request::getString('group_by', '');
             if ($group_by !== '') {
                 $group_cols = array();
-                foreach (explode(',', $group_by) as $gb_col)
-                {
-                $gb_col = trim($gb_col);
-                $rollup = '';
-                if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m))
-                {
-                $gb_col = trim($m[1]);
-                $rollup = ' WITH ROLLUP';
+                foreach (explode(',', $group_by) as $gb_col) {
+                    $gb_col = trim($gb_col);
+                    $rollup = '';
+                    if (preg_match('/^(.*?)\s+WITH\s+ROLLUP$/i', $gb_col, $m)) {
+                        $gb_col = trim($m[1]);
+                        $rollup = ' WITH ROLLUP';
+                    }
+                    if ($gb_col !== '' && array_key_exists($gb_col, $dd['cols'])) {
+                        $group_cols[] = '`' . $gb_col . '`' . $rollup;
+                    }
                 }
-                if ($gb_col !== '' && array_key_exists($gb_col, $dd['cols']))
-                {
-                $group_cols[] = '`' . $gb_col . '`' . $rollup;
-                }
-                }
-                if ($group_cols)
-                {
-                $dd['group_by'] = implode(', ', $group_cols);
+                if ($group_cols) {
+                    $dd['group_by'] = implode(', ', $group_cols);
                 }
             }
 

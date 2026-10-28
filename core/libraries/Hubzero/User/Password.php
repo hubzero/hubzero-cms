@@ -725,7 +725,7 @@ class Password
      * @param   boolean  $show_encrypt  Some password systems prepend the kind of encryption to the crypted password ({SHA}, etc). Defaults to false.
      * @return  string   The encrypted password.
      */
-    static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false)
+    public static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false)
     {
         // Get the salt to use.
         $salt = self::getSalt($encryption, $salt, $plaintext);

@@ -280,9 +280,8 @@ $now = Date::of('now')->toSql();
                                     </a>
                                 </li>
                                 <?php
-                            }
-                            // Only display "anonymous" once
-                            elseif (!$anon) {
+                            } elseif (!$anon) {
+                                // Only display "anonymous" once
                                 $anon = true;
                                 ?>
                                 <li>

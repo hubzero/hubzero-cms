@@ -881,15 +881,14 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
                                 // add author coins
                                 $coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
-                            } // legacy string
-                            elseif (is_object($author)) { // new ORM method
+                            } elseif (is_object($author)) { // the ORM form; above was the legacy string
                                 if ($author->uidNumber > 0) {
                                     $a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8') . '</a>';
                                 } else {
                                     $a[] = htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8');
                                 }
-                            } //new ORM method
-                            else {
+                            } else {
+                                //new ORM method
                                 $a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
                             }
                         }
