@@ -23,9 +23,9 @@ This book is not a field-by-field reference; that is the generated
 [configuration reference](../reference/configuration/README.md). It is not
 about writing code for a hub, which is [Developers](../developers/README.md).
 
-The exception is the first step. [Installing a hub](00-installing.md) is
-being rewritten for the new web installer; everything after a hub is
-running is covered here and current.
+It starts with [Installing a hub](00-installing.md), which takes a server
+with nothing on it to a hub that answers, from the browser or the command
+line; everything after that is covered here.
 
 ## Where to start
 

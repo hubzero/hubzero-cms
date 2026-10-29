@@ -45,6 +45,10 @@ them, and they will not ask twice.
 4. Take the notice down. It has to come down by hand, or by a **Finish
    Publishing** date you set when you posted it.
 
+**When the release branch moves.** Upgrade the hub, with a backup first:
+[Upgrading a hub](06-upgrading.md). The same rule as below applies; an
+upgrade is a change you want to watch.
+
 **Never on a Friday afternoon.** Anything that cannot be tested first: URL
 rewriting, a template change, a permissions change on a live component. Those
 belong on a morning when you can watch what happens.

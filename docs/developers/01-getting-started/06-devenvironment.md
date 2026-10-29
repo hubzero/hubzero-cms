@@ -59,12 +59,12 @@ pre-flight result without installing anything.
 
 ## Getting a hub to develop against
 
-Three routes, none of them in this repository:
+Three routes:
 
-**Install from packages.** The supported path. Enterprise Linux 8 or a
-compatible rebuild, the Hubzero packages, and the `hzcms` command. That
-process is being replaced by a web installer and is not documented here at
-present; see [Installing a hub](../../managers/00-installing.md).
+**Install one.** [Installing a hub](../../managers/00-installing.md) takes a
+Linux server from nothing to a running hub from a checkout of this
+repository, behind Apache, nginx or FrankenPHP, using the web installer or
+`muse install`. A development hub is the same, on a machine of your own.
 
 **Autohub.** A script that provisions a hub in a virtual machine using
 VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a
