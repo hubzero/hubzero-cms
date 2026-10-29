@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
             <thead>
                 <tr>
                     <th><label for="image"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>
-                        <?php<?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
+                        <?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
                 </tr>
             </thead>
             <tbody>
