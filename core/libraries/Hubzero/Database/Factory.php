@@ -254,7 +254,7 @@ abstract class Factory
      * @param   string   $relationship  The relationship method name (optional)
      * @return  $this
      */
-    public function has(Factory $factory, string $relationship = null)
+    public function has(Factory $factory, ?string $relationship = null)
     {
         $this->has[] = [
             'factory' => $factory,
@@ -270,7 +270,7 @@ abstract class Factory
      * @param   string      $relationship  The relationship method name (optional)
      * @return  $this
      */
-    public function for(Relational $model, string $relationship = null)
+    public function for(Relational $model, ?string $relationship = null)
     {
         $this->for[] = [
             'model' => $model,
@@ -649,7 +649,7 @@ abstract class Factory
      * @param   string|null  $name  Optional name to base email on
      * @return  string
      */
-    public static function email(string $name = null)
+    public static function email(?string $name = null)
     {
         if ($name === null) {
             $name = self::words(1) . self::sequence();

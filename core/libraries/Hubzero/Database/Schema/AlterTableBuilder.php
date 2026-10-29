@@ -241,7 +241,7 @@ class AlterTableBuilder
      * @param  bool   $unsigned
      * @return $this
      */
-    public function addInteger(string $name, int $length = null, bool $unsigned = false): self
+    public function addInteger(string $name, ?int $length = null, bool $unsigned = false): self
     {
         return $this->addColumn($name, 'integer', ['length' => $length, 'unsigned' => $unsigned]);
     }
@@ -254,7 +254,7 @@ class AlterTableBuilder
      * @param  bool   $unsigned
      * @return $this
      */
-    public function addTinyInteger(string $name, int $length = null, bool $unsigned = false): self
+    public function addTinyInteger(string $name, ?int $length = null, bool $unsigned = false): self
     {
         return $this->addColumn($name, 'tinyInteger', ['length' => $length, 'unsigned' => $unsigned]);
     }
@@ -267,7 +267,7 @@ class AlterTableBuilder
      * @param  bool   $unsigned
      * @return $this
      */
-    public function addSmallInteger(string $name, int $length = null, bool $unsigned = false): self
+    public function addSmallInteger(string $name, ?int $length = null, bool $unsigned = false): self
     {
         return $this->addColumn($name, 'smallInteger', ['length' => $length, 'unsigned' => $unsigned]);
     }
@@ -280,7 +280,7 @@ class AlterTableBuilder
      * @param  bool   $unsigned
      * @return $this
      */
-    public function addMediumInteger(string $name, int $length = null, bool $unsigned = false): self
+    public function addMediumInteger(string $name, ?int $length = null, bool $unsigned = false): self
     {
         return $this->addColumn($name, 'mediumInteger', ['length' => $length, 'unsigned' => $unsigned]);
     }
@@ -293,7 +293,7 @@ class AlterTableBuilder
      * @param  bool   $unsigned
      * @return $this
      */
-    public function addBigInteger(string $name, int $length = null, bool $unsigned = false): self
+    public function addBigInteger(string $name, ?int $length = null, bool $unsigned = false): self
     {
         return $this->addColumn($name, 'bigInteger', ['length' => $length, 'unsigned' => $unsigned]);
     }
@@ -690,7 +690,7 @@ class AlterTableBuilder
      * @param  int $length
      * @return $this
      */
-    public function integer(int $length = null): self
+    public function integer(?int $length = null): self
     {
         $this->setType('integer');
 
@@ -707,7 +707,7 @@ class AlterTableBuilder
      * @param  int $length
      * @return $this
      */
-    public function tinyInteger(int $length = null): self
+    public function tinyInteger(?int $length = null): self
     {
         $this->setType('tinyInteger');
 
@@ -724,7 +724,7 @@ class AlterTableBuilder
      * @param  int $length
      * @return $this
      */
-    public function smallInteger(int $length = null): self
+    public function smallInteger(?int $length = null): self
     {
         $this->setType('smallInteger');
 
@@ -741,7 +741,7 @@ class AlterTableBuilder
      * @param  int $length
      * @return $this
      */
-    public function mediumInteger(int $length = null): self
+    public function mediumInteger(?int $length = null): self
     {
         $this->setType('mediumInteger');
 
@@ -758,7 +758,7 @@ class AlterTableBuilder
      * @param  int $length
      * @return $this
      */
-    public function bigInteger(int $length = null): self
+    public function bigInteger(?int $length = null): self
     {
         $this->setType('bigInteger');
 
@@ -775,7 +775,7 @@ class AlterTableBuilder
      * @param  int $length
      * @return $this
      */
-    public function string(int $length = null): self
+    public function string(?int $length = null): self
     {
         $this->setType('string');
 
@@ -803,7 +803,7 @@ class AlterTableBuilder
      * @param  int|null $length
      * @return $this
      */
-    public function unsignedInteger(int $length = null): self
+    public function unsignedInteger(?int $length = null): self
     {
         return $this->integer($length)->unsigned(true);
     }
@@ -814,7 +814,7 @@ class AlterTableBuilder
      * @param  int|null $length
      * @return $this
      */
-    public function unsignedBigInteger(int $length = null): self
+    public function unsignedBigInteger(?int $length = null): self
     {
         return $this->bigInteger($length)->unsigned(true);
     }
@@ -825,7 +825,7 @@ class AlterTableBuilder
      * @param  int|null $length
      * @return $this
      */
-    public function unsignedTinyInteger(int $length = null): self
+    public function unsignedTinyInteger(?int $length = null): self
     {
         return $this->tinyInteger($length)->unsigned(true);
     }

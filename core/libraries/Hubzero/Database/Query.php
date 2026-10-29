@@ -4926,7 +4926,7 @@ class Query
      * @param   string  $column  Column name or expression
      * @return  mixed
      **/
-    public function value(string $column = null)
+    public function value(?string $column = null)
     {
         $query = clone $this;
         if ($column !== null) {

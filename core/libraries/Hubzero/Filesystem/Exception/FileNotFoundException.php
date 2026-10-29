@@ -25,7 +25,7 @@ class FileNotFoundException extends \Exception
      * @param  int     $code
      * @param  object  $previous  \Exception
      */
-    public function __construct($path, $code = 0, \Exception $previous = null)
+    public function __construct($path, $code = 0, ?\Exception $previous = null)
     {
         $this->path = $path;
 
