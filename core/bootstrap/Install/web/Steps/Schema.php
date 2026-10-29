@@ -10,6 +10,7 @@
 
 namespace Bootstrap\Install\Web\Steps;
 
+use Bootstrap\Install\Web\PhpCli;
 use Hubzero\Database\ConnectionInterface;
 use Hubzero\Database\SqlParser;
 use PDOException;
@@ -422,11 +423,13 @@ class Schema implements StepInterface
         $command = sprintf(
             'cd %s && %s %s migration run -f --no-ansi 2>&1',
             escapeshellarg(PATH_ROOT),
-            escapeshellarg(PHP_BINARY),
+            PhpCli::find(),
             escapeshellarg($musePath)
         );
 
-        // Execute the command
+        // Execute the command, however long it takes
+        set_time_limit(0);
+
         $output = [];
         $returnCode = 0;
         exec($command, $output, $returnCode);

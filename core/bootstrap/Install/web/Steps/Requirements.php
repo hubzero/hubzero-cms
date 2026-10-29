@@ -41,6 +41,22 @@ class Requirements implements StepInterface
         return ob_get_clean();
     }
 
+    /**
+     * Whether every requirement is met
+     *
+     * @return bool
+     */
+    public function passed(): bool
+    {
+        return $this->passed;
+    }
+
+    /**
+     * Process the step
+     *
+     * @param  array  $data  Submitted form data
+     * @return bool|string
+     */
     public function process($data)
     {
         // Validate CSRF token

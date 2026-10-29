@@ -83,6 +83,7 @@ use Hubzero\System\Requirements;
         $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
         require_once __DIR__ . '/StorageCheck.php';
         require_once __DIR__ . '/SecurityGuard.php';
+        require_once __DIR__ . '/PhpCli.php';
         require_once $libRoot . '/Hubzero/System/Requirements.php';
 
         $this->corePath = PATH_CORE;
@@ -254,13 +255,15 @@ use Hubzero\System\Requirements;
             $this->allPassed = false;
         }
 
-        // Composer
+        // Composer, and a PHP command line to run it with
         $composerPath = $this->findComposer();
-        $composerFound = !empty($composerPath);
+        $phpCli = PhpCli::find();
+        $composerFound = !empty($composerPath) && $phpCli !== '';
+        $composerState = $phpCli === '' ? 'No PHP command line to run it' : 'Found';
         $this->checks['composer'] = [
             'name'     => 'Composer',
             'required' => 'Required',
-            'current'  => $composerFound ? 'Found' : 'Missing',
+            'current'  => empty($composerPath) ? 'Missing' : $composerState,
             'passed'   => $composerFound,
             'note'     => 'PHP dependency manager',
         ];
@@ -329,6 +332,12 @@ use Hubzero\System\Requirements;
             ob_end_flush();
         }
 
+        // This takes as long as it takes. Under FrankenPHP the time limit is
+        // counted on the clock, and stopping at it killed the process half
+        // way through. Nor should leaving the page stop it.
+        set_time_limit(0);
+        ignore_user_abort(true);
+
         $composer = $this->findComposer();
         if (empty($composer)) {
             $this->sendSSE('error', 'Composer not found');
@@ -336,10 +345,20 @@ use Hubzero\System\Requirements;
             return;
         }
 
-        // Build the command
+        $php = PhpCli::find();
+        if ($php === '') {
+            $this->sendSSE('error', 'No PHP command line found to run Composer with');
+            $this->sendSSE('done', json_encode(['success' => false]));
+            return;
+        }
+
+        // Build the command. The only script the package runs after an
+        // install configures a development tool, phpcs, which a hub does not
+        // use, so scripts are skipped.
         $command = sprintf(
-            'cd %s && %s install --no-interaction --no-ansi 2>&1',
+            'cd %s && %s %s install --no-interaction --no-ansi --no-scripts 2>&1',
             escapeshellarg($this->corePath),
+            $php,
             $composer
         );
 
@@ -350,7 +369,7 @@ use Hubzero\System\Requirements;
             2 => ['pipe', 'w'],  // stderr
         ];
 
-        $process = proc_open($command, $descriptors, $pipes);
+        $process = proc_open($command, $descriptors, $pipes, null, PhpCli::environment());
 
         if (!is_resource($process)) {
             $this->sendSSE('error', 'Failed to start composer process');
@@ -364,10 +383,10 @@ use Hubzero\System\Requirements;
         // Set stdout to non-blocking
         stream_set_blocking($pipes[1], false);
 
-        // Read output in real-time
+        // Read output in real-time, everything that has arrived each time
+        // round; one line per pass fell behind a process that writes more
         while (!feof($pipes[1])) {
-            $line = fgets($pipes[1]);
-            if ($line !== false) {
+            while (($line = fgets($pipes[1])) !== false) {
                 $this->sendSSE('output', rtrim($line));
             }
             // Small delay to prevent CPU spinning
