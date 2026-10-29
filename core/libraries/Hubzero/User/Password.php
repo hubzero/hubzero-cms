@@ -15,6 +15,22 @@ use Hubzero\User\Password\History;
 class Password
 {
 	/**
+	 * shadowExpire marking an account expired for inactivity (1970-11-30).
+	 * In the past, so pam_unix and sssd deny it, and distinct from
+	 * BLOCKED_EXPIRE_DAY.
+	 *
+	 * @var  integer
+	 */
+	const INACTIVE_EXPIRE_DAY = 333;
+
+	/**
+	 * shadowExpire marking a blocked account (2000-01-01)
+	 *
+	 * @var  integer
+	 */
+	const BLOCKED_EXPIRE_DAY = 10957;
+
+	/**
 	 * Description for 'user_id'
 	 *
 	 * @var  mixed
@@ -540,22 +556,16 @@ class Password
 	/**
 	 * Check if a password is expired
 	 *
-	 * @param   mixed  $user
+	 * @param   mixed  $user  User id or name, or an already loaded Password record
 	 * @return  bool
 	 */
 	public static function isPasswordExpired($user = null)
 	{
-		$hzup = self::getInstance($user);
+		$hzup = ($user instanceof self) ? $user : self::getInstance($user);
 
 		if (!is_object($hzup))
 		{
 			return false;
-		}
-
-		// An absolute expiry date (days since the epoch), set by an admin
-		if (!empty($hzup->shadowExpire) && intval(time() / 86400) >= (int) $hzup->shadowExpire)
-		{
-			return true;
 		}
 
 		if (empty($hzup->shadowLastChange))
@@ -582,6 +592,58 @@ class Password
 		}
 
 		return true;
+	}
+
+	/**
+	 * Day (days since the epoch, UTC) on which a password stops working,
+	 * or null if it never expires. This is pam_unix's rule: expired once
+	 * today > lastChange + max.
+	 *
+	 * @param   mixed  $lastChange  shadowLastChange
+	 * @param   mixed  $max         shadowMax
+	 * @return  mixed  integer or null
+	 */
+	public static function passwordExpiryDay($lastChange, $max)
+	{
+		if (empty($lastChange) || $max === null || $max === '')
+		{
+			return null;
+		}
+
+		return (int) $lastChange + (int) $max + 1;
+	}
+
+	/**
+	 * shadowMax that makes a password stop working on $day,
+	 * the inverse of passwordExpiryDay()
+	 *
+	 * @param   integer  $lastChange  shadowLastChange
+	 * @param   integer  $day         Days since the epoch, UTC
+	 * @return  integer
+	 */
+	public static function shadowMaxForExpiryDay($lastChange, $day)
+	{
+		return (int) $day - 1 - (int) $lastChange;
+	}
+
+	/**
+	 * Check if an account was expired for inactivity
+	 *
+	 * @param   mixed  $user  User id or name, or an already loaded Password record
+	 * @return  bool
+	 */
+	public static function isInactive($user = null)
+	{
+		$hzup = ($user instanceof self) ? $user : self::getInstance($user);
+
+		if (!is_object($hzup))
+		{
+			return false;
+		}
+
+		$expire = $hzup->get('shadowExpire');
+
+		return ($expire !== null && $expire !== '' && (int) $expire === self::INACTIVE_EXPIRE_DAY);
 	}
 
 	/**
@@ -689,7 +751,32 @@ class Password
 		$hzup->__set('shadowMax', $shadowMax);
 		$hzup->__set('shadowWarning', $shadowWarning);
 		$hzup->__set('shadowInactive', '0');
-		$hzup->__set('shadowExpire', null);
+
+		// A new password lifts an expiry for inactivity (an admin setting one
+		// is how an inactive account is restored), but never a blocked
+		// account's: shadowExpire is account expiry, not password expiry.
+		if (self::isInactive($hzup))
+		{
+			$hzup->__set('shadowExpire', null);
+		}
+
+		self::storePasshash($hzup, $passhash, $oldhash, $user);
+
+		return true;
+	}
+
+	/**
+	 * Save a password record whose passhash was changed, mirror the hash to
+	 * #__xprofiles and #__users, and keep the old hash in the history
+	 *
+	 * @param   object  $hzup      Password record with passhash already set
+	 * @param   string  $passhash  New hash, '' for no password
+	 * @param   string  $oldhash   Previous hash
+	 * @param   mixed   $user
+	 * @return  void
+	 */
+	private static function storePasshash($hzup, $passhash, $oldhash, $user)
+	{
 		$hzup->update();
 
 		$db = \App::get('db');
@@ -704,8 +791,6 @@ class Password
 		{
 			History::addPassword($oldhash, $user);
 		}
-
-		return true;
 	}
 
 	/**
@@ -1111,7 +1196,40 @@ class Password
 
 		$hzup->__set('shadowLastChange', '1');
 		$hzup->__set('shadowMax', '0');
+		// 0, not NULL: an expired password must be a hard deny for SSH keys
+		// too, not pam_unix's "change your password now"
+		$hzup->__set('shadowInactive', '0');
 		$hzup->update();
+
+		return true;
+	}
+
+	/**
+	 * Remove a user's password, leaving the account with no local password.
+	 * shadowExpire is left alone.
+	 *
+	 * @param   mixed  $user
+	 * @return  bool
+	 */
+	public static function removePassword($user = null)
+	{
+		$hzup = self::getInstance($user);
+
+		if (!$hzup)
+		{
+			return false;
+		}
+
+		$oldhash = $hzup->__get('passhash');
+
+		$hzup->__set('passhash', '');
+		$hzup->__set('shadowLastChange', null);
+		$hzup->__set('shadowMin', null);
+		$hzup->__set('shadowMax', null);
+		$hzup->__set('shadowWarning', null);
+		$hzup->__set('shadowInactive', null);
+
+		self::storePasshash($hzup, '', $oldhash, $user);
 
 		return true;
 	}
