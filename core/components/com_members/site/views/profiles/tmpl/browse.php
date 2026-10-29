@@ -249,7 +249,7 @@ foreach ($this->fields as $field)
 									<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
 								</svg>
 							</div>
-							<h3 class="members-search-prompt-title"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE'); ?></h3>
+							<h3 class="members-search-prompt-title"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE', $this->escape(Config::get('sitename'))); ?></h3>
 							<p class="members-search-prompt-body"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH'); ?></p>
 						</div>
 					<?php }

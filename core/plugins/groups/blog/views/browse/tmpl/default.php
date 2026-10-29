@@ -189,7 +189,7 @@ $this->css()
 														Components\Blog\Models\Comment::STATE_FLAGGED
 													))
 													->count();
-												echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
+												echo Lang::txts('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
 											</a>
 										</dd>
 									<?php } else { ?>

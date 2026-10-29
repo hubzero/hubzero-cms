@@ -18,7 +18,7 @@ $this->css();
 <?php } ?>
 	<form action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
-			<legend><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
+			<legend><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
 
 			<p class="warning">
 				<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))); ?>

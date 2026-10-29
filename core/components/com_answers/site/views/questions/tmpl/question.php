@@ -438,7 +438,7 @@ if ($this->question->isDeleted() or !$this->question->get('id'))
 						->rows();
 					?>
 					<h3>
-						<span class="comment-count"><?php echo $responses->count(); ?></span> <?php echo Lang::txt('COM_ANSWERS_RESPONSES'); ?>
+						<span class="comment-count"><?php echo $responses->count(); ?></span> <?php echo Lang::txts('COM_ANSWERS_RESPONSES', $responses->count()); ?>
 					</h3>
 					<?php if ($responses->count()) { ?>
 						<?php

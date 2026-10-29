@@ -56,8 +56,8 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 			<h3>
 				<?php echo $this->escape($job->title); ?> -
 				<?php echo preg_match('#^https?://#i', (string) $job->companyWebsite) ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName) . '</a>' : $this->escape($job->companyName); ?>,
-				<?php echo $this->escape($job->companyLocation); ?>,
-				<?php echo $this->escape($job->companyLocationCountry); ?> <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
+				<?php echo $this->escape(implode(', ', array_filter(array(trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry))))); ?>
+				<span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
 			</h3>
 		</div>
 
