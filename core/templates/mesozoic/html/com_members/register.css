@@ -50,3 +50,26 @@
 	background-color: #8A5A2B;
 	border-color: #8A5A2B;
 }
+
+/*
+ * The warning on the form, as every other warning on the hub
+ *
+ * The component paints it a solid #8a6d3b with white text, with !important,
+ * to clear contrast on a template whose warnings were pale yellow with mid
+ * yellow text. This template's warning already clears it - 5A4100-ish text
+ * on a cream panel with a coloured leading edge - so the form's one warning
+ * was a dark slab in a page of light ones. Specific enough, and !important,
+ * to put it back.
+ */
+#hubForm fieldset p.warning {
+	background-color: #F9F2E3 !important;
+	background-image: none !important;
+	border-color: #E6D3A8 !important;
+	border-left: 4px solid #7A5A12 !important;
+	color: #4A3A10 !important;
+}
+
+#hubForm fieldset p.warning a {
+	color: #4A3A10 !important;
+	border-bottom-color: #4A3A10 !important;
+}

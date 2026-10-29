@@ -1,0 +1,33 @@
+/**
+ * A member's collections
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/members/collections/assets/css/collections.css");
+
+/*
+ * Cards sized to the column they are in
+ *
+ * The plugin gives every card a fixed 332px, which fills three columns of a
+ * 1060px content area. This template's content area beside the member
+ * menu is narrower, so the third card never fitted and every board was two
+ * columns of cards with a third of the page empty beside them. Masonry takes
+ * its column width from the first card, so sizing the card is enough.
+ */
+#posts:not(.view-list) .post {
+	width: calc((100% - 60px) / 3);
+}
+
+@media (max-width: 1099px) {
+	#posts:not(.view-list) .post {
+		width: calc((100% - 40px) / 2);
+	}
+}
+
+@media (max-width: 599px) {
+	#posts:not(.view-list) .post {
+		width: calc(100% - 20px);
+	}
+}

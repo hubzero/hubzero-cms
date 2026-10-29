@@ -15,3 +15,49 @@
 #page_sidebar {
 	background: #2B2622;
 }
+
+/*
+ * The course's picture in the header
+ *
+ * The component pins it to the header's top-right corner in a 130 by 72 box
+ * that crops whatever is put in it - shaped for a banner across a header bar.
+ * Here the header is a card with the offering and section on its right, so a
+ * square picture was cut in half and laid over "Section". A tile in the
+ * card's right edge instead, with room kept for it.
+ */
+#content-header.with-identity #page_identity {
+	margin-right: calc(72px + 1.5rem);
+}
+
+/* The component keeps the title 200px clear of the corner box; the tile is
+   beside the offering details now, so that margin only squeezed the title */
+#content-header.with-identity h2 {
+	margin-right: 0;
+}
+
+p.course-identity {
+	top: 50%;
+	right: 1.5rem;
+	width: 72px;
+	height: 72px;
+	transform: translateY(-50%);
+	background: none;
+	border-radius: 6px;
+}
+
+p.course-identity img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+@media (max-width: 599px) {
+	#content-header.with-identity #page_identity {
+		margin-right: 0;
+	}
+
+	p.course-identity {
+		display: none;
+	}
+}

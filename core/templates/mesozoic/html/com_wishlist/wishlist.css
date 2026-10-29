@@ -19,3 +19,48 @@
 .ideas .ranking .withdrawn {
 	color: #6B6259;
 }
+
+/*
+ * A wish waiting on a decision
+ *
+ * The component writes it in #aaa on #eee, 2.0:1, in a grey slab that is the
+ * coldest thing on the page. The hub's warm ground instead, and the same
+ * flag a closed question gets: 4A4038 on EFE9DF is 9.1:1.
+ */
+.wish-status .pending {
+	color: #4A4038;
+	border-color: #D9CDBA;
+	background-color: #EFE9DF;
+	background-image: none;
+}
+
+.wish-status .pending a {
+	color: #4A4038;
+}
+
+/*
+ * A wish that has been accepted, and one that has been granted
+ *
+ * The component writes the first in #F1C037 on #ffe, 1.6:1 - a word that
+ * can only just be made out - and the second in #7AAB69 on #F3FDF0, 2.6:1.
+ * Each keeps its own hue, deepened until it reads: 7A5300 on FFF8E1 is
+ * 6.5:1 and 3F6B32 on F3FDF0 is 6.1:1.
+ */
+.wish-status .accepted {
+	color: #7A5300;
+	border-color: #E8C66A;
+	background-color: #FFF8E1;
+}
+
+.wish-status .accepted a {
+	color: #7A5300;
+}
+
+.wish-status .granted {
+	color: #3F6B32;
+	border-color: #B9D4B1;
+}
+
+.wish-status .granted a {
+	color: #3F6B32;
+}

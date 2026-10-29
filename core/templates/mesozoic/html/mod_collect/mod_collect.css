@@ -1,0 +1,45 @@
+/**
+ * The Collect button
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/modules/mod_collect/assets/css/mod_collect.css");
+
+/*
+ * The module pins itself 11.75em from the top of whatever contains it, which
+ * in the template it was written for is the top of the page. Here it lives in
+ * the footer, so 11.75em down is the middle of the link columns, and the
+ * button sat among the links as though it were one of them. It belongs on the
+ * footer's last line, opposite the copyright notice, inside the same margins
+ * as everything else in the footer: the footer's own padding, which widens
+ * at the template's breakpoints (see less/template/vars/_vars.less).
+ *
+ * On a phone there is no room beside the copyright notice, so the button
+ * follows the footer's content instead of sitting on top of it.
+ */
+.page-footer .collector {
+	position: static;
+}
+
+@media (min-width: 600px) {
+	.page-footer .collector {
+		position: absolute;
+		top: auto;
+		bottom: 2.5rem;
+		right: 2rem;
+	}
+}
+
+@media (min-width: 900px) {
+	.page-footer .collector {
+		right: 3rem;
+	}
+}
+
+@media (min-width: 1600px) {
+	.page-footer .collector {
+		right: 12rem;
+	}
+}

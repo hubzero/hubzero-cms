@@ -140,19 +140,15 @@
 // A band of front page content
 //
 // Content authored as sections gets a centred heading with a short brand rule
-// under it. The first one lifts into the hero's lower padding, so the two read
-// as one page rather than two stacked blocks.
+// under it. The first one does not lift into the hero's lower padding, as it
+// would on a plain wash: that padding is where this hub's frieze stands, and a
+// heading lifted into it lands on the animals.
 
 .home-section {
 	padding: 3rem 0;
 
 	& > .inner {
 		.outerPadding();
-	}
-
-	&:first-of-type {
-		padding-top: 0;
-		margin-top: -6rem;
 	}
 
 	// The heading of a band is the module's own title, which the module

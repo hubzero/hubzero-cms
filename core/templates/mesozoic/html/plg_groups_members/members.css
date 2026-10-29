@@ -1,0 +1,20 @@
+/**
+ * A group's members
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/groups/members/assets/css/members.css");
+
+/*
+ * The badge that marks a manager in the member list
+ *
+ * The plugin paints it #F17, a magenta that appears nowhere else on the hub
+ * and that white text sits on at 3.6:1. The template's own dark brown, which
+ * every other badge here uses: white on 6B4420 is 9.3:1.
+ */
+.entries .manager .status,
+.group_members .groups tbody .manager .status {
+	background-color: #6B4420;
+}

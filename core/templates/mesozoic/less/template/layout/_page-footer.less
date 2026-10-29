@@ -53,6 +53,19 @@
 			text-decoration: underline;
 		}
 	}
+
+	// A button that lands in the footer - the collections plugin puts its
+	// "Collect" there on a course page - is still a button. The link colour
+	// above outranks the button's own and painted its label the colour of its
+	// ground, leaving an empty brown lozenge under the links.
+	a.btn {
+		&,
+		&:hover,
+		&:focus {
+			color: #fff;
+			text-decoration: none;
+		}
+	}
 }
 
 // Banner, breadcrumb trail and intro
@@ -97,5 +110,20 @@
 	& > .inner {
 		.outerPadding();
 		padding-top: 1.5rem;
+	}
+}
+
+// What the hub has to say about the last thing done: a login needed, a form
+// saved. It sits between the trail and the page rather than above the header,
+// where it read as part of the site's furniture instead of an answer.
+
+.page-messages {
+	& > .inner {
+		.outerPadding();
+		padding-top: 1.5rem;
+	}
+
+	#system-message {
+		margin-bottom: 0;
 	}
 }

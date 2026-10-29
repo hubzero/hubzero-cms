@@ -1,0 +1,32 @@
+// Listings
+//
+// The legacy listing hangs an item's title 1em out from an item padded 1em,
+// so the title starts at the item's edge and the rest sits indented under it.
+// That only lines up while the title is the size of the text. Here a title
+// that is a heading is set much larger, and 1em of a heading is 1.6 of the
+// text's: the title ran out past the listing, on a phone past the gutter
+// into the window's edge. A heading title sits with its text instead.
+
+.entries,
+.results {
+	h3.title,
+	h4.title {
+		margin-left: 0;
+	}
+}
+
+// The rating and its stars float beside the title at 190px, and the title
+// keeps a 220px margin clear for them, which on a phone leaves the title a
+// column one word wide. Under the title instead, and the margin given back.
+@media (max-width: (@sizeM - 1px)) {
+	.entries .metadata,
+	.results .metadata {
+		float: none;
+		width: auto;
+		margin: 0.25em 0 0.5em;
+	}
+
+	.resources.results .title {
+		margin-right: 0;
+	}
+}
