@@ -31,6 +31,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import unicodedata
 from collections.abc import Callable
@@ -111,6 +112,23 @@ def render_template(path: Path, context: dict[str, str]) -> str:
 
 def relative_href(from_file: Path, to_file: Path) -> str:
     return os.path.relpath(to_file, from_file.parent).replace(os.sep, "/")
+
+
+def ignored_doc_files() -> set[Path]:
+    """Files under docs/ that git ignores, such as scratch screenshots.
+
+    They are not part of the sources, so a build in a clean checkout never
+    has them; copying them from a working copy made the committed site
+    differ from every fresh build.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "ls-files", "--others", "--ignored", "--exclude-standard", "-z", "--", str(DOCS_DIR)],
+            cwd=ROOT, capture_output=True, check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return set()
+    return {(ROOT / name).resolve() for name in result.stdout.decode("utf-8", "replace").split("\0") if name}
 
 
 def ensure_clean_dir(path: Path) -> None:
@@ -760,11 +778,12 @@ def main() -> int:
     css_ver = hashlib.sha1((SOURCE_DIR / "assets" / "site.css").read_bytes()).hexdigest()[:8]
 
     # Copy every non-Markdown file under docs/ (images, downloads) to the same relative path.
+    ignored = ignored_doc_files()
     for path in DOCS_DIR.rglob("*"):
         rel = path.relative_to(DOCS_DIR)
         if path.is_dir() or rel.parts[0] in SKIP_DOC_DIRS or rel.parts[0].startswith("."):
             continue
-        if path.suffix.lower() not in COPIED_SUFFIXES:
+        if path.suffix.lower() not in COPIED_SUFFIXES or path.resolve() in ignored:
             continue
         destination = output_dir / rel
         destination.parent.mkdir(parents=True, exist_ok=True)
