@@ -7,11 +7,15 @@
 
 defined('_HZEXEC_') or die();
 
+// The Getting Started page comes with the sample data, so a hub installed
+// without it has nowhere to send people afterwards but the front page
+$database = App::get('db');
+$database->setQuery("SELECT id FROM `#__content` WHERE `alias`='gettingstarted' AND `state`=1");
+$guide = $database->loadResult() ? rtrim(Request::base(), '/') . '/gettingstarted' : '';
+
 if (Request::getInt('getstarted', 0) && ($tpl = $this->params->get('template', '')))
 {
 	$fallback = 'kimera';
-
-	$database = App::get('db');
 
 	// Make the desired template exists
 	$database->setQuery("SELECT id FROM `#__template_styles` WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
@@ -31,7 +35,7 @@ if (Request::getInt('getstarted', 0) && ($tpl = $this->params->get('template', '
 		$database->setQuery("UPDATE `#__template_styles` SET `home`=1 WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
 		$database->query();
 
-		App::redirect(Route::url('/gettingstarted'));
+		App::redirect($guide ? Route::url('/gettingstarted') : rtrim(Request::base(), '/') . '/');
 	}
 }
 
@@ -264,7 +268,7 @@ $flavor = $this->params->get('flavor', false);
 								</div>
 								<div class="spacer col">&nbsp;</div>
 								<div class="col txt">
-									<p><?php echo Lang::txt('TPL_WELCOME_CHANGE_PAGE_BODY', rtrim(Request::base(), '/') . '/gettingstarted'); ?></p>
+									<p><?php echo $guide ? Lang::txt('TPL_WELCOME_CHANGE_PAGE_BODY', $guide) : Lang::txt('TPL_WELCOME_CHANGE_PAGE_BODY_NO_GUIDE'); ?></p>
 
 									<a href="<?php echo rtrim(Request::base(), '/'); ?>/?getstarted=1" class="b"><?php echo Lang::txt('TPL_WELCOME_READY'); ?></a>
 								</div>
