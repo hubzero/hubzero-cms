@@ -222,7 +222,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                             <?php
                             $agtVisible = (($agt->isAvailable() && $agt->isPublished()) || $isManager);
                             ?>
-                            <?php if ($agtVisible && count($agt->children()) > 0) { ?>
+                            <?php if ($agtVisible && (count($agt->children()) > 0 || $agt->assets()->total())) { ?>
                                     <?php
                                     $cls = '';
                                     if (!$agt->started()) {
@@ -515,7 +515,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                 $base
                                                                 . '&active=outline&unit='
                                                                 . $unit->get('alias')
-                                                                . '&b=' . $ag->get('alias')
+                                                                . '&b=' . $agt->get('alias')
                                                             );
                                                         } elseif (
                                                             $a->get('type') == 'file'

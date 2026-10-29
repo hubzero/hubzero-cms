@@ -138,7 +138,16 @@ $this->css()
                 $startDay = Date::of($publish_up)->toTimeZone($event_tz, 'Y-m-d');
                 $endDay   = Date::of($publish_down)->toTimeZone($event_tz, 'Y-m-d');
 
-                if ($startDay == $endDay) {
+                // An all-day event is stored as midnight to 23:59 in its zone,
+                // and printing those times says less than saying all day
+                if (!empty($this->row->allday)) {
+                    $html .= Date::of($publish_up)->toTimeZone($event_tz, 'l d F, Y');
+                    if ($startDay == $endDay) {
+                        $html .= ', ' . Lang::txt('EVENTS_ALL_DAY');
+                    } else {
+                        $html .= ' - ' . Date::of($publish_down)->toTimeZone($event_tz, 'l d F, Y');
+                    }
+                } elseif ($startDay == $endDay) {
                     $html .= Date::of($publish_up)->toTimeZone($event_tz, 'l d F, Y') . ', ';
                     $html .= Date::of($publish_up)->toTimeZone($event_tz, 'g:i a') . ' - ';
                     $html .= Date::of($publish_down)->toTimeZone($event_tz, 'g:i a T');

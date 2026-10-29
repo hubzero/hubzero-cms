@@ -9,6 +9,7 @@
 namespace Components\Collections\Admin\Controllers;
 
 use Components\Collections\Models\Orm\Collection;
+use Components\Collections\Models\Orm\Post;
 use Hubzero\Component\AdminController;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Notify;
@@ -78,7 +79,20 @@ class Collections extends AdminController
             )
         );
 
-        $model = Collection::all()
+        $model = Collection::all();
+
+        // The list can be sorted by its Posts column, which is a count rather
+        // than a column of the table: without one to order by, choosing it
+        // was a database error, and the choice is remembered for the session.
+        $collections = $model->getTableName();
+        $posts       = Post::blank()->getTableName();
+
+        $model
+            ->select($collections . '.*')
+            ->select(
+                '(SELECT COUNT(*) FROM `' . $posts . '` AS p WHERE p.collection_id=' . $collections . '.id)',
+                'posts'
+            )
             ->including(['creator', function ($creator) {
                 $creator->select('*');
             }]);

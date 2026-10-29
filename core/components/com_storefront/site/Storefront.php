@@ -33,7 +33,7 @@ class Storefront extends AbstractComponent
         if (empty($controllerName)) {
             // Load default controller if no controller provided
             $controllerName = 'storefront';
-        } elseif (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+        } elseif (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
             App::abort(404, Lang::txt('Page Not Found'));
         }
 

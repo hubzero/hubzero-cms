@@ -583,7 +583,9 @@ abstract class Result
                 $descr = join('<small>&hellip;</small> ', array_unique($excerpt[1]));
             }
 
-            $wrapped = wordwrap(str_replace("\n", '', $descr), self::$intro_excerpt_len);
+            // A line break in the source stands between two words, so it
+            // becomes a space; dropping it ran them together
+            $wrapped = wordwrap(trim(preg_replace('/\s+/u', ' ', $descr)), self::$intro_excerpt_len);
             $wrap_pos = strpos($wrapped, "\n");
             $len = $wrap_pos ? $wrap_pos : self::$intro_excerpt_len;
             $ellip = $wrap_pos ? '<small>&hellip;</small>' : '';

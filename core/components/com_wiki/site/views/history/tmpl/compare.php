@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 
 // No direct access.
@@ -77,10 +78,10 @@ $drauthor = $this->dr->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
             <div class="col span-half">
                 <dl class="diff-versions">
                     <dt><?php echo Lang::txt('COM_WIKI_VERSION') . ' ' . $this->or->get('version'); ?></dt>
-                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->or->get('created') . '">' . $this->or->get('created') . '</time>', $this->escape($orauthor)); ?></dd>
+                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->or->get('created') . '">' . Date::of($this->or->get('created'))->toLocal('Y-m-d H:i:s') . '</time>', $this->escape($orauthor)); ?></dd>
 
                     <dt><?php echo Lang::txt('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?></dt>
-                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . $this->dr->get('created') . '</time>', $this->escape($drauthor)); ?></dd>
+                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . Date::of($this->dr->get('created'))->toLocal('Y-m-d H:i:s') . '</time>', $this->escape($drauthor)); ?></dd>
                 </dl>
             </div><!-- / .aside -->
             <div class="col span-half omega">

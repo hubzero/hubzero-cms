@@ -44,163 +44,152 @@ Document::setTitle(Lang::txt('COM_KB'));
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>" method="get">
-                <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_KB_SEARCH'); ?>" />
-                    <fieldset class="entry-search">
-                        <legend><?php echo Lang::txt('COM_KB_SEARCH_LEGEND'); ?></legend>
-                        <label for="entry-search-field"><?php echo Lang::txt('COM_KB_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo Lang::txt('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
-                    </fieldset>
-                </div><!-- / .container -->
-
-                <div class="container">
-                    <div class="container-block">
-                        <h3><?php echo Lang::txt('COM_KB_ARTICLES'); ?></h3>
-                        <div class="grid">
-                            <div class="col span-half">
-                                <h4>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
-                                        <?php echo Lang::txt('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
-                                    </a>
-                                </h4>
-                                <?php
-                                $popular = $this->archive->articles()
-                                            ->whereIn('access', User::getAuthorisedViewLevels())
-                                            ->whereEquals('state', 1)
-                                            ->order('helpful', 'desc') // (a.helpful - a.nothelpful)
-                                            ->limit(5)
-                                            ->rows();
-                                if (count($popular) > 0) { ?>
-                                    <ul class="articles">
-                                    <?php foreach ($popular as $row) { ?>
-                                        <li class="icon-file">
-                                            <a href="<?php echo Route::url($row->link()); ?>">
-                                                <?php echo $this->escape(stripslashes($row->get('title'))); ?>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                    </ul>
-                                <?php } else { ?>
-                                    <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
+            <div class="container">
+                <div class="container-block">
+                    <h3><?php echo Lang::txt('COM_KB_ARTICLES'); ?></h3>
+                    <div class="grid">
+                        <div class="col span-half">
+                            <h4>
+                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
+                                    <?php echo Lang::txt('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
+                                </a>
+                            </h4>
+                            <?php
+                            $popular = $this->archive->articles()
+                                        ->whereIn('access', User::getAuthorisedViewLevels())
+                                        ->whereEquals('state', 1)
+                                        ->order('helpful', 'desc') // (a.helpful - a.nothelpful)
+                                        ->limit(5)
+                                        ->rows();
+                            if (count($popular) > 0) { ?>
+                                <ul class="articles">
+                                <?php foreach ($popular as $row) { ?>
+                                    <li class="icon-file">
+                                        <a href="<?php echo Route::url($row->link()); ?>">
+                                            <?php echo $this->escape(stripslashes($row->get('title'))); ?>
+                                        </a>
+                                    </li>
                                 <?php } ?>
-                            </div><!-- / .col span-half -->
-                            <div class="col span-half omega">
-                                <h4>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
-                                        <?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
-                                    </a>
-                                </h4>
-                                <?php
-                                $recent = $this->archive->articles()
-                                            ->whereIn('access', User::getAuthorisedViewLevels())
-                                            ->whereEquals('state', 1)
-                                            ->order('modified', 'desc')
-                                            ->order('created', 'desc')
-                                            ->limit(5)
-                                            ->rows();
-                                if (count($recent) > 0) { ?>
-                                    <ul class="articles">
-                                    <?php foreach ($recent as $row) { ?>
-                                        <li class="icon-file">
-                                            <a href="<?php echo Route::url($row->link()); ?>">
-                                                <?php echo $this->escape(stripslashes($row->get('title'))); ?>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                    </ul>
-                                <?php } else { ?>
-                                    <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
+                                </ul>
+                            <?php } else { ?>
+                                <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
+                            <?php } ?>
+                        </div><!-- / .col span-half -->
+                        <div class="col span-half omega">
+                            <h4>
+                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
+                                    <?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
+                                </a>
+                            </h4>
+                            <?php
+                            $recent = $this->archive->articles()
+                                        ->whereIn('access', User::getAuthorisedViewLevels())
+                                        ->whereEquals('state', 1)
+                                        ->order('modified', 'desc')
+                                        ->order('created', 'desc')
+                                        ->limit(5)
+                                        ->rows();
+                            if (count($recent) > 0) { ?>
+                                <ul class="articles">
+                                <?php foreach ($recent as $row) { ?>
+                                    <li class="icon-file">
+                                        <a href="<?php echo Route::url($row->link()); ?>">
+                                            <?php echo $this->escape(stripslashes($row->get('title'))); ?>
+                                        </a>
+                                    </li>
                                 <?php } ?>
-                            </div><!-- / .col span-half -->
-                        </div><!-- / .grid -->
+                                </ul>
+                            <?php } else { ?>
+                                <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
+                            <?php } ?>
+                        </div><!-- / .col span-half -->
+                    </div><!-- / .grid -->
 
-                        <?php
-                        // Which categories this page will actually draw, and
-                        // the articles it will draw under each.
-                        //
-                        // Settled before the heading rather than inside the
-                        // loop: a category with no published article anybody
-                        // may read is skipped, and on a new knowledge base
-                        // that is every category - which left the word
-                        // "Categories" printed over nothing at all.
-                        $shown = array();
+                    <?php
+                    // Which categories this page will actually draw, and
+                    // the articles it will draw under each.
+                    //
+                    // Settled before the heading rather than inside the
+                    // loop: a category with no published article anybody
+                    // may read is skipped, and on a new knowledge base
+                    // that is every category - which left the word
+                    // "Categories" printed over nothing at all.
+                    $shown = array();
 
-                        $categories = $this->archive->categories(array('state' => 1, 'access' => User::getAuthorisedViewLevels()));
+                    $categories = $this->archive->categories(array('state' => 1, 'access' => User::getAuthorisedViewLevels()));
 
-                        foreach ($categories as $row) {
-                            $articles = $row->articles()
-                                ->whereEquals('state', 1)
-                                ->whereIn('access', User::getAuthorisedViewLevels())
-                                ->order('modified', 'desc')
-                                ->order('created', 'desc')
-                                ->limit(3)
-                                ->rows();
+                    foreach ($categories as $row) {
+                        $articles = $row->articles()
+                            ->whereEquals('state', 1)
+                            ->whereIn('access', User::getAuthorisedViewLevels())
+                            ->order('modified', 'desc')
+                            ->order('created', 'desc')
+                            ->limit(3)
+                            ->rows();
 
-                            if ($articles->count() <= 0) {
-                                continue;
-                            }
-
-                            $shown[] = array($row, $articles);
+                        if ($articles->count() <= 0) {
+                            continue;
                         }
 
-                        if ($shown) {
-                            ?>
-                        <h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
-                        <div class="grid">
-                            <?php
-                            $i = 0;
+                        $shown[] = array($row, $articles);
+                    }
 
-                            foreach ($shown as $pair) {
-                                list($row, $articles) = $pair;
+                    if ($shown) {
+                        ?>
+                    <h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
+                    <div class="grid">
+                        <?php
+                        $i = 0;
 
-                                $i++;
-                                switch ($i) {
-                                    case 1:
-                                        $cls = '';
-                                        break;
-                                    case 2:
-                                        $cls = ' omega';
-                                        break;
-                                }
-                                ?>
-                            <div class="col span-half<?php echo $cls; ?>">
-                                <h4>
-                                    <a href="<?php echo Route::url($row->link()); ?>">
-                                        <?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count">(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
-                                    </a>
-                                </h4>
-                                <?php if ($articles->count() > 0) { ?>
-                                    <ul class="articles">
-                                    <?php foreach ($articles as $article) {
-                                        $article->set('calias', $row->get('path'));
-                                        ?>
-                                        <li class="icon-file">
-                                            <a href="<?php echo Route::url($article->link()); ?>">
-                                                <?php echo $this->escape(stripslashes($article->get('title'))); ?>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                    </ul>
-                                <?php } else { ?>
-                                    <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
-                                <?php } ?>
-                            </div><!-- / .col span-half <?php echo $cls; ?> -->
-                                <?php
-                                //echo ($i >= 2) ? '<div class="clearfix"></div>' : '';
+                        foreach ($shown as $pair) {
+                            list($row, $articles) = $pair;
 
-                                if ($i >= 2) {
-                                    $i = 0;
-                                }
+                            $i++;
+                            switch ($i) {
+                                case 1:
+                                    $cls = '';
+                                    break;
+                                case 2:
+                                    $cls = ' omega';
+                                    break;
                             }
                             ?>
-                        </div><!-- / .grid -->
+                        <div class="col span-half<?php echo $cls; ?>">
+                            <h4>
+                                <a href="<?php echo Route::url($row->link()); ?>">
+                                    <?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count">(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
+                                </a>
+                            </h4>
+                            <?php if ($articles->count() > 0) { ?>
+                                <ul class="articles">
+                                <?php foreach ($articles as $article) {
+                                    $article->set('calias', $row->get('path'));
+                                    ?>
+                                    <li class="icon-file">
+                                        <a href="<?php echo Route::url($article->link()); ?>">
+                                            <?php echo $this->escape(stripslashes($article->get('title'))); ?>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                                </ul>
+                            <?php } else { ?>
+                                <p><?php echo Lang::txt('COM_KB_NO_ARTICLES'); ?></p>
+                            <?php } ?>
+                        </div><!-- / .col span-half <?php echo $cls; ?> -->
                             <?php
+                            //echo ($i >= 2) ? '<div class="clearfix"></div>' : '';
+
+                            if ($i >= 2) {
+                                $i = 0;
+                            }
                         }
                         ?>
-                    </div><!-- / .container-block -->
-                </div><!-- / .container -->
-            </form>
+                    </div><!-- / .grid -->
+                        <?php
+                    }
+                    ?>
+                </div><!-- / .container-block -->
+            </div><!-- / .container -->
         </div><!-- / .subject -->
 
         <aside class="aside">

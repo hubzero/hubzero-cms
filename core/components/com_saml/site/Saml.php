@@ -25,7 +25,7 @@ class Saml extends AbstractComponent
     {
         $controllerName = Request::getCmd('controller', 'saml');
 
-        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
             throw new \Exception('Specified controller does not exist.', 404);
         }
 

@@ -34,7 +34,7 @@ class Redirect extends AbstractComponent
 
         // Include controller
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'links'));
-        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
             App::abort(404, Lang::txt('Controller "%s" not found.', $controllerName));
             return;
         }

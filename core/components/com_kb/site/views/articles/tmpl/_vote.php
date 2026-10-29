@@ -50,12 +50,12 @@ if (!User::isGuest()) {
 <?php if ($this->id) : ?>
     <span class="vote-like">
         <span class="vote-button neutral disabled">
-            <?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo $like_title; ?></span>
+            <?php echo $this->item->get('helpful', 0); ?><span> <?php echo $like_title; ?></span>
         </span>
     </span>
     <span class="vote-dislike">
         <span class="vote-button neutral disabled">
-            <?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo $dislike_title; ?></span>
+            <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo $dislike_title; ?></span>
         </span>
     </span>
 <?php else : ?>
@@ -63,23 +63,23 @@ if (!User::isGuest()) {
         <?php if (User::isGuest()) : ?>
             <span class="vote-like<?php echo $lcls; ?>">
                 <span class="vote-button like">
-                    <?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo $like_title; ?></span>
+                    <?php echo $this->item->get('helpful', 0); ?><span> <?php echo $like_title; ?></span>
                 </span>
             </span>
             <span class="vote-dislike<?php echo $lcls; ?>">
                 <span class="vote-button dislike dislike-disabled">
-                    <?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo $dislike_title; ?></span>
+                    <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo $dislike_title; ?></span>
                 </span>
             </span>
         <?php else : ?>
             <span class="vote-like<?php echo $lcls; ?>">
                 <button type="submit" form="hz-post-action" formaction="<?php echo $like_link; ?>" class="vote-button like" aria-label="<?php echo $like_title; ?>">
-                    <?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
+                    <?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
                 </button>
             </span>
             <span class="vote-dislike<?php echo $lcls; ?>">
                 <button type="submit" form="hz-post-action" formaction="<?php echo $dislike_link; ?>" class="vote-button dislike" aria-label="<?php echo $dislike_title; ?>">
-                    <?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
+                    <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
                 </button>
             </span>
         <?php endif; ?>
@@ -87,23 +87,23 @@ if (!User::isGuest()) {
         <?php if (trim($lcls) == 'chosen') : ?>
             <span class="vote-like<?php echo $lcls; ?>">
                 <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?>">
-                    <?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo $like_title; ?></span>
+                    <?php echo $this->item->get('helpful', 0); ?><span> <?php echo $like_title; ?></span>
                 </span>
             </span>
             <span class="vote-dislike<?php echo $dcls; ?>">
                 <button type="submit" form="hz-post-action" formaction="<?php echo $dislike_link; ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; ?>" aria-label="<?php echo $dislike_title; ?>">
-                    <?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
+                    <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_KB_VOTE_DISLIKE'); ?></span>
                 </button>
             </span>
         <?php else : ?>
             <span class="vote-like<?php echo $lcls; ?>">
                 <button type="submit" form="hz-post-action" formaction="<?php echo $like_link; ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?>" aria-label="<?php echo $like_title; ?>">
-                    <?php echo $this->item->get('helpful', 0); ?><span class="sr-only"> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
+                    <?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_KB_VOTE_LIKE'); ?></span>
                 </button>
             </span>
             <span class="vote-dislike<?php echo $dcls; ?>">
                 <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral'; ?>">
-                    <?php echo $this->item->get('nothelpful', 0); ?><span class="sr-only"> <?php echo $dislike_title; ?></span>
+                    <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo $dislike_title; ?></span>
                 </span>
             </span>
         <?php endif; ?>
