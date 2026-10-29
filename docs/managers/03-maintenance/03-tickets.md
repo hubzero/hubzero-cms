@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/maintenance/tickets
 source-id: 3342
 imported: 2026-09-09
@@ -74,7 +74,7 @@ the current administrator and to unassigned.
 
 ## Working a ticket
 
-![An example support ticket reporting a 500 error when searching the forum](../media/tickets-example-ticket.png)
+![An open ticket in the administrator: the member's report and the details collected with it, its status, severity and owner beside it, and the form for the first reply below](../media/tickets-ticket.png)
 
 Reply first, then diagnose. A short acknowledgement tells the user the ticket
 landed somewhere, and it costs nothing.

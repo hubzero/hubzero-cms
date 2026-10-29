@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/introduction
 source-id: 3294
 modified: 2011-11-04
@@ -63,6 +63,8 @@ tabs — Dashboard, Profile, Account, Groups, Projects, Usage, and so on. Each
 tab is a separate plugin, and the hub decides which ones exist. The two you
 will use first are described in [Member dashboard](14-dashboard.md) and
 [Member profile](15-profile.md).
+
+![A member's area open on the Dashboard tab: the member's picture above the list of tabs down the left, and the dashboard's modules beside it](media/introduction-member-area.png)
 
 **Shared spaces.** Groups and projects are the places where several people
 work on the same thing, and they are not the same thing. A

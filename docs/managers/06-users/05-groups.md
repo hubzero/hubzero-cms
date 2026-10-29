@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/users/groups
 source-id: 3360
 modified: 2016-07-12
@@ -73,6 +73,8 @@ The list shows **Group ID**, **Name**, **Alias**, **Type**, **Published**,
 in the group's URL. Selecting the name or the alias opens the group for
 editing; the member count opens the membership screen for that group; the
 page count opens its page list.
+
+![The Groups list: the type, discoverability, join policy and state filters, and each group with its ID, name, alias, type, published and approved flags, member count and pages](../media/groups-admin-list.png)
 
 Filter with the search box and the **Type**, **Discoverability**, **Join
 Policy** and **State** menus.

@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/users/accessgroups
 source-id: 3361
 modified: 2016-07-12
@@ -113,6 +113,8 @@ expect. Put the batch in an extra group afterwards instead.
 
 Each row shows the group's **ID**, its **Group Title** indented by depth in
 the tree, and **Users in group**. Search by title with the filter bar.
+
+![The Access Groups list: the shipped groups nested under Public, each with a Debug Permissions Report button and the number of accounts in it](../media/accessgroups-list.png)
 
 The toolbar carries **New**, **Edit**, **Delete** and **Options**.
 

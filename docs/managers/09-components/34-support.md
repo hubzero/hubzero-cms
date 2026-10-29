@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/support
 -->
 # Support
@@ -390,7 +391,7 @@ notification, which is what a hub bound by FISMA or HIPAA rules wants.
 When it is on, the **Terse** checkbox on the comment form is pre-checked;
 staff can clear it for a single comment.
 
-![The privacy setting on the Options screen](../media/support-supportprivacyemails.png)
+![The Support component's options open on the Defaults tab, with Email Content at the bottom](../media/support-options.png)
 
 **Max upload** and **Extensions** are blank in the manifest but are given
 real values — 40 MB, and a long list of image, document, video and archive

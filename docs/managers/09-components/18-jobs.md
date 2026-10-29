@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Jobs
 
@@ -48,6 +48,8 @@ Neither shape has anything to do with [Storefront](33-storefront.md) or
 **Components → Jobs** opens the job board manager. Every screen is headed
 **Jobs Manager**, and three tabs run along the top: **Jobs**, **Categories**
 and **Types**. Reaching any of them needs `core.manage` on `com_jobs`.
+
+![The Jobs Manager: each posting with its code, title, company and location, status, owner, the dates it was added and expires, and its applications](../media/jobs-admin-list.png)
 
 ### Jobs
 

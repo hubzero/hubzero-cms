@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/maintenance/notices
 source-id: 3343
 imported: 2026-09-09
@@ -42,14 +42,14 @@ recognise later, like `Site notice`, and change its message.
 1. Log in to `/administrator`.
 2. Go to **Extensions → Module Manager**.
 
-![The Module Manager](../media/notices-site-notices.png)
+![The Module Manager searched for notices: the one Notices module, in the notices position, of type mod_notices](../media/notices-modules.png)
 
 3. Find the notices module. Filter by position, type, or state, or type
    `notices` into the search box. The module's type is `mod_notices` and it
    belongs in the **notices** position.
 4. Click the module's title to edit it.
 
-![The site notice module open for editing](../media/notices-site-notices1.png)
+![The Notices module open for editing, with a maintenance message typed into its Basic Options beside the alert level](../media/notices-edit.png)
 
 If no such module exists yet, select **New**, pick **Site Notices** from the
 module type list, and set its position to `notices`.

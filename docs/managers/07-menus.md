@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/menus
 source-id: 3366
 modified: 2014-10-10
@@ -85,6 +85,8 @@ person can find the link they need to change.
 menu's title, its menu type beneath, the number of published, unpublished and
 trashed items in it, and the modules linked to it.
 
+![The Menu Manager's list of menus: each menu's title and type, its counts of published, unpublished and trashed items, and the modules that display it](media/menus-menus.png)
+
 - The **title** opens the menu's items.
 - The **menu type** opens the menu itself for editing.
 - Under **Modules Linked to the Menu**, each module is a link to its
@@ -117,6 +119,8 @@ worth doing if items start appearing at the wrong depth.
 the first drop-down above the list, or open it from the Menu Manager. The
 other filters are **Select Max Levels**, status, access level, and language,
 and the search box matches the title or the alias.
+
+![The Main Menu's items: each item's title and alias, its status, its place in the ordering, access level, menu item type, and whether it is the home page](media/menus-items.png)
 
 The columns are **Title**, **Status**, **Ordering**, **Access**, **Menu Item
 Type**, **Home**, **Language**, and **ID**. Sort by **Ordering** ascending to

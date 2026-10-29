@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/users/members
 source-id: 3355
 modified: 2014-11-06
@@ -411,11 +411,7 @@ these seven:
 Fill in **Points**, **Alias** and **Description** on a row and press **Save
 Configuration**.
 
-![The points configuration screen, a numbered table of Points, Alias and Description rows](../media/members-points-config.png)
-
-> **Note:** That screenshot is from an older release. Its sub-menu shows an
-> **Export** tab, which no longer exists — export is a toolbar button on the
-> account list.
+![The points configuration screen: numbered rows of Points, Alias and Description, the seven Answers actions filled in and the rest empty](../media/members-points-config.png)
 
 ## Passwords
 

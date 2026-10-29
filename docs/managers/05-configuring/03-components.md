@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/configuring/components
 -->
 # Components
@@ -39,6 +39,10 @@ it behaves once they are there.
 4. A pop-up opens with one tab per group of settings.
 5. Change what you need and select **Save & Close**. **Save** keeps the
    pop-up open. **Cancel** discards the changes.
+
+![The Components menu open over the Blog Manager, listing the hub's components alphabetically](../media/components-menu.png)
+
+![The Blog component's options pop-up, with its Defaults, Archive, Entries, Feeds and Permissions tabs](../media/components-options.png)
 
 Changes take effect immediately, for everyone using the hub, with no undo
 and no confirmation. In practice that is fine: almost every option is a
@@ -86,26 +90,11 @@ it always matches the screen.
 
 ## Known problem: unnamed tabs
 
-The pop-up names each tab from a language string built out of the fieldset
-name, `COM_CONFIG_<NAME>_FIELDSET_LABEL`. Only `basic` and `component` are
-defined, so a component whose `config.xml` uses any other unlabelled
-fieldset name shows the raw key as the tab title. The Members component,
-for instance, shows `COM_CONFIG_LOGIN_FIELDSET_LABEL`,
-`COM_CONFIG_PASSWORD_FIELDSET_LABEL`, and
-`COM_CONFIG_REGISTRATION_FIELDSET_LABEL` where names should be. The fields
-under those tabs work normally.
-
-## Older screenshots
-
-> **Note:** The screenshots below came from the imported version of this
-> page. They show the retired **Hub** component and call the toolbar button
-> **Parameters**; the button is now called **Options**, and there is no Hub
-> component. The pop-up they show is otherwise the same screen.
-
-![The Components menu with a component selected](../media/components-edit-registration-01.png)
-
-![The toolbar button that opens the options pop-up](../media/components-edit-registration-05.png)
-
-![The component options pop-up](../media/components-edit-registration-06.png)
-
-![The component options pop-up with the Save button](../media/components-edit-registration-07.png)
+The pop-up names each tab from the fieldset's `label` in `config.xml`, or,
+where there is none, from a language string built out of the fieldset name,
+`COM_CONFIG_<NAME>_FIELDSET_LABEL`. The configuration component defines
+that string only for `basic` and `component`, so any other unlabelled
+fieldset needs the component's own language file to define it. The Members
+component does, which is why its **Login Settings**, **Password** and
+**Registration** tabs have names. A component that does not shows the raw
+key as the tab title. The fields under such a tab work normally.

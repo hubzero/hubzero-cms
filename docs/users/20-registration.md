@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/registration
 source-id: 3324
 modified: 2014-11-14
@@ -34,13 +34,7 @@ required, optional, read-only, or hidden. Administrators set that up on the
 [Registration chapter](../managers/06-users/02-registration.md) of the Hub managers
 book.
 
-> **Note:** The images on this page were captured from an older release. The
-> first one shows a member dashboard rather than the registration form and is
-> misleading; ignore it until the screenshots are recaptured.
-
 ## Creating an account
-
-![A member area, captured for an older release](media/registration-210registration.png)
 
 1. Go to the hub's front page and select **Register**, or go straight to
    `https://yourhub.org/register`. The login form also carries a
@@ -61,6 +55,8 @@ book.
    is available. You do not have to submit the form to find out.
 
    > **Note:** Usernames cannot be changed afterwards.
+
+   ![The Login Information fieldset, reporting that the username typed is already taken, with the password rules listed under the password boxes](media/registration-login.png)
 
    Choose one you would not mind a co-author seeing. On hubs that offer SSH or
    SFTP access for tool development, the same username is your login there;
@@ -84,7 +80,7 @@ book.
    > confirmation off, the account cannot be used until you follow a link sent
    > to it.
 
-   ![The Contact Information fieldset of the registration form](media/registration-210registration2.png)
+   ![The Contact Information fieldset: first, middle and last name, the email address twice, and the notice naming the address the confirmation will come from](media/registration-contact.png)
 
    If the address already belongs to an account, the form says so and offers
    two buttons instead: one that emails you the existing account's details, and

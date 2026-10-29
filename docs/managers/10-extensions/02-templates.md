@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/extensions/templates
 source-id: 3407
 modified: 2009-10-01
@@ -70,6 +70,8 @@ error and module-chrome layouts every template falls back on.
 
 A style is what is actually assigned, so this tab is where the site's
 appearance is decided. Three styles ship in the install data:
+
+![The Template Manager's Styles tab: each style with whether it is for the site or the administrator, its template, the star marking each side's default, and its ID](../media/templates-styles.png)
 
 | Style | Template | Client | Default on a fresh install |
 |---|---|---|---|

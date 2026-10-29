@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/wiki
 -->
 # Wiki
@@ -75,6 +76,8 @@ lists of links:
 Above the page body is a row of tabs: **Article**, **Edit**, **Comments**,
 **History**, and **Delete**. You only see the tabs you have rights to use.
 
+![A page of the hub's wiki as a guest sees it: the Search box and the Wiki and Tools links in the sidebar, and only the Article and History tabs above the page](media/wiki-page.png)
+
 > **Note:** The wiki search uses MySQL full-text matching. It works well once
 > a wiki has a lot of content, but it returns few or no results on a small
 > wiki, and it ignores very common words such as "the".
@@ -120,6 +123,8 @@ Open a page and choose the **Edit** tab. The same form appears, filled in.
 Write your **Edit summary**, then **Save**. Say the lab's calibration step
 changes: open the protocol page, change the paragraph, put *new calibration
 interval* in the summary, and save. The old text stays in the history.
+
+![Editing a page in a group's wiki: the Article, Edit, Comments and History tabs, the Parent page, Template and Title fields, and the page text in wiki markup under its formatting buttons](media/wiki-edit.png)
 
 Your revision goes live immediately. There is no approval queue for the people
 who may edit.
@@ -215,6 +220,8 @@ optionally filtered by a name prefix), `[[TableOfContents]]`,
 The **History** tab lists every revision, newest first, with when it was made,
 who made it, its length and the change in bytes, and its status. Click a date
 to read that version, or **Markup** to see its raw wiki text.
+
+![The History tab: how many versions the page has, the Compare selected versions button, and the revisions with their radio buttons, date, author, length and status](media/wiki-history.png)
 
 Pick two revisions with the radio buttons and press **Compare selected
 versions** to see a line-by-line difference: deletions are marked before the

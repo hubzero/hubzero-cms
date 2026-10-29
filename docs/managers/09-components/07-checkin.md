@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Check-in
 
@@ -68,6 +68,8 @@ is what this screen is for.
 ## The screen
 
 The list has one row per **database table**, not per record:
+
+![Global Check-in with nothing checked out: the list of tables, each with its count of checked-out items, is empty](../media/checkin-screen.png)
 
 | Column | Meaning |
 |---|---|

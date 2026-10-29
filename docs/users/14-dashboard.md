@@ -67,7 +67,7 @@ Projects** off the dashboard does not touch your projects.
   and release. The other modules move out of the way.
 - **Resize.** Drag the bottom-right corner of a module.
 
-![Dragging a module to a new position](media/dashboard-rearrange.png)
+![The member dashboard: modules in columns, each with a title bar to drag it by, and settings and remove icons on the ones that have them](media/dashboard-modules.png)
 
 Both are saved as soon as you let go.
 

@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/blog
 source-id: 3295
 modified: 2014-11-17
@@ -40,10 +41,12 @@ own entries or pull in member and group entries as well.
 ## Your blog page
 
 The Blog tab lists your entries newest first. Each one shows its title,
-its entry number, the date and time it was published, its author, and
-either the number of comments on it or **Comments off**. Below that comes
-an excerpt — the first 300 characters or so of the entry. On your own
-entries you also see the privacy level and **Edit** and **Delete** links.
+the date and time it was published, its author, and either the number of
+comments on it or **Comments off**. Below that comes an excerpt — the
+first 300 characters or so of the entry. On your own entries you also see
+the privacy level and **Edit** and **Delete** links.
+
+![A member's own Blog tab: the search box, then each entry with its title, date and time, author, comment count, privacy level, delete and edit icons, and an excerpt](media/blog-member.png)
 
 A search box at the top finds entries by title and text. The sidebar has
 **Entries By Year**, which drills down to a year and then a month, and
@@ -61,6 +64,9 @@ Two buttons sit at the top of your own blog: **New entry** and
 
 Follow the postdoc's Friday entry the whole way. She is on her profile,
 on the **Blog** tab, and presses **New entry** at the top of the page.
+
+![The New entry form: a required Title, and the Entry text in the editor](media/blog-new.png)
+
 The form asks for:
 
 | Field | Notes |
@@ -123,8 +129,10 @@ set of people, they belong in a [group](11-groups/README.md) or a
 
 ## Reading and commenting
 
-An entry page shows the title, the entry number, the date and time, the
-text, and the entry's tags. Click a tag to find related content.
+An entry page shows the title, the date and time, the text, and the
+entry's tags. Click a tag to find related content.
+
+![An entry on the site blog: its title, date, time and comment count, the text, its tags, and the author below it, with Entries By Year and Popular Entries beside](media/blog-entry.png)
 
 Where comments are allowed, they follow the entry as a threaded
 conversation. Each comment shows the commenter's picture and name — or
@@ -134,6 +142,8 @@ conversation. Each comment shows the commenter's picture and name — or
 To add one, log in, write it in the form at the bottom, and press
 **Submit**. Tick **Post anonymously** to hide your name and picture from
 other readers. Guests see a note saying they must log in first.
+
+![Two comments under an entry, each with the commenter's picture, name, time and date, and Reply and Report abuse links, then the form to post a comment](media/blog-comments.png)
 
 On each existing comment you can:
 

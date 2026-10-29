@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/configuring/modules
 -->
 # Modules
@@ -59,6 +59,13 @@ Its columns are **Title**, **Status**, **Position**, **Ordering**, **Type**,
 **Pages**, **Access**, **Language**, and **ID**. Select a column heading to
 sort by it.
 
+A module assigned to a position the default site template does not have is
+flagged under its position with a warning that it is not shown. That is the
+usual reason a module that is published and assigned to every page still
+appears nowhere.
+
+![The Module Manager listing site modules by position, several flagged because the template does not have their position](../media/modules-list.png)
+
 The toolbar offers **New**, **Edit**, **Duplicate**, **Publish**,
 **Unpublish**, **Check In**, **Trash**, **Options**, and **Help**. Each
 button appears only if your account holds the matching permission.
@@ -81,6 +88,8 @@ The right column holds the parameter panels and a table of facts about the
 module — its type, whether it belongs to the site or the administrator, and
 its ID.
 
+![The Latest Events module open for editing: its Details on the left, and on the right the table of its type and client above its Basic Options](../media/modules-edit.png)
+
 The toolbar has **Save**, **Save & Close**, **Save & New**, **Save as
 Copy**, **Cancel**, and **Help**. **Save** keeps you on the screen; **Save
 & Close** returns to the list.
@@ -90,17 +99,3 @@ Every module's parameters are listed in the generated
 
 > **Tip:** The Module Manager also adds and removes modules, not just
 > configures them. See [Modules manager](../10-extensions/01-modules.md).
-
-## Older screenshots
-
-> **Note:** The screenshots below came from the imported version of this
-> page. The screens are the same but the administrator template has been
-> restyled since, and the Save button is not a star.
-
-![The Module Manager list](../media/modules-modules-manager-01.png)
-
-![Choosing a module from the list](../media/modules-modules-manager-02.png)
-
-![The parameter panels on the right of the module edit screen](../media/modules-modules-manager-09.png)
-
-![Saving the module](../media/modules-modules-manager-10.png)

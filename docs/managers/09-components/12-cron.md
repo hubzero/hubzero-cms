@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/cron
 source-id: 3378
 modified: 2016-08-24
@@ -64,6 +64,8 @@ with the plugins that listen for it.
 Fourteen cron plugins ship with the hub. The **Event** column gives the name
 as it appears in the drop-down; the identifier in parentheses is what is
 stored on the job.
+
+![The Cron job list: each job's title, state, start and end, whether it is active, and when it last ran and runs next](../media/cron-list.png)
 
 ### Cron - Activity
 

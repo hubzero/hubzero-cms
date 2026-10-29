@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/tools
 source-id: 3326
 modified: 2011-11-04
@@ -36,6 +36,8 @@ and wants to put it on the hub. Running one is
 > that cannot launch anything.
 
 ## Running a tool
+
+![A tool's page: its name and summary, the Launch Tool button with the tool's licence under it, the reviews, usage and sharing links beside it, and the About tab open on its category, publication date and abstract](media/tools-page.png)
 
 Select **Launch Tool** on the tool's page. The hub allocates a session on an
 execution host and shows it in a frame on the session page. What you see

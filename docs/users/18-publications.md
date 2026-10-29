@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/publications
 -->
 # Publications
@@ -57,6 +58,8 @@ the **Popular Tags** list beside the results. Tags stack: each one you add
 appears above the results with an `x` that removes it. Sort with **Title**,
 **Published**, and, where the hub shows rankings, **Ranking**.
 
+![Browse Publications: the search box, the Category list and the Ranking, Published and Title sorts, each publication with its date, category and contributors, and the Popular Tags cloud beside them](media/publications-browse.png)
+
 Every publication has a permanent address you can share:
 `https://<your hub>/publications/<id>`. Adding a version number reaches one
 particular release, as in `/publications/42/3`.
@@ -68,6 +71,8 @@ and the category it is listed in. To the right sits the download or launch
 button and, under it, the version and license lines. The version line reads
 something like *Version 1.2 - published on 12 Mar 2026* and, where the work
 has a DOI, shows `doi:` followed by the identifier and a **cite this** link.
+
+![A dataset's publication page: its authors and their affiliations, the summary, the Download Bundle button with the version and licence lines under it, the ranking and links to citations, questions, reviews and wishes beside them, and the About, Citations, Questions, Reviews, Supporting Docs, Versions and Wishlist tabs](media/publications-page.png)
 
 The **About** tab below holds the full description, the image gallery, the
 list of what is in the publication, any extra metadata the hub collects, the

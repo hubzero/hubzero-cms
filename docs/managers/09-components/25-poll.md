@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Poll
 
@@ -82,6 +82,8 @@ Open it under **Components > Poll**. The list shows every poll with its
 **Title**, **Published** and **Open** states, the number of **Votes**, how
 many **Options** it has, and its **Lag**. All are sortable except the option
 count.
+
+![The Polls list: each poll with whether it is published and open, its votes, its options and its lag](../media/poll-admin-list.png)
 
 Above the list, a search box matching the title — type and press **Go** — and
 a state filter offering published and unpublished.

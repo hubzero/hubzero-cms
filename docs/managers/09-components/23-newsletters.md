@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/newsletters
 -->
 # Newsletters
@@ -43,7 +44,7 @@ Do this first, before you write a word:
 
 Publishing a job is reversible: unpublish it and sending stops, with the
 queue left where it is. The Newsletters screen tells you when the job is
-missing or unpublished — it shows a warning and a **Check HUB cron jobs**
+missing or unpublished — it shows a warning and a **Check the hub's cron jobs**
 link — but only that one check runs, so a hub with `processMailings`
 published and a broken scheduler shows no warning at all and still sends
 nothing.
@@ -81,6 +82,8 @@ The list shows **Name**, **Format**, **Template**, **Public**, **Sent**, and
 against the name, and by format with the **- Select Type -** menu (HTML or
 Plain). The **Public** cell is a toggle: click it to publish or unpublish.
 
+![The Newsletters list under a warning that the cron job that sends mailings is missing or switched off, each newsletter with its format, template, and whether it is public, sent and tracked](../media/newsletters-admin-list.png)
+
 The toolbar offers **New**, **Copy** (duplicates the checked newsletters and
 their stories, appending "(copy)" to the name), **Edit**, **Delete**,
 **Publish**, **Unpublish**, **Preview** (renders the newsletter in a
@@ -98,7 +101,7 @@ screen, but is not removed from the database.
 | Issue | Free text, substituted into the template as `{{ISSUE}}`. |
 | Format | **HTML** or **Plain Text**. An HTML newsletter is also sent with a generated plain-text part. |
 | Template | A saved template, or **No Template (If HTML format, content includes template)** to write the whole message yourself. |
-| Show Newsletter on HUB | **Show** or **Don't Show**. Hidden newsletters are not listed at `/newsletter`. |
+| Show Newsletter on the hub | **Show** or **Don't Show**. Hidden newsletters are not listed at `/newsletter`. |
 | Email Tracking | Yes or No. See [Mailings](#mailings). |
 | Scheduled Digest | Disabled, Daily, Weekly, or Monthly. Turns the newsletter into an auto-generated digest. |
 

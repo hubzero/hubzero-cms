@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/support
 -->
 # Support
@@ -58,16 +59,17 @@ at the two things you can do here: **Report Problems** and
 
 There are two ways in.
 
-**From any page on the hub.** Select the **?** tab. The report form drops
-down over the page you were on, already carrying the address you came
-from.
+**From any page on the hub.** Select the help tab at the top of the page —
+a **?** in the hub's default template, **Help** in some others. The report
+form opens over the page you were on, already carrying the address you
+came from.
 
-![The report form opened from the ? tab](media/support-support-newticket1.png)
+![The trouble report open over a page, as a guest sees it: the Username, Name and Email fields, then the Detailed Description](media/support-help-pane.png)
 
 **From the Support Center.** Go to `/support/ticket/new`, or follow
 **Report Problems** from `/support`.
 
-![The full new ticket form](media/support-support-newticket2.png)
+![The new ticket form as a logged-in member sees it: the Detailed Description and the Attachments box, with no fields for name or e-mail](media/support-new-ticket.png)
 
 The form asks for one thing: a **Detailed Description** of what went
 wrong. Say what you were doing, what you expected, and what happened
@@ -164,6 +166,8 @@ Support staff get more here: a **Watch list** with counts of the open and
 closed tickets they are watching, a **Stats** button, and controls for
 adding query folders and building their own queries.
 
+![A member's ticket list: the Common and Mine folders of saved queries with their counts down the left, and the one open ticket in the selected query](media/support-tickets.png)
+
 ## Reading a ticket
 
 `/support/ticket/123` — or clicking the summary in the list — opens one
@@ -180,6 +184,8 @@ its severity or status altered. Comments marked private by staff are not
 shown to you.
 
 Beside the ticket, its status says **open ticket** or **closed ticket**.
+
+![A closed ticket as its submitter sees it: the original report, the status and the Watch ticket button beside it, and the comments below](media/support-ticket.png)
 
 ## Adding a comment
 
@@ -204,18 +210,17 @@ sees who is watching.
 
 ## Terse comment e-mails
 
-Hub administrators and support staff see a **Terse** checkbox under the
-comment box.
-
-![The Terse checkbox on the comment form](media/support-support-terse.png)
-
-Left clear, the e-mail sent to the ticket's recipients contains the whole
-comment. Checked, they get only the ticket number and a line saying the
-ticket has been updated, with a link to come and read it. Hubs that must
-keep sensitive material out of e-mail — those working to HIPAA or FISMA
-rules — turn this on hub-wide, and then the box is checked for every
-comment; staff can still clear it one comment at a time. See
+By default, the e-mail sent to a ticket's recipients contains the whole
+comment. Hubs that must keep sensitive material out of e-mail — those
+working to HIPAA or FISMA rules — can switch support e-mail to terse
+hub-wide. Then the recipients get only the ticket number and a line saying
+the ticket has been updated, with a link to come and read it. See
 [Support](../managers/09-components/34-support.md) in the managers book.
+
+On a hub set up that way, hub administrators and support staff see a
+**Terse** checkbox under the comment box, already ticked. Clear it to send
+one comment in full. On a hub left at the default there is no checkbox,
+and every e-mail carries the whole comment.
 
 ## Reporting abuse
 

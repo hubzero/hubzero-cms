@@ -88,7 +88,7 @@ clicking anything else publishes it. The **Cert.** cell goes to the
 certificate screen for that course, and says **Certificate set** or **No
 certificate set**.
 
-![The Cert. column showing a course with no certificate](../media/courses-210course.png)
+![The Courses list, each course with its state, Cert. cell, managers, offerings and pages](../media/courses-list.png)
 
 ## Creating a course
 
@@ -440,11 +440,12 @@ A role's edit form asks for an **Offering**, a **Title** and an **Alias**.
 
 ## Options
 
-![The Options button in the toolbar](../media/courses-210options.png)
-
 Press **Options** in the toolbar of the course list. `core.admin` is
 required. The full list is in the
 [generated parameter reference](../../reference/configuration/components/courses.md).
+
+![The Courses component's options open on the Defaults tab: upload path, template, default asset groups, default enrollment, whether section owners may edit the grading policy, and what progress is calculated from](../media/courses-options.png)
+
 The ones worth knowing:
 
 | Option | Default | Effect |

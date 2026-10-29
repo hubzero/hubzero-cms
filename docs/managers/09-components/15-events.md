@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/events
 -->
 # Events
@@ -42,6 +43,8 @@ Events; and **Configuration**, the component's own settings screen.
 The list is the whole calendar, past and future. Its most useful filter is
 the group drop-down, because a busy hub's calendar is mostly group events
 you did not create and cannot usefully edit here.
+
+![The Events Manager: the category and group filters, and each event with its state, the dates it runs between, the access it is restricted to, and its pages](../media/events-admin-list.png)
 
 The **Events Manager** screen lists every event. Above the list, filter
 by a search term (matched against titles), a category, or a group, then

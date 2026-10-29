@@ -42,7 +42,7 @@ administrator interface a button with the same wording erases the row for
 good. [States, deleting and check-out](states.md) says which is which, and it
 is the chapter to read before you press a delete button anywhere on this hub.
 
-![The Content menu in the administrator interface, open over the control panel](../media/content-backendcontent.png)
+![The Content menu in the administrator interface, open over the control panel: Article Manager, Category Manager and Media Manager](../media/content-menu.png)
 
 ## What an article is not
 

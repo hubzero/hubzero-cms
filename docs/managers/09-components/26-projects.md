@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/projects
 source-id: 3385
 modified: 2016-07-12
@@ -61,6 +61,8 @@ This is the screen you open when someone writes to you, which is how nearly
 all project administration starts: a team is out of space, a project owner
 has left the institution, or a project that should have gone live is stuck
 part-way through setup.
+
+![The Projects list: each project with its picture, title and alias, owner, team, status, privacy, quota and activity](../media/projects-admin-list.png)
 
 The default screen lists every project on the hub. The filter bar has a
 **Search** box and four drop-downs — **Status**, **Privacy**, **Access**

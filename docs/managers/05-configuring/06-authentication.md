@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/configuring/authentication
 -->
 # Authentication
@@ -98,6 +98,10 @@ The hub builds these itself, so they are not a guess:
 7. Sign out in a private window and check that the provider's button appears
    on the login page and takes you all the way through.
 
+![The Plug-in Manager filtered to the authentication type, with only Authentication - HUBzero enabled](../media/authentication-plugins.png)
+
+![The Google authentication plugin open for editing: Consumer Key and Consumer Secret at the top of its Basic Options, then Display name, Site login, Admin login and Auto approve new users](../media/authentication-google.png)
+
 Adding a provider is safe: existing members keep signing in exactly as they
 did, and a provider that turns out to be misconfigured fails for the people
 who choose it rather than for everyone. Removing one is the change that hurts
@@ -172,18 +176,3 @@ Manager the same way.
 Rules for the hub's own passwords are not part of these plugins. They live
 under **Users > Members > Passwords**, which has two screens: the character
 and length rules, and a blacklist of passwords that are refused outright.
-
-## Older screenshots
-
-> **Note:** The screenshots below came from the imported version of this
-> page and were taken around 2012. The Plug-in Manager and the plugin edit
-> screen have been restyled since, and the login page no longer looks like
-> the one shown.
-
-![The authentication plugins listed in the Plug-in Manager](../media/authentication-auth-04.png)
-
-![Filtering the Plug-in Manager to the authentication type](../media/authentication-210authentication.png)
-
-![Filling in an authentication plugin's key and secret](../media/authentication-210authentication2.png)
-
-![The login page offering a third-party provider](../media/authentication-210authentication3.png)

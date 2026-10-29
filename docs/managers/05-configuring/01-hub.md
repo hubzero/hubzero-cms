@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/configuring/hub
 -->
 # Global configuration
@@ -66,6 +66,8 @@ someone in a group is done from
 ## The screen
 
 Open **Site > Global Configuration** from the administrator menu.
+
+![Global Configuration open on its Site tab: Site Settings down the left, SEO Settings and Cookie Settings down the right, and the Site, System, Server, API, Permissions and Text Filters tabs above them](../media/config-global.png)
 
 ### Toolbar
 
@@ -400,23 +402,10 @@ view:
 3. Set **Logout Redirect** in the same place if you want a different
    destination after signing out.
 
+![The login menu item open for editing, with Login Redirect at the top of its Basic Options](../media/config-login-menu-item.png)
+
 A path that starts with `/` is treated as internal and the hub prefixes the
 site root. The same menu item also carries the login and logout
 descriptions and images.
 
 <!--include: core/components/com_users/site/controllers/auth.php:143-159-->
-
-## Older screenshots
-
-> **Note:** The four images below came from the imported version of this
-> page. They show the retired **Hub** component and its parameters pop-up,
-> which no longer exist in Hubzero 2.4. They are kept only until the
-> screenshot pass replaces them; do not follow the steps they show.
-
-![The Components menu with the retired Hub component selected](../media/hub-edit-registration-01.png)
-
-![The Parameters button in the retired Hub component's toolbar](../media/hub-edit-hubconfig-00.png)
-
-![The retired Hub parameters pop-up showing a Login Return URL field](../media/hub-edit-hubconfig-02.png)
-
-![The retired Hub parameters pop-up with the Save button](../media/hub-edit-hubconfig-03.png)

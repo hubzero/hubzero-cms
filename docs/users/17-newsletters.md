@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/newsletters
 -->
 # Newsletters
@@ -30,6 +31,8 @@ Go to `/newsletter`. The page shows the most recent public issue, with
 **Past Newsletters & Updates** listing the others down the side. Click one to
 read it; its address is `https://<your hub>/newsletter/<alias>`, which you
 can share.
+
+![The newsletter page: the latest issue in full, the Save as PDF and Subscribe To Mailing Lists buttons above it, and Past Newsletters & Updates listing the other issues beside it](media/newsletters-issue.png)
 
 Two buttons sit at the top of the page. **Save as PDF** turns the issue you
 are reading into a PDF and downloads it. **Subscribe To Mailing Lists**

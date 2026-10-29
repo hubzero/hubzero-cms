@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/configuring/registration
 -->
 # Registration
@@ -48,6 +48,8 @@ The Registration screen has its own tabs: **Config** (this screen),
 ## The field table
 
 The table has one row per field and four columns, one per action.
+
+![The Registration screen's field table: a row for each field from Username to TOU, and a drop-down in each of the Create Account, Proxy Create Account, Update on Next Login and Edit Profile columns](../media/registration-fields.png)
 
 | Column | What it controls |
 |---|---|
@@ -162,21 +164,14 @@ wave starts producing junk accounts faster than anyone can delete them: it
 closes the door without touching the accounts that already exist, and turning
 it back on restores the form exactly as it was.
 
+![The Members component's options open on the Component tab, with Allow User Registration first](../media/registration-options.png)
+
 The same screen carries **New User Registration Group**, **New User Account
-Activation**, **Send Password**, and **Simple Registration**, which submits
-the registration form on behalf of an account arriving from an external
-authentication provider instead of showing it, where the provider supplied
-enough to fill it in.
-
-> **Note:** The tabs in the Options pop-up are labelled from language
-> strings that the Members component does not define, so three of them
-> render as raw keys such as `COM_CONFIG_REGISTRATION_FIELDSET_LABEL`
-> instead of a name. The fields inside them are correct.
-
-> **Warning:** **Send Password** on that screen is inert. It is declared, it
-> has help text, it defaults to **Yes**, and nothing in the tree reads it.
-> Setting it either way changes nothing, so do not treat it as the hub's
-> answer to whether passwords are mailed out.
+Activation**, and **Simple Registration**, which submits the registration
+form on behalf of an account arriving from an external authentication
+provider instead of showing it, where the provider supplied enough to fill
+it in. No setting mails a new member their password; the hub never sends
+one.
 
 ## Confirmation return URL
 
@@ -220,24 +215,3 @@ cron.
 
 > **Tip:** See [Output overrides](../../developers/11-templates/09-overrides.md)
 > for the general rules on overriding layouts and CSS.
-
-## Older screenshots
-
-> **Note:** The screenshots below came from the imported version of this
-> page. The field table and the Save button are still where they show them,
-> but the administrator template has been restyled since. The last four
-> images show the retired **Register** component and its parameters pop-up,
-> which no longer exist; the settings they show are now on the Members
-> component's **Options** screen.
-
-![The member field configuration table with its Create, Proxy, Update, and Edit columns](../media/registration-edit-registration-03.png)
-
-![The Save button in the upper right of the Registration screen](../media/registration-edit-registration-04.png)
-
-![The retired Components menu with the Register component selected](../media/registration-edit-registration-01.png)
-
-![The Parameters button in the retired Register component's toolbar](../media/registration-edit-registration-05.png)
-
-![The retired Register parameters pop-up showing the Confirmation Return URL option](../media/registration-edit-registration-06.png)
-
-![The retired Register parameters pop-up with the Confirmation Return URL filled in](../media/registration-edit-registration-07.png)

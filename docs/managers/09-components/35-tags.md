@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/tags
 -->
 # Tags
@@ -40,6 +41,8 @@ The **Plugins** link appears only if you may manage plugins.
 ## Tags
 
 The list shows every tag in the system with these columns.
+
+![The Tags list: each tag's raw form and normalised form, its type, how many items carry it, its aliases and when it was created](../media/tags-admin-list.png)
 
 | Column | Notes |
 |---|---|

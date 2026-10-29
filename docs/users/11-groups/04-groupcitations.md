@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/groups/groupcitations
 source-id: 3307
 modified: 2015-09-22
@@ -22,7 +22,9 @@ publications the project produced. Rather than chase people for BibTeX, the
 managers import each new paper as it appears, so the list is always current
 and anyone can export the whole thing in one go.
 
-> **Note:** The tab is not on every group. A manager switches it on under
+> **Note:** The tab is not on every hub or every group. A new hub installs
+> the **Groups - Citations** plugin switched off, so an administrator has to
+> enable it first; then a manager switches the tab on under
 > **Access Permissions**; see
 > [Customization](03-groupcustom.md#which-tabs-appear). The hub as a whole
 > also has a [citations catalogue](../06-citations.md), which is a different
@@ -36,6 +38,8 @@ tab redirects to its settings page with *Please select your settings for this
 group.* Fill it in and select **Save**.
 
 The settings page has four sections.
+
+![The top of the Group Citations Settings page: Sources, Badge and Tag Options, and COinS Options](../media/groups-citations-settings.png)
 
 ### Sources
 

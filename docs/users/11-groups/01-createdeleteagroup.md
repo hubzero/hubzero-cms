@@ -101,7 +101,7 @@ of the co-investigator who vouches for them.
 You can change the policy at any time afterwards, and changing it does not
 disturb anybody who has already joined.
 
-![The Membership Settings/Join Policy section of the group form](../media/createdeleteagroup-groupmembershipmanagement.png)
+![The Membership Settings/Join Policy section of the group form: Open/Anyone, Restricted with its Credentials box filled in, Invite Only and Closed](../media/groups-join-policy.png)
 
 If the hub allows time-limited memberships, a **Membership length** section
 follows, where you set a default number of days after which new members are

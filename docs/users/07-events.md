@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/events
 -->
 # Events
@@ -125,7 +126,7 @@ You have to be logged in, and the hub has to allow you to create events.
 When it does, an **Add an Event** button sits at the top right of every
 calendar page. It leads to `/events/add`.
 
-![The event submission form](media/events-210events.png)
+![The Events: Add form: Category, Title, the Description editor, Where, Website and Tags](media/events-add.png)
 
 | Field | Notes |
 |---|---|

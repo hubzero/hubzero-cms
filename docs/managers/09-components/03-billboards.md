@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/billboards
 source-id: 3372
 modified: 2016-07-12
@@ -67,7 +67,10 @@ the slide in it.
 2. Fill in the fields below.
 3. Press **Save & Close**.
 
-The edit form has three fieldsets.
+The edit form has three fieldsets. **Styling** is folded shut until you
+select its heading.
+
+![A new billboard's edit form: Content on the left with Name, Collection, Ordering, Header, the Background image file picker and the Text editor, and Learn More Link and Styling on the right](../media/billboards-new.png)
 
 ### Content
 
@@ -115,18 +118,6 @@ Uploading a new image deletes the one it replaces.
 
 Once a billboard has an image, the edit form shows it under **Current Image**,
 scaled to 500 pixels wide.
-
-> **Note:** The screenshots on this page show an older interface in which the
-> image was chosen through a **Media Manager** pop-up with **Browse** and
-> **Start Upload** buttons, and the filename was then pasted into a text
-> field. That flow no longer exists. Ignore the pop-up in the second and third
-> images.
-
-![The Components menu with Billboards selected](../media/billboards-billboards.png)
-
-![The old Media Manager pop-up, no longer used](../media/billboards-billboards2.png)
-
-![The old background image field, no longer used](../media/billboards-billboards3.png)
 
 ## The billboard list
 

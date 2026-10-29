@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/answers
 -->
 # Answers
@@ -67,7 +68,7 @@ against question subjects and bodies, or use **Filter by:** to show **Open
 Questions**, **Closed Questions**, or **All Questions**. **Clear** resets
 the search.
 
-![The Answers Manager questions list, with its sub-menu, search box, state filter, and column headings](../media/answers-newquestion.png)
+![The Answers Manager questions list: its Questions and Answers sub-menu, the search box and state filter, and each question with its state, date, author and answer count](../media/answers-questions.png)
 
 The toolbar offers:
 

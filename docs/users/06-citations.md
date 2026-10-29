@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/citations
 -->
 # Citations
@@ -144,7 +145,7 @@ turn it off entirely, in which case the button is not shown. If you cannot
 see the button and you are logged in, that setting is why; send the reference
 to the hub's support team instead. See [Support](12-support.md).
 
-![The Citations: Add form, with the Details, Manually Format Citation, Tags and Badges, Citation For, and Affiliation sections](media/citations-citations-1.png)
+![The top of the Citations: Add form: Type and Cite key, Ref Type, the submitted, accepted and published dates, Year and Month, and the Author(s) box](media/citations-add.png)
 
 1. Choose a **Type**. The form then shows the fields that type uses.
 2. Fill in **Title/Chapter** and the other details that apply — authors,

@@ -139,7 +139,7 @@ For a video file of your own, upload it first. Wherever the hub gives you an
 editor next to an **Uploaded files** area — a blog entry, for instance — you
 can attach a file and then refer to it by name:
 
-![Embedding an uploaded MP4](media/faq-embedingmp4.png)
+![A blog entry with a Video macro in its text naming the file, and the Uploaded files area below the editor with its Choose File and Upload buttons](media/faq-embed-video.png)
 
 1. Open the page you are writing.
 2. Under **Uploaded files**, select **Choose File**, pick the `.mp4` from your

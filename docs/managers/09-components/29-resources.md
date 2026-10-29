@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/resources
 -->
 # Resources
@@ -52,6 +53,8 @@ Open it under **Components > Resources**. The sub-menu across the top has
 This is the screen you live in. Its most useful setting is the **Status**
 filter set to **Pending**: those are the submissions members have made and
 nobody has looked at yet, and on a stock hub they sit there until you do.
+
+![The Resources list: each resource with its ID, title, status, access, last modification, licence, type, children and tags, the pending submissions first](../media/resources-admin-list.png)
 
 The list shows *standalone* resources only — the ones that appear in
 searches and listings. Child resources are reached through their parent, or

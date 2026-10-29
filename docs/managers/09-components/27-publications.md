@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/publications
 -->
 # Publications
@@ -70,6 +71,8 @@ You come here to fix or withdraw something, not to make one — there is no
 project. The common errands are approving a submission when the curators
 are away, unpublishing a dataset that turned out to be wrong, and correcting
 a DOI.
+
+![The Publication Manager: each publication with its version, status, the project it came from, its releases, its master type and category, and when it was last modified](../media/publications-admin-list.png)
 
 The **Publication Manager** lists every publication version. Columns are
 **ID**, **Title**, **@v.** (the version label), **Status**, **Project**,

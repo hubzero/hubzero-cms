@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/wiki
 -->
 # Wiki
@@ -61,6 +62,8 @@ The list shows every page in every wiki — site and group alike. Columns are
 **Mode**, **State**, **Locked**, **Scope**, **Revisions**, and **Comments**.
 Click a sortable column heading to sort by it; click again to reverse.
 **Mode** is not sortable.
+
+![The Wiki Pages list: each page with its path, state, whether it is locked, its scope, and its counts of revisions and comments](../media/wiki-admin-pages.png)
 
 The **Revisions** and **Comments** cells are links: they open the revisions
 or comments screen for that page.

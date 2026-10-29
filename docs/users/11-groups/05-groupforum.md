@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/groups/groupforum
 source-id: 3308
 modified: 2015-12-04
@@ -36,6 +36,8 @@ used.* A manager has to make the first section before anyone can use it.
 
 Anyone who can reach the tab can read. Posting needs group membership, so
 this is where a member starts.
+
+![A group's Forum tab: its section and two categories with their counts of discussions and posts, and the Statistics and Last Post panels beside them](../media/groups-forum.png)
 
 The tab opens on the list of sections, each with its categories and a count
 of the discussions and posts in each. **Statistics** and **Last Post**

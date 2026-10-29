@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/forum
 -->
 # Forum
@@ -77,6 +78,8 @@ The Sections screen lists **ID**, **Title**, **State**, **Access**,
 **Scope**, and the number of **Categories** in the section. Click a column
 heading to sort by it, click again to reverse the order. Click the category
 count to jump to that section's categories.
+
+![The forum's Sections list: the site's own section and one for each group forum, each with its state, access, scope and number of categories](../media/forum-admin-sections.png)
 
 Filter the list with the search box (matched against titles; press **Go**, or
 **Clear** to reset), the **Scope**, **State**, and **Access** menus.

@@ -148,7 +148,7 @@ The arrow points up for an ordinary member — select it to **Promote** them to
 manager. It points down for a manager — select it to **Demote** them. The
 change is saved immediately.
 
-![Promoting a member to group manager from the member list](../media/groupmembers-promotegroupmember.png)
+![A group's member list as a manager sees it: the Members, Managers, Pending and Invitees filters, and each member with the remove, promote or demote, and message buttons on their row, the two managers marked Managers](../media/groups-members.png)
 
 The last remaining manager cannot be demoted or removed, so a group is never
 left without one. Demote them from the administrator interface if you really

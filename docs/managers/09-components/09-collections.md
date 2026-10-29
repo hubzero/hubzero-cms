@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/collections
 source-id: 3376
 modified: 2016-07-12
@@ -63,6 +63,8 @@ Use this screen to take a board off the site. Setting **State** to
 unpublished is the reversible way to do it, and it is what to reach for when
 a complaint arrives and you have not yet decided whether it is justified.
 **Delete** is not reversible and takes the posts with it.
+
+![The Collections list sorted by number of posts: each collection with its state, access, owner and posts](../media/collections-admin-list.png)
 
 The list shows **ID**, **Title**, **State**, **Access**, **Owner**, and
 **Posts**, all sortable. Filters above it are a **Search** box, a **State**

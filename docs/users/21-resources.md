@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/resources
 -->
 # Resources
@@ -72,6 +73,8 @@ Search by keyword or phrase, sort by **Title**, **Published**, or
 Types**. The **Popular Tags** cloud beside the list filters by tag; click
 more tags to narrow further, and the `x` on an applied tag removes it.
 
+![The resource browse list: the search box, the type menu and the sorts, each resource with its rating, date, contributors, summary and tags, and the Popular Tags cloud beside them](media/resources-browse.png)
+
 > **Note:** You can filter on at most five tags at once. Extra tags are
 > ignored and listed in a warning above the results.
 
@@ -91,6 +94,8 @@ Getting from the listing to the thing itself is one click and then one more.
 The listing gives you titles; the title takes you to the resource page; the
 button at the top of the resource page gives you the thing. There is no
 download area to hunt for.
+
+![A resource page: the title and its authors with their affiliations, the Download button with a link to additional materials under it, the reviews and share links beside it, and the About, Reviews and Supporting Docs tabs over the abstract](media/resources-page.png)
 
 A resource opens on its **About** tab. That shows the abstract, any
 screenshots, an **At a glance** table of details the contributor filled in,

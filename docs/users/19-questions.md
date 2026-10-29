@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/questions
 -->
 # Questions and answers
@@ -59,6 +60,8 @@ with tools you author), or **Tagged with my interests** (questions matching
 the tags on your profile). The last two only have any effect on hubs that
 have the matching plugins enabled.
 
+![The questions list as a logged-in member sees it: the New Question button, the search box, the Everything, Questions I asked, Related to my contributions and Tagged with my interests row, the All, Open and Closed filters, the Recent, Popular and Rewards sorts, and each question with who asked it, when, its status, its answer count and its vote buttons](media/questions-list.png)
+
 Each row shows the question, who asked it and when, whether it is open or
 closed, how many answers it has, and its vote buttons. A question that has
 been reported as abusive is listed as **Question under review** and cannot
@@ -89,6 +92,8 @@ the list.
    question** takes a number up to the balance shown beside it. The field
    is disabled when you have no points to spend.
 7. Press **Save**.
+
+![The New Question form: Post a question anonymously, the required Tags and Short question fields, and the Long question editor, with a note on point rewards beside it](media/questions-ask.png)
 
 The question appears immediately and you are taken to it. If the hub
 notifies particular staff of new questions, or if your tags name a tool
@@ -165,6 +170,8 @@ convergence failure turns a thread into a result: the fix sits at the
 top of the page, the people who helped are paid, and the reward she put
 up leaves hold. Nobody else can do this for her, and there is no
 deadline that does it automatically.
+
+![A closed question: the question with its tags, vote buttons and Report abuse link, marked Closed in the sidebar, and the Chosen Answer below it](media/questions-question.png)
 
 ## Deleting your question
 

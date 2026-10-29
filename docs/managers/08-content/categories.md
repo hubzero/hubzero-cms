@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Categories
 
@@ -140,6 +140,8 @@ instant.
 ## The category list
 
 Above the list are a search box and four menus.
+
+![The Category Manager for articles: each category with its status, place in the ordering, access level and language](../media/content-categories.png)
 
 | Filter | What it does |
 |---|---|

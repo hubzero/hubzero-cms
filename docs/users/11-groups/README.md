@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/groups
 source-id: 3303
 modified: 2015-09-22
@@ -69,6 +69,8 @@ leave **Overview** readable by anyone and shut everything interesting —
 files, forum, wiki — to members, so a group can look almost empty from
 outside and be busy within.
 
+![Browse Groups: the search box and the state and join policy filters, and a card for each group with its logo, alias, title, join policy and a Join Group button](../media/groups-browse.png)
+
 Open a group and use the button at the top of its sidebar. What the button
 offers depends on the group's join policy:
 
@@ -93,6 +95,8 @@ manager left cannot leave; promote someone else first.
 ## The group page
 
 Every group page has the same frame:
+
+![A group's overview as a visitor sees it: the logo, the Login button where a member would see the membership menu, and the tab menu down the sidebar with padlocks on the tabs kept to members, beside the group's description and members](../media/groups-page.png)
 
 - The group's **logo** at the top of the sidebar, linking back to the group's
   home page.

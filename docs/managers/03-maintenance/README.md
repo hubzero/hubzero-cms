@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/maintenance
 source-id: 3339
 imported: 2026-09-09
@@ -56,7 +56,7 @@ served by `com_cpanel`. It has no content of its own. It renders every
 administrator module published in the **cpanel** position, one collapsible
 panel per module:
 
-![The administrative dashboard, showing one collapsible panel per module published in the cpanel position](../media/maintenance-dashboard.png)
+![The administrative dashboard: panels for support tickets, who is online, resources, members and the wish list, one for each module published in the cpanel position](../media/maintenance-dashboard.png)
 
 <!--include: core/components/com_cpanel/admin/views/cpanel/tmpl/default.php:15-40-->
 

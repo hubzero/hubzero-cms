@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/usage
 source-id: 3332
 modified: 2016-08-30
@@ -35,6 +35,8 @@ If the tab is not there, the hub has not enabled the plugin.
 A line at the top of the tab reads *Usage is calculated on the last day of
 every month*, with a link to the hub-wide [`/usage`](#the-hub-wide-usage-page)
 page.
+
+![A member's Usage tab: the overview of their contributions and citations, a simulation tool they are credited on, and their other resources](media/usage-tab.png)
 
 ## What the tab shows
 

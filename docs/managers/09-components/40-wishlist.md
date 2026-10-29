@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/wishlist
 -->
 # Wish lists
@@ -47,6 +48,8 @@ order. Two filters sit above the table: a **Search** box, matched against
 the title and description, and a **Category** menu whose entries are
 **- Category -**, *general*, *group* and *resource*. Press **Go** to apply
 the search or **Clear** to drop it.
+
+![The Wishlist component's Lists: the hub's general list, a group's and a publication's, each with its state, access, category and number of wishes](../media/wishlist-admin-lists.png)
 
 The toolbar offers:
 

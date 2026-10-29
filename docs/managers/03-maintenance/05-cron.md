@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/maintenance/cron
 source-id: 3344
 modified: 2013-11-01
@@ -14,7 +14,7 @@ The **Cron** component manages the hub's scheduled jobs — digest emails, cache
 cleanup, search indexing, DOI registration, and the rest. Go to
 **Components → Cron**.
 
-![The Cron job manager](../media/cron-cron-manager-01.png)
+![The Cron job list: each job's title, state, start and end, whether it is active, and when it last ran and runs next](../media/cron-list.png)
 
 ## Nothing here runs until you set it up
 
@@ -176,9 +176,9 @@ in.
 A job has four fieldsets: **Details**, the event's own **Parameters**,
 **Recurrence**, and **Publishing**, plus an **Execution** option.
 
-### <a id="editfields-details"></a>Details
+![A cron job open for editing: Details, Parameters and Recurrence on the left, the job's record and its Publishing Options and Execution on the right](../media/cron-job.png)
 
-![The Details fieldset of a cron job](../media/cron-cron-manager-03.png)
+### <a id="editfields-details"></a>Details
 
 - **Title** (required)
   What the job is called in the list.
@@ -196,6 +196,7 @@ The events on offer come from the enabled plugins in `core/plugins/cron/`:
 | `courses` | `syncPassportBadgeStatus`, `emailInstructorDigest` |
 | `forum` | `emailGroupForumDigest` |
 | `groups` | `cleanGroupFolders`, `sendGroupAnnouncements`, `expireGroupMemberships`, `notifyExpiringMemberships` |
+| `massmail` | `processMassmailQueue`, `collectPostfixVolume` |
 | `members` | `onPointRoyalties` |
 | `newsletter` | `processMailings`, `processIps` |
 | `projects` | `computeStats`, `googleSync`, `gitGc` |
@@ -211,14 +212,13 @@ with its listeners.
 
 ### <a id="editfields-parameters"></a>Parameters
 
-![The Parameters fieldset](../media/cron-cron-manager-05.png)
-
 Every event brings its own parameters, and the form swaps them in when you
-pick the event. An event with none shows "No parameters found".
+pick the event. An event with none shows "There are no Parameters for this
+item".
+
+![The Parameters fieldset for the support plugin's tickets reminder: which severity of ticket, and for users in which group](../media/cron-parameters.png)
 
 ### <a id="editfields-recurrence"></a>Recurrence
-
-![The Recurrence fieldset](../media/cron-cron-manager-04.png)
 
 **Frequency** offers the common schedules:
 

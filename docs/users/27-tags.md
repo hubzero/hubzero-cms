@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/tags
 -->
 # Tags
@@ -81,6 +82,8 @@ one or more tags, and two clouds: **Recently Used** and **Top Used**. Click
 any tag in either cloud to open its page. **Browse the full list** goes to
 the complete list.
 
+![The tags page: the box that takes one or more tags, the Browse the full list button, and the Recently Used and Top Used clouds](media/tags-home.png)
+
 ## Browsing all tags
 
 `/tags/browse` lists every tag on the hub in a table with its aliases.
@@ -102,6 +105,8 @@ A tag's page is the payoff for tagging: it is the single list the lab wanted.
 Open a tag and you get everything on the hub tagged with it, at
 `https://<your hub>/tags/<tag>`. If a manager has written a description for
 the tag, it appears at the top.
+
+![A tag's page: the tag in the search box ready for a second one, the Date and Title/Name sorts, the results of every kind, and the Categories list beside them with a count for each kind](media/tags-tag.png)
 
 Down the side, **Categories** breaks the results up by what kind of thing
 they are — All Categories, Resources, Publications, Groups, Members, Wiki

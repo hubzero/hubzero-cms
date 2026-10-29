@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: stale
 source: https://help.hubzero.org/documentation/22/security_considerations
 source-id: 2825
 modified: 2025-01-31
@@ -649,11 +649,7 @@ Settings** tab.
 The same list, generated from the manifest, is in the
 [Members configuration reference](../reference/configuration/components/members.md#login).
 
-![The Login Settings tab of the Members Configuration window](media/cmscontrolled-fail2ban-jail-fail2ban1.png)
-
-> **Warning:** This screenshot predates 2.4. It shows six fields with older
-> labels and is missing **Purge Log After**, **Fail2Ban**, and **Fail2Ban
-> Jail**. Read the table above, not the picture.
+![The Login Settings tab of the Members Configuration window, with every setting in the table above at its default](media/security-login-settings.png)
 
 > **Warning:** Setting any of the three limits to `0` does **not** mean
 > "no limit", whatever the field's help text says — it makes the check fail
@@ -699,7 +695,7 @@ the login:
 > Your account has been temporarily disabled due to an excessive number of
 > failed login attempts.
 
-![The account temporarily disabled message on the sign-in form](media/cmscontrolled-fail2ban-jail-fail2ban3.png)
+![The sign-in form after the tenth failed attempt, saying the account has been temporarily disabled](media/security-login-blocked.png)
 
 With the default of 10, the tenth attempt inside the hour is the one that is
 refused. The account frees itself as the window slides forward; there is no

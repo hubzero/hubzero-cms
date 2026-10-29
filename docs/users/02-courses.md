@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/courses
 source-id: 3289
 modified: 2014-11-17
@@ -241,7 +241,7 @@ graded item in it. A score you were expecting to see may read *Not yet open*,
 closed and the instructor chose not to show results for it, not that you
 scored zero.
 
-![The Progress tab](media/student-features-210courses.png)
+![A student's Progress tab: a figure walking a line through the course's five units, the current score against the grading policy, counts of quizzes, homework and exams taken, and the breakdown by unit](media/courses-progress.png)
 
 ### Certificates
 

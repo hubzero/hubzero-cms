@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/forum
 -->
 # Forum
@@ -49,6 +50,8 @@ category row shows its description, how many discussions it holds, and how
 many posts. A padlock in place of the folder icon means the category is
 locked: you can read it, but you cannot start a new discussion there.
 
+![The forum's front page: the search box, one section with its five categories, each with a description and its counts of discussions and posts, and the Statistics and Last Post panels beside](media/forum-home.png)
+
 The sidebar carries a **Statistics** panel counting the categories,
 discussions, and posts on the hub, and a **Last Post** panel linking to the
 most recent post anyone has made.
@@ -75,6 +78,8 @@ it was posted, and an **Edited** stamp if it has been changed since. The
 **@**/**on** timestamp beside a post is a permalink to that post. Where the
 hub has turned on nested threads, replies are indented under the post they
 answer.
+
+![A discussion: its title, then each post with the author's picture and name and the time and date it was posted, and Tags On This Discussion and In This Discussion beside](media/forum-thread.png)
 
 The sidebar of a discussion lists **Tags On This Discussion**, **In This
 Discussion** — everyone who has posted, with anonymous posters shown once as

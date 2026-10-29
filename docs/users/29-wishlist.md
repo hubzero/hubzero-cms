@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/wishlist
 -->
 # Wish list
@@ -54,6 +55,8 @@ number, who proposed it and when, and how many comments it has, plus the
 like and dislike counts. On the right of the row you see the wish's state
 — **Accepted**, **Granted**, **Rejected** or **Withdrawn** — or nothing at
 all while it is still pending.
+
+![The hub's wish list: the Add a Wish button, the search box, the filter and sort links, and each wish with its title, number, who proposed it and when, its comment count, and its like and dislike counts](media/wishlist-list.png)
 
 Above the table is a search box; type a few words and press **Search** to
 match wish titles and descriptions. Two menus sit beside it:
@@ -111,6 +114,8 @@ Every wish has a permanent address of the form
 `https://<your hub>/wishlist/general/1/wish/<number>`, which you can share.
 The page shows who proposed it and when, the summary, the detailed
 description, and its tags.
+
+![An accepted wish: who proposed it and when, its summary and description, its like and dislike counts, its state beside it, and the comments below, one with a reply nested under it](media/wishlist-wish.png)
 
 Below the wish is the row of actions available to you:
 

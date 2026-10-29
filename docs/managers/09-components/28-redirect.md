@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Redirect
 
@@ -54,6 +54,8 @@ Opening the component needs `core.manage` on `com_redirect`.
 ## The two lists
 
 The screen has two sub-navigation entries over the same table:
+
+![The Redirect Manager's Redirects tab with no links yet, and a note that the Redirect plugin is enabled](../media/redirect-list.png)
 
 - **Redirects** — links that have a destination.
 - **404s** — links that do not. These are the recorded misses.

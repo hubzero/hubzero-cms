@@ -28,7 +28,7 @@ services linked to your account, and an SSH key if your hub offers one.
 
 ## Editing your profile
 
-![The profile fields, each with an Edit link](media/profile-member-profile-1.png)
+![Your own profile: a row for each field with its value, an Edit link on the rows you can change here, and a padlock on the ones hidden from other members](media/profile-fields.png)
 
 The profile is a list of rows, one per field, each showing a label and its
 current value. Editing happens in place:

@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Cache
 
@@ -71,6 +71,8 @@ is `site` for the front end and `admin` for the administrator interface.
 ## Clear Cache
 
 Open **Site → Maintenance → Clear Cache**.
+
+![Clear Cache: the cache groups for the site, each with its number of files and size](../media/cache-clear.png)
 
 The table lists one row per cache group for the selected location:
 

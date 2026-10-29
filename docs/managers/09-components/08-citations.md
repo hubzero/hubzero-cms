@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/citations
 -->
 # Citations
@@ -38,6 +39,8 @@ The list is the whole catalogue, and it is where you go to fix what someone
 else entered — a member submits a citation from the site, an import run
 brings in a `.bib` file, and both land here unpublished or wrong as often as
 not.
+
+![The Citations list: each citation with its type, title and authors, whether it is published and affiliated, its year and its scope](../media/citations-admin-list.png)
 
 The list shows every citation on the hub, whatever its scope. Columns are
 **ID**, **Type**, **Title** / **Author(s)**, the published state, **Year**,

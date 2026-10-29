@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/content/articlemanager
 source-id: 3368
 modified: 2014-10-10
@@ -122,6 +122,8 @@ everything in this chapter. The rest of the chapter refers back to it.
 ## The article list
 
 Seven filters sit above the list, and a search box.
+
+![The Article Manager: the search box and filters, and each article with its status, category, ordering, access, author, date and language](../media/content-articles.png)
 
 | Filter | What it does |
 |---|---|

@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/maintenance/approvingcontent
 source-id: 3340
 imported: 2026-09-09
@@ -94,7 +94,7 @@ the author has not submitted, or items an administrator has taken down.
 
 Monday morning, eight datasets waiting. This is the round trip:
 
-![The resources list filtered to pending submissions](../media/approvingcontent-pending-resources1.png)
+![The Resources list with the status filter set to Pending: three submissions, each with its type, the date it came in, and the dots that mark it pending](../media/approvingcontent-pending.png)
 
 1. Go to **Components → Resources**.
 2. Set the **Status** filter to **Pending**.
@@ -110,7 +110,7 @@ Monday morning, eight datasets waiting. This is the round trip:
 Publishing is reversible: set a resource back to Unpublished and it leaves the
 site, with nothing lost. Nothing on this screen deletes a submission.
 
-![A pending resource open for editing, with its status field](../media/approvingcontent-pending-resources2.png)
+![A pending submission open for editing: its title, type and description on the left, and on the right who created it, its contributors, and Publishing with Status set to Pending](../media/approvingcontent-edit.png)
 
 Publishing stamps the publish-up date and, if **Email When Published** is on,
 notifies the submitter. The resource then appears in browse and search for

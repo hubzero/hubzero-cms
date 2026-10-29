@@ -30,7 +30,7 @@ falls.
 Two entries in the **Group Manager** menu do all of it: **Edit Group
 Settings** and **Manage Group Pages**.
 
-![The Group Manager menu, open](../media/groupcustom-groupmanagersettings.png)
+![The Group Manager menu, open under the group's logo: Invite Members, Edit Group Settings, Manage Group Pages, Cancel Group Membership and Delete Group](../media/groups-manager-menu.png)
 
 Members holding a role can reach them too: **Edit Group Settings** needs the
 role permission of the same name, **Manage Group Pages** needs
@@ -61,7 +61,7 @@ The **Logo** section only exists once the group has been saved at least once.
 3. Choose it from the **Logo** drop-down. A preview appears below.
 4. Select **Save Group**.
 
-![Choosing a logo, with the group file browser beside it](../media/groupcustom-addingalogo.png)
+![The Logo section of the group's settings: the logo chosen from the drop-down and previewed on a sketch of a group page, with the Group Files browser beside it](../media/groups-logo.png)
 
 > **Note:** On a super group the logo set here does *not* change the logo in
 > the group's own template. It is used for branding elsewhere on the hub —

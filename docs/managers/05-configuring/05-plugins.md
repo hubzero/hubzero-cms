@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/configuring/plugins
 -->
 # Plugins
@@ -63,6 +63,8 @@ The toolbar offers **Edit**, **Enable**, **Disable**, **Check In**,
 [Extension Manager](../10-extensions/04-extension-manager.md), and the Plug-in Manager
 only turns them on and off and configures them.
 
+![The Plug-in Manager, its plugins sorted by type, each with its status, ordering, element and access](../media/plugins-list.png)
+
 ## The edit screen
 
 **Details** holds the three settings you can change: **Status**,
@@ -70,23 +72,12 @@ only turns them on and off and configures them.
 Name**, **ID**, **Plug-in Type** — the group the plugin belongs to, such as
 `authentication` or `members` — **Plug-in File**, **Description**, and who
 last modified it. Those describe where the plugin lives on disk and come
-from its manifest.
+from its manifest. The plugin's own parameters, if it has any, are in the
+panels on the right.
+
+![The Akismet antispam plugin open for editing: Status, Access and Ordering under Details, the read-only table below them, and its API Key and server settings under Basic Options](../media/plugins-edit.png)
 
 The toolbar has **Save**, **Save & Close**, **Close**, and **Help**.
 
 Every plugin's parameters are listed by group in the generated
 [configuration reference](../../reference/configuration/README.md#plugin-groups).
-
-## Older screenshots
-
-> **Note:** The screenshots below came from the imported version of this
-> page. The screens are the same but the administrator template has been
-> restyled since.
-
-![The Plug-in Manager list](../media/plugins-plugin-manager-01.png)
-
-![Choosing a plugin from the list](../media/plugins-plugin-manager-02.png)
-
-![The parameter panels on the right of the plugin edit screen](../media/plugins-plugin-manager-07.png)
-
-![Saving the plugin](../media/plugins-plugin-manager-08.png)

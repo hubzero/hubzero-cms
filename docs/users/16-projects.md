@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/projects
 source-id: 3313
 modified: 2013-07-10
@@ -76,7 +76,7 @@ project** and **Add team member(s)** — and a third, **One last thing...**,
 appears only on hubs that have turned on the agree-to-terms screen. The
 progress bar at the top of each step shows where you are.
 
-![The first step of project setup: title and alias](media/projects-projects-1.png)
+![The first step of project setup, Describe your project: a title and an alias for the project's address](media/projects-setup.png)
 
 ### Step 1: describe your project
 
@@ -181,7 +181,7 @@ The tabs sit in a menu down the left of the project page. Where the hub uses
 the extended page layout instead, they run across the top and **Files** and
 **Databases** are grouped under an **Assets** heading.
 
-![The project menu, an activity feed, and the feed subscription box](media/projects-210projects4.png)
+![A project's menu down the left, and its Updates feed: a box to post an update, then the team's latest activity](media/projects-feed.png)
 
 > **Note:** The picture above shows the extended layout, where **Files** and
 > **Databases** sit under **Assets**. In the standard layout, which is the
@@ -266,13 +266,15 @@ comment on it. Each note keeps its history, so you can see what changed.
 Note history is the notes plugin's own, and does not depend on the project's
 file version tracking.
 
-A note is private to the team until you share it. At the bottom of a note,
-select **Generate public link**. The pop-up gives you an address anyone can
+A note is private to the team until you share it. If the hub has public
+links switched on — an administrator's choice, in the options of the
+projects notes plugin — the bottom of a note offers **Generate public
+link**; select it. The pop-up gives you an address anyone can
 open — paste it into email, chat, or a web page. Select **Close this** to
 dismiss the pop-up. In a public project you can also choose whether the note
 is *listed* on the project's public page or reachable only by its link.
 
-![A project note, with the Generate public link control below it](media/projects-210projects3.png)
+![A project note, with "You can share this private note publicly. Generate public link" below it](media/projects-note.png)
 
 ## To Do
 
@@ -286,7 +288,7 @@ someone, and check it off when it is done. Two buttons above the list switch
 the layout: **Pinboard view** shows items as cards you can drag to reorder,
 **List view** stacks them as rows. Both show the newest first.
 
-![The To Do tab and its view buttons](media/projects-210projects2.png)
+![The To Do tab in pinboard view: the view buttons, the Active, Mine and Completed filters, and an Add a to do button](media/projects-todo.png)
 
 The sidebar lists the project's to-do lists. **My to do's** is a built-in
 list of everything assigned to you; you cannot add to it directly, because
@@ -300,10 +302,12 @@ uploaded anything. Feed subscription mails you the parts you care about
 instead.
 
 Everything the team does shows up on the **Updates** tab. To get it by
-email as well, find the **Subscribe to feed updates** box in the sidebar of
-a project page and select it.
+email as well, find the **Subscribe to feed updates** box among the boxes
+beside or below the feed and select it. The box comes from the **Projects -
+Watch It** plugin, which a hub installs switched off; if you cannot find
+it, ask the hub's administrators.
 
-![The feed subscription options](media/projects-projects-feedmodule2.png)
+![The Subscribe to feed updates options: a box to tick for each kind of update, then Save](media/projects-subscribe-options.png)
 
 Tick the categories you want to hear about — project updates and comments,
 team changes, new files, publishing activity, new to-do items, new notes —
@@ -328,7 +332,7 @@ end.
    **Delete**.
 3. Confirm with **Yes, delete**.
 
-![The delete control on the Edit Project screen](media/projects-210projects.png)
+![The Tips box on the Edit Project screen, with the Delete button](media/projects-delete.png)
 
 > **Note:** The picture above shows an older Edit Project screen, where
 > **delete** was a link at the foot of the page. It is now a **Delete**

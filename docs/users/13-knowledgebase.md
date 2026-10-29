@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/knowledgebase
 -->
 # Knowledge base
@@ -35,6 +36,8 @@ The knowledge base home page lists the categories, the most recent
 articles, and the most popular ones, with a search box at the top. Type a
 few words and press **Search** to find articles by title and text.
 
+![The knowledge base home page: the search box, the Most Popular and Most Recent article lists, the categories, and the Categories list with each category's article count beside them](media/kb-home.png)
+
 Say a student in a lab cannot get a tool to open a 3 GB input file. Type
 `file size` into the box on `/kb`, press **Search**, and read what comes
 back; if nothing fits, open the **Categories** list and look through the
@@ -55,6 +58,8 @@ An article shows its title, its text, and its tags. Depending on how the
 hub is set up it may also show who wrote it and when it was created,
 modified, or published. Click a tag to see everything else on the hub with
 that tag.
+
+![An article: its title and text, when it was last updated, and the helpful and not helpful buttons with their counts, with the categories beside it](media/kb-article.png)
 
 ## Rating an article
 

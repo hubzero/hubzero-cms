@@ -2,6 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/managers/components/blogs
 source-id: 3373
 modified: 2016-07-12
@@ -58,6 +59,8 @@ columns are **ID**, **Title**, **Author**, **State**, **Created**,
 **Comments**, and **Scope**. Click a column heading to sort by it; click
 again to reverse the order. The list is sorted by title ascending until you
 change it.
+
+![The Blog Manager's entries: each entry with its author, state, date, comment count and scope, which says whether it is on the site blog, a member's or a group's](../media/blog-admin-entries.png)
 
 The **Comments** column is two cells. The first is an on/off switch that
 toggles whether the post accepts comments; clicking it saves immediately.

@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 source: https://help.hubzero.org/documentation/240/users/search
 source-id: 3328
 modified: 2016-08-30
@@ -49,10 +49,20 @@ profiles, projects, publications, questions and answers, resources, wiki
 pages, wishlist items, and hand-written site map entries.
 
 Type words into **Search terms** and select **Search**. Each result shows its
-title, the section it came from, its date, its contributors, and an excerpt
-with your terms highlighted. Related items are grouped under their parent.
-There is no field syntax and no faceting; ordering is decided by a handful of
-weighting plugins that promote matching titles and contributors.
+title, the section it came from, its date, its contributors, and an excerpt.
+Your terms are not highlighted in it. Related items are grouped under their
+parent.
+
+Down the side, **Filter results** lists **All Categories** with the total,
+then each kind of content that matched, with its count; a kind with
+sub-types, such as resources, lists those under it. Select one to see only
+those results. The choice travels as a prefix on your words — `wiki:calder`
+finds only the wiki pages that mention *calder* — and you can type the
+prefix yourself. Beyond that there is no field syntax. Ordering is decided by
+a handful of weighting plugins that promote matching titles and
+contributors.
+
+![Basic search results for "calder": a matching tag, then each result with its title, its section, its date and contributors and an excerpt, and the Filter results list beside them with a count for each kind of content](media/search-results.png)
 
 On a Basic hub the lab's forum thread and wiki protocol *are* reachable from
 `/search`, because those two plugins are installed. The gap described below is
