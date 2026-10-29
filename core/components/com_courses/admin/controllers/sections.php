@@ -69,7 +69,7 @@ class Sections extends AdminController
             'limit' => Request::getState(
                 $this->_option . '.' . $this->_controller . '.limit',
                 'limit',
-                Config::get('config.list_limit'),
+                Config::get('list_limit'),
                 'int'
             ),
             'start' => Request::getState(
