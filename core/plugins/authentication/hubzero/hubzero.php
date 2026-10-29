@@ -125,7 +125,13 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 
 		if ($result)
 		{
-			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true))
+			$hzup = \Hubzero\User\Password::getInstance($result->id);
+
+			// An account expired for inactivity may not sign in with a password. It fails
+			// exactly like a wrong password, so the form confirms neither the password nor the
+			// account's state; "Forgot password" mails the explanation to the owner.
+			if (\Hubzero\User\Password::passwordMatches($result->username, $credentials['password'], true)
+			 && !\Hubzero\User\Password::isInactive($hzup))
 			{
 				$user = User::getInstance($result->id);
 
@@ -144,7 +150,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 				{
 					App::get('session')->set('badpassword', '1');
 				}
-				if (\Hubzero\User\Password::isPasswordExpired($result->username))
+				if (\Hubzero\User\Password::isPasswordExpired($hzup))
 				{
 					App::get('session')->set('expiredpassword', '1');
 				}
