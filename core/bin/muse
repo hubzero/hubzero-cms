@@ -76,6 +76,11 @@ else // Start Minimal Muse
         aecho("\e[32m  -v|vv|vvv, --verbose\e[39m            Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug\n");
     }
 
+    // The full muse reads the command line from $argv as well, and the loop
+    // below strips from it every option this minimal one does not know,
+    // --config among them. Keep what was typed to hand over intact.
+    $originalArgv = $argv;
+
     for($arg = 1; $arg < $argc; $arg++)
     {
         if ($argv[$arg] == '--')
@@ -447,6 +452,9 @@ else // Start Minimal Muse
         if (include($vendorPath))
         {
             require_once dirname(__DIR__) . '/bootstrap/app.php';
+
+            $argv = $originalArgv;
+            $argc = count($argv);
 
             (new Hubzero\Base\Application())->run();
         }
