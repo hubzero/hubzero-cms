@@ -56,11 +56,28 @@ class Git
 
         // Save upstream branch name
         if (!isset($source)) {
-            $this->upstream = $this->call('rev-parse', array('--abbrev-ref', '--symbolic-full-name', '@{u}'));
-            $this->upstream = trim($this->upstream);
+            $this->upstream = trim((string) $this->call('rev-parse', array('--abbrev-ref', '--symbolic-full-name', '@{u}')));
+
+            // A checkout at a tag, or on a branch that follows nothing, has no
+            // upstream, and git says so on the same stream as the answer.
+            // Taken for a branch name, that message made an update compare
+            // HEAD with nothing and report the hub up to date.
+            if ($this->upstream === '' || preg_match('/^(fatal|error):/mi', $this->upstream)) {
+                $this->upstream = null;
+            }
         } else {
             $this->upstream = trim($source);
         }
+    }
+
+    /**
+     * Whether there is a branch to update from
+     *
+     * @return  bool
+     **/
+    public function hasUpstream()
+    {
+        return !empty($this->upstream);
     }
 
     /**
