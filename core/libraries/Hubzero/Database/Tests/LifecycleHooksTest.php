@@ -82,7 +82,7 @@ class LifecycleHooksTest extends AbstractDriverTestCase
     /**
      * Helper to create a test record directly (without hooks)
      */
-    private function createTestRecord(Driver $driver, string $title, string $deletedAt = null): int
+    private function createTestRecord(Driver $driver, string $title, ?string $deletedAt = null): int
     {
         $query = new Query($driver);
         $query->insertMany('hook_test_items', [

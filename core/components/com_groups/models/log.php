@@ -79,7 +79,7 @@ class Log extends Model
      * @param   array  $options
      * @return  mixed
      */
-    public static function log(array $options = null)
+    public static function log(?array $options = null)
     {
         $instance = new self();
 

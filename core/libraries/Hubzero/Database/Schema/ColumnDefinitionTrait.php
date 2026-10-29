@@ -57,7 +57,7 @@ trait ColumnDefinitionTrait
      *
      * @return static
      */
-    public function tinyInteger(int $length = null): static
+    public function tinyInteger(?int $length = null): static
     {
         $this->columnType = 'tinyInteger';
         $this->typeParameters['length'] = $length;
@@ -69,7 +69,7 @@ trait ColumnDefinitionTrait
      *
      * @return static
      */
-    public function smallInteger(int $length = null): static
+    public function smallInteger(?int $length = null): static
     {
         $this->columnType = 'smallInteger';
         $this->typeParameters['length'] = $length;
@@ -81,7 +81,7 @@ trait ColumnDefinitionTrait
      *
      * @return static
      */
-    public function mediumInteger(int $length = null): static
+    public function mediumInteger(?int $length = null): static
     {
         $this->columnType = 'mediumInteger';
         $this->typeParameters['length'] = $length;
@@ -93,7 +93,7 @@ trait ColumnDefinitionTrait
      *
      * @return static
      */
-    public function integer(int $length = null): static
+    public function integer(?int $length = null): static
     {
         $this->columnType = 'integer';
         $this->typeParameters['length'] = $length;
@@ -105,7 +105,7 @@ trait ColumnDefinitionTrait
      *
      * @return static
      */
-    public function bigInteger(int $length = null): static
+    public function bigInteger(?int $length = null): static
     {
         $this->columnType = 'bigInteger';
         $this->typeParameters['length'] = $length;
