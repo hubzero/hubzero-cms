@@ -11,7 +11,7 @@ Events in the `publications` group. A plugin in `core/plugins/publications/` rec
 
 Fired from:
 
-- [`core/plugins/projects/publications/publications.php:856`](../../../core/plugins/projects/publications/publications.php#L856) with `$pub`
+- [`core/plugins/projects/publications/publications.php:868`](../../../core/plugins/projects/publications/publications.php#L868) with `$pub`
 
 No plugin in the source tree listens for this event.
 
@@ -19,7 +19,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/projects/publications/publications.php:791`](../../../core/plugins/projects/publications/publications.php#L791) with `$pub`
+- [`core/plugins/projects/publications/publications.php:803`](../../../core/plugins/projects/publications/publications.php#L803) with `$pub`
 
 No plugin in the source tree listens for this event.
 
@@ -27,7 +27,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:655`](../../../core/components/com_publications/site/controllers/publications.php#L655) with `[ $this->model, $this->_option, array($tab), 'all', $this->model->versionAlias, $extended]`
+- [`core/components/com_publications/site/controllers/publications.php:661`](../../../core/components/com_publications/site/controllers/publications.php#L661) with `[ $this->model, $this->_option, array($tab), 'all', $this->model->versionAlias, $extended]`
 
 Listeners:
 
@@ -49,7 +49,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_publications/site/controllers/publications.php:648`](../../../core/components/com_publications/site/controllers/publications.php#L648) with `[ $this->model, $this->model->versionAlias, $extended]`
+- [`core/components/com_publications/site/controllers/publications.php:654`](../../../core/components/com_publications/site/controllers/publications.php#L654) with `[ $this->model, $this->model->versionAlias, $extended]`
 
 No plugin in the source tree listens for this event.
 

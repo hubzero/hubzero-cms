@@ -21,8 +21,8 @@ Fired from:
 
 - [`core/components/com_citations/site/controllers/import.php:168`](../../../core/components/com_citations/site/controllers/import.php#L168) with `[$file]`
 - [`core/plugins/citation/default/default.php:69`](../../../core/plugins/citation/default/default.php#L69) with `array($new_file), $scope, $scope_id`
-- [`core/plugins/groups/citations/citations.php:1255`](../../../core/plugins/groups/citations/citations.php#L1255) with `[$file, 'group', $this->group->get('gidNumber')]`
-- [`core/plugins/members/citations/citations.php:1127`](../../../core/plugins/members/citations/citations.php#L1127) with `[$file, 'member', User::get('id')]`
+- [`core/plugins/groups/citations/citations.php:1318`](../../../core/plugins/groups/citations/citations.php#L1318) with `[$file, 'group', $this->group->get('gidNumber')]`
+- [`core/plugins/members/citations/citations.php:1174`](../../../core/plugins/members/citations/citations.php#L1174) with `[$file, 'member', User::get('id')]`
 
 Listeners:
 
@@ -35,8 +35,8 @@ Listeners:
 Fired from:
 
 - [`core/components/com_citations/site/controllers/import.php:117`](../../../core/components/com_citations/site/controllers/import.php#L117) with `[]`
-- [`core/plugins/groups/citations/citations.php:1182`](../../../core/plugins/groups/citations/citations.php#L1182) with `[]`
-- [`core/plugins/members/citations/citations.php:1067`](../../../core/plugins/members/citations/citations.php#L1067) with `[]`
+- [`core/plugins/groups/citations/citations.php:1238`](../../../core/plugins/groups/citations/citations.php#L1238) with `[]`
+- [`core/plugins/members/citations/citations.php:1114`](../../../core/plugins/members/citations/citations.php#L1114) with `[]`
 
 Listeners:
 

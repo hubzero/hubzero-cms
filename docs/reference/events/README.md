@@ -40,7 +40,7 @@ Every event the CMS fires through `Event::trigger()`, grouped by plugin group, w
 | [resources](resources.md) | 9 | 8 | 7 |
 | [search](search.md) | 8 | 6 | 6 |
 | [support](support.md) | 11 | 7 | 8 |
-| [system](system.md) | 16 | 9 | 14 |
+| [system](system.md) | 17 | 9 | 15 |
 | [tags](tags.md) | 5 | 5 | 1 |
 | [tools](tools.md) | 4 | 4 | 2 |
 | [update](update.md) | 1 | 0 | 1 |

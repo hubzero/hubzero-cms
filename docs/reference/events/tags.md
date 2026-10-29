@@ -12,9 +12,9 @@ Events in the `tags` group. A plugin in `core/plugins/tags/` receives an event b
 Fired from:
 
 - [`core/components/com_tags/admin/controllers/entries.php:232`](../../../core/components/com_tags/admin/controllers/entries.php#L232) with `[&$row, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1_0.php:254`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L254) with `[&$record, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1_0.php:390`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L390) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:837`](../../../core/components/com_tags/site/controllers/tags.php#L837) with `[&$row, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1_0.php:281`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L281) with `[&$record, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1_0.php:423`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L423) with `[&$record, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:873`](../../../core/components/com_tags/site/controllers/tags.php#L873) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -22,7 +22,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/site/controllers/tags.php:464`](../../../core/components/com_tags/site/controllers/tags.php#L464)
+- [`core/components/com_tags/site/controllers/tags.php:476`](../../../core/components/com_tags/site/controllers/tags.php#L476)
 
 No plugin in the source tree listens for this event.
 
@@ -31,9 +31,9 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_tags/admin/controllers/entries.php:210`](../../../core/components/com_tags/admin/controllers/entries.php#L210) with `[&$row, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1_0.php:235`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L235) with `[&$record, $isNew]`
-- [`core/components/com_tags/api/controllers/entriesv1_0.php:366`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L366) with `[&$record, $isNew]`
-- [`core/components/com_tags/site/controllers/tags.php:815`](../../../core/components/com_tags/site/controllers/tags.php#L815) with `[&$row, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1_0.php:262`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L262) with `[&$record, $isNew]`
+- [`core/components/com_tags/api/controllers/entriesv1_0.php:399`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L399) with `[&$record, $isNew]`
+- [`core/components/com_tags/site/controllers/tags.php:851`](../../../core/components/com_tags/site/controllers/tags.php#L851) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -42,8 +42,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_tags/admin/controllers/entries.php:278`](../../../core/components/com_tags/admin/controllers/entries.php#L278) with `[$id]`
-- [`core/components/com_tags/api/controllers/entriesv1_0.php:424`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L424) with `[$id]`
-- [`core/components/com_tags/site/controllers/tags.php:881`](../../../core/components/com_tags/site/controllers/tags.php#L881) with `[$id]`
+- [`core/components/com_tags/api/controllers/entriesv1_0.php:463`](../../../core/components/com_tags/api/controllers/entriesv1_0.php#L463) with `[$id]`
+- [`core/components/com_tags/site/controllers/tags.php:926`](../../../core/components/com_tags/site/controllers/tags.php#L926) with `[$id]`
 
 No plugin in the source tree listens for this event.
 
@@ -51,9 +51,9 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tags/site/controllers/tags.php:177`](../../../core/components/com_tags/site/controllers/tags.php#L177) with `[ $tags, $this->view->filters['limit'], $this->view->filters['start'], $this->view->filters['sort'], $area ]`
-- [`core/components/com_tags/site/controllers/tags.php:473`](../../../core/components/com_tags/site/controllers/tags.php#L473) with `[ $tags, $limit, $limitstart, $sort, '' ]`
-- [`core/components/com_tags/site/controllers/tags.php:538`](../../../core/components/com_tags/site/controllers/tags.php#L538) with `[ $tags, $limit, $limitstart, $sort, $area ]`
+- [`core/components/com_tags/site/controllers/tags.php:183`](../../../core/components/com_tags/site/controllers/tags.php#L183) with `[ $tags, $this->view->filters['limit'], $this->view->filters['start'], $this->view->filters['sort'], $area ]`
+- [`core/components/com_tags/site/controllers/tags.php:485`](../../../core/components/com_tags/site/controllers/tags.php#L485) with `[ $tags, $limit, $limitstart, $sort, '' ]`
+- [`core/components/com_tags/site/controllers/tags.php:550`](../../../core/components/com_tags/site/controllers/tags.php#L550) with `[ $tags, $limit, $limitstart, $sort, $area ]`
 
 Listeners:
 

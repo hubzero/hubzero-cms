@@ -43,8 +43,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/api/controllers/filefsv1_0.php:877`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L877) with `$plugin_params`
-- [`core/components/com_projects/api/controllers/filesv1_0.php:1098`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1098) with `$plugin_params`
+- [`core/components/com_projects/api/controllers/filefsv1_0.php:889`](../../../core/components/com_projects/api/controllers/filefsv1_0.php#L889) with `$plugin_params`
+- [`core/components/com_projects/api/controllers/filesv1_0.php:1117`](../../../core/components/com_projects/api/controllers/filesv1_0.php#L1117) with `$plugin_params`
 
 Listeners:
 
@@ -54,10 +54,10 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/controllers/projects.php:657`](../../../core/components/com_projects/site/controllers/projects.php#L657) with `$plugin_params`
-- [`core/components/com_projects/site/controllers/setup.php:948`](../../../core/components/com_projects/site/controllers/setup.php#L948) with `[ $this->model, 'save', array('team') ]`
-- [`core/components/com_projects/site/controllers/setup.php:1048`](../../../core/components/com_projects/site/controllers/setup.php#L1048) with `[ $this->model, $this->_task, array('team') ]`
-- [`core/components/com_publications/site/controllers/publications.php:1546`](../../../core/components/com_publications/site/controllers/publications.php#L1546) with `$plugin_params`
+- [`core/components/com_projects/site/controllers/projects.php:658`](../../../core/components/com_projects/site/controllers/projects.php#L658) with `$plugin_params`
+- [`core/components/com_projects/site/controllers/setup.php:991`](../../../core/components/com_projects/site/controllers/setup.php#L991) with `[ $this->model, 'save', array('team') ]`
+- [`core/components/com_projects/site/controllers/setup.php:1097`](../../../core/components/com_projects/site/controllers/setup.php#L1097) with `[ $this->model, $this->_task, array('team') ]`
+- [`core/components/com_publications/site/controllers/publications.php:1562`](../../../core/components/com_publications/site/controllers/publications.php#L1562) with `$plugin_params`
 - [`core/plugins/cron/projects/projects.php:144`](../../../core/plugins/cron/projects/projects.php#L144) with `$plugin_params`
 
 Listeners:
@@ -78,7 +78,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/models/orm/project.php:532`](../../../core/components/com_projects/models/orm/project.php#L532) with `[$data]`
+- [`core/components/com_projects/models/orm/project.php:546`](../../../core/components/com_projects/models/orm/project.php#L546) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -99,9 +99,9 @@ Fired from:
 - [`core/components/com_projects/admin/controllers/projects.php:782`](../../../core/components/com_projects/admin/controllers/projects.php#L782) with `[$model]`
 - [`core/components/com_projects/admin/controllers/projects.php:842`](../../../core/components/com_projects/admin/controllers/projects.php#L842) with `[$model]`
 - [`core/components/com_projects/admin/controllers/projects.php:899`](../../../core/components/com_projects/admin/controllers/projects.php#L899) with `[$model]`
-- [`core/components/com_projects/api/controllers/projectsv2_0.php:588`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L588) with `[&$row, $isNew]`
-- [`core/components/com_projects/api/controllers/projectsv2_0.php:1100`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L1100) with `[&$row, $isNew]`
-- [`core/components/com_projects/site/controllers/setup.php:351`](../../../core/components/com_projects/site/controllers/setup.php#L351) with `[$this->model]`
+- [`core/components/com_projects/api/controllers/projectsv2_0.php:598`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L598) with `[&$row, $isNew]`
+- [`core/components/com_projects/api/controllers/projectsv2_0.php:1136`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L1136) with `[&$row, $isNew]`
+- [`core/components/com_projects/site/controllers/setup.php:366`](../../../core/components/com_projects/site/controllers/setup.php#L366) with `[$this->model]`
 - [`core/plugins/groups/projects/projects.php:288`](../../../core/plugins/groups/projects/projects.php#L288) with `[$model]`
 
 No plugin in the source tree listens for this event.
@@ -119,7 +119,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/site/controllers/projects.php:614`](../../../core/components/com_projects/site/controllers/projects.php#L614) with `[$this->model->get('alias')]`
+- [`core/components/com_projects/site/controllers/projects.php:615`](../../../core/components/com_projects/site/controllers/projects.php#L615) with `[$this->model->get('alias')]`
 
 No plugin in the source tree listens for this event.
 
@@ -127,7 +127,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/models/orm/project.php:496`](../../../core/components/com_projects/models/orm/project.php#L496) with `[$data]`
+- [`core/components/com_projects/models/orm/project.php:510`](../../../core/components/com_projects/models/orm/project.php#L510) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -135,8 +135,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/api/controllers/projectsv2_0.php:571`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L571) with `[&$row, $isNew]`
-- [`core/components/com_projects/api/controllers/projectsv2_0.php:1087`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L1087) with `[&$row, $isNew]`
+- [`core/components/com_projects/api/controllers/projectsv2_0.php:581`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L581) with `[&$row, $isNew]`
+- [`core/components/com_projects/api/controllers/projectsv2_0.php:1123`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L1123) with `[&$row, $isNew]`
 
 No plugin in the source tree listens for this event.
 
@@ -153,7 +153,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_projects/admin/controllers/projects.php:266`](../../../core/components/com_projects/admin/controllers/projects.php#L266) with `[$model, 1]`
-- [`core/components/com_projects/site/controllers/projects.php:682`](../../../core/components/com_projects/site/controllers/projects.php#L682) with `[$this->model]`
+- [`core/components/com_projects/site/controllers/projects.php:683`](../../../core/components/com_projects/site/controllers/projects.php#L683) with `[$this->model]`
 
 Listeners:
 
@@ -163,8 +163,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/api/controllers/projectsv2_0.php:672`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L672) with `[$row]`
-- [`core/components/com_projects/site/controllers/setup.php:611`](../../../core/components/com_projects/site/controllers/setup.php#L611) with `[$this->model]`
+- [`core/components/com_projects/api/controllers/projectsv2_0.php:682`](../../../core/components/com_projects/api/controllers/projectsv2_0.php#L682) with `[$row]`
+- [`core/components/com_projects/site/controllers/setup.php:626`](../../../core/components/com_projects/site/controllers/setup.php#L626) with `[$this->model]`
 
 No plugin in the source tree listens for this event.
 
@@ -190,7 +190,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/plugins/projects/feed/feed.php:212`](../../../core/plugins/projects/feed/feed.php#L212) with `[$model]`
+- [`core/plugins/projects/feed/feed.php:218`](../../../core/plugins/projects/feed/feed.php#L218) with `[$model]`
 
 Listeners:
 
@@ -200,7 +200,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/projects/feed/feed.php:207`](../../../core/plugins/projects/feed/feed.php#L207) with `[$model]`
+- [`core/plugins/projects/feed/feed.php:213`](../../../core/plugins/projects/feed/feed.php#L213) with `[$model]`
 
 Listeners:
 
@@ -258,7 +258,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/groups/projects/projects.php:419`](../../../core/plugins/groups/projects/projects.php#L419) with `[ $project, $entry, $managers, $posted_by, $posted ]`
+- [`core/plugins/groups/projects/projects.php:431`](../../../core/plugins/groups/projects/projects.php#L431) with `[ $project, $entry, $managers, $posted_by, $posted ]`
 
 Listeners:
 
@@ -269,7 +269,7 @@ Listeners:
 Fired from:
 
 - [`core/components/com_projects/models/project.php:1486`](../../../core/components/com_projects/models/project.php#L1486) with `[$this, $class, array($aid), User::get('id')]`
-- [`core/plugins/projects/feed/feed.php:439`](../../../core/plugins/projects/feed/feed.php#L439) with `[ $this->model, ($row->get('parent') ? 'quote' : 'blog'), array($row->get('id')), User::get('id') ]`
+- [`core/plugins/projects/feed/feed.php:455`](../../../core/plugins/projects/feed/feed.php#L455) with `[ $this->model, ($row->get('parent') ? 'quote' : 'blog'), array($row->get('id')), User::get('id') ]`
 
 Listeners:
 

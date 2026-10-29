@@ -32,7 +32,7 @@ API version 2.0, task `create` in [`userscategoriesv2_0.php`](../../../core/comp
 
 Destroys user's categories
 
-API version 2.0, task `destroy` in [`userscategoriesv2_0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2_0.php#L108).
+API version 2.0, task `destroy` in [`userscategoriesv2_0.php`](../../../core/components/com_forum/api/controllers/userscategoriesv2_0.php#L114).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ API version 1.0, task `sections` in [`threadsv1_0.php`](../../../core/components
 
 Retrieve a thread
 
-API version 1.0, task `read` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L806).
+API version 1.0, task `read` in [`threadsv1_0.php`](../../../core/components/com_forum/api/controllers/threadsv1_0.php#L864).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

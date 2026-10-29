@@ -13,6 +13,7 @@ Parameters from [`core/components/com_resources/config/config.xml`](../../../../
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
+| `browse_access` | Browse and search access | accesslevel | `1` | Who may browse and search resources, including the tag browser, the API list search and site search. Public by default; a narrower level sends guests to log in. |
 | `defaultpic` | Default picture | text | `/components/com_resources/site/assets/img/resource_thumb.gif` | Default placeholder image for resource pictures |
 | `tagstool` | Tool Fields | text | `screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications` | Default fields for tools type |
 | `tagsothr` | Default type fields | text | `bio,credits,citations,sponsoredby,references,publications` | Default fields for resource types |

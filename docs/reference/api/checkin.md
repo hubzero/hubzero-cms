@@ -16,7 +16,7 @@ Endpoints under `/api/checkin`, from the `com_checkin` API controllers. Authenti
 
 Checkin entries on a table
 
-API version 1.0, task `checkin` in [`checkinv1_0.php`](../../../core/components/com_checkin/api/controllers/checkinv1_0.php#L74).
+API version 1.0, task `checkin` in [`checkinv1_0.php`](../../../core/components/com_checkin/api/controllers/checkinv1_0.php#L80).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -26,7 +26,7 @@ API version 1.0, task `checkin` in [`checkinv1_0.php`](../../../core/components/
 
 Display a list of entries
 
-API version 1.0, task `list` in [`checkinv1_0.php`](../../../core/components/com_checkin/api/controllers/checkinv1_0.php#L24).
+API version 1.0, task `list` in [`checkinv1_0.php`](../../../core/components/com_checkin/api/controllers/checkinv1_0.php#L25).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

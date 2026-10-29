@@ -20,6 +20,7 @@ Parameters from [`core/components/com_wiki/config/config.xml`](../../../../core/
 | `comment_ratings` | Comment Ratings | radio | `0 (No)` | Allow ratings on comments?. Options: `0` No, `1` Yes. |
 | `automatic_toc` | Automatic table of contents | list | `inline (Inline (top of the page))` | Where to place a table of contents on pages that do not use a [[TableOfContents]] macro, once they reach the heading threshold. A macro on a page always overrides this. Options: `inline` Inline (top of the page), `sidebar` Sidebar, `off` Off. |
 | `toc_threshold` | TOC heading threshold | text | `4` | Minimum number of headings a page must have before an automatic table of contents appears. Does not apply to an explicit [[TableOfContents]] macro. |
+| `wiki_crumbs` | Show page crumbs | radio | `0 (No)` | List a sub-page's parent pages as links above its title. Leave off if the site template already shows breadcrumbs. A group may override this in its Wiki Settings. Options: `0` No, `1` Yes. |
 
 ## Files
 

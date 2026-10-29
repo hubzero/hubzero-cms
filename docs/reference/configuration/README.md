@@ -29,26 +29,27 @@ Every parameter an administrator can set, generated from the extension manifests
 | [installer](components/installer.md) | 2 | Installer component for adding, removing and upgrading extensions |
 | [jobs](components/jobs.md) | 9 | Manage job postings and job seekers |
 | [kb](components/kb.md) | 5 | Manage a knowledgebase |
+| [massmail](components/massmail.md) | 11 | Compliant, rate-limited mass mail to users, groups, and addresses. |
 | [media](components/media.md) | 10 |  |
-| [members](components/members.md) | 61 | Manage members |
+| [members](components/members.md) | 60 | Manage members |
 | [menus](components/menus.md) | 4 | Component for creating menus |
 | [newsletter](components/newsletter.md) | 7 | Manage Newsletters |
 | [oaipmh](components/oaipmh.md) | 8 | COM_OAIPMH_XML_DESCRIPTION |
 | [projects](components/projects.md) | 40 | Manage projects |
-| [publications](components/publications.md) | 65 | Manage publications |
+| [publications](components/publications.md) | 66 | Manage publications |
 | [redirect](components/redirect.md) | 4 | This component implements link redirection |
-| [resources](components/resources.md) | 35 | Manage resources |
+| [resources](components/resources.md) | 36 | Manage resources |
 | [saml](components/saml.md) | 9 | SAML IdP |
 | [search](components/search.md) | 13 | Configure search settings |
 | [services](components/services.md) | 1 | Manage services |
 | [storefront](components/storefront.md) | 6 | Store |
 | [support](components/support.md) | 11 |  |
 | [system](components/system.md) | 16 | Utility component for managing various parts of the system such as the cache. |
-| [tags](components/tags.md) | 12 |  |
+| [tags](components/tags.md) | 13 |  |
 | [templates](components/templates.md) | 1 | This component manages templates |
 | [tools](components/tools.md) | 53 |  |
 | [usage](components/usage.md) | 13 |  |
-| [wiki](components/wiki.md) | 12 | Manage wiki pages |
+| [wiki](components/wiki.md) | 13 | Manage wiki pages |
 | [wishlist](components/wishlist.md) | 8 | Manage wishlists |
 
 ## Plugin groups
@@ -57,7 +58,7 @@ Every parameter an administrator can set, generated from the extension manifests
 |---|---|---|
 | [answers](plugins/answers.md) | 2 | 0 |
 | [antispam](plugins/antispam.md) | 6 | 20 |
-| [authentication](plugins/authentication.md) | 13 | 79 |
+| [authentication](plugins/authentication.md) | 13 | 82 |
 | [authfactors](plugins/authfactors.md) | 2 | 0 |
 | [blog](plugins/blog.md) | 2 | 1 |
 | [captcha](plugins/captcha.md) | 3 | 10 |
@@ -65,7 +66,7 @@ Every parameter an administrator can set, generated from the extension manifests
 | [citation](plugins/citation.md) | 4 | 3 |
 | [content](plugins/content.md) | 13 | 43 |
 | [courses](plugins/courses.md) | 14 | 28 |
-| [cron](plugins/cron.md) | 14 | 39 |
+| [cron](plugins/cron.md) | 15 | 41 |
 | [editors](plugins/editors.md) | 8 | 65 |
 | [editors-xtd](plugins/editors-xtd.md) | 4 | 0 |
 | [filesystem](plugins/filesystem.md) | 5 | 12 |
@@ -82,7 +83,7 @@ Every parameter an administrator can set, generated from the extension manifests
 | [resources](plugins/resources.md) | 22 | 47 |
 | [search](plugins/search.md) | 26 | 2 |
 | [support](plugins/support.md) | 13 | 38 |
-| [system](plugins/system.md) | 29 | 63 |
+| [system](plugins/system.md) | 30 | 63 |
 | [tags](plugins/tags.md) | 14 | 0 |
 | [tools](plugins/tools.md) | 1 | 2 |
 | [update](plugins/update.md) | 2 | 13 |

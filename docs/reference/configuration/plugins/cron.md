@@ -49,11 +49,22 @@ Cron events for groups
 
 This plugin has no parameters.
 
+## Cron - Mass Mail (`plg_cron_massmail`)
+
+Feeds queued mass-mail messages to the mail system under a rate limit.
+
+This plugin has no parameters.
+
 ## Cron - Members (`plg_cron_members`)
 
 Cron events for members
 
-This plugin has no parameters.
+### 
+
+| Parameter | Label | Type | Default | Description |
+|---|---|---|---|---|
+| `members_expireinactive_months` | Inactive for (months) | text | `36` | Accounts with no web sign-in and no password change in this many months lose password sign-in, password resets and SSH/SFTP access, until they sign in another way or an administrator sets a new password. |
+| `members_expireinactive_exempt_group` | Exempt access group | text | `Service accounts` | Title of an access group whose members are never expired, for service accounts that use only SSH keys or no login at all. A migration creates "Service accounts" with apps, gridstat and hubzerosolrworker in it, where they exist. Leave empty to exempt nobody. |
 
 ## Cron - Newsletter (`plg_cron_newsletter`)
 

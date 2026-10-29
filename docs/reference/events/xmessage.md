@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/messages.php:252`](../../../core/components/com_members/admin/controllers/messages.php#L252) with `[]`
+- [`core/components/com_members/admin/controllers/messages.php:250`](../../../core/components/com_members/admin/controllers/messages.php#L250) with `[]`
 - [`core/plugins/members/messages/messages.php:435`](../../../core/plugins/members/messages/messages.php#L435) with `[]`
 
 Listeners:
@@ -34,19 +34,19 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:174`](../../../core/components/com_answers/site/controllers/questions.php#L174) with `['answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE…`
-- [`core/components/com_answers/site/controllers/questions.php:184`](../../../core/components/com_answers/site/controllers/questions.php#L184) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
-- [`core/components/com_answers/site/controllers/questions.php:797`](../../../core/components/com_answers/site/controllers/questions.php#L797) with `['new_question_admin', $subject, $message, $from, $recipients, $this->_option))) { Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
-- [`core/components/com_answers/site/controllers/questions.php:916`](../../../core/components/com_answers/site/controllers/questions.php#L916) with `['answers_question_deleted', $subject, $message, $from, $users, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
-- [`core/components/com_answers/site/controllers/questions.php:1064`](../../../core/components/com_answers/site/controllers/questions.php#L1064) with `[$messageType , $subject, $message, $from, array($authorid), $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
-- [`core/components/com_answers/site/controllers/questions.php:1073`](../../../core/components/com_answers/site/controllers/questions.php#L1073) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
+- [`core/components/com_answers/site/controllers/questions.php:223`](../../../core/components/com_answers/site/controllers/questions.php#L223) with `['answers_reply_comment', $subject, $message, $from, array($authorid), $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE…`
+- [`core/components/com_answers/site/controllers/questions.php:233`](../../../core/components/com_answers/site/controllers/questions.php#L233) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
+- [`core/components/com_answers/site/controllers/questions.php:922`](../../../core/components/com_answers/site/controllers/questions.php#L922) with `['new_question_admin', $subject, $message, $from, $recipients, $this->_option))) { Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
+- [`core/components/com_answers/site/controllers/questions.php:1065`](../../../core/components/com_answers/site/controllers/questions.php#L1065) with `['answers_question_deleted', $subject, $message, $from, $users, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
+- [`core/components/com_answers/site/controllers/questions.php:1250`](../../../core/components/com_answers/site/controllers/questions.php#L1250) with `[$messageType , $subject, $message, $from, array($authorid), $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
+- [`core/components/com_answers/site/controllers/questions.php:1259`](../../../core/components/com_answers/site/controllers/questions.php#L1259) with `['new_answer_admin', $subject, $message, $from, $receivers, $this->_option))) { $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED']`
 - [`core/components/com_cart/lib/cartmessenger/CartMessenger.php:511`](../../../core/components/com_cart/lib/cartmessenger/CartMessenger.php#L511) with `['store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true]`
-- [`core/components/com_courses/site/controllers/course.php:649`](../../../core/components/com_courses/site/controllers/course.php#L649) with `['courses_deleted', $subject, $message, $from, $members, $this->_option))) { Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAI…`
-- [`core/components/com_groups/site/controllers/membership.php:860`](../../../core/components/com_groups/site/controllers/membership.php#L860) with `array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option))) { $this->setError(Lang::tx…`
+- [`core/components/com_courses/site/controllers/course.php:686`](../../../core/components/com_courses/site/controllers/course.php#L686) with `['courses_deleted', $subject, $message, $from, $managers, $this->_option))) { Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FA…`
+- [`core/components/com_groups/site/controllers/membership.php:907`](../../../core/components/com_groups/site/controllers/membership.php#L907) with `array('groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->_option))) { $this->setError(Lang::tx…`
 - [`core/components/com_jobs/admin/controllers/jobs.php:339`](../../../core/components/com_jobs/admin/controllers/jobs.php#L339) with `['jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option))) { Notify::error(Lang::txt('COM_JOBS_ERROR…`
 - [`core/components/com_projects/admin/controllers/projects.php:577`](../../../core/components/com_projects/admin/controllers/projects.php#L577) with `['projects_admin_notice', $subject, $body, $from, $managers, $this->_option]`
-- [`core/components/com_projects/helpers/html.php:1323`](../../../core/components/com_projects/helpers/html.php#L1323) with `[ $component, $subject, $body, $from, $addressees, $option ]`
-- and 28 more call sites
+- [`core/components/com_projects/helpers/html.php:1325`](../../../core/components/com_projects/helpers/html.php#L1325) with `[ $component, $subject, $body, $from, $addressees, $option ]`
+- and 26 more call sites
 
 Listeners:
 

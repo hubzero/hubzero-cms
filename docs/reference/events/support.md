@@ -45,7 +45,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:861`](../../../core/components/com_support/site/controllers/tickets.php#L861) with `[]`
+- [`core/components/com_support/site/controllers/tickets.php:877`](../../../core/components/com_support/site/controllers/tickets.php#L877) with `[]`
 
 No plugin in the source tree listens for this event.
 
@@ -53,7 +53,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/abuse.php:196`](../../../core/components/com_support/site/controllers/abuse.php#L196) with `[ $refid, $cat ]`
+- [`core/components/com_support/site/controllers/abuse.php:199`](../../../core/components/com_support/site/controllers/abuse.php#L199) with `[ $refid, $cat ]`
 
 Listeners:
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:1409`](../../../core/components/com_support/site/controllers/tickets.php#L1409) with `[$row]`
+- [`core/components/com_support/site/controllers/tickets.php:1428`](../../../core/components/com_support/site/controllers/tickets.php#L1428) with `[$row]`
 
 Listeners:
 
@@ -89,8 +89,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/admin/controllers/tickets.php:578`](../../../core/components/com_support/admin/controllers/tickets.php#L578) with `[$ticket, $comment]`
-- [`core/components/com_support/site/controllers/tickets.php:1793`](../../../core/components/com_support/site/controllers/tickets.php#L1793) with `[$row, $rowc]`
+- [`core/components/com_support/helpers/notifier.php:74`](../../../core/components/com_support/helpers/notifier.php#L74) with `[$ticket, $comment]`
 
 Listeners:
 
@@ -108,6 +107,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:910`](../../../core/components/com_support/site/controllers/tickets.php#L910) with `[$reporter, $problem]`
+- [`core/components/com_support/site/controllers/tickets.php:926`](../../../core/components/com_support/site/controllers/tickets.php#L926) with `[$reporter, $problem]`
 
 No plugin in the source tree listens for this event.

@@ -11,6 +11,6 @@ Events in the `filesystem` group. A plugin in `core/plugins/filesystem/` receive
 
 Fired from:
 
-- [`core/components/com_publications/models/attachments/file.php:1373`](../../../core/components/com_publications/models/attachments/file.php#L1373) with `[$pub, $configs, $elementId, $element]`
+- [`core/components/com_publications/models/attachments/file.php:1382`](../../../core/components/com_publications/models/attachments/file.php#L1382) with `[$pub, $configs, $elementId, $element]`
 
 No plugin in the source tree listens for this event.

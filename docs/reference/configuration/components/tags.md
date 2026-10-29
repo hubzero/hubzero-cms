@@ -11,6 +11,7 @@ Parameters from [`core/components/com_tags/config/config.xml`](../../../../core/
 
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
+| `search_access` | Multi-tag search access | accesslevel | `1` | Who may search by combining tags, in the tag view and its feed. Public by default; a narrower level sends guests to log in. |
 | `focus_area_01` | Focus Area 1 | text | — | A tag that is to serve as a focus area for the site. |
 | `focus_area_02` | Focus Area 2 | text | — | A tag that is to serve as a focus area for the site. |
 | `focus_area_03` | Focus Area 3 | text | — | A tag that is to serve as a focus area for the site. |

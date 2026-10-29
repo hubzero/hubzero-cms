@@ -24,7 +24,7 @@ Endpoints under `/api/collections`, from the `com_collections` API controllers. 
 
 Create a collection
 
-API version 1.0, task `create` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L113).
+API version 1.0, task `create` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L139).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -44,7 +44,7 @@ API version 1.0, task `create` in [`collectionsv1_0.php`](../../../core/componen
 
 Display a list of collections
 
-API version 1.0, task `list` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L27).
+API version 1.0, task `list` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L53).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -58,7 +58,7 @@ API version 1.0, task `list` in [`collectionsv1_0.php`](../../../core/components
 
 Display posts
 
-API version 1.0, task `list` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L41).
+API version 1.0, task `list` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L58).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -73,7 +73,7 @@ API version 1.0, task `list` in [`postsv1_0.php`](../../../core/components/com_c
 
 Create a post
 
-API version 1.0, task `create` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L170).
+API version 1.0, task `create` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L189).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -92,7 +92,7 @@ API version 1.0, task `create` in [`postsv1_0.php`](../../../core/components/com
 
 Delete a post
 
-API version 1.0, task `delete` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L584).
+API version 1.0, task `delete` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L631).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -102,7 +102,7 @@ API version 1.0, task `delete` in [`postsv1_0.php`](../../../core/components/com
 
 Retrieve a post
 
-API version 1.0, task `read` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L341).
+API version 1.0, task `read` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L367).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -112,7 +112,7 @@ API version 1.0, task `read` in [`postsv1_0.php`](../../../core/components/com_c
 
 Update a post
 
-API version 1.0, task `update` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L415).
+API version 1.0, task `update` in [`postsv1_0.php`](../../../core/components/com_collections/api/controllers/postsv1_0.php#L447).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -132,7 +132,7 @@ API version 1.0, task `update` in [`postsv1_0.php`](../../../core/components/com
 
 Delete a collection
 
-API version 1.0, task `delete` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L398).
+API version 1.0, task `delete` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L453).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -142,7 +142,7 @@ API version 1.0, task `delete` in [`collectionsv1_0.php`](../../../core/componen
 
 Retrieve a collection
 
-API version 1.0, task `read` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L232).
+API version 1.0, task `read` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L269).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -152,7 +152,7 @@ API version 1.0, task `read` in [`collectionsv1_0.php`](../../../core/components
 
 Update a collection
 
-API version 1.0, task `update` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L266).
+API version 1.0, task `update` in [`collectionsv1_0.php`](../../../core/components/com_collections/api/controllers/collectionsv1_0.php#L305).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

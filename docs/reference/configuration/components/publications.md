@@ -14,6 +14,7 @@ Parameters from [`core/components/com_publications/config/config.xml`](../../../
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
 | `enabled` | Component ON/OFF | list | `0 (Off)` | Enable Publications component, or redirect to Resources component. Options: `0` Off, `1` On. |
+| `browse_access` | Browse and search access | accesslevel | `1` | Who may browse and search publications. Public by default; a narrower level sends guests to log in. |
 | `contribute` | User Contributions Outside of Projects | list | `1 (Allow)` | Allow users to work on drafts from within Publications component without starting a project. Options: `0` Do not allow, `1` Allow. |
 | `contribute_default` | Default master type | mastertype | `files` | The master types to offer when 'User Contributions Outside of Projects' is set to 'Allow'. You may choose a specific master type or allow for selecting from a list of all contributable types. |
 | `forks` | Allow Forks | list | `0 (No)` | Allow entries to be forked. A fork is a copy of an entry that allows the user to use the source materials as a starting point for a derivation. Options: `0` No, `1` Yes. |

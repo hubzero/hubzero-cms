@@ -24,7 +24,7 @@ Every endpoint the CMS exposes under `/api/`, generated from the `@apiMethod`, `
 | [forum](forum.md) | 7 |
 | [groups](groups.md) | 16 |
 | [jobs](jobs.md) | 2 |
-| [kb](kb.md) | 1 |
+| [kb](kb.md) | 6 |
 | [members](members.md) | 18 |
 | [news](news.md) | 1 |
 | [newsletter](newsletter.md) | 3 |

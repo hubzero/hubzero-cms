@@ -19,6 +19,7 @@ Handles user authentication against client side SSL certificates
 | `site_login` | Site login | radio | `1 (Yes)` | Enable this plugin for frontend authentication. Options: `0` No, `1` Yes. |
 | `admin_login` | Admin login | radio | `0 (No)` | Enable this plugin for backend authentication. Options: `0` No, `1` Yes. |
 | `auto_approve` | Auto approve new users | radio | `0 (No)` | Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: `0` No, `1` Yes. |
+| `require_verify` | Require a verified certificate | radio | `1 (Yes)` | Only accept a client certificate the web server reports as verified (SSL_CLIENT_VERIFY=SUCCESS). Turn off only if your web server verifies every certificate itself and cannot pass SSL_CLIENT_VERIFY through. Options: `0` No, `1` Yes. |
 
 ## Authentication - CILogon (`plg_authentication_cilogon`)
 
@@ -33,6 +34,8 @@ Handles user authentication against CILogon
 | `display_name` | Display name | text | `CILogon` | Text to display on the site when referencing this plugin |
 | `site_login` | Site login | radio | `1 (Yes)` | Enable this plugin for frontend authentication. Options: `0` No, `1` Yes. |
 | `admin_login` | Admin login | radio | `0 (No)` | Enable this plugin for backend authentication. Options: `0` No, `1` Yes. |
+| `auto_approve` | Auto approve new users | radio | `0 (No)` | Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: `0` No, `1` Yes. |
+| `allowed_idps` | Allowed identity providers | textarea | — | Restrict logins to specific CILogon identity providers. Enter one IdP entityID per line, e.g. https://idp.example.edu/idp/shibboleth. When a single IdP is listed it is pre-selected so CILogon skips its provider picker. Leave empty to allow any identity provider. |
 
 ## Authentication - Email Token (`plg_authentication_emailtoken`)
 

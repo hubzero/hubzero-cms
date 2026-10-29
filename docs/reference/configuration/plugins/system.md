@@ -219,6 +219,12 @@ The system logout plug-in enables the CMS to redirect the user to the home page 
 
 This plugin has no parameters.
 
+## System - Mass Mail (`plg_system_massmail`)
+
+Keeps the mass-mail delivery cron in sync with the component's sending switch.
+
+This plugin has no parameters.
+
 ## System - Member Home Page (`plg_system_memberhome`)
 
 This plugin redirects your members to a pre-defined homepage if they are logged in. Every link on your website that directs to your homepage, will now be redirected to the new member homepage.

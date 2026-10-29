@@ -19,7 +19,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/Password.php:371`](../../../core/libraries/Hubzero/User/Password.php#L371) with `[$this]`
+- [`core/libraries/Hubzero/User/Password.php:390`](../../../core/libraries/Hubzero/User/Password.php#L390) with `[$this]`
 
 Listeners:
 
@@ -29,7 +29,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/Profile.php:1055`](../../../core/libraries/Hubzero/User/Profile.php#L1055) with `[$this]`
+- [`core/libraries/Hubzero/User/Profile.php:1060`](../../../core/libraries/Hubzero/User/Profile.php#L1060) with `[$this]`
 
 Listeners:
 
@@ -66,7 +66,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/Password.php:323`](../../../core/libraries/Hubzero/User/Password.php#L323) with `[$this]`
+- [`core/libraries/Hubzero/User/Password.php:342`](../../../core/libraries/Hubzero/User/Password.php#L342) with `[$this]`
 
 Listeners:
 
@@ -78,7 +78,7 @@ Fired from:
 
 - [`core/components/com_members/admin/controllers/hosts.php:66`](../../../core/components/com_members/admin/controllers/hosts.php#L66) with `[$profile]`
 - [`core/components/com_members/admin/controllers/hosts.php:114`](../../../core/components/com_members/admin/controllers/hosts.php#L114) with `[$profile]`
-- [`core/libraries/Hubzero/User/Profile.php:994`](../../../core/libraries/Hubzero/User/Profile.php#L994) with `[$this]`
+- [`core/libraries/Hubzero/User/Profile.php:999`](../../../core/libraries/Hubzero/User/Profile.php#L999) with `[$this]`
 
 Listeners:
 
@@ -127,9 +127,9 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:787`](../../../core/components/com_members/admin/controllers/members.php#L787) with `[$data, true, $this->getError()]`
-- [`core/components/com_members/models/member.php:518`](../../../core/components/com_members/models/member.php#L518) with `[$data, true, $this->getError()]`
-- [`core/libraries/Hubzero/User/User.php:1021`](../../../core/libraries/Hubzero/User/User.php#L1021) with `[$data, true, $this->getError()]`
+- [`core/components/com_members/admin/controllers/members.php:899`](../../../core/components/com_members/admin/controllers/members.php#L899) with `[$data, true, $this->getError()]`
+- [`core/components/com_members/models/member.php:536`](../../../core/components/com_members/models/member.php#L536) with `[$data, true, $this->getError()]`
+- [`core/libraries/Hubzero/User/User.php:1214`](../../../core/libraries/Hubzero/User/User.php#L1214) with `[$data, true, $this->getError()]`
 
 Listeners:
 
@@ -145,7 +145,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/accessgroups.php:309`](../../../core/components/com_members/admin/controllers/accessgroups.php#L309) with `[$data, true, $this->getError()]`
+- [`core/components/com_members/admin/controllers/accessgroups.php:323`](../../../core/components/com_members/admin/controllers/accessgroups.php#L323) with `[$data, true, $this->getError()]`
 
 No plugin in the source tree listens for this event.
 
@@ -154,8 +154,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_cart/lib/handlers/type/Access_Group_Membership_Type_Handler.php:61`](../../../core/components/com_cart/lib/handlers/type/Access_Group_Membership_Type_Handler.php#L61) with `[$table->toArray(), false, true, null]`
-- [`core/components/com_cart/site/controllers/test.php:197`](../../../core/components/com_cart/site/controllers/test.php#L197) with `[$table->toArray(), false, true, null]`
-- [`core/libraries/Hubzero/User/User.php:968`](../../../core/libraries/Hubzero/User/User.php#L968) with `[$data, $isNew, $result, $this->getError()]`
+- [`core/libraries/Hubzero/User/User.php:1161`](../../../core/libraries/Hubzero/User/User.php#L1161) with `[$data, $isNew, $result, $this->getError()]`
 
 Listeners:
 
@@ -170,7 +169,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/models/member.php:464`](../../../core/components/com_members/models/member.php#L464) with `[$user, $profile, $access]`
+- [`core/components/com_members/models/member.php:482`](../../../core/components/com_members/models/member.php#L482) with `[$user, $profile, $access]`
 
 No plugin in the source tree listens for this event.
 
@@ -194,8 +193,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/models/member.php:478`](../../../core/components/com_members/models/member.php#L478) with `[$data]`
-- [`core/libraries/Hubzero/User/User.php:992`](../../../core/libraries/Hubzero/User/User.php#L992) with `[$data]`
+- [`core/components/com_members/models/member.php:496`](../../../core/components/com_members/models/member.php#L496) with `[$data]`
+- [`core/libraries/Hubzero/User/User.php:1185`](../../../core/libraries/Hubzero/User/User.php#L1185) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -203,7 +202,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/accessgroups.php:299`](../../../core/components/com_members/admin/controllers/accessgroups.php#L299) with `[$data]`
+- [`core/components/com_members/admin/controllers/accessgroups.php:313`](../../../core/components/com_members/admin/controllers/accessgroups.php#L313) with `[$data]`
 
 No plugin in the source tree listens for this event.
 
@@ -211,7 +210,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/libraries/Hubzero/User/User.php:930`](../../../core/libraries/Hubzero/User/User.php#L930) with `[$oldUser->toArray(), $isNew, $data]`
+- [`core/libraries/Hubzero/User/User.php:1121`](../../../core/libraries/Hubzero/User/User.php#L1121) with `[$oldUser->toArray(), $isNew, $data]`
 
 Listeners:
 
@@ -221,7 +220,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/models/member.php:286`](../../../core/components/com_members/models/member.php#L286) with `[$user, $profile, $access]`
+- [`core/components/com_members/models/member.php:304`](../../../core/components/com_members/models/member.php#L304) with `[$user, $profile, $access]`
 
 No plugin in the source tree listens for this event.
 
@@ -229,7 +228,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/members.php:1053`](../../../core/components/com_members/admin/controllers/members.php#L1053) with `$id`
+- [`core/components/com_members/admin/controllers/members.php:1248`](../../../core/components/com_members/admin/controllers/members.php#L1248) with `$id`
 
 Listeners:
 
@@ -242,7 +241,7 @@ Listeners:
 Fired from:
 
 - [`core/libraries/Hubzero/Auth/Manager.php:101`](../../../core/libraries/Hubzero/Auth/Manager.php#L101) with `[(array) $response, $options]`
-- [`core/libraries/Hubzero/User/User.php:551`](../../../core/libraries/Hubzero/User/User.php#L551) with `[$data]`
+- [`core/libraries/Hubzero/User/User.php:666`](../../../core/libraries/Hubzero/User/User.php#L666) with `[$data]`
 
 Listeners:
 
@@ -268,8 +267,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_login/site/controllers/auth.php:906`](../../../core/components/com_login/site/controllers/auth.php#L906) with `[$parameters, $options]`
-- [`core/components/com_users/site/controllers/auth.php:926`](../../../core/components/com_users/site/controllers/auth.php#L926) with `[$parameters, $options]`
+- [`core/components/com_login/site/controllers/auth.php:921`](../../../core/components/com_login/site/controllers/auth.php#L921) with `[$parameters, $options]`
+- [`core/components/com_users/site/controllers/auth.php:992`](../../../core/components/com_users/site/controllers/auth.php#L992) with `[$parameters, $options]`
 - [`core/libraries/Hubzero/Auth/Manager.php:177`](../../../core/libraries/Hubzero/Auth/Manager.php#L177) with `[$parameters, $options]`
 
 Listeners:
@@ -281,8 +280,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_login/site/controllers/auth.php:919`](../../../core/components/com_login/site/controllers/auth.php#L919) with `[$parameters]`
-- [`core/components/com_users/site/controllers/auth.php:939`](../../../core/components/com_users/site/controllers/auth.php#L939) with `[$parameters]`
+- [`core/components/com_login/site/controllers/auth.php:934`](../../../core/components/com_login/site/controllers/auth.php#L934) with `[$parameters]`
+- [`core/components/com_users/site/controllers/auth.php:1005`](../../../core/components/com_users/site/controllers/auth.php#L1005) with `[$parameters]`
 - [`core/libraries/Hubzero/Auth/Manager.php:192`](../../../core/libraries/Hubzero/Auth/Manager.php#L192) with `[$parameters]`
 
 No plugin in the source tree listens for this event.

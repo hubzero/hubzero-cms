@@ -9,9 +9,9 @@ Endpoints under `/api/users`, from the `com_users` API controllers. Authenticate
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | [`/api/v1.0/users/current_user/isAuthenticated`](#get-api-v1-0-users-current-user-isauthenticated) | Indicates whether current user is authenticated |
+| `GET` | [`/api/v1.0/users/currentuser/isAuthenticated`](#get-api-v1-0-users-currentuser-isauthenticated) | Indicates whether current user is authenticated |
 
-## GET /api/v1.0/users/current_user/isAuthenticated
+## GET /api/v1.0/users/currentuser/isAuthenticated
 
 Indicates whether current user is authenticated
 

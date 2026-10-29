@@ -34,7 +34,7 @@ Endpoints under `/api/courses`, from the `com_courses` API controllers. Authenti
 
 Deletes an asset
 
-API version 1.0, task `delete` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L563).
+API version 1.0, task `delete` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L674).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ API version 1.0, task `delete` in [`assetv1_0.php`](../../../core/components/com
 
 Deletes an asset file
 
-API version 1.0, task `deletefile` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L671).
+API version 1.0, task `deletefile` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L801).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -57,7 +57,7 @@ API version 1.0, task `deletefile` in [`assetv1_0.php`](../../../core/components
 
 Retrieves the asset edit page
 
-API version 1.0, task `edit` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L173).
+API version 1.0, task `edit` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L198).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ API version 1.0, task `edit` in [`assetv1_0.php`](../../../core/components/com_c
 
 Looks up the form id and deployment id based on the asset id
 
-API version 1.0, task `getformanddepid` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L897).
+API version 1.0, task `getformanddepid` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L1087).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ API version 1.0, task `getformanddepid` in [`assetv1_0.php`](../../../core/compo
 
 Looks up the form id based on the asset id
 
-API version 1.0, task `getformid` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L845).
+API version 1.0, task `getformid` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L1019).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -109,7 +109,7 @@ API version 1.0, task `new` in [`assetv1_0.php`](../../../core/components/com_co
 
 Previews an asset
 
-API version 1.0, task `preview` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L215).
+API version 1.0, task `preview` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L247).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -119,7 +119,7 @@ API version 1.0, task `preview` in [`assetv1_0.php`](../../../core/components/co
 
 Reorders assets
 
-API version 1.0, task `reorder` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L731).
+API version 1.0, task `reorder` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L861).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -131,7 +131,7 @@ API version 1.0, task `reorder` in [`assetv1_0.php`](../../../core/components/co
 
 Saves an asset
 
-API version 1.0, task `save` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L257).
+API version 1.0, task `save` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L296).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -144,7 +144,7 @@ API version 1.0, task `save` in [`assetv1_0.php`](../../../core/components/com_c
 
 Toggles the published state of an asset
 
-API version 1.0, task `togglepublished` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L792).
+API version 1.0, task `togglepublished` in [`assetv1_0.php`](../../../core/components/com_courses/api/controllers/assetv1_0.php#L960).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -154,7 +154,7 @@ API version 1.0, task `togglepublished` in [`assetv1_0.php`](../../../core/compo
 
 Reorders asset groups
 
-API version 1.0, task `reorder` in [`assetgroupv1_0.php`](../../../core/components/com_courses/api/controllers/assetgroupv1_0.php#L194).
+API version 1.0, task `reorder` in [`assetgroupv1_0.php`](../../../core/components/com_courses/api/controllers/assetgroupv1_0.php#L223).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -164,7 +164,7 @@ API version 1.0, task `reorder` in [`assetgroupv1_0.php`](../../../core/componen
 
 Saves an asset group
 
-API version 1.0, task `save` in [`assetgroupv1_0.php`](../../../core/components/com_courses/api/controllers/assetgroupv1_0.php#L33).
+API version 1.0, task `save` in [`assetgroupv1_0.php`](../../../core/components/com_courses/api/controllers/assetgroupv1_0.php#L34).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -216,7 +216,7 @@ API version 1.0, task `badge` in [`passportv1_0.php`](../../../core/components/c
 
 Deletes a prerequisite
 
-API version 1.0, task `delete` in [`prerequisitev1_0.php`](../../../core/components/com_courses/api/controllers/prerequisitev1_0.php#L84).
+API version 1.0, task `delete` in [`prerequisitev1_0.php`](../../../core/components/com_courses/api/controllers/prerequisitev1_0.php#L88).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -255,7 +255,7 @@ API version 1.0, task `save` in [`unitv1_0.php`](../../../core/components/com_co
 
 Processes grade save from unity app
 
-API version 1.0, task `save` in [`unityv1_0.php`](../../../core/components/com_courses/api/controllers/unityv1_0.php#L26).
+API version 1.0, task `save` in [`unityv1_0.php`](../../../core/components/com_courses/api/controllers/unityv1_0.php#L28).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

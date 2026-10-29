@@ -18,7 +18,7 @@ Endpoints under `/api/search`, from the `com_search` API controllers. Authentica
 
 Display a list of hub types for a term
 
-API version 1.0, task `getHubTypes` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L244).
+API version 1.0, task `getHubTypes` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L266).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -28,7 +28,7 @@ API version 1.0, task `getHubTypes` in [`searchv1_0.php`](../../../core/componen
 
 Display a list of entries
 
-API version 1.0, task `list` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L25).
+API version 1.0, task `list` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L47).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -44,7 +44,7 @@ API version 1.0, task `list` in [`searchv1_0.php`](../../../core/components/com_
 
 Display a list of suggestions for a term
 
-API version 1.0, task `suggest` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L167).
+API version 1.0, task `suggest` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L189).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ API version 1.0, task `suggest` in [`searchv1_0.php`](../../../core/components/c
 
 Get suggestions for submitted terms
 
-API version 1.0, task `typeSuggestions` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L200).
+API version 1.0, task `typeSuggestions` in [`searchv1_0.php`](../../../core/components/com_search/api/controllers/searchv1_0.php#L222).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

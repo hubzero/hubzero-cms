@@ -24,7 +24,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/admin/controllers/abusereports.php:293`](../../../core/components/com_support/admin/controllers/abusereports.php#L293) with `[ $reported->text, $isSpam ]`
+- [`core/components/com_support/admin/controllers/abusereports.php:304`](../../../core/components/com_support/admin/controllers/abusereports.php#L304) with `[ $reported->text, $isSpam ]`
 - [`core/plugins/content/antispam/antispam.php:124`](../../../core/plugins/content/antispam/antispam.php#L124) with `[ $content, true ]`
 - [`core/plugins/content/antispam/antispam.php:151`](../../../core/plugins/content/antispam/antispam.php#L151) with `[ $content, false ]`
 

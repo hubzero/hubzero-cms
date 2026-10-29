@@ -45,7 +45,7 @@ Listeners:
 Fired from:
 
 - [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:128`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L128)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:152`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L152)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:162`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L162)
 
 Listeners:
 
@@ -79,7 +79,7 @@ Listeners:
 Fired from:
 
 - [`core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:124`](../../../core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L124)
-- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:148`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L148)
+- [`core/bootstrap/Site/Providers/DocumentServiceProvider.php:151`](../../../core/bootstrap/Site/Providers/DocumentServiceProvider.php#L151)
 
 No plugin in the source tree listens for this event.
 
@@ -111,11 +111,19 @@ Listeners:
 
 - `plg_system_cache` — [`onCleanCache($group = null, $client_id = 0)`](../../../core/plugins/system/cache/cache.php)
 
+## `system.onConfigurationAfterSave`
+
+No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.
+
+Listeners:
+
+- `plg_system_massmail` — [`onConfigurationAfterSave($context, $table, $isNew)`](../../../core/plugins/system/massmail/massmail.php)
+
 ## `system.onContentDestroy`
 
 Fired from:
 
-- [`core/libraries/Hubzero/Database/Relational.php:1631`](../../../core/libraries/Hubzero/Database/Relational.php#L1631) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:1698`](../../../core/libraries/Hubzero/Database/Relational.php#L1698) with `[$this->getTableName(), $this]`
 
 Listeners:
 
@@ -138,7 +146,7 @@ Fired from:
 - [`core/components/com_groups/models/orm/manager.php:124`](../../../core/components/com_groups/models/orm/manager.php#L124) with `[$this->getTableName(), $this]`
 - [`core/components/com_groups/models/orm/member.php:124`](../../../core/components/com_groups/models/orm/member.php#L124) with `[$this->getTableName(), $this]`
 - [`core/components/com_modules/models/menu.php:71`](../../../core/components/com_modules/models/menu.php#L71) with `[$this->getTableName(), $this]`
-- [`core/libraries/Hubzero/Database/Relational.php:1451`](../../../core/libraries/Hubzero/Database/Relational.php#L1451) with `[$this->getTableName(), $this]`
+- [`core/libraries/Hubzero/Database/Relational.php:1518`](../../../core/libraries/Hubzero/Database/Relational.php#L1518) with `[$this->getTableName(), $this]`
 - [`core/libraries/Hubzero/Database/Table.php:582`](../../../core/libraries/Hubzero/Database/Table.php#L582) with `[$this->getTableName(), $this]`
 
 Listeners:

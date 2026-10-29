@@ -19,7 +19,7 @@ Endpoints under `/api/wiki`, from the `com_wiki` API controllers. Authenticate w
 
 Create a page
 
-API version 1.0, task `create` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L130).
+API version 1.0, task `create` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L131).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -54,7 +54,7 @@ API version 1.0, task `list` in [`pagesv1_0.php`](../../../core/components/com_w
 
 Delete a page
 
-API version 1.0, task `delete` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L482).
+API version 1.0, task `delete` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L516).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -64,7 +64,7 @@ API version 1.0, task `delete` in [`pagesv1_0.php`](../../../core/components/com
 
 Display info for a page
 
-API version 1.0, task `read` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L212).
+API version 1.0, task `read` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L213).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -75,7 +75,7 @@ API version 1.0, task `read` in [`pagesv1_0.php`](../../../core/components/com_w
 
 Update a page
 
-API version 1.0, task `update` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L271).
+API version 1.0, task `update` in [`pagesv1_0.php`](../../../core/components/com_wiki/api/controllers/pagesv1_0.php#L275).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

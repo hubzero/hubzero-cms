@@ -11,7 +11,7 @@ Events in the `members` group. A plugin in `core/plugins/members/` receives an e
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:180`](../../../core/components/com_members/admin/controllers/plugins.php#L180)
+- [`core/components/com_members/admin/controllers/plugins.php:191`](../../../core/components/com_members/admin/controllers/plugins.php#L191)
 
 Listeners:
 
@@ -37,7 +37,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/admin/controllers/plugins.php:207`](../../../core/components/com_members/admin/controllers/plugins.php#L207) with `[ $this->_option, $this->_controller, Request::getString('action', 'default') ]`
+- [`core/components/com_members/admin/controllers/plugins.php:218`](../../../core/components/com_members/admin/controllers/plugins.php#L218) with `[ $this->_option, $this->_controller, Request::getString('action', 'default') ]`
 
 Listeners:
 
@@ -47,7 +47,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:644`](../../../core/plugins/user/xusers/xusers.php#L644) with `[$user, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:615`](../../../core/plugins/user/xusers/xusers.php#L615) with `[$user, $success, $msg]`
 
 Listeners:
 
@@ -59,7 +59,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:591`](../../../core/plugins/user/xusers/xusers.php#L591) with `[$user, $isnew, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:562`](../../../core/plugins/user/xusers/xusers.php#L562) with `[$user, $isnew, $success, $msg]`
 
 Listeners:
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:890`](../../../core/components/com_members/site/controllers/profiles.php#L890) with `[User::getInstance(), $profile, $this->_option, array($tab)]`
+- [`core/components/com_members/site/controllers/profiles.php:898`](../../../core/components/com_members/site/controllers/profiles.php#L898) with `[User::getInstance(), $profile, $this->_option, array($tab)]`
 
 Listeners:
 
@@ -105,7 +105,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/controllers/profiles.php:869`](../../../core/components/com_members/site/controllers/profiles.php#L869) with `[User::getInstance(), $profile]`
+- [`core/components/com_members/site/controllers/profiles.php:877`](../../../core/components/com_members/site/controllers/profiles.php#L877) with `[User::getInstance(), $profile]`
 
 Listeners:
 

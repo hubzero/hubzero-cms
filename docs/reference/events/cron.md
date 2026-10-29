@@ -28,6 +28,7 @@ Listeners:
 - `plg_cron_courses` — [`onCronEvents()`](../../../core/plugins/cron/courses/courses.php)
 - `plg_cron_forum` — [`onCronEvents()`](../../../core/plugins/cron/forum/forum.php)
 - `plg_cron_groups` — [`onCronEvents()`](../../../core/plugins/cron/groups/groups.php)
+- `plg_cron_massmail` — [`onCronEvents()`](../../../core/plugins/cron/massmail/massmail.php)
 - `plg_cron_members` — [`onCronEvents()`](../../../core/plugins/cron/members/members.php)
 - `plg_cron_newsletter` — [`onCronEvents()`](../../../core/plugins/cron/newsletter/newsletter.php)
 - `plg_cron_projects` — [`onCronEvents()`](../../../core/plugins/cron/projects/projects.php)

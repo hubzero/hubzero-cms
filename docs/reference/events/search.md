@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:436`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L436)
+- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:437`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L437)
 
 No plugin in the source tree listens for this event.
 
@@ -54,7 +54,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/api/controllers/searchv1_0.php:268`](../../../core/components/com_search/api/controllers/searchv1_0.php#L268)
+- [`core/components/com_search/api/controllers/searchv1_0.php:290`](../../../core/components/com_search/api/controllers/searchv1_0.php#L290)
 
 Listeners:
 

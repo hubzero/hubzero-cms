@@ -31,7 +31,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/create.php:1489`](../../../core/components/com_resources/site/controllers/create.php#L1489) with `[$resource]`
+- [`core/components/com_resources/site/controllers/create.php:1590`](../../../core/components/com_resources/site/controllers/create.php#L1590) with `[$resource]`
 
 No plugin in the source tree listens for this event.
 
@@ -39,7 +39,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/create.php:1305`](../../../core/components/com_resources/site/controllers/create.php#L1305) with `[$resource]`
+- [`core/components/com_resources/site/controllers/create.php:1406`](../../../core/components/com_resources/site/controllers/create.php#L1406) with `[$resource]`
 
 Listeners:
 
@@ -49,8 +49,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:658`](../../../core/components/com_resources/site/controllers/resources.php#L658) with `[$model, $this->_option, array('about'), 'metadata']`
-- [`core/components/com_resources/site/controllers/resources.php:1497`](../../../core/components/com_resources/site/controllers/resources.php#L1497) with `[ $this->model, $this->_option, array($tab), 'all', ]`
+- [`core/components/com_resources/site/controllers/resources.php:676`](../../../core/components/com_resources/site/controllers/resources.php#L676) with `[$model, $this->_option, array('about'), 'metadata']`
+- [`core/components/com_resources/site/controllers/resources.php:1537`](../../../core/components/com_resources/site/controllers/resources.php#L1537) with `[ $this->model, $this->_option, array($tab), 'all', ]`
 
 Listeners:
 
@@ -74,7 +74,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/resources.php:1468`](../../../core/components/com_resources/site/controllers/resources.php#L1468) with `[ $this->model ]`
+- [`core/components/com_resources/site/controllers/resources.php:1508`](../../../core/components/com_resources/site/controllers/resources.php#L1508) with `[ $this->model ]`
 
 No plugin in the source tree listens for this event.
 
@@ -104,7 +104,7 @@ Fired from:
 - [`core/components/com_resources/site/views/view/tmpl/courses.php:212`](../../../core/components/com_resources/site/views/view/tmpl/courses.php#L212) with `[$this->model, $this->option, 1]`
 - [`core/components/com_resources/site/views/view/tmpl/default.php:186`](../../../core/components/com_resources/site/views/view/tmpl/default.php#L186) with `[$this->model, $this->option, 1]`
 - [`core/components/com_resources/site/views/view/tmpl/series.php:250`](../../../core/components/com_resources/site/views/view/tmpl/series.php#L250) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/tools.php:286`](../../../core/components/com_resources/site/views/view/tmpl/tools.php#L286) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/tools.php:292`](../../../core/components/com_resources/site/views/view/tmpl/tools.php#L292) with `[$this->model, $this->option, 1]`
 - [`core/components/com_resources/site/views/view/tmpl/windowstools.php:209`](../../../core/components/com_resources/site/views/view/tmpl/windowstools.php#L209) with `[$this->model, $this->option, 1]`
 - [`core/components/com_resources/site/views/view/tmpl/workshops.php:250`](../../../core/components/com_resources/site/views/view/tmpl/workshops.php#L250) with `[$this->model, $this->option, 1]`
 
