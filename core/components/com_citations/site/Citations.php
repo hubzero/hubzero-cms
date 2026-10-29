@@ -25,7 +25,7 @@ class Citations extends AbstractComponent
     {
 
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'citations'));
-        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
             $controllerName = 'citations';
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

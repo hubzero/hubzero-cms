@@ -36,7 +36,7 @@ class Wiki extends AbstractComponent
 
         // Initiate controller
         $controllerName = Request::getCmd('controller', 'pages');
-        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
             $controllerName = 'pages';
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

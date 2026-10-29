@@ -27,7 +27,7 @@ class System extends AbstractComponent
         App::abort(404);
 
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'info'));
-        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
             App::abort(404);
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
