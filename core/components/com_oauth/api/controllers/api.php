@@ -343,7 +343,8 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 			$match = \Hubzero\User\Password::passwordMatches($x_auth_username, $x_auth_password, true);
 
-			if (!$match)
+			// an account expired for inactivity may not use its password, here as on the web
+			if (!$match || \Hubzero\User\Password::isInactive($x_auth_username))
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
 				$this->_response->setErrorMessage('oauth_problem=permission_denied', 401, 'Unauthorized');
