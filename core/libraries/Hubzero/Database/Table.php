@@ -10,6 +10,7 @@ namespace Hubzero\Database;
 
 use RuntimeException;
 use Exception;
+use Hubzero\Facades\App;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Filesystem;
 
@@ -1118,14 +1119,17 @@ abstract class Table extends \stdClass
             return false;
         }
 
-        $this->_db->setQuery('SELECT COUNT(userid)' .
+        // Static, so there is no $this to take a connection from
+        $db = App::get('db');
+
+        $db->setQuery('SELECT COUNT(userid)' .
             ' FROM ' .
-            $this->_db->quoteName('#__session') .
+            $db->quoteName('#__session') .
             ' WHERE ' .
-            $this->_db->quoteName('userid') .
+            $db->quoteName('userid') .
             ' = ' .
             (int) $against);
-        $checkedOut = (bool) $this->_db->loadResult();
+        $checkedOut = (bool) $db->loadResult();
 
         // If a session exists for the user then it is checked out.
         return $checkedOut;
