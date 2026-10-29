@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Date;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
@@ -33,11 +34,11 @@ Html::behavior('formvalidation', true);
 
 $this->js()->js('timepicker.js');
 
-$offset = Config::get('config.offset');
+$now = Date::of('now');
 
-$year  = strftime("%Y", time() + ($offset * 60 * 60));
-$month = strftime("%m", time() + ($offset * 60 * 60));
-$day   = strftime("%d", time() + ($offset * 60 * 60));
+$year  = $now->toLocal('Y');
+$month = $now->toLocal('m');
+$day   = $now->toLocal('d');
 
 //$nextMonth = date("m", mktime(0, 0, 0, $month, $day + 7, $year));
 $nextYear  = date("Y", mktime(0, 0, 0, $month + 1, $day, $year));
