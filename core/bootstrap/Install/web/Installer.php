@@ -109,6 +109,7 @@ class Installer
         $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
         require_once __DIR__ . '/StorageCheck.php';
         require_once __DIR__ . '/SecurityGuard.php';
+        require_once __DIR__ . '/PhpCli.php';
         require_once $libRoot . '/Hubzero/Database/Exception/RuntimeException.php';
         require_once $libRoot . '/Hubzero/Database/Exception/ConnectionFailedException.php';
         require_once $libRoot . '/Hubzero/Database/ConnectionInterface.php';
@@ -496,12 +497,18 @@ class Installer
         // Step 2: Welcome - informational, always pass if verified
         // (no system state to check)
 
-        // Step 3: Requirements - check PHP requirements
-        // For now, assume requirements are met if we got past verify
-        // A more thorough check could re-run the requirements checks
+        // Step 3: Requirements. The checks before Composer ran covered only
+        // what Composer needs, so a server without pdo_mysql or gd went
+        // straight on to the database step and failed there without saying
+        // why. Until the database is configured, a failed requirement is
+        // where the installer stops. Not after: an installed hub whose app
+        // directory is later made read-only must not reopen its installer.
+        $dbConfigPath = PATH_APP . '/config/database.php';
+        if (!file_exists($dbConfigPath) && !(new Requirements($this))->passed()) {
+            return 'requirements';
+        }
 
         // Step 4: Database - check if database.php config exists and connects
-        $dbConfigPath = PATH_APP . '/config/database.php';
         if (!file_exists($dbConfigPath)) {
             return 'database';
         }
@@ -1201,6 +1208,12 @@ class Installer
             ob_end_flush();
         }
 
+        // This takes as long as it takes. Under FrankenPHP the time limit is
+        // counted on the clock, and stopping at it killed the process half
+        // way through. Nor should leaving the page stop it.
+        set_time_limit(0);
+        ignore_user_abort(true);
+
         $musePath = PATH_CORE . '/bin/muse';
 
         if (!file_exists($musePath)) {
@@ -1215,7 +1228,7 @@ class Installer
         $command = sprintf(
             'cd %s && %s %s migration run -f --no-ansi 2>&1',
             escapeshellarg(PATH_ROOT),
-            escapeshellarg(PHP_BINARY),
+            PhpCli::find(),
             escapeshellarg($musePath)
         );
 
@@ -1226,7 +1239,7 @@ class Installer
             2 => ['pipe', 'w'],  // stderr
         ];
 
-        $process = proc_open($command, $descriptors, $pipes);
+        $process = proc_open($command, $descriptors, $pipes, null, PhpCli::environment());
 
         if (!is_resource($process)) {
             $this->sendSSE('error', 'Failed to start migration process');
@@ -1240,10 +1253,10 @@ class Installer
         // Set stdout to non-blocking
         stream_set_blocking($pipes[1], false);
 
-        // Read output in real-time
+        // Read output in real-time, everything that has arrived each time
+        // round; one line per pass fell behind a process that writes more
         while (!feof($pipes[1])) {
-            $line = fgets($pipes[1]);
-            if ($line !== false) {
+            while (($line = fgets($pipes[1])) !== false) {
                 $this->sendSSE('output', rtrim($line));
             }
             // Small delay to prevent CPU spinning
@@ -1273,6 +1286,10 @@ class Installer
     {
         // Filter out unwanted lines (similar to bootstrap composer output)
         if ($event === 'output') {
+            // The migrations colour some of what they print whatever muse is
+            // told, and a browser shows the codes as text
+            $data = preg_replace('/\e\[[0-9;]*m/', '', $data);
+
             // Skip empty lines
             if (trim($data) === '') {
                 return;

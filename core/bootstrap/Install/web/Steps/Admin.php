@@ -114,12 +114,12 @@ class Admin implements StepInterface
             return false;
         }
 
-        // Initialize database connection for Hubzero ORM
+        // Initialize database connection for HUBzero ORM
         if (!$this->bootstrapApplication()) {
             return false;
         }
 
-        // Update user using Hubzero User class
+        // Update user using HUBzero User class
         try {
             $user = User::oneOrFail($this->existingAdmin['id']);
 
@@ -194,12 +194,12 @@ class Admin implements StepInterface
             return false;
         }
 
-        // Initialize database connection for Hubzero ORM
+        // Initialize database connection for HUBzero ORM
         if (!$this->bootstrapApplication()) {
             return false;
         }
 
-        // Create user using Hubzero User class
+        // Create user using HUBzero User class
         try {
             $user = User::blank();
 
@@ -212,7 +212,7 @@ class Admin implements StepInterface
             // which changed nothing and reported success, so the wizard
             // finished with no administrator. Start the empty table's
             // numbering there instead and let the save insert.
-            $db = \App::get('db');
+            $db = App::get('db');
             $db->setQuery('ALTER TABLE `#__users` AUTO_INCREMENT = ' . (int) self::ADMIN_USER_ID);
             $db->query();
 
@@ -316,7 +316,7 @@ class Admin implements StepInterface
     }
 
     /**
-     * Bootstrap a full Hubzero application
+     * Bootstrap a full HUBzero application
      *
      * This initializes all Site service providers (database, events, etc.)
      * so that User, Password, and Map classes can function properly.
