@@ -105,6 +105,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -289,7 +290,7 @@
 </table>
 <h2 id="post-collections">POST /collections</h2>
 <p>Create a collection</p>
-<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L113"><code>collectionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L139"><code>collectionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -382,7 +383,7 @@
 </table>
 <h2 id="get-collections-list">GET /collections/list</h2>
 <p>Display a list of collections</p>
-<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L27"><code>collectionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L53"><code>collectionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -433,7 +434,7 @@
 </table>
 <h2 id="get-collections-posts">GET /collections/posts</h2>
 <p>Display posts</p>
-<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L41"><code>postsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L58"><code>postsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -491,7 +492,7 @@
 </table>
 <h2 id="post-collections-posts">POST /collections/posts</h2>
 <p>Create a post</p>
-<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L170"><code>postsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L189"><code>postsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -577,7 +578,7 @@
 </table>
 <h2 id="delete-collections-posts-id">DELETE /collections/posts/{id}</h2>
 <p>Delete a post</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L584"><code>postsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L631"><code>postsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -600,7 +601,7 @@
 </table>
 <h2 id="get-collections-posts-id">GET /collections/posts/{id}</h2>
 <p>Retrieve a post</p>
-<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L341"><code>postsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L367"><code>postsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -623,7 +624,7 @@
 </table>
 <h2 id="put-collections-posts-id">PUT /collections/posts/{id}</h2>
 <p>Update a post</p>
-<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L415"><code>postsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/postsv1_0.php#L447"><code>postsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -716,7 +717,7 @@
 </table>
 <h2 id="delete-collections-id">DELETE /collections/{id}</h2>
 <p>Delete a collection</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L398"><code>collectionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L453"><code>collectionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -739,7 +740,7 @@
 </table>
 <h2 id="get-collections-id">GET /collections/{id}</h2>
 <p>Retrieve a collection</p>
-<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L232"><code>collectionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L269"><code>collectionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -762,7 +763,7 @@
 </table>
 <h2 id="put-collections-id">PUT /collections/{id}</h2>
 <p>Update a collection</p>
-<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L266"><code>collectionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_collections/api/controllers/collectionsv1_0.php#L305"><code>collectionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>

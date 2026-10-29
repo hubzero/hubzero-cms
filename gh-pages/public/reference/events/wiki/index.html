@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -235,19 +236,19 @@
 <h2 id="wiki-onafterdisplaycontent"><code>wiki.onAfterDisplayContent</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L279"><code>core/components/com_wiki/site/controllers/pages.php:279</code></a> with <code>[&amp;$this-&gt;page, &amp;$revision, $this-&gt;config]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L265"><code>core/components/com_wiki/site/controllers/pages.php:265</code></a> with <code>[&amp;$this-&gt;page, &amp;$revision, $this-&gt;config]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onafterdisplaytitle"><code>wiki.onAfterDisplayTitle</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L273"><code>core/components/com_wiki/site/controllers/pages.php:273</code></a> with <code>[$this-&gt;page, &amp;$revision, $this-&gt;config]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L259"><code>core/components/com_wiki/site/controllers/pages.php:259</code></a> with <code>[$this-&gt;page, &amp;$revision, $this-&gt;config]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onbeforedisplaycontent"><code>wiki.onBeforeDisplayContent</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L276"><code>core/components/com_wiki/site/controllers/pages.php:276</code></a> with <code>[&amp;$this-&gt;page, &amp;$revision, $this-&gt;config]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L262"><code>core/components/com_wiki/site/controllers/pages.php:262</code></a> with <code>[&amp;$this-&gt;page, &amp;$revision, $this-&gt;config]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-ondisplayeditor"><code>wiki.onDisplayEditor</code></h2>
@@ -274,7 +275,7 @@
 <h2 id="wiki-onwikiafterbeforecomment"><code>wiki.onWikiAfterBeforeComment</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/comments.php#L254"><code>core/components/com_wiki/admin/controllers/comments.php:254</code></a> with <code>[&amp;$row, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/comments.php#L255"><code>core/components/com_wiki/admin/controllers/comments.php:255</code></a> with <code>[&amp;$row, $isNew]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onwikiafterdelete"><code>wiki.onWikiAfterDelete</code></h2>
@@ -286,7 +287,7 @@
 <h2 id="wiki-onwikiafterdeletecomment"><code>wiki.onWikiAfterDeleteComment</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/comments.php#L321"><code>core/components/com_wiki/admin/controllers/comments.php:321</code></a> with <code>[$id]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/comments.php#L323"><code>core/components/com_wiki/admin/controllers/comments.php:323</code></a> with <code>[$id]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onwikiafterdeleteversion"><code>wiki.onWikiAfterDeleteVersion</code></h2>
@@ -300,13 +301,13 @@
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/pages.php#L276"><code>core/components/com_wiki/admin/controllers/pages.php:276</code></a> with <code>[&amp;$page, $isNew]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/history.php#L485"><code>core/components/com_wiki/site/controllers/history.php:485</code></a> with <code>[&amp;$this-&gt;page, false]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L727"><code>core/components/com_wiki/site/controllers/pages.php:727</code></a> with <code>[&amp;$this-&gt;page, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L832"><code>core/components/com_wiki/site/controllers/pages.php:832</code></a> with <code>[&amp;$this-&gt;page, $isNew]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onwikiaftersavecomment"><code>wiki.onWikiAfterSaveComment</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/comments.php#L270"><code>core/components/com_wiki/admin/controllers/comments.php:270</code></a> with <code>[&amp;$row, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/comments.php#L271"><code>core/components/com_wiki/admin/controllers/comments.php:271</code></a> with <code>[&amp;$row, $isNew]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onwikiaftersaveversion"><code>wiki.onWikiAfterSaveVersion</code></h2>
@@ -319,7 +320,7 @@
 <p>Fired from:</p>
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/admin/controllers/pages.php#L252"><code>core/components/com_wiki/admin/controllers/pages.php:252</code></a> with <code>[&amp;$page, $isNew]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L621"><code>core/components/com_wiki/site/controllers/pages.php:621</code></a> with <code>[&amp;$this-&gt;page, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_wiki/site/controllers/pages.php#L708"><code>core/components/com_wiki/site/controllers/pages.php:708</code></a> with <code>[&amp;$this-&gt;page, $isNew]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="wiki-onwikibeforesaveversion"><code>wiki.onWikiBeforeSaveVersion</code></h2>
@@ -331,7 +332,7 @@
 <h2 id="wiki-onwikiparsetext"><code>wiki.onWikiParseText</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/content/formatwiki/formatwiki.php#L121"><code>core/plugins/content/formatwiki/formatwiki.php:121</code></a> with <code>[$content, $params, $params['fullparse'], true]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/content/formatwiki/formatwiki.php#L150"><code>core/plugins/content/formatwiki/formatwiki.php:150</code></a> with <code>[$content, $params, $params['fullparse'], true]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>

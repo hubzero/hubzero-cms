@@ -287,11 +287,11 @@ redirect:</p>
 	 */
 	public function displayTask()
 	{
+		// The same contract as categoryTask(), so the two layouts can share
+		// the category navigation and search form
 		$this-&gt;view
 			-&gt;set('archive', $this-&gt;archive)
-			-&gt;setLayout('display')
-			-&gt;display();
-	}
+			-&gt;set('category', $this-&gt;allCategory())
 </code></pre>
 <h2 id="properties">Properties</h2>
 <p>Each controller has:</p>
@@ -454,28 +454,28 @@ the request or the third URL segment and appends <code>v{major}_{minor}</code>; 
 <code>Components\Kb\Api\Controllers\Entriesv1_0</code> and answers <code>/api/kb/list</code>.</p>
 <p>Tasks are documented in their docblock, and the base <code>indexTask()</code> reads those
 docblocks back with reflection to publish the endpoint list:</p>
-<pre><code class="language-php">	/**
-	 * Get a list of Knowledge Base Articles 
-	 *
-	 * @apiMethod GET
-	 * @apiUri    /kb/list
-	 * @apiParameter {
-	 * 		&quot;name&quot;:          &quot;limit&quot;,
-	 * 		&quot;description&quot;:   &quot;Number of result to return.&quot;,
-	 * 		&quot;type&quot;:          &quot;integer&quot;,
-	 * 		&quot;required&quot;:      false,
-	 * 		&quot;default&quot;:       25
-	 * }
-	 * @apiParameter {
-	 * 		&quot;name&quot;:          &quot;limitstart&quot;,
-	 * 		&quot;description&quot;:   &quot;Number of where to start returning results.&quot;,
-	 * 		&quot;type&quot;:          &quot;integer&quot;,
-	 * 		&quot;required&quot;:      false,
-	 * 		&quot;default&quot;:       0
-	 * }
-	 * @return    void
-	 */
-	public function listTask()
+<pre><code class="language-php">
+// article.php brings com_categories' nested model with it, which the
+// category writes below save through
+require_once Component::path('com_kb') . '/models/article.php';
+require_once Component::path('com_kb') . '/models/category.php';
+
+/**
+ * API controller for the knowledge base
+ *
+ * For a caller who is not a Super User this is read-only, with the
+ * visibility the site applies: a published article, in a published
+ * category, at an access level the caller holds. A guest therefore sees
+ * public articles only, and an authenticated caller sees what they could
+ * read on the site.
+ *
+ * A Super User may additionally ask for unpublished content, and may
+ * create, change and remove both articles and the categories they sit in.
+ */
+class Entriesv1_0 extends ApiController
+{
+	/**
+	 * Date format for timestamps in responses
 </code></pre>
 <p>That means the docblock is the API documentation, not a comment about it. An
 endpoint with no docblock is an endpoint nobody discovers.</p>

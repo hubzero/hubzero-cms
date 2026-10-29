@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
@@ -64,7 +65,6 @@
 <li class="toc__item toc__item--l2"><a href="#turning-registration-off">Turning registration off</a></li>
 <li class="toc__item toc__item--l2"><a href="#confirmation-return-url">Confirmation return URL</a></li>
 <li class="toc__item toc__item--l2"><a href="#customising-the-registration-emails">Customising the registration emails</a></li>
-<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
@@ -196,6 +196,7 @@ setting.</p>
 <strong>Incremental Registration</strong>, and <strong>PREMIS Data Import</strong>.</p>
 <h2 id="the-field-table">The field table</h2>
 <p>The table has one row per field and four columns, one per action.</p>
+<p><img src="../../media/registration-fields.png" alt="The Registration screen's field table: a row for each field from Username to TOU, and a drop-down in each of the Create Account, Proxy Create Account, Update on Next Login and Edit Profile columns" /></p>
 <table>
 <thead>
 <tr>
@@ -302,18 +303,10 @@ setting is fixed and there is no drop-down.</p>
 above: <code>R</code> required, <code>O</code> optional, <code>H</code> hidden, <code>U</code> read only. The stored
 values are listed in the
 <a href="../../../reference/configuration/components/members/index.html#registration">Members component reference</a>.</p>
-<pre><code class="language-xml">	&lt;fieldset name=&quot;registration&quot;&gt;
-		&lt;field name=&quot;ConfirmationReturn&quot; type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;&quot; label=&quot;Confirmation Return URL&quot; description=&quot;Redirect here after confirming email...&quot; /&gt;
-		&lt;field name=&quot;registrationUsername&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Username&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationPassword&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Password&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationConfirmPassword&quot;  type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Password Confirmation&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationFullname&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Full Name&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationEmail&quot;            type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Email&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationConfirmEmail&quot;     type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Email Confirmation&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationOptIn&quot;            type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;HHHO&quot; label=&quot;OptIn&quot; description=&quot;Receieve Emails. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationCAPTCHA&quot;          type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHHH&quot; label=&quot;CAPTCHA&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
-		&lt;field name=&quot;registrationTOU&quot;              type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHRH&quot; label=&quot;TOU&quot; description=&quot;Terms of Use. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+<pre><code class="language-xml">	&lt;fieldset name=&quot;permissions&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; description=&quot;JCONFIG_PERMISSIONS_DESC&quot;&gt;
+		&lt;field name=&quot;rules&quot; type=&quot;rules&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; class=&quot;inputbox&quot; validate=&quot;rules&quot; filter=&quot;rules&quot; component=&quot;com_members&quot; section=&quot;component&quot; /&gt;
 	&lt;/fieldset&gt;
+&lt;/config&gt;
 </code></pre>
 <p>Those shipped defaults are sensible for a hub that anyone may join, and most
 hubs never change them. The <strong>Create Account</strong> column is the visible sign-up
@@ -380,23 +373,13 @@ Registration</strong> to <strong>No</strong>. This is the setting a hub reaches 
 wave starts producing junk accounts faster than anyone can delete them: it
 closes the door without touching the accounts that already exist, and turning
 it back on restores the form exactly as it was.</p>
+<p><img src="../../media/registration-options.png" alt="The Members component's options open on the Component tab, with Allow User Registration first" /></p>
 <p>The same screen carries <strong>New User Registration Group</strong>, <strong>New User Account
-Activation</strong>, <strong>Send Password</strong>, and <strong>Simple Registration</strong>, which submits
-the registration form on behalf of an account arriving from an external
-authentication provider instead of showing it, where the provider supplied
-enough to fill it in.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The tabs in the Options pop-up are labelled from language
-strings that the Members component does not define, so three of them
-render as raw keys such as <code>COM_CONFIG_REGISTRATION_FIELDSET_LABEL</code>
-instead of a name. The fields inside them are correct.</p>
-</aside>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> <strong>Send Password</strong> on that screen is inert. It is declared, it
-has help text, it defaults to <strong>Yes</strong>, and nothing in the tree reads it.
-Setting it either way changes nothing, so do not treat it as the hub's
-answer to whether passwords are mailed out.</p>
-</aside>
+Activation</strong>, and <strong>Simple Registration</strong>, which submits the registration
+form on behalf of an account arriving from an external authentication
+provider instead of showing it, where the provider supplied enough to fill
+it in. No setting mails a new member their password; the hub never sends
+one.</p>
 <h2 id="confirmation-return-url">Confirmation return URL</h2>
 <p>By default a member who confirms their email address lands on a thank-you
 page. To send them somewhere else, select <strong>Options</strong> on any Members screen
@@ -462,21 +445,6 @@ cron.</p>
 <p><strong>Tip:</strong> See <a href="../../../developers/templates/overrides/index.html">Output overrides</a>
 for the general rules on overriding layouts and CSS.</p>
 </aside>
-<h2 id="older-screenshots">Older screenshots</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The screenshots below came from the imported version of this
-page. The field table and the Save button are still where they show them,
-but the administrator template has been restyled since. The last four
-images show the retired <strong>Register</strong> component and its parameters pop-up,
-which no longer exist; the settings they show are now on the Members
-component's <strong>Options</strong> screen.</p>
-</aside>
-<p><img src="../../media/registration-edit-registration-03.png" alt="The member field configuration table with its Create, Proxy, Update, and Edit columns" /></p>
-<p><img src="../../media/registration-edit-registration-04.png" alt="The Save button in the upper right of the Registration screen" /></p>
-<p><img src="../../media/registration-edit-registration-01.png" alt="The retired Components menu with the Register component selected" /></p>
-<p><img src="../../media/registration-edit-registration-05.png" alt="The Parameters button in the retired Register component's toolbar" /></p>
-<p><img src="../../media/registration-edit-registration-06.png" alt="The retired Register parameters pop-up showing the Confirmation Return URL option" /></p>
-<p><img src="../../media/registration-edit-registration-07.png" alt="The retired Register parameters pop-up with the Confirmation Return URL filled in" /></p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

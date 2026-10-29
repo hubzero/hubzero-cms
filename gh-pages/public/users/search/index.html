@@ -130,10 +130,18 @@ courses, events, forum posts, groups, knowledge base articles, member
 profiles, projects, publications, questions and answers, resources, wiki
 pages, wishlist items, and hand-written site map entries.</p>
 <p>Type words into <strong>Search terms</strong> and select <strong>Search</strong>. Each result shows its
-title, the section it came from, its date, its contributors, and an excerpt
-with your terms highlighted. Related items are grouped under their parent.
-There is no field syntax and no faceting; ordering is decided by a handful of
-weighting plugins that promote matching titles and contributors.</p>
+title, the section it came from, its date, its contributors, and an excerpt.
+Your terms are not highlighted in it. Related items are grouped under their
+parent.</p>
+<p>Down the side, <strong>Filter results</strong> lists <strong>All Categories</strong> with the total,
+then each kind of content that matched, with its count; a kind with
+sub-types, such as resources, lists those under it. Select one to see only
+those results. The choice travels as a prefix on your words — <code>wiki:calder</code>
+finds only the wiki pages that mention <em>calder</em> — and you can type the
+prefix yourself. Beyond that there is no field syntax. Ordering is decided by
+a handful of weighting plugins that promote matching titles and
+contributors.</p>
+<p><img src="../media/search-results.png" alt="Basic search results for &quot;calder&quot;: a matching tag, then each result with its title, its section, its date and contributors and an excerpt, and the Filter results list beside them with a count for each kind of content" /></p>
 <p>On a Basic hub the lab's forum thread and wiki protocol <em>are</em> reachable from
 <code>/search</code>, because those two plugins are installed. The gap described below is
 specific to hubs that have moved to Solr.</p>

@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
@@ -62,7 +63,6 @@
 <li class="toc__item toc__item--l2"><a href="#opening-a-plugin-s-parameters">Opening a plugin&#x27;s parameters</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list-screen">The list screen</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-edit-screen">The edit screen</a></li>
-<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
@@ -206,26 +206,19 @@ missing is flagged under its name with &quot;Plugin file(s) not found!&quot;.</p
 <strong>New</strong> and no <strong>Delete</strong>: plugins arrive and leave through the
 <a href="../../extensions/extension-manager/index.html">Extension Manager</a>, and the Plug-in Manager
 only turns them on and off and configures them.</p>
+<p><img src="../../media/plugins-list.png" alt="The Plug-in Manager, its plugins sorted by type, each with its status, ordering, element and access" /></p>
 <h2 id="the-edit-screen">The edit screen</h2>
 <p><strong>Details</strong> holds the three settings you can change: <strong>Status</strong>,
 <strong>Access</strong>, and <strong>Ordering</strong>. Beside it is a read-only table: <strong>Plug-in
 Name</strong>, <strong>ID</strong>, <strong>Plug-in Type</strong> — the group the plugin belongs to, such as
 <code>authentication</code> or <code>members</code> — <strong>Plug-in File</strong>, <strong>Description</strong>, and who
 last modified it. Those describe where the plugin lives on disk and come
-from its manifest.</p>
+from its manifest. The plugin's own parameters, if it has any, are in the
+panels on the right.</p>
+<p><img src="../../media/plugins-edit.png" alt="The Akismet antispam plugin open for editing: Status, Access and Ordering under Details, the read-only table below them, and its API Key and server settings under Basic Options" /></p>
 <p>The toolbar has <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Close</strong>, and <strong>Help</strong>.</p>
 <p>Every plugin's parameters are listed by group in the generated
 <a href="../../../reference/configuration/index.html#plugin-groups">configuration reference</a>.</p>
-<h2 id="older-screenshots">Older screenshots</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The screenshots below came from the imported version of this
-page. The screens are the same but the administrator template has been
-restyled since.</p>
-</aside>
-<p><img src="../../media/plugins-plugin-manager-01.png" alt="The Plug-in Manager list" /></p>
-<p><img src="../../media/plugins-plugin-manager-02.png" alt="Choosing a plugin from the list" /></p>
-<p><img src="../../media/plugins-plugin-manager-07.png" alt="The parameter panels on the right of the plugin edit screen" /></p>
-<p><img src="../../media/plugins-plugin-manager-08.png" alt="Saving the plugin" /></p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

@@ -3,10 +3,9 @@
   {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 90,
+   "pages": 91,
    "counts": {
-    "rewritten": 89,
-    "draft": 1
+    "rewritten": 91
    }
   },
   {
@@ -38,17 +37,17 @@
   {
    "slug": "reference",
    "title": "Reference",
-   "pages": 154,
+   "pages": 155,
    "counts": {
     "rewritten": 1,
-    "generated": 153
+    "generated": 154
    }
   }
  ],
  "totals": {
-  "rewritten": 235,
-  "draft": 2,
+  "rewritten": 237,
+  "draft": 1,
   "reviewed": 23,
-  "generated": 153
+  "generated": 154
  }
 }

@@ -103,6 +103,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -277,7 +278,7 @@
 </table>
 <h2 id="post-tags">POST /tags</h2>
 <p>Create an entry</p>
-<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L155"><code>entriesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L171"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -400,7 +401,7 @@
 </table>
 <h2 id="get-tags-tagactivitylogs-previouslogs">GET /tags/tagactivitylogs/previouslogs</h2>
 <p>Retrieve tag's logs that preceeded the given log</p>
-<p>API version 2.0, task <code>previousLogs</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/tagactivitylogsv2_0.php#L26"><code>tagactivitylogsv2_0.php</code></a>.</p>
+<p>API version 2.0, task <code>previousLogs</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/tagactivitylogsv2_0.php#L29"><code>tagactivitylogsv2_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -437,7 +438,7 @@
 </table>
 <h2 id="delete-tags-id">DELETE /tags/{id}</h2>
 <p>Delete an entry</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L395"><code>entriesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L428"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -460,7 +461,7 @@
 </table>
 <h2 id="get-tags-id">GET /tags/{id}</h2>
 <p>Retrieve an entry</p>
-<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L260"><code>entriesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L287"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -483,7 +484,7 @@
 </table>
 <h2 id="put-tags-id">PUT /tags/{id}</h2>
 <p>Update an entry</p>
-<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L292"><code>entriesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L319"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -541,7 +542,7 @@
 </table>
 <h2 id="delete-tags-id-add">DELETE /tags/{id}/add</h2>
 <p>Add a tag to an item</p>
-<p>API version 1.0, task <code>add</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L500"><code>entriesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>add</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L548"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -585,7 +586,7 @@
 </table>
 <h2 id="delete-tags-id-remove">DELETE /tags/{id}/remove</h2>
 <p>Remove tag from an item</p>
-<p>API version 1.0, task <code>remove</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L434"><code>entriesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>remove</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/api/controllers/entriesv1_0.php#L473"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>

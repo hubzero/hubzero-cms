@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -200,7 +201,7 @@ mail.</li>
 </ol>
 <p>Publishing a job is reversible: unpublish it and sending stops, with the
 queue left where it is. The Newsletters screen tells you when the job is
-missing or unpublished — it shows a warning and a <strong>Check HUB cron jobs</strong>
+missing or unpublished — it shows a warning and a <strong>Check the hub's cron jobs</strong>
 link — but only that one check runs, so a hub with <code>processMailings</code>
 published and a broken scheduler shows no warning at all and still sends
 nothing.</p>
@@ -229,6 +230,7 @@ top: <strong>Newsletters</strong>, <strong>Mailings</strong>, <strong>Lists</str
 <strong>Tracking</strong>. Click a heading to sort. Filter by a search term matched
 against the name, and by format with the <strong>- Select Type -</strong> menu (HTML or
 Plain). The <strong>Public</strong> cell is a toggle: click it to publish or unpublish.</p>
+<p><img src="../../media/newsletters-admin-list.png" alt="The Newsletters list under a warning that the cron job that sends mailings is missing or switched off, each newsletter with its format, template, and whether it is public, sent and tracked" /></p>
 <p>The toolbar offers <strong>New</strong>, <strong>Copy</strong> (duplicates the checked newsletters and
 their stories, appending &quot;(copy)&quot; to the name), <strong>Edit</strong>, <strong>Delete</strong>,
 <strong>Publish</strong>, <strong>Unpublish</strong>, <strong>Preview</strong> (renders the newsletter in a
@@ -265,7 +267,7 @@ screen, but is not removed from the database.</p>
 <td>A saved template, or <strong>No Template (If HTML format, content includes template)</strong> to write the whole message yourself.</td>
 </tr>
 <tr>
-<td>Show Newsletter on HUB</td>
+<td>Show Newsletter on the hub</td>
 <td><strong>Show</strong> or <strong>Don't Show</strong>. Hidden newsletters are not listed at <code>/newsletter</code>.</td>
 </tr>
 <tr>

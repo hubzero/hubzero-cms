@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
@@ -67,7 +68,6 @@
 <li class="toc__item toc__item--l2"><a href="#members-who-already-have-an-account">Members who already have an account</a></li>
 <li class="toc__item toc__item--l2"><a href="#second-factors">Second factors</a></li>
 <li class="toc__item toc__item--l2"><a href="#password-rules">Password rules</a></li>
-<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../extauth/index.html">External authenticators</a></li>
 </ul></details></li>
@@ -310,6 +310,8 @@ filter to <code>authentication</code>.</li>
 <li>Sign out in a private window and check that the provider's button appears
 on the login page and takes you all the way through.</li>
 </ol>
+<p><img src="../../media/authentication-plugins.png" alt="The Plug-in Manager filtered to the authentication type, with only Authentication - HUBzero enabled" /></p>
+<p><img src="../../media/authentication-google.png" alt="The Google authentication plugin open for editing: Consumer Key and Consumer Secret at the top of its Basic Options, then Display name, Site login, Admin login and Auto approve new users" /></p>
 <p>Adding a provider is safe: existing members keep signing in exactly as they
 did, and a provider that turns out to be misconfigured fails for the people
 who choose it rather than for everyone. Removing one is the change that hurts
@@ -393,17 +395,6 @@ Manager the same way.</p>
 <p>Rules for the hub's own passwords are not part of these plugins. They live
 under <strong>Users &gt; Members &gt; Passwords</strong>, which has two screens: the character
 and length rules, and a blacklist of passwords that are refused outright.</p>
-<h2 id="older-screenshots">Older screenshots</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The screenshots below came from the imported version of this
-page and were taken around 2012. The Plug-in Manager and the plugin edit
-screen have been restyled since, and the login page no longer looks like
-the one shown.</p>
-</aside>
-<p><img src="../../media/authentication-auth-04.png" alt="The authentication plugins listed in the Plug-in Manager" /></p>
-<p><img src="../../media/authentication-210authentication.png" alt="Filtering the Plug-in Manager to the authentication type" /></p>
-<p><img src="../../media/authentication-210authentication2.png" alt="Filling in an authentication plugin's key and secret" /></p>
-<p><img src="../../media/authentication-210authentication3.png" alt="The login page offering a third-party provider" /></p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

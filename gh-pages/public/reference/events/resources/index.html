@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -246,13 +247,13 @@
 <h2 id="resources-onresourceaftersubmit"><code>resources.onResourceAfterSubmit</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/create.php#L1489"><code>core/components/com_resources/site/controllers/create.php:1489</code></a> with <code>[$resource]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/create.php#L1590"><code>core/components/com_resources/site/controllers/create.php:1590</code></a> with <code>[$resource]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="resources-onresourcebeforesubmit"><code>resources.onResourceBeforeSubmit</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/create.php#L1305"><code>core/components/com_resources/site/controllers/create.php:1305</code></a> with <code>[$resource]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/create.php#L1406"><code>core/components/com_resources/site/controllers/create.php:1406</code></a> with <code>[$resource]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -261,8 +262,8 @@
 <h2 id="resources-onresources"><code>resources.onResources</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/resources.php#L658"><code>core/components/com_resources/site/controllers/resources.php:658</code></a> with <code>[$model, $this-&gt;_option, array('about'), 'metadata']</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/resources.php#L1497"><code>core/components/com_resources/site/controllers/resources.php:1497</code></a> with <code>[ $this-&gt;model, $this-&gt;_option, array($tab), 'all', ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/resources.php#L676"><code>core/components/com_resources/site/controllers/resources.php:676</code></a> with <code>[$model, $this-&gt;_option, array('about'), 'metadata']</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/resources.php#L1537"><code>core/components/com_resources/site/controllers/resources.php:1537</code></a> with <code>[ $this-&gt;model, $this-&gt;_option, array($tab), 'all', ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -285,7 +286,7 @@
 <h2 id="resources-onresourcesareas"><code>resources.onResourcesAreas</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/resources.php#L1468"><code>core/components/com_resources/site/controllers/resources.php:1468</code></a> with <code>[ $this-&gt;model ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/controllers/resources.php#L1508"><code>core/components/com_resources/site/controllers/resources.php:1508</code></a> with <code>[ $this-&gt;model ]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="resources-onresourceslist"><code>resources.onResourcesList</code></h2>
@@ -310,7 +311,7 @@
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/courses.php#L212"><code>core/components/com_resources/site/views/view/tmpl/courses.php:212</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/default.php#L186"><code>core/components/com_resources/site/views/view/tmpl/default.php:186</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/series.php#L250"><code>core/components/com_resources/site/views/view/tmpl/series.php:250</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/tools.php#L286"><code>core/components/com_resources/site/views/view/tmpl/tools.php:286</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/tools.php#L292"><code>core/components/com_resources/site/views/view/tmpl/tools.php:292</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/windowstools.php#L209"><code>core/components/com_resources/site/views/view/tmpl/windowstools.php:209</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_resources/site/views/view/tmpl/workshops.php#L250"><code>core/components/com_resources/site/views/view/tmpl/workshops.php:250</code></a> with <code>[$this-&gt;model, $this-&gt;option, 1]</code></li>
 </ul>

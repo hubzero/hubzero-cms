@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -196,6 +197,7 @@
 <li class="toc__item toc__item--l2"><a href="#system-onbeforerendersupergroupcomponent">system.onBeforeRenderSuperGroupComponent</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-onbeforeroute">system.onBeforeRoute</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncleancache">system.onCleanCache</a></li>
+<li class="toc__item toc__item--l2"><a href="#system-onconfigurationaftersave">system.onConfigurationAfterSave</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncontentdestroy">system.onContentDestroy</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncontentprepareform">system.onContentPrepareForm</a></li>
 <li class="toc__item toc__item--l2"><a href="#system-oncontentsave">system.onContentSave</a></li>
@@ -267,7 +269,7 @@
 <p>Fired from:</p>
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L128"><code>core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:128</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L152"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:152</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L162"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:162</code></a></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -299,7 +301,7 @@
 <p>Fired from:</p>
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Administrator/Providers/DocumentServiceProvider.php#L124"><code>core/bootstrap/Administrator/Providers/DocumentServiceProvider.php:124</code></a></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L148"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:148</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/Site/Providers/DocumentServiceProvider.php#L151"><code>core/bootstrap/Site/Providers/DocumentServiceProvider.php:151</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="system-onbeforerendersupergroupcomponent"><code>system.onBeforeRenderSuperGroupComponent</code></h2>
@@ -325,10 +327,16 @@
 <ul>
 <li><code>plg_system_cache</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/cache/cache.php"><code>onCleanCache($group = null, $client_id = 0)</code></a></li>
 </ul>
+<h2 id="system-onconfigurationaftersave"><code>system.onConfigurationAfterSave</code></h2>
+<p>No call site in the CMS fires this event; the listener may answer an event fired by another package or by an older plugin.</p>
+<p>Listeners:</p>
+<ul>
+<li><code>plg_system_massmail</code> — <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/system/massmail/massmail.php"><code>onConfigurationAfterSave($context, $table, $isNew)</code></a></li>
+</ul>
 <h2 id="system-oncontentdestroy"><code>system.onContentDestroy</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L1631"><code>core/libraries/Hubzero/Database/Relational.php:1631</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L1698"><code>core/libraries/Hubzero/Database/Relational.php:1698</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -348,7 +356,7 @@
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/manager.php#L124"><code>core/components/com_groups/models/orm/manager.php:124</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/models/orm/member.php#L124"><code>core/components/com_groups/models/orm/member.php:124</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_modules/models/menu.php#L71"><code>core/components/com_modules/models/menu.php:71</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L1451"><code>core/libraries/Hubzero/Database/Relational.php:1451</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php#L1518"><code>core/libraries/Hubzero/Database/Relational.php:1518</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Table.php#L582"><code>core/libraries/Hubzero/Database/Table.php:582</code></a> with <code>[$this-&gt;getTableName(), $this]</code></li>
 </ul>
 <p>Listeners:</p>

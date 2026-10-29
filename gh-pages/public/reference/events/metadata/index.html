@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -223,8 +224,8 @@
 <h2 id="metadata-onfilemove"><code>metadata.onFileMove</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1333"><code>core/plugins/projects/files/connections.php:1333</code></a> with <code>[$oldName, $item-&gt;getAbsolutePath()]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1424"><code>core/plugins/projects/files/connections.php:1424</code></a> with <code>[$oldName, $entity-&gt;getAbsolutePath()]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1457"><code>core/plugins/projects/files/connections.php:1457</code></a> with <code>[$oldName, $item-&gt;getAbsolutePath()]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1548"><code>core/plugins/projects/files/connections.php:1548</code></a> with <code>[$oldName, $entity-&gt;getAbsolutePath()]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -233,17 +234,17 @@
 <h2 id="metadata-onmetadataedit"><code>metadata.onMetadataEdit</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1531"><code>core/plugins/projects/files/connections.php:1531</code></a></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1655"><code>core/plugins/projects/files/connections.php:1655</code></a></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="metadata-onmetadataget"><code>metadata.onMetadataGet</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L948"><code>core/components/com_projects/api/controllers/filefsv1_0.php:948</code></a> with <code>[$entity]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L1036"><code>core/components/com_projects/api/controllers/filefsv1_0.php:1036</code></a> with <code>[$entity]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1176"><code>core/components/com_projects/api/controllers/filesv1_0.php:1176</code></a> with <code>[$entity]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1271"><code>core/components/com_projects/api/controllers/filesv1_0.php:1271</code></a> with <code>[$entity]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1539"><code>core/plugins/projects/files/connections.php:1539</code></a> with <code>[$entity]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L967"><code>core/components/com_projects/api/controllers/filefsv1_0.php:967</code></a> with <code>[$entity]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L1062"><code>core/components/com_projects/api/controllers/filefsv1_0.php:1062</code></a> with <code>[$entity]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1195"><code>core/components/com_projects/api/controllers/filesv1_0.php:1195</code></a> with <code>[$entity]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1290"><code>core/components/com_projects/api/controllers/filesv1_0.php:1290</code></a> with <code>[$entity]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1663"><code>core/plugins/projects/files/connections.php:1663</code></a> with <code>[$entity]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -252,9 +253,9 @@
 <h2 id="metadata-onmetadatasave"><code>metadata.onMetadataSave</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L1039"><code>core/components/com_projects/api/controllers/filefsv1_0.php:1039</code></a> with <code>[$entity, array_merge($oldmetadata, $metadata)]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1274"><code>core/components/com_projects/api/controllers/filesv1_0.php:1274</code></a> with <code>[$entity, array_merge($oldmetadata, $metadata)]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1601"><code>core/plugins/projects/files/connections.php:1601</code></a> with <code>[ $entity, $metadata ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L1065"><code>core/components/com_projects/api/controllers/filefsv1_0.php:1065</code></a> with <code>[$entity, array_merge($oldmetadata, $metadata)]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1293"><code>core/components/com_projects/api/controllers/filesv1_0.php:1293</code></a> with <code>[$entity, array_merge($oldmetadata, $metadata)]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/files/connections.php#L1725"><code>core/plugins/projects/files/connections.php:1725</code></a> with <code>[ $entity, $metadata ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>

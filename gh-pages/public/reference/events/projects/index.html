@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -269,8 +270,8 @@
 <h2 id="projects-onafterupdate"><code>projects.onAfterUpdate</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L877"><code>core/components/com_projects/api/controllers/filefsv1_0.php:877</code></a> with <code>$plugin_params</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1098"><code>core/components/com_projects/api/controllers/filesv1_0.php:1098</code></a> with <code>$plugin_params</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L889"><code>core/components/com_projects/api/controllers/filefsv1_0.php:889</code></a> with <code>$plugin_params</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1117"><code>core/components/com_projects/api/controllers/filesv1_0.php:1117</code></a> with <code>$plugin_params</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -279,10 +280,10 @@
 <h2 id="projects-onproject"><code>projects.onProject</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/projects.php#L657"><code>core/components/com_projects/site/controllers/projects.php:657</code></a> with <code>$plugin_params</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L948"><code>core/components/com_projects/site/controllers/setup.php:948</code></a> with <code>[ $this-&gt;model, 'save', array('team') ]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L1048"><code>core/components/com_projects/site/controllers/setup.php:1048</code></a> with <code>[ $this-&gt;model, $this-&gt;_task, array('team') ]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/publications.php#L1546"><code>core/components/com_publications/site/controllers/publications.php:1546</code></a> with <code>$plugin_params</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/projects.php#L658"><code>core/components/com_projects/site/controllers/projects.php:658</code></a> with <code>$plugin_params</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L991"><code>core/components/com_projects/site/controllers/setup.php:991</code></a> with <code>[ $this-&gt;model, 'save', array('team') ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L1097"><code>core/components/com_projects/site/controllers/setup.php:1097</code></a> with <code>[ $this-&gt;model, $this-&gt;_task, array('team') ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_publications/site/controllers/publications.php#L1562"><code>core/components/com_publications/site/controllers/publications.php:1562</code></a> with <code>$plugin_params</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/cron/projects/projects.php#L144"><code>core/plugins/cron/projects/projects.php:144</code></a> with <code>$plugin_params</code></li>
 </ul>
 <p>Listeners:</p>
@@ -302,7 +303,7 @@
 <h2 id="projects-onprojectafterdelete"><code>projects.onProjectAfterDelete</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/models/orm/project.php#L532"><code>core/components/com_projects/models/orm/project.php:532</code></a> with <code>[$data]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/models/orm/project.php#L546"><code>core/components/com_projects/models/orm/project.php:546</code></a> with <code>[$data]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="projects-onprojectafterdeleteactivity"><code>projects.onProjectAfterDeleteActivity</code></h2>
@@ -319,9 +320,9 @@
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/admin/controllers/projects.php#L782"><code>core/components/com_projects/admin/controllers/projects.php:782</code></a> with <code>[$model]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/admin/controllers/projects.php#L842"><code>core/components/com_projects/admin/controllers/projects.php:842</code></a> with <code>[$model]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/admin/controllers/projects.php#L899"><code>core/components/com_projects/admin/controllers/projects.php:899</code></a> with <code>[$model]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L588"><code>core/components/com_projects/api/controllers/projectsv2_0.php:588</code></a> with <code>[&amp;$row, $isNew]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L1100"><code>core/components/com_projects/api/controllers/projectsv2_0.php:1100</code></a> with <code>[&amp;$row, $isNew]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L351"><code>core/components/com_projects/site/controllers/setup.php:351</code></a> with <code>[$this-&gt;model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L598"><code>core/components/com_projects/api/controllers/projectsv2_0.php:598</code></a> with <code>[&amp;$row, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L1136"><code>core/components/com_projects/api/controllers/projectsv2_0.php:1136</code></a> with <code>[&amp;$row, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L366"><code>core/components/com_projects/site/controllers/setup.php:366</code></a> with <code>[$this-&gt;model]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/groups/projects/projects.php#L288"><code>core/plugins/groups/projects/projects.php:288</code></a> with <code>[$model]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
@@ -335,20 +336,20 @@
 <h2 id="projects-onprojectareas"><code>projects.onProjectAreas</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/projects.php#L614"><code>core/components/com_projects/site/controllers/projects.php:614</code></a> with <code>[$this-&gt;model-&gt;get('alias')]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/projects.php#L615"><code>core/components/com_projects/site/controllers/projects.php:615</code></a> with <code>[$this-&gt;model-&gt;get('alias')]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="projects-onprojectbeforedelete"><code>projects.onProjectBeforeDelete</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/models/orm/project.php#L496"><code>core/components/com_projects/models/orm/project.php:496</code></a> with <code>[$data]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/models/orm/project.php#L510"><code>core/components/com_projects/models/orm/project.php:510</code></a> with <code>[$data]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="projects-onprojectbeforesave"><code>projects.onProjectBeforeSave</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L571"><code>core/components/com_projects/api/controllers/projectsv2_0.php:571</code></a> with <code>[&amp;$row, $isNew]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L1087"><code>core/components/com_projects/api/controllers/projectsv2_0.php:1087</code></a> with <code>[&amp;$row, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L581"><code>core/components/com_projects/api/controllers/projectsv2_0.php:581</code></a> with <code>[&amp;$row, $isNew]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L1123"><code>core/components/com_projects/api/controllers/projectsv2_0.php:1123</code></a> with <code>[&amp;$row, $isNew]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="projects-onprojectbeforesaveactivity"><code>projects.onProjectBeforeSaveActivity</code></h2>
@@ -361,7 +362,7 @@
 <p>Fired from:</p>
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/admin/controllers/projects.php#L266"><code>core/components/com_projects/admin/controllers/projects.php:266</code></a> with <code>[$model, 1]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/projects.php#L682"><code>core/components/com_projects/site/controllers/projects.php:682</code></a> with <code>[$this-&gt;model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/projects.php#L683"><code>core/components/com_projects/site/controllers/projects.php:683</code></a> with <code>[$this-&gt;model]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -370,8 +371,8 @@
 <h2 id="projects-onprojectcreate"><code>projects.onProjectCreate</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L672"><code>core/components/com_projects/api/controllers/projectsv2_0.php:672</code></a> with <code>[$row]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L611"><code>core/components/com_projects/site/controllers/setup.php:611</code></a> with <code>[$this-&gt;model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L682"><code>core/components/com_projects/api/controllers/projectsv2_0.php:682</code></a> with <code>[$row]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/site/controllers/setup.php#L626"><code>core/components/com_projects/site/controllers/setup.php:626</code></a> with <code>[$this-&gt;model]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="projects-onprojectextras"><code>projects.onProjectExtras</code></h2>
@@ -392,7 +393,7 @@
 <h2 id="projects-onprojectmember"><code>projects.onProjectMember</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/feed/feed.php#L212"><code>core/plugins/projects/feed/feed.php:212</code></a> with <code>[$model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/feed/feed.php#L218"><code>core/plugins/projects/feed/feed.php:218</code></a> with <code>[$model]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -401,7 +402,7 @@
 <h2 id="projects-onprojectminilist"><code>projects.onProjectMiniList</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/feed/feed.php#L207"><code>core/plugins/projects/feed/feed.php:207</code></a> with <code>[$model]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/feed/feed.php#L213"><code>core/plugins/projects/feed/feed.php:213</code></a> with <code>[$model]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -453,7 +454,7 @@
 <h2 id="projects-onsharedupdate"><code>projects.onSharedUpdate</code></h2>
 <p>Fired from:</p>
 <ul>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/groups/projects/projects.php#L419"><code>core/plugins/groups/projects/projects.php:419</code></a> with <code>[ $project, $entry, $managers, $posted_by, $posted ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/groups/projects/projects.php#L431"><code>core/plugins/groups/projects/projects.php:431</code></a> with <code>[ $project, $entry, $managers, $posted_by, $posted ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>
@@ -463,7 +464,7 @@
 <p>Fired from:</p>
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/models/project.php#L1486"><code>core/components/com_projects/models/project.php:1486</code></a> with <code>[$this, $class, array($aid), User::get('id')]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/feed/feed.php#L439"><code>core/plugins/projects/feed/feed.php:439</code></a> with <code>[ $this-&gt;model, ($row-&gt;get('parent') ? 'quote' : 'blog'), array($row-&gt;get('id')), User::get('id') ]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/feed/feed.php#L455"><code>core/plugins/projects/feed/feed.php:455</code></a> with <code>[ $this-&gt;model, ($row-&gt;get('parent') ? 'quote' : 'blog'), array($row-&gt;get('id')), User::get('id') ]</code></li>
 </ul>
 <p>Listeners:</p>
 <ul>

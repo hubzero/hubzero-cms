@@ -62,6 +62,7 @@
 <li class="toc__item toc__item--l3"><a href="#publishing">Publishing</a></li>
 <li class="toc__item toc__item--l3"><a href="#execution">Execution</a></li>
 </ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -167,7 +168,7 @@
 <p>The <strong>Cron</strong> component manages the hub's scheduled jobs — digest emails, cache
 cleanup, search indexing, DOI registration, and the rest. Go to
 <strong>Components → Cron</strong>.</p>
-<p><img src="../../media/cron-cron-manager-01.png" alt="The Cron job manager" /></p>
+<p><img src="../../media/cron-list.png" alt="The Cron job list: each job's title, state, start and end, whether it is active, and when it last ran and runs next" /></p>
 <h2 id="nothing-here-runs-until-you-set-it-up">Nothing here runs until you set it up</h2>
 <p>This is the section of the book where a feature can be switched on, tested,
 documented and still do nothing, because the work it depends on happens on a
@@ -389,8 +390,8 @@ in.</p>
 <h2 id="creating-and-editing-a-job">Creating and editing a job</h2>
 <p>A job has four fieldsets: <strong>Details</strong>, the event's own <strong>Parameters</strong>,
 <strong>Recurrence</strong>, and <strong>Publishing</strong>, plus an <strong>Execution</strong> option.</p>
+<p><img src="../../media/cron-job.png" alt="A cron job open for editing: Details, Parameters and Recurrence on the left, the job's record and its Publishing Options and Execution on the right" /></p>
 <h3 id="details"><a id="editfields-details"></a>Details</h3>
-<p><img src="../../media/cron-cron-manager-03.png" alt="The Details fieldset of a cron job" /></p>
 <ul>
 <li><strong>Title</strong> (required)
 What the job is called in the list.</li>
@@ -427,6 +428,10 @@ changed to something no installed cron plugin offers.</li>
 <tr>
 <td><code>groups</code></td>
 <td><code>cleanGroupFolders</code>, <code>sendGroupAnnouncements</code>, <code>expireGroupMemberships</code>, <code>notifyExpiringMemberships</code></td>
+</tr>
+<tr>
+<td><code>massmail</code></td>
+<td><code>processMassmailQueue</code>, <code>collectPostfixVolume</code></td>
 </tr>
 <tr>
 <td><code>members</code></td>
@@ -469,11 +474,11 @@ changed to something no installed cron plugin offers.</li>
 <p>The <a href="../../../reference/events/cron/index.html">cron events reference</a> lists each event
 with its listeners.</p>
 <h3 id="parameters"><a id="editfields-parameters"></a>Parameters</h3>
-<p><img src="../../media/cron-cron-manager-05.png" alt="The Parameters fieldset" /></p>
 <p>Every event brings its own parameters, and the form swaps them in when you
-pick the event. An event with none shows &quot;No parameters found&quot;.</p>
+pick the event. An event with none shows &quot;There are no Parameters for this
+item&quot;.</p>
+<p><img src="../../media/cron-parameters.png" alt="The Parameters fieldset for the support plugin's tickets reminder: which severity of ticket, and for users in which group" /></p>
 <h3 id="recurrence"><a id="editfields-recurrence"></a>Recurrence</h3>
-<p><img src="../../media/cron-cron-manager-04.png" alt="The Recurrence fieldset" /></p>
 <p><strong>Frequency</strong> offers the common schedules:</p>
 <table>
 <thead>
@@ -539,7 +544,7 @@ for archival and bundle-building jobs, not for anything that sends mail.</p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../notices/index.html" rel="prev"><span>Previous</span>Site Notices</a><a class="pager__next" href="../../faq/index.html" rel="next"><span>Next</span>Frequently asked questions</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../notices/index.html" rel="prev"><span>Previous</span>Site Notices</a><a class="pager__next" href="../upgrading/index.html" rel="next"><span>Next</span>Upgrading a hub</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/managers/03-maintenance/05-cron.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

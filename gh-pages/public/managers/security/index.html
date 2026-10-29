@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -867,12 +868,7 @@ Settings</strong> tab.</p>
 </table>
 <p>The same list, generated from the manifest, is in the
 <a href="../../reference/configuration/components/members/index.html#login">Members configuration reference</a>.</p>
-<p><img src="../media/cmscontrolled-fail2ban-jail-fail2ban1.png" alt="The Login Settings tab of the Members Configuration window" /></p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> This screenshot predates 2.4. It shows six fields with older
-labels and is missing <strong>Purge Log After</strong>, <strong>Fail2Ban</strong>, and <strong>Fail2Ban
-Jail</strong>. Read the table above, not the picture.</p>
-</aside>
+<p><img src="../media/security-login-settings.png" alt="The Login Settings tab of the Members Configuration window, with every setting in the table above at its default" /></p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Setting any of the three limits to <code>0</code> does <strong>not</strong> mean
 &quot;no limit&quot;, whatever the field's help text says — it makes the check fail
@@ -911,7 +907,7 @@ the login:</p>
 <p>Your account has been temporarily disabled due to an excessive number of
 failed login attempts.</p>
 </blockquote>
-<p><img src="../media/cmscontrolled-fail2ban-jail-fail2ban3.png" alt="The account temporarily disabled message on the sign-in form" /></p>
+<p><img src="../media/security-login-blocked.png" alt="The sign-in form after the tenth failed attempt, saying the account has been temporarily disabled" /></p>
 <p>With the default of 10, the tenth attempt inside the hour is the one that is
 refused. The account frees itself as the window slides forward; there is no
 administrator action to take.</p>

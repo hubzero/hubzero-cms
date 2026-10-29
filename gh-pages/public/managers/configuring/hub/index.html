@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
@@ -71,7 +72,6 @@
 <li class="toc__item toc__item--l2"><a href="#what-moved-where">What moved where</a></li>
 <li class="toc__item toc__item--l2"><a href="#ldap">LDAP</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-members-land-after-signing-in">Where members land after signing in</a></li>
-<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../components/index.html">Components</a></li>
@@ -263,6 +263,7 @@ someone in a group is done from
 <a href="../../users/accessgroups/index.html">Access groups</a>.</p>
 <h2 id="the-screen">The screen</h2>
 <p>Open <strong>Site &gt; Global Configuration</strong> from the administrator menu.</p>
+<p><img src="../../media/config-global.png" alt="Global Configuration open on its Site tab: Site Settings down the left, SEO Settings and Cookie Settings down the right, and the Site, System, Server, API, Permissions and Text Filters tabs above them" /></p>
 <h3 id="toolbar">Toolbar</h3>
 <ul>
 <li><strong>Save</strong> — write the changes and stay on the screen.</li>
@@ -709,6 +710,7 @@ view:</p>
 <li>Set <strong>Logout Redirect</strong> in the same place if you want a different
 destination after signing out.</li>
 </ol>
+<p><img src="../../media/config-login-menu-item.png" alt="The login menu item open for editing, with Login Redirect at the top of its Basic Options" /></p>
 <p>A path that starts with <code>/</code> is treated as internal and the hub prefixes the
 site root. The same menu item also carries the login and logout
 descriptions and images.</p>
@@ -730,17 +732,6 @@ descriptions and images.</p>
 		}
 		$defaultReturn = base64_encode($defaultReturn);
 </code></pre>
-<h2 id="older-screenshots">Older screenshots</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The four images below came from the imported version of this
-page. They show the retired <strong>Hub</strong> component and its parameters pop-up,
-which no longer exist in Hubzero 2.4. They are kept only until the
-screenshot pass replaces them; do not follow the steps they show.</p>
-</aside>
-<p><img src="../../media/hub-edit-registration-01.png" alt="The Components menu with the retired Hub component selected" /></p>
-<p><img src="../../media/hub-edit-hubconfig-00.png" alt="The Parameters button in the retired Hub component's toolbar" /></p>
-<p><img src="../../media/hub-edit-hubconfig-02.png" alt="The retired Hub parameters pop-up showing a Login Return URL field" /></p>
-<p><img src="../../media/hub-edit-hubconfig-03.png" alt="The retired Hub parameters pop-up with the Save button" /></p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

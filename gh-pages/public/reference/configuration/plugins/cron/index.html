@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/menus/index.html">Menus (com_menus)</a></li>
@@ -135,6 +136,7 @@
 <li class="toc__item toc__item--l2"><a href="#cron-forum-plg-cron-forum">Cron - Forum (plg_cron_forum)</a></li>
 <li class="toc__item toc__item--l3"><a href="#basic-2">Basic</a></li>
 <li class="toc__item toc__item--l2"><a href="#cron-groups-plg-cron-groups">Cron - Groups (plg_cron_groups)</a></li>
+<li class="toc__item toc__item--l2"><a href="#cron-mass-mail-plg-cron-massmail">Cron - Mass Mail (plg_cron_massmail)</a></li>
 <li class="toc__item toc__item--l2"><a href="#cron-members-plg-cron-members">Cron - Members (plg_cron_members)</a></li>
 <li class="toc__item toc__item--l2"><a href="#cron-newsletter-plg-cron-newsletter">Cron - Newsletter (plg_cron_newsletter)</a></li>
 <li class="toc__item toc__item--l2"><a href="#cron-projects-plg-cron-projects">Cron - Projects (plg_cron_projects)</a></li>
@@ -308,9 +310,39 @@
 <h2 id="cron-groups-plg-cron-groups">Cron - Groups (<code>plg_cron_groups</code>)</h2>
 <p>Cron events for groups</p>
 <p>This plugin has no parameters.</p>
+<h2 id="cron-mass-mail-plg-cron-massmail">Cron - Mass Mail (<code>plg_cron_massmail</code>)</h2>
+<p>Feeds queued mass-mail messages to the mail system under a rate limit.</p>
+<p>This plugin has no parameters.</p>
 <h2 id="cron-members-plg-cron-members">Cron - Members (<code>plg_cron_members</code>)</h2>
 <p>Cron events for members</p>
-<p>This plugin has no parameters.</p>
+<h3></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Label</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>members_expireinactive_months</code></td>
+<td>Inactive for (months)</td>
+<td>text</td>
+<td><code>36</code></td>
+<td>Accounts with no web sign-in and no password change in this many months lose password sign-in, password resets and SSH/SFTP access, until they sign in another way or an administrator sets a new password.</td>
+</tr>
+<tr>
+<td><code>members_expireinactive_exempt_group</code></td>
+<td>Exempt access group</td>
+<td>text</td>
+<td><code>Service accounts</code></td>
+<td>Title of an access group whose members are never expired, for service accounts that use only SSH keys or no login at all. A migration creates &quot;Service accounts&quot; with apps, gridstat and hubzerosolrworker in it, where they exist. Leave empty to exempt nobody.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="cron-newsletter-plg-cron-newsletter">Cron - Newsletter (<code>plg_cron_newsletter</code>)</h2>
 <p>Cron events for newsletter</p>
 <h3></h3>

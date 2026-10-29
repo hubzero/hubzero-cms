@@ -58,7 +58,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../groups/index.html">Groups API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../jobs/index.html">Jobs API</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Kb API</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#post-kb">POST /kb</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-kb-categories">GET, /kb/categories</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-kb-list">GET /kb/list</a></li>
+<li class="toc__item toc__item--l2"><a href="#delete-kb-id">DELETE /kb/{id}</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-kb-id">GET /kb/{id}</a></li>
+<li class="toc__item toc__item--l2"><a href="#put-kb-id">PUT /kb/{id}</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../news/index.html">News API</a></li>
@@ -96,6 +101,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -227,15 +233,198 @@
 </thead>
 <tbody>
 <tr>
+<td><code>POST</code></td>
+<td><a href="#post-kb"><code>/kb</code></a></td>
+<td>Create a knowledge base article</td>
+</tr>
+<tr>
+<td><code>GET,</code></td>
+<td><a href="#get-kb-categories"><code>/kb/categories</code></a></td>
+<td>The knowledge base categories</td>
+</tr>
+<tr>
 <td><code>GET</code></td>
 <td><a href="#get-kb-list"><code>/kb/list</code></a></td>
-<td>Get a list of Knowledge Base Articles</td>
+<td>List knowledge base articles</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><a href="#delete-kb-id"><code>/kb/{id}</code></a></td>
+<td>Delete a knowledge base article</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-kb-id"><code>/kb/{id}</code></a></td>
+<td>Get a single knowledge base article</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td><a href="#put-kb-id"><code>/kb/{id}</code></a></td>
+<td>Update a knowledge base article</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-kb">POST /kb</h2>
+<p>Create a knowledge base article</p>
+<p>API version 1.0, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L289"><code>entriesv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Article title.</td>
+</tr>
+<tr>
+<td><code>fulltxt</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>Article body, as wiki markup.</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>ID of the knowledge base category the article belongs to.</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>URL alias, unique within the category. Derived from the title when absent.</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>integer</td>
+<td>no</td>
+<td>1</td>
+<td>Published state.</td>
+</tr>
+<tr>
+<td><code>access</code></td>
+<td>integer</td>
+<td>no</td>
+<td>1</td>
+<td>Viewing access level.</td>
+</tr>
+<tr>
+<td><code>created</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Creation timestamp. Defaults to now.</td>
+</tr>
+<tr>
+<td><code>created_by</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>ID of the user the article is credited to. Defaults to the caller.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Comma-separated list of tags to apply.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-kb-categories">GET, /kb/categories</h2>
+<p>The knowledge base categories</p>
+<p>API version 1.0, task <code>categories</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L512"><code>entriesv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Category ID. Required to read, update or delete one; omitted to list them or create one.</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Category title. Required on create.</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>URL alias, unique among the category's siblings. Derived from the title when absent.</td>
+</tr>
+<tr>
+<td><code>parent_id</code></td>
+<td>integer</td>
+<td>no</td>
+<td>1</td>
+<td>ID of the parent category; the root (1) makes it top-level. Passing it on an update moves the category, and its descendants with it.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Category description.</td>
+</tr>
+<tr>
+<td><code>note</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Administrative note.</td>
+</tr>
+<tr>
+<td><code>published</code></td>
+<td>string</td>
+<td>no</td>
+<td>1</td>
+<td>Published state. On a listing, the state to filter by -- Super Users only, 'all' for every state.</td>
+</tr>
+<tr>
+<td><code>access</code></td>
+<td>integer</td>
+<td>no</td>
+<td>1</td>
+<td>Viewing access level.</td>
+</tr>
+<tr>
+<td><code>parent</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>On a listing, only the immediate children of this category (ID).</td>
 </tr>
 </tbody>
 </table>
 <h2 id="get-kb-list">GET /kb/list</h2>
-<p>Get a list of Knowledge Base Articles</p>
-<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L24"><code>entriesv1_0.php</code></a>.</p>
+<p>List knowledge base articles</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L94"><code>entriesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -252,14 +441,167 @@
 <td>integer</td>
 <td>no</td>
 <td>25</td>
-<td>Number of result to return.</td>
+<td>Number of results to return.</td>
 </tr>
 <tr>
 <td><code>limitstart</code></td>
 <td>integer</td>
 <td>no</td>
 <td>0</td>
-<td>Number of where to start returning results.</td>
+<td>Offset to start returning results from (snapped to a multiple of limit).</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Only articles in this category, by ID, alias or path.</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Only articles whose title or text contains this.</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>string</td>
+<td>no</td>
+<td>1</td>
+<td>Only articles in this state, from published and unpublished categories alike. Super Users only; anyone else sees published articles whatever they pass. 'all' for every state.</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>string</td>
+<td>no</td>
+<td>title</td>
+<td>Field to sort results by.</td>
+</tr>
+<tr>
+<td><code>sort_Dir</code></td>
+<td>string</td>
+<td>no</td>
+<td>asc</td>
+<td>Direction to sort results by.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="delete-kb-id">DELETE /kb/{id}</h2>
+<p>Delete a knowledge base article</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L477"><code>entriesv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Article ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-kb-id">GET /kb/{id}</h2>
+<p>Get a single knowledge base article</p>
+<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L243"><code>entriesv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Article ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="put-kb-id">PUT /kb/{id}</h2>
+<p>Update a knowledge base article</p>
+<p>API version 1.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_kb/api/controllers/entriesv1_0.php#L382"><code>entriesv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>—</td>
+<td>Article ID</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Article title.</td>
+</tr>
+<tr>
+<td><code>fulltxt</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Article body, as wiki markup.</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>ID of the knowledge base category the article belongs to.</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>URL alias, unique within the category.</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Published state.</td>
+</tr>
+<tr>
+<td><code>access</code></td>
+<td>integer</td>
+<td>no</td>
+<td>—</td>
+<td>Viewing access level.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Comma-separated list of tags, replacing the article's current ones.</td>
 </tr>
 </tbody>
 </table>

@@ -1602,7 +1602,8 @@ so does not save it.</p>
 <p>A method named <code>transformFoo()</code> makes <code>$model-&gt;foo</code> return its result instead
 of the raw attribute. <code>com_blog</code> uses one to hand back the entry's parameters
 as a <code>Registry</code> rather than a JSON string:</p>
-<pre><code class="language-php">	/**
+<pre><code class="language-php">
+	/**
 	 * Transform params
 	 *
 	 * @return  string
@@ -1620,7 +1621,6 @@ as a <code>Registry</code> rather than a JSON string:</p>
 		}
 
 		return $this-&gt;params;
-	}
 </code></pre>
 <p>A method named <code>helperFoo()</code> makes <code>$model-&gt;foo(...)</code> call it. Listing a field
 in <code>$parsed</code> makes <code>$model-&gt;field</code> return the content run through

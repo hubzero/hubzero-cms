@@ -82,6 +82,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -339,12 +340,12 @@ accounts.</p>
 </table>
 <p>A new hub is online. Set <strong>Site Offline</strong> to <strong>Yes</strong> and the public front end
 returns the template's offline page with a <code>503 Service Temporarily Unavailable</code> status:</p>
-<pre><code class="language-php">			if ($this-&gt;app['config']-&gt;get('offline') &amp;&amp; !User::authorise('core.login.offline'))
+<pre><code class="language-php">				$file = 'index';
+			}
+
+			if ($this-&gt;app['config']-&gt;get('offline') &amp;&amp; !User::authorise('core.login.offline'))
 			{
 				$file = 'offline';
-
-				$response-&gt;headers-&gt;set('Status', '503 Service Temporarily Unavailable', 'true');
-			}
 </code></pre>
 <p>Anyone holding <code>core.login.offline</code> still sees the real site. On a new hub
 that permission is granted to the <strong>Manager</strong> access group and inherited by
@@ -405,13 +406,13 @@ credentials, to match the machine.</p>
 the hub builds no transport and every send throws. Recorded in
 It is recorded with the project.</p>
 </aside>
-<pre><code class="language-php">					case 'sendmail':
+<pre><code class="language-php">
+						break;
+
+					case 'sendmail':
 					case 'mail':
 					case 'native':
 						$dsn = &quot;sendmail://default&quot;;
-						break;
-
-					case 'mandrill+smtp':
 </code></pre>
 <p>The value the installer writes into <code>app/config/mail.php</code> is <code>mail</code>, which is
 not one of the three options the drop-down offers. It behaves as <strong>Sendmail</strong>,

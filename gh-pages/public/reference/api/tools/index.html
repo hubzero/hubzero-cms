@@ -111,6 +111,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -325,7 +326,7 @@
 </table>
 <h2 id="get-tools-list">GET /tools/list</h2>
 <p>Method to get list of tools</p>
-<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L85"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L86"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -351,7 +352,7 @@
 <p>API version 1.0, task <code>listAll</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L32"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-output">GET /tools/output</h2>
 <p>Grabs the output from a tool session</p>
-<p>API version 1.0, task <code>output</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1115"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>output</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1127"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -381,7 +382,7 @@
 </table>
 <h2 id="post-tools-run">POST /tools/run</h2>
 <p>Runs a rappture job.</p>
-<p>API version 1.0, task <code>run</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L784"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>run</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L796"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -418,7 +419,7 @@
 </table>
 <h2 id="get-tools-screenshots-user-id">GET /tools/screenshots/{user_id}</h2>
 <p>Method to take session screenshots for user</p>
-<p>API version 1.0, task <code>screenshots</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L292"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>screenshots</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L297"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -441,7 +442,7 @@
 </table>
 <h2 id="get-tools-status">GET /tools/status</h2>
 <p>Gets the status of the session identified</p>
-<p>API version 1.0, task <code>status</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1022"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>status</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1034"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -464,7 +465,7 @@
 </table>
 <h2 id="get-tools-sessionid-fileshare">GET /tools/{sessionid}/fileshare</h2>
 <p>Method to setup Windows filesharing connection</p>
-<p>API version 1.0, task <code>fileshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1568"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>fileshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1582"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -508,7 +509,7 @@
 </table>
 <h2 id="get-tools-sessionid-screenshot">GET /tools/{sessionid}/screenshot</h2>
 <p>Method to return session screenshot</p>
-<p>API version 1.0, task <code>screenshot</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L335"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>screenshot</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L340"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -545,16 +546,16 @@
 </table>
 <h2 id="delete-tools-session">DELETE /tools/{session}</h2>
 <p>Method to stop tool session</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1302"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1316"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-session">GET /tools/{session}</h2>
 <p>Method to view tool session</p>
-<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1195"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1207"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-session-unshare">GET /tools/{session}/unshare</h2>
 <p>Method to disconnect from shared tool session</p>
-<p>API version 1.0, task <code>unshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1387"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>unshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1401"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-tool">GET /tools/{tool}</h2>
 <p>Method to get tool information</p>
-<p>API version 1.0, task <code>info</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L147"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>info</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L148"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -584,10 +585,10 @@
 </table>
 <h2 id="get-tools-tool-invoke">GET /tools/{tool}/invoke</h2>
 <p>Method to invoke new tools session</p>
-<p>API version 1.0, task <code>invoke</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L591"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>invoke</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L603"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-tool-rappturexml">GET /tools/{tool}/rappturexml</h2>
 <p>Method to get the Rappture definition file for a tool</p>
-<p>API version 1.0, task <code>rapptureXML</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L469"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>rapptureXML</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L474"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -610,10 +611,10 @@
 </table>
 <h2 id="delete-tools-user-id">DELETE /tools/{user_id}</h2>
 <p>Method to purge users storage</p>
-<p>API version 1.0, task <code>purge</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1487"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>purge</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1501"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-user-id">GET /tools/{user_id}</h2>
 <p>Method to return users storage results</p>
-<p>API version 1.0, task <code>storage</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1441"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>storage</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1455"><code>sessionsv1_0.php</code></a>.</p>
 
         </div>
         <p class="stamp">Generated from the source tree.</p>

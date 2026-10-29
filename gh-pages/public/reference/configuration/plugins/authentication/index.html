@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../components/menus/index.html">Menus (com_menus)</a></li>
@@ -288,6 +289,13 @@
 <td><code>0 (No)</code></td>
 <td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
 </tr>
+<tr>
+<td><code>require_verify</code></td>
+<td>Require a verified certificate</td>
+<td>radio</td>
+<td><code>1 (Yes)</code></td>
+<td>Only accept a client certificate the web server reports as verified (SSL_CLIENT_VERIFY=SUCCESS). Turn off only if your web server verifies every certificate itself and cannot pass SSL_CLIENT_VERIFY through. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="authentication-cilogon-plg-authentication-cilogon">Authentication - CILogon (<code>plg_authentication_cilogon</code>)</h2>
@@ -338,6 +346,20 @@
 <td>radio</td>
 <td><code>0 (No)</code></td>
 <td>Enable this plugin for backend authentication. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>auto_approve</code></td>
+<td>Auto approve new users</td>
+<td>radio</td>
+<td><code>0 (No)</code></td>
+<td>Automatically approve new users that register through this plugin.  This will override the setting in the users component concerning new user approval status. Options: <code>0</code> No, <code>1</code> Yes.</td>
+</tr>
+<tr>
+<td><code>allowed_idps</code></td>
+<td>Allowed identity providers</td>
+<td>textarea</td>
+<td>—</td>
+<td>Restrict logins to specific CILogon identity providers. Enter one IdP entityID per line, e.g. https://idp.example.edu/idp/shibboleth. When a single IdP is listed it is pre-selected so CILogon skips its provider picker. Leave empty to allow any identity provider.</td>
 </tr>
 </tbody>
 </table>

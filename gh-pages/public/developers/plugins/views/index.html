@@ -226,18 +226,18 @@ directory, and <code>layout</code> is the file inside <code>tmpl</code>.</p>
 <h2 id="passing-data-and-rendering">Passing data and rendering</h2>
 <p><code>set()</code> assigns a variable and returns the view, so calls chain, and
 <code>loadTemplate()</code> renders the layout and returns the markup as a string:</p>
-<pre><code class="language-php">		return $this-&gt;view
+<pre><code class="language-php">
+			$recvEmailOptionID = $recvEmailOption-&gt;get('id', 0);
+			$recvEmailOptionValue = $recvEmailOption-&gt;get('optionvalue', 0);
+		}
+
+		return $this-&gt;view
 			-&gt;set('recvEmailOptionID', $recvEmailOptionID)
 			-&gt;set('recvEmailOptionValue', $recvEmailOptionValue)
 			-&gt;set('option', $this-&gt;option)
 			-&gt;set('group', $this-&gt;group)
 			-&gt;set('filters', $filters)
 			-&gt;set('config', $this-&gt;params)
-			-&gt;set('forum', $this-&gt;forum)
-			-&gt;set('sections', $sections)
-			-&gt;set('categories', $categories)
-			-&gt;set('edit', $edit)
-			-&gt;loadTemplate();
 </code></pre>
 <p>Return that string from your event handler. Use <code>loadTemplate()</code>, not
 <code>display()</code>: <code>display()</code> echoes, which puts the output wherever the buffer

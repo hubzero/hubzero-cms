@@ -11,6 +11,7 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/tickets/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/notices/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/cron/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/upgrading/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/faq/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/configuring/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/configuring/hub/</loc></url>
@@ -313,6 +314,7 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/installer/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/jobs/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/kb/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/massmail/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/media/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/members/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/configuration/components/menus/</loc></url>

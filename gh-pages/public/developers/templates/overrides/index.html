@@ -252,7 +252,12 @@ component that owns the view.</li>
 <p>A component view resolves its layout through
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/View.php"><code>Hubzero\View\View::setPath()</code></a>,
 which builds the search list:</p>
-<pre><code class="language-php">	protected function setPath($type, $path)
+<pre><code class="language-php">	 *
+	 * @param   string  $type  The type of path to set, typically 'template'.
+	 * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the current directory only.
+	 * @return  void
+	 */
+	protected function setPath($type, $path)
 	{
 		$type = strtolower($type);
 
@@ -282,11 +287,6 @@ which builds the search list:</p>
 			{
 				$component = ltrim($this-&gt;_overridePath, DIRECTORY_SEPARATOR);
 			}
-
-			$path = $this-&gt;_overrideRoot . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this-&gt;getName();
-			$this-&gt;addPath($type, $path);
-		}
-	}
 </code></pre>
 <p>Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:</p>
@@ -361,28 +361,28 @@ template.</p>
 <h2 id="rule-4-plugin-views-have-no-fallback">Rule 4: plugin views have no fallback</h2>
 <p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/View.php"><code>Hubzero\Plugin\View</code></a> builds
 its own search list:</p>
-<pre><code class="language-php">	protected function setPath($type, $path)
-	{
-		$type = strtolower($type);
+<pre><code class="language-php">				$element = strtolower($bits[2]);
 
-		// Clear out the prior search dirs
-		$this-&gt;_path[$type] = array();
-
-		// Actually add the user-specified directories
-		$this-&gt;addPath($type, $path);
-
-		// Always add the fallback directories as last resort
-		if ($type == 'template' &amp;&amp; $this-&gt;_overridePath)
-		{
-			// Set the alternative template search dir
-			$option = 'plg_' . $this-&gt;_folder . '_' . $this-&gt;_element;
-			$option = preg_replace('/[^A-Z0-9_\.-]/i', '', $option);
-
-			$path = $this-&gt;_overridePath . DIRECTORY_SEPARATOR . 'html' . DIRECTORY_SEPARATOR . $option . DIRECTORY_SEPARATOR . $this-&gt;getName();
-
-			$this-&gt;addPath($type, $path);
+				if (strtolower($bits[0]) == 'components')
+				{
+					$element = strtolower($bits[3]);
+				}
+			}
+			else
+			{
+				throw new Exception('Cannot get or parse view class name.', 500);
+			}
 		}
+
+		return $element;
 	}
+
+	/**
+	 * Sets an entire array of search paths for templates or resources.
+	 *
+	 * @param   string        $type  The type of path to set, typically 'template'.
+	 * @param   string|array  $path  The new set of search paths. If null or false, resets to the current directory only.
+	 * @return  void
 </code></pre>
 <p>The override directory is named <code>plg_{folder}_{element}</code>, and the view name is
 a directory inside it. So</p>
@@ -405,11 +405,11 @@ which checks the template before the extension:</p>
 	{
 		if (!isset($this-&gt;paths['override']))
 		{
-			$this-&gt;paths['override']  = \App::get('template')-&gt;path . DS . 'html';
-			$this-&gt;paths['override'] .= DS . $this-&gt;extensionName() . DS . ($this-&gt;extensionType() == 'system' ? $this-&gt;type() . DS : '') . $this-&gt;file();
-		}
-		return $this-&gt;paths['override'];
-	}
+			$suffix = DS . 'html' . DS . $this-&gt;extensionName() . DS . ($this-&gt;extensionType() == 'system' ? $this-&gt;type() . DS : '') . $this-&gt;file();
+
+			// The first template root (the supergroup's, then the site's)
+			// that carries an override; failing that the site template's
+			// location, so callers still get a well-formed path to test
 </code></pre>
 <p>The override path is the extension's name and the file's name, with no
 <code>assets</code>, no <code>css</code> and no <code>js</code> directory in between, whatever the source file's
@@ -466,42 +466,41 @@ source paths these fall back to.</p>
 <p>Modules do not use a view object. <code>Hubzero\Module\Module::display()</code> requires
 one file, chosen by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::getLayoutPath()</code></a>:</p>
-<pre><code class="language-php">	public function getLayoutPath($module, $layout = 'default')
+<pre><code class="language-php">	 * @return  string  The path to the module layout
+	 */
+	public function getLayoutPath($module, $layout = 'default')
 	{
 		$template = $this-&gt;app['template']-&gt;template;
 		$path     = dirname($this-&gt;app['template']-&gt;path);
 		$default  = $layout;
+		$explicit = false;
 
 		if (strpos($layout, ':') !== false)
 		{
 			// Get the template and file name from the string
 			$temp = explode(':', $layout);
 
-			$template = ($temp[0] == '_') ? $template : $temp[0];
+			$explicit = ($temp[0] != '_');
+			$template = $explicit ? $temp[0] : $template;
 			$layout   = $temp[1];
 			$default  = ($temp[1]) ? $temp[1] : 'default';
 		}
 
-		// Build the template and base path for the layout
-		$tPath = $path . '/' . $template . '/html/' . $module . '/' . $layout . '.php';
+		// Template roots that may override the layout, highest priority
+		// first. Naming a template ('template:layout') asks for that one
+		// alone; otherwise the supergroup template, inside a supergroup's
+		// pages, outranks the site template as it does for views and assets.
+		$roots = $explicit ? array($path . '/' . $template) : Overrides::roots();
 
 		$base = dirname($this-&gt;path($module));
 
 		$bPath = $base . '/tmpl/' . $default . '.php';
 		$dPath = $base . '/tmpl/default.php';
 
-		// If the template has a layout override use it
-		if (file_exists($tPath))
+		// If a template has a layout override use it
+		foreach ($roots as $root)
 		{
-			return $tPath;
-		}
-		elseif (file_exists($bPath))
-		{
-			return $bPath;
-		}
-
-		return $dPath;
-	}
+			$tPath = $root . '/html/' . $module . '/' . $layout . '.php';
 </code></pre>
 <p>There are exactly three candidates, tried in order:</p>
 <ol>

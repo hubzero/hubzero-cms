@@ -54,6 +54,7 @@
 <li class="tree__leaf"><a class="tree__link" href="tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -215,6 +216,9 @@ accounts, stuck check-outs.</li>
 <li>Take the notice down. It has to come down by hand, or by a <strong>Finish
 Publishing</strong> date you set when you posted it.</li>
 </ol>
+<p><strong>When the release branch moves.</strong> Upgrade the hub, with a backup first:
+<a href="upgrading/index.html">Upgrading a hub</a>. The same rule as below applies; an
+upgrade is a change you want to watch.</p>
 <p><strong>Never on a Friday afternoon.</strong> Anything that cannot be tested first: URL
 rewriting, a template change, a permissions change on a live component. Those
 belong on a morning when you can watch what happens.</p>
@@ -223,7 +227,7 @@ belong on a morning when you can watch what happens.</p>
 served by <code>com_cpanel</code>. It has no content of its own. It renders every
 administrator module published in the <strong>cpanel</strong> position, one collapsible
 panel per module:</p>
-<p><img src="../media/maintenance-dashboard.png" alt="The administrative dashboard, showing one collapsible panel per module published in the cpanel position" /></p>
+<p><img src="../media/maintenance-dashboard.png" alt="The administrative dashboard: panels for support tickets, who is online, resources, members and the wish list, one for each module published in the cpanel position" /></p>
 <pre><code class="language-php">echo Html::sliders('start', 'panel-sliders', array('useCookie' =&gt; '1'));
 
 $modules = Module::byPosition('cpanel');

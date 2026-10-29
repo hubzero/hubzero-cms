@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
@@ -60,7 +61,6 @@
 <li class="toc__item toc__item--l2"><a href="#opening-a-module-s-parameters">Opening a module&#x27;s parameters</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-list-screen">The list screen</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-edit-screen">The edit screen</a></li>
-<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../authentication/index.html">Authentication</a></li>
@@ -204,6 +204,11 @@ or Administrator), <strong>- Select Status -</strong>, <strong>- Select Position
 <p>Its columns are <strong>Title</strong>, <strong>Status</strong>, <strong>Position</strong>, <strong>Ordering</strong>, <strong>Type</strong>,
 <strong>Pages</strong>, <strong>Access</strong>, <strong>Language</strong>, and <strong>ID</strong>. Select a column heading to
 sort by it.</p>
+<p>A module assigned to a position the default site template does not have is
+flagged under its position with a warning that it is not shown. That is the
+usual reason a module that is published and assigned to every page still
+appears nowhere.</p>
+<p><img src="../../media/modules-list.png" alt="The Module Manager listing site modules by position, several flagged because the template does not have their position" /></p>
 <p>The toolbar offers <strong>New</strong>, <strong>Edit</strong>, <strong>Duplicate</strong>, <strong>Publish</strong>,
 <strong>Unpublish</strong>, <strong>Check In</strong>, <strong>Trash</strong>, <strong>Options</strong>, and <strong>Help</strong>. Each
 button appears only if your account holds the matching permission.
@@ -221,6 +226,7 @@ Administrator modules have no assignment section.</p>
 <p>The right column holds the parameter panels and a table of facts about the
 module — its type, whether it belongs to the site or the administrator, and
 its ID.</p>
+<p><img src="../../media/modules-edit.png" alt="The Latest Events module open for editing: its Details on the left, and on the right the table of its type and client above its Basic Options" /></p>
 <p>The toolbar has <strong>Save</strong>, <strong>Save &amp; Close</strong>, <strong>Save &amp; New</strong>, <strong>Save as
 Copy</strong>, <strong>Cancel</strong>, and <strong>Help</strong>. <strong>Save</strong> keeps you on the screen; <strong>Save
 &amp; Close</strong> returns to the list.</p>
@@ -230,16 +236,6 @@ Copy</strong>, <strong>Cancel</strong>, and <strong>Help</strong>. <strong>Save<
 <p><strong>Tip:</strong> The Module Manager also adds and removes modules, not just
 configures them. See <a href="../../extensions/modules/index.html">Modules manager</a>.</p>
 </aside>
-<h2 id="older-screenshots">Older screenshots</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The screenshots below came from the imported version of this
-page. The screens are the same but the administrator template has been
-restyled since, and the Save button is not a star.</p>
-</aside>
-<p><img src="../../media/modules-modules-manager-01.png" alt="The Module Manager list" /></p>
-<p><img src="../../media/modules-modules-manager-02.png" alt="Choosing a module from the list" /></p>
-<p><img src="../../media/modules-modules-manager-09.png" alt="The parameter panels on the right of the module edit screen" /></p>
-<p><img src="../../media/modules-modules-manager-10.png" alt="Saving the module" /></p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

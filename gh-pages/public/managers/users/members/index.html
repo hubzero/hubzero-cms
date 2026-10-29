@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -625,7 +626,25 @@ everything hung off it. This section replaces the older
 <p>Deleting needs <code>core.delete</code> on <code>com_members</code>, and refuses to remove a Super
 User unless you are one yourself. For each checked account it calls <code>destroy()</code>
 on the member model:</p>
-<pre><code class="language-php">	public function destroy()
+<pre><code class="language-php">					return false;
+				}
+			}
+
+			$i++;
+		}
+
+		// Fire the onUserAfterSaveProfile event
+		Event::trigger('user.onUserAfterSaveProfile', array($user, $profile, $access));
+
+		return true;
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function destroy()
 	{
 		$data = $this-&gt;toArray();
 
@@ -656,24 +675,6 @@ on the member model:</p>
 		{
 			if (!$host-&gt;destroy())
 			{
-				$this-&gt;addError($host-&gt;getError());
-				return false;
-			}
-		}
-
-		// Remove tags
-		$this-&gt;tag('');
-
-		// Attempt to delete the record
-		$result = parent::destroy();
-
-		if ($result)
-		{
-			Event::trigger('user.onUserAfterDelete', array($data, true, $this-&gt;getError()));
-		}
-
-		return $result;
-	}
 </code></pre>
 <p>So the account's own profile field values, notes, hosts and tags go with it,
 and the <code>user.onUserAfterDelete</code> event carries the deletion outward. Seven
@@ -901,12 +902,7 @@ these seven:</p>
 </table>
 <p>Fill in <strong>Points</strong>, <strong>Alias</strong> and <strong>Description</strong> on a row and press <strong>Save
 Configuration</strong>.</p>
-<p><img src="../../media/members-points-config.png" alt="The points configuration screen, a numbered table of Points, Alias and Description rows" /></p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> That screenshot is from an older release. Its sub-menu shows an
-<strong>Export</strong> tab, which no longer exists — export is a toolbar button on the
-account list.</p>
-</aside>
+<p><img src="../../media/members-points-config.png" alt="The points configuration screen: numbered rows of Points, Alias and Description, the seven Answers actions filled in and the rest empty" /></p>
 <h2 id="passwords">Passwords</h2>
 <p>Two sub-links.</p>
 <p><strong>Password Rules</strong> lists the rules a password must satisfy, with columns

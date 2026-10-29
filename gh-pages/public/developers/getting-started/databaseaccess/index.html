@@ -205,21 +205,21 @@ administrator has to grant SSH separately.</p>
 default install, whatever <code>dbprefix</code> says on yours. Code never writes that
 prefix. It writes <code>#__</code>, and the driver substitutes the configured value as
 the statement goes out:</p>
-<pre><code class="language-php">	public function replacePrefix($sql, $prefix = '#__')
+<pre><code class="language-php">		return $connectors;
+	}
+
+	/**
+	 * Replaces a string placeholder with the string held in the class variable
+	 *
+	 * @param   string  $sql     The SQL statement to prepare
+	 * @param   string  $prefix  The common table prefix
+	 * @return  string
+	 * @since   2.0.0
+	 */
+	public function replacePrefix($sql, $prefix = '#__')
 	{
 		// As we replace strings of different lengths, subsequent prefix positions will become invalid.
 		// Thus, we track that differential here to account for the shifting locations
-		$differential = strlen($this-&gt;tablePrefix) - strlen($prefix);
-		$count        = 0;
-
-		foreach (Str::findLiteral($prefix, $sql) as $prefixPosition)
-		{
-			$sql = substr_replace($sql, $this-&gt;tablePrefix, $prefixPosition + ($differential*$count), strlen($prefix));
-			$count++;
-		}
-
-		return $sql;
-	}
 </code></pre>
 <p>So <code>#__users</code> in a query is <code>jos_users</code> in the database, and a query with a
 literal <code>jos_</code> in it is a bug: it breaks on any hub whose prefix differs.

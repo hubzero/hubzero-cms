@@ -72,6 +72,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -279,7 +280,11 @@ the pipeline appears to be empty and there is nothing on screen to say why.</p>
 <p>Administrator controls on the pipeline are not granted by the ordinary
 component ACL. They are granted by membership of the hub group named in
 <code>com_tools</code>' <strong>Admin Group</strong> option, which defaults to <code>apps</code>:</p>
-<pre><code class="language-php">		// if no admin group is defined, allow superadmin to act as admin
+<pre><code class="language-php">		{
+			return;
+		}
+
+		// if no admin group is defined, allow superadmin to act as admin
 		// otherwise superadmins can only act if they are also a member of the component admin group
 		if ($admingroup = trim($this-&gt;config-&gt;get('admingroup', '')))
 		{
@@ -297,10 +302,6 @@ component ACL. They are granted by membership of the hub group named in
 						$this-&gt;config-&gt;set('access-create-' . $assetType, true);
 						$this-&gt;config-&gt;set('access-delete-' . $assetType, true);
 						$this-&gt;config-&gt;set('access-edit-' . $assetType, true);
-					}
-				}
-			}
-		}
 </code></pre>
 <p>While that option has a value, membership of the group is the <em>only</em> way to
 get those controls; a Super User outside the group sees none of them. Clear

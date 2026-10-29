@@ -241,10 +241,10 @@ of strings. Two extensions that both define <code>TITLE</code> will fight over i
 <h2 id="loading">Loading</h2>
 <p>You do not need to load the template's own file. The document loads it while
 fetching the template:</p>
-<pre><code class="language-php">		// Load the language file for the template
-		$lang = \App::get('language');
-		$lang-&gt;load('tpl_' . $template, PATH_APP . DS . 'bootstrap' . DS . \App::get('client')-&gt;name, null, false, true) ||
-		$lang-&gt;load('tpl_' . $template, $directory . DS . $template, null, false, true);
+<pre><code class="language-php">	 * @param   string  $directory  The name of the template
+	 * @param   string  $filename   The actual filename
+	 * @return  string  The contents of the template
+	 */
 </code></pre>
 <p>Note the pair of calls. The first looks under
 <code>app/bootstrap/{client}/language/{tag}/</code>, which is where a hub puts a

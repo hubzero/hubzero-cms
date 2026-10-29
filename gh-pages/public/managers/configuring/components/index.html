@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Configuring</a></summary><ul class="tree">
@@ -61,7 +62,6 @@
 <li class="toc__item toc__item--l2"><a href="#permissions">Permissions</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-the-options-are">What the options are</a></li>
 <li class="toc__item toc__item--l2"><a href="#known-problem-unnamed-tabs">Known problem: unnamed tabs</a></li>
-<li class="toc__item toc__item--l2"><a href="#older-screenshots">Older screenshots</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/index.html">Modules</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../plugins/index.html">Plugins</a></li>
@@ -187,6 +187,8 @@ System are not listed there; they have their own places in the menu.</li>
 <li>Change what you need and select <strong>Save &amp; Close</strong>. <strong>Save</strong> keeps the
 pop-up open. <strong>Cancel</strong> discards the changes.</li>
 </ol>
+<p><img src="../../media/components-menu.png" alt="The Components menu open over the Blog Manager, listing the hub's components alphabetically" /></p>
+<p><img src="../../media/components-options.png" alt="The Blog component's options pop-up, with its Defaults, Archive, Entries, Feeds and Permissions tabs" /></p>
 <p>Changes take effect immediately, for everyone using the hub, with no undo
 and no confirmation. In practice that is fine: almost every option is a
 display choice or a default, and setting it back restores what you had.</p>
@@ -228,25 +230,14 @@ component are set; the geolocation and LDAP screens in the System
 component need their connection details before either screen works.</p>
 </aside>
 <h2 id="known-problem-unnamed-tabs">Known problem: unnamed tabs</h2>
-<p>The pop-up names each tab from a language string built out of the fieldset
-name, <code>COM_CONFIG_&lt;NAME&gt;_FIELDSET_LABEL</code>. Only <code>basic</code> and <code>component</code> are
-defined, so a component whose <code>config.xml</code> uses any other unlabelled
-fieldset name shows the raw key as the tab title. The Members component,
-for instance, shows <code>COM_CONFIG_LOGIN_FIELDSET_LABEL</code>,
-<code>COM_CONFIG_PASSWORD_FIELDSET_LABEL</code>, and
-<code>COM_CONFIG_REGISTRATION_FIELDSET_LABEL</code> where names should be. The fields
-under those tabs work normally.</p>
-<h2 id="older-screenshots">Older screenshots</h2>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The screenshots below came from the imported version of this
-page. They show the retired <strong>Hub</strong> component and call the toolbar button
-<strong>Parameters</strong>; the button is now called <strong>Options</strong>, and there is no Hub
-component. The pop-up they show is otherwise the same screen.</p>
-</aside>
-<p><img src="../../media/components-edit-registration-01.png" alt="The Components menu with a component selected" /></p>
-<p><img src="../../media/components-edit-registration-05.png" alt="The toolbar button that opens the options pop-up" /></p>
-<p><img src="../../media/components-edit-registration-06.png" alt="The component options pop-up" /></p>
-<p><img src="../../media/components-edit-registration-07.png" alt="The component options pop-up with the Save button" /></p>
+<p>The pop-up names each tab from the fieldset's <code>label</code> in <code>config.xml</code>, or,
+where there is none, from a language string built out of the fieldset name,
+<code>COM_CONFIG_&lt;NAME&gt;_FIELDSET_LABEL</code>. The configuration component defines
+that string only for <code>basic</code> and <code>component</code>, so any other unlabelled
+fieldset needs the component's own language file to define it. The Members
+component does, which is why its <strong>Login Settings</strong>, <strong>Password</strong> and
+<strong>Registration</strong> tabs have names. A component that does not shows the raw
+key as the tab title. The fields under such a tab work normally.</p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

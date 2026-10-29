@@ -130,6 +130,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -748,7 +749,7 @@
 </table>
 <h2 id="delete-projects-id">DELETE /projects/{id}</h2>
 <p>Delete a project</p>
-<p>API version 2.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L1178"><code>projectsv2_0.php</code></a>.</p>
+<p>API version 2.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L1214"><code>projectsv2_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -794,7 +795,7 @@
 </table>
 <h2 id="get-projects-id-v1-1">GET /projects/{id} (v1.1)</h2>
 <p>Get project info (if user is in project)</p>
-<p>API version 1.1, task <code>get</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv1_1.php#L210"><code>projectsv1_1.php</code></a>.</p>
+<p>API version 1.1, task <code>get</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv1_1.php#L206"><code>projectsv1_1.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -817,7 +818,7 @@
 </table>
 <h2 id="get-projects-id-v2-0">GET /projects/{id} (v2.0)</h2>
 <p>Get project info (if user is in project)</p>
-<p>API version 2.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L677"><code>projectsv2_0.php</code></a>.</p>
+<p>API version 2.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L687"><code>projectsv2_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -840,7 +841,7 @@
 </table>
 <h2 id="put-projects-id">PUT /projects/{id}</h2>
 <p>Update a project</p>
-<p>API version 2.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L741"><code>projectsv2_0.php</code></a>.</p>
+<p>API version 2.0, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/projectsv2_0.php#L751"><code>projectsv2_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -996,7 +997,7 @@
 </table>
 <h2 id="get-projects-id-files-v1-0-filefsv1-0">GET /projects/{id}/files (v1.0, filefsv1_0)</h2>
 <p>Get a list of project files</p>
-<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L83"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L90"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1047,7 +1048,7 @@
 </table>
 <h2 id="get-projects-id-files-v1-0-filesv1-0">GET /projects/{id}/files (v1.0, filesv1_0)</h2>
 <p>Get a list of project files</p>
-<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L101"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>list</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L118"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1156,7 +1157,7 @@
 </table>
 <h2 id="get-projects-id-files-connections">GET /projects/{id}/files/connections</h2>
 <p>Get a list of project files connections</p>
-<p>API version 1.0, task <code>connections</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1499"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>connections</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1518"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1179,7 +1180,7 @@
 </table>
 <h2 id="get-post-projects-id-files-connections-cid-chunkedupload">GET,POST /projects/{id}/files/connections/{cid}/chunkedUpload</h2>
 <p>Uploads file chunk(s) and combines them before adding the final file to repository</p>
-<p>API version 1.0, task <code>chunkedUpload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L717"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>chunkedUpload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L734"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1265,7 +1266,7 @@
 </table>
 <h2 id="get-projects-id-files-connections-cid-download">GET /projects/{id}/files/connections/{cid}/download</h2>
 <p>Download file or folder from project (non-default connection providers only)</p>
-<p>API version 1.0, task <code>download</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L940"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>download</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L954"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1316,7 +1317,7 @@
 </table>
 <h2 id="get-projects-id-files-connections-cid-getmetadata">GET /projects/{id}/files/connections/{cid}/getmetadata</h2>
 <p>Get file annotation</p>
-<p>API version 1.0, task <code>getmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1111"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>getmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1130"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1367,7 +1368,7 @@
 </table>
 <h2 id="get-projects-id-files-connections-cid-setmetadata">GET /projects/{id}/files/connections/{cid}/setmetadata</h2>
 <p>Set file annotation</p>
-<p>API version 1.0, task <code>setmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1206"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>setmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1225"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1418,7 +1419,7 @@
 </table>
 <h2 id="post-projects-id-files-connections-cid-upload">POST /projects/{id}/files/connections/{cid}/upload</h2>
 <p>upload/replace a project file (only for non-default connection providers)</p>
-<p>API version 1.0, task <code>upload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L634"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>upload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L651"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1462,7 +1463,7 @@
 </table>
 <h2 id="get-projects-id-files-delete-v1-0-filefsv1-0">GET /projects/{id}/files/delete (v1.0, filefsv1_0)</h2>
 <p>Delete file or folder from project</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L263"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L270"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1506,7 +1507,7 @@
 </table>
 <h2 id="get-projects-id-files-delete-v1-0-filesv1-0">GET /projects/{id}/files/delete (v1.0, filesv1_0)</h2>
 <p>Delete file or folder from project</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L333"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L350"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1550,7 +1551,7 @@
 </table>
 <h2 id="get-projects-id-files-download">GET /projects/{id}/files/download</h2>
 <p>Download file or folder from project (non-default connection providers only)</p>
-<p>API version 1.0, task <code>download</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L575"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>download</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L582"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1594,7 +1595,7 @@
 </table>
 <h2 id="get-projects-id-files-get-v1-0-filefsv1-0">GET /projects/{id}/files/get (v1.0, filefsv1_0)</h2>
 <p>Get file(s) metadata</p>
-<p>API version 1.0, task <code>get</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L152"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>get</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L159"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1631,7 +1632,7 @@
 </table>
 <h2 id="get-projects-id-files-get-v1-0-filesv1-0">GET /projects/{id}/files/get (v1.0, filesv1_0)</h2>
 <p>Get file(s) metadata</p>
-<p>API version 1.0, task <code>get</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L189"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>get</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L206"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1668,7 +1669,7 @@
 </table>
 <h2 id="get-projects-id-files-getmetadata">GET /projects/{id}/files/getmetadata</h2>
 <p>Get file annotation</p>
-<p>API version 1.0, task <code>getmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L890"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>getmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L902"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1712,7 +1713,7 @@
 </table>
 <h2 id="get-projects-id-files-insert-v1-0-filefsv1-0">GET /projects/{id}/files/insert (v1.0, filefsv1_0)</h2>
 <p>Insert/update a project file</p>
-<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L799"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L806"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1749,7 +1750,7 @@
 </table>
 <h2 id="get-projects-id-files-insert-v1-0-filesv1-0">GET /projects/{id}/files/insert (v1.0, filesv1_0)</h2>
 <p>Insert/update a project file</p>
-<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1020"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>save</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L1034"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1786,7 +1787,7 @@
 </table>
 <h2 id="get-projects-id-files-makedirectory-v1-0-filefsv1-0">GET /projects/{id}/files/makedirectory (v1.0, filefsv1_0)</h2>
 <p>Create a folder in project local repo</p>
-<p>API version 1.0, task <code>makedirectory</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L205"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>makedirectory</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L212"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1823,7 +1824,7 @@
 </table>
 <h2 id="get-projects-id-files-makedirectory-v1-0-filesv1-0">GET /projects/{id}/files/makedirectory (v1.0, filesv1_0)</h2>
 <p>Create a folder in project local repo</p>
-<p>API version 1.0, task <code>makedirectory</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L260"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>makedirectory</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L277"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1860,7 +1861,7 @@
 </table>
 <h2 id="get-projects-id-files-move-v1-0-filefsv1-0">GET /projects/{id}/files/move (v1.0, filefsv1_0)</h2>
 <p>Move file or folder in project</p>
-<p>API version 1.0, task <code>move</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L348"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>move</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L355"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1904,7 +1905,7 @@
 </table>
 <h2 id="get-projects-id-files-move-v1-0-filesv1-0">GET /projects/{id}/files/move (v1.0, filesv1_0)</h2>
 <p>Move file or folder in project</p>
-<p>API version 1.0, task <code>move</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L437"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>move</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L454"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1948,7 +1949,7 @@
 </table>
 <h2 id="get-projects-id-files-rename-v1-0-filefsv1-0">GET /projects/{id}/files/rename (v1.0, filefsv1_0)</h2>
 <p>Move file or folder in project</p>
-<p>API version 1.0, task <code>rename</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L437"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>rename</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L444"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -1999,7 +2000,7 @@
 </table>
 <h2 id="get-projects-id-files-rename-v1-0-filesv1-0">GET /projects/{id}/files/rename (v1.0, filesv1_0)</h2>
 <p>Move file or folder in project</p>
-<p>API version 1.0, task <code>rename</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L544"><code>filesv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>rename</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filesv1_0.php#L561"><code>filesv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -2050,7 +2051,7 @@
 </table>
 <h2 id="get-projects-id-files-setmetadata">GET /projects/{id}/files/setmetadata</h2>
 <p>Set file annotation</p>
-<p>API version 1.0, task <code>setmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L978"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>setmetadata</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L997"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -2094,7 +2095,7 @@
 </table>
 <h2 id="post-projects-id-files-upload">POST /projects/{id}/files/upload</h2>
 <p>upload/replace a project file (only for non-default connection providers)</p>
-<p>API version 1.0, task <code>upload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L509"><code>filefsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>upload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_projects/api/controllers/filefsv1_0.php#L516"><code>filefsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>

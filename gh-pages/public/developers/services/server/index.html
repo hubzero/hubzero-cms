@@ -186,20 +186,20 @@ will not seek.</p>
 <pre><code class="language-php">use Hubzero\Content\Server;
 </code></pre>
 <h2 id="serving-a-file">Serving a file</h2>
-<pre><code class="language-php">		// Serve up the image
-		$server = new Server();
-		$server-&gt;filename($file_path);
-		$server-&gt;disposition('inline');
-		$server-&gt;acceptranges(false); // @TODO fix byte range support
+<pre><code class="language-php">		);
 
-		// Serve up file
-		if (!$server-&gt;serve())
+		if (!$entry-&gt;get('id') || !$entry-&gt;access('view'))
 		{
-			// Should only get here on error
-			throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
+			throw new \Exception(Lang::txt('Access denied.'), 403);
 		}
 
-		exit;
+		if (!($file = Request::getString('file', '')))
+		{
+			$parts = explode('/', $_SERVER['REQUEST_URI']);
+
+			$filename = array_pop($parts);
+
+			// Get the file name
 </code></pre>
 <p>That is the whole pattern: set the file, say how it should be presented,
 call <code>serve()</code>, and stop. <code>serve()</code> returns <code>false</code> if it could not send

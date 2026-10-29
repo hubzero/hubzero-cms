@@ -94,6 +94,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/installer/index.html">Installer (com_installer)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/jobs/index.html">Jobs (com_jobs)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/kb/index.html">Kb (com_kb)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../configuration/components/massmail/index.html">Massmail (com_massmail)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/media/index.html">Media (com_media)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/members/index.html">Members (com_members)</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../configuration/components/menus/index.html">Menus (com_menus)</a></li>
@@ -231,8 +232,8 @@
 <ul>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_modules/admin/controllers/modules.php#L452"><code>core/components/com_modules/admin/controllers/modules.php:452</code></a> with <code>[$this-&gt;_option . '.module', &amp;$model, $model-&gt;isNew()]</code></li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/admin/controllers/styles.php#L344"><code>core/components/com_templates/admin/controllers/styles.php:344</code></a> with <code>['com_templates.style', $style, ($fields['id'] ? false : true)]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/models/file.php#L161"><code>core/components/com_templates/models/file.php:161</code></a> with <code>['com_templates.source', &amp;$table, false]</code></li>
-<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/models/source.php#L166"><code>core/components/com_templates/models/source.php:166</code></a> with <code>['com_templates.source', &amp;$table, false]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/models/file.php#L161"><code>core/components/com_templates/models/file.php:161</code></a> with <code>['com_templates.source', &amp;$this, false]</code></li>
+<li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_templates/models/source.php#L166"><code>core/components/com_templates/models/source.php:166</code></a> with <code>['com_templates.source', &amp;$this, false]</code></li>
 </ul>
 <p>No plugin in the source tree listens for this event.</p>
 <h2 id="extension-onextensionbeforedelete"><code>extension.onExtensionBeforeDelete</code></h2>

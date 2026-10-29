@@ -288,17 +288,17 @@ interactive explorer a hub serves at <code>/developer/api/docs</code>, and
 <code>docs/_tools/docs/gen_api_reference.py</code> builds the
 <a href="../../reference/api/index.html">API reference</a> in these pages.</p>
 <pre><code class="language-php">	/**
-	 * Display a list of entries
+	 * Decide which blog an entry may be written to, and whose name goes on it.
 	 *
-	 * @apiMethod GET
-	 * @apiUri    /blog/list
-	 * @apiParameter {
-	 * 		&quot;name&quot;:          &quot;scope&quot;,
-	 * 		&quot;description&quot;:   &quot;Scope type (group, member, etc.)&quot;,
-	 * 		&quot;type&quot;:          &quot;string&quot;,
-	 * 		&quot;required&quot;:      false,
-	 * 		&quot;default&quot;:       &quot;site&quot;
-	 * }
+	 * The API accepts an ordinary logged-in browser session, so none of these
+	 * three may come from the request for an ordinary caller: created_by is
+	 * the byline, and scope/scope_id decide whose blog the entry appears in.
+	 * Taken raw, any member could publish under another member's name, onto
+	 * another member's blog, or into a group they do not belong to.
+	 *
+	 * The site never takes them from the request either -- the member and
+	 * group blog plugins set both from the page context.
+	 *
 </code></pre>
 <p>More <code>@apiParameter</code> blocks follow, one per parameter, and then
 <code>public function listTask()</code>.</p>

@@ -50,6 +50,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/tickets/index.html">Support Tickets</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/notices/index.html">Site Notices</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../maintenance/cron/index.html">Scheduled Tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../maintenance/upgrading/index.html">Upgrading a hub</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../../faq/index.html">Frequently asked questions</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../configuring/index.html">Configuring</a></summary><ul class="tree">
@@ -218,7 +219,9 @@ a mistake matters — the hub will only ever deliver an assertion there.</li>
 service expects to identify people by. Ask; do not guess. Changing it later
 makes the service treat returning members as new people.</li>
 <li>Decide <strong>Allowed groups</strong>. Left empty, every member of the hub can sign in
-to that service. If the survey is for one group, put that group's <code>cn</code> here.</li>
+to that service. If the survey is for one group, put that group's <code>cn</code> here.
+The same list is what <code>groups:allowed</code> releases, if you go on to send the
+service a member's groups.</li>
 <li>Save, with the state set to enabled.</li>
 <li>Give the service the hub's metadata URL from the <strong>Overview</strong> screen, and
 ask them to try a sign-on.</li>
@@ -280,6 +283,51 @@ ID</strong>. <strong>NameID format</strong> declares which of those it is. <stro
 default set (email, common name, given name, surname) and entering <code>[]</code>
 releases none. <strong>Allowed groups</strong> takes a comma-separated list of group
 <code>cn</code>s; leave it empty to let every hub member in.</p>
+<p><strong>Releasing group membership</strong> — two attribute-map sources carry a member's
+groups. Both release one value per group, naming groups by <code>cn</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Releases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>groups:allowed</code></td>
+<td>the groups from <strong>Allowed groups</strong> that this member belongs to</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>every HUB group this member belongs to</td>
+</tr>
+</tbody>
+</table>
+<p>Prefer <code>groups:allowed</code>. It tells the service which of its own gates the
+member came through and nothing else. <code>groups</code> hands over the member's whole
+HUB group list, which is more than most services need and is readable by
+whoever runs that service. An SP with <strong>Allowed groups</strong> empty has no gate to
+report, so <code>groups:allowed</code> releases nothing there — it does not fall back to
+releasing everything.</p>
+<p>Only confirmed membership is released: someone who has applied to a group, or
+been invited and not yet accepted, is not a member and is not reported as one.
+Project and course groups are never released by <code>groups</code>, though either can
+still gate access through <strong>Allowed groups</strong>. Nothing is released until a map
+names one of these sources, so upgrading the hub does not start sending groups
+to services that are already registered.</p>
+<p>A map entry looks like this. The name is the one services that already
+understand group attributes expect; <code>friendly</code> is the human-readable label
+that travels beside it:</p>
+<pre><code class="language-json">[
+  {
+    &quot;name&quot;: &quot;urn:oid:1.3.6.1.4.1.5923.1.5.1.1&quot;,
+    &quot;friendly&quot;: &quot;isMemberOf&quot;,
+    &quot;source&quot;: &quot;groups:allowed&quot;
+  }
+]
+</code></pre>
+<p>Adding an entry replaces the default set rather than adding to it, so a map
+that should still release the usual attributes has to list them too.</p>
 <p><strong>Publishing</strong> — the enabled/disabled state, plus the ID, creation date, and
 the metadata URL an imported registration came from.</p>
 <p><strong>Import from metadata</strong> takes the service's <code>EntityDescriptor</code> XML, pasted
