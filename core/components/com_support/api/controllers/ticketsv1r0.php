@@ -79,19 +79,6 @@ class Ticketsv1r0 extends ApiController
 
         $group = Request::getString('group', '');
 
-        // Set up some dates
-        $date = new \Hubzero\Utility\Date();
-
-        $year = Request::getInt('year', strftime("%Y", $date->toLocal('Y')));
-        $month = strftime("%m", $date->toLocal('m'));
-        if ($month <= "9" & preg_match("#(^[1-9]{1})#", $month)) {
-            $month = "0$month";
-        }
-        $day = strftime("%d", $date->toLocal('d'));
-        if ($day <= "9" & preg_match("#(^[1-9]{1})#", $day)) {
-            $day = "0$day";
-        }
-
         $stats = new stdClass();
         $stats->open = 0;
         $stats->new = 0;
