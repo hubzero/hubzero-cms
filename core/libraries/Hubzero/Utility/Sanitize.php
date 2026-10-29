@@ -398,7 +398,49 @@ class Sanitize
 			'excludes' => ['area' => true]
 		];
 
-		$elementSettings = [$styleElement, $mapElement, $areaElement];
+		$videoElement = [
+			'name' => 'video',
+			'contentSet' => 'Block',
+			'allowedChildren' => 'Inline',
+			'attributeCollection' => 'Common',
+			'attributes' => [
+				'src'                     => 'URI',
+				'poster'                  => 'URI',
+				'width'                   => 'Length',
+				'height'                  => 'Length',
+				'preload'                 => 'Enum#auto,metadata,none',
+				'crossorigin'             => 'Enum#anonymous,use-credentials',
+				'loading'                 => 'Enum#lazy,eager',
+				'controlslist'            => 'Text',
+				'autoplay'                => 'Bool',
+				'controls'                => 'Bool',
+				'loop'                    => 'Bool',
+				'muted'                   => 'Bool',
+				'playsinline'             => 'Bool',
+				'disablepictureinpicture' => 'Bool',
+				'disableremoteplayback'   => 'Bool',
+			],
+			'excludes' => []
+		];
+
+		$sourceElement = [
+			'name' => 'source',
+			'contentSet' => 'Inline',
+			'allowedChildren' => 'Empty',
+			'attributeCollection' => 'Common',
+			'attributes' => [
+				'src'    => 'URI',
+				'type'   => 'Text',
+				'media'  => 'Text',
+				'srcset' => 'Text',
+				'sizes'  => 'Text',
+				'width'  => 'Number',
+				'height' => 'Number',
+			],
+			'excludes' => []
+		];
+
+		$elementSettings = [$styleElement, $mapElement, $areaElement, $videoElement, $sourceElement];
 
 		foreach ($elementSettings as $settings)
 		{
