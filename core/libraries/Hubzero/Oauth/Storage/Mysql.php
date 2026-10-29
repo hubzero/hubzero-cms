@@ -308,8 +308,8 @@ class Mysql
 		// use hubzero password library to compare stored password with sent password
 		$match = Password::passwordMatches($username, $password, true);
 
-		// return if match was found
-		return (bool) $match;
+		// an account expired for inactivity may not use its password, here as on the web
+		return ($match && !Password::isInactive($username));
 	}
 
 	/**
