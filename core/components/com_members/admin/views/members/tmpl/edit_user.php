@@ -163,6 +163,35 @@ if (substr($this->profile->get('email',''), -8) == '@invalid')
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_LASTVISITDATE'); ?></th>
 					<td><?php echo !$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate'); ?></td>
 				</tr>
+				<?php
+					// Account expiry (shadowExpire), which LDAP/PAM enforce for SSH and SFTP
+					$expire = is_object($this->password) ? $this->password->get('shadowExpire') : null;
+
+					if ($expire === null || $expire === '')
+					{
+						$expiry = Lang::txt('COM_MEMBERS_ACCOUNT_EXPIRED_NO');
+					}
+					elseif (\Hubzero\User\Password::isInactive($this->password))
+					{
+						$expiry = Lang::txt('COM_MEMBERS_ACCOUNT_EXPIRED_INACTIVE');
+					}
+					elseif ((int) $expire == \Hubzero\User\Password::BLOCKED_EXPIRE_DAY)
+					{
+						$expiry = Lang::txt('COM_MEMBERS_ACCOUNT_EXPIRED_BLOCKED');
+					}
+					elseif ((int) $expire <= intval(time() / 86400))
+					{
+						$expiry = Lang::txt('COM_MEMBERS_ACCOUNT_EXPIRED_SINCE', gmdate('Y-m-d', (int) $expire * 86400));
+					}
+					else
+					{
+						$expiry = Lang::txt('COM_MEMBERS_ACCOUNT_EXPIRES_ON', gmdate('Y-m-d', (int) $expire * 86400));
+					}
+				?>
+				<tr>
+					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_ACCOUNT_EXPIRED'); ?></th>
+					<td><?php echo $this->escape($expiry); ?></td>
+				</tr>
 				<tr>
 					<th><?php echo Lang::txt('COM_MEMBERS_FIELD_MODIFIED'); ?></th>
 					<td><?php echo !$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate'); ?></td>
