@@ -54,7 +54,8 @@ defined('_HZEXEC_') or die();
 				if (is_object($this->password) && $this->password->get('shadowLastChange'))
 				{
 					$shadowLastChange = $this->password->get('shadowLastChange')*86400;
-					echo date("Y-m-d", $shadowLastChange);
+					// UTC days, like "Expires on" and pam_unix
+					echo gmdate("Y-m-d", $shadowLastChange);
 					echo " ({$this->password->get('shadowLastChange')})";
 					echo " - " . intval((time()/86400) - ($shadowLastChange/86400)) . " days ago";
 				}
@@ -67,16 +68,25 @@ defined('_HZEXEC_') or die();
 		<div class="input-wrap">
 			<label title="shadowMax" class="key"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_MAX'); ?>:</label>
 			<input type="text" name="shadowMax" value="<?php echo $this->escape($this->password->get('shadowMax')); ?>" />
+			<input type="hidden" name="shadowMaxShown" value="<?php echo $this->escape($this->password->get('shadowMax')); ?>" />
 		</div>
 		<div class="input-wrap">
 			<label title="shadowWarning" class="key"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_WARNING'); ?>:</label>
 			<input type="text" name="shadowWarning" value="<?php echo $this->escape($this->password->get('shadowWarning')); ?>" />
 		</div>
+		<?php
+			$expiryDay = \Hubzero\User\Password::passwordExpiryDay($this->password->get('shadowLastChange'), $this->password->get('shadowMax'));
+			$expiresOn = ($expiryDay === null) ? '' : gmdate('Y-m-d', $expiryDay * 86400);
+		?>
 		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?>">
-			<label title="shadowExpire"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE'); ?>:</label>
-			<input type="text" name="shadowExpire" value="<?php echo $this->escape($this->password->get('shadowExpire')); ?>" />
+			<label for="expiresOn"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE'); ?>:</label>
+			<input type="text" name="expiresOn" id="expiresOn" value="<?php echo $this->escape($expiresOn); ?>" />
+			<input type="hidden" name="expiresOnShown" value="<?php echo $this->escape($expiresOn); ?>" />
 			<span class="hint"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?></span>
 		</div>
+		<?php if (\Hubzero\User\Password::isInactive($this->password)) : ?>
+			<p class="warning"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_INACTIVE'); ?></p>
+		<?php endif; ?>
 		<!-- Add reset for user secret -->
 		<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_RESET_SECRET_HINT'); ?>">
 			<label for="cbResetSecret"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RESET_SECRET'); ?>:</label>
