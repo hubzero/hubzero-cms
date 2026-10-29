@@ -12,14 +12,14 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
 /**
- * Install command class - fresh HUBzero installation
+ * Install command class - fresh Hubzero installation
  **/
 class Install extends Base implements CommandInterface
 {
     /**
      * Default (required) command - runs the full installation
      *
-     * @museDescription  Run the full HUBzero installation process
+     * @museDescription  Run the full Hubzero installation process
      *
      * Pass --config=<file> to install without being asked anything. The file
      * is JSON, with a "site", "database" and "admin" object holding the same
@@ -74,7 +74,7 @@ class Install extends Base implements CommandInterface
         echo "-----------------------------\n";
         echo "\n";
         echo "This will create 381 database tables and load essential system data.\n";
-        echo "This step is required for HUBzero to function.\n";
+        echo "This step is required for Hubzero to function.\n";
         echo "\n";
 
         if (!$unattended && !$this->promptContinue("Continue with schema loading?")) {
@@ -280,7 +280,7 @@ class Install extends Base implements CommandInterface
         echo "-----------------------------\n";
         echo "\n";
         echo "This will create 381 database tables and load essential system data.\n";
-        echo "This step is required for HUBzero to function.\n";
+        echo "This step is required for Hubzero to function.\n";
         echo "\n";
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Continue with schema loading?")) {
@@ -665,7 +665,7 @@ class Install extends Base implements CommandInterface
     {
         $this->output
              ->getHelpOutput()
-             ->addOverview('HUBzero Fresh Installation')
+             ->addOverview('Hubzero Fresh Installation')
              ->addTasks($this)
              ->render();
     }
@@ -818,7 +818,7 @@ class Install extends Base implements CommandInterface
         echo "\033[32m" . str_repeat("=", 50) . "\033[39m\n";
         echo "\n";
 
-        echo "Your HUBzero site has been successfully installed.\n";
+        echo "Your Hubzero site has been successfully installed.\n";
         echo "\n";
 
         echo "\033[33mSite Information:\033[39m\n";

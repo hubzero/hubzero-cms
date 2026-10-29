@@ -47,7 +47,7 @@ $emailEsc = htmlspecialchars($admin['email'] ?? '');
         <div class="success-icon">&#10004;</div>
         <div class="success-text">
             <h2>Installation Complete!</h2>
-            <p>Your HUBzero site has been successfully installed.</p>
+            <p>Your Hubzero site has been successfully installed.</p>
         </div>
     </div>
 

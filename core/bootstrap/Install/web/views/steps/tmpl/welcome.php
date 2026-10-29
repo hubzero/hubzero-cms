@@ -1,5 +1,5 @@
 <div class="welcome-content">
-    <p class="lead">Welcome to the HUBzero installation wizard. This will guide you through setting up your new hub.</p>
+    <p class="lead">Welcome to the Hubzero installation wizard. This will guide you through setting up your new hub.</p>
 
     <div class="info-box">
         <h3>Before You Begin</h3>

@@ -1,5 +1,5 @@
 /**
- * HUBzero Installation Wizard JavaScript
+ * Hubzero Installation Wizard JavaScript
  */
 (function() {
     'use strict';

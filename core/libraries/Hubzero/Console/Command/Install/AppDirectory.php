@@ -191,7 +191,7 @@ class AppDirectory
         $content .= "    'tmp_path'            => " . var_export($appPath . '/tmp', true) . ",\n";
         $content .= "    'force_ssl'           => " . var_export($config['force_ssl'] ?? '0', true) . ",\n";
         $content .= "    'offset'              => " . var_export($config['offset'] ?? 'UTC', true) . ",\n";
-        $content .= "    'sitename'            => " . var_export($config['sitename'] ?? 'HUBzero', true) . ",\n";
+        $content .= "    'sitename'            => " . var_export($config['sitename'] ?? 'Hubzero', true) . ",\n";
         $content .= "    'captcha'             => " . var_export($config['captcha'] ?? 'image', true) . ",\n";
         $content .= "    'access'              => " . var_export($config['access'] ?? '1', true) . ",\n";
         $content .= "    'log_post_data'       => " . var_export($config['log_post_data'] ?? '0', true) . ",\n";
@@ -258,7 +258,7 @@ class AppDirectory
             !self::writeConfigFile($ansi, $appPath, 'mail.php', [
             'mailer'     => 'sendmail',
             'mailfrom'   => $config['mailfrom'] ?? 'noreply@example.com',
-            'fromname'   => $config['sitename'] ?? 'HUBzero',
+            'fromname'   => $config['sitename'] ?? 'Hubzero',
             'smtpauth'   => '0',
             'smtphost'   => 'localhost',
             'smtpport'   => '25',
@@ -302,7 +302,7 @@ class AppDirectory
             !self::writeConfigFile($ansi, $appPath, 'meta.php', [
             'MetaAuthor'  => '1',
             'MetaTitle'   => '0',
-            'MetaDesc'    => $config['MetaDesc'] ?? 'HUBzero - The platform for scientific research and collaboration.',
+            'MetaDesc'    => $config['MetaDesc'] ?? 'Hubzero - The platform for scientific research and collaboration.',
             'MetaKeys'    => $config['MetaKeys'] ?? 'hub, hubzero, research, collaboration',
             'MetaVersion' => '0',
             'MetaRights'  => '',

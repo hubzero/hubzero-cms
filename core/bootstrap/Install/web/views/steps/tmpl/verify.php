@@ -2,7 +2,7 @@
     <div class="warning-box">
         <h3>Why This Step?</h3>
         <p>This verification prevents unauthorized users from running the installer on your server.
-        Only someone with file system access should be able to install HUBzero.</p>
+        Only someone with file system access should be able to install Hubzero.</p>
     </div>
 
     <?php if ($security->isLockedOut()) : ?>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * HUBzero Bootstrap Installer
+ * Hubzero Bootstrap Installer
  *
  * This minimal installer runs when vendor dependencies are missing.
  * It performs preflight checks and can run composer install.
@@ -94,7 +94,7 @@ use Hubzero\System\Requirements;
      */
     public function run(): void
     {
-        // Check for Windows first - HUBzero does not support Windows
+        // Check for Windows first - Hubzero does not support Windows
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             http_response_code(500);
             include __DIR__ . '/views/tmpl/windows-error.php';
@@ -453,7 +453,7 @@ use Hubzero\System\Requirements;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUBzero Bootstrap Setup</title>
+    <title>Hubzero Bootstrap Setup</title>
     <style>
 :root {
     --primary-color: #2563eb;
@@ -748,7 +748,7 @@ tr.failed { background: #fef2f2; }
 <body>
     <div class="container">
         <div class="header">
-            <h1>HUBzero Bootstrap Setup</h1>
+            <h1>Hubzero Bootstrap Setup</h1>
             <p>Preparing your environment for installation</p>
         </div>
 
@@ -823,7 +823,7 @@ tr.failed { background: #fef2f2; }
         </div>
 
         <div class="footer">
-            <p>&copy; <?php echo date('Y'); ?> HUBzero. Released under the MIT License.</p>
+            <p>&copy; <?php echo date('Y'); ?> Hubzero. Released under the MIT License.</p>
         </div>
     </div>
 

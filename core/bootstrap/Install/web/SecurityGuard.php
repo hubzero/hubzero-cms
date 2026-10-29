@@ -401,7 +401,7 @@ class SecurityGuard
     {
         $content = "<?php\n";
         $content .= "/**\n";
-        $content .= " * HUBzero Installation Security Secret\n";
+        $content .= " * Hubzero Installation Security Secret\n";
         $content .= " * DO NOT DELETE - Required for installation security\n";
         $content .= " * DO NOT SHARE - This file should never be accessible via web\n";
         $content .= " * Generated: " . date('Y-m-d H:i:s') . "\n";
@@ -886,7 +886,7 @@ class SecurityGuard
         $ip = $this->getClientIP();
         $timestamp = date('Y-m-d H:i:s');
 
-        $content = "HUBzero Installation Verification\n";
+        $content = "Hubzero Installation Verification\n";
         $content .= "==================================\n";
         $content .= "Client IP: {$ip}\n";
         $content .= "Verified: {$timestamp}\n";

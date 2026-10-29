@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUBzero Installation - <?php echo htmlspecialchars($title); ?></title>
+    <title>Hubzero Installation - <?php echo htmlspecialchars($title); ?></title>
     <?php
     // Compute the assets path from filesystem location relative to document root
     // layout.php is in /web/views/tmpl/, assets are in /web/assets/
@@ -97,7 +97,7 @@
         </main>
 
         <footer class="installer-footer">
-            <p>&copy; <?php echo date('Y'); ?> HUBzero. Released under the MIT License.</p>
+            <p>&copy; <?php echo date('Y'); ?> Hubzero. Released under the MIT License.</p>
         </footer>
     </div>
 
