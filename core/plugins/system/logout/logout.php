@@ -36,8 +36,8 @@ class Logout extends Plugin
 
         if (App::isSite() && Request::getString($hash, null, 'cookie')) {
             // Destroy the cookie
-            $cookie_domain = Config::get('config.cookie_domain', '');
-            $cookie_path   = Config::get('config.cookie_path', '/');
+            $cookie_domain = Config::get('cookie_domain', '');
+            $cookie_path   = Config::get('cookie_path', '/');
             setcookie($hash, false, time() - 86400, $cookie_path, $cookie_domain);
 
             // Set the error handler for E_ALL to be the class handleError method.
@@ -58,8 +58,8 @@ class Logout extends Plugin
             // Create the cookie
             $hash = App::hash(static::class);
 
-            $cookie_domain = Config::get('config.cookie_domain', '');
-            $cookie_path   = Config::get('config.cookie_path', '/');
+            $cookie_domain = Config::get('cookie_domain', '');
+            $cookie_path   = Config::get('cookie_path', '/');
 
             setcookie($hash, true, time() + 86400, $cookie_path, $cookie_domain);
         }
