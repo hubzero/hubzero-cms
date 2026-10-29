@@ -1,0 +1,68 @@
+/**
+ * Tag, group and member pickers
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/plugins/hubzero/autocompleter/assets/css/autocompleter.css");
+
+/*
+ * The box a tag is typed into, as a field like every other on the hub
+ *
+ * The plugin sets it in 12px Verdana with a grey border, so on any form with
+ * a Tags field - a new collection, a question, the tags page itself - the one
+ * field that took tags was set smaller and in a different face from the
+ * fields around it, its placeholder barely legible.
+ */
+ul.token-input-list-act,
+ul.token-input-list-acg,
+ul.token-input-list-acm {
+	font-family: inherit;
+	font-size: 0.95rem;
+	background-color: #FBF8F4;
+	border: 1px solid #D5CBBB;
+	border-radius: 5px;
+	box-shadow: inset 0 1px 2px rgba(74, 58, 42, 0.10);
+}
+
+ul.token-input-list-act li input,
+ul.token-input-list-acg li input,
+ul.token-input-list-acm li input {
+	font-family: inherit;
+	font-size: inherit;
+	width: 14em;
+	padding: 5px 8px;
+	background-color: transparent;
+}
+
+li.token-input-token-act,
+li.token-input-token-acg,
+li.token-input-token-acm {
+	font-size: 0.85rem;
+}
+
+/*
+ * In a search panel the field the tags are typed into is the list above, not
+ * the input inside it. The panel gives every input in it a white box with an
+ * edge and a shadow of its own, so the tags page drew a small white box
+ * inside the field it belongs to.
+ */
+.entry-search ul.token-input-list-act li input[type="text"],
+.entry-search ul.token-input-list-acg li input[type="text"],
+.entry-search ul.token-input-list-acm li input[type="text"] {
+	background-color: transparent;
+	border: 0 !important;
+	box-shadow: none;
+}
+
+/*
+ * The hero a page opens with puts a chevron before every item of every list
+ * in it, the tags and the place they are typed included - which is how the
+ * tags page came to show a stray "›" at the start of its search box.
+ */
+#introduction ul.token-input-list-act li:before,
+#introduction ul.token-input-list-acg li:before,
+#introduction ul.token-input-list-acm li:before {
+	content: none;
+}

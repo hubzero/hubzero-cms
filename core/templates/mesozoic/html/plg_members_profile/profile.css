@@ -15,3 +15,41 @@
 #profile li .section-content .key {
 	color: #6B6259;
 }
+
+/*
+ * On a phone, the label over the value rather than beside it
+ *
+ * The label is given a fifth of the row, which on a 390px screen is sixty
+ * pixels: "Biography" does not fit in it, and ran on into the value beside it.
+ */
+@media (max-width: 599px) {
+	#profile li .section-content .key,
+	#profile li .section-content .value {
+		float: none;
+		width: auto;
+		margin: 0 0 0.25rem;
+	}
+}
+
+/*
+ * A field the member has hidden from everyone else
+ *
+ * The plugin greys the whole row to rgba(0, 0, 0, 0.3), 2.4:1, so the owner
+ * could barely read their own name and e-mail address. The padlock beside
+ * the label is what says the row is private; the text only has to be
+ * quieter than the rows around it. 6B6259 on white is 5.8:1.
+ */
+#profile li.section.hidden .key,
+#profile li.section.hidden .value {
+	color: #6B6259;
+}
+
+/*
+ * The Edit link on each row of your own profile
+ *
+ * #ccc at 11px, 1.6:1: the one control on the page that does anything was
+ * the hardest thing on it to see. It is a link, so it is coloured as one.
+ */
+#profile .section-edit a.edit-profile-section {
+	color: #6B4420;
+}

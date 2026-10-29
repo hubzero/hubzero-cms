@@ -148,12 +148,50 @@ a.btn {
 	float: left;
 	text-align: left;
 	min-width: 160px;
-	padding: 0; //5px 0;
+	padding: 0.35em 0;
 	margin: 0 !important;
 	list-style: none;
 	-webkit-background-clip: padding-box;
 	-moz-background-clip: padding;
 	background-clip: padding-box;
+
+	// A menu that opens over the page has to be something: with no ground
+	// and no layer of its own, the group's Manager menu printed its items
+	// straight over the section list beneath it, both legible as neither.
+	// A surface standing on the page, the same as any other raised panel.
+	z-index: 1000;
+	background-color: @colorSurfaceRaised;
+	border: 1px solid @colorSurfaceBorder;
+	border-radius: @radius;
+	box-shadow: @shadowLifted;
+
+	> li > a,
+	> li > button {
+		display: block;
+		width: 100%;
+		margin: 0;
+		padding: 0.5em 1em;
+		border: 0;
+		border-radius: 0;
+		background: none;
+		box-shadow: none;
+		color: @colorText;
+		font: inherit;
+		text-align: left;
+		white-space: nowrap;
+		cursor: pointer;
+
+		&:hover,
+		&:focus {
+			background-color: @colorSurface;
+			color: @colorText;
+			text-decoration: none;
+		}
+	}
+
+	> .divider {
+		margin: 0.35em 0;
+	}
 }
 
 .dropup .dropdown-menu {

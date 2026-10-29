@@ -29,3 +29,20 @@ p.course-identity {
 .course-summary {
 	background: #F8F4EE;
 }
+
+/*
+ * A course's picture, whole
+ *
+ * The box it sits in is a fixed landscape shape that crops whatever it is
+ * given to fill it, which suits a banner and halves a square: a monogram lost
+ * its lower half. The picture takes the box's height instead and stands in
+ * the middle of it, on the box's own ground.
+ */
+.course-identity img {
+	display: block;
+	width: auto;
+	height: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+	object-fit: contain;
+}

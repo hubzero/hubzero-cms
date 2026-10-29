@@ -17,6 +17,15 @@
 		max-width: 100%;
 	}
 
+	// Except a calendar's. FullCalendar draws its month out of nested tables
+	// that it sizes to the width it is given, so it already fits; made into
+	// blocks, every day collapsed to a pixel and the month read as a run of
+	// numbers with no grid.
+	main .fc table {
+		display: table;
+		overflow-x: visible;
+	}
+
 	// A fieldset defaults to min-width: min-content and will not shrink below
 	// what is inside it, so a wide table in one takes the fieldset with it and
 	// the scrolling above never gets a chance.

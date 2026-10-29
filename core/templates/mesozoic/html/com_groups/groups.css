@@ -62,10 +62,38 @@
 	}
 }
 
-/* The group's own actions, a dark neutral among warm ones */
+/*
+ * The group's own actions, a dark neutral among warm ones
+ *
+ * The component writes the label in a signal green, rgba(20,208,0), which on
+ * this neutral is 3.0:1 and reads as an error state rather than a role. White
+ * is 6.9:1. The toggle beside the label is the other half of the same button
+ * and takes the same ground and height, so the two read as one.
+ */
 #group_options .btn-group > .btn {
 	background: #635A50;
 	border-color: #4E463D;
+	color: #fff;
+}
+
+#group_options .btn-group > .btn.dropdown-toggle {
+	align-self: stretch;
+}
+
+/*
+ * The caret that says the toggle opens something. The shared rule draws it
+ * on a span.dropdown-toggle, and this one is a button, so it was an empty
+ * square beside the label.
+ */
+#group_options .btn-group > .btn.dropdown-toggle:before {
+	content: "";
+	display: inline-block;
+	width: 0;
+	height: 0;
+	vertical-align: middle;
+	border-top: 5px solid #fff;
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
 }
 
 #group_options .btn-group > .btn:hover,
@@ -81,4 +109,23 @@
 #page_menu li.active .meta .count {
 	background: #6B4420;
 	color: #fff;
+}
+
+/* The icon before each item in the Group Manager menu, set clear of its word */
+.dropdown-menu li a:before,
+.dropdown-menu li button:before {
+	display: inline-block;
+	width: 1.4em;
+	padding-right: 0;
+}
+
+/*
+ * The logo preview on the group's settings form
+ *
+ * Everything else in the form's fieldsets is set in by 2em; the preview's
+ * own margin of 0 put it hard against the fieldset's edge, under a select
+ * that starts a column further in.
+ */
+.form-group > #logo.preview {
+	margin: 1em 2em 1.5em;
 }

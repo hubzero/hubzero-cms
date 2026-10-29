@@ -33,3 +33,16 @@ a.fmanage.inactive {
 	background: #F4EFE7;
 	color: #8A8178;
 }
+
+/*
+ * A project's picture beside its title
+ *
+ * The component makes room for the picture only in a header with the id
+ * content-header. The edit screen's header carries the class and not the id,
+ * so the picture sat on top of the first letters of the title.
+ */
+#project-wrap .content-header > .pthumb + .ptitle h2,
+#project-wrap .content-header > .pthumb + .ptitle h3 {
+	padding-left: 86px;
+	min-height: 70px;
+}

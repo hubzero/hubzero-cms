@@ -1,0 +1,21 @@
+/**
+ * Support
+ *
+ * A stylesheet a template puts here replaces the extension's own rather than
+ * adding to it, so the original is imported first and only what this template
+ * needs differently follows.
+ */
+@import url("../../../../../core/components/com_support/site/assets/css/support.css");
+
+/*
+ * The bar across the top of the trouble report when it opens over a page
+ *
+ * The component draws it in #e84c3d with diagonal stripes, a red that is
+ * nowhere else on the hub and reads as an error before anything has gone
+ * wrong. The template's dark brown, flat: white on 6B4420 is 9.3:1.
+ */
+#component-body #content-header h2 {
+	background-color: #6B4420;
+	background-image: none;
+	box-shadow: none;
+}

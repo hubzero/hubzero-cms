@@ -93,9 +93,6 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
     }
     ?>
 
-    <?php if ($this->getBuffer('message')) : ?>
-        <jdoc:include type="message" />
-    <?php endif; ?>
 </section>
 
 
@@ -301,6 +298,15 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
             <div class="inner">
                 <jdoc:include type="modules" name="welcome" />
                 <jdoc:include type="modules" name="introblock" />
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php // A message answers what was just done, so it sits with the page it is about ?>
+    <?php if ($this->getBuffer('message')) : ?>
+        <div class="page-messages">
+            <div class="inner">
+                <jdoc:include type="message" />
             </div>
         </div>
     <?php endif; ?>

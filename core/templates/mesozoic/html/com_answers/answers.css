@@ -22,7 +22,18 @@
 	color: #7C5BB8;
 }
 
-/* A closed question's flag beside the thread, which was a mid grey */
-.aside .entry-status.closed {
-	background: #635A50;
+/* A closed question's flag beside the thread
+ *
+ * The component draws it as a striped grey slab with a grey border, the
+ * heaviest thing on the page, for the most ordinary state a question can be
+ * in. Here it is a panel in the hub's own warm ground, which says closed
+ * without competing with the question. 4A4038 on EFE9DF is 9.1:1.
+ */
+.aside .entry-status.closed,
+.aside .entry-status.closed:hover {
+	background: #EFE9DF;
+	background-image: none;
+	color: #4A4038;
+	border-color: #D9CDBA;
+	box-shadow: none;
 }

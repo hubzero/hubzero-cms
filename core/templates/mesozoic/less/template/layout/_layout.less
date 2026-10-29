@@ -69,9 +69,14 @@ body {
 	// given one, which is where anybody would see it. Corrected here rather
 	// than in the component, whose markup a dozen hubs' templates are built
 	// against.
+	//
+	// A project's pages are the same: com_projects wraps everything inside a
+	// project, title and all, in #project-wrap and nothing else, so its files,
+	// team and to-do pages ran from the window's edge too.
 	& > .inner > section.section,
 	& > .inner > form > section.section,
 	& > .inner > .blog-featured,
+	& > .inner > #project-wrap,
 	& > .inner > .contentpane > .contentpaneopen {
 		.outerPadding();
 		padding-top: 30px;
@@ -86,6 +91,16 @@ body {
 		.subject .contentpaneopen {
 			padding: 0;
 		}
+	}
+
+	// Sections stacked one after another - a resource's summary over its tabs,
+	// a question over its chosen answer over the rest - would otherwise each
+	// bring their own top and bottom padding, which leaves twice the gap
+	// between them as around them: a blank band wide enough to read as the end
+	// of the page. The one below takes its spacing from the one above.
+	& > .inner > section.section + section.section,
+	& > .inner > form > section.section + section.section {
+		padding-top: 0;
 	}
 }
 

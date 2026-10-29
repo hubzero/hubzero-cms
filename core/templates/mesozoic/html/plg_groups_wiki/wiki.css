@@ -20,3 +20,34 @@
 .timestamp {
 	color: #6B6259;
 }
+
+/*
+ * The wiki's own buttons, cut down to their icons
+ *
+ * Under 1200px the plugin keeps only the icon of Index, Search, New page and
+ * Settings: the button narrows to its left padding and hides the rest. That
+ * relies on the icon being placed in that padding, which a template that sets
+ * button icons in the flow rather than over the edge does not do - so the
+ * icon went the way of the label and each button was an empty brown square.
+ */
+@media all and (max-width: 1200px) {
+	.add.btn,
+	.index.btn,
+	.search.btn,
+	.settings.btn {
+		position: relative;
+	}
+
+	.add.btn:before,
+	.index.btn:before,
+	.search.btn:before,
+	.settings.btn:before {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 2.41em;
+		margin: 0;
+		text-align: center;
+		transform: translateY(-50%);
+	}
+}
