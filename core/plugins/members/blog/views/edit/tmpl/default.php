@@ -44,7 +44,7 @@ $this->css('jquery.datepicker.css', 'system')
 
     <form action="<?php echo Route::url($this->member->link() . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
         <fieldset>
-            <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
+            <legend><?php echo Lang::txt($this->entry->isNew() ? 'PLG_MEMBERS_BLOG_NEW_ENTRY' : 'PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
             <div class="form-group">
                 <label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) {

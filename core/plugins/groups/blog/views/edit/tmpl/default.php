@@ -40,7 +40,7 @@ $this->css()
 
 <form action="<?php echo Route::url($base); ?>" method="post" id="hubForm" class="full">
     <fieldset>
-        <legend><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
+        <legend><?php echo Lang::txt($this->entry->isNew() ? 'PLG_GROUPS_BLOG_NEW_ENTRY' : 'PLG_GROUPS_BLOG_EDIT_DETAILS'); ?></legend>
 
         <div class="form-group">
             <label<?php if ($this->task == 'save' && !$this->entry->get('title')) {

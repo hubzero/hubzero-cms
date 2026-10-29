@@ -42,7 +42,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             <div class="grid">
                 <div class="col span6">
                     <div class="form-group">
-                        <label for="display-members">
+                        <label for="display-sources">
                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SELECT_SOURCES'); ?>
                             <select name="display" id="display-sources" class="form-control">
                                 <?php $groupsLabel = Lang::txt('PLG_GROUPS_CITATIONS_DISPLAY_GROUPS'); ?>
@@ -72,7 +72,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             <div class="grid">
                 <div class="col span6">
                     <div class="form-group">
-                        <label for="display-members">
+                        <label for="show_tags">
                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_DISPLAY_TAGS'); ?>
                             <select name="citations_show_tags" id="show_tags" class="form-control">
                                 <?php $selTags = ($this->citations_show_tags == "yes") ? "selected=selected" : ""; ?>
@@ -85,7 +85,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                 </div>
                 <div class="col span6 omega">
                     <div class="form-group">
-                        <label for="display-members">
+                        <label for="show_badges">
                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_DISPLAY_BADGES'); ?>
                             <select name="citations_show_badges" id="show_badges" class="form-control">
                                 <?php $sel = ($this->citations_show_badges == "yes") ? "selected=selected" : ""; ?>
@@ -115,7 +115,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             <div class="grid">
                 <div class="col span6">
                     <div class="form-group">
-                        <label for="display-members">
+                        <label for="include-coins">
                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_INCLUDE_COINS'); ?>
                             <select name="include_coins" id="include-coins" class="form-control">
                                 <?php $selCoins = ($this->include_coins == "no") ? "selected=selected" : ""; ?>
@@ -128,7 +128,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                 </div>
                 <div class="col span6 omega">
                     <div class="form-group">
-                        <label for="display-members">
+                        <label for="coins-only">
                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_COINS_ONLY'); ?>
                             <select name="coins_only" id="coins-only" class="form-control">
                                 <?php $selOnly = ($this->coins_only == "no") ? "selected=selected" : ""; ?>
@@ -152,7 +152,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             <legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?></legend>
 
             <div class="form-group">
-                <label for="cite">
+                <label for="format-selector">
                     <?php echo Lang::txt('PLG_GROUPS_CITATIONS_CITATION_FORMAT'); ?>:
                     <select name="citation-format"
                         id="format-selector"

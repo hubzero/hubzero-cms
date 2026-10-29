@@ -63,7 +63,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                 <iframe width="100%" height="370" name="filer" id="filer" title="<?php echo Lang::txt('COM_BLOG_FIELD_FILES'); ?>" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
             </div>
             <fieldset>
-                <legend><?php echo Lang::txt('COM_BLOG_EDIT_DETAILS'); ?></legend>
+                <legend><?php echo Lang::txt($this->entry->isNew() ? 'COM_BLOG_NEW_ENTRY' : 'COM_BLOG_EDIT_DETAILS'); ?></legend>
 
                 <div class="form-group">
                     <label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) {

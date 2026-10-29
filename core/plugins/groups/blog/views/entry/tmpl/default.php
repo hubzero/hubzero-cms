@@ -93,7 +93,7 @@ $first = $this->archive->entries(array(
                 ?>
                 <dd class="comments">
                     <a href="<?php echo Route::url($this->row->link('comments')); ?>">
-                        <?php echo Lang::txt('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
+                        <?php echo Lang::txts('PLG_GROUPS_BLOG_NUM_COMMENTS', $comments); ?>
                     </a>
                 </dd>
             <?php } else { ?>

@@ -90,7 +90,7 @@ $this->css()
                 ?>
                 <dd class="comments">
                     <a href="<?php echo Route::url($this->row->link('comments')); ?>">
-                        <?php echo Lang::txt('PLG_MEMBERS_BLOG_NUM_COMMENTS', $comments); ?>
+                        <?php echo Lang::txts('PLG_MEMBERS_BLOG_NUM_COMMENTS', $comments); ?>
                     </a>
                 </dd>
             <?php } else { ?>

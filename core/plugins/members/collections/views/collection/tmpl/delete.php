@@ -28,7 +28,7 @@ $this->css();
         id="hubForm"
         class="full">
         <fieldset>
-            <legend><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
+            <legend><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
 
             <p class="warning">
                 <?php echo Lang::txt(
