@@ -1021,6 +1021,64 @@ class User extends \Hubzero\Database\Relational
 	}
 
 	/**
+	 * Keep the account expiry (shadowExpire) in line with the block state,
+	 * whichever code path blocked or unblocked the user. A blocked account
+	 * must be expired so LDAP/PAM refuse it, SSH keys included.
+	 *
+	 * @param   bool  $wasBlocked  Block state before this save
+	 * @return  void
+	 */
+	protected function syncAccountExpiry($wasBlocked)
+	{
+		$blocked = ((int) $this->get('block') == 1);
+
+		if (!$blocked && !$wasBlocked)
+		{
+			return;
+		}
+
+		$id   = (int) $this->get('id');
+		$hzup = Password::getInstance($id);
+
+		if (!$hzup)
+		{
+			if (!$blocked)
+			{
+				return;
+			}
+
+			// No password row and no profile to create one from yet
+			$db = \App::get('db');
+			$db->setQuery("INSERT IGNORE INTO `#__users_password` (user_id, passhash) VALUES (" . $db->quote($id) . ", '')");
+			$db->query();
+
+			$hzup = Password::getInstance($id);
+
+			if (!$hzup)
+			{
+				return;
+			}
+		}
+
+		$expire = $hzup->get('shadowExpire');
+
+		if ($blocked)
+		{
+			// Already expired (blocked, or inactive): keep it
+			if ($expire === null || $expire === '' || (int) $expire > intval(time() / 86400))
+			{
+				$hzup->set('shadowExpire', Password::BLOCKED_EXPIRE_DAY);
+				$hzup->update();
+			}
+		}
+		elseif ($expire !== null)
+		{
+			$hzup->set('shadowExpire', null);
+			$hzup->update();
+		}
+	}
+
+	/**
 	 * Save data
 	 *
 	 * @return  boolean
@@ -1096,6 +1154,8 @@ class User extends \Hubzero\Database\Relational
 
 			// In case it's a new user, we need to grab the ID
 			$data['id'] = $this->get('id');
+
+			$this->syncAccountExpiry($isNew ? false : (bool) $oldUser->get('block'));
 
 			// Fire the onUserAfterSave event
 			Event::trigger('user.onUserAfterSave', array($data, $isNew, $result, $this->getError()));
