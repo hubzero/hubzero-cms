@@ -206,8 +206,15 @@ class Admin implements StepInterface
             $fullName = trim($data['name']);
             $nameParts = $this->parseNameParts($fullName);
 
-            // Set fixed id and username
-            $user->set('id', self::ADMIN_USER_ID);
+            // The administrator is account 1000. Setting the id on the
+            // model made the save an update of a row that was not there,
+            // which changed nothing and reported success, so the wizard
+            // finished with no administrator. Start the empty table's
+            // numbering there instead and let the save insert.
+            $db = \App::get('db');
+            $db->setQuery('ALTER TABLE `#__users` AUTO_INCREMENT = ' . (int) self::ADMIN_USER_ID);
+            $db->query();
+
             $user->set('name', $fullName);
             $user->set('givenName', $nameParts['givenName']);
             $user->set('middleName', $nameParts['middleName']);
@@ -225,14 +232,17 @@ class Admin implements StepInterface
             $user->set('registerIP', $_SERVER['REMOTE_ADDR'] ?? '');
             $user->set('lastvisitDate', '0000-00-00 00:00:00');
             $user->set('lastResetTime', '0000-00-00 00:00:00');
-            $user->set('activation', 0);
+            // Answered, not left unset: a hub holds a member at the
+            // registration form until these are, and an administrator who
+            // cannot use the site they have just installed is no use
+            $user->set('activation', 1);
             $user->set('resetCount', 0);
-            $user->set('usageAgreement', 0);
+            $user->set('usageAgreement', 1);
             $user->set('homeDirectory', '');
             $user->set('loginShell', '');
             $user->set('ftpShell', '');
 
-            if (!$user->save()) {
+            if (!$user->save() || !$user->get('id')) {
                 $this->installer->addMessage('Failed to create admin user: ' . $user->getError(), 'error');
                 return false;
             }

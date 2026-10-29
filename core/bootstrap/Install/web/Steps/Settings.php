@@ -114,6 +114,11 @@ class Settings implements StepInterface
             return false;
         }
 
+        if (!$this->saveDefaultConfigs()) {
+            $this->installer->addMessage('Failed to save the default configuration files.', 'error');
+            return false;
+        }
+
         // Store in session for later
         $this->installer->setSessionData('settings', array_merge($appSettings, $mailSettings));
         $this->installer->markStepComplete('settings');
@@ -207,6 +212,35 @@ class Settings implements StepInterface
         $content .= ");\n";
 
         return file_put_contents($configDir . '/app.php', $content) !== false;
+    }
+
+    /**
+     * Save the configuration this step does not ask about
+     *
+     * The hub reads its cache, session, URL and other settings from files of
+     * their own, and with no cache.php there is no cache handler at all: the
+     * administrator login stopped with a 500. Copy the shipped defaults for
+     * any of them not already there, the same values `muse install` writes.
+     *
+     * @return  bool
+     */
+    private function saveDefaultConfigs()
+    {
+        $configDir = PATH_APP . '/config';
+
+        foreach (['cache', 'session', 'seo', 'offline', 'ftp', 'rate_limit'] as $name) {
+            $target = $configDir . '/' . $name . '.php';
+
+            if (file_exists($target)) {
+                continue;
+            }
+
+            if (!copy(INSTALL_ROOT . '/config/' . $name . '.php', $target)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

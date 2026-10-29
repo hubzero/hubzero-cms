@@ -2615,6 +2615,7 @@ CREATE TABLE `#__migrations` (
   `direction` varchar(10) NOT NULL DEFAULT '',
   `date` datetime NOT NULL,
   `action_by` varchar(255) NOT NULL DEFAULT '',
+  `status` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 

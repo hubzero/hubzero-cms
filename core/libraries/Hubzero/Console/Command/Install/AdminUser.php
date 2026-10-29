@@ -54,8 +54,9 @@ class AdminUser
         self::output("\n", $ansi);
         self::output("Press Ctrl+C to cancel at any time.\n", $ansi);
 
-        // Load database configuration from Config facade
-        $dbConfig = \Config::get('database');
+        // Prefer what the database step wrote over the configuration the
+        // console read at startup, which a fresh install predates.
+        $dbConfig = Database::readConfig($appPath) ?? \Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -400,20 +401,54 @@ class AdminUser
             // Generate password hash (using CRYPT_SHA512 format)
             $passhash = self::hashPassword($userData['password']);
 
+            $values = [
+                'name'         => $userData['name'],
+                'username'     => $userData['username'],
+                'email'        => $userData['email'],
+                'password'     => $passhash,
+                'usertype'     => 'Super Administrator',
+                'block'        => 0,
+                'approved'     => 2,
+                'sendEmail'    => 1,
+                'registerDate' => date('Y-m-d H:i:s'),
+                'params'       => '',
+            ];
+
+            // A hub keeps the parts of a name as well as the whole of it, and
+            // asks for none of them, or the shell fields, to be null. Which of
+            // them the table has depends on how far the migrations have run.
+            $parts = preg_split('/\s+/', trim($userData['name']), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+            $optional = [
+                'givenName'     => array_shift($parts) ?? '',
+                'surname'       => array_pop($parts) ?? '',
+                'middleName'    => implode(' ', $parts),
+                'homeDirectory' => '',
+                'loginShell'    => '',
+                'ftpShell'      => '',
+            ];
+
+            $present = self::getColumns($pdo, $prefix . 'users');
+
+            foreach ($optional as $column => $value) {
+                if (in_array($column, $present, true)) {
+                    $values[$column] = $value;
+                }
+            }
+
+            $columns      = array_keys($values);
+            $placeholders = [];
+
+            foreach ($columns as $column) {
+                $placeholders[] = ':' . $column;
+            }
+
             // Insert into users table
             $stmt = $pdo->prepare(
-                "INSERT INTO `{$prefix}users`
-                 (name, username, email, password, usertype, block, approved, sendEmail, registerDate, params)
-                 VALUES
-                 (:name, :username, :email, :password, 'Super Administrator', 0, 2, 1, :registerDate, '')"
+                "INSERT INTO `{$prefix}users` (`" . implode('`, `', $columns) . "`)"
+                . ' VALUES (' . implode(', ', $placeholders) . ')'
             );
-            $stmt->execute([
-                'name' => $userData['name'],
-                'username' => $userData['username'],
-                'email' => $userData['email'],
-                'password' => $passhash,
-                'registerDate' => date('Y-m-d H:i:s'),
-            ]);
+            $stmt->execute($values);
 
             $userId = $pdo->lastInsertId();
 
@@ -452,6 +487,24 @@ class AdminUser
     }
 
     /**
+     * The columns a table has
+     *
+     * @param   \PDO    $pdo    PDO connection
+     * @param   string  $table  The table to describe
+     * @return  array
+     **/
+    private static function getColumns($pdo, $table)
+    {
+        try {
+            $stmt = $pdo->query('SHOW COLUMNS FROM `' . $table . '`');
+
+            return $stmt ? $stmt->fetchAll(\PDO::FETCH_COLUMN, 0) : [];
+        } catch (\PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
      * Hash a password using CRYPT_SHA512
      *
      * @param   string  $password  Plain text password
@@ -459,9 +512,11 @@ class AdminUser
      **/
     private static function hashPassword($password)
     {
-        $salt = self::generateSalt(16);
-        $encrypted = crypt($password, '$6$' . $salt . '$');
-        return '{CRYPT}' . $encrypted;
+        // Eight hex characters between the markers, which is the shape the
+        // hub's own password code writes and the only one it reads back
+        $salt = self::generateSalt(8);
+
+        return '{CRYPT}' . crypt($password, '$6$' . $salt . '$');
     }
 
     /**
@@ -472,21 +527,7 @@ class AdminUser
      **/
     private static function generateSalt($length)
     {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./';
-        $salt = '';
-
-        if (function_exists('random_bytes')) {
-            $bytes = random_bytes($length);
-            for ($i = 0; $i < $length; $i++) {
-                $salt .= $chars[ord($bytes[$i]) % strlen($chars)];
-            }
-        } else {
-            for ($i = 0; $i < $length; $i++) {
-                $salt .= $chars[mt_rand(0, strlen($chars) - 1)];
-            }
-        }
-
-        return $salt;
+        return substr(bin2hex(random_bytes($length)), 0, $length);
     }
 
     /**
