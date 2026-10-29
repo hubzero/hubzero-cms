@@ -283,7 +283,7 @@ class Flavor extends Base implements CommandInterface
 					$query  = "INSERT INTO `#__resource_types` VALUES ('7', 'tools', 'Tools', '27',";
 					$query .= "'Simulation and modeling tools that can be accessed via a web browser.', '1',";
 					$query .= "'poweredby=Powered by=textarea=0\ncredits=Credits=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0',";
-					$query .= "'plg_citations=1\nplg_questions=1\nplg_recommendations=1\nplg_related=1\nplg_reviews=1\nplg_usage=1\nplg_versions=1\nplg_favorite=1\nplg_share=1\nplg_wishlist=1\nplg_supportingdocs=1\nplg_about=0\nplg_abouttool=1')";
+					$query .= "'plg_citations=1\nplg_questions=1\nplg_recommendations=1\nplg_related=1\nplg_reviews=1\nplg_usage=1\nplg_versions=1\nplg_favorite=1\nplg_share=1\nplg_wishlist=1\nplg_supportingdocs=1\nplg_about=1\nplg_abouttool=0')";
 					$database->setQuery($query);
 					$database->query();
 					$this->output->addLine('Adding tools resource type');
