@@ -252,8 +252,8 @@ $this->css('browse.css');
 					'start'    => 0,
 					'sort'     => 'total',
 					'sort_Dir' => '',
+					// No scope_id: every course's tags, not those of course 0
 					'scope'    => 'courses',
-					'scope_id' => 0,
 					'base'     => 'index.php?option=' . $this->option . '&task=browse',
 					'filters'  => $this->filters
 				));

@@ -194,7 +194,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 						<?php $k = 0; ?>
 
 						<?php foreach ($unit->assetgroups(null, $filters) as $agt) { ?>
-							<?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && count($agt->children()) > 0) { ?>
+							<?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && (count($agt->children()) > 0 || $agt->assets()->total())) { ?>
 									<?php
 									$cls = '';
 									if (!$agt->started())
@@ -450,7 +450,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 														$target = '';
 														if ($a->get('type') == 'video')
 														{
-															$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
+															$href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $agt->get('alias'));
 														}
 														else if ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool')
 														{

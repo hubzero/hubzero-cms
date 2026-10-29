@@ -178,7 +178,11 @@ if ($primary != 'hubzero' && !isset($refl[$primary]))
 		</div>
 	<?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
 		<p class="create">
-			<a href="<?php echo Request::base(true); ?>/register<?php echo $this->return ? '?return=' . $this->return : ''; ?>" class="register">
+			<?php
+			$regUrl = Route::url('index.php?option=com_members&view=register&layout=create')
+				. ($this->return ? '?return=' . $this->return : '');
+			?>
+			<a href="<?php echo $regUrl; ?>" class="register">
 				<?php echo Lang::txt('COM_USERS_LOGIN_CREATE_ACCOUNT'); ?>
 			</a>
 		</p>

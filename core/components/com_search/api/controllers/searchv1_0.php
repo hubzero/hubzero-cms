@@ -170,8 +170,8 @@ class Searchv1_0 extends ApiController
 				}
 			}
 
-			$snippet = str_replace("\n", "", $snippet);
-			$snippet = str_replace("\r", "", $snippet);
+			// A line break stands between two words: a space, not nothing
+			$snippet = preg_replace('/\s+/u', ' ', $snippet);
 			$snippet  = Str::excerpt($snippet, $terms, $radius = 200, $ellipsis = '…');
 
 			$result['snippet'] = $snippet;

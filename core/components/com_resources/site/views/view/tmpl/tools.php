@@ -119,10 +119,13 @@ $revision = $this->revision;
 						$html = '';
 
 						// get launch button
-						$versiontext = '<strong>';
+						// The version is bold where there is one. A tool with no version
+						// record has none to show, and opening the tag regardless left it
+						// unclosed, so everything after it - the whole aside - was in it.
+						$versiontext = '';
 						if ($revision && $thistool)
 						{
-							$versiontext .= $thistool->version.'</strong>';
+							$versiontext .= '<strong>' . $thistool->version . '</strong>';
 							if ($this->model->revision!='dev')
 							{
 								$versiontext .=  '<br /> '.ucfirst(Lang::txt('COM_RESOURCES_PUBLISHED_ON')).' ';
@@ -136,13 +139,16 @@ $revision = $this->revision;
 						}
 						else if ($curtool)
 						{
-							$versiontext .= $curtool->version.'</strong> - '.Lang::txt('COM_RESOURCES_PUBLISHED_ON').' ';
+							$versiontext .= '<strong>' . $curtool->version . '</strong> - '.Lang::txt('COM_RESOURCES_PUBLISHED_ON').' ';
 							$versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? Date::of($curtool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')): Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 						}
 
 						if (!$thistool)
 						{
-							$html .= "\t\t\t\t".'<p class="curversion">'.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext.'</p>'."\n";
+							if ($versiontext !== '')
+							{
+								$html .= "\t\t\t\t".'<p class="curversion">'.Lang::txt('COM_RESOURCES_VERSION').' '.$versiontext.'</p>'."\n";
+							}
 						}
 						else if ($revision == 'dev')
 						{

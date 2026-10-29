@@ -382,11 +382,11 @@ class Solr extends SiteController
 					}
 				}
 
-				// Do some filtering
-				$snippet = str_replace("\n", '', $snippet);
-				$snippet = str_replace("\r", '', $snippet);
-				$snippet = str_replace("<br/>", '', $snippet);
-				$snippet = str_replace("<br>", '', $snippet);
+				// Do some filtering. A line break in the source is the space
+				// between two words, so it becomes one rather than nothing -
+				// "took four\nof us" was coming out as "took fourof us".
+				$snippet = str_replace(array("<br/>", "<br />", "<br>"), ' ', $snippet);
+				$snippet = preg_replace('/\s+/u', ' ', $snippet);
 				$snippet = \Hubzero\Utility\Str::excerpt($snippet, $terms, $radius = 500, $ellipsis = '…');
 				$snippet = \Hubzero\Utility\Str::highlight($snippet, $terms, $highlightOptions);
 				$result['snippet'] = trim($snippet);

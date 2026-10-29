@@ -81,7 +81,7 @@ $revisions = $this->page->versions()
 
 		<form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
 			<p class="info">
-				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toSql(true) . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toSql(true) . '</time>'); ?>
+				<?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toLocal('Y-m-d H:i:s') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toLocal('Y-m-d H:i:s') . '</time>'); ?>
 			</p>
 
 			<div class="container">
@@ -95,12 +95,12 @@ $revisions = $this->page->versions()
 						<tr>
 							<th scope="col" colspan="2"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_COMPARE'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_WHEN'); ?></th>
+							<th scope="col"><span class="sr-only">Markup</span></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_MADE_BY'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_LENGTH'); ?></th>
 							<th scope="col"><?php echo Lang::txt('COM_WIKI_HISTORY_COL_STATUS'); ?></th>
-							<th scope="col"><span class="sr-only">Markup</span></th>
 							<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
-								<th scope="col"><span class="sr-only">Actions</span></th>
+								<th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
 							<?php } ?>
 						</tr>
 					</thead>
@@ -168,7 +168,7 @@ $revisions = $this->page->versions()
 								<?php } ?>
 								<td>
 									<a href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version'))); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY').' :: ' . $this->escape(strip_tags((string) $summary)); ?>">
-										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d h:i:s')); ?></time>
+										<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s')); ?></time>
 									</a>
 								</td>
 								<td>

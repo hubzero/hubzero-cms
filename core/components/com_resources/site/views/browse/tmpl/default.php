@@ -189,7 +189,7 @@ $this->css()
 			<div class="container">
 				<h3><?php echo Lang::txt('COM_RESOURCES_POPULAR_TAGS'); ?></h3>
 				<?php
-				$rt = new \Components\Resources\Helpers\Tags(0);
+				$rt = new \Components\Resources\Helpers\Tags();
 				echo $rt->getTopTagCloud(20, $this->filters['tag']);
 				?>
 				<p><?php echo Lang::txt('COM_RESOURCES_POPULAR_TAGS_HINT'); ?></p>
