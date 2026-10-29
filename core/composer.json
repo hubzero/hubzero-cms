@@ -18,6 +18,7 @@
         "source": "http://hubzero.org/download"
     },
     "require": {
+        "php": "^8.3",
         "alek13/slack": "^2.3",
         "apereo/phpcas": "1.6.*",
         "bordoni/phpass": "0.3.*",
@@ -57,7 +58,7 @@
         "masbug/flysystem-google-drive-ext": "2.5.*",
         "pear/archive_tar": "^1.6",
         "pear/net_dns2": "1.5.*",
-        "pelago/emogrifier": "7.0.*",
+        "pelago/emogrifier": "^7.3",
         "php-amqplib/php-amqplib": "3.7.*",
         "php-http/curl-client": "2.3.*",
         "phpdocumentor/reflection-docblock": "5.2.*",
@@ -104,7 +105,7 @@
     "config": {
         "preferred-install": "dist",
         "platform": {
-            "php": "8.2.30"
+            "php": "8.3.6"
         },
         "allow-plugins": {
             "simplesamlphp/composer-module-installer": true,
