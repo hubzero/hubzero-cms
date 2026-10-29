@@ -244,6 +244,14 @@ class Ldap
 
 		if (!empty($dbinfo))
 		{
+			// passhash is NOT NULL, so "no password" is ''. Treat it as NULL so
+			// a cleared password is deleted from LDAP, not left there or
+			// written as an empty value.
+			if (isset($dbinfo['userPassword']) && $dbinfo['userPassword'] === '')
+			{
+				$dbinfo['userPassword'] = null;
+			}
+
 			// Make sure we have a name
 			// If one isn't set, make it the same as the username
 			if (!trim($dbinfo['cn']) && $dbinfo['uid'])
