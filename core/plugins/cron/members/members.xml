@@ -15,6 +15,10 @@
 	</languages>
 	<config>
 		<fields name="params">
+			<fieldset group="expireinactive">
+				<field name="members_expireinactive_months" type="text" default="36" label="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_MONTHS_LABEL" description="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_MONTHS_DESC" />
+				<field name="members_expireinactive_exempt_group" type="text" default="Service accounts" label="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_EXEMPT_LABEL" description="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_EXEMPT_DESC" />
+			</fieldset>
 		</fields>
 	</config>
 </extension>
