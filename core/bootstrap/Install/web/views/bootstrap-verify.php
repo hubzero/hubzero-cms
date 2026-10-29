@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUBzero Bootstrap Setup - Verify Ownership</title>
+    <title>Hubzero Bootstrap Setup - Verify Ownership</title>
     <style>
 :root {
     --primary-color: #2563eb;
@@ -301,7 +301,7 @@ body {
 <body>
     <div class="container">
         <div class="header">
-            <h1>HUBzero Bootstrap Setup</h1>
+            <h1>Hubzero Bootstrap Setup</h1>
             <p>Verify file system ownership</p>
         </div>
 
@@ -316,7 +316,7 @@ body {
 
             <div class="warning-box">
                 <h3>Why This Step?</h3>
-                <p>This verification prevents unauthorized users from running the installer on your server. Only someone with file system access should be able to install HUBzero.</p>
+                <p>This verification prevents unauthorized users from running the installer on your server. Only someone with file system access should be able to install Hubzero.</p>
             </div>
 
             <?php if ($security->isLockedOut()) : ?>
@@ -379,7 +379,7 @@ body {
         </div>
 
         <div class="footer">
-            <p>&copy; <?php echo date('Y'); ?> HUBzero. Released under the MIT License.</p>
+            <p>&copy; <?php echo date('Y'); ?> Hubzero. Released under the MIT License.</p>
         </div>
     </div>
 

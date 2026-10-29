@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUBzero Installation - Configuration Required</title>
+    <title>Hubzero Installation - Configuration Required</title>
     <style>
 :root {
     --primary-color: #2563eb;
@@ -311,7 +311,7 @@ body {
 
             <div class="explanation-box">
                 <h3>What's happening?</h3>
-                <p>For security, the HUBzero installer needs to store sensitive data in a location that is <strong>not accessible via the web</strong>. This prevents potential attackers from accessing installation secrets even if there are web server misconfigurations.</p>
+                <p>For security, the Hubzero installer needs to store sensitive data in a location that is <strong>not accessible via the web</strong>. This prevents potential attackers from accessing installation secrets even if there are web server misconfigurations.</p>
                 <p>The installer tried to use the following locations but none were available:</p>
             </div>
 
@@ -369,7 +369,7 @@ body {
         </main>
 
         <footer class="installer-footer">
-            <p>&copy; <?php echo date('Y'); ?> HUBzero. Released under the MIT License.</p>
+            <p>&copy; <?php echo date('Y'); ?> Hubzero. Released under the MIT License.</p>
         </footer>
     </div>
 </body>

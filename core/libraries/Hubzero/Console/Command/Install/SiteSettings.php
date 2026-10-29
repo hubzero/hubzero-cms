@@ -174,7 +174,7 @@ class SiteSettings
         // Meta description - use existing or generate from sitename
         self::output("\n", $ansi);
         $defaultDesc = $existing['MetaDesc']
-            ?? ($settings['sitename'] . ' - A HUBzero-powered hub for research and collaboration.');
+            ?? ($settings['sitename'] . ' - A Hubzero-powered hub for research and collaboration.');
         $settings['MetaDesc'] = self::promptInput(
             "Site description (for search engines)",
             $defaultDesc,

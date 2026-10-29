@@ -4,7 +4,7 @@
  * Windows OS Error Page
  *
  * Shared between bootstrap installer and main web installer.
- * HUBzero does not support Windows.
+ * Hubzero does not support Windows.
  *
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unsupported Operating System - HUBzero</title>
+    <title>Unsupported Operating System - Hubzero</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -97,22 +97,22 @@
             <h1>Unsupported Operating System</h1>
         </div>
         <div class="error-body">
-            <p><strong>HUBzero cannot be installed on Windows.</strong></p>
-            <p>HUBzero is designed exclusively for Unix-like operating systems and relies on features that are not available on Windows, including:</p>
+            <p><strong>Hubzero cannot be installed on Windows.</strong></p>
+            <p>Hubzero is designed exclusively for Unix-like operating systems and relies on features that are not available on Windows, including:</p>
             <ul>
                 <li>POSIX file permissions and ownership</li>
                 <li>Unix process management</li>
                 <li>Symbolic links and Unix filesystem semantics</li>
                 <li>Shell commands and utilities (bash, grep, etc.)</li>
             </ul>
-            <p>To install HUBzero, please use one of the following supported platforms:</p>
+            <p>To install Hubzero, please use one of the following supported platforms:</p>
             <ul>
                 <li><strong>Linux</strong> (Ubuntu, CentOS, Rocky Linux, etc.)</li>
                 <li><strong>macOS</strong> (for development only)</li>
             </ul>
             <div class="info-box">
                 <h3>Using Windows for Development?</h3>
-                <p>Consider using Windows Subsystem for Linux (WSL2), Docker, or a virtual machine running Linux to develop and test HUBzero.</p>
+                <p>Consider using Windows Subsystem for Linux (WSL2), Docker, or a virtual machine running Linux to develop and test Hubzero.</p>
             </div>
         </div>
     </div>

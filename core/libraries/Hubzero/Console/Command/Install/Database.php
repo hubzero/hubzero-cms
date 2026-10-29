@@ -793,7 +793,7 @@ class Database
 
                     $options = [
                         'Try a different admin account',
-                        'Use this account for HUBzero instead',
+                        'Use this account for Hubzero instead',
                         'Back',
                         'Exit'
                     ];
@@ -810,7 +810,7 @@ class Database
                         return false;
                     }
 
-                    if ($options[$selected] === 'Use this account for HUBzero instead') {
+                    if ($options[$selected] === 'Use this account for Hubzero instead') {
                         // Use these credentials directly
                         $connection['username'] = $adminUser;
                         $connection['password'] = $adminPass;

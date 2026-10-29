@@ -113,12 +113,12 @@ class Admin implements StepInterface
             return false;
         }
 
-        // Initialize database connection for HUBzero ORM
+        // Initialize database connection for Hubzero ORM
         if (!$this->bootstrapApplication()) {
             return false;
         }
 
-        // Update user using HUBzero User class
+        // Update user using Hubzero User class
         try {
             $user = User::oneOrFail($this->existingAdmin['id']);
 
@@ -193,12 +193,12 @@ class Admin implements StepInterface
             return false;
         }
 
-        // Initialize database connection for HUBzero ORM
+        // Initialize database connection for Hubzero ORM
         if (!$this->bootstrapApplication()) {
             return false;
         }
 
-        // Create user using HUBzero User class
+        // Create user using Hubzero User class
         try {
             $user = User::blank();
 
@@ -314,7 +314,7 @@ class Admin implements StepInterface
     }
 
     /**
-     * Bootstrap a full HUBzero application
+     * Bootstrap a full Hubzero application
      *
      * This initializes all Site service providers (database, events, etc.)
      * so that User, Password, and Map classes can function properly.

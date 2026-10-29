@@ -37,7 +37,7 @@ foreach ($missingExtensions as $ext) {
 $helpText = [
     'os' => [
         'title' => 'Operating System',
-        'debian' => 'HUBzero is designed for Linux servers. Debian/Ubuntu is fully supported.',
+        'debian' => 'Hubzero is designed for Linux servers. Debian/Ubuntu is fully supported.',
         'rhel' => 'RHEL, CentOS, Rocky Linux, and Oracle Linux are fully supported.',
         'mac' => 'macOS is supported for development environments.',
     ],

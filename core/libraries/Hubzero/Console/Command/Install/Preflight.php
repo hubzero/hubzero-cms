@@ -126,7 +126,7 @@ class Preflight
         }
 
         self::output("  \e[31m[FAIL]\e[39m Operating System: {$os}\n", $ansi, true);
-        self::output("         HUBzero requires Linux, macOS, or BSD. Windows is not supported.\n", $ansi, true);
+        self::output("         Hubzero requires Linux, macOS, or BSD. Windows is not supported.\n", $ansi, true);
         return false;
     }
 
