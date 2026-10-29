@@ -236,6 +236,14 @@ class Repository extends Base implements CommandInterface
 	public function update()
 	{
 		$mode = $this->output->getMode();
+
+		if (!$this->mechanism->hasUpstream())
+		{
+			$this->output->error(
+				'This checkout is not on a branch that follows another, so there is nothing to update it from. '
+				. 'Check out the release branch first (for example: git checkout 2.4-main), or name one with --source.'
+			);
+		}
 		if ($this->arguments->getOpt('f'))
 		{
 			if ($mode != 'minimal')
