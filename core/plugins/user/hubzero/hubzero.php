@@ -367,10 +367,52 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 		$userid = $instance->get('id');
 		$this->verifyUserSecret($userid);
 
+		// A sign-in that did not use the local password
+		if (!isset($user['type']) || $user['type'] != 'hubzero')
+		{
+			$this->afterOtherSignIn($userid);
+		}
+
 		// Hit the user last visit field
 		$instance->setLastVisit();
 
 		return true;
+	}
+
+	/**
+	 * After a sign-in that did not use the local password (SSO, JWT):
+	 * - an expired password is removed, so the account falls into the
+	 *   "no password" case and SSH keys work again;
+	 * - an account expired for inactivity is restored, since this sign-in
+	 *   is activity.
+	 *
+	 * @param   integer  $userid
+	 * @return  void
+	 */
+	protected function afterOtherSignIn($userid)
+	{
+		$this->loadLanguage();
+
+		$hzup = \Hubzero\User\Password::getInstance($userid);
+
+		if (!$hzup)
+		{
+			return;
+		}
+
+		if (\Hubzero\User\Password::isPasswordExpired($hzup)
+		 && \Hubzero\User\Password::removePassword($userid))
+		{
+			Notify::warning(Lang::txt('PLG_USER_HUBZERO_EXPIRED_PASSWORD_REMOVED'));
+		}
+
+		if (\Hubzero\User\Password::isInactive($hzup))
+		{
+			$hzup->set('shadowExpire', null);
+			$hzup->update();
+
+			Notify::warning(Lang::txt('PLG_USER_HUBZERO_INACTIVE_LIFTED'));
+		}
 	}
 
 	/**
