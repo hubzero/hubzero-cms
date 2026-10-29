@@ -280,6 +280,15 @@ class Credentials extends SiteController
 			return $this->pretendSent();
 		}
 
+		// An account expired for inactivity gets an explanation instead of a
+		// reset code. The screen reads as for any request, so the form still
+		// reveals nothing about the account.
+		if (\Hubzero\User\Password::isInactive($user->get('id')))
+		{
+			$this->sendInactiveNotice($user);
+			return $this->pretendSent();
+		}
+
 		// Set the confirmation token
 		$token       = App::hash(\Hubzero\User\Password::genRandomPassword());
 		$salt        = \Hubzero\User\Password::getSalt('crypt-md5');
@@ -289,37 +298,12 @@ class Credentials extends SiteController
 		$user->tokens()->save(['token' => $hashedToken]);
 
 		// Send an email
-		$eview  = new \Hubzero\Mail\View(array(
-			'name'   => 'emails',
-			'layout' => 'reset_plain'
+		$sent = $this->sendResetMail($user, 'reset', 'password_reset', array(
+			'token'  => $token,
+			'return' => Route::url('index.php?option=' . $this->_option . '&task=verify')
 		));
 
-		$eview->config  = Config::getRoot();
-		$eview->baseUrl = rtrim(Request::base(), '/');
-		$eview->user    = $user;
-		$eview->token   = $token;
-		$eview->return  = Route::url('index.php?option=' . $this->_option . '&task=verify');
-
-		$plain = $eview->loadTemplate(false);
-		$plain = str_replace("\n", "\r\n", $plain);
-
-		$eview->setLayout('reset_html');
-
-		$html = $eview->loadTemplate();
-		$html = str_replace("\n", "\r\n", $html);
-
-		// Build message
-		$message = new \Hubzero\Mail\Message();
-		$message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
-		        ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
-		        ->addTo($user->get('email'), $user->get('name'))
-		        ->addHeader('X-Component', $this->_option)
-		        ->addHeader('X-Component-Object', 'password_reset')
-		        ->addPart($plain, 'text/plain')
-		        ->addPart($html, 'text/html');
-
-		// Send mail
-		if (!$message->send())
+		if (!$sent)
 		{
 			Log::error('Members password reset email failed[2]: ' . Lang::txt('Failed to mail %s', $user->get('email')));
 
@@ -422,8 +406,8 @@ class Credentials extends SiteController
 			return;
 		}
 
-		// Make sure the user isn't blocked
-		if ($user->get('block'))
+		// Make sure the user isn't blocked or expired for inactivity
+		if ($user->get('block') || \Hubzero\User\Password::isInactive($user->get('id')))
 		{
 			$this->finish(
 				Route::url('index.php?option=' . $this->_option . '&task=verify', false),
@@ -507,8 +491,8 @@ class Credentials extends SiteController
 			return;
 		}
 
-		// Make sure the user isn't blocked
-		if ($user->get('block'))
+		// Make sure the user isn't blocked or expired for inactivity
+		if ($user->get('block') || \Hubzero\User\Password::isInactive($user->get('id')))
 		{
 			App::redirect(
 				Route::url('index.php?option=' . $this->_option . '&task=setpassword', false),
@@ -665,6 +649,74 @@ class Credentials extends SiteController
 			Lang::txt('COM_MEMBERS_CREDENTIALS_' . ucfirst($this->_task)),
 			'index.php?option=' . $this->_option . '&task=' . $this->_task
 		);
+	}
+
+	/**
+	 * Send one of the password reset emails (layouts <name>_plain and <name>_html)
+	 *
+	 * @param   object  $user    \Hubzero\User\User
+	 * @param   string  $layout  Layout name without _plain/_html
+	 * @param   string  $object  X-Component-Object header
+	 * @param   array   $vars    Extra variables for the layouts
+	 * @return  bool    Whether the message was sent
+	 */
+	private function sendResetMail($user, $layout, $object, $vars = array())
+	{
+		$eview  = new \Hubzero\Mail\View(array(
+			'name'   => 'emails',
+			'layout' => $layout . '_plain'
+		));
+
+		$eview->config  = Config::getRoot();
+		$eview->baseUrl = rtrim(Request::base(), '/');
+		$eview->user    = $user;
+
+		foreach ($vars as $key => $value)
+		{
+			$eview->$key = $value;
+		}
+
+		$plain = $eview->loadTemplate(false);
+		$plain = str_replace("\n", "\r\n", $plain);
+
+		$eview->setLayout($layout . '_html');
+
+		$html = $eview->loadTemplate();
+		$html = str_replace("\n", "\r\n", $html);
+
+		$message = new \Hubzero\Mail\Message();
+		$message->setSubject(Lang::txt('COM_MEMBERS_CREDENTIALS_EMAIL_RESET_SUBJECT', Config::get('sitename')))
+		        ->addFrom(Config::get('mailfrom'), Config::get('fromname'))
+		        ->addTo($user->get('email'), $user->get('name'))
+		        ->addHeader('X-Component', $this->_option)
+		        ->addHeader('X-Component-Object', $object)
+		        ->addPart($plain, 'text/plain')
+		        ->addPart($html, 'text/html');
+
+		return $message->send();
+	}
+
+	/**
+	 * Email a user whose account was expired for inactivity why a password
+	 * reset is not available
+	 *
+	 * @param   object  $user  \Hubzero\User\User
+	 * @return  void
+	 */
+	private function sendInactiveNotice($user)
+	{
+		// Store an unusable token so the notice counts against the reset
+		// limit like a reset would; verify and setpassword refuse inactive
+		// accounts, and the token is never sent.
+		$salt = \Hubzero\User\Password::getSalt('crypt-md5');
+		$user->tokens()->save(['token' => md5(App::hash(\Hubzero\User\Password::genRandomPassword()) . $salt) . ':' . $salt]);
+
+		$sent = $this->sendResetMail($user, 'inactive', 'password_reset_inactive');
+
+		if (!$sent)
+		{
+			Log::error('Members inactive account notice email failed: ' . Lang::txt('Failed to mail %s', $user->get('email')));
+		}
 	}
 
 	/**
