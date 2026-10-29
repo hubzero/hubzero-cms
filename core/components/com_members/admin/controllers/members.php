@@ -598,38 +598,64 @@ class Members extends AdminController
 		{
 			// Do we have shadow info to change?
 			// Read as a string: 0 is a real value (expire now), not "unset"
+			// Like "Expires on" below, only acted on when changed from the value the form
+			// displayed: posting it back unchanged would undo the lifetime a new password got.
 			$shadowMax     = trim(Request::getString('shadowMax', '', 'post'));
-			$shadowMaxSet  = ($shadowMax !== '' && is_numeric($shadowMax) && $shadowMax >= 0);
+			$shadowMaxSet  = ($shadowMax !== '' && is_numeric($shadowMax) && $shadowMax >= 0
+				&& $shadowMax !== trim(Request::getString('shadowMaxShown', '', 'post')));
 			$shadowWarning = Request::getInt('shadowWarning', false, 'post');
-			$shadowExpire  = Request::getString('shadowExpire', '', 'post');
 
-			if ($shadowMaxSet || $shadowWarning || $shadowExpire || !is_null($passinfo->get('shadowExpire')))
+			// "Expires on" is the password expiry date. It is only acted on
+			// when it was changed from the date the form displayed.
+			$expiresOn      = trim(Request::getString('expiresOn', '', 'post'));
+			$expiresOnShown = trim(Request::getString('expiresOnShown', '', 'post'));
+			$expiresChanged = ($expiresOn !== $expiresOnShown);
+
+			$changed = false;
+
+			if ($expiresChanged && $shadowMaxSet)
 			{
-				if ($shadowMaxSet)
-				{
-					$passinfo->set('shadowMax', (int) $shadowMax);
-				}
-				if ($shadowExpire || (!is_null($passinfo->get('shadowExpire')) && empty($shadowExpire)))
-				{
-					if (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}/", $shadowExpire))
-					{
-						$shadowExpire = strtotime($shadowExpire) / 86400;
-						$passinfo->set('shadowExpire', $shadowExpire);
-					}
-					elseif (preg_match("/[0-9]+/", $shadowExpire))
-					{
-						$passinfo->set('shadowExpire', $shadowExpire);
-					}
-					elseif (empty($shadowExpire))
-					{
-						$passinfo->set('shadowExpire', null);
-					}
-				}
-				if ($shadowWarning)
-				{
-					$passinfo->set('shadowWarning', $shadowWarning);
-				}
+				// Both say when the password expires; applying one would silently drop the other
+				Notify::error(Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_BOTH'));
+				$this->_task = 'apply';
+			}
+			elseif ($expiresChanged)
+			{
+				$expiryDay = self::expiryDay($expiresOn);
+				$error     = $this->passwordExpiryError($passinfo, $expiresOn, $expiryDay);
 
+				if ($error)
+				{
+					Notify::error($error);
+					$this->_task = 'apply';
+				}
+				elseif ($expiresOn === '')
+				{
+					$passinfo->set('shadowMax', null);
+					$changed = true;
+				}
+				else
+				{
+					$passinfo->set('shadowMax', \Hubzero\User\Password::shadowMaxForExpiryDay($passinfo->get('shadowLastChange'), $expiryDay));
+					$passinfo->set('shadowInactive', 0);
+					$changed = true;
+				}
+			}
+			elseif ($shadowMaxSet)
+			{
+				$passinfo->set('shadowMax', (int) $shadowMax);
+				$passinfo->set('shadowInactive', 0);
+				$changed = true;
+			}
+
+			if ($shadowWarning)
+			{
+				$passinfo->set('shadowWarning', $shadowWarning);
+				$changed = true;
+			}
+
+			if ($changed)
+			{
 				$passinfo->update();
 			}
 		}
@@ -1038,6 +1064,56 @@ class Members extends AdminController
 	}
 
 	/**
+	 * Parse an "Expires on" date
+	 *
+	 * @param   string  $expiresOn  yyyy-mm-dd
+	 * @return  mixed   Days since the epoch (UTC), or null if not a valid date
+	 */
+	protected static function expiryDay($expiresOn)
+	{
+		if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $expiresOn, $parts)
+		 || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1]))
+		{
+			return null;
+		}
+
+		return intval(gmmktime(0, 0, 0, (int) $parts[2], (int) $parts[3], (int) $parts[1]) / 86400);
+	}
+
+	/**
+	 * Check a posted password expiry date ("Expires on")
+	 *
+	 * @param   object  $passinfo   \Hubzero\User\Password
+	 * @param   string  $expiresOn  Empty (never expires) or yyyy-mm-dd
+	 * @param   mixed   $expiryDay  self::expiryDay($expiresOn)
+	 * @return  string  Error message, empty if the date can be applied
+	 */
+	protected function passwordExpiryError($passinfo, $expiresOn, $expiryDay)
+	{
+		if ($expiresOn === '')
+		{
+			return '';
+		}
+
+		if ($expiryDay === null)
+		{
+			return Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_FORMAT');
+		}
+
+		if ($passinfo->get('passhash') === null || $passinfo->get('passhash') === '' || !$passinfo->get('shadowLastChange'))
+		{
+			return Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_NO_PASSWORD');
+		}
+
+		if ($expiryDay <= (int) $passinfo->get('shadowLastChange'))
+		{
+			return Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_BEFORE_CHANGE');
+		}
+
+		return '';
+	}
+
+	/**
 	 * Send an email to a user
 	 * stating their account has been approved
 	 *
@@ -1238,27 +1314,16 @@ class Members extends AdminController
 				continue;
 			}
 
-			// Block user
+			// Block user. User::save() sets or clears the account expiry
+			// (shadowExpire) that disables the account in LDAP.
 			$user->set('block', $state);
-
-			// Load user password object
-			$passinfo = \Hubzero\User\Password::getInstance($user->get('id'));
-			// If blocking
 
 			if ($state == 1)
 			{
-				// Set user Shadow Expiration to a past date.  This disabled the account in LDAP.  "10957" is the number of days to January 1, 2000 from epoch start
-				$passinfo->set('shadowExpire', "10957");
 				// Randomize and Save password
 				$newrandompass = \Components\Members\Helpers\Utility::userpassgen(16);
 				\Hubzero\User\Password::changePassword($user->get('username'), $newrandompass);
 			}
-			elseif ($state == 0)
-			{
-				// Set user Shadow Expiration to a past date.  This disabled the account in LDAP.  "10957" is the number of days to January 1, 2000 from epoch start
-				$passinfo->set('shadowExpire', null);
-			}
-			$passinfo->update();
 
 			if (!$user->save())
 			{
