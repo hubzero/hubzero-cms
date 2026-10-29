@@ -213,6 +213,7 @@ class Repository extends Base implements CommandInterface
                 . 'Check out the release branch first (for example: git checkout 2.4-main), or name one with --source.'
             );
         }
+
         if ($this->arguments->getOpt('f')) {
             if ($mode != 'minimal') {
                 $this->output->addLine(
