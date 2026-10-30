@@ -94,18 +94,18 @@ class Install extends Base implements CommandInterface
         }
 
         // Prompt before loading schema
-        echo "\n";
-        echo "\033[33mReady to Load Database Schema\033[39m\n";
-        echo "-----------------------------\n";
-        echo "\n";
-        echo "This will create 381 database tables and load essential system data.\n";
-        echo "This step is required for Hubzero to function.\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mReady to Load Database Schema\033[39m\n");
+        $this->say("-----------------------------\n");
+        $this->say("\n");
+        $this->say("This will create 381 database tables and load essential system data.\n");
+        $this->say("This step is required for Hubzero to function.\n");
+        $this->say("\n");
 
         if (!$unattended && !$this->promptContinue("Continue with schema loading?")) {
-            echo "\n";
-            echo "Installation cancelled.\n";
-            echo "\n";
+            $this->say("\n");
+            $this->say("Installation cancelled.\n");
+            $this->say("\n");
             return;
         }
 
@@ -122,13 +122,13 @@ class Install extends Base implements CommandInterface
         }
 
         // Ask about sample data
-        echo "\n";
-        echo "\033[33mSample Data (Optional)\033[39m\n";
-        echo "-----------------------\n";
-        echo "\n";
-        echo "Sample data includes demo content to help you get started.\n";
-        echo "This is optional and can be skipped for production installations.\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mSample Data (Optional)\033[39m\n");
+        $this->say("-----------------------\n");
+        $this->say("\n");
+        $this->say("Sample data includes demo content to help you get started.\n");
+        $this->say("This is optional and can be skipped for production installations.\n");
+        $this->say("\n");
 
         $loadSample = $unattended
             ? Install\Answers::wantsSampleData()
@@ -140,17 +140,17 @@ class Install extends Base implements CommandInterface
                 // Continue anyway - sample data is optional
             }
         } else {
-            echo "\n";
-            echo "Skipping sample data.\n";
+            $this->say("\n");
+            $this->say("Skipping sample data.\n");
         }
 
         // Run database migrations
-        echo "\n";
-        echo "\033[33mDatabase Migrations\033[39m\n";
-        echo "-------------------\n";
-        echo "\n";
-        echo "Migrations apply incremental updates to bring the database schema up to date.\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mDatabase Migrations\033[39m\n");
+        $this->say("-------------------\n");
+        $this->say("\n");
+        $this->say("Migrations apply incremental updates to bring the database schema up to date.\n");
+        $this->say("\n");
 
         if (!Install\Migrations::run($ansi, PATH_APP, PATH_CORE, PATH_ROOT)) {
             $this->output->error('Some migrations may have failed. You can retry with: muse install migrations');
@@ -284,18 +284,18 @@ class Install extends Base implements CommandInterface
         }
 
         // Prompt before loading schema
-        echo "\n";
-        echo "\033[33mReady to Load Database Schema\033[39m\n";
-        echo "-----------------------------\n";
-        echo "\n";
-        echo "This will create 381 database tables and load essential system data.\n";
-        echo "This step is required for Hubzero to function.\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mReady to Load Database Schema\033[39m\n");
+        $this->say("-----------------------------\n");
+        $this->say("\n");
+        $this->say("This will create 381 database tables and load essential system data.\n");
+        $this->say("This step is required for Hubzero to function.\n");
+        $this->say("\n");
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Continue with schema loading?")) {
-            echo "\n";
-            echo "Schema loading cancelled.\n";
-            echo "\n";
+            $this->say("\n");
+            $this->say("Schema loading cancelled.\n");
+            $this->say("\n");
             return;
         }
 
@@ -311,13 +311,13 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        echo "\n";
-        echo "\033[32mSchema and base data loaded successfully.\033[39m\n";
-        echo "\n";
-        echo "Next steps:\n";
-        echo "  - Run migrations:           muse install migrations\n";
-        echo "  - Load sample data (opt):   muse install sample\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[32mSchema and base data loaded successfully.\033[39m\n");
+        $this->say("\n");
+        $this->say("Next steps:\n");
+        $this->say("  - Run migrations:           muse install migrations\n");
+        $this->say("  - Load sample data (opt):   muse install sample\n");
+        $this->say("\n");
     }
 
     /**
@@ -365,18 +365,18 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        echo "\n";
-        echo "\033[33mSample Data\033[39m\n";
-        echo "-----------\n";
-        echo "\n";
-        echo "Sample data includes demo content to help you get started.\n";
-        echo "This is optional and can be skipped for production installations.\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mSample Data\033[39m\n");
+        $this->say("-----------\n");
+        $this->say("\n");
+        $this->say("Sample data includes demo content to help you get started.\n");
+        $this->say("This is optional and can be skipped for production installations.\n");
+        $this->say("\n");
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Load sample data?")) {
-            echo "\n";
-            echo "Sample data loading cancelled.\n";
-            echo "\n";
+            $this->say("\n");
+            $this->say("Sample data loading cancelled.\n");
+            $this->say("\n");
             return;
         }
 
@@ -435,18 +435,18 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        echo "\n";
-        echo "\033[33mDatabase Migrations\033[39m\n";
-        echo "-------------------\n";
-        echo "\n";
-        echo "This will run all pending database migrations to update the schema.\n";
-        echo "Migrations apply incremental changes to bring the database up to date.\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mDatabase Migrations\033[39m\n");
+        $this->say("-------------------\n");
+        $this->say("\n");
+        $this->say("This will run all pending database migrations to update the schema.\n");
+        $this->say("Migrations apply incremental changes to bring the database up to date.\n");
+        $this->say("\n");
 
         if (!Install\Answers::isUnattended() && !$this->promptContinue("Run database migrations?")) {
-            echo "\n";
-            echo "Migration cancelled.\n";
-            echo "\n";
+            $this->say("\n");
+            $this->say("Migration cancelled.\n");
+            $this->say("\n");
             return;
         }
 
@@ -490,6 +490,24 @@ class Install extends Base implements CommandInterface
             // User cancelled or it failed - error already displayed
             return;
         }
+    }
+
+    /**
+     * Print a line of the installer's own output
+     *
+     * Its color codes are written into the text, so they come out here when
+     * the output is not colored, as in a container's log.
+     *
+     * @param   string  $text
+     * @return  void
+     **/
+    private function say($text)
+    {
+        if (!$this->output->isColored()) {
+            $text = preg_replace("/\e\[[0-9;]*m/", '', $text);
+        }
+
+        echo $text;
     }
 
     /**
@@ -557,36 +575,36 @@ class Install extends Base implements CommandInterface
             return;
         }
 
-        echo "\n";
-        echo "\033[33mExisting Configuration Found\033[39m\n";
-        echo "----------------------------\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[33mExisting Configuration Found\033[39m\n");
+        $this->say("----------------------------\n");
+        $this->say("\n");
 
         if (!empty($siteConfig)) {
             if (!empty($siteConfig['sitename'])) {
-                echo "  Site name:    \033[32m{$siteConfig['sitename']}\033[39m\n";
+                $this->say("  Site name:    \033[32m{$siteConfig['sitename']}\033[39m\n");
             }
             if (!empty($siteConfig['mailfrom'])) {
-                echo "  Admin email:  \033[32m{$siteConfig['mailfrom']}\033[39m\n";
+                $this->say("  Admin email:  \033[32m{$siteConfig['mailfrom']}\033[39m\n");
             }
             if (!empty($siteConfig['offset'])) {
-                echo "  Timezone:     \033[32m{$siteConfig['offset']}\033[39m\n";
+                $this->say("  Timezone:     \033[32m{$siteConfig['offset']}\033[39m\n");
             }
         }
 
         if (!empty($dbConfig)) {
             if (!empty($dbConfig['database'])) {
-                echo "  Database:     \033[32m{$dbConfig['database']}\033[39m\n";
+                $this->say("  Database:     \033[32m{$dbConfig['database']}\033[39m\n");
             }
             if (!empty($dbConfig['username'])) {
-                echo "  DB User:      \033[32m{$dbConfig['username']}\033[39m\n";
+                $this->say("  DB User:      \033[32m{$dbConfig['username']}\033[39m\n");
             }
             $host = $dbConfig['host'] ?? 'localhost';
-            echo "  DB Host:      \033[32m{$host}\033[39m\n";
+            $this->say("  DB Host:      \033[32m{$host}\033[39m\n");
         }
 
-        echo "\n";
-        echo "\033[90mExisting values will be shown as defaults. Press Enter to keep them.\033[39m\n";
+        $this->say("\n");
+        $this->say("\033[90mExisting values will be shown as defaults. Press Enter to keep them.\033[39m\n");
     }
 
     /**
@@ -598,7 +616,7 @@ class Install extends Base implements CommandInterface
     private function promptContinue($prompt)
     {
         while (true) {
-            echo "{$prompt} [Y/n] ";
+            $this->say("{$prompt} [Y/n] ");
             $response = strtolower(trim(fgets(STDIN)));
 
             if ($response === '' || $response === 'y' || $response === 'yes') {
@@ -609,7 +627,7 @@ class Install extends Base implements CommandInterface
                 return false;
             }
 
-            echo "Please enter y/yes or n/no.\n\n";
+            $this->say("Please enter y/yes or n/no.\n\n");
         }
     }
 
@@ -625,7 +643,7 @@ class Install extends Base implements CommandInterface
         $hint = $default ? '[Y/n]' : '[y/N]';
 
         while (true) {
-            echo "{$prompt} {$hint} ";
+            $this->say("{$prompt} {$hint} ");
             $response = strtolower(trim(fgets(STDIN)));
 
             if ($response === '') {
@@ -640,7 +658,7 @@ class Install extends Base implements CommandInterface
                 return false;
             }
 
-            echo "Please enter y/yes or n/no.\n\n";
+            $this->say("Please enter y/yes or n/no.\n\n");
         }
     }
 
@@ -654,41 +672,41 @@ class Install extends Base implements CommandInterface
      **/
     private function showInstallationComplete($ansi, $settingsResult, $adminResult)
     {
-        echo "\n";
-        echo "\033[32m" . str_repeat("=", 50) . "\033[39m\n";
-        echo "\033[32m  Installation Complete!\033[39m\n";
-        echo "\033[32m" . str_repeat("=", 50) . "\033[39m\n";
-        echo "\n";
+        $this->say("\n");
+        $this->say("\033[32m" . str_repeat("=", 50) . "\033[39m\n");
+        $this->say("\033[32m  Installation Complete!\033[39m\n");
+        $this->say("\033[32m" . str_repeat("=", 50) . "\033[39m\n");
+        $this->say("\n");
 
-        echo "Your Hubzero site has been successfully installed.\n";
-        echo "\n";
+        $this->say("Your Hubzero site has been successfully installed.\n");
+        $this->say("\n");
 
-        echo "\033[33mSite Information:\033[39m\n";
-        echo "  Site Name:  \033[32m{$settingsResult['sitename']}\033[39m\n";
+        $this->say("\033[33mSite Information:\033[39m\n");
+        $this->say("  Site Name:  \033[32m{$settingsResult['sitename']}\033[39m\n");
         if (!empty($settingsResult['live_site'])) {
-            echo "  Site URL:   \033[32m{$settingsResult['live_site']}\033[39m\n";
+            $this->say("  Site URL:   \033[32m{$settingsResult['live_site']}\033[39m\n");
         }
-        echo "\n";
+        $this->say("\n");
 
-        echo "\033[33mAdmin Login:\033[39m\n";
-        echo "  Username:   \033[32m{$adminResult['username']}\033[39m\n";
-        echo "  Email:      \033[32m{$adminResult['email']}\033[39m\n";
-        echo "\n";
+        $this->say("\033[33mAdmin Login:\033[39m\n");
+        $this->say("  Username:   \033[32m{$adminResult['username']}\033[39m\n");
+        $this->say("  Email:      \033[32m{$adminResult['email']}\033[39m\n");
+        $this->say("\n");
 
-        echo "\033[33mNext Steps:\033[39m\n";
-        echo "  1. Configure your web server to point to: \033[36m" . PATH_ROOT . "\033[39m\n";
-        echo "  2. Access your site in a web browser\n";
-        echo "  3. Log in at \033[36m/administrator\033[39m with the admin credentials above\n";
-        echo "  4. Configure additional settings in the admin panel\n";
-        echo "\n";
+        $this->say("\033[33mNext Steps:\033[39m\n");
+        $this->say("  1. Configure your web server to point to: \033[36m" . PATH_ROOT . "\033[39m\n");
+        $this->say("  2. Access your site in a web browser\n");
+        $this->say("  3. Log in at \033[36m/administrator\033[39m with the admin credentials above\n");
+        $this->say("  4. Configure additional settings in the admin panel\n");
+        $this->say("\n");
 
-        echo "\033[33mUseful Commands:\033[39m\n";
-        echo "  \033[36mmuse help\033[39m              - Show available muse commands\n";
-        echo "  \033[36mmuse migration run\033[39m    - Run database migrations\n";
-        echo "  \033[36mmuse cache clear\033[39m      - Clear the cache\n";
-        echo "\n";
+        $this->say("\033[33mUseful Commands:\033[39m\n");
+        $this->say("  \033[36mmuse help\033[39m              - Show available muse commands\n");
+        $this->say("  \033[36mmuse migration run\033[39m    - Run database migrations\n");
+        $this->say("  \033[36mmuse cache clear\033[39m      - Clear the cache\n");
+        $this->say("\n");
 
-        echo "\033[90mFor documentation, visit: https://help.hubzero.org\033[39m\n";
-        echo "\n";
+        $this->say("\033[90mFor documentation, visit: https://help.hubzero.org\033[39m\n");
+        $this->say("\n");
     }
 }

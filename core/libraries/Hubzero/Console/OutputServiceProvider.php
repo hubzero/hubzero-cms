@@ -47,8 +47,11 @@ class OutputServiceProvider extends Middleware
 			$output->makeNonInteractive();
 		}
 
-		// Check for color flag and set on output accordingly
-		if ($arguments->getOpt('no-colors'))
+		// Colors are for a terminal: leave them out when the output goes to
+		// a file, a pipe or a container's log, unless --ansi asks for them
+		$terminal = function_exists('stream_isatty') && @stream_isatty(STDOUT);
+
+		if ($arguments->getOpt('no-colors') || (!$terminal && !$arguments->getOpt('ansi')))
 		{
 			$output->makeUnColored();
 		}

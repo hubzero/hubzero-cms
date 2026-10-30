@@ -41,7 +41,8 @@ else // Start Minimal Muse
     $minimalVersion = '2.4.1';
     $minimalDate = '2025-02-09 11:51:22';
 
-    $ansi = true;
+    // Colors only for a terminal, unless --ansi asks for them
+    $ansi = function_exists('stream_isatty') && @stream_isatty(STDOUT);
     $help = false;
     $quiet = false;
     $verbose = 0;
@@ -90,9 +91,11 @@ else // Start Minimal Muse
         else if ($argv[$arg] == '--ansi')
         {
             $ansi = true;
+            array_splice($argv,$arg,1);
+            $argc--;
             $arg--;
         }
-        else if ($argv[$arg] == '--no-ansi')
+        else if ($argv[$arg] == '--no-ansi' || $argv[$arg] == '--no-colors')
         {
             $ansi = false;
             array_splice($argv,$arg,1);
