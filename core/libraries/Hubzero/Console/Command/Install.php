@@ -30,7 +30,9 @@ class Install extends Base implements CommandInterface
      *
      * Without being asked anything, an install of a hub that is already
      * installed only brings its database up to date, so the same command can
-     * start a container every time.
+     * start a container every time. --wait=<seconds> waits that long for
+     * the database server to answer first, as one starting beside it may not
+     * yet.
      *
      * @return  void
      **/
@@ -43,6 +45,10 @@ class Install extends Base implements CommandInterface
         }
 
         $unattended = Install\Answers::isUnattended();
+
+        if ($wait = (int) $this->arguments->getOpt('wait')) {
+            $this->waitForDatabase($wait);
+        }
 
         if ($unattended) {
             $installed = Install\AdminUser::exists(PATH_APP);
@@ -490,6 +496,63 @@ class Install extends Base implements CommandInterface
         if ($result === null) {
             // User cancelled or it failed - error already displayed
             return;
+        }
+    }
+
+    /**
+     * Wait for the database server to accept a connection
+     *
+     * Tries the configuration the hub already has, or else the answers'
+     * database section, every two seconds. Giving up is not an error: the
+     * install then fails on the connection itself, and says why.
+     *
+     * @param   int  $seconds  How long to keep trying
+     * @return  void
+     **/
+    private function waitForDatabase($seconds)
+    {
+        $config = (array) (Install\Database::readConfig(PATH_APP) ?? []);
+
+        if ($config) {
+            $config['username'] = $config['user'] ?? '';
+            $config['database'] = $config['db'] ?? '';
+        } else {
+            $config = Install\Answers::section('database');
+        }
+
+        if (empty($config['username'])) {
+            return;
+        }
+
+        $dsn = 'mysql:';
+        if (!empty($config['socket'])) {
+            $dsn .= 'unix_socket=' . $config['socket'];
+        } else {
+            $dsn .= 'host=' . ($config['host'] ?? 'localhost');
+            if (!empty($config['port'])) {
+                $dsn .= ';port=' . $config['port'];
+            }
+        }
+
+        $deadline = time() + $seconds;
+        $said     = false;
+
+        while (true) {
+            try {
+                new \PDO($dsn, $config['username'], $config['password'] ?? '', [\PDO::ATTR_TIMEOUT => 5]);
+                return;
+            } catch (\PDOException $e) {
+                if (time() >= $deadline) {
+                    return;
+                }
+            }
+
+            if (!$said) {
+                $this->output->addLine('Waiting for the database server...');
+                $said = true;
+            }
+
+            sleep(2);
         }
     }
 
