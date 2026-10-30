@@ -332,6 +332,20 @@ class Git
 		{
 			// Move to the working tree dir (git 1.8.5 has a built in option for this...but we're still generally running 1.7.x)
 			chdir($this->workTree);
+
+			// Fetch first: merging the tracking ref as the last fetch left it
+			// would bring the checkout only as far as the last dry run looked
+			$fetch = trim($this->call('fetch'));
+
+			if (preg_match('/^(fatal|error):/mi', $fetch))
+			{
+				return array(
+					'status'  => 'fatal',
+					'message' => 'fetch failed: ' . preg_replace('/\s+/', ' ', $fetch),
+					'raw'     => $fetch
+				);
+			}
+
 			$arguments = array();
 
 			if (isset($source))
