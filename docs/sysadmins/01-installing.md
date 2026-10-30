@@ -65,8 +65,9 @@ requirements check:
 
 ## 1. Install the packages
 
-Find your system below. Each section installs the database, PHP 8.2 with
-the extensions the hub needs, the tools, and then lets you choose Apache or
+Find your system below, or [Any other Linux](#any-other-linux) for one that
+is not listed. Each section installs the database, PHP 8.2 with the
+extensions the hub needs, the tools, and then lets you choose Apache or
 nginx. If you are going to run FrankenPHP in Docker instead, install only
 the database and the tools from your system's section, then go to
 [FrankenPHP in Docker](#frankenphp-in-docker-on-any-of-these-systems).
@@ -267,6 +268,58 @@ sudo systemctl enable --now nginx
 
 Then [the firewall and SELinux](#on-enterprise-linux-the-firewall-and-selinux).
 
+### Any other Linux
+
+On a distribution not listed here, the steps are the same; only the
+package names and paths are yours to find. Install:
+
+- **MariaDB**, from the distribution. The hub was installed against 10.11
+  and 11.8. MySQL is expected to work but was not tried.
+- **PHP 8.2**: the command line, PHP-FPM if the web server is Apache or
+  nginx, and these extensions, whatever packages they come in:
+  `pdo_mysql`, `mbstring`, `curl`, `gd`, `zip`, `fileinfo`, `openssl`, the
+  XML family (`dom`, `simplexml`, `xmlreader`, `xmlwriter`), `sockets` and
+  `posix`. If the distribution ships another version of PHP, look for a
+  second repository that packages 8.2 for it, as Debian, Ubuntu and
+  Enterprise Linux each have; if there is none, use
+  [FrankenPHP in Docker](#frankenphp-in-docker-on-any-of-these-systems),
+  which needs no PHP on the system at all.
+- **A web server**: Apache with `mod_proxy_fcgi` and `mod_ssl`, or nginx.
+- **`git` and `unzip`.**
+
+Then find three things the configurations later on depend on:
+
+1. **The account PHP-FPM runs as.** It is the `user` line of PHP-FPM's
+   pool configuration, usually a file named `www.conf`. The hub's files
+   belong to that account (step 3), and the commands on this page run as
+   it.
+2. **The socket PHP-FPM listens on.** It is the `listen` line of the same
+   file. The Apache and nginx configurations in step 4 name it.
+3. **Where PHP keeps sessions.** `session.save_path`, in PHP-FPM's
+   `php.ini` or pool. It has to be a directory the account above can write
+   to, outside the hub's directory: the installer keeps its secrets there,
+   and stops at a page headed *Server Configuration Required* without one.
+
+Check PHP before going on. This lists any extension the hub needs that is
+missing, and prints nothing when all are there:
+
+```bash
+php -r 'foreach (["pdo_mysql","mbstring","curl","gd","zip","fileinfo","openssl","dom","simplexml","xmlreader","xmlwriter","sockets","posix","json","ctype","iconv","zlib"] as $e) if (!extension_loaded($e)) echo "missing: $e\n";'
+```
+
+Once the code is in place in step 3, the installer's own check covers the
+rest, without changing anything:
+
+```bash
+sudo -u <the PHP-FPM account> php core/bin/muse install check
+```
+
+If the distribution runs SELinux or AppArmor, or starts with its firewall
+closed, it needs the same allowances
+[Enterprise Linux](#on-enterprise-linux-the-firewall-and-selinux) does: the
+web ports open, and the web server allowed to write to the hub's directory,
+to connect to MariaDB and the network, and to send mail.
+
 ### On Enterprise Linux: the firewall and SELinux
 
 Enterprise Linux starts with the firewall closed and SELinux enforcing.
@@ -379,6 +432,9 @@ Then give it to the account that runs PHP:
   ```bash
   sudo chown -R apache:apache /var/www/hub
   ```
+
+- **Any other Linux, with Apache or nginx:** the account PHP-FPM runs as,
+  found in step 1.
 
 - **FrankenPHP in Docker, on any system:** user and group 33, which is
   `www-data` inside the image. On Debian and Ubuntu that is `www-data` on
@@ -622,6 +678,21 @@ sudo nginx -t && sudo systemctl reload nginx
 
 The stock `/etc/nginx/nginx.conf` also has a server on port 80 for any
 other name. It does not get in the way, but you can delete it.
+
+### Apache or nginx on any other Linux
+
+Start from the Debian and Ubuntu configuration for your web server and
+change only what is your distribution's:
+
+- where the file goes, and whether it needs enabling (Debian and Ubuntu link
+  it into `sites-enabled`; most others read a `conf.d` directory as it is);
+- the PHP-FPM socket in `SetHandler` or `fastcgi_pass`, found in step 1;
+- the log locations, and the certificate paths.
+
+Keep the rest as it is. Each of its rules is one of the four things listed
+at the top of this step, and the hub needs all four. Then check the private
+paths are refused, as under
+[When something goes wrong](#when-something-goes-wrong).
 
 ### FrankenPHP in Docker
 
