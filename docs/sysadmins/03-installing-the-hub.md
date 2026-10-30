@@ -127,7 +127,7 @@ on. In order:
    needs, then offers **sample data**: a front page, menus and articles to
    look at. Answer no for a hub you are going to fill yourself.
 6. **Migrations.** It brings the database up to date, which takes a minute or
-   so. Four warnings are expected; see
+   so. Three warnings are expected; see
    [Warnings during the migrations](#warnings-during-the-migrations).
 7. **Administrator.** A name, a username, an email address and a password of
    at least eight characters.
@@ -324,13 +324,12 @@ Then go on to
 
 ## Warnings during the migrations
 
-Both installers, and the upgrade, show the same four warnings on a new hub.
+Both installers, and the upgrade, show the same three warnings on a new hub.
 None of them stops the hub working:
 
 | Warning | Why |
 |---|---|
 | *onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables* | Loading MariaDB's time zone tables needs its `root` account. Load them yourself, as described above |
-| *Migration20150330124145Core.php: Unable to write out new configuration file* | It updates a configuration file from an older version of the hub, which a new hub does not have |
 | *Migration20150904235936ComUsage.php: Failed to run with the necessary privileges* | The `_metrics` database does not exist, and creating one needs `root`. Create it as described above and run the migrations again |
 | *Migration20170627153900ComHubgraph.php: Failed to run with the necessary privileges* | It removes database triggers that older hubs had. A new hub has none to remove |
 

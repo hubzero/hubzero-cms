@@ -343,11 +343,12 @@ creates the administrator. Then it prints **Installation Complete!**, and
 FrankenPHP's log lines follow. Press Ctrl+C to stop watching; the container
 goes on.
 
-Three of the
+Two of the
 [warnings during the migrations](03-installing-the-hub.md#warnings-during-the-migrations)
-are expected. The usage statistics' warning is not among them, because
-`metrics.sql` created their database. The time zone warning can be ignored
-here: MariaDB's image loads its time zone tables itself.
+are expected: the time zone one, and Hubgraph's. The usage statistics'
+warning is not among them, because `metrics.sql` created their database. The
+time zone warning can be ignored here: MariaDB's image loads its time zone
+tables itself.
 
 Open `https://hub.example.org/`, and sign in at
 `https://hub.example.org/administrator` with the administrator's username and

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 348f0057c2
-reviewed: 2026-09-10
+reviewed-against: 2.4-main @ e660f4dc23
+reviewed: 2026-10-30
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/devenvironment
 source-id: 3429
@@ -26,14 +26,15 @@ Everything here is in the tree and you can read it:
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
 | [`docs/_tools/lint/`](../../_tools/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
 | [`docs/_tools/docs/`](../../_tools/docs) and `gh-pages/` | The documentation builder and the reference generators. |
+| [`compose.yaml`](../../../compose.yaml) and [`.docker/`](../../../.docker) | A development hub in Docker: this checkout served by FrankenPHP's PHP 8.2, with MariaDB and a mail catcher. See [Developing in Docker](#developing-in-docker). |
 | `.github/workflows/` | The CI. See below. |
 
 ## What this repository does not provide
 
-There is **no** Dockerfile, no `docker-compose.yml`, no Vagrantfile, no
+Apart from the Docker setup for development, there is no Vagrantfile, no
 provisioning script, and no `make`-style setup target anywhere in the tree.
-Nothing here builds you a machine. Nothing here installs Apache, PHP, or
-MySQL.
+Nothing here installs Apache, PHP, or MySQL on a machine; for a server, see
+the [System administrators](../../sysadmins/README.md) book.
 
 The `.travis.yml` at the root is left over from Travis CI. It declares PHP 8.2
 and 8.3 and calls `core/bin/php_tests.sh` on the changed files. Nothing runs
@@ -59,7 +60,12 @@ pre-flight result without installing anything.
 
 ## Getting a hub to develop against
 
-Three routes:
+Four routes:
+
+**Docker Compose.** `docker compose up -d` in a checkout starts a hub
+serving that checkout, with its database and a mail catcher beside it. It is
+the quickest way to a hub you can change; see
+[Developing in Docker](#developing-in-docker).
 
 **Install one.** The [installation overview](../../sysadmins/01-installing.md) takes a
 Linux server from nothing to a running hub from a checkout of this
@@ -102,6 +108,121 @@ Solr. For those you need the packages or Autohub.
 > **Note:** The old version of this page pointed at a VMware image on
 > `hubzero.org/download`. Nothing in this repository builds or references
 > such an image; check whether it still exists before relying on it.
+
+## Developing in Docker
+
+You need Docker with its Compose plugin. On Debian and Ubuntu that is
+`sudo apt install docker.io docker-compose-v2`. Then, from a fresh clone:
+
+```bash
+git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git
+cd hubzero-cms
+docker compose up -d
+docker compose logs -f hub
+```
+
+Put `sudo` in front of each `docker` command if your account is not in the
+`docker` group.
+
+The first start takes a few minutes. It builds the image, installs the
+Composer libraries into `core/vendor/`, installs the hub into `app/` with the
+sample data, and starts the web server. When the log shows
+**Installation Complete!** and FrankenPHP's own lines follow it, press Ctrl+C
+to stop watching:
+
+| | |
+|---|---|
+| The hub | `https://localhost:8443` |
+| Its administrator interface | `https://localhost:8443/administrator`, as `admin` with the password `hubzero-admin` |
+| The mail it sends | `http://localhost:8025`, Mailpit's inbox |
+| Its database | `docker compose exec db mariadb -u hub -phub hub` |
+
+The certificate is one FrankenPHP makes itself, so the browser warns about
+it once. Both ports answer only on `127.0.0.1`, and every password is in
+[`compose.yaml`](../../../compose.yaml) for anyone to read: this is a hub for
+your own machine, not for serving. For a real hub in Docker, see
+[A self-contained hub in Docker](../../sysadmins/05-docker-image.md).
+
+### What runs
+
+| Service | What it is |
+|---|---|
+| `hub` | FrankenPHP's PHP 8.2 image with the hub's extensions, Xdebug and Composer's tools, built from [`.docker/Dockerfile`](../../../.docker/Dockerfile). It holds no code: the checkout is mounted over `/var/www/hub`, so a change you save is the next request's code. [`.docker/hub-dev`](../../../.docker/hub-dev) starts it. |
+| `db` | `mariadb:10.11`, with the database in a Docker volume. It waits to be healthy before the hub starts, and creates the usage statistics' `hub_metrics` database on its first start. |
+| `mail` | Mailpit. PHP's `mail()` in the hub's container hands every message to it, so nothing the hub sends leaves your machine. |
+
+Each start runs `muse install --env`. The first time, that installs the hub
+from the `HUB_*` settings in `compose.yaml`. Every time after, it only runs
+the migrations, so pulling new code and restarting brings the database up to
+date: `docker compose restart hub`.
+
+The hub runs as the account that owns the checkout, not as `www-data`, so
+`app/` and `core/vendor/` stay yours, as they would on your own LAMP stack.
+The scheduled tasks are ticked every minute inside the container; the ticks
+show in `docker compose logs hub`.
+
+### Commands
+
+`muse` runs in the hub's container:
+
+```bash
+docker compose exec hub php core/bin/muse migration -f
+```
+
+`docker compose exec` runs as root, and `muse`, as on a server, becomes the
+account that owns the checkout before it does anything. Other commands do
+not, so give them your own user number, which `id -u` prints, with
+`--user`. For example, with the number 1000:
+
+```bash
+docker compose exec --user 1000 hub core/vendor/bin/phpunit core/libraries/Hubzero/Utility/Tests
+```
+
+### Xdebug
+
+Xdebug is installed and off. Start the hub with it on, and your editor
+listening on port 9003:
+
+```bash
+XDEBUG_MODE=debug docker compose up -d
+```
+
+Map `/var/www/hub` in the container to the checkout in your editor.
+`docker compose up -d` without it turns Xdebug off again.
+
+### Changing the ports, or leaving out the sample data
+
+Compose reads a file named `.env` beside `compose.yaml`, if there is one.
+Set any of these in it before the first start:
+
+```
+HUB_DEV_PORT=8444
+HUB_DEV_MAIL_PORT=8026
+HUB_DEV_SAMPLE_DATA=0
+```
+
+The hub is served on `HUB_DEV_PORT` both inside its container and out, and
+the installer writes the address into `app/config/app.php`. Change the port
+after the first start and you must change `live_site` there too.
+
+### Stopping, and starting over
+
+`docker compose stop` stops the three containers and `docker compose start`
+starts them again. `docker compose down` removes the containers but keeps the
+database. To start again from nothing, remove the database volume and the
+hub's `app/` directory as well:
+
+```bash
+docker compose down -v
+rm -rf app
+docker compose up -d
+```
+
+The setup was run on Ubuntu 24.04 with Docker 29 and Compose 2.40, from a
+clone with no `core/vendor/` and no `app/`: the first start, restarts, the
+administrator interface, mail reaching Mailpit, the scheduled tasks, `muse`
+through `docker compose exec`, and Xdebug switched on and off. Nothing it
+wrote in the checkout belonged to root. It was not tried on macOS or Windows.
 
 ## Replacing a hub's CMS with a checkout
 
