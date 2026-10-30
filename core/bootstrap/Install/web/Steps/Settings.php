@@ -51,6 +51,16 @@ class Settings implements StepInterface
     {
         $installer = $this->installer;
         $config = $this->existingConfig;
+
+        // Offer the address the installer is being reached at. The scheduled
+        // tasks and other requests made without a visitor need it written
+        // down, and whoever is installing can still change it. A hub is
+        // always served over HTTPS, even when a proxy in front of it is what
+        // speaks it.
+        if (empty($config['live_site']) && !empty($_SERVER['HTTP_HOST'])) {
+            $config['live_site'] = 'https://' . $_SERVER['HTTP_HOST'];
+        }
+
         $errors = $this->errors;
         $timezones = $this->timezones;
         ob_start();

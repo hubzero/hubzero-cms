@@ -42,10 +42,10 @@ $metadescVal = htmlspecialchars($config['metadesc'] ?? '');
         </div>
 
         <div class="form-group">
-            <label for="live_site">Site URL (Optional)</label>
+            <label for="live_site">Site URL</label>
             <input type="url" id="live_site" name="live_site"
                    value="<?php echo $liveSiteVal; ?>" placeholder="https://example.com">
-            <small>Leave blank to auto-detect (recommended for most setups)</small>
+            <small>The address the hub is served at. Scheduled tasks need it; leave it blank only to work it out from each request.</small>
         </div>
 
         <div class="form-group">
