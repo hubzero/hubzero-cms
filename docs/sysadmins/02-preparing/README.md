@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
 summary: Preparing a server for a hub: what each system's page covers, and how to choose between them.
@@ -29,11 +29,11 @@ paths:
    runs as.
 5. **The web server's configuration**, written for that system: where the
    file goes, the PHP-FPM socket, the logs.
-6. **Two values, `HUB_OWNER` and `HUB_PHP`**, that the installation and later
-   upgrades use, and the line that ticks the hub's scheduled tasks.
 
-The Docker page replaces the PHP and web server steps with an image built
-from FrankenPHP's PHP 8.2 image, which brings both.
+
+The Docker pages replace the PHP and web server steps with an image built
+from FrankenPHP's PHP 8.2 image, which brings both, and say how to run the
+hub's commands inside the container.
 
 | Page | PHP 8.2 from | MariaDB | Web server |
 |---|---|---|---|

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
 summary: How installing a hub goes: what it needs, preparing the server on your system's page, then installing the hub.

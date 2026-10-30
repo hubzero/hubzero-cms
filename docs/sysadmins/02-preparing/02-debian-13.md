@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
 summary: Preparing a Debian 13 server for a hub: PHP 8.2 from Ondřej Surý's archive and MariaDB 11.8, behind Apache or nginx.
@@ -200,28 +200,7 @@ administrator interface lives at one: `/administrator/index.php` is answered
 by the hub's `index.php`, not by a file of that name. Raise `client_max_body_size` if members will upload files
 larger than 100 MB.
 
-## 5. Set the values the installation uses
-
-The rest of the installation is the same on every system, and runs the hub's
-commands through two values. Set them in the shell you will carry on in:
-
-```bash
-export HUB_OWNER=www-data:www-data
-export HUB_PHP="sudo -u www-data php"
-```
-
-`HUB_OWNER` is the account and group that own the hub's files, and `HUB_PHP`
-is how to run the hub's PHP. If you open a new shell before you have
-finished, set them again.
-
-Once the hub is installed, scheduled tasks need this line in `/etc/crontab`.
-Keep it for then:
-
-```
-* * * * * www-data /var/www/hub/core/bin/muse cron:jobs tick
-```
-
-## 6. Next: install the hub
+## 5. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.

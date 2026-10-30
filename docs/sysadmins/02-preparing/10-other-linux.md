@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
 summary: Preparing a server on a Linux distribution the other pages do not name, from what a hub needs rather than from package names.
@@ -53,8 +53,7 @@ Then find three things the later steps depend on:
 
 1. **The account PHP-FPM runs as.** It is the `user` line of PHP-FPM's pool
    configuration, usually a file named `www.conf`. The hub's files belong to
-   that account, and every command below that changes the hub runs as it.
-   This page calls it *the PHP-FPM account*.
+   that account. This page calls it *the PHP-FPM account*.
 2. **The socket PHP-FPM listens on.** It is the `listen` line of the same
    file. The web server's configuration names it.
 3. **Where PHP keeps sessions.** `session.save_path`, in PHP-FPM's
@@ -91,7 +90,7 @@ changing anything:
 
 ```bash
 cd /var/www/hub
-sudo -u <the PHP-FPM account> php core/bin/muse install check
+sudo php core/bin/muse install check
 ```
 
 If the distribution runs SELinux or AppArmor, the web server needs to be
@@ -127,29 +126,7 @@ distribution snippet that answers 404 for a `.php` address with no file
 behind it: `/administrator/index.php` is answered by the hub's own
 `index.php`.
 
-## 5. Set the values the installation uses
-
-The rest of the installation is the same on every system, and runs the hub's
-commands through two values. Set them in the shell you will carry on in, with
-the PHP-FPM account in place of `<account>`:
-
-```bash
-export HUB_OWNER=<account>:<account>
-export HUB_PHP="sudo -u <account> php"
-```
-
-`HUB_OWNER` is the account and group that own the hub's files, and `HUB_PHP`
-is how to run the hub's PHP. If you open a new shell before you have
-finished, set them again.
-
-Once the hub is installed, scheduled tasks need this line in `/etc/crontab`.
-Keep it for then:
-
-```
-* * * * * <account> /var/www/hub/core/bin/muse cron:jobs tick
-```
-
-## 6. Next: install the hub
+## 5. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md),
 which creates the database and runs the installer, the same way on every

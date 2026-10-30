@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
 summary: Preparing an Ubuntu 26.04 LTS server for a hub, which has no PHP 8.2 packages: FrankenPHP's PHP 8.2 Docker image, with MariaDB 11.8.
@@ -146,27 +146,28 @@ sudo docker run -d --name hub --restart unless-stopped --network host \
 - `hub_caddy_data` keeps the certificates FrankenPHP obtains across restarts
   and rebuilds.
 
-## 6. Set the values the installation uses
+## 6. How to run the hub's commands
 
-The rest of the installation is the same on every system, and runs the hub's
-commands through two values. Set them in the shell you will carry on in:
+The hub's PHP is inside the container, so its commands run there, and the
+container already runs as the account that owns the hub's files. Wherever
+[Installing the hub](../03-installing-the-hub.md) and
+[Upgrading a hub](../04-upgrading.md) say
 
 ```bash
-export HUB_OWNER=33:33
-export HUB_PHP="sudo docker exec -it -w /var/www/hub hub php"
+sudo php core/bin/muse ...
 ```
 
-`HUB_OWNER` is the account and group that own the hub's files, and `HUB_PHP`
-is how to run the hub's PHP. If you open a new shell before you have
-finished, set them again.
+run instead
 
-With this `HUB_PHP`, every `php` command runs inside the container, in the hub's
-directory, and the `cd /var/www/hub` before each one is harmless. `-it` is what lets
-`muse` ask its questions; leave it out of `HUB_PHP` in a script, which has no
-terminal to give it.
+```bash
+sudo docker exec -it -w /var/www/hub hub php core/bin/muse ...
+```
 
-Once the hub is installed, scheduled tasks need this line in `/etc/crontab`.
-Keep it for then:
+`-it` is what lets `muse` ask its questions; leave it out in a script, which
+has no terminal to give it.
+
+The scheduled tasks need a line of their own too. Once the hub is installed,
+add this to `/etc/crontab` in place of the one Installing the hub gives:
 
 ```
 * * * * * root docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick

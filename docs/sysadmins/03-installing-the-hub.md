@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: ok
 summary: Installing the hub on a server its system's page has prepared, the same way on every system: the database, the installer, and what comes after.
@@ -13,17 +13,23 @@ web server answering for the hub's name over HTTPS. If yours is not ready
 yet, start at [Preparing the server](02-preparing/README.md) and follow your system's
 page first.
 
-Everything here is the same on every system. Where a command differs, it
-uses the two values your system's page set at its end: `HUB_OWNER`, the
-account that owns the hub's files, and `HUB_PHP`, how to run the hub's PHP.
-Check they are set in the shell you are using:
+Everything here is the same on every system. The hub's commands are run
+with `muse`, its command line, in the hub's directory:
 
 ```bash
-echo "$HUB_OWNER" "$HUB_PHP"
+cd /var/www/hub
+sudo php core/bin/muse ...
 ```
 
-It should print something like `www-data:www-data sudo -u www-data php`. If it
-prints nothing, set them again as your system's page shows.
+Whatever `muse` writes has to belong to the account that owns the hub's
+files, `www-data` or `apache`, or the web server cannot write it again. Run
+with `sudo`, `muse` becomes that account by itself before it does anything,
+and says so. If you are that account, or the files are your own, as in a
+checkout for development, leave out `sudo`: `muse` then runs as you.
+
+If the hub runs in Docker, `muse` runs in the container instead, as your
+system's page shows: `sudo docker exec -it -w /var/www/hub hub php
+core/bin/muse ...` wherever this page says `sudo php core/bin/muse ...`.
 
 ## 1. Create the database
 
@@ -60,7 +66,7 @@ The installer can check everything it needs before it changes anything:
 
 ```bash
 cd /var/www/hub
-$HUB_PHP core/bin/muse install check
+sudo php core/bin/muse install check
 ```
 
 It lists the PHP version, each extension, `unzip`, and whether it can write
@@ -78,7 +84,7 @@ ways below.
 
 ```bash
 cd /var/www/hub
-$HUB_PHP core/bin/muse install
+sudo php core/bin/muse install
 ```
 
 It asks its questions one at a time and checks each answer before moving
@@ -144,16 +150,19 @@ Write the file as `/var/www/hub-install.json`, outside the hub's directory:
 | `admin` | `name`, `username`, `email`, `password` (at least eight characters) |
 | `sample` | `true` to load the sample data, `false` not to |
 
-It holds two passwords, so give it to the hub's account alone, use it, and
-delete it:
+It holds two passwords, so give it to the account that owns the hub alone,
+use it, and delete it:
 
 ```bash
-sudo chown "$HUB_OWNER" /var/www/hub-install.json
+sudo chown --reference=/var/www/hub /var/www/hub-install.json
 sudo chmod 600 /var/www/hub-install.json
 cd /var/www/hub
-$HUB_PHP core/bin/muse install --config=/var/www/hub-install.json
+sudo php core/bin/muse install --config=/var/www/hub-install.json
 sudo rm /var/www/hub-install.json
 ```
+
+`chown --reference` gives the file the same owner as the hub's directory, so
+it does not matter which account that is.
 
 If the hub runs in Docker, the container cannot see that file. Copy it in
 instead, use the copy, and remove both:
@@ -162,7 +171,7 @@ instead, use the copy, and remove both:
 sudo docker cp /var/www/hub-install.json hub:/tmp/hub-install.json
 sudo docker exec -u root hub chown 33:33 /tmp/hub-install.json
 sudo docker exec -u root hub chmod 600 /tmp/hub-install.json
-$HUB_PHP core/bin/muse install --config=/tmp/hub-install.json
+sudo docker exec -w /var/www/hub hub php core/bin/muse install --config=/tmp/hub-install.json
 sudo docker exec -u root hub rm /tmp/hub-install.json
 sudo rm /var/www/hub-install.json
 ```
@@ -246,8 +255,15 @@ you to a Getting Started article; without it, to the hub's front page.
 site at `/login`.
 
 **Scheduled tasks.** Nothing that runs on a schedule happens until the server
-ticks the hub every minute. Add the line your system's page gave you to
-`/etc/crontab`. It needs the hub's address in `live_site` in
+ticks the hub every minute. Add this line to `/etc/crontab` (under Docker,
+the one your system's page gives instead):
+
+```
+* * * * * root php /var/www/hub/core/bin/muse cron:jobs tick
+```
+
+Run as root, `muse` becomes the account that owns the hub, as it does from
+the command line. The tick needs the hub's address in `live_site` in
 `app/config/app.php`, which the browser installer leaves blank unless you
 filled in **Site URL**. What the tick does, and the jobs it runs, are in
 [Scheduled tasks](../managers/03-maintenance/05-cron.md#how-it-works).
@@ -270,7 +286,7 @@ not finish run again:
 
 ```bash
 cd /var/www/hub
-$HUB_PHP core/bin/muse migration run -f
+sudo php core/bin/muse migration run -f
 ```
 
 **Keeping it up to date.** [Upgrading a hub](04-upgrading.md) brings the hub
@@ -302,10 +318,11 @@ The administrator sign-in form posts to `https://`; serve the hub over HTTPS.
 
 **A page says the file or directory is not writable, or images and uploads
 fail.** Something in `/var/www/hub` belongs to another account, usually
-because a command was run as yourself or as `root`. Give it back:
+because something other than `muse` was run as yourself or as `root`. Give
+it back to the directory's owner:
 
 ```bash
-sudo chown -R "$HUB_OWNER" /var/www/hub
+sudo chown -R --reference=/var/www/hub /var/www/hub
 ```
 
 **The browser installer's migrations stop with *Connection error*.** The
@@ -314,7 +331,7 @@ migrations as pending, finish them from the command line:
 
 ```bash
 cd /var/www/hub
-$HUB_PHP core/bin/muse migration run -f
+sudo php core/bin/muse migration run -f
 ```
 
 **Requests for `/app/config/database.php` do not answer 403.** The web

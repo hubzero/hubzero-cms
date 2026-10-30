@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 581dd435fc
+reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
 summary: Preparing an Enterprise Linux 9 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the php:8.2 and mariadb:10.11 module streams, behind Apache or nginx.
@@ -222,28 +222,7 @@ use its socket. The stock `/etc/nginx/nginx.conf` also has a server on port
 80 for any other name; it does not get in the way, but you can delete it. Raise `client_max_body_size` if members will upload files
 larger than 100 MB.
 
-## 6. Set the values the installation uses
-
-The rest of the installation is the same on every system, and runs the hub's
-commands through two values. Set them in the shell you will carry on in:
-
-```bash
-export HUB_OWNER=apache:apache
-export HUB_PHP="sudo -u apache php"
-```
-
-`HUB_OWNER` is the account and group that own the hub's files, and `HUB_PHP`
-is how to run the hub's PHP. If you open a new shell before you have
-finished, set them again.
-
-Once the hub is installed, scheduled tasks need this line in `/etc/crontab`.
-Keep it for then:
-
-```
-* * * * * apache /var/www/hub/core/bin/muse cron:jobs tick
-```
-
-## 7. Next: install the hub
+## 6. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.
