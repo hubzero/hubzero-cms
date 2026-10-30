@@ -21,14 +21,16 @@
 		else { document.addEventListener('DOMContentLoaded', fn); }
 	}
 
-	function fmtBytes(b) {
-		if (!b || b < 0) { return '0 B'; }
-		var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-		var i = Math.floor(Math.log(b) / Math.log(1024));
-		i = Math.max(0, Math.min(i, units.length - 1));
-		var v = b / Math.pow(1024, i);
-		return (i === 0 ? v : v.toFixed(v < 10 ? 1 : 0)) + ' ' + units[i];
+	// Hub GB convention (1 GB = 1024000000 B), matching how quotas are set and
+	// the PHP view's formatter, so the tiles add up and match the gauge.
+	var HUB_UNITS = [[1024000000, 'GB'], [1024000, 'MB'], [1024, 'KB'], [1, 'B']];
+	function pickUnit(ref) {
+		for (var i = 0; i < HUB_UNITS.length; i++) {
+			if (ref >= HUB_UNITS[i][0]) { return HUB_UNITS[i]; }
+		}
+		return HUB_UNITS[HUB_UNITS.length - 1];
 	}
+	function fmtUnit(v, u) { return (v / u[0]).toFixed(1) + ' ' + u[1]; }
 
 	function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
@@ -597,13 +599,15 @@
 					function () { pctEl.textContent = Math.round(percent); });
 			}
 
+			// Format all tiles in one unit (chosen from the quota) so they add up
+			// and match the gauge -- same convention as the PHP view.
+			var softRef = (statBytes && statBytes.length > 1) ? statBytes[1] : (parseFloat(root.getAttribute('data-soft')) || 0);
+			var unit = pickUnit(softRef);
 			statEls.forEach(function (el, i) {
-				var bytes = (statBytes && statBytes.length > i) ? statBytes[i] : parseFloat(el.getAttribute('data-bytes')) || 0;
-				var finalText = el.getAttribute('data-final') || el.textContent;
-				el.setAttribute('data-final', finalText);
+				var bytes = (statBytes && statBytes.length > i) ? statBytes[i] : (parseFloat(el.getAttribute('data-bytes')) || 0);
 				el.setAttribute('data-bytes', bytes);
-				count(bytes, function (v) { el.textContent = fmtBytes(v); },
-					function () { el.textContent = (statBytes ? fmtBytes(bytes) : finalText); });
+				count(bytes, function (v) { el.textContent = fmtUnit(v, unit); },
+					function () { el.textContent = fmtUnit(bytes, unit); });
 			});
 		}
 

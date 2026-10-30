@@ -138,9 +138,12 @@
    file list are styled here. Light-first with a dark-scheme fallback.
    ===================================================================== */
 #storage-manager {
-	--sm-card:   #ffffff;
+	/* Surface + text inherit the host template so the manager follows its theme
+	   (light, dark, or custom) instead of forcing its own colors; cards are
+	   delineated by border + shadow rather than a painted fill. */
+	--sm-card:   inherit;
+	--sm-text:   inherit;
 	--sm-border: #e2e5ea;
-	--sm-text:   #2b2f35;
 	--sm-muted:  #6b7280;
 	--sm-track:  #e7eaef;
 	--sm-accent: #2f6db3;
@@ -289,9 +292,9 @@
 
 @media (prefers-color-scheme: dark) {
 	#storage-manager {
-		--sm-card:   #1e1f22;
+		/* card + text stay inherited from the template; only the structural
+		   greys shift so borders/tracks read on a dark ground */
 		--sm-border: #34363b;
-		--sm-text:   #e7eaee;
 		--sm-muted:  #9aa1ab;
 		--sm-track:  #34363b;
 	}

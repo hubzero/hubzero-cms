@@ -23,13 +23,24 @@ $state = ($percent >= 90) ? 'crit' : (($percent >= 70) ? 'warn' : 'ok');
 $circ   = 2 * M_PI * 54;
 $offset = $circ * (1 - $percent / 100);
 
-$fmt = function ($bytes) {
-	return \Hubzero\Utility\Number::formatBytes((float) $bytes);
-};
+$used = isset($this->usedBytes) ? (float) $this->usedBytes : 0;
+$soft = isset($this->softBytes) ? (float) $this->softBytes : 0;
+$free = isset($this->freeBytes) ? (float) $this->freeBytes : 0;
 
-$used = isset($this->usedBytes) ? $this->usedBytes : 0;
-$soft = isset($this->softBytes) ? $this->softBytes : 0;
-$free = isset($this->freeBytes) ? $this->freeBytes : 0;
+// Format all three figures in ONE unit (chosen from the quota) so they read
+// consistently, add up (used + free = quota), and line up with the gauge
+// percentage. Uses the hub's GB convention (1 GB = 1024000000 B) -- the unit
+// quotas are provisioned in (e.g. softspace 20480000000 = 20 GB) -- rather than
+// GiB, which is why plain formatBytes() showed "19 GB" for a 20 GB quota.
+$units = array(array(1024000000, 'GB'), array(1024000, 'MB'), array(1024, 'KB'), array(1, 'B'));
+$unitDiv = 1; $unitLbl = 'B';
+foreach ($units as $u)
+{
+	if ($soft >= $u[0]) { $unitDiv = $u[0]; $unitLbl = $u[1]; break; }
+}
+$fmt = function ($bytes) use ($unitDiv, $unitLbl) {
+	return number_format($bytes / $unitDiv, 1) . ' ' . $unitLbl;
+};
 
 $filerUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component');
 $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=storage');

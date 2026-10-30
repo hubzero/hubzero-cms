@@ -69,9 +69,9 @@ class Storagev1_0 extends ApiController
 			'hard'      => $hard,
 			'free'      => $free,
 			'percent'   => $percent,
-			'used_gb'   => round($used / 1000000000, 2),
-			'soft_gb'   => round($soft / 1000000000, 2),
-			'free_gb'   => round($free / 1000000000, 2)
+			'used_gb'   => round($used / 1024000000, 2),
+			'soft_gb'   => round($soft / 1024000000, 2),
+			'free_gb'   => round($free / 1024000000, 2)
 		));
 	}
 
