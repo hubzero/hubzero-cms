@@ -46,7 +46,7 @@ API version 1.0, task `listAll` in [`sessionsv1_0.php`](../../../core/components
 
 Grabs the output from a tool session
 
-API version 1.0, task `output` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1127).
+API version 1.0, task `output` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1131).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -57,7 +57,7 @@ API version 1.0, task `output` in [`sessionsv1_0.php`](../../../core/components/
 
 Runs a rappture job.
 
-API version 1.0, task `run` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L796).
+API version 1.0, task `run` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L800).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -79,7 +79,7 @@ API version 1.0, task `screenshots` in [`sessionsv1_0.php`](../../../core/compon
 
 Gets the status of the session identified
 
-API version 1.0, task `status` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1034).
+API version 1.0, task `status` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1038).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -89,7 +89,7 @@ API version 1.0, task `status` in [`sessionsv1_0.php`](../../../core/components/
 
 Method to setup Windows filesharing connection
 
-API version 1.0, task `fileshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1582).
+API version 1.0, task `fileshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1586).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -114,19 +114,19 @@ API version 1.0, task `screenshot` in [`sessionsv1_0.php`](../../../core/compone
 
 Method to stop tool session
 
-API version 1.0, task `delete` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1316).
+API version 1.0, task `delete` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1320).
 
 ## GET /tools/{session}
 
 Method to view tool session
 
-API version 1.0, task `read` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1207).
+API version 1.0, task `read` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1211).
 
 ## GET /tools/{session}/unshare
 
 Method to disconnect from shared tool session
 
-API version 1.0, task `unshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1401).
+API version 1.0, task `unshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1405).
 
 ## GET /tools/{tool}
 
@@ -159,10 +159,10 @@ API version 1.0, task `rapptureXML` in [`sessionsv1_0.php`](../../../core/compon
 
 Method to purge users storage
 
-API version 1.0, task `purge` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1501).
+API version 1.0, task `purge` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1505).
 
 ## GET /tools/{user_id}
 
 Method to return users storage results
 
-API version 1.0, task `storage` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1455).
+API version 1.0, task `storage` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1459).
