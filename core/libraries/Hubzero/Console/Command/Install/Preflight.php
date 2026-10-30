@@ -88,6 +88,11 @@ class Preflight
             $allPassed = false;
         }
 
+        // And the ones the libraries Composer installs need besides
+        if (!self::checkLibraryExtensions($ansi, $corePath)) {
+            $allPassed = false;
+        }
+
         // Check write permissions
         if (!self::checkWritePermissions($ansi, $appPath)) {
             $allPassed = false;
@@ -169,6 +174,62 @@ class Preflight
         }
 
         return $allLoaded;
+    }
+
+    /**
+     * Check the extensions the locked libraries need
+     *
+     * Composer reads them from composer.lock, so the list is the libraries'
+     * own and needs no keeping up here. Only extensions are taken from it:
+     * the PHP version is checked above, against the platform composer.json
+     * pins, which Composer installs for whatever a library's own range says.
+     *
+     * @param   bool    $ansi      Whether to use ANSI colors
+     * @param   string  $corePath  Path to the core directory
+     * @return  bool
+     **/
+    private static function checkLibraryExtensions($ansi, $corePath)
+    {
+        $composer = $corePath . '/bin/composer';
+
+        if (!is_file($composer) || !is_file($corePath . '/composer.lock')) {
+            return true;
+        }
+
+        $cmd = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($composer)
+            . ' check-platform-reqs --lock --format=json --no-interaction -d ' . escapeshellarg($corePath)
+            . ' 2>/dev/null';
+
+        $requirements = json_decode((string) shell_exec($cmd), true);
+
+        // Composer could not say; the install itself will
+        if (!is_array($requirements)) {
+            return true;
+        }
+
+        $missing = [];
+
+        foreach ($requirements as $requirement) {
+            if (
+                strpos($requirement['name'] ?? '', 'ext-') === 0
+                && ($requirement['status'] ?? '') !== 'success'
+            ) {
+                $source = $requirement['failed_requirement']['source'] ?? '';
+                $missing[] = substr($requirement['name'], 4) . ' extension'
+                    . ($source && $source !== '__root__' ? " - needed by {$source}" : '');
+            }
+        }
+
+        if (!$missing) {
+            self::output("  \e[32m[OK]\e[39m Extensions the libraries need\n", $ansi);
+            return true;
+        }
+
+        foreach ($missing as $ext) {
+            self::output("  \e[31m[FAIL]\e[39m {$ext}\n", $ansi, true);
+        }
+
+        return false;
     }
 
     /**
