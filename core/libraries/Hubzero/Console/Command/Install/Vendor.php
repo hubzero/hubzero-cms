@@ -69,6 +69,8 @@ class Vendor
             self::output("\n", $ansi);
         }
 
+        self::useWritableCache();
+
         // Build composer command
         $composerOptions = $ansi ? " --ansi" : " --no-ansi";
 
@@ -134,6 +136,55 @@ class Vendor
         self::output("\n", $ansi);
 
         return true;
+    }
+
+    /**
+     * Give Composer a cache it can write
+     *
+     * The account muse runs Composer as often has no home it can write,
+     * www-data's being the web server's own directory, and Composer then
+     * warns that it cannot create its cache and downloads every package
+     * afresh. Put the cache in the temporary directory instead.
+     *
+     * @return  void
+     */
+    private static function useWritableCache()
+    {
+        if (getenv('COMPOSER_CACHE_DIR') !== false || getenv('COMPOSER_HOME') !== false) {
+            return;
+        }
+
+        $home  = getenv('HOME');
+        $cache = getenv('XDG_CACHE_HOME') ?: ($home ? $home . '/.cache' : '');
+
+        if ($cache !== '' && self::canCreate($cache . '/composer')) {
+            return;
+        }
+
+        $uid = function_exists('posix_geteuid') ? posix_geteuid() : getmypid();
+
+        putenv('COMPOSER_CACHE_DIR=' . sys_get_temp_dir() . '/composer-cache-' . $uid);
+    }
+
+    /**
+     * Whether a directory exists and can be written, or can be made
+     *
+     * @param   string  $dir
+     * @return  bool
+     */
+    private static function canCreate($dir)
+    {
+        while (!is_dir($dir)) {
+            $parent = dirname($dir);
+
+            if ($parent === $dir) {
+                return false;
+            }
+
+            $dir = $parent;
+        }
+
+        return is_writable($dir);
     }
 
     /**
