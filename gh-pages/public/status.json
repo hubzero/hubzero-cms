@@ -1,11 +1,19 @@
 {
  "books": [
   {
+   "slug": "sysadmins",
+   "title": "System administrators",
+   "pages": 3,
+   "counts": {
+    "rewritten": 3
+   }
+  },
+  {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 91,
+   "pages": 89,
    "counts": {
-    "rewritten": 91
+    "rewritten": 89
    }
   },
   {
@@ -45,7 +53,7 @@
   }
  ],
  "totals": {
-  "rewritten": 237,
+  "rewritten": 238,
   "draft": 1,
   "reviewed": 23,
   "generated": 154
