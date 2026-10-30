@@ -1,9 +1,9 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a7cc23ecc4
+reviewed-against: 2.4-main @ a89b23e433
 reviewed: 2026-10-30
 screenshots: ok
-summary: Installing a hub on a Linux server with PHP 8.2 and MariaDB, behind Apache, nginx or FrankenPHP in Docker, using the browser installer or muse install.
+summary: Installing a hub on Debian, Ubuntu or Enterprise Linux with PHP 8.2 and MariaDB, behind Apache, nginx or FrankenPHP in Docker, using the browser installer or muse install.
 -->
 # Installing a hub
 
@@ -26,12 +26,24 @@ the wrong page. Go to
 which starts from a hub that runs and walks the decisions that come next in
 order.
 
-This branch is built for PHP 8.2, and the page names it throughout. The
-Apache and nginx routes were run on Ubuntu 24.04 with MariaDB 10.11, Apache
-2.4, nginx 1.24 and Ubuntu's own PHP 8.3; nothing in them changes with the
-PHP version but the number in the package and socket names. The FrankenPHP
-route was run in FrankenPHP's PHP 8.2 image. On another distribution the
-package names differ; the steps do not.
+This branch is built for PHP 8.2, and the page installs that version on
+every system it covers: Debian 12 and 13, Ubuntu 22.04, 24.04 and 26.04, and
+Enterprise Linux 8, 9 and 10 (Red Hat Enterprise Linux, Rocky Linux,
+AlmaLinux). Most of the page is the same everywhere; where a system differs,
+it has a section of its own, even when that means saying something twice.
+
+What was run, and where:
+
+- **Full installs, browser and command line:** Ubuntu 24.04 behind Apache
+  and nginx (with Ubuntu's PHP 8.3), and FrankenPHP's PHP 8.2 Docker image.
+- **Full installs, command line:** Enterprise Linux 8 and 10 behind Apache,
+  and 9 behind nginx, each with PHP 8.2 from the packages named below, in
+  Rocky Linux containers. A container has no SELinux, firewall or systemd,
+  so those steps are written from the distributions' documentation and were
+  not run.
+- **PHP 8.2 packages installed and every extension checked:** Debian 12 and
+  13, Ubuntu 22.04 and 24.04.
+- **Databases:** MariaDB 10.11 and 11.8.
 
 ## What you need
 
@@ -53,39 +65,269 @@ requirements check:
 
 ## 1. Install the packages
 
-The database and the tools:
+Find your system below. Each section installs the database, PHP 8.2 with
+the extensions the hub needs, the tools, and then lets you choose Apache or
+nginx. If you are going to run FrankenPHP in Docker instead, install only
+the database and the tools from your system's section, then go to
+[FrankenPHP in Docker](#frankenphp-in-docker-on-any-of-these-systems).
+
+On every system, `json`, `openssl`, `fileinfo` and `pdo` come with PHP
+itself. The XML package is not on the installer's list, but the libraries
+Composer installs need it.
+
+### Debian 12
+
+PHP 8.2 and MariaDB 10.11 are Debian 12's own.
 
 ```bash
-sudo apt install mariadb-server git unzip
+sudo apt install mariadb-server git unzip \
+    php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring php8.2-curl \
+    php8.2-gd php8.2-zip php8.2-xml
 ```
 
-Then the web server, and PHP with it. Choose one:
+Then the web server, one of:
 
-- **Apache or nginx**, with PHP 8.2 from the distribution. Debian 12 ships
-  PHP 8.2. Ubuntu 24.04 ships 8.3, and gets 8.2 from the `ondrej/php`
-  package archive first:
+```bash
+sudo apt install apache2
+sudo a2enmod proxy_fcgi setenvif ssl
+```
+
+```bash
+sudo apt install nginx
+```
+
+### Debian 13
+
+Debian 13 ships PHP 8.4. PHP 8.2 comes from Ondřej Surý's archive, which
+packages it for Debian under the same names Debian uses:
+
+```bash
+sudo apt install curl ca-certificates lsb-release
+curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+    | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
+```
+
+Then the same packages as Debian 12. MariaDB is Debian 13's own, 11.8:
+
+```bash
+sudo apt install mariadb-server git unzip \
+    php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring php8.2-curl \
+    php8.2-gd php8.2-zip php8.2-xml
+```
+
+Then the web server, one of:
+
+```bash
+sudo apt install apache2
+sudo a2enmod proxy_fcgi setenvif ssl
+```
+
+```bash
+sudo apt install nginx
+```
+
+### Ubuntu 22.04 and 24.04
+
+Ubuntu 22.04 ships PHP 8.1 and 24.04 ships 8.3. PHP 8.2 comes from Ondřej
+Surý's PPA:
+
+```bash
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+```
+
+Then the packages. MariaDB is Ubuntu's own: 10.6 on 22.04, 10.11 on 24.04.
+
+```bash
+sudo apt install mariadb-server git unzip \
+    php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring php8.2-curl \
+    php8.2-gd php8.2-zip php8.2-xml
+```
+
+Then the web server, one of:
+
+```bash
+sudo apt install apache2
+sudo a2enmod proxy_fcgi setenvif ssl
+```
+
+```bash
+sudo apt install nginx
+```
+
+### Ubuntu 26.04
+
+Ubuntu 26.04 ships PHP 8.5, and the PPA above has no packages for it, so
+there is no PHP 8.2 to install on the system itself. Run the hub in
+FrankenPHP's PHP 8.2 Docker image instead. Install the database, the tools
+and Docker:
+
+```bash
+sudo apt install mariadb-server git unzip docker.io
+```
+
+MariaDB is Ubuntu's own, 11.8. Then go to
+[FrankenPHP in Docker](#frankenphp-in-docker-on-any-of-these-systems).
+
+### Enterprise Linux 8
+
+PHP 8.2 and MariaDB 10.11 are module streams in AppStream. Enable them
+before installing anything from either:
+
+```bash
+sudo dnf module enable php:8.2 mariadb:10.11
+sudo dnf install mariadb-server git unzip \
+    php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
+sudo systemctl enable --now mariadb php-fpm
+```
+
+`php-process` brings the POSIX functions the command line uses. `curl` and
+`sockets` come with `php-cli`.
+
+Then the web server, one of:
+
+```bash
+sudo dnf install httpd mod_ssl
+sudo systemctl enable --now httpd
+```
+
+```bash
+sudo dnf install nginx
+sudo systemctl enable --now nginx
+```
+
+Then [the firewall and SELinux](#on-enterprise-linux-the-firewall-and-selinux).
+
+### Enterprise Linux 9
+
+The same as 8: PHP 8.2 and MariaDB 10.11 are module streams in AppStream.
+Enable them first; without the MariaDB stream, `dnf` installs the default
+10.5.
+
+```bash
+sudo dnf module enable php:8.2 mariadb:10.11
+sudo dnf install mariadb-server git unzip \
+    php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
+sudo systemctl enable --now mariadb php-fpm
+```
+
+Then the web server, one of:
+
+```bash
+sudo dnf install httpd mod_ssl
+sudo systemctl enable --now httpd
+```
+
+```bash
+sudo dnf install nginx
+sudo systemctl enable --now nginx
+```
+
+Then [the firewall and SELinux](#on-enterprise-linux-the-firewall-and-selinux).
+
+### Enterprise Linux 10
+
+Enterprise Linux 10 has no module streams for PHP, and AppStream has PHP
+8.3. PHP 8.2 comes from Remi Collet's repository, which needs EPEL:
+
+```bash
+sudo dnf install epel-release
+sudo dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm
+sudo dnf module enable php:remi-8.2
+```
+
+On Red Hat Enterprise Linux itself, where `epel-release` is not in the
+repositories, install it from
+`https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm`
+instead.
+
+Then the packages. MariaDB is AppStream's own, 10.11:
+
+```bash
+sudo dnf install mariadb-server git unzip \
+    php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
+sudo systemctl enable --now mariadb php-fpm
+```
+
+Then the web server, one of:
+
+```bash
+sudo dnf install httpd mod_ssl
+sudo systemctl enable --now httpd
+```
+
+```bash
+sudo dnf install nginx
+sudo systemctl enable --now nginx
+```
+
+Then [the firewall and SELinux](#on-enterprise-linux-the-firewall-and-selinux).
+
+### On Enterprise Linux: the firewall and SELinux
+
+Enterprise Linux starts with the firewall closed and SELinux enforcing.
+Open the web ports:
+
+```bash
+sudo firewall-cmd --permanent --add-service=http --add-service=https
+sudo firewall-cmd --reload
+```
+
+SELinux lets the web server read files under `/var/www` but not write
+them, and not open network connections. The hub writes to its own
+directory, and the installer writes to the whole of it; it connects to
+MariaDB over TCP, and the browser installer downloads Composer's libraries.
+Once the code is in place in step 3:
+
+```bash
+sudo dnf install policycoreutils-python-utils
+sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/hub(/.*)?"
+sudo restorecon -R /var/www/hub
+sudo setsebool -P httpd_can_network_connect_db 1
+sudo setsebool -P httpd_can_network_connect 1
+sudo setsebool -P httpd_can_sendmail 1
+```
+
+These were not run: the test installs were in containers, which have no
+SELinux. If something the web server does fails with a permission error
+that the file permissions do not explain, `sudo ausearch -m avc -ts recent`
+shows what SELinux refused. The command-line installer does its work as a
+login user rather than through the web server, so it is the safer of the
+two on a system where SELinux has not been set up for the hub yet.
+
+### FrankenPHP in Docker, on any of these systems
+
+Install the database and the tools from your system's section above, but
+not PHP or a web server: the image brings PHP, and FrankenPHP is the web
+server. Then Docker:
+
+- **Debian and Ubuntu:** `sudo apt install docker.io`.
+- **Enterprise Linux 8, 9 and 10:** from Docker's own repository. It
+  replaces Podman, which Enterprise Linux installs by default:
 
   ```bash
-  sudo add-apt-repository ppa:ondrej/php     # Ubuntu only
-  sudo apt install php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring \
-      php8.2-curl php8.2-gd php8.2-zip php8.2-xml
+  sudo dnf remove podman buildah runc
+  sudo dnf install dnf-plugins-core
+  sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+  sudo dnf install docker-ce docker-ce-cli containerd.io
+  sudo systemctl enable --now docker
   ```
 
-  `php8.2-xml` is not on the installer's list, but the libraries Composer
-  installs need it. `json`, `openssl`, `fileinfo` and `pdo` come with PHP
-  itself. Then `sudo apt install apache2` and
-  `sudo a2enmod proxy_fcgi setenvif ssl`, or `sudo apt install nginx`.
+  Open the firewall as in
+  [the firewall and SELinux](#on-enterprise-linux-the-firewall-and-selinux);
+  the SELinux settings there are for Apache and nginx and do not apply.
 
-- **FrankenPHP**, a web server with PHP built in, run in Docker from its
-  PHP 8.2 image. Install Docker (`sudo apt install docker.io`); the image
-  brings PHP, and you install no PHP packages on the server at all. It serves
-  HTTPS with a certificate it obtains itself.
+The image itself is built in step 4.
 
 ## 2. Create the database
 
-Hubzero needs a database and an account that owns it. On Ubuntu, MariaDB's
-`root` account signs in through the operating system rather than with a
-password, so create them with `sudo`:
+Hubzero needs a database and an account that owns it. MariaDB's `root`
+account signs in through the operating system rather than with a password,
+so create them with `sudo`:
 
 ```bash
 sudo mariadb
@@ -106,6 +348,10 @@ CREATE DATABASE hub_metrics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL PRIVILEGES ON hub_metrics.* TO 'hub'@'localhost';
 ```
 
+On Enterprise Linux, MariaDB was started in step 1. On Debian and Ubuntu
+the package starts it. On every system above, MariaDB's `root` signs in with
+`sudo mariadb` and no password.
+
 The browser installer can also create the database and account itself, if you
 give it an administrator account that has a password and the right to grant
 privileges. Creating them by hand, as above, needs neither.
@@ -113,14 +359,42 @@ privileges. Creating them by hand, as above, needs neither.
 ## 3. Get the code
 
 The repository is the hub: its top directory is the web server's document
-root. Clone it, and give it to the account the web server runs PHP as, which
-on Debian and Ubuntu is `www-data`. The FrankenPHP container runs as
-`www-data` too:
+root. Clone it:
 
 ```bash
 sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /var/www/hub
-sudo chown -R www-data:www-data /var/www/hub
 ```
+
+Then give it to the account that runs PHP:
+
+- **Debian and Ubuntu, with Apache or nginx:** `www-data`.
+
+  ```bash
+  sudo chown -R www-data:www-data /var/www/hub
+  ```
+
+- **Enterprise Linux, with Apache or nginx:** `apache`. PHP-FPM's pool runs
+  as `apache` with either web server.
+
+  ```bash
+  sudo chown -R apache:apache /var/www/hub
+  ```
+
+- **FrankenPHP in Docker, on any system:** user and group 33, which is
+  `www-data` inside the image. On Debian and Ubuntu that is `www-data` on
+  the server too; on Enterprise Linux no account has the number, so use it
+  as it is.
+
+  ```bash
+  sudo chown -R 33:33 /var/www/hub
+  ```
+
+The rest of this page writes `www-data` in commands such as
+`sudo -u www-data ...`. On Enterprise Linux with Apache or nginx, write
+`apache`.
+
+On Enterprise Linux with Apache or nginx, now set the SELinux labels in
+[the firewall and SELinux](#on-enterprise-linux-the-firewall-and-selinux).
 
 The installer writes the hub's configuration into a new `app/` directory
 inside it, and the hub later keeps its uploads, logs and cache there, so the
@@ -144,9 +418,11 @@ The last of those matters: `app/config/database.php` holds the database
 password, and nothing else stops a browser from reading it.
 
 Replace `hub.example.org` and the certificate paths with your own. The
-examples use certificates from Let's Encrypt's `certbot`.
+examples use certificates from Let's Encrypt's `certbot`: on Debian and
+Ubuntu `sudo apt install certbot`, on Enterprise Linux
+`sudo dnf install certbot` from EPEL.
 
-### Apache with PHP-FPM
+### Apache with PHP-FPM on Debian and Ubuntu
 
 `/etc/apache2/sites-available/hub.conf`:
 
@@ -196,7 +472,55 @@ The repository has no `.htaccess` file. Everything the hub needs is in this
 block, so `AllowOverride None` is right, and `FallbackResource` does the work
 a rewrite rule would.
 
-### nginx with PHP-FPM
+### Apache with PHP-FPM on Enterprise Linux
+
+The same configuration, with Enterprise Linux's paths: the file goes in
+`/etc/httpd/conf.d/`, PHP-FPM listens on `/run/php-fpm/www.sock`, and logs
+are relative to `/var/log/httpd`. `mod_ssl` already listens on port 443.
+`/etc/httpd/conf.d/hub.conf`:
+
+```apache
+<VirtualHost *:80>
+    ServerName hub.example.org
+    Redirect permanent / https://hub.example.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName hub.example.org
+    DocumentRoot /var/www/hub
+
+    SSLEngine on
+    SSLCertificateFile    /etc/letsencrypt/live/hub.example.org/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/hub.example.org/privkey.pem
+
+    <Directory /var/www/hub>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+        FallbackResource /index.php
+    </Directory>
+
+    <FilesMatch "\.php$">
+        SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost"
+    </FilesMatch>
+
+    <LocationMatch "^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)">
+        Require all denied
+    </LocationMatch>
+    <LocationMatch "/\.(?!well-known)">
+        Require all denied
+    </LocationMatch>
+
+    ErrorLog logs/hub-error.log
+    CustomLog logs/hub-access.log combined
+</VirtualHost>
+```
+
+```bash
+sudo apachectl configtest && sudo systemctl reload httpd
+```
+
+### nginx with PHP-FPM on Debian and Ubuntu
 
 `/etc/nginx/sites-available/hub`:
 
@@ -247,6 +571,57 @@ Do not use Ubuntu's `snippets/fastcgi-php.conf` for this block. It answers
 interface lives at one: `/administrator/index.php` is answered by the hub's
 `index.php`, not by a file of that name. Raise `client_max_body_size` if
 members will upload files larger than 100 MB.
+
+### nginx with PHP-FPM on Enterprise Linux
+
+The same configuration, with Enterprise Linux's paths: the file goes in
+`/etc/nginx/conf.d/`, which nginx reads without a link, and PHP-FPM listens
+on `/run/php-fpm/www.sock`. PHP-FPM's pool already lets nginx use the socket.
+`/etc/nginx/conf.d/hub.conf`:
+
+```nginx
+server {
+    listen 80;
+    server_name hub.example.org;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name hub.example.org;
+    root /var/www/hub;
+    index index.php;
+
+    ssl_certificate     /etc/letsencrypt/live/hub.example.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hub.example.org/privkey.pem;
+
+    client_max_body_size 100m;
+
+    location ~ ^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$) { deny all; }
+    location ~ /\.(?!well-known) { deny all; }
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Addresses such as /administrator/index.php name no file; the hub's own
+    # index.php answers them, as it does every other address
+    location ~ \.php$ {
+        try_files $uri /index.php?$query_string;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_read_timeout 300;
+    }
+}
+```
+
+```bash
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+The stock `/etc/nginx/nginx.conf` also has a server on port 80 for any
+other name. It does not get in the way, but you can delete it.
 
 ### FrankenPHP in Docker
 
@@ -324,10 +699,14 @@ sudo docker run -d --name hub --restart unless-stopped --network host \
   reach MariaDB at `127.0.0.1` as if it were not in a container.
 - The hub's directory is mounted at the same path inside, so paths the
   installer writes into the configuration are right on both sides. The
-  container's `www-data` is user 33, the same as on Debian and Ubuntu, so the
-  files you gave to `www-data` are its files.
+  container runs as user 33, its `www-data`, which owns the files after
+  step 3.
 - `hub_caddy_data` keeps the certificates FrankenPHP obtains across restarts
   and rebuilds.
+- On Enterprise Linux, where SELinux keeps containers out of files it has
+  not labelled for them, write the hub's mount as
+  `-v /var/www/hub:/var/www/hub:z`. Docker relabels the directory for
+  containers when it starts.
 
 FrankenPHP obtains and renews the certificate for `hub.example.org` itself,
 so there are no certificate paths to give it. Its regular expressions have no

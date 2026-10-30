@@ -14,7 +14,7 @@
    "title": "System administrators",
    "dir": "docs/sysadmins",
    "audience": "Run a hub",
-   "summary": "Putting a hub on a server and keeping it current: installing it with PHP 8.2 and MariaDB behind Apache, nginx or FrankenPHP, and upgrading it."
+   "summary": "Putting a hub on a server and keeping it current: installing it on Debian, Ubuntu or Enterprise Linux with PHP 8.2 and MariaDB behind Apache, nginx or FrankenPHP, and upgrading it."
   },
   {
    "slug": "managers",

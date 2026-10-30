@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a7cc23ecc4
-reviewed: 2026-10-29
+reviewed-against: 2.4-main @ a89b23e433
+reviewed: 2026-10-30
 screenshots: none
 summary: Bringing a hub up to the latest code on its release branch, with a backup taken first and a way back if something goes wrong.
 -->
@@ -18,7 +18,8 @@ rolling it back and upgrading it again. Its content came through unchanged,
 and the upgraded database matched a newly installed one.
 
 Run every command in the hub's directory, as the account that owns the hub's
-files: `www-data` on Debian and Ubuntu, as in the install guide. With
+files: `www-data` on Debian and Ubuntu, `apache` on Enterprise Linux, as in
+the install guide. The commands below write `www-data`. With
 FrankenPHP in Docker, run the `php` commands in the container instead:
 `sudo docker exec -w /var/www/hub hub php core/bin/muse ...`. The `git`,
 `mariadb-dump` and `tar` commands run on the server as they are.
@@ -111,8 +112,9 @@ the dump is not empty before you go on.
    ```
 
 5. **Reload PHP**, so no worker carries on with copies of the old code it had
-   already compiled: `sudo systemctl reload php8.2-fpm` for Apache or nginx,
-   `sudo docker restart hub` for FrankenPHP.
+   already compiled: `sudo systemctl reload php8.2-fpm` for Apache or nginx
+   on Debian and Ubuntu, `sudo systemctl reload php-fpm` on Enterprise
+   Linux, `sudo docker restart hub` for FrankenPHP.
 
 6. **Check the hub, then put it back online.** Sign in to the administrator
    interface and to the site, and open the pages your members use most. Then
@@ -157,7 +159,7 @@ comes back from the dump.
    ```bash
    sudo rm -rf app
    sudo tar xzf ~/hub-app-before-upgrade.tgz
-   sudo chown -R www-data:www-data app
+   sudo chown -R www-data:www-data app     # apache:apache on Enterprise Linux, 33:33 for FrankenPHP
    ```
 
 5. Clear the cache and reload PHP, as in steps 4 and 5 above.
