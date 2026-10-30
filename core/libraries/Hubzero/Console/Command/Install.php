@@ -845,11 +845,14 @@ class Install extends Base implements CommandInterface
     /**
      * Check that everything the hub writes belongs to the account that owns it
      *
+     * That is app/'s owner: in an image, the code itself can belong to root
+     * while only app/ is the web server's.
+     *
      * @return  void
      **/
     private function checkOwnership()
     {
-        $owner = fileowner(PATH_ROOT);
+        $owner = fileowner(PATH_APP);
         $files = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator(PATH_APP, \FilesystemIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::SELF_FIRST
@@ -861,7 +864,7 @@ class Install extends Base implements CommandInterface
                     $this->report(
                         'warn',
                         $file->getPathname() . ' belongs to another account, so the hub may not be able to write it. '
-                        . 'Give it back: sudo chown -R --reference=' . PATH_ROOT . ' ' . PATH_ROOT
+                        . 'Give it back: sudo chown -R --reference=' . PATH_APP . ' ' . PATH_APP
                     );
                     return;
                 }
