@@ -1,0 +1,68 @@
+# A hub to develop on: this checkout, served by FrankenPHP's PHP 8.2 at
+# https://localhost:8443, with MariaDB and a mail catcher beside it.
+#
+#   docker compose up -d
+#
+# The first start installs the hub into app/, and every start after brings
+# its database up to date. Not for serving a real hub: the passwords below
+# are known to everyone who reads this file. See
+# docs/developers/01-getting-started/06-devenvironment.md.
+
+name: hubzero
+
+services:
+  hub:
+    build: .docker
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${HUB_DEV_PORT:-8443}:${HUB_DEV_PORT:-8443}"
+    environment:
+      SERVER_NAME: "localhost:${HUB_DEV_PORT:-8443}"
+      HUB_SITENAME: Hubzero Development
+      HUB_MAILFROM: admin@localhost.localdomain
+      HUB_LIVE_SITE: "https://localhost:${HUB_DEV_PORT:-8443}"
+      HUB_TIMEZONE: UTC
+      HUB_DB_HOST: db
+      HUB_DB_NAME: hub
+      HUB_DB_USER: hub
+      HUB_DB_PASSWORD: hub
+      HUB_ADMIN_NAME: Hub Administrator
+      HUB_ADMIN_USERNAME: admin
+      HUB_ADMIN_EMAIL: admin@localhost.localdomain
+      HUB_ADMIN_PASSWORD: hubzero-admin
+      HUB_SAMPLE_DATA: "${HUB_DEV_SAMPLE_DATA:-1}"
+      XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/var/www/hub
+      - caddy_data:/data
+      - caddy_config:/config
+
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_DATABASE: hub
+      MARIADB_USER: hub
+      MARIADB_PASSWORD: hub
+      MARIADB_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./.docker/metrics.sql:/docker-entrypoint-initdb.d/metrics.sql:ro
+
+  mail:
+    image: axllent/mailpit:v1.32
+    ports:
+      - "127.0.0.1:${HUB_DEV_MAIL_PORT:-8025}:8025"
+
+volumes:
+  caddy_data:
+  caddy_config:
+  db_data:

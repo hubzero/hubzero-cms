@@ -1,0 +1,31 @@
+#!/bin/sh
+# Start a development hub: install it the first time, bring its database up
+# to date every time after, then serve it, all as the account that owns the
+# checkout, so that what the hub writes in it is yours
+set -e
+
+if [ "$(id -u)" = 0 ]; then
+	uid=$(stat -c %u /var/www/hub)
+	gid=$(stat -c %g /var/www/hub)
+
+	if [ "$uid" != 0 ]; then
+		# Give the owner a name in this container, which muse needs to
+		# become it when it is run here as root
+		getent group "$gid" > /dev/null || groupadd -g "$gid" hub
+		getent passwd "$uid" > /dev/null || useradd -u "$uid" -g "$gid" -M -d /tmp/hub-home -s /bin/sh hub
+
+		mkdir -p /tmp/hub-home
+		chown -R "$uid:$gid" /data /config /var/lib/php/sessions /tmp/hub-home
+
+		exec setpriv --reuid="$uid" --regid="$gid" --init-groups env HOME=/tmp/hub-home "$0"
+	fi
+fi
+
+php core/bin/muse install --env --no-colors
+
+# The hub's scheduled tasks, every minute
+while sleep 60; do
+	php core/bin/muse cron:jobs tick --no-colors || true
+done &
+
+exec frankenphp run --config /etc/frankenphp/Caddyfile

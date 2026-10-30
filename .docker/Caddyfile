@@ -1,0 +1,19 @@
+{
+	frankenphp
+	skip_install_trust
+	order php_server before file_server
+}
+
+{$SERVER_NAME} {
+	root * /var/www/hub
+
+	@private path_regexp ^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)
+	@dotfiles {
+		path_regexp /\.
+		not path /.well-known/*
+	}
+	respond @private 403
+	respond @dotfiles 403
+
+	php_server
+}
