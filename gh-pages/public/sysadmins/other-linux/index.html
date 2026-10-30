@@ -55,12 +55,12 @@
 <li class="toc__item toc__item--l2"><a href="#what-you-need">What you need</a></li>
 <li class="toc__item toc__item--l2"><a href="#1-install-mariadb-php-and-the-tools">1. Install MariaDB, PHP and the tools</a></li>
 <li class="toc__item toc__item--l2"><a href="#2-install-the-web-server">2. Install the web server</a></li>
-<li class="toc__item toc__item--l2"><a href="#3-create-the-database">3. Create the database</a></li>
-<li class="toc__item toc__item--l2"><a href="#4-get-the-code">4. Get the code</a></li>
-<li class="toc__item toc__item--l2"><a href="#5-configure-the-web-server">5. Configure the web server</a></li>
+<li class="toc__item toc__item--l2"><a href="#3-get-the-code">3. Get the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#4-configure-the-web-server">4. Configure the web server</a></li>
+<li class="toc__item toc__item--l2"><a href="#5-set-the-values-the-installation-uses">5. Set the values the installation uses</a></li>
 <li class="toc__item toc__item--l2"><a href="#6-install-the-hub">6. Install the hub</a></li>
-<li class="toc__item toc__item--l2"><a href="#7-after-installing">7. After installing</a></li>
 </ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul>
         </nav>
@@ -80,7 +80,9 @@
 <p>This page is for a Linux distribution the other installation pages do not
 name. It says what a hub needs rather than which packages to install, because
 those are the distribution's to name. The steps are the same as on every
-other system; only the package names and paths are yours to find.</p>
+other system; only the package names and paths are yours to find. When this
+page has prepared the server, <a href="../installing-the-hub/index.html">Installing the hub</a>
+installs it.</p>
 <p>If your distribution has no PHP 8.2 and no second source of it, run the hub
 in Docker instead: <a href="../docker/index.html">Installing with FrankenPHP in Docker</a>
 needs no PHP on the server at all.</p>
@@ -128,20 +130,7 @@ stops at a page headed <em>Server Configuration Required</em> without one.</li>
 <p><strong>Apache</strong>, with <code>mod_proxy_fcgi</code>, <code>mod_setenvif</code> and <code>mod_ssl</code> enabled.</p>
 <p><strong>Or nginx.</strong></p>
 <p>If the distribution starts with its firewall closed, open ports 80 and 443.</p>
-<h2 id="3-create-the-database">3. Create the database</h2>
-<p>The hub needs a database and an account that owns it. Connect to MariaDB as
-its administrator (<code>sudo mariadb</code> on most distributions) and create them:</p>
-<pre><code class="language-sql">CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'hub'@'localhost' IDENTIFIED BY 'a-long-random-password';
-GRANT ALL PRIVILEGES ON hub.* TO 'hub'@'localhost';
-</code></pre>
-<p>The usage statistics keep a second database of their own, named after the
-first with <code>_metrics</code> on the end. A hub runs without it, but its usage pages
-stay empty. If you want them, create it now as well:</p>
-<pre><code class="language-sql">CREATE DATABASE hub_metrics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON hub_metrics.* TO 'hub'@'localhost';
-</code></pre>
-<h2 id="4-get-the-code">4. Get the code</h2>
+<h2 id="3-get-the-code">3. Get the code</h2>
 <p>The repository is the hub: its top directory is the web server's document
 root. Clone it, and give it to the PHP-FPM account:</p>
 <pre><code class="language-bash">sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /var/www/hub
@@ -159,7 +148,7 @@ sudo -u &lt;the PHP-FPM account&gt; php core/bin/muse install check
 allowed to write to <code>/var/www/hub</code>, to connect to MariaDB and to the network,
 and to send mail. On SELinux, the commands are the ones
 <a href="../enterprise-linux-9/index.html#selinux">Enterprise Linux 9</a> uses.</p>
-<h2 id="5-configure-the-web-server">5. Configure the web server</h2>
+<h2 id="4-configure-the-web-server">4. Configure the web server</h2>
 <p>Every configuration for the hub does the same four things:</p>
 <ul>
 <li>serves <code>/var/www/hub</code> as the document root, over HTTPS;</li>
@@ -172,7 +161,7 @@ command-line programs and hidden files.</li>
 <p>The last of those matters: <code>app/config/database.php</code> holds the database
 password, and nothing else stops a browser from reading it.</p>
 <p>Start from the configuration for your web server on
-<a href="../debian-12/index.html#5-configure-the-web-server">Debian 12</a>, and change only what
+<a href="../debian-12/index.html#4-configure-the-web-server">Debian 12</a>, and change only what
 is your distribution's:</p>
 <ul>
 <li>where the file goes, and whether it needs enabling;</li>
@@ -184,27 +173,28 @@ and the hub needs all four. Under nginx, do not route PHP through a
 distribution snippet that answers 404 for a <code>.php</code> address with no file
 behind it: <code>/administrator/index.php</code> is answered by the hub's own
 <code>index.php</code>.</p>
+<h2 id="5-set-the-values-the-installation-uses">5. Set the values the installation uses</h2>
+<p>The rest of the installation is the same on every system, and runs the hub's
+commands through two values. Set them in the shell you will carry on in, with
+the PHP-FPM account in place of <code>&lt;account&gt;</code>:</p>
+<pre><code class="language-bash">export HUB_OWNER=&lt;account&gt;:&lt;account&gt;
+export HUB_PHP=&quot;sudo -u &lt;account&gt; php&quot;
+</code></pre>
+<p><code>HUB_OWNER</code> is the account and group that own the hub's files, and <code>HUB_PHP</code>
+is how to run the hub's PHP. If you open a new shell before you have
+finished, set them again.</p>
+<p>Once the hub is installed, scheduled tasks need this line in <code>/etc/crontab</code>.
+Keep it for then:</p>
+<pre><code>* * * * * &lt;account&gt; /var/www/hub/core/bin/muse cron:jobs tick
+</code></pre>
 <h2 id="6-install-the-hub">6. Install the hub</h2>
-<p>Use either installer, as the PHP-FPM account. The command line:</p>
-<pre><code class="language-bash">cd /var/www/hub
-sudo -u &lt;the PHP-FPM account&gt; php core/bin/muse install
-</code></pre>
-<p>or an answer file, or the browser. Each is described step by step on
-<a href="../debian-12/index.html#6-install-the-hub">Debian 12</a>, and works the same way here,
-with the PHP-FPM account in place of <code>www-data</code>.</p>
-<h2 id="7-after-installing">7. After installing</h2>
-<p>Everything on <a href="../debian-12/index.html#7-after-installing">Debian 12</a> applies,
-with the PHP-FPM account in place of <code>www-data</code>: the welcome page, the cron
-entry for scheduled tasks, mail, the database's time zones, and the usage
-statistics. Then check that the private paths are refused before the hub is
-in use:</p>
-<pre><code class="language-bash">curl -s -o /dev/null -w &quot;%{http_code}\n&quot; https://hub.example.org/app/config/database.php
-</code></pre>
-<p>It should print <code>403</code>.</p>
+<p>The server is ready. Go on to <a href="../installing-the-hub/index.html">Installing the hub</a>,
+which creates the database and runs the installer, the same way on every
+system.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 4b8a132fb4</code> on 2026-10-30.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../docker/index.html" rel="prev"><span>Previous</span>Installing with FrankenPHP in Docker</a><a class="pager__next" href="../upgrading/index.html" rel="next"><span>Next</span>Upgrading a hub</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 981ae7fc4a</code> on 2026-10-30.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../docker/index.html" rel="prev"><span>Previous</span>Installing with FrankenPHP in Docker</a><a class="pager__next" href="../installing-the-hub/index.html" rel="next"><span>Next</span>Installing the hub</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/11-other-linux.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

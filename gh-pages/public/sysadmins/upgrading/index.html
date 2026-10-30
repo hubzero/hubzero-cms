@@ -52,6 +52,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Installing on Enterprise Linux 10</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Installing with FrankenPHP in Docker</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Installing on any other Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Upgrading a hub</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#before-you-start">Before you start</a></li>
 <li class="toc__item toc__item--l2"><a href="#upgrade">Upgrade</a></li>
@@ -81,21 +82,22 @@ It takes a few minutes, most of it Composer and the migrations.</p>
 commits and 21 database migrations behind, to the head of <code>2.4-main</code>, then
 rolling it back and upgrading it again. Its content came through unchanged,
 and the upgraded database matched a newly installed one.</p>
-<p>Run every command in the hub's directory, as the account that owns the hub's
-files: <code>www-data</code> on Debian and Ubuntu, <code>apache</code> on Enterprise Linux, as in
-the install guide. The commands below write <code>www-data</code>. With
-FrankenPHP in Docker, run the <code>php</code> commands in the container instead:
-<code>sudo docker exec -w /var/www/hub hub php core/bin/muse ...</code>. The <code>git</code>,
-<code>mariadb-dump</code> and <code>tar</code> commands run on the server as they are.</p>
-<pre><code class="language-bash">cd /var/www/hub
+<p>Run every command in the hub's directory. The hub's own commands use the
+two values your system's page set when the hub was installed: <code>HUB_OWNER</code>,
+the account that owns its files, and <code>HUB_PHP</code>, how to run its PHP. Set them
+again, the same way:</p>
+<pre><code class="language-bash">export HUB_OWNER=www-data:www-data       # as your system's page shows
+export HUB_PHP=&quot;sudo -u www-data php&quot;    # as your system's page shows
+cd /var/www/hub
 </code></pre>
+<p><code>mariadb-dump</code> and <code>tar</code> run on the server as they are.</p>
 <h2 id="before-you-start">Before you start</h2>
 <p><strong>See what is coming.</strong> This fetches the branch and lists what the upgrade
 would bring, without changing anything:</p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse repository update
+<pre><code class="language-bash">$HUB_PHP core/bin/muse repository update
 </code></pre>
 <p><strong>Check that the checkout has no changes of its own.</strong></p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse repository status
+<pre><code class="language-bash">$HUB_PHP core/bin/muse repository status
 </code></pre>
 <p>It should say the repository is clean. If it lists modified files, someone has
 edited the hub's code in place. The update sets those edits aside with
@@ -120,7 +122,7 @@ the dump is not empty before you go on.</p>
 <ol>
 <li>
 <p><strong>Bring the code up to date.</strong></p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse repository update -f
+<pre><code class="language-bash">$HUB_PHP core/bin/muse repository update -f
 </code></pre>
 <p>It tags the current state as a rollback point, then fast-forwards the
 checkout to the branch. It ends with <strong>complete</strong>. If the branch cannot be
@@ -129,7 +131,7 @@ without changing anything.</p>
 </li>
 <li>
 <p><strong>Install the libraries the new code needs.</strong></p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/composer install --working-dir=core
+<pre><code class="language-bash">$HUB_PHP core/bin/composer install --working-dir=core
 </code></pre>
 <p>Composer installs exactly the versions in the new <code>composer.lock</code>, adding,
 updating and removing packages to match. A warning that it <em>&quot;Cannot create
@@ -138,18 +140,18 @@ cache directory&quot;</em> is harmless.</p>
 <li>
 <p><strong>Bring the database up to date.</strong> Run it once without <code>-f</code> to list what
 it will do, then with <code>-f</code> to do it:</p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse migration run
-sudo -u www-data php core/bin/muse migration run -f
+<pre><code class="language-bash">$HUB_PHP core/bin/muse migration run
+$HUB_PHP core/bin/muse migration run -f
 </code></pre>
 <p>It ends with <em>Success: Up migration complete!</em> The dry run ends with the
 same words, so read the list above them to see what will run. The same
 warnings a new hub shows may appear again; they are explained in
-<a href="../installing/index.html#warnings-during-the-migrations">Warnings during the migrations</a>.
+<a href="../installing-the-hub/index.html#warnings-during-the-migrations">Warnings during the migrations</a>.
 A migration that ended in a warning is tried again on every run.</p>
 </li>
 <li>
 <p><strong>Clear the cache.</strong></p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse cache clear
+<pre><code class="language-bash">$HUB_PHP core/bin/muse cache clear
 </code></pre>
 </li>
 <li>
@@ -171,13 +173,13 @@ comes back from the dump.</p>
 <ol>
 <li>
 <p><strong>Put the code back</strong> to the rollback point the update made:</p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse repository rollback
+<pre><code class="language-bash">$HUB_PHP core/bin/muse repository rollback
 </code></pre>
 <p>It asks you to confirm the date of the snapshot.</p>
 </li>
 <li>
 <p><strong>Put the libraries back</strong> to the versions the old code expects:</p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/composer install --working-dir=core
+<pre><code class="language-bash">$HUB_PHP core/bin/composer install --working-dir=core
 </code></pre>
 </li>
 <li>
@@ -195,7 +197,7 @@ CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 <p><strong>Put <code>app/</code> back:</strong></p>
 <pre><code class="language-bash">sudo rm -rf app
 sudo tar xzf ~/hub-app-before-upgrade.tgz
-sudo chown -R www-data:www-data app     # apache:apache on Enterprise Linux, 33:33 for FrankenPHP
+sudo chown -R &quot;$HUB_OWNER&quot; app
 </code></pre>
 </li>
 <li>
@@ -205,7 +207,7 @@ sudo chown -R www-data:www-data app     # apache:apache on Enterprise Linux, 33:
 <p>Every update leaves a rollback point behind, a git tag named
 <code>cmsrollbackpoint-</code> and the time. Once an upgrade has worked and the hub has
 run on it for a while, clear out the older ones:</p>
-<pre><code class="language-bash">sudo -u www-data php core/bin/muse repository clean
+<pre><code class="language-bash">$HUB_PHP core/bin/muse repository clean
 </code></pre>
 <p>It asks two questions: whether to remove every rollback point except the
 latest, and whether to throw away the changes earlier updates set aside with
@@ -215,7 +217,9 @@ what they are.</p>
 <p><strong>&quot;This checkout is not on a branch that follows another.&quot;</strong> The checkout
 is not on a branch, usually because someone checked out a release tag, or it
 is on a branch of its own that follows nothing on GitHub. Put it back on the
-release branch first: <code>sudo -u www-data git checkout 2.4-main</code>.</p>
+release branch first, running <code>git checkout 2.4-main</code> in <code>/var/www/hub</code> as the
+hub's account: <code>sudo -u www-data git checkout 2.4-main</code>, or under Docker
+<code>sudo docker exec -w /var/www/hub hub git checkout 2.4-main</code>.</p>
 <p><strong>The fetch fails.</strong> The server cannot reach GitHub, or the checkout's
 <code>origin</code> points somewhere it can no longer reach. <code>git remote -v</code> shows where
 it points.</p>
@@ -233,10 +237,10 @@ sudo docker rm -f hub
 files and certificates are outside the container, so nothing is lost.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a89b23e433</code> on 2026-10-30.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../other-linux/index.html" rel="prev"><span>Previous</span>Installing on any other Linux</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 981ae7fc4a</code> on 2026-10-30.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../installing-the-hub/index.html" rel="prev"><span>Previous</span>Installing the hub</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/12-upgrading.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/13-upgrading.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

@@ -53,20 +53,16 @@
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installing with FrankenPHP in Docker</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#what-you-need">What you need</a></li>
 <li class="toc__item toc__item--l2"><a href="#1-install-mariadb-the-tools-and-docker">1. Install MariaDB, the tools and Docker</a></li>
-<li class="toc__item toc__item--l2"><a href="#2-create-the-database">2. Create the database</a></li>
-<li class="toc__item toc__item--l2"><a href="#3-get-the-code">3. Get the code</a></li>
-<li class="toc__item toc__item--l2"><a href="#4-build-the-image">4. Build the image</a></li>
-<li class="toc__item toc__item--l2"><a href="#5-write-the-caddyfile">5. Write the Caddyfile</a></li>
-<li class="toc__item toc__item--l2"><a href="#6-start-the-container">6. Start the container</a></li>
+<li class="toc__item toc__item--l2"><a href="#2-get-the-code">2. Get the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#3-build-the-image">3. Build the image</a></li>
+<li class="toc__item toc__item--l2"><a href="#4-write-the-caddyfile">4. Write the Caddyfile</a></li>
+<li class="toc__item toc__item--l2"><a href="#5-start-the-container">5. Start the container</a></li>
+<li class="toc__item toc__item--l2"><a href="#6-set-the-values-the-installation-uses">6. Set the values the installation uses</a></li>
 <li class="toc__item toc__item--l2"><a href="#7-install-the-hub">7. Install the hub</a></li>
-<li class="toc__item toc__item--l3"><a href="#from-the-command-line">From the command line</a></li>
-<li class="toc__item toc__item--l3"><a href="#or-from-the-command-line-with-an-answer-file">Or from the command line, with an answer file</a></li>
-<li class="toc__item toc__item--l3"><a href="#or-from-the-browser">Or from the browser</a></li>
-<li class="toc__item toc__item--l2"><a href="#8-after-installing">8. After installing</a></li>
-<li class="toc__item toc__item--l2"><a href="#warnings-during-the-migrations">Warnings during the migrations</a></li>
-<li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong">When something goes wrong</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong-in-docker">When something goes wrong in Docker</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Installing on any other Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul>
         </nav>
@@ -89,7 +85,8 @@ the image brings PHP 8.2, so the server needs no PHP of its own and no other
 web server. It is the way to run a hub on a system whose own PHP is not 8.2
 and has no second source of it, and a way to keep the hub's PHP apart from
 the server's on any system. MariaDB comes from the server's distribution.
-Everything you need is on this page.</p>
+Then <a href="../installing-the-hub/index.html">Installing the hub</a> installs it, the same
+way on every system.</p>
 <p>Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.</p>
 <p>For another system, see <a href="../installing/index.html">Installing a hub</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -124,26 +121,7 @@ sudo firewall-cmd --reload
 </code></pre>
 <p><strong>Or on any other distribution</strong>, its own MariaDB, <code>git</code>, <code>unzip</code> and Docker
 packages.</p>
-<h2 id="2-create-the-database">2. Create the database</h2>
-<p>The hub needs a database and an account that owns it. MariaDB's <code>root</code>
-account signs in through the operating system rather than with a password,
-so create them with <code>sudo</code>:</p>
-<pre><code class="language-bash">sudo mariadb
-</code></pre>
-<pre><code class="language-sql">CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'hub'@'localhost' IDENTIFIED BY 'a-long-random-password';
-GRANT ALL PRIVILEGES ON hub.* TO 'hub'@'localhost';
-</code></pre>
-<p>The usage statistics keep a second database of their own, named after the
-first with <code>_metrics</code> on the end. A hub runs without it, but its usage pages
-stay empty. If you want them, create it now as well:</p>
-<pre><code class="language-sql">CREATE DATABASE hub_metrics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON hub_metrics.* TO 'hub'@'localhost';
-</code></pre>
-<p>The browser installer can also create the database and account itself, if you
-give it an administrator account that has a password and the right to grant
-privileges. Creating them by hand, as above, needs neither.</p>
-<h2 id="3-get-the-code">3. Get the code</h2>
+<h2 id="2-get-the-code">2. Get the code</h2>
 <p>The repository is the hub: its top directory is the document root. Clone it,
 and give it to user and group 33, which is the <code>www-data</code> account inside the
 image the hub runs in:</p>
@@ -151,7 +129,7 @@ image the hub runs in:</p>
 sudo chown -R 33:33 /var/www/hub
 </code></pre>
 <p>On Debian and Ubuntu that is the <code>www-data</code> account on the server too. On Enterprise Linux no account has the number; use it as it is.</p>
-<h2 id="4-build-the-image">4. Build the image</h2>
+<h2 id="3-build-the-image">3. Build the image</h2>
 <p>FrankenPHP is a web server with PHP built in, and its PHP 8.2 image is the
 starting point. Add the extensions the hub needs that it does not already
 have. Put this in <code>/opt/hub-frankenphp/Dockerfile</code>:</p>
@@ -182,7 +160,7 @@ USER www-data
 <p>The session directory is not optional. Without a writable place outside the
 document root, the installer stops at a page headed <em>Server Configuration
 Required</em> before it asks anything.</p>
-<h2 id="5-write-the-caddyfile">5. Write the Caddyfile</h2>
+<h2 id="4-write-the-caddyfile">4. Write the Caddyfile</h2>
 <p>FrankenPHP reads a Caddyfile. Put the hub's in
 <code>/opt/hub-frankenphp/Caddyfile</code>, with your own name for the hub:</p>
 <pre><code class="language-caddyfile">{
@@ -212,7 +190,7 @@ The last matters: <code>app/config/database.php</code> holds the database passwo
 <p>FrankenPHP obtains and renews the certificate for the name itself, so there
 are no certificate paths to give it. Its regular expressions have no
 lookahead, which is why the hidden-file rule is a matcher of two lines.</p>
-<h2 id="6-start-the-container">6. Start the container</h2>
+<h2 id="5-start-the-container">5. Start the container</h2>
 <pre><code class="language-bash">sudo docker run -d --name hub --restart unless-stopped --network host \
     -v /var/www/hub:/var/www/hub:z \
     -v /opt/hub-frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro \
@@ -221,7 +199,9 @@ lookahead, which is why the hidden-file rule is a matcher of two lines.</p>
 </code></pre>
 <ul>
 <li><code>--network host</code> lets it answer on the server's own ports 80 and 443, and
-reach MariaDB at <code>127.0.0.1</code> as if it were not in a container.</li>
+reach MariaDB at <code>127.0.0.1</code> as if it were not in a container. MariaDB's
+socket is not inside the container, so <code>127.0.0.1</code> is how the hub reaches
+the database.</li>
 <li>The hub's directory is mounted at the same path inside, so paths the
 installer writes into the configuration are right on both sides. The
 container runs as user 33, which owns the files.</li>
@@ -230,221 +210,27 @@ and rebuilds.</li>
 <li><code>:z</code> on the hub's mount is for SELinux, on Enterprise Linux: it lets
 the container use the files. Elsewhere it does nothing.</li>
 </ul>
-<p>Every <code>php</code> command for the hub runs inside the container, as
-<code>sudo docker exec -w /var/www/hub hub php ...</code>, with <code>-it</code> added when it asks
-questions. MariaDB's socket is not inside the container, so the hub reaches
-the database at <code>127.0.0.1</code>.</p>
-<h2 id="7-install-the-hub">7. Install the hub</h2>
-<p>Two installers do the same job: one on the command line, one in the browser.
-Both load the database, write the configuration into <code>app/config/</code>, bring
-the database up to date and create the administrator. Use one of the three
-ways below.</p>
-<h3 id="from-the-command-line">From the command line</h3>
-<pre><code class="language-bash">sudo docker exec -it -w /var/www/hub hub php core/bin/muse install
+<h2 id="6-set-the-values-the-installation-uses">6. Set the values the installation uses</h2>
+<p>The rest of the installation is the same on every system, and runs the hub's
+commands through two values. Set them in the shell you will carry on in:</p>
+<pre><code class="language-bash">export HUB_OWNER=33:33
+export HUB_PHP=&quot;sudo docker exec -it -w /var/www/hub hub php&quot;
 </code></pre>
-<p><code>muse install</code> asks its questions one at a time and checks each answer before
-moving on. In order:</p>
-<ol>
-<li><strong>Composer.</strong> If the libraries are not installed yet, it installs them
-first, which takes a minute or two. A warning that Composer <em>&quot;Cannot create
-cache directory&quot;</em> is harmless: the account has no home of its own to keep
-a cache in, so Composer downloads without one.</li>
-<li><strong>Requirements.</strong> The PHP version, each extension, <code>unzip</code>, and whether it
-can write to the hub's directory. It lists every check, and stops if any of
-them failed.</li>
-<li><strong>Site settings.</strong> The hub's name, the administrator's email address, the
-address it is served at (<code>https://hub.example.org</code>), the time zone, and a
-description for search engines.</li>
-<li><strong>Database.</strong> It looks for an account it can use without asking, then
-offers to use an existing account or to create one with an
-administrator's credentials. Choose the existing account and give it the
-database, user and password you created. Give the host as <code>127.0.0.1</code>.</li>
-<li><strong>Schema.</strong> It creates about 380 tables and loads the data every hub
-needs, then offers <strong>sample data</strong>: a front page, menus and articles to
-look at. Answer no for a hub you are going to fill yourself.</li>
-<li><strong>Migrations.</strong> It brings the database up to date, which takes a minute or
-so. Four warnings are expected; see
-<a href="#warnings-during-the-migrations">Warnings during the migrations</a>.</li>
-<li><strong>Administrator.</strong> A name, a username, an email address and a password of
-at least eight characters.</li>
-</ol>
-<p>It ends by printing the site's address and the administrator's username.</p>
-<h3 id="or-from-the-command-line-with-an-answer-file">Or from the command line, with an answer file</h3>
-<p><code>muse install</code> can take every answer from a file instead of asking for them,
-which is how to install a hub from a script, or the same hub more than once.
-The file is JSON:</p>
-<pre><code class="language-json">{
-    &quot;site&quot;: {
-        &quot;sitename&quot;: &quot;My Hub&quot;,
-        &quot;mailfrom&quot;: &quot;admin@hub.example.org&quot;,
-        &quot;live_site&quot;: &quot;https://hub.example.org&quot;,
-        &quot;offset&quot;: &quot;America/New_York&quot;
-    },
-    &quot;database&quot;: {
-        &quot;host&quot;: &quot;127.0.0.1&quot;,
-        &quot;database&quot;: &quot;hub&quot;,
-        &quot;username&quot;: &quot;hub&quot;,
-        &quot;password&quot;: &quot;a-long-random-password&quot;
-    },
-    &quot;admin&quot;: {
-        &quot;name&quot;: &quot;Ada Administrator&quot;,
-        &quot;username&quot;: &quot;admin&quot;,
-        &quot;email&quot;: &quot;admin@hub.example.org&quot;,
-        &quot;password&quot;: &quot;another-long-password&quot;
-    },
-    &quot;sample&quot;: false
-}
-</code></pre>
-<table>
-<thead>
-<tr>
-<th>Section</th>
-<th>Keys</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>site</code></td>
-<td><code>sitename</code>, <code>mailfrom</code> (the administrator's address), <code>live_site</code> (the hub's address; leave it out to have the hub work it out from each request), <code>offset</code> (a time zone such as <code>UTC</code> or <code>Europe/London</code>), and optionally <code>MetaDesc</code>, the description for search engines</td>
-</tr>
-<tr>
-<td><code>database</code></td>
-<td><code>host</code>, <code>database</code>, <code>username</code>, <code>password</code>, and optionally <code>port</code>, <code>socket</code> and <code>prefix</code> (the table prefix, <code>jos_</code> unless you say otherwise)</td>
-</tr>
-<tr>
-<td><code>admin</code></td>
-<td><code>name</code>, <code>username</code>, <code>email</code>, <code>password</code> (at least eight characters)</td>
-</tr>
-<tr>
-<td><code>sample</code></td>
-<td><code>true</code> to load the sample data, <code>false</code> not to</td>
-</tr>
-</tbody>
-</table>
-<p>The file holds two passwords, and has to be inside the container to be read.
-Copy it in, use it, and remove both copies:</p>
-<pre><code class="language-bash">sudo docker cp /var/www/hub-install.json hub:/tmp/hub-install.json
-sudo docker exec -u root hub chown www-data /tmp/hub-install.json
-sudo docker exec -u root hub chmod 600 /tmp/hub-install.json
-sudo docker exec -w /var/www/hub hub php core/bin/muse install --config=/tmp/hub-install.json
-sudo docker exec -u root hub rm /tmp/hub-install.json
-sudo rm /var/www/hub-install.json
-</code></pre>
-<p>It runs every step the questions would, Composer included, and stops at the
-first answer it cannot use, saying which. It never creates the database or
-its account: create those first.</p>
-<h3 id="or-from-the-browser">Or from the browser</h3>
-<p>Open <code>https://hub.example.org/</code>. A hub that is not installed yet answers every
-address with its installer.</p>
-<p>The first thing it asks is that you prove you can change files on the server,
-so that nobody who merely finds the address can install a hub on it. It shows
-the name of a file to create in the hub's directory:</p>
-<p><img src="../media/install-verify.png" alt="The installer's ownership check, showing the name of the file to create, the directory to create it in, a ten-minute countdown, and the touch command that creates it" /></p>
-<p>Create it within ten minutes, then select <strong>Verify &amp; Continue</strong>:</p>
-<pre><code class="language-bash">sudo touch /var/www/hub/hubzero-verify-XXXXXXXX.txt
-</code></pre>
-<p>The installer removes the file once it has seen it.</p>
-<p>If the libraries are not installed yet, the next page is <strong>Hubzero Bootstrap
-Setup</strong>. It checks what Composer needs and has a <strong>Run Composer</strong> button,
-which installs the libraries and shows Composer's output as it goes. When it
-reports <strong>Success!</strong>, select <strong>Continue</strong>.</p>
-<p><img src="../media/install-composer.png" alt="The bootstrap page after Composer has run: its requirements all passed, a success message, and the end of Composer's output above a Continue button" /></p>
-<p>The installation wizard follows. It moves through <strong>Verify</strong>, <strong>Welcome</strong>,
-<strong>Requirements</strong>, <strong>Database</strong>, <strong>Settings</strong>, <strong>Schema</strong>, <strong>Admin</strong> and
-<strong>Complete</strong>, and goes straight to the first step that still needs doing, so
-after the bootstrap page it usually opens at <strong>Database</strong>.</p>
-<p><strong>Database.</strong> Choose <strong>Standard (localhost)</strong>, which connects to <code>127.0.0.1</code> over TCP. Then choose <strong>I have credentials ready</strong> and give
-it the database name, user and password you created. <strong>Test Connection</strong>
-checks them without moving on.</p>
-<p><img src="../media/install-database.png" alt="The Database step's credentials page with the database name, username and password filled in, and Test Connection, Back and Next buttons" /></p>
-<p><strong>Settings.</strong> The hub's name, the administrator's email address, the time
-zone, and a description for search engines. Leave <strong>Site URL</strong> blank to have
-the hub work out its address from each request, or give it, which the
-scheduled tasks need later.</p>
-<p><strong>Schema.</strong> Tick <strong>Load sample data</strong> if you want a front page, menus and
-articles to look at, then select <strong>Load Database</strong>. It creates the tables,
-loads the data and runs the migrations, showing their output as they go. This
-takes a minute or two; leave the page open until it says <strong>Success!</strong>, then
-select <strong>Continue</strong>. The output also carries warnings that session settings <em>&quot;cannot be
-changed after headers have already been sent&quot;</em>: they come from FrankenPHP's own
-command line, which the installer runs the migrations with, and are harmless.</p>
-<p><img src="../media/install-schema.png" alt="The Schema step after it has finished: schema, base data, sample data and migrations all ticked, a success message, and the end of the migration output" /></p>
-<p><strong>Admin.</strong> The administrator's username is always <code>admin</code>. Give a name, an
-email address and a password of at least eight characters, then select
-<strong>Create Account</strong>. <strong>Complete</strong> follows, with the address of the
-administrator interface.</p>
-<p><img src="../media/install-admin.png" alt="The Admin step: the fixed username admin, and fields for the full name, email address, password and its confirmation" /></p>
-<p>Once the hub is installed, the installer refuses to change anything.
-<code>/install</code> still answers, behind the same ownership check, but every step is
-read-only.</p>
-<h2 id="8-after-installing">8. After installing</h2>
-<p><strong>The welcome page.</strong> Until you say otherwise, every page of the new hub shows
-a welcome page that points at this documentation. Select <strong>Jump to Your Hub</strong>
-on it to switch the hub to its real template. With sample data, that takes
-you to a Getting Started article; without it, to the hub's front page.</p>
-<p><strong>Sign in.</strong> The administrator interface is at
-<code>https://hub.example.org/administrator</code>. The same account signs in to the
-site at <code>/login</code>.</p>
-<p><strong>Scheduled tasks.</strong> Nothing that runs on a schedule happens until the server
-ticks the hub every minute. Add this to <code>/etc/crontab</code>:</p>
+<p><code>HUB_OWNER</code> is the account and group that own the hub's files, and <code>HUB_PHP</code>
+is how to run the hub's PHP. If you open a new shell before you have
+finished, set them again.</p>
+<p>With this <code>HUB_PHP</code>, every <code>php</code> command runs inside the container, in the hub's
+directory, and the <code>cd /var/www/hub</code> before each one is harmless. <code>-it</code> is what lets
+<code>muse</code> ask its questions; leave it out of <code>HUB_PHP</code> in a script, which has no
+terminal to give it.</p>
+<p>Once the hub is installed, scheduled tasks need this line in <code>/etc/crontab</code>.
+Keep it for then:</p>
 <pre><code>* * * * * root docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick
 </code></pre>
-<p>It needs the hub's address in <code>live_site</code> in <code>app/config/app.php</code>, which the
-browser installer leaves blank unless you filled in <strong>Site URL</strong>. What the
-tick does, and the jobs it runs, are in
-<a href="../../managers/maintenance/cron/index.html#how-it-works">Scheduled tasks</a>.</p>
-<p><strong>Mail.</strong> The hub sends mail with PHP's <code>mail()</code> until you configure
-something else. See
-<a href="../../managers/configuring/hub/index.html#mail-settings">Mail Settings</a>.</p>
-<p><strong>Time zones in the database.</strong> MariaDB starts without its time zone tables.
-The migrations load them only when they are run by the system's <code>root</code>,
-which the installers are not. Load them once yourself:</p>
-<pre><code class="language-bash">mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb mysql
-</code></pre>
-<p><strong>Usage statistics.</strong> If you created the <code>_metrics</code> database after
-installing, run the migrations again to set it up. Only the ones that did
-not finish run again:</p>
-<pre><code class="language-bash">sudo docker exec -w /var/www/hub hub php core/bin/muse migration run -f
-</code></pre>
-<p><strong>Keeping it up to date.</strong> <a href="../upgrading/index.html">Upgrading a hub</a> brings the hub
-up to the latest code on its branch, with a backup first and a way back.</p>
-<p>Then go on to
-<a href="../../managers/getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>.</p>
-<h2 id="warnings-during-the-migrations">Warnings during the migrations</h2>
-<p>Both installers show the same four warnings on a new hub. None of them stops
-the hub working:</p>
-<table>
-<thead>
-<tr>
-<th>Warning</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables</em></td>
-<td>Loading MariaDB's time zone tables needs its <code>root</code> account. Load them yourself, as described above</td>
-</tr>
-<tr>
-<td><em>Migration20150330124145Core.php: Unable to write out new configuration file</em></td>
-<td>It updates a configuration file from an older version of the hub, which a new hub does not have</td>
-</tr>
-<tr>
-<td><em>Migration20150904235936ComUsage.php: Failed to run with the necessary privileges</em></td>
-<td>The <code>_metrics</code> database does not exist, and creating one needs <code>root</code>. Create it as described above and run the migrations again</td>
-</tr>
-<tr>
-<td><em>Migration20170627153900ComHubgraph.php: Failed to run with the necessary privileges</em></td>
-<td>It removes database triggers that older hubs had. A new hub has none to remove</td>
-</tr>
-</tbody>
-</table>
-<p>A migration that ended in a warning is tried again the next time the
-migrations run; one that succeeded is not.</p>
-<h2 id="when-something-goes-wrong">When something goes wrong</h2>
-<p><strong>The administrator sign-in page does nothing, or the browser shows a
-connection error after signing in.</strong> The hub is being served over plain HTTP.
-The administrator sign-in form posts to <code>https://</code>; serve the hub over HTTPS.</p>
+<h2 id="7-install-the-hub">7. Install the hub</h2>
+<p>The server is ready. Go on to <a href="../installing-the-hub/index.html">Installing the hub</a>, which creates
+the database and runs the installer, the same way on every system.</p>
+<h2 id="when-something-goes-wrong-in-docker">When something goes wrong in Docker</h2>
 <p><strong>The installer shows <em>Server Configuration Required</em>.</strong> PHP in the container
 has no writable place outside the document root. The image was built without
 the <code>session.save_path</code> lines in the Dockerfile; add them and rebuild.</p>
@@ -454,20 +240,16 @@ MariaDB's socket is not inside the container. Use <code>127.0.0.1</code>.</p>
 Something else on the server already listens on port 80 or 443, or on 2019,
 where FrankenPHP takes its own administration requests. Stop it, or move the
 hub to a server of its own.</p>
-<p><strong>A page says the file or directory is not writable.</strong> Something in
-<code>/var/www/hub</code> belongs to an account other than 33. Run
-<code>sudo chown -R 33:33 /var/www/hub</code> again.</p>
-<p><strong>The browser installer's migrations stop with <em>Connection error</em>.</strong> The
-migrations may still have finished. Reload the page; if it still lists
-migrations as pending, finish them with
-<code>sudo docker exec -w /var/www/hub hub php core/bin/muse migration run -f</code>.</p>
-<p><strong>Requests for <code>/app/config/database.php</code> do not answer 403.</strong> The web
-server's rules for private paths are missing. Check before the hub is in use:</p>
-<pre><code class="language-bash">curl -s -o /dev/null -w &quot;%{http_code}\n&quot; https://hub.example.org/app/config/database.php
-</code></pre>
+<p><strong>The browser installer's migration output carries warnings that session
+settings <em>&quot;cannot be changed after headers have already been sent&quot;</em>.</strong> They
+come from FrankenPHP's own command line, which the installer runs the
+migrations with, and are harmless.</p>
+<p>For everything else, see
+<a href="../installing-the-hub/index.html#when-something-goes-wrong">When something goes wrong</a> on the page
+that installs the hub.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 4b8a132fb4</code> on 2026-10-30.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 981ae7fc4a</code> on 2026-10-30.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../enterprise-linux-10/index.html" rel="prev"><span>Previous</span>Installing on Enterprise Linux 10</a><a class="pager__next" href="../other-linux/index.html" rel="next"><span>Next</span>Installing on any other Linux</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/10-docker.md">Edit this page on GitHub</a>

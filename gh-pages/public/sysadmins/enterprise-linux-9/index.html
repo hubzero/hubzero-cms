@@ -53,23 +53,19 @@
 <li class="toc__item toc__item--l2"><a href="#1-install-mariadb-php-and-the-tools">1. Install MariaDB, PHP and the tools</a></li>
 <li class="toc__item toc__item--l2"><a href="#2-install-the-web-server">2. Install the web server</a></li>
 <li class="toc__item toc__item--l2"><a href="#3-open-the-firewall">3. Open the firewall</a></li>
-<li class="toc__item toc__item--l2"><a href="#4-create-the-database">4. Create the database</a></li>
-<li class="toc__item toc__item--l2"><a href="#5-get-the-code">5. Get the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#4-get-the-code">4. Get the code</a></li>
 <li class="toc__item toc__item--l3"><a href="#selinux">SELinux</a></li>
-<li class="toc__item toc__item--l2"><a href="#6-configure-the-web-server">6. Configure the web server</a></li>
+<li class="toc__item toc__item--l2"><a href="#5-configure-the-web-server">5. Configure the web server</a></li>
 <li class="toc__item toc__item--l3"><a href="#if-you-installed-apache">If you installed Apache</a></li>
 <li class="toc__item toc__item--l3"><a href="#or-if-you-installed-nginx">Or, if you installed nginx</a></li>
+<li class="toc__item toc__item--l2"><a href="#6-set-the-values-the-installation-uses">6. Set the values the installation uses</a></li>
 <li class="toc__item toc__item--l2"><a href="#7-install-the-hub">7. Install the hub</a></li>
-<li class="toc__item toc__item--l3"><a href="#from-the-command-line">From the command line</a></li>
-<li class="toc__item toc__item--l3"><a href="#or-from-the-command-line-with-an-answer-file">Or from the command line, with an answer file</a></li>
-<li class="toc__item toc__item--l3"><a href="#or-from-the-browser">Or from the browser</a></li>
-<li class="toc__item toc__item--l2"><a href="#8-after-installing">8. After installing</a></li>
-<li class="toc__item toc__item--l2"><a href="#warnings-during-the-migrations">Warnings during the migrations</a></li>
-<li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong">When something goes wrong</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong-on-enterprise-linux-9">When something goes wrong on Enterprise Linux 9</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Installing on Enterprise Linux 10</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Installing with FrankenPHP in Docker</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Installing on any other Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul>
         </nav>
@@ -86,9 +82,9 @@
         </header>
         
         <div class="prose">
-<p>This page takes a server running Enterprise Linux 9 with nothing on it to a hub that
-answers at its own address and has an administrator who can sign in.
-Enterprise Linux 9 means Red Hat Enterprise Linux 9 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Everything you need is on this page.</p>
+<p>This page prepares a server running Enterprise Linux 9 for a hub, from nothing to a
+web server ready to serve it. Enterprise Linux 9 means Red Hat Enterprise Linux 9 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+<a href="../installing-the-hub/index.html">Installing the hub</a> installs it, the same way on every system.</p>
 <p>A full install from the command line was run in a Rocky Linux 9 container with these packages behind this nginx configuration; the Apache configuration is the one installs on Enterprise Linux 8 and 10 were run behind. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run.</p>
 <p>For another system, see <a href="../installing/index.html">Installing a hub</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -125,26 +121,7 @@ sudo systemctl enable --now nginx
 <pre><code class="language-bash">sudo firewall-cmd --permanent --add-service=http --add-service=https
 sudo firewall-cmd --reload
 </code></pre>
-<h2 id="4-create-the-database">4. Create the database</h2>
-<p>The hub needs a database and an account that owns it. MariaDB's <code>root</code>
-account signs in through the operating system rather than with a password,
-so create them with <code>sudo</code>:</p>
-<pre><code class="language-bash">sudo mariadb
-</code></pre>
-<pre><code class="language-sql">CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'hub'@'localhost' IDENTIFIED BY 'a-long-random-password';
-GRANT ALL PRIVILEGES ON hub.* TO 'hub'@'localhost';
-</code></pre>
-<p>The usage statistics keep a second database of their own, named after the
-first with <code>_metrics</code> on the end. A hub runs without it, but its usage pages
-stay empty. If you want them, create it now as well:</p>
-<pre><code class="language-sql">CREATE DATABASE hub_metrics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON hub_metrics.* TO 'hub'@'localhost';
-</code></pre>
-<p>The browser installer can also create the database and account itself, if you
-give it an administrator account that has a password and the right to grant
-privileges. Creating them by hand, as above, needs neither.</p>
-<h2 id="5-get-the-code">5. Get the code</h2>
+<h2 id="4-get-the-code">4. Get the code</h2>
 <p>The repository is the hub: its top directory is the web server's document
 root. Clone it, and give it to <code>apache</code>, the account PHP-FPM runs as:</p>
 <pre><code class="language-bash">sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /var/www/hub
@@ -152,9 +129,7 @@ sudo chown -R apache:apache /var/www/hub
 </code></pre>
 <p>The installer writes the hub's configuration into a new <code>app/</code> directory
 inside it, and the hub later keeps its uploads, logs and cache there, so
-<code>apache</code> has to be able to write to the whole tree. Run every command
-that changes the hub as <code>apache</code> (<code>sudo -u apache ...</code>), so
-nothing ends up owned by an account the web server cannot write as.</p>
+<code>apache</code> has to be able to write to the whole tree.</p>
 <h3 id="selinux">SELinux</h3>
 <p>SELinux lets the web server read files under <code>/var/www</code> but not write them,
 and not open network connections. The hub writes to its own directory, and
@@ -173,7 +148,7 @@ the file permissions do not explain, <code>sudo ausearch -m avc -ts recent</code
 what SELinux refused. The command-line installer does its work as a login
 user rather than through the web server, so it is the safer of the two
 installers until SELinux is set up for the hub.</p>
-<h2 id="6-configure-the-web-server">6. Configure the web server</h2>
+<h2 id="5-configure-the-web-server">5. Configure the web server</h2>
 <p>Each configuration below does the same four things:</p>
 <ul>
 <li>serves <code>/var/www/hub</code> as the document root, over HTTPS;</li>
@@ -274,236 +249,34 @@ server {
 use its socket. The stock <code>/etc/nginx/nginx.conf</code> also has a server on port
 80 for any other name; it does not get in the way, but you can delete it. Raise <code>client_max_body_size</code> if members will upload files
 larger than 100 MB.</p>
-<h2 id="7-install-the-hub">7. Install the hub</h2>
-<p>Two installers do the same job: one on the command line, one in the browser.
-Both load the database, write the configuration into <code>app/config/</code>, bring
-the database up to date and create the administrator. Use one of the three
-ways below.</p>
-<h3 id="from-the-command-line">From the command line</h3>
-<pre><code class="language-bash">cd /var/www/hub
-sudo -u apache php core/bin/muse install
+<h2 id="6-set-the-values-the-installation-uses">6. Set the values the installation uses</h2>
+<p>The rest of the installation is the same on every system, and runs the hub's
+commands through two values. Set them in the shell you will carry on in:</p>
+<pre><code class="language-bash">export HUB_OWNER=apache:apache
+export HUB_PHP=&quot;sudo -u apache php&quot;
 </code></pre>
-<p><code>muse install</code> asks its questions one at a time and checks each answer before
-moving on. In order:</p>
-<ol>
-<li><strong>Composer.</strong> If the libraries are not installed yet, it installs them
-first, which takes a minute or two. A warning that Composer <em>&quot;Cannot create
-cache directory&quot;</em> is harmless: the account has no home of its own to keep
-a cache in, so Composer downloads without one.</li>
-<li><strong>Requirements.</strong> The PHP version, each extension, <code>unzip</code>, and whether it
-can write to the hub's directory. It lists every check, and stops if any of
-them failed.</li>
-<li><strong>Site settings.</strong> The hub's name, the administrator's email address, the
-address it is served at (<code>https://hub.example.org</code>), the time zone, and a
-description for search engines.</li>
-<li><strong>Database.</strong> It looks for an account it can use without asking, then
-offers to use an existing account or to create one with an
-administrator's credentials. Choose the existing account and give it the
-database, user and password you created.</li>
-<li><strong>Schema.</strong> It creates about 380 tables and loads the data every hub
-needs, then offers <strong>sample data</strong>: a front page, menus and articles to
-look at. Answer no for a hub you are going to fill yourself.</li>
-<li><strong>Migrations.</strong> It brings the database up to date, which takes a minute or
-so. Four warnings are expected; see
-<a href="#warnings-during-the-migrations">Warnings during the migrations</a>.</li>
-<li><strong>Administrator.</strong> A name, a username, an email address and a password of
-at least eight characters.</li>
-</ol>
-<p>It ends by printing the site's address and the administrator's username.</p>
-<h3 id="or-from-the-command-line-with-an-answer-file">Or from the command line, with an answer file</h3>
-<p><code>muse install</code> can take every answer from a file instead of asking for them,
-which is how to install a hub from a script, or the same hub more than once.
-The file is JSON:</p>
-<pre><code class="language-json">{
-    &quot;site&quot;: {
-        &quot;sitename&quot;: &quot;My Hub&quot;,
-        &quot;mailfrom&quot;: &quot;admin@hub.example.org&quot;,
-        &quot;live_site&quot;: &quot;https://hub.example.org&quot;,
-        &quot;offset&quot;: &quot;America/New_York&quot;
-    },
-    &quot;database&quot;: {
-        &quot;host&quot;: &quot;127.0.0.1&quot;,
-        &quot;database&quot;: &quot;hub&quot;,
-        &quot;username&quot;: &quot;hub&quot;,
-        &quot;password&quot;: &quot;a-long-random-password&quot;
-    },
-    &quot;admin&quot;: {
-        &quot;name&quot;: &quot;Ada Administrator&quot;,
-        &quot;username&quot;: &quot;admin&quot;,
-        &quot;email&quot;: &quot;admin@hub.example.org&quot;,
-        &quot;password&quot;: &quot;another-long-password&quot;
-    },
-    &quot;sample&quot;: false
-}
-</code></pre>
-<table>
-<thead>
-<tr>
-<th>Section</th>
-<th>Keys</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>site</code></td>
-<td><code>sitename</code>, <code>mailfrom</code> (the administrator's address), <code>live_site</code> (the hub's address; leave it out to have the hub work it out from each request), <code>offset</code> (a time zone such as <code>UTC</code> or <code>Europe/London</code>), and optionally <code>MetaDesc</code>, the description for search engines</td>
-</tr>
-<tr>
-<td><code>database</code></td>
-<td><code>host</code>, <code>database</code>, <code>username</code>, <code>password</code>, and optionally <code>port</code>, <code>socket</code> and <code>prefix</code> (the table prefix, <code>jos_</code> unless you say otherwise)</td>
-</tr>
-<tr>
-<td><code>admin</code></td>
-<td><code>name</code>, <code>username</code>, <code>email</code>, <code>password</code> (at least eight characters)</td>
-</tr>
-<tr>
-<td><code>sample</code></td>
-<td><code>true</code> to load the sample data, <code>false</code> not to</td>
-</tr>
-</tbody>
-</table>
-<p>Keep the file outside the hub's directory, where only <code>apache</code> can read it:
-it holds two passwords.</p>
-<pre><code class="language-bash">sudo chown apache /var/www/hub-install.json
-sudo chmod 600 /var/www/hub-install.json
-cd /var/www/hub
-sudo -u apache php core/bin/muse install --config=/var/www/hub-install.json
-sudo rm /var/www/hub-install.json
-</code></pre>
-<p>It runs every step the questions would, Composer included, and stops at the
-first answer it cannot use, saying which. It never creates the database or its
-account: create those first. Any single step takes the file too, so one can
-be repeated on its own, for example <code>muse install admin --config=...</code>.</p>
-<h3 id="or-from-the-browser">Or from the browser</h3>
-<p>Open <code>https://hub.example.org/</code>. A hub that is not installed yet answers every
-address with its installer.</p>
-<p>The first thing it asks is that you prove you can change files on the server,
-so that nobody who merely finds the address can install a hub on it. It shows
-the name of a file to create in the hub's directory:</p>
-<p><img src="../media/install-verify.png" alt="The installer's ownership check, showing the name of the file to create, the directory to create it in, a ten-minute countdown, and the touch command that creates it" /></p>
-<p>Create it within ten minutes, then select <strong>Verify &amp; Continue</strong>:</p>
-<pre><code class="language-bash">sudo -u apache touch /var/www/hub/hubzero-verify-XXXXXXXX.txt
-</code></pre>
-<p>The installer removes the file once it has seen it.</p>
-<p>If the libraries are not installed yet, the next page is <strong>Hubzero Bootstrap
-Setup</strong>. It checks what Composer needs and has a <strong>Run Composer</strong> button,
-which installs the libraries and shows Composer's output as it goes. When it
-reports <strong>Success!</strong>, select <strong>Continue</strong>.</p>
-<p><img src="../media/install-composer.png" alt="The bootstrap page after Composer has run: its requirements all passed, a success message, and the end of Composer's output above a Continue button" /></p>
-<p>The installation wizard follows. It moves through <strong>Verify</strong>, <strong>Welcome</strong>,
-<strong>Requirements</strong>, <strong>Database</strong>, <strong>Settings</strong>, <strong>Schema</strong>, <strong>Admin</strong> and
-<strong>Complete</strong>, and goes straight to the first step that still needs doing, so
-after the bootstrap page it usually opens at <strong>Database</strong>.</p>
-<p><strong>Database.</strong> Choose how to reach MariaDB: <strong>Standard (localhost)</strong> connects to <code>127.0.0.1</code> over TCP; <strong>Unix Socket</strong> uses MariaDB's socket file. Then choose <strong>I have credentials ready</strong> and give
-it the database name, user and password you created. <strong>Test Connection</strong>
-checks them without moving on.</p>
-<p><img src="../media/install-database.png" alt="The Database step's credentials page with the database name, username and password filled in, and Test Connection, Back and Next buttons" /></p>
-<p><strong>Settings.</strong> The hub's name, the administrator's email address, the time
-zone, and a description for search engines. Leave <strong>Site URL</strong> blank to have
-the hub work out its address from each request, or give it, which the
-scheduled tasks need later.</p>
-<p><strong>Schema.</strong> Tick <strong>Load sample data</strong> if you want a front page, menus and
-articles to look at, then select <strong>Load Database</strong>. It creates the tables,
-loads the data and runs the migrations, showing their output as they go. This
-takes a minute or two; leave the page open until it says <strong>Success!</strong>, then
-select <strong>Continue</strong>.</p>
-<p><img src="../media/install-schema.png" alt="The Schema step after it has finished: schema, base data, sample data and migrations all ticked, a success message, and the end of the migration output" /></p>
-<p><strong>Admin.</strong> The administrator's username is always <code>admin</code>. Give a name, an
-email address and a password of at least eight characters, then select
-<strong>Create Account</strong>. <strong>Complete</strong> follows, with the address of the
-administrator interface.</p>
-<p><img src="../media/install-admin.png" alt="The Admin step: the fixed username admin, and fields for the full name, email address, password and its confirmation" /></p>
-<p>Once the hub is installed, the installer refuses to change anything.
-<code>/install</code> still answers, behind the same ownership check, but every step is
-read-only.</p>
-<h2 id="8-after-installing">8. After installing</h2>
-<p><strong>The welcome page.</strong> Until you say otherwise, every page of the new hub shows
-a welcome page that points at this documentation. Select <strong>Jump to Your Hub</strong>
-on it to switch the hub to its real template. With sample data, that takes
-you to a Getting Started article; without it, to the hub's front page.</p>
-<p><strong>Sign in.</strong> The administrator interface is at
-<code>https://hub.example.org/administrator</code>. The same account signs in to the
-site at <code>/login</code>.</p>
-<p><strong>Scheduled tasks.</strong> Nothing that runs on a schedule happens until the server
-ticks the hub every minute. Add this to <code>/etc/crontab</code>:</p>
+<p><code>HUB_OWNER</code> is the account and group that own the hub's files, and <code>HUB_PHP</code>
+is how to run the hub's PHP. If you open a new shell before you have
+finished, set them again.</p>
+<p>Once the hub is installed, scheduled tasks need this line in <code>/etc/crontab</code>.
+Keep it for then:</p>
 <pre><code>* * * * * apache /var/www/hub/core/bin/muse cron:jobs tick
 </code></pre>
-<p>It needs the hub's address in <code>live_site</code> in <code>app/config/app.php</code>, which the
-browser installer leaves blank unless you filled in <strong>Site URL</strong>. What the
-tick does, and the jobs it runs, are in
-<a href="../../managers/maintenance/cron/index.html#how-it-works">Scheduled tasks</a>.</p>
-<p><strong>Mail.</strong> The hub sends mail with PHP's <code>mail()</code> until you configure
-something else. See
-<a href="../../managers/configuring/hub/index.html#mail-settings">Mail Settings</a>.</p>
-<p><strong>Time zones in the database.</strong> MariaDB starts without its time zone tables.
-The migrations load them only when they are run by the system's <code>root</code>,
-which the installers are not. Load them once yourself:</p>
-<pre><code class="language-bash">mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb mysql
-</code></pre>
-<p><strong>Usage statistics.</strong> If you created the <code>_metrics</code> database after
-installing, run the migrations again to set it up. Only the ones that did
-not finish run again:</p>
-<pre><code class="language-bash">cd /var/www/hub
-sudo -u apache php core/bin/muse migration run -f
-</code></pre>
-<p><strong>Keeping it up to date.</strong> <a href="../upgrading/index.html">Upgrading a hub</a> brings the hub
-up to the latest code on its branch, with a backup first and a way back.</p>
-<p>Then go on to
-<a href="../../managers/getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>.</p>
-<h2 id="warnings-during-the-migrations">Warnings during the migrations</h2>
-<p>Both installers show the same four warnings on a new hub. None of them stops
-the hub working:</p>
-<table>
-<thead>
-<tr>
-<th>Warning</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables</em></td>
-<td>Loading MariaDB's time zone tables needs its <code>root</code> account. Load them yourself, as described above</td>
-</tr>
-<tr>
-<td><em>Migration20150330124145Core.php: Unable to write out new configuration file</em></td>
-<td>It updates a configuration file from an older version of the hub, which a new hub does not have</td>
-</tr>
-<tr>
-<td><em>Migration20150904235936ComUsage.php: Failed to run with the necessary privileges</em></td>
-<td>The <code>_metrics</code> database does not exist, and creating one needs <code>root</code>. Create it as described above and run the migrations again</td>
-</tr>
-<tr>
-<td><em>Migration20170627153900ComHubgraph.php: Failed to run with the necessary privileges</em></td>
-<td>It removes database triggers that older hubs had. A new hub has none to remove</td>
-</tr>
-</tbody>
-</table>
-<p>A migration that ended in a warning is tried again the next time the
-migrations run; one that succeeded is not.</p>
-<h2 id="when-something-goes-wrong">When something goes wrong</h2>
-<p><strong>The administrator sign-in page does nothing, or the browser shows a
-connection error after signing in.</strong> The hub is being served over plain HTTP.
-The administrator sign-in form posts to <code>https://</code>; serve the hub over HTTPS.</p>
+<h2 id="7-install-the-hub">7. Install the hub</h2>
+<p>The server is ready. Go on to <a href="../installing-the-hub/index.html">Installing the hub</a>, which creates
+the database and runs the installer, the same way on every system.</p>
+<h2 id="when-something-goes-wrong-on-enterprise-linux-9">When something goes wrong on Enterprise Linux 9</h2>
 <p><strong><code>/administrator</code> answers 404 under nginx.</strong> The PHP block is passing every
 <code>.php</code> address straight to PHP. Use the block above, which
 hands addresses that are not files to <code>index.php</code>.</p>
-<p><strong>A page says the file or directory is not writable, or images and uploads
-fail.</strong> Something in <code>/var/www/hub</code> belongs to an account the web server does
-not run as, usually because a command was run as yourself or as <code>root</code>. Run
-<code>sudo chown -R apache:apache /var/www/hub</code> again. If the owner is right, SELinux is the next suspect: see
-<a href="#selinux">SELinux</a>.</p>
-<p><strong>The browser installer's migrations stop with <em>Connection error</em>.</strong> The
-migrations may still have finished. Reload the page; if it still lists
-migrations as pending, finish them from the command line with
-<code>sudo -u apache php core/bin/muse migration run -f</code>.</p>
-<p><strong>Requests for <code>/app/config/database.php</code> do not answer 403.</strong> The web
-server's rules for private paths are missing. Check before the hub is in use:</p>
-<pre><code class="language-bash">curl -s -o /dev/null -w &quot;%{http_code}\n&quot; https://hub.example.org/app/config/database.php
-</code></pre>
+<p><strong>Something the web server does fails with a permission error, though the
+files belong to <code>apache</code>.</strong> SELinux is refusing it. See <a href="#selinux">SELinux</a>.</p>
+<p>For everything else, see
+<a href="../installing-the-hub/index.html#when-something-goes-wrong">When something goes wrong</a> on the page
+that installs the hub.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 4b8a132fb4</code> on 2026-10-30.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 981ae7fc4a</code> on 2026-10-30.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../enterprise-linux-8/index.html" rel="prev"><span>Previous</span>Installing on Enterprise Linux 8</a><a class="pager__next" href="../enterprise-linux-10/index.html" rel="next"><span>Next</span>Installing on Enterprise Linux 10</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/08-enterprise-linux-9.md">Edit this page on GitHub</a>

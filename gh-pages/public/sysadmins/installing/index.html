@@ -46,7 +46,6 @@
 <li class="toc__item toc__item--l2"><a href="#what-every-system-needs">What every system needs</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-installing-does">What installing does</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-was-tested">What was tested</a></li>
-<li class="toc__item toc__item--l2"><a href="#warnings-during-the-migrations">Warnings during the migrations</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../debian-12/index.html">Installing on Debian 12</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../debian-13/index.html">Installing on Debian 13</a></li>
@@ -58,6 +57,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Installing on Enterprise Linux 10</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Installing with FrankenPHP in Docker</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Installing on any other Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul>
         </nav>
@@ -75,10 +75,16 @@
         
         <div class="prose">
 <p>A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
-of PHP. Each system below has a page of its own that takes a server with
-nothing on it to a hub with an administrator who can sign in. Every page is
-complete, and they repeat each other rather than send you between them: find
-your system and follow its page from the top.</p>
+of PHP. Installing one takes two pages:</p>
+<ol>
+<li><strong>Your system's page</strong>, from the table below, which takes a server with
+nothing on it to one ready for the hub: the packages, the code, and the
+web server. Each is complete for its system, and repeats the others
+rather than send you between them.</li>
+<li><strong><a href="../installing-the-hub/index.html">Installing the hub</a></strong>, which every system's
+page ends at: the database, the installer, and what comes after. It is the
+same on every system.</li>
+</ol>
 <p>If the hub you are asking about is already installed and answering, go to
 <a href="../../managers/getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>
 instead.</p>
@@ -198,9 +204,9 @@ own requirements check:</li>
 <p>The libraries Composer installs need the XML extensions, <code>sockets</code> and
 <code>posix</code> as well. Each system's page installs all of them.</p>
 <h2 id="what-installing-does">What installing does</h2>
-<p>Every page ends the same way, with one of two installers that do the same
-job: <code>muse install</code> on the command line, which can also take its answers from
-a file, or the installer in the browser. Both load the database, write the
+<p><a href="../installing-the-hub/index.html">Installing the hub</a> runs one of two installers
+that do the same job: <code>muse install</code> on the command line, which can also
+take its answers from a file, or the installer in the browser. Both load the database, write the
 hub's configuration into <code>app/config/</code>, bring the database up to date with
 the migrations, and create the administrator. The hub's code is a git
 checkout of its release branch, <code>2.4-main</code>, which is what
@@ -218,37 +224,6 @@ those steps were not run.</li>
 13, Ubuntu 22.04 LTS and 24.04 LTS.</li>
 <li><strong>Databases:</strong> MariaDB 10.11 and 11.8.</li>
 </ul>
-<h2 id="warnings-during-the-migrations">Warnings during the migrations</h2>
-<p>Both installers, and the upgrade, show the same four warnings on a new hub.
-None of them stops the hub working:</p>
-<table>
-<thead>
-<tr>
-<th>Warning</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables</em></td>
-<td>Loading MariaDB's time zone tables needs its <code>root</code> account. Each system's page shows how to load them yourself</td>
-</tr>
-<tr>
-<td><em>Migration20150330124145Core.php: Unable to write out new configuration file</em></td>
-<td>It updates a configuration file from an older version of the hub, which a new hub does not have</td>
-</tr>
-<tr>
-<td><em>Migration20150904235936ComUsage.php: Failed to run with the necessary privileges</em></td>
-<td>The <code>_metrics</code> database does not exist, and creating one needs <code>root</code>. Create it, as each system's page shows, and run the migrations again</td>
-</tr>
-<tr>
-<td><em>Migration20170627153900ComHubgraph.php: Failed to run with the necessary privileges</em></td>
-<td>It removes database triggers that older hubs had. A new hub has none to remove</td>
-</tr>
-</tbody>
-</table>
-<p>A migration that ended in a warning is tried again the next time the
-migrations run; one that succeeded is not.</p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 4b8a132fb4</code> on 2026-10-30.</p>
