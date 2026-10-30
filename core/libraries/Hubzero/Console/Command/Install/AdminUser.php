@@ -249,6 +249,32 @@ class AdminUser
     }
 
     /**
+     * Whether the hub already has its administrator
+     *
+     * The administrator is the last thing an install creates, so a hub that
+     * has one is installed, and one that does not is not, however far an
+     * earlier attempt got.
+     *
+     * @param   string  $appPath  Path to the app directory
+     * @return  bool|null  Null when the database is configured but cannot be reached
+     **/
+    public static function exists($appPath)
+    {
+        $dbConfig = Database::readConfig($appPath);
+        if (!$dbConfig) {
+            return false;
+        }
+        $dbConfig = (array) $dbConfig;
+
+        $pdo = self::connectToDatabase($dbConfig, false);
+        if ($pdo === null) {
+            return null;
+        }
+
+        return self::getExistingAdmin($pdo, $dbConfig['dbprefix'] ?? 'jos_') !== null;
+    }
+
+    /**
      * Check if an admin user already exists
      *
      * @param   \PDO    $pdo     PDO connection

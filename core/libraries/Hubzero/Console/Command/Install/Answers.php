@@ -74,6 +74,66 @@ class Answers
     }
 
     /**
+     * The environment variables that can stand in for an answer file
+     *
+     * @var  array
+     */
+    private const ENVIRONMENT = [
+        'site' => [
+            'sitename'  => 'HUB_SITENAME',
+            'mailfrom'  => 'HUB_MAILFROM',
+            'live_site' => 'HUB_LIVE_SITE',
+            'offset'    => 'HUB_TIMEZONE',
+        ],
+        'database' => [
+            'host'     => 'HUB_DB_HOST',
+            'port'     => 'HUB_DB_PORT',
+            'database' => 'HUB_DB_NAME',
+            'username' => 'HUB_DB_USER',
+            'password' => 'HUB_DB_PASSWORD',
+            'prefix'   => 'HUB_DB_PREFIX',
+        ],
+        'admin' => [
+            'name'     => 'HUB_ADMIN_NAME',
+            'username' => 'HUB_ADMIN_USERNAME',
+            'email'    => 'HUB_ADMIN_EMAIL',
+            'password' => 'HUB_ADMIN_PASSWORD',
+        ],
+    ];
+
+    /**
+     * Read the answers from environment variables
+     *
+     * A container is configured through its environment rather than a file.
+     * Each variable answers the question its answer-file key does, and a
+     * variable left unset leaves that answer to its default.
+     *
+     * @return  void
+     **/
+    public static function fromEnvironment()
+    {
+        $answers = [];
+
+        foreach (self::ENVIRONMENT as $section => $keys) {
+            foreach ($keys as $key => $variable) {
+                $value = getenv($variable);
+
+                if ($value !== false && $value !== '') {
+                    $answers[$section][$key] = $value;
+                }
+            }
+        }
+
+        $sample = getenv('HUB_SAMPLE_DATA');
+
+        if ($sample !== false) {
+            $answers['sample'] = $sample;
+        }
+
+        self::set($answers);
+    }
+
+    /**
      * Supply answers directly, without a file
      *
      * @param   array  $answers  The answers

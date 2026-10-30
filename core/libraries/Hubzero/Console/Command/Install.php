@@ -24,7 +24,12 @@ class Install extends Base implements CommandInterface
      * Pass --config=<file> to install without being asked anything. The file
      * is JSON, with a "site", "database" and "admin" object holding the same
      * values the prompts collect, and an optional "sample" key saying whether
-     * to load sample data.
+     * to load sample data. Pass --env to read the same answers from HUB_*
+     * environment variables instead, as a container is configured.
+     *
+     * Without being asked anything, an install of a hub that is already
+     * installed only brings its database up to date, so the same command can
+     * start a container every time.
      *
      * @return  void
      **/
@@ -38,9 +43,26 @@ class Install extends Base implements CommandInterface
 
         $unattended = Install\Answers::isUnattended();
 
+        if ($unattended) {
+            $installed = Install\AdminUser::exists(PATH_APP);
+
+            if ($installed === null) {
+                $this->output->error('The hub is configured, but its database cannot be reached.');
+            }
+
+            if ($installed) {
+                $this->output->addLine('The hub is already installed. Bringing its database up to date.');
+
+                if (!Install\Migrations::run($ansi, PATH_APP, PATH_CORE, PATH_ROOT)) {
+                    $this->output->error('Some migrations failed. You can retry with: muse install migrations');
+                }
+                return;
+            }
+        }
+
         // Run preflight checks
         if (!Install\Preflight::check($ansi, PATH_ROOT)) {
-            return;
+            $this->output->error('Pre-flight checks failed.');
         }
 
         // Create app directory structure
@@ -54,6 +76,9 @@ class Install extends Base implements CommandInterface
 
         // Site settings
         $settingsResult = Install\SiteSettings::configure($ansi, PATH_APP);
+        if ($settingsResult === null && $unattended) {
+            $this->output->error('Site settings failed.');
+        }
         if ($settingsResult === null) {
             return; // User chose to exit
         }
@@ -482,15 +507,21 @@ class Install extends Base implements CommandInterface
     }
 
     /**
-     * Read the answer file, if one was named
+     * Read the answers, from a file or the environment, if either was named
      *
-     * Every task takes --config, so that a step can be repeated on its own
+     * Every task takes --config or --env, so that a step can be repeated on its own
      * without being asked anything, the same way the whole install can.
      *
      * @return  bool  False if a file was named and could not be read
      **/
     private function loadAnswers()
     {
+        if ($this->arguments->getOpt('env')) {
+            Install\Answers::fromEnvironment();
+            $this->output->addLine('Reading the answers from HUB_* environment variables');
+            return true;
+        }
+
         $answerFile = $this->arguments->getOpt('config');
 
         if (!$answerFile) {
