@@ -61,10 +61,10 @@ pre-flight result without installing anything.
 
 Three routes:
 
-**Install one.** [Installing a hub](../../managers/00-installing.md) takes a
+**Install one.** [Installing a hub](../../sysadmins/01-installing.md) takes a
 Linux server from nothing to a running hub from a checkout of this
-repository, behind Apache, nginx or FrankenPHP, using the web installer or
-`muse install`. A development hub is the same, on a machine of your own.
+repository, behind Apache, nginx or FrankenPHP in Docker, using the web
+installer or `muse install`. A development hub is the same, on a machine of your own.
 
 **Autohub.** A script that provisions a hub in a virtual machine using
 VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a

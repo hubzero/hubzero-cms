@@ -46,7 +46,7 @@ them, and they will not ask twice.
    Publishing** date you set when you posted it.
 
 **When the release branch moves.** Upgrade the hub, with a backup first:
-[Upgrading a hub](06-upgrading.md). The same rule as below applies; an
+[Upgrading a hub](../../sysadmins/02-upgrading.md). The same rule as below applies; an
 upgrade is a change you want to watch.
 
 **Never on a Friday afternoon.** Anything that cannot be tested first: URL

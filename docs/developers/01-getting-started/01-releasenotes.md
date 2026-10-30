@@ -25,9 +25,9 @@ authoritative record of what changed is the repository itself: the tags
 and commit history on
 [hubzero/hubzero-cms](https://github.com/hubzero/hubzero-cms). Each release
 line has its own `X.Y-main` branch; `2.4-main` is the current one, and a
-release is cut from it. [Upgrading a hub](../../managers/03-maintenance/06-upgrading.md)
+release is cut from it. [Upgrading a hub](../../sysadmins/02-upgrading.md)
 brings a running hub up to the head of its branch;
-[Installing a hub](../../managers/00-installing.md) sets up a new one.
+[Installing a hub](../../sysadmins/01-installing.md) sets up a new one.
 
 The running version is the `HVERSION` constant, defined in
 [`core/bootstrap/app.php`](../../../core/bootstrap/app.php) and shown in

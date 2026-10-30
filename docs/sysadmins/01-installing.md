@@ -1,16 +1,16 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6dd778fb19
-reviewed: 2026-10-29
+reviewed-against: 2.4-main @ a7cc23ecc4
+reviewed: 2026-10-30
 screenshots: ok
-summary: Installing a hub on a Linux server with MariaDB, behind Apache, nginx or FrankenPHP, using either the browser installer or muse install.
+summary: Installing a hub on a Linux server with PHP 8.2 and MariaDB, behind Apache, nginx or FrankenPHP in Docker, using the browser installer or muse install.
 -->
 # Installing a hub
 
 This page takes a Linux server with nothing on it to a hub that answers at
 its own address and has an administrator who can sign in. It uses MariaDB for
 the database and gives three ways to serve the hub: Apache with PHP-FPM, nginx
-with PHP-FPM, or FrankenPHP. The installation itself can be run from the
+with PHP-FPM, or FrankenPHP in a Docker container. The installation itself can be run from the
 browser or from the command line. Every combination gives the same hub, so
 choose the web server you already know how to run, and whichever installer
 suits you.
@@ -18,16 +18,19 @@ suits you.
 What it installs is the CMS. The parts of a hub that are not the CMS — the
 tool session middleware, Workspaces, the mail gateway, LDAP and Solr — are
 separate services, and none of them is needed for a hub to run. Search on
-Solr is covered in [Search](09-components/31-search/README.md).
+Solr is covered in [Search](../managers/09-components/31-search/README.md).
 
 If the hub you are asking about is already installed and answering, this is
 the wrong page. Go to
-[The first week with a new hub](01-getting-started.md#the-first-week-with-a-new-hub),
+[The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub),
 which starts from a hub that runs and walks the decisions that come next in
 order.
 
-The commands below were tested on Ubuntu 24.04 with MariaDB 10.11, PHP 8.3,
-Apache 2.4, nginx 1.24 and FrankenPHP 1.11. On another distribution the
+This branch is built for PHP 8.2, and the page names it throughout. The
+Apache and nginx routes were run on Ubuntu 24.04 with MariaDB 10.11, Apache
+2.4, nginx 1.24 and Ubuntu's own PHP 8.3; nothing in them changes with the
+PHP version but the number in the package and socket names. The FrankenPHP
+route was run in FrankenPHP's PHP 8.2 image. On another distribution the
 package names differ; the steps do not.
 
 ## What you need
@@ -50,27 +53,33 @@ requirements check:
 
 ## 1. Install the packages
 
-The database, PHP and the tools:
+The database and the tools:
 
 ```bash
-sudo apt install mariadb-server git unzip \
-    php8.3-cli php8.3-fpm php8.3-mysql php8.3-mbstring php8.3-curl \
-    php8.3-gd php8.3-zip php8.3-xml
+sudo apt install mariadb-server git unzip
 ```
 
-`php8.3-xml` is not on the installer's list, but the libraries Composer
-installs need it. `json`, `openssl`, `fileinfo` and `pdo` come with PHP itself.
+Then the web server, and PHP with it. Choose one:
 
-Then the web server. Install one of them:
+- **Apache or nginx**, with PHP 8.2 from the distribution. Debian 12 ships
+  PHP 8.2. Ubuntu 24.04 ships 8.3, and gets 8.2 from the `ondrej/php`
+  package archive first:
 
-- **Apache:** `sudo apt install apache2`, then
-  `sudo a2enmod proxy_fcgi setenvif ssl`.
-- **nginx:** `sudo apt install nginx`.
-- **FrankenPHP:** download the binary from
-  [frankenphp.dev](https://frankenphp.dev/). It is a web server with its own
-  PHP built in, so it does not use `php8.3-fpm`, and it serves HTTPS with a
-  certificate it obtains itself. Its PHP already has every extension listed
-  above.
+  ```bash
+  sudo add-apt-repository ppa:ondrej/php     # Ubuntu only
+  sudo apt install php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring \
+      php8.2-curl php8.2-gd php8.2-zip php8.2-xml
+  ```
+
+  `php8.2-xml` is not on the installer's list, but the libraries Composer
+  installs need it. `json`, `openssl`, `fileinfo` and `pdo` come with PHP
+  itself. Then `sudo apt install apache2` and
+  `sudo a2enmod proxy_fcgi setenvif ssl`, or `sudo apt install nginx`.
+
+- **FrankenPHP**, a web server with PHP built in, run in Docker from its
+  PHP 8.2 image. Install Docker (`sudo apt install docker.io`); the image
+  brings PHP, and you install no PHP packages on the server at all. It serves
+  HTTPS with a certificate it obtains itself.
 
 ## 2. Create the database
 
@@ -105,7 +114,8 @@ privileges. Creating them by hand, as above, needs neither.
 
 The repository is the hub: its top directory is the web server's document
 root. Clone it, and give it to the account the web server runs PHP as, which
-on Ubuntu is `www-data`:
+on Debian and Ubuntu is `www-data`. The FrankenPHP container runs as
+`www-data` too:
 
 ```bash
 sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /var/www/hub
@@ -115,8 +125,9 @@ sudo chown -R www-data:www-data /var/www/hub
 The installer writes the hub's configuration into a new `app/` directory
 inside it, and the hub later keeps its uploads, logs and cache there, so the
 web server's account has to be able to write to the whole tree. Run every
-command that changes the hub as that account (`sudo -u www-data ...`), so
-nothing ends up owned by someone the web server cannot write as.
+command that changes the hub as that account (`sudo -u www-data ...`, or in
+the container with FrankenPHP), so nothing ends up owned by someone the web
+server cannot write as.
 
 ## 4. Configure the web server
 
@@ -161,7 +172,7 @@ examples use certificates from Let's Encrypt's `certbot`.
     </Directory>
 
     <FilesMatch "\.php$">
-        SetHandler "proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost"
+        SetHandler "proxy:unix:/run/php/php8.2-fpm.sock|fcgi://localhost"
     </FilesMatch>
 
     <LocationMatch "^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)">
@@ -220,7 +231,7 @@ server {
         try_files $uri /index.php?$query_string;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
         fastcgi_read_timeout 300;
     }
 }
@@ -237,10 +248,46 @@ interface lives at one: `/administrator/index.php` is answered by the hub's
 `index.php`, not by a file of that name. Raise `client_max_body_size` if
 members will upload files larger than 100 MB.
 
-### FrankenPHP
+### FrankenPHP in Docker
 
-FrankenPHP reads a Caddyfile. Give it its own, such as
-`/etc/frankenphp/Caddyfile`:
+Build an image from FrankenPHP's PHP 8.2 image with the extensions the hub
+needs that it does not already have. Put this in
+`/opt/hub-frankenphp/Dockerfile`:
+
+```dockerfile
+FROM dunglas/frankenphp:1-php8.2-bookworm
+
+# The extensions the hub needs that the image does not already have, and the
+# tools Composer uses
+RUN install-php-extensions pdo_mysql gd zip sockets opcache \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends git unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# PHP's production settings, and a place for sessions outside the document
+# root: the image has neither, and the installer keeps its secrets there
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
+    && mkdir -p /var/lib/php/sessions \
+    && chown www-data:www-data /var/lib/php/sessions \
+    && echo 'session.save_path = "/var/lib/php/sessions"' > "$PHP_INI_DIR/conf.d/hub.ini"
+
+# Run as the account that owns the hub's files, still able to listen on 80/443
+RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
+    && chown -R www-data:www-data /config/caddy /data/caddy
+
+USER www-data
+```
+
+```bash
+sudo docker build -t hub-frankenphp /opt/hub-frankenphp
+```
+
+The session directory is not optional. Without a writable place outside the
+document root, the installer stops at a page headed *Server Configuration
+Required* before it asks anything.
+
+FrankenPHP reads a Caddyfile. Put the hub's in
+`/opt/hub-frankenphp/Caddyfile`:
 
 ```caddyfile
 {
@@ -263,21 +310,40 @@ hub.example.org {
 }
 ```
 
+Then start the container:
+
 ```bash
-sudo -u www-data frankenphp run --config /etc/frankenphp/Caddyfile
+sudo docker run -d --name hub --restart unless-stopped --network host \
+    -v /var/www/hub:/var/www/hub \
+    -v /opt/hub-frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro \
+    -v hub_caddy_data:/data -v hub_caddy_config:/config \
+    hub-frankenphp
 ```
+
+- `--network host` lets it answer on the server's own ports 80 and 443, and
+  reach MariaDB at `127.0.0.1` as if it were not in a container.
+- The hub's directory is mounted at the same path inside, so paths the
+  installer writes into the configuration are right on both sides. The
+  container's `www-data` is user 33, the same as on Debian and Ubuntu, so the
+  files you gave to `www-data` are its files.
+- `hub_caddy_data` keeps the certificates FrankenPHP obtains across restarts
+  and rebuilds.
 
 FrankenPHP obtains and renews the certificate for `hub.example.org` itself,
 so there are no certificate paths to give it. Its regular expressions have no
 lookahead, which is why the hidden-file rule is a matcher of two lines rather
-than the single pattern Apache and nginx use. Run it as the account that owns
-the hub's files, and under a service manager rather than a terminal once the
-hub is in use; FrankenPHP's own documentation describes a systemd unit.
+than the single pattern Apache and nginx use.
 
-FrankenPHP's PHP looks for MariaDB's socket in `/tmp`, where Ubuntu does not
-put it. When an installer asks how to reach the database, choose
-`127.0.0.1` rather than `localhost` or the socket. The account created above
-accepts either.
+MariaDB's socket is not inside the container. When an installer asks how to
+reach the database, choose `127.0.0.1` rather than the socket. The account
+created above accepts either.
+
+Every `php` command on this page runs inside the container with this in front
+of it, and needs `-it` when it asks questions:
+
+```bash
+sudo docker exec -it -w /var/www/hub hub php core/bin/muse install
+```
 
 ## 5. Install
 
@@ -292,11 +358,7 @@ cd /var/www/hub
 sudo -u www-data php core/bin/muse install
 ```
 
-With FrankenPHP, use its own PHP: `sudo -u www-data frankenphp php-cli
-core/bin/muse install`. It prints warnings that session settings *"cannot be
-changed after headers have already been sent"*. They are harmless: FrankenPHP's
-command line reports headers as sent before anything has been, which PHP's own
-does not.
+With FrankenPHP, run it in the container, as above.
 
 `muse install` asks its questions one at a time and checks each answer before
 moving on. In order:
@@ -380,6 +442,15 @@ the hub's account can read it, and delete it once the hub is installed:
 sudo chown www-data /var/www/hub-install.json && sudo chmod 600 /var/www/hub-install.json
 ```
 
+With FrankenPHP, the file has to be inside the container:
+
+```bash
+sudo docker cp /var/www/hub-install.json hub:/tmp/hub-install.json
+sudo docker exec -u root hub chown www-data /tmp/hub-install.json
+sudo docker exec -w /var/www/hub hub php core/bin/muse install --config=/tmp/hub-install.json
+sudo docker exec -u root hub rm /tmp/hub-install.json
+```
+
 ### From the browser
 
 Open `https://hub.example.org/`. A hub that is not installed yet answers every
@@ -456,12 +527,14 @@ site at `/login`.
 
 **Scheduled tasks.** Nothing that runs on a schedule happens until the server
 ticks the hub every minute. Add the cron entry described in
-[Scheduled tasks](03-maintenance/05-cron.md#how-it-works). It needs the
+[Scheduled tasks](../managers/03-maintenance/05-cron.md#how-it-works). It needs the
 hub's address in `live_site` in `app/config/app.php`. The browser installer
-leaves that blank unless you filled in **Site URL**.
+leaves that blank unless you filled in **Site URL**. With FrankenPHP the
+entry runs `muse` in the container:
+`sudo docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick`.
 
 **Mail.** The hub sends mail with PHP's `mail()` until you configure
-something else. See [Mail Settings](05-configuring/01-hub.md#mail-settings).
+something else. See [Mail Settings](../managers/05-configuring/01-hub.md#mail-settings).
 
 **Time zones in the database.** MariaDB on Ubuntu starts without its time
 zone tables. The migrations load them only when they are run by the system's
@@ -480,12 +553,12 @@ cd /var/www/hub
 sudo -u www-data php core/bin/muse migration run -f
 ```
 
-**Keeping it up to date.** [Upgrading a hub](03-maintenance/06-upgrading.md)
+**Keeping it up to date.** [Upgrading a hub](02-upgrading.md)
 brings the hub up to the latest code on its branch, with a backup first and a
 way back.
 
 Then go on to
-[The first week with a new hub](01-getting-started.md#the-first-week-with-a-new-hub).
+[The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub).
 
 ## Warnings during the migrations
 
@@ -501,6 +574,11 @@ the hub working:
 
 A migration that ended in a warning is tried again the next time the
 migrations run; one that succeeded is not.
+
+Under FrankenPHP, the browser installer's migration output also carries
+warnings that session settings *"cannot be changed after headers have
+already been sent"*. They come from FrankenPHP's own command line, which the
+installer runs the migrations with, and are harmless.
 
 ## When something goes wrong
 
@@ -523,7 +601,13 @@ migrations as pending, finish them from the command line with
 `sudo -u www-data php core/bin/muse migration run -f`.
 
 **Under FrankenPHP, the installer cannot connect to the database through
-`localhost`.** Use `127.0.0.1`, as described under [FrankenPHP](#frankenphp).
+the socket.** Use `127.0.0.1`, as described under
+[FrankenPHP in Docker](#frankenphp-in-docker).
+
+**Under FrankenPHP, the installer shows *Server Configuration Required*.**
+PHP in the container has no writable place outside the document root. The
+image was built without the `session.save_path` lines above; add them and
+rebuild.
 
 **Requests for `/app/config/database.php` do not answer 403.** The web
 server's rules for private paths are missing. Check before the hub is in use:

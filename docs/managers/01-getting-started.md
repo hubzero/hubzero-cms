@@ -12,7 +12,8 @@ imported: 2026-09-09
 This book is for the person who runs a hub. It covers the administrator
 interface — the back end at `/administrator` — and the settings, screens and
 extensions you reach from it. It starts from a hub that is already installed
-and answering; it does not cover installing the software.
+and answering; installing the software is
+[System administrators](../sysadmins/README.md).
 
 ## What a hub manager does
 

@@ -23,9 +23,9 @@ This book is not a field-by-field reference; that is the generated
 [configuration reference](../reference/configuration/README.md). It is not
 about writing code for a hub, which is [Developers](../developers/README.md).
 
-It starts with [Installing a hub](00-installing.md), which takes a server
-with nothing on it to a hub that answers, from the browser or the command
-line; everything after that is covered here.
+It starts from a hub that is installed and answering. Putting one on a
+server, and upgrading it later, is
+[System administrators](../sysadmins/README.md).
 
 ## Where to start
 

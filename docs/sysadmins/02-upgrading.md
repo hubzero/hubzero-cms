@@ -1,13 +1,13 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 6dd778fb19
+reviewed-against: 2.4-main @ a7cc23ecc4
 reviewed: 2026-10-29
 screenshots: none
 summary: Bringing a hub up to the latest code on its release branch, with a backup taken first and a way back if something goes wrong.
 -->
 # Upgrading a hub
 
-A hub installed as [Installing a hub](../00-installing.md) describes is a git
+A hub installed as [Installing a hub](01-installing.md) describes is a git
 checkout of its release branch, `2.4-main`. Upgrading it means bringing that
 checkout up to date, then the libraries Composer installs, then the database.
 It takes a few minutes, most of it Composer and the migrations.
@@ -18,8 +18,10 @@ rolling it back and upgrading it again. Its content came through unchanged,
 and the upgraded database matched a newly installed one.
 
 Run every command in the hub's directory, as the account that owns the hub's
-files: `www-data` on Ubuntu, as in the install guide. Under FrankenPHP, use
-`frankenphp php-cli` where the commands below say `php`.
+files: `www-data` on Debian and Ubuntu, as in the install guide. With
+FrankenPHP in Docker, run the `php` commands in the container instead:
+`sudo docker exec -w /var/www/hub hub php core/bin/muse ...`. The `git`,
+`mariadb-dump` and `tar` commands run on the server as they are.
 
 ```bash
 cd /var/www/hub
@@ -49,7 +51,7 @@ and plugins of your own belong under `app/`, which the update never touches.
 **Take the hub offline.** Visitors see a maintenance page while the code and
 the database are out of step with each other. The administrator interface
 stays available. Use **Site Offline** in **Site > Global Configuration**, as
-[Taking the hub offline](../05-configuring/01-hub.md#taking-the-hub-offline)
+[Taking the hub offline](../managers/05-configuring/01-hub.md#taking-the-hub-offline)
 describes, or set `'offline' => '1'` in `app/config/offline.php`.
 
 **Back up the database and `app/`.** These are what an upgrade changes, and
@@ -99,7 +101,7 @@ the dump is not empty before you go on.
    It ends with *Success: Up migration complete!* The dry run ends with the
    same words, so read the list above them to see what will run. The same
    warnings a new hub shows may appear again; they are explained in
-   [Warnings during the migrations](../00-installing.md#warnings-during-the-migrations).
+   [Warnings during the migrations](01-installing.md#warnings-during-the-migrations).
    A migration that ended in a warning is tried again on every run.
 
 4. **Clear the cache.**
@@ -109,8 +111,8 @@ the dump is not empty before you go on.
    ```
 
 5. **Reload PHP**, so no worker carries on with copies of the old code it had
-   already compiled: `sudo systemctl reload php8.3-fpm` for Apache or nginx;
-   restart FrankenPHP.
+   already compiled: `sudo systemctl reload php8.2-fpm` for Apache or nginx,
+   `sudo docker restart hub` for FrankenPHP.
 
 6. **Check the hub, then put it back online.** Sign in to the administrator
    interface and to the site, and open the pages your members use most. Then
@@ -187,3 +189,16 @@ it points.
 **Composer reports that a package needs a newer PHP.** The new code needs a
 PHP version the server does not have. Roll back the code with
 `muse repository rollback`, upgrade PHP, and start again.
+
+**PHP itself has a security release.** Under Apache or nginx it comes with
+the server's other updates. FrankenPHP's image has to be rebuilt to get it,
+and the container started again from the new image:
+
+```bash
+sudo docker build --pull -t hub-frankenphp /opt/hub-frankenphp
+sudo docker rm -f hub
+```
+
+Then start it with the same `docker run` as in
+[FrankenPHP in Docker](01-installing.md#frankenphp-in-docker). The hub's
+files and certificates are outside the container, so nothing is lost.

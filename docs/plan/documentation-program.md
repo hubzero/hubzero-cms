@@ -152,10 +152,9 @@ docs/
     01-what-is-hubzero.md
     02-concepts.md              components, plugins, modules, groups, tools
     03-quick-tour.md
-  installation/                 book
+  sysadmins/                    book: installing and upgrading a hub
     README.md
-    01-requirements.md
-    02-el9.md  03-el8.md  04-docker.md  05-first-hub.md  06-upgrading.md
+    01-installing.md  02-upgrading.md
   managers/                     book: hub administration
     README.md
     01-administrator.md ... (configuring, users, content, extensions,

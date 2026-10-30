@@ -23,9 +23,11 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 
 ## Run a hub
 
-- [Hub managers](managers/README.md) — installing a hub, then administering
-  it: configuration, members and access, content, extensions, maintenance,
-  and every component's administrative side.
+- [System administrators](sysadmins/README.md) — putting a hub on a
+  server and keeping it current: installing it, and upgrading it.
+- [Hub managers](managers/README.md) — administering a hub once it runs:
+  configuration, members and access, content, extensions, maintenance, and
+  every component's administrative side.
 
 ## Use a hub
 
