@@ -26,7 +26,7 @@ if (UserEnvironment::getInstance()->isWindows()) {
 ini_set('display_errors', 'stderr');
 
 // Handle privilege detection and user prompts
-if (!(new PrivilegeNotifier())->handleStartup()) {
+if (!(new PrivilegeNotifier())->handleStartup(dirname(dirname(__DIR__)))) {
     // User declined to continue as root
     exit(1);
 }
