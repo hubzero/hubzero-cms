@@ -202,5 +202,5 @@ sudo docker rm -f hub
 ```
 
 Then start it with the same `docker run` as in
-[FrankenPHP in Docker](01-installing.md#frankenphp-in-docker). The hub's
+[Installing with FrankenPHP in Docker](10-docker.md). The hub's
 files and certificates are outside the container, so nothing is lost.
