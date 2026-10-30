@@ -155,9 +155,10 @@ docs/
   sysadmins/                    book: installing and upgrading a hub
     README.md
     01-installing.md            overview: what a hub needs, which page to follow
-    02-*.md ... 11-*.md         one page per system, preparing the server (Debian, Ubuntu LTS, EL, Docker, other)
-    12-installing-the-hub.md    the database and the installer, the same on every system
-    13-upgrading.md
+    02-preparing/               section: preparing the server, how to choose, one page per system
+                                (Debian, Ubuntu LTS, EL, Docker, other)
+    03-installing-the-hub.md    the database and the installer, the same on every system
+    04-upgrading.md
   managers/                     book: hub administration
     README.md
     01-administrator.md ... (configuring, users, content, extensions,

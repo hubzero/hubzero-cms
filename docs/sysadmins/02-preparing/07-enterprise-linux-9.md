@@ -1,23 +1,24 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing an Enterprise Linux 8 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the php:8.2 and mariadb:10.11 module streams, behind Apache or nginx.
+summary: Preparing an Enterprise Linux 9 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the php:8.2 and mariadb:10.11 module streams, behind Apache or nginx.
 -->
-# Preparing an Enterprise Linux 8 server
+# Preparing an Enterprise Linux 9 server
 
-This page prepares a server running Enterprise Linux 8 for a hub, from nothing to a
-web server ready to serve it. Enterprise Linux 8 means Red Hat Enterprise Linux 8 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
-[Installing the hub](12-installing-the-hub.md) installs it, the same way on every system.
+This page prepares a server running Enterprise Linux 9 for a hub, from nothing to a
+web server ready to serve it. Enterprise Linux 9 means Red Hat Enterprise Linux 9 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+[Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-A full install from the command line was run in a Rocky Linux 8 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run.
+A full install from the command line was run in a Rocky Linux 9 container with these packages behind this nginx configuration; the Apache configuration is the one installs on Enterprise Linux 8 and 10 were run behind. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run.
 
-For another system, see the [installation overview](01-installing.md).
+For another system, or help choosing one, see
+[Preparing the server](README.md).
 
 ## What you need
 
-- A server running Enterprise Linux 8, and an account on it that can use `sudo`.
+- A server running Enterprise Linux 9, and an account on it that can use `sudo`.
 - A name for the hub, such as `hub.example.org`, pointing at the server, and a
   TLS certificate for it. A hub has to be served over HTTPS: the administrator
   sign-in form always posts to an `https://` address, so on plain HTTP the
@@ -25,7 +26,7 @@ For another system, see the [installation overview](01-installing.md).
 
 ## 1. Install MariaDB, PHP and the tools
 
-PHP 8.2 and MariaDB 10.11 are module streams in AppStream. Enable them before installing anything from either:
+PHP 8.2 and MariaDB 10.11 are module streams in AppStream. Enable them before installing anything from either; without the MariaDB stream, `dnf` installs the default 10.5.
 
 ```bash
 sudo dnf module enable php:8.2 mariadb:10.11
@@ -244,10 +245,10 @@ Keep it for then:
 
 ## 7. Next: install the hub
 
-The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
+The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.
 
-## When something goes wrong on Enterprise Linux 8
+## When something goes wrong on Enterprise Linux 9
 
 **`/administrator` answers 404 under nginx.** The PHP block is passing every
 `.php` address straight to PHP. Use the block above, which
@@ -257,5 +258,5 @@ hands addresses that are not files to `index.php`.
 files belong to `apache`.** SELinux is refusing it. See [SELinux](#selinux).
 
 For everything else, see
-[When something goes wrong](12-installing-the-hub.md#when-something-goes-wrong) on the page
+[When something goes wrong](../03-installing-the-hub.md#when-something-goes-wrong) on the page
 that installs the hub.

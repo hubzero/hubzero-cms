@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 4b8a132fb4
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
 summary: How installing a hub goes: what it needs, preparing the server on your system's page, then installing the hub.
@@ -8,45 +8,20 @@ summary: How installing a hub goes: what it needs, preparing the server on your 
 # Installation overview
 
 A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
-of PHP. Installing one takes two pages:
+of PHP. Installing one takes two steps, each with its own part of this book:
 
-1. **Your system's page**, from the table below, which takes a server with
-   nothing on it to one ready for the hub: the packages, the code, and the
-   web server. Each is complete for its system, and repeats the others
-   rather than send you between them.
-2. **[Installing the hub](12-installing-the-hub.md)**, which every system's
+1. **[Preparing the server](02-preparing/README.md).** Choose your system
+   there and follow its page, which takes a server with nothing on it to one
+   ready for the hub: the packages, the code, and the web server. Each
+   system's page is complete on its own. The section also helps you choose,
+   if you have not already: hosted hubs currently run on Enterprise Linux 8.
+2. **[Installing the hub](03-installing-the-hub.md)**, which every system's
    page ends at: the database, the installer, and what comes after. It is the
    same on every system.
 
 If the hub you are asking about is already installed and answering, go to
 [The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub)
 instead.
-
-## Choose your system
-
-| System | PHP 8.2 from | MariaDB | Web server |
-|---|---|---|---|
-| [Debian 12](02-debian-12.md) | Debian | 10.11 | Apache or nginx |
-| [Debian 13](03-debian-13.md) | Ondřej Surý's archive | 11.8 | Apache or nginx |
-| [Ubuntu 22.04 LTS](04-ubuntu-22-04-lts.md) | Ondřej Surý's PPA | 10.6 | Apache or nginx |
-| [Ubuntu 24.04 LTS](05-ubuntu-24-04-lts.md) | Ondřej Surý's PPA | 10.11 | Apache or nginx |
-| [Ubuntu 26.04 LTS](06-ubuntu-26-04-lts.md) | FrankenPHP's Docker image | 11.8 | FrankenPHP |
-| [Enterprise Linux 8](07-enterprise-linux-8.md) | AppStream, `php:8.2` | 10.11 | Apache or nginx |
-| [Enterprise Linux 9](08-enterprise-linux-9.md) | AppStream, `php:8.2` | 10.11 | Apache or nginx |
-| [Enterprise Linux 10](09-enterprise-linux-10.md) | Remi's repository | 10.11 | Apache or nginx |
-| [Any Linux, in Docker](10-docker.md) | FrankenPHP's Docker image | the distribution's | FrankenPHP |
-| [Any other Linux](11-other-linux.md) | wherever it is packaged | the distribution's | Apache or nginx |
-
-Enterprise Linux means Red Hat Enterprise Linux and its rebuilds, Rocky
-Linux and AlmaLinux. Ubuntu is covered in its long-term support releases
-only.
-
-Where a system has PHP 8.2 of its own, its page uses it. Where it does not,
-the page adds the repository that packages it for that system: Ondřej Surý's
-for Debian and Ubuntu, Remi Collet's for Enterprise Linux. Where there is no
-such repository, as on Ubuntu 26.04 LTS, the hub runs in FrankenPHP's PHP 8.2
-Docker image, which needs no PHP on the server. That image is also a choice on
-any system.
 
 ## What every system needs
 
@@ -69,13 +44,13 @@ The libraries Composer installs need the XML extensions, `sockets` and
 
 ## What installing does
 
-[Installing the hub](12-installing-the-hub.md) runs one of two installers
+[Installing the hub](03-installing-the-hub.md) runs one of two installers
 that do the same job: `muse install` on the command line, which can also
 take its answers from a file, or the installer in the browser. Both load the database, write the
 hub's configuration into `app/config/`, bring the database up to date with
 the migrations, and create the administrator. The hub's code is a git
 checkout of its release branch, `2.4-main`, which is what
-[Upgrading a hub](13-upgrading.md) brings up to date later.
+[Upgrading a hub](04-upgrading.md) brings up to date later.
 
 ## What was tested
 

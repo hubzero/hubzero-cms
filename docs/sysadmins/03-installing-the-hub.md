@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: ok
 summary: Installing the hub on a server its system's page has prepared, the same way on every system: the database, the installer, and what comes after.
@@ -10,7 +10,7 @@ summary: Installing the hub on a server its system's page has prepared, the same
 This page installs the hub on a server that one of the system pages has
 prepared: MariaDB and PHP 8.2 installed, the code in `/var/www/hub`, and a
 web server answering for the hub's name over HTTPS. If yours is not ready
-yet, start at the [installation overview](01-installing.md) and follow your system's
+yet, start at [Preparing the server](02-preparing/README.md) and follow your system's
 page first.
 
 Everything here is the same on every system. Where a command differs, it
@@ -273,7 +273,7 @@ cd /var/www/hub
 $HUB_PHP core/bin/muse migration run -f
 ```
 
-**Keeping it up to date.** [Upgrading a hub](13-upgrading.md) brings the hub
+**Keeping it up to date.** [Upgrading a hub](04-upgrading.md) brings the hub
 up to the latest code on its branch, with a backup first and a way back.
 
 Then go on to

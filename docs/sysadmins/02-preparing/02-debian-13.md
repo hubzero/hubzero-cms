@@ -1,23 +1,24 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing a Debian 12 server for a hub: PHP 8.2 and MariaDB 10.11 from Debian, behind Apache or nginx.
+summary: Preparing a Debian 13 server for a hub: PHP 8.2 from Ondřej Surý's archive and MariaDB 11.8, behind Apache or nginx.
 -->
-# Preparing a Debian 12 server
+# Preparing a Debian 13 server
 
-This page prepares a server running Debian 12 for a hub, from nothing to a
-web server ready to serve it. It uses Debian 12's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
-[Installing the hub](12-installing-the-hub.md) installs it, the same way on every system.
+This page prepares a server running Debian 13 for a hub, from nothing to a
+web server ready to serve it. It uses PHP 8.2 from Ondřej Surý's archive, Debian 13's own MariaDB 11.8, and Apache or nginx with PHP-FPM. Then
+[Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-The PHP 8.2 packages below were installed on Debian 12 and every extension the hub needs was present. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04.
+The PHP 8.2 packages below were installed on Debian 13 and every extension the hub needs was present, and a hub was installed against MariaDB 11.8. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04.
 
-For another system, see the [installation overview](01-installing.md).
+For another system, or help choosing one, see
+[Preparing the server](README.md).
 
 ## What you need
 
-- A server running Debian 12, and an account on it that can use `sudo`.
+- A server running Debian 13, and an account on it that can use `sudo`.
 - A name for the hub, such as `hub.example.org`, pointing at the server, and a
   TLS certificate for it. A hub has to be served over HTTPS: the administrator
   sign-in form always posts to an `https://` address, so on plain HTTP the
@@ -25,7 +26,18 @@ For another system, see the [installation overview](01-installing.md).
 
 ## 1. Install MariaDB, PHP and the tools
 
-PHP 8.2 and MariaDB 10.11 are Debian 12's own.
+Debian 13 ships PHP 8.4. PHP 8.2 comes from Ondřej Surý's archive, which packages it for Debian under the names Debian uses. Add it first:
+
+```bash
+sudo apt install curl ca-certificates lsb-release
+curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+    | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
+```
+
+Then the packages. MariaDB is Debian 13's own, 11.8.
 
 ```bash
 sudo apt install mariadb-server git unzip \
@@ -211,15 +223,15 @@ Keep it for then:
 
 ## 6. Next: install the hub
 
-The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
+The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.
 
-## When something goes wrong on Debian 12
+## When something goes wrong on Debian 13
 
 **`/administrator` answers 404 under nginx.** The PHP block is passing every
 `.php` address straight to PHP, or uses `snippets/fastcgi-php.conf`. Use the block above, which
 hands addresses that are not files to `index.php`.
 
 For everything else, see
-[When something goes wrong](12-installing-the-hub.md#when-something-goes-wrong) on the page
+[When something goes wrong](../03-installing-the-hub.md#when-something-goes-wrong) on the page
 that installs the hub.

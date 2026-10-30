@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
 summary: Preparing a server on a Linux distribution the other pages do not name, from what a hub needs rather than from package names.
@@ -11,11 +11,11 @@ This page is for a Linux distribution the other installation pages do not
 name. It says what a hub needs rather than which packages to install, because
 those are the distribution's to name. The steps are the same as on every
 other system; only the package names and paths are yours to find. When this
-page has prepared the server, [Installing the hub](12-installing-the-hub.md)
+page has prepared the server, [Installing the hub](../03-installing-the-hub.md)
 installs it.
 
 If your distribution has no PHP 8.2 and no second source of it, run the hub
-in Docker instead: [Preparing a server for FrankenPHP in Docker](10-docker.md)
+in Docker instead: [Preparing a server for FrankenPHP in Docker](09-docker.md)
 needs no PHP on the server at all.
 
 ## What you need
@@ -97,7 +97,7 @@ sudo -u <the PHP-FPM account> php core/bin/muse install check
 If the distribution runs SELinux or AppArmor, the web server needs to be
 allowed to write to `/var/www/hub`, to connect to MariaDB and to the network,
 and to send mail. On SELinux, the commands are the ones
-[Enterprise Linux 9](08-enterprise-linux-9.md#selinux) uses.
+[Enterprise Linux 9](07-enterprise-linux-9.md#selinux) uses.
 
 ## 4. Configure the web server
 
@@ -114,7 +114,7 @@ The last of those matters: `app/config/database.php` holds the database
 password, and nothing else stops a browser from reading it.
 
 Start from the configuration for your web server on
-[Debian 12](02-debian-12.md#4-configure-the-web-server), and change only what
+[Debian 12](01-debian-12.md#4-configure-the-web-server), and change only what
 is your distribution's:
 
 - where the file goes, and whether it needs enabling;
@@ -151,6 +151,6 @@ Keep it for then:
 
 ## 6. Next: install the hub
 
-The server is ready. Go on to [Installing the hub](12-installing-the-hub.md),
+The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md),
 which creates the database and runs the installer, the same way on every
 system.

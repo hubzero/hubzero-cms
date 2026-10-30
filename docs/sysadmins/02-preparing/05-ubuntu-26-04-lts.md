@@ -1,28 +1,29 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing any Linux server for a hub in FrankenPHP's PHP 8.2 Docker image, with MariaDB from the server's own distribution.
+summary: Preparing an Ubuntu 26.04 LTS server for a hub, which has no PHP 8.2 packages: FrankenPHP's PHP 8.2 Docker image, with MariaDB 11.8.
 -->
-# Preparing a server for FrankenPHP in Docker
+# Preparing an Ubuntu 26.04 LTS server
 
-This page runs the hub in FrankenPHP's PHP 8.2 Docker image, on any Linux
-server that can run Docker. FrankenPHP is a web server with PHP built in, and
-the image brings PHP 8.2, so the server needs no PHP of its own and no other
-web server. It is the way to run a hub on a system whose own PHP is not 8.2
-and has no second source of it, and a way to keep the hub's PHP apart from
-the server's on any system. MariaDB comes from the server's distribution.
-Then [Installing the hub](12-installing-the-hub.md) installs it, the same
+This page takes a server running Ubuntu 26.04 LTS with nothing on it to a hub
+that answers at its own address and has an administrator who can sign in.
+Ubuntu 26.04 ships PHP 8.5, and Ondřej Surý's PPA, which packages PHP 8.2 for
+earlier Ubuntu releases, has none for it. So the hub runs in FrankenPHP's
+PHP 8.2 Docker image: FrankenPHP is a web server with PHP built in, and the
+image brings PHP 8.2, so the server needs none. MariaDB is Ubuntu's own,
+11.8. Then [Installing the hub](../03-installing-the-hub.md) installs it, the same
 way on every system.
 
-Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.
+The PPA was checked for Ubuntu 26.04 and has no packages for it. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server, and a hub was installed against MariaDB 11.8.
 
-For another system, see the [installation overview](01-installing.md).
+For another system, or help choosing one, see
+[Preparing the server](README.md).
 
 ## What you need
 
-- A Linux server, and an account on it that can use `sudo`.
+- A server running Ubuntu 26.04 LTS, and an account on it that can use `sudo`.
 - Nothing else listening on ports 80 and 443: FrankenPHP is the web server.
 - A name for the hub, such as `hub.example.org`, pointing at the server, and a
   TLS certificate for it. A hub has to be served over HTTPS: the administrator
@@ -31,35 +32,12 @@ For another system, see the [installation overview](01-installing.md).
 
 ## 1. Install MariaDB, the tools and Docker
 
-Install MariaDB, `git` and `unzip` from the distribution, and Docker. Install
-no PHP and no web server: the image brings both.
-
-**On Debian or Ubuntu:**
-
 ```bash
 sudo apt install mariadb-server git unzip docker.io
 ```
 
-**Or on Enterprise Linux 8, 9 or 10**, MariaDB from the distribution and
-Docker from Docker's own repository, which replaces the Podman Enterprise
-Linux installs by default. On 8 and 9, enable the `mariadb:10.11` stream
-first, with `sudo dnf module enable mariadb:10.11`; 10 has MariaDB 10.11 as it
-is.
-
-```bash
-sudo dnf install mariadb-server git unzip
-sudo systemctl enable --now mariadb
-sudo dnf remove podman buildah runc
-sudo dnf install dnf-plugins-core
-sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
-sudo dnf install docker-ce docker-ce-cli containerd.io
-sudo systemctl enable --now docker
-sudo firewall-cmd --permanent --add-service=http --add-service=https
-sudo firewall-cmd --reload
-```
-
-**Or on any other distribution**, its own MariaDB, `git`, `unzip` and Docker
-packages.
+MariaDB is Ubuntu's own, 11.8. Install no PHP and no web server: the image
+brings both.
 
 ## 2. Get the code
 
@@ -72,7 +50,7 @@ sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /var
 sudo chown -R 33:33 /var/www/hub
 ```
 
-On Debian and Ubuntu that is the `www-data` account on the server too. On Enterprise Linux no account has the number; use it as it is.
+On Ubuntu that is the `www-data` account on the server too.
 
 ## 3. Build the image
 
@@ -152,7 +130,7 @@ lookahead, which is why the hidden-file rule is a matcher of two lines.
 
 ```bash
 sudo docker run -d --name hub --restart unless-stopped --network host \
-    -v /var/www/hub:/var/www/hub:z \
+    -v /var/www/hub:/var/www/hub \
     -v /opt/hub-frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro \
     -v hub_caddy_data:/data -v hub_caddy_config:/config \
     hub-frankenphp
@@ -167,8 +145,6 @@ sudo docker run -d --name hub --restart unless-stopped --network host \
   container runs as user 33, which owns the files.
 - `hub_caddy_data` keeps the certificates FrankenPHP obtains across restarts
   and rebuilds.
-- `:z` on the hub's mount is for SELinux, on Enterprise Linux: it lets
-  the container use the files. Elsewhere it does nothing.
 
 ## 6. Set the values the installation uses
 
@@ -198,7 +174,7 @@ Keep it for then:
 
 ## 7. Next: install the hub
 
-The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
+The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.
 
 ## When something goes wrong in Docker
@@ -221,5 +197,5 @@ come from FrankenPHP's own command line, which the installer runs the
 migrations with, and are harmless.
 
 For everything else, see
-[When something goes wrong](12-installing-the-hub.md#when-something-goes-wrong) on the page
+[When something goes wrong](../03-installing-the-hub.md#when-something-goes-wrong) on the page
 that installs the hub.

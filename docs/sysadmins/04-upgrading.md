@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
 summary: Bringing a hub up to the latest code on its release branch, with a backup taken first and a way back if something goes wrong.
@@ -104,7 +104,7 @@ the dump is not empty before you go on.
    It ends with *Success: Up migration complete!* The dry run ends with the
    same words, so read the list above them to see what will run. The same
    warnings a new hub shows may appear again; they are explained in
-   [Warnings during the migrations](12-installing-the-hub.md#warnings-during-the-migrations).
+   [Warnings during the migrations](03-installing-the-hub.md#warnings-during-the-migrations).
    A migration that ended in a warning is tried again on every run.
 
 4. **Clear the cache.**
@@ -206,5 +206,5 @@ sudo docker rm -f hub
 ```
 
 Then start it with the same `docker run` as in
-[Preparing a server for FrankenPHP in Docker](10-docker.md). The hub's
+[Preparing a server for FrankenPHP in Docker](02-preparing/09-docker.md). The hub's
 files and certificates are outside the container, so nothing is lost.

@@ -1,23 +1,24 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 981ae7fc4a
+reviewed-against: 2.4-main @ 581dd435fc
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing an Ubuntu 22.04 LTS server for a hub: PHP 8.2 from Ondřej Surý's PPA and MariaDB 10.6, behind Apache or nginx.
+summary: Preparing a Debian 12 server for a hub: PHP 8.2 and MariaDB 10.11 from Debian, behind Apache or nginx.
 -->
-# Preparing an Ubuntu 22.04 LTS server
+# Preparing a Debian 12 server
 
-This page prepares a server running Ubuntu 22.04 LTS for a hub, from nothing to a
-web server ready to serve it. It uses PHP 8.2 from Ondřej Surý's PPA, Ubuntu's own MariaDB 10.6, and Apache or nginx with PHP-FPM. Then
-[Installing the hub](12-installing-the-hub.md) installs it, the same way on every system.
+This page prepares a server running Debian 12 for a hub, from nothing to a
+web server ready to serve it. It uses Debian 12's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+[Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-The PHP 8.2 packages below were installed on Ubuntu 22.04 and every extension the hub needs was present. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04 LTS. The hub was installed against MariaDB 10.11 and 11.8; 10.6, which Ubuntu 22.04 ships, was not tried.
+The PHP 8.2 packages below were installed on Debian 12 and every extension the hub needs was present. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04.
 
-For another system, see the [installation overview](01-installing.md).
+For another system, or help choosing one, see
+[Preparing the server](README.md).
 
 ## What you need
 
-- A server running Ubuntu 22.04 LTS, and an account on it that can use `sudo`.
+- A server running Debian 12, and an account on it that can use `sudo`.
 - A name for the hub, such as `hub.example.org`, pointing at the server, and a
   TLS certificate for it. A hub has to be served over HTTPS: the administrator
   sign-in form always posts to an `https://` address, so on plain HTTP the
@@ -25,15 +26,7 @@ For another system, see the [installation overview](01-installing.md).
 
 ## 1. Install MariaDB, PHP and the tools
 
-Ubuntu 22.04 ships PHP 8.1. PHP 8.2 comes from Ondřej Surý's PPA. Add it first:
-
-```bash
-sudo apt install software-properties-common
-sudo add-apt-repository ppa:ondrej/php
-sudo apt update
-```
-
-Then the packages. MariaDB is Ubuntu's own, 10.6.
+PHP 8.2 and MariaDB 10.11 are Debian 12's own.
 
 ```bash
 sudo apt install mariadb-server git unzip \
@@ -219,15 +212,15 @@ Keep it for then:
 
 ## 6. Next: install the hub
 
-The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
+The server is ready. Go on to [Installing the hub](../03-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.
 
-## When something goes wrong on Ubuntu 22.04 LTS
+## When something goes wrong on Debian 12
 
 **`/administrator` answers 404 under nginx.** The PHP block is passing every
 `.php` address straight to PHP, or uses `snippets/fastcgi-php.conf`. Use the block above, which
 hands addresses that are not files to `index.php`.
 
 For everything else, see
-[When something goes wrong](12-installing-the-hub.md#when-something-goes-wrong) on the page
+[When something goes wrong](../03-installing-the-hub.md#when-something-goes-wrong) on the page
 that installs the hub.
