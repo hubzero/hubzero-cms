@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ e660f4dc23
+reviewed-against: 2.4-main @ 5d7f20276e
 reviewed: 2026-10-30
 screenshots: none
 source: https://help.hubzero.org/documentation/240/webdevs/index/devenvironment
@@ -100,6 +100,7 @@ php core/bin/muse install
 | `muse install migrations` | Run migrations to bring the schema up to date |
 | `muse install sample` | Load sample data |
 | `muse install admin` | Create the first administrator account |
+| `muse install verify` | Check an installed hub: how it is served, its scheduled tasks, database server, mail and file ownership |
 
 This gets you the CMS. It does not get you the parts of a hub that are not
 the CMS: the tool session middleware, Workspaces, the mail gateway, LDAP, or
@@ -153,8 +154,10 @@ your own machine, not for serving. For a real hub in Docker, see
 
 Each start runs `muse install --env`. The first time, that installs the hub
 from the `HUB_*` settings in `compose.yaml`. Every time after, it only runs
-the migrations, so pulling new code and restarting brings the database up to
-date: `docker compose restart hub`.
+the migrations, so restarting brings the database up to date:
+`docker compose restart hub`. After pulling code that changes the libraries
+too, run `docker compose exec hub php core/bin/muse upgrade`, which installs
+them, runs the migrations and clears the cache.
 
 The hub runs as the account that owns the checkout, not as `www-data`, so
 `app/` and `core/vendor/` stay yours, as they would on your own LAMP stack.
@@ -295,8 +298,9 @@ carry across.
 > anyone else uses.
 
 Afterwards, `git pull --rebase` from the hub root brings in new code. Rebase
-keeps your own unpushed commits on top of it. Re-run steps 4 and 5 when the
-dependencies or the migrations change.
+keeps your own unpushed commits on top of it. Then `php core/bin/muse upgrade`
+does steps 4 and 5 again, and clears the cache, for whatever the new code
+needs.
 
 ## Continuous integration
 

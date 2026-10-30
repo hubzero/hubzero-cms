@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d96149df5b
+reviewed-against: 2.4-main @ 5d7f20276e
 reviewed: 2026-10-30
 screenshots: ok
 summary: Installing the hub on a server its system's page has prepared, the same way on every system: the database, the installer, and what comes after.
@@ -28,8 +28,8 @@ and says so. If you are that account, or the files are your own, as in a
 checkout for development, leave out `sudo`: `muse` then runs as you.
 
 If the hub runs in Docker, `muse` runs in the container instead, as your
-system's page shows: `sudo docker exec -it -w /var/www/hub hub php
-core/bin/muse ...` wherever this page says `sudo php core/bin/muse ...`.
+system's page shows: `sudo docker exec -it hub php core/bin/muse ...`
+wherever this page says `sudo php core/bin/muse ...`.
 
 ## 1. Create the database
 
@@ -90,8 +90,9 @@ cd /var/www/hub
 sudo php core/bin/muse install check
 ```
 
-It lists the PHP version, each extension, `unzip`, and whether it can write
-to the hub's directory, and ends by saying whether all of them passed. If the
+It lists the PHP version, each extension, the extensions the libraries
+Composer installs need besides, `unzip`, and whether it can write to the
+hub's directory, and ends by saying whether all of them passed. If the
 libraries are not installed yet it says so; the installer installs them.
 
 ## 3. Install
@@ -112,9 +113,7 @@ It asks its questions one at a time and checks each answer before moving
 on. In order:
 
 1. **Composer.** If the libraries are not installed yet, it installs them
-   first, which takes a minute or two. A warning that Composer *"Cannot create
-   cache directory"* is harmless: the account has no home of its own to keep
-   a cache in, so Composer downloads without one.
+   first, which takes a minute or two.
 2. **Requirements.** The same checks as above. It stops if any of them fail.
 3. **Site settings.** The hub's name, the administrator's email address, the
    address it is served at (`https://hub.example.org`), the time zone, and a
@@ -127,8 +126,8 @@ on. In order:
    needs, then offers **sample data**: a front page, menus and articles to
    look at. Answer no for a hub you are going to fill yourself.
 6. **Migrations.** It brings the database up to date, which takes a minute or
-   so. Three warnings are expected; see
-   [Warnings during the migrations](#warnings-during-the-migrations).
+   so. Two warnings are expected until the steps after installing are done;
+   see [Warnings during the migrations](#warnings-during-the-migrations).
 7. **Administrator.** A name, a username, an email address and a password of
    at least eight characters.
 
@@ -138,7 +137,7 @@ It ends by printing the site's address and the administrator's username.
 
 `muse install` can take every answer from a file instead of asking for them,
 which is how to install a hub from a script, or the same hub more than once.
-Write the file as `/var/www/hub-install.json`, outside the hub's directory:
+Write the file in your own home directory, as `~/hub-install.json`:
 
 ```json
 {
@@ -171,30 +170,22 @@ Write the file as `/var/www/hub-install.json`, outside the hub's directory:
 | `admin` | `name`, `username`, `email`, `password` (at least eight characters) |
 | `sample` | `true` to load the sample data, `false` not to |
 
-It holds two passwords, so give it to the account that owns the hub alone,
-use it, and delete it:
+It holds two passwords, so keep it to yourself, hand it to `muse` on its
+standard input, and delete it:
 
 ```bash
-sudo chown --reference=/var/www/hub /var/www/hub-install.json
-sudo chmod 600 /var/www/hub-install.json
+chmod 600 ~/hub-install.json
 cd /var/www/hub
-sudo php core/bin/muse install --config=/var/www/hub-install.json
-sudo rm /var/www/hub-install.json
+sudo php core/bin/muse install --config=- < ~/hub-install.json
+rm ~/hub-install.json
 ```
 
-`chown --reference` gives the file the same owner as the hub's directory, so
-it does not matter which account that is.
-
-If the hub runs in Docker, the container cannot see that file. Copy it in
-instead, use the copy, and remove both:
+`--config=-` reads the answers from standard input, which your shell opens
+for `muse`, so the file never has to be readable by the hub's account. In
+Docker it is the same, with `-i` to pass standard input into the container:
 
 ```bash
-sudo docker cp /var/www/hub-install.json hub:/tmp/hub-install.json
-sudo docker exec -u root hub chown 33:33 /tmp/hub-install.json
-sudo docker exec -u root hub chmod 600 /tmp/hub-install.json
-sudo docker exec -w /var/www/hub hub php core/bin/muse install --config=/tmp/hub-install.json
-sudo docker exec -u root hub rm /tmp/hub-install.json
-sudo rm /var/www/hub-install.json
+sudo docker exec -i hub php core/bin/muse install --config=- < ~/hub-install.json
 ```
 
 It runs every step the questions would, Composer included, and stops at the
@@ -247,9 +238,9 @@ moving on.
 ![The Database step's credentials page with the database name, username and password filled in, and Test Connection, Back and Next buttons](media/install-database.png)
 
 **Settings.** The hub's name, the administrator's email address, the time
-zone, and a description for search engines. Leave **Site URL** blank to have
-the hub work out its address from each request, or give it, which the
-scheduled tasks need later.
+zone, and a description for search engines. **Site URL** starts as the
+address you reached the installer at, over `https://`. Keep it, or correct
+it if the hub has another name: the scheduled tasks need it later.
 
 **Schema.** Tick **Load sample data** if you want a front page, menus and
 articles to look at, then select **Load Database**. It creates the tables,
@@ -291,8 +282,8 @@ the one your system's page gives instead):
 
 Run as root, `muse` becomes the account that owns the hub, as it does from
 the command line. The tick needs the hub's address in `live_site` in
-`app/config/app.php`, which the browser installer leaves blank unless you
-filled in **Site URL**. What the tick does, and the jobs it runs, are in
+`app/config/app.php`, which both installers ask for. What the tick does, and
+the jobs it runs, are in
 [Scheduled tasks](../managers/03-maintenance/05-cron.md#how-it-works).
 
 **Mail.** The hub sends mail with PHP's `mail()` until you configure
@@ -316,6 +307,21 @@ cd /var/www/hub
 sudo php core/bin/muse migration run -f
 ```
 
+**Check the hub.** Once the cron line has had a few minutes to run, `muse`
+can check the hub from the outside and the inside:
+
+```bash
+cd /var/www/hub
+sudo php core/bin/muse install verify
+```
+
+It requests the hub at its own address, checks that its configuration is
+refused to visitors, that the scheduled tasks have run, MariaDB's SQL mode and
+time zone tables, the usage statistics' database, where mail goes, and that
+everything in `app/` belongs to the hub's account. Each line says **OK**,
+**WARN** or **FAIL**, and what to do about anything that is not OK. A
+self-signed certificate is a warning, not a failure.
+
 **Keeping it up to date.** [Upgrading a hub](04-upgrading.md) brings the hub
 up to the latest code on its branch, with a backup first and a way back.
 
@@ -324,14 +330,13 @@ Then go on to
 
 ## Warnings during the migrations
 
-Both installers, and the upgrade, show the same three warnings on a new hub.
-None of them stops the hub working:
+Both installers, and the upgrade, can show two warnings. Neither stops the
+hub working, and each goes away once its cause is dealt with:
 
 | Warning | Why |
 |---|---|
-| *onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables* | Loading MariaDB's time zone tables needs its `root` account. Load them yourself, as described above |
+| *onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables* | MariaDB's time zone tables are empty, and loading them needs its `root` account. Load them yourself, as described above |
 | *Migration20150904235936ComUsage.php: Failed to run with the necessary privileges* | The `_metrics` database does not exist, and creating one needs `root`. Create it as described above and run the migrations again |
-| *Migration20170627153900ComHubgraph.php: Failed to run with the necessary privileges* | It removes database triggers that older hubs had. A new hub has none to remove |
 
 A migration that ended in a warning is tried again the next time the
 migrations run; one that succeeded is not.
@@ -360,12 +365,10 @@ cd /var/www/hub
 sudo php core/bin/muse migration run -f
 ```
 
-**Requests for `/app/config/database.php` do not answer 403.** The web
-server's rules for private paths are missing. Check before the hub is in use:
-
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" https://hub.example.org/app/config/database.php
-```
+**`muse install verify` says the configuration answers HTTP 200.** The
+web server's rules for private paths are missing, and anyone can read the
+database password in `app/config/database.php`. Put the rules from your
+system's page in place before the hub is in use.
 
 **Anything particular to your system**, such as SELinux on Enterprise Linux
 or the container under Docker, is at the end of your system's page.

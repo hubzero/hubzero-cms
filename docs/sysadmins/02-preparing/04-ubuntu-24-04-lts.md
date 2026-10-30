@@ -42,9 +42,9 @@ sudo apt install mariadb-server git unzip \
     php8.2-gd php8.2-zip php8.2-xml
 ```
 
-`php8.2-xml` is not on the installer's list of requirements, but the libraries
-Composer installs need it. `json`, `openssl`, `fileinfo` and `pdo` come with
-PHP itself.
+`php8.2-xml` is for the libraries Composer installs, which need it, and
+`muse install check` asks Composer what they need, so it checks for it too.
+`json`, `openssl`, `fileinfo` and `pdo` come with PHP itself.
 
 ## 2. Install the web server
 

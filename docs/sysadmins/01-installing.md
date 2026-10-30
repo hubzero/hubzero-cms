@@ -50,7 +50,9 @@ instead.
 <!--include: core/libraries/Hubzero/System/Requirements.php:25-40-->
 
 The libraries Composer installs need the XML extensions, `sockets` and
-`posix` as well. Each system's page installs all of them.
+`posix` as well. Each system's page installs all of them, and the installer's
+check asks Composer for the libraries' own list, so it finds any that are
+missing.
 
 ## What installing does
 

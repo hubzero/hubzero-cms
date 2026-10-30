@@ -61,11 +61,11 @@ have. Put this in `/opt/hub-frankenphp/Dockerfile`:
 ```dockerfile
 FROM dunglas/frankenphp:1-php8.2-bookworm
 
-# The extensions the hub needs that the image does not already have, and the
-# tools Composer uses
+# The extensions the hub needs that the image does not already have, the
+# tools Composer uses, and the MariaDB client muse backs up and restores with
 RUN install-php-extensions pdo_mysql gd zip sockets opcache \
     && apt-get update \
-    && apt-get install -y --no-install-recommends git unzip \
+    && apt-get install -y --no-install-recommends git unzip mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP's production settings, and a place for sessions outside the document
@@ -75,10 +75,12 @@ RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
     && chown www-data:www-data /var/lib/php/sessions \
     && echo 'session.save_path = "/var/lib/php/sessions"' > "$PHP_INI_DIR/conf.d/hub.ini"
 
-# Run as the account that owns the hub's files, still able to listen on 80/443
+# Run as the account that owns the hub's files, still able to listen on
+# 80/443, and run the hub's commands in its directory
 RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
     && chown -R www-data:www-data /config/caddy /data/caddy
 
+WORKDIR /var/www/hub
 USER www-data
 ```
 
@@ -168,7 +170,7 @@ sudo php core/bin/muse ...
 run instead
 
 ```bash
-sudo docker exec -it -w /var/www/hub hub php core/bin/muse ...
+sudo docker exec -it hub php core/bin/muse ...
 ```
 
 `-it` is what lets `muse` ask its questions; leave it out in a script, which
@@ -178,7 +180,7 @@ The scheduled tasks need a line of their own too. Once the hub is installed,
 add this to `/etc/crontab` in place of the one Installing the hub gives:
 
 ```
-* * * * * root docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick
+* * * * * root docker exec hub php core/bin/muse cron:jobs tick
 ```
 
 ## 7. Next: install the hub

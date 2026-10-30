@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ dae9fcc703
+reviewed-against: 2.4-main @ 5d7f20276e
 reviewed: 2026-10-30
 screenshots: none
 summary: A hub built into a Docker image of its own, beside MariaDB's image: built from the release branch, installed from environment variables on its first start, upgraded by building it again.
@@ -184,20 +184,11 @@ place.
 set -e
 
 # MariaDB takes a few seconds to start the first time
-tries=0
-until php -r 'new PDO("mysql:host=" . getenv("HUB_DB_HOST"), getenv("HUB_DB_USER"), getenv("HUB_DB_PASSWORD"));' 2>/dev/null
-do
-	tries=$((tries + 1))
-	[ "$tries" -lt 30 ] || break
-	echo "Waiting for the database at $HUB_DB_HOST..."
-	sleep 2
-done
-
-php core/bin/muse install --env --no-colors
+php core/bin/muse install --env --wait=60
 
 # The hub's scheduled tasks, every minute
 while sleep 60; do
-	php core/bin/muse cron:jobs tick --no-colors || true
+	php core/bin/muse cron:jobs tick || true
 done &
 
 exec frankenphp run --config /etc/frankenphp/Caddyfile
@@ -208,8 +199,9 @@ sudo chmod 755 /opt/hub-image/hub-start
 ```
 
 `muse install --env` does the work. It takes the installer's answers from
-the container's `HUB_*` settings instead of asking for them. On a hub that
-is already installed, it only runs the migrations. If the install cannot
+the container's `HUB_*` settings instead of asking for them, after waiting up
+to a minute for MariaDB to answer. On a hub that is already installed, it
+only runs the migrations. If the install cannot
 finish, the container stops before it serves anything. That matters because
 a hub that is not installed answers every address with its installer.
 
@@ -296,8 +288,7 @@ would:
 
 They are read once, on the first start. Changing them after the hub is
 installed changes nothing in the hub. Change its settings in its
-administrator interface instead. The database settings are the exception:
-`hub-start` uses them on every start to wait for MariaDB.
+administrator interface instead.
 
 ## 6. Start the hub
 
@@ -343,12 +334,20 @@ creates the administrator. Then it prints **Installation Complete!**, and
 FrankenPHP's log lines follow. Press Ctrl+C to stop watching; the container
 goes on.
 
-Two of the
+None of the
 [warnings during the migrations](03-installing-the-hub.md#warnings-during-the-migrations)
-are expected: the time zone one, and Hubgraph's. The usage statistics'
-warning is not among them, because `metrics.sql` created their database. The
-time zone warning can be ignored here: MariaDB's image loads its time zone
-tables itself.
+should appear: `metrics.sql` created the usage statistics' database, and
+MariaDB's image loads its time zone tables itself.
+
+A few minutes later, once the scheduled tasks have run, check the hub:
+
+```bash
+sudo docker exec hub php core/bin/muse install verify
+```
+
+It should report no failures, and a warning about mail: the image has no
+mail server. See [Mail](#running-the-hub-s-commands) below. While the
+Caddyfile says `tls internal`, it warns about the certificate too.
 
 Open `https://hub.example.org/`, and sign in at
 `https://hub.example.org/administrator` with the administrator's username and

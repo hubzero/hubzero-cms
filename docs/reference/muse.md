@@ -24,7 +24,7 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse help`](#muse-help) | 0 | Help class for rendering utility-wide help documentation |
 | [`muse htmx`](#muse-htmx) | 2 | HTMX developer tooling command. |
 | [`muse inertia`](#muse-inertia) | 2 | Inertia developer tooling command. |
-| [`muse install`](#muse-install) | 9 | Install  - fresh Hubzero installation |
+| [`muse install`](#muse-install) | 10 | Install  - fresh Hubzero installation |
 | [`muse log:post`](#muse-log-post) | 0 | Post log class |
 | [`muse log:profile`](#muse-log-profile) | 0 | Profile log class |
 | [`muse log:sql`](#muse-log-sql) | 0 | Sql log class |
@@ -37,6 +37,7 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse scaffolding`](#muse-scaffolding) | 2 | Scaffolding class for generating template extensions |
 | [`muse searchmigration`](#muse-searchmigration) | 1 | Migration class |
 | [`muse test`](#muse-test) | 2 | Test class |
+| [`muse upgrade`](#muse-upgrade) | 0 | Finish an upgrade once the hub's new code is in place |
 | [`muse user:terms`](#muse-user-terms) | 1 | User class for terms of use functions |
 | [`muse user`](#muse-user) | 4 | User class for general user functions |
 
@@ -166,7 +167,7 @@ Run alone, `muse database` default (required) command - just executes run
 
 ### `muse database dump`
 
-Dumps the current site database into a file in the users home directory
+Dumps the hub's database into a file
 
 ### `muse database load`
 
@@ -307,6 +308,10 @@ Run database migrations to update schema
 ### `muse install admin`
 
 Create the initial admin user account
+
+### `muse install verify`
+
+Check that an installed hub is served, keeps its secrets and runs as it should
 
 ## `muse log:post`
 
@@ -516,6 +521,14 @@ Runs available tests for the given extension
 ### `muse test show`
 
 Shows a list of extensions with available tests
+
+## `muse upgrade`
+
+Finish an upgrade once the hub's new code is in place.
+
+Implemented in [`Upgrade.php`](../../core/libraries/Hubzero/Console/Command/Upgrade.php).
+
+Run alone, `muse upgrade` install the libraries, run the migrations and clear the cache the code now needs
 
 ## `muse user:terms`
 

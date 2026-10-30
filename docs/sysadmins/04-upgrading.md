@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ d96149df5b
+reviewed-against: 2.4-main @ 5d7f20276e
 reviewed: 2026-10-30
 screenshots: none
 summary: Bringing a hub up to the latest code on its release branch, with a backup taken first and a way back if something goes wrong.
@@ -12,10 +12,13 @@ checkout of its release branch, `2.4-main`. Upgrading it means bringing that
 checkout up to date, then the libraries Composer installs, then the database.
 It takes a few minutes, most of it Composer and the migrations.
 
-The steps below were tested by upgrading a hub from the 2.4.6 release, 825
-commits and 21 database migrations behind, to the head of `2.4-main`, then
-rolling it back and upgrading it again. Its content came through unchanged,
-and the upgraded database matched a newly installed one.
+Upgrading a hub from the 2.4.6 release, 825 commits and 21 database
+migrations behind, to the head of `2.4-main`, then rolling it back and
+upgrading it again, was tested with the separate commands `muse upgrade`
+now runs. Its content came through unchanged, and the upgraded database
+matched a newly installed one. The steps as they stand, with `muse upgrade`,
+`muse install verify` and the restore through `muse database load`, were
+tested by upgrading a hub from an earlier `2.4-main` and rolling it back.
 
 Run every command in the hub's directory, `/var/www/hub`. The hub's own
 commands are `muse`'s, run with `sudo` as on
@@ -23,7 +26,7 @@ commands are `muse`'s, run with `sudo` as on
 that owns the hub's files by itself, so what it writes stays the web
 server's to write. If the files are your own, leave out `sudo`. If the hub
 runs in Docker, run each `muse` command in the container instead:
-`sudo docker exec -it -w /var/www/hub hub php core/bin/muse ...`.
+`sudo docker exec -it hub php core/bin/muse ...`.
 
 ## Before you start
 
@@ -60,10 +63,14 @@ the only way back to them afterwards. Use the database name and account from
 mariadb-dump --single-transaction --no-tablespaces --routines --triggers \
     -u hub -p hub > ~/hub-before-upgrade.sql
 sudo tar czf ~/hub-app-before-upgrade.tgz app
+chmod 600 ~/hub-before-upgrade.sql
 ```
 
-Keep the backups somewhere other than the hub's own directory, and check that
-the dump is not empty before you go on.
+The dump holds every member's password hash, so keep it to yourself. Keep
+both somewhere other than the hub's own directory, and check that the dump is
+not empty before you go on. Hubs from this version on can make the dump with
+`muse database dump`; in older ones that command does not work, so this page
+uses MariaDB's own.
 
 ## Upgrade
 
@@ -78,45 +85,41 @@ the dump is not empty before you go on.
    fast-forwarded because the checkout has commits of its own, it stops
    without changing anything.
 
-2. **Install the libraries the new code needs.**
+   On a hub older than this version, it brings only what
+   `muse repository update` last fetched, so run that first, as in
+   [Before you start](#before-you-start), and it can say **complete** even
+   when it stopped. Check with `git status`, which should say the branch is
+   up to date with `origin/2.4-main`.
+
+2. **Bring the libraries, the database and the cache up to the new code.**
 
    ```bash
-   sudo php core/bin/muse install vendor
+   sudo php core/bin/muse upgrade
    ```
 
-   `muse` runs Composer, as the hub's account, which installs exactly the
-   versions in the new `composer.lock`, adding, updating and removing packages
-   to match. A warning that it *"Cannot create
-   cache directory"* is harmless.
-
-3. **Bring the database up to date.** Run it once without `-f` to list what
-   it will do, then with `-f` to do it:
-
-   ```bash
-   sudo php core/bin/muse migration run
-   sudo php core/bin/muse migration run -f
-   ```
-
-   It ends with *Success: Up migration complete!* The dry run ends with the
-   same words, so read the list above them to see what will run. The same
-   warnings a new hub shows may appear again; they are explained in
+   It is the new code's own command, so it is there now even if the hub was
+   older than it. It runs Composer, as the hub's account, which installs
+   exactly the versions in the new `composer.lock`; then the migrations; then
+   it clears the cache. It stops at the first of them that fails, and says
+   which. It ends with *The hub is up to date with its code.* The warnings a
+   new hub can show may appear; they are explained in
    [Warnings during the migrations](03-installing-the-hub.md#warnings-during-the-migrations).
    A migration that ended in a warning is tried again on every run.
 
-4. **Clear the cache.**
-
-   ```bash
-   sudo php core/bin/muse cache clear
-   ```
-
-5. **Reload PHP**, so no worker carries on with copies of the old code it had
+3. **Reload PHP**, so no worker carries on with copies of the old code it had
    already compiled: `sudo systemctl reload php8.2-fpm` for Apache or nginx
    on Debian and Ubuntu, `sudo systemctl reload php-fpm` on Enterprise
    Linux, `sudo docker restart hub` for FrankenPHP.
 
-6. **Check the hub, then put it back online.** Sign in to the administrator
-   interface and to the site, and open the pages your members use most. Then
-   set **Site Offline** back to **No**.
+4. **Check the hub, then put it back online.**
+
+   ```bash
+   sudo php core/bin/muse install verify
+   ```
+
+   It should report no failures. Then sign in to the administrator interface
+   and to the site, and open the pages your members use most. Then set
+   **Site Offline** back to **No**.
 
 ## If something goes wrong
 
@@ -124,7 +127,20 @@ The code and the database have to go back together. The database cannot be
 taken back by running anything: the migrations only move it forward, so it
 comes back from the dump.
 
-1. **Put the code back** to the rollback point the update made:
+1. **Put the database back**, first, while the new code is still in
+   place: its `muse database load` is the one that works.
+
+   ```bash
+   sudo php core/bin/muse database load - --drop-all-tables --exact < ~/hub-before-upgrade.sql
+   ```
+
+   `-` reads the dump from standard input, which your shell opens, so the
+   hub's account need not be able to read your home directory.
+   `--drop-all-tables` removes every table first, including any the upgrade
+   added, and `--exact` loads the dump just as it was. Under Docker, add `-i`:
+   `sudo docker exec -i hub php core/bin/muse database load - ...`.
+
+2. **Put the code back** to the rollback point the update made:
 
    ```bash
    sudo php core/bin/muse repository rollback
@@ -132,24 +148,10 @@ comes back from the dump.
 
    It asks you to confirm the date of the snapshot.
 
-2. **Put the libraries back** to the versions the old code expects:
+3. **Put the libraries back** to the versions the old code expects:
 
    ```bash
    sudo php core/bin/muse install vendor
-   ```
-
-3. **Put the database back.** Empty it first: the upgrade may have added
-   tables that the dump does not mention, and loading the dump over them would
-   leave them in place. The hub's own database account has the right to do
-   this, on its own database only:
-
-   ```sql
-   DROP DATABASE hub;
-   CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-
-   ```bash
-   mariadb -u hub -p hub < ~/hub-before-upgrade.sql
    ```
 
 4. **Put `app/` back:**
@@ -160,7 +162,8 @@ comes back from the dump.
    sudo chown -R --reference=/var/www/hub app
    ```
 
-5. Clear the cache and reload PHP, as in steps 4 and 5 above.
+5. Clear the cache, with `sudo php core/bin/muse cache clear`, and reload
+   PHP, as in step 3 above.
 
 Every update leaves a rollback point behind, a git tag named
 `cmsrollbackpoint-` and the time. Once an upgrade has worked and the hub has
@@ -182,7 +185,7 @@ is not on a branch, usually because someone checked out a release tag, or it
 is on a branch of its own that follows nothing on GitHub. Put it back on the
 release branch first, running `git checkout 2.4-main` in `/var/www/hub` as the
 account that owns it: `sudo -u "$(stat -c %U /var/www/hub)" git checkout 2.4-main`,
-or under Docker `sudo docker exec -w /var/www/hub hub git checkout 2.4-main`.
+or under Docker `sudo docker exec hub git checkout 2.4-main`.
 
 **The fetch fails.** The server cannot reach GitHub, or the checkout's
 `origin` points somewhere it can no longer reach. `git remote -v` shows where
