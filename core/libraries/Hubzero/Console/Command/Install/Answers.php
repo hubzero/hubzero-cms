@@ -42,18 +42,27 @@ class Answers
     /**
      * Read an answer file
      *
-     * @param   string  $path   Path to a JSON answer file
+     * A path of "-" reads the answers from standard input, so that they can
+     * be handed to muse from a file it could not open itself: one that
+     * belongs to someone else, or that is outside its container.
+     *
+     * @param   string  $path   Path to a JSON answer file, or "-"
      * @param   string  $error  Set to the reason when this returns false
      * @return  bool
      **/
     public static function load($path, &$error = null)
     {
-        if (!is_file($path) || !is_readable($path)) {
+        if ($path === '-') {
+            $path = 'standard input';
+            $json = stream_get_contents(STDIN);
+        } elseif (!is_file($path) || !is_readable($path)) {
             $error = 'Answer file not found: ' . $path;
             return false;
+        } else {
+            $json = file_get_contents($path);
         }
 
-        $answers = json_decode(file_get_contents($path), true);
+        $answers = json_decode((string) $json, true);
 
         if (!is_array($answers)) {
             $error = 'Answer file is not valid JSON: ' . $path;
