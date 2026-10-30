@@ -24,6 +24,10 @@ class AppDirectory
      **/
     private const SUBDIRECTORIES = [
         'config',
+        // The log_path and tmp_path written into app.php; the scheduled
+        // tasks' tick, among others, will not run without tmp
+        'logs',
+        'tmp',
     ];
 
     /**
