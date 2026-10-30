@@ -575,6 +575,306 @@ class Install extends Base implements CommandInterface
     }
 
     /**
+     * Check an installed hub
+     *
+     * @museDescription  Check that an installed hub is served, keeps its secrets and runs as it should
+     *
+     * Looks at the hub as a visitor would, over its own address, and at
+     * what it needs behind that: the scheduled tasks, the database server's
+     * settings, mail, and who owns what it writes. Each check says what to
+     * do when it does not pass.
+     *
+     * @return  void
+     **/
+    public function verify()
+    {
+        $this->say("\n\033[33mChecking the Hub\033[39m\n");
+        $this->say("----------------\n");
+
+        $live = rtrim((string) \Config::get('live_site'), '/');
+
+        if ($live === '') {
+            $passed = $this->report(
+                'fail',
+                'live_site is not set in app/config/app.php, so the scheduled tasks cannot reach the hub'
+            );
+        } else {
+            $passed = $this->checkServed($live);
+        }
+
+        $this->checkScheduledTasks();
+        $this->checkDatabaseServer();
+        $this->checkMail();
+        $this->checkOwnership();
+
+        $this->say("\n");
+
+        if (!$passed) {
+            $this->output->error('The hub failed a check above.');
+        }
+
+        $this->output->addLine('No check failed.', 'success');
+    }
+
+    /**
+     * Report the result of one check
+     *
+     * @param   string  $status  ok, warn or fail
+     * @param   string  $text
+     * @return  bool    False for a failure
+     **/
+    private function report($status, $text)
+    {
+        $labels = [
+            'ok'   => "\033[32m[OK]\033[39m  ",
+            'warn' => "\033[33m[WARN]\033[39m",
+            'fail' => "\033[31m[FAIL]\033[39m",
+        ];
+
+        $this->say('  ' . $labels[$status] . ' ' . $text . "\n");
+
+        return $status !== 'fail';
+    }
+
+    /**
+     * Request one of the hub's own addresses
+     *
+     * @param   string  $url
+     * @param   bool    $verify  Whether to require a certificate this server trusts
+     * @return  array   The status code, and curl's error if there was one
+     **/
+    private function fetch($url, $verify = true)
+    {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_NOBODY         => false,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_SSL_VERIFYPEER => $verify,
+            CURLOPT_SSL_VERIFYHOST => $verify ? 2 : 0,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_USERAGENT      => 'hubzero-cms verify',
+        ]);
+
+        curl_exec($ch);
+        $code  = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_errno($ch) ? curl_error($ch) : '';
+        curl_close($ch);
+
+        return [$code, $error];
+    }
+
+    /**
+     * Check that the hub answers over HTTPS and refuses its private files
+     *
+     * @param   string  $live  The hub's address
+     * @return  bool    False if a check failed
+     **/
+    private function checkServed($live)
+    {
+        if (stripos($live, 'https://') !== 0) {
+            return $this->report('fail', "live_site is {$live}; a hub has to be served over https://");
+        }
+
+        list($code, $error) = $this->fetch($live . '/');
+
+        if ($error !== '') {
+            list($code, $insecure) = $this->fetch($live . '/', false);
+
+            if ($insecure !== '') {
+                return $this->report('fail', "{$live} does not answer from this server: {$error}");
+            }
+
+            $this->report('warn', "{$live} answers, but with a certificate this server does not trust: {$error}");
+        }
+
+        if ($code !== 200) {
+            return $this->report('fail', "{$live}/ answered HTTP {$code}, not 200");
+        }
+
+        if ($error === '') {
+            $this->report('ok', "{$live} answers over HTTPS");
+        }
+
+        list($code) = $this->fetch($live . '/app/config/database.php', false);
+
+        if ($code === 403 || $code === 404) {
+            return $this->report('ok', "Its configuration is refused to visitors (HTTP {$code})");
+        }
+
+        return $this->report(
+            'fail',
+            "{$live}/app/config/database.php answered HTTP {$code}: "
+            . "the web server's rules for private paths are missing"
+        );
+    }
+
+    /**
+     * Check that the server ticks the scheduled tasks
+     *
+     * @return  void
+     **/
+    private function checkScheduledTasks()
+    {
+        try {
+            $db = \App::get('db');
+            $db->setQuery("SELECT MAX(`last_run`) FROM `#__cron_jobs` WHERE `state` = 1");
+            $last = $db->loadResult();
+        } catch (\Exception $e) {
+            $this->report('warn', 'Could not read when the scheduled tasks last ran: ' . $e->getMessage());
+            return;
+        }
+
+        $minutes = $last && $last !== '0000-00-00 00:00:00'
+            ? (int) floor((time() - strtotime($last . ' UTC')) / 60)
+            : null;
+
+        if ($minutes === null) {
+            $this->report('warn', 'The scheduled tasks have never run. Add the cron line that ticks the hub');
+        } elseif ($minutes > 15) {
+            $this->report('warn', "The scheduled tasks last ran {$minutes} minutes ago. Is the server ticking them?");
+        } else {
+            $this->report('ok', 'The scheduled tasks are running');
+        }
+    }
+
+    /**
+     * Check the database server's settings the hub depends on
+     *
+     * @return  void
+     **/
+    private function checkDatabaseServer()
+    {
+        $db = \App::get('db');
+
+        try {
+            $db->setQuery('SELECT @@GLOBAL.sql_mode');
+            $mode = (string) $db->loadResult();
+
+            if (strpos($mode, 'STRICT_TRANS_TABLES') === false) {
+                $this->report(
+                    'warn',
+                    "MariaDB's SQL mode is not strict ('{$mode}'). Leave it at the server's default"
+                );
+            } else {
+                $this->report('ok', "MariaDB's SQL mode is strict");
+            }
+
+            $db->setQuery("SELECT CONVERT_TZ('2000-01-01 00:00:00', 'UTC', 'America/New_York')");
+
+            if ($db->loadResult() === null) {
+                $this->report(
+                    'warn',
+                    "MariaDB's time zone tables are empty. Load them: "
+                    . 'mariadb-tzinfo-to-sql /usr/share/zoneinfo | sudo mariadb mysql'
+                );
+            } else {
+                $this->report('ok', "MariaDB's time zone tables are loaded");
+            }
+        } catch (\Exception $e) {
+            $this->report('warn', 'Could not read the database server\'s settings: ' . $e->getMessage());
+        }
+
+        $usage = \Component::params('com_usage');
+
+        if (!$usage->get('statsDBDatabase')) {
+            $this->report(
+                'warn',
+                'The usage statistics have no database. Create ' . \Config::get('db') . '_metrics'
+                . ' for the hub\'s account, then run: muse migration run -f'
+            );
+            return;
+        }
+
+        try {
+            \Hubzero\Database\Driver::getInstance([
+                'driver'   => 'pdo',
+                'host'     => $usage->get('statsDBHost'),
+                'port'     => $usage->get('statsDBPort'),
+                'user'     => $usage->get('statsDBUsername'),
+                'password' => $usage->get('statsDBPassword'),
+                'database' => $usage->get('statsDBDatabase'),
+            ]);
+            $this->report('ok', 'The usage statistics reach their database');
+        } catch (\Exception $e) {
+            $this->report('warn', 'The usage statistics cannot reach their database: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Check that the hub has somewhere to send mail
+     *
+     * @return  void
+     **/
+    private function checkMail()
+    {
+        $mailer = (string) \Config::get('mailer', 'mail');
+
+        if ($mailer === 'smtp') {
+            $host = (string) \Config::get('smtphost', 'localhost');
+            $port = (int) \Config::get('smtpport', 25);
+
+            $socket = @fsockopen($host, $port, $errno, $errstr, 5);
+
+            if ($socket) {
+                fclose($socket);
+                $this->report('ok', "Mail goes to the SMTP server at {$host}:{$port}");
+            } else {
+                $this->report('warn', "Mail goes to {$host}:{$port}, which does not answer: {$errstr}");
+            }
+            return;
+        }
+
+        $command = $mailer === 'sendmail'
+            ? (string) \Config::get('sendmail', '/usr/sbin/sendmail')
+            : (string) ini_get('sendmail_path');
+        $program = strtok($command, ' ');
+
+        if ($program && is_executable($program)) {
+            $this->report('ok', "Mail goes to {$program}");
+        } else {
+            $this->report(
+                'warn',
+                'Mail goes to ' . ($program ?: 'nothing') . ', which is not there. '
+                . 'Give the hub an SMTP server in its Mail Settings'
+            );
+        }
+    }
+
+    /**
+     * Check that everything the hub writes belongs to the account that owns it
+     *
+     * @return  void
+     **/
+    private function checkOwnership()
+    {
+        $owner = fileowner(PATH_ROOT);
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(PATH_APP, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        try {
+            foreach ($files as $file) {
+                if ($file->getOwner() !== $owner) {
+                    $this->report(
+                        'warn',
+                        $file->getPathname() . ' belongs to another account, so the hub may not be able to write it. '
+                        . 'Give it back: sudo chown -R --reference=' . PATH_ROOT . ' ' . PATH_ROOT
+                    );
+                    return;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->report('warn', 'Could not look through ' . PATH_APP . ': ' . $e->getMessage());
+            return;
+        }
+
+        $this->report('ok', 'Everything in app/ belongs to the account that owns the hub');
+    }
+
+    /**
      * Output help documentation
      *
      * @return  void
