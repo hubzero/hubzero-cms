@@ -16,10 +16,11 @@
 	   a global box-sizing:border-box (Tailwind) would otherwise shrink the
 	   content box and let the fixed-width canvas overflow the right rail. */
 	box-sizing: content-box;
+	position: relative;   /* positioning context for the timeout-warning popup */
 	padding: 0 7px;   /* brushed-metal side rails around the screen */
 	background:
 		url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nNDgnPjxmaWx0ZXIgaWQ9J2InPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAxMyAwLjgyJyBudW1PY3RhdmVzPScyJyBzZWVkPScxMScgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjYiknIG9wYWNpdHk9JzAuNScvPjwvc3ZnPg=="),
-		linear-gradient(180deg, #c9ced5 0%, #a3a9b2 100%);
+		linear-gradient(180deg, #ccd1d8 0%, #aeb4bc 54%, #9fa5ae 100%);
 	background-blend-mode: soft-light, normal;
 	border: 1px solid #787e88;
 	border-radius: 12px;
@@ -31,18 +32,24 @@
 		inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
-/* Shared bar surface: brushed-metal wave + vertical sheen + bevel */
+/* The bars are transparent so the single, continuous #app-wrap brushed metal
+   shows through -- side rails and top/bottom bars are then the exact same
+   surface at every height (they diverged when each bar compressed its own
+   gradient into 46px). The bevel comes from the inset sheen + edge borders. */
 #app-header,
 #app-footer {
-	background:
-		url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nNDgnPjxmaWx0ZXIgaWQ9J2InPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAxMyAwLjgyJyBudW1PY3RhdmVzPScyJyBzZWVkPScxMScgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjxmZUNvbG9yTWF0cml4IHR5cGU9J3NhdHVyYXRlJyB2YWx1ZXM9JzAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjYiknIG9wYWNpdHk9JzAuNScvPjwvc3ZnPg=="),
-		linear-gradient(180deg, #ccd1d8 0%, #aeb4bc 54%, #9fa5ae 100%);
-	background-blend-mode: soft-light, normal;
+	background: transparent;
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.16);
 	color: #2b2f35;
 	filter: none;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 	overflow: visible;
+}
+/* Small footer text renders crisp only without the emboss shadow, and in one
+   face throughout so labels and figures share a baseline. */
+#app-footer {
+	font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	text-shadow: none;
 	zoom: normal;
 }
 
@@ -114,6 +121,13 @@
 	height: 15px;
 	flex: none;
 }
+#app-footer > ul li a {
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	padding: 0;
+	text-shadow: none;
+}
 /* Neutralize legacy span styling (sprite icons, Fontcons glyphs, indents) */
 #app-header ul.app-toolbar li a span,
 #app-footer > ul li a span {
@@ -174,6 +188,7 @@
 /* Dark fill so the screen area (and any letterbox gap left by the centered
    noVNC canvas) reads as the screen, not the silver frame showing through. */
 #app-content {
+	position: relative;   /* anchor the absolutely-positioned resize grip */
 	background: #0b0d10;
 	box-shadow:
 		inset 0 0 0 1px rgba(0, 0, 0, 0.5),
@@ -187,14 +202,14 @@
 	align-items: center;
 	gap: 0.6rem;
 	min-height: 46px;
-	padding: 0 0.6rem 0 1rem;
+	padding: 0 2rem 0 1rem;   /* right: clear the bottom-right corner for the resize grip */
 	border-top: 1px solid #b9bec5;
 	border-bottom: none;
 }
 #app-logo        { order: 0; }
 #diskusage       { order: 1; margin-right: auto; }
-#app-footer > ul { order: 2; display: flex; align-items: center; gap: 0.25rem; float: none; margin: 0; padding: 0; border: 0; list-style: none; background: none; }
-#session-timer   { order: 3; }
+#app-footer > ul { order: 2; flex: none; display: flex; align-items: center; gap: 0.25rem; float: none; margin: 0 0.4rem 0 0; padding: 0; border: 0; list-style: none; background: none; }
+#session-timer   { order: 3; flex: none; }
 
 /* HUBzero mark engraved into the brushed-metal footer (lower-left). The shape
    sits sunk into the metal: a light lower lip catches the light and a faint
@@ -231,19 +246,20 @@
 #diskusage {
 	display: flex;
 	align-items: center;
-	gap: 0.6rem;
-	margin: 0 auto 0 0;
+	gap: 0.5rem;
+	margin: 0 auto 0 1.25rem;   /* sit a bit further right of the logo */
 	padding: 0;
 	border: none;
 }
 #diskusage dt {
 	float: none;
+	display: flex;          /* centre the link box, not its text baseline */
+	align-items: center;
 	margin: 0;
 	padding: 0;
-	font-weight: normal;
-	font-size: 0.86rem;
-	color: #494f57;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	font: 600 0.8125rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	color: #3a4048;
+	text-shadow: none;
 	white-space: nowrap;
 }
 /* The label is the link to the storage page. Keep it in the etched footer tone
@@ -252,9 +268,10 @@
 #diskusage dt a.du-view {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.28em;
+	gap: 0.3em;
 	color: inherit;
 	text-decoration: none;
+	text-shadow: none;   /* the legacy footer link shadow (#111 above the glyphs) smears them */
 }
 #diskusage dt a.du-view span {
 	border-bottom: 1px solid transparent;
@@ -266,6 +283,12 @@
 #diskusage dt a.du-view:hover span,
 #diskusage dt a.du-view:focus span {
 	border-bottom-color: rgba(0, 0, 0, 0.35);
+}
+#diskusage dt a.du-view .du-disk {
+	width: 1em;
+	height: 1em;
+	flex: none;
+	opacity: 0.85;
 }
 #diskusage dt a.du-view .du-view-ico {
 	width: 0.82em;
@@ -281,21 +304,22 @@
 	position: relative;
 	float: none;
 	display: inline-block;
-	width: 120px;
-	height: 9px;
-	margin: 0 5.5rem 0 0;
+	width: 180px;
+	height: 18px;
+	margin: 0;
 	padding: 0;
-	border-radius: 5px;
-	background: #9298a1;
+	border-radius: 9px;
+	background: #c3c8cf;   /* light recessed track so the figure reads over it */
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.6);
 	filter: none;
 }
 #diskusage #du-amount .du-amount-bar,
 #diskusage #du-amount div {
-	height: 9px;
+	position: static;
+	height: 18px;
 	margin: 0;
-	border-radius: 5px;
-	background: linear-gradient(180deg, #7cc0f0, #3f8fc9);
+	border-radius: 9px;
+	background: linear-gradient(180deg, #8ccaf5, #4f9ad3);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 	filter: none;
 }
@@ -303,15 +327,16 @@
 #diskusage #du-amount .du-amount-text,
 #diskusage #du-amount div span {
 	position: absolute;
-	left: calc(100% + 0.6rem);
-	top: 50%;
-	transform: translateY(-50%);
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: auto;
-	padding: 0;
-	font: 600 0.85rem/1 'IBM Plex Mono', ui-monospace, monospace;
-	color: #2b2f35;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	text-align: left;
+	padding: 3px 0 0;   /* Inter's figures sit high in a line-height:1 box; this centres the ink (measured) */
+	text-indent: 0;     /* legacy tools.css indents this span 7px, pushing it off centre */
+	font: 600 0.72rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	color: #1b1f24;
+	text-shadow: 0 0 2px rgba(255, 255, 255, 0.55);   /* halo keeps it legible where it crosses the fill edge */
 	white-space: nowrap;
 	font-variant-numeric: tabular-nums;
 }
@@ -319,51 +344,89 @@
 /* injected "size" (W x H) read-out */
 #app-footer a.resize #app-size,
 #app-footer #app-size {
-	font-family: 'IBM Plex Mono', ui-monospace, monospace;
-	font-size: 0.8rem;
+	font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	font-size: 0.75rem;
 	font-variant-numeric: tabular-nums;
 }
 
 /* ---- Session countdown (hard-timeout tools only) --------------------- */
 #session-timer {
+	/* A plain read-out, not a control: no box or fill, only a faint engraved
+	   divider setting it apart from the buttons. State shows in the text colour. */
 	display: inline-flex;
 	align-items: center;
 	gap: 0.5rem;
 	height: 30px;
-	padding: 0 0.75rem;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	border-radius: 7px;
-	background: rgba(0, 0, 0, 0.06);
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16), 0 1px 0 rgba(255, 255, 255, 0.6);
-	color: #494f57;
+	padding: 0 0 0 0.9rem;
+	border: 0;
+	border-left: 1px solid rgba(0, 0, 0, 0.18);
+	box-shadow: -1px 0 0 rgba(255, 255, 255, 0.45);
+	background: none;
+	color: #2b2f35;
 }
 #session-timer[hidden] { display: none; }
 #session-timer svg { width: 15px; height: 15px; flex: none; }
-#session-timer .st-label { font-size: 0.76rem; white-space: nowrap; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
+#session-timer .st-label { font: 500 0.75rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; color: #3a4048; white-space: nowrap; }
 #session-timer .st-clock {
-	font: 600 0.9rem/1 'IBM Plex Mono', ui-monospace, monospace;
-	color: #23272c;
+	font: 700 0.875rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	color: #14171b;
 	font-variant-numeric: tabular-nums;
-	letter-spacing: 0.02em;
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	letter-spacing: 0.01em;
 }
-#session-timer.warn { border-color: rgba(176, 122, 20, 0.55); color: #8a5e0c; }
-#session-timer.warn .st-clock { color: #8a5e0c; }
-#session-timer.crit { border-color: rgba(180, 45, 38, 0.6); color: #a5241c; }
-#session-timer.crit .st-clock { color: #a5241c; }
+#session-timer.warn,
+#session-timer.warn .st-clock { color: #7a3305; }
+#session-timer.crit,
+#session-timer.crit .st-clock { color: #7f1810; }
+/* At 0 the countdown gives way to a "time limit reached" note; ending the
+   session is the middleware's job, and it may not happen at once */
+#session-timer.ended .st-label { display: none; }
+#session-timer.ended .st-clock { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0; color: #7f1810; }
 /* !important so the hub's global prefers-reduced-motion reset can't freeze it */
 #session-timer.crit svg { animation: session-timer-tick 1s steps(2) infinite !important; }
+#session-timer.ended svg { animation: none !important; }   /* nothing left to count */
+/* Hover/focus explanation of the terse expired notice, raised above the footer */
+#session-timer { position: relative; }
+#session-timer.ended { cursor: help; }
+#session-timer.ended:focus-visible { outline: 2px solid #2f6db3; outline-offset: 2px; border-radius: 4px; }
+#session-timer.ended[data-tip]:hover::after,
+#session-timer.ended[data-tip]:focus-visible::after {
+	content: attr(data-tip);
+	position: absolute;
+	right: 0;
+	bottom: calc(100% + 10px);
+	z-index: 950;
+	width: max-content;
+	max-width: 19rem;
+	padding: 0.6rem 0.75rem;
+	border-radius: 8px;
+	background: #1f2329;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+	color: #f3f4f6;
+	font: 400 0.8125rem/1.4 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	text-align: left;
+	white-space: normal;
+	pointer-events: none;
+}
 @keyframes session-timer-tick { 50% { opacity: 0.4; } }
 
 /* ---- Hide the Refresh control (removed per design) ------------------- */
 #app-footer a.refresh { display: none !important; }
 #app-footer > ul li:has(> a.refresh) { display: none !important; }
+/* Drop the "W x H" size read-out from the footer -- not useful to end users
+   (the corner grip still resizes). */
+#app-footer a.resize { display: none !important; }
+#app-footer > ul li:has(> a.resize) { display: none !important; }
 
 /* ---- Resize grip: engraved diagonal grooves (Aqua corner) ------------ */
 .ui-resizable-handle,
 .ui-resizable-se {
-	right: 3px;
-	bottom: 3px;
+	/* jQuery UI makes #app-content position:relative, so the grip anchors there;
+	   a negative bottom drops it out of the VNC display and onto the metal
+	   footer's bottom-right corner (the footer controls are given right margin
+	   to keep this corner clear). */
+	position: absolute;
+	right: 4px;
+	bottom: -37px;
 	width: 18px;
 	height: 18px;
 	padding: 0;
@@ -381,3 +444,74 @@
 }
 .ui-resizable-handle:hover,
 .ui-resizable-se:hover { opacity: 1; }
+
+/* ---- Privacy: blank the display for passers-by ----------------------- */
+#app-content.privacy-on::after {
+	content: "\1F512";          /* padlock */
+	position: absolute;
+	inset: 0;
+	z-index: 60;                /* over the VNC canvas/iframe, under the footer */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #14171c;
+	color: rgba(255, 255, 255, 0.16);
+	font-size: 2.8rem;
+}
+/* The Hide button highlights while privacy is on */
+#app-footer a.hide-display.active {
+	background: linear-gradient(180deg, rgba(47, 109, 179, 0.30), rgba(47, 109, 179, 0.12));
+	border-color: rgba(47, 109, 179, 0.55);
+	color: #1f5591;
+}
+
+/* Legacy noVNC status indicator (the "lightning" glyph) -- redundant now that
+   the reconnect overlay handles connection state. */
+#noVNC_status_bar { display: none; }
+
+/* ---- Timeout warning popup (5-min = orange, 1-min = red) ------------- */
+#session-timeout-popup {
+	position: absolute;
+	inset: 0;
+	z-index: 900;                 /* above the display + resize grip */
+	display: none;
+	align-items: center;
+	justify-content: center;
+	padding: 1.25rem;
+	background: rgba(8, 10, 13, 0.5);
+}
+#session-timeout-popup.is-open { display: flex; }
+#session-timeout-popup .stp-card {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.9rem;
+	max-width: 30em;
+	padding: 1rem 1.15rem;
+	background: #ffffff;
+	border: 1px solid #e2e5ea;
+	border-left: 5px solid #c2410c;      /* orange accent (5-minute) */
+	border-radius: 12px;
+	box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
+	color: #23272c;
+	font: 400 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+#session-timeout-popup.crit .stp-card { border-left-color: #cf4033; }  /* red (1-minute) */
+#session-timeout-popup .stp-ico { width: 26px; height: 26px; flex: none; color: #c2410c; margin-top: 1px; }
+#session-timeout-popup.crit .stp-ico { color: #cf4033; }
+#session-timeout-popup .stp-body { flex: 1 1 auto; }
+#session-timeout-popup .stp-title { margin: 0 0 0.2rem; font-size: 1rem; font-weight: 600; }
+#session-timeout-popup .stp-msg { margin: 0; color: #4b5560; }
+#session-timeout-popup .stp-dismiss {
+	flex: none;
+	align-self: center;
+	padding: 0.45rem 0.95rem;
+	border: 1px solid #c2410c;
+	background: #c2410c;
+	color: #fff;
+	border-radius: 7px;
+	font: inherit;
+	font-size: 0.9rem;
+	cursor: pointer;
+}
+#session-timeout-popup.crit .stp-dismiss { border-color: #cf4033; background: #cf4033; }
+#session-timeout-popup .stp-dismiss:hover { filter: brightness(1.08); }

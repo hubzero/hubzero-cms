@@ -1504,12 +1504,13 @@ class Sessionsv1_0 extends ApiController
 	/**
 	 * Report the timeout window for a tool session (DB-only; no middleware call).
 	 *
-	 * The middleware session row's `timeout` (seconds) does double duty:
-	 *   - normally it is an IDLE/disuse timeout, measured from `accesstime`;
-	 *   - for tools listed in hard_timeout_tools in the middleware client config
-	 *     (/etc/mw-client/mw2-client.conf) it is a HARD limit, measured from the
-	 *     session `start`.
-	 * `hard` says which applies and `basis` names the timestamp it counts from.
+	 * Two limits can end a session:
+	 *   - `timeout` (seconds) is the IDLE/disuse timeout, measured from `accesstime`;
+	 *   - `hardTimeout` (seconds, null for none) is a HARD limit on how long the
+	 *     session may run, measured from its `start`. Sessions take it from their
+	 *     tool version when they start.
+	 * `hard` says whether a hard limit applies; when it does, the expiry reported
+	 * is the hard deadline, and `basis` names the timestamp it counts from.
 	 *
 	 * @apiMethod GET
 	 * @apiUri    /tools/{session}/timeout
@@ -1546,7 +1547,6 @@ class Sessionsv1_0 extends ApiController
 		}
 
 		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-		require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
 
 		// Ownership comes from the session row itself (see stateTask)
 		$row = new \Components\Tools\Tables\Session($mwdb);
@@ -1557,24 +1557,30 @@ class Sessionsv1_0 extends ApiController
 
 		$timeout = (int) $row->timeout;
 
-		// Resolve the base tool name to test against the hard-timeout list.
-		// (The Table constructor takes $db by reference, so pass a variable.)
-		$database = \App::get('db');
-		$tv = new \Components\Tools\Tables\Version($database);
-		$tv->loadFromInstance($row->appname);
-		$toolname = $tv->toolname ? $tv->toolname : $row->appname;
+		// Null until the session table has the column
+		$hardTimeout = (property_exists($row, 'hardTimeout') && (int) $row->hardTimeout > 0) ? (int) $row->hardTimeout : null;
 
-		$hard   = $this->isHardTimeoutTool($toolname);
-		$basis  = $hard ? 'start' : 'accesstime';
+		$hard  = ($hardTimeout !== null);
+		$basis = $hard ? 'start' : 'accesstime';
+		$limit = $hard ? $hardTimeout : $timeout;
 
-		// Timestamps are stored UTC
-		$baseTs = strtotime((string) ($hard ? $row->start : $row->accesstime));
-		$expiry = ($timeout && $baseTs) ? $baseTs + $timeout : null;
+		// The session's timestamps are in the middleware database's own clock, so
+		// measure the elapsed time there rather than guess its time zone here
+		$expiry = null;
+		if ($limit)
+		{
+			$mwdb->setQuery("SELECT TIMESTAMPDIFF(SECOND, " . $mwdb->quoteName($basis) . ", NOW()) FROM `session` WHERE sessnum=" . $mwdb->quote($sess));
+			$elapsed = $mwdb->loadResult();
+			if ($elapsed !== null)
+			{
+				$expiry = time() + ($limit - (int) $elapsed);
+			}
+		}
 
 		$this->send(array(
 			'session'           => $sess,
-			'toolname'          => $toolname,
 			'timeout'           => $timeout,
+			'hardTimeout'       => $hardTimeout,
 			'hard'              => $hard,
 			'basis'             => $basis,
 			'start'             => $row->start,
@@ -1583,44 +1589,6 @@ class Sessionsv1_0 extends ApiController
 			'expires_epoch'     => $expiry,
 			'seconds_remaining' => ($expiry !== null ? max(0, $expiry - time()) : null)
 		));
-	}
-
-	/**
-	 * Is a tool subject to a hard (from-start) session timeout rather than the
-	 * default idle timeout? True when its name appears in hard_timeout_tools in
-	 * the middleware client config.
-	 *
-	 * @param   string   $toolname  Base tool name
-	 * @return  boolean
-	 */
-	protected function isHardTimeoutTool($toolname)
-	{
-		if (!$toolname)
-		{
-			return false;
-		}
-
-		$conf = '/etc/mw-client/mw2-client.conf';
-		if (!is_readable($conf))
-		{
-			return false;
-		}
-
-		$contents = file_get_contents($conf);
-		if ($contents === false)
-		{
-			return false;
-		}
-
-		// hard_timeout_tools = [ "toola", "toolb", ... ]
-		if (!preg_match('/hard_timeout_tools\s*=\s*\[(.*?)\]/s', $contents, $m))
-		{
-			return false;
-		}
-
-		preg_match_all('/["\']([^"\']+)["\']/', $m[1], $names);
-
-		return in_array($toolname, $names[1]);
 	}
 
 	/**

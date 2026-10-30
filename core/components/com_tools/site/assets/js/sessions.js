@@ -31,18 +31,102 @@ jQuery(document).ready(function(jq){
 		var WARN = 15 * 60, CRIT = 5 * 60;
 		var remaining = null, tick = null;
 
+		// Warning modal (fired once each at the 5- and 1-minute marks). One shared
+		// element, so the 1-minute warning REPLACES the 5-minute one in place --
+		// even if the earlier popup was left open and never dismissed.
+		var warnTitle = el.getAttribute('data-warntitle') || 'Session ending soon';
+		var warn5     = el.getAttribute('data-warn5') || 'Your session will end in about 5 minutes.';
+		var warn1     = el.getAttribute('data-warn1') || 'Your session will end in about 1 minute.';
+		var dismiss   = el.getAttribute('data-dismiss') || 'Dismiss';
+		var endingTxt = el.getAttribute('data-ending') || 'Expired, ending soon';
+		var endingTip = el.getAttribute('data-endingtip') || 'This session has reached its time limit and will be shut down shortly. Save your work now; anything unsaved will be lost when the session closes.';
+		var fired5 = false, fired1 = false;
+		var lastBand = null;
+
+		function closePopup() {
+			var ov = document.getElementById('session-timeout-popup');
+			if (ov) { ov.classList.remove('is-open'); }
+		}
+		function popup(kind) {
+			var ov = document.getElementById('session-timeout-popup');
+			if (!ov) {
+				ov = document.createElement('div');
+				ov.id = 'session-timeout-popup';
+				ov.innerHTML =
+					'<div class="stp-card" role="alertdialog" aria-live="assertive">' +
+						'<svg class="stp-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+						'<div class="stp-body"><h3 class="stp-title"></h3><p class="stp-msg"></p></div>' +
+						'<button type="button" class="stp-dismiss"></button>' +
+					'</div>';
+				(document.getElementById('app-wrap') || document.body).appendChild(ov);
+				ov.querySelector('.stp-dismiss').addEventListener('click', closePopup);
+				ov.addEventListener('click', function (e) { if (e.target === ov) { closePopup(); } });
+				document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.keyCode === 27) { closePopup(); } });
+			}
+			ov.querySelector('.stp-title').textContent = warnTitle;
+			ov.querySelector('.stp-msg').textContent = (kind === '1') ? warn1 : warn5;
+			ov.querySelector('.stp-dismiss').textContent = dismiss;
+			ov.classList.toggle('crit', kind === '1');  // 1-min = red; 5-min = orange
+			ov.classList.add('is-open');                 // re-show even if it was dismissed
+		}
+
+		function band(r) {
+			if (r == null)  { return 'na'; }
+			if (r <= 0)     { return 'ended'; }
+			if (r <= 60)    { return 'min'; }
+			if (r <= CRIT)  { return 'crit'; }
+			if (r <= WARN)  { return 'warn'; }
+			return 'normal';
+		}
+		function checkWarnings() {
+			if (remaining == null) { return; }
+			// If the deadline moved back out (session extended), reset the once-
+			// flags so warnings can fire again, and drop any stale popup.
+			if (remaining > CRIT) { fired5 = false; closePopup(); }
+			if (remaining > 60)   { fired1 = false; }
+			if (remaining <= 0)   { return; }
+			if (!fired5 && remaining <= CRIT) { fired5 = true; popup('5'); }
+			if (!fired1 && remaining <= 60)   { fired1 = true; popup('1'); }
+		}
+
 		function pad(n) { return (n < 10 ? '0' : '') + n; }
 		function fmt(s) {
 			s = Math.max(0, s | 0);
 			return pad(Math.floor(s / 3600)) + ':' + pad(Math.floor((s % 3600) / 60)) + ':' + pad(s % 60);
 		}
 		function render() {
-			$('#session-timer .st-clock').text(fmt(remaining));
-			el.classList.toggle('warn', remaining <= WARN && remaining > CRIT);
-			el.classList.toggle('crit', remaining <= CRIT);
+			var b = band(remaining);
+
+			if (b === 'ended') {
+				el.classList.remove('warn');
+				el.classList.add('crit', 'ended');
+				$('#session-timer .st-clock').text(endingTxt);
+				// Explain the terse notice on hover, and on focus for keyboard users
+				el.setAttribute('data-tip', endingTip);
+				el.setAttribute('aria-label', endingTxt + '. ' + endingTip);
+				el.setAttribute('tabindex', '0');
+			} else {
+				el.classList.remove('ended');
+				el.removeAttribute('data-tip');
+				el.removeAttribute('aria-label');
+				el.removeAttribute('tabindex');
+				$('#session-timer .st-clock').text(fmt(remaining));
+				el.classList.toggle('warn', b === 'warn');
+				el.classList.toggle('crit', b === 'crit' || b === 'min');
+				checkWarnings();
+			}
+
+			// Re-query the authoritative timeout on each band transition, so an
+			// extension or early shutdown is picked up promptly (not just on the
+			// 60s re-sync). Skip the first render and the terminal state.
+			if (b !== lastBand) {
+				var prev = lastBand;
+				lastBand = b;
+				if (prev !== null && prev !== 'na' && b !== 'ended') { fetchTimeout(); }
+			}
 		}
 		function fetchTimeout() {
-			$.ajax({ url: url, dataType: 'json', xhrFields: { withCredentials: true } })
+			$.ajax({ url: url, dataType: 'json', cache: false, xhrFields: { withCredentials: true } })
 				.done(function (data) {
 					if (!data || !data.hard || data.seconds_remaining == null) {
 						if (tick) { clearInterval(tick); tick = null; }
@@ -57,12 +141,16 @@ jQuery(document).ready(function(jq){
 							if (remaining == null) { return; }
 							remaining = Math.max(0, remaining - 1);
 							render();
-							if (remaining === 0) { clearInterval(tick); tick = null; }
+							if (remaining === 0) { clearInterval(tick); tick = null; closePopup(); }
 						}, 1000);
 					}
 				});
 			// A failure (not the owner, or session gone) simply leaves it hidden.
 		}
+
+		// Let other components (e.g. the viewer's Reconnect button) force a
+		// re-read of the authoritative timeout.
+		window.SessionTimer = { refresh: fetchTimeout };
 
 		fetchTimeout();
 		setInterval(fetchTimeout, 60 * 1000);  // re-sync to correct drift

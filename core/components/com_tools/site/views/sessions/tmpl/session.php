@@ -212,7 +212,13 @@ if (!$this->app->sess) {
 			}
 			?>
 			<?php if ($this->app->sess) : ?>
-				<div id="session-timer" hidden data-sess="<?php echo (int) $this->app->sess; ?>" data-base="<?php echo $this->escape(rtrim(Request::base(true), '/')); ?>">
+				<div id="session-timer" hidden data-sess="<?php echo (int) $this->app->sess; ?>" data-base="<?php echo $this->escape(rtrim(Request::base(true), '/')); ?>"
+				     data-warntitle="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_TITLE')); ?>"
+				     data-warn5="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_5')); ?>"
+				     data-warn1="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_1')); ?>"
+				     data-dismiss="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_DISMISS')); ?>"
+				     data-ending="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_ENDING')); ?>"
+				     data-endingtip="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_ENDING_TIP')); ?>">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
 					<span class="st-label"><?php echo Lang::txt('COM_TOOLS_SESSION_ENDS_IN'); ?></span>
 					<span class="st-clock">--:--:--</span>

@@ -149,24 +149,45 @@ else
 				li.appendTo(footermenu);
 			}
 
-			// Test affordance: drop the live VNC connection to exercise the
-			// connection-recovery sequence. The session stays alive, so recovery
-			// polls state -> ready -> reconnects. Toggle off with class no-nettest.
-			if (!app.hasClass('no-nettest') && !$('#app-btn-nettest').length) {
-				var liNet = $('<li></li>');
-				$('<a class="nettest" id="app-btn-nettest" href="#" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_NETTEST'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg><span><?php echo Lang::txt('PLG_TOOLS_NOVNC_NETTEST_LABEL'); ?></span></a>')
+			// Reconnect: drops and re-establishes the VNC connection (also the way
+			// to exercise the recovery sequence). Icon-only; hover for the label.
+			if (!app.hasClass('no-reconnect') && !$('#app-btn-reconnect').length) {
+				var liRe = $('<li></li>');
+				$('<a class="reconnect" id="app-btn-reconnect" href="#" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN'); ?>" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN'); ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></a>')
 					.on('click', function(event) {
 						event.preventDefault();
-						if (window.console) { console.log('[novnc-reconnect] test: dropping connection'); }
-						// Paint the overlay right away -- the canvas blanks
-						// instantly but the 'disconnected' state lags ~1s.
+						if (window.SessionTimer) { window.SessionTimer.refresh(); }
 						if (window.NoVNCReconnect) { NoVNCReconnect.pending(); }
 						if (UI.rfb) {
 							try { UI.rfb.disconnect(); } catch (e) {}
 						}
 					})
-					.appendTo(liNet);
-				liNet.appendTo(footermenu);
+					.appendTo(liRe);
+				liRe.appendTo(footermenu);
+			}
+
+			// Privacy: blank the display so a passer-by can't read it. Icon-only;
+			// the eye is open when visible and crossed-out when hidden.
+			if (!app.hasClass('no-hide') && !$('#app-btn-hide').length) {
+				var eyeOpen = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+				var eyeOff  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+				var titleHide = '<?php echo Lang::txt('PLG_TOOLS_NOVNC_HIDE'); ?>';
+				var titleShow = '<?php echo Lang::txt('PLG_TOOLS_NOVNC_SHOW'); ?>';
+				var liHide = $('<li></li>');
+				var aHide = $('<a class="hide-display" id="app-btn-hide" href="#" role="button" aria-pressed="false"></a>')
+					.attr({ title: titleHide, 'aria-label': titleHide })
+					.html(eyeOpen);
+				aHide.on('click', function(event) {
+						event.preventDefault();
+						var content = document.getElementById('app-content');
+						if (!content) { return; }
+						var on = content.classList.toggle('privacy-on');
+						$(this).toggleClass('active', on)
+							.attr({ 'aria-pressed': on ? 'true' : 'false', title: on ? titleShow : titleHide, 'aria-label': on ? titleShow : titleHide })
+							.html(on ? eyeOff : eyeOpen);
+					})
+					.appendTo(liHide);
+				liHide.appendTo(footermenu);
 			}
 
 			if (!app.hasClass('no-resize') && !$('#app-btn-resizehandle').length) {
@@ -195,11 +216,8 @@ else
 
 						$('#app-size').html(w.toString() + ' x ' + h.toString());
 
-						if (w < 513) {
-							$('.ui-resizable-handle').css('bottom', '-5em');
-						} else {
-							$('.ui-resizable-handle').css('bottom', '-3em');
-						}
+						// (The grip is pinned to the content's bottom-right corner
+						// via CSS; no negative-offset repositioning needed.)
 
 						// We need to set the width of the wrapping container
 						// Otherwise some elements may overflow, pushing the

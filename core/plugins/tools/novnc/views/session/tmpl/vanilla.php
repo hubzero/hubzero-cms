@@ -135,23 +135,56 @@ $novncVersion = '1.7.0';
 		const footer = document.getElementById('app-footer');
 		if (!footer) { return; }
 		const ul = document.createElement('ul');
+
+		// Reconnect: drops and re-establishes the connection. Icon-only (sync);
+		// hover for the label.
 		const li = document.createElement('li');
 		const a  = document.createElement('a');
-		a.className = 'nettest';
-		a.id = 'app-btn-nettest';
+		a.className = 'reconnect';
+		a.id = 'app-btn-reconnect';
 		a.href = '#';
-		a.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_NETTEST')); ?>;
-		a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg><span>' + <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_NETTEST_LABEL')); ?> + '</span>';
+		a.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN')); ?>;
+		a.setAttribute('aria-label', a.title);
+		a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
 		a.addEventListener('click', function (e) {
 			e.preventDefault();
-			console.log('[novnc-reconnect] test: dropping connection');
-			// Paint the overlay right away -- the canvas blanks instantly but
-			// the 'disconnect' event lags behind the socket close.
+			if (window.SessionTimer) { window.SessionTimer.refresh(); }
 			if (reco) { reco.pending(); }
 			if (rfb) { try { rfb.disconnect(); } catch (err) {} }
 		});
 		li.appendChild(a);
 		ul.appendChild(li);
+
+		// Privacy: blank the display for passers-by. Icon-only; the eye is open
+		// when visible and crossed-out when hidden; button highlights while on.
+		const eyeOpen = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+		const eyeOff  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+		const titleHide = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HIDE')); ?>;
+		const titleShow = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_SHOW')); ?>;
+		const liHide = document.createElement('li');
+		const hide = document.createElement('a');
+		hide.className = 'hide-display';
+		hide.id = 'app-btn-hide';
+		hide.href = '#';
+		hide.setAttribute('role', 'button');
+		hide.setAttribute('aria-pressed', 'false');
+		hide.title = titleHide;
+		hide.setAttribute('aria-label', titleHide);
+		hide.innerHTML = eyeOpen;
+		hide.addEventListener('click', function (e) {
+			e.preventDefault();
+			var content = document.getElementById('app-content');
+			if (!content) { return; }
+			var on = content.classList.toggle('privacy-on');
+			hide.classList.toggle('active', on);
+			hide.setAttribute('aria-pressed', on ? 'true' : 'false');
+			hide.title = on ? titleShow : titleHide;
+			hide.setAttribute('aria-label', on ? titleShow : titleHide);
+			hide.innerHTML = on ? eyeOff : eyeOpen;
+		});
+		liHide.appendChild(hide);
+		ul.appendChild(liHide);
+
 		footer.appendChild(ul);
 	})();
 </script>
