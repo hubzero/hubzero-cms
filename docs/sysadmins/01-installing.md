@@ -19,6 +19,11 @@ of PHP. Installing one takes two steps, each with its own part of this book:
    page ends at: the database, the installer, and what comes after. It is the
    same on every system.
 
+To run the hub as a Docker image that holds its code, with MariaDB in a
+container beside it, follow
+[A self-contained hub in Docker](05-docker-image.md) instead. It does both
+steps, and the upgrades after.
+
 If the hub you are asking about is already installed and answering, go to
 [The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub)
 instead.

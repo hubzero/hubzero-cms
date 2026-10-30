@@ -94,6 +94,12 @@ the hub's PHP kept apart from the server's, use Docker.** The
 [Docker page](09-docker.md) works on any Linux server, and it is the only
 route on Ubuntu 26.04 LTS.
 
+**If you want the whole hub in an image, built, started and replaced the way
+other containers are, skip this section.**
+[A self-contained hub in Docker](../05-docker-image.md) builds the code into
+the image and runs MariaDB in a container too, so the server needs nothing
+but Docker.
+
 **Apache or nginx makes little difference to the hub.** Every page gives a
 complete configuration for each. Choose the one you already know how to
 run.

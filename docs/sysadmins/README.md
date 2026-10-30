@@ -24,6 +24,9 @@ server, as `www-data` or as root. The hub's own administrator interface, at
   system.
 - [Upgrading a hub](04-upgrading.md) — bringing an installed hub up to the
   head of its release branch, with a backup first and the way back.
+- [A self-contained hub in Docker](05-docker-image.md) — the hub built into
+  an image of its own beside MariaDB's, installed on its first start and
+  upgraded by building it again.
 
 On a small hub the system administrator and the hub manager are often the
 same person. The split is between the work, not the people: what needs a

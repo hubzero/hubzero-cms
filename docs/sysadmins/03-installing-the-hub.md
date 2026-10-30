@@ -202,6 +202,12 @@ first answer it cannot use, saying which. It never creates the database or its
 account: create those first. Any single step takes the file too, so one can
 be repeated on its own, for example `muse install admin --config=...`.
 
+On a hub that is already installed, it changes nothing and only runs the
+migrations. `muse install --env` takes the same answers from `HUB_*`
+environment variables in place of a file, which is how
+[A self-contained hub in Docker](05-docker-image.md) installs the hub its
+container starts.
+
 ### Or from the browser
 
 Open `https://hub.example.org/`. A hub that is not installed yet answers every
