@@ -111,9 +111,9 @@ sudo apt update
     php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring php8.2-curl \
     php8.2-gd php8.2-zip php8.2-xml
 </code></pre>
-<p><code>php8.2-xml</code> is not on the installer's list of requirements, but the libraries
-Composer installs need it. <code>json</code>, <code>openssl</code>, <code>fileinfo</code> and <code>pdo</code> come with
-PHP itself.</p>
+<p><code>php8.2-xml</code> is for the libraries Composer installs, which need it, and
+<code>muse install check</code> asks Composer what they need, so it checks for it too.
+<code>json</code>, <code>openssl</code>, <code>fileinfo</code> and <code>pdo</code> come with PHP itself.</p>
 <h2 id="2-install-the-web-server">2. Install the web server</h2>
 <p>Choose Apache <strong>or</strong> nginx. Install one of them, not both.</p>
 <p><strong>Apache:</strong></p>

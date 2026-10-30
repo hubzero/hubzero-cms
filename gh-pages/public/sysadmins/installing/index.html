@@ -132,7 +132,9 @@ own requirements check:</li>
     ];
 </code></pre>
 <p>The libraries Composer installs need the XML extensions, <code>sockets</code> and
-<code>posix</code> as well. Each system's page installs all of them.</p>
+<code>posix</code> as well. Each system's page installs all of them, and the installer's
+check asks Composer for the libraries' own list, so it finds any that are
+missing.</p>
 <h2 id="what-installing-does">What installing does</h2>
 <p><a href="../installing-the-hub/index.html">Installing the hub</a> runs one of two installers
 that do the same job: <code>muse install</code> on the command line, which can also
