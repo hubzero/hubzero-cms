@@ -155,6 +155,13 @@ class Version
 	private $vnc_timeout = null;		// vncTimeout			#__tool_version
 
 	/**
+	 * The longest a session of this version may run, in seconds; null for no limit
+	 *
+	 * @var integer
+	 */
+	private $hardTimeout = null;		// hardTimeout			#__tool_version
+
+	/**
 	 * Description for 'vnc_command'
 	 *
 	 * @var unknown
@@ -261,6 +268,7 @@ class Version
 		'vnc_geometry'=>'vncGeometry',
 		'vnc_depth'=>'vncDepth',
 		'vnc_timeout'=>'vncTimeout',
+		'hardTimeout'=>'hardTimeout',
 		'vnc_command'=>'vncCommand',
 		'mw'=>'defaultMiddleware',
 		'priority'=>'priority',
