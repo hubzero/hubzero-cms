@@ -77,6 +77,13 @@ class UpdateTimezoneDatabase extends Base
 		// Connecting to mysql database, need elevated permissions
 		if (!$this->runAsRoot())
 		{
+			// The tables may have been loaded another way, by hand or by
+			// MariaDB's own container image; only their absence matters
+			if ($this->timezoneTablesLoaded())
+			{
+				return false;
+			}
+
 			$return = array(
 				'success' => false,
 				'message' => "Insufficient privileges to update timezone tables."
@@ -84,10 +91,29 @@ class UpdateTimezoneDatabase extends Base
 			return $return;
 		}
 
+		// MariaDB 10.5 renamed the converter; older servers have only the old name
+		$converter = null;
+		foreach (array('/usr/bin/mariadb-tzinfo-to-sql', '/usr/bin/mysql_tzinfo_to_sql') as $path)
+		{
+			if (is_executable($path))
+			{
+				$converter = $path;
+				break;
+			}
+		}
+
+		if (!$converter)
+		{
+			return array(
+				'success' => false,
+				'message' => "No mariadb-tzinfo-to-sql or mysql_tzinfo_to_sql to load the timezone tables with."
+			);
+		}
+
 		$this->db->select('mysql');
 
 		// Run command to generate SQL
-		$sql = shell_exec("/usr/bin/mysql_tzinfo_to_sql {$zoneinfo} 2>/dev/null");
+		$sql = shell_exec($converter . " {$zoneinfo} 2>/dev/null");
 		$sql = explode(";", $sql);
 
 		if (count($sql) > 0)
@@ -131,6 +157,27 @@ class UpdateTimezoneDatabase extends Base
 		if (is_dir(PATH_APP . DS . 'site' . DS . 'protected'))
 		{
 			file_put_contents($tz_dat_file, $content);
+		}
+	}
+
+	/**
+	 * Whether the database server can already convert between named zones
+	 *
+	 * CONVERT_TZ() returns NULL for a named zone when the server's time zone
+	 * tables are empty, and needs no privileges to ask.
+	 *
+	 * @return  bool
+	 **/
+	private function timezoneTablesLoaded()
+	{
+		try
+		{
+			$this->db->setQuery("SELECT CONVERT_TZ('2000-01-01 00:00:00', 'UTC', 'America/New_York')");
+			return $this->db->loadResult() !== null;
+		}
+		catch (Exception $e)
+		{
+			return false;
 		}
 	}
 }
