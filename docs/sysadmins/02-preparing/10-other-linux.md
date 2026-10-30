@@ -30,8 +30,11 @@ needs no PHP on the server at all.
 
 Install, from the distribution or a repository that packages them for it:
 
-- **MariaDB.** The hub was installed against 10.11 and 11.8. MySQL is
-  expected to work but was not tried.
+- **MariaDB.** The hub was installed against 10.11 and 11.8, with their
+  default SQL mode. MySQL is expected to work but was not tried; its default
+  SQL mode is stricter than MariaDB's and rejects the zero dates hub data
+  carries, so on MySQL set `sql_mode` to MariaDB's default, given on
+  [Installing the hub](../03-installing-the-hub.md#mariadb-s-sql-mode).
 - **PHP 8.2**, both its command line and PHP-FPM, with these extensions in
   whatever packages they come in: `pdo_mysql`, `mbstring`, `curl`, `gd`,
   `zip`, `fileinfo`, `openssl`, the XML family (`dom`, `simplexml`,

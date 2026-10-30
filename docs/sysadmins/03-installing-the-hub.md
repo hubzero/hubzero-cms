@@ -60,6 +60,27 @@ The browser installer can also create the database and account itself, if you
 give it an administrator account that has a password and the right to grant
 privileges. Creating them by hand, as above, needs neither.
 
+### MariaDB's SQL mode
+
+Leave MariaDB's SQL mode as the distribution sets it. Its default,
+
+```
+STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
+
+is strict: a value that does not fit its column is an error, not something
+quietly cut down or changed to fit. Hubs are installed and tested under it.
+Do not set `sql_mode = ""` (or `sql-mode = ""`) in MariaDB's configuration:
+that turns every mode off and lets bad data in without a word. The installer
+and the migrations relax the mode for themselves while they run, and put it
+back; nothing else in the hub needs it relaxed.
+
+To see the mode the server is using:
+
+```bash
+sudo mariadb -e 'SELECT @@GLOBAL.sql_mode'
+```
+
 ## 2. Check the server
 
 The installer can check everything it needs before it changes anything:

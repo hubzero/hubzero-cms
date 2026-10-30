@@ -33,7 +33,8 @@ instead.
   never sign in. A self-signed certificate will do to start with, before the
   real one or the name is ready; each system's page shows where to find or
   make one.
-- MariaDB.
+- MariaDB, with its default SQL mode, which is strict. See
+  [MariaDB's SQL mode](03-installing-the-hub.md#mariadb-s-sql-mode).
 - SELinux turned off, on a system that has it. Hubs run with it off and are
   not tested with it on.
 - `git` and `unzip`. Composer itself ships in the repository as
