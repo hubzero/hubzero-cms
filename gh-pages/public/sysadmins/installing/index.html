@@ -51,6 +51,7 @@
 <li class="toc__item toc__item--l3"><a href="#enterprise-linux-8">Enterprise Linux 8</a></li>
 <li class="toc__item toc__item--l3"><a href="#enterprise-linux-9">Enterprise Linux 9</a></li>
 <li class="toc__item toc__item--l3"><a href="#enterprise-linux-10">Enterprise Linux 10</a></li>
+<li class="toc__item toc__item--l3"><a href="#any-other-linux">Any other Linux</a></li>
 <li class="toc__item toc__item--l3"><a href="#on-enterprise-linux-the-firewall-and-selinux">On Enterprise Linux: the firewall and SELinux</a></li>
 <li class="toc__item toc__item--l3"><a href="#frankenphp-in-docker-on-any-of-these-systems">FrankenPHP in Docker, on any of these systems</a></li>
 <li class="toc__item toc__item--l2"><a href="#2-create-the-database">2. Create the database</a></li>
@@ -60,6 +61,7 @@
 <li class="toc__item toc__item--l3"><a href="#apache-with-php-fpm-on-enterprise-linux">Apache with PHP-FPM on Enterprise Linux</a></li>
 <li class="toc__item toc__item--l3"><a href="#nginx-with-php-fpm-on-debian-and-ubuntu">nginx with PHP-FPM on Debian and Ubuntu</a></li>
 <li class="toc__item toc__item--l3"><a href="#nginx-with-php-fpm-on-enterprise-linux">nginx with PHP-FPM on Enterprise Linux</a></li>
+<li class="toc__item toc__item--l3"><a href="#apache-or-nginx-on-any-other-linux">Apache or nginx on any other Linux</a></li>
 <li class="toc__item toc__item--l3"><a href="#frankenphp-in-docker">FrankenPHP in Docker</a></li>
 <li class="toc__item toc__item--l2"><a href="#5-install">5. Install</a></li>
 <li class="toc__item toc__item--l3"><a href="#from-the-command-line">From the command line</a></li>
@@ -152,8 +154,9 @@ requirements check:</p>
     ];
 </code></pre>
 <h2 id="1-install-the-packages">1. Install the packages</h2>
-<p>Find your system below. Each section installs the database, PHP 8.2 with
-the extensions the hub needs, the tools, and then lets you choose Apache or
+<p>Find your system below, or <a href="#any-other-linux">Any other Linux</a> for one that
+is not listed. Each section installs the database, PHP 8.2 with the
+extensions the hub needs, the tools, and then lets you choose Apache or
 nginx. If you are going to run FrankenPHP in Docker instead, install only
 the database and the tools from your system's section, then go to
 <a href="#frankenphp-in-docker-on-any-of-these-systems">FrankenPHP in Docker</a>.</p>
@@ -279,6 +282,50 @@ sudo systemctl enable --now httpd
 sudo systemctl enable --now nginx
 </code></pre>
 <p>Then <a href="#on-enterprise-linux-the-firewall-and-selinux">the firewall and SELinux</a>.</p>
+<h3 id="any-other-linux">Any other Linux</h3>
+<p>On a distribution not listed here, the steps are the same; only the
+package names and paths are yours to find. Install:</p>
+<ul>
+<li><strong>MariaDB</strong>, from the distribution. The hub was installed against 10.11
+and 11.8. MySQL is expected to work but was not tried.</li>
+<li><strong>PHP 8.2</strong>: the command line, PHP-FPM if the web server is Apache or
+nginx, and these extensions, whatever packages they come in:
+<code>pdo_mysql</code>, <code>mbstring</code>, <code>curl</code>, <code>gd</code>, <code>zip</code>, <code>fileinfo</code>, <code>openssl</code>, the
+XML family (<code>dom</code>, <code>simplexml</code>, <code>xmlreader</code>, <code>xmlwriter</code>), <code>sockets</code> and
+<code>posix</code>. If the distribution ships another version of PHP, look for a
+second repository that packages 8.2 for it, as Debian, Ubuntu and
+Enterprise Linux each have; if there is none, use
+<a href="#frankenphp-in-docker-on-any-of-these-systems">FrankenPHP in Docker</a>,
+which needs no PHP on the system at all.</li>
+<li><strong>A web server</strong>: Apache with <code>mod_proxy_fcgi</code> and <code>mod_ssl</code>, or nginx.</li>
+<li><strong><code>git</code> and <code>unzip</code>.</strong></li>
+</ul>
+<p>Then find three things the configurations later on depend on:</p>
+<ol>
+<li><strong>The account PHP-FPM runs as.</strong> It is the <code>user</code> line of PHP-FPM's
+pool configuration, usually a file named <code>www.conf</code>. The hub's files
+belong to that account (step 3), and the commands on this page run as
+it.</li>
+<li><strong>The socket PHP-FPM listens on.</strong> It is the <code>listen</code> line of the same
+file. The Apache and nginx configurations in step 4 name it.</li>
+<li><strong>Where PHP keeps sessions.</strong> <code>session.save_path</code>, in PHP-FPM's
+<code>php.ini</code> or pool. It has to be a directory the account above can write
+to, outside the hub's directory: the installer keeps its secrets there,
+and stops at a page headed <em>Server Configuration Required</em> without one.</li>
+</ol>
+<p>Check PHP before going on. This lists any extension the hub needs that is
+missing, and prints nothing when all are there:</p>
+<pre><code class="language-bash">php -r 'foreach ([&quot;pdo_mysql&quot;,&quot;mbstring&quot;,&quot;curl&quot;,&quot;gd&quot;,&quot;zip&quot;,&quot;fileinfo&quot;,&quot;openssl&quot;,&quot;dom&quot;,&quot;simplexml&quot;,&quot;xmlreader&quot;,&quot;xmlwriter&quot;,&quot;sockets&quot;,&quot;posix&quot;,&quot;json&quot;,&quot;ctype&quot;,&quot;iconv&quot;,&quot;zlib&quot;] as $e) if (!extension_loaded($e)) echo &quot;missing: $e\n&quot;;'
+</code></pre>
+<p>Once the code is in place in step 3, the installer's own check covers the
+rest, without changing anything:</p>
+<pre><code class="language-bash">sudo -u &lt;the PHP-FPM account&gt; php core/bin/muse install check
+</code></pre>
+<p>If the distribution runs SELinux or AppArmor, or starts with its firewall
+closed, it needs the same allowances
+<a href="#on-enterprise-linux-the-firewall-and-selinux">Enterprise Linux</a> does: the
+web ports open, and the web server allowed to write to the hub's directory,
+to connect to MariaDB and the network, and to send mail.</p>
 <h3 id="on-enterprise-linux-the-firewall-and-selinux">On Enterprise Linux: the firewall and SELinux</h3>
 <p>Enterprise Linux starts with the firewall closed and SELinux enforcing.
 Open the web ports:</p>
@@ -365,6 +412,10 @@ root. Clone it:</p>
 as <code>apache</code> with either web server.</p>
 <pre><code class="language-bash">sudo chown -R apache:apache /var/www/hub
 </code></pre>
+</li>
+<li>
+<p><strong>Any other Linux, with Apache or nginx:</strong> the account PHP-FPM runs as,
+found in step 1.</p>
 </li>
 <li>
 <p><strong>FrankenPHP in Docker, on any system:</strong> user and group 33, which is
@@ -576,6 +627,19 @@ server {
 </code></pre>
 <p>The stock <code>/etc/nginx/nginx.conf</code> also has a server on port 80 for any
 other name. It does not get in the way, but you can delete it.</p>
+<h3 id="apache-or-nginx-on-any-other-linux">Apache or nginx on any other Linux</h3>
+<p>Start from the Debian and Ubuntu configuration for your web server and
+change only what is your distribution's:</p>
+<ul>
+<li>where the file goes, and whether it needs enabling (Debian and Ubuntu link
+it into <code>sites-enabled</code>; most others read a <code>conf.d</code> directory as it is);</li>
+<li>the PHP-FPM socket in <code>SetHandler</code> or <code>fastcgi_pass</code>, found in step 1;</li>
+<li>the log locations, and the certificate paths.</li>
+</ul>
+<p>Keep the rest as it is. Each of its rules is one of the four things listed
+at the top of this step, and the hub needs all four. Then check the private
+paths are refused, as under
+<a href="#when-something-goes-wrong">When something goes wrong</a>.</p>
 <h3 id="frankenphp-in-docker">FrankenPHP in Docker</h3>
 <p>Build an image from FrankenPHP's PHP 8.2 image with the extensions the hub
 needs that it does not already have. Put this in
