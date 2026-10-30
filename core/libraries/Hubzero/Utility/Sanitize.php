@@ -398,9 +398,14 @@ class Sanitize
 			'excludes' => ['area' => true]
 		];
 
+		// Video is phrasing content, so it is declared Inline: as a block it
+		// was moved out of any paragraph it was written in. No autoplay:
+		// this purifies what members submit as well as what administrators
+		// do, and media that starts by itself is an accessibility failure
+		// (WCAG 1.4.2) and easily abused.
 		$videoElement = [
 			'name' => 'video',
-			'contentSet' => 'Block',
+			'contentSet' => 'Inline',
 			'allowedChildren' => 'Inline',
 			'attributeCollection' => 'Common',
 			'attributes' => [
@@ -410,15 +415,13 @@ class Sanitize
 				'height'                  => 'Length',
 				'preload'                 => 'Enum#auto,metadata,none',
 				'crossorigin'             => 'Enum#anonymous,use-credentials',
-				'loading'                 => 'Enum#lazy,eager',
 				'controlslist'            => 'Text',
-				'autoplay'                => 'Bool',
-				'controls'                => 'Bool',
-				'loop'                    => 'Bool',
-				'muted'                   => 'Bool',
-				'playsinline'             => 'Bool',
-				'disablepictureinpicture' => 'Bool',
-				'disableremoteplayback'   => 'Bool',
+				'controls'                => 'Bool#controls',
+				'loop'                    => 'Bool#loop',
+				'muted'                   => 'Bool#muted',
+				'playsinline'             => 'Bool#playsinline',
+				'disablepictureinpicture' => 'Bool#disablepictureinpicture',
+				'disableremoteplayback'   => 'Bool#disableremoteplayback',
 			],
 			'excludes' => []
 		];
@@ -432,15 +435,28 @@ class Sanitize
 				'src'    => 'URI',
 				'type'   => 'Text',
 				'media'  => 'Text',
-				'srcset' => 'Text',
-				'sizes'  => 'Text',
-				'width'  => 'Number',
-				'height' => 'Number',
 			],
 			'excludes' => []
 		];
 
-		$elementSettings = [$styleElement, $mapElement, $areaElement, $videoElement, $sourceElement];
+		// Captions and subtitles. Without it the purifier removed them, and
+		// a hub could not caption its video (WCAG 1.2.2).
+		$trackElement = [
+			'name' => 'track',
+			'contentSet' => 'Inline',
+			'allowedChildren' => 'Empty',
+			'attributeCollection' => 'Common',
+			'attributes' => [
+				'kind'    => 'Enum#subtitles,captions,descriptions,chapters,metadata',
+				'src'     => 'URI',
+				'srclang' => 'Text',
+				'label'   => 'Text',
+				'default' => 'Bool#default',
+			],
+			'excludes' => []
+		];
+
+		$elementSettings = [$styleElement, $mapElement, $areaElement, $videoElement, $sourceElement, $trackElement];
 
 		foreach ($elementSettings as $settings)
 		{
