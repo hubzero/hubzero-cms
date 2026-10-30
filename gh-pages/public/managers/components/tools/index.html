@@ -291,8 +291,18 @@ parameter list is in the
 <strong>ID</strong>, <strong>Name</strong>, <strong>Version</strong>, <strong>Revision</strong>, <strong>State</strong>, and, when DOI
 registration is configured, <strong>DOI</strong>.</p>
 <p>A version's edit form has a <strong>Details</strong> tab with <strong>Command</strong>, <strong>Timeout</strong>,
-<strong>Required Host</strong>, <strong>Middleware</strong> and <strong>Parameters</strong>, a DOI panel, and a
-<strong>Zones</strong> tab listing the zones the version may run in.</p>
+<strong>Hard timeout</strong>, <strong>Required Host</strong>, <strong>Middleware</strong> and <strong>Parameters</strong>, a DOI
+panel, and a <strong>Zones</strong> tab listing the zones the version may run in.</p>
+<p><strong>Hard timeout</strong> is the longest a session of the version may run. Give a
+number and choose its unit, <strong>days</strong>, <strong>hours</strong>, <strong>minutes</strong> or <strong>seconds</strong>;
+a fraction works, so 1.5 hours is an hour and a half. Leave it empty for no
+limit. It is kept in seconds and shown again in the largest unit that holds
+it whole, so 90 minutes saved as 1.5 hours comes back as 90 minutes.
+Publishing a new version gives it the hard timeout of the version it
+replaces, or the development version's for a tool's first. Each session the
+version starts takes the version's hard timeout, unless the middleware gave
+the session one of its own; ending sessions that run past it is the
+middleware's work.</p>
 <p>The <strong>DOI</strong> column appears only when the <strong>Enable DOI service?</strong> option is on.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The component has a <code>batchdoi</code> task that registers DOIs for tool

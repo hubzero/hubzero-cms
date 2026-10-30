@@ -278,7 +278,9 @@ the pipeline appears to be empty and there is nothing on screen to say why.</p>
 <p>Administrator controls on the pipeline are not granted by the ordinary
 component ACL. They are granted by membership of the hub group named in
 <code>com_tools</code>' <strong>Admin Group</strong> option, which defaults to <code>apps</code>:</p>
-<pre><code class="language-php">		{
+<pre><code class="language-php">		$this-&gt;config-&gt;set('access-view-' . $assetType, true);
+		if (User::get('guest'))
+		{
 			return;
 		}
 
@@ -298,8 +300,6 @@ component ACL. They are granted by membership of the hub group named in
 						$this-&gt;config-&gt;set('access-manage-' . $assetType, true);
 						$this-&gt;config-&gt;set('access-admin-' . $assetType, true);
 						$this-&gt;config-&gt;set('access-create-' . $assetType, true);
-						$this-&gt;config-&gt;set('access-delete-' . $assetType, true);
-						$this-&gt;config-&gt;set('access-edit-' . $assetType, true);
 </code></pre>
 <p>While that option has a value, membership of the group is the <em>only</em> way to
 get those controls; a Super User outside the group sees none of them. Clear
