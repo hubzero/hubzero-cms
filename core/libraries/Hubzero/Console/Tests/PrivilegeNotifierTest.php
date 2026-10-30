@@ -173,6 +173,89 @@ class PrivilegeNotifierTest extends Basic
     }
 
     /**
+     * Root on a hub that belongs to another account becomes that account,
+     * says so, and gets no root warning
+     *
+     * @return  void
+     */
+    public function testRootOnAnotherAccountsHubSwitchesToItsOwner()
+    {
+        $privileges = m::mock(PrivilegeManager::class);
+        $privileges->shouldReceive('isSudo')->andReturn(true);
+        $privileges->shouldReceive('isRoot')->andReturn(true);
+        $privileges->shouldReceive('getSudoUser')->andReturn('alice');
+        $privileges->shouldReceive('switchToOwnerOf')->once()->with(__DIR__)->andReturn('www-data');
+        $privileges->shouldNotReceive('initializeSudoEnvironment');
+
+        $notifier = (new PrivilegeNotifier($privileges))->setStream($this->stream);
+
+        $this->assertTrue($notifier->handleStartup(__DIR__));
+
+        $out = $this->captured();
+        $this->assertStringContainsString("Running as 'www-data', the account that owns the hub's files", $out);
+        $this->assertStringNotContainsString('Security Warning', $out);
+        $this->assertStringNotContainsString('Sudo Environment Detected', $out);
+    }
+
+    /**
+     * sudo on a checkout that belongs to the person who ran it keeps the
+     * existing handling: drop to them, with escalation still possible
+     *
+     * @return  void
+     */
+    public function testSudoOnYourOwnCheckoutKeepsSudoHandling()
+    {
+        $me = posix_getpwuid(fileowner(__DIR__))['name'];
+
+        $privileges = m::mock(PrivilegeManager::class);
+        $privileges->shouldReceive('isSudo')->andReturn(true);
+        $privileges->shouldReceive('isRoot')->andReturn(true);
+        $privileges->shouldReceive('getSudoUser')->andReturn($me);
+        $privileges->shouldNotReceive('switchToOwnerOf');
+        $privileges->shouldReceive('initializeSudoEnvironment')->once()->andReturn(true);
+
+        $notifier = (new PrivilegeNotifier($privileges))->setStream($this->stream);
+
+        $this->assertTrue($notifier->handleStartup(__DIR__));
+        $this->assertStringContainsString("Now running as user '{$me}'", $this->captured());
+    }
+
+    /**
+     * Someone who is not root runs as themselves, wherever the hub is
+     *
+     * @return  void
+     */
+    public function testRegularUserNeverSwitches()
+    {
+        $privileges = m::mock(PrivilegeManager::class);
+        $privileges->shouldReceive('isSudo')->andReturn(false);
+        $privileges->shouldReceive('isRoot')->andReturn(false);
+        $privileges->shouldNotReceive('switchToOwnerOf');
+
+        $notifier = (new PrivilegeNotifier($privileges))->setStream($this->stream);
+
+        $this->assertTrue($notifier->handleStartup(__DIR__));
+        $this->assertSame('', $this->captured());
+    }
+
+    /**
+     * Without root, there is nothing to switch and nothing changes
+     *
+     * @return  void
+     */
+    public function testSwitchingNeedsRoot()
+    {
+        if (function_exists('posix_getuid') && posix_getuid() === 0) {
+            $this->markTestSkipped('Running as root');
+        }
+
+        $privileges = new PrivilegeManager();
+
+        $this->assertNull($privileges->switchToOwnerOf(__DIR__));
+        $this->assertNull($privileges->getSwitchedTo());
+    }
+
+    /**
      * No escape codes unless the stream is a terminal
      *
      * @return  void

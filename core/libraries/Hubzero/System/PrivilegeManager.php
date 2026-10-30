@@ -75,6 +75,11 @@ class PrivilegeManager
     private bool $hasPosix;
 
     /**
+     * The account the process switched to for good, if it did
+     */
+    private ?string $switchedTo = null;
+
+    /**
      * Constructor - captures initial privilege state
      */
     public function __construct()
@@ -151,7 +156,7 @@ class PrivilegeManager
      */
     public function canEscalate(): bool
     {
-        if (!$this->hasPosix || !function_exists('posix_seteuid')) {
+        if (!$this->hasPosix || !function_exists('posix_seteuid') || $this->switchedTo !== null) {
             return false;
         }
 
@@ -340,6 +345,85 @@ class PrivilegeManager
         }
 
         return $this->drop();
+    }
+
+    /**
+     * Become, for good, the account that owns a directory
+     *
+     * Files a hub's command line writes have to belong to the account that
+     * owns the hub, or the web server cannot write them afterwards. Run as
+     * root, muse switches to that account before it does anything, so
+     * `sudo php core/bin/muse ...` works without naming it.
+     *
+     * The switch is complete: real, effective and saved IDs, and the
+     * account's own supplementary groups. Changing only the effective ID is
+     * not enough, because anything started through a shell (Composer, git)
+     * goes back to the real ID, root, and leaves root's files behind. The
+     * price is that the process cannot become root again.
+     *
+     * Nothing changes unless the process is root and the directory belongs
+     * to another account that the system can name. A directory owned by root,
+     * or by an account with no entry in the user database, is left alone:
+     * without the account's groups, the process would keep root's.
+     *
+     * @param   string  $path  The directory whose owner to become
+     * @return  string|null  The account switched to, or null if nothing changed
+     */
+    public function switchToOwnerOf(string $path): ?string
+    {
+        if (
+            !$this->hasPosix
+            || $this->originalUid !== self::ROOT_UID
+            || $this->switchedTo !== null
+            || !function_exists('posix_setuid')
+            || !function_exists('posix_initgroups')
+        ) {
+            return null;
+        }
+
+        $uid = @fileowner($path);
+
+        if ($uid === false || $uid === self::ROOT_UID) {
+            return null;
+        }
+
+        $account = posix_getpwuid($uid);
+
+        if (!$account) {
+            return null;
+        }
+
+        // Groups first, then the group ID, then the user ID: once the user ID
+        // changes, there is no permission left to change the others
+        if (
+            !posix_initgroups($account['name'], $account['gid'])
+            || !posix_setgid($account['gid'])
+            || !posix_setuid($uid)
+        ) {
+            return null;
+        }
+
+        // What the account's own programs expect to find, Composer's cache
+        // among them
+        putenv('HOME=' . $account['dir']);
+        putenv('USER=' . $account['name']);
+        putenv('LOGNAME=' . $account['name']);
+        $_SERVER['HOME'] = $account['dir'];
+
+        $this->elevated = false;
+        $this->switchedTo = $account['name'];
+
+        return $this->switchedTo;
+    }
+
+    /**
+     * The account switchToOwnerOf() switched to, if it did
+     *
+     * @return string|null
+     */
+    public function getSwitchedTo(): ?string
+    {
+        return $this->switchedTo;
     }
 
     /**

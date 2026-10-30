@@ -61,10 +61,38 @@ class PrivilegeNotifier
      * - Dropping privileges if running as root via sudo
      * - Warning and prompting if running as root directly
      *
+     * @param   string|null  $hubRoot  The hub's top directory; run as root, muse
+     *                               becomes the account that owns it
      * @return bool  True to continue, false to abort
      */
-    public function handleStartup(): bool
+    public function handleStartup(?string $hubRoot = null): bool
     {
+        // Run as root on a hub that belongs to another account, become that
+        // account, so what muse writes is the web server's to write too. Not
+        // when it belongs to whoever ran sudo, as a developer's own checkout
+        // does: that is what the sudo handling below is for already.
+        if ($hubRoot !== null && $this->privileges->isRoot()) {
+            $owner = @fileowner($hubRoot);
+            $ownerInfo = ($owner !== false && function_exists('posix_getpwuid')) ? posix_getpwuid($owner) : false;
+
+            if (
+                $ownerInfo
+                && $owner !== 0
+                && $ownerInfo['name'] !== $this->privileges->getSudoUser()
+                && ($account = $this->privileges->switchToOwnerOf($hubRoot)) !== null
+            ) {
+                $this->output("\n");
+                if ($this->ansi()) {
+                    $this->output("Running as '\033[32m{$account}\033[39m', the account that owns the hub's files.\n");
+                } else {
+                    $this->output("Running as '{$account}', the account that owns the hub's files.\n");
+                }
+                $this->output("\n");
+
+                return true;
+            }
+        }
+
         // Only sudo to root has privileges to drop. "sudo -u hubadmin" also
         // sets SUDO_USER, but a non-root process cannot seteuid back to the
         // caller, so it simply runs as the target user.
