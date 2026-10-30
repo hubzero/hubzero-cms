@@ -179,6 +179,14 @@ class Settings implements StepInterface
             mkdir($configDir, 0755, true);
         }
 
+        // The log_path and tmp_path written below; the scheduled tasks'
+        // tick, among others, will not run without tmp
+        foreach (['logs', 'tmp'] as $dir) {
+            if (!is_dir(PATH_APP . '/' . $dir)) {
+                mkdir(PATH_APP . '/' . $dir, 0775, true);
+            }
+        }
+
         $secret = bin2hex(random_bytes(32));
 
         $content = "<?php\n\n";
