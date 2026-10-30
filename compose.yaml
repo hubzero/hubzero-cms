@@ -8,8 +8,6 @@
 # are known to everyone who reads this file. See
 # docs/developers/01-getting-started/06-devenvironment.md.
 
-name: hubzero
-
 services:
   hub:
     build: .docker
