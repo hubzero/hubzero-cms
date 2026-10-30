@@ -67,6 +67,7 @@
 <li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong">When something goes wrong</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../docker-image/index.html">A self-contained hub in Docker</a></li>
 </ul>
         </nav>
       </details>
@@ -248,6 +249,11 @@ sudo rm /var/www/hub-install.json
 first answer it cannot use, saying which. It never creates the database or its
 account: create those first. Any single step takes the file too, so one can
 be repeated on its own, for example <code>muse install admin --config=...</code>.</p>
+<p>On a hub that is already installed, it changes nothing and only runs the
+migrations. <code>muse install --env</code> takes the same answers from <code>HUB_*</code>
+environment variables in place of a file, which is how
+<a href="../docker-image/index.html">A self-contained hub in Docker</a> installs the hub its
+container starts.</p>
 <h3 id="or-from-the-browser">Or from the browser</h3>
 <p>Open <code>https://hub.example.org/</code>. A hub that is not installed yet answers every
 address with its installer.</p>

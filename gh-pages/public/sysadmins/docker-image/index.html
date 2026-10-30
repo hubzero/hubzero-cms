@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A self-contained hub in Docker · System administrators · Hubzero Documentation</title>
+  <meta name="description" content="A hub built into a Docker image of its own, beside MariaDB&#x27;s image: built from the release branch, installed from environment variables on its first start, upgraded by building it again.">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/sysadmins/docker-image/">
+  <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../assets/site.css?v=8a405e6d">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html">
+      <img class="brand__mark" src="../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../search-index.json" data-base="../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../docs/index.html">About</a>
+      <a href="../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../index.html">System administrators</a>
+        <nav aria-label="System administrators contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../installing/index.html">Installation overview</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../preparing/index.html">Preparing the server</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../preparing/debian-12/index.html">Preparing a Debian 12 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/debian-13/index.html">Preparing a Debian 13 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/docker/index.html">Preparing a server for FrankenPHP in Docker</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/other-linux/index.html">Preparing any other Linux server</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">A self-contained hub in Docker</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-you-need">What you need</a></li>
+<li class="toc__item toc__item--l2"><a href="#1-install-docker-and-git">1. Install Docker and git</a></li>
+<li class="toc__item toc__item--l2"><a href="#2-get-the-code">2. Get the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#3-write-the-image-s-files">3. Write the image&#x27;s files</a></li>
+<li class="toc__item toc__item--l2"><a href="#4-build-the-image">4. Build the image</a></li>
+<li class="toc__item toc__item--l2"><a href="#5-write-the-settings">5. Write the settings</a></li>
+<li class="toc__item toc__item--l2"><a href="#6-start-the-hub">6. Start the hub</a></li>
+<li class="toc__item toc__item--l2"><a href="#running-the-hub-s-commands">Running the hub&#x27;s commands</a></li>
+<li class="toc__item toc__item--l2"><a href="#backing-up">Backing up</a></li>
+<li class="toc__item toc__item--l2"><a href="#upgrading">Upgrading</a></li>
+<li class="toc__item toc__item--l3"><a href="#going-back">Going back</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong">When something goes wrong</a></li>
+</ol></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">System administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">A self-contained hub in Docker</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">System administrators</p>
+          <h1>A self-contained hub in Docker</h1>
+        </header>
+        
+        <div class="prose">
+<p>This page builds the whole hub into one Docker image: PHP 8.2 and the web
+server from FrankenPHP's image, the hub's code, and the libraries Composer
+installs. MariaDB runs beside it in its own official image. The server needs
+nothing but Docker.</p>
+<p>The first time the hub's container starts, it installs the hub, taking its
+answers from a file of settings. Every time after, it brings the database up
+to date and serves the hub. Upgrading means building the image again from
+newer code and starting a new container from it.</p>
+<p>This differs from <a href="../preparing/docker/index.html">Preparing a server for FrankenPHP in Docker</a>,
+where the hub's code is a checkout on the server and the container only runs
+PHP and the web server over it. Here the code is inside the image and nothing
+can change it. Only what the hub writes is kept outside the image, in Docker
+volumes: its configuration, uploads, logs and cache, and the database. You
+do not follow <a href="../installing-the-hub/index.html">Installing the hub</a> or
+<a href="../upgrading/index.html">Upgrading a hub</a>; this page does both.</p>
+<p>The image was built and run on an Ubuntu 24.04 server with Docker 29 and
+MariaDB 10.11. That covered a first start that installs the hub, restarts and
+a rebuilt image that bring it up to date, administrator sign-in, the
+scheduled tasks, and the backup and restore below. It was served with a
+certificate FrankenPHP made itself, not a real one.</p>
+<h2 id="what-you-need">What you need</h2>
+<ul>
+<li>A Linux server, and an account on it that can use <code>sudo</code>.</li>
+<li>Nothing else listening on ports 80 and 443: the hub's container is the web
+server.</li>
+<li>A name for the hub, such as <code>hub.example.org</code>, pointing at the server. A
+hub has to be served over HTTPS: the administrator sign-in form always
+posts to an <code>https://</code> address. FrankenPHP obtains the certificate itself
+once the name reaches the server. Until then, it can make one of its own;
+see <a href="#3-write-the-image-s-files">step 3</a>.</li>
+</ul>
+<h2 id="1-install-docker-and-git">1. Install Docker and git</h2>
+<p><strong>On Debian or Ubuntu:</strong></p>
+<pre><code class="language-bash">sudo apt install docker.io git
+</code></pre>
+<p><strong>Or on Enterprise Linux 8, 9 or 10</strong>, Docker from Docker's own repository,
+which replaces the Podman Enterprise Linux installs by default:</p>
+<pre><code class="language-bash">sudo dnf install git
+sudo dnf remove podman buildah runc
+sudo dnf install dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+sudo dnf install docker-ce docker-ce-cli containerd.io
+sudo systemctl enable --now docker
+sudo firewall-cmd --permanent --add-service=http --add-service=https
+sudo firewall-cmd --reload
+</code></pre>
+<p>Turn SELinux off as well. Hubs run with it off and are not tested with it
+on. On Enterprise Linux 8, <code>sudo setenforce 0</code> and then <code>SELINUX=disabled</code> in
+<code>/etc/selinux/config</code>; on 9 and 10, <code>sudo setenforce 0</code> and then
+<code>sudo grubby --update-kernel ALL --args selinux=0</code>. Reboot when it suits you;
+<code>getenforce</code> should then print <code>Disabled</code>.</p>
+<p><strong>Or on any other distribution</strong>, its own Docker and <code>git</code> packages.</p>
+<h2 id="2-get-the-code">2. Get the code</h2>
+<p>Everything the image is built from goes in <code>/opt/hub-image</code>. Start with the
+hub's code, cloned from its release branch:</p>
+<pre><code class="language-bash">sudo mkdir /opt/hub-image
+sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /opt/hub-image/hubzero-cms
+</code></pre>
+<p>The checkout stays on the server only to build from. The hub runs from the
+copy inside the image.</p>
+<h2 id="3-write-the-image-s-files">3. Write the image's files</h2>
+<p>Four files go beside the checkout, in <code>/opt/hub-image</code>.</p>
+<p><strong><code>Dockerfile</code></strong>, which builds the image:</p>
+<pre><code class="language-dockerfile">FROM dunglas/frankenphp:1-php8.2-bookworm
+
+# The extensions the hub needs that the image does not already have, and the
+# tools Composer uses
+RUN install-php-extensions pdo_mysql gd zip sockets opcache \
+    &amp;&amp; apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends git unzip \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# PHP's production settings, and a place for sessions outside the document
+# root: the image has neither, and the installer keeps its secrets there
+RUN cp &quot;$PHP_INI_DIR/php.ini-production&quot; &quot;$PHP_INI_DIR/php.ini&quot; \
+    &amp;&amp; mkdir -p /var/lib/php/sessions \
+    &amp;&amp; chown www-data:www-data /var/lib/php/sessions \
+    &amp;&amp; echo 'session.save_path = &quot;/var/lib/php/sessions&quot;' &gt; &quot;$PHP_INI_DIR/conf.d/hub.ini&quot;
+
+# The hub's code, and the libraries it needs. It belongs to root, so the web
+# server cannot change it; only app/, where the hub keeps everything it
+# writes, belongs to www-data.
+COPY hubzero-cms /var/www/hub
+WORKDIR /var/www/hub
+RUN php core/bin/muse install vendor \
+    &amp;&amp; mkdir app \
+    &amp;&amp; chown www-data:www-data app
+
+COPY Caddyfile /etc/frankenphp/Caddyfile
+COPY hub-start /usr/local/bin/hub-start
+
+# Run as www-data, still able to listen on 80 and 443
+RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
+    &amp;&amp; chown -R www-data:www-data /config/caddy /data/caddy
+
+USER www-data
+VOLUME /var/www/hub/app
+
+CMD [&quot;hub-start&quot;]
+</code></pre>
+<p><strong><code>.dockerignore</code></strong>, which keeps the checkout's history, and any <code>app/</code>
+directory, out of the image:</p>
+<pre><code>hubzero-cms/.git
+hubzero-cms/app
+</code></pre>
+<p><strong><code>Caddyfile</code></strong>, FrankenPHP's configuration. It is the one the other Docker
+page uses, except that it takes the hub's name from the container's
+settings:</p>
+<pre><code class="language-caddyfile">{
+	frankenphp
+	order php_server before file_server
+}
+
+{$SERVER_NAME} {
+	root * /var/www/hub
+
+	@private path_regexp ^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)
+	@dotfiles {
+		path_regexp /\.
+		not path /.well-known/*
+	}
+	respond @private 403
+	respond @dotfiles 403
+
+	php_server
+}
+</code></pre>
+<p>It serves the hub over HTTPS and refuses the hub's configuration, logs,
+temporary files, command-line programs and hidden files.
+<code>app/config/database.php</code> holds the database password, so the last part matters.</p>
+<p>Before the name reaches the server, or for a hub with no public name, add
+<code>tls internal</code> inside the site block, on the line after <code>root</code>. FrankenPHP
+then makes the certificate itself, from a local authority of its own, and
+browsers warn about it. When the name reaches the server, take the line out,
+then build the image and start the container again as in
+<a href="#upgrading">Upgrading</a>. FrankenPHP then obtains a real certificate in its
+place.</p>
+<p><strong><code>hub-start</code></strong>, what the container runs each time it starts:</p>
+<pre><code class="language-sh">#!/bin/sh
+# Install the hub the first time the container starts, bring its database up
+# to date every time after, then serve it
+set -e
+
+# MariaDB takes a few seconds to start the first time
+tries=0
+until php -r 'new PDO(&quot;mysql:host=&quot; . getenv(&quot;HUB_DB_HOST&quot;), getenv(&quot;HUB_DB_USER&quot;), getenv(&quot;HUB_DB_PASSWORD&quot;));' 2&gt;/dev/null
+do
+	tries=$((tries + 1))
+	[ &quot;$tries&quot; -lt 30 ] || break
+	echo &quot;Waiting for the database at $HUB_DB_HOST...&quot;
+	sleep 2
+done
+
+php core/bin/muse install --env --no-colors
+
+# The hub's scheduled tasks, every minute
+while sleep 60; do
+	php core/bin/muse cron:jobs tick --no-colors || true
+done &amp;
+
+exec frankenphp run --config /etc/frankenphp/Caddyfile
+</code></pre>
+<pre><code class="language-bash">sudo chmod 755 /opt/hub-image/hub-start
+</code></pre>
+<p><code>muse install --env</code> does the work. It takes the installer's answers from
+the container's <code>HUB_*</code> settings instead of asking for them. On a hub that
+is already installed, it only runs the migrations. If the install cannot
+finish, the container stops before it serves anything. That matters because
+a hub that is not installed answers every address with its installer.</p>
+<p>And one more file, for MariaDB rather than the image.
+<strong><code>metrics.sql</code></strong> creates the second database the usage statistics keep:</p>
+<pre><code class="language-sql">CREATE DATABASE hub_metrics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+GRANT ALL PRIVILEGES ON hub_metrics.* TO 'hub'@'%';
+</code></pre>
+<p>MariaDB runs it once, the first time its container starts with an empty
+database volume.</p>
+<h2 id="4-build-the-image">4. Build the image</h2>
+<pre><code class="language-bash">sudo docker build -t hub /opt/hub-image
+</code></pre>
+<p>Building takes a few minutes the first time, most of them spent by Composer.
+A warning that the legacy builder is deprecated is harmless.</p>
+<h2 id="5-write-the-settings">5. Write the settings</h2>
+<p>Both containers read their settings from one file,
+<code>/opt/hub-image/hub.env</code>. Put your own names and passwords in it. The
+database password appears twice: once for MariaDB to create the account, and
+once for the hub to use it.</p>
+<pre><code># MariaDB: the database and account it creates the first time it starts
+MARIADB_DATABASE=hub
+MARIADB_USER=hub
+MARIADB_PASSWORD=a-long-random-password
+MARIADB_RANDOM_ROOT_PASSWORD=1
+
+# The hub's name, for its certificate
+SERVER_NAME=hub.example.org
+
+# The installer's answers
+HUB_SITENAME=My Hub
+HUB_MAILFROM=admin@hub.example.org
+HUB_LIVE_SITE=https://hub.example.org
+HUB_TIMEZONE=America/New_York
+HUB_DB_HOST=hub-db
+HUB_DB_NAME=hub
+HUB_DB_USER=hub
+HUB_DB_PASSWORD=a-long-random-password
+HUB_ADMIN_NAME=Ada Administrator
+HUB_ADMIN_USERNAME=admin
+HUB_ADMIN_EMAIL=admin@hub.example.org
+HUB_ADMIN_PASSWORD=another-long-password
+</code></pre>
+<p>Write the values without quotation marks; Docker would keep them as part of
+the value. The file holds passwords, so only root should be able to read it:</p>
+<pre><code class="language-bash">sudo chmod 600 /opt/hub-image/hub.env
+</code></pre>
+<p>Each <code>HUB_</code> setting answers one of the installer's questions, as a key in an
+<a href="../installing-the-hub/index.html#or-from-the-command-line-with-an-answer-file">answer file</a>
+would:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Answer-file key</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HUB_SITENAME</code></td>
+<td><code>site.sitename</code></td>
+<td>The hub's name</td>
+</tr>
+<tr>
+<td><code>HUB_MAILFROM</code></td>
+<td><code>site.mailfrom</code></td>
+<td>The address the hub's mail comes from</td>
+</tr>
+<tr>
+<td><code>HUB_LIVE_SITE</code></td>
+<td><code>site.live_site</code></td>
+<td>The hub's address. The scheduled tasks need it</td>
+</tr>
+<tr>
+<td><code>HUB_TIMEZONE</code></td>
+<td><code>site.offset</code></td>
+<td>A time zone such as <code>UTC</code> or <code>Europe/London</code></td>
+</tr>
+<tr>
+<td><code>HUB_DB_HOST</code></td>
+<td><code>database.host</code></td>
+<td><code>hub-db</code>, the name of MariaDB's container</td>
+</tr>
+<tr>
+<td><code>HUB_DB_PORT</code></td>
+<td><code>database.port</code></td>
+<td>Only if it is not 3306</td>
+</tr>
+<tr>
+<td><code>HUB_DB_NAME</code></td>
+<td><code>database.database</code></td>
+<td>The database</td>
+</tr>
+<tr>
+<td><code>HUB_DB_USER</code></td>
+<td><code>database.username</code></td>
+<td>Its account</td>
+</tr>
+<tr>
+<td><code>HUB_DB_PASSWORD</code></td>
+<td><code>database.password</code></td>
+<td>The account's password</td>
+</tr>
+<tr>
+<td><code>HUB_DB_PREFIX</code></td>
+<td><code>database.prefix</code></td>
+<td>The table prefix, <code>jos_</code> if left out</td>
+</tr>
+<tr>
+<td><code>HUB_ADMIN_NAME</code></td>
+<td><code>admin.name</code></td>
+<td>The administrator's full name</td>
+</tr>
+<tr>
+<td><code>HUB_ADMIN_USERNAME</code></td>
+<td><code>admin.username</code></td>
+<td>Their username</td>
+</tr>
+<tr>
+<td><code>HUB_ADMIN_EMAIL</code></td>
+<td><code>admin.email</code></td>
+<td>Their email address</td>
+</tr>
+<tr>
+<td><code>HUB_ADMIN_PASSWORD</code></td>
+<td><code>admin.password</code></td>
+<td>Their password, at least eight characters</td>
+</tr>
+<tr>
+<td><code>HUB_SAMPLE_DATA</code></td>
+<td><code>sample</code></td>
+<td><code>1</code> to load the sample data. Leave it out for a hub you will fill yourself</td>
+</tr>
+</tbody>
+</table>
+<p>They are read once, on the first start. Changing them after the hub is
+installed changes nothing in the hub. Change its settings in its
+administrator interface instead. The database settings are the exception:
+<code>hub-start</code> uses them on every start to wait for MariaDB.</p>
+<h2 id="6-start-the-hub">6. Start the hub</h2>
+<p>Make a network for the two containers. Start MariaDB, then the hub:</p>
+<pre><code class="language-bash">sudo docker network create hub
+
+sudo docker run -d --name hub-db --network hub --restart unless-stopped \
+    --env-file /opt/hub-image/hub.env \
+    -v hub_db:/var/lib/mysql \
+    -v /opt/hub-image/metrics.sql:/docker-entrypoint-initdb.d/metrics.sql:ro \
+    mariadb:10.11
+
+sudo docker run -d --name hub --network hub --restart unless-stopped \
+    --env-file /opt/hub-image/hub.env \
+    -p 80:80 -p 443:443 \
+    --add-host hub.example.org:127.0.0.1 \
+    -v hub_app:/var/www/hub/app \
+    -v hub_caddy_data:/data -v hub_caddy_config:/config \
+    hub
+</code></pre>
+<ul>
+<li><code>hub_db</code> keeps the database, and <code>hub_app</code> everything the hub writes.
+<code>hub_caddy_data</code> keeps the certificates FrankenPHP obtains. All three
+outlast the containers, which can be removed and started again from the
+image at any time.</li>
+<li><code>--add-host</code> gives the hub's own name the address <code>127.0.0.1</code> inside its
+container, with your hub's name in place of <code>hub.example.org</code>. The
+scheduled tasks reach the hub at its own address. The hub accepts that
+request only from the server itself, and through Docker's port mapping it
+would come from somewhere else.</li>
+</ul>
+<p>Watch the first start:</p>
+<pre><code class="language-bash">sudo docker logs -f hub
+</code></pre>
+<p>After waiting a few seconds for MariaDB, the installer runs its checks,
+writes the configuration, creates about 380 tables, runs the migrations and
+creates the administrator. Then it prints <strong>Installation Complete!</strong>, and
+FrankenPHP's log lines follow. Press Ctrl+C to stop watching; the container
+goes on.</p>
+<p>Three of the
+<a href="../installing-the-hub/index.html#warnings-during-the-migrations">warnings during the migrations</a>
+are expected. The usage statistics' warning is not among them, because
+<code>metrics.sql</code> created their database. The time zone warning can be ignored
+here: MariaDB's image loads its time zone tables itself.</p>
+<p>Open <code>https://hub.example.org/</code>, and sign in at
+<code>https://hub.example.org/administrator</code> with the administrator's username and
+password. Then go on to
+<a href="../../managers/getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>.</p>
+<h2 id="running-the-hub-s-commands">Running the hub's commands</h2>
+<p>The hub's PHP is inside its container, so <code>muse</code> runs there, already as the
+account that owns the hub's files:</p>
+<pre><code class="language-bash">sudo docker exec -it hub php core/bin/muse cache clear
+</code></pre>
+<p><code>-it</code> is what lets <code>muse</code> ask its questions; leave it out in a script, which
+has no terminal to give it.</p>
+<p>The scheduled tasks need nothing more. <code>hub-start</code> ticks the hub every minute
+inside the container, and each tick shows in <code>sudo docker logs hub</code>.</p>
+<p><strong>Mail.</strong> The image has no mail server, and PHP's <code>mail()</code> has nothing to
+hand mail to. Until you give the hub an SMTP server, it cannot send mail;
+see <a href="../../managers/configuring/hub/index.html#mail-settings">Mail Settings</a>.</p>
+<h2 id="backing-up">Backing up</h2>
+<p>Two things hold the hub: the database, and the <code>hub_app</code> volume. Copy both
+into <code>/var/backups</code>:</p>
+<pre><code class="language-bash">sudo docker exec hub-db sh -c 'mariadb-dump -u hub -p&quot;$MARIADB_PASSWORD&quot; hub' | sudo tee /var/backups/hub.sql &gt; /dev/null
+sudo docker run --rm -u root -v hub_app:/app:ro -v /var/backups:/backup hub tar czf /backup/hub-app.tar.gz -C /app .
+sudo chmod 600 /var/backups/hub.sql /var/backups/hub-app.tar.gz
+</code></pre>
+<p>The single quotes matter: <code>$MARIADB_PASSWORD</code> is read inside MariaDB's
+container, from its settings, not by your shell.</p>
+<h2 id="upgrading">Upgrading</h2>
+<p>The image holds the code, so upgrading means building a new image from newer
+code and starting a new container from it. <code>hub-start</code> runs the migrations
+as it starts.</p>
+<ol>
+<li>
+<p>Back up, as above.</p>
+</li>
+<li>
+<p>Keep the image you have, so that you can go back to it:</p>
+<pre><code class="language-bash">sudo docker tag hub hub:previous
+</code></pre>
+</li>
+<li>
+<p>Bring the code up to date, and build:</p>
+<pre><code class="language-bash">sudo git -C /opt/hub-image/hubzero-cms pull
+sudo docker build -t hub /opt/hub-image
+</code></pre>
+</li>
+<li>
+<p>Replace the container. The command that starts it is the same as in
+<a href="#6-start-the-hub">step 6</a>:</p>
+<pre><code class="language-bash">sudo docker rm -f hub
+sudo docker run -d --name hub --network hub --restart unless-stopped \
+    --env-file /opt/hub-image/hub.env \
+    -p 80:80 -p 443:443 \
+    --add-host hub.example.org:127.0.0.1 \
+    -v hub_app:/var/www/hub/app \
+    -v hub_caddy_data:/data -v hub_caddy_config:/config \
+    hub
+sudo docker logs -f hub
+</code></pre>
+<p>This time the log says <strong>The hub is already installed. Bringing its
+database up to date.</strong> The migrations run, and FrankenPHP starts.</p>
+</li>
+</ol>
+<p>The same four commands apply a change to <code>Caddyfile</code> or <code>hub-start</code>. After
+such a change, <code>git pull</code> simply has nothing new.</p>
+<h3 id="going-back">Going back</h3>
+<p>If the new image does not work, put the database back as it was and start the
+previous image:</p>
+<pre><code class="language-bash">sudo docker rm -f hub
+sudo cat /var/backups/hub.sql | sudo docker exec -i hub-db sh -c 'mariadb -u hub -p&quot;$MARIADB_PASSWORD&quot; hub'
+sudo docker run -d --name hub --network hub --restart unless-stopped \
+    --env-file /opt/hub-image/hub.env \
+    -p 80:80 -p 443:443 \
+    --add-host hub.example.org:127.0.0.1 \
+    -v hub_app:/var/www/hub/app \
+    -v hub_caddy_data:/data -v hub_caddy_config:/config \
+    hub:previous
+</code></pre>
+<h2 id="when-something-goes-wrong">When something goes wrong</h2>
+<p><strong>The hub's container keeps restarting.</strong> The install stopped, and the
+container stops with it rather than serve a hub that is not installed.
+<code>sudo docker logs hub</code> says why, at the end of the installer's output: most
+often a database password that differs between <code>MARIADB_PASSWORD</code> and
+<code>HUB_DB_PASSWORD</code>, or an administrator password shorter than eight
+characters. Correct <code>hub.env</code>, then remove the container and start it again
+as in step 6. A container reads <code>hub.env</code> only when it is created, so
+restarting it is not enough.</p>
+<p>MariaDB, too, reads its settings only once, on its first start. If
+<code>MARIADB_PASSWORD</code> was wrong then, correcting it later changes nothing.
+Before the hub is installed, the simplest way out is to start the database
+again: remove both containers and the <code>hub_db</code> volume
+(<code>sudo docker volume rm hub_db</code>), and start again from step 6.</p>
+<p><strong>The log says <em>&quot;The hub is configured, but its database cannot be
+reached&quot;</em>.</strong> The hub is installed, and MariaDB is not answering. Check that
+<code>hub-db</code> is running with <code>sudo docker ps</code>, and look at
+<code>sudo docker logs hub-db</code>.</p>
+<p><strong>The browser warns about the certificate.</strong> The Caddyfile still says
+<code>tls internal</code>, or FrankenPHP has not obtained a certificate for the name
+yet. Its log, in <code>sudo docker logs hub</code>, says what happened when it tried.
+It needs the name to reach the server, and ports 80 and 443 open to the
+internet.</p>
+<p><strong>The scheduled tasks' lines in the log say <em>HTTP 404</em>.</strong> The tick reached
+the hub from somewhere other than the server itself. Check that
+<code>--add-host</code> names the hub's own name, the one in <code>HUB_LIVE_SITE</code>.</p>
+<p><strong>The container will not start, saying an address is already in use.</strong>
+Something else on the server listens on port 80 or 443. Stop it, or move the
+hub to a server of its own.</p>
+<p>For everything else, see
+<a href="../installing-the-hub/index.html#when-something-goes-wrong">When something goes wrong</a>
+on the page that installs the hub.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ dae9fcc703</code> on 2026-10-30.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../upgrading/index.html" rel="prev"><span>Previous</span>Upgrading a hub</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/05-docker-image.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../assets/search.js?v=8a405e6d" defer></script>
+</body>
+</html>
