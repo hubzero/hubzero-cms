@@ -182,7 +182,7 @@ class Preflight
         $allFound = true;
 
         // Check for unzip (required by Composer)
-        $unzipPath = trim(shell_exec('which unzip 2>/dev/null') ?? '');
+        $unzipPath = trim(shell_exec('command -v unzip 2>/dev/null') ?? '');
         if (!empty($unzipPath)) {
             self::output("  \e[32m[OK]\e[39m unzip command\n", $ansi);
         } else {

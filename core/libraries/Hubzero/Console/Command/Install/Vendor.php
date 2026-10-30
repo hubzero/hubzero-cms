@@ -35,7 +35,7 @@ class Vendor
         $composerPath = $binPath . '/composer';
 
         // Check for unzip command (required by Composer)
-        $unzipPath = trim(shell_exec('which unzip 2>/dev/null') ?? '');
+        $unzipPath = trim(shell_exec('command -v unzip 2>/dev/null') ?? '');
         if (empty($unzipPath)) {
             self::output("\n", $ansi, true);
             self::output("\e[37;41mERROR:\e[39;49m unzip command not found.\n", $ansi, true);

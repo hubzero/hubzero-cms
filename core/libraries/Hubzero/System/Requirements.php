@@ -96,7 +96,7 @@ class Requirements
      */
     public static function checkUnzip(): array
     {
-        $unzipPath = trim(shell_exec('which unzip 2>/dev/null') ?? '');
+        $unzipPath = trim(shell_exec('command -v unzip 2>/dev/null') ?? '');
         $found = !empty($unzipPath);
 
         return [
