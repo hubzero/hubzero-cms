@@ -20,12 +20,9 @@ class Migration20170627153900ComHubgraph extends Base
 	 **/
 	public function up()
 	{
-		if (!$this->runAsRoot())
-		{
-			$this->setError('Failed to run with the necessary privileges.', 'warning');
-			return false;
-		}
-
+		// Dropping a trigger needs only the TRIGGER privilege on its table,
+		// which the hub's own account has on its own database, so this runs
+		// as that account. Most hubs never had these triggers at all.
 		$triggers = array(
 			//Answers
 			'hg_jos_answers_questions_insert_trigger',
@@ -176,11 +173,25 @@ class Migration20170627153900ComHubgraph extends Base
 			'hg_jos_xprofiles_bio_delete_trigger'
 		);
 
-		foreach ($triggers as $trigger)
+		$this->db->setQuery(
+			"SELECT TRIGGER_NAME FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = DATABASE()"
+		);
+		$existing = (array) $this->db->loadColumn();
+
+		foreach (array_intersect($triggers, $existing) as $trigger)
 		{
 			$query = "DROP TRIGGER IF EXISTS `" . $trigger . "`;";
 			$this->db->setQuery($query);
-			$this->db->query();
+
+			try
+			{
+				$this->db->query();
+			}
+			catch (\Exception $e)
+			{
+				$this->setError('Could not remove trigger ' . $trigger . ': ' . $e->getMessage(), 'warning');
+				return false;
+			}
 		}
 	}
 
