@@ -3,10 +3,10 @@
 FROM dunglas/frankenphp:1-php8.2-bookworm
 
 # The extensions the hub needs that the image does not already have, Xdebug,
-# and the tools Composer uses
+# the tools Composer uses, and the MariaDB client muse dumps and loads with
 RUN install-php-extensions pdo_mysql gd zip sockets opcache xdebug \
     && apt-get update \
-    && apt-get install -y --no-install-recommends git unzip \
+    && apt-get install -y --no-install-recommends git unzip mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 
 # PHP's development settings, and a place for sessions outside the document
