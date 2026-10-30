@@ -72,7 +72,8 @@ commits and 21 database migrations behind, to the head of <code>2.4-main</code>,
 rolling it back and upgrading it again. Its content came through unchanged,
 and the upgraded database matched a newly installed one.</p>
 <p>Run every command in the hub's directory, as the account that owns the hub's
-files: <code>www-data</code> on Debian and Ubuntu, as in the install guide. With
+files: <code>www-data</code> on Debian and Ubuntu, <code>apache</code> on Enterprise Linux, as in
+the install guide. The commands below write <code>www-data</code>. With
 FrankenPHP in Docker, run the <code>php</code> commands in the container instead:
 <code>sudo docker exec -w /var/www/hub hub php core/bin/muse ...</code>. The <code>git</code>,
 <code>mariadb-dump</code> and <code>tar</code> commands run on the server as they are.</p>
@@ -143,8 +144,9 @@ A migration that ended in a warning is tried again on every run.</p>
 </li>
 <li>
 <p><strong>Reload PHP</strong>, so no worker carries on with copies of the old code it had
-already compiled: <code>sudo systemctl reload php8.2-fpm</code> for Apache or nginx,
-<code>sudo docker restart hub</code> for FrankenPHP.</p>
+already compiled: <code>sudo systemctl reload php8.2-fpm</code> for Apache or nginx
+on Debian and Ubuntu, <code>sudo systemctl reload php-fpm</code> on Enterprise
+Linux, <code>sudo docker restart hub</code> for FrankenPHP.</p>
 </li>
 <li>
 <p><strong>Check the hub, then put it back online.</strong> Sign in to the administrator
@@ -183,7 +185,7 @@ CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 <p><strong>Put <code>app/</code> back:</strong></p>
 <pre><code class="language-bash">sudo rm -rf app
 sudo tar xzf ~/hub-app-before-upgrade.tgz
-sudo chown -R www-data:www-data app
+sudo chown -R www-data:www-data app     # apache:apache on Enterprise Linux, 33:33 for FrankenPHP
 </code></pre>
 </li>
 <li>
@@ -221,7 +223,7 @@ sudo docker rm -f hub
 files and certificates are outside the container, so nothing is lost.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ a7cc23ecc4</code> on 2026-10-29.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ a89b23e433</code> on 2026-10-30.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../installing/index.html" rel="prev"><span>Previous</span>Installing a hub</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/02-upgrading.md">Edit this page on GitHub</a>
