@@ -54,9 +54,8 @@
 <li class="toc__item toc__item--l2"><a href="#what-you-need">What you need</a></li>
 <li class="toc__item toc__item--l2"><a href="#1-install-mariadb-php-and-the-tools">1. Install MariaDB, PHP and the tools</a></li>
 <li class="toc__item toc__item--l2"><a href="#2-install-the-web-server">2. Install the web server</a></li>
-<li class="toc__item toc__item--l2"><a href="#3-open-the-firewall">3. Open the firewall</a></li>
+<li class="toc__item toc__item--l2"><a href="#3-open-the-firewall-and-turn-off-selinux">3. Open the firewall and turn off SELinux</a></li>
 <li class="toc__item toc__item--l2"><a href="#4-get-the-code">4. Get the code</a></li>
-<li class="toc__item toc__item--l3"><a href="#selinux">SELinux</a></li>
 <li class="toc__item toc__item--l2"><a href="#5-configure-the-web-server">5. Configure the web server</a></li>
 <li class="toc__item toc__item--l3"><a href="#if-you-installed-apache">If you installed Apache</a></li>
 <li class="toc__item toc__item--l3"><a href="#or-if-you-installed-nginx">Or, if you installed nginx</a></li>
@@ -86,7 +85,7 @@
 <p>This page prepares a server running Enterprise Linux 10 for a hub, from nothing to a
 web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.2 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 <a href="../../installing-the-hub/index.html">Installing the hub</a> installs it, the same way on every system.</p>
-<p>A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.</p>
+<p>A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.</p>
 <p>For another system, or help choosing one, see
 <a href="../index.html">Preparing the server</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -123,11 +122,23 @@ sudo systemctl enable --now httpd
 <pre><code class="language-bash">sudo dnf install nginx
 sudo systemctl enable --now nginx
 </code></pre>
-<h2 id="3-open-the-firewall">3. Open the firewall</h2>
-<p>Enterprise Linux starts with its firewall closed. Open the web ports:</p>
+<h2 id="3-open-the-firewall-and-turn-off-selinux">3. Open the firewall and turn off SELinux</h2>
+<p>Enterprise Linux starts with its firewall closed and SELinux enforcing. Open
+the web ports:</p>
 <pre><code class="language-bash">sudo firewall-cmd --permanent --add-service=http --add-service=https
 sudo firewall-cmd --reload
 </code></pre>
+<p>Hubs run with SELinux turned off, and the hub is not tested with it on. In
+its default policy it refuses much of what a hub does: writing to its own
+directory, connecting to MariaDB over TCP, sending mail. Turn it off:</p>
+<pre><code class="language-bash">sudo setenforce 0
+sudo grubby --update-kernel ALL --args selinux=0
+</code></pre>
+<p><code>setenforce 0</code> stops it enforcing at once; the kernel argument turns it off
+from the next boot. On Enterprise Linux 10, <code>SELINUX=disabled</code> in
+<code>/etc/selinux/config</code> does not turn it off completely, so use the kernel
+argument. Reboot when it suits you, then check that <code>getenforce</code> prints
+<code>Disabled</code>.</p>
 <h2 id="4-get-the-code">4. Get the code</h2>
 <p>The repository is the hub: its top directory is the web server's document
 root. Clone it, and give it to <code>apache</code>, the account PHP-FPM runs as:</p>
@@ -137,24 +148,6 @@ sudo chown -R apache:apache /var/www/hub
 <p>The installer writes the hub's configuration into a new <code>app/</code> directory
 inside it, and the hub later keeps its uploads, logs and cache there, so
 <code>apache</code> has to be able to write to the whole tree.</p>
-<h3 id="selinux">SELinux</h3>
-<p>SELinux lets the web server read files under <code>/var/www</code> but not write them,
-and not open network connections. The hub writes to its own directory, and
-the installer writes to the whole of it; the hub connects to MariaDB over
-TCP, and the browser installer downloads Composer's libraries. Allow those:</p>
-<pre><code class="language-bash">sudo dnf install policycoreutils-python-utils
-sudo semanage fcontext -a -t httpd_sys_rw_content_t &quot;/var/www/hub(/.*)?&quot;
-sudo restorecon -R /var/www/hub
-sudo setsebool -P httpd_can_network_connect_db 1
-sudo setsebool -P httpd_can_network_connect 1
-sudo setsebool -P httpd_can_sendmail 1
-</code></pre>
-<p>These were not run: the test installs were in containers, which have no
-SELinux. If something the web server does fails with a permission error that
-the file permissions do not explain, <code>sudo ausearch -m avc -ts recent</code> shows
-what SELinux refused. The command-line installer does its work as a login
-user rather than through the web server, so it is the safer of the two
-installers until SELinux is set up for the hub.</p>
 <h2 id="5-configure-the-web-server">5. Configure the web server</h2>
 <p>Each configuration below does the same four things:</p>
 <ul>
@@ -264,7 +257,9 @@ the database and runs the installer, the same way on every system.</p>
 <code>.php</code> address straight to PHP. Use the block above, which
 hands addresses that are not files to <code>index.php</code>.</p>
 <p><strong>Something the web server does fails with a permission error, though the
-files belong to <code>apache</code>.</strong> SELinux is refusing it. See <a href="#selinux">SELinux</a>.</p>
+files belong to <code>apache</code>.</strong> SELinux is still enforcing. <code>getenforce</code> should
+print <code>Disabled</code>, or <code>Permissive</code> until the reboot; if it prints <code>Enforcing</code>,
+go back to <a href="#3-open-the-firewall-and-turn-off-selinux">step 3</a>.</p>
 <p>For everything else, see
 <a href="../../installing-the-hub/index.html#when-something-goes-wrong">When something goes wrong</a> on the page
 that installs the hub.</p>

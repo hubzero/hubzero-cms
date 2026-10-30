@@ -122,6 +122,11 @@ sudo systemctl enable --now docker
 sudo firewall-cmd --permanent --add-service=http --add-service=https
 sudo firewall-cmd --reload
 </code></pre>
+<p>Turn SELinux off as well. Hubs run with it off and are not tested with it
+on. On Enterprise Linux 8, <code>sudo setenforce 0</code> and then <code>SELINUX=disabled</code> in
+<code>/etc/selinux/config</code>; on 9 and 10, <code>sudo setenforce 0</code> and then
+<code>sudo grubby --update-kernel ALL --args selinux=0</code>. Reboot when it suits you;
+<code>getenforce</code> should then print <code>Disabled</code>.</p>
 <p><strong>Or on any other distribution</strong>, its own MariaDB, <code>git</code>, <code>unzip</code> and Docker
 packages.</p>
 <h2 id="2-get-the-code">2. Get the code</h2>
@@ -195,7 +200,7 @@ are no certificate paths to give it. Its regular expressions have no
 lookahead, which is why the hidden-file rule is a matcher of two lines.</p>
 <h2 id="5-start-the-container">5. Start the container</h2>
 <pre><code class="language-bash">sudo docker run -d --name hub --restart unless-stopped --network host \
-    -v /var/www/hub:/var/www/hub:z \
+    -v /var/www/hub:/var/www/hub \
     -v /opt/hub-frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro \
     -v hub_caddy_data:/data -v hub_caddy_config:/config \
     hub-frankenphp
@@ -210,8 +215,6 @@ installer writes into the configuration are right on both sides. The
 container runs as user 33, which owns the files.</li>
 <li><code>hub_caddy_data</code> keeps the certificates FrankenPHP obtains across restarts
 and rebuilds.</li>
-<li><code>:z</code> on the hub's mount is for SELinux, on Enterprise Linux: it lets
-the container use the files. Elsewhere it does nothing.</li>
 </ul>
 <h2 id="6-how-to-run-the-hub-s-commands">6. How to run the hub's commands</h2>
 <p>The hub's PHP is inside the container, so its commands run there, and the
