@@ -81,7 +81,10 @@ class Pdo extends Driver
 		// Call parent construct
 		parent::__construct($options);
 
-		// @FIXME: Set sql_mode to non_strict mode?
+		// The SQL mode is the database server's to set, in its own
+		// configuration, and ordinary requests run under it. Only the
+		// installer's SQL files and the migration runner relax it, and the
+		// runner puts the server's mode back when it is done.
 	}
 
 	/**
