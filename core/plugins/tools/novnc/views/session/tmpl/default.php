@@ -14,20 +14,25 @@ if (!$this->app->sess)
 }
 else
 {
-	// Which VNC JS engine to run: the HubZero-extended stack ("legacy") or the
-	// stock modern noVNC client ("vanilla"). The plugin's vnc_engine config sets
-	// the default; &vncengine=legacy|vanilla overrides it per-request for testing.
+	// Which VNC JS engine to run: the bundled 2014 noVNC with HUBzero extensions
+	// ("legacy"), current noVNC with the HUBzero patches reapplied ("modern"), or
+	// stock upstream noVNC from a CDN ("vanilla"). The plugin's vnc_engine config
+	// sets the default; &vncengine=legacy|modern|vanilla overrides it per-request.
 	$engine = strtolower(Request::getWord('vncengine', ''));
 	if (!$engine)
 	{
 		$engine = strtolower($this->params->get('vnc_engine', 'legacy'));
 	}
-	if (!in_array($engine, array('legacy', 'vanilla')))
+	if (!in_array($engine, array('legacy', 'modern', 'vanilla')))
 	{
 		$engine = 'legacy';
 	}
 
-	if ($engine == 'vanilla')
+	if ($engine == 'modern')
+	{
+		require __DIR__ . DIRECTORY_SEPARATOR . 'modern.php';
+	}
+	else if ($engine == 'vanilla')
 	{
 		require __DIR__ . DIRECTORY_SEPARATOR . 'vanilla.php';
 	}

@@ -1,0 +1,107 @@
+From 1da91d1a1d5256bd323f75c73420c3c3fe34313d Mon Sep 17 00:00:00 2001
+From: "Nicholas J. Kisseberth" <nkissebe@purdue.edu>
+Date: Fri, 30 Oct 2026 16:47:28 -0400
+Subject: [PATCH] HUBzero: framebuffer resize request, ClientAction message,
+ fbresize event
+
+---
+ core/rfb.js | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+
+diff --git a/core/rfb.js b/core/rfb.js
+index 80011e4..ca69551 100644
+--- a/core/rfb.js
++++ b/core/rfb.js
+@@ -436,6 +436,18 @@ export default class RFB extends EventTargetMixin {
+         this._resumeAuthentication();
+     }
+ 
++    // HUBzero: ask the HUBzero VNC server to resize its framebuffer to w x h,
++    // through its own client message (not ExtendedDesktopSize). The server
++    // answers with a DesktopSize update, which fires "fbresize".
++    requestHubzeroResize(width, height) {
++        if (this._rfbConnectionState !== 'connected' || this._viewOnly) { return; }
++        width = Math.floor(width);
++        height = Math.floor(height);
++        if (!(width > 0 && width <= 4096 && height > 0 && height <= 4096)) { return; }
++        Log.Info("Requesting HUBzero framebuffer size " + width + "x" + height);
++        RFB.messages.hubzeroResize(this._sock, width, height);
++    }
++
+     sendCtrlAltDel() {
+         if (this._rfbConnectionState !== 'connected' || this._viewOnly) { return; }
+         Log.Info("Sending Ctrl-Alt-Del");
+@@ -2556,6 +2568,30 @@ export default class RFB extends EventTargetMixin {
+         return true;
+     }
+ 
++    // HUBzero ClientAction: 3 bytes padding, u32 length, then the action
++    // string ("url <url>" or a bare URL). The page decides how to open it, via
++    // the "clientaction" event.
++    _handleHubzeroClientAction() {
++        if (this._sock.rQwait("HUBzero ClientAction header", 7, 1)) { return false; }
++
++        this._sock.rQskipBytes(3);  // Padding
++        const length = this._sock.rQshift32();
++
++        if (this._sock.rQwait("HUBzero ClientAction content", length, 8)) { return false; }
++
++        let action = this._sock.rQshiftStr(length);
++        if (action.substr(0, 4) === 'url ') {
++            action = action.substr(4);
++        }
++        Log.Info("HUBzero ClientAction: " + action);
++
++        this.dispatchEvent(new CustomEvent(
++            "clientaction",
++            { detail: { url: action } }));
++
++        return true;
++    }
++
+     _normalMsg() {
+         let msgType;
+         if (this._FBU.rects > 0) {
+@@ -2607,6 +2643,9 @@ export default class RFB extends EventTargetMixin {
+             case 250:  // XVP
+                 return this._handleXvpMsg();
+ 
++            case 0x20:  // HUBzero ClientAction
++                return this._handleHubzeroClientAction();
++
+             default:
+                 this._fail("Unexpected server message (type " + msgType + ")");
+                 Log.Debug("sock.rQpeekBytes(30): " + this._sock.rQpeekBytes(30));
+@@ -3014,6 +3053,11 @@ export default class RFB extends EventTargetMixin {
+ 
+         // Keep this size until browser client size changes
+         this._saveExpectedClientSize();
++
++        // HUBzero: the page sizes its frame to the framebuffer
++        this.dispatchEvent(new CustomEvent(
++            "fbresize",
++            { detail: { width: width, height: height } }));
+     }
+ 
+     _xvpOp(ver, op) {
+@@ -3378,6 +3422,17 @@ RFB.messages = {
+         sock.flush();
+     },
+ 
++    // HUBzero framebuffer resize request: type 0x20, subtype 42, u16 w, u16 h
++    hubzeroResize(sock, width, height) {
++        sock.sQpush8(0x20); // msg-type
++        sock.sQpush8(42);   // HUBzero: resize
++
++        sock.sQpush16(width);
++        sock.sQpush16(height);
++
++        sock.flush();
++    },
++
+     xvpOp(sock, ver, op) {
+         sock.sQpush8(250); // msg-type
+ 
+-- 
+2.43.7
+

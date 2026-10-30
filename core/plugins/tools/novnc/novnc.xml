@@ -16,8 +16,9 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="vnc_engine" type="list" default="legacy" label="VNC JS engine" description="Which VNC client to run in the viewer. Overridable per-request with &amp;vncengine=legacy|vanilla.">
+				<field name="vnc_engine" type="list" default="legacy" label="VNC JS engine" description="Which VNC client to run in the viewer. Overridable per-request with &amp;vncengine=legacy|modern|vanilla.">
 					<option value="legacy">HubZero noVNC (bundled + extensions)</option>
+					<option value="modern">Modern noVNC 1.7.0 (bundled + HubZero patches)</option>
 					<option value="vanilla">Vanilla noVNC (current upstream, from CDN)</option>
 				</field>
 				<field name="browsers" type="textarea" rows="15" cols="40" default="*, safari 5.1&#13;&#10;*, chrome 27.0&#13;&#10;*, iceweasel 38.0&#13;&#10;*, firefox 30.0&#13;&#10;*, opera 23.0&#13;&#10;*, mozilla 5.0&#13;&#10;iOS, safari 1.0&#13;&#10;Windows, msie 10.0&#13;&#10;Windows, ie 10.0" label="Minimum OS/Browsers" description="A list of minimum OS/Browser required. One entry per line, the pattern is 'OS, BROWSER MAJOR.MINOR'. If all OSes apply, us an asterisk." />
