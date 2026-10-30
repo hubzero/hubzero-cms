@@ -20,6 +20,13 @@ class Migration20150330124145Core extends Base
 	 **/
 	public function up()
 	{
+		// A hub configured in app/config has no such file to update, and
+		// writing one would leave an empty configuration.php behind
+		if (!is_file(PATH_ROOT . DS . 'configuration.php'))
+		{
+			return;
+		}
+
 		// Update configuration, replacing mysql with pdo
 		$configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
 		$configuration = preg_replace('/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/', '$1pdo$2', $configuration);
