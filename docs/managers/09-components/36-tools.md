@@ -120,8 +120,19 @@ The number in the **Versions** column links to the tool's version list —
 registration is configured, **DOI**.
 
 A version's edit form has a **Details** tab with **Command**, **Timeout**,
-**Required Host**, **Middleware** and **Parameters**, a DOI panel, and a
-**Zones** tab listing the zones the version may run in.
+**Hard timeout**, **Required Host**, **Middleware** and **Parameters**, a DOI
+panel, and a **Zones** tab listing the zones the version may run in.
+
+**Hard timeout** is the longest a session of the version may run. Give a
+number and choose its unit, **days**, **hours**, **minutes** or **seconds**;
+a fraction works, so 1.5 hours is an hour and a half. Leave it empty for no
+limit. It is kept in seconds and shown again in the largest unit that holds
+it whole, so 90 minutes saved as 1.5 hours comes back as 90 minutes.
+Publishing a new version gives it the hard timeout of the version it
+replaces, or the development version's for a tool's first. Each session the
+version starts takes the version's hard timeout, unless the middleware gave
+the session one of its own; ending sessions that run past it is the
+middleware's work.
 
 The **DOI** column appears only when the **Enable DOI service?** option is on.
 
