@@ -390,15 +390,12 @@ class Git
 			$response  = trim($response);
 			$return    = array();
 
-			if (substr($response, 0, 5) == 'fatal')
+			// Newer git puts hints before the line that says it refused, so
+			// look for that line anywhere in what it said
+			if (preg_match('/^(?:fatal|error): (.*)$/m', $response, $refusal))
 			{
 				$return['status']  = 'fatal';
-				$return['message'] = trim(substr($response, stripos($response, 'fatal') + 6));
-			}
-			else if (substr($response, 0, 5) == 'error')
-			{
-				$return['status']  = 'fatal';
-				$return['message'] = trim(substr($response, stripos($response, 'error') + 6));
+				$return['message'] = trim($refusal[1]);
 			}
 			else if (stripos($response, 'automatic merge failed') !== false)
 			{
