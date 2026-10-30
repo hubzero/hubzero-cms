@@ -114,6 +114,32 @@ Replace `hub.example.org` and the certificate paths with your own. The
 examples use certificates from Let's Encrypt's `certbot`:
 `sudo dnf install epel-release && sudo dnf install certbot`, certbot being in EPEL.
 
+### Before you have a certificate
+
+The hub is always served over HTTPS, but it need not wait for a real
+certificate, or for its name to reach the server. Start with a self-signed
+one. With Apache, `mod_ssl` makes one the first time `httpd` starts. With
+nginx, or if those files are not there, make it yourself with the hub's name:
+
+```bash
+sudo openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+    -subj "/CN=hub.example.org" -addext "subjectAltName=DNS:hub.example.org" \
+    -keyout /etc/pki/tls/private/localhost.key -out /etc/pki/tls/certs/localhost.crt
+sudo chmod 600 /etc/pki/tls/private/localhost.key
+```
+
+In the configuration below, use these files in place of the Let's Encrypt
+paths:
+
+| | Path |
+|---|---|
+| Certificate | `/etc/pki/tls/certs/localhost.crt` |
+| Key | `/etc/pki/tls/private/localhost.key` |
+
+Browsers warn about a self-signed certificate; accept the warning to reach
+the installer. When the real certificate arrives, put its paths in instead
+and reload the web server.
+
 ### If you installed Apache
 
 `/etc/httpd/conf.d/hub.conf`:

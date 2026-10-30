@@ -120,6 +120,22 @@ is your distribution's:
 - the PHP-FPM socket, in `SetHandler` for Apache or `fastcgi_pass` for nginx;
 - the log locations, and the certificate paths.
 
+Until the hub has a real certificate, or before its name reaches the server,
+use a self-signed one. The hub is always served over HTTPS, but it need not
+wait. Many distributions make one when their web server's TLS module is
+installed; if yours does not, `openssl` makes one with the hub's name:
+
+```bash
+sudo mkdir -p /etc/ssl/private /etc/ssl/certs
+sudo openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+    -subj "/CN=hub.example.org" -addext "subjectAltName=DNS:hub.example.org" \
+    -keyout /etc/ssl/private/hub.key -out /etc/ssl/certs/hub.crt
+sudo chmod 600 /etc/ssl/private/hub.key
+```
+
+Browsers warn about it; accept the warning to reach the installer, and put
+the real certificate's paths in when it arrives.
+
 Keep the rest as it is: each of its rules is one of the four things above,
 and the hub needs all four. Under nginx, do not route PHP through a
 distribution snippet that answers 404 for a `.php` address with no file

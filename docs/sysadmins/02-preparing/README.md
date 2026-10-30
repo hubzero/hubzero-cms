@@ -29,7 +29,8 @@ paths:
 4. **The code**, cloned from the release branch and owned by the account PHP
    runs as.
 5. **The web server's configuration**, written for that system: where the
-   file goes, the PHP-FPM socket, the logs.
+   file goes, the PHP-FPM socket, the logs, and a self-signed certificate to
+   start with if the real one or the hub's name is not ready yet.
 
 
 The Docker pages replace the PHP and web server steps with an image built

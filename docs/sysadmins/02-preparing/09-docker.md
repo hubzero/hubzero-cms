@@ -155,6 +155,14 @@ FrankenPHP obtains and renews the certificate for the name itself, so there
 are no certificate paths to give it. Its regular expressions have no
 lookahead, which is why the hidden-file rule is a matcher of two lines.
 
+Before the name reaches the server, or for a hub with no public name, add
+`tls internal` inside the site block, on the line after `root`. FrankenPHP
+then makes the certificate itself, from a local authority of its own, and
+browsers warn about it; accept the warning to reach the installer. When the
+name reaches the server, take the line out and restart the container, and
+FrankenPHP obtains a real certificate in its place. The hub is served over
+HTTPS either way.
+
 ## 5. Start the container
 
 ```bash

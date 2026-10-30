@@ -28,9 +28,11 @@ instead.
 - A Linux server. Hubzero does not run on Windows; the installer refuses to
   start there.
 - A name for the hub, pointing at the server, and a TLS certificate for it.
-  A hub has to be served over HTTPS: the administrator sign-in form always
+  A hub is always served over HTTPS: the administrator sign-in form always
   posts to an `https://` address, so on plain HTTP the administrator can
-  never sign in.
+  never sign in. A self-signed certificate will do to start with, before the
+  real one or the name is ready; each system's page shows where to find or
+  make one.
 - MariaDB.
 - SELinux turned off, on a system that has it. Hubs run with it off and are
   not tested with it on.
