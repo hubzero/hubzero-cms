@@ -297,7 +297,7 @@ class BootstrapInstaller
         }
 
         // Check system composer via which
-        $composerPath = trim(shell_exec('which composer 2>/dev/null') ?? '');
+        $composerPath = trim(shell_exec('command -v composer 2>/dev/null') ?? '');
         if (!empty($composerPath)) {
             return escapeshellarg($composerPath);
         }
