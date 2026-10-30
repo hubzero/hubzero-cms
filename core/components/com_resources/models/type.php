@@ -74,7 +74,7 @@ class Type extends Relational
 	 */
 	public function automaticAlias($data)
 	{
-		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['type']);
+		$alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : ($data['type'] ?? ''));
 		$alias = strip_tags($alias);
 		$alias = trim($alias);
 		if (strlen($alias) > 70)

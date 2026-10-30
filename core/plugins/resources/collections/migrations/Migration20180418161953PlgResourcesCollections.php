@@ -31,9 +31,14 @@ class Migration20180418161953PlgResourcesCollections extends Base
 				$this->db->query();
 			}
 		}
+		// A hub without a series type has nothing to mark; saving the empty
+		// model it gets back would add a resource type with no name
 		$type = Type::onebyAlias('series');
-		$type->set('collection', 1);
-		$type->save();
+		if (!$type->isNew())
+		{
+			$type->set('collection', 1);
+			$type->save();
+		}
 		$this->addPluginEntry('resources', 'collections');
 	}
 
