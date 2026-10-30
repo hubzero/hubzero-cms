@@ -41,17 +41,17 @@
         <a class="rail__book" href="../index.html">System administrators</a>
         <nav aria-label="System administrators contents">
 <ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../installing/index.html">Installing a hub</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../debian-12/index.html">Installing on Debian 12</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../debian-13/index.html">Installing on Debian 13</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-22-04-lts/index.html">Installing on Ubuntu 22.04 LTS</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-24-04-lts/index.html">Installing on Ubuntu 24.04 LTS</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-26-04-lts/index.html">Installing on Ubuntu 26.04 LTS</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-8/index.html">Installing on Enterprise Linux 8</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-9/index.html">Installing on Enterprise Linux 9</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Installing on Enterprise Linux 10</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Installing with FrankenPHP in Docker</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Installing on any other Linux</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../installing/index.html">Installation overview</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../debian-12/index.html">Preparing a Debian 12 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../debian-13/index.html">Preparing a Debian 13 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Preparing a server for FrankenPHP in Docker</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Preparing any other Linux server</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Upgrading a hub</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#before-you-start">Before you start</a></li>
@@ -74,7 +74,7 @@
         </header>
         
         <div class="prose">
-<p>A hub installed as <a href="../installing/index.html">Installing a hub</a> describes is a git
+<p>A hub installed as the <a href="../installing/index.html">installation overview</a> describes is a git
 checkout of its release branch, <code>2.4-main</code>. Upgrading it means bringing that
 checkout up to date, then the libraries Composer installs, then the database.
 It takes a few minutes, most of it Composer and the migrations.</p>
@@ -233,7 +233,7 @@ and the container started again from the new image:</p>
 sudo docker rm -f hub
 </code></pre>
 <p>Then start it with the same <code>docker run</code> as in
-<a href="../docker/index.html">Installing with FrankenPHP in Docker</a>. The hub's
+<a href="../docker/index.html">Preparing a server for FrankenPHP in Docker</a>. The hub's
 files and certificates are outside the container, so nothing is lost.</p>
 
         </div>
