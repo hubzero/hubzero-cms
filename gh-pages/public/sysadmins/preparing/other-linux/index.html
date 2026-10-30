@@ -98,8 +98,11 @@ administrator can never sign in.</li>
 <h2 id="1-install-mariadb-php-and-the-tools">1. Install MariaDB, PHP and the tools</h2>
 <p>Install, from the distribution or a repository that packages them for it:</p>
 <ul>
-<li><strong>MariaDB.</strong> The hub was installed against 10.11 and 11.8. MySQL is
-expected to work but was not tried.</li>
+<li><strong>MariaDB.</strong> The hub was installed against 10.11 and 11.8, with their
+default SQL mode. MySQL is expected to work but was not tried; its default
+SQL mode is stricter than MariaDB's and rejects the zero dates hub data
+carries, so on MySQL set <code>sql_mode</code> to MariaDB's default, given on
+<a href="../../installing-the-hub/index.html#mariadb-s-sql-mode">Installing the hub</a>.</li>
 <li><strong>PHP 8.2</strong>, both its command line and PHP-FPM, with these extensions in
 whatever packages they come in: <code>pdo_mysql</code>, <code>mbstring</code>, <code>curl</code>, <code>gd</code>,
 <code>zip</code>, <code>fileinfo</code>, <code>openssl</code>, the XML family (<code>dom</code>, <code>simplexml</code>,
