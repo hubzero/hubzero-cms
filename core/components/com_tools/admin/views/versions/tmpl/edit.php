@@ -60,6 +60,18 @@ $this->js();
 							<input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?php echo $this->escape(stripslashes($this->row->vnc_timeout ?: ''));?>" size="50" />
 						</div>
 
+						<?php list($hardTimeout, $hardTimeoutUnit) = \Components\Tools\Helpers\Duration::fromSeconds($this->row->hardTimeout); ?>
+						<div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT'); ?>">
+							<label for="field-hardtimeout"><?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT'); ?>:</label><br />
+							<input type="number" name="fields[hardTimeout]" id="field-hardtimeout" min="0" step="any" value="<?php echo $this->escape($hardTimeout); ?>" aria-describedby="field-hardtimeout-hint" />
+							<select name="fields[hardTimeoutUnit]" id="field-hardtimeout-unit" aria-label="<?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_UNIT'); ?>">
+								<?php foreach (array_keys(\Components\Tools\Helpers\Duration::UNITS) as $unit) : ?>
+									<option value="<?php echo $unit; ?>"<?php if ($unit == $hardTimeoutUnit) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit)); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<span class="hint" id="field-hardtimeout-hint"><?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT'); ?></span>
+						</div>
+
 						<div class="input-wrap">
 							<label for="field-hostreq"><?php echo Lang::txt('COM_TOOLS_FIELD_HOSTREQ'); ?>:</label><br />
 							<input type="text" name="fields[hostreq]" id="field-hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', $this->row->hostreq)));?>" size="50" />

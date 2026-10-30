@@ -11,6 +11,7 @@ use Hubzero\Component\AdminController;
 use Components\Tools\Models\Version\Zone;
 use Components\Tools\Models\Version;
 use Components\Tools\Models\Tool;
+use Components\Tools\Helpers\Duration;
 use Request;
 use Config;
 use Notify;
@@ -234,6 +235,23 @@ class Versions extends AdminController
 		if (!$row->vnc_command)
 		{
 			Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_COMMAND'));
+			return $this->editTask($row);
+		}
+
+		// Given as a number of hours, minutes or the like, kept in seconds
+		try
+		{
+			$row->hardTimeout = Duration::toSeconds(
+				isset($fields['hardTimeout']) ? $fields['hardTimeout'] : '',
+				isset($fields['hardTimeoutUnit']) ? $fields['hardTimeoutUnit'] : 'seconds'
+			);
+		}
+		catch (\InvalidArgumentException $e)
+		{
+			Request::setVar('id', $fields['id']);
+			Request::setVar('version', $fields['version']);
+
+			Notify::error(Lang::txt('COM_TOOLS_ERROR_INVALID_HARD_TIMEOUT'));
 			return $this->editTask($row);
 		}
 
