@@ -3,9 +3,9 @@ status: rewritten
 reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
-summary: Installing a hub on a Linux distribution the other pages do not name, from what it needs rather than from package names.
+summary: Preparing a server on a Linux distribution the other pages do not name, from what a hub needs rather than from package names.
 -->
-# Installing on any other Linux
+# Preparing any other Linux server
 
 This page is for a Linux distribution the other installation pages do not
 name. It says what a hub needs rather than which packages to install, because
@@ -15,7 +15,7 @@ page has prepared the server, [Installing the hub](12-installing-the-hub.md)
 installs it.
 
 If your distribution has no PHP 8.2 and no second source of it, run the hub
-in Docker instead: [Installing with FrankenPHP in Docker](10-docker.md)
+in Docker instead: [Preparing a server for FrankenPHP in Docker](10-docker.md)
 needs no PHP on the server at all.
 
 ## What you need
@@ -149,7 +149,7 @@ Keep it for then:
 * * * * * <account> /var/www/hub/core/bin/muse cron:jobs tick
 ```
 
-## 6. Install the hub
+## 6. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](12-installing-the-hub.md),
 which creates the database and runs the installer, the same way on every

@@ -233,8 +233,8 @@ package's own tracker.
 
 You need a working hub to develop against; the CMS does not run standalone.
 [Development Environment](../developers/01-getting-started/06-devenvironment.md)
-covers getting one, and [Installing a hub](../sysadmins/01-installing.md)
-sets one up from scratch. The platform targets PHP 8.2.
+covers getting one, and the [installation overview](../sysadmins/01-installing.md)
+shows how to set one up from scratch. The platform targets PHP 8.2.
 
 Once the hub runs, replace its CMS directory with your clone, restore the
 `app/` directory from the original, install the Composer dependencies, and run

@@ -3,9 +3,9 @@ status: rewritten
 reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
-summary: Installing a hub on Debian 12 with PHP 8.2 and MariaDB 10.11, behind Apache or nginx.
+summary: Preparing a Debian 12 server for a hub: PHP 8.2 and MariaDB 10.11 from Debian, behind Apache or nginx.
 -->
-# Installing on Debian 12
+# Preparing a Debian 12 server
 
 This page prepares a server running Debian 12 for a hub, from nothing to a
 web server ready to serve it. It uses Debian 12's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
@@ -13,7 +13,7 @@ web server ready to serve it. It uses Debian 12's own PHP 8.2 and MariaDB 10.11,
 
 The PHP 8.2 packages below were installed on Debian 12 and every extension the hub needs was present. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04.
 
-For another system, see [Installing a hub](01-installing.md).
+For another system, see the [installation overview](01-installing.md).
 
 ## What you need
 
@@ -209,7 +209,7 @@ Keep it for then:
 * * * * * www-data /var/www/hub/core/bin/muse cron:jobs tick
 ```
 
-## 6. Install the hub
+## 6. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.

@@ -7,7 +7,7 @@ summary: Bringing a hub up to the latest code on its release branch, with a back
 -->
 # Upgrading a hub
 
-A hub installed as [Installing a hub](01-installing.md) describes is a git
+A hub installed as the [installation overview](01-installing.md) describes is a git
 checkout of its release branch, `2.4-main`. Upgrading it means bringing that
 checkout up to date, then the libraries Composer installs, then the database.
 It takes a few minutes, most of it Composer and the migrations.
@@ -206,5 +206,5 @@ sudo docker rm -f hub
 ```
 
 Then start it with the same `docker run` as in
-[Installing with FrankenPHP in Docker](10-docker.md). The hub's
+[Preparing a server for FrankenPHP in Docker](10-docker.md). The hub's
 files and certificates are outside the container, so nothing is lost.

@@ -13,8 +13,9 @@ puts it back when something goes wrong. Everything here happens on the
 server, as `www-data` or as root. The hub's own administrator interface, at
 `/administrator`, is the subject of [Hub managers](../managers/README.md).
 
-- [Installing a hub](01-installing.md) — what a hub needs, and which page
-  to follow. Each system has its own page for preparing the server:
+- [Installation overview](01-installing.md) — what a hub needs, and how
+  installing goes: prepare the server on your system's page, then install
+  the hub. The pages for preparing the server:
   [Debian 12](02-debian-12.md), [Debian 13](03-debian-13.md),
   [Ubuntu 22.04 LTS](04-ubuntu-22-04-lts.md),
   [Ubuntu 24.04 LTS](05-ubuntu-24-04-lts.md),
@@ -24,9 +25,9 @@ server, as `www-data` or as root. The hub's own administrator interface, at
   [Enterprise Linux 10](09-enterprise-linux-10.md),
   [any Linux in Docker](10-docker.md), and
   [any other Linux](11-other-linux.md).
-- [Installing the hub](12-installing-the-hub.md) — the database, the
-  installer and what comes after, the same on every system, once its page has
-  prepared the server.
+- [Installing the hub](12-installing-the-hub.md) — on a prepared server:
+  the database, the installer and what comes after, the same on every
+  system.
 - [Upgrading a hub](13-upgrading.md) — bringing an installed hub up to the
   head of its release branch, with a backup first and the way back.
 

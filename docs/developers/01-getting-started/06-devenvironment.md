@@ -61,7 +61,7 @@ pre-flight result without installing anything.
 
 Three routes:
 
-**Install one.** [Installing a hub](../../sysadmins/01-installing.md) takes a
+**Install one.** The [installation overview](../../sysadmins/01-installing.md) takes a
 Linux server from nothing to a running hub from a checkout of this
 repository, behind Apache, nginx or FrankenPHP in Docker, using the web
 installer or `muse install`. A development hub is the same, on a machine of your own.

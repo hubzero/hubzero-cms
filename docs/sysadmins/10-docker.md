@@ -3,9 +3,9 @@ status: rewritten
 reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
-summary: Installing a hub on any Linux server in FrankenPHP's PHP 8.2 Docker image, with MariaDB from the server's own distribution.
+summary: Preparing any Linux server for a hub in FrankenPHP's PHP 8.2 Docker image, with MariaDB from the server's own distribution.
 -->
-# Installing with FrankenPHP in Docker
+# Preparing a server for FrankenPHP in Docker
 
 This page runs the hub in FrankenPHP's PHP 8.2 Docker image, on any Linux
 server that can run Docker. FrankenPHP is a web server with PHP built in, and
@@ -18,7 +18,7 @@ way on every system.
 
 Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.
 
-For another system, see [Installing a hub](01-installing.md).
+For another system, see the [installation overview](01-installing.md).
 
 ## What you need
 
@@ -196,7 +196,7 @@ Keep it for then:
 * * * * * root docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick
 ```
 
-## 7. Install the hub
+## 7. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.

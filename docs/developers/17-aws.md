@@ -59,4 +59,4 @@ overridden per client.
 
 A hub installs on any Linux server, a cloud instance included. Nothing
 about the machine being an EC2 instance changes how; see
-[Installing a hub](../sysadmins/01-installing.md).
+[Installation overview](../sysadmins/01-installing.md).

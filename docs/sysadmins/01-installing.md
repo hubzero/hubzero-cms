@@ -3,9 +3,9 @@ status: rewritten
 reviewed-against: 2.4-main @ 4b8a132fb4
 reviewed: 2026-10-30
 screenshots: none
-summary: Choosing how to install a hub: what it needs, the systems the installation pages cover, and what installing does.
+summary: How installing a hub goes: what it needs, preparing the server on your system's page, then installing the hub.
 -->
-# Installing a hub
+# Installation overview
 
 A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
 of PHP. Installing one takes two pages:

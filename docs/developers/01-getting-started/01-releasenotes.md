@@ -27,7 +27,7 @@ and commit history on
 line has its own `X.Y-main` branch; `2.4-main` is the current one, and a
 release is cut from it. [Upgrading a hub](../../sysadmins/13-upgrading.md)
 brings a running hub up to the head of its branch;
-[Installing a hub](../../sysadmins/01-installing.md) sets up a new one.
+the [installation overview](../../sysadmins/01-installing.md) sets up a new one.
 
 The running version is the `HVERSION` constant, defined in
 [`core/bootstrap/app.php`](../../../core/bootstrap/app.php) and shown in

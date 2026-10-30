@@ -3,9 +3,9 @@ status: rewritten
 reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
-summary: Installing a hub on Ubuntu 26.04 LTS, which has no PHP 8.2 packages, in FrankenPHP's PHP 8.2 Docker image with MariaDB 11.8.
+summary: Preparing an Ubuntu 26.04 LTS server for a hub, which has no PHP 8.2 packages: FrankenPHP's PHP 8.2 Docker image, with MariaDB 11.8.
 -->
-# Installing on Ubuntu 26.04 LTS
+# Preparing an Ubuntu 26.04 LTS server
 
 This page takes a server running Ubuntu 26.04 LTS with nothing on it to a hub
 that answers at its own address and has an administrator who can sign in.
@@ -18,7 +18,7 @@ way on every system.
 
 The PPA was checked for Ubuntu 26.04 and has no packages for it. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server, and a hub was installed against MariaDB 11.8.
 
-For another system, see [Installing a hub](01-installing.md).
+For another system, see the [installation overview](01-installing.md).
 
 ## What you need
 
@@ -171,7 +171,7 @@ Keep it for then:
 * * * * * root docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick
 ```
 
-## 7. Install the hub
+## 7. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.

@@ -3,9 +3,9 @@ status: rewritten
 reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
-summary: Installing a hub on Enterprise Linux 10 (RHEL, Rocky Linux, AlmaLinux) with PHP 8.2 from Remi's repository and MariaDB 10.11, behind Apache or nginx.
+summary: Preparing an Enterprise Linux 10 server (RHEL, Rocky Linux, AlmaLinux) for a hub: PHP 8.2 from Remi's repository and MariaDB 10.11, behind Apache or nginx.
 -->
-# Installing on Enterprise Linux 10
+# Preparing an Enterprise Linux 10 server
 
 This page prepares a server running Enterprise Linux 10 for a hub, from nothing to a
 web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.2 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
@@ -13,7 +13,7 @@ web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux
 
 A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.
 
-For another system, see [Installing a hub](01-installing.md).
+For another system, see the [installation overview](01-installing.md).
 
 ## What you need
 
@@ -251,7 +251,7 @@ Keep it for then:
 * * * * * apache /var/www/hub/core/bin/muse cron:jobs tick
 ```
 
-## 7. Install the hub
+## 7. Next: install the hub
 
 The server is ready. Go on to [Installing the hub](12-installing-the-hub.md), which creates
 the database and runs the installer, the same way on every system.
