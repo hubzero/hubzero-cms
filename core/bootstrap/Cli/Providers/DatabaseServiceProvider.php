@@ -27,6 +27,8 @@ class DatabaseServiceProvider extends ServiceProvider
 			$options = [
 				'driver'   => $app['config']->get('dbtype'),
 				'host'     => $app['config']->get('host'),
+				'port'     => $app['config']->get('port'),
+				'socket'   => $app['config']->get('socket'),
 				'user'     => $app['config']->get('user'),
 				'password' => $app['config']->get('password'),
 				'database' => $app['config']->get('db'),

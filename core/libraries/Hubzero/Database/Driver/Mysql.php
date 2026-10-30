@@ -42,10 +42,19 @@ class Mysql extends PdoDriver
 			// utf8mb4 so 4-byte characters (emoji) aren't silently truncated;
 			// 'dbcharset' in the hub config overrides it
 			$charset = (!empty($options['charset']) && preg_match('/^[a-z0-9_]+$/i', $options['charset'])) ? $options['charset'] : 'utf8mb4';
-			$options['dsn']  = "mysql:host={$options['host']};charset={$charset}";
-			if (isset($options['port']))
+			// A socket names the server outright, and a host and port are then
+			// ignored; without one, an empty port is the server's default
+			if (!empty($options['socket']))
 			{
-				$options['dsn'] .= ";port={$options['port']}";
+				$options['dsn'] = "mysql:unix_socket={$options['socket']};charset={$charset}";
+			}
+			else
+			{
+				$options['dsn'] = "mysql:host={$options['host']};charset={$charset}";
+				if (!empty($options['port']))
+				{
+					$options['dsn'] .= ";port={$options['port']}";
+				}
 			}
 			$options['dsn'] .= (isset($options['database']) && $options['database']) ? ";dbname={$options['database']}" : '';
 		}
