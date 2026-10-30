@@ -86,14 +86,18 @@ prepared: MariaDB and PHP 8.2 installed, the code in <code>/var/www/hub</code>, 
 web server answering for the hub's name over HTTPS. If yours is not ready
 yet, start at <a href="../preparing/index.html">Preparing the server</a> and follow your system's
 page first.</p>
-<p>Everything here is the same on every system. Where a command differs, it
-uses the two values your system's page set at its end: <code>HUB_OWNER</code>, the
-account that owns the hub's files, and <code>HUB_PHP</code>, how to run the hub's PHP.
-Check they are set in the shell you are using:</p>
-<pre><code class="language-bash">echo &quot;$HUB_OWNER&quot; &quot;$HUB_PHP&quot;
+<p>Everything here is the same on every system. The hub's commands are run
+with <code>muse</code>, its command line, in the hub's directory:</p>
+<pre><code class="language-bash">cd /var/www/hub
+sudo php core/bin/muse ...
 </code></pre>
-<p>It should print something like <code>www-data:www-data sudo -u www-data php</code>. If it
-prints nothing, set them again as your system's page shows.</p>
+<p>Whatever <code>muse</code> writes has to belong to the account that owns the hub's
+files, <code>www-data</code> or <code>apache</code>, or the web server cannot write it again. Run
+with <code>sudo</code>, <code>muse</code> becomes that account by itself before it does anything,
+and says so. If you are that account, or the files are your own, as in a
+checkout for development, leave out <code>sudo</code>: <code>muse</code> then runs as you.</p>
+<p>If the hub runs in Docker, <code>muse</code> runs in the container instead, as your
+system's page shows: <code>sudo docker exec -it -w /var/www/hub hub php core/bin/muse ...</code> wherever this page says <code>sudo php core/bin/muse ...</code>.</p>
 <h2 id="1-create-the-database">1. Create the database</h2>
 <p>The hub needs a database and an account that owns it. MariaDB's <code>root</code>
 account signs in through the operating system rather than with a password,
@@ -116,7 +120,7 @@ privileges. Creating them by hand, as above, needs neither.</p>
 <h2 id="2-check-the-server">2. Check the server</h2>
 <p>The installer can check everything it needs before it changes anything:</p>
 <pre><code class="language-bash">cd /var/www/hub
-$HUB_PHP core/bin/muse install check
+sudo php core/bin/muse install check
 </code></pre>
 <p>It lists the PHP version, each extension, <code>unzip</code>, and whether it can write
 to the hub's directory, and ends by saying whether all of them passed. If the
@@ -128,7 +132,7 @@ the database up to date and create the administrator. Use one of the three
 ways below.</p>
 <h3 id="from-the-command-line">From the command line</h3>
 <pre><code class="language-bash">cd /var/www/hub
-$HUB_PHP core/bin/muse install
+sudo php core/bin/muse install
 </code></pre>
 <p>It asks its questions one at a time and checks each answer before moving
 on. In order:</p>
@@ -207,20 +211,22 @@ Write the file as <code>/var/www/hub-install.json</code>, outside the hub's dire
 </tr>
 </tbody>
 </table>
-<p>It holds two passwords, so give it to the hub's account alone, use it, and
-delete it:</p>
-<pre><code class="language-bash">sudo chown &quot;$HUB_OWNER&quot; /var/www/hub-install.json
+<p>It holds two passwords, so give it to the account that owns the hub alone,
+use it, and delete it:</p>
+<pre><code class="language-bash">sudo chown --reference=/var/www/hub /var/www/hub-install.json
 sudo chmod 600 /var/www/hub-install.json
 cd /var/www/hub
-$HUB_PHP core/bin/muse install --config=/var/www/hub-install.json
+sudo php core/bin/muse install --config=/var/www/hub-install.json
 sudo rm /var/www/hub-install.json
 </code></pre>
+<p><code>chown --reference</code> gives the file the same owner as the hub's directory, so
+it does not matter which account that is.</p>
 <p>If the hub runs in Docker, the container cannot see that file. Copy it in
 instead, use the copy, and remove both:</p>
 <pre><code class="language-bash">sudo docker cp /var/www/hub-install.json hub:/tmp/hub-install.json
 sudo docker exec -u root hub chown 33:33 /tmp/hub-install.json
 sudo docker exec -u root hub chmod 600 /tmp/hub-install.json
-$HUB_PHP core/bin/muse install --config=/tmp/hub-install.json
+sudo docker exec -w /var/www/hub hub php core/bin/muse install --config=/tmp/hub-install.json
 sudo docker exec -u root hub rm /tmp/hub-install.json
 sudo rm /var/www/hub-install.json
 </code></pre>
@@ -280,8 +286,12 @@ you to a Getting Started article; without it, to the hub's front page.</p>
 <code>https://hub.example.org/administrator</code>. The same account signs in to the
 site at <code>/login</code>.</p>
 <p><strong>Scheduled tasks.</strong> Nothing that runs on a schedule happens until the server
-ticks the hub every minute. Add the line your system's page gave you to
-<code>/etc/crontab</code>. It needs the hub's address in <code>live_site</code> in
+ticks the hub every minute. Add this line to <code>/etc/crontab</code> (under Docker,
+the one your system's page gives instead):</p>
+<pre><code>* * * * * root php /var/www/hub/core/bin/muse cron:jobs tick
+</code></pre>
+<p>Run as root, <code>muse</code> becomes the account that owns the hub, as it does from
+the command line. The tick needs the hub's address in <code>live_site</code> in
 <code>app/config/app.php</code>, which the browser installer leaves blank unless you
 filled in <strong>Site URL</strong>. What the tick does, and the jobs it runs, are in
 <a href="../../managers/maintenance/cron/index.html#how-it-works">Scheduled tasks</a>.</p>
@@ -297,7 +307,7 @@ which the installers are not. Load them once yourself:</p>
 installing, run the migrations again to set it up. Only the ones that did
 not finish run again:</p>
 <pre><code class="language-bash">cd /var/www/hub
-$HUB_PHP core/bin/muse migration run -f
+sudo php core/bin/muse migration run -f
 </code></pre>
 <p><strong>Keeping it up to date.</strong> <a href="../upgrading/index.html">Upgrading a hub</a> brings the hub
 up to the latest code on its branch, with a backup first and a way back.</p>
@@ -340,14 +350,15 @@ connection error after signing in.</strong> The hub is being served over plain H
 The administrator sign-in form posts to <code>https://</code>; serve the hub over HTTPS.</p>
 <p><strong>A page says the file or directory is not writable, or images and uploads
 fail.</strong> Something in <code>/var/www/hub</code> belongs to another account, usually
-because a command was run as yourself or as <code>root</code>. Give it back:</p>
-<pre><code class="language-bash">sudo chown -R &quot;$HUB_OWNER&quot; /var/www/hub
+because something other than <code>muse</code> was run as yourself or as <code>root</code>. Give
+it back to the directory's owner:</p>
+<pre><code class="language-bash">sudo chown -R --reference=/var/www/hub /var/www/hub
 </code></pre>
 <p><strong>The browser installer's migrations stop with <em>Connection error</em>.</strong> The
 migrations may still have finished. Reload the page; if it still lists
 migrations as pending, finish them from the command line:</p>
 <pre><code class="language-bash">cd /var/www/hub
-$HUB_PHP core/bin/muse migration run -f
+sudo php core/bin/muse migration run -f
 </code></pre>
 <p><strong>Requests for <code>/app/config/database.php</code> do not answer 403.</strong> The web
 server's rules for private paths are missing. Check before the hub is in use:</p>
@@ -357,7 +368,7 @@ server's rules for private paths are missing. Check before the hub is in use:</p
 or the container under Docker, is at the end of your system's page.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 581dd435fc</code> on 2026-10-30.</p>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ d96149df5b</code> on 2026-10-30.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../preparing/other-linux/index.html" rel="prev"><span>Previous</span>Preparing any other Linux server</a><a class="pager__next" href="../upgrading/index.html" rel="next"><span>Next</span>Upgrading a hub</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/03-installing-the-hub.md">Edit this page on GitHub</a>
