@@ -52,7 +52,7 @@ $this->js();
 
 						<div class="input-wrap">
 							<label for="field-command"><?php echo Lang::txt('COM_TOOLS_FIELD_COMMAND'); ?>:</label><br />
-							<input type="text" name="fields[vnc_command]" id="field-command" value="<?php echo $this->escape(stripslashes($this->row->vnc_command));?>" size="50" />
+							<input type="text" name="fields[vnc_command]" id="field-command" value="<?php echo $this->escape(stripslashes($this->row->vnc_command ?? ''));?>" size="50" />
 						</div>
 
 						<div class="input-wrap">
@@ -74,17 +74,17 @@ $this->js();
 
 						<div class="input-wrap">
 							<label for="field-hostreq"><?php echo Lang::txt('COM_TOOLS_FIELD_HOSTREQ'); ?>:</label><br />
-							<input type="text" name="fields[hostreq]" id="field-hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', $this->row->hostreq)));?>" size="50" />
+							<input type="text" name="fields[hostreq]" id="field-hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', (array) $this->row->hostreq)));?>" size="50" />
 						</div>
 
 						<div class="input-wrap">
 							<label for="field-mw"><?php echo Lang::txt('COM_TOOLS_FIELD_MIDDLEWARE'); ?>:</label><br />
-							<input type="text" name="fields[mw]" id="field-mw" value="<?php echo $this->escape(stripslashes($this->row->mw));?>" size="50" />
+							<input type="text" name="fields[mw]" id="field-mw" value="<?php echo $this->escape(stripslashes($this->row->mw ?? ''));?>" size="50" />
 						</div>
 
 						<div class="input-wrap">
 							<label for="field-params"><?php echo Lang::txt('COM_TOOLS_FIELD_PARAMS'); ?>:</label><br />
-							<textarea name="fields[params]" id="field-params" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->params));?></textarea>
+							<textarea name="fields[params]" id="field-params" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->params ?? ''));?></textarea>
 						</div>
 					</fieldset>
 
@@ -134,11 +134,11 @@ $this->js();
 						<tbody>
 							<tr>
 								<th><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>:</th>
-								<td><?php echo $this->escape(stripslashes($this->parent->title));?></td>
+								<td><?php echo $this->escape(stripslashes($this->parent->title ?? ''));?></td>
 							</tr>
 							<tr>
 								<th><?php echo Lang::txt('COM_TOOLS_FIELD_TOOLNAME'); ?>:</th>
-								<td><?php echo $this->escape(stripslashes($this->parent->toolname));?></td>
+								<td><?php echo $this->escape(stripslashes($this->parent->toolname ?? ''));?></td>
 							</tr>
 							<tr>
 								<th><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION'); ?>:</th>
