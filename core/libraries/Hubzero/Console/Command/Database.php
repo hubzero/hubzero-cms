@@ -32,17 +32,21 @@ class Database extends Base implements CommandInterface
 	/**
 	 * Dump the database
 	 *
-	 * @museDescription  Dumps the current site database into a file in the users home directory
+	 * @museDescription  Dumps the hub's database into a file
+	 *
+	 * Give the file to write as the argument, or leave it out to write one
+	 * in the home directory. Tables without the hub's prefix are left out
+	 * unless --all-tables is given. The dump is consistent without locking
+	 * the hub, and only its owner can read it.
 	 *
 	 * @return  void
 	 **/
 	public function dump()
 	{
-		$tables   = App::get('db')->getTableList();
-		$prefix   = App::get('db')->getPrefix();
+		$db       = \App::get('db');
+		$tables   = $db->getTableList();
+		$prefix   = $db->getPrefix();
 		$excludes = [];
-		$now      = new Date;
-		$exclude  = '';
 		$includes = (array)$this->arguments->getOpt('include-table', []);
 
 		if (!$this->arguments->getOpt('all-tables'))
@@ -52,34 +56,49 @@ class Database extends Base implements CommandInterface
 			{
 				if (strpos($table, $prefix) !== 0 && !in_array(str_replace('#__', $prefix, $table), $includes))
 				{
-					$excludes[] = Config::get('db') . '.' . $table;
+					$excludes[] = '--ignore-table=' . escapeshellarg(Config::get('db') . '.' . $table);
 				}
 				elseif (in_array(str_replace('#__', $prefix, $table), $includes))
 				{
 					$this->output->addLine('Also including `' . $table . '`');
 				}
 			}
-
-			// Build exclude list string
-			$exclude = '--ignore-table=' . implode(' --ignore-table=', $excludes);
 		}
 		else
 		{
 			$this->output->addLine('Dumping database with all tables included');
 		}
 
-		// Add save location option
+		if (!$filename = $this->file())
+		{
+			$now      = new Date;
+			$filename = tempnam(getenv('HOME'), gethostname() . '.mysql.dump.' . $now->format('Y.m.d') . '.sql.');
+		}
 
-		$home     = getenv('HOME');
-		$hostname = gethostname();
-		$filename = tempnam($home, "{$hostname}.mysql.dump." . $now->format('Y.m.d') . ".sql.");
+		// Made first, so that the dump is never readable by anyone else
+		if (!touch($filename) || !chmod($filename, 0600))
+		{
+			$this->output->error('Cannot write ' . $filename);
+		}
 
-		// Build command
-		$cmd = "mysqldump -u " . Config::get('user') . " -p'" . Config::get('password') . "' " . Config::get('db') . " --routines {$exclude} > {$filename}";
+		$client      = $this->client(['mariadb-dump', 'mysqldump']);
+		$credentials = $this->credentials();
 
-		exec($cmd);
+		$cmd = escapeshellarg($client)
+			. ' --defaults-extra-file=' . escapeshellarg($credentials)
+			. ' --single-transaction --no-tablespaces --routines --triggers '
+			. implode(' ', $excludes) . ' '
+			. escapeshellarg(Config::get('db'))
+			. ' > ' . escapeshellarg($filename);
 
-		// Print out location of file
+		exec($cmd, $output, $status);
+		unlink($credentials);
+
+		if ($status !== 0)
+		{
+			$this->output->error('The dump failed; ' . $filename . ' is incomplete.');
+		}
+
 		$this->output->addLine('File saved to: ' . $filename, 'success');
 	}
 
@@ -88,52 +107,79 @@ class Database extends Base implements CommandInterface
 	 *
 	 * @museDescription  Loads the provided database into the hubs currently configured database
 	 *
+	 * Give the dump to load as the argument, or "-" to read it from standard
+	 * input, as from a file the hub's account cannot read itself.
+	 *
+	 * By default the settings of a few extensions that differ between hubs,
+	 * such as the paths and services of a development hub, are kept across
+	 * the load. Pass --exact to restore a hub's own dump just as it was, and
+	 * --drop-all-tables to remove tables the dump does not mention.
+	 *
 	 * @return  void
 	 **/
 	public function load()
 	{
-		if (!$infile = $this->arguments->getOpt(3))
+		if (!$infile = $this->file())
 		{
 			$this->output->error('Please provide an input file');
 		}
-		else
+		elseif ($infile !== '-' && !is_file($infile))
 		{
-			if (!is_file($infile))
-			{
-				$this->output->error("'{$infile}' does not appear to be a valid file");
-			}
+			$this->output->error("'{$infile}' does not appear to be a valid file");
 		}
+
+		$exact = (bool) $this->arguments->getOpt('exact');
+		$db    = \App::get('db');
 
 		// First, set some things aside that we need to reapply after the update
 		$params = [];
-		$params['com_system']             = \Component::params('com_system');
-		$params['com_tools']              = \Component::params('com_tools');
-		$params['com_usage']              = \Component::params('com_usage');
-		$params['com_members']            = \Component::params('com_members');
-		$params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
-
-		$tables = App::get('db')->getTableList();
+		if (!$exact)
+		{
+			$params['com_system']             = \Component::params('com_system');
+			$params['com_tools']              = \Component::params('com_tools');
+			$params['com_usage']              = \Component::params('com_usage');
+			$params['com_members']            = \Component::params('com_members');
+			$params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
+		}
 
 		// See if we should drop all tables first
 		if ($this->arguments->getOpt('drop-all-tables'))
 		{
 			$this->output->addLine('Dropping all tables...');
-			foreach ($tables as $table)
+
+			$db->setQuery('SET FOREIGN_KEY_CHECKS = 0');
+			$db->query();
+
+			foreach ($db->getTableList() as $table)
 			{
-				App::get('db')->dropTable($table);
+				$db->dropTable($table);
 			}
+
+			$db->setQuery('SET FOREIGN_KEY_CHECKS = 1');
+			$db->query();
 		}
 
-		// Craft the command to be executed
-		$infile = escapeshellarg($infile);
-		$cmd    = "mysql -u " . Config::get('user') . " -p'" . Config::get('password') . "' -D " . Config::get('db') . " < {$infile}";
+		$client      = $this->client(['mariadb', 'mysql']);
+		$credentials = $this->credentials();
 
-		$this->output->addLine('Loading data from ' . $infile . '...');
+		// A file of "-" is standard input, which the client inherits
+		$cmd = escapeshellarg($client)
+			. ' --defaults-extra-file=' . escapeshellarg($credentials)
+			. ' ' . escapeshellarg(Config::get('db'))
+			. ($infile === '-' ? '' : ' < ' . escapeshellarg($infile));
+
+		$this->output->addLine('Loading data from ' . ($infile === '-' ? 'standard input' : $infile) . '...');
 
 		// Now push the big red button
-		exec($cmd);
+		exec($cmd, $output, $status);
+		unlink($credentials);
 
-		$migration = new Migration(App::get('db'));
+		if ($status !== 0)
+		{
+			$this->output->error('The load failed.');
+		}
+
+		$migration = new Migration($db);
 
 		// Now load some things back up
 		foreach ($params as $k => $v)
@@ -145,6 +191,94 @@ class Database extends Base implements CommandInterface
 		}
 
 		$this->output->addLine('Load complete!', 'success');
+	}
+
+	/**
+	 * The file named on the command line, before or after its options, or
+	 * "-" for standard input
+	 *
+	 * @return  string|null
+	 **/
+	private function file()
+	{
+		$opts = (array) $this->arguments->getOpts();
+
+		foreach ($opts as $key => $value)
+		{
+			if (is_int($key) && $key >= 3)
+			{
+				return $value;
+			}
+		}
+
+		// A lone "-" reads as an option with no name
+		return array_key_exists('', $opts) ? '-' : null;
+	}
+
+	/**
+	 * Find the first of the named database clients that is installed
+	 *
+	 * MariaDB's own names first; servers before 10.5 have only MySQL's.
+	 *
+	 * @param   array   $names
+	 * @return  string
+	 **/
+	private function client(array $names)
+	{
+		foreach ($names as $name)
+		{
+			$path = trim((string) shell_exec('command -v ' . escapeshellarg($name) . ' 2>/dev/null'));
+
+			if ($path !== '')
+			{
+				return $path;
+			}
+		}
+
+		$this->output->error('Neither ' . implode(' nor ', $names) . ' is installed. Install the MariaDB client.');
+	}
+
+	/**
+	 * Write the hub's database credentials where only this account can read them
+	 *
+	 * The clients read them from the file, so the password is never on a
+	 * command line, where anyone on the server could see it.
+	 *
+	 * @return  string  The file's path; remove it when done
+	 **/
+	private function credentials()
+	{
+		$file = tempnam(sys_get_temp_dir(), 'muse-db-');
+		chmod($file, 0600);
+
+		$options = [
+			'user'     => Config::get('user'),
+			'password' => Config::get('password'),
+		];
+
+		if (Config::get('socket'))
+		{
+			$options['socket'] = Config::get('socket');
+		}
+		else
+		{
+			$options['host'] = Config::get('host', 'localhost');
+
+			if (Config::get('port'))
+			{
+				$options['port'] = Config::get('port');
+			}
+		}
+
+		$content = "[client]\n";
+		foreach ($options as $key => $value)
+		{
+			$content .= $key . '="' . addcslashes((string) $value, "\\\"") . "\"\n";
+		}
+
+		file_put_contents($file, $content);
+
+		return $file;
 	}
 
 	/**
@@ -176,6 +310,12 @@ class Database extends Base implements CommandInterface
 				these tables. Use with caution when planning to eventually load this
 				data into another host (ex: dev) as it rarely makes sense to reload
 				tool sessions into another environment.'
+			)
+			->addArgument(
+				'--exact: Load the dump just as it was',
+				'When loading in a database dump, keep none of the current settings
+				that a load otherwise carries over. Use it to restore a hub from its
+				own backup.'
 			)
 			->addArgument(
 				'--drop-all-tables: Drop all tables',
