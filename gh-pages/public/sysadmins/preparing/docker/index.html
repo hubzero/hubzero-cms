@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preparing a server for FrankenPHP in Docker · System administrators · Hubzero Documentation</title>
+  <meta name="description" content="Preparing any Linux server for a hub in FrankenPHP&#x27;s PHP 8.2 Docker image, with MariaDB from the server&#x27;s own distribution.">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/sysadmins/preparing/docker/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=8a405e6d">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">About</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">System administrators</a>
+        <nav aria-label="System administrators contents">
+<ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../installing/index.html">Installation overview</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Preparing the server</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../debian-12/index.html">Preparing a Debian 12 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../debian-13/index.html">Preparing a Debian 13 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Preparing a server for FrankenPHP in Docker</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#what-you-need">What you need</a></li>
+<li class="toc__item toc__item--l2"><a href="#1-install-mariadb-the-tools-and-docker">1. Install MariaDB, the tools and Docker</a></li>
+<li class="toc__item toc__item--l2"><a href="#2-get-the-code">2. Get the code</a></li>
+<li class="toc__item toc__item--l2"><a href="#3-build-the-image">3. Build the image</a></li>
+<li class="toc__item toc__item--l2"><a href="#4-write-the-caddyfile">4. Write the Caddyfile</a></li>
+<li class="toc__item toc__item--l2"><a href="#5-start-the-container">5. Start the container</a></li>
+<li class="toc__item toc__item--l2"><a href="#6-set-the-values-the-installation-uses">6. Set the values the installation uses</a></li>
+<li class="toc__item toc__item--l2"><a href="#7-next-install-the-hub">7. Next: install the hub</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-something-goes-wrong-in-docker">When something goes wrong in Docker</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Preparing any other Linux server</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../installing-the-hub/index.html">Installing the hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../upgrading/index.html">Upgrading a hub</a></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">System administrators</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Preparing the server</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Preparing a server for FrankenPHP in Docker</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">System administrators</p>
+          <h1>Preparing a server for FrankenPHP in Docker</h1>
+        </header>
+        
+        <div class="prose">
+<p>This page runs the hub in FrankenPHP's PHP 8.2 Docker image, on any Linux
+server that can run Docker. FrankenPHP is a web server with PHP built in, and
+the image brings PHP 8.2, so the server needs no PHP of its own and no other
+web server. It is the way to run a hub on a system whose own PHP is not 8.2
+and has no second source of it, and a way to keep the hub's PHP apart from
+the server's on any system. MariaDB comes from the server's distribution.
+Then <a href="../../installing-the-hub/index.html">Installing the hub</a> installs it, the same
+way on every system.</p>
+<p>Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.</p>
+<p>For another system, or help choosing one, see
+<a href="../index.html">Preparing the server</a>.</p>
+<h2 id="what-you-need">What you need</h2>
+<ul>
+<li>A Linux server, and an account on it that can use <code>sudo</code>.</li>
+<li>Nothing else listening on ports 80 and 443: FrankenPHP is the web server.</li>
+<li>A name for the hub, such as <code>hub.example.org</code>, pointing at the server, and a
+TLS certificate for it. A hub has to be served over HTTPS: the administrator
+sign-in form always posts to an <code>https://</code> address, so on plain HTTP the
+administrator can never sign in.</li>
+</ul>
+<h2 id="1-install-mariadb-the-tools-and-docker">1. Install MariaDB, the tools and Docker</h2>
+<p>Install MariaDB, <code>git</code> and <code>unzip</code> from the distribution, and Docker. Install
+no PHP and no web server: the image brings both.</p>
+<p><strong>On Debian or Ubuntu:</strong></p>
+<pre><code class="language-bash">sudo apt install mariadb-server git unzip docker.io
+</code></pre>
+<p><strong>Or on Enterprise Linux 8, 9 or 10</strong>, MariaDB from the distribution and
+Docker from Docker's own repository, which replaces the Podman Enterprise
+Linux installs by default. On 8 and 9, enable the <code>mariadb:10.11</code> stream
+first, with <code>sudo dnf module enable mariadb:10.11</code>; 10 has MariaDB 10.11 as it
+is.</p>
+<pre><code class="language-bash">sudo dnf install mariadb-server git unzip
+sudo systemctl enable --now mariadb
+sudo dnf remove podman buildah runc
+sudo dnf install dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+sudo dnf install docker-ce docker-ce-cli containerd.io
+sudo systemctl enable --now docker
+sudo firewall-cmd --permanent --add-service=http --add-service=https
+sudo firewall-cmd --reload
+</code></pre>
+<p><strong>Or on any other distribution</strong>, its own MariaDB, <code>git</code>, <code>unzip</code> and Docker
+packages.</p>
+<h2 id="2-get-the-code">2. Get the code</h2>
+<p>The repository is the hub: its top directory is the document root. Clone it,
+and give it to user and group 33, which is the <code>www-data</code> account inside the
+image the hub runs in:</p>
+<pre><code class="language-bash">sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git /var/www/hub
+sudo chown -R 33:33 /var/www/hub
+</code></pre>
+<p>On Debian and Ubuntu that is the <code>www-data</code> account on the server too. On Enterprise Linux no account has the number; use it as it is.</p>
+<h2 id="3-build-the-image">3. Build the image</h2>
+<p>FrankenPHP is a web server with PHP built in, and its PHP 8.2 image is the
+starting point. Add the extensions the hub needs that it does not already
+have. Put this in <code>/opt/hub-frankenphp/Dockerfile</code>:</p>
+<pre><code class="language-dockerfile">FROM dunglas/frankenphp:1-php8.2-bookworm
+
+# The extensions the hub needs that the image does not already have, and the
+# tools Composer uses
+RUN install-php-extensions pdo_mysql gd zip sockets opcache \
+    &amp;&amp; apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends git unzip \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# PHP's production settings, and a place for sessions outside the document
+# root: the image has neither, and the installer keeps its secrets there
+RUN cp &quot;$PHP_INI_DIR/php.ini-production&quot; &quot;$PHP_INI_DIR/php.ini&quot; \
+    &amp;&amp; mkdir -p /var/lib/php/sessions \
+    &amp;&amp; chown www-data:www-data /var/lib/php/sessions \
+    &amp;&amp; echo 'session.save_path = &quot;/var/lib/php/sessions&quot;' &gt; &quot;$PHP_INI_DIR/conf.d/hub.ini&quot;
+
+# Run as the account that owns the hub's files, still able to listen on 80/443
+RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
+    &amp;&amp; chown -R www-data:www-data /config/caddy /data/caddy
+
+USER www-data
+</code></pre>
+<pre><code class="language-bash">sudo docker build -t hub-frankenphp /opt/hub-frankenphp
+</code></pre>
+<p>The session directory is not optional. Without a writable place outside the
+document root, the installer stops at a page headed <em>Server Configuration
+Required</em> before it asks anything.</p>
+<h2 id="4-write-the-caddyfile">4. Write the Caddyfile</h2>
+<p>FrankenPHP reads a Caddyfile. Put the hub's in
+<code>/opt/hub-frankenphp/Caddyfile</code>, with your own name for the hub:</p>
+<pre><code class="language-caddyfile">{
+	frankenphp
+	order php_server before file_server
+}
+
+hub.example.org {
+	root * /var/www/hub
+
+	@private path_regexp ^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)
+	@dotfiles {
+		path_regexp /\.
+		not path /.well-known/*
+	}
+	respond @private 403
+	respond @dotfiles 403
+
+	php_server
+}
+</code></pre>
+<p>It does the same four things every configuration for the hub does: serves
+<code>/var/www/hub</code> over HTTPS, passes PHP to PHP, sends every address that is not
+a file to <code>index.php</code> (<code>php_server</code> does both), and refuses the hub's
+configuration, logs, temporary files, command-line programs and hidden files.
+The last matters: <code>app/config/database.php</code> holds the database password.</p>
+<p>FrankenPHP obtains and renews the certificate for the name itself, so there
+are no certificate paths to give it. Its regular expressions have no
+lookahead, which is why the hidden-file rule is a matcher of two lines.</p>
+<h2 id="5-start-the-container">5. Start the container</h2>
+<pre><code class="language-bash">sudo docker run -d --name hub --restart unless-stopped --network host \
+    -v /var/www/hub:/var/www/hub:z \
+    -v /opt/hub-frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro \
+    -v hub_caddy_data:/data -v hub_caddy_config:/config \
+    hub-frankenphp
+</code></pre>
+<ul>
+<li><code>--network host</code> lets it answer on the server's own ports 80 and 443, and
+reach MariaDB at <code>127.0.0.1</code> as if it were not in a container. MariaDB's
+socket is not inside the container, so <code>127.0.0.1</code> is how the hub reaches
+the database.</li>
+<li>The hub's directory is mounted at the same path inside, so paths the
+installer writes into the configuration are right on both sides. The
+container runs as user 33, which owns the files.</li>
+<li><code>hub_caddy_data</code> keeps the certificates FrankenPHP obtains across restarts
+and rebuilds.</li>
+<li><code>:z</code> on the hub's mount is for SELinux, on Enterprise Linux: it lets
+the container use the files. Elsewhere it does nothing.</li>
+</ul>
+<h2 id="6-set-the-values-the-installation-uses">6. Set the values the installation uses</h2>
+<p>The rest of the installation is the same on every system, and runs the hub's
+commands through two values. Set them in the shell you will carry on in:</p>
+<pre><code class="language-bash">export HUB_OWNER=33:33
+export HUB_PHP=&quot;sudo docker exec -it -w /var/www/hub hub php&quot;
+</code></pre>
+<p><code>HUB_OWNER</code> is the account and group that own the hub's files, and <code>HUB_PHP</code>
+is how to run the hub's PHP. If you open a new shell before you have
+finished, set them again.</p>
+<p>With this <code>HUB_PHP</code>, every <code>php</code> command runs inside the container, in the hub's
+directory, and the <code>cd /var/www/hub</code> before each one is harmless. <code>-it</code> is what lets
+<code>muse</code> ask its questions; leave it out of <code>HUB_PHP</code> in a script, which has no
+terminal to give it.</p>
+<p>Once the hub is installed, scheduled tasks need this line in <code>/etc/crontab</code>.
+Keep it for then:</p>
+<pre><code>* * * * * root docker exec -w /var/www/hub hub php core/bin/muse cron:jobs tick
+</code></pre>
+<h2 id="7-next-install-the-hub">7. Next: install the hub</h2>
+<p>The server is ready. Go on to <a href="../../installing-the-hub/index.html">Installing the hub</a>, which creates
+the database and runs the installer, the same way on every system.</p>
+<h2 id="when-something-goes-wrong-in-docker">When something goes wrong in Docker</h2>
+<p><strong>The installer shows <em>Server Configuration Required</em>.</strong> PHP in the container
+has no writable place outside the document root. The image was built without
+the <code>session.save_path</code> lines in the Dockerfile; add them and rebuild.</p>
+<p><strong>The installer cannot connect to the database through the socket.</strong>
+MariaDB's socket is not inside the container. Use <code>127.0.0.1</code>.</p>
+<p><strong>The container will not start, saying an address is already in use.</strong>
+Something else on the server already listens on port 80 or 443, or on 2019,
+where FrankenPHP takes its own administration requests. Stop it, or move the
+hub to a server of its own.</p>
+<p><strong>The browser installer's migration output carries warnings that session
+settings <em>&quot;cannot be changed after headers have already been sent&quot;</em>.</strong> They
+come from FrankenPHP's own command line, which the installer runs the
+migrations with, and are harmless.</p>
+<p>For everything else, see
+<a href="../../installing-the-hub/index.html#when-something-goes-wrong">When something goes wrong</a> on the page
+that installs the hub.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 581dd435fc</code> on 2026-10-30.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../enterprise-linux-10/index.html" rel="prev"><span>Previous</span>Preparing an Enterprise Linux 10 server</a><a class="pager__next" href="../other-linux/index.html" rel="next"><span>Next</span>Preparing any other Linux server</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/02-preparing/09-docker.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="../../../license/index.html">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=8a405e6d" defer></script>
+</body>
+</html>

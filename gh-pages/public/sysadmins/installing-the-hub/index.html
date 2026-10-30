@@ -42,16 +42,18 @@
         <nav aria-label="System administrators contents">
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../installing/index.html">Installation overview</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../debian-12/index.html">Preparing a Debian 12 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../debian-13/index.html">Preparing a Debian 13 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Preparing a server for FrankenPHP in Docker</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Preparing any other Linux server</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../preparing/index.html">Preparing the server</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../preparing/debian-12/index.html">Preparing a Debian 12 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/debian-13/index.html">Preparing a Debian 13 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/docker/index.html">Preparing a server for FrankenPHP in Docker</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/other-linux/index.html">Preparing any other Linux server</a></li>
+</ul></details></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installing the hub</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#1-create-the-database">1. Create the database</a></li>
 <li class="toc__item toc__item--l2"><a href="#2-check-the-server">2. Check the server</a></li>
@@ -82,7 +84,7 @@
 <p>This page installs the hub on a server that one of the system pages has
 prepared: MariaDB and PHP 8.2 installed, the code in <code>/var/www/hub</code>, and a
 web server answering for the hub's name over HTTPS. If yours is not ready
-yet, start at the <a href="../installing/index.html">installation overview</a> and follow your system's
+yet, start at <a href="../preparing/index.html">Preparing the server</a> and follow your system's
 page first.</p>
 <p>Everything here is the same on every system. Where a command differs, it
 uses the two values your system's page set at its end: <code>HUB_OWNER</code>, the
@@ -355,10 +357,10 @@ server's rules for private paths are missing. Check before the hub is in use:</p
 or the container under Docker, is at the end of your system's page.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 981ae7fc4a</code> on 2026-10-30.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../other-linux/index.html" rel="prev"><span>Previous</span>Preparing any other Linux server</a><a class="pager__next" href="../upgrading/index.html" rel="next"><span>Next</span>Upgrading a hub</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 581dd435fc</code> on 2026-10-30.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../preparing/other-linux/index.html" rel="prev"><span>Previous</span>Preparing any other Linux server</a><a class="pager__next" href="../upgrading/index.html" rel="next"><span>Next</span>Upgrading a hub</a></nav>
         <footer class="article__footer">
-          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/12-installing-the-hub.md">Edit this page on GitHub</a>
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/03-installing-the-hub.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>
         </footer>
       </article>

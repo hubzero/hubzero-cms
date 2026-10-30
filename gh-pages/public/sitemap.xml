@@ -3,16 +3,17 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/installing/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/debian-12/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/debian-13/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/ubuntu-22-04-lts/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/ubuntu-24-04-lts/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/ubuntu-26-04-lts/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/enterprise-linux-8/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/enterprise-linux-9/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/enterprise-linux-10/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/docker/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/other-linux/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/debian-12/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/debian-13/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-22-04-lts/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-24-04-lts/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-26-04-lts/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-8/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-9/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-10/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/docker/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/preparing/other-linux/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/installing-the-hub/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/upgrading/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/</loc></url>

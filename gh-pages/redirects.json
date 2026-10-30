@@ -666,5 +666,15 @@
  "users/projects/projectfiles": "users/projects/index.html#project-files",
  "users/publications/curation": "users/publications/index.html#curation",
  "managers/installing": "sysadmins/installing/index.html",
- "managers/maintenance/upgrading": "sysadmins/upgrading/index.html"
+ "managers/maintenance/upgrading": "sysadmins/upgrading/index.html",
+ "sysadmins/debian-12": "sysadmins/preparing/debian-12/index.html",
+ "sysadmins/debian-13": "sysadmins/preparing/debian-13/index.html",
+ "sysadmins/ubuntu-22-04-lts": "sysadmins/preparing/ubuntu-22-04-lts/index.html",
+ "sysadmins/ubuntu-24-04-lts": "sysadmins/preparing/ubuntu-24-04-lts/index.html",
+ "sysadmins/ubuntu-26-04-lts": "sysadmins/preparing/ubuntu-26-04-lts/index.html",
+ "sysadmins/enterprise-linux-8": "sysadmins/preparing/enterprise-linux-8/index.html",
+ "sysadmins/enterprise-linux-9": "sysadmins/preparing/enterprise-linux-9/index.html",
+ "sysadmins/enterprise-linux-10": "sysadmins/preparing/enterprise-linux-10/index.html",
+ "sysadmins/docker": "sysadmins/preparing/docker/index.html",
+ "sysadmins/other-linux": "sysadmins/preparing/other-linux/index.html"
 }

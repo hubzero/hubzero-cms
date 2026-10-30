@@ -42,21 +42,22 @@
         <nav aria-label="System administrators contents">
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installation overview</a><ol class="toc">
-<li class="toc__item toc__item--l2"><a href="#choose-your-system">Choose your system</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-every-system-needs">What every system needs</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-installing-does">What installing does</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-was-tested">What was tested</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../debian-12/index.html">Preparing a Debian 12 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../debian-13/index.html">Preparing a Debian 13 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../docker/index.html">Preparing a server for FrankenPHP in Docker</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../other-linux/index.html">Preparing any other Linux server</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../preparing/index.html">Preparing the server</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../preparing/debian-12/index.html">Preparing a Debian 12 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/debian-13/index.html">Preparing a Debian 13 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-22-04-lts/index.html">Preparing an Ubuntu 22.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-24-04-lts/index.html">Preparing an Ubuntu 24.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/ubuntu-26-04-lts/index.html">Preparing an Ubuntu 26.04 LTS server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-8/index.html">Preparing an Enterprise Linux 8 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-9/index.html">Preparing an Enterprise Linux 9 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/enterprise-linux-10/index.html">Preparing an Enterprise Linux 10 server</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/docker/index.html">Preparing a server for FrankenPHP in Docker</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../preparing/other-linux/index.html">Preparing any other Linux server</a></li>
+</ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../installing-the-hub/index.html">Installing the hub</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../upgrading/index.html">Upgrading a hub</a></li>
 </ul>
@@ -75,12 +76,13 @@
         
         <div class="prose">
 <p>A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
-of PHP. Installing one takes two pages:</p>
+of PHP. Installing one takes two steps, each with its own part of this book:</p>
 <ol>
-<li><strong>Your system's page</strong>, from the table below, which takes a server with
-nothing on it to one ready for the hub: the packages, the code, and the
-web server. Each is complete for its system, and repeats the others
-rather than send you between them.</li>
+<li><strong><a href="../preparing/index.html">Preparing the server</a>.</strong> Choose your system
+there and follow its page, which takes a server with nothing on it to one
+ready for the hub: the packages, the code, and the web server. Each
+system's page is complete on its own. The section also helps you choose,
+if you have not already: hosted hubs currently run on Enterprise Linux 8.</li>
 <li><strong><a href="../installing-the-hub/index.html">Installing the hub</a></strong>, which every system's
 page ends at: the database, the installer, and what comes after. It is the
 same on every system.</li>
@@ -88,88 +90,6 @@ same on every system.</li>
 <p>If the hub you are asking about is already installed and answering, go to
 <a href="../../managers/getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>
 instead.</p>
-<h2 id="choose-your-system">Choose your system</h2>
-<table>
-<thead>
-<tr>
-<th>System</th>
-<th>PHP 8.2 from</th>
-<th>MariaDB</th>
-<th>Web server</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../debian-12/index.html">Debian 12</a></td>
-<td>Debian</td>
-<td>10.11</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../debian-13/index.html">Debian 13</a></td>
-<td>Ondřej Surý's archive</td>
-<td>11.8</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../ubuntu-22-04-lts/index.html">Ubuntu 22.04 LTS</a></td>
-<td>Ondřej Surý's PPA</td>
-<td>10.6</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../ubuntu-24-04-lts/index.html">Ubuntu 24.04 LTS</a></td>
-<td>Ondřej Surý's PPA</td>
-<td>10.11</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../ubuntu-26-04-lts/index.html">Ubuntu 26.04 LTS</a></td>
-<td>FrankenPHP's Docker image</td>
-<td>11.8</td>
-<td>FrankenPHP</td>
-</tr>
-<tr>
-<td><a href="../enterprise-linux-8/index.html">Enterprise Linux 8</a></td>
-<td>AppStream, <code>php:8.2</code></td>
-<td>10.11</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../enterprise-linux-9/index.html">Enterprise Linux 9</a></td>
-<td>AppStream, <code>php:8.2</code></td>
-<td>10.11</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../enterprise-linux-10/index.html">Enterprise Linux 10</a></td>
-<td>Remi's repository</td>
-<td>10.11</td>
-<td>Apache or nginx</td>
-</tr>
-<tr>
-<td><a href="../docker/index.html">Any Linux, in Docker</a></td>
-<td>FrankenPHP's Docker image</td>
-<td>the distribution's</td>
-<td>FrankenPHP</td>
-</tr>
-<tr>
-<td><a href="../other-linux/index.html">Any other Linux</a></td>
-<td>wherever it is packaged</td>
-<td>the distribution's</td>
-<td>Apache or nginx</td>
-</tr>
-</tbody>
-</table>
-<p>Enterprise Linux means Red Hat Enterprise Linux and its rebuilds, Rocky
-Linux and AlmaLinux. Ubuntu is covered in its long-term support releases
-only.</p>
-<p>Where a system has PHP 8.2 of its own, its page uses it. Where it does not,
-the page adds the repository that packages it for that system: Ondřej Surý's
-for Debian and Ubuntu, Remi Collet's for Enterprise Linux. Where there is no
-such repository, as on Ubuntu 26.04 LTS, the hub runs in FrankenPHP's PHP 8.2
-Docker image, which needs no PHP on the server. That image is also a choice on
-any system.</p>
 <h2 id="what-every-system-needs">What every system needs</h2>
 <ul>
 <li>A Linux server. Hubzero does not run on Windows; the installer refuses to
@@ -226,8 +146,8 @@ those steps were not run.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 4b8a132fb4</code> on 2026-10-30.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>System administrators</a><a class="pager__next" href="../debian-12/index.html" rel="next"><span>Next</span>Preparing a Debian 12 server</a></nav>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 581dd435fc</code> on 2026-10-30.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>System administrators</a><a class="pager__next" href="../preparing/index.html" rel="next"><span>Next</span>Preparing the server</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/01-installing.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

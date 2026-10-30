@@ -666,3 +666,13 @@
 /users/publications/curation https://hubzero.github.io/hubzero-cms/users/publications/#curation
 /managers/installing https://hubzero.github.io/hubzero-cms/sysadmins/installing/
 /managers/maintenance/upgrading https://hubzero.github.io/hubzero-cms/sysadmins/upgrading/
+/sysadmins/debian-12 https://hubzero.github.io/hubzero-cms/sysadmins/preparing/debian-12/
+/sysadmins/debian-13 https://hubzero.github.io/hubzero-cms/sysadmins/preparing/debian-13/
+/sysadmins/ubuntu-22-04-lts https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-22-04-lts/
+/sysadmins/ubuntu-24-04-lts https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-24-04-lts/
+/sysadmins/ubuntu-26-04-lts https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-26-04-lts/
+/sysadmins/enterprise-linux-8 https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-8/
+/sysadmins/enterprise-linux-9 https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-9/
+/sysadmins/enterprise-linux-10 https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-10/
+/sysadmins/docker https://hubzero.github.io/hubzero-cms/sysadmins/preparing/docker/
+/sysadmins/other-linux https://hubzero.github.io/hubzero-cms/sysadmins/preparing/other-linux/
