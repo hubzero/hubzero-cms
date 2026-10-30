@@ -11,7 +11,7 @@ This page prepares a server running Enterprise Linux 10 for a hub, from nothing 
 web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.2 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 [Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.
+A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.
 
 For another system, or help choosing one, see
 [Preparing the server](README.md).
@@ -67,14 +67,30 @@ sudo dnf install nginx
 sudo systemctl enable --now nginx
 ```
 
-## 3. Open the firewall
+## 3. Open the firewall and turn off SELinux
 
-Enterprise Linux starts with its firewall closed. Open the web ports:
+Enterprise Linux starts with its firewall closed and SELinux enforcing. Open
+the web ports:
 
 ```bash
 sudo firewall-cmd --permanent --add-service=http --add-service=https
 sudo firewall-cmd --reload
 ```
+
+Hubs run with SELinux turned off, and the hub is not tested with it on. In
+its default policy it refuses much of what a hub does: writing to its own
+directory, connecting to MariaDB over TCP, sending mail. Turn it off:
+
+```bash
+sudo setenforce 0
+sudo grubby --update-kernel ALL --args selinux=0
+```
+
+`setenforce 0` stops it enforcing at once; the kernel argument turns it off
+from the next boot. On Enterprise Linux 10, `SELINUX=disabled` in
+`/etc/selinux/config` does not turn it off completely, so use the kernel
+argument. Reboot when it suits you, then check that `getenforce` prints
+`Disabled`.
 
 ## 4. Get the code
 
@@ -90,28 +106,6 @@ The installer writes the hub's configuration into a new `app/` directory
 inside it, and the hub later keeps its uploads, logs and cache there, so
 `apache` has to be able to write to the whole tree.
 
-### SELinux
-
-SELinux lets the web server read files under `/var/www` but not write them,
-and not open network connections. The hub writes to its own directory, and
-the installer writes to the whole of it; the hub connects to MariaDB over
-TCP, and the browser installer downloads Composer's libraries. Allow those:
-
-```bash
-sudo dnf install policycoreutils-python-utils
-sudo semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/hub(/.*)?"
-sudo restorecon -R /var/www/hub
-sudo setsebool -P httpd_can_network_connect_db 1
-sudo setsebool -P httpd_can_network_connect 1
-sudo setsebool -P httpd_can_sendmail 1
-```
-
-These were not run: the test installs were in containers, which have no
-SELinux. If something the web server does fails with a permission error that
-the file permissions do not explain, `sudo ausearch -m avc -ts recent` shows
-what SELinux refused. The command-line installer does its work as a login
-user rather than through the web server, so it is the safer of the two
-installers until SELinux is set up for the hub.
 
 ## 5. Configure the web server
 
@@ -243,7 +237,9 @@ the database and runs the installer, the same way on every system.
 hands addresses that are not files to `index.php`.
 
 **Something the web server does fails with a permission error, though the
-files belong to `apache`.** SELinux is refusing it. See [SELinux](#selinux).
+files belong to `apache`.** SELinux is still enforcing. `getenforce` should
+print `Disabled`, or `Permissive` until the reboot; if it prints `Enforcing`,
+go back to [step 3](#3-open-the-firewall-and-turn-off-selinux).
 
 For everything else, see
 [When something goes wrong](../03-installing-the-hub.md#when-something-goes-wrong) on the page

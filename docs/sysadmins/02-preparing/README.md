@@ -23,8 +23,9 @@ paths:
 1. **MariaDB, PHP and the tools.** PHP 8.2 from the system where it has it,
    or from the repository that packages it for that system where it does not.
 2. **The web server.** Apache **or** nginx, with PHP-FPM.
-3. **The firewall and SELinux**, on Enterprise Linux, which starts with both
-   closed to a web application.
+3. **The firewall, and turning SELinux off**, on Enterprise Linux, which
+   starts with both closed to a web application. Hubs run with SELinux off
+   and are not tested with it on.
 4. **The code**, cloned from the release branch and owned by the account PHP
    runs as.
 5. **The web server's configuration**, written for that system: where the

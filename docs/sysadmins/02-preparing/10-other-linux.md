@@ -93,10 +93,10 @@ cd /var/www/hub
 sudo php core/bin/muse install check
 ```
 
-If the distribution runs SELinux or AppArmor, the web server needs to be
-allowed to write to `/var/www/hub`, to connect to MariaDB and to the network,
-and to send mail. On SELinux, the commands are the ones
-[Enterprise Linux 9](07-enterprise-linux-9.md#selinux) uses.
+If the distribution runs SELinux, turn it off: hubs run with it off and are
+not tested with it on. [Enterprise Linux 9](07-enterprise-linux-9.md#3-open-the-firewall-and-turn-off-selinux)
+shows how. AppArmor, as Debian and Ubuntu ship it, does not confine the web
+server or PHP, and the installs on Ubuntu were run with it as it ships.
 
 ## 4. Configure the web server
 

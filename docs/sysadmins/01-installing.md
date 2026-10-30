@@ -32,6 +32,8 @@ instead.
   posts to an `https://` address, so on plain HTTP the administrator can
   never sign in.
 - MariaDB.
+- SELinux turned off, on a system that has it. Hubs run with it off and are
+  not tested with it on.
 - `git` and `unzip`. Composer itself ships in the repository as
   `core/bin/composer`; you do not install it separately.
 - PHP 8.2 and the extensions the installer checks for, read here from its
