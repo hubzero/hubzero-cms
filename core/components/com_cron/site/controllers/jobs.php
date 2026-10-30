@@ -44,25 +44,9 @@ class Jobs extends SiteController
         // try to see if their IP address is in the whitelist.
         // Otherwise, we stop any further code execution.
         if (!User::authorise('core.manage', $this->_option)) {
-            $ip = Request::ip();
-
-            $ips = explode(',', $this->config->get('whitelist', ''));
-            $ips = array_map('trim', $ips);
-
-            if (!in_array($ip, $ips)) {
-                // gethostbynamel() returns false on resolver failure; cast to
-                // array so a DNS hiccup can't turn in_array() into a TypeError
-                // (which would 500 the tick and stall all cron).
-                $ips = (array) gethostbynamel($_SERVER['SERVER_NAME'] ?? '');
-
-                if (!in_array($ip, $ips)) {
-                    $ips = (array) gethostbynamel('localhost');
-
-                    if (!in_array($ip, $ips)) {
-                        header("HTTP/1.1 404 Not Found");
-                        exit();
-                    }
-                }
+            if (!$this->isTickCallerAllowed(Request::ip())) {
+                header("HTTP/1.1 404 Not Found");
+                exit();
             }
         }
 
@@ -242,5 +226,55 @@ class Jobs extends SiteController
         @exec($cmd);
 
         return true;
+    }
+    /**
+     * Whether an address may ask for the tick without signing in
+     *
+     * The whitelist, the server itself, and the server's own name. The server
+     * can reach itself over IPv6 as readily as IPv4 -- localhost is ::1 first
+     * on many systems, and a name with an AAAA record is reached over it --
+     * and gethostbynamel() knows only IPv4, so a tick arriving over IPv6 was
+     * refused with a 404 and nothing scheduled ever ran.
+     *
+     * @param   string  $ip
+     * @return  bool
+     */
+    private function isTickCallerAllowed($ip)
+    {
+        $caller = @inet_pton((string) $ip);
+
+        if ($caller === false) {
+            return false;
+        }
+
+        $allowed = array_map('trim', explode(',', $this->config->get('whitelist', '')));
+
+        // The server asking itself, in either family
+        $allowed[] = '::1';
+
+        foreach ([$_SERVER['SERVER_NAME'] ?? '', 'localhost'] as $name) {
+            if ($name === '') {
+                continue;
+            }
+
+            // Both return false on a resolver failure; the casts keep a DNS
+            // hiccup from turning into a TypeError that would stall all cron
+            $allowed = array_merge($allowed, (array) gethostbynamel($name));
+
+            foreach ((array) @dns_get_record($name, DNS_AAAA) as $record) {
+                if (!empty($record['ipv6'])) {
+                    $allowed[] = $record['ipv6'];
+                }
+            }
+        }
+
+        foreach ($allowed as $address) {
+            if ($address !== '' && @inet_pton($address) === $caller) {
+                return true;
+            }
+        }
+
+        // Anything on IPv4's loopback network
+        return strlen($caller) === 4 && ord($caller[0]) === 127;
     }
 }
