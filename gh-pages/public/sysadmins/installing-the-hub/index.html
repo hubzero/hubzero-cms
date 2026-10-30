@@ -168,7 +168,7 @@ administrator's credentials. Choose the existing account, give the host as
 needs, then offers <strong>sample data</strong>: a front page, menus and articles to
 look at. Answer no for a hub you are going to fill yourself.</li>
 <li><strong>Migrations.</strong> It brings the database up to date, which takes a minute or
-so. Four warnings are expected; see
+so. Three warnings are expected; see
 <a href="#warnings-during-the-migrations">Warnings during the migrations</a>.</li>
 <li><strong>Administrator.</strong> A name, a username, an email address and a password of
 at least eight characters.</li>
@@ -334,7 +334,7 @@ up to the latest code on its branch, with a backup first and a way back.</p>
 <p>Then go on to
 <a href="../../managers/getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>.</p>
 <h2 id="warnings-during-the-migrations">Warnings during the migrations</h2>
-<p>Both installers, and the upgrade, show the same four warnings on a new hub.
+<p>Both installers, and the upgrade, show the same three warnings on a new hub.
 None of them stops the hub working:</p>
 <table>
 <thead>
@@ -347,10 +347,6 @@ None of them stops the hub working:</p>
 <tr>
 <td><em>onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables</em></td>
 <td>Loading MariaDB's time zone tables needs its <code>root</code> account. Load them yourself, as described above</td>
-</tr>
-<tr>
-<td><em>Migration20150330124145Core.php: Unable to write out new configuration file</em></td>
-<td>It updates a configuration file from an older version of the hub, which a new hub does not have</td>
 </tr>
 <tr>
 <td><em>Migration20150904235936ComUsage.php: Failed to run with the necessary privileges</em></td>
