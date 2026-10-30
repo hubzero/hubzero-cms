@@ -57,6 +57,7 @@
 <li class="toc__item toc__item--l2"><a href="#3-open-the-firewall-and-turn-off-selinux">3. Open the firewall and turn off SELinux</a></li>
 <li class="toc__item toc__item--l2"><a href="#4-get-the-code">4. Get the code</a></li>
 <li class="toc__item toc__item--l2"><a href="#5-configure-the-web-server">5. Configure the web server</a></li>
+<li class="toc__item toc__item--l3"><a href="#before-you-have-a-certificate">Before you have a certificate</a></li>
 <li class="toc__item toc__item--l3"><a href="#if-you-installed-apache">If you installed Apache</a></li>
 <li class="toc__item toc__item--l3"><a href="#or-if-you-installed-nginx">Or, if you installed nginx</a></li>
 <li class="toc__item toc__item--l2"><a href="#6-next-install-the-hub">6. Next: install the hub</a></li>
@@ -163,6 +164,39 @@ password, and nothing else stops a browser from reading it.</p>
 <p>Replace <code>hub.example.org</code> and the certificate paths with your own. The
 examples use certificates from Let's Encrypt's <code>certbot</code>:
 <code>sudo dnf install epel-release &amp;&amp; sudo dnf install certbot</code>, certbot being in EPEL.</p>
+<h3 id="before-you-have-a-certificate">Before you have a certificate</h3>
+<p>The hub is always served over HTTPS, but it need not wait for a real
+certificate, or for its name to reach the server. Start with a self-signed
+one. With Apache, <code>mod_ssl</code> makes one the first time <code>httpd</code> starts. With
+nginx, or if those files are not there, make it yourself with the hub's name:</p>
+<pre><code class="language-bash">sudo openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
+    -subj &quot;/CN=hub.example.org&quot; -addext &quot;subjectAltName=DNS:hub.example.org&quot; \
+    -keyout /etc/pki/tls/private/localhost.key -out /etc/pki/tls/certs/localhost.crt
+sudo chmod 600 /etc/pki/tls/private/localhost.key
+</code></pre>
+<p>In the configuration below, use these files in place of the Let's Encrypt
+paths:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Certificate</td>
+<td><code>/etc/pki/tls/certs/localhost.crt</code></td>
+</tr>
+<tr>
+<td>Key</td>
+<td><code>/etc/pki/tls/private/localhost.key</code></td>
+</tr>
+</tbody>
+</table>
+<p>Browsers warn about a self-signed certificate; accept the warning to reach
+the installer. When the real certificate arrives, put its paths in instead
+and reload the web server.</p>
 <h3 id="if-you-installed-apache">If you installed Apache</h3>
 <p><code>/etc/httpd/conf.d/hub.conf</code>:</p>
 <pre><code class="language-apache">&lt;VirtualHost *:80&gt;

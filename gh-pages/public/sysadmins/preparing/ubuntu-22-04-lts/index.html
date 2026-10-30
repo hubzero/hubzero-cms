@@ -51,6 +51,7 @@
 <li class="toc__item toc__item--l2"><a href="#2-install-the-web-server">2. Install the web server</a></li>
 <li class="toc__item toc__item--l2"><a href="#3-get-the-code">3. Get the code</a></li>
 <li class="toc__item toc__item--l2"><a href="#4-configure-the-web-server">4. Configure the web server</a></li>
+<li class="toc__item toc__item--l3"><a href="#before-you-have-a-certificate">Before you have a certificate</a></li>
 <li class="toc__item toc__item--l3"><a href="#if-you-installed-apache">If you installed Apache</a></li>
 <li class="toc__item toc__item--l3"><a href="#or-if-you-installed-nginx">Or, if you installed nginx</a></li>
 <li class="toc__item toc__item--l2"><a href="#5-next-install-the-hub">5. Next: install the hub</a></li>
@@ -142,6 +143,35 @@ password, and nothing else stops a browser from reading it.</p>
 <p>Replace <code>hub.example.org</code> and the certificate paths with your own. The
 examples use certificates from Let's Encrypt's <code>certbot</code>:
 <code>sudo apt install certbot</code>.</p>
+<h3 id="before-you-have-a-certificate">Before you have a certificate</h3>
+<p>The hub is always served over HTTPS, but it need not wait for a real
+certificate, or for its name to reach the server. Start with a self-signed
+one. Debian and Ubuntu make one with the <code>ssl-cert</code> package:</p>
+<pre><code class="language-bash">sudo apt install ssl-cert
+</code></pre>
+<p>and in the configuration below, use its files in place of the Let's Encrypt
+paths:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Certificate</td>
+<td><code>/etc/ssl/certs/ssl-cert-snakeoil.pem</code></td>
+</tr>
+<tr>
+<td>Key</td>
+<td><code>/etc/ssl/private/ssl-cert-snakeoil.key</code></td>
+</tr>
+</tbody>
+</table>
+<p>Browsers warn about a self-signed certificate; accept the warning to reach
+the installer. When the real certificate arrives, put its paths in instead
+and reload the web server.</p>
 <h3 id="if-you-installed-apache">If you installed Apache</h3>
 <p><code>/etc/apache2/sites-available/hub.conf</code>:</p>
 <pre><code class="language-apache">&lt;VirtualHost *:80&gt;
