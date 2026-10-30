@@ -21,10 +21,11 @@ class Install extends Base implements CommandInterface
      *
      * @museDescription  Run the full Hubzero installation process
      *
-     * Pass --config=<file> to install without being asked anything. The file
-     * is JSON, with a "site", "database" and "admin" object holding the same
-     * values the prompts collect, and an optional "sample" key saying whether
-     * to load sample data. Pass --env to read the same answers from HUB_*
+     * Pass --config=<file>, or --config=- to read it from standard input, to
+     * install without being asked anything. The file is JSON, with a "site",
+     * "database" and "admin" object holding the same values the prompts
+     * collect, and an optional "sample" key saying whether to load sample
+     * data. Pass --env to read the same answers from HUB_*
      * environment variables instead, as a container is configured.
      *
      * Without being asked anything, an install of a hub that is already
@@ -553,7 +554,7 @@ class Install extends Base implements CommandInterface
             return false;
         }
 
-        $this->output->addLine('Reading the answers in ' . $answerFile);
+        $this->output->addLine('Reading the answers in ' . ($answerFile === '-' ? 'standard input' : $answerFile));
 
         return true;
     }
