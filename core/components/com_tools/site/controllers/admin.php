@@ -698,6 +698,8 @@ class Admin extends SiteController
 			$new_hztv->owner         = $hztv_dev->owner;
 			$new_hztv->member        = $hztv_dev->member;
 			$new_hztv->vnc_timeout   = $hztv_dev->vnc_timeout;
+			// The version being replaced decides; a tool's first carries the dev version's
+			$new_hztv->hardTimeout   = (is_object($hztv_cur) ? $hztv_cur->hardTimeout : $hztv_dev->hardTimeout);
 			$new_hztv->hostreq       = $hztv_dev->hostreq;
 			$new_hztv->params        = $status['params'];
 

@@ -63,6 +63,23 @@ class Session extends Table
 	}
 
 	/**
+	 * Take the hard timeout of the tool version the session runs
+	 *
+	 * Unless the middleware gave the session one already. Does nothing until
+	 * the session table has the column.
+	 *
+	 * @param   object  $version  The tool version, as a table or model
+	 * @return  void
+	 */
+	public function inheritHardTimeout($version)
+	{
+		if (property_exists($this, 'hardTimeout') && empty($this->hardTimeout) && !empty($version->hardTimeout))
+		{
+			$this->hardTimeout = (int) $version->hardTimeout;
+		}
+	}
+
+	/**
 	 * Retrieve a session
 	 *
 	 * @param   string  $sess        Session number

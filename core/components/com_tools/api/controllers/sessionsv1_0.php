@@ -774,6 +774,10 @@ class Sessionsv1_0 extends ApiController
 		// Save the changed caption
 		$ms->load($app->sess);
 		$ms->set('sessname', $app->caption);
+		if (!$ms->get('hardTimeout') && !empty($tv->hardTimeout))
+		{
+			$ms->set('hardTimeout', (int) $tv->hardTimeout);
+		}
 		if (!$ms->store())
 		{
 			throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);

@@ -686,6 +686,7 @@ class Sessions extends SiteController
 		$ms->load($app->sess);
 		$ms->sessname = $app->caption;
 		$ms->params   = $params;
+		$ms->inheritHardTimeout($tv);
 		if (!$ms->store())
 		{
 			App::abort(500, $ms->getError());
