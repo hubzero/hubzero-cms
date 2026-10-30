@@ -233,7 +233,7 @@ of the three icon systems for that reason. See
 runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
 keeps ARIA:
 
-<!--include: core/libraries/Hubzero/Utility/Sanitize.php:423-436-->
+<!--include: core/libraries/Hubzero/Utility/Sanitize.php:481-494-->
 
 So `role`, `aria-label`, `aria-labelledby` and `aria-describedby` survive on
 `a`, `div`, `span`, `img`, `table`, `ul`, `ol`, `li`, `nav`, `section` and
