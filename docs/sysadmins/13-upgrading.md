@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ a89b23e433
+reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
 summary: Bringing a hub up to the latest code on its release branch, with a backup taken first and a way back if something goes wrong.
@@ -17,16 +17,18 @@ commits and 21 database migrations behind, to the head of `2.4-main`, then
 rolling it back and upgrading it again. Its content came through unchanged,
 and the upgraded database matched a newly installed one.
 
-Run every command in the hub's directory, as the account that owns the hub's
-files: `www-data` on Debian and Ubuntu, `apache` on Enterprise Linux, as in
-the install guide. The commands below write `www-data`. With
-FrankenPHP in Docker, run the `php` commands in the container instead:
-`sudo docker exec -w /var/www/hub hub php core/bin/muse ...`. The `git`,
-`mariadb-dump` and `tar` commands run on the server as they are.
+Run every command in the hub's directory. The hub's own commands use the
+two values your system's page set when the hub was installed: `HUB_OWNER`,
+the account that owns its files, and `HUB_PHP`, how to run its PHP. Set them
+again, the same way:
 
 ```bash
+export HUB_OWNER=www-data:www-data       # as your system's page shows
+export HUB_PHP="sudo -u www-data php"    # as your system's page shows
 cd /var/www/hub
 ```
+
+`mariadb-dump` and `tar` run on the server as they are.
 
 ## Before you start
 
@@ -34,13 +36,13 @@ cd /var/www/hub
 would bring, without changing anything:
 
 ```bash
-sudo -u www-data php core/bin/muse repository update
+$HUB_PHP core/bin/muse repository update
 ```
 
 **Check that the checkout has no changes of its own.**
 
 ```bash
-sudo -u www-data php core/bin/muse repository status
+$HUB_PHP core/bin/muse repository status
 ```
 
 It should say the repository is clean. If it lists modified files, someone has
@@ -73,7 +75,7 @@ the dump is not empty before you go on.
 1. **Bring the code up to date.**
 
    ```bash
-   sudo -u www-data php core/bin/muse repository update -f
+   $HUB_PHP core/bin/muse repository update -f
    ```
 
    It tags the current state as a rollback point, then fast-forwards the
@@ -84,7 +86,7 @@ the dump is not empty before you go on.
 2. **Install the libraries the new code needs.**
 
    ```bash
-   sudo -u www-data php core/bin/composer install --working-dir=core
+   $HUB_PHP core/bin/composer install --working-dir=core
    ```
 
    Composer installs exactly the versions in the new `composer.lock`, adding,
@@ -95,20 +97,20 @@ the dump is not empty before you go on.
    it will do, then with `-f` to do it:
 
    ```bash
-   sudo -u www-data php core/bin/muse migration run
-   sudo -u www-data php core/bin/muse migration run -f
+   $HUB_PHP core/bin/muse migration run
+   $HUB_PHP core/bin/muse migration run -f
    ```
 
    It ends with *Success: Up migration complete!* The dry run ends with the
    same words, so read the list above them to see what will run. The same
    warnings a new hub shows may appear again; they are explained in
-   [Warnings during the migrations](01-installing.md#warnings-during-the-migrations).
+   [Warnings during the migrations](12-installing-the-hub.md#warnings-during-the-migrations).
    A migration that ended in a warning is tried again on every run.
 
 4. **Clear the cache.**
 
    ```bash
-   sudo -u www-data php core/bin/muse cache clear
+   $HUB_PHP core/bin/muse cache clear
    ```
 
 5. **Reload PHP**, so no worker carries on with copies of the old code it had
@@ -129,7 +131,7 @@ comes back from the dump.
 1. **Put the code back** to the rollback point the update made:
 
    ```bash
-   sudo -u www-data php core/bin/muse repository rollback
+   $HUB_PHP core/bin/muse repository rollback
    ```
 
    It asks you to confirm the date of the snapshot.
@@ -137,7 +139,7 @@ comes back from the dump.
 2. **Put the libraries back** to the versions the old code expects:
 
    ```bash
-   sudo -u www-data php core/bin/composer install --working-dir=core
+   $HUB_PHP core/bin/composer install --working-dir=core
    ```
 
 3. **Put the database back.** Empty it first: the upgrade may have added
@@ -159,7 +161,7 @@ comes back from the dump.
    ```bash
    sudo rm -rf app
    sudo tar xzf ~/hub-app-before-upgrade.tgz
-   sudo chown -R www-data:www-data app     # apache:apache on Enterprise Linux, 33:33 for FrankenPHP
+   sudo chown -R "$HUB_OWNER" app
    ```
 
 5. Clear the cache and reload PHP, as in steps 4 and 5 above.
@@ -169,7 +171,7 @@ Every update leaves a rollback point behind, a git tag named
 run on it for a while, clear out the older ones:
 
 ```bash
-sudo -u www-data php core/bin/muse repository clean
+$HUB_PHP core/bin/muse repository clean
 ```
 
 It asks two questions: whether to remove every rollback point except the
@@ -182,7 +184,9 @@ what they are.
 **"This checkout is not on a branch that follows another."** The checkout
 is not on a branch, usually because someone checked out a release tag, or it
 is on a branch of its own that follows nothing on GitHub. Put it back on the
-release branch first: `sudo -u www-data git checkout 2.4-main`.
+release branch first, running `git checkout 2.4-main` in `/var/www/hub` as the
+hub's account: `sudo -u www-data git checkout 2.4-main`, or under Docker
+`sudo docker exec -w /var/www/hub hub git checkout 2.4-main`.
 
 **The fetch fails.** The server cannot reach GitHub, or the checkout's
 `origin` points somewhere it can no longer reach. `git remote -v` shows where

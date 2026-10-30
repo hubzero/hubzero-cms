@@ -8,10 +8,15 @@ summary: Choosing how to install a hub: what it needs, the systems the installat
 # Installing a hub
 
 A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
-of PHP. Each system below has a page of its own that takes a server with
-nothing on it to a hub with an administrator who can sign in. Every page is
-complete, and they repeat each other rather than send you between them: find
-your system and follow its page from the top.
+of PHP. Installing one takes two pages:
+
+1. **Your system's page**, from the table below, which takes a server with
+   nothing on it to one ready for the hub: the packages, the code, and the
+   web server. Each is complete for its system, and repeats the others
+   rather than send you between them.
+2. **[Installing the hub](12-installing-the-hub.md)**, which every system's
+   page ends at: the database, the installer, and what comes after. It is the
+   same on every system.
 
 If the hub you are asking about is already installed and answering, go to
 [The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub)
@@ -64,13 +69,13 @@ The libraries Composer installs need the XML extensions, `sockets` and
 
 ## What installing does
 
-Every page ends the same way, with one of two installers that do the same
-job: `muse install` on the command line, which can also take its answers from
-a file, or the installer in the browser. Both load the database, write the
+[Installing the hub](12-installing-the-hub.md) runs one of two installers
+that do the same job: `muse install` on the command line, which can also
+take its answers from a file, or the installer in the browser. Both load the database, write the
 hub's configuration into `app/config/`, bring the database up to date with
 the migrations, and create the administrator. The hub's code is a git
 checkout of its release branch, `2.4-main`, which is what
-[Upgrading a hub](12-upgrading.md) brings up to date later.
+[Upgrading a hub](13-upgrading.md) brings up to date later.
 
 ## What was tested
 
@@ -84,18 +89,3 @@ checkout of its release branch, `2.4-main`, which is what
 - **PHP 8.2 packages installed and every extension checked:** Debian 12 and
   13, Ubuntu 22.04 LTS and 24.04 LTS.
 - **Databases:** MariaDB 10.11 and 11.8.
-
-## Warnings during the migrations
-
-Both installers, and the upgrade, show the same four warnings on a new hub.
-None of them stops the hub working:
-
-| Warning | Why |
-|---|---|
-| *onBeforeMigrate hook 'UpdateTimezoneDatabase.php' ... Insufficient privileges to update timezone tables* | Loading MariaDB's time zone tables needs its `root` account. Each system's page shows how to load them yourself |
-| *Migration20150330124145Core.php: Unable to write out new configuration file* | It updates a configuration file from an older version of the hub, which a new hub does not have |
-| *Migration20150904235936ComUsage.php: Failed to run with the necessary privileges* | The `_metrics` database does not exist, and creating one needs `root`. Create it, as each system's page shows, and run the migrations again |
-| *Migration20170627153900ComHubgraph.php: Failed to run with the necessary privileges* | It removes database triggers that older hubs had. A new hub has none to remove |
-
-A migration that ended in a warning is tried again the next time the
-migrations run; one that succeeded is not.

@@ -1,6 +1,6 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 4b8a132fb4
+reviewed-against: 2.4-main @ 981ae7fc4a
 reviewed: 2026-10-30
 screenshots: none
 summary: Installing a hub on a Linux distribution the other pages do not name, from what it needs rather than from package names.
@@ -10,7 +10,9 @@ summary: Installing a hub on a Linux distribution the other pages do not name, f
 This page is for a Linux distribution the other installation pages do not
 name. It says what a hub needs rather than which packages to install, because
 those are the distribution's to name. The steps are the same as on every
-other system; only the package names and paths are yours to find.
+other system; only the package names and paths are yours to find. When this
+page has prepared the server, [Installing the hub](12-installing-the-hub.md)
+installs it.
 
 If your distribution has no PHP 8.2 and no second source of it, run the hub
 in Docker instead: [Installing with FrankenPHP in Docker](10-docker.md)
@@ -70,27 +72,7 @@ Choose Apache **or** nginx. Install one of them, not both.
 
 If the distribution starts with its firewall closed, open ports 80 and 443.
 
-## 3. Create the database
-
-The hub needs a database and an account that owns it. Connect to MariaDB as
-its administrator (`sudo mariadb` on most distributions) and create them:
-
-```sql
-CREATE DATABASE hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'hub'@'localhost' IDENTIFIED BY 'a-long-random-password';
-GRANT ALL PRIVILEGES ON hub.* TO 'hub'@'localhost';
-```
-
-The usage statistics keep a second database of their own, named after the
-first with `_metrics` on the end. A hub runs without it, but its usage pages
-stay empty. If you want them, create it now as well:
-
-```sql
-CREATE DATABASE hub_metrics CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON hub_metrics.* TO 'hub'@'localhost';
-```
-
-## 4. Get the code
+## 3. Get the code
 
 The repository is the hub: its top directory is the web server's document
 root. Clone it, and give it to the PHP-FPM account:
@@ -117,7 +99,7 @@ allowed to write to `/var/www/hub`, to connect to MariaDB and to the network,
 and to send mail. On SELinux, the commands are the ones
 [Enterprise Linux 9](08-enterprise-linux-9.md#selinux) uses.
 
-## 5. Configure the web server
+## 4. Configure the web server
 
 Every configuration for the hub does the same four things:
 
@@ -132,7 +114,7 @@ The last of those matters: `app/config/database.php` holds the database
 password, and nothing else stops a browser from reading it.
 
 Start from the configuration for your web server on
-[Debian 12](02-debian-12.md#5-configure-the-web-server), and change only what
+[Debian 12](02-debian-12.md#4-configure-the-web-server), and change only what
 is your distribution's:
 
 - where the file goes, and whether it needs enabling;
@@ -145,29 +127,30 @@ distribution snippet that answers 404 for a `.php` address with no file
 behind it: `/administrator/index.php` is answered by the hub's own
 `index.php`.
 
+## 5. Set the values the installation uses
+
+The rest of the installation is the same on every system, and runs the hub's
+commands through two values. Set them in the shell you will carry on in, with
+the PHP-FPM account in place of `<account>`:
+
+```bash
+export HUB_OWNER=<account>:<account>
+export HUB_PHP="sudo -u <account> php"
+```
+
+`HUB_OWNER` is the account and group that own the hub's files, and `HUB_PHP`
+is how to run the hub's PHP. If you open a new shell before you have
+finished, set them again.
+
+Once the hub is installed, scheduled tasks need this line in `/etc/crontab`.
+Keep it for then:
+
+```
+* * * * * <account> /var/www/hub/core/bin/muse cron:jobs tick
+```
+
 ## 6. Install the hub
 
-Use either installer, as the PHP-FPM account. The command line:
-
-```bash
-cd /var/www/hub
-sudo -u <the PHP-FPM account> php core/bin/muse install
-```
-
-or an answer file, or the browser. Each is described step by step on
-[Debian 12](02-debian-12.md#6-install-the-hub), and works the same way here,
-with the PHP-FPM account in place of `www-data`.
-
-## 7. After installing
-
-Everything on [Debian 12](02-debian-12.md#7-after-installing) applies,
-with the PHP-FPM account in place of `www-data`: the welcome page, the cron
-entry for scheduled tasks, mail, the database's time zones, and the usage
-statistics. Then check that the private paths are refused before the hub is
-in use:
-
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" https://hub.example.org/app/config/database.php
-```
-
-It should print `403`.
+The server is ready. Go on to [Installing the hub](12-installing-the-hub.md),
+which creates the database and runs the installer, the same way on every
+system.
