@@ -27,9 +27,25 @@ class Migration20150330124145Core extends Base
 			return;
 		}
 
+		// Earlier runs of this migration left an empty one on hubs that had
+		// none; it holds nothing, so take it away again
+		if (filesize(PATH_ROOT . DS . 'configuration.php') === 0)
+		{
+			@unlink(PATH_ROOT . DS . 'configuration.php');
+			return;
+		}
+
 		// Update configuration, replacing mysql with pdo
 		$configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
-		$configuration = preg_replace('/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/', '$1pdo$2', $configuration);
+		$pattern       = '/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/';
+
+		// Nothing to change, so nothing to write
+		if (!preg_match($pattern, $configuration))
+		{
+			return;
+		}
+
+		$configuration = preg_replace($pattern, '$1pdo$2', $configuration);
 
 		// The configuration file typically doesn't even give write permissions to the owner
 		// Change that and then write it out
