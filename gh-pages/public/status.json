@@ -3,9 +3,9 @@
   {
    "slug": "sysadmins",
    "title": "System administrators",
-   "pages": 3,
+   "pages": 13,
    "counts": {
-    "rewritten": 3
+    "rewritten": 13
    }
   },
   {
@@ -53,7 +53,7 @@
   }
  ],
  "totals": {
-  "rewritten": 238,
+  "rewritten": 248,
   "draft": 1,
   "reviewed": 23,
   "generated": 154
