@@ -86,7 +86,7 @@ class AnswersTest extends Basic
         $this->assertTrue(Answers::isUnattended());
         $this->assertSame([], Answers::section('site'));
         $this->assertSame([], Answers::section('database'));
-        $this->assertFalse(Answers::wantsSampleData());
+        $this->assertNull(Answers::dataSet());
     }
 
     /**
@@ -98,10 +98,14 @@ class AnswersTest extends Basic
     {
         putenv('HUB_SAMPLE_DATA=1');
         Answers::fromEnvironment();
-        $this->assertTrue(Answers::wantsSampleData());
+        $this->assertSame('starter', Answers::dataSet());
 
         putenv('HUB_SAMPLE_DATA=no');
         Answers::fromEnvironment();
-        $this->assertFalse(Answers::wantsSampleData());
+        $this->assertNull(Answers::dataSet());
+
+        putenv('HUB_SAMPLE_DATA=sample');
+        Answers::fromEnvironment();
+        $this->assertSame('sample', Answers::dataSet());
     }
 }
