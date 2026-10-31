@@ -530,6 +530,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 
 		const frame = document.createElement('iframe');
 		frame.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER')); ?>;
+		// The hub template fits filexfer pages shown in its fancyBox, and
+		// would take this frame for one; its own mark tells it the frame
+		// is seen to already
+		frame.setAttribute('data-filexfer-fitted', '1');
 		d.appendChild(frame);
 
 		const settle = () => {
