@@ -190,7 +190,7 @@ class Helper extends Module
 					{
 
 
-						$html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool"' . (!empty($this->launch_page) ? ' data-launch="page"' : '') . ' title="' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . Lang::txt('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
 					}
 					$html .= "\t\t" . ' </li>' . "\n";
 				}
@@ -236,6 +236,9 @@ class Helper extends Module
 		{
 			$this->can_launch = false;
 		}
+
+		// com_tools' launch page shows its own progress from the first moment
+		$this->launch_page = (bool) $mconfig->get('async_launch', 0);
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests

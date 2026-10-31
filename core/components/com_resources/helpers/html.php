@@ -883,7 +883,10 @@ class Html
 						}
 						else
 						{
-							$html .= self::primaryButton('launchtool', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
+							// com_tools' launch page shows its own progress, so the
+							// template's loading overlay stays off for it
+							$launchPage = Component::params('com_tools')->get('async_launch', 0) ? 'data-launch="page"' : '';
+							$html .= self::primaryButton('launchtool', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', $launchPage, 0, $pop);
 						}
 					//}
 				}

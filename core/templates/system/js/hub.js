@@ -75,6 +75,10 @@ jQuery(document).ready(function(jq){
 	if (jQuery.fancybox) {
 		// Set the overlay trigger for launch tool links
 		$('.launchtool').on('click', function(e) {
+			// The launch page shows its own progress from the first moment
+			if (this.getAttribute('data-launch') === 'page') {
+				return;
+			}
 			$.fancybox({
 				closeBtn: false, 
 				href: templatepath + 'images/anim/circling-ball-loading.gif'
