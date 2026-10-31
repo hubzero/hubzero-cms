@@ -70,7 +70,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	#novnc-modern-clip button:hover { filter: brightness(1.12); }
 	/* The tool copied something the browser could not take yet */
 	#app-footer a.clipboard.pending { position: relative; }
-	#app-footer a.clipboard.pending::after {
+	#app-footer a.clipboard.pending::before {
 		content: ""; position: absolute; top: 5px; right: 5px; width: 7px; height: 7px;
 		border-radius: 50%; background: #2f6db3; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.8);
 	}
@@ -79,6 +79,38 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		border-color: rgba(47, 109, 179, 0.55);
 		color: #1f5591;
 	}
+	/* Zoom: a level button in the footer with a menu that opens above it */
+	/* legacy tools.css clips the footer list; the zoom menu opens out of it */
+	#app-footer > ul.app-controls { overflow: visible; }
+	#app-footer li.zoom-li { position: relative; }
+	#app-footer > ul li a.zoom {
+		width: auto;
+		gap: 0.3rem;
+		padding: 0 0.5rem;
+		font: 600 0.75rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		font-variant-numeric: tabular-nums;
+	}
+	#app-footer > ul li a.zoom.active {
+		background: linear-gradient(180deg, rgba(47, 109, 179, 0.30), rgba(47, 109, 179, 0.12));
+		border-color: rgba(47, 109, 179, 0.55);
+		color: #1f5591;
+	}
+	#novnc-zoom-menu {
+		position: absolute; right: 0; bottom: calc(100% + 8px); z-index: 960;
+		min-width: 7.5rem; margin: 0; padding: 0.3rem; list-style: none;
+		border-radius: 8px; background: #1f2329; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+	}
+	#novnc-zoom-menu[hidden] { display: none; }
+	#novnc-zoom-menu button {
+		display: flex; justify-content: space-between; gap: 1rem; width: 100%;
+		padding: 0.35rem 0.6rem; border: 0; border-radius: 5px; background: none; color: #e6e8eb;
+		font: 500 13px/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+		font-variant-numeric: tabular-nums; text-align: left; cursor: pointer;
+	}
+	#novnc-zoom-menu button:hover,
+	#novnc-zoom-menu button:focus-visible { background: #2f3640; outline: none; }
+	#novnc-zoom-menu button[aria-checked="true"]::after { content: "\2713"; color: #8cc4ff; }
+	#novnc-zoom-menu .nzm-sep { height: 1px; margin: 0.25rem 0.2rem; background: #3a4048; }
 	#novnc-modern-action button {
 		flex: none; padding: 0 0.4rem; border: 0; background: none; color: #9aa1ab;
 		font: inherit; font-size: 16px; line-height: 1; cursor: pointer;
@@ -144,6 +176,37 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		}
 	} catch (e) { console.warn('[novnc-modern] reconnect init failed', e); }
 
+	// ----- Zoom --------------------------------------------------------------
+	// The frame is the framebuffer times the zoom; noVNC scales the display to
+	// fill it (scaleViewport). The tool keeps its own size: the grip and the
+	// connect-time request work in framebuffer pixels (frame / zoom).
+	const ZOOMS = [1, 1.25, 1.5, 1.75, 2];
+	const ZOOM_KEY = 'hz-novnc-zoom';
+	let zoom = 1;              // a number, or 'fit'
+	try {
+		const z = localStorage.getItem(ZOOM_KEY);
+		if (z === 'fit') { zoom = 'fit'; }
+		else if (z && parseFloat(z) >= 0.5 && parseFloat(z) <= 3) { zoom = parseFloat(z); }
+	} catch (e) {}
+	let fbW = 0, fbH = 0;      // the framebuffer, as last reported
+
+	// Largest zoom that fits the page's width and the window's height
+	function fitZoom() {
+		if (!(fbW > 0 && fbH > 0)) { return 1; }
+		const holder = appwrap ? appwrap.parentNode : content.parentNode;
+		const chromeW = appwrap ? (appwrap.offsetWidth - content.offsetWidth) : 0;
+		const footer = document.getElementById('app-footer');
+		const header = document.getElementById('app-header');
+		const chromeH = (footer ? footer.offsetHeight : 46) + (header ? header.offsetHeight : 46) + 24;
+		const availW = holder.clientWidth - chromeW;
+		const availH = window.innerHeight - chromeH;
+		const z = Math.min(availW / fbW, availH / fbH);
+		return Math.max(0.5, Math.min(3, Math.floor(z * 100) / 100));
+	}
+	function effZoom() {
+		return (zoom === 'fit') ? fitZoom() : zoom;
+	}
+
 	// ----- Frame sizing ------------------------------------------------------
 	// The frame follows the server's framebuffer; the user resizes it with the
 	// corner grip, which asks the server for a framebuffer of that size.
@@ -152,16 +215,46 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		// framebuffer must not collapse the frame the overlay fills.
 		if (reco && reco.isHolding && reco.isHolding()) { return; }
 		if (!(w > 0 && h > 0)) { return; }
-		content.style.width  = w + 'px';
-		content.style.height = h + 'px';
-		if (appwrap) { appwrap.style.width = w + 'px'; }
+		fbW = w;
+		fbH = h;
+		const z = effZoom();
+		const cw = Math.round(w * z), ch = Math.round(h * z);
+		content.style.width  = cw + 'px';
+		content.style.height = ch + 'px';
+		if (appwrap) { appwrap.style.width = cw + 'px'; }
+		// Whole-number zooms stay crisp pixel for pixel; others smooth
+		const canvas = screen.querySelector('canvas');
+		if (canvas) { canvas.style.imageRendering = (z === Math.round(z)) ? 'pixelated' : 'auto'; }
 		const size = document.getElementById('app-size');
 		if (size) { size.textContent = w + ' x ' + h; }
+		if (zoomUI) { zoomUI.update(); }
 	}
 
+	// The tool's size for the frame as it stands: frame / zoom
 	function requestFrameSize() {
-		if (rfb) { rfb.requestHubzeroResize(content.clientWidth, content.clientHeight); }
+		if (!rfb) { return; }
+		const z = effZoom();
+		rfb.requestHubzeroResize(Math.round(content.clientWidth / z), Math.round(content.clientHeight / z));
 	}
+
+	function setZoom(z) {
+		zoom = z;
+		try { localStorage.setItem(ZOOM_KEY, String(z)); } catch (e) {}
+		if (fbW) { sizeFrame(fbW, fbH); }
+		else if (zoomUI) { zoomUI.update(); }
+	}
+	function stepZoom(dir) {
+		const cur = effZoom();
+		let next = cur;
+		if (dir > 0) { next = ZOOMS.find((z) => z > cur + 0.001) || ZOOMS[ZOOMS.length - 1]; }
+		else { next = ZOOMS.slice().reverse().find((z) => z < cur - 0.001) || ZOOMS[0]; }
+		setZoom(next);
+	}
+	let zoomUI = null;   // set by the footer code
+
+	window.addEventListener('resize', () => {
+		if (zoom === 'fit' && fbW) { sizeFrame(fbW, fbH); }
+	});
 
 	let resizableAttached = false;
 	function attachResizable() {
@@ -177,7 +270,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 				if (appwrap) { appwrap.style.width = content.clientWidth + 'px'; }
 			},
 			stop: function () {
-				sizeFrame(content.clientWidth, content.clientHeight);
+				// Resizing pins Fit at the zoom it was showing
+				if (zoom === 'fit') { setZoom(effZoom()); }
 				requestFrameSize();
 			}
 		});
@@ -318,6 +412,19 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			});
 		}, true);
 
+		// Zoom keys inside the display (instead of zooming the whole page)
+		screen.addEventListener('keydown', function (e) {
+			if (!(e.ctrlKey || e.metaKey) || e.altKey) { return; }
+			let dir = 0;
+			if (e.key === '=' || e.key === '+') { dir = 1; }
+			else if (e.key === '-' || e.key === '_') { dir = -1; }
+			else if (e.key === '0') { dir = 0; }
+			else { return; }
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			if (dir === 0) { setZoom(1); } else { stepZoom(dir); }
+		}, true);
+
 		// Once clipboard reading is allowed, sync on every click into the display,
 		// so the tool's own Paste menu and middle-click have the latest text too.
 		// Never prompts: only runs if permission was already granted.
@@ -391,7 +498,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			// subprotocol; the legacy client offered binary/base64
 			rfb = new RFB(screen, url, { credentials: { password: password }, shared: true, wsProtocols: ['binary'] });
 			rfb.viewOnly      = readOnly;
-			rfb.scaleViewport = false;   // the frame follows the framebuffer instead
+			rfb.scaleViewport = true;    // fills the frame: framebuffer x zoom
 			rfb.resizeSession = false;   // resizing is HUBzero's own request
 			rfb.clipViewport  = false;
 			rfb.background    = '#0b0d10';
@@ -451,6 +558,79 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			ul.className = 'app-controls';
 			footer.appendChild(ul);
 		}
+
+		// Zoom: the level, with a menu of levels above it
+		(function () {
+			const li = document.createElement('li');
+			li.className = 'zoom-li';
+			const btn = document.createElement('a');
+			btn.className = 'zoom';
+			btn.id = 'app-btn-zoom';
+			btn.href = '#';
+			btn.setAttribute('role', 'button');
+			btn.setAttribute('aria-haspopup', 'menu');
+			btn.setAttribute('aria-expanded', 'false');
+			btn.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_ZOOM')); ?>;
+			btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg><span class="zoom-level"></span>';
+			const menu = document.createElement('div');
+			menu.id = 'novnc-zoom-menu';
+			menu.setAttribute('role', 'menu');
+			menu.hidden = true;
+			const items = [];
+			function add(value, label) {
+				const b = document.createElement('button');
+				b.type = 'button';
+				b.setAttribute('role', 'menuitemradio');
+				b.textContent = label;
+				b.addEventListener('click', () => { setZoom(value); close(); if (rfb) { rfb.focus(); } });
+				items.push([value, b]);
+				menu.appendChild(b);
+			}
+			add('fit', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_ZOOM_FIT')); ?>);
+			const sep = document.createElement('div');
+			sep.className = 'nzm-sep';
+			menu.appendChild(sep);
+			ZOOMS.forEach((z) => add(z, Math.round(z * 100) + '%'));
+
+			function open() {
+				menu.hidden = false;
+				btn.classList.add('active');
+				btn.setAttribute('aria-expanded', 'true');
+				const cur = items.find(([v, b]) => b.getAttribute('aria-checked') === 'true');
+				(cur ? cur[1] : items[0][1]).focus();
+			}
+			function close() {
+				menu.hidden = true;
+				btn.classList.remove('active');
+				btn.setAttribute('aria-expanded', 'false');
+			}
+			btn.addEventListener('click', (e) => { e.preventDefault(); if (menu.hidden) { open(); } else { close(); } });
+			menu.addEventListener('keydown', (e) => {
+				const list = items.map(([v, b]) => b);
+				const i = list.indexOf(document.activeElement);
+				if (e.key === 'Escape') { close(); btn.focus(); }
+				else if (e.key === 'ArrowDown') { e.preventDefault(); list[(i + 1) % list.length].focus(); }
+				else if (e.key === 'ArrowUp') { e.preventDefault(); list[(i - 1 + list.length) % list.length].focus(); }
+			});
+			document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !li.contains(e.target)) { close(); } }, true);
+
+			li.appendChild(btn);
+			li.appendChild(menu);
+			ul.appendChild(li);
+
+			zoomUI = {
+				update: function () {
+					const z = effZoom();
+					btn.querySelector('.zoom-level').textContent = Math.round(z * 100) + '%';
+					const label = (zoom === 'fit')
+						? <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_ZOOM_FIT')); ?> + ' (' + Math.round(z * 100) + '%)'
+						: Math.round(z * 100) + '%';
+					btn.setAttribute('aria-label', btn.title + ': ' + label);
+					items.forEach(([v, b]) => b.setAttribute('aria-checked', (v === zoom) ? 'true' : 'false'));
+				}
+			};
+			zoomUI.update();
+		})();
 
 		// Reconnect: drops and re-establishes the connection. Icon-only; hover
 		// for the label.

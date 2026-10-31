@@ -21,11 +21,11 @@ else
 	$engine = strtolower(Request::getWord('vncengine', ''));
 	if (!$engine)
 	{
-		$engine = strtolower($this->params->get('vnc_engine', 'legacy'));
+		$engine = strtolower($this->params->get('vnc_engine', 'modern'));
 	}
 	if (!in_array($engine, array('legacy', 'modern', 'vanilla')))
 	{
-		$engine = 'legacy';
+		$engine = 'modern';
 	}
 
 	if ($engine == 'modern')

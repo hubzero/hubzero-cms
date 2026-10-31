@@ -156,6 +156,210 @@ jQuery(document).ready(function(jq){
 		setInterval(fetchTimeout, 60 * 1000);  // re-sync to correct drift
 	})();
 
+	// Narrow frames. The footer sheds detail one step at a time, only as far as
+	// it must to fit: labels, the logo, a shorter meter, then the least-used
+	// controls into a "More" menu, then the meter itself. The header goes
+	// icon-only once the session title starts to truncate. Re-run whenever the
+	// frame changes width or a viewer engine adds controls.
+	(function () {
+		var wrap   = document.getElementById('app-wrap');
+		var footer = document.getElementById('app-footer');
+		var header = document.getElementById('app-header');
+		if (!wrap || !footer || !window.ResizeObserver) { return; }
+
+		// Least-needed first; the zoom control and the HUBzero mark stay
+		var STEPS = [
+			{ cls: 'fc-label' },
+			{ cls: 'fc-timer' },
+			{ cls: 'fc-meter' },
+			{ move: 'app-btn-hide' },
+			{ move: 'app-btn-clipboard' },
+			{ move: 'app-btn-reconnect' },
+			{ cls: 'fc-nometer' },
+			{ cls: 'fc-tight' }
+		];
+		var moreText = footer.getAttribute('data-more') || 'More';
+		var moreLi = null, moreBtn = null, menu = null, controls = null;
+		var busy = false;
+
+		function ensureMore() {
+			controls = footer.querySelector('ul.app-controls') || footer.querySelector(':scope > ul');
+			if (!controls) { return false; }
+			if (moreLi && moreLi.parentNode === controls) { return true; }
+			moreLi = document.createElement('li');
+			moreLi.id = 'app-more-li';
+			moreLi.hidden = true;
+			moreBtn = document.createElement('a');
+			moreBtn.href = '#';
+			moreBtn.id = 'app-btn-more';
+			moreBtn.className = 'more';
+			moreBtn.setAttribute('role', 'button');
+			moreBtn.setAttribute('aria-haspopup', 'menu');
+			moreBtn.setAttribute('aria-expanded', 'false');
+			moreBtn.title = moreText;
+			moreBtn.setAttribute('aria-label', moreText);
+			moreBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+			menu = document.createElement('ul');
+			menu.id = 'app-more-menu';
+			menu.setAttribute('role', 'menu');
+			menu.hidden = true;
+			moreLi.appendChild(moreBtn);
+			moreLi.appendChild(menu);
+			controls.appendChild(moreLi);
+
+			moreBtn.addEventListener('click', function (e) {
+				e.preventDefault();
+				setOpen(menu.hidden);
+			});
+			// Choosing an item closes the menu (the item does its own thing)
+			menu.addEventListener('click', function (e) {
+				if (e.target.closest('a')) { setTimeout(function () { setOpen(false); }, 0); }
+			});
+			menu.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') { setOpen(false); moreBtn.focus(); }
+			});
+			document.addEventListener('pointerdown', function (e) {
+				if (!menu.hidden && !moreLi.contains(e.target)) { setOpen(false); }
+			}, true);
+			return true;
+		}
+		function setOpen(on) {
+			menu.hidden = !on;
+			moreBtn.classList.toggle('active', on);
+			moreBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+			if (on) {
+				// Keep it inside the frame: shift right if it would cross the
+				// frame's left edge, and never wider than the frame
+				var pad = 6;
+				var wr = wrap.getBoundingClientRect();
+				menu.style.right = '';
+				menu.style.maxWidth = Math.max(160, wr.width - 2 * pad) + 'px';
+				var mr = menu.getBoundingClientRect();
+				if (mr.left < wr.left + pad) {
+					menu.style.right = (mr.left - (wr.left + pad)) + 'px';
+				}
+				var first = menu.querySelector('a');
+				if (first) { first.focus(); }
+			}
+		}
+
+		// Visible footer items must end before the grip's reserved corner
+		function fits() {
+			var limit = footer.getBoundingClientRect().right - parseFloat(getComputedStyle(footer).paddingRight || 0) + 1;
+			var kids = footer.children;
+			for (var i = 0; i < kids.length; i++) {
+				var r = kids[i].getBoundingClientRect();
+				if (r.width && r.right > limit) { return false; }
+			}
+			return true;
+		}
+
+		function restore() {
+			STEPS.forEach(function (s) { if (s.cls) { footer.classList.remove(s.cls); } });
+			if (!menu) { return; }
+			// Put moved controls back in their original order, ahead of More
+			Array.prototype.slice.call(menu.children)
+				.sort(function (a, b) { return a.getAttribute('data-order') - b.getAttribute('data-order'); })
+				.forEach(function (li) { controls.insertBefore(li, moreLi); });
+			moreLi.hidden = true;
+		}
+
+		function apply(step) {
+			if (step.cls) { footer.classList.add(step.cls); return; }
+			var a = document.getElementById(step.move);
+			var li = a ? a.closest('li') : null;
+			if (!li || li.parentNode !== controls) { return; }
+			if (!li.hasAttribute('data-order')) {
+				li.setAttribute('data-order', Array.prototype.indexOf.call(controls.children, li));
+			}
+			li.setAttribute('role', 'none');
+			a.setAttribute('role', 'menuitem');
+			menu.appendChild(li);
+			moreLi.hidden = false;
+		}
+
+		function compactFooter() {
+			if (!ensureMore()) { return; }
+			// Number the controls once, before anything moves
+			Array.prototype.forEach.call(controls.children, function (li, i) {
+				if (li !== moreLi && !li.hasAttribute('data-order')) { li.setAttribute('data-order', i); }
+			});
+			restore();
+			for (var i = 0; i < STEPS.length && !fits(); i++) {
+				apply(STEPS[i]);
+			}
+			if (moreLi.hidden) { setOpen(false); }
+		}
+
+		function compactHeader() {
+			if (!header) { return; }
+			// Give icon-only buttons their name before their text goes
+			header.querySelectorAll('ul.app-toolbar li a').forEach(function (a) {
+				var span = a.querySelector('span');
+				if (span && !a.getAttribute('aria-label')) {
+					var name = span.textContent.trim();
+					a.setAttribute('aria-label', name);
+					if (!a.title) { a.title = name; }
+				}
+			});
+			header.classList.remove('hc-icons');
+			var title = document.getElementById('session-title');
+			if (title && title.scrollWidth > title.clientWidth + 1) {
+				header.classList.add('hc-icons');
+			}
+		}
+
+		// Down to icon + percentage, the storage link's tooltip (and name)
+		// carries the rest: "Storage: 13% of 10GB. View your storage usage"
+		var duView = footer.querySelector('#diskusage a.du-view');
+		var duTitle = duView ? (duView.getAttribute('title') || '') : '';
+		function storageTitle() {
+			if (!duView) { return; }
+			var amt = footer.querySelector('#du-amount .du-amount-text');
+			var label = duView.querySelector('.du-label');
+			var full = (amt && amt.textContent.trim())
+				? (label ? label.textContent.trim() + ': ' : '') + amt.textContent.trim() + '. ' + duTitle
+				: duTitle;
+			var t = footer.classList.contains('fc-nometer') ? full : duTitle;
+			duView.setAttribute('title', t);
+			duView.setAttribute('aria-label', full);
+		}
+		if (duView) { duView.addEventListener('pointerenter', storageTitle); }
+
+		var watcher = null;
+		function run() {
+			if (busy) { return; }
+			busy = true;
+			try { compactHeader(); compactFooter(); storageTitle(); } finally {
+				busy = false;
+				// Our own moves are not news
+				if (watcher) { watcher.takeRecords(); }
+			}
+		}
+
+		var pending = null;
+		function schedule() {
+			if (pending) { return; }
+			pending = requestAnimationFrame(function () { pending = null; run(); });
+		}
+		new ResizeObserver(schedule).observe(wrap);
+		// Engines add their controls after load. The countdown's ticking text
+		// is not a layout change (its state changes are watched below).
+		var timerEl = document.getElementById('session-timer');
+		watcher = new MutationObserver(function (records) {
+			for (var i = 0; i < records.length; i++) {
+				if (!(timerEl && timerEl.contains(records[i].target))) { schedule(); return; }
+			}
+		});
+		watcher.observe(footer, { childList: true, subtree: true });
+		// The countdown changes width as it changes state
+		var timer = document.getElementById('session-timer');
+		if (timer) {
+			new MutationObserver(schedule).observe(timer, { attributes: true, attributeFilter: ['class', 'hidden'] });
+		}
+		run();
+	})();
+
 	if ($('#app-btn-options').length) {
 		$('#app-btn-options').on('click', function (e){
 			e.preventDefault();
@@ -186,8 +390,10 @@ jQuery(document).ready(function(jq){
                                 dataType: "json"
                         }).done(function(data) {
                                 if (data && $.type(data.amount) === "number" && $.type(data.total) === "number") {
-                                        $('#diskusage .du-amount-bar').css('width', data.amount+'%');
-                                        $('#diskusage .du-amount-text').html(data.amount+'% of '+data.total+'GB');
+                                        // (the template sets the width !important; match it)
+                                        $('#diskusage .du-amount-bar').each(function () { this.style.setProperty('width', data.amount + '%', 'important'); });
+                                        $('#diskusage .du-amount-text').text(data.amount+'% of '+data.total+'GB');
+                                        $('#diskusage .du-pct').text(data.amount+'%');
                                 }
                         }).fail(function(jqXHR){
                                 // Stop on a rejected or rate-limited token (a renewal

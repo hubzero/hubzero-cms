@@ -179,7 +179,7 @@ if (!$this->app->sess) {
 			}
 			?>
 		</div><!-- / #app-content -->
-		<div id="app-footer">
+		<div id="app-footer" data-more="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_MORE')); ?>">
 			<?php // Designer mark (dark two-tone), seated on the metal footer ?>
 			<div id="app-logo" class="brand" aria-hidden="true">
 				<svg viewBox="0 0 48.52 85.7" xmlns="http://www.w3.org/2000/svg" focusable="false">

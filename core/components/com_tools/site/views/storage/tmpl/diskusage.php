@@ -21,7 +21,8 @@ if ($this->writelink)
 	$viewTitle  = Lang::txt('COM_TOOLS_STORAGE_VIEW_TITLE');
 	$html .= "\t".'<dt><a class="du-view" href="'.$storageUrl.'" title="'.$viewTitle.'" aria-label="'.$viewTitle.'">'
 		. '<svg class="du-disk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>'
-		. '<span>' . Lang::txt('COM_TOOLS_STORAGE') . '</span>'
+		. '<span class="du-label">' . Lang::txt('COM_TOOLS_STORAGE') . '</span>'
+		. '<span class="du-pct" aria-hidden="true">' . (int) $this->amt . '%</span>'
 		. '<svg class="du-view-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>'
 		. '</a></dt>'."\n";
 }

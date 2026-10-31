@@ -16,7 +16,7 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="vnc_engine" type="list" default="legacy" label="VNC JS engine" description="Which VNC client to run in the viewer. Overridable per-request with &amp;vncengine=legacy|modern|vanilla.">
+				<field name="vnc_engine" type="list" default="modern" label="VNC JS engine" description="Which VNC client to run in the viewer. Overridable per-request with &amp;vncengine=legacy|modern|vanilla.">
 					<option value="legacy">HubZero noVNC (bundled + extensions)</option>
 					<option value="modern">Modern noVNC 1.7.0 (bundled + HubZero patches)</option>
 					<option value="vanilla">Vanilla noVNC (current upstream, from CDN)</option>

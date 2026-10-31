@@ -515,3 +515,72 @@
 }
 #session-timeout-popup.crit .stp-dismiss { border-color: #cf4033; background: #cf4033; }
 #session-timeout-popup .stp-dismiss:hover { filter: brightness(1.08); }
+
+/* ---- Narrow frames ----------------------------------------------------
+   sessions.js steps the footer down only as far as needed to fit, adding
+   these classes cumulatively; the header goes icon-only once the session
+   title starts to truncate. */
+#app-footer.fc-label #diskusage dt a.du-view span.du-label { display: none; }
+#app-footer.fc-timer #session-timer .st-label { display: none; }
+#app-footer.fc-meter #diskusage #du-amount { width: 112px; }
+#app-footer.fc-meter #diskusage #du-amount .du-amount-text { font-size: 0.66rem; }
+/* Storage down to its icon and percentage (the link's tooltip has the rest) */
+#diskusage dt a.du-view span.du-pct { display: none; }
+#app-footer.fc-nometer #diskusage #du-amount { display: none; }
+#app-footer.fc-nometer #diskusage dt a.du-view .du-view-ico { display: none; }
+#app-footer.fc-nometer #diskusage dt a.du-view span.du-pct {
+	display: inline;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+#app-footer.fc-nometer #diskusage { margin-left: 0.9rem; }
+#app-footer.fc-tight #session-timer { padding-left: 0.6rem; }
+#app-footer.fc-tight #session-timer.ended .st-clock { display: none; }   /* the icon + its tooltip remain */
+
+#app-header.hc-icons ul.app-toolbar li a span { display: none; }
+#app-header.hc-icons ul.app-toolbar li a { padding: 0 0.55rem; }
+
+/* "More" overflow menu for footer controls that no longer fit */
+#app-footer li#app-more-li { position: relative; }
+#app-footer li#app-more-li[hidden] { display: none; }
+#app-footer > ul { overflow: visible; }
+#app-more-menu {
+	position: absolute;
+	right: 0;
+	bottom: calc(100% + 8px);
+	z-index: 960;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 11rem;
+	width: max-content;
+	max-width: 16rem;        /* sessions.js also keeps it inside the frame */
+	margin: 0;
+	padding: 0.3rem;
+	list-style: none;
+	border-radius: 8px;
+	background: #1f2329;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+#app-more-menu[hidden] { display: none; }
+#app-footer > ul #app-more-menu li a {
+	justify-content: flex-start;
+	gap: 0.6rem;
+	width: 100%;
+	height: auto;
+	padding: 0.45rem 0.6rem;
+	border: 0;
+	border-radius: 5px;
+	background: none;
+	color: #e6e8eb;
+	font: 500 13px/1.3 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	white-space: normal;
+	text-align: left;
+}
+#app-footer > ul #app-more-menu li a svg { flex: none; }
+#app-footer > ul #app-more-menu li a:hover,
+#app-footer > ul #app-more-menu li a:focus-visible { background: #2f3640; outline: none; }
+#app-footer > ul #app-more-menu li a.active { color: #8cc4ff; }
+/* label from the control's own title (it changes with state, e.g. Hide/Show) */
+#app-footer > ul #app-more-menu li a::after { content: attr(title); position: static; width: auto; height: auto; background: none; box-shadow: none; }
