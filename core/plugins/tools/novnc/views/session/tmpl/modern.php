@@ -23,6 +23,9 @@ $this->js('jquery.editable.min.js', 'system');
 // Shared recovery overlay: registers assets and emits #novnc-reconnect-config
 require __DIR__ . DIRECTORY_SEPARATOR . '_reconnect.php';
 
+// Copy and paste can be off for tools on hosts nothing may leave (plugin config)
+$clipboard = !$this->readOnly && (!isset($this->clipboard) || $this->clipboard);
+
 $novncVersion = '1.7.0';
 $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/assets/novnc-' . $novncVersion;
 ?>
@@ -45,6 +48,14 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	}
 	#novnc-modern-action[hidden] { display: none; }
+	/* Passing notices: the bell rang while away, text left out of a paste */
+	#novnc-modern-note {
+		position: absolute; left: 50%; top: 14px; z-index: 6; transform: translateX(-50%);
+		max-width: calc(100% - 28px); padding: 0.5rem 0.9rem; border-radius: 8px;
+		background: #1f2329; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); color: #f3f4f6;
+		font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	}
+	#novnc-modern-note[hidden] { display: none; }
 	#novnc-modern-action a { color: #8cc4ff; font-weight: 600; white-space: nowrap; }
 	/* Clipboard panel: the always-works path when the browser won't share its clipboard */
 	#novnc-modern-clip {
@@ -111,6 +122,30 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	#novnc-zoom-menu button:focus-visible { background: #2f3640; outline: none; }
 	#novnc-zoom-menu button[aria-checked="true"]::after { content: "\2713"; color: #8cc4ff; }
 	#novnc-zoom-menu .nzm-sep { height: 1px; margin: 0.25rem 0.2rem; background: #3a4048; }
+	/* File transfer (a tool's exportfile/importfile) */
+	dialog.novnc-xfer {
+		display: flex; flex-direction: column; box-sizing: border-box;
+		width: min(1100px, 92vw); height: min(820px, 88vh); max-width: none; max-height: none;
+		margin: auto; padding: 0; border: 0; border-radius: 10px; overflow: hidden;
+		background: #fff; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+	}
+	dialog.novnc-xfer:not([open]) { display: none; }
+	dialog.novnc-xfer.is-upload { width: min(560px, 92vw); height: min(420px, 88vh); }
+	dialog.novnc-xfer::backdrop { background: rgba(10, 12, 16, 0.55); }
+	.novnc-xfer-bar {
+		flex: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+		background: #1f2329; color: #f3f4f6;
+		font: 500 13px/1.4 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	}
+	.novnc-xfer-name { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+	.novnc-xfer-bar button {
+		flex: none; padding: 0.3rem 0.7rem; border: 1px solid #4a515b; border-radius: 6px;
+		background: #2b3038; color: #f3f4f6; font: inherit; font-size: 12px; cursor: pointer;
+	}
+	.novnc-xfer-bar button:hover { filter: brightness(1.15); }
+	.novnc-xfer-bar button[hidden] { display: none; }
+	.novnc-xfer-bar button.nx-close { border: 0; background: none; color: #9aa1ab; font-size: 18px; line-height: 1; padding: 0.15rem 0.45rem; }
+	.novnc-xfer iframe { flex: 1 1 auto; width: 100%; min-height: 0; border: 0; background: #fff; }
 	#novnc-modern-action button {
 		flex: none; padding: 0 0.4rem; border: 0; background: none; color: #9aa1ab;
 		font: inherit; font-size: 16px; line-height: 1; cursor: pointer;
@@ -120,6 +155,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 <div id="novnc-modern">
 	<div id="novnc-modern-status"><?php echo Lang::txt('PLG_TOOLS_NOVNC_LOADING'); ?></div>
 	<div id="novnc-modern-screen"></div>
+	<div id="novnc-modern-note" role="status" aria-live="polite" hidden></div>
+	<?php if ($clipboard) { ?>
 	<div id="novnc-modern-clip" role="dialog" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>" hidden>
 		<p><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_HINT'); ?></p>
 		<textarea spellcheck="false" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>"></textarea>
@@ -129,6 +166,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			<button type="button" class="nmc-send"><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_SEND'); ?></button>
 		</div>
 	</div>
+	<?php } ?>
 	<div id="novnc-modern-action" role="status" hidden>
 		<span><?php echo Lang::txt('PLG_TOOLS_NOVNC_ACTION_BLOCKED'); ?></span>
 		<a href="#" target="_blank" rel="noopener"><?php echo Lang::txt('PLG_TOOLS_NOVNC_ACTION_OPEN'); ?></a>
@@ -147,6 +185,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	const password = <?php echo json_encode((string) $this->output->password); ?>;
 	const encrypt  = <?php echo ($this->output->wsproxy_encrypt == 'Yes') ? 'true' : 'false'; ?>;
 	const readOnly = <?php echo $this->readOnly ? 'true' : 'false'; ?>;
+	const clipboardOn = <?php echo $clipboard ? 'true' : 'false'; ?>;
 
 	const url = (encrypt ? 'wss' : 'ws') + '://' + host + ':' + port + '/websockify?token=' + encodeURIComponent(token);
 
@@ -300,12 +339,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		}
 		const href = target.href;
 
-		// File transfer opens in an overlay when fancybox is on the page
-		if (href.indexOf('filexfer') !== -1 && $ && $.fancybox) {
-			$.fancybox({
-				type: 'iframe', href: href, width: 500, height: 500,
-				autoSize: false, fitToView: true, titleShow: false
-			});
+		// File transfer opens in our own dialog
+		if (href.indexOf('filexfer') !== -1 && window.HTMLDialogElement) {
+			openFileTransfer(href);
 			return;
 		}
 
@@ -319,11 +355,239 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		}
 	}
 
+	// ----- File transfer -----------------------------------------------------
+	// A tool's exportfile/importfile arrives as a ClientAction for a /filexfer/
+	// page, served by the tool host through the hub, so same-origin. The
+	// download page is a two-row frameset, a toolbar over the file, sized for
+	// a window rather than an overlay, and its own Save As/Print buttons reach
+	// for window.top and fail inside one. So rather than show it as it comes:
+	// the frame holding the file gets the whole frameset (text arrives in the
+	// lower frame, an image is laid out in the toolbar frame, so it is decided
+	// by looking), and the header above it names the file and carries Save As
+	// and Print. The upload page is a plain form with its own buttons and is
+	// shown as it is. Anything not recognised is left exactly as it came.
+	const xfer = { dlg: null, content: null };
+
+	function xferHasContent(win) {
+		try {
+			const doc = win && win.document;
+			if (!doc || !doc.body) { return false; }
+			if (doc.body.innerText && doc.body.innerText.trim()) { return true; }
+			return !!doc.querySelector('img, pre, table, embed, object, canvas, svg');
+		} catch (e) { return false; }
+	}
+	function xferDress(win, toolbarFrame) {
+		try {
+			const doc = win.document;
+			if (!doc || doc.getElementById('hz-xfer-skin')) { return; }
+			const st = doc.createElement('style');
+			st.id = 'hz-xfer-skin';
+			st.textContent = toolbarFrame
+				// the image case: hide the page's logo and buttons beside it
+				? '#logo,#main form{display:none!important}' +
+				  '#main{display:block!important;min-height:0!important;padding:16px!important;border:0!important}' +
+				  '#main img,#main embed,#main object,#main canvas{max-width:100%;height:auto}'
+				// a bare text/plain document: some margin and a proper monospace
+				: 'body{margin:0;padding:14px 18px;' +
+				  'font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}' +
+				  'pre{margin:0;font:inherit}';
+			(doc.head || doc.documentElement).appendChild(st);
+		} catch (e) {}
+	}
+	// { view, file }: the frame showing the file, and the lower frame whose
+	// URL is the /dlfile/<name> the transfer is of (empty for an image)
+	function xferClaim(frame) {
+		const win = frame.contentWindow;
+		const doc = frame.contentDocument;
+		const container = doc && (doc.getElementById('container') || doc.querySelector('frameset'));
+		if (!container || !win.frames.length) { return null; }   // the upload page
+		const toolbar = win.frames[0];
+		const lower = win.frames['file'] || win.frames[1];
+		// One frame is hidden below; its border would be a stray line
+		container.setAttribute('border', '0');
+		container.setAttribute('frameborder', '0');
+		container.setAttribute('framespacing', '0');
+		if (lower && xferHasContent(lower)) {
+			container.rows = '0,100%';
+			xferDress(lower, false);
+			return { view: lower, file: lower };
+		}
+		try {
+			if (toolbar && toolbar.document.querySelector('#main img, #main embed, #main object, #main canvas')) {
+				container.rows = '100%,0';
+				xferDress(toolbar, true);
+				return { view: toolbar, file: lower || toolbar };
+			}
+		} catch (e) {}
+		const any = lower || toolbar;
+		return any ? { view: any, file: any } : null;
+	}
+	function xferName(win) {
+		try {
+			const last = decodeURIComponent(win.location.pathname.split('/').filter(Boolean).pop() || '');
+			return /\.[A-Za-z0-9]{1,8}$/.test(last) ? last : '';
+		} catch (e) { return ''; }
+	}
+
+	function xferDialog() {
+		if (xfer.dlg) { return xfer.dlg; }
+		const d = document.createElement('dialog');
+		d.className = 'novnc-xfer';
+		d.setAttribute('aria-label', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER')); ?>);
+		d.innerHTML = '<div class="novnc-xfer-bar"><span class="novnc-xfer-name"></span>' +
+			'<button type="button" data-act="save"></button>' +
+			'<button type="button" data-act="print"></button>' +
+			'<button type="button" class="nx-close" data-act="close">&times;</button></div>';
+		d.querySelector('[data-act="save"]').textContent  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_SAVE')); ?>;
+		d.querySelector('[data-act="print"]').textContent = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_PRINT')); ?>;
+		d.querySelector('[data-act="close"]').setAttribute('aria-label', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_CLOSE')); ?>);
+
+		d.querySelector('.novnc-xfer-bar').addEventListener('click', (e) => {
+			const act = e.target.closest('button') && e.target.closest('button').getAttribute('data-act');
+			const c = xfer.content;
+			if (act === 'close') { d.close(); }
+			else if (act === 'print' && c) {
+				try { c.view.focus(); } catch (err) {}
+				c.view.print();
+			} else if (act === 'save' && c) {
+				// What the page's own Save As does: the file again, as an attachment
+				let href;
+				try { href = c.file.location.href; } catch (err) { href = xfer.url; }
+				window.open(href + (href.indexOf('?') === -1 ? '?' : '&') + 'saveas=1', '_blank');
+			}
+		});
+		// A click on the backdrop closes, as the old overlay did
+		d.addEventListener('click', (e) => { if (e.target === d) { d.close(); } });
+		// Take the frame away rather than blanking it: a navigation to
+		// about:blank left in flight can win against the next transfer's URL
+		d.addEventListener('close', () => {
+			const f = d.querySelector('iframe');
+			if (f) { f.remove(); }
+			xfer.content = null;
+			if (rfb) { rfb.focus(); }
+		});
+		// The upload page may close itself the way it did inside fancybox
+		if ($ && $.fancybox && $.fancybox.close) {
+			const orig = $.fancybox.close;
+			$.fancybox.close = function () {
+				if (d.open) { d.close(); }
+				return orig.apply(this, arguments);
+			};
+		}
+		document.body.appendChild(d);
+		return (xfer.dlg = d);
+	}
+
+	function openFileTransfer(href) {
+		const d = xferDialog();
+		const name = d.querySelector('.novnc-xfer-name');
+		const btns = d.querySelectorAll('[data-act="save"], [data-act="print"]');
+		const old = d.querySelector('iframe');
+		if (old) { old.remove(); }
+
+		xfer.url = href;
+		xfer.content = null;
+		name.textContent = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER')); ?>;
+		btns.forEach((b) => { b.hidden = true; });
+		d.classList.remove('is-upload');
+
+		const frame = document.createElement('iframe');
+		frame.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER')); ?>;
+		d.appendChild(frame);
+
+		const settle = () => {
+			try {
+				if (!frame.isConnected || !frame.contentWindow || frame.contentWindow.location.href === 'about:blank') { return; }
+				const c = xferClaim(frame);
+				xfer.content = c;
+				if (!c) {
+					d.classList.add('is-upload');
+					name.textContent = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_UPLOAD')); ?>;
+					btns.forEach((b) => { b.hidden = true; });
+					return;
+				}
+				btns.forEach((b) => { b.hidden = false; });
+				name.textContent = xferName(c.file) || name.textContent;
+			} catch (e) {}   // not ours to read after all: leave it as it came
+		};
+		// Timers, not animation frames, which pause in a background tab; twice,
+		// because the inner frames can still be laying out at load
+		frame.addEventListener('load', () => { setTimeout(settle, 0); setTimeout(settle, 250); });
+
+		// Open first: a frame inside a closed (display:none) dialog never
+		// starts navigating
+		if (!d.open) { d.showModal(); }
+		frame.src = href;
+	}
+
+	// ----- Notices -----------------------------------------------------------
+	const noteEl = document.getElementById('novnc-modern-note');
+	let noteTimer = null;
+	function note(text) {
+		noteEl.textContent = text;
+		noteEl.hidden = false;
+		clearTimeout(noteTimer);
+		noteTimer = setTimeout(() => { noteEl.hidden = true; }, 6000);
+	}
+
+	// ----- Bell: the session calls the user back -----------------------------
+	// RFB's Bell message: anything in the session writing \a rings it, so a
+	// tool can end a long run with `echo -e '\a'`. Terminals also ring it for
+	// trivia (a failed completion), so it only acts while the user is away
+	// from the tab: the title flashes, a desktop notification shows if the hub
+	// already has permission for them (never asked for here), and a burst is
+	// one alert. Coming back stops the flash and says how often it rang.
+	const bell = (function () {
+		const MARK = '\u25cf ';
+		let flashing = null, base = '', rang = 0, lastAlert = 0;
+		const away = () => document.hidden || !document.hasFocus();
+
+		function ring() {
+			if (!away()) { return; }
+			rang++;
+			if (flashing || Date.now() - lastAlert < 3000) { return; }
+			lastAlert = Date.now();
+			base = document.title;
+			let on = false;
+			flashing = setInterval(() => {
+				on = !on;
+				document.title = on ? MARK + base : base;
+			}, 1200);
+			try {
+				if (window.Notification && Notification.permission === 'granted') {
+					const n = new Notification(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_BELL_TITLE')); ?>, {
+						body: <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_BELL_BODY')); ?>,
+						tag:  'hz-session-bell'
+					});
+					n.onclick = () => { window.focus(); n.close(); };
+				}
+			} catch (e) {}
+		}
+		function back() {
+			if (away()) { return; }
+			if (flashing) {
+				clearInterval(flashing);
+				flashing = null;
+				document.title = base;
+			}
+			if (rang) {
+				note(rang === 1
+					? <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_BELL_ONE')); ?>
+					: <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_BELL_MANY')); ?>.replace('%d', rang));
+				rang = 0;
+			}
+		}
+		document.addEventListener('visibilitychange', back);
+		window.addEventListener('focus', back);
+		return { ring: ring };
+	})();
+
 	// ----- Clipboard ---------------------------------------------------------
 	// The VNC server syncs its clipboard over RFB; this bridges that to the
 	// computer's clipboard as far as the browser allows, with a panel in the
-	// footer as the path that always works.
-	const clip = (function () {
+	// footer as the path that always works. Not at all when the tool's host
+	// is one nothing may be copied off.
+	const clip = !clipboardOn ? { fromSession() {}, toggle() {}, setButton() {} } : (function () {
 		const panel    = document.getElementById('novnc-modern-clip');
 		const textarea = panel.querySelector('textarea');
 		const msg      = panel.querySelector('.nmc-msg');
@@ -367,12 +631,43 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			writeLocal(text);
 		}
 
-		// Computer -> session
+		// Computer -> session. The wire wants LF line ends (a Windows CRLF
+		// arrives in a terminal as two Enters per line), and a classic VNC
+		// server takes Latin-1 only, where anything else turns into '?'. Common
+		// typographic characters get their plain forms; what is left is
+		// dropped and the user told, rather than pasted quietly mangled.
+		const PLAIN = {
+			'\u2018': "'", '\u2019': "'", '\u201a': "'", '\u201b': "'", '\u2032': "'",
+			'\u201c': '"', '\u201d': '"', '\u201e': '"', '\u2033': '"',
+			'\u2010': '-', '\u2011': '-', '\u2012': '-', '\u2013': '-', '\u2014': '-', '\u2212': '-',
+			'\u2026': '...', '\u2022': '*', '\u2009': ' ', '\u202f': ' ', '\u200b': '', '\ufeff': ''
+		};
+		function utf8Clipboard() {
+			// noVNC keeps the server's extended-clipboard formats private;
+			// with UTF-8 text support anything can go as it is
+			const f = rfb && rfb._clipboardServerCapabilitiesFormats;
+			return !!(f && f[1]);
+		}
+		function forWire(text) {
+			text = text.replace(/\r\n?/g, '\n');
+			if (utf8Clipboard()) { return { text: text, dropped: 0 }; }
+			let out = '', dropped = 0;
+			for (const ch of text) {
+				if (ch.codePointAt(0) <= 0xff) { out += ch; }
+				else if (ch in PLAIN) { out += PLAIN[ch]; }
+				else { dropped++; }
+			}
+			return { text: out, dropped: dropped };
+		}
 		function toSession(text) {
 			if (!rfb || !live || readOnly || typeof text !== 'string') { return false; }
-			if (text !== remote) {
-				rfb.clipboardPasteFrom(text);
-				remote = text;
+			const w = forWire(text);
+			if (w.dropped) {
+				note(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_DROPPED')); ?>.replace('%d', w.dropped));
+			}
+			if (w.text !== remote) {
+				rfb.clipboardPasteFrom(w.text);
+				remote = w.text;
 			}
 			return true;
 		}
@@ -381,35 +676,82 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			return api.readText();
 		}
 
-		// Paste keys in the display: sync the computer's clipboard first, then
-		// send the paste key. Ctrl+V (Cmd+V on a Mac, sent as Ctrl+V -- the
-		// tools are X applications) and Shift+Insert (sent as typed: xterm and
-		// friends paste with it). Copy and cut keys (Ctrl+C, Ctrl+Insert,
-		// Shift+Delete) need nothing here: they reach the tool as typed and its
-		// copy comes back through the "clipboard" event.
+		// Once clipboard reading is allowed it can be done without a prompt
+		let readGranted = false;
+		if (navigator.permissions && navigator.permissions.query) {
+			navigator.permissions.query({ name: 'clipboard-read' }).then((st) => {
+				readGranted = (st.state === 'granted');
+				st.onchange = () => { readGranted = (st.state === 'granted'); };
+			}, () => {});
+		}
+
+		// Paste keys in the display: Ctrl+V (Cmd+V on a Mac) and Shift+Insert.
+		// The text comes from the browser's own paste event, which every browser
+		// delivers without a permission prompt (Firefox has no silent clipboard
+		// read at all) -- but only to something that takes text, so the key
+		// moves focus to an offscreen catcher for it. The key is kept from
+		// noVNC but not cancelled, or the browser would not paste, and is
+		// replayed once the session has the text. If no paste arrives the
+		// clipboard is read directly where that needs no prompt, and the key
+		// goes through regardless, so it never does nothing.
+		const CATCH_MS = 400;
+		const catcher = document.createElement('textarea');
+		catcher.tabIndex = -1;
+		catcher.setAttribute('aria-hidden', 'true');
+		catcher.style.cssText = 'position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;';
+		document.body.appendChild(catcher);
+		let cycle = null;   // the paste key being handled
+
+		function sendChord(shiftIns) {
+			if (!rfb || !live) { return; }
+			// The keys the user is holding already reached the session -- Cmd
+			// as Super, so a bare replay would land as Super+Ctrl+V -- and
+			// Windows' AltGr detection may still be holding Ctrl back. Let
+			// noVNC release everything (private in 1.7.0; it drops the
+			// physical releases that follow) and send the whole chord here.
+			const kb = rfb._keyboard;
+			if (kb && typeof kb._allKeysUp === 'function') { kb._allKeysUp(); }
+			const mod = shiftIns ? [0xffe1, 'ShiftLeft'] : [0xffe3, 'ControlLeft'];   // XK_Shift_L, XK_Control_L
+			const key = shiftIns ? [0xff63, 'Insert'] : [0x0076, 'KeyV'];             // XK_Insert, XK_v
+			rfb.sendKey(mod[0], mod[1], true);
+			rfb.sendKey(key[0], key[1], true);
+			rfb.sendKey(key[0], key[1], false);
+			rfb.sendKey(mod[0], mod[1], false);
+		}
+		function finish(c, text) {
+			if (c.done) { return; }
+			c.done = true;
+			clearTimeout(c.timer);
+			if (document.activeElement === catcher && rfb) { rfb.focus(); }
+			if (text) { toSession(text); }
+			// Classic clipboard text is on the wire ahead of the key; the
+			// extended protocol's notify/request round trip needs a moment
+			setTimeout(() => sendChord(c.shiftIns), utf8Clipboard() ? 300 : 0);
+		}
+		function rescue(c) {
+			if (c.done) { return; }
+			if (readGranted) { readLocal().then((t) => finish(c, t), () => finish(c, null)); }
+			else { finish(c, null); }
+		}
+		catcher.addEventListener('paste', function (e) {
+			e.preventDefault();
+			const c = cycle;
+			// A paste after the rescue took over is the same key arriving late
+			if (!c || c.done) { return; }
+			finish(c, e.clipboardData ? e.clipboardData.getData('text/plain') : null);
+		});
 		screen.addEventListener('keydown', function (e) {
 			if (readOnly || !rfb || !live || e.repeat || e.altKey) { return; }
 			const isV      = (e.key === 'v' || e.key === 'V');
 			const ctrlV    = isV && (e.ctrlKey || e.metaKey) && !e.shiftKey;
 			const shiftIns = (e.key === 'Insert' || e.code === 'Insert') && e.shiftKey && !e.ctrlKey && !e.metaKey;
 			if (!ctrlV && !shiftIns) { return; }
-			if (!api || !api.readText) { return; }   // let it through as typed
-			e.preventDefault();
 			e.stopImmediatePropagation();
-			const meta = ctrlV && e.metaKey && !e.ctrlKey;
-			readLocal().then(toSession, () => { if (button) { button.classList.add('pending'); } }).then(() => {
-				if (!rfb || !live) { return; }
-				if (shiftIns) {
-					// Shift already went to the server when it was pressed
-					rfb.sendKey(0xff63, 'Insert', true);    // XK_Insert
-					rfb.sendKey(0xff63, 'Insert', false);
-					return;
-				}
-				if (meta) { rfb.sendKey(0xffe3, 'ControlLeft', true); }   // XK_Control_L
-				rfb.sendKey(0x0076, 'KeyV', true);                           // XK_v
-				rfb.sendKey(0x0076, 'KeyV', false);
-				if (meta) { rfb.sendKey(0xffe3, 'ControlLeft', false); }
-			});
+			if (cycle && !cycle.done) { finish(cycle, null); }
+			const c = cycle = { shiftIns: shiftIns, done: false };
+			catcher.value = '';
+			catcher.focus({ preventScroll: true });
+			c.timer = setTimeout(() => rescue(c), CATCH_MS);
 		}, true);
 
 		// Zoom keys inside the display (instead of zooming the whole page)
@@ -428,13 +770,6 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		// Once clipboard reading is allowed, sync on every click into the display,
 		// so the tool's own Paste menu and middle-click have the latest text too.
 		// Never prompts: only runs if permission was already granted.
-		let readGranted = false;
-		if (navigator.permissions && navigator.permissions.query) {
-			navigator.permissions.query({ name: 'clipboard-read' }).then((st) => {
-				readGranted = (st.state === 'granted');
-				st.onchange = () => { readGranted = (st.state === 'granted'); };
-			}, () => {});
-		}
 		screen.addEventListener('pointerdown', function () {
 			if (readGranted && !readOnly) { readLocal().then(toSession, () => {}); }
 		}, true);
@@ -506,6 +841,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 
 			rfb.addEventListener('connect', () => {
 				if (myGen !== gen) { return; }
+				// Back after a drop: the session may have been restarted or
+				// extended meanwhile, so re-read its deadline
+				if (everConnected && window.SessionTimer) { window.SessionTimer.refresh(); }
 				everConnected = true;
 				setStatus(null);
 				if (reco) { reco.connected(); }
@@ -529,6 +867,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			rfb.addEventListener('clipboard', (e) => {
 				if (myGen !== gen) { return; }
 				clip.fromSession(e.detail.text);
+			});
+			rfb.addEventListener('bell', () => {
+				if (myGen !== gen) { return; }
+				bell.ring();
 			});
 			rfb.addEventListener('clientaction', (e) => {
 				if (myGen !== gen) { return; }
@@ -651,8 +993,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		li.appendChild(a);
 		ul.appendChild(li);
 
-		// Clipboard panel (not for view-only sessions: nothing to paste into)
-		if (!readOnly) {
+		// Clipboard panel (not for view-only sessions, nothing to paste into,
+		// nor for tools on hosts nothing may be copied off)
+		if (clipboardOn) {
 			const liClip = document.createElement('li');
 			const c = document.createElement('a');
 			c.className = 'clipboard';

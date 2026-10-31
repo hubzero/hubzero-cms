@@ -80,8 +80,40 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 					->set('output', $session)
 					->set('app', $tool)
 					->set('readOnly', $readOnly)
+					->set('clipboard', $this->clipboardAllowed($tool))
 					->set('params', $this->params)
 					->loadTemplate();
+	}
+
+	/**
+	 * Whether copy and paste may cross between the session and the browser
+	 *
+	 * Off for tools bound, by their version's host requirements, to a host
+	 * listed in the clipboard_block_hostreq config: hosts nothing may be
+	 * copied out of. This only stops the viewer from offering it; the
+	 * host's own policy is what actually holds.
+	 *
+	 * @param   object   $tool
+	 * @return  boolean
+	 */
+	protected function clipboardAllowed($tool)
+	{
+		$blocked = array_filter(array_map('trim', explode(',', strtolower((string) $this->params->get('clipboard_block_hostreq', '')))));
+
+		if (!$blocked || empty($tool->name))
+		{
+			return true;
+		}
+
+		$db = App::get('db');
+		$db->setQuery(
+			"SELECT h.`hostreq` FROM `#__tool_version_hostreq` AS h
+			INNER JOIN `#__tool_version` AS v ON v.`id`=h.`tool_version_id`
+			WHERE v.`instance`=" . $db->quote($tool->name)
+		);
+		$hostreqs = array_map('trim', array_map('strtolower', (array) $db->loadColumn()));
+
+		return !array_intersect($hostreqs, $blocked);
 	}
 
 	/**

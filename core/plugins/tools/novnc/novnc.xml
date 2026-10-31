@@ -21,6 +21,7 @@
 					<option value="modern">Modern noVNC 1.7.0 (bundled + HubZero patches)</option>
 					<option value="vanilla">Vanilla noVNC (current upstream, from CDN)</option>
 				</field>
+				<field name="clipboard_block_hostreq" type="text" size="60" default="" label="No clipboard on hosts" description="Comma-separated host requirements (e.g. geddes_restricted). Tools whose version requires one of these get no copy and paste in the modern viewer." />
 				<field name="browsers" type="textarea" rows="15" cols="40" default="*, safari 5.1&#13;&#10;*, chrome 27.0&#13;&#10;*, iceweasel 38.0&#13;&#10;*, firefox 30.0&#13;&#10;*, opera 23.0&#13;&#10;*, mozilla 5.0&#13;&#10;iOS, safari 1.0&#13;&#10;Windows, msie 10.0&#13;&#10;Windows, ie 10.0" label="Minimum OS/Browsers" description="A list of minimum OS/Browser required. One entry per line, the pattern is 'OS, BROWSER MAJOR.MINOR'. If all OSes apply, us an asterisk." />
 				<field name="regexes" type="textarea" rows="15" cols="40" default="" label="UAS Regexes" description="A list of regular expressions to run against the User Agent String. One entry per line. If a UAS matches a pattern, the plugin will no render." />
 			</fieldset>

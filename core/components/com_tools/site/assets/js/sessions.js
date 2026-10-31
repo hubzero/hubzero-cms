@@ -29,7 +29,7 @@ jQuery(document).ready(function(jq){
 
 		var url  = base + '/api/tools/' + sess + '/timeout';
 		var WARN = 15 * 60, CRIT = 5 * 60;
-		var remaining = null, tick = null;
+		var remaining = null, deadline = 0, tick = null;
 
 		// Warning modal (fired once each at the 5- and 1-minute marks). One shared
 		// element, so the 1-minute warning REPLACES the 5-minute one in place --
@@ -134,12 +134,15 @@ jQuery(document).ready(function(jq){
 						return;
 					}
 					remaining = parseInt(data.seconds_remaining, 10);
+					// Count against the clock rather than ticks: a background
+					// tab's timers are throttled, and counted ticks fall behind
+					deadline = Date.now() + remaining * 1000;
 					el.hidden = false;
 					render();
 					if (!tick) {
 						tick = setInterval(function () {
 							if (remaining == null) { return; }
-							remaining = Math.max(0, remaining - 1);
+							remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
 							render();
 							if (remaining === 0) { clearInterval(tick); tick = null; closePopup(); }
 						}, 1000);
@@ -154,6 +157,11 @@ jQuery(document).ready(function(jq){
 
 		fetchTimeout();
 		setInterval(fetchTimeout, 60 * 1000);  // re-sync to correct drift
+
+		// Coming back to the tab: re-read at once rather than at the next re-sync
+		document.addEventListener('visibilitychange', function () {
+			if (!document.hidden) { fetchTimeout(); }
+		});
 	})();
 
 	// Narrow frames. The footer sheds detail one step at a time, only as far as
