@@ -584,3 +584,21 @@
 #app-footer > ul #app-more-menu li a.active { color: #8cc4ff; }
 /* label from the control's own title (it changes with state, e.g. Hide/Show) */
 #app-footer > ul #app-more-menu li a::after { content: attr(title); position: static; width: auto; height: auto; background: none; box-shadow: none; }
+/* Hover help for the header and footer controls (sessions.js) */
+#app-help-tip {
+	position: fixed;
+	z-index: 1000;
+	box-sizing: border-box;
+	max-width: min(18rem, calc(100vw - 16px));
+	padding: 0.5rem 0.7rem;
+	border-radius: 8px;
+	background: #1f2329;
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+	color: #c9ced5;
+	font: 400 0.78rem/1.4 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	text-align: left;
+	white-space: normal;
+	pointer-events: none;
+}
+#app-help-tip[hidden] { display: none; }
+#app-help-tip strong { display: block; margin-bottom: 0.1rem; color: #f3f4f6; font-weight: 600; }

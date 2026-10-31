@@ -206,6 +206,7 @@ jQuery(document).ready(function(jq){
 			moreBtn.setAttribute('aria-expanded', 'false');
 			moreBtn.title = moreText;
 			moreBtn.setAttribute('aria-label', moreText);
+			moreBtn.setAttribute('data-help', footer.getAttribute('data-morehelp') || '');
 			moreBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
 			menu = document.createElement('ul');
 			menu.id = 'app-more-menu';
@@ -526,5 +527,77 @@ jQuery(document).ready(function(jq){
 			}
 		});
 	});
+	// Hover help for the header and footer controls: the control's name and a
+	// line on what it does, sooner and plainer than a native tooltip. The
+	// title is set aside while the tip shows so the two don't stack.
+	(function () {
+		var SCOPE = '#session-options a, #app-footer a, #session-timer';
+		var tip = null, cur = null, timer = null, stash = null;
+
+		function name(el) {
+			var n = el.getAttribute('aria-label') || el.textContent || el.title || '';
+			return n.replace(/\s+/g, ' ').trim();
+		}
+		function wanted(el) {
+			return el && el.getAttribute('data-help') &&
+				!el.closest('#app-more-menu') &&                  // labelled there already
+				el.getAttribute('aria-expanded') !== 'true' &&    // its own menu is open
+				!el.classList.contains('ended');                  // the timer's own note
+		}
+		function show(el) {
+			if (!tip) {
+				tip = document.createElement('div');
+				tip.id = 'app-help-tip';
+				tip.setAttribute('role', 'tooltip');
+				tip.innerHTML = '<strong></strong><span></span>';
+				document.body.appendChild(tip);
+			}
+			tip.firstChild.textContent = name(el);
+			tip.lastChild.textContent = el.getAttribute('data-help');
+			if (el.title) { stash = el.title; el.title = ''; }
+			el.setAttribute('aria-describedby', 'app-help-tip');
+			tip.hidden = false;
+			// Above a footer control, below a header one; inside the window
+			var r = el.getBoundingClientRect(), t = tip.getBoundingClientRect(), gap = 8;
+			var left = Math.max(gap, Math.min(window.innerWidth - t.width - gap, r.left + r.width / 2 - t.width / 2));
+			var top = el.closest('#app-footer') ? r.top - t.height - gap : r.bottom + gap;
+			if (top < gap) { top = r.bottom + gap; }
+			tip.style.left = Math.round(left) + 'px';
+			tip.style.top = Math.round(top) + 'px';
+		}
+		function hide() {
+			clearTimeout(timer);
+			if (cur) {
+				if (stash !== null && cur.title === '') { cur.title = stash; }
+				cur.removeAttribute('aria-describedby');
+			}
+			stash = null;
+			cur = null;
+			if (tip) { tip.hidden = true; }
+		}
+		function start(el, delay) {
+			if (el === cur) { return; }
+			hide();
+			if (!wanted(el)) { return; }
+			cur = el;
+			timer = setTimeout(function () { show(el); }, delay);
+		}
+
+		document.addEventListener('pointerover', function (e) {
+			if (e.pointerType === 'touch') { return; }
+			start(e.target.closest ? e.target.closest(SCOPE) : null, 350);
+		});
+		document.addEventListener('pointerout', function (e) {
+			if (cur && !(e.relatedTarget && cur.contains(e.relatedTarget))) { hide(); }
+		});
+		document.addEventListener('focusin', function (e) {
+			var el = e.target.closest ? e.target.closest(SCOPE) : null;
+			if (el && el.matches(':focus-visible')) { start(el, 0); } else { hide(); }
+		});
+		document.addEventListener('focusout', hide);
+		document.addEventListener('pointerdown', hide, true);
+		document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { hide(); } });
+		window.addEventListener('scroll', hide, true);
+	})();
 });
 

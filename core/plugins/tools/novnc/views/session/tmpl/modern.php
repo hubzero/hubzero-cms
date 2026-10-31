@@ -65,6 +65,12 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	}
 	#novnc-modern-clip[hidden] { display: none; }
+	#novnc-modern-clip .nmc-head { display: flex; align-items: center; margin: -0.2rem -0.3rem 0.35rem 0; }
+	#novnc-modern-clip .nmc-title { flex: 1 1 auto; font-weight: 600; }
+	#novnc-modern-clip button.nmc-close {
+		padding: 0.1rem 0.45rem; border: 0; background: none; color: #9aa1ab; font-size: 18px; line-height: 1;
+	}
+	#novnc-modern-clip button.nmc-close:hover { color: #f3f4f6; filter: none; }
 	#novnc-modern-clip p { margin: 0 0 0.5rem; color: #aab1ba; font-size: 12px; }
 	#novnc-modern-clip textarea {
 		box-sizing: border-box; width: 100%; height: 6.5rem; margin: 0; padding: 0.45rem 0.55rem; resize: vertical;
@@ -93,7 +99,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	/* Zoom: a level button in the footer with a menu that opens above it */
 	/* legacy tools.css clips the footer list; the zoom menu opens out of it */
 	#app-footer > ul.app-controls { overflow: visible; }
-	#app-footer li.zoom-li { position: relative; }
+	#app-footer li.zoom-li,
+	#app-footer li.keys-li { position: relative; }
 	#app-footer > ul li a.zoom {
 		width: auto;
 		gap: 0.3rem;
@@ -101,27 +108,39 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		font: 600 0.75rem/1 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 		font-variant-numeric: tabular-nums;
 	}
-	#app-footer > ul li a.zoom.active {
+	#app-footer > ul li a.zoom.active,
+	#app-footer > ul li a.keys.active,
+	#app-footer > ul li a.keys.held {
 		background: linear-gradient(180deg, rgba(47, 109, 179, 0.30), rgba(47, 109, 179, 0.12));
 		border-color: rgba(47, 109, 179, 0.55);
 		color: #1f5591;
 	}
-	#novnc-zoom-menu {
+	#novnc-zoom-menu,
+	#novnc-keys-menu {
 		position: absolute; right: 0; bottom: calc(100% + 8px); z-index: 960;
 		min-width: 7.5rem; margin: 0; padding: 0.3rem; list-style: none;
 		border-radius: 8px; background: #1f2329; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 	}
-	#novnc-zoom-menu[hidden] { display: none; }
-	#novnc-zoom-menu button {
+	#novnc-zoom-menu[hidden],
+	#novnc-keys-menu[hidden] { display: none; }
+	#novnc-zoom-menu button,
+	#novnc-keys-menu button {
 		display: flex; justify-content: space-between; gap: 1rem; width: 100%;
 		padding: 0.35rem 0.6rem; border: 0; border-radius: 5px; background: none; color: #e6e8eb;
 		font: 500 13px/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 		font-variant-numeric: tabular-nums; text-align: left; cursor: pointer;
 	}
 	#novnc-zoom-menu button:hover,
-	#novnc-zoom-menu button:focus-visible { background: #2f3640; outline: none; }
-	#novnc-zoom-menu button[aria-checked="true"]::after { content: "\2713"; color: #8cc4ff; }
-	#novnc-zoom-menu .nzm-sep { height: 1px; margin: 0.25rem 0.2rem; background: #3a4048; }
+	#novnc-zoom-menu button:focus-visible,
+	#novnc-keys-menu button:hover,
+	#novnc-keys-menu button:focus-visible { background: #2f3640; outline: none; }
+	#novnc-zoom-menu button[aria-checked="true"]::after,
+	#novnc-keys-menu button[aria-checked="true"]::after { content: "\2713"; color: #8cc4ff; }
+	#novnc-zoom-menu .nzm-sep,
+	#novnc-keys-menu .nzm-sep { height: 1px; margin: 0.25rem 0.2rem; background: #3a4048; }
+	/* Special keys: the browser or the computer keeps these for itself */
+	#novnc-keys-menu { min-width: 11rem; }
+	#novnc-keys-menu .nkm-head { padding: 0.3rem 0.6rem 0.15rem; color: #8b929c; font: 500 11px/1.3 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
 	/* File transfer (a tool's exportfile/importfile) */
 	dialog.novnc-xfer {
 		display: flex; flex-direction: column; box-sizing: border-box;
@@ -158,6 +177,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	<div id="novnc-modern-note" role="status" aria-live="polite" hidden></div>
 	<?php if ($clipboard) { ?>
 	<div id="novnc-modern-clip" role="dialog" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>" hidden>
+		<div class="nmc-head">
+			<span class="nmc-title"><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?></span>
+			<button type="button" class="nmc-close" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE'); ?>" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE'); ?>">&times;</button>
+		</div>
 		<p><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_HINT'); ?></p>
 		<textarea spellcheck="false" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>"></textarea>
 		<div class="nmc-row">
@@ -229,6 +252,11 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	} catch (e) {}
 	let fbW = 0, fbH = 0;      // the framebuffer, as last reported
 
+	// The tool's size limits are in framebuffer pixels, so a zoom changes the
+	// grip's limits rather than letting a small frame at 200% become a tiny
+	// tool at 100%. Below 100% the frame keeps the minimum the footer needs.
+	const FB_MIN_W = 345, FB_MIN_H = 200, FB_MAX = 3900;
+
 	// Largest zoom that fits the page's width and the window's height
 	function fitZoom() {
 		if (!(fbW > 0 && fbH > 0)) { return 1; }
@@ -266,6 +294,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		if (canvas) { canvas.style.imageRendering = (z === Math.round(z)) ? 'pixelated' : 'auto'; }
 		const size = document.getElementById('app-size');
 		if (size) { size.textContent = w + ' x ' + h; }
+		gripLimits(z);
 		if (zoomUI) { zoomUI.update(); }
 	}
 
@@ -273,7 +302,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	function requestFrameSize() {
 		if (!rfb) { return; }
 		const z = effZoom();
-		rfb.requestHubzeroResize(Math.round(content.clientWidth / z), Math.round(content.clientHeight / z));
+		const clamp = (v, lo) => Math.max(lo, Math.min(FB_MAX, Math.round(v / z)));
+		rfb.requestHubzeroResize(clamp(content.clientWidth, FB_MIN_W), clamp(content.clientHeight, FB_MIN_H));
 	}
 
 	function setZoom(z) {
@@ -290,6 +320,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		setZoom(next);
 	}
 	let zoomUI = null;   // set by the footer code
+	let keysUI = null;   // likewise
 
 	window.addEventListener('resize', () => {
 		if (zoom === 'fit' && fbW) { sizeFrame(fbW, fbH); }
@@ -300,10 +331,6 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		if (resizableAttached || readOnly || !$ || !$.fn.resizable) { return; }
 		resizableAttached = true;
 		$(content).resizable({
-			minHeight: 200,
-			maxHeight: 3900,
-			minWidth:  345,
-			maxWidth:  3900,
 			handles:   'se',
 			resize: function () {
 				if (appwrap) { appwrap.style.width = content.clientWidth + 'px'; }
@@ -313,6 +340,16 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 				if (zoom === 'fit') { setZoom(effZoom()); }
 				requestFrameSize();
 			}
+		});
+		gripLimits(effZoom());
+	}
+	function gripLimits(z) {
+		if (!resizableAttached) { return; }
+		$(content).resizable('option', {
+			minWidth:  Math.round(FB_MIN_W * Math.max(z, 1)),
+			minHeight: Math.round(FB_MIN_H * Math.max(z, 1)),
+			maxWidth:  Math.round(FB_MAX * z),
+			maxHeight: Math.round(FB_MAX * z)
 		});
 	}
 
@@ -805,6 +842,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			}
 		}
 		panel.addEventListener('keydown', (e) => { if (e.key === 'Escape') { toggle(false); } });
+		panel.querySelector('.nmc-close').addEventListener('click', () => toggle(false));
 
 		return {
 			fromSession: fromSession,
@@ -856,6 +894,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			rfb.addEventListener('disconnect', (e) => {
 				if (myGen !== gen) { return; }
 				live = false;
+				if (keysUI) { keysUI.reset(); }
 				const clean = !!(e.detail && e.detail.clean);
 				setStatus(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_DISCONNECTED')); ?>);
 				if (reco && everConnected) { reco.disconnected(clean); }
@@ -913,6 +952,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			btn.setAttribute('aria-haspopup', 'menu');
 			btn.setAttribute('aria-expanded', 'false');
 			btn.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_ZOOM')); ?>;
+			btn.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_ZOOM')); ?>);
 			btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg><span class="zoom-level"></span>';
 			const menu = document.createElement('div');
 			menu.id = 'novnc-zoom-menu';
@@ -983,6 +1023,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		a.href = '#';
 		a.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN')); ?>;
 		a.setAttribute('aria-label', a.title);
+		a.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_RECONNECT')); ?>);
 		a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
 		a.addEventListener('click', function (e) {
 			e.preventDefault();
@@ -992,6 +1033,123 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		});
 		li.appendChild(a);
 		ul.appendChild(li);
+
+		// Special keys: ones the browser or the computer keeps for itself
+		// (Ctrl+Alt+Del, Esc out of full screen, Tab), and Ctrl, Alt and Super
+		// held down for the next key or click, for Ctrl+W, Alt+Tab and the like
+		if (!readOnly) (function () {
+			const KEYS = {
+				ctrl:  [0xffe3, 'ControlLeft'],
+				alt:   [0xffe9, 'AltLeft'],
+				super: [0xffeb, 'MetaLeft'],
+				esc:   [0xff1b, 'Escape'],
+				tab:   [0xff09, 'Tab']
+			};
+			const held = new Set();
+
+			const li = document.createElement('li');
+			li.className = 'keys-li';
+			const btn = document.createElement('a');
+			btn.className = 'keys';
+			btn.id = 'app-btn-keys';
+			btn.href = '#';
+			btn.setAttribute('role', 'button');
+			btn.setAttribute('aria-haspopup', 'menu');
+			btn.setAttribute('aria-expanded', 'false');
+			btn.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS')); ?>;
+			btn.setAttribute('aria-label', btn.title);
+			btn.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_KEYS')); ?>);
+			btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="6" y1="9" x2="6" y2="9"/><line x1="10" y1="9" x2="10" y2="9"/><line x1="14" y1="9" x2="14" y2="9"/><line x1="18" y1="9" x2="18" y2="9"/><line x1="6" y1="13" x2="6" y2="13"/><line x1="18" y1="13" x2="18" y2="13"/><line x1="10" y1="13" x2="14" y2="13"/><line x1="7" y1="16" x2="17" y2="16"/></svg>';
+			const menu = document.createElement('div');
+			menu.id = 'novnc-keys-menu';
+			menu.setAttribute('role', 'menu');
+			menu.hidden = true;
+			const items = [];
+			function add(label, act, check) {
+				const b = document.createElement('button');
+				b.type = 'button';
+				b.setAttribute('role', check ? 'menuitemcheckbox' : 'menuitem');
+				b.textContent = label;
+				b.addEventListener('click', () => { act(); close(); if (rfb) { rfb.focus(); } });
+				items.push(b);
+				menu.appendChild(b);
+				return b;
+			}
+			function tap(k) {
+				if (!rfb || !live) { return; }
+				rfb.sendKey(KEYS[k][0], KEYS[k][1], true);
+				rfb.sendKey(KEYS[k][0], KEYS[k][1], false);
+			}
+			function hold(k, on) {
+				if (on === held.has(k)) { return; }
+				if (on) { held.add(k); } else { held.delete(k); }
+				if (rfb && live) { rfb.sendKey(KEYS[k][0], KEYS[k][1], on); }
+				update();
+			}
+			function releaseAll() { held.forEach((k) => hold(k, false)); }
+
+			add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_CAD')); ?>, () => { if (rfb && live) { rfb.sendCtrlAltDel(); } });
+			add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_ESC')); ?>, () => tap('esc'));
+			add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_TAB')); ?>, () => tap('tab'));
+			const sep = document.createElement('div');
+			sep.className = 'nzm-sep';
+			menu.appendChild(sep);
+			const head = document.createElement('div');
+			head.className = 'nkm-head';
+			head.textContent = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_HOLD')); ?>;
+			menu.appendChild(head);
+			const toggles = {
+				ctrl:  add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_CTRL')); ?>, () => hold('ctrl', !held.has('ctrl')), true),
+				alt:   add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_ALT')); ?>, () => hold('alt', !held.has('alt')), true),
+				super: add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_SUPER')); ?>, () => hold('super', !held.has('super')), true)
+			};
+
+			function update() {
+				Object.keys(toggles).forEach((k) => toggles[k].setAttribute('aria-checked', held.has(k) ? 'true' : 'false'));
+				btn.classList.toggle('held', held.size > 0);
+				const names = Object.keys(toggles).filter((k) => held.has(k)).map((k) => toggles[k].textContent);
+				btn.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS')); ?> + (names.length ? ' (' + names.join('+') + ')' : '');
+				btn.setAttribute('aria-label', btn.title);
+			}
+
+			// Held keys let go after the next key or click in the display. The
+			// release waits a turn, so the display sends that key or click first.
+			function afterUse(e) {
+				if (!held.size) { return; }
+				if (e.type === 'keyup' && /^(Control|Alt|Meta|Shift|OS)/.test(e.code || '')) { return; }
+				setTimeout(releaseAll, 0);
+			}
+			screen.addEventListener('keyup', afterUse, true);
+			screen.addEventListener('pointerup', afterUse, true);
+
+			function open() {
+				menu.hidden = false;
+				btn.classList.add('active');
+				btn.setAttribute('aria-expanded', 'true');
+				items[0].focus();
+			}
+			function close() {
+				menu.hidden = true;
+				btn.classList.remove('active');
+				btn.setAttribute('aria-expanded', 'false');
+			}
+			btn.addEventListener('click', (e) => { e.preventDefault(); if (menu.hidden) { open(); } else { close(); } });
+			menu.addEventListener('keydown', (e) => {
+				const i = items.indexOf(document.activeElement);
+				if (e.key === 'Escape') { close(); btn.focus(); }
+				else if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+				else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+			});
+			document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !li.contains(e.target)) { close(); } }, true);
+
+			li.appendChild(btn);
+			li.appendChild(menu);
+			ul.appendChild(li);
+			update();
+
+			// A dropped connection drops whatever the server had held
+			keysUI = { reset: () => { held.clear(); update(); } };
+		})();
 
 		// Clipboard panel (not for view-only sessions, nothing to paste into,
 		// nor for tools on hosts nothing may be copied off)
@@ -1005,6 +1163,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			c.setAttribute('aria-pressed', 'false');
 			c.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD')); ?>;
 			c.setAttribute('aria-label', c.title);
+			c.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_CLIPBOARD')); ?>);
 			c.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>';
 			c.addEventListener('click', function (e) {
 				e.preventDefault();
@@ -1021,6 +1180,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		const eyeOff  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
 		const titleHide = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HIDE')); ?>;
 		const titleShow = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_SHOW')); ?>;
+		const helpHide  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_HIDE')); ?>;
+		const helpShow  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_SHOW')); ?>;
 		const liHide = document.createElement('li');
 		const hide = document.createElement('a');
 		hide.className = 'hide-display';
@@ -1030,6 +1191,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		hide.setAttribute('aria-pressed', 'false');
 		hide.title = titleHide;
 		hide.setAttribute('aria-label', titleHide);
+		hide.setAttribute('data-help', helpHide);
 		hide.innerHTML = eyeOpen;
 		hide.addEventListener('click', function (e) {
 			e.preventDefault();
@@ -1038,6 +1200,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			hide.setAttribute('aria-pressed', on ? 'true' : 'false');
 			hide.title = on ? titleShow : titleHide;
 			hide.setAttribute('aria-label', on ? titleShow : titleHide);
+			hide.setAttribute('data-help', on ? helpShow : helpHide);
 			hide.innerHTML = on ? eyeOff : eyeOpen;
 		});
 		liHide.appendChild(hide);
