@@ -124,19 +124,31 @@
 	color: #b3261e;
 }
 
-/* --- Error state --- */
+/* --- Error state: the reason in a box of its own, clear of the steps
+   above and the actions below --- */
+.tool-launch-error {
+	margin-top: 1.5em;
+}
+
 .tool-launch-error-msg {
-	color: #b3261e;
-	font-weight: bold;
+	margin: 0;
+	padding: 0.8em 1em;
+	border: 1px solid #f1c4c0;
+	border-left: 4px solid #b3261e;
+	border-radius: 8px;
+	background: #fdf1f0;
+	color: #7f1810;
+	line-height: 1.45;
+	text-align: left;
 }
 
 .tool-launch-actions {
+	margin-top: 1.25em;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
 	gap: 0.5em 1.25em;
-	margin-top: 1em;
 }
 
 .tool-launch-resource {
@@ -173,6 +185,12 @@
 	.tool-launch-spinner span { background: #5aaae1; }
 	.tool-launch-cancel a { color: #8a919c; }
 	.tool-launch-resource { color: #8cc4ff; }
+	.tool-launch-error-msg {
+		border-color: #5c2622;
+		border-left-color: #ff6b5e;
+		background: #2a1716;
+		color: #ffb4ab;
+	}
 	.tool-launch-cancel a:hover,
 	.tool-launch-cancel a:focus { color: #ff6b5e; }
 }

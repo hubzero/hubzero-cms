@@ -64,6 +64,9 @@
 			}
 			$('#launch-spinner').css('display', 'none');
 			$('#launch-status').prop('hidden', true);
+			// Nothing left to cancel; Try again and the tool's page are the ways on
+			$('.tool-launch-cancel').prop('hidden', true);
+			if (S.headFailed) { $('.tool-launch-heading').text(S.headFailed); }
 			$('#launch-error-msg').text(msg || S.errStart);
 			$('#launch-error').prop('hidden', false);
 		}
@@ -168,6 +171,8 @@
 		function start() {
 			$('#launch-error').prop('hidden', true);
 			$('#launch-status').prop('hidden', false);
+			$('.tool-launch-cancel').prop('hidden', false);
+			if (S.heading) { $('.tool-launch-heading').text(S.heading); }
 			// Set flex explicitly -- jQuery .show() would force display:block,
 			// which makes the dot spans inline (transform/bounce then ignored).
 			$('#launch-spinner').css('display', 'flex');
