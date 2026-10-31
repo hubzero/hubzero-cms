@@ -25,6 +25,13 @@ class User extends Base implements CommandInterface
 	const MIN_PASSWORD_LENGTH = 8;
 
 	/**
+	 * Accounts web servers run as, for tasks that must run as the web server
+	 *
+	 * @var  array
+	 **/
+	const WEB_ACCOUNTS = array('apache', 'www-data', 'nginx');
+
+	/**
 	 * Default (required) command
 	 *
 	 * Generates list of available commands and their respective tasks
@@ -389,6 +396,137 @@ class User extends Base implements CommandInterface
 	public function disable()
 	{
 		$this->output->addLine('Not implemented', 'warning');
+	}
+
+	/**
+	 * Create a user account
+	 *
+	 * Makes the account registration would, already confirmed (an
+	 * administrator vouches for it), so it can sign in at once. Usage:
+	 *
+	 *   muse user create <username> --email=<address> --name="Given Surname"
+	 *        [--given=<name> --surname=<name>] [--password=<password>]
+	 *
+	 * Without --password the password is asked for (twice, unechoed). The
+	 * person is asked to accept the terms of use at their first sign-in.
+	 *
+	 * Runs as the web server's account, as registration does: saving a new
+	 * account sets its storage quota and tool session limits through the
+	 * middleware, which takes commands from that account only. (Run as
+	 * root, muse becomes the account that owns the hub's files instead.)
+	 *
+	 * @museDescription  Creates a confirmed user account (run as the web server's account)
+	 *
+	 * @return  void
+	 **/
+	public function create()
+	{
+		$account = function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid()) : false;
+
+		if (!$account || !in_array($account['name'], self::WEB_ACCOUNTS))
+		{
+			$this->output->error('This command must be run as the web server\'s account, e.g. sudo -u apache php core/bin/muse user create ...');
+		}
+
+		$usage = 'muse user create <username> --email=<address> --name="Given Surname" [--password=<password>]';
+		$ask = function ($opt, $prompt)
+		{
+			$value = trim((string) $this->arguments->getOpt($opt));
+			if ($value === '' && $this->output->isInteractive())
+			{
+				$value = trim((string) $this->output->getResponse($prompt));
+			}
+			return $value;
+		};
+
+		$username = strtolower($ask(3, 'Username?'));
+		if (!$username)
+		{
+			$this->output->error('Please provide a username: ' . $usage);
+		}
+		if (!\Hubzero\Utility\Validate::username($username))
+		{
+			$this->output->error('"' . $username . '" is not a valid username (lowercase letters, digits and underscores, not all digits, not reserved)');
+		}
+		if (\Hubzero\User\User::oneByUsername($username)->get('id'))
+		{
+			$this->output->error('The username "' . $username . '" is already taken');
+		}
+
+		$email = $ask('email', 'Email address?');
+		if (!$email || !\Hubzero\Utility\Validate::email($email))
+		{
+			$this->output->error('Please provide a valid email address with --email=');
+		}
+		if (\Hubzero\User\User::all()->whereEquals('email', $email)->total())
+		{
+			$this->output->error('An account with the email address ' . $email . ' already exists');
+		}
+
+		$name = $ask('name', 'Full name?');
+		if (!$name)
+		{
+			$this->output->error('Please provide the person\'s name with --name=');
+		}
+		// Given and surname, unless given: the last word is the surname
+		$parts   = preg_split('/\s+/', $name);
+		$surname = trim((string) $this->arguments->getOpt('surname')) ?: (count($parts) > 1 ? array_pop($parts) : '');
+		$given   = trim((string) $this->arguments->getOpt('given')) ?: implode(' ', $parts);
+
+		$password = $this->arguments->getOpt('password');
+		if (!$password)
+		{
+			if (!$this->output->isInteractive())
+			{
+				$this->output->error('Please provide a password with --password=, or run interactively');
+			}
+			$password = $this->promptPassword();
+		}
+		if (strlen($password) < self::MIN_PASSWORD_LENGTH)
+		{
+			$this->output->error('Password must be at least ' . self::MIN_PASSWORD_LENGTH . ' characters');
+		}
+
+		// The group new accounts join, as registration picks it
+		$group = \Component::params('com_members')->get('new_usertype');
+		if (!$group)
+		{
+			$db = \App::get('db');
+			$db->setQuery("SELECT id FROM `#__usergroups` WHERE title='Registered'");
+			$group = $db->loadResult();
+		}
+
+		$user = \Hubzero\User\User::blank();
+		$user->set('username', $username);
+		$user->set('name', $name);
+		$user->set('givenName', $given);
+		$user->set('middleName', '');
+		$user->set('surname', $surname);
+		$user->set('email', $email);
+		$user->set('usageAgreement', 0);
+		$user->set('sendEmail', 0);
+		$user->set('homeDirectory', \Hubzero\User\User::defaultHomeDirectory($username));
+		$user->set('loginShell', '/bin/bash');
+		$user->set('ftpShell', '/usr/lib/sftp-server');
+		$user->set('accessgroups', array($group));
+		$user->set('registerDate', Date::of('now')->toSql());
+		$user->set('registerIP', '127.0.0.1');
+		$user->set('access', (int) \Component::params('com_members')->get('privacy', 1));
+		$user->set('activation', 1);
+		$user->set('approved', 1);
+		$user->set('params', '{}');
+
+		if (!$user->save())
+		{
+			$this->output->error('Failed to create the account: ' . $user->getError());
+		}
+
+		if (!\Hubzero\User\Password::changePassword($user->get('id'), $password))
+		{
+			$this->output->error('Created ' . $username . ' (' . $user->get('id') . '), but failed to set its password; set it with muse user password');
+		}
+
+		$this->output->addLine('Created ' . $username . ' (' . $user->get('id') . ')', 'success');
 	}
 
 	/**

@@ -344,7 +344,8 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			$xprofile->set('name', $user['name']);
 			$xprofile->set('email', $user['email']);
 			$xprofile->set('username', $user['username']);
-			$xprofile->set('regIP', $_SERVER['REMOTE_ADDR']);
+			// No request to take it from when the account comes from the console
+			$xprofile->set('regIP', !empty($user['registerIP']) ? $user['registerIP'] : (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : ''));
 			//$xprofile->set('emailConfirmed', '3');
 			$xprofile->set('emailConfirmed', isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31)-1));
 			$xprofile->set('public', $params->get('privacy', 0));
