@@ -527,13 +527,24 @@ class Page extends Relational
 				// Plugins supply the group and project adapters. Every entry point
 				// used to have to register them itself, and the ones that did not
 				// (the API, the media controller) died on any group page.
-				foreach (glob(PATH_CORE . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $scope . '.php') ?: array() as $plugged)
+				// App plugins shadow core ones, so look there first.
+				foreach (array(PATH_APP, PATH_CORE) as $root)
 				{
-					static::$paths[] = $plugged;
+					foreach (glob($root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $scope . '.php') ?: array() as $plugged)
+					{
+						static::$paths[] = $plugged;
+					}
 				}
 
+				// An app override and its core counterpart declare the same
+				// class, so stop at the first file that defines it.
 				foreach (static::$paths as $path)
 				{
+					if (class_exists($cls, false))
+					{
+						break;
+					}
+
 					if (is_file($path))
 					{
 						include_once $path;
