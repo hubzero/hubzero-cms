@@ -58,7 +58,12 @@
 		function fail(msg) {
 			stopPoll();
 			log('FAILED:', msg);
+			// Mark where it stopped: the first step not yet done
+			if (!$('.tool-launch-steps li.broken').length) {
+				$('.tool-launch-steps li.wait').first().removeClass('wait').addClass('broken');
+			}
 			$('#launch-spinner').css('display', 'none');
+			$('#launch-status').prop('hidden', true);
 			$('#launch-error-msg').text(msg || S.errStart);
 			$('#launch-error').prop('hidden', false);
 		}
@@ -162,6 +167,7 @@
 		// already painted, so the user sees progress rather than a hung tab.
 		function start() {
 			$('#launch-error').prop('hidden', true);
+			$('#launch-status').prop('hidden', false);
 			// Set flex explicitly -- jQuery .show() would force display:block,
 			// which makes the dot spans inline (transform/bounce then ignored).
 			$('#launch-spinner').css('display', 'flex');

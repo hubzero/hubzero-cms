@@ -754,10 +754,16 @@ class Sessionsv1_0 extends ApiController
 			$output
 		);
 
-		//make sure we got a valid session back from the middleware
-		if (!isset($output->session))
+		// A failed start can still carry a session number; maxwell's
+		// user_message says why (the site launcher shows the same)
+		if (!$status || !isset($output->session))
 		{
-			throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);
+			throw new Exception(
+				!empty($output->user_message)
+					? $output->user_message
+					: Lang::txt('There was a issue while trying to start the tool session. Please try again later.'),
+				500
+			);
 		}
 
 		//set session output

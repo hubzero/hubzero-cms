@@ -131,7 +131,16 @@
 }
 
 .tool-launch-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5em 1.25em;
 	margin-top: 1em;
+}
+
+.tool-launch-resource {
+	color: #2f6db3;
 }
 
 .tool-launch-cancel {
@@ -163,6 +172,7 @@
 	.tool-launch-steps li { color: #6b7280; }
 	.tool-launch-spinner span { background: #5aaae1; }
 	.tool-launch-cancel a { color: #8a919c; }
+	.tool-launch-resource { color: #8cc4ff; }
 	.tool-launch-cancel a:hover,
 	.tool-launch-cancel a:focus { color: #ff6b5e; }
 }
