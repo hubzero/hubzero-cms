@@ -30,7 +30,7 @@ $this->css('jquery.ui.css', 'system')
 		<label>
 			Title:
 			<?php if (!$this->readonly) : ?>
-				<input type="text" class="required" id="title" value="<?php echo str_replace('"', '&quot;', $this->title) ?>" />
+				<input type="text" class="required" id="title" value="<?php echo str_replace('"', '&quot;', $this->title ?? '') ?>" />
 			<?php else : ?>
 				<?php echo $this->title ?>
 			<?php endif; ?>
