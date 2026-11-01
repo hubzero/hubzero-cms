@@ -76,6 +76,19 @@ if (!$this->app->sess) {
 			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->escape($this->app->caption); ?></h2>
 			<?php if ($this->app->sess) { ?>
 				<ul class="app-toolbar" id="session-options">
+					<li class="timer-li">
+						<div id="session-timer" hidden data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_TIMER')); ?>" data-sess="<?php echo (int) $this->app->sess; ?>" data-base="<?php echo $this->escape(rtrim(Request::base(true), '/')); ?>"
+						     data-warntitle="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_TITLE')); ?>"
+						     data-warn5="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_5')); ?>"
+						     data-warn1="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_1')); ?>"
+						     data-dismiss="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_DISMISS')); ?>"
+						     data-ending="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_ENDING')); ?>"
+						     data-endingtip="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_ENDING_TIP')); ?>">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+							<span class="st-label"><?php echo Lang::txt('COM_TOOLS_SESSION_ENDS_IN'); ?></span>
+							<span class="st-clock">--:--:--</span>
+						</div>
+					</li>
 					<li>
 						<a id="app-btn-keep" class="keep sessiontips icon-only" data-ts-action="leave" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_KEEP')); ?>" href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>" title="<?php echo $this->escape(Lang::txt('COM_TOOLS_KEEP_FOR_LATER')); ?>" aria-label="<?php echo $this->escape(Lang::txt('COM_TOOLS_KEEP_FOR_LATER')); ?>">
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -209,19 +222,6 @@ if (!$this->app->sess) {
 				}
 			}
 			?>
-			<?php if ($this->app->sess) : ?>
-				<div id="session-timer" hidden data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_TIMER')); ?>" data-sess="<?php echo (int) $this->app->sess; ?>" data-base="<?php echo $this->escape(rtrim(Request::base(true), '/')); ?>"
-				     data-warntitle="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_TITLE')); ?>"
-				     data-warn5="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_5')); ?>"
-				     data-warn1="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_1')); ?>"
-				     data-dismiss="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_DISMISS')); ?>"
-				     data-ending="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_ENDING')); ?>"
-				     data-endingtip="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_ENDING_TIP')); ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-					<span class="st-label"><?php echo Lang::txt('COM_TOOLS_SESSION_ENDS_IN'); ?></span>
-					<span class="st-clock">--:--:--</span>
-				</div>
-			<?php endif; ?>
 		</div><!-- #app-footer -->
 		<?php if ($this->zone->config('zones') && $this->zone->exists()) { ?>
 			<div id="app-zone">

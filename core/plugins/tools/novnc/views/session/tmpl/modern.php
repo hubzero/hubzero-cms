@@ -1266,6 +1266,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 				a.setAttribute('aria-pressed', on ? 'true' : 'false');
 				a.title = on ? tOff : tOn;
 				a.setAttribute('aria-label', a.title);
+				// The frame changed size; let noVNC rescale the canvas to fill it
+				// (and rescale back when leaving theater).
+				setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 60);
 				if (rfb && rfb.focus) { try { rfb.focus(); } catch (e) {} }
 			}
 			a.addEventListener('click', function (e) {
@@ -1316,6 +1319,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 					a.title = on ? fOff : fOn;
 					a.setAttribute('aria-label', a.title);
 					a.innerHTML = on ? exitIco : enterIco;
+					// Rescale the canvas to the new frame size (and back on exit).
+					setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 60);
 				}
 				document.addEventListener('fullscreenchange', sync);
 				document.addEventListener('webkitfullscreenchange', sync);
