@@ -39,9 +39,9 @@ $this->css('tools.css');
 				<td><?php echo $session->start; ?></td>
 				<td><?php echo $session->accesstime; ?></td>
 			<?php if (User::get('username') == $session->username) { ?>
-				<td><a class="closetool" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=stop&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></a></td>
+				<td><a class="closetool" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=stop&app='.$session->appname.'&sess='.$session->sessnum.'&'.Session::getFormToken().'=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></a></td>
 			<?php } else { ?>
-				<td><a class="disconnect" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=unshare&app='.$session->appname.'&sess='.$session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_DISCONNECT_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?></a> <span class="owner"><?php echo Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER').': '.$session->username; ?></span></td>
+				<td><a class="disconnect" href="<?php echo Route::url('index.php?option='.$this->option.'&controller='.$this->controller.'&task=unshare&app='.$session->appname.'&sess='.$session->sessnum.'&'.Session::getFormToken().'=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_DISCONNECT_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?></a> <span class="owner"><?php echo Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER').': '.$session->username; ?></span></td>
 			<?php } ?>
 			</tr>
 		<?php

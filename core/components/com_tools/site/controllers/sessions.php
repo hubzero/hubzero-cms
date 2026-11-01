@@ -1122,6 +1122,9 @@ class Sessions extends SiteController
 			return;
 		}
 
+		// Validate the anti-CSRF token (state-changing action)
+		Request::checkToken('get');
+
 		// Needed objects
 		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
@@ -1609,6 +1612,9 @@ class Sessions extends SiteController
 			$this->loginTask();
 			return;
 		}
+
+		// Validate the anti-CSRF token (state-changing action)
+		Request::checkToken('get');
 
 		// Incoming
 		$sess = Request::getInt('sess', 0);
