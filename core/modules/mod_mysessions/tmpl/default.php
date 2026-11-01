@@ -142,7 +142,7 @@ $base = rtrim(Request::base(true), '/');
 			{
 				// Calculate the percentage of spaced used
 				bcscale(6);
-				$total   = $diskUsage['softspace'] / 1024000000;
+				$total   = round($diskUsage['softspace'] / 1024000000, 2);
 				$val     = ($diskUsage['softspace'] > 0) ? bcdiv($diskUsage['space'], $diskUsage['softspace']) : 0;
 				$percent = round( $val * 100 );
 				$percent = ($percent > 100) ? 100: $percent;
