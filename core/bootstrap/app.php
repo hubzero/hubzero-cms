@@ -36,7 +36,7 @@ define('JPATH_CACHE', PATH_APP . '/cache');
 define('JPATH_MANIFESTS', PATH_CORE . '/manifests');
 define('JPATH_API', PATH_ROOT . '/api');
 
-define('HVERSION', '2.4.1');
+define('HVERSION', '2.4.7');
 
 date_default_timezone_set('UTC');
 
