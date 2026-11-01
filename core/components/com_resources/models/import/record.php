@@ -483,6 +483,12 @@ class Record extends Obj
 				throw new Exception(Lang::txt('COM_RESOURCES_IMPORT_RECORD_MODEL_UNABLE_SAVECHILDASSOC'));
 			}
 		}
+
+		// Normalize child ordering once after importing all children
+		if (count($this->record->children))
+		{
+			Association::blank()->set('parent_id', $this->record->resource->id)->reorder();
+		}
 	}
 
 	/**

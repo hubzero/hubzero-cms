@@ -571,6 +571,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			return false;
 		}
 
+		// Keep the parent's child ordering gapless and collision-free
+		$model->reorder();
+
 		return true;
 	}
 
@@ -602,6 +605,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
 			$this->addError($model->getError());
 			return false;
 		}
+
+		// Keep the parent's child ordering gapless and collision-free
+		$model->reorder();
 
 		return true;
 	}

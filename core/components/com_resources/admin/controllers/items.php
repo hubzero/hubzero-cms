@@ -519,6 +519,9 @@ class Items extends AdminController
 		}
 		else
 		{
+			// Keep the parent's child ordering gapless and collision-free
+			$assoc->reorder();
+
 			// Redirect
 			Notify::success(Lang::txt('COM_RESOURCES_ITEM_SAVED'));
 		}
@@ -579,6 +582,9 @@ class Items extends AdminController
 
 		if ($removed)
 		{
+			// Close the gaps left by the removed children
+			Association::blank()->set('parent_id', $pid)->reorder();
+
 			Notify::success(Lang::txt('COM_RESOURCES_ITEMS_REMOVED', $removed));
 		}
 

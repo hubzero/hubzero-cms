@@ -94,10 +94,11 @@ class Association extends Relational
 			$last = self::all()
 				->select('ordering')
 				->whereEquals('parent_id', $data['parent_id'])
+				->whereEquals('grouping', isset($data['grouping']) ? (int)$data['grouping'] : 0)
 				->order('ordering', 'desc')
 				->row();
 
-			$data['ordering'] = $last->ordering + 1;
+			$data['ordering'] = ($last && $last->ordering ? $last->ordering : 0) + 1;
 		}
 
 		return $data['ordering'];
@@ -206,8 +207,9 @@ class Association extends Relational
 	}
 
 	/**
-	 * Recalculates ordering values to try and keep
-	 * them clean, in sequence, and no duplicates
+	 * Recalculates ordering values to try and keep them clean, in sequence,
+	 * and free of duplicates. Ordering is sequential *within each grouping*
+	 * of the parent, so each grouping is renumbered 1..N independently.
 	 *
 	 * @return  bool  True on success.
 	 */
@@ -216,16 +218,21 @@ class Association extends Relational
 		// Select the primary key and ordering values from the table.
 		$rows = self::all()
 			->whereEquals('parent_id', $this->get('parent_id'))
+			->order('grouping', 'asc')
 			->order('ordering', 'asc')
+			->order('child_id', 'asc')
 			->order('id', 'asc')
 			->rows();
 
-		$i = 1;
+		$counters = array();
 		foreach ($rows as $row)
 		{
-			if ($row->get('ordering') != $i)
+			$g = (int) $row->get('grouping');
+			$counters[$g] = isset($counters[$g]) ? $counters[$g] + 1 : 1;
+
+			if ((int) $row->get('ordering') != $counters[$g])
 			{
-				$row->set('ordering', $i);
+				$row->set('ordering', $counters[$g]);
 
 				if (!$row->save())
 				{
@@ -233,8 +240,6 @@ class Association extends Relational
 					return false;
 				}
 			}
-
-			$i++;
 		}
 
 		return true;
