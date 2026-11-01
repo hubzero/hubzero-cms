@@ -460,8 +460,10 @@
 	color: rgba(255, 255, 255, 0.16);
 	font-size: 2.8rem;
 }
-/* The Hide button highlights while privacy is on */
-#app-footer a.hide-display.active {
+/* The Hide button highlights while privacy is on; Theater/Fullscreen while on */
+#app-footer a.hide-display.active,
+#app-footer a.theater.active,
+#app-footer a.fullscreen.active {
 	background: linear-gradient(180deg, rgba(47, 109, 179, 0.30), rgba(47, 109, 179, 0.12));
 	border-color: rgba(47, 109, 179, 0.55);
 	color: #1f5591;

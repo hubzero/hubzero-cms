@@ -1266,93 +1266,94 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		liHide.appendChild(hide);
 		ul.appendChild(liHide);
 
-		// Theater: expand the viewer frame to fill the browser window (in-page)
+		// Theater + Fullscreen: two mutually exclusive "maximize" modes. Entering one
+		// leaves the other, and each button swaps to an "exit" icon/label while its
+		// mode is on, so it clearly takes you back to normal.
 		(function () {
-			const li = document.createElement('li');
-			const a = document.createElement('a');
-			a.className = 'theater';
-			a.id = 'app-btn-theater';
-			a.href = '#';
-			a.setAttribute('role', 'button');
-			a.setAttribute('aria-pressed', 'false');
-			const tOn  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER')); ?>;
-			const tOff = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER_EXIT')); ?>;
-			a.title = tOn;
-			a.setAttribute('aria-label', tOn);
-			a.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_THEATER')); ?>);
-			a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>';
-			function setTheater(on) {
-				document.body.classList.toggle('app-theater', on);
-				a.classList.toggle('active', on);
-				a.setAttribute('aria-pressed', on ? 'true' : 'false');
-				a.title = on ? tOff : tOn;
-				a.setAttribute('aria-label', a.title);
-				// Resize now: on enter request the larger desktop; on exit restore the
-				// saved size immediately so the frame never flashes at the big size.
+			const wrap = document.getElementById('app-wrap') || document.getElementById('novnc-modern');
+			if (!wrap) { return; }
+			const fsEnabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+
+			function isFs()      { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+			function isTheater() { return document.body.classList.contains('app-theater'); }
+			function reqFs()  { if (wrap.requestFullscreen) { wrap.requestFullscreen(); } else if (wrap.webkitRequestFullscreen) { wrap.webkitRequestFullscreen(); } }
+			function exitFs() { if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } }
+
+			const T_ON    = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER')); ?>;
+			const T_OFF   = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER_EXIT')); ?>;
+			const T_ENTER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>';
+			const T_EXIT  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="10 4 4 4 4 10"/><polyline points="20 14 14 14 14 20"/><line x1="4" y1="4" x2="9" y2="9"/><line x1="20" y1="20" x2="15" y2="15"/></svg>';
+			const F_ON    = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_FULLSCREEN')); ?>;
+			const F_OFF   = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_FULLSCREEN_EXIT')); ?>;
+			const F_ENTER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+			const F_EXIT  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>';
+
+			// Theater button
+			const tli = document.createElement('li');
+			const tb = document.createElement('a');
+			tb.className = 'theater'; tb.id = 'app-btn-theater'; tb.href = '#';
+			tb.setAttribute('role', 'button'); tb.setAttribute('aria-pressed', 'false');
+			tb.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_THEATER')); ?>);
+
+			// Fullscreen button (only if the browser allows it)
+			let fb = null;
+
+			function updateButtons() {
+				const th = isTheater(), fs = isFs();
+				tb.classList.toggle('active', th);
+				tb.setAttribute('aria-pressed', th ? 'true' : 'false');
+				tb.title = th ? T_OFF : T_ON;
+				tb.setAttribute('aria-label', tb.title);
+				tb.innerHTML = th ? T_EXIT : T_ENTER;
+				if (fb) {
+					fb.classList.toggle('active', fs);
+					fb.setAttribute('aria-pressed', fs ? 'true' : 'false');
+					fb.title = fs ? F_OFF : F_ON;
+					fb.setAttribute('aria-label', fb.title);
+					fb.innerHTML = fs ? F_EXIT : F_ENTER;
+				}
+			}
+			function afterModeChange() {
+				// Resize now (exit restores the saved size with no flash of the big
+				// frame), then settle the canvas scale and re-request after the reflow.
 				syncExpandedSize();
-				// Then settle: rescale the canvas and re-request after the reflow.
 				setTimeout(function () { window.dispatchEvent(new Event('resize')); syncExpandedSize(); }, 60);
 				if (rfb && rfb.focus) { try { rfb.focus(); } catch (e) {} }
 			}
-			a.addEventListener('click', function (e) {
-				e.preventDefault();
-				setTheater(!document.body.classList.contains('app-theater'));
-			});
-			// No Escape-to-exit: the VNC display captures the keyboard, and when it
-			// doesn't, Escape belongs to the tool -- the button is the way out.
-			li.appendChild(a);
-			ul.appendChild(li);
-		})();
 
-		// Fullscreen: native Fullscreen API on the viewer frame
-		if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
-			(function () {
-				const target = document.getElementById('app-wrap') || document.getElementById('novnc-modern');
-				if (!target) { return; }
-				const li = document.createElement('li');
-				const a = document.createElement('a');
-				a.className = 'fullscreen';
-				a.id = 'app-btn-fullscreen';
-				a.href = '#';
-				a.setAttribute('role', 'button');
-				a.setAttribute('aria-pressed', 'false');
-				const fOn  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_FULLSCREEN')); ?>;
-				const fOff = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_FULLSCREEN_EXIT')); ?>;
-				a.title = fOn;
-				a.setAttribute('aria-label', fOn);
-				a.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_FULLSCREEN')); ?>);
-				const enterIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
-				const exitIco  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>';
-				a.innerHTML = enterIco;
-				function isFs() { return document.fullscreenElement || document.webkitFullscreenElement; }
-				a.addEventListener('click', function (e) {
+			tb.addEventListener('click', function (e) {
+				e.preventDefault();
+				const on = !isTheater();
+				if (on && isFs()) { exitFs(); }    // modes are exclusive
+				document.body.classList.toggle('app-theater', on);
+				updateButtons();
+				afterModeChange();
+			});
+			tli.appendChild(tb); ul.appendChild(tli);
+
+			if (fsEnabled) {
+				const fli = document.createElement('li');
+				fb = document.createElement('a');
+				fb.className = 'fullscreen'; fb.id = 'app-btn-fullscreen'; fb.href = '#';
+				fb.setAttribute('role', 'button'); fb.setAttribute('aria-pressed', 'false');
+				fb.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_FULLSCREEN')); ?>);
+				fb.addEventListener('click', function (e) {
 					e.preventDefault();
-					if (!isFs()) {
-						if (target.requestFullscreen) { target.requestFullscreen(); }
-						else if (target.webkitRequestFullscreen) { target.webkitRequestFullscreen(); }
-					} else {
-						if (document.exitFullscreen) { document.exitFullscreen(); }
-						else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
-					}
+					if (!isFs()) { reqFs(); }   // keep theater (if on) until fullscreen is live
+					else { exitFs(); }
 				});
-				function sync() {
-					const on = !!isFs();
-					a.classList.toggle('active', on);
-					a.setAttribute('aria-pressed', on ? 'true' : 'false');
-					a.title = on ? fOff : fOn;
-					a.setAttribute('aria-label', a.title);
-					a.innerHTML = on ? exitIco : enterIco;
-					// Resize now (exit restores immediately -> no flash of the big frame),
-					// then settle the canvas scale and re-request after the reflow.
-					syncExpandedSize();
-					setTimeout(function () { window.dispatchEvent(new Event('resize')); syncExpandedSize(); }, 60);
+				// Native enter/exit (including Esc) keeps the buttons and size in sync.
+				function onFsChange() {
+					if (isFs() && isTheater()) { document.body.classList.remove('app-theater'); } // exclusive
+					updateButtons();
+					afterModeChange();
 				}
-				document.addEventListener('fullscreenchange', sync);
-				document.addEventListener('webkitfullscreenchange', sync);
-				li.appendChild(a);
-				ul.appendChild(li);
-			})();
-		}
+				document.addEventListener('fullscreenchange', onFsChange);
+				document.addEventListener('webkitfullscreenchange', onFsChange);
+				fli.appendChild(fb); ul.appendChild(fli);
+			}
+			updateButtons();
+		})();
 	})();
 
 	// ----- Session title editing (as in the legacy engine) -------------------

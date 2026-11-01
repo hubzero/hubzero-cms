@@ -596,7 +596,9 @@ jQuery(document).ready(function(jq){
 				tip.id = 'app-help-tip';
 				tip.setAttribute('role', 'tooltip');
 				tip.innerHTML = '<strong></strong><span></span>';
-				document.body.appendChild(tip);
+				// Parent it to #app-wrap, not <body>, so it shows in fullscreen (only
+				// the fullscreen element's subtree renders) and above the theater layer.
+				(document.getElementById('app-wrap') || document.body).appendChild(tip);
 			}
 			tip.firstChild.textContent = name(el);
 			tip.lastChild.textContent = el.getAttribute('data-help');
