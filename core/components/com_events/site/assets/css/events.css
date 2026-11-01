@@ -179,7 +179,7 @@
 	.com_events ul.events div.ewrap {
 		margin: 0 0 0 170px;
 	}
-	.com_events ul.events dl.event-details {
+	.com_events ul.events .event-details {
 		float: left;
 		margin: 1.1em 20px 2em 0 !important;
 		padding: 0;
@@ -188,21 +188,21 @@
 		font-size: 0.85em;
 		text-align: right;
 	}
-	.com_events ul.events dl.event-details dt {
+	.com_events ul.events .event-details .event-date {
 		font-weight: bold;
 		color: #777;
 		font-size: 1em;
 		padding: 0;
 		margin: 1.1em 0 0 0;
 	}
-	.com_events ul.events dl.event-details dt:first-child {
+	.com_events ul.events .event-details .event-date:first-child {
 		margin: 0;
 	}
-	.com_events ul.events dl.event-details dd.starttime {
+	.com_events ul.events .event-details .event-time.starttime {
 		padding-bottom: 0;
 		margin: 0;
 	}
-	.com_events ul.events dl.event-details dd.endtime {
+	.com_events ul.events .event-details .event-time.endtime {
 		margin: 0;
 		padding: 0;
 	}
