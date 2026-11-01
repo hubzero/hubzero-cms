@@ -256,7 +256,7 @@ class Sessions extends SiteController
 			return false;
 		}
 
-		return (bool) $this->config->get('async_launch', 0);
+		return (bool) $this->config->get('async_launch', 1);
 	}
 
 	/**

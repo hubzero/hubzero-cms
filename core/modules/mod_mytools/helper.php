@@ -238,7 +238,7 @@ class Helper extends Module
 		}
 
 		// com_tools' launch page shows its own progress from the first moment
-		$this->launch_page = (bool) $mconfig->get('async_launch', 0);
+		$this->launch_page = (bool) $mconfig->get('async_launch', 1);
 
 		// See if we have an incoming string of favorite tools
 		// This should only happen on AJAX requests
