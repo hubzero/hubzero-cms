@@ -341,6 +341,27 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		rfb.requestHubzeroResize(clamp(content.clientWidth, FB_MIN_W), clamp(content.clientHeight, FB_MIN_H));
 	}
 
+	// Theater/fullscreen remote-resize: when the frame is expanded the CSS lets
+	// #app-content fill it, so ask the server for a framebuffer that matches --
+	// a crisp, truly larger desktop rather than a scaled-up small one. Remember
+	// the size on the way in and restore it (frame + server) once BOTH expanded
+	// modes are off again.
+	let expandSavedFb = null;
+	function syncExpandedSize() {
+		if (!rfb) { return; }
+		const expanded = document.body.classList.contains('app-theater')
+			|| !!(document.fullscreenElement || document.webkitFullscreenElement);
+		if (expanded) {
+			if (!expandSavedFb && fbW && fbH) { expandSavedFb = { w: fbW, h: fbH }; }
+			requestFrameSize();
+		} else if (expandSavedFb) {
+			const s = expandSavedFb;
+			expandSavedFb = null;
+			sizeFrame(s.w, s.h);                 // restore the frame immediately
+			rfb.requestHubzeroResize(s.w, s.h);  // and the server desktop
+		}
+	}
+
 	function setZoom(z) {
 		zoom = z;
 		try { localStorage.setItem(ZOOM_KEY, String(z)); } catch (e) {}
@@ -1266,9 +1287,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 				a.setAttribute('aria-pressed', on ? 'true' : 'false');
 				a.title = on ? tOff : tOn;
 				a.setAttribute('aria-label', a.title);
-				// The frame changed size; let noVNC rescale the canvas to fill it
-				// (and rescale back when leaving theater).
-				setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 60);
+				// The frame changed size: rescale the canvas to fill it right away
+				// (instant), then request a matching desktop from the server (crisp).
+				setTimeout(function () { window.dispatchEvent(new Event('resize')); syncExpandedSize(); }, 60);
 				if (rfb && rfb.focus) { try { rfb.focus(); } catch (e) {} }
 			}
 			a.addEventListener('click', function (e) {
@@ -1319,8 +1340,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 					a.title = on ? fOff : fOn;
 					a.setAttribute('aria-label', a.title);
 					a.innerHTML = on ? exitIco : enterIco;
-					// Rescale the canvas to the new frame size (and back on exit).
-					setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 60);
+					// Rescale the canvas to the new frame size (instant), then request
+					// a matching desktop from the server (crisp); restore on exit.
+					setTimeout(function () { window.dispatchEvent(new Event('resize')); syncExpandedSize(); }, 60);
 				}
 				document.addEventListener('fullscreenchange', sync);
 				document.addEventListener('webkitfullscreenchange', sync);
