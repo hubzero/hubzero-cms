@@ -84,9 +84,8 @@ if (!$this->app->sess) {
 					</li>
 					<?php if ($this->app->owns) { ?>
 						<li>
-							<a id="app-btn-close" class="terminate sessiontips" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')); ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn.'&'.Session::getFormToken().'=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
+							<a id="app-btn-close" class="terminate sessiontips icon-only" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')); ?>" href="<?php echo Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn.'&'.Session::getFormToken().'=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>" aria-label="<?php echo $this->escape(Lang::txt('COM_TOOLS_TERMINATE')); ?>">
 								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-								<span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
 							</a>
 						</li>
 					<?php } else { ?>
