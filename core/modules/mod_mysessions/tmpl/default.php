@@ -32,9 +32,10 @@ $base = rtrim(Request::base(true), '/');
 
 					$resumeLink = Route::url('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
 
-					//terminate & disconnect links
-					$terminateLink  = Route::url('index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname);
-					$disconnectLink = Route::url('index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname);
+					//terminate & disconnect links (carry the anti-CSRF token: com_tools
+					// stop/unshare tasks require it)
+					$terminateLink  = Route::url('index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname . '&' . Session::getFormToken() . '=1');
+					$disconnectLink = Route::url('index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname . '&' . Session::getFormToken() . '=1');
 
 					//get snapshot
 					$snapshot = $base . '/api/tools/screenshot?sessionid=' . $session->sessnum . '&notfound=1';
