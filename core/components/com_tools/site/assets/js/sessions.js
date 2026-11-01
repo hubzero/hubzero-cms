@@ -17,6 +17,47 @@ jQuery(document).ready(function(jq){
 
 	Hubzero.initApi();
 
+	// Session leave/terminate confirmation. The Keep (leave) and Terminate
+	// toolbar buttons both open one shared chooser; the button pressed becomes
+	// the default (focused) choice. Progressive enhancement: without this the
+	// buttons simply follow their own hrefs.
+	(function () {
+		var modal = document.getElementById('ts-confirm');
+		if (!modal) { return; }
+		var triggers = document.querySelectorAll('[data-ts-action]');
+		if (!triggers.length) { return; }
+		var lastFocus = null;
+
+		function choiceEl(kind) {
+			return modal.querySelector('[data-ts-choice="' + kind + '"]');
+		}
+		function open(kind) {
+			lastFocus = document.activeElement;
+			modal.hidden = false;
+			document.body.classList.add('ts-confirm-open');
+			var def = choiceEl(kind) || modal.querySelector('[data-ts-choice]');
+			if (def) { def.focus(); }
+		}
+		function close() {
+			modal.hidden = true;
+			document.body.classList.remove('ts-confirm-open');
+			if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
+		}
+
+		[].forEach.call(triggers, function (t) {
+			t.addEventListener('click', function (e) {
+				e.preventDefault();
+				open(t.getAttribute('data-ts-action'));
+			});
+		});
+		[].forEach.call(modal.querySelectorAll('[data-ts-close]'), function (c) {
+			c.addEventListener('click', function (e) { e.preventDefault(); close(); });
+		});
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && !modal.hidden) { e.preventDefault(); close(); }
+		});
+	})();
+
 	// Session countdown (hard-timeout tools only). Reads /api/tools/{sess}/timeout;
 	// idle-timeout tools reset on activity, so they get no countdown.
 	(function () {
