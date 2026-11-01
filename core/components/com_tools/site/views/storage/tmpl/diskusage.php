@@ -37,7 +37,7 @@ $this->css('
 }
 ');
 
-$html .= "\t".'<dd id="du-amount"><div class="du-amount-bar" title="'.$this->amt.'%"><strong>&nbsp;</strong><span class="du-amount-text">'.$this->amt.'% of '.$this->total.'GB</span></div></dd>'."\n";
+$html .= "\t".'<dd id="du-amount"><div class="du-amount-bar" title="'.$this->amt.'%"><strong>&nbsp;</strong><span class="du-amount-text">'.$this->amt.'% of '.round((float) $this->total, 2).'GB</span></div></dd>'."\n";
 if ($this->msgs)
 {
 	if (count($this->du) <=1)

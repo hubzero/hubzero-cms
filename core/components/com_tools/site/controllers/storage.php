@@ -285,7 +285,7 @@ class Storage extends SiteController
 
 		if (isset($du['softspace']))
 		{
-			$total = $du['softspace'] / 1024000000;
+			$total = round($du['softspace'] / 1024000000, 2);
 		}
 		else
 		{
@@ -340,7 +340,7 @@ class Storage extends SiteController
 		}
 
 		$amt = ($percent > 100) ? '100' : $percent;
-		$total = (isset($du['softspace'])) ? $du['softspace'] / 1024000000 : 0;
+		$total = (isset($du['softspace'])) ? round($du['softspace'] / 1024000000, 2) : 0;
 
 		$this->view->amt       = $amt;
 		$this->view->total     = $total;

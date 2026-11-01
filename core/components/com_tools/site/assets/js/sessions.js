@@ -401,7 +401,7 @@ jQuery(document).ready(function(jq){
                                 if (data && $.type(data.amount) === "number" && $.type(data.total) === "number") {
                                         // (the template sets the width !important; match it)
                                         $('#diskusage .du-amount-bar').each(function () { this.style.setProperty('width', data.amount + '%', 'important'); });
-                                        $('#diskusage .du-amount-text').text(data.amount+'% of '+data.total+'GB');
+                                        $('#diskusage .du-amount-text').text(data.amount+'% of '+(Math.round(data.total*100)/100)+'GB');
                                         $('#diskusage .du-pct').text(data.amount+'%');
                                 }
                         }).fail(function(jqXHR){
