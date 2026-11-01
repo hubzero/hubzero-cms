@@ -32,13 +32,42 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 <style>
 	#novnc-modern { position: relative; width: 100%; height: 100%; background: #0b0d10; }
 	#novnc-modern-screen { width: 100%; height: 100%; }
+	/* Connecting / status overlay: a centered dark card with a bouncing-dots
+	   spinner, matching the connection-recovery overlay (reconnect.css) so the
+	   direct session-page load and a reconnect look the same. */
 	#novnc-modern-status {
-		position: absolute; left: 0; right: 0; top: 0; z-index: 5;
-		padding: 8px 12px; text-align: center;
-		font: 500 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-		color: #cdd3da; background: rgba(0, 0, 0, 0.55);
+		position: absolute; inset: 0; left: 0; right: 0; top: 0; bottom: 0; z-index: 5;
+		display: flex; align-items: center; justify-content: center;
+		background: #0b0d10;
 	}
 	#novnc-modern-status[hidden] { display: none; }
+	#novnc-modern-status .nms-card {
+		max-width: 26em; width: calc(100% - 3em); margin: 1.5em;
+		padding: 1.75em 1.75em 1.5em; text-align: center;
+		border-radius: 12px; background: #1e1f22; border: 1px solid #34363b;
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); color: #e7eaee;
+		font: 400 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	}
+	#novnc-modern-status .nms-text { margin: 0; color: #c3c8cf; }
+	#novnc-modern-status .nms-spinner {
+		display: flex; align-items: center; justify-content: center;
+		gap: 0.4em; height: 1.5em; margin-bottom: 0.6em;
+	}
+	#novnc-modern-status .nms-spinner span {
+		display: inline-block; width: 0.6em; height: 0.6em; border-radius: 50%;
+		background: #5aaae1;
+		animation: nms-bounce 1s ease-in-out infinite !important;
+	}
+	#novnc-modern-status .nms-spinner span:nth-child(2) { animation-delay: 0.15s !important; }
+	#novnc-modern-status .nms-spinner span:nth-child(3) { animation-delay: 0.3s !important; }
+	@keyframes nms-bounce {
+		0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+		40%           { transform: translateY(-0.5em); opacity: 1; }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		#novnc-modern-status .nms-spinner span { animation: nms-pulse 1.4s ease-in-out infinite !important; }
+	}
+	@keyframes nms-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
 	/* A ClientAction the browser's popup blocker stopped: offer it as a link */
 	#novnc-modern-action {
 		position: absolute; left: 50%; bottom: 14px; z-index: 6; transform: translateX(-50%);
@@ -172,7 +201,12 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 </style>
 
 <div id="novnc-modern">
-	<div id="novnc-modern-status"><?php echo Lang::txt('PLG_TOOLS_NOVNC_LOADING'); ?></div>
+	<div id="novnc-modern-status" role="status" aria-live="polite">
+		<div class="nms-card">
+			<div class="nms-spinner" aria-hidden="true"><span></span><span></span><span></span></div>
+			<p class="nms-text"><?php echo Lang::txt('PLG_TOOLS_NOVNC_LOADING'); ?></p>
+		</div>
+	</div>
 	<div id="novnc-modern-screen"></div>
 	<div id="novnc-modern-note" role="status" aria-live="polite" hidden></div>
 	<?php if ($clipboard) { ?>
@@ -217,9 +251,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	const content  = document.getElementById('app-content');
 	const appwrap  = document.getElementById('app-wrap');
 
+	const statusText = statusEl ? statusEl.querySelector('.nms-text') : null;
 	function setStatus(m) {
 		statusEl.hidden = (m === null);
-		if (m !== null) { statusEl.textContent = m; }
+		if (m !== null) { (statusText || statusEl).textContent = m; }
 	}
 
 	// ----- Connection recovery (shared with the other engines) ---------------
@@ -1209,6 +1244,85 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 		});
 		liHide.appendChild(hide);
 		ul.appendChild(liHide);
+
+		// Theater: expand the viewer frame to fill the browser window (in-page)
+		(function () {
+			const li = document.createElement('li');
+			const a = document.createElement('a');
+			a.className = 'theater';
+			a.id = 'app-btn-theater';
+			a.href = '#';
+			a.setAttribute('role', 'button');
+			a.setAttribute('aria-pressed', 'false');
+			const tOn  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER')); ?>;
+			const tOff = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER_EXIT')); ?>;
+			a.title = tOn;
+			a.setAttribute('aria-label', tOn);
+			a.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_THEATER')); ?>);
+			a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>';
+			function setTheater(on) {
+				document.body.classList.toggle('app-theater', on);
+				a.classList.toggle('active', on);
+				a.setAttribute('aria-pressed', on ? 'true' : 'false');
+				a.title = on ? tOff : tOn;
+				a.setAttribute('aria-label', a.title);
+				if (rfb && rfb.focus) { try { rfb.focus(); } catch (e) {} }
+			}
+			a.addEventListener('click', function (e) {
+				e.preventDefault();
+				setTheater(!document.body.classList.contains('app-theater'));
+			});
+			// No Escape-to-exit: the VNC display captures the keyboard, and when it
+			// doesn't, Escape belongs to the tool -- the button is the way out.
+			li.appendChild(a);
+			ul.appendChild(li);
+		})();
+
+		// Fullscreen: native Fullscreen API on the viewer frame
+		if (document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+			(function () {
+				const target = document.getElementById('app-wrap') || document.getElementById('novnc-modern');
+				if (!target) { return; }
+				const li = document.createElement('li');
+				const a = document.createElement('a');
+				a.className = 'fullscreen';
+				a.id = 'app-btn-fullscreen';
+				a.href = '#';
+				a.setAttribute('role', 'button');
+				a.setAttribute('aria-pressed', 'false');
+				const fOn  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_FULLSCREEN')); ?>;
+				const fOff = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_FULLSCREEN_EXIT')); ?>;
+				a.title = fOn;
+				a.setAttribute('aria-label', fOn);
+				a.setAttribute('data-help', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_HELP_FULLSCREEN')); ?>);
+				const enterIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+				const exitIco  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>';
+				a.innerHTML = enterIco;
+				function isFs() { return document.fullscreenElement || document.webkitFullscreenElement; }
+				a.addEventListener('click', function (e) {
+					e.preventDefault();
+					if (!isFs()) {
+						if (target.requestFullscreen) { target.requestFullscreen(); }
+						else if (target.webkitRequestFullscreen) { target.webkitRequestFullscreen(); }
+					} else {
+						if (document.exitFullscreen) { document.exitFullscreen(); }
+						else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+					}
+				});
+				function sync() {
+					const on = !!isFs();
+					a.classList.toggle('active', on);
+					a.setAttribute('aria-pressed', on ? 'true' : 'false');
+					a.title = on ? fOff : fOn;
+					a.setAttribute('aria-label', a.title);
+					a.innerHTML = on ? exitIco : enterIco;
+				}
+				document.addEventListener('fullscreenchange', sync);
+				document.addEventListener('webkitfullscreenchange', sync);
+				li.appendChild(a);
+				ul.appendChild(li);
+			})();
+		}
 	})();
 
 	// ----- Session title editing (as in the legacy engine) -------------------

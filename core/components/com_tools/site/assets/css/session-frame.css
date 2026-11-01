@@ -674,6 +674,29 @@
 	border-color: #c0392b;
 	box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.35);
 }
+/* The default (the button that was pressed) is a solid, filled button; the
+   other choice stays a plain outline. Which one is selected needs no thought. */
+.ts-choice.is-default { box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22); }
+.ts-choice.is-default.ts-choice-leave {
+	background: #2f6db3;
+	border-color: #2f6db3;
+	color: #fff;
+}
+.ts-choice.is-default.ts-choice-leave .ts-choice-desc { color: #dcebf8; }
+.ts-choice.is-default.ts-choice-leave:hover { background: #3a80cf; border-color: #3a80cf; }
+.ts-choice.is-default.ts-choice-terminate {
+	background: #c0392b;
+	border-color: #c0392b;
+	color: #fff;
+}
+.ts-choice.is-default.ts-choice-terminate .ts-choice-desc { color: #f7dcd8; }
+.ts-choice.is-default.ts-choice-terminate:hover { background: #d0432f; border-color: #d0432f; }
+.ts-choice.is-default:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6), 0 3px 12px rgba(0, 0, 0, 0.25);
+}
+/* With one choice filled, dim the other so the default clearly leads. */
+.ts-confirm-choices:has(.is-default) .ts-choice:not(.is-default) { opacity: 0.75; }
 .ts-confirm-cancel {
 	display: block;
 	width: 100%;
@@ -687,3 +710,36 @@
 	cursor: pointer;
 }
 .ts-confirm-cancel:hover { color: #23272c; text-decoration: underline; }
+
+/* ---- Theater mode: the viewer frame fills the browser window ---------- */
+body.app-theater { overflow: hidden; }
+/* Hide the surrounding site chrome so the tool is immersive. */
+body.app-theater > header,
+body.app-theater .site-header,
+body.app-theater .breadcrumbs,
+body.app-theater footer.site-footer,
+body.app-theater > footer { display: none !important; }
+body.app-theater #app-wrap {
+	position: fixed;
+	inset: 0;
+	z-index: 2147483000;
+	display: flex;
+	flex-direction: column;
+	width: auto !important;
+	max-width: none;
+	height: 100vh;
+	margin: 0;
+	border-radius: 0;
+}
+/* The screen area grows to fill the space between the header and footer;
+   the fixed-size canvas sits centered in it (dark surround). */
+body.app-theater #app-content {
+	flex: 1 1 auto;
+	min-height: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #0b0d10;
+}
+body.app-theater #app-header,
+body.app-theater #app-footer { flex: 0 0 auto; }

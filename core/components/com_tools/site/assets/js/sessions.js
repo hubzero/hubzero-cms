@@ -35,6 +35,11 @@ jQuery(document).ready(function(jq){
 			lastFocus = document.activeElement;
 			modal.hidden = false;
 			document.body.classList.add('ts-confirm-open');
+			// Mark the pressed button's action as the default so it reads as the
+			// solid, filled choice (the other stays a plain outline).
+			[].forEach.call(modal.querySelectorAll('[data-ts-choice]'), function (c) {
+				c.classList.toggle('is-default', c.getAttribute('data-ts-choice') === kind);
+			});
 			var def = choiceEl(kind) || modal.querySelector('[data-ts-choice]');
 			if (def) { def.focus(); }
 		}
