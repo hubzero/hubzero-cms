@@ -78,43 +78,147 @@ HUB.Resources = {
 };
 
 jQuery(document).ready(function($){
-	$('a.play').fancybox({
-		type: 'ajax',
-		width: 750,
-		height: 500,
-		autoSize: false,
-		fitToView: false,
-		beforeLoad: function() {
-			href = this.element.attr('href').nohtml();
+	// Pop-up viewer for "play" links: the primary "View ..." button and any
+	// supporting document with link_action=2. A native <dialog> sized to the
+	// viewport (keeping the aspect ratio given by the link's WxH class) is
+	// filled with the no_html render of the target, which is what the old
+	// fancybox 'ajax' popup injected too, so every content type (SWF via
+	// Ruffle, images, video, audio, documents) keeps working.
+	HUB.Resources.lightbox = (function () {
+		var dlg, frame, titleEl, openEl, content, opener = null, aspect = 16 / 9;
+		var icons = {
+			open:  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+			full:  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>',
+			close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+		};
 
-			this.element.attr('href', href);
-			this.href = href;
+		function build() {
+			dlg = document.createElement('dialog');
+			dlg.className = 'rs-lightbox';
+			dlg.setAttribute('aria-labelledby', 'rs-lightbox-title');
+			dlg.innerHTML =
+				'<div class="rs-lightbox__frame">' +
+					'<div class="rs-lightbox__head">' +
+						'<h2 class="rs-lightbox__title" id="rs-lightbox-title"></h2>' +
+						'<div class="rs-lightbox__actions">' +
+							'<a class="rs-lightbox__btn rs-lightbox__open" target="_blank" rel="noopener" title="Open in a new tab" aria-label="Open in a new tab">' + icons.open + '</a>' +
+							'<button type="button" class="rs-lightbox__btn rs-lightbox__full" title="Full screen" aria-label="Full screen">' + icons.full + '</button>' +
+							'<button type="button" class="rs-lightbox__btn rs-lightbox__close" title="Close" aria-label="Close">' + icons.close + '</button>' +
+						'</div>' +
+					'</div>' +
+					'<div class="rs-lightbox__body"><div class="rs-lightbox__content"></div></div>' +
+				'</div>';
+			document.body.appendChild(dlg);
 
-			if (this.element.attr('class')) {
-				var sizeString = this.element.attr('class').split(' ').pop();
-				if (sizeString && sizeString.match(/\d+x\d+/i)) {
-					var sizeTokens = sizeString.split('x');
-					if (parseInt(sizeTokens[0]))
-					{
-						this.width  = parseInt(sizeTokens[0]);
-					}
-					if (parseInt(sizeTokens[1]))
-					{
-						this.height = parseInt(sizeTokens[1]);
-					}
+			frame   = dlg.querySelector('.rs-lightbox__frame');
+			titleEl = dlg.querySelector('.rs-lightbox__title');
+			openEl  = dlg.querySelector('.rs-lightbox__open');
+			content = dlg.querySelector('.rs-lightbox__content');
+
+			dlg.querySelector('.rs-lightbox__close').addEventListener('click', function () { dlg.close(); });
+			dlg.querySelector('.rs-lightbox__full').addEventListener('click', function () {
+				if (document.fullscreenElement) {
+					document.exitFullscreen();
+				} else if (frame.requestFullscreen) {
+					frame.requestFullscreen();
+				}
+			});
+			// A click on the backdrop lands on the dialog element itself.
+			dlg.addEventListener('click', function (e) {
+				if (e.target === dlg) {
+					dlg.close();
+				}
+			});
+			dlg.addEventListener('close', function () {
+				// Dropping the content stops whatever was playing in it.
+				$(content).empty();
+				dlg.classList.remove('rs-lightbox--loading', 'rs-lightbox--error');
+				document.body.classList.remove('rs-lightbox-open');
+				if (opener && opener.focus) {
+					opener.focus();
+				}
+				opener = null;
+			});
+			document.addEventListener('fullscreenchange', fit);
+			window.addEventListener('resize', fit);
+		}
+
+		// Size the content box to the largest WxH-shaped rectangle that fits
+		// the viewport (or the screen, in full screen) under the header.
+		function fit() {
+			if (!dlg || !dlg.open) {
+				return;
+			}
+			var full   = !!document.fullscreenElement && document.fullscreenElement === frame;
+			var margin = full ? 0 : (window.innerWidth < 700 ? 8 : 24);
+			var headH  = dlg.querySelector('.rs-lightbox__head').offsetHeight;
+			var availW = window.innerWidth  - 2 * margin;
+			var availH = window.innerHeight - 2 * margin - headH;
+			var w = Math.min(availW, full ? availW : 1400, availH * aspect);
+			var h = w / aspect;
+			if (full) {
+				// Fill the screen; letterbox inside the (black) body instead.
+				w = availW;
+				h = availH;
+			}
+			content.style.width  = Math.max(280, Math.round(w)) + 'px';
+			content.style.height = Math.max(160, Math.round(h)) + 'px';
+		}
+
+		function open(link) {
+			if (!dlg) {
+				build();
+			}
+			opener = link;
+
+			var href = link.getAttribute('href');
+			var m, classes = (link.getAttribute('class') || '').split(/\s+/);
+			aspect = 16 / 9;
+			for (var i = 0; i < classes.length; i++) {
+				if ((m = classes[i].match(/^(\d+)x(\d+)$/)) && +m[1] > 0 && +m[2] > 0) {
+					aspect = m[1] / m[2];
 				}
 			}
-		},
-		afterShow: function() {
-			if ($('#hubForm-ajax')) {
-				$('#hubForm-ajax').on('submit', function(e) {
-					e.preventDefault();
-					$.post($(this).attr('action'));
-					$.fancybox.close();
-					return false;
+
+			var heading = document.querySelector('.upperpane h2');
+			titleEl.textContent = link.getAttribute('title')
+				|| (heading ? heading.textContent.replace(/\s+/g, ' ').trim() : '')
+				|| link.textContent.replace(/\s+/g, ' ').trim();
+			openEl.setAttribute('href', href);
+
+			$(content).empty();
+			dlg.classList.add('rs-lightbox--loading');
+			dlg.classList.remove('rs-lightbox--error');
+			document.body.classList.add('rs-lightbox-open');
+			dlg.showModal();
+			fit();
+
+			$.get(href.nohtml())
+				.done(function (html) {
+					if (!dlg.open) {
+						return;
+					}
+					dlg.classList.remove('rs-lightbox--loading');
+					// jQuery runs the scripts the page carries (e.g. the Ruffle loader).
+					$(content).html(html);
+				})
+				.fail(function () {
+					dlg.classList.remove('rs-lightbox--loading');
+					dlg.classList.add('rs-lightbox--error');
+					$(content).html('<p class="rs-lightbox__msg">Sorry, this item could not be loaded. <a href="' + href + '" target="_blank" rel="noopener">Open it in a new tab.</a></p>');
 				});
-			}
 		}
+
+		return { open: open, fit: fit };
+	})();
+
+	$(document).on('click', 'a.play', function (e) {
+		// Modified clicks and browsers without <dialog> get the plain link.
+		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.which === 2 || !window.HTMLDialogElement) {
+			return;
+		}
+		e.preventDefault();
+		HUB.Resources.lightbox.open(this);
 	});
 
 	$('.fixedResourceTip').tooltip({

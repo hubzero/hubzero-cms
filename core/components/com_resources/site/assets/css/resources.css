@@ -1452,3 +1452,150 @@
 	.embedded-video.loaded:after {
 		content: '';
 	}
+
+/* Pop-up viewer for "play" links (resources.js, HUB.Resources.lightbox).
+   Colors come from the site's theme tokens when it defines them. */
+dialog.rs-lightbox {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	/* shrink-wrap the frame; the UA's margin:auto then centers it */
+	width: fit-content;
+	height: fit-content;
+	max-width: 100vw;
+	max-height: 100vh;
+	overflow: visible;
+	color: var(--c-text, #222);
+}
+dialog.rs-lightbox::backdrop {
+	background: rgba(8, 12, 18, 0.72);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+}
+.rs-lightbox__frame {
+	display: flex;
+	flex-direction: column;
+	background: var(--c-surface, #fff);
+	border-radius: 12px;
+	box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+	overflow: hidden;
+}
+.rs-lightbox__frame:fullscreen {
+	border-radius: 0;
+}
+.rs-lightbox__head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 10px 8px 18px;
+	border-bottom: 1px solid var(--c-border, #e3e6ea);
+}
+.rs-lightbox__title {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 1.05rem;
+	line-height: 1.3;
+	font-weight: 600;
+	color: var(--c-heading, inherit);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.rs-lightbox__actions {
+	display: flex;
+	gap: 2px;
+	flex: 0 0 auto;
+}
+.rs-lightbox__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	padding: 0;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--c-text-muted, #555);
+	cursor: pointer;
+	text-decoration: none;
+	line-height: 1;
+}
+.rs-lightbox__btn:hover,
+.rs-lightbox__btn:focus-visible {
+	background: var(--c-surface-2, #eef1f4);
+	color: var(--c-text, #111);
+	outline: none;
+	text-decoration: none;
+}
+.rs-lightbox__btn:focus-visible {
+	box-shadow: 0 0 0 2px var(--c-accent, #2a7ab0);
+}
+.rs-lightbox__btn svg {
+	width: 20px;
+	height: 20px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.rs-lightbox__body {
+	background: #000;
+}
+.rs-lightbox__content {
+	position: relative;
+	overflow: hidden;
+	/* width/height are set by resources.js to fit the viewport */
+}
+.rs-lightbox__content > object,
+.rs-lightbox__content > embed,
+.rs-lightbox__content > ruffle-object,
+.rs-lightbox__content > ruffle-embed,
+.rs-lightbox__content > iframe,
+.rs-lightbox__content > video,
+.rs-lightbox__content > audio,
+.rs-lightbox__content > img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	border: 0;
+}
+.rs-lightbox__content > img,
+.rs-lightbox__content > video {
+	object-fit: contain;
+}
+.rs-lightbox__msg {
+	margin: 0;
+	padding: 2em;
+	color: #fff;
+	text-align: center;
+}
+.rs-lightbox--loading .rs-lightbox__content:after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 40px;
+	height: 40px;
+	margin: -20px 0 0 -20px;
+	border: 3px solid rgba(255, 255, 255, 0.25);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: rs-lightbox-spin 0.9s linear infinite;
+}
+@keyframes rs-lightbox-spin {
+	to { transform: rotate(360deg); }
+}
+body.rs-lightbox-open {
+	overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+	.rs-lightbox--loading .rs-lightbox__content:after {
+		animation-duration: 2s;
+	}
+}
