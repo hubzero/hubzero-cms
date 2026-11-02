@@ -26,6 +26,7 @@
 	var POLL_MAX_MS        = 5000;   // cap for the growing poll interval
 	var RECONNECT_WATCH_MS = 15000;  // how long to wait for a reconnect to take
 	var STALL_MS           = 120000; // after this, surface a manual escape hatch
+	var FAIL_MS            = 90000;  // a session that never worked and still is not up has failed to start
 
 	var opts    = null;
 	var overlay = null;
@@ -39,6 +40,7 @@
 	var watchTimer     = null;
 	var pollAttempt    = 0;
 	var startedAt      = 0;
+	var everUp         = false;  // the engine reported a working connection at least once
 
 	function log() {
 		if (window.console && console.log) {
@@ -203,6 +205,8 @@
 				// Transient API/network error: keep waiting, keep polling.
 				log('poll error', (err && err.message) || err);
 				if (!active) { return; }
+				// A session that never worked and has not come up has failed to start.
+				if (!everUp && (Date.now() - startedAt > FAIL_MS)) { terminalFailed(true); return; }
 				waiting(S('checking', 'Checking your session…'));
 				schedulePoll();
 			});
@@ -212,8 +216,13 @@
 		if (!active || !data) { return; }
 		log('state', data.state, 'ready=' + data.ready, 'exited=' + data.exited);
 
-		if (data.exited) { terminalEnded(); return; }
+		if (data.exited) { everUp ? terminalEnded() : terminalFailed(false); return; }
 		if (data.state === 'display_broken') { terminalDisplay(); return; }
+
+		// A session that never produced a working connection and still is not up
+		// by now has failed to start. Checked before the ready branch so a session
+		// that reports ready but never actually connects cannot loop forever.
+		if (!everUp && (Date.now() - startedAt > FAIL_MS)) { terminalFailed(true); return; }
 
 		if (data.ready) {
 			tryReconnect();
@@ -288,6 +297,21 @@
 		});
 	}
 
+	// The session never produced a working display -- it failed to start (or
+	// died before it was ready). Distinct from a normal "ended" so the copy does
+	// not imply the tool actually ran. reloadable: offer a retry when the session
+	// is not confirmed dead (it may be a stuck or slow launch).
+	function terminalFailed(reloadable) {
+		active = false;
+		clearTimers();
+		render({
+			title: S('failTitle', 'The tool didn’t start'),
+			msg:   S('failMsg', 'This session couldn’t be started. The tool may have failed to launch or ended before its display was ready.'),
+			spinner: false,
+			actions: homeLinks(!!reloadable)
+		});
+	}
+
 	function terminalDisplay() {
 		active = false;
 		clearTimers();
@@ -350,6 +374,7 @@
 		connected: function () {
 			if (!opts) { return; }
 			log('engine connected');
+			everUp = true;
 			active = false;
 			reconnectingNow = false;
 			clearTimers();
@@ -374,6 +399,7 @@
 		destroy: function () {
 			active = false;
 			holding = false;
+			everUp = false;
 			clearTimers();
 			if (overlay && overlay.parentNode) { overlay.parentNode.removeChild(overlay); }
 			overlay = null;

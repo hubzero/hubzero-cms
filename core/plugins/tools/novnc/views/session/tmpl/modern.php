@@ -957,7 +957,11 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 				if (keysUI) { keysUI.reset(); }
 				const clean = !!(e.detail && e.detail.clean);
 				setStatus(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_DISCONNECTED')); ?>);
-				if (reco && everConnected) { reco.disconnected(clean); }
+				// Hand off to recovery for every drop, including an initial connect
+				// that never succeeded -- a tool that failed to start must be
+				// diagnosed (via the state API) and surfaced, not left on a dead
+				// "Disconnected." message.
+				if (reco) { reco.disconnected(clean); }
 			});
 			rfb.addEventListener('fbresize', (e) => {
 				if (myGen !== gen) { return; }
