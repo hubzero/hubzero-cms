@@ -292,18 +292,36 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	// tool at 100%. Below 100% the frame keeps the minimum the footer needs.
 	const FB_MIN_W = 345, FB_MIN_H = 200, FB_MAX = 3900;
 
-	// Largest zoom that fits the page's width and the window's height
-	function fitZoom() {
-		if (!(fbW > 0 && fbH > 0)) { return 1; }
+	// The room the frame has: the page's width and the window's height, less
+	// the viewer's own chrome (rails, header, footer)
+	function availSpace() {
 		const holder = appwrap ? appwrap.parentNode : content.parentNode;
 		const chromeW = appwrap ? (appwrap.offsetWidth - content.offsetWidth) : 0;
 		const footer = document.getElementById('app-footer');
 		const header = document.getElementById('app-header');
 		const chromeH = (footer ? footer.offsetHeight : 46) + (header ? header.offsetHeight : 46) + 24;
-		const availW = holder.clientWidth - chromeW;
-		const availH = window.innerHeight - chromeH;
-		const z = Math.min(availW / fbW, availH / fbH);
+		// clientWidth includes the holder's padding, and the frame's own margins
+		// (30px in tools.css) sit inside the holder too; neither is usable
+		const cs = window.getComputedStyle(holder);
+		const ws = appwrap ? window.getComputedStyle(appwrap) : null;
+		const px = (s, p) => (s ? parseFloat(s[p]) || 0 : 0);
+		const pad = px(cs, 'paddingLeft') + px(cs, 'paddingRight') + px(ws, 'marginLeft') + px(ws, 'marginRight');
+		return { w: holder.clientWidth - pad - chromeW, h: window.innerHeight - chromeH };
+	}
+	// Largest zoom that fits the page's width and the window's height
+	function fitZoom() {
+		if (!(fbW > 0 && fbH > 0)) { return 1; }
+		const a = availSpace();
+		const z = Math.min(a.w / fbW, a.h / fbH);
 		return Math.max(0.5, Math.min(3, Math.floor(z * 100) / 100));
+	}
+	// Largest framebuffer whose frame fits at the zoom given -- the whole
+	// viewer, with the page's own header above it, on screen at once
+	function fitFbSize(z) {
+		const a = availSpace();
+		const top = appwrap ? Math.max(0, appwrap.getBoundingClientRect().top + window.scrollY) : 0;
+		const clamp = (v, lo) => Math.max(lo, Math.min(FB_MAX, Math.floor(v / z)));
+		return { w: clamp(a.w, FB_MIN_W), h: clamp(a.h - top, FB_MIN_H) };
 	}
 	function effZoom() {
 		return (zoom === 'fit') ? fitZoom() : zoom;
@@ -346,17 +364,62 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 	// a crisp, truly larger desktop rather than a scaled-up small one. Remember
 	// the size on the way in and restore it (frame + server) once BOTH expanded
 	// modes are off again.
+	//
+	// The mode and that size are also kept per session in localStorage. The
+	// server desktop stays at the window's size across a reload (or into a
+	// second tab), and the frame follows the framebuffer, so without this a
+	// reload came back in normal mode with the frame at the big desktop, 1:1,
+	// spilling past the window. Theater is re-entered before the first
+	// connect; fullscreen cannot be re-entered by a page load, so the connect
+	// handler restores the saved size instead.
+	const EXPAND_KEY = 'hz-novnc-expand:' + <?php echo (int) $this->app->sess; ?>;
 	let expandSavedFb = null;
+	function rememberExpand(mode) {
+		try {
+			if (mode && expandSavedFb) {
+				localStorage.setItem(EXPAND_KEY, JSON.stringify({ mode: mode, w: expandSavedFb.w, h: expandSavedFb.h, t: Date.now() }));
+			} else {
+				localStorage.removeItem(EXPAND_KEY);
+			}
+		} catch (e) {}
+	}
+	try {
+		// Drop entries left by tabs closed while expanded (their sessions are
+		// long gone); then pick up this session's, if any.
+		const stale = Date.now() - 7 * 86400 * 1000;
+		for (let i = localStorage.length - 1; i >= 0; i--) {
+			const k = localStorage.key(i);
+			if (k && k.indexOf('hz-novnc-expand:') === 0 && k !== EXPAND_KEY) {
+				const v = JSON.parse(localStorage.getItem(k) || 'null');
+				if (!v || !(v.t > stale)) { localStorage.removeItem(k); }
+			}
+		}
+		const saved = JSON.parse(localStorage.getItem(EXPAND_KEY) || 'null');
+		if (saved && saved.w > 0 && saved.h > 0) {
+			expandSavedFb = { w: saved.w, h: saved.h };
+			if (saved.mode === 'theater') { document.body.classList.add('app-theater'); }
+		}
+	} catch (e) {}
 	function syncExpandedSize() {
 		if (!rfb) { return; }
-		const expanded = document.body.classList.contains('app-theater')
-			|| !!(document.fullscreenElement || document.webkitFullscreenElement);
+		const theater = document.body.classList.contains('app-theater');
+		const expanded = theater || !!(document.fullscreenElement || document.webkitFullscreenElement);
 		if (expanded) {
 			if (!expandSavedFb && fbW && fbH) { expandSavedFb = { w: fbW, h: fbH }; }
+			rememberExpand(theater ? 'theater' : 'fullscreen');
 			requestFrameSize();
 		} else if (expandSavedFb) {
-			const s = expandSavedFb;
+			let s = expandSavedFb;
 			expandSavedFb = null;
+			rememberExpand(null);
+			// Restore the saved size -- unless it would not fit the window at
+			// the zoom in use (a desktop an earlier page load or another tab
+			// left window-sized gets saved as "before" too): then take the
+			// largest frame that fits. Fit zoom scales any size to fit.
+			if (zoom !== 'fit') {
+				const fit = fitFbSize(zoom);
+				if (s.w > fit.w || s.h > fit.h) { s = fit; }
+			}
 			sizeFrame(s.w, s.h);                 // restore the frame immediately
 			rfb.requestHubzeroResize(s.w, s.h);  // and the server desktop
 		}
@@ -942,13 +1005,25 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 				// Back after a drop: the session may have been restarted or
 				// extended meanwhile, so re-read its deadline
 				if (everConnected && window.SessionTimer) { window.SessionTimer.refresh(); }
+				const firstConnect = !everConnected;
 				everConnected = true;
 				setStatus(null);
 				if (reco) { reco.connected(); }
 				attachResizable();
 				// Ask for the frame's size: the session's initial geometry, or
-				// the size the user resized to before a reconnect
-				requestFrameSize();
+				// the size the user resized to before a reconnect. With an
+				// expanded mode remembered from a previous page load, fit the
+				// re-entered theater frame instead (settling the canvas scale
+				// after the reflow, as a mode change does), or restore the
+				// pre-expand size a reload out of fullscreen left behind.
+				if (expandSavedFb) {
+					syncExpandedSize();
+					if (firstConnect) {
+						setTimeout(function () { window.dispatchEvent(new Event('resize')); syncExpandedSize(); }, 60);
+					}
+				} else {
+					requestFrameSize();
+				}
 				rfb.focus();
 			});
 			rfb.addEventListener('disconnect', (e) => {

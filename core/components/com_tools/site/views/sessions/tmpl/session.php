@@ -261,36 +261,40 @@ if (!$this->app->sess) {
 				</div><!-- .grid -->
 			</div><!-- #app-zone -->
 		<?php } ?>
-	</div><!-- #app-wrap -->
-
-	<?php if ($this->app->owns && $this->app->sess) : ?>
-	<?php
-		// Shared confirmation for the Keep (leave) and Terminate toolbar buttons.
-		// Both open this chooser; the button pressed is the default (focused)
-		// choice. The choices are real links so it works without JS too.
-		$leaveUrl     = Route::url('index.php?option=com_members&task=myaccount');
-		$terminateUrl = Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn.'&'.Session::getFormToken().'=1');
-	?>
-	<div id="ts-confirm" class="ts-confirm" hidden role="dialog" aria-modal="true" aria-labelledby="ts-confirm-title">
-		<div class="ts-confirm-backdrop" data-ts-close></div>
-		<div class="ts-confirm-card" role="document">
-			<h2 id="ts-confirm-title" class="ts-confirm-title"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_TITLE')); ?></h2>
-			<div class="ts-confirm-choices">
-				<a class="ts-choice ts-choice-leave" data-ts-choice="leave" href="<?php echo $leaveUrl; ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-					<span class="ts-choice-label"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE')); ?></span>
-					<span class="ts-choice-desc"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE_DESC')); ?></span>
-				</a>
-				<a class="ts-choice ts-choice-terminate" data-ts-choice="terminate" href="<?php echo $terminateUrl; ?>">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-					<span class="ts-choice-label"><?php echo $this->escape(Lang::txt('COM_TOOLS_TERMINATE')); ?></span>
-					<span class="ts-choice-desc"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_TERMINATE_DESC')); ?></span>
-				</a>
+		<?php if ($this->app->owns && $this->app->sess) : ?>
+		<?php
+			// Shared confirmation for the Keep (leave) and Terminate toolbar buttons.
+			// Both open this chooser; the button pressed is the default (focused)
+			// choice. The choices are real links so it works without JS too.
+			// It lives inside #app-wrap, like the timeout popup and hover help, so
+			// it still renders in native fullscreen (only the fullscreen element's
+			// subtree is drawn) and stacks above the theater layer; as a <body>
+			// child it opened unseen behind the canvas in both modes, with the
+			// default choice focused.
+			$leaveUrl     = Route::url('index.php?option=com_members&task=myaccount');
+			$terminateUrl = Route::url('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn.'&'.Session::getFormToken().'=1');
+		?>
+		<div id="ts-confirm" class="ts-confirm" hidden role="dialog" aria-modal="true" aria-labelledby="ts-confirm-title">
+			<div class="ts-confirm-backdrop" data-ts-close></div>
+			<div class="ts-confirm-card" role="document">
+				<h2 id="ts-confirm-title" class="ts-confirm-title"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_TITLE')); ?></h2>
+				<div class="ts-confirm-choices">
+					<a class="ts-choice ts-choice-leave" data-ts-choice="leave" href="<?php echo $leaveUrl; ?>">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+						<span class="ts-choice-label"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE')); ?></span>
+						<span class="ts-choice-desc"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE_DESC')); ?></span>
+					</a>
+					<a class="ts-choice ts-choice-terminate" data-ts-choice="terminate" href="<?php echo $terminateUrl; ?>">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+						<span class="ts-choice-label"><?php echo $this->escape(Lang::txt('COM_TOOLS_TERMINATE')); ?></span>
+						<span class="ts-choice-desc"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_TERMINATE_DESC')); ?></span>
+					</a>
+				</div>
+				<button type="button" class="ts-confirm-cancel" data-ts-close><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_CANCEL')); ?></button>
 			</div>
-			<button type="button" class="ts-confirm-cancel" data-ts-close><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_CANCEL')); ?></button>
 		</div>
-	</div>
-	<?php endif; ?>
+		<?php endif; ?>
+	</div><!-- #app-wrap -->
 
 	<?php echo implode("\n", Event::trigger('tools.onToolSessionViewAfter', array($this->app, $this->output, $readOnly))); ?>
 

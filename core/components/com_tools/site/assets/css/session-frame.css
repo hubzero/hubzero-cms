@@ -729,6 +729,9 @@ body.app-theater #app-wrap {
 	z-index: 2147483000;
 	display: flex;
 	flex-direction: column;
+	/* border-box here: the base rule is content-box (for the side rails), which
+	   put the 1px borders outside 100vh and the bottom edge 2px off-screen. */
+	box-sizing: border-box;
 	width: auto !important;
 	max-width: none;
 	height: 100vh;
