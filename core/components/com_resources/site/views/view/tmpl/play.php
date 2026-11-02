@@ -130,6 +130,10 @@ defined('_HZEXEC_') or die();
 			$html .= 'window.RufflePlayer = window.RufflePlayer || {};'."\n";
 			$html .= 'window.RufflePlayer.config = {'."\n";
 			$html .= '  "publicPath": "' . $rufle_path. '",'."\n";
+			// Flash-compatible AVM1 streaming-sound handling (off by default in
+			// Ruffle): Adobe Presenter / Breeze decks need it to autostart their
+			// narration and to stop the previous slide's track on navigation.
+			$html .= '  "avm1StreamingSoundFixes": true,'."\n";
 			$html .= '}'."\n";
 			$html .= '</script>'."\n";
 			$html .= '<script src="' . $rufle_path. '/ruffle.js"></script>'."\n";
