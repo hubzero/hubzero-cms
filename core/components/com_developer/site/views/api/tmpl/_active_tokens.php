@@ -34,10 +34,10 @@ if (empty($this->tokens)) {
                                 readonly 
                                 class="token-input"
                             />
-                            <button class="token-action-btn" title="Show/Hide Token" onclick="toggleTokenVisibility('<?php echo $tokenId; ?>')">
+                            <button type="button" class="token-action-btn" title="Show/Hide Token" data-token-toggle="<?php echo $tokenId; ?>">
                                 <i class="icon-eye"></i>
                             </button>
-                            <button class="token-action-btn" title="Copy to Clipboard" onclick="copyToken('<?php echo $tokenId; ?>')">
+                            <button type="button" class="token-action-btn" title="Copy to Clipboard" data-token-copy="<?php echo $tokenId; ?>">
                                 <i class="icon-copy"></i>
                             </button>
                         </div>
@@ -48,7 +48,7 @@ if (empty($this->tokens)) {
         </div>
 
         <div class="token-actions">
-            <button class="btn btn-primary" id="generate-session-token-btn" onclick="generateNewSessionToken()">
+            <button type="button" class="btn btn-primary" id="generate-session-token-btn">
                 Generate New Session Token
             </button>
         </div>
@@ -122,83 +122,101 @@ if (empty($this->tokens)) {
 </style>
 
 <script>
-    function toggleTokenVisibility(elementId) {
-        const input = document.getElementById(elementId);
-        const btn = event.target.closest('.token-action-btn');
+    // Kept out of the global scope and bound here rather than by onclick:
+    // other scripts on the page define functions of their own, and a
+    // global generateNewSessionToken() replaced a chat module's, which then
+    // called this one on every page load -- generating and reloading forever.
+    (function () {
+        function toggleTokenVisibility(btn) {
+            const input = document.getElementById(btn.dataset.tokenToggle);
         
-        if (input.type === 'password') {
-            input.type = 'text';
-            btn.title = 'Hide Token';
-        } else {
-            input.type = 'password';
-            btn.title = 'Show Token';
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.title = 'Hide Token';
+            } else {
+                input.type = 'password';
+                btn.title = 'Show Token';
+            }
         }
-    }
 
-    function copyToken(elementId) {
-        const input = document.getElementById(elementId);
-        const btn = event.target.closest('.token-action-btn');
+        function copyToken(btn) {
+            const input = document.getElementById(btn.dataset.tokenCopy);
         
-        // Temporarily show the token if hidden
-        const wasHidden = input.type === 'password';
-        if (wasHidden) {
-            input.type = 'text';
-        }
+            // Temporarily show the token if hidden
+            const wasHidden = input.type === 'password';
+            if (wasHidden) {
+                input.type = 'text';
+            }
         
-        input.select();
-        input.setSelectionRange(0, 99999); // For mobile devices
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
 
-        navigator.clipboard.writeText(input.value).then(function() {
-            const originalTitle = btn.title;
-            btn.title = 'Copied!';
+            navigator.clipboard.writeText(input.value).then(function() {
+                const originalTitle = btn.title;
+                btn.title = 'Copied!';
             
-            setTimeout(function() {
-                btn.title = originalTitle;
+                setTimeout(function() {
+                    btn.title = originalTitle;
+                    if (wasHidden) {
+                        input.type = 'password';
+                    }
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy:', err);
                 if (wasHidden) {
                     input.type = 'password';
                 }
-            }, 2000);
-        }).catch(function(err) {
-            console.error('Failed to copy:', err);
-            if (wasHidden) {
-                input.type = 'password';
-            }
-        });
-    }
+            });
+        }
 
-    function generateNewSessionToken() {
-        const btn = document.getElementById('generate-session-token-btn');
-        const originalText = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = 'Generating...';
+        function generateNewSessionToken() {
+            const btn = document.getElementById('generate-session-token-btn');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
 
-        fetch('/api/developer/oauth/token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'grant_type=session'
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.access_token) {
-                // Success - show message and reload
-                alert('New session token generated successfully! Reloading page...');
-                window.location.reload();
-            } else {
-                throw new Error('No access token in response');
-            }
-        })
-        .catch(error => {
-            console.error('Error generating token:', error);
-            alert('Failed to generate new session token: ' + error.message);
-            btn.disabled = false;
-            btn.textContent = originalText;
+            fetch('/api/developer/oauth/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'grant_type=session'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.access_token) {
+                    // Success - show message and reload
+                    alert('New session token generated successfully! Reloading page...');
+                    window.location.reload();
+                } else {
+                    throw new Error('No access token in response');
+                }
+            })
+            .catch(error => {
+                console.error('Error generating token:', error);
+                alert('Failed to generate new session token: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        }
+
+        document.querySelectorAll('[data-token-toggle]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                toggleTokenVisibility(btn);
+            });
         });
-    }
+
+        document.querySelectorAll('[data-token-copy]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                copyToken(btn);
+            });
+        });
+
+        document.getElementById('generate-session-token-btn').addEventListener('click', generateNewSessionToken);
+    })();
 </script>
