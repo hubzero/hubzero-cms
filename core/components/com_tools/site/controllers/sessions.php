@@ -1600,6 +1600,25 @@ class Sessions extends SiteController
 	}
 
 	/**
+	 * Was this request sent by the browser from this site?
+	 *
+	 * Uses the Fetch Metadata `Sec-Fetch-Site` header, which browsers set and a
+	 * page cannot forge. `same-origin` and `same-site` cover the hub and its
+	 * tool host (e.g. proxy.nanohub.org, same registrable domain). A request
+	 * marked `cross-site`, a direct navigation (`none`, e.g. a link in an
+	 * email), or one with no header at all (old browser, non-browser client)
+	 * is not trusted and the caller should require the form token.
+	 *
+	 * @return  bool
+	 */
+	protected function isSameSiteRequest()
+	{
+		$site = strtolower(trim(Request::getString('HTTP_SEC_FETCH_SITE', '', 'server')));
+
+		return in_array($site, array('same-origin', 'same-site'), true);
+	}
+
+	/**
 	 * Stops a session and redirects upon success
 	 *
 	 * @return  void
@@ -1613,8 +1632,17 @@ class Sessions extends SiteController
 			return;
 		}
 
-		// Validate the anti-CSRF token (state-changing action)
-		Request::checkToken('get');
+		// Anti-CSRF (state-changing action). Web-based tools (Jupyter, etc.) end
+		// their own session by sending the browser to /tools/<app>/stop?sess=N
+		// from the tool host (proxy.nanohub.org) and cannot know the user's form
+		// token. The browser marks that navigation same-site via Fetch Metadata,
+		// whereas a forged request from a third-party page is cross-site, so a
+		// same-site request is accepted as-is and anything else must still
+		// present the token.
+		if (!$this->isSameSiteRequest())
+		{
+			Request::checkToken('get');
+		}
 
 		// Incoming
 		$sess = Request::getInt('sess', 0);
