@@ -1000,6 +1000,28 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 			rfb.background    = '#0b0d10';
 			live = true;
 
+			// On a browser that reports touch support (a pen digitizer or a
+			// touch-capable monitor counts), noVNC does not use a CSS cursor: it
+			// hides the pointer over the canvas and draws the remote cursor on an
+			// overlay canvas it appends to <body>. Theater puts the frame on a
+			// fixed layer above <body>, and native fullscreen draws only the
+			// frame's subtree, so there the overlay -- and with it any pointer --
+			// vanished. Keep it inside the frame and above everything in it, and
+			// hand it back to <body> before noVNC detaches (its detach removes
+			// the overlay from <body> specifically).
+			const cursorOverlay = rfb._cursor && rfb._cursor._canvas;
+			if (appwrap && cursorOverlay && cursorOverlay.parentNode === document.body) {
+				cursorOverlay.style.zIndex = '2147483647';
+				appwrap.appendChild(cursorOverlay);
+				const cur = rfb._cursor, detach = cur.detach;
+				cur.detach = function () {
+					if (cursorOverlay.parentNode && cursorOverlay.parentNode !== document.body) {
+						document.body.appendChild(cursorOverlay);
+					}
+					return detach.apply(this, arguments);
+				};
+			}
+
 			rfb.addEventListener('connect', () => {
 				if (myGen !== gen) { return; }
 				// Back after a drop: the session may have been restarted or
