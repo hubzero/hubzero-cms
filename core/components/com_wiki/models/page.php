@@ -522,7 +522,9 @@ class Page extends Relational
 
 			if (!class_exists($cls))
 			{
-				static::$paths[] = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
+				$file = $scope . '.php';
+
+				static::addAdapterPath(__DIR__ . DS . 'adapters' . DS . $file);
 
 				// Plugins supply the group and project adapters. Every entry point
 				// used to have to register them itself, and the ones that did not
@@ -530,16 +532,24 @@ class Page extends Relational
 				// App plugins shadow core ones, so look there first.
 				foreach (array(PATH_APP, PATH_CORE) as $root)
 				{
-					foreach (glob($root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $scope . '.php') ?: array() as $plugged)
+					foreach (glob($root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $file) ?: array() as $plugged)
 					{
-						static::$paths[] = $plugged;
+						static::addAdapterPath($plugged);
 					}
 				}
 
-				// An app override and its core counterpart declare the same
-				// class, so stop at the first file that defines it.
+				// The registered paths accumulate across scopes, and an app
+				// override and its core counterpart declare the same class. So
+				// only look at this scope's files (a sibling scope's shadowed core
+				// copy must never be included on a later call: that redeclares its
+				// class) and stop at the first file that defines the class.
 				foreach (static::$paths as $path)
 				{
+					if (basename($path) != $file)
+					{
+						continue;
+					}
+
 					if (class_exists($cls, false))
 					{
 						break;
