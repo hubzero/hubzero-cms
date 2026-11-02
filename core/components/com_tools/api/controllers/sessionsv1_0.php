@@ -1197,7 +1197,7 @@ class Sessionsv1_0 extends ApiController
 			User::get('username') . DS . 'data' . DS . 'results'
 		);
 
-		$dir = $results ? \Hubzero\Filesystem\SafePath::directory($results, $session) : false;
+		$dir = $results ? \Hubzero\Filesystem\SafePath::directory($results, (string) $session) : false;
 
 		if (!$dir)
 		{
