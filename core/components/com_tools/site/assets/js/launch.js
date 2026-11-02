@@ -52,15 +52,35 @@
 		log('init', { app: app, version: version, mode: mode, api: api });
 
 		function setStatus(m) { if (m) { $('#launch-status').text(m); } }
-		function setStep(k, s) { $('#step-' + k).removeClass('wait pass broken').addClass(s); }
+		function setStep(k, s) { $('#step-' + k).removeClass('wait pass broken active').addClass(s); }
 		function stopPoll() { if (timer) { clearInterval(timer); timer = null; } }
+
+		// The steps in order (display only exists in vnc mode).
+		var STEP_ORDER = ['session', 'token'].concat(mode === 'vnc' ? ['display'] : [], ['connect']);
+
+		// Highlight the step actually in progress (amber) so the user can see this
+		// step has started, not just which steps are done. The current step is the
+		// first that is neither done (pass) nor failed (broken).
+		function markActive() {
+			$('.tool-launch-steps li').removeClass('active');
+			for (var i = 0; i < STEP_ORDER.length; i++) {
+				var $li = $('#step-' + STEP_ORDER[i]);
+				if (!$li.length) { continue; }
+				if ($li.hasClass('broken')) { return; }
+				if (!$li.hasClass('pass')) { $li.addClass('active'); return; }
+			}
+		}
 
 		function fail(msg) {
 			stopPoll();
 			log('FAILED:', msg);
 			// Mark where it stopped: the first step not yet done
 			if (!$('.tool-launch-steps li.broken').length) {
-				$('.tool-launch-steps li.wait').first().removeClass('wait').addClass('broken');
+				// Mark the step it was actually on (the in-progress one), else the
+				// first not-yet-done step.
+				var $cur = $('.tool-launch-steps li.active').first();
+				if (!$cur.length) { $cur = $('.tool-launch-steps li.wait').first(); }
+				$cur.removeClass('wait active').addClass('broken');
 			}
 			$('#launch-spinner').css('display', 'none');
 			$('#launch-status').prop('hidden', true);
@@ -177,6 +197,7 @@
 			// which makes the dot spans inline (transform/bounce then ignored).
 			$('#launch-spinner').css('display', 'flex');
 			['session', 'token', 'display', 'connect'].forEach(function (k) { setStep(k, 'wait'); });
+			markActive();
 			setStatus(S.starting);
 			startedAt  = Date.now();
 			connecting = false;
@@ -198,6 +219,7 @@
 					sess = parseInt(data.session, 10);
 					log('session created:', sess, '(mode=' + mode + ')');
 					setStep('session', 'pass');
+					markActive();
 					setStatus(S.waiting);
 					stopPoll();
 					timer = setInterval(tick, POLL_MS);
@@ -234,6 +256,8 @@
 				if (st.display === 'broken') { setStep('display', 'broken'); fail(S.errDisplay); return; }
 				if (st.display === 'pass')   { setStep('display', 'pass'); }
 
+				markActive();
+
 				if (data.ready && !connecting) {
 					log('session READY after ' + pollCount + ' poll(s):', data.state);
 					connecting = true;
@@ -249,6 +273,7 @@
 		// 3. CONNECT
 		function connect() {
 			stopPoll();
+			markActive();
 
 			if (mode === 'redirect') {
 				if (embed) {

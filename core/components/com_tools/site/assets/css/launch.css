@@ -124,6 +124,23 @@
 	color: #b3261e;
 }
 
+/* In progress: the step that has actually started (amber). */
+.tool-launch-steps li.active {
+	color: #9a6700;
+	font-weight: 600;
+}
+
+.tool-launch-steps li.active:before {
+	content: "\25CF"; /* filled circle */
+	color: #d4a017;
+	animation: tool-launch-step-pulse 1s ease-in-out infinite;
+}
+
+@keyframes tool-launch-step-pulse {
+	0%, 100% { opacity: 1; }
+	50%      { opacity: 0.3; }
+}
+
 /* --- Error state: the reason in a box of its own, clear of the steps
    above and the actions below --- */
 .tool-launch-error {
@@ -182,7 +199,9 @@
 	.tool-launch-tool { color: #9aa1ab; }
 	.tool-launch-status { color: #d6d9de; }
 	.tool-launch-steps li { color: #6b7280; }
-	.tool-launch-spinner span { background: #5aaae1; }
+	.tool-launch-steps li.active { color: #e3b341; }
+		.tool-launch-steps li.active:before { color: #e3b341; }
+		.tool-launch-spinner span { background: #5aaae1; }
 	.tool-launch-cancel a { color: #8a919c; }
 	.tool-launch-resource { color: #8cc4ff; }
 	.tool-launch-error-msg {
