@@ -31,7 +31,7 @@ class Module extends Renderer
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(1),
 			'approved'  => ($this->allMods == 1) ? array(0,1) : array(1),
-			'title'     => $this->params->title,
+			'title'     => $this->params->title ?? null,
 			'orderby'   => 'ordering DESC'
 		));
 
