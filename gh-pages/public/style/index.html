@@ -49,8 +49,8 @@ directly on GitHub, so everything here works in both places.</p>
 <h2 id="files-and-names">Files and names</h2>
 <ul>
 <li>One book per directory under <code>docs/</code>, listed in <code>gh-pages/site.json</code>.</li>
-<li>A book's landing page is its <code>README.md</code>. A section is a subdirectory with
-its own <code>README.md</code>. Every other <code>*.md</code> file is a chapter.</li>
+<li>A book's landing page is its <code>index.md</code>. A section is a subdirectory with
+its own <code>index.md</code>. Every other <code>*.md</code> file is a chapter.</li>
 <li>Name chapters with lowercase words separated by hyphens: <code>access-levels.md</code>.
 Where order matters, add a two-digit prefix: <code>01-requirements.md</code>. The
 prefix is dropped from the published URL.</li>
@@ -135,7 +135,7 @@ drifted; the <code>/status/</code> page counts what is left.</p>
 <ul>
 <li>Link to other pages with relative paths to the Markdown file:
 <code>[access levels](../users/access-levels.md)</code>. Linking to a directory reaches
-its <code>README.md</code>. Anchors work: <code>access-levels.md#viewing-levels</code>.</li>
+its <code>index.md</code>. Anchors work: <code>access-levels.md#viewing-levels</code>.</li>
 <li>Link to code in the repository with a relative path to the file:
 <code>[</code>Relational<code>](../core/libraries/Hubzero/Database/Relational.php)</code>. The
 site turns it into a GitHub link.</li>
