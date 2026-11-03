@@ -78,7 +78,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../database/index.html">Database</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/driver/index.html">The driver</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/query-builder/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Requirements</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-platform">The platform</a></li>
@@ -162,7 +167,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../conventions/index.html">Conventions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/php-naming/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/css/index.html">CSS Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/database-schema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/commit-messages/index.html">Commit Messages</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -415,7 +426,7 @@ site's. See <a href="../languages/index.html">Languages</a>.</p>
 <h3 id="the-migration">The migration</h3>
 <p>The row in <code>#__extensions</code> is what makes an extension exist as far as the
 platform is concerned, and a
-<a href="../../database/index.html#migrations">migration</a> is how an extension creates it —
+<a href="../../database/migrations/index.html">migration</a> is how an extension creates it —
 the only way, because this release has no package installer to do it for you.
 The migration also creates the extension's tables and drops them again on the
 way down.</p>

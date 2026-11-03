@@ -41,7 +41,11 @@
         <a class="rail__book" href="index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="getting-started/index.html">Getting started</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="getting-started/administrator-interface/index.html">The administrator interface</a></li>
+<li class="tree__leaf"><a class="tree__link" href="getting-started/first-week/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="getting-started/how-a-hub-fits-together/index.html">How a hub fits together</a></li>
+</ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -135,7 +139,11 @@
 <li class="tree__leaf"><a class="tree__link" href="extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="spam/index.html">Spam</a></li>
-<li class="tree__leaf"><a class="tree__link" href="security/index.html">Security considerations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="security/questions/index.html">Security questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="security/operating-system/index.html">Operating system hardening</a></li>
+<li class="tree__leaf"><a class="tree__link" href="security/hardening-the-cms/index.html">Hardening the CMS</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -171,15 +179,15 @@ server, and upgrading it later, is
 <a href="../sysadmins/index.html">System administrators</a>.</p>
 <h2 id="where-to-start">Where to start</h2>
 <p>If the hub is new, read
-<a href="getting-started/index.html#the-administrator-interface">The administrator interface</a> and then
-<a href="getting-started/index.html#the-first-week-with-a-new-hub">The first week with a new hub</a>. The first
+<a href="getting-started/administrator-interface/index.html">The administrator interface</a> and then
+<a href="getting-started/first-week/index.html">The first week with a new hub</a>. The first
 covers the login and the back end's menus; the second is the ordered path
 through the choices that are hard to change later — mail, registration,
 access, the front page, and the scheduled jobs — with a link to the chapter
 covering each. <a href="configuring/index.html">Configuring</a> has the settings
 screens in full.</p>
 <p>If the screens make sense one at a time but not together, read
-<a href="getting-started/index.html#how-a-hub-fits-together">How a hub fits together</a>. It is the
+<a href="getting-started/how-a-hub-fits-together/index.html">How a hub fits together</a>. It is the
 mental model the rest of this book takes for granted — the two halves of the
 application, how a page is built from a component, a template and its
 modules, what lives in the database and what lives on disk, and what a
@@ -224,7 +232,7 @@ component's manifest declares — and the generated reference is built from
 those manifests. Where the two disagree, the stored value wins and this book
 says so. Check the setting on your own hub before relying on either.
 The two clearest cases are in
-<a href="getting-started/index.html#check-the-default-do-not-trust-it">Check the default, do not trust it</a>.</p>
+<a href="getting-started/first-week/index.html#check-the-default-do-not-trust-it">Check the default, do not trust it</a>.</p>
 </aside>
 
         </div>

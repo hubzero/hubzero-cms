@@ -78,7 +78,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../database/index.html">Database</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../database/driver/index.html">The driver</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/query-builder/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
+</ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
@@ -173,7 +178,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../contributing/index.html">Contributing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../conventions/index.html">Conventions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../conventions/php-style/index.html">PHP Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/php-naming/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/css/index.html">CSS Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/database-schema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/commit-messages/index.html">Commit Messages</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -209,7 +220,7 @@ the code that it operates on.</p>
 <p>Write a plain script only for something genuinely throwaway that you will
 delete the same day.</p>
 <p>Do not write a command for a schema change. Schema changes are
-<a href="../database/index.html#migrations">migrations</a>; the runner tracks which have run and
+<a href="../database/migrations/index.html">migrations</a>; the runner tracks which have run and
 an administrator applies them as part of an upgrade, which a command does not
 give you.</p>
 <h2 id="running-it">Running it</h2>
@@ -491,7 +502,7 @@ it prompts for what it needs, so there is no syntax to remember.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> On a hub that uses migrations — which is every hub that is not
 your laptop — this command is the wrong tool. A
-<a href="../database/index.html#migrations">migration</a> that calls <code>addComponentEntry()</code>
+<a href="../database/migrations/index.html">migration</a> that calls <code>addComponentEntry()</code>
 records what it did and travels with the extension; <code>muse extension</code> changes
 one database and leaves no trace. Use it for local testing only.</p>
 </aside>
@@ -514,7 +525,7 @@ for the rest: <code>q</code> quit, <code>i</code> input mode, <code>p</code> pau
 last hundred lines. Following the profile log while clicking through a page
 is the quickest way to find the request that runs four hundred queries.</p>
 <h3 id="migration">Migration</h3>
-<p>See <a href="../database/index.html#migrations">Migrations</a> in the database chapter for
+<p>See <a href="../database/migrations/index.html">Migrations</a> in the database chapter for
 writing one, and
 <a href="../../reference/muse/index.html#muse-migration"><code>muse migration</code></a> for the command.</p>
 <h3 id="repository">Repository</h3>
@@ -544,7 +555,7 @@ admin display template, site display and edit templates, a model,
 files, a router, and empty CSS and JS assets. The component name is
 substituted throughout. It refuses to run if the directory already exists.</p>
 <p>What it does not write is an API controller or a migration. Add the migration
-yourself; see <a href="../database/index.html#writing-one">Writing one</a>.</p>
+yourself; see <a href="../database/migrations/index.html#writing-one">Writing one</a>.</p>
 <h3 id="test">Test</h3>
 <p><a href="../../reference/muse/index.html#muse-test"><code>muse test</code></a> is a wrapper around PHPUnit that
 knows where each extension's tests live. <code>muse test show</code> lists the extensions

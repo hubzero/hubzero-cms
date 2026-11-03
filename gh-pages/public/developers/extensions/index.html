@@ -78,7 +78,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../database/index.html">Database</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../database/driver/index.html">The driver</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/query-builder/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
+</ul></details></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Extensions</a></summary><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#which-kind-do-you-want">Which kind do you want</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-four-kinds">The four kinds</a></li>
@@ -160,7 +165,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../contributing/index.html">Contributing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../conventions/index.html">Conventions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../conventions/php-style/index.html">PHP Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/php-naming/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/css/index.html">CSS Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/database-schema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/commit-messages/index.html">Commit Messages</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -374,7 +385,7 @@ loudly:</p>
 interface is the single most common symptom of a missed migration, and it is
 confusing precisely because the component's own pages work.</p>
 <p>An extension creates its own row from a
-<a href="../database/index.html#migrations">migration</a>, by calling <code>addComponentEntry()</code>,
+<a href="../database/migrations/index.html">migration</a>, by calling <code>addComponentEntry()</code>,
 <code>addPluginEntry()</code>, <code>addModuleEntry()</code> or <code>addTemplateEntry()</code>. Nothing else
 creates it: there is no package installer that reads a manifest and does it
 for you. See <a href="deployext/index.html">Deploying extensions</a>.</p>
@@ -395,7 +406,7 @@ hub.</li>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../database/index.html" rel="prev"><span>Previous</span>Database</a><a class="pager__next" href="extreqs/index.html" rel="next"><span>Next</span>Requirements</a></nav>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../database/orm/index.html" rel="prev"><span>Previous</span>ORM</a><a class="pager__next" href="extreqs/index.html" rel="next"><span>Next</span>Requirements</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/07-extensions/index.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

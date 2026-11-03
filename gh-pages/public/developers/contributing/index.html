@@ -78,7 +78,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../database/index.html">Database</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../database/driver/index.html">The driver</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/query-builder/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database/orm/index.html">ORM</a></li>
+</ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../extensions/parameters/index.html">Parameters</a></li>
@@ -165,7 +170,13 @@
 <li class="toc__item toc__item--l3"><a href="#reviewing-an-imported-page">Reviewing an imported page</a></li>
 <li class="toc__item toc__item--l3"><a href="#committing">Committing</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../conventions/index.html">Conventions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../conventions/php-style/index.html">PHP Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/php-naming/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/css/index.html">CSS Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/database-schema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../conventions/commit-messages/index.html">Commit Messages</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -273,7 +284,7 @@ this repository and has not been for several release lines. Use <code>2.4-main</
 (cd core &amp;&amp; vendor/bin/phpunit -c phpunit.xml.dist)
 php core/bin/lint/missing-facade-imports.php
 </code></pre>
-<p>Read <a href="../conventions/index.html#checking-your-work">PHP Coding Style</a>
+<p>Read <a href="../conventions/php-style/index.html#checking-your-work">PHP Coding Style</a>
 for what each of those catches and how to run phpcs usefully against a
 codebase that has no committed ruleset. The suite takes about half a minute;
 <a href="../testing/index.html#running-one-test">Testing</a> covers running one test while you
@@ -327,7 +338,7 @@ and fails the moment your change adds one. Define the keys your change asks
 for. If you fix some existing ones, lower the ceiling in the workflow in the
 same pull request, so the count cannot creep back.</p>
 <p>No workflow runs phpcs. Style is caught in review; see
-<a href="../conventions/index.html#when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</a>.</p>
+<a href="../conventions/php-style/index.html#when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</a>.</p>
 <h3 id="the-pull-request">The pull request</h3>
 <p>The <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/pull_request_template.md">pull request template</a> asks for:</p>
 <ul>
@@ -348,7 +359,7 @@ not a file you can read here. Write for the review either way: the template's
 testing question is the one reviewers most often have to send a pull request
 back for.</p>
 <p>Write the commit messages the way
-<a href="../conventions/index.html#commit-messages">Commit Messages</a> describes: an extension prefix, a
+<a href="../conventions/commit-messages/index.html">Commit Messages</a> describes: an extension prefix, a
 sentence, and a body that says why.</p>
 <h3 id="what-makes-a-change-acceptable">What makes a change acceptable</h3>
 <p>Beyond the <a href="../conventions/index.html">conventions</a>:</p>

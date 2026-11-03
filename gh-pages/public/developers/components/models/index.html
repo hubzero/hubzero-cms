@@ -78,7 +78,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../database/index.html">Database</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/driver/index.html">The driver</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/query-builder/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
@@ -161,7 +166,13 @@
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../conventions/index.html">Conventions</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/php-naming/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/css/index.html">CSS Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/database-schema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../conventions/commit-messages/index.html">Commit Messages</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -387,7 +398,7 @@ reservation's <code>created</code> and <code>created_by</code>.</p>
 <code>$reservation-&gt;instrument-&gt;get('title')</code>, and the query runs lazily.</p>
 <p>Lazily is the word to watch. Reading a relation as a property inside a loop
 over a list runs one query per row, and the page is slow for reasons the code
-does not show. See the <a href="../../database/index.html#orm">ORM</a> chapter for eager loading.</p>
+does not show. See the <a href="../../database/orm/index.html">ORM</a> chapter for eager loading.</p>
 <h2 id="querying">Querying</h2>
 <p><code>Relational</code> is also the query builder. Static calls start a query and instance
 calls chain onto it:</p>
@@ -408,7 +419,7 @@ state — which is why an administrator list controller passes
 straight into <code>ordered()</code> sorts by whatever request variable happens to carry
 that name, which is usually none, so the list comes back in the default order
 and nothing complains. Full details are in the
-<a href="../../database/index.html#orm">ORM</a> chapter.</p>
+<a href="../../database/orm/index.html">ORM</a> chapter.</p>
 <h2 id="events-a-save-fires">Events a save fires</h2>
 <p><code>save()</code> triggers two events, and they are the hook a hub uses to react to a
 component's records without editing the component:</p>

@@ -11,17 +11,17 @@
   {
    "slug": "managers",
    "title": "Hub managers",
-   "pages": 89,
+   "pages": 95,
    "counts": {
-    "rewritten": 89
+    "rewritten": 95
    }
   },
   {
    "slug": "users",
    "title": "Hub users",
-   "pages": 34,
+   "pages": 38,
    "counts": {
-    "rewritten": 34
+    "rewritten": 38
    }
   },
   {
@@ -37,9 +37,9 @@
   {
    "slug": "developers",
    "title": "Developers",
-   "pages": 101,
+   "pages": 110,
    "counts": {
-    "rewritten": 101
+    "rewritten": 110
    }
   },
   {
@@ -53,7 +53,7 @@
   }
  ],
  "totals": {
-  "rewritten": 251,
+  "rewritten": 270,
   "draft": 1,
   "reviewed": 23,
   "generated": 154

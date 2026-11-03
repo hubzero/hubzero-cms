@@ -19,6 +19,9 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/sysadmins/docker-image/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/administrator-interface/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/first-week/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/getting-started/how-a-hub-fits-together/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/advancedsetup/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/maintenance/approvingcontent/</loc></url>
@@ -106,9 +109,14 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/extensions/extension-manager/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/spam/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/questions/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/operating-system/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/managers/security/hardening-the-cms/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/collections/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/courses/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/users/courses/students/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/users/courses/course-managers/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/faq/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/introduction/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/blog/</loc></url>
@@ -126,6 +134,8 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/users/dashboard/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/profile/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/projects/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/users/projects/files/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/users/projects/databases/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/newsletters/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/publications/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/users/questions/</loc></url>
@@ -209,6 +219,10 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/basics/dates/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/basics/redirect/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/driver/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/query-builder/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/migrations/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/database/orm/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/extensions/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/extensions/extreqs/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/extensions/parameters/</loc></url>
@@ -275,6 +289,11 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/aws/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/contributing/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/php-style/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/php-naming/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/css/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/database-schema/</loc></url>
+  <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/commit-messages/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/api/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/reference/api/activity/</loc></url>

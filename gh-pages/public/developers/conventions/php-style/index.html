@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PHP Coding Style · Developers · Hubzero Documentation</title>
+  <meta name="description" content="Hubzero writes PHP to PSR-12 with three deliberate departures: indentation is a tab, the opening brace of a control structure goes on its own line, and a…">
+  <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/conventions/php-style/">
+  <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
+  <link rel="stylesheet" href="../../../assets/site.css?v=bb8696b6">
+</head>
+<body class="site-doc">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../../index.html">
+      <img class="brand__mark" src="../../../assets/hubzero-mark.svg" alt="" aria-hidden="true">
+      <span class="brand__name">Hubzero</span>
+      <span class="brand__version">2.4</span>
+    </a>
+    <form class="search" role="search" data-index="../../../search-index.json" data-base="../../../">
+      <svg class="search__icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <label class="visually-hidden" for="search-input">Search the documentation</label>
+      <input class="search__input" id="search-input" type="search" name="q" placeholder="Search the documentation" autocomplete="off">
+      <ul class="search__results" hidden></ul>
+    </form>
+    <nav class="site-nav" aria-label="Site">
+      <a href="../../../docs/index.html">About</a>
+      <a href="../../../status/index.html">Status</a>
+      <a href="https://github.com/hubzero/hubzero-cms">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="doc">
+    <aside class="rail">
+      <details class="rail__fold">
+        <summary class="rail__summary">In this book</summary>
+        <a class="rail__book" href="../../index.html">Developers</a>
+        <nav aria-label="Developers contents">
+<ul class="tree">
+<li class="tree__section"><details><summary><a class="tree__link" href="../../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/releasenotes/index.html">Release notes</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/fileaccess/index.html">Accessing files</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/databaseaccess/index.html">Direct database access</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/upgrade/index.html">Upgrade guide</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/autoloading/index.html">Autoloading</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/extensions/index.html">Extensions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/facades/index.html">Facades</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../foundation/providers/index.html">Service providers</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../services/index.html">Services</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../services/cache/index.html">Cache</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/filesystem/index.html">Filesystem</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/session/index.html">Session</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/events/index.html">Events</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../services/server/index.html">Server</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../basics/index.html">The basics</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../basics/requests/index.html">Requests</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/responses/index.html">Responses</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/config/index.html">Config</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/user/index.html">Users &amp; profiles</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/tags/index.html">Tags</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/debugging/index.html">Debugging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/cron/index.html">Scheduled tasks</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/dates/index.html">Dates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../basics/redirect/index.html">Redirect</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../database/index.html">Database</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../database/driver/index.html">The driver</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/query-builder/index.html">Query builder</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../database/orm/index.html">ORM</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../extensions/index.html">Extensions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/extreqs/index.html">Requirements</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/parameters/index.html">Parameters</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../extensions/deployext/index.html">Deploying extensions</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../modules/index.html">Modules</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../components/index.html">Components</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../components/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/models/index.html">Models</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/routing/index.html">Routing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../components/packaging/index.html">Packaging</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../plugins/index.html">Plugins</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/controllers/index.html">Controllers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/views/index.html">Views</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/assets/index.html">Assets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/configuration/index.html">Configuration</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../plugins/loading/index.html">Loading</a></li>
+</ul></details></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../templates/index.html">Templates</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../templates/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/languages/index.html">Languages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/structure/index.html">Structure</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/designing/index.html">Designing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/layouts/index.html">Page layouts</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/css/index.html">Cascading style sheets</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/javascript/index.html">JavaScript</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/overrides/index.html">Output overrides</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/packaging/index.html">Packaging</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/socicons/index.html">Socicons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/fontcons/index.html">Fontcons</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/elements/index.html">Elements and typography</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../templates/accessibility/index.html">Accessibility</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../muse/index.html">Muse</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../../supergroups/index.html">Super Groups</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/templating-system/index.html">Templating system</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/page-templates/index.html">Page templates</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/custom-macros/index.html">Custom macros</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/php-pages/index.html">PHP pages</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/databases/index.html">Databases</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/migrations/index.html">Migrations</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups/components/index.html">Components</a></li>
+</ul></details></li>
+<li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
+<li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Conventions</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">PHP Coding Style</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#the-three-departures">The three departures</a></li>
+<li class="toc__item toc__item--l3"><a href="#indent-with-tabs">Indent with tabs</a></li>
+<li class="toc__item toc__item--l3"><a href="#braces-on-their-own-line">Braces on their own line</a></li>
+<li class="toc__item toc__item--l3"><a href="#a-leading-underscore-is-allowed">A leading underscore is allowed</a></li>
+<li class="toc__item toc__item--l2"><a href="#files">Files</a></li>
+<li class="toc__item toc__item--l3"><a href="#the-direct-access-gate">The direct-access gate</a></li>
+<li class="toc__item toc__item--l3"><a href="#importing-global-facades">Importing global facades</a></li>
+<li class="toc__item toc__item--l2"><a href="#lines">Lines</a></li>
+<li class="toc__item toc__item--l2"><a href="#strings">Strings</a></li>
+<li class="toc__item toc__item--l2"><a href="#arrays">Arrays</a></li>
+<li class="toc__item toc__item--l2"><a href="#classes">Classes</a></li>
+<li class="toc__item toc__item--l2"><a href="#functions-and-methods">Functions and methods</a></li>
+<li class="toc__item toc__item--l2"><a href="#control-structures">Control structures</a></li>
+<li class="toc__item toc__item--l2"><a href="#documentation-blocks">Documentation blocks</a></li>
+<li class="toc__item toc__item--l2"><a href="#sql">SQL</a></li>
+<li class="toc__item toc__item--l2"><a href="#checking-your-work">Checking your work</a></li>
+<li class="toc__item toc__item--l2"><a href="#when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-build-checks">What the build checks</a></li>
+</ol></li>
+<li class="tree__leaf"><a class="tree__link" href="../php-naming/index.html">PHP Naming Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../css/index.html">CSS Coding Style</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../database-schema/index.html">Database Schema Conventions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../commit-messages/index.html">Commit Messages</a></li>
+</ul></details></li>
+</ul>
+        </nav>
+      </details>
+      <script>if (window.matchMedia("(min-width: 841px)").matches) { document.querySelector(".rail__fold").open = true; }</script>
+    </aside>
+
+    <main id="main-content" class="article-wrap" tabindex="-1">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Conventions</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">PHP Coding Style</span></nav>
+      <article class="article">
+        <header class="article__header">
+          <p class="eyebrow">Developers</p>
+          <h1>PHP Coding Style</h1>
+        </header>
+        
+        <div class="prose">
+<p>Hubzero writes PHP to <a href="https://www.php-fig.org/psr/psr-12/">PSR-12</a> with three
+deliberate departures: indentation is a tab, the opening brace of a control
+structure goes on its own line, and a leading underscore on a non-public member
+is still allowed. Everything else PSR-12 says holds.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The repository ships no phpcs ruleset. PSR-12 is a description of
+the house style, not a gate the build enforces. What continuous integration
+checks is in <a href="#what-the-build-checks">What the build checks</a> below.</p>
+</aside>
+<h2 id="the-three-departures">The three departures</h2>
+<p>None of the three is a better idea than what PSR-12 asks for. They are older
+than PSR-12, they are what the tree is written in, and the cost of changing
+them is the point: reformatting 2,800 files rewrites every line of every file,
+which destroys <code>git blame</code>, turns every open pull request into a conflict, and
+buries the next real change in a diff nobody can review. The style is frozen
+because unfreezing it is expensive, not because it is right.</p>
+<p>The rule that follows from that: <strong>match the file you are editing.</strong> A patch
+that fixes one line and reindents the surrounding forty is a patch a reviewer
+has to read twice.</p>
+<h3 id="indent-with-tabs">Indent with tabs</h3>
+<p>One tab per level. PSR-12 asks for four spaces; core does not use them. Of the
+2,870 PHP files under <code>core/components</code>, 2,809 indent with tabs and 32 with
+spaces.</p>
+<p>Newer framework files written from scratch — <code>Hubzero\Base\ClassLoader</code>, for
+one — use four spaces. Match the file you are editing. Never mix the two in a
+single file, and never reindent a file you are otherwise only patching: it
+buries the change in a diff nobody can read.</p>
+<h3 id="braces-on-their-own-line">Braces on their own line</h3>
+<p>The opening brace goes on the line below, for classes, methods, functions
+<strong>and</strong> control structures. PSR-12 puts a control structure's brace on the same
+line; core does not.</p>
+<pre><code class="language-php">if ($filters['month'] &gt; 12)
+{
+	$filters['month'] = 0;
+}
+
+foreach ($rows as $row)
+{
+	$row-&gt;save();
+}
+</code></pre>
+<h3 id="a-leading-underscore-is-allowed">A leading underscore is allowed</h3>
+<p>PSR-12 says an underscore prefix has no meaning. Core uses one on protected and
+private members throughout — 887 methods and 718 properties under
+<code>core/components</code> and <code>core/libraries</code>. Do not add the prefix to new code;
+do not strip it from existing code either, because the name is part of the
+class's contract with its subclasses.</p>
+<p>That last part is the reason this one is not simply a tidy-up waiting to
+happen. Renaming <code>_sortNames()</code> to <code>sortNames()</code> in a base class silently
+breaks every subclass that overrides it — including subclasses in extensions
+that are not in this repository, on hubs you cannot see. PHP raises nothing;
+the override just stops being an override and the base implementation runs
+instead. The prefix stays.</p>
+<h2 id="files">Files</h2>
+<ul>
+<li>Open with <code>&lt;?php</code>. Short tags are never allowed, and <code>&lt;?=</code> appears nowhere in
+core.</li>
+<li>Omit the closing <code>?&gt;</code> in a file that is only PHP; it is not required, and
+leaving it off keeps trailing whitespace out of the response. A file that
+ends in markup keeps its final <code>?&gt;</code> because it has to.</li>
+<li>End the file with a single newline, and use Unix line endings (LF, <code>0x0A</code>).
+Never CR or CRLF.</li>
+<li>One class per file.</li>
+</ul>
+<p>Every PHP file opens with the same four-line docblock:</p>
+<pre><code class="language-php">&lt;?php
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+</code></pre>
+<p><code>@package</code> is <code>hubzero-cms</code> for extensions and <code>framework</code> for files under
+<code>core/libraries/Hubzero</code>. <code>@license</code> is always MIT. A new file gets</p>
+<pre><code class="language-php"> * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
+</code></pre>
+<p>and a file modified from core keeps the earliest year already there:
+<code>Copyright © 2015-2026 …</code>. The long LGPL preamble that older documentation
+showed is gone; no file in the tree carries it.</p>
+<h3 id="the-direct-access-gate">The direct-access gate</h3>
+<p>A file that is reached by including it — a view template, a plugin entry point,
+a helper the router pulls in — declares the gate immediately after the header:</p>
+<pre><code class="language-php">// No direct access
+defined('_HZEXEC_') or die;
+</code></pre>
+<p>3,389 files do. A file that is only ever reached through the autoloader does
+not need it; the autoloader will not run arbitrary code on request.</p>
+<h3 id="importing-global-facades">Importing global facades</h3>
+<p>The CMS registers <code>Route</code>, <code>App</code>, <code>User</code>, <code>Lang</code>, <code>Event</code>, <code>Config</code>, <code>Request</code>,
+<code>Notify</code> and the rest as root-namespace aliases. Inside a namespaced file an
+unqualified <code>Route::url()</code> resolves to <code>Current\Namespace\Route</code>, not the alias,
+and fatals when the line runs. Import every facade you call:</p>
+<pre><code class="language-php">namespace Components\Blog\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Request;
+use Route;
+use Lang;
+use User;
+</code></pre>
+<p>A leading backslash (<code>\Route::url()</code>) works too, but the <code>use</code> list is the house
+form. This is the one style rule with a linter behind it; see below.</p>
+<h2 id="lines">Lines</h2>
+<p>The soft limit is 120 characters. There is no hard limit: a longer line is a
+warning, never an error, and readability wins over the count. Split a long call
+by pulling its arguments into variables first.</p>
+<p>No trailing whitespace. One statement per line.</p>
+<h2 id="strings">Strings</h2>
+<p>Single quotes for a literal with no substitution:</p>
+<pre><code class="language-php">$a = 'Example String';
+</code></pre>
+<p>Double quotes when the string contains apostrophes or interpolates a variable.
+Both interpolation forms are accepted:</p>
+<pre><code class="language-php">$greeting = &quot;Hello $name, welcome back!&quot;;
+$greeting = &quot;Hello {$name}, welcome back!&quot;;
+</code></pre>
+<p><code>&quot;${name}&quot;</code> is not permitted; PHP 8.2 deprecates it.</p>
+<p>Concatenate with <code>.</code>, a space on each side. When a concatenated expression runs
+long, break it and align the <code>.</code> under the <code>=</code>:</p>
+<pre><code class="language-php">$sql = &quot;SELECT `id`, `name` FROM `users` &quot;
+     . &quot;WHERE `name` = 'Jim' &quot;
+     . &quot;ORDER BY `name` ASC&quot;;
+</code></pre>
+<h2 id="arrays">Arrays</h2>
+<p><code>array()</code> is the prevailing form in core — 11,377 uses under
+<code>core/components</code> — and short <code>[]</code> syntax is accepted in new code. Pick one per
+file.</p>
+<p>A single space after each comma. A multi-line array indents its items one level
+and puts the closing paren on its own line at the level of the declaration:</p>
+<pre><code class="language-php">$filters = array(
+	'year'       =&gt; Request::getInt('year', 0),
+	'month'      =&gt; Request::getInt('month', 0),
+	'scope'      =&gt; $this-&gt;config-&gt;get('show_from', 'site'),
+	'authorized' =&gt; false,
+	'state'      =&gt; 1,
+	'access'     =&gt; User::getAuthorisedViewLevels()
+);
+</code></pre>
+<p>Aligning the <code>=&gt;</code> operators is house style, as above. A trailing comma on the
+last item is allowed but core generally omits it.</p>
+<h2 id="classes">Classes</h2>
+<p>Name classes as <a href="../php-naming/index.html">PHP Naming Conventions</a> describes.
+<code>extends</code> and <code>implements</code> stay on the class line:</p>
+<pre><code class="language-php">class Entries extends SiteController
+{
+}
+</code></pre>
+<p>Declare visibility on every property and method. <code>var</code> is not used. Properties
+come before methods.</p>
+<h2 id="functions-and-methods">Functions and methods</h2>
+<p>No space between the name and the opening parenthesis. Arguments separated by
+<code>, </code>. Arguments with defaults go last, and the default gets a space on each
+side of the <code>=</code> — <code>$limit = 25</code>, not <code>$limit=25</code>. Both forms are in core; the
+spaced one is more common and is what PSR-12 asks for. Do not wrap a return
+value in parentheses — <code>return $this-&gt;bar;</code>, not <code>return($this-&gt;bar);</code>.</p>
+<p>Call-time pass-by-reference (<code>foo(&amp;$bar)</code> at the call site) is a PHP fatal and
+is never used. Declare the reference in the signature instead:</p>
+<pre><code class="language-php">public function onContentPrepare($context, &amp;$article, &amp;$params)
+{
+}
+</code></pre>
+<h2 id="control-structures">Control structures</h2>
+<p>One space after the keyword, none inside the parentheses. Braces are always
+required, even for a single statement. <code>elseif</code>, not <code>else if</code> — both appear in
+core, and <code>elseif</code> is the rule for new code.</p>
+<p>Break a long condition before the operator, and indent the continuation so the
+operator hangs one column left of the first clause:</p>
+<pre><code class="language-php">		if (!User::authorise('core.edit', $this-&gt;_option)
+		 &amp;&amp; !User::authorise('core.create', $this-&gt;_option))
+		{
+			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+</code></pre>
+<p>Put the operator at the start of the continuation line, not the end of the one
+before, and do not mix the two in one condition.</p>
+<p>A <code>switch</code> indents its <code>case</code> one level and the case body one more. Give it a
+<code>default</code>. Where a non-empty case falls through deliberately, say so with a
+<code>// no break</code> comment, so the next reader does not read it as a bug:</p>
+<pre><code class="language-php">switch ($state)
+{
+	case 'archived':
+		$this-&gt;archive();
+		// no break
+
+	case 'published':
+		$this-&gt;publish();
+		break;
+
+	default:
+		break;
+}
+</code></pre>
+<h2 id="documentation-blocks">Documentation blocks</h2>
+<p>Docblocks are phpDocumentor format. Every class gets a short description; every
+method gets a description, its parameters, and its return type. Columns are
+aligned with spaces, two after each tag:</p>
+<pre><code class="language-php">	/**
+	 * Generate an alias from the data being saved
+	 *
+	 * @param   array   $data  the data being saved
+	 * @return  string
+	 */
+	public function automaticAlias($data)
+</code></pre>
+<p>Add <code>@throws</code> for every exception class a method can raise. Do not write
+<code>@access</code>; the visibility modifier already says it. Do not write <code>@version</code> or
+<code>@package_version@</code>; nothing substitutes them.</p>
+<h2 id="sql">SQL</h2>
+<p>Keywords uppercase, identifiers lowercase and backquoted. Write the table
+prefix as the <code>#__</code> placeholder, never a literal <code>jos_</code> — see
+<a href="../database-schema/index.html">Database Schema</a>.</p>
+<pre><code class="language-php">$this-&gt;db-&gt;setQuery(&quot;SELECT `id` FROM `#__usergroups` WHERE `title` = &quot; . $this-&gt;db-&gt;quote($title));
+</code></pre>
+<p>Quote every value through <code>$db-&gt;quote()</code> or bind it. Prefer the query builder
+over hand-written SQL in new code; see
+<a href="../../database/index.html">Database</a>.</p>
+<h2 id="checking-your-work">Checking your work</h2>
+<p>The tools live under <code>core/vendor/bin</code>, installed by <code>php bin/composer install</code>
+run from the <code>core</code> directory. The lint and test commands expect that working
+directory too:</p>
+<pre><code class="language-bash">cd core
+vendor/bin/parallel-lint --exclude vendor .
+vendor/bin/phpunit -c phpunit.xml.dist
+</code></pre>
+<p>The facade check runs from the repository root:</p>
+<pre><code class="language-bash">php core/bin/lint/missing-facade-imports.php
+</code></pre>
+<p>It takes <code>--fix</code> to insert the missing <code>use</code> statements, and any path to narrow
+the scan; with no path it scans <code>core/components</code>, <code>core/plugins</code>,
+<code>core/modules</code> and <code>core/libraries/Hubzero</code>.</p>
+<p>phpcs is installed as a development dependency but the repository commits no
+ruleset, so running plain PSR-12 against core reports mostly the three
+departures above: one ordinary controller draws 772 errors, nearly all of them
+tab indentation and control-structure braces. Excluding the sniffs that see only
+those departures makes the result readable — the same file drops to a few dozen
+findings worth reading:</p>
+<pre><code class="language-bash">house_style=Generic.WhiteSpace.DisallowTabIndent
+house_style=$house_style,Generic.WhiteSpace.ScopeIndent
+house_style=$house_style,Squiz.WhiteSpace.ScopeClosingBrace
+house_style=$house_style,Squiz.ControlStructures.ControlSignature
+house_style=$house_style,PSR12.ControlStructures.ControlStructureSpacing
+house_style=$house_style,PSR2.Methods.MethodDeclaration
+house_style=$house_style,Squiz.Functions.MultiLineFunctionDeclaration
+
+core/vendor/bin/phpcs --standard=PSR12 --exclude=$house_style path/to/changed/file.php
+</code></pre>
+<p>Run it on the files you changed, not on the tree.</p>
+<h2 id="when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</h2>
+<p>phpcs has no committed ruleset here, so there is nothing in the repository
+that encodes the house style. <code>--standard=PSR12</code> is the closest thing
+available and it is wrong about three rules, which is why the exclude list
+above exists. When a finding and this page disagree:</p>
+<ol>
+<li><strong>The three departures win.</strong> Tabs, braces on their own line, and a
+leading underscore on an existing non-public member are the house style.
+phpcs is not configured to know that. Exclude the sniff, do not change the
+code.</li>
+<li><strong>Everything else, phpcs wins.</strong> Trailing whitespace, a missing visibility
+modifier, a space before a comma, <code>else if</code> for <code>elseif</code> — fix those. They
+are PSR-12 and they are also what this page asks for.</li>
+<li><strong>The file you are in wins over both, for anything cosmetic.</strong> A file
+already written with four-space indentation or <code>[]</code> arrays stays that way.
+Consistency inside one file beats consistency across the tree, because the
+reader is looking at one file.</li>
+<li><strong>When it is still not clear, leave it.</strong> A style question that needs a
+decision is not worth holding a fix for. Say in the pull request that you
+left it and why; a reviewer can settle it in one comment.</li>
+</ol>
+<p>Do not add a ruleset to the repository as part of an unrelated change. A
+committed <code>phpcs.xml</code> would decide the house style for everyone, and that is
+its own pull request with its own discussion.</p>
+<h2 id="what-the-build-checks">What the build checks</h2>
+<p>Three GitHub Actions workflows run on a pull request, each on the paths it
+cares about.</p>
+<table>
+<thead>
+<tr>
+<th>Workflow</th>
+<th>Checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a></td>
+<td><code>php -l</code> over every <code>*.php</code> under <code>core</code> and <code>app</code> outside <code>vendor</code>, then <code>core/bin/lint/missing-facade-imports.php</code>, then <code>core/bin/lint/undefined-language-keys.php</code> against a ceiling of 444</td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/tests.yml"><code>tests.yml</code></a></td>
+<td>The PHPUnit suite, for a change under <code>core</code></td>
+</tr>
+<tr>
+<td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/pages.yml"><code>pages.yml</code></a></td>
+<td>Builds the documentation, regenerates <code>docs/reference</code>, checks every internal link, and fails if the committed <code>gh-pages/public</code> is stale</td>
+</tr>
+</tbody>
+</table>
+<p>None of them runs phpcs. A style problem is caught in review, not by the
+build. A syntax error, a missing facade import, a language key nothing
+defines, and a broken test are caught by the build.</p>
+
+        </div>
+        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Conventions</a><a class="pager__next" href="../php-naming/index.html" rel="next"><span>Next</span>PHP Naming Conventions</a></nav>
+        <footer class="article__footer">
+          <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/19-conventions/01-php-style.md">Edit this page on GitHub</a>
+          <span>Hubzero 2.4 documentation</span>
+        </footer>
+      </article>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Purdue University. The documentation is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
+  </footer>
+
+  <script src="../../../assets/search.js?v=bb8696b6" defer></script>
+</body>
+</html>

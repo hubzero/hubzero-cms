@@ -41,7 +41,11 @@
         <a class="rail__book" href="../index.html">Hub managers</a>
         <nav aria-label="Hub managers contents">
 <ul class="tree">
-<li class="tree__leaf"><a class="tree__link" href="../getting-started/index.html">Getting started</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../getting-started/index.html">Getting started</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/administrator-interface/index.html">The administrator interface</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/first-week/index.html">The first week with a new hub</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../getting-started/how-a-hub-fits-together/index.html">How a hub fits together</a></li>
+</ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../advancedsetup/index.html">Integrations</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../maintenance/index.html">Daily Maintenance</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../maintenance/approvingcontent/index.html">Approving Content</a></li>
@@ -149,7 +153,11 @@
 <li class="tree__leaf"><a class="tree__link" href="../extensions/extension-manager/index.html">Extension Manager</a></li>
 </ul></details></li>
 <li class="tree__leaf"><a class="tree__link" href="../spam/index.html">Spam</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../security/index.html">Security considerations</a></li>
+<li class="tree__section"><details><summary><a class="tree__link" href="../security/index.html">Security considerations</a></summary><ul class="tree">
+<li class="tree__leaf"><a class="tree__link" href="../security/questions/index.html">Security questions</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/operating-system/index.html">Operating system hardening</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../security/hardening-the-cms/index.html">Hardening the CMS</a></li>
+</ul></details></li>
 </ul>
         </nav>
       </details>
@@ -241,7 +249,7 @@ not stored on the account: it is a count of recent rows in the authentication
 log, so it lifts itself as the window slides forward. Tell the member to wait
 and try again, and to use <strong>Forgot your password</strong> rather than guessing.</p>
 <p>If it is happening to many accounts at once, or repeatedly to one, read
-<a href="../security/index.html#cms-controlled-fail2ban-jail">Security considerations</a>, which
+<a href="../security/hardening-the-cms/index.html#cms-controlled-fail2ban-jail">Security considerations</a>, which
 explains what is being counted and what the three thresholds do.</p>
 <h2 id="a-member-is-stuck-on-a-spam-detected-page-how-do-i-release-them">A member is stuck on a &quot;spam detected&quot; page. How do I release them?</h2>
 <p>Their lifetime spam counter is over the limit. Go to <strong>Users → Members</strong>,
@@ -261,7 +269,7 @@ whole procedure, including the per-session counter that clears itself, is in
 <p>Think about what you are allowing. Every attachment is scanned by the
 command in the <code>virus_scanner</code> configuration key before it is accepted, but a
 scanner is not a substitute for keeping executables and archives off the
-list. See <a href="../security/index.html#does-the-cms-scan-uploads-for-viruses">Security considerations</a>.</p>
+list. See <a href="../security/questions/index.html#does-the-cms-scan-uploads-for-viruses">Security considerations</a>.</p>
 <h2 id="how-does-a-project-connect-to-google-drive">How does a project connect to Google Drive?</h2>
 <p>A project manager creates the connection and authorizes it with their own
 Google account; everyone else in the project works through it.</p>
