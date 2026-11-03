@@ -163,7 +163,6 @@
 <li class="toc__item toc__item--l3"><a href="#what-the-build-checks">What the build checks</a></li>
 <li class="toc__item toc__item--l3"><a href="#the-pull-request">The pull request</a></li>
 <li class="toc__item toc__item--l3"><a href="#what-makes-a-change-acceptable">What makes a change acceptable</a></li>
-<li class="toc__item toc__item--l3"><a href="#reporting-problems-2">Reporting problems</a></li>
 <li class="toc__item toc__item--l3"><a href="#a-development-environment">A development environment</a></li>
 <li class="toc__item toc__item--l2"><a href="#working-on-the-documentation">Working on the documentation</a></li>
 <li class="toc__item toc__item--l3"><a href="#editing-a-page">Editing a page</a></li>
@@ -197,9 +196,19 @@ organizations. This book explains how to work on the code in a way that
 lands cleanly: the conventions the codebase follows, how commits are
 written, how to run the tests, and how to send a change back.</p>
 <h2 id="reporting-problems">Reporting problems</h2>
-<p>Report bugs as <a href="https://github.com/hubzero/hubzero-cms/issues">GitHub issues</a>,
-and security issues privately, through GitHub's
-<a href="https://github.com/hubzero/hubzero-cms/security/advisories/new">private vulnerability reporting</a>.</p>
+<ul>
+<li><strong>Bugs and feature requests</strong>: a GitHub issue, using the
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/ISSUE_TEMPLATE/bug_report.md">bug report template</a>,
+which asks for the Hubzero version, the PHP version, the operating system,
+and steps to reproduce.</li>
+<li><strong>Security issues</strong>: report them privately, through
+<a href="https://github.com/hubzero/hubzero-cms/security/advisories/new">private vulnerability reporting</a>
+on the repository's Security tab. Do not open a public issue.
+See <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/SECURITY.md"><code>SECURITY.md</code></a>.</li>
+</ul>
+<p>Some faults come from a Composer package rather than from Hubzero. When that
+happens the maintainers will usually work around it here and point you at the
+package's own tracker.</p>
 <h2 id="contributions">Contributions</h2>
 <p>How a change gets from your working copy into Hubzero. The short version: fork
 <a href="https://github.com/hubzero/hubzero-cms">hubzero/hubzero-cms</a>, branch from the
@@ -387,19 +396,6 @@ administrator, and is the interface right for them?</li>
 <li>What does it cost to maintain?</li>
 <li>Does something similar already exist that could be extended instead?</li>
 </ol>
-<h3 id="reporting-problems-2">Reporting problems</h3>
-<ul>
-<li><strong>Bugs and feature requests</strong>: a GitHub issue, using the
-<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/ISSUE_TEMPLATE/bug_report.md">bug report template</a>,
-which asks for the Hubzero version, the PHP version, the operating system,
-and steps to reproduce.</li>
-<li><strong>Security issues</strong>: report them privately, on the repository's Security
-tab under <strong>Report a vulnerability</strong>. Do not open a public issue.
-See <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/SECURITY.md"><code>SECURITY.md</code></a>.</li>
-</ul>
-<p>Some faults come from a Composer package rather than from Hubzero. When that
-happens the maintainers will usually work around it here and point you at the
-package's own tracker.</p>
 <h3 id="a-development-environment">A development environment</h3>
 <p>You need a working hub to develop against; the CMS does not run standalone.
 <a href="../getting-started/devenvironment/index.html">Development Environment</a>

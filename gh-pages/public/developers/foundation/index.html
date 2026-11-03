@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Foundation · Developers · Hubzero Documentation</title>
-  <meta name="description" content="How the framework underneath every extension is put together: what is on disk, what a request runs through, how your classes are found, how extensions reach…">
+  <meta name="description" content="This section shows how the framework under every extension is put together. It covers what is on disk, what a request runs through, and how your classes are…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -179,14 +179,14 @@
         </header>
         
         <div class="prose">
-<p>How the framework underneath every extension is put together: what is on
-disk, what a request runs through, how your classes are found, how
-extensions reach each other, and the handful of names an extension uses
-constantly.</p>
+<p>This section shows how the framework under every extension is put
+together. It covers what is on disk, what a request runs through, and how
+your classes are found. It also covers how extensions reach each other, and
+the handful of names an extension uses constantly.</p>
 <p>Read this section once before you write an extension. Most of what goes
-wrong early — a class that will not load, a facade that fatals, a plugin
-nothing calls, a directory that is not an extension because no database row
-says so — is in here, and none of it is discoverable by reading a component.</p>
+wrong early is explained here: a class that will not load, a facade that
+fatals, a plugin nothing calls, a directory that is not an extension because
+no database row says so. None of it can be learned by reading a component.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="structure/index.html">Structure</a> — the directory layout, what belongs in

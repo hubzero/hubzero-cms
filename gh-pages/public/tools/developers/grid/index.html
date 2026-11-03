@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Accessing outside computing resources · Tools · Hubzero Documentation</title>
-  <meta name="description" content="A tool runs in a tool session on the hub&#x27;s execution hosts. The session carries the interface the user works in. Light calculations run in the session itself;…">
+  <meta name="description" content="A tool runs in a tool session on the hub&#x27;s execution hosts. The session carries the interface the user works in. Light calculations run in the session itself.…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/tools/developers/grid/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,24 +98,24 @@
         <div class="prose">
 <p>A tool runs in a tool session on the hub's execution hosts. The session
 carries the interface the user works in. Light calculations run in the
-session itself; heavier ones are sent to a cluster or a national resource
-with the <code>submit</code> command, which keeps the session responsive and returns
-the results when the job finishes.</p>
+session itself. Heavier ones go to a cluster or a national resource through
+the <code>submit</code> command. That keeps the session responsive, and <code>submit</code>
+returns the results when the job finishes.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>submit</code> is part of the tool execution platform, which is
 separate software and is <strong>not in this repository</strong>. Nothing on these
-pages could be checked against the code here, and the CMS holds no trace
-of the command — the only mention left in <code>com_tools</code> is
+pages could be checked against the code here. The CMS holds no trace of
+the command; the only mention left in <code>com_tools</code> is
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/migrations/Migration20180702134743ComToolsRemoveSubmitSessions.php">a migration that dropped an old <code>submit</code> sessions table</a>.
-The material is kept as the written record, corrected where it
-contradicted itself, and <code>submit --help</code> on your own hub is the
-authority on what your client accepts.</p>
+The material is kept as the written record and corrected where it
+contradicted itself. For what your client accepts, <code>submit --help</code> on
+your own hub is the authority.</p>
 </aside>
 <h2 id="the-pages-here">The pages here</h2>
-<p>Most tools reach <code>submit</code> from a Jupyter notebook now, so
-<a href="jupyter-submit/index.html">Submitting from a Jupyter notebook</a> is the page to
-read if you are writing a new tool; the submit command reference below
-explains what the options it sets actually do.</p>
+<p>Most tools now reach <code>submit</code> from a Jupyter notebook. If you are writing a
+new tool, read <a href="jupyter-submit/index.html">Submitting from a Jupyter notebook</a>.
+The submit command reference below explains what the options it sets
+actually do.</p>
 <ul>
 <li><a href="submitcmd/index.html">Submit command</a> — what <code>submit</code> does, its options, and
 the parameter sweep syntax. Start here whichever way you call it.</li>
