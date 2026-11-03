@@ -11,8 +11,8 @@ Events in the `mw` group. A plugin in `core/plugins/mw/` receives an event by de
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1_0.php:762`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L762) with `[$app->toolname, $app->version]`
-- [`core/components/com_tools/site/controllers/sessions.php:674`](../../../core/components/com_tools/site/controllers/sessions.php#L674) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/api/controllers/sessionsv1_0.php:773`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L773) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/site/controllers/sessions.php:798`](../../../core/components/com_tools/site/controllers/sessions.php#L798) with `[$app->toolname, $app->version]`
 
 No plugin in the source tree listens for this event.
 
@@ -20,8 +20,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1306`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1306) with `[$toolname, $tv->revision]`
-- [`core/components/com_tools/site/controllers/sessions.php:1392`](../../../core/components/com_tools/site/controllers/sessions.php#L1392) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1316`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1316) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/site/controllers/sessions.php:1531`](../../../core/components/com_tools/site/controllers/sessions.php#L1531) with `[$toolname, $tv->revision]`
 
 No plugin in the source tree listens for this event.
 
@@ -30,8 +30,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_tools/admin/controllers/sessions.php:176`](../../../core/components/com_tools/admin/controllers/sessions.php#L176) with `[$row->appname]`
-- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1373`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1373) with `[$ms->get('appname')]`
-- [`core/components/com_tools/site/controllers/sessions.php:1539`](../../../core/components/com_tools/site/controllers/sessions.php#L1539) with `[$ms->appname]`
+- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1653`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1653) with `[$ms->get('appname')]`
+- [`core/components/com_tools/site/controllers/sessions.php:1709`](../../../core/components/com_tools/site/controllers/sessions.php#L1709) with `[$ms->appname]`
 
 No plugin in the source tree listens for this event.
 
@@ -39,8 +39,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1_0.php:741`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L741) with `[$app->toolname, $app->version]`
-- [`core/components/com_tools/site/controllers/sessions.php:625`](../../../core/components/com_tools/site/controllers/sessions.php#L625) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/api/controllers/sessionsv1_0.php:746`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L746) with `[$app->toolname, $app->version]`
+- [`core/components/com_tools/site/controllers/sessions.php:749`](../../../core/components/com_tools/site/controllers/sessions.php#L749) with `[$app->toolname, $app->version]`
 
 No plugin in the source tree listens for this event.
 
@@ -48,8 +48,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1292`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1292) with `[$toolname, $tv->revision]`
-- [`core/components/com_tools/site/controllers/sessions.php:1194`](../../../core/components/com_tools/site/controllers/sessions.php#L1194) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1302`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1302) with `[$toolname, $tv->revision]`
+- [`core/components/com_tools/site/controllers/sessions.php:1321`](../../../core/components/com_tools/site/controllers/sessions.php#L1321) with `[$toolname, $tv->revision]`
 
 No plugin in the source tree listens for this event.
 
@@ -58,8 +58,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_tools/admin/controllers/sessions.php:159`](../../../core/components/com_tools/admin/controllers/sessions.php#L159) with `[$row->appname]`
-- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1367`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1367) with `[$ms->get('appname')]`
-- [`core/components/com_tools/site/controllers/sessions.php:1524`](../../../core/components/com_tools/site/controllers/sessions.php#L1524) with `[$ms->appname]`
+- [`core/components/com_tools/api/controllers/sessionsv1_0.php:1647`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1647) with `[$ms->get('appname')]`
+- [`core/components/com_tools/site/controllers/sessions.php:1694`](../../../core/components/com_tools/site/controllers/sessions.php#L1694) with `[$ms->appname]`
 
 No plugin in the source tree listens for this event.
 
@@ -67,6 +67,6 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/site/views/sessions/tmpl/session.php:381`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L381) with `[ $this->option, $this->toolname, $this->app->sess ]`
+- [`core/components/com_tools/site/views/sessions/tmpl/session.php:453`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L453) with `[ $this->option, $this->toolname, $this->app->sess ]`
 
 No plugin in the source tree listens for this event.

@@ -47,7 +47,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:615`](../../../core/plugins/user/xusers/xusers.php#L615) with `[$user, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:616`](../../../core/plugins/user/xusers/xusers.php#L616) with `[$user, $success, $msg]`
 
 Listeners:
 
@@ -59,7 +59,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/user/xusers/xusers.php:562`](../../../core/plugins/user/xusers/xusers.php#L562) with `[$user, $isnew, $success, $msg]`
+- [`core/plugins/user/xusers/xusers.php:563`](../../../core/plugins/user/xusers/xusers.php#L563) with `[$user, $isnew, $success, $msg]`
 
 Listeners:
 

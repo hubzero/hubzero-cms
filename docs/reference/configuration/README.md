@@ -47,7 +47,7 @@ Every parameter an administrator can set, generated from the extension manifests
 | [system](components/system.md) | 16 | Utility component for managing various parts of the system such as the cache. |
 | [tags](components/tags.md) | 13 |  |
 | [templates](components/templates.md) | 1 | This component manages templates |
-| [tools](components/tools.md) | 53 |  |
+| [tools](components/tools.md) | 54 |  |
 | [usage](components/usage.md) | 13 |  |
 | [wiki](components/wiki.md) | 13 | Manage wiki pages |
 | [wishlist](components/wishlist.md) | 8 | Manage wishlists |
@@ -85,7 +85,7 @@ Every parameter an administrator can set, generated from the extension manifests
 | [support](plugins/support.md) | 13 | 38 |
 | [system](plugins/system.md) | 30 | 63 |
 | [tags](plugins/tags.md) | 14 | 0 |
-| [tools](plugins/tools.md) | 1 | 2 |
+| [tools](plugins/tools.md) | 1 | 4 |
 | [update](plugins/update.md) | 2 | 13 |
 | [usage](plugins/usage.md) | 7 | 3 |
 | [user](plugins/user.md) | 10 | 19 |

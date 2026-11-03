@@ -26,6 +26,7 @@ Parameters from [`core/components/com_tools/config/config.xml`](../../../../core
 | Parameter | Label | Type | Default | Description |
 |---|---|---|---|---|
 | `mw_on` | Middleware | list | `0 (OFF)` | Indicate whether the component is active or not. Options: `0` OFF, `1` ON, `2` ON (admin only). |
+| `async_launch` | Async launch | list | `1 (ON)` | Route the Launch Tool button through the asynchronous launch interstitial instead of the classic blocking launch. Can be overridden per-request with &launch=async or &launch=legacy. Options: `0` OFF, `1` ON. |
 | `zones` | Zones | radio | `0 (OFF)` | Allow Tool Session Zones. Options: `0` OFF, `1` ON. |
 | `mw_redirect` | Redirect | text | `/home` | The URL to redirect to when middleware is OFF |
 | `mwDBDriver` | Middleware DB Driver | text | — | Middleware DB Driver |

@@ -15,10 +15,18 @@ Endpoints under `/api/tools`, from the `com_tools` API controllers. Authenticate
 | `POST` | [`/tools/run`](#post-tools-run) | Runs a rappture job. |
 | `GET` | [`/tools/screenshots/{user_id}`](#get-tools-screenshots-user-id) | Method to take session screenshots for user |
 | `GET` | [`/tools/status`](#get-tools-status) | Gets the status of the session identified |
+| `DELETE` | [`/tools/storage/delete`](#delete-tools-storage-delete) | Delete one file or folder from the member's storage. |
+| `GET` | [`/tools/storage/files`](#get-tools-storage-files) | List the folders and files in one directory of the member's storage. |
+| `POST` | [`/tools/storage/mkdir`](#post-tools-storage-mkdir) | Create a new folder in the member's storage. |
+| `POST` | [`/tools/storage/rename`](#post-tools-storage-rename) | Rename a file or folder in the member's storage. |
+| `POST` | [`/tools/storage/upload`](#post-tools-storage-upload) | Upload one or more files into a directory of the member's storage. |
+| `GET` | [`/tools/storage/usage`](#get-tools-storage-usage) | Current disk-usage / quota for the authenticated member (read-only). |
 | `GET` | [`/tools/{sessionid}/fileshare`](#get-tools-sessionid-fileshare) | Method to setup Windows filesharing connection |
 | `GET` | [`/tools/{sessionid}/screenshot`](#get-tools-sessionid-screenshot) | Method to return session screenshot |
 | `DELETE` | [`/tools/{session}`](#delete-tools-session) | Method to stop tool session |
 | `GET` | [`/tools/{session}`](#get-tools-session) | Method to view tool session |
+| `GET` | [`/tools/{session}/state`](#get-tools-session-state) | Report the launch/connection state of a tool session using ONLY the middleware database -- it never calls out to the middleware (maxwell). |
+| `GET` | [`/tools/{session}/timeout`](#get-tools-session-timeout) | Report the timeout window for a tool session (DB-only; no middleware call). |
 | `GET` | [`/tools/{session}/unshare`](#get-tools-session-unshare) | Method to disconnect from shared tool session |
 | `GET` | [`/tools/{tool}`](#get-tools-tool) | Method to get tool information |
 | `GET` | [`/tools/{tool}/invoke`](#get-tools-tool-invoke) | Method to invoke new tools session |
@@ -46,7 +54,7 @@ API version 1.0, task `listAll` in [`sessionsv1_0.php`](../../../core/components
 
 Grabs the output from a tool session
 
-API version 1.0, task `output` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1131).
+API version 1.0, task `output` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1142).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -57,7 +65,7 @@ API version 1.0, task `output` in [`sessionsv1_0.php`](../../../core/components/
 
 Runs a rappture job.
 
-API version 1.0, task `run` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L800).
+API version 1.0, task `run` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L811).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -79,17 +87,63 @@ API version 1.0, task `screenshots` in [`sessionsv1_0.php`](../../../core/compon
 
 Gets the status of the session identified
 
-API version 1.0, task `status` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1038).
+API version 1.0, task `status` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1049).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `session_num` | string | yes | 0 | a valid hub tool session number |
 
+## DELETE /tools/storage/delete
+
+Delete one file or folder from the member's storage.
+
+API version 1.0, task `delete` in [`storagev1_0.php`](../../../core/components/com_tools/api/controllers/storagev1_0.php#L172).
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `dir` | string | no | — | Directory the item lives in, relative to the storage root |
+| `name` | string | yes | — | File or folder name to delete |
+| `type` | string | no | file | file or folder |
+
+## GET /tools/storage/files
+
+List the folders and files in one directory of the member's storage.
+
+API version 1.0, task `files` in [`storagev1_0.php`](../../../core/components/com_tools/api/controllers/storagev1_0.php#L78).
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `dir` | string | no | — | Directory relative to the member's storage root |
+
+## POST /tools/storage/mkdir
+
+Create a new folder in the member's storage.
+
+API version 1.0, task `mkdir` in [`storagev1_0.php`](../../../core/components/com_tools/api/controllers/storagev1_0.php#L264).
+
+## POST /tools/storage/rename
+
+Rename a file or folder in the member's storage.
+
+API version 1.0, task `rename` in [`storagev1_0.php`](../../../core/components/com_tools/api/controllers/storagev1_0.php#L308).
+
+## POST /tools/storage/upload
+
+Upload one or more files into a directory of the member's storage.
+
+API version 1.0, task `upload` in [`storagev1_0.php`](../../../core/components/com_tools/api/controllers/storagev1_0.php#L367).
+
+## GET /tools/storage/usage
+
+Current disk-usage / quota for the authenticated member (read-only).
+
+API version 1.0, task `usage` in [`storagev1_0.php`](../../../core/components/com_tools/api/controllers/storagev1_0.php#L26).
+
 ## GET /tools/{sessionid}/fileshare
 
 Method to setup Windows filesharing connection
 
-API version 1.0, task `fileshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1586).
+API version 1.0, task `fileshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1866).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -114,19 +168,40 @@ API version 1.0, task `screenshot` in [`sessionsv1_0.php`](../../../core/compone
 
 Method to stop tool session
 
-API version 1.0, task `delete` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1320).
+API version 1.0, task `delete` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1600).
 
 ## GET /tools/{session}
 
 Method to view tool session
 
-API version 1.0, task `read` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1211).
+API version 1.0, task `read` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1222).
+
+## GET /tools/{session}/state
+
+Report the launch/connection state of a tool session using ONLY the middleware database -- it never calls out to the middleware (maxwell).
+
+API version 1.0, task `state` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1332).
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `session` | integer | yes | 0 | A valid hub tool session number |
+| `mode` | string | no | vnc | Connection style to evaluate readiness for: 'vnc' or 'redirect' |
+
+## GET /tools/{session}/timeout
+
+Report the timeout window for a tool session (DB-only; no middleware call).
+
+API version 1.0, task `timeout` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1510).
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `session` | integer | yes | 0 | A valid hub tool session number |
 
 ## GET /tools/{session}/unshare
 
 Method to disconnect from shared tool session
 
-API version 1.0, task `unshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1405).
+API version 1.0, task `unshare` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1685).
 
 ## GET /tools/{tool}
 
@@ -159,10 +234,10 @@ API version 1.0, task `rapptureXML` in [`sessionsv1_0.php`](../../../core/compon
 
 Method to purge users storage
 
-API version 1.0, task `purge` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1505).
+API version 1.0, task `purge` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1785).
 
 ## GET /tools/{user_id}
 
 Method to return users storage results
 
-API version 1.0, task `storage` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1459).
+API version 1.0, task `storage` in [`sessionsv1_0.php`](../../../core/components/com_tools/api/controllers/sessionsv1_0.php#L1739).

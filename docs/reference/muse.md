@@ -39,7 +39,7 @@ source: core/libraries/Hubzero/Console/Command/
 | [`muse test`](#muse-test) | 2 | Test class |
 | [`muse upgrade`](#muse-upgrade) | 0 | Finish an upgrade once the hub's new code is in place |
 | [`muse user:terms`](#muse-user-terms) | 1 | User class for terms of use functions |
-| [`muse user`](#muse-user) | 4 | User class for general user functions |
+| [`muse user`](#muse-user) | 5 | User class for general user functions |
 
 ## `muse app:package`
 
@@ -561,6 +561,10 @@ Unmerges a previous merge, reenabling the source user
 ### `muse user disable`
 
 Disables a user completely, without deleting
+
+### `muse user create`
+
+Creates a confirmed user account (run as the web server's account)
 
 ### `muse user password`
 

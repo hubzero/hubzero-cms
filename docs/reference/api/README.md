@@ -36,7 +36,7 @@ Every endpoint the CMS exposes under `/api/`, generated from the `@apiMethod`, `
 | [support](support.md) | 47 |
 | [system](system.md) | 3 |
 | [tags](tags.md) | 8 |
-| [tools](tools.md) | 16 |
+| [tools](tools.md) | 24 |
 | [users](users.md) | 1 |
 | [whatsnew](whatsnew.md) | 1 |
 | [wiki](wiki.md) | 5 |
