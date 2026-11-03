@@ -18,7 +18,7 @@ Instructions for installing the Hubzero platform from packages are in the
 
 Documentation for hub managers, hub users, tool developers, and CMS developers
 is published at https://hubzero.github.io/hubzero-cms/ and written as Markdown
-under [`docs/`](docs/README.md) in this repository. See the
+under [`docs/`](docs/index.md) in this repository. See the
 [writing guide](docs/STYLE.md) to contribute a page.
 
 ## Contributing

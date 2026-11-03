@@ -10,7 +10,7 @@ summary: How installing a hub goes: what it needs, preparing the server on your 
 A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
 of PHP. Installing one takes two steps, each with its own part of this book:
 
-1. **[Preparing the server](02-preparing/README.md).** Choose your system
+1. **[Preparing the server](02-preparing/index.md).** Choose your system
    there and follow its page, which takes a server with nothing on it to one
    ready for the hub: the packages, the code, and the web server. Each
    system's page is complete on its own. The section also helps you choose,

@@ -27,7 +27,7 @@ Every hub is built from the same set of components, but each hub turns on
 only the ones it needs. If a tab, a menu entry, or a whole section described
 here is missing on your hub, it has been switched off rather than removed. The
 administrator's side of those choices is in the
-[Hub managers](../managers/README.md) book; nothing in this book requires
+[Hub managers](../managers/index.md) book; nothing in this book requires
 access to the administrator interface.
 
 ## What an account gets you
@@ -68,7 +68,7 @@ will use first are described in [Member dashboard](14-dashboard.md) and
 
 **Shared spaces.** Groups and projects are the places where several people
 work on the same thing, and they are not the same thing. A
-[group](11-groups/README.md) is a standing community space with its own pages,
+[group](11-groups/index.md) is a standing community space with its own pages,
 forum, calendar, blog, and file area — a lab, a course cohort, a committee
 that keeps going after any one piece of work is finished. A
 [project](16-projects.md) is a workspace for one piece of research, with
@@ -108,4 +108,4 @@ introductory videos.
 [Getting started](30-gettingstarted.md) walks through the first hour: creating an
 account, confirming it, filling in a profile, and arranging a dashboard. After
 that, the rest of this book is organised by feature — see the
-[book's contents](README.md).
+[book's contents](index.md).

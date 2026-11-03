@@ -131,7 +131,7 @@ def main() -> int:
     for group, total, with_sites, with_listeners in index_rows:
         lines.append(f"| [{group}]({group}.md) | {total} | {with_sites} | {with_listeners} |")
     lines.append("")
-    (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8")
+    (OUT / "index.md").write_text("\n".join(lines), encoding="utf-8")
     print(f"{len(index_rows)} group pages, {sum(r[1] for r in index_rows)} events -> {OUT.relative_to(ROOT)}")
     return 0
 

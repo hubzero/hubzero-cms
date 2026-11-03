@@ -110,6 +110,6 @@ and it reads the member's files for the session storage screens through the
 component's `storagepath` setting, which defaults to `/webdav/home`.
 *(CMS-side: `com_tools` session and storage controllers.)*
 
-[Tool paths](07-toolpaths/README.md) covers the same variables in more
+[Tool paths](07-toolpaths/index.md) covers the same variables in more
 detail, along with how a tool finds its own installed directory and its
 example data.

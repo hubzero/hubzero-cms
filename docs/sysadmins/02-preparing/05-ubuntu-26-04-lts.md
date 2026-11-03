@@ -19,7 +19,7 @@ way on every system.
 The PPA was checked for Ubuntu 26.04 and has no packages for it. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server, and a hub was installed against MariaDB 11.8.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

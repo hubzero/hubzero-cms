@@ -15,7 +15,7 @@ components that serve the site and the administrator interface: 246
 endpoints across 31 components, each one a method on a controller in that
 component's `api/` directory.
 
-The [API reference](../reference/api/README.md) lists every endpoint, its
+The [API reference](../reference/api/index.md) lists every endpoint, its
 method, its URI and its parameters, generated from the source. This page is
 about how the API works and how to add to it.
 
@@ -111,7 +111,7 @@ on the base class, with `{component}` and `{controller}` placeholders in
 `@apiUri`, so the explorer lists them for every controller. The generated
 reference reads only files under `core/components/*/api/controllers/`, so it
 does not: an endpoint you inherited appears on a hub's `/developer/api/docs`
-and not in the [API reference](../reference/api/README.md).
+and not in the [API reference](../reference/api/index.md).
 
 `send()` hands an object to
 [`Hubzero\Api\Response`](../../core/libraries/Hubzero/Api/Response.php),
@@ -138,7 +138,7 @@ Endpoint documentation is docblock tags on the task method, and they are not
 decoration — two things read them. `Hubzero\Api\Doc\Generator` builds the
 interactive explorer a hub serves at `/developer/api/docs`, and
 `docs/_tools/gen_api_reference.py` builds the
-[API reference](../reference/api/README.md) in these pages.
+[API reference](../reference/api/index.md) in these pages.
 
 <!--include: core/components/com_blog/api/controllers/entriesv1_0.php:29-40-->
 

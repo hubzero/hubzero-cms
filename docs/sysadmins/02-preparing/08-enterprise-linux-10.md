@@ -14,7 +14,7 @@ web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux
 A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

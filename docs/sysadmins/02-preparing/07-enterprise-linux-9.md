@@ -14,7 +14,7 @@ web server ready to serve it. Enterprise Linux 9 means Red Hat Enterprise Linux 
 A full install from the command line was run in a Rocky Linux 9 container with these packages behind this nginx configuration; the Apache configuration is the one installs on Enterprise Linux 8 and 10 were run behind. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

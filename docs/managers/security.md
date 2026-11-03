@@ -51,7 +51,7 @@ Spam has its own chapter: [Spam](11-spam.md).
 | Upload virus scanning | The `virus_scanner` key in `configuration.php` |
 
 Every parameter behind these screens is listed in the generated
-[configuration reference](../reference/configuration/README.md).
+[configuration reference](../reference/configuration/index.md).
 
 ## Where to start
 

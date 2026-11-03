@@ -14,7 +14,7 @@ web server ready to serve it. It uses PHP 8.2 from Ondřej Surý's PPA, Ubuntu's
 Full installs, from the browser and the command line, were run on Ubuntu 24.04 behind both Apache and nginx with these configurations, using Ubuntu's own PHP 8.3; nothing in them changes with the PHP version but the number in the package and socket names. The PHP 8.2 packages from the PPA were installed on Ubuntu 24.04 and every extension the hub needs was present.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

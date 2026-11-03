@@ -19,7 +19,7 @@ triggers an event because it does not know, and should not know, what a
 particular hub wants to happen next. If instead the thing you are adding owns
 a URL and a screen of its own, you want a component; if it draws a box beside
 somebody else's page, you want a module. The
-[table of the four kinds](../07-extensions/README.md#which-kind-do-you-want)
+[table of the four kinds](../07-extensions/index.md#which-kind-do-you-want)
 is the quick way to decide.
 
 > **Warning:** **A plugin with no row in `#__extensions` never loads at all.**
@@ -30,7 +30,7 @@ is the quick way to decide.
 > an event, and there is no error, no log line and no entry in the Plugin
 > Manager. Of the four extension kinds, this is the one that fails most
 > silently; see
-> [what a missing row costs](../07-extensions/README.md#how-an-extension-is-found).
+> [what a missing row costs](../07-extensions/index.md#how-an-extension-is-found).
 > Writing the migration is step one, not step last. See
 > [Migrations](01-migrations.md).
 
@@ -190,7 +190,7 @@ triggered, the method is called with the event's arguments.
 ## Which events exist
 
 The authoritative list is generated from the source tree: the
-[events reference](../../reference/events/README.md) covers 279 events across
+[events reference](../../reference/events/index.md) covers 279 events across
 41 groups, and for each one names the call sites that fire it, the arguments
 they pass, and the plugins that already listen. Read the page for the group
 you are extending before you invent a method name — half the time the

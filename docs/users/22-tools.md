@@ -185,6 +185,6 @@ versions is what grows a tool's user base. Your own contribution figures are
 gathered on the **Usage** tab of your member area — see [Usage](28-usage.md),
 which explains why that tab is often empty.
 
-The [Tools](../tools/README.md) book covers the developer side in depth:
+The [Tools](../tools/index.md) book covers the developer side in depth:
 repository structure, invoke scripts, tool paths, file transfer, the submit
 command, and Jupyter notebooks as tools.

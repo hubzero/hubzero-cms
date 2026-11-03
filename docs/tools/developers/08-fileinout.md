@@ -57,7 +57,7 @@ interface, and a Jupyter notebook tool has Jupyter's own file browser.
 > **Note:** Rappture is deprecated. Its site now redirects to a nanoHUB page
 > that is not readable without an account. Hubs still run Rappture tools, but
 > a Jupyter notebook is the current path for a new tool on most hubs — see
-> [Jupyter Notebooks](10-jupyter-notebooks/README.md).
+> [Jupyter Notebooks](10-jupyter-notebooks/index.md).
 
 ## What the CMS contributes
 
@@ -183,7 +183,7 @@ This command returns a list of names for files actually uploaded.
 ### See also
 
 - [Export file](#export-file), for the other direction.
-- [Getting files in and out of a tool session](README.md), for how filexfer is
+- [Getting files in and out of a tool session](index.md), for how filexfer is
   started and what the CMS serves.
 ## Export file
 
@@ -266,5 +266,5 @@ for this to work properly.
 ### See also
 
 - [Import file](#import-file), for the other direction.
-- [Getting files in and out of a tool session](README.md), for how filexfer is
+- [Getting files in and out of a tool session](index.md), for how filexfer is
   started and what the CMS serves.

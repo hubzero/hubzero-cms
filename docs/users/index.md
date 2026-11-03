@@ -38,7 +38,7 @@ register, confirm the email, fill in enough of a profile to be findable,
 arrange a dashboard. [Introduction](04-introduction.md) explains how the site
 is laid out before you start clicking.
 
-**"I need to work with other people."** A [group](11-groups/README.md) is a
+**"I need to work with other people."** A [group](11-groups/index.md) is a
 standing community space — a lab, a course cohort, a working committee — with
 its own pages, forum, calendar and files. A [project](16-projects.md) is a
 private workspace for one piece of research, where a team keeps files and data
@@ -84,6 +84,6 @@ things.
   can see each part of it.
 - [Registration](20-registration.md) — the sign-up form, field by field.
 
-The [Tools](../tools/README.md) book covers running simulation tools in
-more depth. The [Hub managers](../managers/README.md) book covers the
+The [Tools](../tools/index.md) book covers running simulation tools in
+more depth. The [Hub managers](../managers/index.md) book covers the
 administrator side of every setting this book says "depends on your hub".

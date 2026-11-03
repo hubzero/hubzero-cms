@@ -52,7 +52,7 @@ resources. Formally released datasets are publications. Pages members write
 and revise themselves are wiki pages. Group material belongs to the group.
 Questions, forum threads, blog entries, support tickets, knowledge base
 entries and courses each have their own component, their own permissions and
-their own chapter in [Components](../09-components/README.md).
+their own chapter in [Components](../09-components/index.md).
 
 The test is simple: if you type it once and visitors only read it, it is an
 article. If it has authors, versions, tags, ratings or a review step, it is

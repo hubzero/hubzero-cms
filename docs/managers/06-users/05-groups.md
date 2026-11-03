@@ -19,7 +19,7 @@ exist.
 > **Note:** A hub group is not an access group. Access groups are the
 > permission buckets described in [Access Groups](06-accessgroups.md), and
 > the two systems are unrelated. See the
-> [section introduction](README.md#two-different-things-are-called-a-group).
+> [section introduction](index.md#two-different-things-are-called-a-group).
 > Putting somebody in a hub group grants them nothing on the rest of the hub.
 > It gives them the group's own pages, forum, wiki and files, and stops there.
 
@@ -154,7 +154,7 @@ shell, and unpublishing it puts it out of sight without losing anything.
 ### Worked example: a group for the workshop cohort
 
 Continuing the scenario from the [section
-introduction](README.md#a-worked-example), the forty visiting participants need
+introduction](index.md#a-worked-example), the forty visiting participants need
 somewhere to work together for the two weeks of the workshop.
 
 1. Go to **Users** → **Groups** and select **New**.

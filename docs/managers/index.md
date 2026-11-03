@@ -20,12 +20,12 @@ first. Where something does not work — an inert button, a dead filter, a
 setting nothing reads — it says that too, rather than describing the intention.
 
 This book is not a field-by-field reference; that is the generated
-[configuration reference](../reference/configuration/README.md). It is not
-about writing code for a hub, which is [Developers](../developers/README.md).
+[configuration reference](../reference/configuration/index.md). It is not
+about writing code for a hub, which is [Developers](../developers/index.md).
 
 It starts from a hub that is installed and answering. Putting one on a
 server, and upgrading it later, is
-[System administrators](../sysadmins/README.md).
+[System administrators](../sysadmins/index.md).
 
 ## Where to start
 
@@ -35,7 +35,7 @@ If the hub is new, read
 covers the login and the back end's menus; the second is the ordered path
 through the choices that are hard to change later — mail, registration,
 access, the front page, and the scheduled jobs — with a link to the chapter
-covering each. [Configuring](05-configuring/README.md) has the settings
+covering each. [Configuring](05-configuring/index.md) has the settings
 screens in full.
 
 If the screens make sense one at a time but not together, read
@@ -46,8 +46,8 @@ modules, what lives in the database and what lives on disk, and what a
 manager can and cannot break.
 
 If you are taking over a running hub, start with
-[Daily maintenance](03-maintenance/README.md) and
-[Users](06-users/README.md).
+[Daily maintenance](03-maintenance/index.md) and
+[Users](06-users/index.md).
 
 If you are here because something has gone wrong, try
 [Frequently asked questions](04-faq.md) first, then the chapter for the
@@ -61,25 +61,25 @@ before that happens rather than during.
   interface and the first configuration.
 - [Integrations](02-advancedsetup.md) — connecting the hub to analytics,
   Google Drive, the rich text editor, and CAPTCHA.
-- [Daily maintenance](03-maintenance/README.md) — approving content,
+- [Daily maintenance](03-maintenance/index.md) — approving content,
   support tickets, cron jobs, notices, and tools.
 - [Frequently asked questions](04-faq.md)
-- [Configuring](05-configuring/README.md) — hub settings, components,
+- [Configuring](05-configuring/index.md) — hub settings, components,
   modules, plugins, registration, and authentication.
-- [Users](06-users/README.md) — members, access groups and levels, groups
+- [Users](06-users/index.md) — members, access groups and levels, groups
   and super groups, member import, and user notes.
 - [Menus](07-menus.md)
-- [Content](08-content/README.md) — articles and URLs.
-- [Components](09-components/README.md) — one chapter per component's
+- [Content](08-content/index.md) — articles and URLs.
+- [Components](09-components/index.md) — one chapter per component's
   administrative side, from Answers to Wishlist.
-- [Extensions](10-extensions/README.md) — the extension, module, template,
+- [Extensions](10-extensions/index.md) — the extension, module, template,
   and plugin managers.
 - [Spam](11-spam.md) — the spam filters and how to tune them.
 - [Security](security.md) — hardening the operating system and the
   CMS.
 
 Every parameter you can set is also listed in the generated
-[configuration reference](../reference/configuration/README.md).
+[configuration reference](../reference/configuration/index.md).
 
 > **Note:** Where this book gives a default, it is the value a hub installed
 > from the shipped data actually has, which is not always the default a

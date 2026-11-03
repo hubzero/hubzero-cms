@@ -9,7 +9,7 @@ modified: 2014-09-10
 -->
 # Super groups with GitLab
 
-A [super group](13-supergroups/README.md) is a directory of code on a
+A [super group](13-supergroups/index.md) is a directory of code on a
 server. Editing that code on a live hub means editing production by hand.
 The alternative the CMS supports is to keep each group's directory in a
 [GitLab](https://about.gitlab.com/) repository: developers work on a copy,

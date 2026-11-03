@@ -206,5 +206,5 @@ the loop. Responses already collected are still returned. Note that a
 listener reached through `WrappedListener` gets the event on
 `$this->event`, not as a parameter, unless the event has no arguments.
 
-The [events reference](../../reference/events/README.md) lists every event
+The [events reference](../../reference/events/index.md) lists every event
 the tree triggers and every plugin method that answers one.

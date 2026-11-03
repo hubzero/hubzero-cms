@@ -124,7 +124,7 @@ Privacy is not a setting here; it belongs to each entry.
 That is worth knowing before you decide where notes live. The postdoc's
 registered-members entries are readable by anyone with a hub account,
 and invisible to her feed subscribers. If notes must stay inside a named
-set of people, they belong in a [group](11-groups/README.md) or a
+set of people, they belong in a [group](11-groups/index.md) or a
 [project](16-projects.md), not in a member blog.
 
 ## Reading and commenting

@@ -13,7 +13,7 @@ This book is for the person who runs a hub. It covers the administrator
 interface — the back end at `/administrator` — and the settings, screens and
 extensions you reach from it. It starts from a hub that is already installed
 and answering; installing the software is
-[System administrators](../sysadmins/README.md).
+[System administrators](../sysadmins/index.md).
 
 ## What a hub manager does
 
@@ -55,20 +55,20 @@ whenever a change made in one screen turns up somewhere you did not expect.
 ## Then
 
 - If the hub is new, go on to [Advanced setup](02-advancedsetup.md) and
-  [Configuring](05-configuring/README.md). Between them they cover the global
+  [Configuring](05-configuring/index.md). Between them they cover the global
   configuration, the site template, the menus, and registration — the choices
   that are hardest to change once members have started using the hub.
 - If you are taking over a hub that is already running, go to
-  [Daily maintenance](03-maintenance/README.md) and
-  [Users](06-users/README.md).
+  [Daily maintenance](03-maintenance/index.md) and
+  [Users](06-users/index.md).
 - If you are looking for one particular screen, the
-  [Components](09-components/README.md) and
-  [Extensions](10-extensions/README.md) chapters are organised the same way
+  [Components](09-components/index.md) and
+  [Extensions](10-extensions/index.md) chapters are organised the same way
   the **Components** and **Extensions** menus are.
 
 Every setting the interface offers is also listed, component by component, in
 the generated
-[configuration reference](../reference/configuration/README.md).
+[configuration reference](../reference/configuration/index.md).
 ## The first week with a new hub
 
 What to do first with a hub that has just been installed, in the order that
@@ -81,8 +81,8 @@ and says which shipped defaults surprise people.
 It is for the person who has just been handed a new hub. It does not repeat
 what the linked chapters say; read it beside them. If you are taking over a
 hub that already has members, this is the wrong chapter — go to
-[Daily maintenance](03-maintenance/README.md) and
-[Users](06-users/README.md) instead.
+[Daily maintenance](03-maintenance/index.md) and
+[Users](06-users/index.md) instead.
 
 One example runs through the chapter, because the right answer to most of
 these questions depends on what the hub is for. Take a hub set up for a
@@ -338,7 +338,7 @@ repair, but it costs every existing member an interruption.
 
 The single most useful thing to know about this section is that *group* means
 two unrelated things, and the screens for them sit next to each other on the
-**Users** menu. [Users](06-users/README.md) explains the split; read that
+**Users** menu. [Users](06-users/index.md) explains the split; read that
 before touching either screen.
 
 A **hub group** is a community with pages, a forum, a wiki and an address at
@@ -426,7 +426,7 @@ Then set the options of the ones you kept:
 [Components](05-configuring/03-components.md) explains the **Options**
 pop-up and its **Permissions** tab, and every parameter of every component is
 listed in the generated
-[configuration reference](../reference/configuration/README.md). Some
+[configuration reference](../reference/configuration/index.md). Some
 components do nothing useful until their options are filled in.
 
 #### Check the default, do not trust it
@@ -434,7 +434,7 @@ components do nothing useful until their options are filled in.
 A component's default comes from two places that do not always agree. The
 manifest — the component's own `config/config.xml` — declares a default for
 every field, and that is the value the generated
-[configuration reference](../reference/configuration/README.md) prints. The
+[configuration reference](../reference/configuration/index.md) prints. The
 shipped install data, `core/bootstrap/Install/sql/mysql/data.sql`, separately
 seeds a row of stored parameters for each component. **The stored row wins**,
 both for what the hub does and for what the **Options** screen shows you: the
@@ -486,7 +486,7 @@ install that is a single item in **Main Menu**, of type **Featured Articles**.
 So the first-week job is to replace it:
 
 1. Write the page you want as an article — **Content > Article Manager**,
-   **New**. See [Content](08-content/README.md).
+   **New**. See [Content](08-content/index.md).
 2. **Menus > Main Menu**, then **New**.
 3. Set **Menu Item Type** to **Articles > Single Article** and pick the
    article.
@@ -569,9 +569,9 @@ it is offline or not.
 
 - [Integrations](02-advancedsetup.md) — analytics, Google Drive, the rich
   text editor, and CAPTCHA.
-- [Configuring](05-configuring/README.md) — the rest of the global
+- [Configuring](05-configuring/index.md) — the rest of the global
   configuration, and the per-extension options.
-- [Daily maintenance](03-maintenance/README.md) — the work the hub needs
+- [Daily maintenance](03-maintenance/index.md) — the work the hub needs
   once people are using it.
 - [Spam](11-spam.md) — worth reading before the hub is public, not after.
 ## How a hub fits together
@@ -732,13 +732,13 @@ a backup has to include:
   the thing to find out about before an upgrade, not after.
 
 So: back up the database and `app/`, together, at the same moment.
-[Daily maintenance](03-maintenance/README.md) covers the rest of the
+[Daily maintenance](03-maintenance/index.md) covers the rest of the
 running-hub routine.
 
 ### The four kinds of extension
 
 Everything the hub puts on a page comes from an extension, and there are four
-kinds. [Extensions](10-extensions/README.md) explains each one properly,
+kinds. [Extensions](10-extensions/index.md) explains each one properly,
 including where they live and which screen manages them; one line each here
 so the words mean something in the meantime:
 
@@ -895,7 +895,7 @@ go and look.
   by menu.
 - [The first week with a new hub](#the-first-week-with-a-new-hub) — the ordered path through the
   decisions a new hub needs.
-- [Extensions](10-extensions/README.md) — the four kinds, in full.
+- [Extensions](10-extensions/index.md) — the four kinds, in full.
 - [Application structure](../developers/03-foundation/01-structure.md) —
   the same picture with the code paths, for readers who want the detail.
 ## The administrator interface
@@ -978,7 +978,7 @@ for any administrator URL that names no component. It has no content of its
 own: it renders every administrator module published in the `cpanel` position,
 one collapsible panel per module. What your dashboard shows therefore depends
 entirely on which modules the hub publishes there. [Daily
-maintenance](03-maintenance/README.md) describes the panels a working hub
+maintenance](03-maintenance/index.md) describes the panels a working hub
 usually adds.
 
 ### The menus
@@ -1028,8 +1028,8 @@ back.
 
 - [Advanced setup](02-advancedsetup.md) — the site template, menus and
   modules.
-- [Configuring](05-configuring/README.md) — the global configuration and the
+- [Configuring](05-configuring/index.md) — the global configuration and the
   per-extension options.
-- [Users](06-users/README.md) — members, access groups, and access levels.
-- [Daily maintenance](03-maintenance/README.md) — the work a running hub
+- [Users](06-users/index.md) — members, access groups, and access levels.
+- [Daily maintenance](03-maintenance/index.md) — the work a running hub
   needs every day.

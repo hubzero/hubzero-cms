@@ -28,9 +28,9 @@ overview all at once.
 
 | You want | Build |
 |---|---|
-| A screen with records behind it, and a URL | a [component](../09-components/README.md) |
+| A screen with records behind it, and a URL | a [component](../09-components/index.md) |
 | A block that appears on pages a component already draws | a module |
-| Something to happen when a record is saved | a [plugin](../10-plugins/README.md) |
+| Something to happen when a record is saved | a [plugin](../10-plugins/index.md) |
 | A form that posts and acts on the result | a component; the module renders the form and posts to it |
 
 A module has no router, no tasks, and no request of its own. The moment you
@@ -42,7 +42,7 @@ want it to handle a submission you have outgrown it — see
 The pages that follow build one module: **`mod_upcoming_bookings`**, a sidebar
 block listing the current user's next few instrument reservations. It reads
 `Components\Bookings\Models\Reservation` from `com_bookings`, the
-instrument-booking component the [Components](../09-components/README.md)
+instrument-booking component the [Components](../09-components/index.md)
 section builds, and stores nothing of its own.
 
 That is the ordinary shape of a module: a few lines of query against somebody
@@ -100,7 +100,7 @@ it. Both of these have to be true before anything renders:
 1. **A row in `#__extensions`.** A migration writes it. Until it exists the
    Module Manager will not offer your module at all — of the four extension
    kinds this is the strictest, and the
-   [extensions chapter](../07-extensions/README.md#how-an-extension-is-found)
+   [extensions chapter](../07-extensions/index.md#how-an-extension-is-found)
    compares them. See [Migrations](01-migrations.md).
 2. **An instance assigned to a position.** An administrator creates an
    *instance* in the Module Manager, gives it a title, picks a template

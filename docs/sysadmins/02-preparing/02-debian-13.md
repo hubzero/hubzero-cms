@@ -14,7 +14,7 @@ web server ready to serve it. It uses PHP 8.2 from Ondřej Surý's archive, Debi
 The PHP 8.2 packages below were installed on Debian 13 and every extension the hub needs was present, and a hub was installed against MariaDB 11.8. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

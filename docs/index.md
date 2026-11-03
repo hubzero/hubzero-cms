@@ -23,22 +23,22 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 
 ## Run a hub
 
-- [System administrators](sysadmins/README.md) — putting a hub on a
+- [System administrators](sysadmins/index.md) — putting a hub on a
   server and keeping it current: installing it, and upgrading it.
-- [Hub managers](managers/README.md) — administering a hub once it runs:
+- [Hub managers](managers/index.md) — administering a hub once it runs:
   configuration, members and access, content, extensions, maintenance, and
   every component's administrative side.
 
 ## Use a hub
 
-- [Hub users](users/README.md) — profiles, groups, projects, publications,
+- [Hub users](users/index.md) — profiles, groups, projects, publications,
   resources, the wiki, forums, courses, and the other features a hub offers.
-- [Tools](tools/README.md) — the tool platform: publishing simulation tools,
+- [Tools](tools/index.md) — the tool platform: publishing simulation tools,
   invoke scripts, the submit command, Jupyter, and tool administration.
 
 ## Build on Hubzero
 
-- [Developers](developers/README.md) — extending the CMS: the framework
+- [Developers](developers/index.md) — extending the CMS: the framework
   foundation, components, plugins, modules, templates, the database layer,
   and the REST API.
 - [Contributing](developers/18-contributing.md) — sending a change back, and
@@ -47,7 +47,7 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 
 ## Reference
 
-- [Reference](reference/README.md) — generated references: configuration
+- [Reference](reference/index.md) — generated references: configuration
   parameters, REST endpoints, muse console commands, and events.
 - [Release notes](developers/01-getting-started/01-releasenotes.md) — how
   Hubzero is released, and where to find what changed.

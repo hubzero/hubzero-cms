@@ -95,7 +95,7 @@ Copy**, **Cancel**, and **Help**. **Save** keeps you on the screen; **Save
 & Close** returns to the list.
 
 Every module's parameters are listed in the generated
-[configuration reference](../../reference/configuration/README.md).
+[configuration reference](../../reference/configuration/index.md).
 
 > **Tip:** The Module Manager also adds and removes modules, not just
 > configures them. See [Modules manager](../10-extensions/01-modules.md).

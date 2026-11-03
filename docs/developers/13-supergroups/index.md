@@ -28,8 +28,8 @@ Reach for something else when that is not the requirement:
 |---|---|
 | A team space with a forum, wiki, blog, calendar and files | an ordinary hub group — it already has all of that |
 | A group whose pages may contain PHP or `<script>`, and nothing more | an ordinary group with **Trusted content** turned on |
-| A new area of the hub, not attached to a group | a [component](../09-components/README.md) |
-| A different look for the whole hub | a [template](../11-templates/README.md) |
+| A new area of the hub, not attached to a group | a [component](../09-components/index.md) |
+| A different look for the whole hub | a [template](../11-templates/index.md) |
 
 A super group costs somebody a template to write and maintain. If nobody on
 the team can do that, the group gets a harder version of what it already had.

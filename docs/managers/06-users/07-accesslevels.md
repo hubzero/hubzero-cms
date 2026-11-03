@@ -136,7 +136,7 @@ to make a variant of an existing audience.
 ### Worked example: a viewing level for the workshop
 
 Continuing the scenario from the [section
-introduction](README.md#a-worked-example), the `Workshop 2026` access group
+introduction](index.md#a-worked-example), the `Workshop 2026` access group
 already exists but grants nothing. This gives it something to grant.
 
 1. Go to **Users** → **Access Levels** and select **New**.

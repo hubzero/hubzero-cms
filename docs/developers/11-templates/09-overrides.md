@@ -40,7 +40,7 @@ surprise when someone changes the default style and half the wording reverts.
 The root is `App::get('template')->path . '/html'` — the active template's
 directory plus `html`. That directory is `app/templates/{name}` when it
 exists and `core/templates/{name}` otherwise; see
-[the book's introduction](README.md#where-templates-live).
+[the book's introduction](index.md#where-templates-live).
 
 Site and administrator templates are separate. An override of an admin screen
 goes under the admin template's `html` directory, not the site template's.

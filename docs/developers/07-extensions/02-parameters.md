@@ -25,7 +25,7 @@ liability with a form field attached.
 This page is about declaring them. [Config](../05-basics/03-config.md) covers
 reading them at runtime — `Component::params()`, `$this->params`, and the
 `Registry` methods. Every parameter the shipped extensions declare is listed
-in the [configuration reference](../../reference/configuration/README.md).
+in the [configuration reference](../../reference/configuration/index.md).
 
 ## Where the declaration goes
 

@@ -194,7 +194,7 @@ A logged-in reader's own active tokens are listed on those pages, so the
 examples can be tried as they are read. See
 [REST API](../../developers/16-api.md) in the developers book for how the
 documentation is produced and how to add to it, and the
-[API reference](../../reference/api/README.md) for the same endpoint list in
+[API reference](../../reference/api/index.md) for the same endpoint list in
 these pages.
 
 ### `/developer/api/applications`

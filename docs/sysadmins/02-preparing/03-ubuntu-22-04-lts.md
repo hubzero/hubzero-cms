@@ -14,7 +14,7 @@ web server ready to serve it. It uses PHP 8.2 from Ondřej Surý's PPA, Ubuntu's
 The PHP 8.2 packages below were installed on Ubuntu 22.04 and every extension the hub needs was present. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04 LTS. The hub was installed against MariaDB 10.11 and 11.8; 10.6, which Ubuntu 22.04 ships, was not tried.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

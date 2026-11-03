@@ -43,7 +43,7 @@ explains what the options it sets actually do.
   that still run Rappture tools. Rappture is deprecated; do not start a new
   tool with it.
 
-Related reading: [Jupyter notebooks as tools](../10-jupyter-notebooks/README.md)
+Related reading: [Jupyter notebooks as tools](../10-jupyter-notebooks/index.md)
 for publishing a notebook in the first place, and
 [registering a tool](../../../managers/03-maintenance/02-tools.md) for the
 publishing option that marks a tool as a web application.

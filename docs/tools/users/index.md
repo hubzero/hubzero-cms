@@ -62,10 +62,10 @@ the current path on most hubs.
 
 Once you have registered a tool, the detail lives elsewhere in this book:
 
-- [Tool developers](../developers/README.md) — repository layout, invoke
+- [Tool developers](../developers/index.md) — repository layout, invoke
   scripts, tool paths and environment variables, moving files in and out of a
   session, the `submit` command for cluster jobs, and
-  [Jupyter notebooks as tools](../developers/10-jupyter-notebooks/README.md).
+  [Jupyter notebooks as tools](../developers/10-jupyter-notebooks/index.md).
 - [Tool administrators](../administrators.md) — what the hub's staff do
   on their side: tool dependencies, the directory parameter whitelist, and the
   Anaconda environments behind Jupyter kernels.

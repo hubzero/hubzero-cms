@@ -205,8 +205,8 @@ whatever you name.
 
 A plugin answering it is one class in
 `app/plugins/bookings/notify/notify.php` with its own migration. See
-[Events](../03-foundation/04-events.md), [Plugins](../10-plugins/README.md) and
-the [events reference](../../reference/events/README.md).
+[Events](../03-foundation/04-events.md), [Plugins](../10-plugins/index.md) and
+the [events reference](../../reference/events/index.md).
 
 The failure here is quiet in the usual way: a plugin whose directory exists
 but whose `#__extensions` row does not is never loaded, so the event fires,

@@ -181,7 +181,7 @@ def main() -> int:
     for short, count in index:
         lines.append(f"| [{short}]({short}.md) | {count} |")
     lines.append("")
-    (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8")
+    (OUT / "index.md").write_text("\n".join(lines), encoding="utf-8")
     print(f"{len(index)} component pages, {sum(c for _, c in index)} endpoints -> {OUT.relative_to(ROOT)}")
     return 0
 

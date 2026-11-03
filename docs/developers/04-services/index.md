@@ -85,4 +85,4 @@ list is its own `aliases.php`.
 - [Server](06-server.md) — serving a file off disk as a download.
 
 Configuration, requests, responses, language, dates and users are covered in
-[the basics](../05-basics/README.md).
+[the basics](../05-basics/index.md).

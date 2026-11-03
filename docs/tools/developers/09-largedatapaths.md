@@ -60,7 +60,7 @@ tool reads them as ordinary paths. Nothing is copied into the session and
 nothing counts against the member's home directory quota.
 
 For the other directories a tool session sees, see
-[Tool paths](07-toolpaths/README.md).
+[Tool paths](07-toolpaths/index.md).
 
 ## Launching a tool at a large data path
 

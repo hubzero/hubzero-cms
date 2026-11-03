@@ -100,7 +100,7 @@ What a hub offers beyond that varies. These are the parts most hubs turn on.
 
 ### Groups
 
-A [group](11-groups/README.md) is a shared space, private or public. Each one can
+A [group](11-groups/index.md) is a shared space, private or public. Each one can
 have its own pages, membership roles, announcements, blog, calendar,
 collections, forum, wiki, and file area. Joining an existing group is usually
 the fastest way to see what a hub is actually used for.

@@ -19,7 +19,7 @@ way on every system.
 Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.
 
 For another system, or help choosing one, see
-[Preparing the server](README.md).
+[Preparing the server](index.md).
 
 ## What you need
 

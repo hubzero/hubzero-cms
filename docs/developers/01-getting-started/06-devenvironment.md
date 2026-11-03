@@ -34,7 +34,7 @@ Everything here is in the tree and you can read it:
 Apart from the Docker setup for development, there is no Vagrantfile, no
 provisioning script, and no `make`-style setup target anywhere in the tree.
 Nothing here installs Apache, PHP, or MySQL on a machine; for a server, see
-the [System administrators](../../sysadmins/README.md) book.
+the [System administrators](../../sysadmins/index.md) book.
 
 The `.travis.yml` at the root is left over from Travis CI. It declares PHP 8.2
 and 8.3 and calls `core/bin/php_tests.sh` on the changed files. Nothing runs
@@ -338,4 +338,4 @@ syntax check in one call, the same pair the old Travis configuration ran.
 
 ## Next
 
-[Foundation](../03-foundation/README.md) covers how a request is served.
+[Foundation](../03-foundation/index.md) covers how a request is served.

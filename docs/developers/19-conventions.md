@@ -33,7 +33,7 @@ which way to follow.
 
 - [Contributions](18-contributing.md#contributions) — the process a change goes through.
 - [Working on the documentation](18-contributing.md#working-on-the-documentation) — writing these pages.
-- [Developers](README.md) — how the pieces the conventions
+- [Developers](index.md) — how the pieces the conventions
   govern actually work.
 
 ## PHP Coding Style

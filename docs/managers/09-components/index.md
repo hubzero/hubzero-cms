@@ -15,12 +15,12 @@ Every component in this book is reached from the **Components** menu in the
 administrator interface. Each has an **Options** button that opens its
 configuration and a **Permissions** tab that says which access groups may
 use it; the generated
-[configuration reference](../../reference/configuration/README.md) lists
+[configuration reference](../../reference/configuration/index.md) lists
 every option of every component in one place.
 
 The extension managers themselves — modules, plugins and templates — are
-covered in [Extensions](../10-extensions/README.md), and the article, category
-and media managers in [Content](../08-content/README.md), rather than here.
+covered in [Extensions](../10-extensions/index.md), and the article, category
+and media managers in [Content](../08-content/index.md), rather than here.
 
 ## Which of these does your hub actually use?
 
@@ -138,7 +138,7 @@ poll asks one question.
 
 | Component | What it does |
 |---|---|
-| [Search](31-search/README.md) | The Solr search index: installing it, filling it, and tuning what it returns. |
+| [Search](31-search/index.md) | The Solr search index: installing it, filling it, and tuning what it returns. |
 | [Usage](37-usage.md) | Traffic and tool-session reports. |
 | [Cron](12-cron.md) | Scheduled jobs and the plugins that run them. |
 | [Activity](01-activity.md) | The hub-wide activity log and the one chart that reports on it. |
@@ -159,5 +159,5 @@ poll asks one question.
 | [DataViewer](13-dataviewer.md) | Renders a database table as a searchable spreadsheet. |
 
 Members and access groups have their own chapters under
-[Users](../06-users/README.md), and the hub's global settings are in
-[Configuring](../05-configuring/README.md).
+[Users](../06-users/index.md), and the hub's global settings are in
+[Configuring](../05-configuring/index.md).

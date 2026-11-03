@@ -192,5 +192,5 @@ The skeleton also ships `template/error.php` and `assets/css/error.css`.
 
 > **Note:** That picture predates the `macros/` and `migrations/`
 > directories, which the skeleton now creates as well. See
-> [the section overview](README.md#the-group-directory) for the current
+> [the section overview](index.md#the-group-directory) for the current
 > layout.

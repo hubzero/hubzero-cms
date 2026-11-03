@@ -145,6 +145,6 @@ code on the `Reservation` model where both can call it.
 Nothing stops a module from carrying models, helpers, or a `views` directory,
 and a few core modules do. But a module that has grown a controller and
 several screens is a component wearing a disguise; see
-[Components](../09-components/README.md). `mod_upcoming_bookings` stays small
+[Components](../09-components/index.md). `mod_upcoming_bookings` stays small
 precisely because everything it knows about a reservation lives in
 `com_bookings`: the module queries a model and renders a list.

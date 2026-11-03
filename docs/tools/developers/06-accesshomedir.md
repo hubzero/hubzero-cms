@@ -25,7 +25,7 @@ itself offers for managing what is in it.
 
 In a tool session your home directory is `$HOME`, which takes the form
 `/home/<hubname>/<username>`. Session and results directories are created
-underneath it; see [Tool paths](07-toolpaths/README.md).
+underneath it; see [Tool paths](07-toolpaths/index.md).
 
 The web server reaches the same files through a separate mount. Both
 [`com_tools`](../../../core/components/com_tools/site/controllers/storage.php)
@@ -43,7 +43,7 @@ will not.
 | [filexfer](#filexfer) | Moving a file in or out while a tool session is running. |
 
 If you develop with Jupyter, its own upload and download controls reach the same
-home directory. See [Jupyter Notebooks](10-jupyter-notebooks/README.md).
+home directory. See [Jupyter Notebooks](10-jupyter-notebooks/index.md).
 
 ## Managing what is there
 

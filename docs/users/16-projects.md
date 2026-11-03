@@ -35,7 +35,7 @@ produce several publications, each publication can have several versions,
 and the project carries on after every release. Nothing you put in a project
 is published by putting it there; publishing is a deliberate, separate act.
 
-> **Note:** A project is not a [group](11-groups/README.md). A group is a
+> **Note:** A project is not a [group](11-groups/index.md). A group is a
 > standing community — a lab, a course, a research centre — with its own
 > pages, forum and membership, and it outlasts any one piece of work. A
 > project is one body of work, a small team, and a file area. A group can own

@@ -103,7 +103,7 @@ Thirty-seven folders ship with the platform, holding 332 plugins.
 | `xmessage` | 3 | Delivery channels for internal messages |
 
 For the parameters each plugin exposes, see
-[the generated plugin reference](../../reference/configuration/plugins/README.md).
+[the generated plugin reference](../../reference/configuration/plugins/index.md).
 
 > **Note:** A plugin also has to be enabled as an *extension* before its row
 > matters. The Extension Manager and the Plug-in Manager both write the same

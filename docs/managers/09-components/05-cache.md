@@ -195,5 +195,5 @@ Both screens also have REST equivalents — `GET /api/cache/list`,
   is a database table refreshed from
   [Language Manager](20-languages.md).
 - The Solr index, which has its own rebuild in
-  [Search](31-search/README.md).
+  [Search](31-search/index.md).
 - Anything the web server or a CDN is caching in front of the hub.

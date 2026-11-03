@@ -8,16 +8,16 @@ Generated references, rebuilt from the source tree so they cannot drift
 from the code. Each is produced by a script under `docs/_tools/`, and the
 Pages workflow fails if the committed pages differ from a fresh run.
 
-- [Configuration](configuration/README.md) — every parameter in every
+- [Configuration](configuration/index.md) — every parameter in every
   component's `config/config.xml` and every plugin manifest, with its
   label, type, default, options, and description resolved from the
   language files.
-- [REST API](api/README.md) — every endpoint under `/api/`, from the
+- [REST API](api/index.md) — every endpoint under `/api/`, from the
   `@apiMethod`, `@apiUri`, and `@apiParameter` docblock tags the API
   explorer in `com_developer` also reads.
 - [Muse](muse.md) — the console commands and their tasks, from the
   `@museDescription` docblocks.
-- [Events](events/README.md) — every event the CMS fires through
+- [Events](events/index.md) — every event the CMS fires through
   `Event::trigger()`, with its call sites, arguments, and the plugins that
   listen.
 
@@ -28,5 +28,5 @@ for g in config muse events api; do python3 docs/_tools/gen_${g}_reference.py; d
 python3 gh-pages/build_site.py
 ```
 
-The narrative counterparts live in the [Developers](../developers/README.md)
+The narrative counterparts live in the [Developers](../developers/index.md)
 book.

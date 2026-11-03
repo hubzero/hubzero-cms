@@ -98,7 +98,7 @@ notebook. Python is the easier language for this, because of the widget
 libraries, and a notebook written in another language can still have its
 interface written in Python.
 
-[Jupyter notebooks](10-jupyter-notebooks/README.md) covers deployment styles
+[Jupyter notebooks](10-jupyter-notebooks/index.md) covers deployment styles
 and the invoke script that selects them.
 
 ## Sim2L

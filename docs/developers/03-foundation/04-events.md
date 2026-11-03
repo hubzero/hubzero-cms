@@ -164,7 +164,7 @@ Two shapes are worth telling apart before you settle on one:
 ## Finding the events that already exist
 
 Do not read the tree for this. The
-[events reference](../../reference/events/README.md) is generated from every
+[events reference](../../reference/events/index.md) is generated from every
 `Event::trigger()` call in the source and lists, per group, each event, the
 places that fire it, and the plugins that answer it. It also shows which
 events are declared by a plugin but fired by nothing, and which are fired

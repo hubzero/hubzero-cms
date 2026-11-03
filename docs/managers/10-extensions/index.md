@@ -23,7 +23,7 @@ four administrator screens that manage extensions, all reached from the
 
 A fifth entry, **Language Manager**, opens `com_languages`. It has its own
 chapter, [Language Manager](../09-components/20-languages.md), among the
-[component chapters](../09-components/README.md).
+[component chapters](../09-components/index.md).
 
 ## This section, and the one it is confused with
 
@@ -32,7 +32,7 @@ a module and putting it in a template position. Turning a plugin on. Choosing
 the template the site renders in. Adding a hub's own code from a git
 repository.
 
-[Configuring](../05-configuring/README.md) is about **values**: the settings
+[Configuring](../05-configuring/index.md) is about **values**: the settings
 inside an extension once it exists and is switched on.
 
 Two screens carry both jobs, and that is where the confusion starts. The

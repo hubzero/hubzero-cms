@@ -66,7 +66,7 @@ everywhere: an entry point, an XML manifest named after the extension, a
 directory.
 
 A component is the one with more than one face. Laid out for `com_bookings`,
-the instrument-booking component the [component chapters](../09-components/README.md)
+the instrument-booking component the [component chapters](../09-components/index.md)
 build:
 
 ```

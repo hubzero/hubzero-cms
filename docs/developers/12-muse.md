@@ -322,7 +322,7 @@ it prompts for what it needs, so there is no syntax to remember.
 
 The [`muse group`](../reference/muse.md#muse-group) tasks are wrappers on
 existing commands, run in a super group's context and against its database.
-See [Super groups](13-supergroups/README.md).
+See [Super groups](13-supergroups/index.md).
 
 ### Log
 

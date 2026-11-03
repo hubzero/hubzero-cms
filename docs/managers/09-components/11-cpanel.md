@@ -19,7 +19,7 @@ two lists about a content type most hubs barely use. It is not broken and it
 is not hiding anything. It is simply the position's shipped contents, and you
 are free to replace them.
 
-[Daily maintenance](../03-maintenance/README.md) describes the panels
+[Daily maintenance](../03-maintenance/index.md) describes the panels
 themselves — what each one counts and where its numbers link to. This chapter
 covers the component and how you change what appears.
 
@@ -37,7 +37,7 @@ The component has one screen and five files. Its layout,
 [`views/cpanel/tmpl/default.php`](../../../core/components/com_cpanel/admin/views/cpanel/tmpl/default.php),
 asks the module loader for everything published in the `cpanel` position,
 renders each one, and wraps it in a slider panel — the loop is quoted in
-[Daily maintenance](../03-maintenance/README.md). The open or closed state of
+[Daily maintenance](../03-maintenance/index.md). The open or closed state of
 each panel is remembered in a cookie, per administrator.
 
 The Control Panel is also the fallback screen for the whole administrator

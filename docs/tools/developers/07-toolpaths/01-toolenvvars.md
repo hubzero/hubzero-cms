@@ -38,6 +38,6 @@ for you.
 
 Rappture writes its results to `RESULTSDIR`. Rappture is deprecated; on most
 hubs a Jupyter notebook is the current path. See
-[Jupyter Notebooks](../10-jupyter-notebooks/README.md), whose
+[Jupyter Notebooks](../10-jupyter-notebooks/index.md), whose
 [environment variables page](../10-jupyter-notebooks/04-environment-variables.md)
 covers the same variables from a notebook.

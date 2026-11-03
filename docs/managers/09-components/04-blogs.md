@@ -39,7 +39,7 @@ compete with [Answers](02-answers.md) or the [Forum](17-forum.md) at all: a
 post has one author and comments underneath, not a conversation.
 
 **What it is not:** it is not the article manager. Articles in
-[Content](../08-content/README.md) build the hub's static pages — About, Policies,
+[Content](../08-content/index.md) build the hub's static pages — About, Policies,
 Contact. Blog posts are a dated stream with their own listing at `/blog` and
 their own feed. Managers reach for the wrong one about half the time.
 

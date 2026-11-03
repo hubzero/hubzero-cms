@@ -29,8 +29,8 @@ Reach for something narrower when the change is narrower:
 |---|---|
 | The whole hub to look like an institution's site | a template |
 | One component's markup changed, everything else left alone | an [output override](09-overrides.md) inside your template |
-| A block of content in a sidebar | a [module](../08-modules/README.md) |
-| A screen with records behind it | a [component](../09-components/README.md) |
+| A block of content in a sidebar | a [module](../08-modules/index.md) |
+| A screen with records behind it | a [component](../09-components/index.md) |
 
 An override lives inside a template, so the two are not really alternatives:
 you get a template first, then put overrides in it.
@@ -39,7 +39,7 @@ you get a template first, then put overrides in it.
 
 One template runs through this section: **`northgate`**, the site template for
 Northgate University, a partner institution on a hub whose main application is
-[`com_bookings`](../09-components/README.md) — the component that books a lab's
+[`com_bookings`](../09-components/index.md) — the component that books a lab's
 instruments.
 
 It is deliberately not built from nothing. `northgate` is a copy of the shipped

@@ -256,7 +256,7 @@ def main() -> int:
         lines.append(f"| [{group}](plugins/{group}.md) | {plugins} | {total} |")
     lines.append("")
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8")
+    (OUT / "index.md").write_text("\n".join(lines), encoding="utf-8")
     how_to_read = (
         "\n## How to read these tables\n\n"
         "- **Default** is the value written in the manifest, which is what a hub "
@@ -271,14 +271,14 @@ def main() -> int:
         "shipped settings are stored and never used again; those are recorded in "
         "the chapter for the extension.\n"
     )
-    (OUT / "components" / "README.md").write_text(
+    (OUT / "components" / "index.md").write_text(
         HEADER.format(source="core/components/*/config/config.xml") + "# Component options\n\n"
         "One page per component with a `config/config.xml`, listing every parameter with its label, "
         "type, default, and description. These are the settings behind each component's **Options** "
         "button in the administrator interface.\n" + how_to_read,
         encoding="utf-8",
     )
-    (OUT / "plugins" / "README.md").write_text(
+    (OUT / "plugins" / "index.md").write_text(
         HEADER.format(source="core/plugins/*/*/*.xml") + "# Plugin parameters\n\n"
         "One page per plugin group, listing every plugin in the group and its parameters. These are "
         "the settings behind each plugin's row under **Extensions** > **Plug-in Manager**.\n" + how_to_read,

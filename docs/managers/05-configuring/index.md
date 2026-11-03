@@ -18,7 +18,7 @@ This section is about **values**. What is the hub called, which address does
 its mail come from, how long does a session last, what does the registration
 form ask for, how many items does a module list.
 
-[Extensions](../10-extensions/README.md) is about **which extensions exist
+[Extensions](../10-extensions/index.md) is about **which extensions exist
 and where they sit**: creating a module and putting it in a template position,
 enabling and disabling a plugin, choosing the site's template, adding a hub's
 own code from a git repository.
@@ -69,5 +69,5 @@ wrong thing.
 - [External authenticators](07-extauth.md)
 
 Every parameter that any component or plugin manifest declares is listed in
-the generated [configuration reference](../../reference/configuration/README.md).
+the generated [configuration reference](../../reference/configuration/index.md).
 These chapters explain the screens; the reference is the exhaustive list.

@@ -80,4 +80,4 @@ panels on the right.
 The toolbar has **Save**, **Save & Close**, **Close**, and **Help**.
 
 Every plugin's parameters are listed by group in the generated
-[configuration reference](../../reference/configuration/README.md#plugin-groups).
+[configuration reference](../../reference/configuration/index.md#plugin-groups).

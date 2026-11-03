@@ -27,7 +27,7 @@ new one.
 > `jupyter`. See
 > [registering a tool](../../../managers/03-maintenance/02-tools.md) for
 > that form, and
-> [Jupyter notebooks as tools](../10-jupyter-notebooks/README.md) for
+> [Jupyter notebooks as tools](../10-jupyter-notebooks/index.md) for
 > publishing a notebook in the first place.
 
 ## Two ways to call it

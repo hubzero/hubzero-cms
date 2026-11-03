@@ -190,7 +190,7 @@ the `groups` column before you upload it.
 ## An import from start to finish
 
 The rest of this page follows one job through. It is the scenario from the
-[section introduction](README.md#a-worked-example): forty participants from a
+[section introduction](index.md#a-worked-example): forty participants from a
 partner institution need accounts before a workshop opens, and their institution
 has sent a spreadsheet of names and email addresses.
 

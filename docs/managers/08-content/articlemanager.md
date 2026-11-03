@@ -37,7 +37,7 @@ Pages members edit themselves are wiki pages. A group's own pages belong to
 the group. Questions and answers, forum threads, blog entries, support
 tickets, knowledge base entries and courses each have their own component,
 their own permissions, and their own chapter in
-[Components](../09-components/README.md). Those components hold far more than
+[Components](../09-components/index.md). Those components hold far more than
 text — authorship, versions, tags, ratings, review — and an article holds
 none of it.
 

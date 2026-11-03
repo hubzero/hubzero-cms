@@ -34,12 +34,12 @@ resource page.
 | [Tool repository structure](01-toolrepostructure.md) | The directory layout the hub expects, and starter invoke scripts |
 | [Launching tools with invoke scripts](03-invoke.md) | The invoke script, its options, and what the CMS hands it |
 | [Combining tools in one session](04-nanowhim.md) | Running several applications on one session desktop |
-| [Accessing outside computing resources](05-grid/README.md) | Sending work from a session to a cluster with `submit` |
+| [Accessing outside computing resources](05-grid/index.md) | Sending work from a session to a cluster with `submit` |
 | [Accessing your home directory](06-accesshomedir.md) | `sftp`, WebDAV, and `filexfer` |
-| [Tool paths](07-toolpaths/README.md) | Environment variables and where a tool reads and writes files |
+| [Tool paths](07-toolpaths/index.md) | Environment variables and where a tool reads and writes files |
 | [Importing and exporting user files](08-fileinout.md) | `importfile` and `exportfile` |
 | [Large data paths](09-largedatapaths.md) | Storage for data too big for a home directory |
-| [Jupyter notebooks](10-jupyter-notebooks/README.md) | Publishing a notebook as a tool |
+| [Jupyter notebooks](10-jupyter-notebooks/index.md) | Publishing a notebook as a tool |
 
 ## The other two sides
 

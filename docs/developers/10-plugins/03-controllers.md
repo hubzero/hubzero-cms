@@ -193,7 +193,7 @@ ends up using:
 | `system.onAfterRender` | After rendering, before the response is sent. |
 
 For everything else, read the
-[events reference](../../reference/events/README.md). It is generated from the
+[events reference](../../reference/events/index.md). It is generated from the
 source tree and covers 279 events across 41 groups, with the call sites that
 fire each one, the arguments they pass, and the plugins that already listen —
 which is both the list of what you can answer and the set of worked examples

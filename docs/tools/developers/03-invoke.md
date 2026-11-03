@@ -291,7 +291,7 @@ tool. Where several are given, the first wins.
 not use Rappture; `-w headless` says it needs no window manager, since the
 notebook is served to the browser rather than drawn on an X display.
 `anaconda-X` stands for whichever Anaconda environment package your hub
-provides. [Jupyter notebooks](10-jupyter-notebooks/README.md) covers
+provides. [Jupyter notebooks](10-jupyter-notebooks/index.md) covers
 `start_jupyter` and its display modes.
 
 ### A Linux GUI tool

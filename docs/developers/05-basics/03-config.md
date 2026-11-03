@@ -80,7 +80,7 @@ and `foreach` work on it.
 > rest of this request and nothing else. The administrator's Global
 > Configuration screen is what writes the files back.
 
-The [configuration reference](../../reference/configuration/README.md) lists
+The [configuration reference](../../reference/configuration/index.md) lists
 every option the tree declares.
 
 ## Component configuration

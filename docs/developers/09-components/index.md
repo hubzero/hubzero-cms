@@ -23,9 +23,9 @@ Reach for something smaller when it does not:
 | You want | Build |
 |---|---|
 | A screen with records behind it | a component |
-| Something to happen when a record is saved, a user logs in, a group page is drawn | a [plugin](../10-plugins/README.md) |
-| A block in the sidebar of pages someone else owns | a [module](../08-modules/README.md) |
-| A different look for pages that already exist | a [template](../11-templates/README.md) or a [template override](../11-templates/09-overrides.md) |
+| Something to happen when a record is saved, a user logs in, a group page is drawn | a [plugin](../10-plugins/index.md) |
+| A block in the sidebar of pages someone else owns | a [module](../08-modules/index.md) |
+| A different look for pages that already exist | a [template](../11-templates/index.md) or a [template override](../11-templates/09-overrides.md) |
 
 A component that only ever renders a box on other people's pages is a module
 wearing the wrong clothes, and it will fight the router for a URL it does not

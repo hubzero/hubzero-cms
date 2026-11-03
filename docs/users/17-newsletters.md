@@ -19,7 +19,7 @@ interface. Everything on this page is about the receiving end: reading
 past issues, getting new ones by email, and stopping them. If you want
 to publish something yourself, you want a [blog](05-blog.md); if you
 want to reach one group, a group's own announcements do that, where the
-hub has that plugin enabled; see [Groups](11-groups/README.md).
+hub has that plugin enabled; see [Groups](11-groups/index.md).
 
 Past issues are readable on the hub at `/newsletter`, and you can have
 new ones mailed to you by joining a mailing list. You do not need an

@@ -22,7 +22,7 @@ loudly.
 Your templates go in `app/templates/{name}`. The templates that ship with the
 CMS are in `core/templates/{name}` and are replaced on upgrade, so do not edit
 them in place — copy one into `app/templates` instead, as the
-[overview](README.md#where-to-start) describes. Nothing under `app/` is part of
+[overview](index.md#where-to-start) describes. Nothing under `app/` is part of
 the distribution.
 
 [`Hubzero\Template\Loader`](../../../core/libraries/Hubzero/Template/Loader.php)

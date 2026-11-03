@@ -232,7 +232,7 @@ saying the page is awaiting approval. The page shows **Pending Approval** in
 > the server. See
 > [Super Groups](../../managers/06-users/08-supergroups.md) for what the
 > status gives a group and
-> [Super Groups](../../developers/13-supergroups/README.md) in the developer
+> [Super Groups](../../developers/13-supergroups/index.md) in the developer
 > book for the templating itself.
 
 ## The group calendar

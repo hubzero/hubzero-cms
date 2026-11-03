@@ -225,7 +225,7 @@ alias, a resource by its ID, a group by its name. Those pages work. They are
 simply unadvertised, and their addresses are whatever the router produces
 rather than anything you chose. [URLs](08-content/urls.md) has the rules for
 articles; each component's own chapter under
-[Components](09-components/README.md) covers the rest.
+[Components](09-components/index.md) covers the rest.
 
 **A menu item can change a page it did not send you to.** Because the match
 is on a prefix, an item with alias `resources` becomes the active item for

@@ -15,7 +15,7 @@ Write it first. A module is the one extension kind that cannot be published at
 all without its row — a component with no row still serves its own pages, a
 plugin at least fails at a known event, but an unregistered module simply is
 not in the Module Manager's list of things you can create.
-[How an extension is found](../07-extensions/README.md#how-an-extension-is-found)
+[How an extension is found](../07-extensions/index.md#how-an-extension-is-found)
 sets the four kinds side by side.
 
 ## Where migrations live

@@ -27,7 +27,7 @@ screen, a model and a router: a component.
 | One page, no URLs below it | a [PHP page](04-php_pages.md) |
 | A snippet inside editor-written prose | a [macro](03-custom_macros.md) |
 | Several screens, records, and its own URL space, for this group | a super group component |
-| The same thing for the whole hub | an ordinary [component](../09-components/README.md) |
+| The same thing for the whole hub | an ordinary [component](../09-components/index.md) |
 
 The last row is the one to think hardest about. A super group component is
 invisible to the hub: no entry in the extension manager, no `access.xml`, no
@@ -100,7 +100,7 @@ There is no `admin`, no `api` and no `site` subdirectory. A super group
 component is only ever dispatched on the site, so the directories a full
 component keeps under `site/` sit at the top here. Writing controllers,
 views, models and routes is otherwise the same job as in a
-[CMS component](../09-components/README.md).
+[CMS component](../09-components/index.md).
 
 > **Note:** Older documentation said an XML manifest belongs here and that a
 > super group component can be moved into the main components directory
@@ -176,7 +176,7 @@ level wrong, which shows as *Layout "display" not found*.
 
 > **Note:** The group's own top-level `language/` directory is a different
 > thing: it overrides the strings of the hub's *group plugins*, as described
-> in [the section overview](README.md). A component's
+> in [the section overview](index.md). A component's
 > strings belong inside the component. A key that renders as itself —
 > `COM_GAUGES_TITLE` on the page — means the file is in the wrong one of the
 > two.

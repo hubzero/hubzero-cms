@@ -53,6 +53,6 @@ The platform targets PHP 8.2; `core/composer.json` pins the platform to
 
 ## Next
 
-[Foundation](../03-foundation/README.md) covers how a request is served and
+[Foundation](../03-foundation/index.md) covers how a request is served and
 the names an extension uses constantly. [Contributing](../18-contributing.md)
 covers sending a change back.

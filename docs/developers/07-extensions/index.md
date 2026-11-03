@@ -19,8 +19,8 @@ plugins, modules and templates sitting on top of it.
 This section covers what all four kinds have in common: what a package must
 contain, how parameters are declared, how strings are translated, and how
 code gets onto a running hub. Each kind then has its own chapter set —
-[Components](../09-components/README.md), [Plugins](../10-plugins/README.md),
-[Modules](../08-modules/README.md), [Templates](../11-templates/README.md) — for
+[Components](../09-components/index.md), [Plugins](../10-plugins/index.md),
+[Modules](../08-modules/index.md), [Templates](../11-templates/index.md) — for
 the parts that differ.
 
 Read this section once before you start, and the four rules it establishes
@@ -67,7 +67,7 @@ main content area. A menu is, in effect, a switch between components.
 
 A component is the only kind with three faces: `site/` for hub visitors,
 `admin/` for the administrator interface, and `api/` for the REST API. See
-[Components](../09-components/README.md).
+[Components](../09-components/index.md).
 
 ### Plugins
 
@@ -78,8 +78,8 @@ Plugins are grouped by the kind of thing they extend, and the group is the
 directory: `plugins/authentication/`, `plugins/content/`,
 `plugins/members/`. Most of the CMS's pluggable behaviour — the tabs on a
 group page, the login methods, the cron jobs — is a plugin group. The
-[events reference](../../reference/events/README.md) lists what the tree
-triggers. See [Plugins](../10-plugins/README.md).
+[events reference](../../reference/events/index.md) lists what the tree
+triggers. See [Plugins](../10-plugins/index.md).
 
 ### Modules
 
@@ -87,7 +87,7 @@ A module renders a small block of HTML into a named position in the
 template: a login form, a breadcrumb trail, a list of recent entries. It
 never owns the request. The same module can be published in different
 positions on different templates and appear several times with different
-parameters. See [Modules](../08-modules/README.md).
+parameters. See [Modules](../08-modules/index.md).
 
 ### Templates
 
@@ -95,7 +95,7 @@ A template is the page around whatever the component produced — the markup,
 the CSS, the positions modules render into, and the error and offline pages.
 The templates that ship are in `core/templates`: `kimera` for the site,
 `kameleon` for the administrator interface, plus `system`, `lucent` and
-`welcome`. See [Templates](../11-templates/README.md).
+`welcome`. See [Templates](../11-templates/index.md).
 
 > **Note:** The old version of this page listed languages as a fifth
 > extension type. A language pack is a set of INI files and an XML metadata

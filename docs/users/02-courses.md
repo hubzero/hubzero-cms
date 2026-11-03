@@ -28,7 +28,7 @@ with a quiz at the end of most of them and an exam at the end.
 
 > **Note:** A course is not a group. Courses keep their own membership and
 > their own roles, so enrolling in a course puts you in no
-> [group](11-groups/README.md), and belonging to the group a course is
+> [group](11-groups/index.md), and belonging to the group a course is
 > attached to does not enrol you.
 
 ## How a course is put together

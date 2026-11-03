@@ -159,7 +159,7 @@ correct after the fact — provided you have not yet attached anything to it.
 
 ### Worked example: an access group for the workshop cohort
 
-Continuing the scenario from the [section introduction](README.md#a-worked-example),
+Continuing the scenario from the [section introduction](index.md#a-worked-example),
 the forty visiting participants need to reach workshop material that ordinary
 members cannot see.
 

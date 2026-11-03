@@ -12,7 +12,7 @@ Editing them takes a permission, and who has it differs between the hub's own
 wiki and a group's — see [Who may edit](#who-may-edit). Every save keeps the
 old text, so nothing is ever lost. The hub's wiki is at
 `https://<your hub>/wiki`, and each group has its own wiki under the group's
-**Wiki** tab; see [Groups](11-groups/README.md).
+**Wiki** tab; see [Groups](11-groups/index.md).
 
 A wiki is the right place for knowledge that changes and has no single owner.
 A thermal transport lab writes down how it prepares samples and calibrates the

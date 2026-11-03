@@ -8,8 +8,8 @@ directly on GitHub, so everything here works in both places.
 ## Files and names
 
 - One book per directory under `docs/`, listed in `gh-pages/site.json`.
-- A book's landing page is its `README.md`. A section is a subdirectory with
-  its own `README.md`. Every other `*.md` file is a chapter.
+- A book's landing page is its `index.md`. A section is a subdirectory with
+  its own `index.md`. Every other `*.md` file is a chapter.
 - Name chapters with lowercase words separated by hyphens: `access-levels.md`.
   Where order matters, add a two-digit prefix: `01-requirements.md`. The
   prefix is dropped from the published URL.
@@ -68,7 +68,7 @@ drifted; the `/status/` page counts what is left.
 
 - Link to other pages with relative paths to the Markdown file:
   `[access levels](../users/access-levels.md)`. Linking to a directory reaches
-  its `README.md`. Anchors work: `access-levels.md#viewing-levels`.
+  its `index.md`. Anchors work: `access-levels.md#viewing-levels`.
 - Link to code in the repository with a relative path to the file:
   `[`Relational`](../core/libraries/Hubzero/Database/Relational.php)`. The
   site turns it into a GitHub link.

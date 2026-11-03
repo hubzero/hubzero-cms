@@ -43,7 +43,7 @@ Configuration**, on the **Site** tab, under **SEO Settings**.
 | **Unicode Aliases** | No | Lets aliases hold non-ASCII characters instead of transliterating them. |
 
 These are also listed in the
-[global configuration reference](../../reference/configuration/README.md).
+[global configuration reference](../../reference/configuration/index.md).
 
 Leave these alone. The shipped values are the ones a hub wants: friendly URLs
 on, rewriting on, everything else off.

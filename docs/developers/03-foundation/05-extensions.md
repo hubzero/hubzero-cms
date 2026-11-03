@@ -17,7 +17,7 @@ There are four kinds, and each is found and run a different way.
 
 This page is the platform's side of that: what each kind is, and the code
 that loads it. The authoring side — package layout, manifests, parameters,
-languages, deployment — is in [Extensions](../07-extensions/README.md), and
+languages, deployment — is in [Extensions](../07-extensions/index.md), and
 each kind then has a book of its own.
 
 ## The four kinds
@@ -76,7 +76,7 @@ them when something triggers one. Plugins are grouped by what they extend,
 and the group is the directory: `plugins/authentication/`,
 `plugins/content/`, `plugins/members/`. Most of the pluggable behaviour in
 the CMS is a plugin group, and the
-[events reference](../../reference/events/README.md) lists what the tree
+[events reference](../../reference/events/index.md) lists what the tree
 triggers. [Events](04-events.md) covers how a trigger reaches a group.
 
 [`Hubzero\Plugin\Loader`](../../../core/libraries/Hubzero/Plugin/Loader.php)
