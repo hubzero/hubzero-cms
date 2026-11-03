@@ -987,6 +987,9 @@ def main() -> int:
                 continue
             sep = "#" if fragment else ""
             stub_path = output_dir / old.strip("/") / "index.html"
+            # A page may since have taken the old address; it wins over the stub
+            if str(stub_path.relative_to(output_dir)).replace(os.sep, "/") in outputs_seen:
+                continue
             target = relative_href(stub_path, output_dir / page_part) + sep + fragment
             pretty = f"{site_url}/{page_part.replace('index.html', '')}{sep}{fragment}"
             write_text(stub_path, render_template(SOURCE_DIR / "templates" / "redirect.html", {
