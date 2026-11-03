@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Spam
 
@@ -79,6 +79,8 @@ Signs a member account exists only to post spam:
 - Text stuffed with links in a field that rarely needs one.
 
 ## Turning the filters on
+
+![The Plug-in Manager filtered to the antispam group, with the six detectors that ship, all disabled](../media/spam-antispam-plugins.png)
 
 1. Go to **Extensions** > **Plug-in Manager**.
 2. Enable **Content - Antispam**. Nothing is checked without it, however

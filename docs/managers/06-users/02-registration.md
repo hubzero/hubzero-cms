@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Registration
 
@@ -45,6 +45,8 @@ To stop visitors creating their own accounts, open **Users > Members**, press
 **Options** in the toolbar, and set **Allow User Registration** — the first
 setting on the **Component** tab — to **No**. Administrators can still create
 accounts from the Members list.
+
+![The Members Configuration window open on its Component tab, with Allow User Registration as the first setting](../media/registration-options.png)
 
 The change is immediate and reversible: turn it back on and registration
 resumes. Existing accounts are untouched. What actually happens is that the
@@ -125,6 +127,8 @@ time, and changing the option later does not revisit anyone.
 2. Click **Registration** in the sub-menu. It opens on **Config**.
 3. Set each field's state in each of the four columns.
 4. Press **Save**. Changes take effect immediately.
+
+![The registration fields table: one row per field, and a Required, Optional, Read only or Hide choice in each of the four columns](../media/registration-fields.png)
 
 Each row is one field, and each column is one situation in which the hub might
 ask for it.

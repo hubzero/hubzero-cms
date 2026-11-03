@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Module Manager
 
@@ -63,6 +63,8 @@ different blocks of HTML sharing one piece of code.
 > extension row is disabled, whatever the instance's own status says.
 
 ## The list
+
+![The Module Manager listing site modules, with each module's position, pages, access and language, and a warning on the ones whose position the current template does not have](../media/modules-list.png)
 
 The list shows the modules for one client at a time — **Site** or
 **Administrator** — chosen from the **Client** filter. Columns:

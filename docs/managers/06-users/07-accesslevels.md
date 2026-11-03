@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Access Levels
 
@@ -100,6 +100,8 @@ nothing extra until you tick it on the levels it should reach.
 Each row shows the level's **ID**, its **Level Name** and its **Ordering**.
 Sort by name or ordering, and search by name with the filter bar. The
 toolbar carries **New**, **Edit**, **Delete** and **Options**.
+
+![The Viewing Levels list with the five levels a hub ships with: Private, Protected, Public, Registered and Special](../media/access-levels-list.png)
 
 > **Note:** Open a level by selecting its name. As on the access group list,
 > the toolbar's **Edit** button looks for the selection under a request name

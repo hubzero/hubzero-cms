@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # The administrator interface
 
@@ -87,7 +87,11 @@ entirely on which modules the hub publishes there. [Daily
 maintenance](../03-maintenance/index.md) describes the panels a working hub
 usually adds.
 
+![The Control Panel on a working hub: the menu bar across the top, and below it the Support Tickets, Resources, Who's Online and Members panels](../../media/maintenance-dashboard.png)
+
 ## The menus
+
+![The administrator menu bar: Site, Users, Menus, Content, Components, Extensions and Help, with the Log out button at the right](../../media/admin-menu-bar.png)
 
 The main navigation is assembled by the admin menu module. Most of it is
 hardcoded, and each entry is shown only if you hold the permission it needs,

@@ -54,6 +54,8 @@ re-enabled, but never installed or removed from here — they come and go with
 the codebase. A core extension can be overridden by putting a replacement of
 the same name under `app/`.
 
+![The Hubzero Core tab listing the platform's own extensions, with each one's location, status, type, version and folder](../media/extension-manager-core.png)
+
 Columns: **Name**, **Location** (Site or Administrator), **Status**, **Type**,
 **Version**, **Date**, **Author**, **Folder** (plugins only) and **ID**. The
 Name, Location, Status, Type, Folder and ID columns sort.
@@ -171,15 +173,7 @@ Editing works the same way: tick the row, select **Edit**, change the form,
 **Save & Close**. Enabling and disabling work as they do on the Hubzero Core
 tab.
 
-![The custom extension form, with each field annotated](../media/extension-manager-extman1.png)
-
-![The Type drop-down open, listing the extension types](../media/extension-manager-extman3.png)
-
-![The Folder drop-down open, listing the plugin groups](../media/extension-manager-extman2.png)
-
-> **Note:** These three images are out of date. The form now also has a
-> **GIT Branch** field, and what they label *GIT API Key* is now
-> **GIT Personal Access Token**.
+![The custom extension form: the git URL, name, alias, type, plugin folder, description, access token, branch and legacy location](../media/extension-manager-custom-form.png)
 
 ### Installing and updating the code
 
@@ -189,7 +183,7 @@ button.
 1. Tick the extension on the **Custom Extensions** tab.
 2. Select **Update Selected Custom Extensions**.
 
-   ![The update button in the Custom Extensions toolbar](../media/extension-manager-extman4.png)
+   ![The Custom Extensions toolbar; the circular-arrows button is Update Selected Custom Extensions](../media/extension-manager-update-button.png)
 
 3. Hubzero clones the repository if it has not been cloned, or fetches it if
    it has, and lists the incoming commits. Select **Merge Code** to apply

@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Control Panel
 
@@ -11,6 +11,8 @@ The component behind it, `com_cpanel`, holds no data and has no settings: it
 draws a stack of collapsible panels, one for each administrator module
 published in the **cpanel** position, and nothing else. What your dashboard
 shows is therefore a question about modules, not about this component.
+
+![A Control Panel with the panels a working hub adds: support tickets opened and closed, resources by state, who is online, and members by confirmation and domain](../media/maintenance-dashboard.png)
 
 That matters more than it sounds. A fresh install publishes exactly two
 modules in the `cpanel` position — *Popular Articles* and *Recently Added

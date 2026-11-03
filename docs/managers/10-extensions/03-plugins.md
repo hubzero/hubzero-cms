@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Plug-in Manager
 
@@ -106,6 +106,8 @@ For the parameters each plugin exposes, see
 > `enabled` flag on the same `#__extensions` row, so either screen will do.
 
 ## The list
+
+![The Plug-in Manager listing plugins by type, each with its status, ordering, element, access level and ID](../media/plugins-list.png)
 
 | Column | Meaning |
 |---|---|

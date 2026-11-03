@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: none
+screenshots: ok
 -->
 # Member import
 
@@ -55,6 +55,8 @@ is a good one — use it every time, including on a job you have run before.
 
 Two links sit under the tab: **Imports**, the list of import jobs, and
 **Hooks**, the scripts that can transform records on the way in.
+
+![The Import tab on a hub with no imports yet: the Imports and Hooks links under the tab, and the list's columns](../media/member-import-list.png)
 
 The imports list shows one row per job.
 
