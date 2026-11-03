@@ -204,7 +204,7 @@ hosts, and could not be verified here. Sections below that describe what
 happens on the execution host are marked.</p>
 </aside>
 <h2 id="the-pipeline">The pipeline</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-06.png"><img src="../../media/tools-contribtool-managers-guide-06.png" alt="The tool pipeline" loading="lazy"></a><figcaption>The tool pipeline</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-created.png"><img src="../../media/tools-status-created.png" alt="A tool's status page, with the pipeline's states across the top and the current one marked" loading="lazy"></a><figcaption>A tool's status page, with the pipeline's states across the top and the current one marked</figcaption></figure>
 <p>A tool has nine states. The number is the <code>state</code> column on <code>#__tool</code>:</p>
 <table>
 <thead>
@@ -320,7 +320,7 @@ the option and the component falls back to the normal permission checks.</p>
 <li>Add the administrator's username as a <strong>Member</strong>.</li>
 </ol>
 <h2 id="registering-a-tool">Registering a tool</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-06.png"><img src="../../media/tools-contribtool-managers-guide-06.png" alt="Registering a tool" loading="lazy"></a><figcaption>Registering a tool</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-register.png"><img src="../../media/tools-register.png" alt="The Register Tool form: the alias, title, version and one-line summary, with the note that the alias cannot be changed later" loading="lazy"></a><figcaption>The Register Tool form: the alias, title, version and one-line summary, with the note that the alias cannot be changed later</figcaption></figure>
 <p>Registration is a user task. The developer starts the contribution flow on the
 hub and chooses the tool contribution type, which lands on the registration
 form (<code>/tools/create</code>). The pipeline listing at <code>/tools/pipeline</code> also has a
@@ -446,7 +446,7 @@ submits the form and puts the tool in the <strong>Registered</strong> state.</p>
 <p>For the full option list see the
 <a href="../../../reference/configuration/components/tools/index.html">generated <code>com_tools</code> parameter reference</a>.</p>
 <h2 id="registered-to-created">Registered to Created</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-10.png"><img src="../../media/tools-contribtool-managers-guide-10.png" alt="The tool pipeline listing" loading="lazy"></a><figcaption>The tool pipeline listing</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-pipeline-listing.png"><img src="../../media/tools-pipeline-listing.png" alt="The tool pipeline listing: every tool with its alias, its state and when that changed, and links to its resource, history and project" loading="lazy"></a><figcaption>The tool pipeline listing: every tool with its alias, its state and when that changed, and links to its resource, history and project</figcaption></figure>
 <p>This is an admin task. Go to <code>/tools/pipeline</code>. The page lists every tool
 contribution on the hub, with <strong>Filter by</strong> (All tools, My submissions,
 Published tools, Tools under development) and <strong>Sort by</strong> (Status, Registration
@@ -474,7 +474,7 @@ back, so nothing about the repository or wiki layout could be verified here.</p>
 </aside>
 <p>Then set <strong>Flip Status</strong> to <strong>Created</strong> and press <strong>Apply change</strong>.</p>
 <h2 id="created-to-uploaded">Created to Uploaded</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-14.png"><img src="../../media/tools-contribtool-managers-guide-14.png" alt="The tool status page in the Created state" loading="lazy"></a><figcaption>The tool status page in the Created state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-created.png"><img src="../../media/tools-status-created.png" alt="The tool status page in the Created state: the tool's information, the developer tools, the administrator controls, and what the developer should do next" loading="lazy"></a><figcaption>The tool status page in the Created state: the tool's information, the developer tools, the administrator controls, and what the developer should do next</figcaption></figure>
 <p>Uploading the source is a user task. In the <strong>Created</strong> state the <strong>What's
 next?</strong> panel links to the project's Getting Started wiki page and, under
 <strong>We are waiting for You</strong>, offers the flip link <em>&quot;My code is committed,
@@ -621,7 +621,7 @@ up in the repository.</p>
 <p>Commit from the top of the working copy, since a commit only covers the
 current directory and below. Enter the hub credentials if prompted.</p>
 <h3 id="flip-the-status">Flip the status</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-39.png"><img src="../../media/tools-contribtool-managers-guide-39.png" alt="The tool pipeline listing" loading="lazy"></a><figcaption>The tool pipeline listing</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-pipeline-listing.png"><img src="../../media/tools-pipeline-listing.png" alt="The tool pipeline listing, with the tool's new state and when it changed" loading="lazy"></a><figcaption>The tool pipeline listing, with the tool's new state and when it changed</figcaption></figure>
 <p>Back on the tool's status page at <code>/tools/pipeline</code>, use the <strong>Timeline</strong> link
 under <strong>Developer Tools</strong> to confirm the commit arrived — the project area may
 require a login. Then, under <strong>We are waiting for You</strong>, click <em>&quot;My code is
@@ -695,14 +695,14 @@ also sets the tool's published flag.</p>
 <p>From the tool information page the tool can now be launched with <strong>Launch
 tool</strong>.</p>
 <h2 id="published-to-updated">Published to Updated</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-57.png"><img src="../../media/tools-contribtool-managers-guide-57.png" alt="The tool status page in the Published state" loading="lazy"></a><figcaption>The tool status page in the Published state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-published.png"><img src="../../media/tools-status-published.png" alt="The tool status page in the Published state: every state across the top passed, the link to the published tool, and the option to install changed code for approval" loading="lazy"></a><figcaption>The tool status page in the Published state: every state across the top passed, the link to the published tool, and the option to install changed code for approval</figcaption></figure>
 <p>When the developer is ready to test a new release, they commit the changes and
 use the <strong>What's next?</strong> link to move the status from <strong>Published</strong> to
 <strong>Updated</strong>. This does not unpublish anything — the published version keeps
 serving users. It signals that the development version needs reinstalling, and
 the install–approve–publish cycle runs again.</p>
 <h2 id="published-to-retired">Published to Retired</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-57.png"><img src="../../media/tools-contribtool-managers-guide-57.png" alt="The tool status page in the Published state" loading="lazy"></a><figcaption>The tool status page in the Published state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-published.png"><img src="../../media/tools-status-published.png" alt="The tool status page in the Published state: every state across the top passed, the link to the published tool, and the option to install changed code for approval" loading="lazy"></a><figcaption>The tool status page in the Published state: every state across the top passed, the link to the published tool, and the option to install changed code for approval</figcaption></figure>
 <p>Published tools usually stay published. Retiring one leaves the tool
 information page in place as a record but stops anyone running it.</p>
 <p><strong>Retired</strong> is on the administrator's <strong>Flip Status</strong> drop-down only for tools
