@@ -21,11 +21,10 @@ hubzero-cms/
     index.php       the single entry point
     core/           the platform
     app/            this hub
-    docs/           this documentation
+    docs/           this documentation, and its reference generators
     gh-pages/       the documentation site builder
-    tools/          linters and documentation generators
-    docker/         database containers used by the test suite
-    .github/        CI workflows
+    compose.yaml    a development hub in Docker; .docker/ holds its image
+    .github/        CI workflows, and the files about contributing
 ```
 
 Only the first three matter at runtime. The rest is repository furniture.
@@ -46,7 +45,7 @@ write belongs in it unless you are contributing the change back.
 | `templates/` | `kimera` (site), `kameleon` (administrator), plus `system`, `lucent` and `welcome`. |
 | `migrations/` | Platform migrations, the ones not owned by a single extension. |
 | `assets/` | Shared CSS, JavaScript and images, including `assets/js/hubzero.js`. |
-| `bin/` | `muse`, `composer`, `lessc`. |
+| `bin/` | `muse`, `composer`, `lessc`, and the linters under `lint/`. |
 | `vendor/` | Composer dependencies. Not in the repository; `composer install` creates it. |
 
 Refer to paths under here with the `PATH_CORE` constant, never a literal
