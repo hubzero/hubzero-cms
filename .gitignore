@@ -33,7 +33,6 @@ __pycache__/
 /docs/*.html
 /docs/*.txt
 /docs/*.conf
-/docs/plan/review-findings.md
 
 # Editor swap files
 .*.sw[a-p]
