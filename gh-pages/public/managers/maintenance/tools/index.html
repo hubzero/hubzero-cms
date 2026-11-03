@@ -628,7 +628,7 @@ require a login. Then, under <strong>We are waiting for You</strong>, click <em>
 committed, working, and ready to be installed&quot;</em>. The status becomes
 <strong>Uploaded</strong>.</p>
 <h2 id="uploaded-to-installed">Uploaded to Installed</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-41.png"><img src="../../media/tools-contribtool-managers-guide-41.png" alt="The tool status page in the Uploaded state" loading="lazy"></a><figcaption>The tool status page in the Uploaded state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-uploaded.png"><img src="../../media/tools-status-uploaded.png" alt="The tool status page in the Uploaded state: the source is in, and What's next? says the hub's team needs to install it" loading="lazy"></a><figcaption>The tool status page in the Uploaded state: the source is in, and What's next? says the hub's team needs to install it</figcaption></figure>
 <p>This is an admin task. On the tool's status page, press <strong>Install</strong> in
 <strong>Administrator Controls</strong>. The CMS builds a command line and runs it as the
 <code>apps</code> user:</p>
@@ -651,20 +651,20 @@ make install
 </code></pre>
 <p>If <code>sudo su - apps</code> fails, the account is not in the <code>apps</code> group — see
 <strong>Preparation</strong>.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-46.png"><img src="../../media/tools-contribtool-managers-guide-46.png" alt="The status page after installation" loading="lazy"></a><figcaption>The status page after installation</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-installed.png"><img src="../../media/tools-status-installed.png" alt="The status page after installation: the state is Installed and What's next? offers the Launch tool button" loading="lazy"></a><figcaption>The status page after installation: the state is Installed and What's next? offers the Launch tool button</figcaption></figure>
 <p>Back on the status page, set <strong>Flip Status</strong> to <strong>Installed</strong> and press
 <strong>Apply change</strong>. The <strong>What's next?</strong> panel then offers a <strong>Launch tool</strong>
 button. Use it and confirm the tool runs.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-45.png"><img src="../../media/tools-contribtool-managers-guide-45.png" alt="Launching the tool" loading="lazy"></a><figcaption>Launching the tool</figcaption></figure>
+<figure class="figure"><a href="../../../users/media/tools-session.png"><img src="../../../users/media/tools-session.png" alt="The tool running in a session after Launch tool" loading="lazy"></a><figcaption>The tool running in a session after Launch tool</figcaption></figure>
 <h2 id="installed-to-updated">Installed to Updated</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-47.png"><img src="../../media/tools-contribtool-managers-guide-47.png" alt="The tool status page in the Installed state" loading="lazy"></a><figcaption>The tool status page in the Installed state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-installed.png"><img src="../../media/tools-status-installed.png" alt="The tool status page in the Installed state, with the developer's links to approve the tool or to report new code" loading="lazy"></a><figcaption>The tool status page in the Installed state, with the developer's links to approve the tool or to report new code</figcaption></figure>
 <p>Testing the tool is the developer's job. When they find something to fix, they
 commit the change and use the <strong>What's next?</strong> link <em>&quot;I've committed new code.
 Please install the latest version for testing and approval.&quot;</em> That sets the
 status to <strong>Updated</strong>, which is the pipeline's way of telling the
 administrator to install again.</p>
 <h2 id="installed-to-approved">Installed to Approved</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-47.png"><img src="../../media/tools-contribtool-managers-guide-47.png" alt="The tool status page in the Installed state" loading="lazy"></a><figcaption>The tool status page in the Installed state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-status-installed.png"><img src="../../media/tools-status-installed.png" alt="The tool status page in the Installed state, with the developer's links to approve the tool or to report new code" loading="lazy"></a><figcaption>The tool status page in the Installed state, with the developer's links to approve the tool or to report new code</figcaption></figure>
 <p>Approval is a user task. Before a tool can be approved it needs a tool
 information page — the resource page listing authors, credits, publications,
 and screenshots. The <strong>What's next?</strong> panel links to it, as <strong>Create this
@@ -691,7 +691,7 @@ publish process exposes the tool information page on the hub and its output
 comes back the same way as <strong>Install</strong> — green for success, red for failure.
 Then set <strong>Flip Status</strong> to <strong>Published</strong> and press <strong>Apply change</strong>, which
 also sets the tool's published flag.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-56.png"><img src="../../media/tools-contribtool-managers-guide-56.png" alt="The published tool" loading="lazy"></a><figcaption>The published tool</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-published-page.png"><img src="../../media/tools-published-page.png" alt="A published tool's page: its title, authors and summary, the Launch Tool button with its version, DOI and licence, and its usage figures" loading="lazy"></a><figcaption>A published tool's page: its title, authors and summary, the Launch Tool button with its version, DOI and licence, and its usage figures</figcaption></figure>
 <p>From the tool information page the tool can now be launched with <strong>Launch
 tool</strong>.</p>
 <h2 id="published-to-updated">Published to Updated</h2>
