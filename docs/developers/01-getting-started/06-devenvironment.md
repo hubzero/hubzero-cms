@@ -36,10 +36,6 @@ provisioning script, and no `make`-style setup target anywhere in the tree.
 Nothing here installs Apache, PHP, or MySQL on a machine; for a server, see
 the [System administrators](../../sysadmins/index.md) book.
 
-The `.travis.yml` at the root is left over from Travis CI. It declares PHP 8.2
-and 8.3 and calls `core/bin/php_tests.sh` on the changed files. Nothing runs
-it now.
-
 ## Requirements
 
 `muse install` runs a pre-flight check before it does anything, and that
@@ -334,7 +330,9 @@ tests need their backend available and are run as a separate suite. See
 [Testing](../15-testing.md).
 
 For style, `core/bin/php_tests.sh <files>` gives you the PSR-12 check and the
-syntax check in one call, the same pair the old Travis configuration ran.
+syntax check in one call. No workflow runs it: much of the older code is
+indented with tabs, which PSR-12 does not allow, so run it on files you write
+or bring up to the standard.
 
 ## Next
 
