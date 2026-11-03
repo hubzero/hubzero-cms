@@ -676,3 +676,4 @@
 /sysadmins/enterprise-linux-10 https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-10/
 /sysadmins/docker https://hubzero.github.io/hubzero-cms/sysadmins/preparing/docker/
 /sysadmins/other-linux https://hubzero.github.io/hubzero-cms/sysadmins/preparing/other-linux/
+/license https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE
