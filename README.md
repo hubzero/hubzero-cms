@@ -1,47 +1,42 @@
-# The HUBzero® Platform for Scientific Collaboration
+# Hubzero
 [![Documentation](https://img.shields.io/badge/docs-hubzero.github.io-0fa1ca)](https://hubzero.github.io/hubzero-cms/)
 [![PHP lint](https://github.com/hubzero/hubzero-cms/actions/workflows/php-lint.yml/badge.svg?branch=2.4-main)](https://github.com/hubzero/hubzero-cms/actions/workflows/php-lint.yml)
 [![Tests](https://github.com/hubzero/hubzero-cms/actions/workflows/tests.yml/badge.svg?branch=2.4-main)](https://github.com/hubzero/hubzero-cms/actions/workflows/tests.yml)
 
-## What is HUBzero?
+Hubzero is an open source platform for websites that support scientific
+research, learning and collaboration. Each site is a hub: a focal point for
+its community, with resources, groups, projects, publications and simulation
+tools that run in the browser. More at https://hubzero.org.
 
-HUBzero is an open source software platform for building powerful Web sites that support scientific discovery, learning, and collaboration. Some refer to such web sites as "collaboratories" supporting "team science." We call them "hubs" because each site becomes a focal point for its user community. The HUBzero platform now supports dozens of hubs across a variety of disciplines, including cancer research, pharmaceuticals, biofuels, microelectromechanical systems, climate modeling, water quality, volcanology, and more.
-
-For more information about HUBzero, visit https://hubzero.org.
-
-## Installation
-
-Instructions for installing the Hubzero platform from packages are in the
-[Installation](https://hubzero.github.io/hubzero-cms/installation/) book.
+This repository is the Hubzero CMS. `2.4-main` is the 2.4 release branch.
 
 ## Documentation
 
-Documentation for hub managers, hub users, tool developers, and CMS developers
-is published at https://hubzero.github.io/hubzero-cms/ and written as Markdown
-under [`docs/`](docs/index.md) in this repository. See the
-[writing guide](docs/STYLE.md) to contribute a page.
+The documentation is published at https://hubzero.github.io/hubzero-cms/,
+for system administrators, hub managers, hub users, tool developers and CMS
+developers. It is written as Markdown under [`docs/`](docs/index.md); the
+[writing guide](docs/STYLE.md) explains how to add to it.
 
-## Contributing
+- **Installing a hub:** [System administrators](https://hubzero.github.io/hubzero-cms/sysadmins/)
+- **Developing:** `docker compose up -d` in a checkout starts a development
+  hub; see [Development environment](https://hubzero.github.io/hubzero-cms/developers/getting-started/devenvironment/)
+- **Contributing:** [Contributing](https://hubzero.github.io/hubzero-cms/developers/contributing/)
 
-Hubzero is an open source project, with code contributions from numerous groups and organizations. If you'd like to contribute, please read the
-[Contributing](https://hubzero.github.io/hubzero-cms/contributing/) book.
+## Reporting a problem
 
-## Issues
+Report bugs and other issues as
+[GitHub issues](https://github.com/hubzero/hubzero-cms/issues). Report
+security problems privately, as [`SECURITY.md`](.github/SECURITY.md)
+describes.
 
-Please report any bugs or issues at https://help.hubzero.org/support.
+## Checks
 
-## Testing
+The badges show the latest run on `2.4-main` of the two workflows that check
+the code: **PHP lint** (syntax, facade imports, and a ceiling on undefined
+language keys) and **Tests** (the PHPUnit suite in `core/`). A failure email
+after a push means that push broke one of them; the run, opened from the
+badge, says which check. Dependabot's "composer in /core" runs are separate.
 
-Every push to `2.4-main` runs two GitHub Actions workflows, and the badges at
-the top of this page show whether the latest push passed:
+## License
 
-- **PHP lint** checks syntax, that global facades are imported where they are
-  used, and that the number of undefined language keys does not grow.
-- **Tests** runs the PHPUnit suite in `core/`.
-
-A red badge or a failure email after a push means that push broke one of
-them; open the run from the badge to see which check failed. Dependabot's
-"composer in /core" runs are separate security-update attempts and are not
-part of this.
-
-This project is also tested with BrowserStack.
+MIT; see [`LICENSE`](LICENSE).
