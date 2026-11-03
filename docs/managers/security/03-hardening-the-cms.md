@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Hardening the CMS
 
@@ -313,17 +313,18 @@ login page down.
 
 Counted per account by
 [`com_members`'s credentials controller](../../../core/components/com_members/site/controllers/credentials.php).
-It counts the member's outstanding reset tokens created inside
-**Time in Hours**, and once that reaches **Maximum Reset Count** it refuses
-the request:
+It counts the member's reset tokens created inside **Time in Hours**, and
+once that reaches **Maximum Reset Count** it stops issuing them. The page
+does not say so. A request over the limit gets the same *An email has been
+sent to your account* answer as one that worked, and no email goes out — the
+same answer an unknown, blocked or super-user account gets, so that the form
+cannot be used to find out which accounts exist.
 
-> Sorry, you have exceeded your reset request limit. Please wait and try
-> again later.
-
-![The reset request limit message on the Reset Password page](../media/cmscontrolled-fail2ban-jail-fail2ban2.png)
-
-Nothing is blocked and nothing is logged as blocked; the member simply has
-to wait for the window to pass.
+A token is saved before its email is sent, so a request whose email failed
+still counts. Nothing is blocked and nothing is logged as blocked; the member
+simply gets no email until the window has passed. A member who says reset
+emails have stopped arriving may be over this limit rather than caught by a
+spam filter.
 
 ### Stage two: failed logins
 

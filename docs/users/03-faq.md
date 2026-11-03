@@ -50,9 +50,10 @@ account and the hub mails the username to it.
 
 Two things to know:
 
-- There is a limit on how often you may ask for a reset. Past it the page says
-  *Sorry, you have exceeded your reset request limit. Please wait and try again
-  later.* Wait rather than retrying.
+- There is a limit on how often you may ask for a reset. Past it the page
+  still says an email has been sent, but none is. If the email does not
+  arrive, wait before asking again — an hour, on a hub left at the default —
+  rather than retrying.
 - If you only ever sign in through an outside service — Google, ORCID, Globus
   and others are possible — there may be no hub password to reset. Set one from
   the **Account** tab of your member area, which is also where you link and
