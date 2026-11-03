@@ -9,6 +9,6 @@
 
 <div class="super-group-footer-wrap">
 	<div class="super-group-footer">
-		&copy; <?php echo gmdate("Y"); ?> The Regents of the University of California. Template designed by the HUBzero Development Team.
+		&copy; <?php echo gmdate("Y"); ?> Purdue University. Template designed by the Hubzero Development Team.
 	</div>
 </div>
