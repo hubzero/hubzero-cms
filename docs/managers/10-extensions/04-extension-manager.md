@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Extension Manager
 
@@ -153,14 +153,14 @@ Columns: **Name**, **Status**, **Location**, **Type**, **Folder**,
 | Field | Notes |
 |---|---|
 | **GIT HTTPS URL** | Required. The full HTTPS clone URL, ending in `.git`. |
-| **Name** | Required. A title for the extension. |
-| **Alias** | Required. The directory name to create, including any `com_` or `mod_` prefix. |
+| **Name** | Required. How the extension appears in the list. The form accepts letters, digits and underscores only — no spaces — and not a leading underscore, so *Cron_Docs_Demo* rather than *Cron - Docs Demo*. |
+| **Alias** | Required. The directory name to create, including any `com_` or `mod_` prefix. The same characters as **Name**. |
 | **Type** | Required. One of `component`, `language`, `library`, `module`, `plugin`, `template`, `non-standard`. |
 | **Folder (Plugins Only)** | The plugin group to install into, for `plugin` extensions. |
 | **Description** | Free text. |
 | **GIT Personal Access Token** | Needed only for a private repository. |
-| **GIT Branch** | The branch to install, in the form `origin/main`. Blank uses the repository's default branch. |
-| **Location (Legacy)** | Site or Administrator. Only relevant to very old extensions. |
+| **GIT Branch** | The branch to install, in the form `origin/main`. The form accepts only letters, digits and underscores after `origin/`, so a branch such as `release-2.4` cannot be entered. Blank uses the repository's default branch — not `origin/master`, whatever the form's warning says. |
+| **Location (Legacy)** | Site or Administrator. Only relevant to very old extensions; left unselected, it is saved as Site. |
 
 To add one:
 
@@ -185,15 +185,29 @@ button.
 
    ![The Custom Extensions toolbar; the circular-arrows button is Update Selected Custom Extensions](../media/extension-manager-update-button.png)
 
-3. Hubzero clones the repository if it has not been cloned, or fetches it if
-   it has, and lists the incoming commits. Select **Merge Code** to apply
-   them.
+3. The first time, Hubzero clones the repository into the extension's
+   directory under `app/` and runs the extension's migrations. Nothing more
+   is asked.
 
-   ![The list of incoming commits with the Merge Code button](../media/extension-manager-extman5.png)
+   ![The report after the first update: the extension's repository was cloned](../media/extension-manager-cloned.png)
 
-4. A confirmation screen reports what was merged.
+4. After that, the same button fetches the repository and lists the commits
+   that are not yet on the hub, one block per extension, each with a
+   **Merge** box that starts ticked. Untick any extension you are not ready
+   to update, then select **Merge Code** in the toolbar.
 
-   ![The confirmation that the code was updated](../media/extension-manager-extman6.png)
+   ![Two fetched commits waiting to be merged, with the extension's Merge box ticked](../media/extension-manager-fetched.png)
+
+5. A confirmation screen reports which extensions were updated.
+
+   ![The confirmation that the extension was updated](../media/extension-manager-merged.png)
+
+The clone, fetch and merge are `muse` commands run on the server as the
+account named in the component's **Options** (`system_user`, `hubadmin` by
+default, through `sudo`). If that account does not exist, they run as the
+web server's own account. Either way, git uses that account's own git
+configuration and credentials, which is how a repository needing no access
+token can still fail on one server and work on another.
 
 ## Warnings
 
