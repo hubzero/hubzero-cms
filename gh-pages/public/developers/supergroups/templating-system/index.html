@@ -409,25 +409,19 @@ skeleton the hub gives you. The skeleton is unstyled by comparison.</p>
 </aside>
 <h2 id="error-template">Error template</h2>
 <p>The skeleton also ships <code>template/error.php</code> and <code>assets/css/error.css</code>.</p>
-<figure class="figure"><a href="../../media/templating-system-error.png"><img src="../../media/templating-system-error.png" alt="The super group error page the template was written for" loading="lazy"></a><figcaption>The super group error page the template was written for</figcaption></figure>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> This does not work in 2.4. <code>View::attachCustomErrorHandler()</code>
 in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/view.php"><code>core/components/com_groups/helpers/view.php</code></a>
 still checks that the group has an <code>error.php</code>, but the
 <code>set_exception_handler()</code> call below the check is commented out. A super
-group gets the site's error pages, so the screenshot above shows a page the
-software no longer produces. The file is still copied into every new group
-directory.</p>
+group gets the site's error pages, and the group's error template is never
+shown. The file is still copied into every new group directory.</p>
 </aside>
 <h2 id="file-layout">File layout</h2>
-<figure class="figure"><a href="../../media/templating-system-filesystem.png"><img src="../../media/templating-system-filesystem.png" alt="A super group directory in a file browser" loading="lazy"></a><figcaption>A super group directory in a file browser</figcaption></figure>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> That picture predates the <code>macros/</code> and <code>migrations/</code>
-directories, which the skeleton now creates as well. See
-<a href="../index.html#the-group-directory">the section overview</a> for the current
-layout.</p>
-</aside>
+<p>The directories a new super group gets, <code>macros/</code> and <code>migrations/</code> among
+them, are listed in
+<a href="../index.html#the-group-directory">the section overview</a>.</p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
