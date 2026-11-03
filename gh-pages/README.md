@@ -37,9 +37,9 @@ commit `public/` with it.
 
 A book is a directory under `docs/` listed in `site.json`. Inside it:
 
-- `README.md` is the book's landing page.
+- `index.md` is the book's landing page.
 - Every other `*.md` file is a chapter. Its `# Heading` is the page title.
-- Every subdirectory is a section, with its own `README.md` as the landing
+- Every subdirectory is a section, with its own `index.md` as the landing
   page and its own chapters and subsections. Sections nest as deep as needed.
 - A `media/` directory holds that book's images; anything that is not
   Markdown is copied to the site at the same relative path.

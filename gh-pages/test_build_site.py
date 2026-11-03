@@ -32,13 +32,13 @@ from build_site import (  # noqa: E402
 
 BLOB = "https://github.com/hubzero/hubzero-cms/blob/2.4-main"
 SOURCE_TO_OUTPUT = {
-    "docs/managers/README.md": "managers/index.html",
-    "docs/managers/components/README.md": "managers/components/index.html",
+    "docs/managers/index.md": "managers/index.html",
+    "docs/managers/components/index.md": "managers/components/index.html",
     "docs/managers/components/kb.md": "managers/components/kb/index.html",
     "docs/users/wiki.md": "users/wiki/index.html",
     "docs/users/03-collections.md": "users/collections/index.html",
-    "docs/users/10-groups/README.md": "users/groups/index.html",
-    "docs/README.md": "docs/index.html",
+    "docs/users/10-groups/index.md": "users/groups/index.html",
+    "docs/index.md": "docs/index.html",
 }
 
 
@@ -109,10 +109,10 @@ def test_no_header_means_no_meta():
     ("href", "expected"),
     [
         ("../../users/wiki.md", "../../../users/wiki/index.html"),
-        ("README.md#creating", "../index.html#creating"),
-        ("../README.md", "../../index.html"),
+        ("index.md#creating", "../index.html#creating"),
+        ("../index.md", "../../index.html"),
         ("../components/", "../index.html"),
-        ("../../README.md", "../../../docs/index.html"),
+        ("../../index.md", "../../../docs/index.html"),
     ],
 )
 def test_links_to_pages_become_relative_site_links(href, expected):
@@ -121,7 +121,7 @@ def test_links_to_pages_become_relative_site_links(href, expected):
 
 def test_links_may_omit_the_numeric_prefix():
     assert resolver()("../../users/collections.md") == "../../../users/collections/index.html"
-    assert resolver()("../../users/groups/README.md") == "../../../users/groups/index.html"
+    assert resolver()("../../users/groups/index.md") == "../../../users/groups/index.html"
     assert resolver()("../../users/groups/") == "../../../users/groups/index.html"
 
 
@@ -201,10 +201,11 @@ def test_excerpt_strips_tags_and_code():
 def make_book(tmp_path):
     book = tmp_path / "docs" / "guide"
     (book / "advanced").mkdir(parents=True)
-    (book / "README.md").write_text("# The guide\n")
+    (book / "index.md").write_text("# The guide\n")
     (book / "02-second.md").write_text("<!--\nstatus: reviewed\n-->\n# Second\n")
     (book / "01-first.md").write_text("# First\n")
     (book / "zeta.md").write_text("# Zeta\n")
+    # A README.md still works as a section's landing page
     (book / "advanced" / "README.md").write_text("# Advanced\n")
     (book / "advanced" / "topic.md").write_text("# Topic\n")
     (book / "orphan").mkdir()

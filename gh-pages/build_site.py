@@ -3,7 +3,8 @@
 
 The documentation is a set of books. Each book is a directory under docs/
 listed in gh-pages/site.json; inside a book, every subdirectory is a section
-whose landing page is its README.md, and every other *.md file is a chapter.
+whose landing page is its index.md, and every other *.md file is a chapter.
+A README.md is still read as a landing page where there is no index.md.
 Chapters and sections are ordered by an optional numeric filename prefix
 (``01-``), then by title. The prefix is stripped from the published URL.
 
@@ -57,7 +58,7 @@ DOCS_PREFIX = "docs/"
 HEADER_LOGO = "assets/hubzero-mark.svg"
 SKIP_DOC_DIRS = {"_import", "_tools", "plan"}
 COPIED_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".pdf", ".zip", ".gz", ".csv"}
-LANDING_NAMES = ("readme.md", "index.md")
+LANDING_NAMES = ("index.md", "readme.md")
 ORDER_PREFIX_RE = re.compile(r"^(\d+)[-_.]\s*")
 META_COMMENT_RE = re.compile(r"^\s*<!--(.*?)-->", re.S)
 ADMONITION_KINDS = ("note", "tip", "warning", "important", "caution")
@@ -289,7 +290,7 @@ def make_link_resolver(
     """Rewrite a repository-relative link so it works in the built site.
 
     * a link to a Markdown file that is a page -> that page, relative
-    * a link to a directory whose README.md is a page -> that page
+    * a link to a directory whose index.md is a page -> that page
     * a link to any other file under docs/ (images, downloads) -> the copy of
       that file in the built site, relative
     * a link to a file under gh-pages/assets/ -> assets/, relative
@@ -329,7 +330,7 @@ def make_link_resolver(
 
         candidates = [target]
         if not target.lower().endswith(".md"):
-            candidates += [f"{target.rstrip('/')}/README.md", f"{target.rstrip('/')}/index.md"]
+            candidates += [f"{target.rstrip('/')}/index.md", f"{target.rstrip('/')}/README.md"]
         for candidate in candidates:
             found = candidate if candidate in source_to_output else prefix_insensitive(candidate)
             if found is not None:
@@ -524,7 +525,7 @@ def read_page_source(path: Path) -> tuple[dict[str, str], str, str]:
 def load_section(
     directory: Path, url_parts: list[str], book: Book, parent: Page | None
 ) -> Page:
-    landing = next((directory / n for n in ("README.md", "index.md") if (directory / n).exists()), None)
+    landing = next((directory / n for n in ("index.md", "README.md") if (directory / n).exists()), None)
     output = str(Path(*url_parts) / "index.html") if url_parts else "index.html"
     if landing is not None:
         meta, body, title = read_page_source(landing)
