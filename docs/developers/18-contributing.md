@@ -62,19 +62,12 @@ root file was the GNU General Public License version 2 and the manifest
 declared `GPL-2.0-or-later`, while every source file said MIT. The project
 settled on MIT and the two outliers were corrected.
 
-Two files outside `core/vendor/` remain third-party and stay under the GNU
-General Public License, because relicensing someone else's work is not the
-project's to do. Both are named at the foot of `LICENSE`, and their notices
-live in the files themselves:
-
-| File | Origin |
-|---|---|
-| `core/components/com_wiki/helpers/sanitizer.php` | The MediaWiki XHTML sanitizer, GPL version 2 or later |
-| `core/plugins/user/domainrestriction/helpers/IPv6Net.php` | Copyright (c) 2011 Juergen Enge, GPL version 2 |
-
-> **Note:** The sanitizer carries the project's MIT header above the original
-> GPL notice. The two contradict each other inside one file. Do not treat that
-> file as MIT on the strength of its header.
+Nothing outside `core/vendor/` is under the GNU General Public License any
+longer. The last two files that were, the MediaWiki XHTML sanitizer the wiki
+used for its heading anchors and the `IPv6Net` class the domain restriction
+plugin matched networks with, were replaced with code of the project's own.
+Relicensing someone else's work is not the project's to do, so code under
+another license is replaced or kept in its package, not given an MIT header.
 
 Everything under `core/vendor/` is installed by Composer and carries whatever
 license its package declares.
