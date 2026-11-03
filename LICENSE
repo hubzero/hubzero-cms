@@ -27,16 +27,3 @@ Third-party components
 This repository bundles third-party code under its own terms. Everything under
 `core/vendor/` is installed by Composer and carries the license each package
 declares; see `core/composer.lock` and each package's own license file.
-
-Two files outside `core/vendor/` are third-party and are licensed under the GNU
-General Public License, not MIT:
-
-  core/components/com_wiki/helpers/sanitizer.php
-      The MediaWiki XHTML sanitizer, Copyright (C) 2002-2005 Brion Vibber
-      et al., GPL version 2 or later.
-
-  core/plugins/user/domainrestriction/helpers/IPv6Net.php
-      Copyright (c) 2011 Juergen Enge, GPL version 2.
-
-Their notices are preserved in the files themselves and are not superseded by
-the terms above.
