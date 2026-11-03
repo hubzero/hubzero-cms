@@ -8,25 +8,25 @@ screenshots: none
 
 A tool runs in a tool session on the hub's execution hosts. The session
 carries the interface the user works in. Light calculations run in the
-session itself; heavier ones are sent to a cluster or a national resource
-with the `submit` command, which keeps the session responsive and returns
-the results when the job finishes.
+session itself. Heavier ones go to a cluster or a national resource through
+the `submit` command. That keeps the session responsive, and `submit`
+returns the results when the job finishes.
 
 > **Note:** `submit` is part of the tool execution platform, which is
 > separate software and is **not in this repository**. Nothing on these
-> pages could be checked against the code here, and the CMS holds no trace
-> of the command — the only mention left in `com_tools` is
+> pages could be checked against the code here. The CMS holds no trace of
+> the command; the only mention left in `com_tools` is
 > [a migration that dropped an old `submit` sessions table](../../../../core/components/com_tools/migrations/Migration20180702134743ComToolsRemoveSubmitSessions.php).
-> The material is kept as the written record, corrected where it
-> contradicted itself, and `submit --help` on your own hub is the
-> authority on what your client accepts.
+> The material is kept as the written record and corrected where it
+> contradicted itself. For what your client accepts, `submit --help` on
+> your own hub is the authority.
 
 ## The pages here
 
-Most tools reach `submit` from a Jupyter notebook now, so
-[Submitting from a Jupyter notebook](04-jupyter_submit.md) is the page to
-read if you are writing a new tool; the submit command reference below
-explains what the options it sets actually do.
+Most tools now reach `submit` from a Jupyter notebook. If you are writing a
+new tool, read [Submitting from a Jupyter notebook](04-jupyter_submit.md).
+The submit command reference below explains what the options it sets
+actually do.
 
 - [Submit command](01-submitcmd.md) — what `submit` does, its options, and
   the parameter sweep syntax. Start here whichever way you call it.

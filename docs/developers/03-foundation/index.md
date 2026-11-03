@@ -5,15 +5,15 @@ reviewed: 2026-09-10
 -->
 # Foundation
 
-How the framework underneath every extension is put together: what is on
-disk, what a request runs through, how your classes are found, how
-extensions reach each other, and the handful of names an extension uses
-constantly.
+This section shows how the framework under every extension is put
+together. It covers what is on disk, what a request runs through, and how
+your classes are found. It also covers how extensions reach each other, and
+the handful of names an extension uses constantly.
 
 Read this section once before you write an extension. Most of what goes
-wrong early — a class that will not load, a facade that fatals, a plugin
-nothing calls, a directory that is not an extension because no database row
-says so — is in here, and none of it is discoverable by reading a component.
+wrong early is explained here: a class that will not load, a facade that
+fatals, a plugin nothing calls, a directory that is not an extension because
+no database row says so. None of it can be learned by reading a component.
 
 ## In this section
 

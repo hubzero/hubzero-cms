@@ -6,20 +6,19 @@ screenshots: none
 -->
 # Tool developers
 
-How to write a program that runs on a hub's execution hosts and appears in a
-member's browser, and how to get it from a registration form to a published
-resource page.
+This book covers writing a program that runs on a hub's execution hosts and
+appears in a member's browser. It then follows the program from the
+registration form to a published resource page.
 
 > **Important:** Two pieces of software are involved and only one of them is
 > in this repository. The CMS here holds the contribution pipeline, the tool
-> pages, and the session screens. The execution hosts, the middleware that
-> starts sessions, the container images, the shared file system, the
-> `invoke_app` and `submit` clients and the Rappture toolkit are the tool
-> platform, which is installed alongside a hub and is separate software. Most
-> of what these pages describe happens on the platform and could not be
-> checked here. Every page says at the top which of its material was verified
-> against the CMS and which was carried over from the earlier documentation
-> unchecked.
+> pages, and the session screens. Everything else is the tool platform,
+> separate software installed alongside a hub: the execution hosts, the
+> middleware that starts sessions, the container images, the shared file
+> system, the `invoke_app` and `submit` clients, and the Rappture toolkit.
+> Most of what these pages describe happens on the platform and could not be
+> checked here. Each page says at the top what was checked against the CMS
+> and what was carried over unchecked from the earlier documentation.
 
 ## Where to start
 

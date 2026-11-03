@@ -11,13 +11,13 @@ extensions, and keeps the site healthy. Almost all of that happens in the
 administrator interface at `/administrator`, which this book walks through
 screen by screen.
 
-It is written for whoever ended up running the hub, which is usually not a
-full-time administrator: a researcher, a lab manager, somebody who inherited
-the site along with three other jobs. So each chapter says what a screen is
-for before it says what fields it has, and it says where a change is hard to
-undo, reaches people who are already using the hub, or cannot be tried out
-first. Where something does not work — an inert button, a dead filter, a
-setting nothing reads — it says that too, rather than describing the intention.
+It is written for whoever ended up running the hub. That is usually not a
+full-time administrator but a researcher, a lab manager, or somebody who
+inherited the site along with three other jobs. So each chapter says what a
+screen is for before it lists the fields. It says where a change is hard to
+undo, reaches people already using the hub, or cannot be tried out first.
+And where something does not work — an inert button, a dead filter, a
+setting nothing reads — it says so, rather than describing the intention.
 
 This book is not a field-by-field reference; that is the generated
 [configuration reference](../reference/configuration/index.md). It is not
@@ -32,18 +32,18 @@ server, and upgrading it later, is
 If the hub is new, read
 [The administrator interface](01-getting-started/01-administrator-interface.md) and then
 [The first week with a new hub](01-getting-started/02-first-week.md). The first
-covers the login and the back end's menus; the second is the ordered path
-through the choices that are hard to change later — mail, registration,
-access, the front page, and the scheduled jobs — with a link to the chapter
+covers the login and the back end's menus. The second takes you in order
+through the choices that are hard to change later: mail, registration,
+access, the front page, and the scheduled jobs. It links to the chapter
 covering each. [Configuring](05-configuring/index.md) has the settings
 screens in full.
 
 If the screens make sense one at a time but not together, read
-[How a hub fits together](01-getting-started/03-how-a-hub-fits-together.md). It is the
-mental model the rest of this book takes for granted — the two halves of the
-application, how a page is built from a component, a template and its
-modules, what lives in the database and what lives on disk, and what a
-manager can and cannot break.
+[How a hub fits together](01-getting-started/03-how-a-hub-fits-together.md). The rest
+of this book takes it for granted. It explains the two halves of the
+application and how a page is built from a component, a template and its
+modules. It also says what lives in the database and what lives on disk,
+and what a manager can and cannot break.
 
 If you are taking over a running hub, start with
 [Daily maintenance](03-maintenance/index.md) and
@@ -51,9 +51,9 @@ If you are taking over a running hub, start with
 
 If you are here because something has gone wrong, try
 [Frequently asked questions](04-faq.md) first, then the chapter for the
-screen in question. A hub that has just become public and is suddenly full of
-junk accounts and junk posts wants [Spam](11-spam.md), which is worth reading
-before that happens rather than during.
+screen in question. If a hub that has just gone public fills up with junk
+accounts and posts, read [Spam](11-spam.md). Better still, read it before
+that happens.
 
 ## In this book
 
@@ -82,9 +82,9 @@ Every parameter you can set is also listed in the generated
 [configuration reference](../reference/configuration/index.md).
 
 > **Note:** Where this book gives a default, it is the value a hub installed
-> from the shipped data actually has, which is not always the default a
-> component's manifest declares — and the generated reference is built from
-> those manifests. Where the two disagree, the stored value wins and this book
+> from the shipped data actually has. That is not always the default a
+> component's manifest declares, and the generated reference is built from
+> the manifests. Where the two disagree, the stored value wins and this book
 > says so. Check the setting on your own hub before relying on either.
 > The two clearest cases are in
 > [Check the default, do not trust it](01-getting-started/02-first-week.md#check-the-default-do-not-trust-it).
