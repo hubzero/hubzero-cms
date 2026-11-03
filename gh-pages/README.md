@@ -9,7 +9,7 @@ site.json           site identity, the list of books, and standalone pages
 build_site.py       the builder: docs/ -> public/
 check_links.py      fails on any broken internal link or anchor in public/
 test_build_site.py  unit tests for the builder
-redirects.json      old help.hubzero.org paths -> new pages (written by the importer)
+redirects.json      old documentation paths -> new pages
 templates/          home, doc (book page with rail), page (plain), redirect
 assets/             stylesheet, search script, logo
 public/             the built site, committed so it can be read without a build
@@ -54,5 +54,5 @@ for the keys. `status: imported` puts a "not yet reviewed" banner on the page;
 
 The builder also writes `search-index.json` (used by the header search box),
 `sitemap.xml`, `status.json`, and a redirect stub for every entry in
-`redirects.json` so links into the old help.hubzero.org tree keep working once
-that host forwards `/documentation/...` here.
+`redirects.json`, so links to the earlier documentation's `/documentation/...`
+paths keep working when they are forwarded here.

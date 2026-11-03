@@ -80,12 +80,12 @@ def test_order_key_prefers_meta_then_prefix_then_name():
 
 def test_meta_header_is_split_from_the_body():
     meta, body = parse_meta(
-        "<!--\nstatus: imported\nsource: https://help.hubzero.org/documentation/240/x\nmodified: 2016-03-01\n-->\n# Title\n\nText.\n"
+        "<!--\nstatus: reviewed\nreviewed-against: 2.4-main @ abc1234\nreviewed: 2026-10-01\n-->\n# Title\n\nText.\n"
     )
     assert meta == {
-        "status": "imported",
-        "source": "https://help.hubzero.org/documentation/240/x",
-        "modified": "2016-03-01",
+        "status": "reviewed",
+        "reviewed-against": "2.4-main @ abc1234",
+        "reviewed": "2026-10-01",
     }
     assert body.lstrip().startswith("# Title")
 

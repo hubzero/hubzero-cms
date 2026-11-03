@@ -11,9 +11,9 @@ Chapters and sections are ordered by an optional numeric filename prefix
 Every page may start with a metadata comment::
 
     <!--
-    status: imported
-    source: https://help.hubzero.org/documentation/240/managers/components/kb
-    modified: 2016-03-01
+    status: reviewed
+    reviewed-against: 2.4-main @ 0ebd2294a3
+    reviewed: 2026-10-01
     -->
 
 ``status`` drives the banner readers see (imported pages carry a warning,
@@ -613,18 +613,10 @@ def build_breadcrumbs(page: Page, output_path: Path, output_dir: Path, home_href
 def build_status_banner(page: Page, config: dict) -> str:
     status = page.status
     if status in ("imported", "merged"):
-        source = page.meta.get("source", "")
-        modified = page.meta.get("modified", "")
-        origin = f'<a href="{escape(source)}">help.hubzero.org</a>' if source else "help.hubzero.org"
-        when = f" It was last edited there in {escape(modified[:4])}." if modified[:4].isdigit() else ""
-        if page.meta.get("source-state") == "unpublished":
-            when += " It was never published there, so read it as a draft."
-        merged = page.meta.get("merged-from", "")
-        extra = f" It exists only in the {escape(merged)} documentation and was merged in from there." if merged else ""
         return (
             f'<aside class="banner banner--{status}" role="note">'
-            f"<strong>Not yet reviewed.</strong> This page was imported from {origin} and "
-            f"has not been checked against Hubzero {escape(config.get('version', ''))}.{when}{extra}"
+            "<strong>Not yet reviewed.</strong> This page was carried over from the earlier documentation "
+            f"and has not been checked against Hubzero {escape(config.get('version', ''))}."
             "</aside>"
         )
     if status == "draft":
@@ -730,7 +722,7 @@ def build_status_report(books: list[Book], config: dict) -> tuple[str, dict]:
     lines = ["# Documentation status", "",
              f"Review progress for the Hubzero {config.get('version', '')} documentation. "
              "A page is *reviewed* once someone has checked it against the code on "
-             f"`{config.get('blob_ref', 'main')}`; everything else still carries its import banner.", ""]
+             f"`{config.get('blob_ref', 'main')}`; anything else carries a banner saying it is not.", ""]
     data: dict = {"books": [], "totals": {}}
     totals: dict[str, int] = {}
     for book in books:
@@ -746,12 +738,12 @@ def build_status_report(books: list[Book], config: dict) -> tuple[str, dict]:
         lines.append(f"{reviewed} of {len(pages)} pages reviewed. "
                      + ", ".join(f"{v} {k}" for k, v in sorted(counts.items())) + ".")
         lines.append("")
-        lines.append("| Page | Status | Source last edited | Reviewed against |")
-        lines.append("|---|---|---|---|")
+        lines.append("| Page | Status | Reviewed against |")
+        lines.append("|---|---|---|")
         for page in pages:
             rel = "/".join(p.title for p in page.ancestors()[1:] + [page])
             link = f"[{rel}](../{page.href})"
-            lines.append(f"| {link} | {page.status or '—'} | {page.meta.get('modified', '')[:10] or '—'} | {page.meta.get('reviewed-against', '') or '—'} |")
+            lines.append(f"| {link} | {page.status or '—'} | {page.meta.get('reviewed-against', '') or '—'} |")
         lines.append("")
         data["books"].append({"slug": book.slug, "title": book.title, "pages": len(pages), "counts": counts})
     data["totals"] = totals
