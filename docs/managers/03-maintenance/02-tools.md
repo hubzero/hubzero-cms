@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Tools
 
@@ -187,9 +187,9 @@ working, and ready to be installed"*.
 The rest of this section is the platform's tool-packaging convention, quoted
 from the original guide. It describes what the developer does inside a
 workspace on the execution host, and none of it is verifiable from the CMS
-repository.
-
-![Requirements for installing a tool](../media/tools-contribtool-managers-guide-17.png)
+repository. Steps 2 to 6 below were run in a nanoHUB workspace in November
+2026, building the Rappture curve example into a scratch directory, and the
+two corrections that needed are made where they apply.
 
 There are four requirements for installing a tool in the hub environment:
 
@@ -198,27 +198,19 @@ There are four requirements for installing a tool in the hub environment:
 3. Makefile
 4. Invoke script
 
-![Source code](../media/tools-contribtool-managers-guide-18a.png)
-
 Source code includes all files related to running the application, with
 `tool.xml` and possibly a wrapper script as the exceptions. No binaries built
 from the source should be stored in the repository. Binary data files such as
 images are fine; committed build products are not, because they cause
 compatibility problems later even when they claim to be platform independent.
 
-![Graphical user interface](../media/tools-contribtool-managers-guide-18b.png)
-
 All tools need a graphical user interface. Qt, GTK, wxWidgets, and Tcl/Tk all
 work. If the tool has none, [Rappture](http://rappture.org) will build one
 that guides users through running the tool and viewing results, and it has
 hooks into the hub infrastructure.
 
-![Makefile](../media/tools-contribtool-managers-guide-18c.png)
-
 All tools need a Makefile, which holds the instructions for compiling and
 installing binaries. Tools with nothing to compile still need one.
-
-![Invoke script](../media/tools-contribtool-managers-guide-18d.png)
 
 All tools need an invoke script, which says how to launch the tool in the hub
 environment. It is usually a one-line call to the hub's own invoke script.
@@ -244,8 +236,6 @@ All of them can be done from within a workspace.
 
 ### 1. Check out the repository
 
-![Checking out the repository](../media/tools-contribtool-managers-guide-31.png)
-
 ```
 svn checkout https://yourhub.org/tools/toolname/svn/trunk toolname
 ```
@@ -255,8 +245,6 @@ alias. Run inside a workspace, this puts a local copy of the repository in a
 directory named for the tool.
 
 ### 2. Add source code
-
-![Adding source code](../media/tools-contribtool-managers-guide-32.png)
 
 ```
 cd toolname
@@ -268,13 +256,9 @@ Every file has to be added, one by one or by directory.
 
 ### 3. Add a Makefile
 
-![Editing the Makefile](../media/tools-contribtool-managers-guide-33a.png)
-
 ```
 gedit src/Makefile
 ```
-
-![A minimal Makefile](../media/tools-contribtool-managers-guide-33b.png)
 
 ```make
 all: curve.tcl
@@ -299,16 +283,16 @@ Save the file and `svn add src/Makefile`.
 
 ### 4. Add `tool.xml`
 
-![Adding tool.xml](../media/tools-contribtool-managers-guide-34a.png)
-
 ```
 cp /apps/rappture/examples/zoo/curve/tool.xml rappture/tool.xml
 svn add rappture/tool.xml
 ```
 
-### 5. Check the invoke script
+The example's `tool.xml` runs `tclsh @tool/curve.tcl @driver`, and `@tool`
+is the `rappture` directory. With the Makefile above installing the script
+into `bin`, change the command to `tclsh @tool/../bin/curve.tcl @driver`.
 
-![The invoke script](../media/tools-contribtool-managers-guide-35a.png)
+### 5. Check the invoke script
 
 The `middleware` directory must contain a file named `invoke`. If it is
 missing, create it and add it to the repository the same way as the Makefile.
@@ -318,13 +302,17 @@ presses **Launch tool**. The default is:
 ```sh
 #!/bin/sh
 
-/apps/rappture/invoke_app "$@" -t toolname
+/usr/bin/invoke_app "$@" -C rappture -t toolname
 ```
 
-`/apps/rappture/invoke_app` is the hub's own invoke script. On older hubs it
-only launches Rappture applications; on newer ones it is a link to
-`/apps/invoke/current/invoke_app`, which launches Rappture applications and
-most non-Rappture ones. Its common flags:
+`/usr/bin/invoke_app` is the platform's own invoke script; `-C rappture`
+starts the Rappture interface from `rappture/tool.xml`. Older tools call
+`/apps/rappture/invoke_app` or `/apps/invoke/invoke_app` instead. On
+nanoHUB's 64-bit execution environment, checked in November 2026, those
+paths no longer launch anything: they print a message asking for the
+`/usr/bin/invoke_app -C rappture` form and exit.
+
+The common flags of `invoke_app`:
 
 ```
 -r  Rappture version (current, dev)
@@ -345,7 +333,7 @@ chmod 755 middleware/invoke
 
 ### 6. Test in a workspace
 
-![Testing in a workspace](../media/tools-contribtool-managers-guide-36.png)
+![The walkthrough's example tool running in a workspace after these commands: the Rappture curve interface, with one simulated result plotted](../media/tools-workspace-test.png)
 
 ```
 cd src
@@ -363,8 +351,6 @@ it should be fixed before the status moves to **Uploaded**.
 
 ### 7. Clean up
 
-![Cleaning the working copy](../media/tools-contribtool-managers-guide-37.png)
-
 ```
 cd src
 make distclean
@@ -375,8 +361,6 @@ This removes what the install produced, so no binaries or temporary files end
 up in the repository.
 
 ### 8. Commit
-
-![Committing](../media/tools-contribtool-managers-guide-38.png)
 
 ```
 svn commit --message "initial upload of code"
@@ -412,11 +396,7 @@ Both scripts are part of the tool platform, so what they do on disk could not
 be verified here. The CMS shows their output: green for success, red with the
 errors for failure.
 
-![The install output](../media/tools-contribtool-managers-guide-42.png)
-
 The next step is on the execution host. Open a workspace and, in an xterm:
-
-![Building the tool](../media/tools-contribtool-managers-guide-43.png)
 
 ```
 sudo su - apps
@@ -455,30 +435,29 @@ information page — the resource page listing authors, credits, publications,
 and screenshots. The **What's next?** panel links to it, as **Create this
 page** or **Edit this page** depending on whether one exists.
 
-![Creating the tool information page](../media/tools-contribtool-managers-guide-50.png)
-
 The wizard collects and formats the information and ends on a preview the
 developer confirms.
 
-![Previewing the tool page](../media/tools-contribtool-managers-guide-52.png)
+![The tool page wizard's Finalize step: the Description, Contributors, Attachments and Tags steps across the top, and a preview of the tool page as it will be published](../media/tools-approve-preview.png)
 
 The developer also picks a license, replacing the template text with their
 own. Closed source requires a reason.
 
-![Choosing a license](../media/tools-contribtool-managers-guide-53.png)
+![The License page: the Source Code Access choice, the case for open source, and the reason a closed-source tool must give](../media/tools-approve-license.png)
 
 Finally, **Approve this tool**. The status changes to **Approved**.
 
-![The tool status page in the Approved state](../media/tools-contribtool-managers-guide-54.png)
+![The last step of Approve New Tool Release: the tool's information for this release, and the Approve this tool button](../media/tools-approve-finalize.png)
 
 > **Note:** Moving to **Approved** goes through a version check first. If the
 > version number on the tool is not a valid new version, the pipeline sends
 > the developer to the versions form to confirm or set one before the flip
 > takes effect.
 
+![The Confirm version step, with the version label for this release and the tool's existing versions](../media/tools-approve-version.png)
+
 ## Approved to Published
 
-![The tool status page in the Approved state](../media/tools-contribtool-managers-guide-55.png)
 
 This is an admin task. Press **Publish** in **Administrator Controls**. The
 publish process exposes the tool information page on the hub and its output
