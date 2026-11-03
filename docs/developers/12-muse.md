@@ -30,7 +30,7 @@ Write a plain script only for something genuinely throwaway that you will
 delete the same day.
 
 Do not write a command for a schema change. Schema changes are
-[migrations](06-database.md#migrations); the runner tracks which have run and
+[migrations](06-database/03-migrations.md); the runner tracks which have run and
 an administrator applies them as part of an upgrade, which a command does not
 give you.
 
@@ -313,7 +313,7 @@ it prompts for what it needs, so there is no syntax to remember.
 
 > **Warning:** On a hub that uses migrations — which is every hub that is not
 > your laptop — this command is the wrong tool. A
-> [migration](06-database.md#migrations) that calls `addComponentEntry()`
+> [migration](06-database/03-migrations.md) that calls `addComponentEntry()`
 > records what it did and travels with the extension; `muse extension` changes
 > one database and leaves no trace. Use it for local testing only.
 
@@ -347,7 +347,7 @@ is the quickest way to find the request that runs four hundred queries.
 
 ### Migration
 
-See [Migrations](06-database.md#migrations) in the database chapter for
+See [Migrations](06-database/03-migrations.md) in the database chapter for
 writing one, and
 [`muse migration`](../reference/muse.md#muse-migration) for the command.
 
@@ -389,7 +389,7 @@ files, a router, and empty CSS and JS assets. The component name is
 substituted throughout. It refuses to run if the directory already exists.
 
 What it does not write is an API controller or a migration. Add the migration
-yourself; see [Writing one](06-database.md#writing-one).
+yourself; see [Writing one](06-database/03-migrations.md#writing-one).
 
 ### Test
 

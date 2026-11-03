@@ -27,7 +27,7 @@ Hubs have three arrangements that sound alike and do quite different jobs.
 - A **group** is what this chapter is about: a space members create and run
   themselves, with its own pages, forum, files and membership. You join one,
   or are invited to it.
-- A [**project**](../16-projects.md) is a workspace for a small team
+- A [**project**](../16-projects/index.md) is a workspace for a small team
   preparing files and data before any of it is released. Its owner picks the
   team and decides whether anyone else ever sees it. It is about work in
   progress rather than community: there is no forum and no wiki, and nobody

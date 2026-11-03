@@ -53,7 +53,7 @@ router, `config.xml`, `access.xml`, language files, and migrations. Where a
 page shows `com_kb`, that is what the working code looks like today. Where it
 shows `com_bookings`, that is what you write.
 
-The same example runs through [Database](../06-database.md); the model,
+The same example runs through [Database](../06-database/index.md); the model,
 queries and table names there are the ones used here.
 
 ## Register it, or it is invisible

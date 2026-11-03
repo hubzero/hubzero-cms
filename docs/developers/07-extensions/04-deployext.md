@@ -23,7 +23,7 @@ afternoon and a wasted day.
 
 Two ways remain, and they are the two below. Both of them put a directory
 where it belongs and stop; neither creates a table or a row. That second half
-is always a [migration](../06-database.md#migrations).
+is always a [migration](../06-database/03-migrations.md).
 
 Which to use:
 
@@ -85,7 +85,7 @@ into place yourself.
    php core/bin/muse migration -e=com_bookings -f   # actually run it
    ```
 
-   That runs the extension's own [migrations](../06-database.md#migrations),
+   That runs the extension's own [migrations](../06-database/03-migrations.md),
    creating its tables and its `#__extensions` row. Without `-f` the runner
    only reports; `-e` restricts it to the one extension.
 
@@ -163,5 +163,5 @@ from that screen, or on the command line:
 php core/bin/muse migration -f
 ```
 
-See [Migrations](../06-database.md#migrations) for what a migration can do and
+See [Migrations](../06-database/03-migrations.md) for what a migration can do and
 how the runner decides what is pending.

@@ -113,7 +113,7 @@ Then:
 php core/bin/lint/missing-facade-imports.php
 ```
 
-Read [PHP Coding Style](19-conventions.md#checking-your-work)
+Read [PHP Coding Style](19-conventions/01-php-style.md#checking-your-work)
 for what each of those catches and how to run phpcs usefully against a
 codebase that has no committed ruleset. The suite takes about half a minute;
 [Testing](15-testing.md#running-one-test) covers running one test while you
@@ -156,7 +156,7 @@ for. If you fix some existing ones, lower the ceiling in the workflow in the
 same pull request, so the count cannot creep back.
 
 No workflow runs phpcs. Style is caught in review; see
-[When the linter and the house style disagree](19-conventions.md#when-the-linter-and-the-house-style-disagree).
+[When the linter and the house style disagree](19-conventions/01-php-style.md#when-the-linter-and-the-house-style-disagree).
 
 ### The pull request
 
@@ -180,12 +180,12 @@ testing question is the one reviewers most often have to send a pull request
 back for.
 
 Write the commit messages the way
-[Commit Messages](19-conventions.md#commit-messages) describes: an extension prefix, a
+[Commit Messages](19-conventions/05-commit-messages.md) describes: an extension prefix, a
 sentence, and a body that says why.
 
 ### What makes a change acceptable
 
-Beyond the [conventions](19-conventions.md):
+Beyond the [conventions](19-conventions/index.md):
 
 - **It works, and you say how you know.** A description of what you tested is
   worth more than an assertion that you did.

@@ -103,7 +103,7 @@ log, so it lifts itself as the window slides forward. Tell the member to wait
 and try again, and to use **Forgot your password** rather than guessing.
 
 If it is happening to many accounts at once, or repeatedly to one, read
-[Security considerations](security.md#cms-controlled-fail2ban-jail), which
+[Security considerations](security/03-hardening-the-cms.md#cms-controlled-fail2ban-jail), which
 explains what is being counted and what the three thresholds do.
 
 ## A member is stuck on a "spam detected" page. How do I release them?
@@ -126,7 +126,7 @@ whole procedure, including the per-session counter that clears itself, is in
 Think about what you are allowing. Every attachment is scanned by the
 command in the `virus_scanner` configuration key before it is accepted, but a
 scanner is not a substitute for keeping executables and archives off the
-list. See [Security considerations](security.md#does-the-cms-scan-uploads-for-viruses).
+list. See [Security considerations](security/01-questions.md#does-the-cms-scan-uploads-for-viruses).
 
 ## How does a project connect to Google Drive?
 

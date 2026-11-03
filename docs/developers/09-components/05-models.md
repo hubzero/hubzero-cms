@@ -135,7 +135,7 @@ Call the method to get the related rows,
 
 Lazily is the word to watch. Reading a relation as a property inside a loop
 over a list runs one query per row, and the page is slow for reasons the code
-does not show. See the [ORM](../06-database.md#orm) chapter for eager loading.
+does not show. See the [ORM](../06-database/04-orm.md) chapter for eager loading.
 
 ## Querying
 
@@ -161,7 +161,7 @@ state — which is why an administrator list controller passes
 straight into `ordered()` sorts by whatever request variable happens to carry
 that name, which is usually none, so the list comes back in the default order
 and nothing complains. Full details are in the
-[ORM](../06-database.md#orm) chapter.
+[ORM](../06-database/04-orm.md) chapter.
 
 ## Events a save fires
 

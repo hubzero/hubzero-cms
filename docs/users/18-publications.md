@@ -13,7 +13,7 @@ it a permanent page and a DOI so other people can cite it. Published work
 lives at `/publications` on the hub.
 
 You publish when you need someone outside your team to be able to point at
-the exact thing you used. The soil lab from [Projects](16-projects.md) has
+the exact thing you used. The soil lab from [Projects](16-projects/index.md) has
 spent a year measuring nitrate in field samples; the paper is nearly
 written, and the journal wants the data available. The lab publishes the
 cleaned dataset from its project, gets back a DOI, and puts that DOI in the

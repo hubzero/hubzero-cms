@@ -49,7 +49,7 @@ app/templates/northgate/
 scans every directory under `core/templates` and `app/templates` for a
 `migrations` subdirectory, alongside the component, module and plugin trees.
 
-> **Note:** See the [migrations chapter](../06-database.md#migrations) for
+> **Note:** See the [migrations chapter](../06-database/03-migrations.md) for
 > the file naming rules, the `up()`/`down()` contract and how to run them.
 
 ## The smallest one that works

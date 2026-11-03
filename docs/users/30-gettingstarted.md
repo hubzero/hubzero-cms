@@ -105,7 +105,7 @@ standards committee. A group outlives any one piece of work in it.
 
 ### Projects
 
-A [project](16-projects.md) is a workspace for a piece of research: files,
+A [project](16-projects/index.md) is a workspace for a piece of research: files,
 notes, a to-do list, and a database area. Project file storage can be the
 hub's own, or connected to Amazon S3, Dropbox, GitHub, or Google Drive through
 the hub's filesystem plugins. When the work is ready, a project is the

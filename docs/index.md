@@ -42,7 +42,7 @@ and is published at https://hubzero.github.io/hubzero-cms/.
   foundation, components, plugins, modules, templates, the database layer,
   and the REST API.
 - [Contributing](developers/18-contributing.md) — sending a change back, and
-  the [conventions](developers/19-conventions.md) the codebase follows: commit
+  the [conventions](developers/19-conventions/index.md) the codebase follows: commit
   practice, testing, and how to send changes back to the project.
 
 ## Reference

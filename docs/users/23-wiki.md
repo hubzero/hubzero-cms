@@ -26,7 +26,7 @@ shows what changed when a result stops reproducing.
   rewritten. See [Blog](05-blog.md).
 - A **project**'s files are private to the project team and are the work
   itself. A wiki page is the writing about the work. See
-  [Projects](16-projects.md).
+  [Projects](16-projects/index.md).
 - A **resource** is a finished thing you are publishing to the whole hub,
   with authors and a citation. A wiki page is a living document. See
   [Resources](21-resources.md).

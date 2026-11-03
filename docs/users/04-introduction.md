@@ -66,7 +66,7 @@ work on the same thing, and they are not the same thing. A
 [group](11-groups/index.md) is a standing community space with its own pages,
 forum, calendar, blog, and file area — a lab, a course cohort, a committee
 that keeps going after any one piece of work is finished. A
-[project](16-projects.md) is a workspace for one piece of research, with
+[project](16-projects/index.md) is a workspace for one piece of research, with
 files, notes, to-dos, and a path to publishing what comes out of it. A soil
 hydrology lab might keep a group for its seminar announcements and shared
 reading, and open a separate project for each field season whose data it

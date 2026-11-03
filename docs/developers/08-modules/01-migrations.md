@@ -30,7 +30,7 @@ after the class. Migrations are run in timestamp order across every extension
 on the hub, so a module that depends on a component's tables should carry a
 later timestamp than the migration that creates them.
 
-> **Note:** See [Migrations](../06-database.md#migrations) for naming
+> **Note:** See [Migrations](../06-database/03-migrations.md) for naming
 > conventions, the `muse` commands, and the helpers available on `$this->db`.
 
 ## The registration migration
@@ -137,7 +137,7 @@ is usually a component in disguise.
 
 Where a module really does own data, it creates the tables in the same
 migration, using the raw query helpers described in the
-[database migrations](../06-database.md#migrations) chapter:
+[database migrations](../06-database/03-migrations.md) chapter:
 
 ```php
 public function up()

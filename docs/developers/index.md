@@ -32,12 +32,12 @@ Whichever it is, three chapters apply to all of them:
 
 - [Extensions](07-extensions/index.md) — what every extension shares: the
   manifest, parameters, language files, and how it gets deployed.
-- [Database](06-database.md) — the query builder, the ORM, and the
-  [migration](06-database.md#migrations) that creates your tables. Read the
-  [table prefix](06-database.md#the-table-prefix) section before you write a
+- [Database](06-database/index.md) — the query builder, the ORM, and the
+  [migration](06-database/03-migrations.md) that creates your tables. Read the
+  [table prefix](06-database/index.md#the-table-prefix) section before you write a
   query; it is the mistake that works on your hub and fails on everyone
   else's.
-- [Conventions](19-conventions.md) — the style the tree is written in, and
+- [Conventions](19-conventions/index.md) — the style the tree is written in, and
   what a commit message looks like.
 
 ## Before you write anything
@@ -63,7 +63,7 @@ New to the codebase, read these in order:
   server, and session.
 - [The basics](05-basics/index.md) — configuration, requests and
   responses, redirects, dates, users, tags, cron, debugging, search.
-- [Database](06-database.md) — queries, the ORM, and migrations.
+- [Database](06-database/index.md) — queries, the ORM, and migrations.
 - [Extensions](07-extensions/index.md) — what every extension shares:
   requirements, parameters, languages, deployment.
 - [Modules](08-modules/index.md), [Components](09-components/index.md),
@@ -81,7 +81,7 @@ New to the codebase, read these in order:
 - [Video tutorials](02-tutorials.md).
 - [Contributing](18-contributing.md) — sending a change back, and working
   on these pages.
-- [Conventions](19-conventions.md) — PHP style and naming, CSS, the
+- [Conventions](19-conventions/index.md) — PHP style and naming, CSS, the
   database schema, and commit messages.
 
 ## Reference

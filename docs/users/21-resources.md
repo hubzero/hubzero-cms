@@ -34,7 +34,7 @@ The two look alike and are not the same thing.
 - A **collection** is your personal board of things you want to find again.
   It holds pointers, not work. See [Collections](01-collections.md).
 - A **project** is the private workspace a piece of work happens in before
-  any of this. See [Projects](16-projects.md).
+  any of this. See [Projects](16-projects/index.md).
 
 If you need a permanent identifier for a dataset a paper depends on, publish
 it. If you want colleagues to find and use something, contribute it as a

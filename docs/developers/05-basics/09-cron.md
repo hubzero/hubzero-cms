@@ -208,7 +208,7 @@ how the tick is delivered, is in
 
 Until a job exists, a declared task never runs. Rather than asking every
 hub's administrator to create one, ship a
-[migration](../06-database.md#migrations) that inserts the row — check for the
+[migration](../06-database/03-migrations.md) that inserts the row — check for the
 job first so re-running the migration does not duplicate it:
 
 <!--include: core/plugins/cron/groups/migrations/Migration20260810000000PlgCronGroups.php:19-56-->

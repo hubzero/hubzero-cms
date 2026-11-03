@@ -25,7 +25,7 @@ container beside it, follow
 steps, and the upgrades after.
 
 If the hub you are asking about is already installed and answering, go to
-[The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub)
+[The first week with a new hub](../managers/01-getting-started/02-first-week.md)
 instead.
 
 ## What every system needs

@@ -326,7 +326,7 @@ self-signed certificate is a warning, not a failure.
 up to the latest code on its branch, with a backup first and a way back.
 
 Then go on to
-[The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub).
+[The first week with a new hub](../managers/01-getting-started/02-first-week.md).
 
 ## Warnings during the migrations
 

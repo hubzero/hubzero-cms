@@ -18,7 +18,7 @@ What the presentation covered is written down here instead:
 
 - [Contributing](18-contributing.md#contributions) — forking, branching from
   a release line, and opening a pull request.
-- [Commit messages](19-conventions.md#commit-messages) — how a commit is
+- [Commit messages](19-conventions/05-commit-messages.md) — how a commit is
   written.
 - [Development environment](01-getting-started/06-devenvironment.md) — getting a
   hub running to develop against.

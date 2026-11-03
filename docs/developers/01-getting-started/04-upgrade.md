@@ -276,7 +276,7 @@ $other = User::getInstance(1234);  // JFactory::getUser(1234)
 ## The database
 
 An upgrade is not finished when the files are in place. Schema and data
-changes ship as [migrations](../06-database.md#migrations) — small PHP
+changes ship as [migrations](../06-database/03-migrations.md) — small PHP
 classes under a `migrations` directory with an `up()` and a `down()` —
 and [muse](../12-muse.md) runs the ones a hub has not seen,
 recording each in `#__migrations` so it never runs twice.

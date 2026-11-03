@@ -143,7 +143,7 @@ interface is the single most common symptom of a missed migration, and it is
 confusing precisely because the component's own pages work.
 
 An extension creates its own row from a
-[migration](../06-database.md#migrations), by calling `addComponentEntry()`,
+[migration](../06-database/03-migrations.md), by calling `addComponentEntry()`,
 `addPluginEntry()`, `addModuleEntry()` or `addTemplateEntry()`. Nothing else
 creates it: there is no package installer that reads a manifest and does it
 for you. See [Deploying extensions](04-deployext.md).

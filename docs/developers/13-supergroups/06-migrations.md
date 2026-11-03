@@ -27,7 +27,7 @@ constructor arguments filled in:
 
 Everything else — the file naming, the class shape, `up()` and `down()`, the
 dry run, the `#__migrations` log — is the hub's machinery unchanged. Read
-[Migrations](../06-database.md#migrations) first; this chapter is only what
+[Migrations](../06-database/03-migrations.md) first; this chapter is only what
 the two substituted arguments change.
 
 Both consequences follow from that table and are worth holding on to: only one

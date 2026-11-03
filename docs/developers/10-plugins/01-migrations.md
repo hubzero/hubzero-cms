@@ -34,7 +34,7 @@ extension on the hub, so give a plugin that depends on a component's tables a
 later timestamp than the migration that creates them — `plg_bookings_notify`
 after `com_bookings`, not before.
 
-> **Note:** See [Migrations](../06-database.md#migrations) for naming
+> **Note:** See [Migrations](../06-database/03-migrations.md) for naming
 > conventions, the `muse` commands, and the schema helpers on `$this->db`.
 
 ## The registration migration
@@ -196,7 +196,7 @@ public function up()
 ```
 
 Write `#__` for the table prefix, never a literal `jos_`; see
-[Database](../06-database.md#the-table-prefix). Most core plugins reverse only
+[Database](../06-database/index.md#the-table-prefix). Most core plugins reverse only
 the registration in `down()` and leave the schema alone, because dropping a
 table throws away data that a re-run cannot restore.
 

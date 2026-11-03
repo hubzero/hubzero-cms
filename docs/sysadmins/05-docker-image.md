@@ -352,7 +352,7 @@ Caddyfile says `tls internal`, it warns about the certificate too.
 Open `https://hub.example.org/`, and sign in at
 `https://hub.example.org/administrator` with the administrator's username and
 password. Then go on to
-[The first week with a new hub](../managers/01-getting-started.md#the-first-week-with-a-new-hub).
+[The first week with a new hub](../managers/01-getting-started/02-first-week.md).
 
 ## Running the hub's commands
 

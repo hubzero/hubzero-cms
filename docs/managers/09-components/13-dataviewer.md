@@ -53,7 +53,7 @@ plugin, not on this component:
 3. Set **Status** to **Enabled** and select **Save & Close**.
 
 See [Projects](26-projects.md#enabling-a-project-feature) for the rest
-of that plugin, and [Databases](../../users/16-projects.md#databases) in
+of that plugin, and [Databases](../../users/16-projects/02-databases.md) in
 the users book for what a project team does with the result.
 
 > **Note:** If a project's databases list loads but opening a database's

@@ -40,7 +40,7 @@ is laid out before you start clicking.
 
 **"I need to work with other people."** A [group](11-groups/index.md) is a
 standing community space — a lab, a course cohort, a working committee — with
-its own pages, forum, calendar and files. A [project](16-projects.md) is a
+its own pages, forum, calendar and files. A [project](16-projects/index.md) is a
 private workspace for one piece of research, where a team keeps files and data
 while the work is still in progress. Most members end up in both.
 
@@ -67,7 +67,7 @@ and the [Forum](09-forum.md) are where members talk;
 [Blog](05-blog.md), [Wiki](23-wiki.md), and
 [Knowledge base](13-knowledgebase.md) are where they write things down.
 [Events](07-events.md), [Newsletters](17-newsletters.md), and
-[Courses](02-courses.md) cover the scheduled and taught parts of a hub.
+[Courses](02-courses/index.md) cover the scheduled and taught parts of a hub.
 
 **"Something is wrong, or I am stuck."** The
 [frequently asked questions](03-faq.md) answer the common ones. Anything else

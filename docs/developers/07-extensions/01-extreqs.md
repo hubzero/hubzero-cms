@@ -175,7 +175,7 @@ site's. See [Languages](03-languages.md).
 
 The row in `#__extensions` is what makes an extension exist as far as the
 platform is concerned, and a
-[migration](../06-database.md#migrations) is how an extension creates it —
+[migration](../06-database/03-migrations.md) is how an extension creates it —
 the only way, because this release has no package installer to do it for you.
 The migration also creates the extension's tables and drops them again on the
 way down.

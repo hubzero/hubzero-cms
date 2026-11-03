@@ -12,7 +12,7 @@ the component changes.
 
 This page covers what a component's migrations do. The mechanics — naming,
 the runner, logging, hooks, and the full macro list — are in
-[Migrations](../06-database.md#migrations) under Database.
+[Migrations](../06-database/03-migrations.md) under Database.
 
 ## Why this comes first
 
@@ -127,7 +127,7 @@ can run against a hub that already has the table:
 `down()` drops all three. Table names use the `#__` prefix placeholder, which
 the driver expands to the hub's configured prefix. Writing `jos_` or `hub_`
 into a migration hard-codes one hub's prefix into every other hub — see
-[the prefix](../06-database.md).
+[the prefix](../06-database/index.md).
 
 Name tables after the component: `#__bookings_instruments`,
 `#__bookings_reservations`. The ORM depends on it — a `Relational` model with

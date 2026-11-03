@@ -357,7 +357,7 @@ submit.
 > library in the tree consults it when content is saved, so **No Filtering**
 > and **Default Black List** are indistinguishable in effect. The screen
 > looks like the most important one here and it is not a control at all. See
-> [Security](../security.md#text-filters).
+> [Security](../security/03-hardening-the-cms.md#text-filters).
 
 ## What moved where
 

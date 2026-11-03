@@ -124,7 +124,7 @@ no row is invisible; a plugin whose access level the visitor does not have is
 not loaded at all, rather than loaded and skipped, so there is nothing for
 the plugin itself to guard against.
 
-That row is written by a [migration](../06-database.md#migrations), which is
+That row is written by a [migration](../06-database/03-migrations.md), which is
 why every extension ships one. See
 [Deploying extensions](../07-extensions/04-deployext.md) and
 [Extensions](05-extensions.md#nothing-scans-the-filesystem).
