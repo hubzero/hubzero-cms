@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
 screenshots: ok
-source: https://help.hubzero.org/documentation/240/users/groups/createdeleteagroup
-source-id: 3304
-modified: 2011-11-04
 -->
 # Creating and deleting a group
 

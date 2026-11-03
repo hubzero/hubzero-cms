@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/240/webdevs/supergroups_gitlab
-source-id: 3527
-modified: 2014-09-10
 -->
 # Super groups with GitLab
 

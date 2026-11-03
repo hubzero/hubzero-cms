@@ -3,8 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/index/fileaccess
-source-id: 3424
 -->
 # Accessing files
 

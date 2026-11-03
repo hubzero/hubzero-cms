@@ -3,11 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/accesshomedir
-source-id: 3544
-modified: 2014-02-28
-imported: 2026-09-09
-merged-from: 2.2
 -->
 # Accessing your home directory
 

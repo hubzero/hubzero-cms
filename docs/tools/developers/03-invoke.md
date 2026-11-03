@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/invoke
-source-id: 3537
-modified: 2011-03-07
-imported: 2026-09-09
 -->
 # Launching tools with invoke scripts
 
@@ -19,7 +15,7 @@ program.
 > The first section below is CMS-side and was checked against `com_tools`. The
 > rest describes `invoke_app`, the platform's own invocation script, which is
 > installed on the execution hosts and is not in this repository. Its options
-> are carried over from help.hubzero.org and could not be verified. Run
+> are carried over from the earlier documentation and could not be verified. Run
 > `invoke_app -h` on your hub, or read the script itself, before relying on a
 > detail here.
 

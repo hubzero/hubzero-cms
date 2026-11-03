@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/testing
-source-id: 3531
-modified: 2015-08-07
-imported: 2026-09-09
 -->
 # Testing
 
@@ -311,7 +307,8 @@ first line.
 
 ## What the old page claimed that is not true
 
-This page was imported from help.hubzero.org and described the 2015 state.
+This page was carried over from the earlier documentation and described the
+2015 state.
 For the record:
 
 - Tests extend `PHPUnit\Framework\TestCase`, not `PHPUnit_Framework_TestCase`.

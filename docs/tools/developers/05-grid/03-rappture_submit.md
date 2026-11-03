@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/rappture_submit
-source-id: 3542
-modified: 2009-10-13
-imported: 2026-09-09
 -->
 # Submitting from a Rappture tool
 

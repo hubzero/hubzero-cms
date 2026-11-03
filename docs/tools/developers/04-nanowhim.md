@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/nanowhim
-source-id: 3538
-modified: 2010-05-13
-imported: 2026-09-09
 -->
 # Combining tools in one session
 
@@ -142,7 +138,6 @@ the tool is installed on the hub.
 So get the contribution to the **Installed** state, then use the **Launch
 tool** button on the tool's status page — the same button you would use to
 test any tool before approving it. See
-[The contribution process](process.md) for the states, the
+[The contribution process](process.md) for the states, and the
 [hub managers' walkthrough](../../managers/03-maintenance/02-tools.md) for the
-administrator's side, and the lecture on
-[uploading and publishing new tools](https://help.hubzero.org/resources/173).
+administrator's side.

@@ -3,8 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 91d03d0a23
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/240/webdevs/templates/designing
-source-id: 3507
 -->
 # Designing
 

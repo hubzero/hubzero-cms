@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/grid/submitcmd
-source-id: 3540
-modified: 2009-12-01
-imported: 2026-09-09
 -->
 # Submit command
 

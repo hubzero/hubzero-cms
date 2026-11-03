@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/extensions
-source-id: 3466
-modified: 2017-04-17
-imported: 2026-09-09
 -->
 # Extensions
 

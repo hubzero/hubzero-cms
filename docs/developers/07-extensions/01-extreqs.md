@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/extensions/extreqs
-source-id: 3467
-imported: 2026-09-09
-source-state: unpublished
 -->
 # Requirements
 

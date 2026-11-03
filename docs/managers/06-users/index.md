@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/users
-source-id: 3354
-modified: 2014-10-10
 -->
 # Users
 

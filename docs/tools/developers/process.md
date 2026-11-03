@@ -3,12 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/22/toolsnewdocs/process
-source-id: 2853
-modified: 2025-01-31
-imported: 2026-09-09
-merged-from: 2.2
-source-state: unpublished
 -->
 # The contribution process
 

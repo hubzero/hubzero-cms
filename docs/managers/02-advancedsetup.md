@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/advancedsetup
-source-id: 3338
-modified: 2015-09-21
-imported: 2026-09-09
 summary: Connecting a hub to the outside services it commonly uses — analytics, external file storage for projects, the rich text editor, and CAPTCHA — and where the sign-in providers are covered instead.
 -->
 # Integrations

@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 5d7f20276e
 reviewed: 2026-10-30
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/index/devenvironment
-source-id: 3429
-modified: 2017-01-03
 -->
 # Development environment
 

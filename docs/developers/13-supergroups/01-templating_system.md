@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 91d03d0a23
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/240/webdevs/supergroups/templating_system
-source-id: 3520
-modified: 2014-09-10
 -->
 # Templating system
 

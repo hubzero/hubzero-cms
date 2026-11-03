@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/jupyter-notebooks/environment-variables
-source-id: 3561
-modified: 2022-11-22
-imported: 2026-09-09
 -->
 # Environment variables in a notebook
 

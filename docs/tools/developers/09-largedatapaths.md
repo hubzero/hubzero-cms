@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/largedatapaths
-source-id: 3556
-modified: 2016-01-25
-imported: 2026-09-09
 -->
 # Large data paths
 

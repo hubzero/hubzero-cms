@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/extensions/deployext
-source-id: 3470
-modified: 2020-12-29
-imported: 2026-09-09
 -->
 # Deploying extensions
 

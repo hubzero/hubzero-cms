@@ -3,12 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/22/security_considerations
-source-id: 2825
-modified: 2025-01-31
-imported: 2026-09-09
-merged-from: 2.2
-source-state: unpublished
 -->
 # Security considerations
 

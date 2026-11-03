@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 42a7a5b5c7
 reviewed: 2026-09-10
 screenshots: ok
-source: https://help.hubzero.org/documentation/240/users/dashboard
-source-id: 3311
-modified: 2013-02-15
-imported: 2026-09-09
 -->
 # Member dashboard
 

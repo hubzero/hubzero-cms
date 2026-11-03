@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/users/memberimport
-source-id: 3358
-modified: 2015-10-27
 -->
 # Member import
 

@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs
-source-id: 3534
-modified: 2025-01-31
-imported: 2026-09-09
 -->
 # Tool developers
 
@@ -22,7 +18,8 @@ resource page.
 > platform, which is installed alongside a hub and is separate software. Most
 > of what these pages describe happens on the platform and could not be
 > checked here. Every page says at the top which of its material was verified
-> against the CMS and which was carried over from help.hubzero.org unchecked.
+> against the CMS and which was carried over from the earlier documentation
+> unchecked.
 
 ## Where to start
 

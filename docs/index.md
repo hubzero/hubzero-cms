@@ -59,6 +59,6 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 - [Status](https://hubzero.github.io/hubzero-cms/status/) — which pages have
   been reviewed against the current code.
 
-Most of this material was imported from help.hubzero.org in September 2026
-and is being reviewed against the code book by book. A page that has not yet
-been reviewed says so at the top.
+Most of this material was carried over from the earlier Hubzero
+documentation in September 2026 and has since been reviewed against the
+code, book by book. A page that has not been reviewed says so at the top.

@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: ok
-source: https://help.hubzero.org/documentation/240/managers/components/blogs
-source-id: 3373
-modified: 2016-07-12
 -->
 # Blogs
 

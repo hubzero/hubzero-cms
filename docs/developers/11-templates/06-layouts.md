@@ -3,8 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 91d03d0a23
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/templates/layouts
-source-id: 3509
 -->
 # Page layouts
 

@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/components/cart
-source-id: 3374
-modified: 2016-07-12
-imported: 2026-09-09
 -->
 # Cart
 

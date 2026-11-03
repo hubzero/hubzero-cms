@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/fileinout
-source-id: 3553
-modified: 2015-02-18
-imported: 2026-09-09
 -->
 # Getting files in and out of a tool session
 

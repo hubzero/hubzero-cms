@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: ok
-source: https://help.hubzero.org/documentation/240/managers/maintenance/cron
-source-id: 3344
-modified: 2013-11-01
-imported: 2026-09-09
 -->
 # Scheduled Tasks
 

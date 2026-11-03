@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/components/usage
-source-id: 3401
-modified: 2016-08-24
-imported: 2026-09-09
 -->
 # Usage
 

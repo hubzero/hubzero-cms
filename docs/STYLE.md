@@ -42,19 +42,15 @@ it; GitHub hides it.
 status: reviewed
 reviewed-against: 2.4-main @ 0ebd2294a3
 reviewed: 2026-10-01
-source: https://help.hubzero.org/documentation/240/managers/components/kb
-modified: 2016-03-01
+screenshots: ok
 -->
 ```
 
 | Key | Meaning |
 |---|---|
-| `status` | `imported` (converted from help.hubzero.org, unreviewed), `merged` (imported, with material merged from an older version), `draft`, `reviewed` (checked against the code), `rewritten` (replaced wholesale after review), `generated` (produced by a script from the source tree) |
+| `status` | `imported` (carried over from the earlier documentation, unreviewed), `merged` (imported, with material merged from an older version), `draft`, `reviewed` (checked against the code), `rewritten` (replaced wholesale after review), `generated` (produced by a script from the source tree) |
 | `reviewed-against` | The branch and commit the page was checked against |
 | `reviewed` | Date of that review |
-| `source` | Where an imported page came from |
-| `source-id`, `modified`, `imported` | Bookkeeping from the import |
-| `merged-from` | The documentation version merged into an imported page |
 | `screenshots` | Whether the page's images still match the software: `ok`, `stale` (some or all show screens that have changed), or `none` (the page has no images). Recorded during review; the recapture is a separate pass |
 | `summary` | Overrides the first paragraph as the page description |
 | `order` | Overrides the filename prefix for ordering |

@@ -3,10 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/toolpaths
-source-id: 3548
-modified: 2015-02-18
-imported: 2026-09-09
 -->
 # Tool paths
 

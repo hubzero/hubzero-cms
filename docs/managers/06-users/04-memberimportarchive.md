@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/users/memberimportarchive
-source-id: 3359
-modified: 2019-09-25
 summary: Why the old member import walkthrough no longer applies, and where the current one is.
 -->
 # Member import (archive)

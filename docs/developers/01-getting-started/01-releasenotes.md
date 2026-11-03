@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/index/releasenotes
-source-id: 3423
-modified: 2014-03-18
 -->
 # Release notes
 

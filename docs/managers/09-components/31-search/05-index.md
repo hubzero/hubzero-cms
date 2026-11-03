@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/components/search/index
-source-id: 3395
-modified: 2019-09-11
 -->
 # Maintaining the index
 

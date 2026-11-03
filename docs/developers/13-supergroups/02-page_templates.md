@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 91d03d0a23
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/240/webdevs/supergroups/page_templates
-source-id: 3521
-modified: 2014-09-10
 -->
 # Page templates
 

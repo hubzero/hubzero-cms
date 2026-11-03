@@ -3,8 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/users/usernotes, https://help.hubzero.org/documentation/240/managers/users/usernotecateg
-imported: 2026-09-09
 -->
 # User notes
 

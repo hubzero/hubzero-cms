@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ be0bd4c772
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/platform_2_4/tool-administrators
-source-id: 3563
-modified: 2025-01-31
-imported: 2026-09-09
 -->
 # Tool administrators
 

@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/managers/fqas
-source-id: 3345
-modified: 2014-11-07
-imported: 2026-09-09
 -->
 # Frequently asked questions
 

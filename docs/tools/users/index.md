@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: stale
-source: https://help.hubzero.org/documentation/platform_2_4/users
-source-id: 3751
-modified: 2017-02-09
-imported: 2026-09-09
 -->
 # Tool users
 

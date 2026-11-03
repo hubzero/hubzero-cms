@@ -3,10 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 348f0057c2
 reviewed: 2026-09-10
 screenshots: none
-source: https://help.hubzero.org/documentation/240/webdevs/tutorials
-source-id: 3430
-modified: 2017-01-12
-imported: 2026-09-09
 -->
 # Video tutorials
 
@@ -15,10 +11,8 @@ documentation can point you at.
 
 The page this replaces held a single link, to slides for a 2017 presentation
 called *Contributing to the Hubzero CMS via GitHub: Feature Branch
-Demonstration*, published as
-[resource 1585](https://help.hubzero.org/resources/1585) on help.hubzero.org.
-That is the site these pages replace, and nothing in this repository mirrors
-the slides or keeps them current. Follow the link only as an archive.
+Demonstration*, published with the earlier documentation. Nothing in this repository keeps
+the slides, and they are not carried over.
 
 What the presentation covered is written down here instead:
 

@@ -276,8 +276,8 @@ links, code blocks, callouts, and house style.
 
 ### Reviewing an imported page
 
-Most pages were imported from help.hubzero.org and carry a banner until
-someone checks them against the code. To review one:
+A page carried over from the earlier documentation carries a banner until
+someone checks it against the code. To review one:
 
 1. Read the page against the current code on `2.4-main`: the controllers,
    views, and `config.xml` of the component it describes. Fix or rewrite

@@ -3,9 +3,6 @@ status: rewritten
 reviewed-against: 2.4-main @ 35f103b1b3
 reviewed: 2026-09-10
 screenshots: ok
-source: https://help.hubzero.org/documentation/240/managers/users/groups
-source-id: 3360
-modified: 2016-07-12
 -->
 # Groups
 

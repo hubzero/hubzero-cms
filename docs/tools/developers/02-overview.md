@@ -3,11 +3,6 @@ status: reviewed
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
 screenshots: ok
-source: https://help.hubzero.org/documentation/platform_2_4/tooldevs/overview
-source-id: 3536
-modified: 2009-10-13
-imported: 2026-09-09
-merged-from: 2.2
 -->
 # What you can publish as a tool
 
@@ -17,8 +12,8 @@ you to build. For the pipeline that publishes them, see
 
 > **Note:** What runs in a session is decided by the tool platform, which is
 > separate software from the CMS in this repository and could not be checked
-> here. The list below is the platform's, carried over from
-> help.hubzero.org. The one part checked here is the **Publishing Option** on
+> here. The list below is the platform's, carried over from the earlier
+> documentation. The one part checked here is the **Publishing Option** on
 > the registration form, which is where you declare which kind of tool you are
 > contributing.
 
@@ -78,11 +73,6 @@ Rappture was written for the hub environment, so it addresses both caveats
 above: its visualisation uses the hub's rendering hosts, and it has
 `importfile` and `exportfile` built in for moving files to and from the
 member's desktop.
-
-The introductory course
-[Developing Scientific Tools for the HUBzero Platform](https://help.hubzero.org/resources/tooldev)
-is still online and is the most complete Rappture material left. It spells the
-product name the way it was spelled at the time.
 
 ## Jupyter notebooks
 
