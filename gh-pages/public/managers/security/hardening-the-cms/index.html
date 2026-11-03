@@ -545,16 +545,17 @@ login page down.</p>
 <h3 id="stage-one-password-reset-requests">Stage one: password reset requests</h3>
 <p>Counted per account by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/site/controllers/credentials.php"><code>com_members</code>'s credentials controller</a>.
-It counts the member's outstanding reset tokens created inside
-<strong>Time in Hours</strong>, and once that reaches <strong>Maximum Reset Count</strong> it refuses
-the request:</p>
-<blockquote>
-<p>Sorry, you have exceeded your reset request limit. Please wait and try
-again later.</p>
-</blockquote>
-<figure class="figure"><a href="../../media/cmscontrolled-fail2ban-jail-fail2ban2.png"><img src="../../media/cmscontrolled-fail2ban-jail-fail2ban2.png" alt="The reset request limit message on the Reset Password page" loading="lazy"></a><figcaption>The reset request limit message on the Reset Password page</figcaption></figure>
-<p>Nothing is blocked and nothing is logged as blocked; the member simply has
-to wait for the window to pass.</p>
+It counts the member's reset tokens created inside <strong>Time in Hours</strong>, and
+once that reaches <strong>Maximum Reset Count</strong> it stops issuing them. The page
+does not say so. A request over the limit gets the same <em>An email has been
+sent to your account</em> answer as one that worked, and no email goes out — the
+same answer an unknown, blocked or super-user account gets, so that the form
+cannot be used to find out which accounts exist.</p>
+<p>A token is saved before its email is sent, so a request whose email failed
+still counts. Nothing is blocked and nothing is logged as blocked; the member
+simply gets no email until the window has passed. A member who says reset
+emails have stopped arriving may be over this limit rather than caught by a
+spam filter.</p>
 <h3 id="stage-two-failed-logins">Stage two: failed logins</h3>
 <p>Counted per account by
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/authentication/hubzero/hubzero.php"><code>plg_authentication_hubzero</code></a>.
