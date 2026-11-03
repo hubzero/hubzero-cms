@@ -241,7 +241,9 @@ class Customexts extends AdminController
 			// IDs can come arrive in two formts: single integer or
 			// an array of integers. If it's the latter, we'll only take
 			// the first ID in the list.
-			$id = Request::getArray('id', array(0));
+			// The name link passes id; the toolbar's Edit sends the ticked
+			// rows' checkboxes, which the list names cid[]
+			$id = Request::getArray('id', Request::getArray('cid', array(0)));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
@@ -304,6 +306,10 @@ class Customexts extends AdminController
 
 		// Incoming
 		$fields = Request::getArray('fields', array(), 'post', 'none', 2);
+
+		// Location (Legacy) is optional on the form, but client_id is a NOT NULL
+		// integer: an unselected location would be '' and fail in strict mode
+		$fields['client_id'] = (int) ($fields['client_id'] ?? 0);
 
 		// Initiate extended database class
 		$model = Custom_extensions::oneOrNew($fields['extension_id'])->set($fields);
