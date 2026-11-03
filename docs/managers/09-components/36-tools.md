@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 009ec973b7
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Tools
 
@@ -270,7 +270,7 @@ access group to it instead — that scales, and this does not.
 The per-user override of the session allowance. This is the screen the old
 version of this page described.
 
-![The User Preferences list](../media/tools-tools-userpreferences.png)
+![The User Preferences list on a hub where nobody has an override yet: the search and Session Class filter above, and the list's columns](../media/tools-user-preferences.png)
 
 The list shows **User ID**, **Username**, **Name**, **Session class**, and
 **Sessions**, all sortable. Above it, a **Search by** drop-down (**Username**
