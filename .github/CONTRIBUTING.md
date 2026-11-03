@@ -20,4 +20,4 @@ To contribute an improvement to this project, fork the repo and open a pull requ
 
 # Contribution Guide
 
-A contribution guide, including coding standards, can be found in the [HUBzero documentation](https://help.hubzero.org/documentation/current/webdevs/index/contributions).
+A contribution guide, including coding standards, is in the [Hubzero documentation](https://hubzero.github.io/hubzero-cms/developers/contributing/).
