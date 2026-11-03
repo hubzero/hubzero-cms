@@ -8,6 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+use Plugins\User\Domainrestriction\Helpers\Network;
+
 /**
  * User plugin for blocking registration by domains or IPs
  */
@@ -23,21 +25,6 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 	public $_domain;
 	public $_tld;
 	public $_allowed;
-	public $_gmp;
-
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $subject
-	 * @param   array   $config
-	 * @return  void
-	 */
-	public function __construct(&$subject, $config = array())
-	{
-		$this->_gmp = function_exists('gmp_pow');
-
-		parent::__construct($subject, $config);
-	}
 
 	/**
 	 * Utility method to act on a user before it has been saved.
@@ -229,18 +216,11 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 
 		if (count(array_merge($whitelistnet, $blacklistnet)))
 		{
-			$require = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
-
-			if (!class_exists($require))
-			{
-				require_once __DIR__ . '/helpers/' . $require . '.php';
-			}
-
 			foreach ($whitelistnet as $net)
 			{
 				$ipnet = $this->_bwnet($net);
 
-				if ($ipnet->contains($ip))
+				if ($ipnet && $ipnet->contains($ip))
 				{
 					return true;
 				}
@@ -250,7 +230,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 			{
 				$ipnet = $this->_bwnet($net);
 
-				if ($ipnet->contains($ip))
+				if ($ipnet && $ipnet->contains($ip))
 				{
 					return $net;
 				}
@@ -260,14 +240,17 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Match email
+	 * A network from the white or black list
+	 *
+	 * An entry that is not a network is null, and matches nobody, rather
+	 * than stopping every sign-in.
 	 *
 	 * @param   string  $net
-	 * @return  object
+	 * @return  Network|null
 	 */
 	private function _bwnet($net)
 	{
-		return $this->_gmp ? (new IPv6Net($net)) : SimpleCIDR::getInstance($net);
+		return Network::parse($net);
 	}
 
 	/**
