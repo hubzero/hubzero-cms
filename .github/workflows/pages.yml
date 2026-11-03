@@ -17,13 +17,11 @@ on:
     paths:
       - 'docs/**'
       - 'gh-pages/**'
-      - 'docs/_tools/docs/**'
       - '.github/workflows/pages.yml'
   pull_request:
     paths:
       - 'docs/**'
       - 'gh-pages/**'
-      - 'docs/_tools/docs/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -50,9 +48,9 @@ jobs:
         run: python3 -m pytest gh-pages/test_build_site.py -q
       - name: Generated references must match the source tree
         run: |
-          for g in config muse events api; do python3 docs/_tools/docs/gen_${g}_reference.py; done
+          for g in config muse events api; do python3 docs/_tools/gen_${g}_reference.py; done
           if ! git diff --quiet -- docs/reference; then
-            echo "::error::docs/reference is stale: rerun docs/_tools/docs/gen_*_reference.py and commit the result."
+            echo "::error::docs/reference is stale: rerun docs/_tools/gen_*_reference.py and commit the result."
             git diff --stat -- docs/reference
             exit 1
           fi

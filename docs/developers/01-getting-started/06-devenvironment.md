@@ -25,7 +25,7 @@ Everything here is in the tree and you can read it:
 | [`core/composer.json`](../../../core/composer.json) | The PHP dependencies. The platform is pinned to PHP `8.2.30`; the dev requirements are PHPUnit 11, PHP_CodeSniffer 3.13, PHPStan 2, `parallel-lint`, and Mockery. |
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
 | [`core/bin/lint/`](../../../core/bin/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
-| [`docs/_tools/docs/`](../../_tools/docs) and `gh-pages/` | The documentation builder and the reference generators. |
+| [`docs/_tools/`](../../_tools) and `gh-pages/` | The documentation builder and the reference generators. |
 | [`compose.yaml`](../../../compose.yaml) and [`.docker/`](../../../.docker) | A development hub in Docker: this checkout served by FrankenPHP's PHP 8.2, with MariaDB and a mail catcher. See [Developing in Docker](#developing-in-docker). |
 | `.github/workflows/` | The CI. See below. |
 

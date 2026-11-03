@@ -1116,5 +1116,5 @@ Then write `~/.gitmessage`:
 
 Run the linters over what you changed. See
 [PHP Coding Style](#php-coding-style) for the commands.
-If the change touches `docs/`, run `sh docs/_tools/docs/rebuild.sh` and commit the
+If the change touches `docs/`, run `sh docs/_tools/rebuild.sh` and commit the
 rebuilt `gh-pages/public/` with it; the Pages workflow fails on a stale copy.

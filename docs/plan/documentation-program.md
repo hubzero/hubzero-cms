@@ -483,4 +483,6 @@ committed; `docs/_import/` is deleted at the end of phase 2.
 - **2026-11-03.** The import from help.hubzero.org is done and will not be
   repeated. Its scripts and their tests are removed from `docs/_tools/docs/`,
   with `beautifulsoup4`, which only they used; the generated references and
-  the linters stay.
+  the linters stay. The linters, which check the code rather than the docs,
+  move to `core/bin/lint/`, and the reference generators and `rebuild.sh`
+  move up from `docs/_tools/docs/` to `docs/_tools/`.

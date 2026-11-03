@@ -7,14 +7,14 @@
 # move a line number the API reference links to, so this is worth running
 # after code changes too, not only after writing a chapter.
 #
-# Usage: sh docs/_tools/docs/rebuild.sh
+# Usage: sh docs/_tools/rebuild.sh
 
 set -e
-cd "$(dirname "$0")/../../.."
+cd "$(dirname "$0")/../.."
 
 echo "==> regenerating the references"
 for generator in config muse events api; do
-    python3 "docs/_tools/docs/gen_${generator}_reference.py"
+    python3 "docs/_tools/gen_${generator}_reference.py"
 done
 
 echo "==> building the site"

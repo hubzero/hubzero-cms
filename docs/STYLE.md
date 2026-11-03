@@ -121,7 +121,7 @@ Labels: `Note`, `Tip`, `Warning`, `Important`, `Caution`.
 ## Before you commit
 
 ```bash
-sh docs/_tools/docs/rebuild.sh
+sh docs/_tools/rebuild.sh
 ```
 
 That regenerates the references, builds the site, checks every link, and
