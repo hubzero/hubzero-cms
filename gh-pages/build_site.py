@@ -405,6 +405,29 @@ def _apply_admonitions(tokens: list) -> None:
                     break
 
 
+FIGURE_RE = re.compile(r'<p>(<img\b[^>]*>)</p>')
+
+
+def wrap_figures(html: str) -> str:
+    """A screenshot on a line of its own becomes a figure.
+
+    Its alt text, which the pages write as a description of the screen, is
+    shown as the caption; the image links to itself, so a reader can open a
+    screenshot at full size.
+    """
+    def figure(match: re.Match) -> str:
+        img = match.group(1)
+        src = re.search(r'\bsrc="([^"]*)"', img)
+        alt = re.search(r'\balt="([^"]*)"', img)
+        if not src:
+            return match.group(0)
+        if "loading=" not in img:
+            img = img[:-1].rstrip("/").rstrip() + ' loading="lazy">'
+        caption = f"<figcaption>{alt.group(1)}</figcaption>" if alt and alt.group(1) else ""
+        return f'<figure class="figure"><a href="{src.group(1)}">{img}</a>{caption}</figure>'
+    return FIGURE_RE.sub(figure, html)
+
+
 class MarkdownRenderer:
     def __init__(self) -> None:
         self.md = MarkdownIt("commonmark", {"html": True, "typographer": True})
@@ -453,6 +476,7 @@ class MarkdownRenderer:
             del tokens[first_h1_index: first_h1_index + 3]
 
         html = self.md.renderer.render(tokens, self.md.options, {})
+        html = wrap_figures(html)
         return {"title": title, "toc": toc, "html": html, "headings": headings}
 
 

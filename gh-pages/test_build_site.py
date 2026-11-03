@@ -97,6 +97,18 @@ def test_ordinary_leading_comment_is_not_metadata():
     assert body == text
 
 
+def test_a_standalone_image_becomes_a_captioned_figure():
+    """The alt text is the caption, and the image opens at full size."""
+    html = build_site.wrap_figures('<p><img src="../media/kb.png" alt="The Articles list"></p>')
+    assert html == (
+        '<figure class="figure"><a href="../media/kb.png">'
+        '<img src="../media/kb.png" alt="The Articles list" loading="lazy"></a>'
+        '<figcaption>The Articles list</figcaption></figure>'
+    )
+    inline = '<p>See <img src="i.png" alt="an icon"> here.</p>'
+    assert build_site.wrap_figures(inline) == inline
+
+
 def test_no_header_means_no_meta():
     meta, body = parse_meta("# Title\n")
     assert meta == {} and body == "# Title\n"
