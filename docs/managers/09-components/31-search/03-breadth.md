@@ -85,6 +85,7 @@ The `^` values are relative weights: a hit in the URL counts ten times a hit
 in the full text, a hit in the title five times. **Phrase Fields** does the
 same for multi-word phrases, and **Phrase Slop** (default `10`) says how many
 words may sit between the terms of a phrase and still count as a match.
+
 The defaults are sensible and there is no reason to touch them on a new hub.
 Changing them changes the ranking of every result on the hub at once, with no
 preview and no way to compare before and after, so if you do change them,

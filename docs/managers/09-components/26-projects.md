@@ -218,7 +218,9 @@ to the team editor go with it. The **Edit Team** button on a project's Team
 tab and the **Invite people** entry in the project's own options menu are
 still drawn, but following either now lands silently on the project
 description form, with no message and no clue that the screen it named has
-been taken away. A project's Team tab still lists the team and still lets a
+been taken away.
+
+A project's Team tab still lists the team and still lets a
 manager approve a membership request; what it stops doing is letting anyone
 add, remove or re-role a member. Nothing about the option's label tells you
 any of this.
@@ -361,11 +363,15 @@ as `/srv/projects/<alias>/files`.
 
 Because the files are a real directory on a real filesystem, a hub can also
 offer SFTP into them, which is the practical way to move data too large for a
-browser upload. That access is granted through the per-project system group
+browser upload.
+
+That access is granted through the per-project system group
 (`pr-<alias>`) rather than through anything in this component: the hub's
 directory service has to publish those groups and the file server has to
 honour them. Files arriving that way appear in the project's file listing once the sync
-has run. If SFTP is
+has run.
+
+If SFTP is
 available on your hub, the connection details and the local password a member
 needs are hub-specific; document them for your own users rather than assuming
 the defaults here.

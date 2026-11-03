@@ -223,16 +223,21 @@ Three site addresses, all under `/saml/idp/`:
 There is nothing at `/saml` itself; it returns a 404, as does every endpoint
 when **Enable IdP** is off or the signing certificate and key are unreadable.
 
-A sign-on runs like this. The service posts or redirects a request to
-`/saml/idp/login`. The hub checks the whole request first — that the issuer
-is a registered, enabled service provider, that the signature verifies, that
-the request has not already been answered, and that it asks for delivery to
-the registered ACS URL — and rejects anything that fails with a plain error
-page. Only then, if the visitor is a guest, are they sent to the hub's login
-form and returned here afterwards. If the service has **Allowed groups** set
-and the member is not in one, the hub shows its own *Access not available*
-page rather than a protocol error. Otherwise it records the session and posts
-a signed response back to the ACS URL.
+A sign-on runs like this:
+
+1. The service posts or redirects a request to `/saml/idp/login`.
+2. The hub checks the whole request first — that the issuer is a registered,
+   enabled service provider, that the signature verifies, that the request
+   has not already been answered, and that it asks for delivery to the
+   registered ACS URL — and rejects anything that fails with a plain error
+   page.
+3. Only then, if the visitor is a guest, are they sent to the hub's login
+   form and returned here afterwards.
+4. If the service has **Allowed groups** set and the member is not in one,
+   the hub shows its own *Access not available* page rather than a protocol
+   error.
+5. Otherwise it records the session and posts a signed response back to the
+   ACS URL.
 
 The errors a member might see, all rendered on the hub's ordinary error page,
 are listed in
