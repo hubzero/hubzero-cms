@@ -21,7 +21,7 @@
  * still fail at runtime. Everything reported here is defined nowhere at all.
  *
  * Usage:
- *   php docs/_tools/lint/undefined-language-keys.php [--quiet] [path ...]
+ *   php core/bin/lint/undefined-language-keys.php [--quiet] [path ...]
  *
  * @package    hubzero-cms
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
@@ -45,7 +45,7 @@ foreach (array_slice($argv, 1) as $arg) {
     } elseif (strpos($arg, '--max=') === 0) {
         $max = (int) substr($arg, 6);
     } elseif ($arg === '--help' || $arg === '-h') {
-        fwrite(STDOUT, "usage: php docs/_tools/lint/undefined-language-keys.php [--quiet] [--max=N] [path ...]\n\n"
+        fwrite(STDOUT, "usage: php core/bin/lint/undefined-language-keys.php [--quiet] [--max=N] [path ...]\n\n"
             . "  --max=N  succeed while N or fewer keys are undefined, so the count\n"
             . "           can be ratcheted down instead of gating on zero.\n");
         exit(0);

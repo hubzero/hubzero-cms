@@ -116,7 +116,7 @@ Then:
 ```bash
 (cd core && vendor/bin/parallel-lint --exclude vendor .)
 (cd core && vendor/bin/phpunit -c phpunit.xml.dist)
-php docs/_tools/lint/missing-facade-imports.php
+php core/bin/lint/missing-facade-imports.php
 ```
 
 Read [PHP Coding Style](19-conventions.md#checking-your-work)
@@ -139,7 +139,7 @@ else.
 
 | Workflow | Runs when | Checks |
 |---|---|---|
-| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | any `*.php` changes | `php -l` on every `*.php` under `core` and `app` outside `vendor`, then `docs/_tools/lint/missing-facade-imports.php`, then `docs/_tools/lint/undefined-language-keys.php` against a ceiling |
+| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | any `*.php` changes | `php -l` on every `*.php` under `core` and `app` outside `vendor`, then `core/bin/lint/missing-facade-imports.php`, then `core/bin/lint/undefined-language-keys.php` against a ceiling |
 | [`tests.yml`](../../.github/workflows/tests.yml) | `core/**.php`, `core/phpunit.xml.dist` or the Composer files change | Installs the Composer dependencies and runs `vendor/bin/phpunit -c phpunit.xml.dist` |
 | [`pages.yml`](../../.github/workflows/pages.yml) | `docs/`, `gh-pages/` or `docs/_tools/docs/` changes | Runs the documentation builder's tests, regenerates `docs/reference` and fails if it differs, builds the site, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 

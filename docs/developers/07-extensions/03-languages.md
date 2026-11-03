@@ -196,7 +196,7 @@ sentence. That fails quietly, and it fails hardest on the paths nobody
 exercises.
 
 ```bash
-php docs/_tools/lint/undefined-language-keys.php core/components/com_example
+php core/bin/lint/undefined-language-keys.php core/components/com_example
 ```
 
 That reports every literal key the code asks for that no `en-GB` file

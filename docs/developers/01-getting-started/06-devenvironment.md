@@ -24,7 +24,7 @@ Everything here is in the tree and you can read it:
 | [`core/bin/composer`](../../../core/bin/composer) | A bundled Composer. Run it as `php core/bin/composer install` from `core/`. |
 | [`core/composer.json`](../../../core/composer.json) | The PHP dependencies. The platform is pinned to PHP `8.2.30`; the dev requirements are PHPUnit 11, PHP_CodeSniffer 3.13, PHPStan 2, `parallel-lint`, and Mockery. |
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
-| [`docs/_tools/lint/`](../../_tools/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
+| [`core/bin/lint/`](../../../core/bin/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
 | [`docs/_tools/docs/`](../../_tools/docs) and `gh-pages/` | The documentation builder and the reference generators. |
 | [`compose.yaml`](../../../compose.yaml) and [`.docker/`](../../../.docker) | A development hub in Docker: this checkout served by FrankenPHP's PHP 8.2, with MariaDB and a mail catcher. See [Developing in Docker](#developing-in-docker). |
 | `.github/workflows/` | The CI. See below. |
@@ -308,9 +308,9 @@ Three workflows, in `.github/workflows/`:
 
 - **`php-lint.yml`** — runs on PHP 8.3. Three checks: `php -l` over every PHP
   file under `core/` and `app/` outside `vendor/`;
-  `docs/_tools/lint/missing-facade-imports.php`, which fails on any namespaced file
+  `core/bin/lint/missing-facade-imports.php`, which fails on any namespaced file
   that uses a facade without importing it; and
-  `docs/_tools/lint/undefined-language-keys.php --quiet --max=444`, which fails if
+  `core/bin/lint/undefined-language-keys.php --quiet --max=444`, which fails if
   the number of language keys nothing defines rises above the current count.
   The second exists because such a file parses cleanly and misbehaves only
   when the line runs — see

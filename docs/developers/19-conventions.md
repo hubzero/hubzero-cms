@@ -341,7 +341,7 @@ vendor/bin/phpunit -c phpunit.xml.dist
 The facade check runs from the repository root:
 
 ```bash
-php docs/_tools/lint/missing-facade-imports.php
+php core/bin/lint/missing-facade-imports.php
 ```
 
 It takes `--fix` to insert the missing `use` statements, and any path to narrow
@@ -402,7 +402,7 @@ cares about.
 
 | Workflow | Checks |
 |---|---|
-| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `docs/_tools/lint/missing-facade-imports.php`, then `docs/_tools/lint/undefined-language-keys.php` against a ceiling of 444 |
+| [`php-lint.yml`](../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `core/bin/lint/missing-facade-imports.php`, then `core/bin/lint/undefined-language-keys.php` against a ceiling of 444 |
 | [`tests.yml`](../../.github/workflows/tests.yml) | The PHPUnit suite, for a change under `core` |
 | [`pages.yml`](../../.github/workflows/pages.yml) | Builds the documentation, regenerates `docs/reference`, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 

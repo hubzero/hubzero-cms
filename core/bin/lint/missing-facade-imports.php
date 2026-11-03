@@ -33,7 +33,7 @@
  * namespace is left alone.
  *
  * Usage:
- *   php docs/_tools/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]
+ *   php core/bin/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]
  *
  * With no path it scans core/components, core/plugins, core/modules, and
  * core/libraries/Hubzero. It exits non-zero when anything is found, so it
@@ -62,7 +62,7 @@ foreach (array_slice($argv, 1) as $arg) {
     } elseif ($arg === '--quiet') {
         $quiet = true;
     } elseif ($arg === '--help' || $arg === '-h') {
-        fwrite(STDOUT, "usage: php docs/_tools/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]\n");
+        fwrite(STDOUT, "usage: php core/bin/lint/missing-facade-imports.php [--fix] [--quiet] [path ...]\n");
         exit(0);
     } else {
         $paths[] = $arg;
