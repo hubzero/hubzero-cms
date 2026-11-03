@@ -15,7 +15,8 @@ written, how to run the tests, and how to send a change back.
 ## Reporting problems
 
 Report bugs as [GitHub issues](https://github.com/hubzero/hubzero-cms/issues),
-and security issues by email to support@hubzero.org.
+and security issues privately, through GitHub's
+[private vulnerability reporting](https://github.com/hubzero/hubzero-cms/security/advisories/new).
 
 ## Contributions
 
@@ -215,7 +216,8 @@ Before proposing a feature rather than a fix, consider:
   [bug report template](../../.github/ISSUE_TEMPLATE/bug_report.md),
   which asks for the Hubzero version, the PHP version, the operating system,
   and steps to reproduce.
-- **Security issues**: email support@hubzero.org. Do not open a public issue.
+- **Security issues**: report them privately, on the repository's Security
+  tab under **Report a vulnerability**. Do not open a public issue.
   See [`SECURITY.md`](../../.github/SECURITY.md).
 
 Some faults come from a Composer package rather than from Hubzero. When that
