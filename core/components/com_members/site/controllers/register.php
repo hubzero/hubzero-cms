@@ -25,6 +25,7 @@ use App;
 use Components\Members\Helpers\ReturnUrl;
 use Notify;
 use Plugin;
+use Log;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
@@ -1451,7 +1452,14 @@ class Register extends SiteController
 		$confirm = \Components\Members\Helpers\Utility::genemailconfirm();
 
 		$profile->set('activation', $confirm);
-		$profile->save();
+
+		// A code that was not kept would make the link in the email invalid
+		// from the start; send nothing rather than that
+		if (!$profile->save())
+		{
+			Log::error('Confirmation not sent: saving a new code for user ' . $profile->get('id') . ' failed: ' . $profile->getError());
+			return false;
+		}
 
 		$subject = Config::get('sitename') . ' ' . Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
@@ -1569,50 +1577,59 @@ class Register extends SiteController
 						$xprofile->get('username');
 						$xprofile->get('email');
 						$xprofile->set('activation', $confirm);
-						$xprofile->save();
 
-						$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
-
-						$eview = new \Hubzero\Mail\View(array(
-							'name'   => 'emails',
-							'layout' => 'confirm'
-						));
-						$eview->option     = $this->_option;
-						$eview->controller = $this->_controller;
-						$eview->sitename   = Config::get('sitename');
-						$eview->login      = $login;
-						$eview->name       = $xprofile->get('name');
-						$eview->registerDate = $xprofile->get('registerDate');
-						$eview->baseURL    = $this->baseURL;
-						$eview->confirm    = $confirm;
-						$eview->email      = $email;
-
-						$msg = new \Hubzero\Mail\Message();
-						$msg->setSubject($subject)
-						    ->addTo($pemail)
-						    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
-						    ->addHeader('X-Component', $this->_option);
-
-						$message = $eview->loadTemplate(false);
-						$message = str_replace("\n", "\r\n", $message);
-
-						$msg->addPart($message, 'text/plain');
-
-						$eview->setLayout('confirm_html');
-						$message = $eview->loadTemplate();
-						$message = str_replace("\n", "\r\n", $message);
-
-						$msg->addPart($message, 'text/html');
-
-						if (!$msg->send())
+						if (!$xprofile->save())
 						{
-							$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION', $pemail));
+							$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_CONFIRMING') . ' ' . $xprofile->getError());
 						}
 
-						// Show the success form
-						$success = true;
+						// A code that was not kept would make the emailed link
+						// invalid from the start; send nothing rather than that
+						if (!$this->getError())
+						{
+							$subject  = Config::get('sitename').' '.Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-						Event::trigger('onUserAfterChangeEmail', array($xprofile->toArray()));
+							$eview = new \Hubzero\Mail\View(array(
+								'name'   => 'emails',
+								'layout' => 'confirm'
+							));
+							$eview->option     = $this->_option;
+							$eview->controller = $this->_controller;
+							$eview->sitename   = Config::get('sitename');
+							$eview->login      = $login;
+							$eview->name       = $xprofile->get('name');
+							$eview->registerDate = $xprofile->get('registerDate');
+							$eview->baseURL    = $this->baseURL;
+							$eview->confirm    = $confirm;
+							$eview->email      = $email;
+
+							$msg = new \Hubzero\Mail\Message();
+							$msg->setSubject($subject)
+							    ->addTo($pemail)
+							    ->addFrom(Config::get('mailfrom'), Config::get('sitename') . ' Administrator')
+							    ->addHeader('X-Component', $this->_option);
+
+							$message = $eview->loadTemplate(false);
+							$message = str_replace("\n", "\r\n", $message);
+
+							$msg->addPart($message, 'text/plain');
+
+							$eview->setLayout('confirm_html');
+							$message = $eview->loadTemplate();
+							$message = str_replace("\n", "\r\n", $message);
+
+							$msg->addPart($message, 'text/html');
+
+							if (!$msg->send())
+							{
+								$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION', $pemail));
+							}
+
+							// Show the success form
+							$success = true;
+
+							Event::trigger('onUserAfterChangeEmail', array($xprofile->toArray()));
+						}
 					}
 				}
 			}
@@ -1670,8 +1687,8 @@ class Register extends SiteController
 		if (User::isGuest())
 		{
 			// A valid confirmation link is itself proof that the recipient
-			// controls the email address, so confirm the account directly --
-			// no login required. Requiring a login here is a catch-22: an
+			// controls the email address, so confirm the account without a
+			// login, once the recipient presses the button the link shows. Requiring a login here is a catch-22: an
 			// unconfirmed user rarely has a working session, which is precisely
 			// why they can get stuck never confirmed. We look the account up
 			// strictly by its pending (negative) activation token and only
@@ -1685,6 +1702,27 @@ class Register extends SiteController
 					&& $pending->get('activation') < 0
 					&& (int) $pending->get('activation') === -(int) $code)
 				{
+					// Opening the link only asks; the button confirms. Mail
+					// services such as Microsoft's Safe Links open every link
+					// in a message before its recipient does, and one opening
+					// it must not spend the code the recipient then clicks.
+					if (Request::getMethod() != 'POST')
+					{
+						$this->_buildPathway();
+						$this->_buildTitle();
+
+						$this->view
+							->set('title', Lang::txt('COM_MEMBERS_REGISTER_CONFIRM'))
+							->set('email', $pending->get('email'))
+							->set('code', $code)
+							->set('return', Request::getString('return', ''))
+							->setLayout('confirm_request')
+							->display();
+						return;
+					}
+
+					Request::checkToken();
+
 					// Respect any post-registration return stored on the account
 					$dest    = '';
 					$cReturn = $this->config->get('ConfirmationReturn');
@@ -1792,9 +1830,36 @@ class Register extends SiteController
 		// Continue confirming the email address
 		$cookie = \Hubzero\Utility\Cookie::eat('authenticator');
 
-		// @FIXME The session is overriding the activation code
-		$xprofile = User::oneByActivationToken(-$code);
+		$xprofile = $code ? User::oneByActivationToken(-$code) : User::blank();
 		$user = User::getInstance();
+
+		// No account holds this code: it has been used, by whoever opened the
+		// link first (a mail service's link scanner can), or replaced by a newer
+		// one. Say what is true of the signed-in account rather than reporting
+		// on no account at all.
+		if (!$xprofile->get('id'))
+		{
+			$current = User::oneOrNew($user->get('id'));
+
+			if (!in_array((int) $current->get('activation'), array(1, 3), true))
+			{
+				$this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_CONFIRMATION'));
+			}
+
+			$this->_buildPathway();
+			$this->_buildTitle();
+
+			$this->view
+				->set('title', Lang::txt('COM_MEMBERS_REGISTER_CONFIRM'))
+				->set('login', $current->get('username'))
+				->set('email', $current->get('email'))
+				->set('code', $code)
+				->set('redirect', '')
+				->set('sitename', Config::get('sitename'))
+				->setErrors($this->getErrors())
+				->display();
+			return;
+		}
 
 		if ($xprofile->get('id') != $user->get('id'))
 		{

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package      hubzero-cms
+@copyright    Copyright © 2026 Purdue University. All Rights Reserved.
+@license      http://opensource.org/licenses/MIT MIT
+-->
+
+<metadata>
+	<layout title="Confirm Email Address">
+		<message>
+			<![CDATA[Confirm an account's email address]]>
+		</message>
+	</layout>
+	<state>
+		<name>Confirm Email Address</name>
+		<description>Confirm Email Address</description>
+	</state>
+</metadata>
