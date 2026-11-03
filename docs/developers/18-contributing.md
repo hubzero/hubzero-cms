@@ -268,7 +268,7 @@ Every page has an **Edit this page on GitHub** link in its footer. For
 anything larger than a typo, clone the repository and work locally:
 
 ```bash
-python3 -m pip install -r gh-pages/requirements.txt -r docs/_tools/docs/requirements.txt pytest
+python3 -m pip install -r gh-pages/requirements.txt pytest
 sh docs/_tools/docs/rebuild.sh
 python3 -m http.server -d gh-pages/public 8000
 ```

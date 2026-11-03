@@ -420,6 +420,11 @@ site to land near 200k words plus the generated references.
 
 ## 9. Exporting the database
 
+The import is finished, and the scripts this section and phase 1 describe,
+`export_help_db.php`, `import_help.py`, `import_com_help.py` and their tests,
+were removed from `docs/_tools/docs/` on 2026-11-03. They are in the history
+before that commit, for anyone who needs to see how a page was converted.
+
 `docs/_tools/docs/export_help_db.php` dumps every row of the documentation table to
 JSON, including the unpublished 2.2 tree, and prints one summary line per
 version. It has to run as root on help.hubzero.org because
@@ -475,3 +480,7 @@ committed; `docs/_import/` is deleted at the end of phase 2.
 - **Still open from phase 2:** the com_help pages are converted into
   `docs/_import/com_help/` but not yet folded into chapters, and the
   largest pages have not been split.
+- **2026-11-03.** The import from help.hubzero.org is done and will not be
+  repeated. Its scripts and their tests are removed from `docs/_tools/docs/`,
+  with `beautifulsoup4`, which only they used; the generated references and
+  the linters stay.

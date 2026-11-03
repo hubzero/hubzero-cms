@@ -24,7 +24,7 @@ echo "==> checking links"
 python3 gh-pages/check_links.py gh-pages/public
 
 echo "==> running the tests"
-python3 -m pytest gh-pages/test_build_site.py docs/_tools/docs/test_import_help.py -q
+python3 -m pytest gh-pages/test_build_site.py -q
 
 echo
 echo "Commit docs/, gh-pages/public/ and any regenerated reference together."
