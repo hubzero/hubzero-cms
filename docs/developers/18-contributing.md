@@ -11,12 +11,20 @@ organizations. This book explains how to work on the code in a way that
 lands cleanly: the conventions the codebase follows, how commits are
 written, how to run the tests, and how to send a change back.
 
-
 ## Reporting problems
 
-Report bugs as [GitHub issues](https://github.com/hubzero/hubzero-cms/issues),
-and security issues privately, through GitHub's
-[private vulnerability reporting](https://github.com/hubzero/hubzero-cms/security/advisories/new).
+- **Bugs and feature requests**: a GitHub issue, using the
+  [bug report template](../../.github/ISSUE_TEMPLATE/bug_report.md),
+  which asks for the Hubzero version, the PHP version, the operating system,
+  and steps to reproduce.
+- **Security issues**: report them privately, through
+  [private vulnerability reporting](https://github.com/hubzero/hubzero-cms/security/advisories/new)
+  on the repository's Security tab. Do not open a public issue.
+  See [`SECURITY.md`](../../.github/SECURITY.md).
+
+Some faults come from a Composer package rather than from Hubzero. When that
+happens the maintainers will usually work around it here and point you at the
+package's own tracker.
 
 ## Contributions
 
@@ -209,20 +217,6 @@ Before proposing a feature rather than a fix, consider:
    administrator, and is the interface right for them?
 3. What does it cost to maintain?
 4. Does something similar already exist that could be extended instead?
-
-### Reporting problems
-
-- **Bugs and feature requests**: a GitHub issue, using the
-  [bug report template](../../.github/ISSUE_TEMPLATE/bug_report.md),
-  which asks for the Hubzero version, the PHP version, the operating system,
-  and steps to reproduce.
-- **Security issues**: report them privately, on the repository's Security
-  tab under **Report a vulnerability**. Do not open a public issue.
-  See [`SECURITY.md`](../../.github/SECURITY.md).
-
-Some faults come from a Composer package rather than from Hubzero. When that
-happens the maintainers will usually work around it here and point you at the
-package's own tracker.
 
 ### A development environment
 
