@@ -375,11 +375,11 @@ how a change gets tested before it is tagged.</p>
 </tr>
 <tr>
 <td><strong>Name</strong></td>
-<td>Required. A title for the extension.</td>
+<td>Required. How the extension appears in the list. The form accepts letters, digits and underscores only — no spaces — and not a leading underscore, so <em>Cron_Docs_Demo</em> rather than <em>Cron - Docs Demo</em>.</td>
 </tr>
 <tr>
 <td><strong>Alias</strong></td>
-<td>Required. The directory name to create, including any <code>com_</code> or <code>mod_</code> prefix.</td>
+<td>Required. The directory name to create, including any <code>com_</code> or <code>mod_</code> prefix. The same characters as <strong>Name</strong>.</td>
 </tr>
 <tr>
 <td><strong>Type</strong></td>
@@ -399,11 +399,11 @@ how a change gets tested before it is tagged.</p>
 </tr>
 <tr>
 <td><strong>GIT Branch</strong></td>
-<td>The branch to install, in the form <code>origin/main</code>. Blank uses the repository's default branch.</td>
+<td>The branch to install, in the form <code>origin/main</code>. The form accepts only letters, digits and underscores after <code>origin/</code>, so a branch such as <code>release-2.4</code> cannot be entered. Blank uses the repository's default branch — not <code>origin/master</code>, whatever the form's warning says.</td>
 </tr>
 <tr>
 <td><strong>Location (Legacy)</strong></td>
-<td>Site or Administrator. Only relevant to very old extensions.</td>
+<td>Site or Administrator. Only relevant to very old extensions; left unselected, it is saved as Site.</td>
 </tr>
 </tbody>
 </table>
@@ -430,16 +430,29 @@ button.</p>
 <figure class="figure"><a href="../../media/extension-manager-update-button.png"><img src="../../media/extension-manager-update-button.png" alt="The Custom Extensions toolbar; the circular-arrows button is Update Selected Custom Extensions" loading="lazy"></a><figcaption>The Custom Extensions toolbar; the circular-arrows button is Update Selected Custom Extensions</figcaption></figure>
 </li>
 <li>
-<p>Hubzero clones the repository if it has not been cloned, or fetches it if
-it has, and lists the incoming commits. Select <strong>Merge Code</strong> to apply
-them.</p>
-<figure class="figure"><a href="../../media/extension-manager-extman5.png"><img src="../../media/extension-manager-extman5.png" alt="The list of incoming commits with the Merge Code button" loading="lazy"></a><figcaption>The list of incoming commits with the Merge Code button</figcaption></figure>
+<p>The first time, Hubzero clones the repository into the extension's
+directory under <code>app/</code> and runs the extension's migrations. Nothing more
+is asked.</p>
+<figure class="figure"><a href="../../media/extension-manager-cloned.png"><img src="../../media/extension-manager-cloned.png" alt="The report after the first update: the extension's repository was cloned" loading="lazy"></a><figcaption>The report after the first update: the extension's repository was cloned</figcaption></figure>
 </li>
 <li>
-<p>A confirmation screen reports what was merged.</p>
-<figure class="figure"><a href="../../media/extension-manager-extman6.png"><img src="../../media/extension-manager-extman6.png" alt="The confirmation that the code was updated" loading="lazy"></a><figcaption>The confirmation that the code was updated</figcaption></figure>
+<p>After that, the same button fetches the repository and lists the commits
+that are not yet on the hub, one block per extension, each with a
+<strong>Merge</strong> box that starts ticked. Untick any extension you are not ready
+to update, then select <strong>Merge Code</strong> in the toolbar.</p>
+<figure class="figure"><a href="../../media/extension-manager-fetched.png"><img src="../../media/extension-manager-fetched.png" alt="Two fetched commits waiting to be merged, with the extension's Merge box ticked" loading="lazy"></a><figcaption>Two fetched commits waiting to be merged, with the extension's Merge box ticked</figcaption></figure>
+</li>
+<li>
+<p>A confirmation screen reports which extensions were updated.</p>
+<figure class="figure"><a href="../../media/extension-manager-merged.png"><img src="../../media/extension-manager-merged.png" alt="The confirmation that the extension was updated" loading="lazy"></a><figcaption>The confirmation that the extension was updated</figcaption></figure>
 </li>
 </ol>
+<p>The clone, fetch and merge are <code>muse</code> commands run on the server as the
+account named in the component's <strong>Options</strong> (<code>system_user</code>, <code>hubadmin</code> by
+default, through <code>sudo</code>). If that account does not exist, they run as the
+web server's own account. Either way, git uses that account's own git
+configuration and credentials, which is how a repository needing no access
+token can still fail on one server and work on another.</p>
 <h2 id="warnings">Warnings</h2>
 <p>This tab is the first place to look when uploads fail, images do not appear,
 or a file that is obviously small is rejected as too large. It reports on the
