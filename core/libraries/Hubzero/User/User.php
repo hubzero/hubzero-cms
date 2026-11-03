@@ -300,7 +300,7 @@ class User extends \Hubzero\Database\Relational
 	 */
 	public static function hubHomeDirectory()
 	{
-		$hubHomeDir = rtrim(Component::params('com_members')->get('homedir'), '/');
+		$hubHomeDir = rtrim((string) Component::params('com_members')->get('homedir'), '/');
 
 		if ($hubHomeDir)
 		{
