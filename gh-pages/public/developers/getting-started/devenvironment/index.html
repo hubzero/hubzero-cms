@@ -234,9 +234,6 @@ repository gives you from what you have to get elsewhere.</p>
 provisioning script, and no <code>make</code>-style setup target anywhere in the tree.
 Nothing here installs Apache, PHP, or MySQL on a machine; for a server, see
 the <a href="../../../sysadmins/index.html">System administrators</a> book.</p>
-<p>The <code>.travis.yml</code> at the root is left over from Travis CI. It declares PHP 8.2
-and 8.3 and calls <code>core/bin/php_tests.sh</code> on the changed files. Nothing runs
-it now.</p>
 <h2 id="requirements">Requirements</h2>
 <p><code>muse install</code> runs a pre-flight check before it does anything, and that
 check is the authoritative statement of what the CMS needs. From
@@ -548,7 +545,9 @@ directory. Run them with <code>core/vendor/bin/phpunit</code>. The database libr
 tests need their backend available and are run as a separate suite. See
 <a href="../../testing/index.html">Testing</a>.</p>
 <p>For style, <code>core/bin/php_tests.sh &lt;files&gt;</code> gives you the PSR-12 check and the
-syntax check in one call, the same pair the old Travis configuration ran.</p>
+syntax check in one call. No workflow runs it: much of the older code is
+indented with tabs, which PSR-12 does not allow, so run it on files you write
+or bring up to the standard.</p>
 <h2 id="next">Next</h2>
 <p><a href="../../foundation/index.html">Foundation</a> covers how a request is served.</p>
 
