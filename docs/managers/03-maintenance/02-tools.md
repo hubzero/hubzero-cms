@@ -32,7 +32,7 @@ one named side, and the pipeline listing marks which.
 
 ## The pipeline
 
-![The tool pipeline](../media/tools-contribtool-managers-guide-06.png)
+![A tool's status page, with the pipeline's states across the top and the current one marked](../media/tools-status-created.png)
 
 A tool has nine states. The number is the `state` column on `#__tool`:
 
@@ -80,7 +80,7 @@ To add someone to the group:
 
 ## Registering a tool
 
-![Registering a tool](../media/tools-contribtool-managers-guide-06.png)
+![The Register Tool form: the alias, title, version and one-line summary, with the note that the alias cannot be changed later](../media/tools-register.png)
 
 Registration is a user task. The developer starts the contribution flow on the
 hub and chooses the tool contribution type, which lands on the registration
@@ -142,7 +142,7 @@ For the full option list see the
 
 ## Registered to Created
 
-![The tool pipeline listing](../media/tools-contribtool-managers-guide-10.png)
+![The tool pipeline listing: every tool with its alias, its state and when that changed, and links to its resource, history and project](../media/tools-pipeline-listing.png)
 
 This is an admin task. Go to `/tools/pipeline`. The page lists every tool
 contribution on the hub, with **Filter by** (All tools, My submissions,
@@ -177,7 +177,7 @@ Then set **Flip Status** to **Created** and press **Apply change**.
 
 ## Created to Uploaded
 
-![The tool status page in the Created state](../media/tools-contribtool-managers-guide-14.png)
+![The tool status page in the Created state: the tool's information, the developer tools, the administrator controls, and what the developer should do next](../media/tools-status-created.png)
 
 Uploading the source is a user task. In the **Created** state the **What's
 next?** panel links to the project's Getting Started wiki page and, under
@@ -387,7 +387,7 @@ current directory and below. Enter the hub credentials if prompted.
 
 ### Flip the status
 
-![The tool pipeline listing](../media/tools-contribtool-managers-guide-39.png)
+![The tool pipeline listing, with the tool's new state and when it changed](../media/tools-pipeline-listing.png)
 
 Back on the tool's status page at `/tools/pipeline`, use the **Timeline** link
 under **Developer Tools** to confirm the commit arrived — the project area may
@@ -493,7 +493,7 @@ tool**.
 
 ## Published to Updated
 
-![The tool status page in the Published state](../media/tools-contribtool-managers-guide-57.png)
+![The tool status page in the Published state: every state across the top passed, the link to the published tool, and the option to install changed code for approval](../media/tools-status-published.png)
 
 When the developer is ready to test a new release, they commit the changes and
 use the **What's next?** link to move the status from **Published** to
@@ -503,7 +503,7 @@ the install–approve–publish cycle runs again.
 
 ## Published to Retired
 
-![The tool status page in the Published state](../media/tools-contribtool-managers-guide-57.png)
+![The tool status page in the Published state: every state across the top passed, the link to the published tool, and the option to install changed code for approval](../media/tools-status-published.png)
 
 Published tools usually stay published. Retiring one leaves the tool
 information page in place as a record but stops anyone running it.

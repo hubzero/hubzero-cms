@@ -50,6 +50,8 @@ or go straight to `/tools/create`. The form asks for a tool alias of 3 to 15
 alphanumeric characters, which becomes the tool's directory name and cannot be
 changed afterwards. Everything else on the form can be changed later.
 
+![The Register Tool form: the alias, title, version and one-line summary, with the note that the alias cannot be changed later](../../managers/media/tools-register.png)
+
 Two of the choices decide how the rest of your work looks:
 
 **Repository Host** — where the source lives:
@@ -114,6 +116,8 @@ status page to say that it is ready to install. The state becomes
 **Uploaded**.
 
 ## Testing and approving
+
+![The tool's status page: its state marked on the strip of states across the top, its information, the developer tools, and what to do next](../../managers/media/tools-status-created.png)
 
 After the administrator installs the tool, the status page offers a **Launch
 tool** button. Use it and run the tool the way a member would. Each time you

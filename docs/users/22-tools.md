@@ -39,6 +39,8 @@ Select **Launch Tool** on the tool's page. The hub allocates a session on an
 execution host and shows it in a frame on the session page. What you see
 inside the frame is the tool's own interface — the CMS only delivers it.
 
+![A running session: the tool's own desktop, here a workspace with a terminal and two small windows, inside the session frame on the hub's page](media/tools-session.png)
+
 Across the top of the session page:
 
 | Control | What it does |
@@ -57,6 +59,8 @@ you to close one first.
 Where the hub shows a storage meter, it sits under the session and reports how
 much of your disk quota you have used. Filling it stops the tool writing
 files.
+
+![The My Sessions module on the dashboard: a running session with its thumbnail, when it was last used, Open and Terminate buttons, and the storage meter below](media/tools-my-sessions.png)
 
 Where a hub runs sessions in more than one zone, the session page names the
 zone you landed in and offers to relaunch elsewhere.

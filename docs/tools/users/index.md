@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ e097e0236d
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Tool users
 
@@ -28,7 +28,7 @@ the people who build tools and the people who run the hub.
 - [Sharing a session](../../users/22-tools.md#sharing-a-session) with other
   members or with a group, read-only or not.
 
-![A tool session running in a browser](../media/users-tools2.gif)
+![A tool session running in a browser: the tool's own desktop inside the session frame on the hub's page](../../users/media/tools-session.png)
 
 The animation shows a tool session in an older hub interface; the surrounding
 page looks different now, but the arrangement — the tool in a frame, its
