@@ -14,7 +14,8 @@ written, how to run the tests, and how to send a change back.
 
 ## Reporting problems
 
-Report bugs and security issues at https://help.hubzero.org/support.
+Report bugs as [GitHub issues](https://github.com/hubzero/hubzero-cms/issues),
+and security issues by email to support@hubzero.org.
 
 ## Contributions
 
@@ -210,8 +211,8 @@ Before proposing a feature rather than a fix, consider:
 
 ### Reporting problems
 
-- **Bugs and feature requests**: https://help.hubzero.org/support, or a GitHub
-  issue using the [bug report template](../../.github/ISSUE_TEMPLATE/bug_report.md),
+- **Bugs and feature requests**: a GitHub issue, using the
+  [bug report template](../../.github/ISSUE_TEMPLATE/bug_report.md),
   which asks for the Hubzero version, the PHP version, the operating system,
   and steps to reproduce.
 - **Security issues**: email support@hubzero.org. Do not open a public issue.

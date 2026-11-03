@@ -1081,7 +1081,7 @@ If a change fixes a reported issue or follows from an outside discussion, name
 it in the body:
 
 ```
-Fixes: https://help.hubzero.org/support/ticket/12345
+Fixes: https://github.com/hubzero/hubzero-cms/issues/1234
 Refs: https://github.com/hubzero/hubzero-cms/pull/1923
 ```
 
