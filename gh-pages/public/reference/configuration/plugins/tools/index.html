@@ -234,6 +234,20 @@
 </thead>
 <tbody>
 <tr>
+<td><code>vnc_engine</code></td>
+<td>VNC JS engine</td>
+<td>list</td>
+<td><code>modern (Modern noVNC 1.7.0 (bundled + HubZero patches))</code></td>
+<td>Which VNC client to run in the viewer. Overridable per-request with &amp;vncengine=legacy|modern|vanilla. Options: <code>legacy</code> HubZero noVNC (bundled + extensions), <code>modern</code> Modern noVNC 1.7.0 (bundled + HubZero patches), <code>vanilla</code> Vanilla noVNC (current upstream, from CDN).</td>
+</tr>
+<tr>
+<td><code>clipboard_block_hostreq</code></td>
+<td>No clipboard on hosts</td>
+<td>text</td>
+<td>—</td>
+<td>Comma-separated host requirements (e.g. geddes_restricted). Tools whose version requires one of these get no copy and paste in the modern viewer.</td>
+</tr>
+<tr>
 <td><code>browsers</code></td>
 <td>Minimum OS/Browsers</td>
 <td>textarea</td>

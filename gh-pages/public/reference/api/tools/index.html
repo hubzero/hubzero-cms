@@ -76,10 +76,18 @@
 <li class="toc__item toc__item--l2"><a href="#post-tools-run">POST /tools/run</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-screenshots-user-id">GET /tools/screenshots/{user_id}</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-status">GET /tools/status</a></li>
+<li class="toc__item toc__item--l2"><a href="#delete-tools-storage-delete">DELETE /tools/storage/delete</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-tools-storage-files">GET /tools/storage/files</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-tools-storage-mkdir">POST /tools/storage/mkdir</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-tools-storage-rename">POST /tools/storage/rename</a></li>
+<li class="toc__item toc__item--l2"><a href="#post-tools-storage-upload">POST /tools/storage/upload</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-tools-storage-usage">GET /tools/storage/usage</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-sessionid-fileshare">GET /tools/{sessionid}/fileshare</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-sessionid-screenshot">GET /tools/{sessionid}/screenshot</a></li>
 <li class="toc__item toc__item--l2"><a href="#delete-tools-session">DELETE /tools/{session}</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-session">GET /tools/{session}</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-tools-session-state">GET /tools/{session}/state</a></li>
+<li class="toc__item toc__item--l2"><a href="#get-tools-session-timeout">GET /tools/{session}/timeout</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-session-unshare">GET /tools/{session}/unshare</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-tool">GET /tools/{tool}</a></li>
 <li class="toc__item toc__item--l2"><a href="#get-tools-tool-invoke">GET /tools/{tool}/invoke</a></li>
@@ -273,6 +281,36 @@
 <td>Gets the status of the session identified</td>
 </tr>
 <tr>
+<td><code>DELETE</code></td>
+<td><a href="#delete-tools-storage-delete"><code>/tools/storage/delete</code></a></td>
+<td>Delete one file or folder from the member's storage.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-tools-storage-files"><code>/tools/storage/files</code></a></td>
+<td>List the folders and files in one directory of the member's storage.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-tools-storage-mkdir"><code>/tools/storage/mkdir</code></a></td>
+<td>Create a new folder in the member's storage.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-tools-storage-rename"><code>/tools/storage/rename</code></a></td>
+<td>Rename a file or folder in the member's storage.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-tools-storage-upload"><code>/tools/storage/upload</code></a></td>
+<td>Upload one or more files into a directory of the member's storage.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-tools-storage-usage"><code>/tools/storage/usage</code></a></td>
+<td>Current disk-usage / quota for the authenticated member (read-only).</td>
+</tr>
+<tr>
 <td><code>GET</code></td>
 <td><a href="#get-tools-sessionid-fileshare"><code>/tools/{sessionid}/fileshare</code></a></td>
 <td>Method to setup Windows filesharing connection</td>
@@ -291,6 +329,16 @@
 <td><code>GET</code></td>
 <td><a href="#get-tools-session"><code>/tools/{session}</code></a></td>
 <td>Method to view tool session</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-tools-session-state"><code>/tools/{session}/state</code></a></td>
+<td>Report the launch/connection state of a tool session using ONLY the middleware database -- it never calls out to the middleware (maxwell).</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-tools-session-timeout"><code>/tools/{session}/timeout</code></a></td>
+<td>Report the timeout window for a tool session (DB-only; no middleware call).</td>
 </tr>
 <tr>
 <td><code>GET</code></td>
@@ -352,7 +400,7 @@
 <p>API version 1.0, task <code>listAll</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L32"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-output">GET /tools/output</h2>
 <p>Grabs the output from a tool session</p>
-<p>API version 1.0, task <code>output</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1131"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>output</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1142"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -382,7 +430,7 @@
 </table>
 <h2 id="post-tools-run">POST /tools/run</h2>
 <p>Runs a rappture job.</p>
-<p>API version 1.0, task <code>run</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L800"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>run</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L811"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -442,7 +490,7 @@
 </table>
 <h2 id="get-tools-status">GET /tools/status</h2>
 <p>Gets the status of the session identified</p>
-<p>API version 1.0, task <code>status</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1038"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>status</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1049"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -463,9 +511,81 @@
 </tr>
 </tbody>
 </table>
+<h2 id="delete-tools-storage-delete">DELETE /tools/storage/delete</h2>
+<p>Delete one file or folder from the member's storage.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/storagev1_0.php#L172"><code>storagev1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dir</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Directory the item lives in, relative to the storage root</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>yes</td>
+<td>—</td>
+<td>File or folder name to delete</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td>no</td>
+<td>file</td>
+<td>file or folder</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-tools-storage-files">GET /tools/storage/files</h2>
+<p>List the folders and files in one directory of the member's storage.</p>
+<p>API version 1.0, task <code>files</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/storagev1_0.php#L78"><code>storagev1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dir</code></td>
+<td>string</td>
+<td>no</td>
+<td>—</td>
+<td>Directory relative to the member's storage root</td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-tools-storage-mkdir">POST /tools/storage/mkdir</h2>
+<p>Create a new folder in the member's storage.</p>
+<p>API version 1.0, task <code>mkdir</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/storagev1_0.php#L264"><code>storagev1_0.php</code></a>.</p>
+<h2 id="post-tools-storage-rename">POST /tools/storage/rename</h2>
+<p>Rename a file or folder in the member's storage.</p>
+<p>API version 1.0, task <code>rename</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/storagev1_0.php#L308"><code>storagev1_0.php</code></a>.</p>
+<h2 id="post-tools-storage-upload">POST /tools/storage/upload</h2>
+<p>Upload one or more files into a directory of the member's storage.</p>
+<p>API version 1.0, task <code>upload</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/storagev1_0.php#L367"><code>storagev1_0.php</code></a>.</p>
+<h2 id="get-tools-storage-usage">GET /tools/storage/usage</h2>
+<p>Current disk-usage / quota for the authenticated member (read-only).</p>
+<p>API version 1.0, task <code>usage</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/storagev1_0.php#L26"><code>storagev1_0.php</code></a>.</p>
 <h2 id="get-tools-sessionid-fileshare">GET /tools/{sessionid}/fileshare</h2>
 <p>Method to setup Windows filesharing connection</p>
-<p>API version 1.0, task <code>fileshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1586"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>fileshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1866"><code>sessionsv1_0.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -546,13 +666,66 @@
 </table>
 <h2 id="delete-tools-session">DELETE /tools/{session}</h2>
 <p>Method to stop tool session</p>
-<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1320"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1600"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-session">GET /tools/{session}</h2>
 <p>Method to view tool session</p>
-<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1211"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1222"><code>sessionsv1_0.php</code></a>.</p>
+<h2 id="get-tools-session-state">GET /tools/{session}/state</h2>
+<p>Report the launch/connection state of a tool session using ONLY the middleware database -- it never calls out to the middleware (maxwell).</p>
+<p>API version 1.0, task <code>state</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1332"><code>sessionsv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>0</td>
+<td>A valid hub tool session number</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>string</td>
+<td>no</td>
+<td>vnc</td>
+<td>Connection style to evaluate readiness for: 'vnc' or 'redirect'</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get-tools-session-timeout">GET /tools/{session}/timeout</h2>
+<p>Report the timeout window for a tool session (DB-only; no middleware call).</p>
+<p>API version 1.0, task <code>timeout</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1510"><code>sessionsv1_0.php</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session</code></td>
+<td>integer</td>
+<td>yes</td>
+<td>0</td>
+<td>A valid hub tool session number</td>
+</tr>
+</tbody>
+</table>
 <h2 id="get-tools-session-unshare">GET /tools/{session}/unshare</h2>
 <p>Method to disconnect from shared tool session</p>
-<p>API version 1.0, task <code>unshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1405"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>unshare</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1685"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-tool">GET /tools/{tool}</h2>
 <p>Method to get tool information</p>
 <p>API version 1.0, task <code>info</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L148"><code>sessionsv1_0.php</code></a>.</p>
@@ -611,10 +784,10 @@
 </table>
 <h2 id="delete-tools-user-id">DELETE /tools/{user_id}</h2>
 <p>Method to purge users storage</p>
-<p>API version 1.0, task <code>purge</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1505"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>purge</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1785"><code>sessionsv1_0.php</code></a>.</p>
 <h2 id="get-tools-user-id">GET /tools/{user_id}</h2>
 <p>Method to return users storage results</p>
-<p>API version 1.0, task <code>storage</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1459"><code>sessionsv1_0.php</code></a>.</p>
+<p>API version 1.0, task <code>storage</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tools/api/controllers/sessionsv1_0.php#L1739"><code>sessionsv1_0.php</code></a>.</p>
 
         </div>
         <p class="stamp">Generated from the source tree.</p>

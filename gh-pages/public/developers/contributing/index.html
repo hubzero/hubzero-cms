@@ -436,7 +436,7 @@ site rebuilt and checked before it merges.</p>
 <h3 id="editing-a-page">Editing a page</h3>
 <p>Every page has an <strong>Edit this page on GitHub</strong> link in its footer. For
 anything larger than a typo, clone the repository and work locally:</p>
-<pre><code class="language-bash">python3 -m pip install -r gh-pages/requirements.txt -r docs/_tools/docs/requirements.txt pytest
+<pre><code class="language-bash">python3 -m pip install -r gh-pages/requirements.txt pytest
 sh docs/_tools/docs/rebuild.sh
 python3 -m http.server -d gh-pages/public 8000
 </code></pre>
