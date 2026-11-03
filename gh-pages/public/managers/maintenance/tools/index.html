@@ -482,8 +482,9 @@ working, and ready to be installed&quot;</em>.</p>
 <p>The rest of this section is the platform's tool-packaging convention, quoted
 from the original guide. It describes what the developer does inside a
 workspace on the execution host, and none of it is verifiable from the CMS
-repository.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-17.png"><img src="../../media/tools-contribtool-managers-guide-17.png" alt="Requirements for installing a tool" loading="lazy"></a><figcaption>Requirements for installing a tool</figcaption></figure>
+repository. Steps 2 to 6 below were run in a nanoHUB workspace in November
+2026, building the Rappture curve example into a scratch directory, and the
+two corrections that needed are made where they apply.</p>
 <p>There are four requirements for installing a tool in the hub environment:</p>
 <ol>
 <li>Source code</li>
@@ -491,21 +492,17 @@ repository.</p>
 <li>Makefile</li>
 <li>Invoke script</li>
 </ol>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18a.png"><img src="../../media/tools-contribtool-managers-guide-18a.png" alt="Source code" loading="lazy"></a><figcaption>Source code</figcaption></figure>
 <p>Source code includes all files related to running the application, with
 <code>tool.xml</code> and possibly a wrapper script as the exceptions. No binaries built
 from the source should be stored in the repository. Binary data files such as
 images are fine; committed build products are not, because they cause
 compatibility problems later even when they claim to be platform independent.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18b.png"><img src="../../media/tools-contribtool-managers-guide-18b.png" alt="Graphical user interface" loading="lazy"></a><figcaption>Graphical user interface</figcaption></figure>
 <p>All tools need a graphical user interface. Qt, GTK, wxWidgets, and Tcl/Tk all
 work. If the tool has none, <a href="http://rappture.org">Rappture</a> will build one
 that guides users through running the tool and viewing results, and it has
 hooks into the hub infrastructure.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18c.png"><img src="../../media/tools-contribtool-managers-guide-18c.png" alt="Makefile" loading="lazy"></a><figcaption>Makefile</figcaption></figure>
 <p>All tools need a Makefile, which holds the instructions for compiling and
 installing binaries. Tools with nothing to compile still need one.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18d.png"><img src="../../media/tools-contribtool-managers-guide-18d.png" alt="Invoke script" loading="lazy"></a><figcaption>Invoke script</figcaption></figure>
 <p>All tools need an invoke script, which says how to launch the tool in the hub
 environment. It is usually a one-line call to the hub's own invoke script.</p>
 <p>There are eight steps to getting source code into the repository:</p>
@@ -528,24 +525,20 @@ For either Git option the developer uses <code>git clone</code>, <code>git add</
 intervening steps are the same.</p>
 </aside>
 <h3 id="1-check-out-the-repository">1. Check out the repository</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-31.png"><img src="../../media/tools-contribtool-managers-guide-31.png" alt="Checking out the repository" loading="lazy"></a><figcaption>Checking out the repository</figcaption></figure>
 <pre><code>svn checkout https://yourhub.org/tools/toolname/svn/trunk toolname
 </code></pre>
 <p>Replace <code>yourhub.org</code> with the hub's hostname and <code>toolname</code> with the tool
 alias. Run inside a workspace, this puts a local copy of the repository in a
 directory named for the tool.</p>
 <h3 id="2-add-source-code">2. Add source code</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-32.png"><img src="../../media/tools-contribtool-managers-guide-32.png" alt="Adding source code" loading="lazy"></a><figcaption>Adding source code</figcaption></figure>
 <pre><code>cd toolname
 cp /apps/rappture/examples/zoo/curve/curve.tcl src/curve.tcl
 svn add src/curve.tcl
 </code></pre>
 <p>Every file has to be added, one by one or by directory.</p>
 <h3 id="3-add-a-makefile">3. Add a Makefile</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-33a.png"><img src="../../media/tools-contribtool-managers-guide-33a.png" alt="Editing the Makefile" loading="lazy"></a><figcaption>Editing the Makefile</figcaption></figure>
 <pre><code>gedit src/Makefile
 </code></pre>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-33b.png"><img src="../../media/tools-contribtool-managers-guide-33b.png" alt="A minimal Makefile" loading="lazy"></a><figcaption>A minimal Makefile</figcaption></figure>
 <pre><code class="language-make">all: curve.tcl
 
 install: curve.tcl
@@ -564,24 +557,28 @@ then removes whatever <code>install</code> produced, so that running it returns 
 working copy to the state it was checked out in.</p>
 <p>Save the file and <code>svn add src/Makefile</code>.</p>
 <h3 id="4-add-tool-xml">4. Add <code>tool.xml</code></h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-34a.png"><img src="../../media/tools-contribtool-managers-guide-34a.png" alt="Adding tool.xml" loading="lazy"></a><figcaption>Adding tool.xml</figcaption></figure>
 <pre><code>cp /apps/rappture/examples/zoo/curve/tool.xml rappture/tool.xml
 svn add rappture/tool.xml
 </code></pre>
+<p>The example's <code>tool.xml</code> runs <code>tclsh @tool/curve.tcl @driver</code>, and <code>@tool</code>
+is the <code>rappture</code> directory. With the Makefile above installing the script
+into <code>bin</code>, change the command to <code>tclsh @tool/../bin/curve.tcl @driver</code>.</p>
 <h3 id="5-check-the-invoke-script">5. Check the invoke script</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-35a.png"><img src="../../media/tools-contribtool-managers-guide-35a.png" alt="The invoke script" loading="lazy"></a><figcaption>The invoke script</figcaption></figure>
 <p>The <code>middleware</code> directory must contain a file named <code>invoke</code>. If it is
 missing, create it and add it to the repository the same way as the Makefile.
 The invoke script sets up the environment and launches the tool when a user
 presses <strong>Launch tool</strong>. The default is:</p>
 <pre><code class="language-sh">#!/bin/sh
 
-/apps/rappture/invoke_app &quot;$@&quot; -t toolname
+/usr/bin/invoke_app &quot;$@&quot; -C rappture -t toolname
 </code></pre>
-<p><code>/apps/rappture/invoke_app</code> is the hub's own invoke script. On older hubs it
-only launches Rappture applications; on newer ones it is a link to
-<code>/apps/invoke/current/invoke_app</code>, which launches Rappture applications and
-most non-Rappture ones. Its common flags:</p>
+<p><code>/usr/bin/invoke_app</code> is the platform's own invoke script; <code>-C rappture</code>
+starts the Rappture interface from <code>rappture/tool.xml</code>. Older tools call
+<code>/apps/rappture/invoke_app</code> or <code>/apps/invoke/invoke_app</code> instead. On
+nanoHUB's 64-bit execution environment, checked in November 2026, those
+paths no longer launch anything: they print a message asking for the
+<code>/usr/bin/invoke_app -C rappture</code> form and exit.</p>
+<p>The common flags of <code>invoke_app</code>:</p>
 <pre><code>-r  Rappture version (current, dev)
 -t  tool name
 -T  tool root directory
@@ -595,7 +592,7 @@ most non-Rappture ones. Its common flags:</p>
 <pre><code>chmod 755 middleware/invoke
 </code></pre>
 <h3 id="6-test-in-a-workspace">6. Test in a workspace</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-36.png"><img src="../../media/tools-contribtool-managers-guide-36.png" alt="Testing in a workspace" loading="lazy"></a><figcaption>Testing in a workspace</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-workspace-test.png"><img src="../../media/tools-workspace-test.png" alt="The walkthrough's example tool running in a workspace after these commands: the Rappture curve interface, with one simulated result plotted" loading="lazy"></a><figcaption>The walkthrough's example tool running in a workspace after these commands: the Rappture curve interface, with one simulated result plotted</figcaption></figure>
 <pre><code>cd src
 make all install
 cd ../
@@ -607,7 +604,6 @@ run a simulation and check the result.</p>
 installing the tool on the hub. Anything that fails here fails there too, so
 it should be fixed before the status moves to <strong>Uploaded</strong>.</p>
 <h3 id="7-clean-up">7. Clean up</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-37.png"><img src="../../media/tools-contribtool-managers-guide-37.png" alt="Cleaning the working copy" loading="lazy"></a><figcaption>Cleaning the working copy</figcaption></figure>
 <pre><code>cd src
 make distclean
 cd ../
@@ -615,7 +611,6 @@ cd ../
 <p>This removes what the install produced, so no binaries or temporary files end
 up in the repository.</p>
 <h3 id="8-commit">8. Commit</h3>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-38.png"><img src="../../media/tools-contribtool-managers-guide-38.png" alt="Committing" loading="lazy"></a><figcaption>Committing</figcaption></figure>
 <pre><code>svn commit --message &quot;initial upload of code&quot;
 </code></pre>
 <p>Commit from the top of the working copy, since a commit only covers the
@@ -641,9 +636,7 @@ passing the repository host, the project alias, and the hub directory.</li>
 <p>Both scripts are part of the tool platform, so what they do on disk could not
 be verified here. The CMS shows their output: green for success, red with the
 errors for failure.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-42.png"><img src="../../media/tools-contribtool-managers-guide-42.png" alt="The install output" loading="lazy"></a><figcaption>The install output</figcaption></figure>
 <p>The next step is on the execution host. Open a workspace and, in an xterm:</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-43.png"><img src="../../media/tools-contribtool-managers-guide-43.png" alt="Building the tool" loading="lazy"></a><figcaption>Building the tool</figcaption></figure>
 <pre><code>sudo su - apps
 cd /apps/toolname/dev/src
 make all
@@ -669,23 +662,22 @@ administrator to install again.</p>
 information page — the resource page listing authors, credits, publications,
 and screenshots. The <strong>What's next?</strong> panel links to it, as <strong>Create this
 page</strong> or <strong>Edit this page</strong> depending on whether one exists.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-50.png"><img src="../../media/tools-contribtool-managers-guide-50.png" alt="Creating the tool information page" loading="lazy"></a><figcaption>Creating the tool information page</figcaption></figure>
 <p>The wizard collects and formats the information and ends on a preview the
 developer confirms.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-52.png"><img src="../../media/tools-contribtool-managers-guide-52.png" alt="Previewing the tool page" loading="lazy"></a><figcaption>Previewing the tool page</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-approve-preview.png"><img src="../../media/tools-approve-preview.png" alt="The tool page wizard's Finalize step: the Description, Contributors, Attachments and Tags steps across the top, and a preview of the tool page as it will be published" loading="lazy"></a><figcaption>The tool page wizard's Finalize step: the Description, Contributors, Attachments and Tags steps across the top, and a preview of the tool page as it will be published</figcaption></figure>
 <p>The developer also picks a license, replacing the template text with their
 own. Closed source requires a reason.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-53.png"><img src="../../media/tools-contribtool-managers-guide-53.png" alt="Choosing a license" loading="lazy"></a><figcaption>Choosing a license</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-approve-license.png"><img src="../../media/tools-approve-license.png" alt="The License page: the Source Code Access choice, the case for open source, and the reason a closed-source tool must give" loading="lazy"></a><figcaption>The License page: the Source Code Access choice, the case for open source, and the reason a closed-source tool must give</figcaption></figure>
 <p>Finally, <strong>Approve this tool</strong>. The status changes to <strong>Approved</strong>.</p>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-54.png"><img src="../../media/tools-contribtool-managers-guide-54.png" alt="The tool status page in the Approved state" loading="lazy"></a><figcaption>The tool status page in the Approved state</figcaption></figure>
+<figure class="figure"><a href="../../media/tools-approve-finalize.png"><img src="../../media/tools-approve-finalize.png" alt="The last step of Approve New Tool Release: the tool's information for this release, and the Approve this tool button" loading="lazy"></a><figcaption>The last step of Approve New Tool Release: the tool's information for this release, and the Approve this tool button</figcaption></figure>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Moving to <strong>Approved</strong> goes through a version check first. If the
 version number on the tool is not a valid new version, the pipeline sends
 the developer to the versions form to confirm or set one before the flip
 takes effect.</p>
 </aside>
+<figure class="figure"><a href="../../media/tools-approve-version.png"><img src="../../media/tools-approve-version.png" alt="The Confirm version step, with the version label for this release and the tool's existing versions" loading="lazy"></a><figcaption>The Confirm version step, with the version label for this release and the tool's existing versions</figcaption></figure>
 <h2 id="approved-to-published">Approved to Published</h2>
-<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-55.png"><img src="../../media/tools-contribtool-managers-guide-55.png" alt="The tool status page in the Approved state" loading="lazy"></a><figcaption>The tool status page in the Approved state</figcaption></figure>
 <p>This is an admin task. Press <strong>Publish</strong> in <strong>Administrator Controls</strong>. The
 publish process exposes the tool information page on the hub and its output
 comes back the same way as <strong>Install</strong> — green for success, red for failure.
