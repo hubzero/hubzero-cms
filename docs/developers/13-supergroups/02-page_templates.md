@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 91d03d0a23
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Page templates
 
@@ -110,12 +110,7 @@ The list holds **- Default** plus one entry per named template. Leaving it on
 **- Default** falls back to the `page-*` / `page.php` / `index.php` chain
 above.
 
-![The Template drop-down on the page edit form, listing a custom template](../media/page-templates-customtemplateselect.png)
-
-> **Note:** That screenshot predates the current form. The **Settings**
-> section now reads Category, Parent, Order, Comments, Template, and the home
-> page override shown under the drop-down is no longer there. The **Template**
-> control itself still looks and behaves as pictured.
+![The Settings panel of a new group page with the Template drop-down open, offering - Default and a named template, Field site](../media/page-templates-template-select.png)
 
 The control only exists on a super group's pages, and on the site form only
 when the template directory holds at least one named template. The

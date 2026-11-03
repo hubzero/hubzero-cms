@@ -2,7 +2,7 @@
 status: rewritten
 reviewed-against: 2.4-main @ 91d03d0a23
 reviewed: 2026-09-10
-screenshots: stale
+screenshots: ok
 -->
 # Templating system
 
@@ -172,22 +172,16 @@ in a banner returns a banner inside a file listing.
 
 The skeleton also ships `template/error.php` and `assets/css/error.css`.
 
-![The super group error page the template was written for](../media/templating-system-error.png)
-
 > **Warning:** This does not work in 2.4. `View::attachCustomErrorHandler()`
 > in
 > [`core/components/com_groups/helpers/view.php`](../../../core/components/com_groups/helpers/view.php)
 > still checks that the group has an `error.php`, but the
 > `set_exception_handler()` call below the check is commented out. A super
-> group gets the site's error pages, so the screenshot above shows a page the
-> software no longer produces. The file is still copied into every new group
-> directory.
+> group gets the site's error pages, and the group's error template is never
+> shown. The file is still copied into every new group directory.
 
 ## File layout
 
-![A super group directory in a file browser](../media/templating-system-filesystem.png)
-
-> **Note:** That picture predates the `macros/` and `migrations/`
-> directories, which the skeleton now creates as well. See
-> [the section overview](index.md#the-group-directory) for the current
-> layout.
+The directories a new super group gets, `macros/` and `migrations/` among
+them, are listed in
+[the section overview](index.md#the-group-directory).
