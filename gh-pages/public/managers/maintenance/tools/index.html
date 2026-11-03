@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../../assets/site.css?v=8a405e6d">
+  <link rel="stylesheet" href="../../../assets/site.css?v=bb8696b6">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -196,7 +196,7 @@ hosts, and could not be verified here. Sections below that describe what
 happens on the execution host are marked.</p>
 </aside>
 <h2 id="the-pipeline">The pipeline</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-06.png" alt="The tool pipeline" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-06.png"><img src="../../media/tools-contribtool-managers-guide-06.png" alt="The tool pipeline" loading="lazy"></a><figcaption>The tool pipeline</figcaption></figure>
 <p>A tool has nine states. The number is the <code>state</code> column on <code>#__tool</code>:</p>
 <table>
 <thead>
@@ -312,7 +312,7 @@ the option and the component falls back to the normal permission checks.</p>
 <li>Add the administrator's username as a <strong>Member</strong>.</li>
 </ol>
 <h2 id="registering-a-tool">Registering a tool</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-06.png" alt="Registering a tool" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-06.png"><img src="../../media/tools-contribtool-managers-guide-06.png" alt="Registering a tool" loading="lazy"></a><figcaption>Registering a tool</figcaption></figure>
 <p>Registration is a user task. The developer starts the contribution flow on the
 hub and chooses the tool contribution type, which lands on the registration
 form (<code>/tools/create</code>). The pipeline listing at <code>/tools/pipeline</code> also has a
@@ -438,7 +438,7 @@ submits the form and puts the tool in the <strong>Registered</strong> state.</p>
 <p>For the full option list see the
 <a href="../../../reference/configuration/components/tools/index.html">generated <code>com_tools</code> parameter reference</a>.</p>
 <h2 id="registered-to-created">Registered to Created</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-10.png" alt="The tool pipeline listing" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-10.png"><img src="../../media/tools-contribtool-managers-guide-10.png" alt="The tool pipeline listing" loading="lazy"></a><figcaption>The tool pipeline listing</figcaption></figure>
 <p>This is an admin task. Go to <code>/tools/pipeline</code>. The page lists every tool
 contribution on the hub, with <strong>Filter by</strong> (All tools, My submissions,
 Published tools, Tools under development) and <strong>Sort by</strong> (Status, Registration
@@ -466,7 +466,7 @@ back, so nothing about the repository or wiki layout could be verified here.</p>
 </aside>
 <p>Then set <strong>Flip Status</strong> to <strong>Created</strong> and press <strong>Apply change</strong>.</p>
 <h2 id="created-to-uploaded">Created to Uploaded</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-14.png" alt="The tool status page in the Created state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-14.png"><img src="../../media/tools-contribtool-managers-guide-14.png" alt="The tool status page in the Created state" loading="lazy"></a><figcaption>The tool status page in the Created state</figcaption></figure>
 <p>Uploading the source is a user task. In the <strong>Created</strong> state the <strong>What's
 next?</strong> panel links to the project's Getting Started wiki page and, under
 <strong>We are waiting for You</strong>, offers the flip link <em>&quot;My code is committed,
@@ -475,7 +475,7 @@ working, and ready to be installed&quot;</em>.</p>
 from the original guide. It describes what the developer does inside a
 workspace on the execution host, and none of it is verifiable from the CMS
 repository.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-17.png" alt="Requirements for installing a tool" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-17.png"><img src="../../media/tools-contribtool-managers-guide-17.png" alt="Requirements for installing a tool" loading="lazy"></a><figcaption>Requirements for installing a tool</figcaption></figure>
 <p>There are four requirements for installing a tool in the hub environment:</p>
 <ol>
 <li>Source code</li>
@@ -483,21 +483,21 @@ repository.</p>
 <li>Makefile</li>
 <li>Invoke script</li>
 </ol>
-<p><img src="../../media/tools-contribtool-managers-guide-18a.png" alt="Source code" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18a.png"><img src="../../media/tools-contribtool-managers-guide-18a.png" alt="Source code" loading="lazy"></a><figcaption>Source code</figcaption></figure>
 <p>Source code includes all files related to running the application, with
 <code>tool.xml</code> and possibly a wrapper script as the exceptions. No binaries built
 from the source should be stored in the repository. Binary data files such as
 images are fine; committed build products are not, because they cause
 compatibility problems later even when they claim to be platform independent.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-18b.png" alt="Graphical user interface" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18b.png"><img src="../../media/tools-contribtool-managers-guide-18b.png" alt="Graphical user interface" loading="lazy"></a><figcaption>Graphical user interface</figcaption></figure>
 <p>All tools need a graphical user interface. Qt, GTK, wxWidgets, and Tcl/Tk all
 work. If the tool has none, <a href="http://rappture.org">Rappture</a> will build one
 that guides users through running the tool and viewing results, and it has
 hooks into the hub infrastructure.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-18c.png" alt="Makefile" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18c.png"><img src="../../media/tools-contribtool-managers-guide-18c.png" alt="Makefile" loading="lazy"></a><figcaption>Makefile</figcaption></figure>
 <p>All tools need a Makefile, which holds the instructions for compiling and
 installing binaries. Tools with nothing to compile still need one.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-18d.png" alt="Invoke script" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-18d.png"><img src="../../media/tools-contribtool-managers-guide-18d.png" alt="Invoke script" loading="lazy"></a><figcaption>Invoke script</figcaption></figure>
 <p>All tools need an invoke script, which says how to launch the tool in the hub
 environment. It is usually a one-line call to the hub's own invoke script.</p>
 <p>There are eight steps to getting source code into the repository:</p>
@@ -520,24 +520,24 @@ For either Git option the developer uses <code>git clone</code>, <code>git add</
 intervening steps are the same.</p>
 </aside>
 <h3 id="1-check-out-the-repository">1. Check out the repository</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-31.png" alt="Checking out the repository" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-31.png"><img src="../../media/tools-contribtool-managers-guide-31.png" alt="Checking out the repository" loading="lazy"></a><figcaption>Checking out the repository</figcaption></figure>
 <pre><code>svn checkout https://yourhub.org/tools/toolname/svn/trunk toolname
 </code></pre>
 <p>Replace <code>yourhub.org</code> with the hub's hostname and <code>toolname</code> with the tool
 alias. Run inside a workspace, this puts a local copy of the repository in a
 directory named for the tool.</p>
 <h3 id="2-add-source-code">2. Add source code</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-32.png" alt="Adding source code" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-32.png"><img src="../../media/tools-contribtool-managers-guide-32.png" alt="Adding source code" loading="lazy"></a><figcaption>Adding source code</figcaption></figure>
 <pre><code>cd toolname
 cp /apps/rappture/examples/zoo/curve/curve.tcl src/curve.tcl
 svn add src/curve.tcl
 </code></pre>
 <p>Every file has to be added, one by one or by directory.</p>
 <h3 id="3-add-a-makefile">3. Add a Makefile</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-33a.png" alt="Editing the Makefile" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-33a.png"><img src="../../media/tools-contribtool-managers-guide-33a.png" alt="Editing the Makefile" loading="lazy"></a><figcaption>Editing the Makefile</figcaption></figure>
 <pre><code>gedit src/Makefile
 </code></pre>
-<p><img src="../../media/tools-contribtool-managers-guide-33b.png" alt="A minimal Makefile" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-33b.png"><img src="../../media/tools-contribtool-managers-guide-33b.png" alt="A minimal Makefile" loading="lazy"></a><figcaption>A minimal Makefile</figcaption></figure>
 <pre><code class="language-make">all: curve.tcl
 
 install: curve.tcl
@@ -556,12 +556,12 @@ then removes whatever <code>install</code> produced, so that running it returns 
 working copy to the state it was checked out in.</p>
 <p>Save the file and <code>svn add src/Makefile</code>.</p>
 <h3 id="4-add-tool-xml">4. Add <code>tool.xml</code></h3>
-<p><img src="../../media/tools-contribtool-managers-guide-34a.png" alt="Adding tool.xml" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-34a.png"><img src="../../media/tools-contribtool-managers-guide-34a.png" alt="Adding tool.xml" loading="lazy"></a><figcaption>Adding tool.xml</figcaption></figure>
 <pre><code>cp /apps/rappture/examples/zoo/curve/tool.xml rappture/tool.xml
 svn add rappture/tool.xml
 </code></pre>
 <h3 id="5-check-the-invoke-script">5. Check the invoke script</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-35a.png" alt="The invoke script" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-35a.png"><img src="../../media/tools-contribtool-managers-guide-35a.png" alt="The invoke script" loading="lazy"></a><figcaption>The invoke script</figcaption></figure>
 <p>The <code>middleware</code> directory must contain a file named <code>invoke</code>. If it is
 missing, create it and add it to the repository the same way as the Makefile.
 The invoke script sets up the environment and launches the tool when a user
@@ -587,7 +587,7 @@ most non-Rappture ones. Its common flags:</p>
 <pre><code>chmod 755 middleware/invoke
 </code></pre>
 <h3 id="6-test-in-a-workspace">6. Test in a workspace</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-36.png" alt="Testing in a workspace" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-36.png"><img src="../../media/tools-contribtool-managers-guide-36.png" alt="Testing in a workspace" loading="lazy"></a><figcaption>Testing in a workspace</figcaption></figure>
 <pre><code>cd src
 make all install
 cd ../
@@ -599,7 +599,7 @@ run a simulation and check the result.</p>
 installing the tool on the hub. Anything that fails here fails there too, so
 it should be fixed before the status moves to <strong>Uploaded</strong>.</p>
 <h3 id="7-clean-up">7. Clean up</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-37.png" alt="Cleaning the working copy" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-37.png"><img src="../../media/tools-contribtool-managers-guide-37.png" alt="Cleaning the working copy" loading="lazy"></a><figcaption>Cleaning the working copy</figcaption></figure>
 <pre><code>cd src
 make distclean
 cd ../
@@ -607,20 +607,20 @@ cd ../
 <p>This removes what the install produced, so no binaries or temporary files end
 up in the repository.</p>
 <h3 id="8-commit">8. Commit</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-38.png" alt="Committing" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-38.png"><img src="../../media/tools-contribtool-managers-guide-38.png" alt="Committing" loading="lazy"></a><figcaption>Committing</figcaption></figure>
 <pre><code>svn commit --message &quot;initial upload of code&quot;
 </code></pre>
 <p>Commit from the top of the working copy, since a commit only covers the
 current directory and below. Enter the hub credentials if prompted.</p>
 <h3 id="flip-the-status">Flip the status</h3>
-<p><img src="../../media/tools-contribtool-managers-guide-39.png" alt="The tool pipeline listing" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-39.png"><img src="../../media/tools-contribtool-managers-guide-39.png" alt="The tool pipeline listing" loading="lazy"></a><figcaption>The tool pipeline listing</figcaption></figure>
 <p>Back on the tool's status page at <code>/tools/pipeline</code>, use the <strong>Timeline</strong> link
 under <strong>Developer Tools</strong> to confirm the commit arrived — the project area may
 require a login. Then, under <strong>We are waiting for You</strong>, click <em>&quot;My code is
 committed, working, and ready to be installed&quot;</em>. The status becomes
 <strong>Uploaded</strong>.</p>
 <h2 id="uploaded-to-installed">Uploaded to Installed</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-41.png" alt="The tool status page in the Uploaded state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-41.png"><img src="../../media/tools-contribtool-managers-guide-41.png" alt="The tool status page in the Uploaded state" loading="lazy"></a><figcaption>The tool status page in the Uploaded state</figcaption></figure>
 <p>This is an admin task. On the tool's status page, press <strong>Install</strong> in
 <strong>Administrator Controls</strong>. The CMS builds a command line and runs it as the
 <code>apps</code> user:</p>
@@ -633,9 +633,9 @@ passing the repository host, the project alias, and the hub directory.</li>
 <p>Both scripts are part of the tool platform, so what they do on disk could not
 be verified here. The CMS shows their output: green for success, red with the
 errors for failure.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-42.png" alt="The install output" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-42.png"><img src="../../media/tools-contribtool-managers-guide-42.png" alt="The install output" loading="lazy"></a><figcaption>The install output</figcaption></figure>
 <p>The next step is on the execution host. Open a workspace and, in an xterm:</p>
-<p><img src="../../media/tools-contribtool-managers-guide-43.png" alt="Building the tool" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-43.png"><img src="../../media/tools-contribtool-managers-guide-43.png" alt="Building the tool" loading="lazy"></a><figcaption>Building the tool</figcaption></figure>
 <pre><code>sudo su - apps
 cd /apps/toolname/dev/src
 make all
@@ -643,33 +643,33 @@ make install
 </code></pre>
 <p>If <code>sudo su - apps</code> fails, the account is not in the <code>apps</code> group — see
 <strong>Preparation</strong>.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-46.png" alt="The status page after installation" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-46.png"><img src="../../media/tools-contribtool-managers-guide-46.png" alt="The status page after installation" loading="lazy"></a><figcaption>The status page after installation</figcaption></figure>
 <p>Back on the status page, set <strong>Flip Status</strong> to <strong>Installed</strong> and press
 <strong>Apply change</strong>. The <strong>What's next?</strong> panel then offers a <strong>Launch tool</strong>
 button. Use it and confirm the tool runs.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-45.png" alt="Launching the tool" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-45.png"><img src="../../media/tools-contribtool-managers-guide-45.png" alt="Launching the tool" loading="lazy"></a><figcaption>Launching the tool</figcaption></figure>
 <h2 id="installed-to-updated">Installed to Updated</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-47.png" alt="The tool status page in the Installed state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-47.png"><img src="../../media/tools-contribtool-managers-guide-47.png" alt="The tool status page in the Installed state" loading="lazy"></a><figcaption>The tool status page in the Installed state</figcaption></figure>
 <p>Testing the tool is the developer's job. When they find something to fix, they
 commit the change and use the <strong>What's next?</strong> link <em>&quot;I've committed new code.
 Please install the latest version for testing and approval.&quot;</em> That sets the
 status to <strong>Updated</strong>, which is the pipeline's way of telling the
 administrator to install again.</p>
 <h2 id="installed-to-approved">Installed to Approved</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-47.png" alt="The tool status page in the Installed state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-47.png"><img src="../../media/tools-contribtool-managers-guide-47.png" alt="The tool status page in the Installed state" loading="lazy"></a><figcaption>The tool status page in the Installed state</figcaption></figure>
 <p>Approval is a user task. Before a tool can be approved it needs a tool
 information page — the resource page listing authors, credits, publications,
 and screenshots. The <strong>What's next?</strong> panel links to it, as <strong>Create this
 page</strong> or <strong>Edit this page</strong> depending on whether one exists.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-50.png" alt="Creating the tool information page" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-50.png"><img src="../../media/tools-contribtool-managers-guide-50.png" alt="Creating the tool information page" loading="lazy"></a><figcaption>Creating the tool information page</figcaption></figure>
 <p>The wizard collects and formats the information and ends on a preview the
 developer confirms.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-52.png" alt="Previewing the tool page" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-52.png"><img src="../../media/tools-contribtool-managers-guide-52.png" alt="Previewing the tool page" loading="lazy"></a><figcaption>Previewing the tool page</figcaption></figure>
 <p>The developer also picks a license, replacing the template text with their
 own. Closed source requires a reason.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-53.png" alt="Choosing a license" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-53.png"><img src="../../media/tools-contribtool-managers-guide-53.png" alt="Choosing a license" loading="lazy"></a><figcaption>Choosing a license</figcaption></figure>
 <p>Finally, <strong>Approve this tool</strong>. The status changes to <strong>Approved</strong>.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-54.png" alt="The tool status page in the Approved state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-54.png"><img src="../../media/tools-contribtool-managers-guide-54.png" alt="The tool status page in the Approved state" loading="lazy"></a><figcaption>The tool status page in the Approved state</figcaption></figure>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Moving to <strong>Approved</strong> goes through a version check first. If the
 version number on the tool is not a valid new version, the pipeline sends
@@ -677,24 +677,24 @@ the developer to the versions form to confirm or set one before the flip
 takes effect.</p>
 </aside>
 <h2 id="approved-to-published">Approved to Published</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-55.png" alt="The tool status page in the Approved state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-55.png"><img src="../../media/tools-contribtool-managers-guide-55.png" alt="The tool status page in the Approved state" loading="lazy"></a><figcaption>The tool status page in the Approved state</figcaption></figure>
 <p>This is an admin task. Press <strong>Publish</strong> in <strong>Administrator Controls</strong>. The
 publish process exposes the tool information page on the hub and its output
 comes back the same way as <strong>Install</strong> — green for success, red for failure.
 Then set <strong>Flip Status</strong> to <strong>Published</strong> and press <strong>Apply change</strong>, which
 also sets the tool's published flag.</p>
-<p><img src="../../media/tools-contribtool-managers-guide-56.png" alt="The published tool" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-56.png"><img src="../../media/tools-contribtool-managers-guide-56.png" alt="The published tool" loading="lazy"></a><figcaption>The published tool</figcaption></figure>
 <p>From the tool information page the tool can now be launched with <strong>Launch
 tool</strong>.</p>
 <h2 id="published-to-updated">Published to Updated</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-57.png" alt="The tool status page in the Published state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-57.png"><img src="../../media/tools-contribtool-managers-guide-57.png" alt="The tool status page in the Published state" loading="lazy"></a><figcaption>The tool status page in the Published state</figcaption></figure>
 <p>When the developer is ready to test a new release, they commit the changes and
 use the <strong>What's next?</strong> link to move the status from <strong>Published</strong> to
 <strong>Updated</strong>. This does not unpublish anything — the published version keeps
 serving users. It signals that the development version needs reinstalling, and
 the install–approve–publish cycle runs again.</p>
 <h2 id="published-to-retired">Published to Retired</h2>
-<p><img src="../../media/tools-contribtool-managers-guide-57.png" alt="The tool status page in the Published state" /></p>
+<figure class="figure"><a href="../../media/tools-contribtool-managers-guide-57.png"><img src="../../media/tools-contribtool-managers-guide-57.png" alt="The tool status page in the Published state" loading="lazy"></a><figcaption>The tool status page in the Published state</figcaption></figure>
 <p>Published tools usually stay published. Retiring one leaves the tool
 information page in place as a record but stops anyone running it.</p>
 <p><strong>Retired</strong> is on the administrator's <strong>Flip Status</strong> drop-down only for tools
@@ -725,6 +725,6 @@ abandoned.</p>
     <p>© 2026 Purdue University. The documentation is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../../assets/search.js?v=8a405e6d" defer></script>
+  <script src="../../../assets/search.js?v=bb8696b6" defer></script>
 </body>
 </html>

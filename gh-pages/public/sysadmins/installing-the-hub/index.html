@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../assets/site.css?v=8a405e6d">
+  <link rel="stylesheet" href="../../assets/site.css?v=bb8696b6">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -253,7 +253,7 @@ address with its installer.</p>
 <p>The first thing it asks is that you prove you can change files on the server,
 so that nobody who merely finds the address can install a hub on it. It shows
 the name of a file to create in the hub's directory:</p>
-<p><img src="../media/install-verify.png" alt="The installer's ownership check, showing the name of the file to create, the directory to create it in, a ten-minute countdown, and the touch command that creates it" /></p>
+<figure class="figure"><a href="../media/install-verify.png"><img src="../media/install-verify.png" alt="The installer's ownership check, showing the name of the file to create, the directory to create it in, a ten-minute countdown, and the touch command that creates it" loading="lazy"></a><figcaption>The installer's ownership check, showing the name of the file to create, the directory to create it in, a ten-minute countdown, and the touch command that creates it</figcaption></figure>
 <p>Create it within ten minutes, then select <strong>Verify &amp; Continue</strong>:</p>
 <pre><code class="language-bash">sudo touch /var/www/hub/hubzero-verify-XXXXXXXX.txt
 </code></pre>
@@ -262,7 +262,7 @@ the name of a file to create in the hub's directory:</p>
 Setup</strong>. It checks what Composer needs and has a <strong>Run Composer</strong> button,
 which installs the libraries and shows Composer's output as it goes. When it
 reports <strong>Success!</strong>, select <strong>Continue</strong>.</p>
-<p><img src="../media/install-composer.png" alt="The bootstrap page after Composer has run: its requirements all passed, a success message, and the end of Composer's output above a Continue button" /></p>
+<figure class="figure"><a href="../media/install-composer.png"><img src="../media/install-composer.png" alt="The bootstrap page after Composer has run: its requirements all passed, a success message, and the end of Composer's output above a Continue button" loading="lazy"></a><figcaption>The bootstrap page after Composer has run: its requirements all passed, a success message, and the end of Composer's output above a Continue button</figcaption></figure>
 <p>The installation wizard follows. It moves through <strong>Verify</strong>, <strong>Welcome</strong>,
 <strong>Requirements</strong>, <strong>Database</strong>, <strong>Settings</strong>, <strong>Schema</strong>, <strong>Admin</strong> and
 <strong>Complete</strong>, and goes straight to the first step that still needs doing, so
@@ -271,7 +271,7 @@ after the bootstrap page it usually opens at <strong>Database</strong>.</p>
 over TCP. Then choose <strong>I have credentials ready</strong> and give it the database
 name, user and password you created. <strong>Test Connection</strong> checks them without
 moving on.</p>
-<p><img src="../media/install-database.png" alt="The Database step's credentials page with the database name, username and password filled in, and Test Connection, Back and Next buttons" /></p>
+<figure class="figure"><a href="../media/install-database.png"><img src="../media/install-database.png" alt="The Database step's credentials page with the database name, username and password filled in, and Test Connection, Back and Next buttons" loading="lazy"></a><figcaption>The Database step's credentials page with the database name, username and password filled in, and Test Connection, Back and Next buttons</figcaption></figure>
 <p><strong>Settings.</strong> The hub's name, the administrator's email address, the time
 zone, and a description for search engines. <strong>Site URL</strong> starts as the
 address you reached the installer at, over <code>https://</code>. Keep it, or correct
@@ -281,12 +281,12 @@ articles to look at, then select <strong>Load Database</strong>. It creates the 
 loads the data and runs the migrations, showing their output as they go. This
 takes a minute or two; leave the page open until it says <strong>Success!</strong>, then
 select <strong>Continue</strong>.</p>
-<p><img src="../media/install-schema.png" alt="The Schema step after it has finished: schema, base data, sample data and migrations all ticked, a success message, and the end of the migration output" /></p>
+<figure class="figure"><a href="../media/install-schema.png"><img src="../media/install-schema.png" alt="The Schema step after it has finished: schema, base data, sample data and migrations all ticked, a success message, and the end of the migration output" loading="lazy"></a><figcaption>The Schema step after it has finished: schema, base data, sample data and migrations all ticked, a success message, and the end of the migration output</figcaption></figure>
 <p><strong>Admin.</strong> The administrator's username is always <code>admin</code>. Give a name, an
 email address and a password of at least eight characters, then select
 <strong>Create Account</strong>. <strong>Complete</strong> follows, with the address of the
 administrator interface.</p>
-<p><img src="../media/install-admin.png" alt="The Admin step: the fixed username admin, and fields for the full name, email address, password and its confirmation" /></p>
+<figure class="figure"><a href="../media/install-admin.png"><img src="../media/install-admin.png" alt="The Admin step: the fixed username admin, and fields for the full name, email address, password and its confirmation" loading="lazy"></a><figcaption>The Admin step: the fixed username admin, and fields for the full name, email address, password and its confirmation</figcaption></figure>
 <p>Once the hub is installed, the installer refuses to change anything.
 <code>/install</code> still answers, behind the same ownership check, but every step is
 read-only.</p>
@@ -398,6 +398,6 @@ or the container under Docker, is at the end of your system's page.</p>
     <p>© 2026 Purdue University. The documentation is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../assets/search.js?v=8a405e6d" defer></script>
+  <script src="../../assets/search.js?v=bb8696b6" defer></script>
 </body>
 </html>

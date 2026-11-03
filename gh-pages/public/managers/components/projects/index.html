@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../../assets/site.css?v=8a405e6d">
+  <link rel="stylesheet" href="../../../assets/site.css?v=bb8696b6">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -246,7 +246,7 @@ sub-navigation has two screens:</p>
 all project administration starts: a team is out of space, a project owner
 has left the institution, or a project that should have gone live is stuck
 part-way through setup.</p>
-<p><img src="../../media/projects-admin-list.png" alt="The Projects list: each project with its picture, title and alias, owner, team, status, privacy, quota and activity" /></p>
+<figure class="figure"><a href="../../media/projects-admin-list.png"><img src="../../media/projects-admin-list.png" alt="The Projects list: each project with its picture, title and alias, owner, team, status, privacy, quota and activity" loading="lazy"></a><figcaption>The Projects list: each project with its picture, title and alias, owner, team, status, privacy, quota and activity</figcaption></figure>
 <p>The default screen lists every project on the hub. The filter bar has a
 <strong>Search</strong> box and four drop-downs — <strong>Status</strong>, <strong>Privacy</strong>, <strong>Access</strong>
 and <strong>Quotas</strong> — and the columns sort on ID, <strong>Title</strong>, <strong>Owner</strong>,
@@ -430,7 +430,8 @@ to the team editor go with it. The <strong>Edit Team</strong> button on a projec
 tab and the <strong>Invite people</strong> entry in the project's own options menu are
 still drawn, but following either now lands silently on the project
 description form, with no message and no clue that the screen it named has
-been taken away. A project's Team tab still lists the team and still lets a
+been taken away.</p>
+<p>A project's Team tab still lists the team and still lets a
 manager approve a membership request; what it stops doing is letting anyone
 add, remove or re-role a member. Nothing about the option's label tells you
 any of this.</p>
@@ -618,11 +619,13 @@ Repository and Quotas → Files Git repo path</strong> — <code>/srv/projects</
 as <code>/srv/projects/&lt;alias&gt;/files</code>.</p>
 <p>Because the files are a real directory on a real filesystem, a hub can also
 offer SFTP into them, which is the practical way to move data too large for a
-browser upload. That access is granted through the per-project system group
+browser upload.</p>
+<p>That access is granted through the per-project system group
 (<code>pr-&lt;alias&gt;</code>) rather than through anything in this component: the hub's
 directory service has to publish those groups and the file server has to
 honour them. Files arriving that way appear in the project's file listing once the sync
-has run. If SFTP is
+has run.</p>
+<p>If SFTP is
 available on your hub, the connection details and the local password a member
 needs are hub-specific; document them for your own users rather than assuming
 the defaults here.</p>
@@ -858,6 +861,6 @@ to the one bucket, or the one prefix, and nothing else.</p>
     <p>© 2026 Purdue University. The documentation is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../../assets/search.js?v=8a405e6d" defer></script>
+  <script src="../../../assets/search.js?v=bb8696b6" defer></script>
 </body>
 </html>

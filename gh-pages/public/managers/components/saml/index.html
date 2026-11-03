@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../../assets/site.css?v=8a405e6d">
+  <link rel="stylesheet" href="../../../assets/site.css?v=bb8696b6">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -375,16 +375,22 @@ selecting rows by hand.</p>
 </table>
 <p>There is nothing at <code>/saml</code> itself; it returns a 404, as does every endpoint
 when <strong>Enable IdP</strong> is off or the signing certificate and key are unreadable.</p>
-<p>A sign-on runs like this. The service posts or redirects a request to
-<code>/saml/idp/login</code>. The hub checks the whole request first — that the issuer
-is a registered, enabled service provider, that the signature verifies, that
-the request has not already been answered, and that it asks for delivery to
-the registered ACS URL — and rejects anything that fails with a plain error
-page. Only then, if the visitor is a guest, are they sent to the hub's login
-form and returned here afterwards. If the service has <strong>Allowed groups</strong> set
-and the member is not in one, the hub shows its own <em>Access not available</em>
-page rather than a protocol error. Otherwise it records the session and posts
-a signed response back to the ACS URL.</p>
+<p>A sign-on runs like this:</p>
+<ol>
+<li>The service posts or redirects a request to <code>/saml/idp/login</code>.</li>
+<li>The hub checks the whole request first — that the issuer is a registered,
+enabled service provider, that the signature verifies, that the request
+has not already been answered, and that it asks for delivery to the
+registered ACS URL — and rejects anything that fails with a plain error
+page.</li>
+<li>Only then, if the visitor is a guest, are they sent to the hub's login
+form and returned here afterwards.</li>
+<li>If the service has <strong>Allowed groups</strong> set and the member is not in one,
+the hub shows its own <em>Access not available</em> page rather than a protocol
+error.</li>
+<li>Otherwise it records the session and posts a signed response back to the
+ACS URL.</li>
+</ol>
 <p>The errors a member might see, all rendered on the hub's ordinary error page,
 are listed in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_saml/site/language/en-GB/en-GB.com_saml.ini"><code>site/language/en-GB/en-GB.com_saml.ini</code></a>.</p>
@@ -444,6 +450,6 @@ Recorded with the project.</p>
     <p>© 2026 Purdue University. The documentation is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../../assets/search.js?v=8a405e6d" defer></script>
+  <script src="../../../assets/search.js?v=bb8696b6" defer></script>
 </body>
 </html>

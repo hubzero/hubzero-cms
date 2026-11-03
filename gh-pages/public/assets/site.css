@@ -27,7 +27,8 @@
   --font-ui: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
   --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --measure: 72ch;
+  --measure: 72ch;           /* running text */
+  --wide: 62rem;             /* code, tables and screenshots may run this wide */
   --rail: 18rem;
   --header-h: 3.6rem;
   color-scheme: light;
@@ -105,7 +106,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: .15em; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: .15em; overflow-wrap: anywhere; }
 a:hover { color: var(--accent-ink); }
 
 a:focus-visible,
@@ -349,6 +350,10 @@ img { max-width: 100%; height: auto; }
 .tree .toc a:hover { color: var(--accent-ink); }
 .tree .toc__item--l3 a { padding-left: 1.25rem; }
 
+/* The text keeps a reading measure; code, tables and screenshots may run
+   wider, and the column sits centred in whatever is left beside the rail
+   rather than leaving it all on the right. The wrap itself stays stretched:
+   an auto margin on a grid item would size it to its widest table instead. */
 .article-wrap {
   min-width: 0;
   padding: 1.5rem clamp(1rem, 3vw, 3rem) 4rem;
@@ -358,7 +363,8 @@ img { max-width: 100%; height: auto; }
   display: flex;
   flex-wrap: wrap;
   gap: .4rem;
-  margin: 0 0 1.25rem;
+  max-width: var(--wide);
+  margin: 0 auto 1.25rem;
   color: var(--ink-3);
   font-size: .82rem;
 }
@@ -367,7 +373,13 @@ img { max-width: 100%; height: auto; }
 .crumbs [aria-current] { color: var(--ink-2); }
 .crumbs__sep { color: var(--rule-2); }
 
-.article { max-width: var(--measure); }
+.article { max-width: var(--wide); margin: 0 auto; }
+.article > *,
+.prose > * { max-width: var(--measure); }
+.prose { max-width: none; }
+.prose > pre,
+.prose > table,
+.prose > figure { max-width: none; }
 
 .article__header { margin-bottom: 1.5rem; }
 
@@ -449,6 +461,9 @@ img { max-width: 100%; height: auto; }
 .prose h5, .prose h6 { margin: 1.2rem 0 .3rem; font-size: .92rem; font-weight: 600; color: var(--ink-2); }
 
 .prose p { margin: 0 0 1rem; }
+/* A long path or address that has no break in it would otherwise push the
+   page wider than a phone; table cells keep their words whole and scroll. */
+.prose p, .prose li, .prose dd { overflow-wrap: anywhere; }
 .prose li { margin: .25rem 0; }
 .prose ul, .prose ol { margin: 0 0 1rem; padding-left: 1.5rem; }
 .prose li > ul, .prose li > ol { margin: .25rem 0 .25rem; }
@@ -464,7 +479,7 @@ img { max-width: 100%; height: auto; }
 .prose blockquote p:last-child { margin-bottom: 0; }
 
 .prose :not(pre) > code {
-  padding: .1em .35em;
+  padding: .1em .28em;
   border-radius: 4px;
   background: var(--code-bg);
   color: var(--code-ink);
@@ -509,9 +524,10 @@ img { max-width: 100%; height: auto; }
   border: 1px solid var(--rule);
   border-radius: 4px;
 }
-.prose figure { margin: 1.25rem 0; }
+.prose figure { margin: 1.25rem 0 1.5rem; }
 .prose figure img { margin: 0; }
-.prose figcaption { margin-top: .4rem; color: var(--ink-3); font-size: .85rem; }
+.prose figure a { display: block; cursor: zoom-in; }
+.prose figcaption { margin-top: .45rem; color: var(--ink-3); font-size: .85rem; line-height: 1.45; max-width: var(--measure); }
 
 .prose dl { margin: 0 0 1rem; }
 .prose dt { font-weight: 600; margin-top: .6rem; }
@@ -663,7 +679,8 @@ img { max-width: 100%; height: auto; }
 
 /* One shelf, every volume the same size. A cover is a fixed width and keeps
    a book's proportions, so slack in the row becomes space between the books
-   rather than stretching them out of shape. */
+   rather than stretching them out of shape. Six volumes make two rows of
+   three; a wider shelf would leave one on a row by itself. */
 .shelf {
   --cover-w: 13rem;
   --cover-ratio: 1.4;
@@ -671,6 +688,8 @@ img { max-width: 100%; height: auto; }
   grid-template-columns: repeat(auto-fit, var(--cover-w));
   justify-content: center;
   gap: 1.25rem clamp(1.1rem, 2.5vw, 2rem);
+  max-width: calc(3 * var(--cover-w) + 2 * 2rem);
+  margin: 0 auto;
   padding: 1.5rem 0 2rem;
 }
 
@@ -812,7 +831,9 @@ img { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 840px) {
-  .doc { grid-template-columns: 1fr; }
+  /* minmax(0, 1fr), not 1fr: a plain 1fr track grows to fit the widest
+     table on the page, and the page scrolls sideways with it */
+  .doc { grid-template-columns: minmax(0, 1fr); }
   .rail {
     position: static;
     max-height: none;

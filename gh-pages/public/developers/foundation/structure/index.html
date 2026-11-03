@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&family=IBM+Plex+Mono&display=swap">
-  <link rel="stylesheet" href="../../../assets/site.css?v=8a405e6d">
+  <link rel="stylesheet" href="../../../assets/site.css?v=bb8696b6">
 </head>
 <body class="site-doc">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -185,11 +185,10 @@ runs — which is the answer to most &quot;why is this empty here&quot; question
     index.php       the single entry point
     core/           the platform
     app/            this hub
-    docs/           this documentation
+    docs/           this documentation, and its reference generators
     gh-pages/       the documentation site builder
-    tools/          linters and documentation generators
-    docker/         database containers used by the test suite
-    .github/        CI workflows
+    compose.yaml    a development hub in Docker; .docker/ holds its image
+    .github/        CI workflows, and the files about contributing
 </code></pre>
 <p>Only the first three matter at runtime. The rest is repository furniture.</p>
 <h2 id="core"><code>core/</code></h2>
@@ -238,7 +237,7 @@ write belongs in it unless you are contributing the change back.</p>
 </tr>
 <tr>
 <td><code>bin/</code></td>
-<td><code>muse</code>, <code>composer</code>, <code>lessc</code>.</td>
+<td><code>muse</code>, <code>composer</code>, <code>lessc</code>, and the linters under <code>lint/</code>.</td>
 </tr>
 <tr>
 <td><code>vendor/</code></td>
@@ -458,6 +457,6 @@ never asked for.</p>
     <p>© 2026 Purdue University. The documentation is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">MIT-licensed</a>, like the code. Built from the <a href="https://github.com/hubzero/hubzero-cms">hubzero-cms</a> repository.</p>
   </footer>
 
-  <script src="../../../assets/search.js?v=8a405e6d" defer></script>
+  <script src="../../../assets/search.js?v=bb8696b6" defer></script>
 </body>
 </html>
