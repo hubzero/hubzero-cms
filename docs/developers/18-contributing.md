@@ -72,9 +72,8 @@ another license is replaced or kept in its package, not given an MIT header.
 Everything under `core/vendor/` is installed by Composer and carries whatever
 license its package declares.
 
-Third-party code the CMS includes or derives from is listed in
-[`ACKNOWLEDGMENTS.md`](../../ACKNOWLEDGMENTS.md), which also lists the
-contributors.
+The project's contributors are listed in
+[`ACKNOWLEDGMENTS.md`](../../ACKNOWLEDGMENTS.md).
 
 ### Branches
 
