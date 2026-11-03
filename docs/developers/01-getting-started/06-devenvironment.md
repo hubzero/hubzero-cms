@@ -310,7 +310,7 @@ Three workflows, in `.github/workflows/`:
   file under `core/` and `app/` outside `vendor/`;
   `core/bin/lint/missing-facade-imports.php`, which fails on any namespaced file
   that uses a facade without importing it; and
-  `core/bin/lint/undefined-language-keys.php --quiet --max=444`, which fails if
+  `core/bin/lint/undefined-language-keys.php --quiet --max=442`, which fails if
   the number of language keys nothing defines rises above the current count.
   The second exists because such a file parses cleanly and misbehaves only
   when the line runs — see

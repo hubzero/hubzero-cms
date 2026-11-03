@@ -34,16 +34,16 @@ usually an error branch, a confirmation email, or a screen only an
 administrator sees.
 
 It is not rare. `php core/bin/lint/undefined-language-keys.php` currently
-reports **444 keys** the tree asks for that no `en-GB` file anywhere
+reports **442 keys** the tree asks for that no `en-GB` file anywhere
 defines, and the
 [PHP lint workflow](../../../.github/workflows/php-lint.yml) runs it against
 that number as a ceiling rather than against zero:
 
 ```yaml
-run: php core/bin/lint/undefined-language-keys.php --quiet --max=444
+run: php core/bin/lint/undefined-language-keys.php --quiet --max=442
 ```
 
-So the build fails when your change makes it 445. Three rules keep you off
+So the build fails when your change makes it 443. Three rules keep you off
 that list.
 
 ### 1. Define the key
