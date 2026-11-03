@@ -3091,8 +3091,6 @@ class WikiParser
 		$toclevel      = 0;
 		$prevtoclevel  = 0;
 
-		include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'sanitizer.php';
-
 		foreach ($matches[3] as $headline)
 		{
 			$istemplate = 0;
@@ -3217,7 +3215,7 @@ class WikiParser
 			// Save headline for section edit hint before it's escaped
 			$headline_hint = $canonized_headline;
 
-			$canonized_headline = Sanitizer::escapeId($canonized_headline);
+			$canonized_headline = \Components\Wiki\Helpers\Anchor::fromHeading($canonized_headline);
 			$refers[$headlineCount] = $canonized_headline;
 
 			// count how many in assoc. array so we can track dupes in anchors
