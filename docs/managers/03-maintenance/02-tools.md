@@ -397,7 +397,7 @@ committed, working, and ready to be installed"*. The status becomes
 
 ## Uploaded to Installed
 
-![The tool status page in the Uploaded state](../media/tools-contribtool-managers-guide-41.png)
+![The tool status page in the Uploaded state: the source is in, and What's next? says the hub's team needs to install it](../media/tools-status-uploaded.png)
 
 This is an admin task. On the tool's status page, press **Install** in
 **Administrator Controls**. The CMS builds a command line and runs it as the
@@ -428,17 +428,17 @@ make install
 If `sudo su - apps` fails, the account is not in the `apps` group — see
 **Preparation**.
 
-![The status page after installation](../media/tools-contribtool-managers-guide-46.png)
+![The status page after installation: the state is Installed and What's next? offers the Launch tool button](../media/tools-status-installed.png)
 
 Back on the status page, set **Flip Status** to **Installed** and press
 **Apply change**. The **What's next?** panel then offers a **Launch tool**
 button. Use it and confirm the tool runs.
 
-![Launching the tool](../media/tools-contribtool-managers-guide-45.png)
+![The tool running in a session after Launch tool](../../users/media/tools-session.png)
 
 ## Installed to Updated
 
-![The tool status page in the Installed state](../media/tools-contribtool-managers-guide-47.png)
+![The tool status page in the Installed state, with the developer's links to approve the tool or to report new code](../media/tools-status-installed.png)
 
 Testing the tool is the developer's job. When they find something to fix, they
 commit the change and use the **What's next?** link *"I've committed new code.
@@ -448,7 +448,7 @@ administrator to install again.
 
 ## Installed to Approved
 
-![The tool status page in the Installed state](../media/tools-contribtool-managers-guide-47.png)
+![The tool status page in the Installed state, with the developer's links to approve the tool or to report new code](../media/tools-status-installed.png)
 
 Approval is a user task. Before a tool can be approved it needs a tool
 information page — the resource page listing authors, credits, publications,
@@ -486,7 +486,7 @@ comes back the same way as **Install** — green for success, red for failure.
 Then set **Flip Status** to **Published** and press **Apply change**, which
 also sets the tool's published flag.
 
-![The published tool](../media/tools-contribtool-managers-guide-56.png)
+![A published tool's page: its title, authors and summary, the Launch Tool button with its version, DOI and licence, and its usage figures](../media/tools-published-page.png)
 
 From the tool information page the tool can now be launched with **Launch
 tool**.

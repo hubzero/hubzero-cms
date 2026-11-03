@@ -117,7 +117,7 @@ status page to say that it is ready to install. The state becomes
 
 ## Testing and approving
 
-![The tool's status page: its state marked on the strip of states across the top, its information, the developer tools, and what to do next](../../managers/media/tools-status-created.png)
+![The status page of an installed tool: the Launch tool button under What's next?, and the links to approve the tool or to report new code](../../managers/media/tools-status-installed.png)
 
 After the administrator installs the tool, the status page offers a **Launch
 tool** button. Use it and run the tool the way a member would. Each time you
