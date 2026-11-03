@@ -55,7 +55,7 @@ and is published at https://hubzero.github.io/hubzero-cms/.
 ## About the documentation
 
 - [Writing guide](STYLE.md) — how pages are written and built.
-- [License](LICENSE.md) — MIT, like the code.
+- [License](../LICENSE) — MIT, the same as the code.
 - [Status](https://hubzero.github.io/hubzero-cms/status/) — which pages have
   been reviewed against the current code.
 

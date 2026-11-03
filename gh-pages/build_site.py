@@ -858,7 +858,7 @@ def main() -> int:
             "github_href": escape(github_href),
             "docs_href": escape(relative_href(output_path, output_dir / index_page.output) if index_page else home_href),
             "status_href": escape(relative_href(output_path, output_dir / "status" / "index.html")),
-            "license_href": escape(relative_href(output_path, output_dir / "license" / "index.html")),
+            "license_href": escape(f"{blob_base}/LICENSE"),
             "year": year,
             "copyright": escape(config.get("copyright", config["site_name"])),
             "books_nav": "".join(
@@ -958,6 +958,13 @@ def main() -> int:
         for old, new in read_json(redirects_path).items():
             # A target may carry a fragment, so a page that was merged into a
             # section of another can still send its old URL to the right place.
+            # Or it may be an address off the site, for a page that is no
+            # longer published here.
+            if re.match(r"^https?://", new):
+                write_text(output_dir / old.strip("/") / "index.html", render_template(
+                    SOURCE_DIR / "templates" / "redirect.html", {"target": escape(new), "canonical": escape(new)}))
+                redirect_lines.append(f"/{old.strip('/')} {new}")
+                continue
             page_part, _, fragment = new.partition("#")
             if page_part not in outputs_seen:
                 warn(f"redirect target missing: {old} -> {new}")

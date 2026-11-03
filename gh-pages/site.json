@@ -63,11 +63,6 @@
    "slug": "style",
    "source": "docs/STYLE.md",
    "title": "Writing guide"
-  },
-  {
-   "slug": "license",
-   "source": "docs/LICENSE.md",
-   "title": "License"
   }
  ]
 }

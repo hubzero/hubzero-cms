@@ -49,7 +49,7 @@ A new file gets the current year. A file you modify keeps the earliest year
 already in its header and extends the range:
 `Copyright © 2015-2026 Purdue University. All Rights Reserved.` Do not change
 the `@license` line. The documentation under `docs/` is
-[MIT as well](../LICENSE.md).
+[MIT as well](../../LICENSE).
 
 Most of core still reads
 `Copyright (c) 2005-2020 The Regents of the University of California.`, from an

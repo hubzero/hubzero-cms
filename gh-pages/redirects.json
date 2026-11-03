@@ -676,5 +676,6 @@
  "sysadmins/enterprise-linux-9": "sysadmins/preparing/enterprise-linux-9/index.html",
  "sysadmins/enterprise-linux-10": "sysadmins/preparing/enterprise-linux-10/index.html",
  "sysadmins/docker": "sysadmins/preparing/docker/index.html",
- "sysadmins/other-linux": "sysadmins/preparing/other-linux/index.html"
+ "sysadmins/other-linux": "sysadmins/preparing/other-linux/index.html",
+ "license": "https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE"
 }
