@@ -73,7 +73,7 @@ Everything under `core/vendor/` is installed by Composer and carries whatever
 license its package declares.
 
 The project's contributors are listed in
-[`ACKNOWLEDGMENTS.md`](../../ACKNOWLEDGMENTS.md).
+[`.github/CONTRIBUTORS.md`](../../.github/CONTRIBUTORS.md).
 
 ### Branches
 
