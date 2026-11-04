@@ -31,6 +31,27 @@ require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . '
 class Ticketsv2_0 extends ApiController
 {
 	/**
+	 * Component parameters
+	 *
+	 * @var  \Hubzero\Config\Registry
+	 */
+	protected $config;
+
+	/**
+	 * Database connection
+	 *
+	 * @var  object
+	 */
+	protected $database;
+
+	/**
+	 * Support access control list
+	 *
+	 * @var  \Components\Support\Helpers\ACL
+	 */
+	protected $acl;
+
+	/**
 	 * Execute a request
 	 *
 	 * @return  void

@@ -30,6 +30,13 @@ require_once dirname(dirname(__DIR__)) . '/helpers/utilities.php';
 class Messagesv2_1 extends ApiController
 {
 	/**
+	 * Support access control list
+	 *
+	 * @var  \Components\Support\Helpers\ACL
+	 */
+	protected $acl;
+
+	/**
 	 * Execute a request
 	 *
 	 * @return  void

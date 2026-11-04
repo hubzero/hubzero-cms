@@ -33,11 +33,11 @@ class AuthorizationCode implements GrantTypeInterface
 	private $config = [];
 
 	/**
-	 * Array to hold client data
+	 * The authorization code being exchanged, as storage returned it
 	 *
 	 * @var  array
 	 */
-	private $authorizationCode;
+	private $authCode;
 
 	/**
 	 * Constructor

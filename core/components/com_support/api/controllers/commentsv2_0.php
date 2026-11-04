@@ -28,6 +28,27 @@ require_once dirname(dirname(__DIR__)) . '/helpers/utilities.php';
 class Commentsv2_0 extends ApiController
 {
 	/**
+	 * Component parameters
+	 *
+	 * @var  \Hubzero\Config\Registry
+	 */
+	protected $config;
+
+	/**
+	 * Database connection
+	 *
+	 * @var  object
+	 */
+	protected $database;
+
+	/**
+	 * Support access control list
+	 *
+	 * @var  \Components\Support\Helpers\ACL
+	 */
+	protected $acl;
+
+	/**
 	 * Execute a request
 	 *
 	 * @return  void

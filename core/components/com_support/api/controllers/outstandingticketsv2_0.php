@@ -20,6 +20,13 @@ require_once Component::path('com_support') . '/helpers/acl.php';
 class OutstandingTicketsv2_0 extends ApiController
 {
 	/**
+	 * Support access control list
+	 *
+	 * @var  \Components\Support\Helpers\ACL
+	 */
+	protected $acl;
+
+	/**
 	 * Execute a request
 	 *
 	 * @return  void
