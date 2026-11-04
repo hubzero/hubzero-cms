@@ -192,7 +192,10 @@ $this->css()
 
 			$groups = array();
 			foreach ($row->accessgroups as $agroup):
-				$groups[] = $this->accessgroups->seek($agroup->get('group_id'))->get('title');
+				// A mapping to an access group that no longer exists has no title to show
+				if ($accessgroup = $this->accessgroups->seek($agroup->get('group_id'))):
+					$groups[] = $accessgroup->get('title');
+				endif;
 			endforeach;
 			$row->set('group_names', implode('<br />', $groups));
 
