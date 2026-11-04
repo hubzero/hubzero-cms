@@ -33,6 +33,13 @@ require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'prov
 class Filefsv1_0 extends ApiController
 {
 	/**
+	 * The project the request addresses
+	 *
+	 * @var  object
+	 */
+	protected $model;
+
+	/**
 	 * Execute a request
 	 *
 	 * @return  void

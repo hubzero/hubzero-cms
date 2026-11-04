@@ -13,7 +13,7 @@ $time = $this->time;
 
 <div class="input-wrap">
 	<label for="field-title"><?php echo Lang::txt('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-	<input type="text" name="fields[title]" id="field-title" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+	<input type="text" name="fields[title]" id="field-title" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes((string) $this->row->title)); ?>" />
 </div>
 
 <div class="input-wrap">
@@ -66,7 +66,7 @@ $time = $this->time;
 
 	<div class="input-wrap">
 		<label for="field-path"><?php echo Lang::txt('COM_RESOURCES_FIELD_PATH'); ?>:</label><br />
-		<input type="text" name="fields[path]" id="field-path" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('path'))); ?>" />
+		<input type="text" name="fields[path]" id="field-path" maxlength="250" value="<?php echo $this->escape(stripslashes((string) $this->row->get('path'))); ?>" />
 	</div>
 
 	<div class="input-wrap">

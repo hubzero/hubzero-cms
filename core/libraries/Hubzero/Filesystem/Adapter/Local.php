@@ -121,6 +121,10 @@ class Local implements AdapterInterface
 
 			// Try making the file writable first. If it's read-only, it can't be deleted
 			// on Windows, even if the parent folder is writable
+			if (!file_exists($path))
+			{
+				continue;
+			}
 			@chmod($path, 0777);
 
 			if (!@unlink($path))
@@ -588,7 +592,7 @@ class Local implements AdapterInterface
 			}
 		}
 
-		if (!$preserve)
+		if (!$preserve && is_dir($directory))
 		{
 			@rmdir($directory);
 		}

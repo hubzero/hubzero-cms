@@ -237,8 +237,8 @@ class Event extends Model
 		$url      = $this->get('extra_info');
 		$location = $this->get('adresse_info');
 		$now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-		$created  = gmdate('Ymd', strtotime($this->get('created'))) . 'T' . gmdate('His', strtotime($this->get('created'))) . 'Z';
-		$modified = gmdate('Ymd', strtotime($this->get('modified'))) . 'T' . gmdate('His', strtotime($this->get('modified'))) . 'Z';
+		$created  = gmdate('Ymd', strtotime((string) $this->get('created'))) . 'T' . gmdate('His', strtotime((string) $this->get('created'))) . 'Z';
+		$modified = gmdate('Ymd', strtotime((string) $this->get('modified'))) . 'T' . gmdate('His', strtotime((string) $this->get('modified'))) . 'Z';
 
 		//create ouput
 		$output  = "BEGIN:VCALENDAR\r\n";

@@ -467,7 +467,7 @@ class WikiParser
 			}
 			else
 			{
-				$text = preg_replace_callback("/$regex/i", array(&$this, 'link' . ucfirst($func)), $text);
+				$text = preg_replace_callback("/$regex/i", array(&$this, 'link' . ucfirst($func)), (string) $text);
 			}
 		}
 
@@ -706,7 +706,7 @@ class WikiParser
 			break;
 		}
 
-		if (substr($scope, 0, strlen($this->get('scope'))) != $this->get('scope'))
+		if (substr((string) $scope, 0, strlen((string) $this->get('scope'))) != $this->get('scope'))
 		{
 			$scope = $this->get('scope') . '/' . ltrim($scope, '/');
 		}

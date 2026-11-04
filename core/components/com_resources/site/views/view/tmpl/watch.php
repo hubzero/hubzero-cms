@@ -14,15 +14,16 @@ $this->css('hubpresenter.css')
      ->css('jquery.colpick.css', 'system')
      ->js('jquery.colpick', 'system');
 
-//get the manifest for the presentation
-$contents = file_get_contents(PATH_APP . DS . $this->manifest);
+//get the manifest for the presentation (missing or not a file: no slides)
+$manifest = PATH_APP . DS . $this->manifest;
+$contents = is_file($manifest) ? file_get_contents($manifest) : '';
 //content folder
 $content_folder = $this->content_folder;
 $content_url = $this->content_url;
 
 //decode the json formatted manifest so we can use the information
 $presentation = json_decode($contents);
-$presentation = $presentation->presentation;
+$presentation = $presentation->presentation ?? null;
 if (!is_object($presentation))
 {
 	$presentation = new stdClass;

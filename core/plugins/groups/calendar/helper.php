@@ -89,6 +89,10 @@ class plgGroupsCalendarHelper
 		}
 
 		// IANA zone (post-migration): derive the current abbreviation and name.
+		if (!$timezone)
+		{
+			return null;
+		}
 		try
 		{
 			$now = new \DateTime('now', new \DateTimeZone($timezone));

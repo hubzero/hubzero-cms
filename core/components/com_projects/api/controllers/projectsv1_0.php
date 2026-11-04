@@ -25,6 +25,13 @@ require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';
 class Projectsv1_0 extends ApiController
 {
 	/**
+	 * The project the request addresses
+	 *
+	 * @var  object
+	 */
+	protected $model;
+
+	/**
 	 * Display projects user belongs to
 	 *
 	 * @apiMethod GET
