@@ -150,12 +150,17 @@ class Solr extends SiteController
 		}
 		// A bogus/stale type id resolves to false (no such SearchComponent), so
 		// normalize it to null and fall through to an all-types search rather
-		// than reading ->filters on a boolean.
+		// than reading ->filters on a boolean. The id is dropped as well, so
+		// the view and pagination treat it as the all-types search it is.
 		$typeComponent = null;
 		if ($type != null)
 		{
 			$loaded = SearchComponent::one($type);
 			$typeComponent = is_object($loaded) ? $loaded : null;
+			if (!$typeComponent)
+			{
+				$type = null;
+			}
 		}
 		if ($typeComponent)
 		{
