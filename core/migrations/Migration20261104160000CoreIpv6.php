@@ -23,21 +23,13 @@ defined('_HZEXEC_') or die();
  * varchar(45) also holds the longest text form, with an embedded IPv4 one.
  * Each column keeps its nullability, default, collation and comment.
  *
- * The usage tables in the metrics database are widened too, when it can be
- * reached. Those are MyISAM and can be large, so ALTER copies each; on a
- * busy hub, expect the migration to take a while there.
+ * The usage tables in the metrics database are widened by com_usage's own
+ * migration, Migration20261104160100ComUsage.
  **/
 class Migration20261104160000CoreIpv6 extends Base
 {
 	/**
-	 * Width that holds any IP address as text
-	 *
-	 * @var  integer
-	 **/
-	const WIDTH = 45;
-
-	/**
-	 * IP address columns in the CMS database, by table
+	 * IP address columns, by table
 	 *
 	 * @var  array
 	 **/
@@ -61,36 +53,13 @@ class Migration20261104160000CoreIpv6 extends Base
 	);
 
 	/**
-	 * IP address columns in the metrics database, by table
-	 *
-	 * @var  array
-	 **/
-	protected $metricsColumns = array(
-		'sessionlog_metrics' => 'ip',
-		'toolstart'          => 'ip',
-		'userlogin'          => 'ip',
-		'web'                => 'ip',
-		'websessions'        => 'ip'
-	);
-
-	/**
 	 * Up
 	 **/
 	public function up()
 	{
 		foreach ($this->columns as $table => $column)
 		{
-			$this->widen($this->db, $table, $column);
-		}
-
-		$metrics = $this->metricsDb();
-
-		if ($metrics)
-		{
-			foreach ($this->metricsColumns as $table => $column)
-			{
-				$this->widen($metrics, $table, $column);
-			}
+			$this->widenColumn($table, $column, 45, null, $this->db);
 		}
 	}
 
@@ -102,102 +71,5 @@ class Migration20261104160000CoreIpv6 extends Base
 	 **/
 	public function down()
 	{
-	}
-
-	/**
-	 * Widen a text column to WIDTH, if it exists and is narrower
-	 *
-	 * @param   object  $db      Database connection
-	 * @param   string  $table
-	 * @param   string  $column
-	 * @return  void
-	 **/
-	protected function widen($db, $table, $column)
-	{
-		if (!$db->tableExists($table) || !$db->tableHasField($table, $column))
-		{
-			return;
-		}
-
-		$fields = $db->getTableColumns($table, false);
-
-		if (!isset($fields[$column]))
-		{
-			return;
-		}
-
-		$field = $fields[$column];
-
-		if (!preg_match('/^(?:var)?char\((\d+)\)$/i', $field->Type, $match) || (int) $match[1] >= self::WIDTH)
-		{
-			return;
-		}
-
-		$query = 'ALTER TABLE ' . $db->quoteName($table)
-			. ' MODIFY ' . $db->quoteName($column) . ' varchar(' . self::WIDTH . ')';
-
-		if (!empty($field->Collation))
-		{
-			$query .= ' COLLATE ' . $field->Collation;
-		}
-
-		$query .= ($field->Null == 'YES') ? ' NULL' : ' NOT NULL';
-
-		if ($field->Default !== null)
-		{
-			$query .= ' DEFAULT ' . $db->quote($field->Default);
-		}
-		elseif ($field->Null == 'YES')
-		{
-			$query .= ' DEFAULT NULL';
-		}
-
-		if (!empty($field->Comment))
-		{
-			$query .= ' COMMENT ' . $db->quote($field->Comment);
-		}
-
-		$db->setQuery($query);
-		$db->query();
-
-		$this->log(sprintf('Widened %s.%s from %s to varchar(%d)', $table, $column, $field->Type, self::WIDTH));
-	}
-
-	/**
-	 * The metrics database, or null when it cannot be reached
-	 *
-	 * Through com_usage's own helper, as its migrations do. Where no
-	 * separate metrics database is configured the helper gives the CMS
-	 * database, which has none of the metrics tables; widen() skips those.
-	 *
-	 * @return  object|null
-	 **/
-	protected function metricsDb()
-	{
-		$helper = PATH_CORE . '/components/com_usage/helpers/helper.php';
-
-		if (!file_exists($helper))
-		{
-			return null;
-		}
-
-		include_once $helper;
-
-		try
-		{
-			$db = \Components\Usage\Helpers\Helper::getUDBO();
-		}
-		catch (\Exception $e)
-		{
-			$db = null;
-		}
-
-		if (!$db)
-		{
-			$this->log('Unable to reach the metrics database; its IP columns are left as they are.', 'warning');
-			return null;
-		}
-
-		return $db;
 	}
 }
