@@ -235,11 +235,12 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
 			$characteristics = phpCAS::getAttribute('i2a2characteristics');
 
 			$chars = explode(',',$characteristics);
-			error_log($response->username . '(' . $response->email . ')' . ' i2a2= ' . var_export($characteristics,true));
 
+			// Only a rejected login is logged, with the data that rejected it;
+			// logging every login's attributes filled the error log
 			if (count($chars) <= 3)
 			{
-				error_log($response->username . '(' . $response->email . ')' . ' login REJECTED due to insufficient I2A2 data');
+				error_log($response->username . ' login REJECTED due to insufficient I2A2 data: ' . var_export($characteristics, true));
 				$response->status = \Hubzero\Auth\Status::FAILURE;
 				$response->error_message = Lang::txt('PLG_AUTHENTICATION_PUCAS_AUTHENTICATION_FAILED');
 				return;
