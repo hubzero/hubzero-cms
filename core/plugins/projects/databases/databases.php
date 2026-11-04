@@ -663,7 +663,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (file_exists($targetReal) && ($handle = fopen($targetReal, "r")) !== false)
+		if (is_file($targetReal) && ($handle = fopen($targetReal, "r")) !== false)
 		{
 			$table = array();
 			$dd = array();
@@ -1001,7 +1001,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		if (file_exists($targetReal) && ($handle = fopen($targetReal, "r")) !== false)
+		if (is_file($targetReal) && ($handle = fopen($targetReal, "r")) !== false)
 		{
 
 			// Check if expert mode CSV
