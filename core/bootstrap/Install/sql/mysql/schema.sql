@@ -63,7 +63,7 @@ CREATE TABLE `#__announcements` (
 CREATE TABLE `#__answers_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `response_id` int(11) unsigned NOT NULL DEFAULT 0,
-  `ip` varchar(15) NOT NULL DEFAULT '',
+  `ip` varchar(45) NOT NULL DEFAULT '',
   `helpful` varchar(10) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_rid` (`response_id`)
@@ -101,7 +101,7 @@ CREATE TABLE `#__answers_questions_log` (
   `question_id` int(11) unsigned NOT NULL DEFAULT 0,
   `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `voter` int(11) NOT NULL DEFAULT 0,
-  `ip` varchar(15) NOT NULL DEFAULT '',
+  `ip` varchar(45) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_qid` (`question_id`),
   KEY `idx_voter` (`voter`)
@@ -625,7 +625,7 @@ CREATE TABLE `#__citations_authors` (
   `orgtype` varchar(255) NOT NULL DEFAULT '',
   `countryresident` char(2) NOT NULL DEFAULT '',
   `email` varchar(100) NOT NULL DEFAULT '',
-  `ip` varchar(40) NOT NULL DEFAULT '',
+  `ip` varchar(45) NOT NULL DEFAULT '',
   `host` varchar(64) NOT NULL DEFAULT '',
   `countrySHORT` char(2) NOT NULL DEFAULT '',
   `countryLONG` varchar(64) NOT NULL DEFAULT '',
@@ -1034,7 +1034,7 @@ CREATE TABLE `#__courses_asset_views` (
   `course_id` int(11) DEFAULT NULL,
   `viewed` datetime NOT NULL,
   `viewed_by` int(11) NOT NULL,
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   `referrer` varchar(255) DEFAULT NULL,
   `user_agent_string` varchar(255) DEFAULT NULL,
@@ -1415,7 +1415,7 @@ CREATE TABLE `#__courses_page_hits` (
   `page_id` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) NOT NULL DEFAULT 0,
   `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ip` varchar(15) NOT NULL DEFAULT '',
+  `ip` varchar(45) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_offering_id` (`offering_id`),
   KEY `idx_page_id` (`page_id`),
@@ -1873,7 +1873,7 @@ CREATE TABLE `#__faq_comments` (
 CREATE TABLE `#__faq_helpful_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_id` int(11) DEFAULT 0,
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   `vote` varchar(10) DEFAULT NULL,
   `user_id` int(11) DEFAULT 0,
   `type` varchar(255) DEFAULT NULL,
@@ -2193,7 +2193,7 @@ CREATE TABLE `#__item_votes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL DEFAULT 0,
   `item_type` varchar(255) DEFAULT NULL,
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
   `vote` tinyint(3) NOT NULL DEFAULT 0,
@@ -3178,7 +3178,7 @@ CREATE TABLE `#__project_logs` (
   `userid` int(11) NOT NULL DEFAULT 0,
   `ajax` tinyint(1) DEFAULT 0,
   `owner` int(11) unsigned DEFAULT 0,
-  `ip` varchar(15) DEFAULT '0',
+  `ip` varchar(45) DEFAULT '0',
   `section` varchar(100) DEFAULT 'general',
   `layout` varchar(100) DEFAULT '',
   `action` varchar(100) DEFAULT '',
@@ -4155,7 +4155,7 @@ CREATE TABLE `#__session` (
   `userid` int(11) DEFAULT 0,
   `username` varchar(150) DEFAULT '',
   `usertype` varchar(50) DEFAULT '',
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`session_id`),
   KEY `whosonline` (`guest`,`usertype`),
   KEY `userid` (`userid`),
@@ -4172,7 +4172,7 @@ CREATE TABLE `#__session_geo` (
   `time` varchar(14) DEFAULT '',
   `guest` tinyint(4) DEFAULT 1,
   `userid` int(11) DEFAULT 0,
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   `host` varchar(128) DEFAULT NULL,
   `domain` varchar(128) DEFAULT NULL,
   `signed` tinyint(3) DEFAULT 0,
@@ -5365,7 +5365,7 @@ CREATE TABLE `#__vote_log` (
   `voted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `voter` int(11) DEFAULT NULL,
   `helpful` varchar(11) DEFAULT NULL,
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   `category` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_referenceid` (`referenceid`)
@@ -5912,7 +5912,7 @@ CREATE TABLE `#__xgroups_pages_hits` (
   `pageid` int(11) DEFAULT NULL,
   `userid` int(11) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -6255,7 +6255,7 @@ CREATE TABLE `#__xprofiles_role` (
 
 CREATE TABLE `#__xsession` (
   `session_id` varchar(200) NOT NULL DEFAULT '0',
-  `ip` varchar(15) DEFAULT NULL,
+  `ip` varchar(45) DEFAULT NULL,
   `host` varchar(128) DEFAULT NULL,
   `domain` varchar(128) DEFAULT NULL,
   `signed` tinyint(3) DEFAULT 0,
