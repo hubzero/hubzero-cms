@@ -767,6 +767,15 @@ class Events extends SiteController
 		$edbits = explode(' ', $bits[2] ?? '');
 		$eday   = $edbits[0] ?? '';
 
+		// An event with no start date has no day to show the calendar at;
+		// show it at the requested (or current) date instead
+		if (!ctype_digit($eyear) || !ctype_digit($emonth) || !ctype_digit($eday))
+		{
+			$eyear  = $year;
+			$emonth = $month;
+			$eday   = $day;
+		}
+
 		// May the current user create a new event? (controls the "Add Event" button)
 		$authorized = $this->_authorize('core.create');
 
@@ -924,11 +933,19 @@ class Events extends SiteController
 
 		$auth = $this->_authorize('core.create');
 
-		$bits = explode('-', $event->publish_up);
-		$eyear = $bits[0];
-		$emonth = $bits[1];
-		$edbits = explode(' ', $bits[2]);
-		$eday = $edbits[0];
+		$bits = explode('-', (string) $event->publish_up);
+		$eyear = $bits[0] ?? '';
+		$emonth = $bits[1] ?? '';
+		$edbits = explode(' ', $bits[2] ?? '');
+		$eday = $edbits[0] ?? '';
+
+		// As in the details view: no start date, so use the requested date
+		if (!ctype_digit($eyear) || !ctype_digit($emonth) || !ctype_digit($eday))
+		{
+			$eyear  = $this->year;
+			$emonth = $this->month;
+			$eday   = $this->day;
+		}
 
 		// Set the page title
 		Document::setTitle(Lang::txt(strtoupper($this->_name)).': '.Lang::txt('EVENTS_REGISTER').': '.stripslashes($event->title));
