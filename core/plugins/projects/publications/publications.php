@@ -800,7 +800,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get curation
 		$pub->setCuration();
 
-		Event::trigger('publications.onBeforeSave', $pub);
+		Event::trigger('publications.onBeforeSave', array($pub));
 
 		// Make sure block exists, else redirect to status
 		if (!$pub->_curationModel->setBlock($block, $blockId))
@@ -865,7 +865,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			? $pub->_curationModel->get('_message')
 			: Lang::txt(ucfirst($block) . ' information successfully saved');
 
-		Event::trigger('publications.onAfterSave', $pub);
+		Event::trigger('publications.onAfterSave', array($pub));
 
 		// Record action, notify team
 		$this->onAfterSave($pub);
