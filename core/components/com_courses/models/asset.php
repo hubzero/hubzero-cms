@@ -319,7 +319,7 @@ class Asset extends Base
 		$view->course_id         = $this->get('course_id');
 		$view->viewed            = Date::toSql();
 		$view->viewed_by         = $member->get('id');
-		$view->ip                = (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
+		$view->ip                = (string) Request::ip();
 		$view->url               = (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');
 		$view->referrer          = (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
 		$view->user_agent_string = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');

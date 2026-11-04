@@ -1,19 +1,17 @@
 <?php
 /**
- * @package    hubzero-cms
+ * @package    framework
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\User\Domainrestriction\Tests;
+namespace Hubzero\Utility\Tests;
 
-require_once dirname(__DIR__) . '/helpers/network.php';
-
-use Plugins\User\Domainrestriction\Helpers\Network;
+use Hubzero\Utility\Network;
 use Hubzero\Test\Basic;
 
 /**
- * Tests for the networks in the plugin's white and black lists
+ * Tests for IPv4 and IPv6 networks
  */
 class NetworkTest extends Basic
 {
@@ -84,6 +82,22 @@ class NetworkTest extends Basic
 		$this->assertTrue(Network::parse('0.0.0.0/0')->contains('192.0.2.7'));
 		$this->assertTrue(Network::parse('0.0.0.0/0')->contains('2001:db8::1'));
 		$this->assertTrue(Network::parse('::/0')->contains('192.0.2.7'));
+		$this->assertTrue(Network::parse('0.0.0.0/0.0.0.0')->contains('2001:db8::1'));
+	}
+
+	/**
+	 * ::ffff:0:0/96 is all of IPv4, and no IPv6 address
+	 *
+	 * @return  void
+	 */
+	public function testMappedSpaceIsOnlyIpv4()
+	{
+		$net = Network::parse('::ffff:0:0/96');
+
+		$this->assertTrue($net->contains('192.0.2.7'));
+		$this->assertTrue($net->contains('::ffff:10.0.0.1'));
+		$this->assertFalse($net->contains('2001:db8::1'));
+		$this->assertFalse($net->contains('::1'));
 	}
 
 	/**
@@ -96,6 +110,31 @@ class NetworkTest extends Basic
 		$this->assertTrue(Network::parse('10.0.0.0/255.0.0.0')->contains('10.1.2.3'));
 		$this->assertFalse(Network::parse('10.0.0.0/255.0.0.0')->contains('11.1.2.3'));
 		$this->assertNull(Network::parse('10.0.0.0/255.0.255.0'));
+	}
+
+	/**
+	 * The bounds of a network are its lowest and highest addresses
+	 *
+	 * @return  void
+	 */
+	public function testBounds()
+	{
+		$net = Network::parse('192.0.2.77/24');
+		$this->assertEquals('192.0.2.0', $net->first());
+		$this->assertEquals('192.0.2.255', $net->last());
+
+		$net = Network::parse('2001:db8:1:2::/63');
+		$this->assertEquals('2001:db8:1:2::', $net->first());
+		$this->assertEquals('2001:db8:1:3:ffff:ffff:ffff:ffff', $net->last());
+
+		$net = Network::parse('192.0.2.7');
+		$this->assertEquals('192.0.2.7', $net->first());
+		$this->assertEquals('192.0.2.7', $net->last());
+
+		// A mapped network is an IPv4 one
+		$net = Network::parse('::ffff:192.0.2.0/120');
+		$this->assertEquals('192.0.2.0', $net->first());
+		$this->assertEquals('192.0.2.255', $net->last());
 	}
 
 	/**

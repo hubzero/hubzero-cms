@@ -87,13 +87,13 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			// The plugin order is fine, so an earlier user plugin refused the
 			// login (no linked account, blocked, no backend access) and has
 			// already queued its message. Fail the login rather than 500.
-			Log::auth('[' . (isset($user['username']) ? $user['username'] : '') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login refused by an earlier user plugin');
+			Log::auth('[' . (isset($user['username']) ? $user['username'] : '') . '] ' . Request::ip() . ' login refused by an earlier user plugin');
 
 			return false;
 		}
 
 		// log login to auth log
-		Log::auth($xuser->get('id') . ' [' . $xuser->get('username') . '] ' . $_SERVER['REMOTE_ADDR'] . ' login');
+		Log::auth($xuser->get('id') . ' [' . $xuser->get('username') . '] ' . Request::ip() . ' login');
 
 		// correct apache log data
 		if (function_exists('apache_note'))
@@ -345,7 +345,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 			$xprofile->set('email', $user['email']);
 			$xprofile->set('username', $user['username']);
 			// No request to take it from when the account comes from the console
-			$xprofile->set('regIP', !empty($user['registerIP']) ? $user['registerIP'] : (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : ''));
+			$xprofile->set('regIP', !empty($user['registerIP']) ? $user['registerIP'] : (string) Request::ip());
 			//$xprofile->set('emailConfirmed', '3');
 			$xprofile->set('emailConfirmed', isset($user['activation']) ? $user['activation'] : -rand(1, pow(2, 31)-1));
 			$xprofile->set('public', $params->get('privacy', 0));
@@ -640,7 +640,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
 	 */
 	public function onLogoutUser($user, $options = array())
 	{
-		Log::auth($user['username'] . ' ' . $_SERVER['REMOTE_ADDR'] . ' logout');
+		Log::auth($user['username'] . ' ' . Request::ip() . ' logout');
 
 		if (function_exists('apache_note'))
 		{

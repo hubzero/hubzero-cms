@@ -630,7 +630,7 @@ class Sessionsv1_0 extends ApiController
 		$app = new stdClass;
 		$app->name    = trim(str_replace(':', '-', $tool_name));
 		$app->version = $tool_version;
-		$app->ip      = $_SERVER["REMOTE_ADDR"];
+		$app->ip      = Request::ip();
 
 		//check to make sure we have an app to invoke
 		if (!$app->name)
@@ -859,7 +859,7 @@ class Sessionsv1_0 extends ApiController
 		$app          = new stdClass;
 		$app->name    = trim(str_replace(':', '-', $tool_name));
 		$app->version = $tool_version;
-		$app->ip      = $_SERVER["REMOTE_ADDR"];
+		$app->ip      = Request::ip();
 
 		// Check to make sure we have an app to invoke
 		if (!$app->name)

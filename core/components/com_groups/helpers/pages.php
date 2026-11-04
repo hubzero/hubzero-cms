@@ -638,7 +638,7 @@ class Pages
 			$pageHit->pageid    = $page->get('id');
 			$pageHit->userid    = User::get('id');
 			$pageHit->date      = date('Y-m-d H:i:s');
-			$pageHit->ip        = $_SERVER['REMOTE_ADDR'];
+			$pageHit->ip        = Request::ip();
 			$groupsTablePageHit->save($pageHit);
 		}
 

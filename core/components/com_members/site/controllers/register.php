@@ -147,7 +147,7 @@ class Register extends SiteController
 
 		if ($xprofile->get('regIP') == '')
 		{
-			$xprofile->set('regIP', Request::getString('REMOTE_ADDR', '', 'server'));
+			$xprofile->set('regIP', (string) Request::ip());
 		}
 
 		if ($xprofile->get('regHost') == '')
@@ -543,7 +543,7 @@ class Register extends SiteController
 
 			if ($xprofile->get('registerIP') == '')
 			{
-				$xprofile->set('registerIP', Request::getString('REMOTE_ADDR', '', 'server'));
+				$xprofile->set('registerIP', (string) Request::ip());
 			}
 
 			if ($xprofile->get('registerDate') == '')

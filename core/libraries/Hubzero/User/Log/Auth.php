@@ -52,6 +52,6 @@ class Auth extends Relational
 	 **/
 	public function automaticIp($data)
 	{
-		return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+		return (string) \Request::ip();
 	}
 }

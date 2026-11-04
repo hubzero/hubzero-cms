@@ -8,7 +8,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-use Plugins\User\Domainrestriction\Helpers\Network;
+use Hubzero\Utility\Network;
 
 /**
  * User plugin for blocking registration by domains or IPs

@@ -129,7 +129,7 @@ class Database extends Store
 					->set(array(
 						'data' => $data,
 						'time' => (int) time(),
-						'ip'   => $_SERVER['REMOTE_ADDR']
+						'ip'   => (string) \Request::ip()
 					))
 					->whereEquals('session_id', $id);
 

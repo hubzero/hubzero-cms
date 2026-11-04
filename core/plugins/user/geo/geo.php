@@ -33,7 +33,7 @@ class plgUserGeo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Check user location
-		if (\Hubzero\Geocode\Geocode::is_iplocation($_SERVER['REMOTE_ADDR'], $location))
+		if (\Hubzero\Geocode\Geocode::is_iplocation(Request::ip(), $location))
 		{
 			// Get user groups and instances of access groups
 			$group = \Hubzero\User\Group::getInstance($groupAlias);

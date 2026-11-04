@@ -45,7 +45,7 @@ class Mediav1_0 extends ApiController
 		$entityId   = Request::getInt('entity_id', 0);
 		$entityType = Request::getWord('entity_type', 'resource');
 		$detailedId = Request::getInt('detailed_tracking_id', 0);
-		$ipAddress  = $_SERVER['REMOTE_ADDR'];
+		$ipAddress  = Request::ip();
 
 		// Check for entity id
 		if (!$entityId)

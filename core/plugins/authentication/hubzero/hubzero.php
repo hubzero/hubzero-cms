@@ -231,7 +231,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 		$params    = \Component::params('com_members');
 		$limit     = (int)$params->get('blocked_accounts_limit', 10);
 		$timeframe = (int)$params->get('blocked_accounts_timeframe', 1);
-		$ip        = $_SERVER['REMOTE_ADDR'];
+		$ip        = Request::ip();
 		$fail2ban  = $params->get('fail2ban', 0);
 		$jailname  = $params->get('fail2ban-jail', 'hub-login');
 		$username  = $response->username;

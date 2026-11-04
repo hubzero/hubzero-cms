@@ -482,11 +482,19 @@ class Request extends BaseRequest
 	/**
 	 * Get the IP address of the client.
 	 *
-	 * @return  string
+	 * In one canonical form (see \Hubzero\Utility\Ip::normalize()): an
+	 * IPv4-mapped address as plain IPv4, IPv6 lower case and compressed. One
+	 * client is then one string wherever the address is stored or compared.
+	 *
+	 * @return  string|null  Null when there is no client address (CLI)
 	 */
 	public function ip()
 	{
-		return $this->getClientIp();
+		$ip = $this->getClientIp();
+
+		$normalized = \Hubzero\Utility\Ip::normalize($ip);
+
+		return $normalized !== '' ? $normalized : $ip;
 	}
 
 	/**

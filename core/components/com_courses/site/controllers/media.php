@@ -51,7 +51,7 @@ class Media extends SiteController
 		$event      = Request::getString('event', 'update');
 		$resourceid = Request::getInt('resourceid', 0);
 		$detailedId = Request::getInt('detailedTrackingId', 0);
-		$ipAddress  = $_SERVER['REMOTE_ADDR'];
+		$ipAddress  = Request::ip();
 
 		// Check for asset id
 		if (!$resourceid)
