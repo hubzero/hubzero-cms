@@ -441,6 +441,14 @@ class Server extends Obj
 
 		header("Content-Length: $content_length");
 
+		// Nothing below touches the session, and a large file can stream for
+		// longer than the database keeps an idle connection open -- after
+		// which the session write at shutdown fails. Write it out now.
+		if (session_status() === PHP_SESSION_ACTIVE)
+		{
+			session_write_close();
+		}
+
 		$depth = ob_get_level();
 
 		for ($i=0; $i < $depth; $i++)
