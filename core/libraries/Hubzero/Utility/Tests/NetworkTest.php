@@ -83,6 +83,11 @@ class NetworkTest extends Basic
 		$this->assertTrue(Network::parse('0.0.0.0/0')->contains('2001:db8::1'));
 		$this->assertTrue(Network::parse('::/0')->contains('192.0.2.7'));
 		$this->assertTrue(Network::parse('0.0.0.0/0.0.0.0')->contains('2001:db8::1'));
+
+		$this->assertTrue(Network::parse('0.0.0.0/0')->isEveryone());
+		$this->assertTrue(Network::parse('::/0')->isEveryone());
+		$this->assertFalse(Network::parse('::ffff:0:0/96')->isEveryone());
+		$this->assertFalse(Network::parse('10.0.0.0/8')->isEveryone());
 	}
 
 	/**

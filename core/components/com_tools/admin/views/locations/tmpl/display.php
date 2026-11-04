@@ -8,6 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+require_once Component::path('com_tools') . '/helpers/iprange.php';
+
 Toolbar::title(Lang::txt('COM_TOOLS') . ': ' . Lang::txt('COM_TOOLS_ZONES') . ': ' . Lang::txt('COM_TOOLS_LOCATIONS'), 'tools');
 Toolbar::spacer();
 Toolbar::addNew();
@@ -65,16 +67,16 @@ if ($this->rows)
 					</a>
 				</td>
 				<td>
-					<?php if ($row->get('ipFROM') != 0000000000) : ?>
+					<?php if ($row->get('ipFROM') != '') : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
+							<?php echo $this->escape(\Components\Tools\Helpers\Iprange::toText($row->get('ipFROM'))); ?>
 						</a>
 					<?php endif; ?>
 				</td>
 				<td>
-					<?php if ($row->get('ipFROM') != 0000000000) : ?>
+					<?php if ($row->get('ipTO') != '') : ?>
 						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
+							<?php echo $this->escape(\Components\Tools\Helpers\Iprange::toText($row->get('ipTO'))); ?>
 						</a>
 					<?php endif; ?>
 				</td>

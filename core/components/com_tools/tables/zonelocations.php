@@ -7,8 +7,11 @@
 
 namespace Components\Tools\Tables;
 
+use Components\Tools\Helpers\Iprange;
 use Hubzero\Database\Table;
 use Lang;
+
+require_once dirname(__DIR__) . '/helpers/iprange.php';
 
 /**
  * Middleware zone locations table class
@@ -40,21 +43,14 @@ class ZoneLocations extends Table
 			return false;
 		}
 
-		if (strpos($this->ipFROM, '/') !== false)
+		// Addresses as entered, or as loaded when a stored row is saved again
+		$range = Iprange::fromInput($this->ipFROM, $this->ipTO);
+		if ($range === false)
 		{
-			$cidr         = explode('/', $this->ipFROM);
-			$this->ipFROM = ip2long($cidr[0]) & ((-1 << (32 - (int)$cidr[1])));
-			$this->ipTO   = ip2long($cidr[0]) + pow(2, (32 - (int)$cidr[1])) - 1;
+			$this->setError(Lang::txt('Invalid IP address or range'));
+			return false;
 		}
-
-		if (strstr($this->ipFROM, '.'))
-		{
-			$this->ipFROM = ip2long($this->ipFROM);
-		}
-		if (strstr($this->ipTO, '.'))
-		{
-			$this->ipTO = ip2long($this->ipTO);
-		}
+		list($this->ipFROM, $this->ipTO) = $range;
 
 		return true;
 	}

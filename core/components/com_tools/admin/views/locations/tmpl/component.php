@@ -8,6 +8,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+require_once Component::path('com_tools') . '/helpers/iprange.php';
+
 Html::behavior('modal');
 
 $this->js('locations.js');
@@ -55,16 +57,16 @@ foreach ($this->rows as $row)
 				</td>
 			<?php } ?>
 				<td>
-					<?php if ($row->get('ipFROM') != 0000000000) : ?>
+					<?php if ($row->get('ipFROM') != '') : ?>
 						<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
-							<?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
+							<?php echo $this->escape(\Components\Tools\Helpers\Iprange::toText($row->get('ipFROM'))); ?>
 						</a>
 					<?php endif; ?>
 				</td>
 				<td>
-					<?php if ($row->get('ipTO') != 0000000000) : ?>
+					<?php if ($row->get('ipTO') != '') : ?>
 						<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
-							<?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
+							<?php echo $this->escape(\Components\Tools\Helpers\Iprange::toText($row->get('ipTO'))); ?>
 						</a>
 					<?php endif; ?>
 				</td>

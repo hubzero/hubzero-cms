@@ -6,8 +6,11 @@
  */
 namespace Components\Tools\Models\Orm\Zone;
 
+use Components\Tools\Helpers\Iprange;
 use Hubzero\Database\Relational;
 use Lang;
+
+require_once dirname(dirname(dirname(__DIR__))) . '/helpers/iprange.php';
 
 /**
  * Tool zone location model
@@ -40,8 +43,16 @@ class Location extends Relational
 	 * @var  array
 	 **/
 	protected $rules = array(
-		'zone_id' => 'positive|nonzero',
-		'ipFROM'  => 'notempty'
+		'zone_id' => 'positive|nonzero'
+	);
+
+	/**
+	 * Automatic fields, set on every save; automaticIpFrom() sets ipTO too
+	 *
+	 * @var  array
+	 **/
+	public $always = array(
+		'ipFROM'
 	);
 
 	/**
@@ -57,52 +68,42 @@ class Location extends Relational
 
 			return (in_array($data['state'], array('up', 'down')) ? false : Lang::txt('Invalid state provided.'));
 		});
+
+		// No range at all is allowed, as by the table class: a location by
+		// country or continent only
+		$this->addRule('ipFROM', function($data)
+		{
+			$from = isset($data['ipFROM']) ? $data['ipFROM'] : '';
+			$to   = isset($data['ipTO']) ? $data['ipTO'] : '';
+
+			return (Iprange::fromInput($from, $to) === false ? Lang::txt('Invalid IP address or range') : false);
+		});
 	}
 
 	/**
-	 * Generates automatic ipFROM field value
+	 * Generates automatic ipFROM field value, and sets ipTO with it
+	 *
+	 * The range is read from both fields at once: a network entered in
+	 * ipFROM gives ipTO its end. The validation rule has already refused
+	 * anything that is not an address or network.
 	 *
 	 * @param   array   $data  the data being saved
 	 * @return  string
 	 */
 	public function automaticIpFrom($data)
 	{
-		if (strpos($data['ipFROM'], '/') !== false)
+		$from  = isset($data['ipFROM']) ? $data['ipFROM'] : '';
+		$to    = isset($data['ipTO']) ? $data['ipTO'] : '';
+		$range = Iprange::fromInput($from, $to);
+
+		if ($range === false)
 		{
-			$cidr         = explode('/', $data['ipFROM']);
-			$data['ipFROM'] = ip2long($cidr[0]) & ((-1 << (32 - (int)$cidr[1])));
-			$data['ipTO']   = ip2long($cidr[0]) + pow(2, (32 - (int)$cidr[1])) - 1;
+			return $from;
 		}
 
-		if (strstr($data['ipFROM'], '.'))
-		{
-			$data['ipFROM'] = ip2long($data['ipFROM']);
-		}
+		$this->set('ipTO', $range[1]);
 
-		return $data['ipFROM'];
-	}
-
-	/**
-	 * Generates automatic ipTO field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticIpTo($data)
-	{
-		if (strpos($data['ipFROM'], '/') !== false)
-		{
-			$cidr         = explode('/', $data['ipFROM']);
-			$data['ipFROM'] = ip2long($cidr[0]) & ((-1 << (32 - (int)$cidr[1])));
-			$data['ipTO']   = ip2long($cidr[0]) + pow(2, (32 - (int)$cidr[1])) - 1;
-		}
-
-		if (strstr($data['ipTO'], '.'))
-		{
-			$data['ipTO'] = ip2long($data['ipTO']);
-		}
-
-		return $data['ipTO'];
+		return $range[0];
 	}
 
 	/**

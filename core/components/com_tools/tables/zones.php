@@ -7,8 +7,11 @@
 
 namespace Components\Tools\Tables;
 
+use Components\Tools\Helpers\Iprange;
 use Hubzero\Database\Table;
 use Lang;
+
+require_once dirname(__DIR__) . '/helpers/iprange.php';
 
 /**
  * Middleware zones table class
@@ -139,19 +142,38 @@ class Zones extends Table
 		{
 			$query .= " JOIN `zone_locations` AS t ON c.`id`=t.`zone_id`";
 			//$where[] = "t.`id` = " . $this->_db->quote($this->view->filters['location']);
-			if (isset($filters['ipFROM']) && $filters['ipFROM'] != '')
+			// Addresses compare in the form zone_locations stores them; one
+			// that is not an address matches nothing. A location with no
+			// range ('') never matches an address -- and while the columns
+			// are still the old integers, before Migration20261104170100ComTools,
+			// this keeps their 0 (no range) from matching every address, since
+			// MySQL reads the hex as the number 0.
+			$ranged = false;
+			foreach (array('ipFROM' => array('ipFROM' => '='), 'ipTO' => array('ipTO' => '='), 'ip' => array('ipFROM' => '<=', 'ipTO' => '>=')) as $filter => $compare)
 			{
-				$where[] = "t.`ipFROM`= INET_ATON(" . $this->_db->quote($filters['ipFROM']) . ")";
-			}
-			if (isset($filters['ipTO']) && $filters['ipTO'] != '')
-			{
-				$where[] = "t.`ipTO`= INET_ATON(" . $this->_db->quote($filters['ipTO']) . ")";
-			}
-			// If we just have an IP address
-			if (isset($filters['ip']) && $filters['ip'] != '')
-			{
-				$where[] = "t.`ipFROM` <= INET_ATON(" . $this->_db->quote($filters['ip']) . ")";
-				$where[] = "t.`ipTO` >= INET_ATON(" . $this->_db->quote($filters['ip']) . ")";
+				if (!isset($filters[$filter]) || $filters[$filter] == '')
+				{
+					continue;
+				}
+
+				if (!$ranged)
+				{
+					$where[] = "t.`ipTO` <> ''";
+					$ranged  = true;
+				}
+
+				$ip = Iprange::toColumn($filters[$filter]);
+
+				if ($ip === false || $ip === '')
+				{
+					$where[] = "0=1";
+					continue;
+				}
+
+				foreach ($compare as $column => $op)
+				{
+					$where[] = "t.`" . $column . "` " . $op . " " . $this->_db->quote($ip);
+				}
 			}
 			if (isset($filters['continent']) && $filters['continent'])
 			{

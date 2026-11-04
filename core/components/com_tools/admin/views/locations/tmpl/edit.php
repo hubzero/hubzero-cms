@@ -8,6 +8,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+require_once Component::path('com_tools') . '/helpers/iprange.php';
+
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 if (!$this->tmpl)
 {
@@ -309,11 +311,11 @@ $countries = array(
 				<tbody>
 					<tr>
 						<th class="key"><label for="field-ipFROM"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_FROM'); ?>:</label></th>
-						<td><input type="text" name="fields[ipFROM]" id="field-ipFROM" value="<?php echo $this->escape(stripslashes(long2ip($this->row->get('ipFROM')))); ?>" /></td>
+						<td><input type="text" name="fields[ipFROM]" id="field-ipFROM" value="<?php echo $this->escape(\Components\Tools\Helpers\Iprange::toText($this->row->get('ipFROM'))); ?>" /></td>
 					</tr>
 					<tr class="ipTOrow">
 						<th class="key"><label for="field-ipTO"><?php echo Lang::txt('COM_TOOLS_FIELD_IP_TO'); ?>:</label></th>
-						<td><input type="text" name="fields[ipTO]" id="field-ipTO" value="<?php echo $this->escape(stripslashes(long2ip($this->row->get('ipTO')))); ?>" /></td>
+						<td><input type="text" name="fields[ipTO]" id="field-ipTO" value="<?php echo $this->escape(\Components\Tools\Helpers\Iprange::toText($this->row->get('ipTO'))); ?>" /></td>
 					</tr>
 					<tr>
 						<th class="key"><label for="field-continent"><?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>

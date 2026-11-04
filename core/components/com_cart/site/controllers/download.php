@@ -153,7 +153,7 @@ class Download extends ComponentController
 		$sql = "INSERT INTO `#__cart_downloads` SET
 				`uId` = " . $currentUser . ",
 				`sId` = " . $sId . ",
-				`dIp` = INET_ATON(" . $db->quote(Request::ip()) . "),
+				`dIp` = " . (Request::ip() ? $db->quote(Request::ip()) : "NULL") . ",
 				`dDownloaded` = NOW()";
 		$db->setQuery($sql);
 		$db->query();

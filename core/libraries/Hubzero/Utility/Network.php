@@ -129,6 +129,17 @@ class Network
 	}
 
 	/**
+	 * Whether the network is every address of either family, written with a
+	 * prefix of 0
+	 *
+	 * @return  bool
+	 */
+	public function isEveryone()
+	{
+		return $this->everyone;
+	}
+
+	/**
 	 * The lowest address in the network
 	 *
 	 * @return  string

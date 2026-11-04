@@ -6550,8 +6550,8 @@ CREATE TABLE `viewperm` (
 CREATE TABLE `zone_locations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `zone_id` int(11) NOT NULL,
-  `ipFROM` int(10) unsigned zerofill NOT NULL DEFAULT 0000000000,
-  `ipTO` int(10) unsigned zerofill NOT NULL DEFAULT 0000000000,
+  `ipFROM` char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
+  `ipTO` char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT '',
   `continent` char(2) NOT NULL,
   `countrySHORT` char(2) NOT NULL,
   `countryLONG` varchar(64) NOT NULL,
