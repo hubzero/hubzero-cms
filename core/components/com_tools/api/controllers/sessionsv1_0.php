@@ -1312,6 +1312,11 @@ class Sessionsv1_0 extends ApiController
 			);
 		}
 
+		// The launch interstitial redirects the browser to redirect_url using
+		// this response, so set the weber-auth cookie here as the site viewer
+		// does -- without it the weber proxy (Jupyter, etc.) refuses the browser.
+		\Components\Tools\Helpers\Utils::setWeberAuthCookie($output);
+
 		// Trigger any events that need to be called after session start
 		Event::trigger('mw.onAfterSessionStart', array($toolname, $tv->revision));
 

@@ -1334,16 +1334,7 @@ class Sessions extends SiteController
 		}
 
 		// If weber_auth is defined, set a cookie for it.
-		if (isset($output->weber_auth))
-		{
-			$domain = rtrim(Request::base(), '/');
-			$domain = preg_replace('/^http:\/\//', '', $domain);
-			$domain = preg_replace('/^https:\/\//', '', $domain);
-			$name = 'weber-auth-' . preg_replace('/\./', '-', $domain);
-			$secure = true;
-			$httponly = true;
-			setcookie($name, $output->weber_auth, time()+86400*30, "/", $domain, $secure, $httponly);
-		}
+		Utils::setWeberAuthCookie($output);
 
 		// If this is something other than VNC, such as Jupyter, we normally
 		// redirect to the proxy URL. PROTOTYPE: with &embed=1 we instead render

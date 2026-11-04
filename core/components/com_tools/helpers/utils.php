@@ -763,4 +763,32 @@ class Utils
 
 		return (bool)$retval;
 	}
+
+	/**
+	 * Set the weber-auth cookie from a middleware "view" result
+	 *
+	 * The weber proxy (Jupyter, etc.) only lets the browser through to a
+	 * session's redirect_url when this cookie is present, so every path that
+	 * hands the browser that URL must call this first.
+	 *
+	 * @param   object  $output  Output of a middleware "view" command
+	 * @return  void
+	 */
+	public static function setWeberAuthCookie($output)
+	{
+		if (!is_object($output) || !isset($output->weber_auth))
+		{
+			return;
+		}
+
+		// Request::root() rather than base(): it drops a trailing /api, so the
+		// domain is the same whether this runs from the site or the API.
+		$domain = rtrim(Request::root(), '/');
+		$domain = preg_replace('/^http:\/\//', '', $domain);
+		$domain = preg_replace('/^https:\/\//', '', $domain);
+		$name = 'weber-auth-' . preg_replace('/\./', '-', $domain);
+		$secure = true;
+		$httponly = true;
+		setcookie($name, $output->weber_auth, time()+86400*30, "/", $domain, $secure, $httponly);
+	}
 }
