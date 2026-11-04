@@ -31,8 +31,8 @@ if (!$isRegister)
 	$profile = User::getInstance();
 	if ($profile)
 	{
-		$fname = $fname ?: $profile->get('givenName');
-		$lname = $lname ?: $profile->get('surname');
+		$fname = $fname ?: (string) $profile->get('givenName');
+		$lname = $lname ?: (string) $profile->get('surname');
 		$email = $email ?: $profile->get('email');
 	}
 }
