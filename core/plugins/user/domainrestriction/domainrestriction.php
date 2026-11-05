@@ -204,12 +204,14 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 			}
 		}
 
-		if (in_array($ip, $whitelist))
+		// Single addresses compare as addresses, not strings, like the
+		// networks below: 2001:DB8::1 or ::ffff:192.0.2.1 matches its entry
+		if ($this->_inList($ip, $whitelist))
 		{
 			return true;
 		}
 
-		if (in_array($ip, $blacklist))
+		if ($this->_inList($ip, $blacklist))
 		{
 			return $ip;
 		}
@@ -236,6 +238,28 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
 				}
 			}
 		}
+		return false;
+	}
+
+	/**
+	 * Whether an address is one of a list of single addresses
+	 *
+	 * @param   string  $ip
+	 * @param   array   $addresses
+	 * @return  bool
+	 */
+	private function _inList($ip, $addresses)
+	{
+		foreach ($addresses as $address)
+		{
+			$network = $this->_bwnet($address);
+
+			if ($network && $network->contains($ip))
+			{
+				return true;
+			}
+		}
+
 		return false;
 	}
 
