@@ -457,60 +457,242 @@ class Geocode
 	}
 
 	/**
-	 * An address as the IPv4 integer the ip tables are keyed by
+	 * Lookups already made, by kind, so that callers asking the same thing
+	 * in one request (both sign-in plugins, the export-control check) cost
+	 * one query. Static, so in a CLI process they last for the process; geo
+	 * data changes monthly, and each kind is emptied past 1000 entries so a
+	 * run over many addresses does not grow without bound.
 	 *
-	 * Unwraps IPv4-mapped IPv6 addresses (::ffff:1.2.3.4), which dual-stack
-	 * proxies hand on for IPv4 clients.
-	 *
-	 * @param   string     $ip
-	 * @return  int|false  False when the address has no IPv4 form
+	 * @var  array
 	 */
-	protected static function ipv4Long($ip)
+	private static $cache = array();
+
+	/**
+	 * Whether each IPv6 table is known unusable, as found in this request
+	 *
+	 * @var  array
+	 */
+	private static $unusable = array();
+
+	/**
+	 * A cached lookup, made when not cached yet
+	 *
+	 * A lookup that could not be made (no geo database, an unusable table)
+	 * returns null, which is not cached: it is asked again next time.
+	 *
+	 * @param   string    $kind
+	 * @param   string    $key
+	 * @param   callable  $lookup
+	 * @return  mixed     null when the lookup could not be made
+	 */
+	private static function cached($kind, $key, $lookup)
 	{
-		$ip = trim((string) $ip);
-
-		if (stripos($ip, '::ffff:') === 0 && filter_var(substr($ip, 7), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		if (isset(self::$cache[$kind]) && array_key_exists($key, self::$cache[$kind]))
 		{
-			$ip = substr($ip, 7);
+			return self::$cache[$kind][$key];
 		}
 
-		if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		$result = $lookup();
+
+		if ($result === null)
 		{
-			return false;
+			return null;
 		}
 
-		return ip2long($ip);
+		if (isset(self::$cache[$kind]) && count(self::$cache[$kind]) >= 1000)
+		{
+			self::$cache[$kind] = array();
+		}
+
+		return self::$cache[$kind][$key] = $result;
+	}
+
+	/**
+	 * Whether an IPv6 table is known unusable (missing, or with other
+	 * columns than expected)
+	 *
+	 * Kept in the CMS cache for five minutes, since a static does not
+	 * outlive a web request; read once per request. Where the cache is
+	 * off, each request finds out for itself.
+	 *
+	 * @param   string     $table
+	 * @param   bool|null  $set    True to record it unusable
+	 * @return  bool
+	 */
+	private static function unusable($table, $set = null)
+	{
+		$key = 'geocode.unusable.' . $table;
+
+		if ($set)
+		{
+			self::$unusable[$table] = true;
+
+			try
+			{
+				\App::get('cache')->put($key, 1, 5);
+			}
+			catch (\Exception $e)
+			{
+			}
+
+			return true;
+		}
+
+		if (!isset(self::$unusable[$table]))
+		{
+			try
+			{
+				self::$unusable[$table] = (bool) \App::get('cache')->get($key);
+			}
+			catch (\Exception $e)
+			{
+				self::$unusable[$table] = false;
+			}
+		}
+
+		return self::$unusable[$table];
+	}
+
+	/**
+	 * Where an address is looked up in the geo database
+	 *
+	 * An IPv4 address, an IPv4-mapped one (::ffff:1.2.3.4) included, is
+	 * looked up in the IPv4 tables (ipcountry, iplocation), keyed by the
+	 * address as an integer. An IPv6 address is looked up in the IPv6 ones
+	 * (ipcountry6, iplocation6), keyed by DECIMAL(39,0), as the ip2location
+	 * role loads them: its value goes in through CAST, because MySQL
+	 * compares a quoted number with a DECIMAL as a double, which cannot tell
+	 * neighbouring IPv6 addresses apart.
+	 *
+	 * @param   object      $gdb    Geo database
+	 * @param   string      $ip     Address
+	 * @param   string      $table  ipcountry or iplocation
+	 * @return  array|null  array(table, SQL value), or null when there is no lookup
+	 */
+	protected static function ipLookup($gdb, $ip, $table)
+	{
+		$ip = \Hubzero\Utility\Ip::normalize($ip);
+
+		if ($ip === '')
+		{
+			return null;
+		}
+
+		if (strpos($ip, ':') === false)
+		{
+			return array($table, $gdb->quote(ip2long($ip)));
+		}
+
+		$table .= '6';
+
+		if (self::unusable($table))
+		{
+			return null;
+		}
+
+		return array($table, 'CAST(' . $gdb->quote(\Hubzero\Utility\Ip::toDecimal($ip)) . ' AS DECIMAL(39,0))');
+	}
+
+	/**
+	 * The result of a lookup query
+	 *
+	 * A query on an IPv6 table that fails is no result, not an error: a geo
+	 * database may not have those tables, or have them with other columns,
+	 * and these lookups run at every sign-in. The failure is logged, and
+	 * the table not asked again for five minutes (see unusable()). The IPv4
+	 * tables are queried as they always were.
+	 *
+	 * @param   object  $gdb     Geo database
+	 * @param   string  $table
+	 * @param   string  $sql
+	 * @param   bool    $failed  Set true when an IPv6 query failed
+	 * @return  mixed   null when an IPv6 query failed
+	 */
+	private static function lookupResult($gdb, $table, $sql, &$failed = false)
+	{
+		$failed = false;
+
+		$gdb->setQuery($sql);
+
+		if (substr($table, -1) !== '6')
+		{
+			return $gdb->loadResult();
+		}
+
+		try
+		{
+			return $gdb->loadResult();
+		}
+		catch (\Exception $e)
+		{
+			$failed = true;
+
+			self::unusable($table, true);
+
+			\Log::warning('Geocode: IPv6 lookups skipped for five minutes, querying ' . $table . ' failed: ' . $e->getMessage());
+
+			return null;
+		}
 	}
 
 	/**
 	 * Get the country based on IP address
 	 *
 	 * @param   string  $ip  IP address to look up
-	 * @return  string
+	 * @return  string  Lower-case country code, or '' when not known
 	 */
 	public static function ipcountry($ip='')
 	{
-		$country = '';
-		if ($ip)
+		$ip = \Hubzero\Utility\Ip::normalize($ip);
+
+		if ($ip === '')
+		{
+			return '';
+		}
+
+		return (string) self::cached('ipcountry', $ip, function () use ($ip)
+		{
+			if (!($gdb = self::getGeoDBO()) || !($lookup = self::ipLookup($gdb, $ip, 'ipcountry')))
+			{
+				return null;
+			}
+			list($table, $n_ip) = $lookup;
+
+			// The range starting closest below the address, if it reaches it
+			$sql = "SELECT LOWER(countrySHORT) FROM " . $table
+				. " INNER JOIN (SELECT MAX(ipFROM) AS start FROM " . $table
+				. " WHERE ipFROM <= " . $n_ip . ") s ON (ipFROM = s.start)"
+				. " WHERE ipTO >= " . $n_ip;
+
+			$result = self::lookupResult($gdb, $table, $sql, $failed);
+
+			return $failed ? null : stripslashes((string) $result);
+		});
+	}
+
+	/**
+	 * The export-control groups of a country (D1, E1, ...), in one query
+	 * shared by is_d1nation() and is_e1nation()
+	 *
+	 * @param   string  $country  Country code
+	 * @return  array
+	 */
+	protected static function countryGroups($country)
+	{
+		return self::cached('countrygroup', strtoupper((string) $country), function () use ($country)
 		{
 			if (!($gdb = self::getGeoDBO()))
 			{
-				return $country;
+				return null;
 			}
 
-			// The ranges are IPv4; an address with no IPv4 form has no country
-			if (($n_ip = self::ipv4Long($ip)) === false)
-			{
-				return $country;
-			}
-			$sql = "SELECT LOWER(countrySHORT) FROM ipcountry"
-				. " INNER JOIN (SELECT MAX(ipFROM) AS start FROM ipcountry"
-				. " WHERE ipFROM <= " . $gdb->quote($n_ip) . ") s ON (ipFROM = s.start)"
-				. " WHERE ipTO >= " . $gdb->quote($n_ip);
-			$gdb->setQuery($sql);
-			$country = stripslashes((string) $gdb->loadResult());
-		}
-		return $country;
+			// Both cases, whatever the collation, as LOWER() on both sides
+			// did; IN keeps the primary key in use, which LOWER() did not
+			$gdb->setQuery("SELECT countrygroup FROM countrygroup WHERE countrycode IN ("
+				. $gdb->quote(strtoupper($country)) . ", " . $gdb->quote(strtolower($country)) . ")");
+
+			return array_map('strtoupper', (array) $gdb->loadColumn());
+		});
 	}
 
 	/**
@@ -521,22 +703,7 @@ class Geocode
 	 */
 	public static function is_d1nation($country)
 	{
-		$d1nation = false;
-		if ($country)
-		{
-			if (!($gdb = self::getGeoDBO()))
-			{
-				return $d1nation;
-			}
-
-			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = " . $gdb->quote(strtolower($country)) . " AND countrygroup = 'D1'");
-			$c = $gdb->loadResult();
-			if ($c > 0)
-			{
-				$d1nation = true;
-			}
-		}
-		return $d1nation;
+		return $country ? in_array('D1', (array) self::countryGroups($country)) : false;
 	}
 
 	/**
@@ -547,22 +714,7 @@ class Geocode
 	 */
 	public static function is_e1nation($country)
 	{
-		$e1nation = false;
-		if ($country)
-		{
-			if (!($gdb = self::getGeoDBO()))
-			{
-				return $e1nation;
-			}
-
-			$gdb->setQuery("SELECT COUNT(*) FROM countrygroup WHERE LOWER(countrycode) = " . $gdb->quote(strtolower($country)) . " AND countrygroup = 'E1'");
-			$c = $gdb->loadResult();
-			if ($c > 0)
-			{
-				$e1nation = true;
-			}
-		}
-		return $e1nation;
+		return $country ? in_array('E1', (array) self::countryGroups($country)) : false;
 	}
 
 	/**
@@ -574,28 +726,26 @@ class Geocode
 	 */
 	public static function is_iplocation($ip, $location)
 	{
-		$iplocation = false;
-		if ($ip && $location)
+		$ip = \Hubzero\Utility\Ip::normalize($ip);
+
+		if ($ip === '' || !$location)
 		{
-			if (!($gdb = self::getGeoDBO()))
-			{
-				return $iplocation;
-			}
-
-			// The ranges are IPv4; an address with no IPv4 form matches nothing
-			if (($n_ip = self::ipv4Long($ip)) === false)
-			{
-				return $iplocation;
-			}
-
-			$sql = "SELECT COUNT(*) FROM iplocation WHERE ipfrom <= " .  $gdb->quote($n_ip) . " AND ipto >= " . $gdb->quote($n_ip) . " AND LOWER(location) = " .  $gdb->quote(strtolower($location));
-			$gdb->setQuery($sql);
-			$c = $gdb->loadResult();
-			if ($c > 0)
-			{
-				$iplocation = true;
-			}
+			return false;
 		}
-		return $iplocation;
+
+		return (bool) self::cached('iplocation', strtolower($location) . ' ' . $ip, function () use ($ip, $location)
+		{
+			if (!($gdb = self::getGeoDBO()) || !($lookup = self::ipLookup($gdb, $ip, 'iplocation')))
+			{
+				return null;
+			}
+			list($table, $n_ip) = $lookup;
+
+			$sql = "SELECT COUNT(*) FROM " . $table . " WHERE ipfrom <= " . $n_ip . " AND ipto >= " . $n_ip . " AND LOWER(location) = " .  $gdb->quote(strtolower($location));
+
+			$result = self::lookupResult($gdb, $table, $sql, $failed);
+
+			return $failed ? null : $result > 0;
+		});
 	}
 }

@@ -27,65 +27,45 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLogin($user, $options = array())
 	{
-		$approved = \Hubzero\User\Group::getInstance('d1_override');
-
-		if (is_object($approved) && $approved->isMember(User::get('id')))
-		{
-			Log::debug('plgUserD1: [' . User::get('username') . '] is in d1_override, removing from d1_nation and skipping geo check.');
-
-			$nation = \Hubzero\User\Group::getInstance('d1_nation');
-
-			if (is_object($nation))
-			{
-				$nation->remove('members', array(User::get('id')));
-				$nation->update();
-			}
-
-			return;
-		}
-
-		$ip = $_SERVER['REMOTE_ADDR'];
-
-		$gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
-
-		if (!$gdb)
-		{
-			Log::debug('plgUserD1: geo database unavailable, skipping group update for [' . User::get('username') . '].');
-			return;
-		}
-
-		$gdb->setQuery(
-			"SELECT cg.countrygroup FROM ipcountry ic" .
-			" JOIN countrygroup cg ON ic.countrySHORT = cg.countrycode" .
-			" WHERE ic.ipfrom <= INET_ATON(" . $gdb->quote($ip) . ")" .
-			" AND ic.ipto >= INET_ATON(" . $gdb->quote($ip) . ")"
-		);
-		$countrygroup = $gdb->loadResult();
-
-		if (!$countrygroup)
+		if (!($uid = $this->userId($user)))
 		{
 			return;
 		}
+		$username = isset($user['username']) ? $user['username'] : $uid;
 
-		if ($countrygroup == 'D1')
+		if (\Hubzero\User\Group::hasMember('d1_override', $uid))
 		{
-			Log::debug($ip . ' is in a D1 nation, adding [' . User::get('username') . '] to group [d1_nation].');
+			Log::debug('plgUserD1: [' . $username . '] is in d1_override, not in d1_nation, skipping geo check.');
 
-			$group = \Hubzero\User\Group::getInstance('d1_nation');
+			\Hubzero\User\Group::setMember('d1_nation', $uid, false);
+			return;
+		}
 
-			if (is_object($group))
-			{
-				$group->add('members', array(User::get('id')));
-				$group->update();
-			}
-			else
-			{
-				Log::debug('group [d1_nation] does not exist, member addition failed.');
-			}
+		$ip = Request::ip();
+
+		// IPv4 or IPv6, through the table for the address's family. A country
+		// can be in several groups (KP is D1 and E1), so ask about D1 itself
+		// rather than taking whichever group comes first.
+		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
+
+		// d1_nation records that a user has signed in from a D1 nation; it is
+		// not taken away for signing in from elsewhere, nor from an address
+		// with no known country
+		if ($country === '')
+		{
+			Log::debug('plgUserD1: no country for ' . $ip . ', leaving [' . $username . '] membership to group [d1_nation] unchanged.');
+			return;
+		}
+
+		if (\Hubzero\Geocode\Geocode::is_d1nation($country))
+		{
+			Log::debug($ip . ' is in a D1 nation, [' . $username . '] in group [d1_nation].');
+
+			\Hubzero\User\Group::setMember('d1_nation', $uid, true);
 		}
 		else
 		{
-			Log::debug($ip . ' has countrygroup [' . $countrygroup . '], leaving [' . User::get('username') . '] membership to group [d1_nation] unchanged.');
+			Log::debug($ip . ' is in [' . $country . '], not a D1 nation, leaving [' . $username . '] membership to group [d1_nation] unchanged.');
 		}
 	}
 
@@ -103,12 +83,33 @@ class plgUserD1 extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserAfterDelete($user, $success, $msg)
 	{
-		$group = \Hubzero\User\Group::getInstance('d1_nation');
+		\Hubzero\User\Group::setMember('d1_nation', (int) $user['id'], false);
+	}
 
-		if (is_object($group))
+
+	/**
+	 * The ID of the user signing in
+	 *
+	 * From the session, as user/hubzero has put the user there by now. If it
+	 * has not (the session still holds the guest, 0), this plugin is ordered
+	 * before user/hubzero: look the user up by name instead, and say so.
+	 *
+	 * @param   array    $user  The user data passed to onUserLogin
+	 * @return  integer  0 when the user cannot be found
+	 */
+	private function userId($user)
+	{
+		$uid = (int) User::get('id');
+
+		if ($uid)
 		{
-			$group->remove('members', array($user['id']));
-			$group->update();
+			return $uid;
 		}
+
+		$username = isset($user['username']) ? (string) $user['username'] : '';
+
+		Log::warning(get_class($this) . ': no user in the session at sign-in of [' . $username . ']; is this plugin ordered before user/hubzero? Looking the user up by name.');
+
+		return $username === '' ? 0 : (int) User::getInstance($username)->get('id');
 	}
 }

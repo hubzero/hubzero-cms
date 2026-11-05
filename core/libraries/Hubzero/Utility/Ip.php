@@ -181,7 +181,11 @@ class Ip
 	 * An address as 16 bytes, an IPv4 one as IPv4-mapped IPv6
 	 *
 	 * All addresses then have one length and sort as the numbers they are,
-	 * for a VARBINARY(16) column compared with <= and >=.
+	 * so ranges can be compared with <= and >= in either family. com_tools
+	 * zone locations store them as hex (see its helpers/iprange.php). The
+	 * geo database's IPv6 tables (ipcountry6, iplocation6) are keyed by
+	 * DECIMAL(39,0) instead, as ip2location ships them: see toDecimal() and
+	 * \Hubzero\Geocode\Geocode.
 	 *
 	 * @param   string  $ip
 	 * @return  string|false  False when it is not an address

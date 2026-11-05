@@ -27,68 +27,31 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserLogin($user, $options = array())
 	{
-		$ip = $_SERVER['REMOTE_ADDR'];
-
-		$d1 = \Hubzero\User\Group::getInstance('d1_nation');
-
-		if (is_object($d1) && in_array(User::get('id'), $d1->get('members')))
+		if (!($uid = $this->userId($user)))
 		{
-			Log::debug('[' . User::get('username') . '] is a member of [d1_nation], removing from group [location_us].');
+			return;
+		}
+		$username = isset($user['username']) ? $user['username'] : $uid;
 
-			$group = \Hubzero\User\Group::getInstance('location_us');
+		if (\Hubzero\User\Group::hasMember('d1_nation', $uid))
+		{
+			Log::debug('[' . $username . '] is a member of [d1_nation], not a member of [location_us].');
 
-			if (is_object($group))
-			{
-				$group->remove('members', array(User::get('id')));
-				$group->update();
-			}
-
+			\Hubzero\User\Group::setMember('location_us', $uid, false);
 			return;
 		}
 
-		$gdb = \Hubzero\Geocode\Geocode::getGeoDBO();
+		$ip = Request::ip();
 
-		if (!$gdb)
-		{
-			Log::debug('plgUserUs: geo database unavailable, skipping group update for [' . User::get('username') . '].');
-			return;
-		}
+		// IPv4 or IPv6, through the table for the address's family
+		$country = \Hubzero\Geocode\Geocode::ipcountry($ip);
 
-		$gdb->setQuery(
-			"SELECT countrySHORT FROM ipcountry" .
-			" WHERE ipfrom <= INET_ATON(" . $gdb->quote($ip) . ")" .
-			" AND ipto >= INET_ATON(" . $gdb->quote($ip) . ")"
-		);
-		$country = $gdb->loadResult();
+		// location_us follows where the user signs in from now, for access
+		// control: an address not known to be in the US (no range, or no
+		// geo database) is not a US address
+		Log::debug($ip . ' is ' . ($country == 'us' ? 'a' : 'not a') . ' US address' . ($country === '' ? ' (no country found)' : '') . ', [' . $username . '] ' . ($country == 'us' ? 'in' : 'not in') . ' group [location_us].');
 
-		if ($country == 'US')
-		{
-			Log::debug($ip . ' is a US address, adding [' . User::get('username') . '] to group [location_us].');
-
-			$group = \Hubzero\User\Group::getInstance('location_us');
-
-			if (is_object($group))
-			{
-				$group->add('members', array(User::get('id')));
-				$group->update();
-			}
-			else
-			{
-				Log::debug('group [location_us] does not exist, member addition failed.');
-			}
-		}
-		else
-		{
-			Log::debug($ip . ' is not a US address, removing [' . User::get('username') . '] from group [location_us].');
-
-			$group = \Hubzero\User\Group::getInstance('location_us');
-
-			if (is_object($group))
-			{
-				$group->remove('members', array(User::get('id')));
-				$group->update();
-			}
-		}
+		\Hubzero\User\Group::setMember('location_us', $uid, $country == 'us');
 	}
 
 	public function onAfterDeleteUser($user, $success, $msg)
@@ -105,12 +68,33 @@ class plgUserUs extends \Hubzero\Plugin\Plugin
 	 */
 	public function onUserAfterDelete($user, $success, $msg)
 	{
-		$group = \Hubzero\User\Group::getInstance('location_us');
+		\Hubzero\User\Group::setMember('location_us', (int) $user['id'], false);
+	}
 
-		if (is_object($group))
+
+	/**
+	 * The ID of the user signing in
+	 *
+	 * From the session, as user/hubzero has put the user there by now. If it
+	 * has not (the session still holds the guest, 0), this plugin is ordered
+	 * before user/hubzero: look the user up by name instead, and say so.
+	 *
+	 * @param   array    $user  The user data passed to onUserLogin
+	 * @return  integer  0 when the user cannot be found
+	 */
+	private function userId($user)
+	{
+		$uid = (int) User::get('id');
+
+		if ($uid)
 		{
-			$group->remove('members', array($user['id']));
-			$group->update();
+			return $uid;
 		}
+
+		$username = isset($user['username']) ? (string) $user['username'] : '';
+
+		Log::warning(get_class($this) . ': no user in the session at sign-in of [' . $username . ']; is this plugin ordered before user/hubzero? Looking the user up by name.');
+
+		return $username === '' ? 0 : (int) User::getInstance($username)->get('id');
 	}
 }

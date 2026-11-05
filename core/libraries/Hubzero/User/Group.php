@@ -1336,6 +1336,81 @@ class Group extends Obj
 	}
 
 	/**
+	 * Whether a user is a member of a group, by the group's cn, in one query
+	 *
+	 * getInstance() loads every list of the group (members, managers,
+	 * applicants, invitees), and update() rewrites the whole list it saves.
+	 * For a check alone, such as the location groups' at every sign-in,
+	 * that is far more than needed: this asks about the one user, through
+	 * the cn and the (gidNumber, uidNumber) keys. A group that does not
+	 * exist has no members.
+	 *
+	 * @param   string   $cn   Group cn
+	 * @param   integer  $uid  User ID
+	 * @return  boolean
+	 */
+	public static function hasMember($cn, $uid)
+	{
+		$db = \App::get('db');
+
+		if (!is_object($db) || !is_numeric($uid))
+		{
+			return false;
+		}
+
+		$db->setQuery(
+			"SELECT 1 FROM `#__xgroups` AS g"
+			. " JOIN `#__xgroups_members` AS m ON m.gidNumber = g.gidNumber"
+			. " WHERE g.cn = " . $db->quote((string) $cn) . " AND m.uidNumber = " . (int) $uid
+			. " LIMIT 1"
+		);
+
+		return (bool) $db->loadResult();
+	}
+
+	/**
+	 * Put a user in a group, or take them out, if they are not so already
+	 *
+	 * Checked with hasMember(), one query. Only a change opens the group
+	 * and saves it, through update(), so that the enrollment events and
+	 * the membership history are as for any other change: getInstance()
+	 * loads every list of the group, and update() rewrites the whole
+	 * member list, too much to do at every sign-in for nothing.
+	 *
+	 * @param   string   $cn      Group cn
+	 * @param   integer  $uid     User ID
+	 * @param   bool     $member  Whether the user should be a member
+	 * @return  bool     False when the group does not exist or could not be saved
+	 */
+	public static function setMember($cn, $uid, $member)
+	{
+		$member = (bool) $member;
+
+		if (self::hasMember($cn, $uid) === $member)
+		{
+			return true;
+		}
+
+		$group = self::getInstance($cn);
+
+		if (!is_object($group))
+		{
+			return false;
+		}
+
+		if ($member)
+		{
+			$group->add('members', array((int) $uid));
+		}
+		else
+		{
+			$group->remove('members', array((int) $uid));
+		}
+
+		return (bool) $group->update();
+	}
+
+	/**
 	 * Is user a member of the group?
 	 *
 	 * @param   integer  $uid

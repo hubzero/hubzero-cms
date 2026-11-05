@@ -35,15 +35,8 @@ class plgUserGeo extends \Hubzero\Plugin\Plugin
 		// Check user location
 		if (\Hubzero\Geocode\Geocode::is_iplocation(Request::ip(), $location))
 		{
-			// Get user groups and instances of access groups
-			$group = \Hubzero\User\Group::getInstance($groupAlias);
-
-			// Update group if that group exists
-			if (is_object($group))
-			{
-				$group->add('members', array(\User::getInstance($user['username'])->get('id')));
-				$group->update();
-			}
+			// Opens and saves the group only if the user is not in it yet
+			\Hubzero\User\Group::setMember($groupAlias, \User::getInstance($user['username'])->get('id'), true);
 		}
 	}
 
