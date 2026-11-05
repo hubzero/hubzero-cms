@@ -609,7 +609,8 @@ class Validate
 			{
 				return true;
 			}
-			return is_array(gethostbynamel($regs[1]));
+			// A host with an address, IPv4 or IPv6
+			return (bool) Ip::resolve($regs[1]);
 		}
 		return false;
 	}
