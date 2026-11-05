@@ -158,6 +158,26 @@ class IpTest extends Basic
 	}
 
 	/**
+	 * Tests reading an address, and telling an IPv4-mapped one
+	 *
+	 * @return  void
+	 **/
+	public function testToPacked()
+	{
+		$this->assertEquals('c0000207', bin2hex(\Hubzero\Utility\Ip::toPacked('192.0.2.7', $mapped)));
+		$this->assertFalse($mapped);
+
+		$this->assertEquals('c0000207', bin2hex(\Hubzero\Utility\Ip::toPacked('::ffff:192.0.2.7', $mapped)));
+		$this->assertTrue($mapped);
+
+		$this->assertEquals(16, strlen(\Hubzero\Utility\Ip::toPacked('2001:db8::1', $mapped)));
+		$this->assertFalse($mapped);
+
+		$this->assertFalse(\Hubzero\Utility\Ip::toPacked('nonsense', $mapped));
+		$this->assertFalse($mapped);
+	}
+
+	/**
 	 * Tests addresses as decimal numbers
 	 *
 	 * @return  void
@@ -197,6 +217,15 @@ class IpTest extends Basic
 		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('2002:7f00:1::'));
 		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('2001:0:4136:e378:8000:63bf:3fff:fdd2'));
 		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('::7f00:1'));
+		// Shared address space (a cloud metadata service is in it), protocol
+		// assignments, benchmarking, multicast, local-use NAT64, site-local
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('100.100.100.200'));
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('192.0.0.170'));
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('198.18.0.1'));
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('224.0.0.1'));
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('ff02::1'));
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('64:ff9b:1::a00:1'));
+		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('fec0::1'));
 		$this->assertFalse(\Hubzero\Utility\Ip::isPublic('nonsense'));
 	}
 

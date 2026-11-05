@@ -47,7 +47,7 @@ class Ip
 	public function __construct($ip)
 	{
 		$this->ip     = $ip;
-		$this->packed = self::pack($ip);
+		$this->packed = self::toPacked($ip);
 	}
 
 	/**
@@ -84,9 +84,16 @@ class Ip
 	 **/
 	public function isPrivate()
 	{
-		foreach (array('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7') as $net)
+		static $networks = null;
+
+		if ($networks === null)
 		{
-			if (Network::parse($net)->contains($this->ip))
+			$networks = array_map(array(Network::class, 'parse'), array('10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7'));
+		}
+
+		foreach ($networks as $network)
+		{
+			if ($network->contains($this->ip))
 			{
 				return true;
 			}
@@ -141,7 +148,7 @@ class Ip
 	 **/
 	private function isRelativeTo($threshold, $above = true)
 	{
-		$threshold = self::pack($threshold);
+		$threshold = self::toPacked($threshold);
 
 		if ($threshold === false)
 		{
@@ -172,7 +179,7 @@ class Ip
 	 */
 	public static function normalize($ip)
 	{
-		$packed = self::pack($ip);
+		$packed = self::toPacked($ip);
 
 		return $packed === false ? '' : inet_ntop($packed);
 	}
@@ -192,7 +199,7 @@ class Ip
 	 */
 	public static function toPacked16($ip)
 	{
-		$packed = self::pack($ip);
+		$packed = self::toPacked($ip);
 
 		if ($packed === false)
 		{
@@ -234,7 +241,7 @@ class Ip
 	 */
 	public static function toDecimal($ip)
 	{
-		$packed = self::pack($ip);
+		$packed = self::toPacked($ip);
 
 		if ($packed === false)
 		{
@@ -320,21 +327,38 @@ class Ip
 	}
 
 	/**
+	 * Networks no outbound request may go to, beyond what filter_var()'s
+	 * private and reserved ranges refuse: those carrying another address
+	 * inside them (IPv4-compatible ::/96, NAT64 64:ff9b::/96 and its
+	 * local-use 64:ff9b:1::/48, discard-only 100::/64, Teredo 2001::/32,
+	 * 6to4 2002::/16), shared address space 100.64.0.0/10 (carrier-grade NAT,
+	 * where at least one cloud's metadata service is), IETF protocol
+	 * assignments 192.0.0.0/24, benchmarking 198.18.0.0/15, multicast in both
+	 * families, and the deprecated IPv6 site-local fec0::/10
+	 *
+	 * @var  array
+	 */
+	const NOT_PUBLIC = array(
+		'::/96', '64:ff9b::/96', '64:ff9b:1::/48', '100::/64', '2001::/32', '2002::/16',
+		'100.64.0.0/10', '192.0.0.0/24', '198.18.0.0/15', '224.0.0.0/4', 'ff00::/8', 'fec0::/10'
+	);
+
+	/**
 	 * Whether an address is one an outbound request may be sent to
 	 *
-	 * Refuses private and reserved addresses of both families. An
-	 * IPv4-mapped address is judged as the IPv4 one it carries, since
+	 * Refuses private and reserved addresses of both families, and NOT_PUBLIC.
+	 * An IPv4-mapped address is judged as the IPv4 one it carries, since
 	 * FILTER_FLAG_NO_PRIV_RANGE does not look inside ::ffff:0:0/96 and curl
-	 * connects to the IPv4 address. Prefixes that carry another address
-	 * inside them are refused too: IPv4-compatible ::/96, NAT64
-	 * 64:ff9b::/96, discard-only 100::/64, Teredo 2001::/32 and 6to4
-	 * 2002::/16.
+	 * connects to the IPv4 address. Where PHP has FILTER_FLAG_GLOBAL_RANGE
+	 * (8.2), it is asked too.
 	 *
 	 * @param   string  $ip
 	 * @return  bool
 	 */
 	public static function isPublic($ip)
 	{
+		static $networks = null;
+
 		$ip = self::normalize($ip);
 
 		if ($ip === '')
@@ -342,25 +366,42 @@ class Ip
 			return false;
 		}
 
-		foreach (array('::/96', '64:ff9b::/96', '100::/64', '2001::/32', '2002::/16') as $net)
+		if ($networks === null)
 		{
-			if (Network::parse($net)->contains($ip))
+			$networks = array_map(array(Network::class, 'parse'), self::NOT_PUBLIC);
+		}
+
+		foreach ($networks as $network)
+		{
+			if ($network->contains($ip))
 			{
 				return false;
 			}
 		}
 
-		return (bool) filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+		$flags = FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE;
+
+		if (defined('FILTER_FLAG_GLOBAL_RANGE'))
+		{
+			$flags |= FILTER_FLAG_GLOBAL_RANGE;
+		}
+
+		return (bool) filter_var($ip, FILTER_VALIDATE_IP, $flags);
 	}
 
 	/**
 	 * An address as inet_pton() packs it, an IPv4-mapped one as IPv4
 	 *
+	 * The one place an address is read, for this class and Network alike,
+	 * so that the two never disagree about what is an address.
+	 *
 	 * @param   string  $ip
-	 * @return  string|false
+	 * @param   bool    $mapped  Set true when the address was IPv4-mapped IPv6
+	 * @return  string|false  4 bytes for IPv4, 16 for IPv6; false when not an address
 	 */
-	private static function pack($ip)
+	public static function toPacked($ip, &$mapped = false)
 	{
+		$mapped = false;
 		$packed = @inet_pton(trim((string) $ip));
 
 		if ($packed === false)
@@ -370,6 +411,7 @@ class Ip
 
 		if (strlen($packed) == 16 && substr($packed, 0, 12) === self::MAPPED_PREFIX)
 		{
+			$mapped = true;
 			return substr($packed, 12);
 		}
 

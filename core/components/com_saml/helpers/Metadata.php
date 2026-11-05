@@ -65,32 +65,19 @@ class Metadata
 			return false;
 		}
 
-		$addresses = self::publicAddressesFor($url);
+		// A host with only public addresses, IPv4 and IPv6, fetched from those
+		// addresses, so it cannot reach the hub's own network; see
+		// \Hubzero\Utility\PublicUrl
+		$target = \Hubzero\Utility\PublicUrl::check($url, array('https'));
 
-		if (!$addresses)
+		if (!$target)
 		{
 			return false;
 		}
 
-		$ch = curl_init($url);
+		$ch = curl_init();
 
-		// Pin the connection to the address we validated, so the name cannot
-		// resolve to something internal between the check and the connect
-		$host = trim((string) parse_url($url, PHP_URL_HOST), '[]');
-		$port = (int) parse_url($url, PHP_URL_PORT);
-		$port = $port ?: 443;
-
-		// Pin every validated address, not just the first, so failover still
-		// works. curl needs an IPv6 literal bracketed in the address
-		// position or it cannot parse the entry and drops the pin silently.
-		$pinned = array();
-
-		foreach ($addresses as $address)
-		{
-			$pinned[] = strpos($address, ':') !== false ? '[' . $address . ']' : $address;
-		}
-
-		curl_setopt($ch, CURLOPT_RESOLVE, array($host . ':' . $port . ':' . implode(',', $pinned)));
+		\Hubzero\Utility\PublicUrl::apply($ch, $target);
 
 		// Redirects are not followed: each hop would need its own address
 		// check, and this endpoint must not become a way to probe the
@@ -116,82 +103,16 @@ class Metadata
 
 		$ok   = curl_exec($ch);
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$from = \Hubzero\Utility\PublicUrl::fetchedFromChecked($ch, $target);
 
 		curl_close($ch);
 
-		if (!$ok || $code >= 300 || $body === '' || strlen($body) > self::MAX_BYTES)
+		if (!$ok || !$from || $code >= 300 || $body === '' || strlen($body) > self::MAX_BYTES)
 		{
 			return false;
 		}
 
 		return $body;
-	}
-
-	/**
-	 * The routable public addresses this URL's host resolves to
-	 *
-	 * Keeps the admin-triggered fetch from reaching loopback, link-local, or
-	 * RFC1918 hosts — i.e. from being used to probe the hub's own network.
-	 * Returns false unless every resolved address is public, so a name that
-	 * answers with a mix cannot be used to sneak past the check.
-	 *
-	 * @param   string  $url
-	 * @return  array|false
-	 */
-	protected static function publicAddressesFor($url)
-	{
-		$host = parse_url($url, PHP_URL_HOST);
-
-		if (!$host)
-		{
-			return false;
-		}
-
-		// Bracketed IPv6 literal
-		$host = trim($host, '[]');
-
-		$addresses = array();
-
-		if (filter_var($host, FILTER_VALIDATE_IP))
-		{
-			$addresses[] = $host;
-		}
-		else
-		{
-			foreach (array(DNS_A, DNS_AAAA) as $type)
-			{
-				foreach ((array) @dns_get_record($host, $type) as $record)
-				{
-					if (!empty($record['ip']))
-					{
-						$addresses[] = $record['ip'];
-					}
-					if (!empty($record['ipv6']))
-					{
-						$addresses[] = $record['ipv6'];
-					}
-				}
-			}
-		}
-
-		if (empty($addresses))
-		{
-			return false;
-		}
-
-		foreach ($addresses as $address)
-		{
-			if (!filter_var(
-				$address,
-				FILTER_VALIDATE_IP,
-				FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
-			))
-			{
-				return false;
-			}
-		}
-
-		return array_values($addresses);
 	}
 
 	/**

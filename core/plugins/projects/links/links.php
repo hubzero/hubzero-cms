@@ -939,53 +939,15 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 			// redirect hop is checked the same way before it is followed, and the
 			// connection is pinned to the checked address so the name cannot be
 			// re-pointed between the check and the connect.
-			$safeAddress = function ($u)
+			$safeTarget = function ($u)
 			{
-				if (!preg_match('#^https?://#i', $u))
-				{
-					return false;
-				}
-				$h = parse_url($u, PHP_URL_HOST);
-				if (!$h)
-				{
-					return false;
-				}
-				$h = trim($h, '[]');
-				$addrs = array();
-				if (filter_var($h, FILTER_VALIDATE_IP))
-				{
-					$addrs[] = $h;
-				}
-				else
-				{
-					foreach ((array) @dns_get_record($h, DNS_A | DNS_AAAA) as $rec)
-					{
-						if (!empty($rec['ip']))
-						{
-							$addrs[] = $rec['ip'];
-						}
-						if (!empty($rec['ipv6']))
-						{
-							$addrs[] = $rec['ipv6'];
-						}
-					}
-				}
-				if (!$addrs)
-				{
-					return false;
-				}
-				foreach ($addrs as $a)
-				{
-					if (filter_var($a, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false)
-					{
-						return false;
-					}
-				}
-				return $addrs[0];
+				// http(s) to a host with only public addresses, IPv4 and IPv6,
+				// fetched from those addresses; see \Hubzero\Utility\PublicUrl
+				return \Hubzero\Utility\PublicUrl::check($u);
 			};
 
-			$addr = $safeAddress($url);
-			if (!$addr)
+			$target = $safeTarget($url);
+			if (!$target)
 			{
 				$output['error'] = Lang::txt('Please enter a valid URL starting with http:// or https://');
 				return json_encode($output);
@@ -1004,42 +966,44 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
 			$content  = false;
 			$finalUrl = $url;
+			$arrived  = false;
 			for ($hop = 0; $hop <= 10; $hop++)
 			{
-				$rh = trim((string) parse_url($finalUrl, PHP_URL_HOST), '[]');
-				$rp = (int) parse_url($finalUrl, PHP_URL_PORT);
-				if (!$rp)
-				{
-					$rp = (strtolower((string) parse_url($finalUrl, PHP_URL_SCHEME)) == 'https') ? 443 : 80;
-				}
-				$pin = (strpos($addr, ':') !== false) ? '[' . $addr . ']' : $addr;
-
-				$ch = curl_init($finalUrl);
+				$ch = curl_init();
 				curl_setopt_array($ch, $options);
 				curl_setopt($ch, CURLOPT_FAILONERROR, true);
-				// An address literal needs no pin (there is no name to re-point), and
-				// an IPv6 literal host would make a malformed RESOLVE entry
-				if (!filter_var($rh, FILTER_VALIDATE_IP))
-				{
-					curl_setopt($ch, CURLOPT_RESOLVE, array($rh . ':' . $rp . ':' . $pin));
-				}
+				\Hubzero\Utility\PublicUrl::apply($ch, $target);
 				$content  = curl_exec($ch);
 				$code     = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
 				$redirect = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
+				$checked  = \Hubzero\Utility\PublicUrl::fetchedFromChecked($ch, $target);
 				curl_close($ch);
 
+				// Kept only if fetched from an address that was checked
+				if (!$checked)
+				{
+					$content = false;
+					break;
+				}
 				if ($code < 300 || $code >= 400 || !$redirect)
 				{
+					$arrived = true;
 					break;
 				}
 				// Follow the redirect only if its target is also a public host
-				$addr = $safeAddress($redirect);
-				if (!$addr)
+				$target = $safeTarget($redirect);
+				if (!$target)
 				{
 					$content = false;
 					break;
 				}
 				$finalUrl = $redirect;
+			}
+			// Still being redirected after the last hop: no page was reached,
+			// and $content is a redirect's body
+			if (!$arrived)
+			{
+				$content = false;
 			}
 			$finalUrl = str_replace("HTTP", "http", $finalUrl);
 			$finalUrl = str_replace("HTTPS", "https", $finalUrl);
