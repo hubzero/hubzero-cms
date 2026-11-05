@@ -1445,37 +1445,24 @@ class Tickets extends SiteController
 	 */
 	private function _detectSpam($text, $ip)
 	{
-		// Spammer IPs (banned)
+		// Spammer IPs (banned): addresses or networks (192.0.2.0/24,
+		// 2001:db8::/32), separated by commas or white space
 		$ips = $this->config->get('blacklist');
-		if ($ips)
-		{
-			$bl = explode(',', $ips);
-			array_map('trim', $bl);
-		}
-		else
-		{
-			$bl = array();
-		}
+		$bl  = $ips ? preg_split('/[\s,]+/', trim($ips), -1, PREG_SPLIT_NO_EMPTY) : array();
 
 		// Bad words
-		$words = $this->config->get('badwords');
-		if ($words)
-		{
-			$badwords = explode(',', $words);
-			array_map('trim', $badwords);
-		}
-		else
-		{
-			$badwords = array();
-		}
+		$words    = $this->config->get('badwords');
+		$badwords = $words ? array_map('trim', explode(',', $words)) : array();
 
-		// Build an array of patterns to check against
+		// Build an array of patterns to check against. A bad word is text, not
+		// a pattern: 'c++' or 'http://spam.example' made an invalid pattern,
+		// and every ticket check then failed with it.
 		$patterns = array('/\[url=(.*?)\](.*?)\[\/url\]/s', '/\[url=(.*?)\[\/url\]/s');
 		foreach ($badwords as $badword)
 		{
-			if (!empty($badword))
+			if ($badword !== '')
 			{
-				$patterns[] = '/(.*?)'.trim($badword).'(.*?)/s';
+				$patterns[] = '/(.*?)' . preg_quote($badword, '/') . '(.*?)/s';
 			}
 		}
 
@@ -1503,10 +1490,18 @@ class Tickets extends SiteController
 			}
 		}
 
-		// Check the user's IP against the blacklist
-		if (in_array($ip, $bl))
+		// Check the user's IP against the blacklist, as addresses rather than
+		// strings: 2001:DB8::1, 2001:db8:0:0::1 and ::ffff:192.0.2.1 are each
+		// the same address as their usual form
+		foreach ($bl as $entry)
 		{
-			$spam = true;
+			$network = \Hubzero\Utility\Network::parse($entry);
+
+			if ($network && $network->contains($ip))
+			{
+				$spam = true;
+				break;
+			}
 		}
 
 		return $spam;
