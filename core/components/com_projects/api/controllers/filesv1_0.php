@@ -1651,8 +1651,10 @@ class Filesv1_0 extends ApiController
 	 * anything else with curl. From any collaborator that was a read of every
 	 * file the web server can see (configuration.php included) into a project
 	 * they can download from, and a request from the server to any address.
-	 * A server-local path stays available to a site super admin; a remote one
-	 * must be http(s) to a host that resolves only to public addresses.
+	 * A server-local path stays available to a site super admin. Anything else
+	 * must be http(s) -- a file:// path would pass Repo's is_file() as a local
+	 * one -- and Repo::insert() then checks the host's addresses, IPv4 and
+	 * IPv6, and fetches from those it checked.
 	 *
 	 * @param   string   $dataPath
 	 * @return  boolean
@@ -1666,31 +1668,6 @@ class Filesv1_0 extends ApiController
 			return User::authorise('core.admin');
 		}
 
-		if ($scheme !== 'http' && $scheme !== 'https')
-		{
-			return false;
-		}
-
-		$host = trim((string) parse_url($dataPath, PHP_URL_HOST), '[]');
-		if ($host === '')
-		{
-			return false;
-		}
-
-		$ips = filter_var($host, FILTER_VALIDATE_IP) ? array($host) : (array) gethostbynamel($host);
-		if (empty($ips))
-		{
-			return false;
-		}
-
-		foreach ($ips as $ip)
-		{
-			if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE))
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return $scheme === 'http' || $scheme === 'https';
 	}
 }

@@ -906,6 +906,103 @@ class Repo extends Obj
 	}
 
 	/**
+	 * A remote data path, checked, and how to fetch it from the addresses
+	 * checked
+	 *
+	 * Here, next to the fetch, so that every caller of insert() gets the
+	 * check and the fetch cannot drift apart from it:
+	 *
+	 * - http(s) only, and no user info or backslash in it: PHP's parse_url()
+	 *   and curl could take a different host from such a URL, so the host
+	 *   checked would not be the host fetched. curl is handed the URL
+	 *   rebuilt from the parts that were checked.
+	 * - The host's addresses, IPv4 and IPv6, must all be public
+	 *   (\Hubzero\Utility\Ip::isPublic()).
+	 * - The fetch is pinned to them with CURLOPT_RESOLVE, else curl would
+	 *   resolve the name again, and a name can point at a public address
+	 *   when checked and an internal one when fetched. A trailing dot is
+	 *   dropped from the name, so the pin is for the name curl looks up.
+	 *
+	 * @param   string  $url
+	 * @return  array|false  array(url, pins, addresses), or false when refused
+	 */
+	protected static function remoteSource($url)
+	{
+		$url   = (string) $url;
+		$parts = parse_url($url);
+
+		if (!$parts
+		 || !isset($parts['scheme'], $parts['host'])
+		 || !in_array(strtolower($parts['scheme']), array('http', 'https'))
+		 || isset($parts['user']) || isset($parts['pass'])
+		 || strpos($url, '\\') !== false
+		 || preg_match('#^[^:]*://[^/?\#]*@#', $url))
+		{
+			return false;
+		}
+
+		$scheme = strtolower($parts['scheme']);
+		$host   = rtrim(trim($parts['host'], '[]'), '.');
+		$port   = isset($parts['port']) ? (int) $parts['port'] : ($scheme == 'https' ? 443 : 80);
+
+		if ($host === '')
+		{
+			return false;
+		}
+
+		$addresses = \Hubzero\Utility\Ip::resolve($host);
+
+		if (!$addresses)
+		{
+			return false;
+		}
+
+		foreach ($addresses as $address)
+		{
+			if (!\Hubzero\Utility\Ip::isPublic($address))
+			{
+				return false;
+			}
+		}
+
+		$literal = (bool) filter_var($host, FILTER_VALIDATE_IP);
+		$authority = ($literal && strpos($host, ':') !== false) ? '[' . $host . ']' : $host;
+
+		$fetch = $scheme . '://' . $authority . (isset($parts['port']) ? ':' . $port : '')
+			. (isset($parts['path']) && $parts['path'] !== '' ? $parts['path'] : '/')
+			. (isset($parts['query']) ? '?' . $parts['query'] : '');
+
+		// An address literal has no name to re-point, and needs no pin
+		$pins = array();
+		if (!$literal)
+		{
+			$curl  = curl_version();
+			$pinned = $addresses;
+
+			// IPv4 first, for a libcurl that takes only one address (before
+			// 7.59); before 7.57 an IPv6 address is not given in brackets
+			usort($pinned, function ($a, $b)
+			{
+				return (strpos($a, ':') !== false) - (strpos($b, ':') !== false);
+			});
+			if (version_compare($curl['version'], '7.59.0', '<'))
+			{
+				$pinned = array_slice($pinned, 0, 1);
+			}
+			$brackets = version_compare($curl['version'], '7.57.0', '>=');
+
+			foreach ($pinned as $k => $address)
+			{
+				$pinned[$k] = ($brackets && strpos($address, ':') !== false) ? '[' . $address . ']' : $address;
+			}
+
+			$pins[] = $host . ':' . $port . ':' . implode(',', $pinned);
+		}
+
+		return array('url' => $fetch, 'pins' => $pins, 'addresses' => $addresses);
+	}
+
+	/**
 	 * Insert file into the repo
 	 *
 	 * @param   array    $params
@@ -1085,6 +1182,12 @@ class Repo extends Obj
 		// Local file not found? Try to download as remote
 		if (!is_file($dataPath))
 		{
+			if (!($source = self::remoteSource($dataPath)))
+			{
+				$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ACCESS_DATA_PATH'));
+				return false;
+			}
+
 			$ch = curl_init();
 
 			$tempPath = sys_get_temp_dir() . DS . basename($dataPath); // temp
@@ -1097,16 +1200,22 @@ class Repo extends Obj
 			}
 
 			// Download file to a temp directory
-			if (curl_setopt($ch, CURLOPT_URL, $dataPath))
+			if (curl_setopt($ch, CURLOPT_URL, $source['url']))
 			{
 				// A remote source is fetched over http(s) only -- never file://,
 				// gopher:// or the like, and not by following a redirect into one.
 				curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 				curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 				curl_setopt($ch, CURLOPT_FILE, $tempFile);
+				if ($source['pins'])
+				{
+					curl_setopt($ch, CURLOPT_RESOLVE, $source['pins']);
+				}
 				curl_exec ($ch);
 				$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				if ($success !== 200)
+				// Kept only if fetched from an address that was checked
+				$fetchedFrom = \Hubzero\Utility\Ip::normalize(curl_getinfo($ch, CURLINFO_PRIMARY_IP));
+				if ($success !== 200 || !in_array($fetchedFrom, $source['addresses'], true))
 				{
 					$this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_FAILED_DOWNLOAD_DATA'));
 					unlink($tempPath);
