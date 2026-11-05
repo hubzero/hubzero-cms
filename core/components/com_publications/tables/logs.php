@@ -31,10 +31,45 @@ class Log extends Table
 	/**
 	 * Check if bot
 	 *
+	 * Called for every line of a log, so what does not change between lines
+	 * is worked out once: the metrics exclude list's location and its IPv6
+	 * entries, and each address's answer (logs repeat addresses).
+	 *
 	 * @param   string  $ip
-	 * @return  void
+	 * @return  bool
 	 */
 	public function checkBotIp($ip)
+	{
+		static $known = array();
+
+		$ip = \Hubzero\Utility\Ip::normalize($ip);
+
+		if ($ip === '')
+		{
+			return false;
+		}
+
+		if (!isset($known[$ip]))
+		{
+			if (count($known) >= 10000)
+			{
+				$known = array();
+			}
+
+			$known[$ip] = $this->isBotIp($ip);
+		}
+
+		return $known[$ip];
+	}
+
+	/**
+	 * Whether an address is a bot's, by its host name or the metrics
+	 * database's exclude list
+	 *
+	 * @param   string  $ip  A normalized address
+	 * @return  bool
+	 */
+	protected function isBotIp($ip)
 	{
 		// Check by hostname
 		$hostname = gethostbyaddr($ip);
@@ -57,40 +92,132 @@ class Log extends Table
 			'fetch',
 			'findlinks'
 		);
-		foreach ($bots as $bot)
+		// With no reverse DNS, gethostbyaddr() gives the address back, and an
+		// IPv6 address can spell a bot word ('feed' in 2001:db8:feed::1)
+		if ($hostname && $hostname !== $ip)
 		{
-			if (stripos($hostname, $bot) !== false)
+			foreach ($bots as $bot)
 			{
-				return true;
+				if (stripos($hostname, $bot) !== false)
+				{
+					return true;
+				}
 			}
 		}
 
-		// Metrics db name
-		$query = "SELECT DATABASE()";
-		$this->_db->setQuery($query);
-		$dbname = $this->_db->loadResult();
-		$metrics_db = $dbname . '_metrics';
-
-		// Do we have metrics db and necessary table?
-		$query = "SELECT COUNT(*) FROM information_schema.tables
-				WHERE table_schema = '$metrics_db'
-				AND table_name = 'exclude_list'";
-		$this->_db->setQuery($query);
-		$exists = $this->_db->loadResult();
-
-		// So it it bot or real user?
-		if ($exists)
+		if (!($metrics_db = $this->excludeListDb()))
 		{
+			return false;
+		}
+
+		if (strpos($ip, ':') === false)
+		{
+			// An excluded IPv4 address excludes its neighbours in the same
+			// /24: entries are matched on the first three octets
 			$bits   = explode('.', $ip);
 			$n      = array_pop($bits);
 			$subnet = trim(implode('.', $bits)) . '.';
 
 			$query = " SELECT COUNT(*) FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE " . $this->_db->quote($subnet . '%');
 			$this->_db->setQuery($query);
-			return $this->_db->loadResult();
+			return (bool) $this->_db->loadResult();
+		}
+
+		// IPv6: an excluded address excludes its /64, the counterpart of the
+		// IPv4 /24 above; an entry written as a network (2001:db8::/48)
+		// excludes that network
+		foreach ($this->excludedNetworks6($metrics_db) as $network)
+		{
+			if ($network->contains($ip))
+			{
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * The metrics database that has the exclude list, if there is one,
+	 * looked up once
+	 *
+	 * @return  string|null
+	 */
+	protected function excludeListDb()
+	{
+		static $metrics_db = false;
+
+		if ($metrics_db === false)
+		{
+			// Metrics db name
+			$this->_db->setQuery("SELECT DATABASE()");
+			$name = $this->_db->loadResult() . '_metrics';
+
+			// Do we have metrics db and necessary table?
+			$query = "SELECT COUNT(*) FROM information_schema.tables
+					WHERE table_schema = " . $this->_db->quote($name) . "
+					AND table_name = 'exclude_list'";
+			$this->_db->setQuery($query);
+
+			$metrics_db = $this->_db->loadResult() ? $name : null;
+		}
+
+		return $metrics_db;
+	}
+
+	/**
+	 * The IPv6 entries of the exclude list, as networks, read once
+	 *
+	 * An entry is an address, which stands for its /64; a network
+	 * (2001:db8::/48); or, like the IPv4 entries' '137.187.22.', the first
+	 * hextets followed by a colon ('2001:db8:1:'), which stands for the
+	 * network they make (2001:db8:1::/48). An IPv4 address written as IPv6
+	 * (::ffff:192.0.2.1) belongs with the IPv4 entries, and is not used here.
+	 *
+	 * @param   string  $metrics_db
+	 * @return  array   \Hubzero\Utility\Network objects
+	 */
+	protected function excludedNetworks6($metrics_db)
+	{
+		static $networks = null;
+
+		if ($networks === null)
+		{
+			$networks = array();
+
+			$this->_db->setQuery("SELECT filter FROM $metrics_db.exclude_list WHERE type='ip' AND filter LIKE '%:%'");
+
+			foreach ((array) $this->_db->loadColumn() as $filter)
+			{
+				$filter = trim((string) $filter);
+
+				if (strpos($filter, '/') === false)
+				{
+					if (preg_match('/^([0-9a-f]{1,4}:){1,7}$/i', $filter))
+					{
+						// Hextets with a trailing colon: their network
+						$filter .= ':/' . (16 * substr_count($filter, ':'));
+					}
+					else
+					{
+						$filter .= '/64';
+					}
+				}
+
+				$network = \Hubzero\Utility\Network::parse($filter);
+
+				if ($network)
+				{
+					$networks[] = $network;
+				}
+				else
+				{
+					\Log::debug('Publications: exclude_list entry not used for IPv6: ' . $filter);
+				}
+			}
+		}
+
+		return $networks;
 	}
 
 	/**

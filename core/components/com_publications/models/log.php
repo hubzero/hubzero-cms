@@ -74,7 +74,9 @@ class Log extends Model
 
 			if ((count($parts) == 4) && trim($parts[3]) == $type)
 			{
-				$ip = trim($parts[1]);
+				// One form per address, so 2001:DB8::1 and 2001:db8::1 are
+				// one visitor; unparseable text is kept as it was
+				$ip = \Hubzero\Utility\Ip::normalize(trim($parts[1])) ?: trim($parts[1]);
 
 				// Check if bot
 				if ($pubLog->checkBotIp($ip))
@@ -83,10 +85,11 @@ class Log extends Model
 					continue;
 				}
 
-				if (!in_array($ip, $ips))
+				// Keyed by address: in_array() over the list was quadratic
+				if (!isset($ips[$ip]))
 				{
 					// Add to list of unique IPs
-					$ips[] = trim($parts[1]);
+					$ips[$ip] = true;
 					$unique++;
 				}
 				// Add to non-unique list
