@@ -52,14 +52,16 @@ class Network
 	public static function parse($cidr)
 	{
 		$parts    = explode('/', trim((string) $cidr), 2);
-		$offset   = 0;
 		$everyone = false;
-		$address  = self::pack($parts[0], $offset);
+		$address  = Ip::toPacked($parts[0], $mapped);
 
-		if ($address === null)
+		if ($address === false)
 		{
 			return null;
 		}
+
+		// An IPv4 network written as IPv4-mapped IPv6 counts its prefix from 128
+		$offset = $mapped ? 96 : 0;
 
 		$bits = strlen($address) * 8;
 
@@ -111,10 +113,9 @@ class Network
 	 */
 	public function contains($ip)
 	{
-		$offset = 0;
-		$ip = self::pack($ip, $offset);
+		$ip = Ip::toPacked($ip);
 
-		if ($ip === null)
+		if ($ip === false)
 		{
 			return false;
 		}
@@ -157,32 +158,6 @@ class Network
 	public function last()
 	{
 		return inet_ntop($this->address | ~$this->mask);
-	}
-
-	/**
-	 * An address as inet_pton() packs it, with an IPv4-mapped IPv6
-	 * address unpacked to its IPv4 one
-	 *
-	 * @param   string   $ip
-	 * @param   integer  $offset  Set to 96 when the address was IPv4-mapped
-	 * @return  string|null
-	 */
-	private static function pack($ip, &$offset)
-	{
-		$packed = @inet_pton(trim((string) $ip));
-
-		if ($packed === false)
-		{
-			return null;
-		}
-
-		if (strlen($packed) == 16 && substr($packed, 0, 12) === str_repeat("\0", 10) . "\xff\xff")
-		{
-			$offset = 96;
-			return substr($packed, 12);
-		}
-
-		return $packed;
 	}
 
 	/**
