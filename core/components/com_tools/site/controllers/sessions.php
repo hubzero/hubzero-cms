@@ -1412,6 +1412,13 @@ class Sessions extends SiteController
 			$output->wsproxy_host = $_SERVER['SERVER_NAME'];
 		}
 
+		// The noVNC views build ws(s)://host:port/... from this; an IPv6
+		// address must be in brackets there
+		if (filter_var($output->wsproxy_host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
+		{
+			$output->wsproxy_host = '[' . $output->wsproxy_host . ']';
+		}
+
 		if (empty($output->wsproxy_port))
 		{
 			$output->wsproxy_port = '8080';
