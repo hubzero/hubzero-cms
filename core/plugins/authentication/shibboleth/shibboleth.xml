@@ -24,6 +24,10 @@
 					<option value="1">JYes</option>
 				</field>
 				<field name="dns" type="text" size="15" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_DNS_LABEL" default="8.8.8.8" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_DNS_DESC" />
+				<field name="behind_proxy" type="radio" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_BEHIND_PROXY_LABEL" default="0" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_BEHIND_PROXY_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
 				<field name="auto_approve" type="radio" label="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_AUTO_APPROVE_LABEL" default="0" description="PLG_AUTHENTICATION_SHIBBOLETH_PARAM_AUTO_APPROVE_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>

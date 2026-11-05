@@ -91,6 +91,35 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * The address to guess the user's institution from
+	 *
+	 * Request::ip(), unless the plugin is set as behind a proxy: then the
+	 * first valid address in X-Forwarded-For, which such a proxy sets to the
+	 * client's. Without a proxy any client can set that header, and have the
+	 * hub look up an address of its choosing at every sign-in page view.
+	 *
+	 * @param   bool    $behindProxy  The plugin's behind_proxy option
+	 * @return  string
+	 */
+	private static function clientAddress($behindProxy)
+	{
+		if ($behindProxy && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+		{
+			foreach (explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']) as $address)
+			{
+				$address = \Hubzero\Utility\Ip::normalize($address);
+
+				if ($address !== '')
+				{
+					return $address;
+				}
+			}
+		}
+
+		return (string) Request::ip();
+	}
+
+	/**
 	 * Looks up a hostname by ip address to see if we can infer and institution
 	 *
 	 * We use this instead of standard php function gethostbyaddr because we need
@@ -248,7 +277,7 @@ class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
 		// Saved id provider? Use it as the default
 		$prefill = isset($_COOKIE['shib-entity-id']) ? $_COOKIE['shib-entity-id'] : null;
 		if (!$prefill && // no cookie
-				($host = self::getHostByAddress(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'], $params->get('dns', '8.8.8.8'))) && // can get a host
+				($host = self::getHostByAddress(self::clientAddress((bool) $params->get('behind_proxy', 0)), $params->get('dns', '8.8.8.8'))) && // can get a host
 				preg_match('/[.]([^.]*?[.][a-z0-9]+?)$/', $host, $ma))
 		{ // Hostname lookup seems php jsonrational (not an ip address, has a few dots in it)
 			// Try to look up a provider to pre-select based on the user's hostname
