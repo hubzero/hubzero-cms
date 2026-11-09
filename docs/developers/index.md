@@ -84,9 +84,6 @@ New to the codebase, read these in order:
 - [Testing](15-testing.md) — the test suite, the linters, and what CI runs.
 - [The REST API](16-api.md) — the API client, versioned controllers, and
   the docblock tags the endpoint reference is generated from.
-- [Running on AWS](17-aws.md) — what in this repository is specific to it,
-  which is very little.
-- [Video tutorials](02-tutorials.md).
 - [Contributing](18-contributing.md) — sending a change back, and working
   on these pages.
 - [Conventions](19-conventions/index.md) — PHP style and naming, CSS, the
