@@ -40,10 +40,13 @@ rest. `scp -r` and `rsync -a` are usually quicker for a whole directory.
 
 ## Finding the hub
 
-The web root is the hub's document root, conventionally `/www/<hubname>` on
-a Hubzero server. Many sites keep a second, development copy alongside it,
-often `/www/dev`. Both are ordinary directories; nothing in the CMS depends
-on the name.
+The hub's files live in the directory its installer was pointed at. The
+[installation guides](../../sysadmins/01-installing.md) use `/var/www/hub`,
+and many sites keep a second, development copy alongside it. Ask whoever
+installed the hub which directory it is; nothing in the CMS depends on the
+name. In the [Docker development setup](06-devenvironment.md#developing-in-docker)
+the hub's files are your own checkout, and you edit them directly with no
+SSH involved.
 
 Underneath, the layout is the one described in
 [Structure](../03-foundation/01-structure.md): `core/` holds the platform,
@@ -52,8 +55,9 @@ Underneath, the layout is the one described in
 
 Two things to know before you edit anything in place:
 
-- Files must stay readable by the web server user, `apache` on Enterprise
-  Linux. A file you create over sFTP is owned by you.
+- Files must stay readable by the account the web server runs as:
+  `www-data` on Debian and Ubuntu, `apache` on Enterprise Linux. A file you
+  create over sFTP is owned by you, so check its permissions afterwards.
 - Everything under `app/` is a running hub's state and is not in the
   repository. Everything under `core/` is, so an edit there is a change you
   will have to carry forward or contribute back.

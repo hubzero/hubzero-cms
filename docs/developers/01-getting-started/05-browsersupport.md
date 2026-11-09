@@ -19,11 +19,6 @@ feature-detect anything newer.** The rest of the page is where that number
 comes from, because nobody in this repository will tell you if you get it
 wrong.
 
-The page this replaces carried a table of supported versions written in
-2012: Internet Explorer 7 through 9, Firefox 3 to 5, Safari 5, Android 2
-WebKit, Opera 10. None of it is meaningful now. The code in this tree cannot
-run in any of those browsers, and no part of the repository checks.
-
 ## What the repository does not contain
 
 Each of these was looked for and is not present anywhere outside
@@ -199,10 +194,7 @@ And the rules that go with it:
   parses a string the browser is free to lie about, and it is not maintained
   against current user agents.
 - Progressive enhancement — a usable page first, richness layered on — is
-  still the right approach, and is the one idea worth keeping from the
-  "graded browser support" material this page used to reproduce. That
-  material was Yahoo!'s, written in the mid-2000s, and described a testing
-  programme Hubzero does not run.
+  still the right approach.
 
 ## Next
 

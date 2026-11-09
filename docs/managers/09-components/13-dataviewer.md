@@ -144,8 +144,7 @@ Databases tab, not by editing files.
 > all can open it, whatever the **Permissions** tab says. The component
 > declares the usual seven actions and exposes a permissions fieldset, and
 > nothing reads either. On a stock hub there is nothing on the screen to
-> misuse; on a hub that has the `com_databases` component, there is. It is
-> Recorded with the project.
+> misuse; on a hub that has the `com_databases` component, there is. It is a known defect.
 
 ## Options
 

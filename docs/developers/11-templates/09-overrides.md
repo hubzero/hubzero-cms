@@ -354,7 +354,7 @@ through a view whose layout is
 > adds `{override_path}/html/pagination/` to its search path only when an
 > `override_path` was passed into its constructor, and `Paginator::render()`
 > never passes one. A `html/pagination/paginator.php` in your template is
-> ignored. This is recorded with the project.
+> ignored. This is a known defect.
 >
 > The older mechanism — a `templates/{name}/html/pagination.php` defining
 > `pagination_list_footer()`, `pagination_list_render()`,

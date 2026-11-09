@@ -258,8 +258,7 @@ release it does not work for a group: scaffolding resolves its install
 directory against `core/` rather than `app/`, so the files land in
 `core/site/groups/<id>/components/`, and the template it writes is a full CMS
 component with `admin/` and `site/` directories rather than the flat layout a
-group needs. The `@FIXME` on the path is in the source. Both problems are
-recorded in the review findings.
+group needs. The `@FIXME` on the path is in the source. Both problems are known defects.
 
 Build the directory by hand, or copy the `site/` directory of an existing
 component up one level and adjust. It is a small amount of typing compared

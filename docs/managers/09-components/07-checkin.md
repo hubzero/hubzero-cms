@@ -121,8 +121,7 @@ everything inherited — is the right setting on almost every hub.
 > time, whose test can never be true, so it never runs. It should be deleted
 > rather than repaired: the only `editor` column on a stock schema belongs to
 > `#__citations` and holds a citation's bibliographic editor, which is not a
-> lock and must not be erased by a check-in. Recorded in
-> a record kept with the project.
+> lock and must not be erased by a check-in. This is a known defect.
 
 > **Note:** The screen itself is available to anyone with *Access
 > Administration Interface* on the component, but the **Check-in** and

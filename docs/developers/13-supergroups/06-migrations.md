@@ -194,5 +194,4 @@ that arrive with a merge are applied as part of the merge.
 > fails. It decides by looking for the word `ineligble` in the update output —
 > misspelled, and in any case a word muse never prints. The test therefore
 > always passes and migrations run even after a failed update. Read the
-> output of a merge rather than trusting that it stopped itself. This is
-> recorded in the review findings.
+> output of a merge rather than trusting that it stopped itself. This is a known defect.

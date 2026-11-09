@@ -47,8 +47,8 @@ live accounts rather than on the file.
    [What the importer actually checks](#what-the-importer-actually-checks).
 
 None of it is undone by anything on this screen. There is no "roll back this
-run" and the [import archive](04-memberimportarchive.md) keeps a record of the
-job, not of the data as it was before. The dry run is the safety net, and it
+run", and the **Imports** list keeps a record of the job, not of the data
+as it was before. The dry run is the safety net, and it
 is a good one — use it every time, including on a job you have run before.
 
 ## What the screen holds

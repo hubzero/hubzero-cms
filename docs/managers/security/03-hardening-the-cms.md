@@ -88,8 +88,7 @@ group gets one of:
 > that reads them back is the same screen, redisplaying them. No component,
 > plugin or library in this tree consults them when content is saved, so
 > changing a group from **Default Black List** to **No Filtering** — or the
-> other way — has no effect on what any member can submit. Recorded in
-> It is recorded with the project.
+> other way — has no effect on what any member can submit. This is a known defect.
 Do not treat this screen as a control, and do not read a hub's row of
 settings here as a description of what the hub does. If you have been asked
 to tighten what members may submit, the levers that do work are elsewhere:
@@ -173,8 +172,7 @@ out.
 > whatever the comment in the source says. So enabling it on a client where
 > the web server is not asking for client certificates locks out everyone
 > with an account on that client, including you. Set it up on a staging hub,
-> or with the web server configured first. Recorded in
-> It is recorded with the project.
+> or with the web server configured first. This is a known defect.
 > **Warning:** **Authfactors - Google** cannot enrol anyone on a hub built
 > from this repository alone. Its enrolment screen shells out to
 > `/usr/share/adm/scripts/google-authenticator-setup.sh`, which is not in
@@ -184,7 +182,7 @@ out.
 > and the member cannot get past it — and because the system plugin diverts
 > them there on every request, they cannot get anywhere else either. Ask
 > whoever built the host whether that script is installed before you enable
-> this. Recorded with the project.
+> this. This is a known defect.
 
 In practice, then, second-factor authentication on a hub built from this
 repository means client certificates, or an authentication provider that does

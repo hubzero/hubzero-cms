@@ -457,15 +457,14 @@ The ones worth knowing:
 To show enrolment numbers on the course pages, set **Show Enrollment
 Numbers** to **Yes** on the **Basic** tab and save.
 
-> **Note:** The old version of this page put this setting on a **Defaults**
-> tab. There is no such tab. The Options pop-up has **Basic**, then two
+> **Note:** There is no **Defaults** tab, whatever older instructions say.
+> The Options pop-up has **Basic**, then two
 > fieldsets — the Passport badge keys and the Unity key — whose tab titles
 > render as raw language keys because `config.xml` gives them no label.
 
 ## Presentations
 
-The old version of this page ended with a section on HUB Presenter, the
-slide-and-video presentation format. That belongs to
+HUB Presenter, the slide-and-video presentation format, belongs to
 [Resources](29-resources.md), not to Courses: a presentation is a resource of
 an online-presentation type, whose files are assembled on the hub's file
 system and described by a `presentation.json` manifest. Nothing about it is

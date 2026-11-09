@@ -78,7 +78,7 @@ See [Article Manager](08-content/articlemanager.md#the-editor).
 Because it writes to a column the site does not read. The site's **Featured
 Articles** page reads a separate table that nothing in the administrator
 interface writes to, and the administrator's own Featured Articles screen is
-unreachable. This is a defect and is recorded with the project.
+unreachable. This is a known defect.
 
 It matters more than it sounds, because the home page a plain install ships
 is a Featured Articles item. A hub left on it has an empty front page and no
@@ -176,14 +176,3 @@ course manager sees the whole outline, published and unpublished, and sees it
 regardless of prerequisites. A student sees only what the prerequisites and
 the availability dates have released to them, so the instructor's view is not
 a preview of the student's.
-
-## What was removed from this page
-
-The imported version of this page had one further answer, a second
-step-by-step for redirecting `/groups/mainclass` to another group, duplicating
-the one above it. Both have been replaced by the single entry under
-[How do I point one URL at another?](#how-do-i-point-one-url-at-another).
-Nothing else was dropped; the remaining answers were corrected rather than
-removed — most visibly the group message answer, which described an email
-icon on the **Members** tab as the only way in, and the wishlist answer, which
-described a drop-down where the interface has radio buttons.

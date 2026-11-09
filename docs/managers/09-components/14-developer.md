@@ -266,7 +266,7 @@ namespace, so every one of them is *Unknown command*. Use the **Revoke
 Application Tokens** button on the administrator screen instead, which is
 per-application rather than hub-wide, and delete
 `app/cache/api/documentation.json` to force the documentation to regenerate.
-Recorded with the project.
+This is a known defect.
 
 ## What does not work
 

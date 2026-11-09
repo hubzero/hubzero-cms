@@ -120,6 +120,6 @@ These are all still current, and each has its own chapter:
 
 ## Older legacy names
 
-An extension written against the pre-Hubzero class names rather than against
-Hubzero 1.x needs a different table. That is the
+An extension written against the Joomla class names — `JFactory`, `JText`
+and the rest — rather than against Hubzero 1.x needs a different table. That is the
 [Upgrade guide](04-upgrade.md).

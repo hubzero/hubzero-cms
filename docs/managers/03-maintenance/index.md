@@ -96,8 +96,7 @@ filter is on **Site**.
 > **Note:** `mod_tools` counts tools in the **Installed** state but has no
 > panel cell for it, so that count is never displayed. Its links also use a
 > `status` query parameter where the pipeline screen reads `state`, so
-> clicking a count opens the full list unfiltered. Both are recorded in
-> a record kept with the project.
+> clicking a count opens the full list unfiltered. Both are known defects.
 
 ## In this section
 

@@ -225,7 +225,7 @@ Opening an article checks it out to you. Leaving with **Save & Close** or
 > writes to. Setting **Featured** to **Yes** therefore has no visible effect.
 > The administrator's own Featured Articles screen is unreachable — its menu
 > entry is commented out, and the code behind it refers to a model class that
-> does not exist. Both are recorded with the project.
+> does not exist. Both are known defects.
 
 ## Featured articles
 

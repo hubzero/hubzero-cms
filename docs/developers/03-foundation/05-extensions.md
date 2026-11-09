@@ -109,8 +109,9 @@ user holds and whose menu assignment matches, ordered by `ordering`;
 position at a time.
 
 Rendering a module is an `include` of `mod_{name}.php` with output buffering
-on, wrapped in a *chrome* function from the template's
-`html/modules.php` that supplies the surrounding markup.
+on, wrapped in a *chrome* function from the template's `html/modules.php`.
+Chrome is the template's name for the markup around a module's output: the
+box, its heading and its CSS classes.
 
 > **Note:** On this release a module's `mod_{name}.php` is a stub that
 > requires `helper.php`, and the loader includes the file rather than
@@ -149,8 +150,7 @@ See [Overrides](../11-templates/09-overrides.md).
 
 A language is not an extension. It is a set of INI files and an XML metadata
 file, loaded by `Hubzero\Language\Translator`, and Hubzero ships `en-GB`
-only. Earlier versions of this page called languages a fifth extension type;
-they are not one. See [Languages](../05-basics/04-languages.md).
+only. See [Languages](../05-basics/04-languages.md).
 
 ## Nothing scans the filesystem
 

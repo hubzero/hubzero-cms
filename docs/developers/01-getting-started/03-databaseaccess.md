@@ -9,7 +9,7 @@ screenshots: none
 How to reach a hub's database from the command line, and the one convention
 that will confuse you if nobody tells you about it: the `#__` table prefix.
 
-You will want a `mysql` prompt sooner than you expect — to see what a
+You will want a database prompt sooner than you expect — to see what a
 migration actually did, or what a form saved. Read this before you write a
 query into an extension, because the prefix rule is not optional and the
 mistake it prevents does not show up until someone installs your work on a
@@ -36,9 +36,16 @@ The file is written by the installer and is not in the repository. Read it
 over [SSH](02-fileaccess.md#reaching-the-server); it is only readable by the
 web server user and root.
 
+Then, on the server, open a prompt with the user and database names from
+that file. The client asks for the password:
+
 ```bash
-mysql -u hubuser -p hubdatabase
+mariadb -u hubuser -p hubdatabase
 ```
+
+On older servers the client is called `mysql`. In the
+[Docker development setup](06-devenvironment.md#developing-in-docker), the
+`docker compose exec db …` command on that page opens the same prompt.
 
 > **Warning:** A hub account does not carry shell access. A system
 > administrator has to grant SSH separately.
@@ -57,19 +64,20 @@ literal `jos_` in it is a bug: it breaks on any hub whose prefix differs.
 It will not break on yours, which is the problem — the failure arrives on
 somebody else's hub as `Table 'theirdb.jos_booking_instruments' doesn't
 exist`, naming a prefix they have never used. Copying a working statement
-out of a `mysql` prompt and into a model is how it happens; put the `#__`
+out of a database prompt and into a model is how it happens; put the `#__`
 back on the way in.
 The same placeholder is the default table name a model derives for itself —
 `#__{namespace}_{plural model name}` — so a `Post` model in the `blog`
 namespace reads and writes `#__blog_posts` without being told to.
 
-Translate in your head when you move between a `mysql` prompt and the code:
+Translate in your head when you move between a database prompt and the code:
 `SELECT * FROM jos_users` at the prompt is `#__users` in a query.
 
 ## Dumping and loading
 
 Muse wraps the two operations you actually need, using the hub's own
-credentials so you do not have to find them:
+credentials so you do not have to find them. Run both from the hub's root
+directory, the one holding `core/` and `index.php`:
 
 ```bash
 php core/bin/muse database dump
@@ -96,5 +104,5 @@ The [Database](../06-database/index.md) book covers all three layers: the
 [query builder](../06-database/02-query-builder.md), the
 [ORM](../06-database/04-orm.md), and
 [migrations](../06-database/03-migrations.md) for schema changes. Schema
-changes belong in a migration, not in a `mysql` prompt — a change made by
+changes belong in a migration, not in a database prompt — a change made by
 hand is a change the next hub to run the migrations will not have.

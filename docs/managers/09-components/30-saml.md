@@ -287,5 +287,4 @@ fieldset, so **Options** shows no **Permissions** tab, and none of the six
 can be granted or denied on this component. They fall back to whatever the
 group inherits from the global configuration, which in practice means the
 screens are open to any group with global `core.manage` and closed to
-everyone else. `com_system` and `com_search` have the same gap; it is
-Recorded with the project.
+everyone else. `com_system` and `com_search` have the same gap; it is a known defect.

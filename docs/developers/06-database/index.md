@@ -8,9 +8,10 @@ reviewed: 2026-09-10
 Hubzero talks to the database through three layers, each built on the one
 below it, and this page covers all three. The
 [driver](01-driver.md) ([`Hubzero\Database\Driver`](../../../core/libraries/Hubzero/Database/Driver.php))
-wraps PDO and runs prepared statements. The
+wraps PDO, PHP's own database interface, and runs prepared statements. The
 [query builder](02-query-builder.md) assembles statements without you writing SQL
-strings. The [ORM](04-orm.md) maps table rows to model objects. Schema changes are
+strings. The [ORM](04-orm.md), the object-relational mapper, represents table
+rows as PHP model objects. Schema changes are
 made by [migrations](03-migrations.md), which is the only supported way to change a
 hub's tables.
 

@@ -23,7 +23,8 @@ and media managers in [Content](../08-content/index.md), rather than here.
 
 ## Which of these does your hub actually use?
 
-Forty components ship with a hub. Almost no hub uses forty. A typical hub
+Nearly sixty components ship with a hub, and this book has a chapter for
+each one a manager is likely to meet. Almost no hub uses them all. A typical hub
 runs its resources or publications catalogue, groups, projects, support, and
 perhaps three or four others; the rest sit installed, empty, and out of the
 way. If you have inherited a hub, work out which are live before you read

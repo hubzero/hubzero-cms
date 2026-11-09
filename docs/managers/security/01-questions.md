@@ -78,7 +78,7 @@ clamscan -i --no-summary --block-encrypted
 ```
 
 `virus_scanner` has no field in **Global Configuration**; set it in
-`configuration.php` if you want a different command, for example `clamdscan`
+`app/config/app.php` if you want a different command, for example `clamdscan`
 against a running daemon. A non-zero exit from the scanner rejects the file,
 so a scanner that is missing or whose daemon is down fails closed and logs
 the reason.

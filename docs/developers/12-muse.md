@@ -37,7 +37,7 @@ give you.
 ## Running it
 
 The executable is `core/bin/muse`, and it is not on the path. Run it from
-the hub's root directory:
+the hub's root directory, the one holding `core/`, `app/` and `index.php`:
 
 ```bash
 php core/bin/muse

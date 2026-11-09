@@ -51,9 +51,8 @@ A tool has nine states. The number is the `state` column on `#__tool`:
 Each state carries tasks for one side or the other. This page calls the
 developer's tasks *user tasks* and the administrator's *admin tasks*.
 
-> **Note:** The old version of this page listed eight states and left out
-> **Abandoned**. Abandoned is not on the administrator's status drop-down —
-> a tool reaches it only when a developer cancels the contribution, which is
+> **Note:** **Abandoned** is not on the administrator's status drop-down.
+> A tool reaches it only when a developer cancels the contribution, which is
 > refused once the tool has been published.
 
 ## Preparation

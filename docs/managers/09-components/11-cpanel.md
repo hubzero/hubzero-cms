@@ -111,5 +111,4 @@ setting.
 > `index.php?option=com_cpanel&task=module&module=<name>` renders that one
 > administrator module on its own, ignoring whether it is published, what
 > position it is assigned to, and what access level it carries. Nothing in the
-> interface links to it. It is recorded with the project,
-> which is not published to this site.
+> interface links to it. It is a known defect.

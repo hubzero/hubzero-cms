@@ -5,8 +5,11 @@ reviewed: 2026-09-10
 -->
 # Service providers
 
-A service provider registers something into the application container and,
-optionally, does setup once everything is registered. Between them they
+The application container is the object that holds the framework's
+services — the database connection, the session, the router — under short
+keys such as `db` and `router`; [Structure](01-structure.md) introduces it.
+A service provider registers something into that container and, optionally,
+does setup once everything is registered. Between them they
 build the whole runtime: the database connection, the session, the router,
 the document, the template, the plugin dispatcher, the mailer.
 

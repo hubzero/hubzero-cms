@@ -167,8 +167,8 @@ credentials, to match the machine.
 
 > **Warning:** Do not choose **Mandrill (SMTP)**. The option stores the value
 > `mandrill`, but the transport builder only recognises `mandrill+smtp`, so
-> the hub builds no transport and every send throws. Recorded in
-> It is recorded with the project.
+> the hub builds no transport and every send throws. This is a known defect.
+
 <!--include: core/libraries/Hubzero/Mail/Message.php:136-142-->
 
 The value the installer writes into `app/config/mail.php` is `mail`, which is
@@ -209,8 +209,8 @@ the decisions:
 | **Send Password** | Yes | Nothing. No code reads it. |
 | **Simple Registration** | No | Nothing. No code reads it. |
 
-Three of those options do not do what the screen implies, and all three are
-Recorded with the project:
+Three of those options do not do what the screen implies, and all three are known
+defects:
 
 - **Send Password** and **Simple Registration** are declared on the form and
   described in the help text, but nothing in the tree reads either value.
@@ -251,7 +251,7 @@ your members' pages look like to the outside without their ever choosing it.
 > `com_members/site/controllers/register.php` that apply it fall back to
 > **Public** as well. So on a hub installed from that data, and on a hub whose
 > Members options have never been saved, every account is created public
-> whatever the manifest says. Recorded with the project.
+> whatever the manifest says. This is a known defect.
 > Open the tab, read the value, and save it deliberately — see
 > [Check the default, do not trust it](#check-the-default-do-not-trust-it).
 

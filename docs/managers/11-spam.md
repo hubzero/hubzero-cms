@@ -255,7 +255,7 @@ else, and only for a submitter who is not signed in: a ticket from a member
 goes straight through. The same check
 refuses a ticket containing five or more occurrences of `http://` — which
 misses `https://` entirely, so it catches almost nothing on the modern web.
-Recorded with the project.
+This is a known defect.
 
 **The registration CAPTCHA.** A CAPTCHA stops a script creating accounts. It
 does nothing about a human who registers and then posts advertising, and

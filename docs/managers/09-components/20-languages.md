@@ -115,7 +115,7 @@ and the row ID. The edit form takes:
 > nothing done; **Empty Trash** posts a task the controller does not
 > implement. The only working routes into a content language are the title
 > link, which opens the edit form, and the **Status** field inside that form.
-> Both faults are recorded with the project.
+> Both faults are known defects.
 
 The component also carries a multilingual status panel, listing whether the
 language filter plugin is on, how many switcher modules are published, and

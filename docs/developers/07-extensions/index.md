@@ -93,10 +93,9 @@ The templates that ship are in `core/templates`: `kimera` for the site,
 `kameleon` for the administrator interface, plus `system`, `lucent` and
 `welcome`. See [Templates](../11-templates/index.md).
 
-> **Note:** The old version of this page listed languages as a fifth
-> extension type. A language pack is a set of INI files and an XML metadata
-> file, not code, and Hubzero ships only `en-GB`. Translating is covered in
-> [Languages](03-languages.md).
+> **Note:** A language pack is not an extension. It is a set of INI files
+> and an XML metadata file, not code, and Hubzero ships only `en-GB`.
+> Translating is covered in [Languages](03-languages.md).
 
 ## Where extensions live
 

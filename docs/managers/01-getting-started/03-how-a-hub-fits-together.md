@@ -311,7 +311,7 @@ including screens this book does not cover.
   to Files Folder** and **Path to Images Folder** default to `images` in the
   manifest while the code reads `site/media`, so opening that screen and
   saving it untouched points the Media Manager at a directory that does not
-  exist. Recorded with the project.
+  exist. This is a known defect.
 - **Mass Mail Users.** **Users > Mass Mail Users** sends to every account in
   the access group you pick, and the hub reports how many it reached. Nothing
   reverses that. Send to a group of one first.

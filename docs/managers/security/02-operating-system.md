@@ -117,7 +117,7 @@ Install ClamAV, keep `freshclam` running so definitions stay current, and
 scan the whole document root at least weekly.
 
 The CMS calls a scanner on uploaded files by itself. The command it runs
-comes from the `virus_scanner` key in `configuration.php` and defaults to
+comes from the `virus_scanner` key in `app/config/app.php` and defaults to
 `clamscan -i --no-summary --block-encrypted`. A non-zero exit rejects the
 upload, so a broken or unreachable scanner blocks uploads rather than
 silently passing them.

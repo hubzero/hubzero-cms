@@ -6,11 +6,12 @@ screenshots: none
 -->
 # Upgrade guide
 
-Before 2.0 the platform used an older set of class names, and 2.0 replaced
-most of them. An extension written against `JFactory`, `JText` and
-`JRequest` still needs converting. This page is that
-translation table, plus what to do about the database when you upgrade a
-hub.
+Hubzero 1.x was built on the Joomla content management system, and its
+extensions used Joomla's `J`-prefixed classes: `JFactory`, `JText`,
+`JRequest`. Hubzero 2.0 replaced most of them with the framework's own
+classes, so an extension written against the Joomla names still needs
+converting. This page is that translation table, plus what to do about the
+database when you upgrade a hub.
 
 **This page is for inherited code only.** Read it when you have an old
 extension to bring forward, or when you are reading a file in this tree that

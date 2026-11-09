@@ -81,7 +81,7 @@ loader falls back to `core/templates/system`.
 
 | Template | Client | Notes |
 |---|---|---|
-| `kimera` | Site | The reference site template. LESS sources, a colour and background theme in its parameters, and a large set of output overrides in `html/`. Copy this one. |
+| `kimera` | Site | The reference site template. LESS sources (LESS is a stylesheet language the CMS compiles to CSS), a colour and background theme in its parameters, and a large set of output overrides in `html/`. Copy this one. |
 | `lucent` | Site | A newer site template. Leaner, with layered LESS. Registered but not made the home style by its migration, and its manifest is in the older form. |
 | `welcome` | Site | A single-page splash template. It is the home style on a fresh hub — see below. |
 | `system` | Site | The fallback. Also holds the default `email.php`, `group.php`, `help.php`, `login.php` and `offline.php` layouts that other templates inherit. |

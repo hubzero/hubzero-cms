@@ -45,8 +45,7 @@ link puts it back in front of the hub's own access rules.
 > group, is served to any anonymous harvester: title, authors, abstract, tags
 > and the record's address. The files behind it stay protected, but the
 > catalogue entry does not. If the hub has restricted publications whose
-> existence is itself sensitive, disable the plugins below. Recorded in
-> a record kept with the project.
+> existence is itself sensitive, disable the plugins below. This is a known defect.
 
 If that is not wanted, disable the two `oaipmh` plugins under **Extensions →
 Plugins**. The endpoint keeps answering, but with nothing in it.

@@ -110,8 +110,8 @@ The toolbar offers **Options**, **New**, **Delete**, and **Help**.
 > the screen behind it has been partly disabled — it changes the fields and
 > tells nobody, and the comment it writes to the ticket's log is empty.
 > Treat it as gone. If a spam wave puts two hundred junk tickets in the
-> queue, you close or delete them one at a time. Recorded in
-> It is recorded with the project.
+> queue, you close or delete them one at a time. This is a known defect.
+
 ## Reading and answering a ticket
 
 Clicking a ticket's summary opens it. The top of the screen shows the

@@ -47,8 +47,8 @@ project-creation half only runs on a hub whose `application_env` starts with
 
 Everything on the GitLab side — accounts, forks, merge requests, review, the
 web interface — is that application's, not the hub's. This section says
-plainly which parts of the old workflow could be checked against this code
-and which could not.
+plainly which parts of the workflow could be checked against this code and
+which could not.
 
 ## The chapters
 
@@ -63,6 +63,7 @@ and which could not.
 > **Note:** That screenshot shows GitLab 6, from 2014. No current GitLab looks
 > anything like it, and the picture is of GitLab's own project rather than of
 > a hub. Treat it as historical.
+
 ## Why GitLab
 
 A super group's code is a directory on the hub's server. Without a repository,
@@ -180,8 +181,8 @@ messages you may see are:
 
 > **Warning:** That first warning appears on **every** super group save on a
 > hub that has not configured GitLab, including hubs that never intend to.
-> It is noise, not a fault with the group. Recorded in
-> It is recorded with the project.
+> It is noise, not a fault with the group. This is a known defect.
+
 ### What the hub does when a super group is saved
 
 Everything below happens in `_handSuperGroupGitlab()` in
@@ -266,7 +267,7 @@ GitLab works, not how the hub works.
   error page or an HTML 404 from the URL in **Repo URL** produces a fatal
   error rather than a message.
 
-All of these are recorded with the project.
+All of these are known defects.
 ## Developing
 
 The cycle for a super group managed through GitLab is: work in a clone,
@@ -401,8 +402,8 @@ group's directory. Concretely, for each group:
 
 > **Warning:** The controller means to skip migrations when the update fails,
 > but the test it uses never matches, so migrations run either way. Read the
-> output of the merge instead of assuming it stopped. Recorded in
-> It is recorded with the project.
+> output of the merge instead of assuming it stopped. This is a known defect.
+
 ### Rolling back
 
 The rollback point the merge wrote is reachable from muse:

@@ -168,8 +168,8 @@ modules that will and will not show on this page.
 > component's `site/views/<view>/tmpl/<layout>.xml`. The component's own
 > global options are *not* merged into the menu item form: the code that
 > would load them is disabled behind an always-false condition, with a `TODO`
-> saying that fixing it breaks the form. Recorded in
-> It is recorded with the project.
+> saying that fixing it breaks the form. This is a known defect.
+
 ### Where the types come from
 
 The picker is built from every enabled component. For each one the hub looks
@@ -197,7 +197,7 @@ at the view in general.
 > meant to open; **Resources → Standard browse layout**, **Resources item**
 > and **Browse by tags** all fall through to the Resources front page;
 > **Articles → Create Article** returns a 404. Open a new menu item on the
-> site before you publish it. Recorded with the project.
+> site before you publish it. This is a known defect.
 
 The **System Links** group at the end is fixed, and holds three types that
 belong to no component:

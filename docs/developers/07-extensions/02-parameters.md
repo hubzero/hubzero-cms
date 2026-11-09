@@ -158,10 +158,11 @@ These are the types that exist:
 | `sql` | Options from a query given in the field's `query` attribute |
 | `cachehandler`, `sessionhandler`, `databaseconnection` | The configured handlers |
 
-> **Note:** The old version of this page listed `editors`, `languages`,
-> `timezones`, `menu` and `helpsites`. None of those exist. The singular
-> forms — `editor`, `language`, `timezone` — are the real names, there is no
-> menu-picker field, and `helpsites` went with the help system it belonged to.
+> **Note:** Older manifests and instructions sometimes name `editors`,
+> `languages`, `timezones`, `menu` and `helpsites` as field types. None of
+> those exist. The singular forms — `editor`, `language`, `timezone` — are
+> the real names, there is no menu-picker field, and `helpsites` went with
+> the help system it belonged to.
 
 ## Permissions
 

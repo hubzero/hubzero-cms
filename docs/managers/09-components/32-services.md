@@ -66,7 +66,7 @@ The edit form:
 > restricted service is hidden from everyone unless the job board's **Special
 > services group** is set, and when it is set the service is offered to
 > members who are *not* in that group rather than to members who are.
-> Recorded with the project. Leave **Restricted** clear.
+> This is a known defect. Leave **Restricted** clear.
 
 The first time an employer reaches the job board's subscription screen and
 finds no `jobs` services at all, the job board creates two for you:
@@ -83,8 +83,7 @@ added, updated and expiry dates.
 
 > **Note:** The **Active** filter does not filter. The controller understands
 > **Pending** and **Cancelled**; anything else, **Active** included, falls
-> through to showing everything. This is recorded in
-> It is recorded with the project.
+> through to showing everything. This is a known defect.
 Opening a subscription shows the service and its price, the member's profile
 and employer details, the amounts paid and pending, and an **Administrator
 Notes** box. Below that, **Manage Subscription** offers one action at a time:
@@ -104,8 +103,8 @@ are appended to the notes with a timestamp and mailed to the member.
 > always zero: the subscription is cancelled showing nothing owed, and
 > because the pending payment is zeroed at the same time, **Process refund**
 > never appears afterwards. The job board's own cancel screen has the same
-> fault. Work refunds out by hand. Recorded in
-> It is recorded with the project.
+> fault. Work refunds out by hand. This is a known defect.
+
 ### Activating a subscription somebody has paid for
 
 An employer has chosen the Premium service and sent the department a cheque

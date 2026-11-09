@@ -191,7 +191,7 @@ directly; otherwise it recompiles when any imported file has changed.
 > after the LESS sources change. Delete `app/cache/{client}/site.css` and
 > `app/cache/{client}/site.less.cache` to force a rebuild. `muse cache css
 > clear` looks for those two files one directory too high and clears
-> nothing; that is recorded with the project.
+> nothing; that is a known defect.
 
 A template can take the build over. If the active template has a
 `less/site.less`, that file is used as the build root instead of the core one,

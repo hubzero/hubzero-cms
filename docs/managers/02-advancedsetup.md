@@ -24,16 +24,6 @@ eventually leave. Write down which account, in whose name, before you set one
 up. A dead API key is the commonest way an integration stops working, and it
 is the hardest to diagnose because nothing on the hub says so.
 
-> **Note:** This page was imported as "Getting Started: Advanced Setup" and
-> was mostly a set of step-by-step instructions for registering the hub with
-> Facebook, LinkedIn, Google, ORCID, and CILogon. Those instructions were
-> stale, and they duplicated
-> [Authentication](05-configuring/06-authentication.md) and
-> [External authenticators](05-configuring/07-extauth.md), which cover the
-> same ground against the current plugins. They have been removed rather than
-> maintained in two places. What is left is the material that has nowhere
-> else to live.
-
 ## Sign-in providers
 
 Every way of signing in — Google, Facebook, LinkedIn, ORCID, CILogon,

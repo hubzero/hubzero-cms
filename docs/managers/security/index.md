@@ -29,7 +29,7 @@ that look like security controls and are not.
 | Content-Security-Policy header | **Extensions** > **Plug-in Manager** > **System - Content Security Policy** (ships disabled) |
 | Referrer-Policy header | **Extensions** > **Plug-in Manager** > **System - Referrer Policy** (ships enabled) |
 | Spam detection | **Extensions** > **Plug-in Manager**, the `antispam` group |
-| Upload virus scanning | The `virus_scanner` key in `configuration.php` |
+| Upload virus scanning | The `virus_scanner` key in `app/config/app.php` |
 
 Every parameter behind these screens is listed in the generated
 [configuration reference](../../reference/configuration/index.md).
