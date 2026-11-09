@@ -49,7 +49,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
@@ -167,7 +166,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -480,7 +478,7 @@ directly; otherwise it recompiles when any imported file has changed.</p>
 <p><strong>Warning:</strong> In production the cached file is served as it stands, even
 after the LESS sources change. Delete <code>app/cache/{client}/site.css</code> and
 <code>app/cache/{client}/site.less.cache</code> to force a rebuild. <code>muse cache css clear</code> looks for those two files one directory too high and clears
-nothing; that is recorded with the project.</p>
+nothing; that is a known defect.</p>
 </aside>
 <p>A template can take the build over. If the active template has a
 <code>less/site.less</code>, that file is used as the build root instead of the core one,

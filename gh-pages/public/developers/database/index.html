@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Database · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Hubzero talks to the database through three layers, each built on the one below it, and this page covers all three. The driver ( ) wraps PDO and runs prepared…">
+  <meta name="description" content="Hubzero talks to the database through three layers, each built on the one below it, and this page covers all three. The driver ( ) wraps PDO, PHP&#x27;s own…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/database/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +49,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
@@ -156,7 +155,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -183,9 +181,10 @@
 <p>Hubzero talks to the database through three layers, each built on the one
 below it, and this page covers all three. The
 <a href="driver/index.html">driver</a> (<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Driver.php"><code>Hubzero\Database\Driver</code></a>)
-wraps PDO and runs prepared statements. The
+wraps PDO, PHP's own database interface, and runs prepared statements. The
 <a href="query-builder/index.html">query builder</a> assembles statements without you writing SQL
-strings. The <a href="orm/index.html">ORM</a> maps table rows to model objects. Schema changes are
+strings. The <a href="orm/index.html">ORM</a>, the object-relational mapper, represents table
+rows as PHP model objects. Schema changes are
 made by <a href="migrations/index.html">migrations</a>, which is the only supported way to change a
 hub's tables.</p>
 <p>The examples that are not taken from a shipped extension use one running

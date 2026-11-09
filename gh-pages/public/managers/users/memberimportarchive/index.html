@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Member import (archive) · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="Why the old member import walkthrough no longer applies, and where the current one is.">
+  <title>Member import: changes from earlier instructions · Hub managers · Hubzero Documentation</title>
+  <meta name="description" content="What has changed for anyone following member import instructions written against an earlier release, and where the current walkthrough is.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/users/memberimportarchive/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,7 +68,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../memberimport/index.html">Member import</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Member import (archive)</a><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Member import: changes from earlier instructions</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#what-changed">What changed</a></li>
 <li class="toc__item toc__item--l2"><a href="#delivering-passwords">Delivering passwords</a></li>
 </ol></li>
@@ -154,58 +154,53 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Users</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Member import (archive)</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Hub managers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Users</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Member import: changes from earlier instructions</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Hub managers</p>
-          <h1>Member import (archive)</h1>
+          <h1>Member import: changes from earlier instructions</h1>
         </header>
         
         <div class="prose">
-<p>This page carried an older walkthrough of the member importer, built around a
-fixed table of CSV columns. It is kept because it is linked from elsewhere.
-Everything you need is now in <a href="../memberimport/index.html">Member import</a>, checked
-against the code in this release.</p>
-<p>Read the list below if you have an old import file, an old set of notes, or a
-procedure someone wrote down before this release. Each item is somewhere the
-old instructions would lead you into an import that does not do what you
-expect. If you are starting fresh, go straight to
-<a href="../memberimport/index.html">Member import</a> instead.</p>
+<p><a href="../memberimport/index.html">Member import</a> is the current walkthrough of the
+importer, checked against this release. Read this page only if you have an
+import file, a set of notes, or a procedure written against an earlier
+release. Each item below is somewhere the earlier instructions lead to an
+import that does not do what you expect. If you are starting fresh, go
+straight to <a href="../memberimport/index.html">Member import</a> instead.</p>
 <h2 id="what-changed">What changed</h2>
-<p><strong>The column list was never fixed, and is now clearly not.</strong> The old page
-printed a table of thirty-odd columns — <code>uidNumber</code>, <code>mailPreferenceOption</code>,
-<code>nativeTribe</code> and the rest — as though that were the schema. It is not. The
-sample file is generated when you press <strong>Sample import file</strong>, from the
-accounts table plus every field currently in your hub's profile builder plus
-the <code>groups</code> and <code>projects</code> columns. Two hubs with different profile schemas
-get different sample files. Always download a fresh one rather than reusing a
+<p><strong>There is no fixed column list.</strong> Earlier instructions printed a table of
+thirty-odd columns — <code>uidNumber</code>, <code>mailPreferenceOption</code>, <code>nativeTribe</code> and
+the rest — as though that were the schema. It is not. The sample file is
+generated when you press <strong>Sample import file</strong>, from the accounts table
+plus every field currently in your hub's profile builder plus the <code>groups</code>
+and <code>projects</code> columns. Two hubs with different profile schemas get
+different sample files. Always download a fresh one rather than reusing a
 column list.</p>
 <p><strong>CSV is not the only format.</strong> The importer sniffs the file's MIME type and
-picks a reader; CSV, Excel, JSON and XML all work. The old page's &quot;the import
-only accepts CSV files&quot; is wrong.</p>
+picks a reader; CSV, Excel, JSON and XML all work.</p>
 <p><strong>Columns are mapped, not matched by name.</strong> After a file is uploaded the
 importer shows a <strong>Field Mapping</strong> screen with its guess for each column and
 lets you correct it. Column names close to the field name — <code>lname</code>,
 <code>userPassword</code>, <code>emailConfirmed</code> — are recognised automatically.</p>
 <p><strong>The import mode labels changed.</strong> They now read <strong>Overwrite all fields</strong> and
-<strong>Modify only non-empty fields</strong>. The old page called them <em>Update</em> and
-<em>Patch</em>, and described Update as &quot;when creating new members&quot;, which was never
-what it meant: the modes decide how a record that matches an existing account
-is merged.</p>
+<strong>Modify only non-empty fields</strong>. Earlier instructions called them <em>Update</em>
+and <em>Patch</em>, and described Update as &quot;when creating new members&quot;, which was
+never what it meant: the modes decide how a record that matches an existing
+account is merged.</p>
 <p><strong>The &quot;Email new member&quot; parameter does not send a password.</strong> It sends the
 standard account confirmation email, which carries the username and a
-confirmation link. The old page said it delivered the login and password in
-plain text.</p>
+confirmation link. It never delivered the login and password in plain text.</p>
 <p><strong>The &quot;Approved&quot; parameter has no effect</strong> in this release. Whether an imported
 account is approved comes from the record's <code>approved</code> column.</p>
 <h2 id="delivering-passwords">Delivering passwords</h2>
-<p>The restricted-data procedure from the old page still holds and has been moved
-into the current chapter, corrected: see
+<p>The procedure for handing out restricted data is in the current chapter,
+corrected: see
 <a href="../memberimport/index.html#delivering-passwords-safely">Delivering passwords safely</a>.
-One detail there is worth repeating, because it makes the old page's third step
-unnecessary — the importer already expires every password it sets, so a new
-account's owner is forced to change it at first login without anyone editing
-the account.</p>
+One detail there is worth repeating, because it removes a step from the
+earlier procedure: the importer already expires every password it sets, so a
+new account's owner is forced to change it at first login without anyone
+editing the account.</p>
 
         </div>
         <p class="stamp">Rewritten and checked against <code>2.4-main @ 35f103b1b3</code> on 2026-09-10.</p>

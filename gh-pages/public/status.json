@@ -37,9 +37,9 @@
   {
    "slug": "developers",
    "title": "Developers",
-   "pages": 110,
+   "pages": 108,
    "counts": {
-    "rewritten": 110
+    "rewritten": 108
    }
   },
   {
@@ -53,7 +53,7 @@
   }
  ],
  "totals": {
-  "rewritten": 270,
+  "rewritten": 268,
   "draft": 1,
   "reviewed": 23,
   "generated": 154

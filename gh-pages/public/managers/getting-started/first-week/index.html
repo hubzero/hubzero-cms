@@ -83,7 +83,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../users/members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import: changes from earlier instructions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -338,8 +338,7 @@ credentials, to match the machine.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Do not choose <strong>Mandrill (SMTP)</strong>. The option stores the value
 <code>mandrill</code>, but the transport builder only recognises <code>mandrill+smtp</code>, so
-the hub builds no transport and every send throws. Recorded in
-It is recorded with the project.</p>
+the hub builds no transport and every send throws. This is a known defect.</p>
 </aside>
 <pre><code class="language-php">
 						break;
@@ -419,8 +418,8 @@ the decisions:</p>
 </tr>
 </tbody>
 </table>
-<p>Three of those options do not do what the screen implies, and all three are
-Recorded with the project:</p>
+<p>Three of those options do not do what the screen implies, and all three are known
+defects:</p>
 <ul>
 <li><strong>Send Password</strong> and <strong>Simple Registration</strong> are declared on the form and
 described in the help text, but nothing in the tree reads either value.
@@ -459,7 +458,7 @@ the shipped install data stores it as <strong>Public</strong>, and both places i
 <code>com_members/site/controllers/register.php</code> that apply it fall back to
 <strong>Public</strong> as well. So on a hub installed from that data, and on a hub whose
 Members options have never been saved, every account is created public
-whatever the manifest says. Recorded with the project.
+whatever the manifest says. This is a known defect.
 Open the tab, read the value, and save it deliberately — see
 <a href="#check-the-default-do-not-trust-it">Check the default, do not trust it</a>.</p>
 </aside>

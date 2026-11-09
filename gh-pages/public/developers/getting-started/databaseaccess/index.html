@@ -54,7 +54,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
@@ -158,7 +157,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -184,7 +182,7 @@
         <div class="prose">
 <p>How to reach a hub's database from the command line, and the one convention
 that will confuse you if nobody tells you about it: the <code>#__</code> table prefix.</p>
-<p>You will want a <code>mysql</code> prompt sooner than you expect — to see what a
+<p>You will want a database prompt sooner than you expect — to see what a
 migration actually did, or what a form saved. Read this before you write a
 query into an extension, because the prefix rule is not optional and the
 mistake it prevents does not show up until someone installs your work on a
@@ -205,8 +203,13 @@ returns a plain PHP array:</p>
 <p>The file is written by the installer and is not in the repository. Read it
 over <a href="../fileaccess/index.html#reaching-the-server">SSH</a>; it is only readable by the
 web server user and root.</p>
-<pre><code class="language-bash">mysql -u hubuser -p hubdatabase
+<p>Then, on the server, open a prompt with the user and database names from
+that file. The client asks for the password:</p>
+<pre><code class="language-bash">mariadb -u hubuser -p hubdatabase
 </code></pre>
+<p>On older servers the client is called <code>mysql</code>. In the
+<a href="../devenvironment/index.html#developing-in-docker">Docker development setup</a>, the
+<code>docker compose exec db …</code> command on that page opens the same prompt.</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> A hub account does not carry shell access. A system
 administrator has to grant SSH separately.</p>
@@ -236,16 +239,17 @@ the statement goes out:</p>
 literal <code>jos_</code> in it is a bug: it breaks on any hub whose prefix differs.
 It will not break on yours, which is the problem — the failure arrives on
 somebody else's hub as <code>Table 'theirdb.jos_booking_instruments' doesn't exist</code>, naming a prefix they have never used. Copying a working statement
-out of a <code>mysql</code> prompt and into a model is how it happens; put the <code>#__</code>
+out of a database prompt and into a model is how it happens; put the <code>#__</code>
 back on the way in.
 The same placeholder is the default table name a model derives for itself —
 <code>#__{namespace}_{plural model name}</code> — so a <code>Post</code> model in the <code>blog</code>
 namespace reads and writes <code>#__blog_posts</code> without being told to.</p>
-<p>Translate in your head when you move between a <code>mysql</code> prompt and the code:
+<p>Translate in your head when you move between a database prompt and the code:
 <code>SELECT * FROM jos_users</code> at the prompt is <code>#__users</code> in a query.</p>
 <h2 id="dumping-and-loading">Dumping and loading</h2>
 <p>Muse wraps the two operations you actually need, using the hub's own
-credentials so you do not have to find them:</p>
+credentials so you do not have to find them. Run both from the hub's root
+directory, the one holding <code>core/</code> and <code>index.php</code>:</p>
 <pre><code class="language-bash">php core/bin/muse database dump
 php core/bin/muse database load &lt;file&gt;
 </code></pre>
@@ -264,7 +268,7 @@ given:</p>
 <a href="../../database/query-builder/index.html">query builder</a>, the
 <a href="../../database/orm/index.html">ORM</a>, and
 <a href="../../database/migrations/index.html">migrations</a> for schema changes. Schema
-changes belong in a migration, not in a <code>mysql</code> prompt — a change made by
+changes belong in a migration, not in a database prompt — a change made by
 hand is a change the next hub to run the migrations will not have.</p>
 
         </div>

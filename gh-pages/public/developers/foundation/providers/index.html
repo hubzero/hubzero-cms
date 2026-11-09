@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Service providers · Developers · Hubzero Documentation</title>
-  <meta name="description" content="A service provider registers something into the application container and, optionally, does setup once everything is registered. Between them they build the…">
+  <meta name="description" content="The application container is the object that holds the framework&#x27;s services — the database connection, the session, the router — under short keys such as and ;…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/foundation/providers/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +49,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
@@ -158,7 +157,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -182,8 +180,11 @@
         </header>
         
         <div class="prose">
-<p>A service provider registers something into the application container and,
-optionally, does setup once everything is registered. Between them they
+<p>The application container is the object that holds the framework's
+services — the database connection, the session, the router — under short
+keys such as <code>db</code> and <code>router</code>; <a href="../structure/index.html">Structure</a> introduces it.
+A service provider registers something into that container and, optionally,
+does setup once everything is registered. Between them they
 build the whole runtime: the database connection, the session, the router,
 the document, the template, the plugin dispatcher, the mailer.</p>
 <h2 id="the-list-of-providers">The list of providers</h2>

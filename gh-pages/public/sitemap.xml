@@ -192,7 +192,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/getting-started/upgrade/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/getting-started/browsersupport/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/getting-started/devenvironment/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/tutorials/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/structure/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/foundation/constants/</loc></url>
@@ -286,7 +285,6 @@
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/supergroups-gitlab/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/testing/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/api/</loc></url>
-  <url><loc>https://hubzero.github.io/hubzero-cms/developers/aws/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/contributing/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/</loc></url>
   <url><loc>https://hubzero.github.io/hubzero-cms/developers/conventions/php-style/</loc></url>

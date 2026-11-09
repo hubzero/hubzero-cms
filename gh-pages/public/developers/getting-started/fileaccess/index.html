@@ -53,7 +53,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
@@ -157,7 +156,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -205,18 +203,22 @@ macOS and Linux have <code>ssh</code> and <code>sftp</code> installed already.</
 on the remote side, <code>lls</code> and <code>lcd</code> on the local side, and <code>help</code> lists the
 rest. <code>scp -r</code> and <code>rsync -a</code> are usually quicker for a whole directory.</p>
 <h2 id="finding-the-hub">Finding the hub</h2>
-<p>The web root is the hub's document root, conventionally <code>/www/&lt;hubname&gt;</code> on
-a Hubzero server. Many sites keep a second, development copy alongside it,
-often <code>/www/dev</code>. Both are ordinary directories; nothing in the CMS depends
-on the name.</p>
+<p>The hub's files live in the directory its installer was pointed at. The
+<a href="../../../sysadmins/installing/index.html">installation guides</a> use <code>/var/www/hub</code>,
+and many sites keep a second, development copy alongside it. Ask whoever
+installed the hub which directory it is; nothing in the CMS depends on the
+name. In the <a href="../devenvironment/index.html#developing-in-docker">Docker development setup</a>
+the hub's files are your own checkout, and you edit them directly with no
+SSH involved.</p>
 <p>Underneath, the layout is the one described in
 <a href="../../foundation/structure/index.html">Structure</a>: <code>core/</code> holds the platform,
 <code>app/</code> holds this hub's configuration, extensions, cache, and uploads, and
 <code>index.php</code> at the root is the only entry point.</p>
 <p>Two things to know before you edit anything in place:</p>
 <ul>
-<li>Files must stay readable by the web server user, <code>apache</code> on Enterprise
-Linux. A file you create over sFTP is owned by you.</li>
+<li>Files must stay readable by the account the web server runs as:
+<code>www-data</code> on Debian and Ubuntu, <code>apache</code> on Enterprise Linux. A file you
+create over sFTP is owned by you, so check its permissions afterwards.</li>
 <li>Everything under <code>app/</code> is a running hub's state and is not in the
 repository. Everything under <code>core/</code> is, so an edit there is a change you
 will have to carry forward or contribute back.</li>

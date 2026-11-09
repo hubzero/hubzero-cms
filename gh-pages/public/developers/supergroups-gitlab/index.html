@@ -49,7 +49,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../foundation/constants/index.html">Constants</a></li>
@@ -180,7 +179,6 @@
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -240,8 +238,8 @@ project-creation half only runs on a hub whose <code>application_env</code> star
 <code>production</code>.</p>
 <p>Everything on the GitLab side — accounts, forks, merge requests, review, the
 web interface — is that application's, not the hub's. This section says
-plainly which parts of the old workflow could be checked against this code
-and which could not.</p>
+plainly which parts of the workflow could be checked against this code and
+which could not.</p>
 <h2 id="the-chapters">The chapters</h2>
 <table>
 <thead>
@@ -387,8 +385,7 @@ messages you may see are:</p>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> That first warning appears on <strong>every</strong> super group save on a
 hub that has not configured GitLab, including hubs that never intend to.
-It is noise, not a fault with the group. Recorded in
-It is recorded with the project.</p>
+It is noise, not a fault with the group. This is a known defect.</p>
 </aside>
 <h3 id="what-the-hub-does-when-a-super-group-is-saved">What the hub does when a super group is saved</h3>
 <p>Everything below happens in <code>_handSuperGroupGitlab()</code> in
@@ -467,7 +464,7 @@ expose it elsewhere. Not verified against a live GitLab.</li>
 error page or an HTML 404 from the URL in <strong>Repo URL</strong> produces a fatal
 error rather than a message.</li>
 </ul>
-<p>All of these are recorded with the project.</p>
+<p>All of these are known defects.</p>
 <h2 id="developing">Developing</h2>
 <p>The cycle for a super group managed through GitLab is: work in a clone,
 propose the change as a merge request, and have an administrator pull the
@@ -572,8 +569,7 @@ against the group's own database.</li>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The controller means to skip migrations when the update fails,
 but the test it uses never matches, so migrations run either way. Read the
-output of the merge instead of assuming it stopped. Recorded in
-It is recorded with the project.</p>
+output of the merge instead of assuming it stopped. This is a known defect.</p>
 </aside>
 <h3 id="rolling-back">Rolling back</h3>
 <p>The rollback point the merge wrote is reachable from muse:</p>

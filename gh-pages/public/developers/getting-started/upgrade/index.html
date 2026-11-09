@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Upgrade guide · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Before 2.0 the platform used an older set of class names, and 2.0 replaced most of them. An extension written against , and still needs converting. This page…">
+  <meta name="description" content="Hubzero 1.x was built on the Joomla content management system, and its extensions used Joomla&#x27;s -prefixed classes: , , . Hubzero 2.0 replaced most of them with…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/getting-started/upgrade/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,7 +62,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
@@ -166,7 +165,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -190,11 +188,12 @@
         </header>
         
         <div class="prose">
-<p>Before 2.0 the platform used an older set of class names, and 2.0 replaced
-most of them. An extension written against <code>JFactory</code>, <code>JText</code> and
-<code>JRequest</code> still needs converting. This page is that
-translation table, plus what to do about the database when you upgrade a
-hub.</p>
+<p>Hubzero 1.x was built on the Joomla content management system, and its
+extensions used Joomla's <code>J</code>-prefixed classes: <code>JFactory</code>, <code>JText</code>,
+<code>JRequest</code>. Hubzero 2.0 replaced most of them with the framework's own
+classes, so an extension written against the Joomla names still needs
+converting. This page is that translation table, plus what to do about the
+database when you upgrade a hub.</p>
 <p><strong>This page is for inherited code only.</strong> Read it when you have an old
 extension to bring forward, or when you are reading a file in this tree that
 still uses the old names — there are plenty. Do not use it as a menu. Nothing

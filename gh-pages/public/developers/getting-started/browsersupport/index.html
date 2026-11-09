@@ -57,7 +57,6 @@
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
@@ -161,7 +160,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -196,10 +194,6 @@ current Chrome, Edge, Firefox and Safari, write ES2020 and modern CSS, and
 feature-detect anything newer.</strong> The rest of the page is where that number
 comes from, because nobody in this repository will tell you if you get it
 wrong.</p>
-<p>The page this replaces carried a table of supported versions written in
-2012: Internet Explorer 7 through 9, Firefox 3 to 5, Safari 5, Android 2
-WebKit, Opera 10. None of it is meaningful now. The code in this tree cannot
-run in any of those browsers, and no part of the repository checks.</p>
 <h2 id="what-the-repository-does-not-contain">What the repository does not contain</h2>
 <p>Each of these was looked for and is not present anywhere outside
 <code>core/vendor/</code> and vendored third-party libraries:</p>
@@ -447,10 +441,7 @@ JavaScript or use an <code>@supports</code> rule in CSS. Do not use <code>Detect
 parses a string the browser is free to lie about, and it is not maintained
 against current user agents.</li>
 <li>Progressive enhancement — a usable page first, richness layered on — is
-still the right approach, and is the one idea worth keeping from the
-&quot;graded browser support&quot; material this page used to reproduce. That
-material was Yahoo!'s, written in the mid-2000s, and described a testing
-programme Hubzero does not run.</li>
+still the right approach.</li>
 </ul>
 <h2 id="next">Next</h2>
 <p><a href="../devenvironment/index.html">Development environment</a> covers getting a hub to develop

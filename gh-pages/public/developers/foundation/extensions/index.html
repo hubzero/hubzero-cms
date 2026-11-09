@@ -49,7 +49,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section is-open"><details open><summary><a class="tree__link" href="../index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../constants/index.html">Constants</a></li>
@@ -161,7 +160,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -300,8 +298,9 @@ user holds and whose menu assignment matches, ordered by <code>ordering</code>;
 <code>byPosition($position)</code> filters that list, and the template asks for a
 position at a time.</p>
 <p>Rendering a module is an <code>include</code> of <code>mod_{name}.php</code> with output buffering
-on, wrapped in a <em>chrome</em> function from the template's
-<code>html/modules.php</code> that supplies the surrounding markup.</p>
+on, wrapped in a <em>chrome</em> function from the template's <code>html/modules.php</code>.
+Chrome is the template's name for the markup around a module's output: the
+box, its heading and its CSS classes.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> On this release a module's <code>mod_{name}.php</code> is a stub that
 requires <code>helper.php</code>, and the loader includes the file rather than
@@ -356,8 +355,7 @@ See <a href="../../templates/overrides/index.html">Overrides</a>.</p>
 <h2 id="languages">Languages</h2>
 <p>A language is not an extension. It is a set of INI files and an XML metadata
 file, loaded by <code>Hubzero\Language\Translator</code>, and Hubzero ships <code>en-GB</code>
-only. Earlier versions of this page called languages a fifth extension type;
-they are not one. See <a href="../../basics/languages/index.html">Languages</a>.</p>
+only. See <a href="../../basics/languages/index.html">Languages</a>.</p>
 <h2 id="nothing-scans-the-filesystem">Nothing scans the filesystem</h2>
 <p>Worth saying plainly, because it is the first thing that trips people up: a
 directory on disk is not an extension. Every loader above reads a database

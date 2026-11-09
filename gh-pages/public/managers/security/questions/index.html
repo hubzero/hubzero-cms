@@ -68,7 +68,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../users/members/index.html">Members</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/registration/index.html">Registration</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/memberimport/index.html">Member import</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import (archive)</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../users/memberimportarchive/index.html">Member import: changes from earlier instructions</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/groups/index.html">Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accessgroups/index.html">Access Groups</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../users/accesslevels/index.html">Access Levels</a></li>
@@ -220,7 +220,7 @@ the <code>virus_scanner</code> configuration key, which defaults to:</p>
 <pre><code>clamscan -i --no-summary --block-encrypted
 </code></pre>
 <p><code>virus_scanner</code> has no field in <strong>Global Configuration</strong>; set it in
-<code>configuration.php</code> if you want a different command, for example <code>clamdscan</code>
+<code>app/config/app.php</code> if you want a different command, for example <code>clamdscan</code>
 against a running daemon. A non-zero exit from the scanner rejects the file,
 so a scanner that is missing or whose daemon is down fails closed and logs
 the reason.</p>

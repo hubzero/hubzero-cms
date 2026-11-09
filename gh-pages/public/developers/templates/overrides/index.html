@@ -49,7 +49,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/browsersupport/index.html">Browser support</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../getting-started/devenvironment/index.html">Development environment</a></li>
 </ul></details></li>
-<li class="tree__leaf"><a class="tree__link" href="../../tutorials/index.html">Video tutorials</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../foundation/index.html">Foundation</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/structure/index.html">Application structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../foundation/constants/index.html">Constants</a></li>
@@ -170,7 +169,6 @@
 <li class="tree__leaf"><a class="tree__link" href="../../supergroups-gitlab/index.html">Super groups with GitLab</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../testing/index.html">Testing</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../api/index.html">REST API</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../aws/index.html">AWS</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../contributing/index.html">Contributing</a></li>
 <li class="tree__section"><details><summary><a class="tree__link" href="../../conventions/index.html">Conventions</a></summary><ul class="tree">
 <li class="tree__leaf"><a class="tree__link" href="../../conventions/php-style/index.html">PHP Coding Style</a></li>
@@ -600,7 +598,7 @@ through a view whose layout is
 adds <code>{override_path}/html/pagination/</code> to its search path only when an
 <code>override_path</code> was passed into its constructor, and <code>Paginator::render()</code>
 never passes one. A <code>html/pagination/paginator.php</code> in your template is
-ignored. This is recorded with the project.</p>
+ignored. This is a known defect.</p>
 <p>The older mechanism — a <code>templates/{name}/html/pagination.php</code> defining
 <code>pagination_list_footer()</code>, <code>pagination_list_render()</code>,
 <code>pagination_item_active()</code> and <code>pagination_item_inactive()</code> — was removed

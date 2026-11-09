@@ -180,7 +180,7 @@
 /documentation/240/users/wishlist https://hubzero.github.io/hubzero-cms/users/wishlist/
 /documentation/240/webdevs https://hubzero.github.io/hubzero-cms/developers/
 /documentation/240/webdevs/api https://hubzero.github.io/hubzero-cms/developers/api/
-/documentation/240/webdevs/aws https://hubzero.github.io/hubzero-cms/developers/aws/
+/documentation/240/webdevs/aws https://hubzero.github.io/hubzero-cms/sysadmins/installing/
 /documentation/240/webdevs/basics https://hubzero.github.io/hubzero-cms/developers/basics/
 /documentation/240/webdevs/basics/config https://hubzero.github.io/hubzero-cms/developers/basics/config/
 /documentation/240/webdevs/basics/cron https://hubzero.github.io/hubzero-cms/developers/basics/cron/
@@ -290,7 +290,7 @@
 /documentation/240/webdevs/templates/socicons https://hubzero.github.io/hubzero-cms/developers/templates/socicons/
 /documentation/240/webdevs/templates/structure https://hubzero.github.io/hubzero-cms/developers/templates/structure/
 /documentation/240/webdevs/testing https://hubzero.github.io/hubzero-cms/developers/testing/
-/documentation/240/webdevs/tutorials https://hubzero.github.io/hubzero-cms/developers/tutorials/
+/documentation/240/webdevs/tutorials https://hubzero.github.io/hubzero-cms/developers/
 /documentation/current/installation https://hubzero.github.io/hubzero-cms/sysadmins/installing/
 /documentation/current/installation/el8 https://hubzero.github.io/hubzero-cms/sysadmins/installing/
 /documentation/current/installation/el8/addons https://hubzero.github.io/hubzero-cms/sysadmins/installing/
@@ -450,7 +450,7 @@
 /documentation/current/users/wishlist https://hubzero.github.io/hubzero-cms/users/wishlist/
 /documentation/current/webdevs https://hubzero.github.io/hubzero-cms/developers/
 /documentation/current/webdevs/api https://hubzero.github.io/hubzero-cms/developers/api/
-/documentation/current/webdevs/aws https://hubzero.github.io/hubzero-cms/developers/aws/
+/documentation/current/webdevs/aws https://hubzero.github.io/hubzero-cms/sysadmins/installing/
 /documentation/current/webdevs/basics https://hubzero.github.io/hubzero-cms/developers/basics/
 /documentation/current/webdevs/basics/config https://hubzero.github.io/hubzero-cms/developers/basics/config/
 /documentation/current/webdevs/basics/cron https://hubzero.github.io/hubzero-cms/developers/basics/cron/
@@ -560,7 +560,7 @@
 /documentation/current/webdevs/templates/socicons https://hubzero.github.io/hubzero-cms/developers/templates/socicons/
 /documentation/current/webdevs/templates/structure https://hubzero.github.io/hubzero-cms/developers/templates/structure/
 /documentation/current/webdevs/testing https://hubzero.github.io/hubzero-cms/developers/testing/
-/documentation/current/webdevs/tutorials https://hubzero.github.io/hubzero-cms/developers/tutorials/
+/documentation/current/webdevs/tutorials https://hubzero.github.io/hubzero-cms/developers/
 /documentation/platform_2_4 https://hubzero.github.io/hubzero-cms/tools/
 /documentation/platform_2_4/tool-administrators https://hubzero.github.io/hubzero-cms/tools/administrators/
 /documentation/platform_2_4/tool-administrators/installing-tool-dependencies https://hubzero.github.io/hubzero-cms/tools/administrators/#installing-tool-dependencies
