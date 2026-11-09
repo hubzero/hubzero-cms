@@ -11,13 +11,11 @@ extensions, and keeps the site healthy. Almost all of that happens in the
 administrator interface at `/administrator`, which this book walks through
 screen by screen.
 
-It is written for whoever ended up running the hub. That is usually not a
-full-time administrator but a researcher, a lab manager, or somebody who
-inherited the site along with three other jobs. So each chapter says what a
-screen is for before it lists the fields. It says where a change is hard to
-undo, reaches people already using the hub, or cannot be tried out first.
-And where something does not work — an inert button, a dead filter, a
-setting nothing reads — it says so, rather than describing the intention.
+You do not need to write PHP or administer a server to use this book. You
+need an account allowed into the administrator interface; an ordinary member
+account may not have that permission. Each chapter explains what a screen
+does before listing its fields, and identifies changes that delete content,
+send messages, or affect people already using the hub.
 
 This book is not a field-by-field reference; that is the generated
 [configuration reference](../reference/configuration/index.md). It is not
@@ -29,21 +27,18 @@ server, and upgrading it later, is
 
 ## Where to start
 
-If the hub is new, read
-[The administrator interface](01-getting-started/01-administrator-interface.md) and then
-[The first week with a new hub](01-getting-started/02-first-week.md). The first
-covers the login and the back end's menus. The second takes you in order
-through the choices that are hard to change later: mail, registration,
-access, the front page, and the scheduled jobs. It links to the chapter
-covering each. [Configuring](05-configuring/index.md) has the settings
-screens in full.
+For a new hub, or if you are new to Hubzero, read these in order:
 
-If the screens make sense one at a time but not together, read
-[How a hub fits together](01-getting-started/03-how-a-hub-fits-together.md). The rest
-of this book takes it for granted. It explains the two halves of the
-application and how a page is built from a component, a template and its
-modules. It also says what lives in the database and what lives on disk,
-and what a manager can and cannot break.
+1. [How a hub fits together](01-getting-started/03-how-a-hub-fits-together.md)
+   explains the public site, administrator interface, and the extensions
+   that build a page. It also explains where the hub stores its content.
+2. [The administrator interface](01-getting-started/01-administrator-interface.md)
+   covers signing in, the menus, and the controls shared by many screens.
+3. [The first week with a new hub](01-getting-started/02-first-week.md)
+   takes you through mail, registration, access, the front page, and
+   scheduled jobs, with links to the detailed settings chapters.
+
+[Configuring](05-configuring/index.md) covers the settings screens in full.
 
 If you are taking over a running hub, start with
 [Daily maintenance](03-maintenance/index.md) and

@@ -164,13 +164,11 @@ members and their access, curates its content, installs and configures
 extensions, and keeps the site healthy. Almost all of that happens in the
 administrator interface at <code>/administrator</code>, which this book walks through
 screen by screen.</p>
-<p>It is written for whoever ended up running the hub. That is usually not a
-full-time administrator but a researcher, a lab manager, or somebody who
-inherited the site along with three other jobs. So each chapter says what a
-screen is for before it lists the fields. It says where a change is hard to
-undo, reaches people already using the hub, or cannot be tried out first.
-And where something does not work — an inert button, a dead filter, a
-setting nothing reads — it says so, rather than describing the intention.</p>
+<p>You do not need to write PHP or administer a server to use this book. You
+need an account allowed into the administrator interface; an ordinary member
+account may not have that permission. Each chapter explains what a screen
+does before listing its fields, and identifies changes that delete content,
+send messages, or affect people already using the hub.</p>
 <p>This book is not a field-by-field reference; that is the generated
 <a href="../reference/configuration/index.html">configuration reference</a>. It is not
 about writing code for a hub, which is <a href="../developers/index.html">Developers</a>.</p>
@@ -178,20 +176,18 @@ about writing code for a hub, which is <a href="../developers/index.html">Develo
 server, and upgrading it later, is
 <a href="../sysadmins/index.html">System administrators</a>.</p>
 <h2 id="where-to-start">Where to start</h2>
-<p>If the hub is new, read
-<a href="getting-started/administrator-interface/index.html">The administrator interface</a> and then
-<a href="getting-started/first-week/index.html">The first week with a new hub</a>. The first
-covers the login and the back end's menus. The second takes you in order
-through the choices that are hard to change later: mail, registration,
-access, the front page, and the scheduled jobs. It links to the chapter
-covering each. <a href="configuring/index.html">Configuring</a> has the settings
-screens in full.</p>
-<p>If the screens make sense one at a time but not together, read
-<a href="getting-started/how-a-hub-fits-together/index.html">How a hub fits together</a>. The rest
-of this book takes it for granted. It explains the two halves of the
-application and how a page is built from a component, a template and its
-modules. It also says what lives in the database and what lives on disk,
-and what a manager can and cannot break.</p>
+<p>For a new hub, or if you are new to Hubzero, read these in order:</p>
+<ol>
+<li><a href="getting-started/how-a-hub-fits-together/index.html">How a hub fits together</a>
+explains the public site, administrator interface, and the extensions
+that build a page. It also explains where the hub stores its content.</li>
+<li><a href="getting-started/administrator-interface/index.html">The administrator interface</a>
+covers signing in, the menus, and the controls shared by many screens.</li>
+<li><a href="getting-started/first-week/index.html">The first week with a new hub</a>
+takes you through mail, registration, access, the front page, and
+scheduled jobs, with links to the detailed settings chapters.</li>
+</ol>
+<p><a href="configuring/index.html">Configuring</a> covers the settings screens in full.</p>
 <p>If you are taking over a running hub, start with
 <a href="maintenance/index.html">Daily maintenance</a> and
 <a href="users/index.html">Users</a>.</p>

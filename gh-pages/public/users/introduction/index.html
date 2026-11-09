@@ -51,7 +51,6 @@
 <li class="toc__item toc__item--l2"><a href="#what-an-account-gets-you">What an account gets you</a></li>
 <li class="toc__item toc__item--l2"><a href="#how-the-site-is-laid-out">How the site is laid out</a></li>
 <li class="toc__item toc__item--l2"><a href="#finding-things">Finding things</a></li>
-<li class="toc__item toc__item--l2"><a href="#a-note-on-the-videos">A note on the videos</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-to-go-next">Where to go next</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../blog/index.html">Blog</a></li>
@@ -114,13 +113,15 @@ already know where you are going, go straight to
 <a href="../gettingstarted/index.html">Getting started</a>.</p>
 <p>Every hub is built from the same set of components, but each hub turns on
 only the ones it needs. If a tab, a menu entry, or a whole section described
-here is missing on your hub, it has been switched off rather than removed. The
+here is missing on your hub, it may be disabled, hidden by your permissions,
+or depend on a service the hub does not offer. The
 administrator's side of those choices is in the
 <a href="../../managers/index.html">Hub managers</a> book; nothing in this book requires
 access to the administrator interface.</p>
 <h2 id="what-an-account-gets-you">What an account gets you</h2>
-<p>Most of a hub is readable without logging in. An account is what lets you
-take part. With one you can:</p>
+<p>A hub may let you read public content without logging in. An account lets
+you take part in the features it enables, subject to its access rules. With
+one you can usually:</p>
 <ul>
 <li>keep a <strong>member profile</strong> that other members can find, and a
 <strong>dashboard</strong> you arrange yourself;</li>
@@ -134,16 +135,16 @@ own machines and appear in your browser — where the hub offers them;</li>
 <p>Registering is described in <a href="../registration/index.html">Registration</a>. What the hub asks
 you for varies: the form is assembled from the fields the hub's administrators
 chose, so two hubs rarely ask exactly the same questions.</p>
-<p>An account is specific to one hub. Hubs do not share members with each other,
-so an account on one hub gives you nothing on another, even when both are
-Hubzero sites and both accept a sign-in from the same outside service.</p>
+<p>An account is specific to one hub. Even if two hubs accept the same campus
+or third-party sign-in, each hub keeps its own profile, permissions, and
+memberships. You may need to complete registration on each one.</p>
 <h2 id="how-the-site-is-laid-out">How the site is laid out</h2>
 <p>Three things are worth knowing before you start clicking.</p>
 <p><strong>The member area.</strong> Everything that belongs to you personally lives under
 <code>/members</code>. Your own area is at <code>/members/myaccount</code>; another member's public
 profile is at <code>/members/&lt;their id&gt;</code>. Down the left of that page is a list of
-tabs — Dashboard, Profile, Account, Groups, Projects, Usage, and so on. Each
-tab is a separate plugin, and the hub decides which ones exist. The two you
+tabs — Dashboard, Profile, Account, Groups, Projects, Usage, and so on. The
+hub decides which tabs are available. The two you
 will use first are described in <a href="../dashboard/index.html">Member dashboard</a> and
 <a href="../profile/index.html">Member profile</a>.</p>
 <figure class="figure"><a href="../media/introduction-member-area.png"><img src="../media/introduction-member-area.png" alt="A member's area open on the Dashboard tab: the member's picture above the list of tabs down the left, and the dashboard's modules beside it" loading="lazy"></a><figcaption>A member's area open on the Dashboard tab: the member's picture above the list of tabs down the left, and the dashboard's modules beside it</figcaption></figure>
@@ -158,10 +159,11 @@ hydrology lab might keep a group for its seminar announcements and shared
 reading, and open a separate project for each field season whose data it
 intends to release.</p>
 <p><strong>Published content.</strong> Resources, publications, wiki pages, knowledge base
-articles, courses, and collections are the hub's library. They are public by
-default, they carry their authors' names, and the good ones acquire citations
-and a DOI. <a href="../publications/index.html">Publications</a> covers the guided route from
-a project to a citable release.</p>
+articles, courses, and collections are ways to share work on the hub.
+Visibility depends on each item's settings and the hub's approval rules;
+saving a draft does not necessarily make it public. A publication can carry
+a DOI for citation. <a href="../publications/index.html">Publications</a> covers the guided
+route from a project to a citable release.</p>
 <h2 id="finding-things">Finding things</h2>
 <p>There are three different ways to look, and they do not overlap as much as you
 might expect:</p>
@@ -173,12 +175,6 @@ covered.</li>
 <li><strong>What's New</strong> (<code>/whatsnew</code>) lists recently added items by category, with an
 RSS feed for each one.</li>
 </ul>
-<h2 id="a-note-on-the-videos">A note on the videos</h2>
-<p>The page this chapter replaces was a stub that pointed at a series of How-to
-videos on YouTube. The videos are hosted outside the hub software and the
-original page carried no working links to them, so nothing here could be
-checked or preserved. Ask your hub's support staff whether it publishes its own
-introductory videos.</p>
 <h2 id="where-to-go-next">Where to go next</h2>
 <p><a href="../gettingstarted/index.html">Getting started</a> walks through the first hour: creating an
 account, confirming it, filling in a profile, and arranging a dashboard. After

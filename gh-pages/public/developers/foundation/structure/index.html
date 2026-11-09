@@ -186,8 +186,8 @@
         <div class="prose">
 <p>A Hubzero installation is two trees and one entry point. <code>core/</code> is the
 platform as the release ships it. <code>app/</code> is everything that makes one hub
-different from another. <code>index.php</code> is the only file a web request ever
-reaches.</p>
+different from another. <code>index.php</code> is the entry point for CMS page
+requests; the web server can serve static assets directly.</p>
 <p>Read this before you decide where to put anything. The <code>core</code>/<code>app</code> split
 decides whether your work survives an upgrade, and the lifecycle at the end
 of the page decides what has already happened by the time your controller
@@ -298,8 +298,9 @@ inside it is that installation's.</p>
 </tr>
 </tbody>
 </table>
-<p>Only <code>config/</code> is created at install time. The others appear when something
-needs them, so a healthy hub can be missing most of this list.</p>
+<p>The installer creates the directories it needs; other directories appear
+as features use them. A healthy hub may not contain every directory listed
+above.</p>
 <p>Refer to paths under here with <code>PATH_APP</code>.</p>
 <h3 id="overriding-a-core-extension">Overriding a core extension</h3>
 <p>The loaders check <code>app/</code> before <code>core/</code> and take the first directory they

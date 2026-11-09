@@ -206,15 +206,13 @@ echo Lang::txt('COM_BOOKINGS_HOLD_RELEASED');
 of a sentence, and it survives review because the path that renders it is
 usually an error branch, a confirmation email, or a screen only an
 administrator sees.</p>
-<p>It is not rare. <code>php core/bin/lint/undefined-language-keys.php</code> currently
-reports <strong>442 keys</strong> the tree asks for that no <code>en-GB</code> file anywhere
-defines, and the
-<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml">PHP lint workflow</a> runs it against
-that number as a ceiling rather than against zero:</p>
-<pre><code class="language-yaml">run: php core/bin/lint/undefined-language-keys.php --quiet --max=442
-</code></pre>
-<p>So the build fails when your change makes it 443. Three rules keep you off
-that list.</p>
+<p>Run <code>php core/bin/lint/undefined-language-keys.php</code> from the checkout root
+to find keys the code asks for that no <code>en-GB</code> file defines. The
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml">PHP lint workflow</a> sets a <code>--max</code>
+ceiling for existing findings rather than requiring zero; the build fails
+if your change raises the count above that ceiling. Use the value in the
+workflow when reproducing the CI check. Three rules help prevent new
+findings.</p>
 <h3 id="1-define-the-key">1. Define the key</h3>
 <p>Add it to the extension's INI file in the same change that adds the
 <code>Lang::txt()</code> call. Nothing else in the toolchain will remind you: the file

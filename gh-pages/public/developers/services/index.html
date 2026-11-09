@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Services · Developers · Hubzero Documentation</title>
-  <meta name="description" content="The framework registers a small set of long-lived objects in the application container at boot: a cache store, a filesystem, a session, an event dispatcher.…">
+  <meta name="description" content="Services are framework objects that do shared work: caching data, accessing files, keeping a visitor&#x27;s session, and dispatching events. At startup, the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/services/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -181,11 +181,13 @@
         </header>
         
         <div class="prose">
-<p>The framework registers a small set of long-lived objects in the application
-container at boot: a cache store, a filesystem, a session, an event
-dispatcher. Extensions reach them through facades rather than constructing
-them, so that a hub can swap the implementation without touching extension
-code.</p>
+<p>Services are framework objects that do shared work: caching data, accessing
+files, keeping a visitor's session, and dispatching events. At startup, the
+framework registers them in an application <strong>container</strong>, a registry from
+which code requests an object by name. They are shared for the lifetime of
+that request. Extensions usually reach them through
+<a href="../foundation/facades/index.html">facades</a>, so a hub can swap an implementation
+without changing extension code.</p>
 <p>That indirection is the point, and it is also the thing that surprises
 people. A service can be configured into a do-nothing version, and the
 do-nothing version accepts every call and answers plausibly rather than
@@ -265,10 +267,10 @@ Filesystem::exists($path);
 container under the same key and the facade will pick it up.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The facades are aliased in the <strong>root</strong> namespace. Almost every
-file you write is namespaced, and there an unqualified <code>Filesystem</code> means
-<code>Your\Namespace\Filesystem</code>, which does not exist — a fatal error the
-moment the line runs. Import each facade you use (<code>use Filesystem;</code>) or
-write it fully qualified (<code>\Filesystem::exists(...)</code>). See
+file you write is namespaced. There an unqualified <code>Filesystem</code> means
+<code>Your\Namespace\Filesystem</code>. A fallback may resolve it, but a real class
+with that name can take precedence. Import each facade you use
+(<code>use Filesystem;</code>) or write it fully qualified (<code>\Filesystem::exists(...)</code>). See
 <a href="../foundation/facades/index.html">facades</a>.</p>
 </aside>
 <p>Not every client registers every service. <code>Cache</code>, <code>Session</code>, <code>Module</code>,

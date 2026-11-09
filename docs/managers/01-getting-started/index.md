@@ -31,23 +31,19 @@ back end. The recurring jobs are:
 
 ## Read this first
 
-[The administrator interface](01-administrator-interface.md) explains how to reach the back
-end, who is allowed in, and what each of its menus contains. Read it before
-anything else in this book; every other chapter assumes you can find your way
-around those screens.
+Start with [How a hub fits together](03-how-a-hub-fits-together.md) if you
+are new to Hubzero. It explains components, modules, plugins, and templates
+with a worked example, then shows what lives in the database and in files.
+
+Next, [The administrator interface](01-administrator-interface.md)
+explains how to reach the back end, who is allowed in, and what each of its
+menus contains.
 
 Then, if the hub was installed this week, work through
 [The first week with a new hub](02-first-week.md). It puts the decisions a new hub
 needs — the site name, mail, registration, access, which components to keep,
 the front page and menu, and the scheduled jobs — into the order that works,
 and links to the chapter covering each one.
-
-[How a hub fits together](03-how-a-hub-fits-together.md) is the short chapter that explains
-what the hub is doing underneath those screens: the two halves of the
-application, how a page is assembled out of a component, a template and its
-modules, where the platform ends and your hub's own material begins, and what
-you can and cannot break. Every other chapter in this book assumes it. Read it
-whenever a change made in one screen turns up somewhere you did not expect.
 
 ## Then
 

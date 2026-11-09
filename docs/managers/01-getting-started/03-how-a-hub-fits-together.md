@@ -6,12 +6,9 @@ screenshots: none
 -->
 # How a hub fits together
 
-The mental model the rest of this book assumes. Every other chapter tells you
-which screen to open and which field to set; none of them tells you what the
-hub is doing underneath, so the first time a change you made in one screen
-appears — or fails to appear — somewhere else entirely, there is nothing to
-reason from. This chapter supplies that. It is short, and it is worth reading
-once before the screen-by-screen chapters rather than after.
+This chapter explains how the hub builds a page, how its features fit
+together, and where it stores your content. That helps you decide which
+administrator screen to use when you want to change something.
 
 It is for the person who has just been given a hub to run and has no
 background in the software. If you write code for a hub, read
@@ -46,13 +43,24 @@ end itself; this one is about what the back end is editing.
 
 ## How a page gets built
 
-This is the single most useful thing to understand, because almost every
-"why did that happen?" question on a hub is answered by it.
+Four extension types build the pages you manage:
+
+| Extension | Its job | Example |
+|---|---|---|
+| Component | Produces the page's main content | The article displayed on an About page |
+| Module | Adds a small block in a named position | A navigation menu beside the article |
+| Template | Supplies the page layout and appearance | The header, columns, footer, and styles |
+| Plugin | Adds behavior to another feature | A Forum tab inside a group |
+
+You configure them from the **Components** and **Extensions** menus.
+The same module type can have several instances: two menu modules can show
+different menus in different positions.
 
 A page is assembled in four stages:
 
-1. **The request arrives.** One file, `index.php`, handles every URL on the
-   hub. Nothing else is ever reached directly.
+1. **The request arrives.** The web server sends a page request to
+   `index.php`, the CMS entry point. Static files such as images and
+   stylesheets can be served directly.
 2. **The router picks a component.** It looks at the URL and decides which
    component owns it, and it sets two things: `option`, the component's name,
    and `Itemid`, the id of the menu item that matched. Remember `Itemid`; it

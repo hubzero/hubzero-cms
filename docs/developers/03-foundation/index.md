@@ -10,10 +10,12 @@ together. It covers what is on disk, what a request runs through, and how
 your classes are found. It also covers how extensions reach each other, and
 the handful of names an extension uses constantly.
 
-Read this section once before you write an extension. Most of what goes
-wrong early is explained here: a class that will not load, a facade that
-fatals, a plugin nothing calls, a directory that is not an extension because
-no database row says so. None of it can be learned by reading a component.
+Start with [Structure](01-structure.md) to see the request lifecycle and
+where files belong. Then read [Extensions](05-extensions.md) for the four
+extension types and [Facades](06-facades.md) for calls such as
+`Request::getString()` and `Lang::txt()`. A **facade** is a short class name
+that forwards a call to a framework service. The remaining chapters explain
+how the framework finds classes, registers services, and calls plugins.
 
 ## In this section
 

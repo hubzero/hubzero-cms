@@ -8,8 +8,8 @@ screenshots: ok
 
 Registering creates a member account: a username, a password, an email
 address the hub can reach you at, and whatever else your hub asks for. Once
-the account is confirmed you can contribute content, join groups, and run
-tools.
+any required confirmation and administrator approval are complete, you can
+use the features the hub makes available to members.
 
 Read this page if the form asked you something you did not expect, or if you
 registered and the account still will not work. If the form is short and
@@ -122,8 +122,8 @@ In order, and depending on how the hub is set up:
    switched on, it emails you when the account is approved. Nothing you can do
    speeds it up; the page carries a link to raise a support ticket if you think
    it is wrong.
-4. **If the hub has switched confirmation off**, the account works as soon as
-   it is created and you can log in immediately.
+4. **If neither confirmation nor administrator approval is required**, you
+   can log in immediately after creating the account.
 
 ## Activating the account
 

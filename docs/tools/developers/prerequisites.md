@@ -29,6 +29,18 @@ Two pages outside this section are worth reading first:
 You also need an account on the hub you are publishing to, and that account
 has to be allowed to register a tool. Hubs are normally configured to let any
 member register one.
+
+Before registering, confirm these details with the hub's tool administrators:
+
+- Which publishing styles and runtimes it supports for your program.
+- How you get a workspace or test session on its execution hosts.
+- Where your source repository should live and how dependencies are installed.
+- Who handles installation and publication requests in the contribution
+  pipeline.
+
+CMS development access and tool development access are different. A local
+checkout of the CMS alone cannot run the platform commands below.
+
 ## Environment
 
 The container a tool session runs in, and the environment variables a tool

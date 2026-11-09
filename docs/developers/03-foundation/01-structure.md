@@ -8,8 +8,8 @@ screenshots: none
 
 A Hubzero installation is two trees and one entry point. `core/` is the
 platform as the release ships it. `app/` is everything that makes one hub
-different from another. `index.php` is the only file a web request ever
-reaches.
+different from another. `index.php` is the entry point for CMS page
+requests; the web server can serve static assets directly.
 
 Read this before you decide where to put anything. The `core`/`app` split
 decides whether your work survives an upgrade, and the lifecycle at the end
@@ -68,8 +68,9 @@ inside it is that installation's.
 | `cache/` | Generated content, sub-divided by client: `admin`, `site`, `api`, `cli`. Nothing in it is precious. |
 | `logs/` | The hub's logs. |
 
-Only `config/` is created at install time. The others appear when something
-needs them, so a healthy hub can be missing most of this list.
+The installer creates the directories it needs; other directories appear
+as features use them. A healthy hub may not contain every directory listed
+above.
 
 Refer to paths under here with `PATH_APP`.
 

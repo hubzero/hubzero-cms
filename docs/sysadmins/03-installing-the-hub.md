@@ -13,6 +13,11 @@ web server answering for the hub's name over HTTPS. If yours is not ready
 yet, start at [Preparing the server](02-preparing/index.md) and follow your system's
 page first.
 
+The paths, hostname, database name, and passwords below are examples.
+Use the values chosen while preparing your server. In particular,
+`https://hub.example.org` must be your hub's address before you give it to
+the installer.
+
 Everything here is the same on every system. The hub's commands are run
 with `muse`, its command line, in the hub's directory:
 

@@ -370,7 +370,7 @@ cares about.
 
 | Workflow | Checks |
 |---|---|
-| [`php-lint.yml`](../../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `core/bin/lint/missing-facade-imports.php`, then `core/bin/lint/undefined-language-keys.php` against a ceiling of 444 |
+| [`php-lint.yml`](../../../.github/workflows/php-lint.yml) | `php -l` over every `*.php` under `core` and `app` outside `vendor`, then `core/bin/lint/missing-facade-imports.php`, then `core/bin/lint/undefined-language-keys.php` against the ceiling declared in the workflow |
 | [`tests.yml`](../../../.github/workflows/tests.yml) | The PHPUnit suite, for a change under `core` |
 | [`pages.yml`](../../../.github/workflows/pages.yml) | Builds the documentation, regenerates `docs/reference`, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 

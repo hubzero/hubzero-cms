@@ -148,20 +148,19 @@ else.
 A fourth, [`dev-push.yml`](../../.github/workflows/dev-push.yml), deploys to a
 Purdue development host and is switched off.
 
-The facade check is worth understanding before it fails on you. The CMS
-registers `Route`, `User`, `Lang` and the rest as root-namespace aliases, so an
-unqualified `Route::url()` inside a namespaced file resolves to
-`Current\Namespace\Route` and fatals when that line runs. The file parses, so
-`php -l` says nothing, and the fault only surfaces on the path that reaches it.
-730 of these were fixed at once; the linter keeps them from coming back. Run it
-with `--fix` to insert the missing `use` statements.
+The facade check requires explicit imports for names such as `Route`,
+`User`, and `Lang` inside namespaced files. A fallback autoloader often
+resolves a missing import, but another class with the same short name can
+take precedence, and aliases differ between clients. `php -l` cannot catch
+that ambiguity. See [Facades](03-foundation/06-facades.md#importing-a-facade).
+Run the linter with `--fix` to insert missing `use` statements.
 
 The language-key check is graded, not absolute. `Lang::txt()` prints the key
-when nothing defines it, and 444 keys in the tree are undefined today, so the
-workflow runs the linter with `--max=444`: the build passes at today's number
-and fails the moment your change adds one. Define the keys your change asks
-for. If you fix some existing ones, lower the ceiling in the workflow in the
-same pull request, so the count cannot creep back.
+when nothing defines it. The workflow sets a `--max` ceiling to allow
+existing findings while preventing the count from growing. Use the value
+in [`php-lint.yml`](../../.github/workflows/php-lint.yml) when checking
+locally. Define the keys your change asks for. If you fix existing ones,
+lower the ceiling in the same pull request.
 
 No workflow runs phpcs. Style is caught in review; see
 [When the linter and the house style disagree](19-conventions/01-php-style.md#when-the-linter-and-the-house-style-disagree).
@@ -220,23 +219,13 @@ Before proposing a feature rather than a fix, consider:
 
 ### A development environment
 
-You need a working hub to develop against; the CMS does not run standalone.
-[Development Environment](../developers/01-getting-started/06-devenvironment.md)
-covers getting one, and the [installation overview](../sysadmins/01-installing.md)
-shows how to set one up from scratch. The platform targets PHP 8.2.
+The [Docker development setup](01-getting-started/06-devenvironment.md#developing-in-docker)
+creates a working hub from a fresh checkout. Edit the mounted source and
+reload the affected page to try a change. The same guide covers manual
+installation and replacing the code in an existing development hub.
 
-Once the hub runs, replace its CMS directory with your clone, restore the
-`app/` directory from the original, install the Composer dependencies, and run
-the migrations:
-
-```bash
-(cd core && php bin/composer install)
-php core/bin/muse migration -f
-```
-
-`muse migration` runs in dry-run mode by default and lists what it would do;
-`-f` is the full run. Older instructions pair `-f` with `-i`. That flag is
-deprecated: it now behaves as `-a`, which only widens what is listed.
+If you are only editing documentation, you can build and preview it with
+Python as described below; you do not need a running CMS.
 
 [muse](../developers/12-muse.md) is the CMS command line; it does a
 great deal more than migrations.

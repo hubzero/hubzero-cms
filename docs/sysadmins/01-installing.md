@@ -8,7 +8,20 @@ summary: How installing a hub goes: what it needs, preparing the server on your 
 # Installation overview
 
 A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
-of PHP. Installing one takes two steps, each with its own part of this book:
+of PHP. This guide installs the Hubzero CMS: the website and its
+administrator interface. Tool execution and other integrations need
+separate services; see [What the CMS includes](../index.md#what-the-cms-includes).
+
+## Choose an installation path
+
+| Your goal | Follow |
+|---|---|
+| Try the CMS locally or develop its code | [Developing in Docker](../developers/01-getting-started/06-devenvironment.md#developing-in-docker), which includes a database and sample content |
+| Install on a Linux server using its database and web server packages | The two steps below |
+| Build the CMS into a container image and run MariaDB in a second container | [A self-contained hub in Docker](05-docker-image.md), which covers the complete installation |
+| Configure a hub that already runs | [The first week with a new hub](../managers/01-getting-started/02-first-week.md) |
+
+For an installation using server packages, follow these two steps:
 
 1. **[Preparing the server](02-preparing/index.md).** Choose your system
    there and follow its page, which takes a server with nothing on it to one
@@ -19,14 +32,24 @@ of PHP. Installing one takes two steps, each with its own part of this book:
    page ends at: the database, the installer, and what comes after. It is the
    same on every system.
 
-To run the hub as a Docker image that holds its code, with MariaDB in a
-container beside it, follow
-[A self-contained hub in Docker](05-docker-image.md) instead. It does both
-steps, and the upgrades after.
+## Before you begin
 
-If the hub you are asking about is already installed and answering, go to
-[The first week with a new hub](../managers/01-getting-started/02-first-week.md)
-instead.
+The server guides assume you can use a Linux shell, install packages with
+`sudo` or root access, edit configuration files, and restart services. You
+also need control of the hub's DNS record, or help from someone who can
+point its name at the server.
+
+Examples use `/var/www/hub` as the installation directory and
+`hub.example.org` as its hostname. Replace those consistently if you use
+another path or name. Replace example passwords with your own. Shell
+commands go in a server terminal; blocks marked `sql` go at MariaDB's
+prompt after you open it with `sudo mariadb`. Type `exit` to leave that
+prompt.
+
+Choose one web server configuration on your system's page: Apache, nginx,
+or the Docker route where offered. They are alternative ways to serve the
+same CMS. Apache and nginx pass PHP requests to **PHP-FPM**, the service
+that executes PHP; the FrankenPHP container includes its own PHP runtime.
 
 ## What every system needs
 

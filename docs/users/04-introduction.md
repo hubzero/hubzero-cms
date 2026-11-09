@@ -20,15 +20,17 @@ already know where you are going, go straight to
 
 Every hub is built from the same set of components, but each hub turns on
 only the ones it needs. If a tab, a menu entry, or a whole section described
-here is missing on your hub, it has been switched off rather than removed. The
+here is missing on your hub, it may be disabled, hidden by your permissions,
+or depend on a service the hub does not offer. The
 administrator's side of those choices is in the
 [Hub managers](../managers/index.md) book; nothing in this book requires
 access to the administrator interface.
 
 ## What an account gets you
 
-Most of a hub is readable without logging in. An account is what lets you
-take part. With one you can:
+A hub may let you read public content without logging in. An account lets
+you take part in the features it enables, subject to its access rules. With
+one you can usually:
 
 - keep a **member profile** that other members can find, and a
   **dashboard** you arrange yourself;
@@ -43,9 +45,9 @@ Registering is described in [Registration](20-registration.md). What the hub ask
 you for varies: the form is assembled from the fields the hub's administrators
 chose, so two hubs rarely ask exactly the same questions.
 
-An account is specific to one hub. Hubs do not share members with each other,
-so an account on one hub gives you nothing on another, even when both are
-Hubzero sites and both accept a sign-in from the same outside service.
+An account is specific to one hub. Even if two hubs accept the same campus
+or third-party sign-in, each hub keeps its own profile, permissions, and
+memberships. You may need to complete registration on each one.
 
 ## How the site is laid out
 
@@ -54,8 +56,8 @@ Three things are worth knowing before you start clicking.
 **The member area.** Everything that belongs to you personally lives under
 `/members`. Your own area is at `/members/myaccount`; another member's public
 profile is at `/members/<their id>`. Down the left of that page is a list of
-tabs — Dashboard, Profile, Account, Groups, Projects, Usage, and so on. Each
-tab is a separate plugin, and the hub decides which ones exist. The two you
+tabs — Dashboard, Profile, Account, Groups, Projects, Usage, and so on. The
+hub decides which tabs are available. The two you
 will use first are described in [Member dashboard](14-dashboard.md) and
 [Member profile](15-profile.md).
 
@@ -73,10 +75,11 @@ reading, and open a separate project for each field season whose data it
 intends to release.
 
 **Published content.** Resources, publications, wiki pages, knowledge base
-articles, courses, and collections are the hub's library. They are public by
-default, they carry their authors' names, and the good ones acquire citations
-and a DOI. [Publications](18-publications.md) covers the guided route from
-a project to a citable release.
+articles, courses, and collections are ways to share work on the hub.
+Visibility depends on each item's settings and the hub's approval rules;
+saving a draft does not necessarily make it public. A publication can carry
+a DOI for citation. [Publications](18-publications.md) covers the guided
+route from a project to a citable release.
 
 ## Finding things
 
@@ -89,14 +92,6 @@ might expect:
 - [Tags](27-tags.md) collect items of any type that were labelled the same way.
 - **What's New** (`/whatsnew`) lists recently added items by category, with an
   RSS feed for each one.
-
-## A note on the videos
-
-The page this chapter replaces was a stub that pointed at a series of How-to
-videos on YouTube. The videos are hosted outside the hub software and the
-original page carried no working links to them, so nothing here could be
-checked or preserved. Ask your hub's support staff whether it publishes its own
-introductory videos.
 
 ## Where to go next
 

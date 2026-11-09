@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How a hub fits together · Hub managers · Hubzero Documentation</title>
-  <meta name="description" content="The mental model the rest of this book assumes. Every other chapter tells you which screen to open and which field to set; none of them tells you what the hub…">
+  <meta name="description" content="This chapter explains how the hub builds a page, how its features fit together, and where it stores your content. That helps you decide which administrator…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/managers/getting-started/how-a-hub-fits-together/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,12 +170,9 @@
         </header>
         
         <div class="prose">
-<p>The mental model the rest of this book assumes. Every other chapter tells you
-which screen to open and which field to set; none of them tells you what the
-hub is doing underneath, so the first time a change you made in one screen
-appears — or fails to appear — somewhere else entirely, there is nothing to
-reason from. This chapter supplies that. It is short, and it is worth reading
-once before the screen-by-screen chapters rather than after.</p>
+<p>This chapter explains how the hub builds a page, how its features fit
+together, and where it stores your content. That helps you decide which
+administrator screen to use when you want to change something.</p>
 <p>It is for the person who has just been given a hub to run and has no
 background in the software. If you write code for a hub, read
 <a href="../../../developers/foundation/structure/index.html">Application structure</a>
@@ -201,12 +198,46 @@ address, host or port to remember.</p>
 allowed in, and what each of its menus holds. Read that chapter for the back
 end itself; this one is about what the back end is editing.</p>
 <h2 id="how-a-page-gets-built">How a page gets built</h2>
-<p>This is the single most useful thing to understand, because almost every
-&quot;why did that happen?&quot; question on a hub is answered by it.</p>
+<p>Four extension types build the pages you manage:</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Its job</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component</td>
+<td>Produces the page's main content</td>
+<td>The article displayed on an About page</td>
+</tr>
+<tr>
+<td>Module</td>
+<td>Adds a small block in a named position</td>
+<td>A navigation menu beside the article</td>
+</tr>
+<tr>
+<td>Template</td>
+<td>Supplies the page layout and appearance</td>
+<td>The header, columns, footer, and styles</td>
+</tr>
+<tr>
+<td>Plugin</td>
+<td>Adds behavior to another feature</td>
+<td>A Forum tab inside a group</td>
+</tr>
+</tbody>
+</table>
+<p>You configure them from the <strong>Components</strong> and <strong>Extensions</strong> menus.
+The same module type can have several instances: two menu modules can show
+different menus in different positions.</p>
 <p>A page is assembled in four stages:</p>
 <ol>
-<li><strong>The request arrives.</strong> One file, <code>index.php</code>, handles every URL on the
-hub. Nothing else is ever reached directly.</li>
+<li><strong>The request arrives.</strong> The web server sends a page request to
+<code>index.php</code>, the CMS entry point. Static files such as images and
+stylesheets can be served directly.</li>
 <li><strong>The router picks a component.</strong> It looks at the URL and decides which
 component owns it, and it sets two things: <code>option</code>, the component's name,
 and <code>Itemid</code>, the id of the menu item that matched. Remember <code>Itemid</code>; it

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reference · Reference · Hubzero Documentation</title>
-  <meta name="description" content="Generated references, rebuilt from the source tree so they cannot drift from the code. Each is produced by a script under , and the Pages workflow fails if the…">
+  <meta name="description" content="Look up configuration fields, REST API endpoints, command-line tasks, and plugin events declared in the CMS source. These pages are generated from the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/reference/">
   <link rel="icon" href="../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -215,29 +215,72 @@
         </header>
         
         <div class="prose">
-<p>Generated references, rebuilt from the source tree so they cannot drift
-from the code. Each is produced by a script under <code>docs/_tools/</code>, and the
-Pages workflow fails if the committed pages differ from a fresh run.</p>
+<p>Look up configuration fields, REST API endpoints, command-line tasks, and
+plugin events declared in the CMS source. These pages are generated from
+the repository; the guides linked below explain how to use each feature.</p>
+<h2 id="choose-a-reference">Choose a reference</h2>
+<table>
+<thead>
+<tr>
+<th>You need to</th>
+<th>Reference</th>
+<th>Read first if this is new to you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find a component or plugin option</td>
+<td><a href="configuration/index.html">Configuration</a></td>
+<td><a href="../managers/configuring/index.html">Configuring a hub</a></td>
+</tr>
+<tr>
+<td>Call the hub from another program</td>
+<td><a href="api/index.html">REST API</a></td>
+<td><a href="../developers/api/index.html">The REST API guide</a> for authentication and requests</td>
+</tr>
+<tr>
+<td>Run a CMS task from a terminal</td>
+<td><a href="muse/index.html">Muse</a></td>
+<td><a href="../developers/muse/index.html">Muse guide</a> for command syntax and component commands</td>
+</tr>
+<tr>
+<td>Find an event a plugin can handle</td>
+<td><a href="events/index.html">Events</a></td>
+<td><a href="../developers/foundation/events/index.html">Framework events</a> for loading plugins and triggering events</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-the-entries-describe">What the entries describe</h2>
 <ul>
-<li><a href="configuration/index.html">Configuration</a> — every parameter in every
-component's <code>config/config.xml</code> and every plugin manifest, with its
+<li><a href="configuration/index.html">Configuration</a> — parameters in
+components' <code>config/config.xml</code> files and plugin manifests, with each
 label, type, default, options, and description resolved from the
 language files.</li>
-<li><a href="api/index.html">REST API</a> — every endpoint under <code>/api/</code>, from the
+<li><a href="api/index.html">REST API</a> — documented endpoints under <code>/api/</code>, from the
 <code>@apiMethod</code>, <code>@apiUri</code>, and <code>@apiParameter</code> docblock tags the API
 explorer in <code>com_developer</code> also reads.</li>
 <li><a href="muse/index.html">Muse</a> — the console commands and their tasks, from the
 <code>@museDescription</code> docblocks.</li>
-<li><a href="events/index.html">Events</a> — every event the CMS fires through
-<code>Event::trigger()</code>, with its call sites, arguments, and the plugins that
+<li><a href="events/index.html">Events</a> — event calls found through
+<code>Event::trigger()</code>, with their call sites, arguments, and the plugins that
 listen.</li>
 </ul>
-<p>To regenerate after changing a manifest, a controller, or a command:</p>
-<pre><code class="language-bash">for g in config muse events api; do python3 docs/_tools/gen_${g}_reference.py; done
-python3 gh-pages/build_site.py
+<p>Generation keeps the references in sync with the declarations it reads;
+it does not test the behavior of an option or endpoint. A configuration
+<strong>default</strong> is the value in the manifest, which may differ from a value
+saved by the installer or a hub manager. API docblocks can also be
+incomplete, and an endpoint's availability depends on the hub's enabled
+components and permissions. Follow the source links when you need to check
+the implementation.</p>
+<h2 id="updating-the-references">Updating the references</h2>
+<p>Each reference is produced by a script under <code>docs/_tools/</code>. Edit its source
+manifest or docblock, or the generator's explanatory text; direct edits to
+generated pages are overwritten. To regenerate and validate the site after
+a change, run this from the repository root:</p>
+<pre><code class="language-bash">sh docs/_tools/rebuild.sh
 </code></pre>
-<p>The narrative counterparts live in the <a href="../developers/index.html">Developers</a>
-book.</p>
+<p>Commit the regenerated pages and <code>gh-pages/public/</code> with the source change.
+The Pages workflow checks that both match a fresh build.</p>
 
         </div>
         <p class="stamp">Rewritten and checked on 2026-09-09.</p>

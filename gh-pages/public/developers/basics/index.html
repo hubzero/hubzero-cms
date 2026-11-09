@@ -194,18 +194,18 @@ namespace standing in for an object in the application container.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The facades are aliased in the <strong>root</strong> namespace, and almost
 every file you write is namespaced. Inside a namespace an unqualified
-<code>Request</code> means <code>Your\Namespace\Request</code>, which does not exist, and PHP
-raises a fatal error the moment the line runs. Import each facade you use:</p>
+<code>Request</code> means <code>Your\Namespace\Request</code>. A fallback often resolves it,
+but can hide a missing import until a different client or class-name
+collision exposes it. Import each facade you use:</p>
 <pre><code class="language-php">namespace Components\Blog\Site\Controllers;
 
 use Request;
 use Config;
 use Lang;
 </code></pre>
-<p><code>\Request::getInt('id')</code> works too. Nothing catches a missing import
-before the line runs, so a rarely taken error path can carry the fault for
-a long time; <code>php core/bin/lint/missing-facade-imports.php</code> finds them, and
-it runs in continuous integration. See
+<p><code>\Request::getInt('id')</code> works too. PHP's syntax check does not detect a
+missing import; <code>php core/bin/lint/missing-facade-imports.php</code> finds them,
+and it runs in continuous integration. See
 <a href="../foundation/facades/index.html">facades</a>.</p>
 </aside>
 <h2 id="in-this-section">In this section</h2>

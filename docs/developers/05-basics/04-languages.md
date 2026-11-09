@@ -32,18 +32,13 @@ of a sentence, and it survives review because the path that renders it is
 usually an error branch, a confirmation email, or a screen only an
 administrator sees.
 
-It is not rare. `php core/bin/lint/undefined-language-keys.php` currently
-reports **442 keys** the tree asks for that no `en-GB` file anywhere
-defines, and the
-[PHP lint workflow](../../../.github/workflows/php-lint.yml) runs it against
-that number as a ceiling rather than against zero:
-
-```yaml
-run: php core/bin/lint/undefined-language-keys.php --quiet --max=442
-```
-
-So the build fails when your change makes it 443. Three rules keep you off
-that list.
+Run `php core/bin/lint/undefined-language-keys.php` from the checkout root
+to find keys the code asks for that no `en-GB` file defines. The
+[PHP lint workflow](../../../.github/workflows/php-lint.yml) sets a `--max`
+ceiling for existing findings rather than requiring zero; the build fails
+if your change raises the count above that ceiling. Use the value in the
+workflow when reproducing the CI check. Three rules help prevent new
+findings.
 
 ### 1. Define the key
 

@@ -114,6 +114,33 @@ Labels: `Note`, `Tip`, `Warning`, `Important`, `Caution`.
 - Screenshots show the current template, cropped to the part that matters,
   with alt text that says what the picture shows.
 
+## Write for someone new to Hubzero
+
+- Open with the task, who the page is for, and what they need before
+  starting. Link to a setup page instead of assuming they have a running
+  hub, server access, or administrator permissions.
+- Define project terms and abbreviations on first use, or link to their
+  explanation. Distinguish CMS development from tool development and hub
+  groups from permission groups.
+- Explain whether a path is a URL on the reader's hub or a file on its
+  server. For commands, name the working directory and whether they run on
+  the host, in a container, or at a database prompt. Mark example values
+  the reader must replace.
+- Put the recommended reading or setup path first. Present alternative
+  installation methods as choices, so readers do not perform all of them.
+- After a procedure, describe what success looks like and link to the next
+  task. For code fragments, state what surrounding files or registration
+  they assume; label illustrative extensions that do not ship in the tree.
+- Distinguish CMS features from integrations that require separate software.
+  Describe access, visibility, approval, and session limits as configurable
+  when they depend on the hub.
+- Keep documentation import history out of ordinary task instructions.
+  Preserve compatibility notes when they help someone using an older
+  command or extension. Use metadata for review provenance.
+- Link to the source of changing counts or limits, such as CI thresholds.
+  If a recorded test result is useful, date it and make clear that it is a
+  snapshot.
+
 ## Before you commit
 
 ```bash

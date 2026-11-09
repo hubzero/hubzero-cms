@@ -14,6 +14,13 @@ sessions, language, and the view layer; extensions live under
 `core/components/`, `core/plugins/`, `core/modules/`, and
 `core/templates/`, and a hub can override any of them under `app/`.
 
+If this is your first visit to the codebase, start with
+[Getting started](01-getting-started/index.md). It takes you from a fresh
+checkout to a local hub and explains where your changes belong. You can
+develop CMS features without installing the separate tool execution
+platform; writing a simulation program for that platform is covered in
+[Tool developers](../tools/developers/index.md).
+
 ## What are you building?
 
 Most people arrive here to add one thing to one hub. Find it below and start
@@ -32,7 +39,8 @@ Whichever it is, three chapters apply to all of them:
 
 - [Extensions](07-extensions/index.md) — what every extension shares: the
   manifest, parameters, language files, and how it gets deployed.
-- [Database](06-database/index.md) — the query builder, the ORM, and the
+- [Database](06-database/index.md) — the query builder, the object-relational
+  mapper (ORM, which represents database records as PHP objects), and the
   [migration](06-database/03-migrations.md) that creates your tables. Read the
   [table prefix](06-database/index.md#the-table-prefix) section before you write a
   query; it is the mistake that works on your hub and fails on everyone
@@ -59,10 +67,10 @@ New to the codebase, read these in order:
 - [Foundation](03-foundation/index.md) — the tree, the path constants, how a
   class name becomes a file, the event system, the four extension kinds, the
   facades, and the service providers.
-- [Services](04-services/index.md) — cache, events, filesystem, language,
+- [Services](04-services/index.md) — cache, events, filesystem,
   server, and session.
 - [The basics](05-basics/index.md) — configuration, requests and
-  responses, redirects, dates, users, tags, cron, debugging, search.
+  responses, redirects, dates, users, tags, scheduled jobs (cron), and debugging.
 - [Database](06-database/index.md) — queries, the ORM, and migrations.
 - [Extensions](07-extensions/index.md) — what every extension shares:
   requirements, parameters, languages, deployment.

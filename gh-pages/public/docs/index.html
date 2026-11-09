@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About Hubzero · Hubzero Documentation</title>
-  <meta name="description" content="Hubzero® is an open source software platform for building powerful websites that host analytical tools, publish data, share resources, collaborate and build…">
+  <meta name="description" content="Hubzero is software for websites where a research or teaching community shares resources and works together. Each website is called a hub , with its own…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/docs/">
   <link rel="icon" href="../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,26 +42,133 @@
       </header>
       
       <div class="prose">
-<p>Hubzero® is an open source software platform for building powerful websites that host analytical tools, publish data, share resources, collaborate and build communities in a single web-based ecosystem. Initially created by researchers in the NSF-sponsored <a href="http://nanohub.org/groups/ncn">Network for Computational Nanotechnology</a> to support <a href="http://nanohub.org/">nanoHUB.org</a>. The Hubzero Platform now supports science gateways from a variety of disciplines with a collective of over 2 million visitors a year.</p>
-<p>Hubzero includes a powerful content management system built to support scientific activities. Members on a hub can write blog entries, participate in discussion groups, work together in projects, publish datasets and computational tools with digital object identifiers (DOIs), and make these publications available for others to use—not as dusty downloads, but as live, interactive digital resources. Simulation/modeling tools published on a hub can be accessed with the click of a button, running on cloud computing resources, campus clusters, and other national high-performance computing (HPC) facilities and serve up compelling visualizations.</p>
-<p>Hubzero partners to help researchers:</p>
-<ul>
-<li>Create datasets and interactive simulation tools using RStudio, Jupyter Notebooks, and other Web Applications</li>
-<li>Publish research products including, datasets, tools, and white papers, through a step-by-step guided system</li>
-<li>Provide spaces for your research teams and collaborators to discuss data concepts, track progress, and share files.</li>
-</ul>
+<p>Hubzero is software for websites where a research or teaching community
+shares resources and works together. Each website is called a <strong>hub</strong>, with
+its own address, accounts, content, and settings. This documentation covers
+version 2.4 of the Hubzero content management system (<strong>CMS</strong>).</p>
+<p>For example, a lab can use a hub to announce seminars in a group, prepare
+data in a project, and release a publication that other researchers can
+cite. A hub with the tool execution platform can also let members run
+analysis programs in their browsers.</p>
+<h2 id="start-here">Start here</h2>
+<p>You can read these books independently. Choose the task you need to do;
+you do not need to install the software to use someone else's hub.</p>
+<table>
+<thead>
+<tr>
+<th>You want to</th>
+<th>Start with</th>
+<th>You need</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Use an existing hub</td>
+<td><a href="../users/introduction/index.html">Introduction</a>, then <a href="../users/gettingstarted/index.html">Getting started</a></td>
+<td>The hub's address; an account for participating</td>
+</tr>
+<tr>
+<td>Configure a hub or manage its members and content</td>
+<td><a href="../managers/getting-started/index.html">Getting started for hub managers</a></td>
+<td>An installed hub and permission to use <code>/administrator</code></td>
+</tr>
+<tr>
+<td>Install a hub on a server</td>
+<td><a href="../sysadmins/installing/index.html">Installation overview</a></td>
+<td>Access to a Linux server and permission to administer it</td>
+</tr>
+<tr>
+<td>Try the CMS locally or change its code</td>
+<td><a href="../developers/getting-started/devenvironment/index.html#developing-in-docker">Development environment</a></td>
+<td>A Git checkout and Docker with Compose for the documented local setup</td>
+</tr>
+<tr>
+<td>Publish a program that runs on a hub</td>
+<td><a href="../tools/developers/prerequisites/index.html">Tool developer prerequisites</a></td>
+<td>An account on a hub with the separate tool platform</td>
+</tr>
+<tr>
+<td>Look up a setting, endpoint, command, or event</td>
+<td><a href="../reference/index.html">Reference</a></td>
+<td>The name of the feature you are working with</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>hub manager</strong> works in the browser to configure the site. A <strong>system
+administrator</strong> looks after its server, files, database, and upgrades. One
+person may do both jobs. A <strong>CMS developer</strong> changes the website software;
+a <strong>tool developer</strong> writes a program that members run through it.</p>
+<h2 id="what-the-cms-includes">What the CMS includes</h2>
+<p>The <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/README.md">hubzero-cms repository</a> contains the website application:
+member accounts, content, groups, projects, publications, administrator
+screens, and the framework used to extend them. The installation guides
+and development setup get this CMS running with PHP, a web server, and a
+database.</p>
+<p>Some features need additional services. The tool execution platform runs
+programs on execution hosts; Solr provides an optional search engine;
+statistics collection supplies usage reports. The CMS has interfaces for
+these services, but installing it does not install the services themselves.
+The <a href="../tools/index.html">Tools book</a> explains that boundary in more detail.</p>
+<p>Each hub enables the features it needs. A missing menu or tab can reflect
+the hub's configuration, your permissions, or an integration that has not
+been set up. Ask that hub's support staff if the instructions describe a
+feature you cannot find.</p>
+<h3 id="hosting-and-support-notice">Hosting and support notice</h3>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> We are no longer able to support the Hubzero Platform as a complete open source product. Please see https://hubzero.org for hosting options or email info@hubzero.org.</p>
 </aside>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> We are in the process of releasing a self service, self-hosted Hubzero CMS product here to explore before trying one of our hosting or development services. This will not include many integrations including tools. This is a work in progress.</p>
 </aside>
-<hr />
-<p>This documentation covers Hubzero 2.4. It is organized as books, each for a
-different kind of reader. Everything here is Markdown in the
-<a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/docs">hubzero-cms repository</a>
-and is published at https://hubzero.github.io/hubzero-cms/.</p>
-<h2 id="run-a-hub">Run a hub</h2>
+<h2 id="common-terms">Common terms</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Member</td>
+<td>A person with an account on this hub</td>
+</tr>
+<tr>
+<td>Group</td>
+<td>A community space with members, pages, and optional features such as a forum</td>
+</tr>
+<tr>
+<td>Project</td>
+<td>A workspace where a team prepares files and research outputs</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>An item in the hub's library, such as a presentation, dataset, or tool</td>
+</tr>
+<tr>
+<td>Publication</td>
+<td>A versioned research output released through a publishing workflow; it can carry a digital object identifier (DOI) for citation</td>
+</tr>
+<tr>
+<td>Tool and session</td>
+<td>A tool is a program offered by the hub; a session is one running instance of it</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>Code that adds a feature or presentation to the CMS: a component, module, plugin, or template</td>
+</tr>
+<tr>
+<td>Muse</td>
+<td>The CMS command-line tool, invoked as <code>php core/bin/muse</code> from the installation directory</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="../users/index.html">Hub users</a> book explains the features from a member's
+perspective. <a href="../managers/getting-started/how-a-hub-fits-together/index.html">How a hub fits together</a>
+explains how the website is assembled and where its content is stored.</p>
+<h2 id="the-books">The books</h2>
+<p>The books below cover each area in more detail.</p>
+<h3 id="run-a-hub">Run a hub</h3>
 <ul>
 <li><a href="../sysadmins/index.html">System administrators</a> — putting a hub on a
 server and keeping it current: installing it, and upgrading it.</li>
@@ -69,14 +176,14 @@ server and keeping it current: installing it, and upgrading it.</li>
 configuration, members and access, content, extensions, maintenance, and
 every component's administrative side.</li>
 </ul>
-<h2 id="use-a-hub">Use a hub</h2>
+<h3 id="use-a-hub">Use a hub</h3>
 <ul>
 <li><a href="../users/index.html">Hub users</a> — profiles, groups, projects, publications,
 resources, the wiki, forums, courses, and the other features a hub offers.</li>
 <li><a href="../tools/index.html">Tools</a> — the tool platform: publishing simulation tools,
 invoke scripts, the submit command, Jupyter, and tool administration.</li>
 </ul>
-<h2 id="build-on-hubzero">Build on Hubzero</h2>
+<h3 id="build-on-hubzero">Build on Hubzero</h3>
 <ul>
 <li><a href="../developers/index.html">Developers</a> — extending the CMS: the framework
 foundation, components, plugins, modules, templates, the database layer,
@@ -85,7 +192,7 @@ and the REST API.</li>
 the <a href="../developers/conventions/index.html">conventions</a> the codebase follows: commit
 practice, testing, and how to send changes back to the project.</li>
 </ul>
-<h2 id="reference">Reference</h2>
+<h3 id="reference">Reference</h3>
 <ul>
 <li><a href="../reference/index.html">Reference</a> — generated references: configuration
 parameters, REST endpoints, muse console commands, and events.</li>
@@ -93,15 +200,22 @@ parameters, REST endpoints, muse console commands, and events.</li>
 Hubzero is released, and where to find what changed.</li>
 </ul>
 <h2 id="about-the-documentation">About the documentation</h2>
+<p>Paths such as <code>/register</code> and <code>/administrator</code> are addresses on <strong>your
+hub</strong>. For a hub at <code>https://hub.example.org</code>, <code>/register</code> means
+<code>https://hub.example.org/register</code>. Paths such as <code>core/</code> and <code>app/</code> are
+directories on the server or in a development checkout. Each setup guide
+says where to run its shell commands and which example values to replace.</p>
 <ul>
 <li><a href="../style/index.html">Writing guide</a> — how pages are written and built.</li>
 <li><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/LICENSE">License</a> — MIT, the same as the code.</li>
 <li><a href="https://hubzero.github.io/hubzero-cms/status/">Status</a> — which pages have
 been reviewed against the current code.</li>
 </ul>
-<p>Most of this material was carried over from the earlier Hubzero
-documentation in September 2026 and has since been reviewed against the
-code, book by book. A page that has not been reviewed says so at the top.</p>
+<p>The source is Markdown under <code>docs/</code> in the repository and is published at
+https://hubzero.github.io/hubzero-cms/. Review dates describe checks against
+a particular version of the code. Generated references describe declarations
+in that source; your hub's enabled features and saved settings may differ.
+A page that has not been reviewed carries a notice at the top.</p>
 
       </div>
       

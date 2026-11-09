@@ -165,7 +165,7 @@
 <li class="toc__item toc__item--l3"><a href="#missing-facade-imports">Missing facade imports</a></li>
 <li class="toc__item toc__item--l3"><a href="#undefined-language-keys">Undefined language keys</a></li>
 <li class="toc__item toc__item--l2"><a href="#continuous-integration">Continuous integration</a></li>
-<li class="toc__item toc__item--l2"><a href="#what-the-old-page-claimed-that-is-not-true">What the old page claimed that is not true</a></li>
+<li class="toc__item toc__item--l2"><a href="#choosing-a-test-directory-and-configuration">Choosing a test directory and configuration</a></li>
 </ol></li>
 <li class="tree__leaf"><a class="tree__link" href="../api/index.html">REST API</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../aws/index.html">AWS</a></li>
@@ -196,15 +196,15 @@
 components and two plugins, plus two custom linters that catch faults nothing
 else does. This page says what is there, how to run it, what is worth adding
 to it, and how to run one test instead of all of them.</p>
-<p>A full run on 2.4-main passes:</p>
+<p>A recorded run during the September 2026 review produced:</p>
 <pre><code>Tests: 855, Assertions: 2905, PHPUnit Deprecations: 83, Skipped: 6.
 </code></pre>
-<p>The deprecations come from PHPUnit 11 warning about older test syntax, not
-from failures. Six tests skip themselves when what they need is absent.</p>
+<p>The counts change as tests are added. Use your own run to assess a change.
+In that recorded run, the deprecations were PHPUnit 11 warnings about older
+test syntax, and six tests skipped when their requirements were absent.</p>
 <h2 id="what-is-worth-testing">What is worth testing</h2>
-<p>The suite is not a safety net over the whole CMS and pretending otherwise
-wastes your afternoon. It is 855 tests over a codebase of several thousand
-files, and it splits sharply:</p>
+<p>The suite primarily tests framework classes and extension helpers. The
+September 2026 breakdown shows the shape of that coverage:</p>
 <table>
 <thead>
 <tr>
@@ -315,6 +315,15 @@ core/components/com_search/tests/boostQueryHelperTest.php
 core/plugins/user/hubzero/tests/HubzeroIsThirdPartyPlaceholderTest.php
 </code></pre>
 <h2 id="running-them">Running them</h2>
+<p>From the checkout root, install the development dependencies:</p>
+<pre><code class="language-bash">php core/bin/composer install --working-dir=core
+</code></pre>
+<p>Use the PHP environment prepared for the CMS, with <code>pdo_sqlite</code> as well
+for the database fixtures. You do not need to install a hub or connect the
+suite to its MariaDB database. The test configuration loads
+<code>core/tests/bootstrap.php</code>, which supplies a minimal framework environment.
+If you develop in Docker, use the
+<a href="../getting-started/devenvironment/index.html#commands">container test command</a>.</p>
 <p>Everything, through the shipped configuration:</p>
 <pre><code class="language-bash">cd core
 vendor/bin/phpunit -c phpunit.xml.dist
@@ -439,9 +448,11 @@ not happen to execute the affected line. Both have a linter.</p>
 <h3 id="missing-facade-imports">Missing facade imports</h3>
 <p>The CMS registers <code>Route</code>, <code>Lang</code>, <code>User</code>, <code>Config</code> and the rest as
 <strong>root-namespace</strong> aliases. Inside a namespaced file, an unqualified
-<code>Route::url()</code> resolves to <code>Current\Namespace\Route</code> and fatals when the line
-runs. The file parses; nothing complains until that branch executes, which
-on a rarely used error path can be years.</p>
+<code>Route::url()</code> resolves to <code>Current\Namespace\Route</code>. A fallback autoloader
+often finds the facade anyway, but the call can fail if that client lacks
+the alias or can reach a different class with the same name. Import facades
+explicitly with <code>use Route;</code>. See
+<a href="../foundation/facades/index.html#importing-a-facade">Importing a facade</a>.</p>
 <pre><code class="language-bash">php core/bin/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
 php core/bin/lint/missing-facade-imports.php --fix      # insert the missing `use` statements
 </code></pre>
@@ -460,11 +471,11 @@ defines it, which is deliberately generous: only a handful of files load per
 request, so a key defined in some other extension may still fail at runtime.
 Keys built at runtime (<code>'COM_X_' . strtoupper($type)</code>) cannot be checked and
 are skipped, so a clean run does not prove every string resolves.</p>
-<p>It runs in CI against a ceiling rather than against zero. 444 keys are
-undefined today, so <code>--max=444</code> in the workflow lets the check pass while
-refusing to let the number grow. Define the keys your change asks for, and
-when you have fixed some, lower the ceiling so the count cannot creep back
-up.</p>
+<p>It runs in CI against a ceiling rather than against zero. The <code>--max</code>
+value in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a> allows
+existing findings while refusing to let the number grow. Define the keys
+your change asks for, and when you fix existing ones, lower that ceiling
+in the same change.</p>
 <h2 id="continuous-integration">Continuous integration</h2>
 <p>Three workflows run on GitHub:</p>
 <ul>
@@ -479,22 +490,11 @@ linter against its ceiling.</li>
 tests, regenerates the references and fails if the committed copy is
 stale, and checks every internal link.</li>
 </ul>
-<p>A third, <code>dev-push.yml</code>, deploys to a Purdue development host and is
+<p>A fourth, <code>dev-push.yml</code>, deploys to a Purdue development host and is
 disabled (<code>if: false</code>).</p>
 <p>Run the suite before sending a change anyway; CI is the backstop, not the
 first line.</p>
-<h2 id="what-the-old-page-claimed-that-is-not-true">What the old page claimed that is not true</h2>
-<p>This page was carried over from the earlier documentation and described the
-2015 state.
-For the record:</p>
-<ul>
-<li>Tests extend <code>PHPUnit\Framework\TestCase</code>, not <code>PHPUnit_Framework_TestCase</code>.
-PHPUnit here is 11.5, not 4.6.</li>
-<li>The &quot;tests are only supported in individual extensions with 2.1.10+&quot; note
-is long spent. Extension tests work and several ship.</li>
-<li><code>muse test show</code> output has changed; the list above is the real one.</li>
-</ul>
-<p>Two loose ends worth knowing about:</p>
+<h2 id="choosing-a-test-directory-and-configuration">Choosing a test directory and configuration</h2>
 <ul>
 <li><code>tests/Unit</code> and <code>tests/Feature</code> in the installation root are <strong>empty</strong>,
 and no configuration file refers to them. They are a stub of a layout that

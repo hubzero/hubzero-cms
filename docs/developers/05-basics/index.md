@@ -21,8 +21,9 @@ namespace standing in for an object in the application container.
 
 > **Note:** The facades are aliased in the **root** namespace, and almost
 > every file you write is namespaced. Inside a namespace an unqualified
-> `Request` means `Your\Namespace\Request`, which does not exist, and PHP
-> raises a fatal error the moment the line runs. Import each facade you use:
+> `Request` means `Your\Namespace\Request`. A fallback often resolves it,
+> but can hide a missing import until a different client or class-name
+> collision exposes it. Import each facade you use:
 >
 > ```php
 > namespace Components\Blog\Site\Controllers;
@@ -32,10 +33,9 @@ namespace standing in for an object in the application container.
 > use Lang;
 > ```
 >
-> `\Request::getInt('id')` works too. Nothing catches a missing import
-> before the line runs, so a rarely taken error path can carry the fault for
-> a long time; `php core/bin/lint/missing-facade-imports.php` finds them, and
-> it runs in continuous integration. See
+> `\Request::getInt('id')` works too. PHP's syntax check does not detect a
+> missing import; `php core/bin/lint/missing-facade-imports.php` finds them,
+> and it runs in continuous integration. See
 > [facades](../03-foundation/06-facades.md).
 
 ## In this section

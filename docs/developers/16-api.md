@@ -7,13 +7,12 @@ screenshots: none
 # REST API
 
 Every hub serves a REST API under `/api/`. It is a third face on the same
-components that serve the site and the administrator interface: 246
-endpoints across 31 components, each one a method on a controller in that
-component's `api/` directory.
+components that serve the site and the administrator interface. Each
+endpoint is a method on a controller in a component's `api/` directory.
 
-The [API reference](../reference/api/index.md) lists every endpoint, its
-method, its URI and its parameters, generated from the source. This page is
-about how the API works and how to add to it.
+The [API reference](../reference/api/index.md) lists documented endpoints
+with their HTTP methods, URIs, and parameters, generated from the source.
+This page explains how the API works and how to add to it.
 
 ## When to write one
 

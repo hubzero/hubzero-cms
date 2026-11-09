@@ -42,7 +42,9 @@
         <nav aria-label="Developers contents">
 <ul class="tree">
 <li class="tree__section is-open"><details open><summary><a class="tree__link is-active" href="index.html" aria-current="page">Getting started</a></summary><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#your-first-development-session">Your first development session</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-you-should-know">What you should know</a></li>
+<li class="toc__item toc__item--l2"><a href="#reading-the-code-examples">Reading the code examples</a></li>
 <li class="toc__item toc__item--l2"><a href="#in-this-section">In this section</a></li>
 <li class="toc__item toc__item--l2"><a href="#next">Next</a></li>
 </ol><ul class="tree">
@@ -184,27 +186,91 @@
 <p>What you need before you write code against Hubzero: a hub to develop
 against, a way to reach its files and its database, and a sense of what
 changed in the framework you are reading.</p>
-<p>The CMS is PHP, and it does not run standalone. You develop against a
-working hub, replacing its CMS directory with a checkout of
-<a href="https://github.com/hubzero/hubzero-cms">hubzero/hubzero-cms</a>. Everything
-under <code>core/</code> is the platform; everything under <code>app/</code> is that hub's own
-state and is not in the repository.</p>
+<p>The CMS is a PHP web application. To try a change in a browser, you need a
+running installation with a web server, a database, and configuration. The
+repository's <a href="devenvironment/index.html#developing-in-docker">Docker setup</a>
+creates that installation directly from a checkout; you do not need an
+existing hub or the separate tool execution platform.</p>
+<h2 id="your-first-development-session">Your first development session</h2>
+<ol>
+<li>Follow <a href="devenvironment/index.html#developing-in-docker">Developing in Docker</a>
+to start the hub and sign in to its administrator interface.</li>
+<li>Read <a href="../foundation/structure/index.html">Application structure</a>.
+<code>core/</code> holds the shipped code; the installer creates <code>app/</code> for this
+hub's configuration, uploads, and local customizations. <code>app/</code> is
+Git-ignored, so changes there are not part of a contribution.</li>
+<li>Choose an <a href="../index.html#what-are-you-building">extension type</a> for your
+feature, or find the existing extension you want to change. A component
+named <code>com_blog</code>, for example, lives under <code>core/components/com_blog/</code>.</li>
+<li>Try the affected page on your local hub. For code checks, start with
+<a href="../testing/index.html#running-them">Running the tests</a>; for sending a change
+back, read <a href="../contributing/index.html">Contributing</a>.</li>
+</ol>
+<p>The <a href="devenvironment/index.html">development environment</a> page also covers a
+manual installation and working with a copy of an existing hub.</p>
 <h2 id="what-you-should-know">What you should know</h2>
-<p>The requirements are modest: PHP, and a text editor. Working knowledge of
-the following makes the rest of this book easier:</p>
+<p>You need a text editor, Git, and either Docker with Compose or the server
+software described in the installation guide. Working knowledge of the
+following makes the code chapters easier:</p>
 <ul>
 <li>HTML and CSS</li>
 <li>JavaScript. The CMS ships <a href="https://jquery.com">jQuery</a> 3.3.1 in
 <code>core/assets/js/jquery.js</code> and most of its own scripts are written
 against it.</li>
 <li>XML, which every extension manifest and configuration file is written in</li>
-<li>The model-view-controller pattern, which components and the admin
-interface follow</li>
+<li>The model-view-controller (<strong>MVC</strong>) pattern: a controller handles the
+request, a model manages data, and a view renders the result</li>
 <li>Object-oriented PHP. The framework is namespaced under <code>Hubzero\</code> and
 autoloaded by Composer.</li>
 </ul>
-<p>The platform targets PHP 8.2; <code>core/composer.json</code> pins the platform to
-<code>8.2.30</code> and the lint workflow runs on 8.3.</p>
+<p>The documented setup uses PHP 8.2. <code>core/composer.json</code> resolves dependencies
+as PHP <code>8.2.30</code>; that setting does not install PHP. The PHPUnit workflow
+runs on 8.2 and the syntax/lint workflow runs on 8.3.</p>
+<h2 id="reading-the-code-examples">Reading the code examples</h2>
+<p>Examples use an illustrative instrument-booking feature, with names such
+as <code>com_booking</code> and <code>com_bookings</code>. These are examples to adapt, not
+extensions included in the checkout. A controller excerpt assumes the
+component is registered and its models, views, permissions, and language
+files exist; a pasted class alone does not install a feature.</p>
+<p>These terms recur throughout the developer guide:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Client</td>
+<td>The part of the CMS handling a request: the public site, administrator interface, API, or command line</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>A framework object that does shared work, such as translating strings or dispatching events</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>The registry that supplies service objects by name</td>
+</tr>
+<tr>
+<td>Facade</td>
+<td>A short class name such as <code>Lang</code> that forwards calls to a service; import it in namespaced PHP files</td>
+</tr>
+<tr>
+<td>Manifest</td>
+<td>An extension's descriptive XML or JSON file, used for metadata and configuration</td>
+</tr>
+<tr>
+<td>Migration</td>
+<td>PHP code that installs or updates database tables and extension records</td>
+</tr>
+<tr>
+<td><code>#__</code></td>
+<td>A placeholder for the installation's database table prefix; use the real prefix when running SQL directly</td>
+</tr>
+</tbody>
+</table>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="releasenotes/index.html">Release notes</a> — where release notes live, and the one

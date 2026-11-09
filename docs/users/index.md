@@ -25,10 +25,16 @@ which are private workspaces where a team prepares files and data before
 releasing any of it.
 
 What a hub publishes is a **resource**: a tool, a dataset, a presentation,
-a course. A **publication** is a versioned, citable resource that has been
-through a curation workflow and carries a DOI. A **tool** is a program
-that runs on the hub's own machines and appears in your browser, without
-you installing anything.
+a course. A **publication** is a versioned research output released through
+a publishing workflow; it can carry a digital object identifier (**DOI**)
+for citation. Whether review or DOI registration is required depends on the
+hub. A **tool** is a program that runs through the hub's execution platform
+and appears in your browser, without you installing it on your computer.
+
+Paths such as `/members/myaccount` are on your own hub. Add them to its
+address, or follow the corresponding menu link. Your account and these
+instructions apply to that hub; this documentation website does not create
+an account for you.
 
 ## Start with what you came to do
 

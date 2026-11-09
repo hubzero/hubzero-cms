@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>REST API · Developers · Hubzero Documentation</title>
-  <meta name="description" content="Every hub serves a REST API under . It is a third face on the same components that serve the site and the administrator interface: 246 endpoints across 31…">
+  <meta name="description" content="Every hub serves a REST API under . It is a third face on the same components that serve the site and the administrator interface. Each endpoint is a method on…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/api/">
   <link rel="icon" href="../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -189,12 +189,11 @@
         
         <div class="prose">
 <p>Every hub serves a REST API under <code>/api/</code>. It is a third face on the same
-components that serve the site and the administrator interface: 246
-endpoints across 31 components, each one a method on a controller in that
-component's <code>api/</code> directory.</p>
-<p>The <a href="../../reference/api/index.html">API reference</a> lists every endpoint, its
-method, its URI and its parameters, generated from the source. This page is
-about how the API works and how to add to it.</p>
+components that serve the site and the administrator interface. Each
+endpoint is a method on a controller in a component's <code>api/</code> directory.</p>
+<p>The <a href="../../reference/api/index.html">API reference</a> lists documented endpoints
+with their HTTP methods, URIs, and parameters, generated from the source.
+This page explains how the API works and how to add to it.</p>
 <h2 id="when-to-write-one">When to write one</h2>
 <p>A component gets an API controller when something outside the page needs the
 data: a script that loads a term's instrument bookings overnight, a lab's own

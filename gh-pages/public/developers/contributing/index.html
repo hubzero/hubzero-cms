@@ -333,19 +333,18 @@ else.</p>
 </table>
 <p>A fourth, <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/dev-push.yml"><code>dev-push.yml</code></a>, deploys to a
 Purdue development host and is switched off.</p>
-<p>The facade check is worth understanding before it fails on you. The CMS
-registers <code>Route</code>, <code>User</code>, <code>Lang</code> and the rest as root-namespace aliases, so an
-unqualified <code>Route::url()</code> inside a namespaced file resolves to
-<code>Current\Namespace\Route</code> and fatals when that line runs. The file parses, so
-<code>php -l</code> says nothing, and the fault only surfaces on the path that reaches it.
-730 of these were fixed at once; the linter keeps them from coming back. Run it
-with <code>--fix</code> to insert the missing <code>use</code> statements.</p>
+<p>The facade check requires explicit imports for names such as <code>Route</code>,
+<code>User</code>, and <code>Lang</code> inside namespaced files. A fallback autoloader often
+resolves a missing import, but another class with the same short name can
+take precedence, and aliases differ between clients. <code>php -l</code> cannot catch
+that ambiguity. See <a href="../foundation/facades/index.html#importing-a-facade">Facades</a>.
+Run the linter with <code>--fix</code> to insert missing <code>use</code> statements.</p>
 <p>The language-key check is graded, not absolute. <code>Lang::txt()</code> prints the key
-when nothing defines it, and 444 keys in the tree are undefined today, so the
-workflow runs the linter with <code>--max=444</code>: the build passes at today's number
-and fails the moment your change adds one. Define the keys your change asks
-for. If you fix some existing ones, lower the ceiling in the workflow in the
-same pull request, so the count cannot creep back.</p>
+when nothing defines it. The workflow sets a <code>--max</code> ceiling to allow
+existing findings while preventing the count from growing. Use the value
+in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a> when checking
+locally. Define the keys your change asks for. If you fix existing ones,
+lower the ceiling in the same pull request.</p>
 <p>No workflow runs phpcs. Style is caught in review; see
 <a href="../conventions/php-style/index.html#when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</a>.</p>
 <h3 id="the-pull-request">The pull request</h3>
@@ -397,19 +396,12 @@ administrator, and is the interface right for them?</li>
 <li>Does something similar already exist that could be extended instead?</li>
 </ol>
 <h3 id="a-development-environment">A development environment</h3>
-<p>You need a working hub to develop against; the CMS does not run standalone.
-<a href="../getting-started/devenvironment/index.html">Development Environment</a>
-covers getting one, and the <a href="../../sysadmins/installing/index.html">installation overview</a>
-shows how to set one up from scratch. The platform targets PHP 8.2.</p>
-<p>Once the hub runs, replace its CMS directory with your clone, restore the
-<code>app/</code> directory from the original, install the Composer dependencies, and run
-the migrations:</p>
-<pre><code class="language-bash">(cd core &amp;&amp; php bin/composer install)
-php core/bin/muse migration -f
-</code></pre>
-<p><code>muse migration</code> runs in dry-run mode by default and lists what it would do;
-<code>-f</code> is the full run. Older instructions pair <code>-f</code> with <code>-i</code>. That flag is
-deprecated: it now behaves as <code>-a</code>, which only widens what is listed.</p>
+<p>The <a href="../getting-started/devenvironment/index.html#developing-in-docker">Docker development setup</a>
+creates a working hub from a fresh checkout. Edit the mounted source and
+reload the affected page to try a change. The same guide covers manual
+installation and replacing the code in an existing development hub.</p>
+<p>If you are only editing documentation, you can build and preview it with
+Python as described below; you do not need a running CMS.</p>
 <p><a href="../muse/index.html">muse</a> is the CMS command line; it does a
 great deal more than migrations.</p>
 <aside class="admonition admonition--tip">

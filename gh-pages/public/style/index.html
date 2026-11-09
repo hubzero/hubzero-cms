@@ -190,6 +190,33 @@ everything else that is a list.</li>
 <li>Screenshots show the current template, cropped to the part that matters,
 with alt text that says what the picture shows.</li>
 </ul>
+<h2 id="write-for-someone-new-to-hubzero">Write for someone new to Hubzero</h2>
+<ul>
+<li>Open with the task, who the page is for, and what they need before
+starting. Link to a setup page instead of assuming they have a running
+hub, server access, or administrator permissions.</li>
+<li>Define project terms and abbreviations on first use, or link to their
+explanation. Distinguish CMS development from tool development and hub
+groups from permission groups.</li>
+<li>Explain whether a path is a URL on the reader's hub or a file on its
+server. For commands, name the working directory and whether they run on
+the host, in a container, or at a database prompt. Mark example values
+the reader must replace.</li>
+<li>Put the recommended reading or setup path first. Present alternative
+installation methods as choices, so readers do not perform all of them.</li>
+<li>After a procedure, describe what success looks like and link to the next
+task. For code fragments, state what surrounding files or registration
+they assume; label illustrative extensions that do not ship in the tree.</li>
+<li>Distinguish CMS features from integrations that require separate software.
+Describe access, visibility, approval, and session limits as configurable
+when they depend on the hub.</li>
+<li>Keep documentation import history out of ordinary task instructions.
+Preserve compatibility notes when they help someone using an older
+command or extension. Use metadata for review provenance.</li>
+<li>Link to the source of changing counts or limits, such as CI thresholds.
+If a recorded test result is useful, date it and make clear that it is a
+snapshot.</li>
+</ul>
 <h2 id="before-you-commit">Before you commit</h2>
 <pre><code class="language-bash">sh docs/_tools/rebuild.sh
 </code></pre>

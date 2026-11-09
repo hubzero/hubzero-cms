@@ -10,11 +10,11 @@ The first hour on a hub, in order: create an account, confirm it, fill in
 enough of a profile to be findable, arrange a dashboard, and then find the
 part of the site you actually came for.
 
-The point of the first four steps is the fifth. Nothing on a hub is much use
-until other members can find you and add you to things — a group cannot invite
-a member it cannot see, and a project owner has to pick you off a list by
-name. Half an hour spent on an account and a profile saves a week of "who is
-this person and why can't they open the files".
+Start with the address of the hub you have been invited to use. Paths such
+as `/register` below refer to that site. If you already have an account,
+sign in and skip the registration steps. Your profile helps collaborators
+recognize you; joining their group or project may also need an invitation
+or approval from its manager.
 
 The example running through this chapter is a postdoc joining her lab's hub.
 She has been told two things: run the group's infiltration model, and get at
@@ -67,10 +67,10 @@ Two things are worth doing straight away:
   by other members, and on hubs that run Solr search, member profiles are
   indexed.
 
-For the postdoc, "findable" is the whole point of the step. The group's
-manager searches the member list for her name and her department to send the
-invitation; if the profile is private, or the organisation is blank, that
-search returns nothing useful and she has to be added by hand.
+For the postdoc, a recognizable name and organisation help the group's
+manager identify the right account. You can still choose the privacy
+settings appropriate for you; a public profile is not a prerequisite for
+participating in a group or project.
 
 ## 4. Arrange your dashboard
 
@@ -80,11 +80,9 @@ offers. It starts from a default arrangement and you rearrange it by dragging.
 [Member dashboard](14-dashboard.md) covers adding, removing, and configuring
 modules.
 
-This is the one step you can skip. Nobody else sees your dashboard and nothing
-depends on it. It is worth five minutes only because the panels you put there
-are the ones you will otherwise go looking for in a menu every day — for the
-postdoc, **My Sessions**, so she can get back into a running model, and
-**My Projects**, so the field-data project is one click away.
+This step is optional. The dashboard gives you shortcuts to things you use
+often — for the postdoc, **My Sessions**, so she can return to a running
+model, and **My Projects**, so the field-data project is one click away.
 
 > **Note:** A hub can switch dashboard personalisation off. If there is no
 > **Add Modules** button and nothing will drag, that is why.
@@ -135,9 +133,10 @@ Where a hub runs the tool platform, published tools launch in the browser and
 execute on the hub's own machines. Running one, sharing a session, and
 contributing your own are covered in [Tools](22-tools.md).
 
-Nothing is installed on your computer, and a session keeps running when you
-close the browser, which is why the postdoc can start the infiltration model
-on a laptop and pick the session up the next morning from **My Sessions**.
+Nothing is installed on your computer. Closing the browser does not itself
+terminate a session, so you can return through **My Sessions** while it
+remains available. Session limits and cleanup rules depend on the hub;
+save results you need to keep rather than relying on a session staying open.
 
 ![Animation of a simulation](media/gettingstarted-tools2.gif)
 

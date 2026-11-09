@@ -42,6 +42,8 @@
         <nav aria-label="System administrators contents">
 <ul class="tree">
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Installation overview</a><ol class="toc">
+<li class="toc__item toc__item--l2"><a href="#choose-an-installation-path">Choose an installation path</a></li>
+<li class="toc__item toc__item--l2"><a href="#before-you-begin">Before you begin</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-every-system-needs">What every system needs</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-installing-does">What installing does</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-was-tested">What was tested</a></li>
@@ -77,7 +79,37 @@
         
         <div class="prose">
 <p>A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
-of PHP. Installing one takes two steps, each with its own part of this book:</p>
+of PHP. This guide installs the Hubzero CMS: the website and its
+administrator interface. Tool execution and other integrations need
+separate services; see <a href="../../docs/index.html#what-the-cms-includes">What the CMS includes</a>.</p>
+<h2 id="choose-an-installation-path">Choose an installation path</h2>
+<table>
+<thead>
+<tr>
+<th>Your goal</th>
+<th>Follow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Try the CMS locally or develop its code</td>
+<td><a href="../../developers/getting-started/devenvironment/index.html#developing-in-docker">Developing in Docker</a>, which includes a database and sample content</td>
+</tr>
+<tr>
+<td>Install on a Linux server using its database and web server packages</td>
+<td>The two steps below</td>
+</tr>
+<tr>
+<td>Build the CMS into a container image and run MariaDB in a second container</td>
+<td><a href="../docker-image/index.html">A self-contained hub in Docker</a>, which covers the complete installation</td>
+</tr>
+<tr>
+<td>Configure a hub that already runs</td>
+<td><a href="../../managers/getting-started/first-week/index.html">The first week with a new hub</a></td>
+</tr>
+</tbody>
+</table>
+<p>For an installation using server packages, follow these two steps:</p>
 <ol>
 <li><strong><a href="../preparing/index.html">Preparing the server</a>.</strong> Choose your system
 there and follow its page, which takes a server with nothing on it to one
@@ -88,13 +120,21 @@ if you have not already: hosted hubs currently run on Enterprise Linux 8.</li>
 page ends at: the database, the installer, and what comes after. It is the
 same on every system.</li>
 </ol>
-<p>To run the hub as a Docker image that holds its code, with MariaDB in a
-container beside it, follow
-<a href="../docker-image/index.html">A self-contained hub in Docker</a> instead. It does both
-steps, and the upgrades after.</p>
-<p>If the hub you are asking about is already installed and answering, go to
-<a href="../../managers/getting-started/first-week/index.html">The first week with a new hub</a>
-instead.</p>
+<h2 id="before-you-begin">Before you begin</h2>
+<p>The server guides assume you can use a Linux shell, install packages with
+<code>sudo</code> or root access, edit configuration files, and restart services. You
+also need control of the hub's DNS record, or help from someone who can
+point its name at the server.</p>
+<p>Examples use <code>/var/www/hub</code> as the installation directory and
+<code>hub.example.org</code> as its hostname. Replace those consistently if you use
+another path or name. Replace example passwords with your own. Shell
+commands go in a server terminal; blocks marked <code>sql</code> go at MariaDB's
+prompt after you open it with <code>sudo mariadb</code>. Type <code>exit</code> to leave that
+prompt.</p>
+<p>Choose one web server configuration on your system's page: Apache, nginx,
+or the Docker route where offered. They are alternative ways to serve the
+same CMS. Apache and nginx pass PHP requests to <strong>PHP-FPM</strong>, the service
+that executes PHP; the FrankenPHP container includes its own PHP runtime.</p>
 <h2 id="what-every-system-needs">What every system needs</h2>
 <ul>
 <li>A Linux server. Hubzero does not run on Windows; the installer refuses to

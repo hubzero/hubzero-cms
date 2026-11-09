@@ -5,11 +5,13 @@ reviewed: 2026-09-10
 -->
 # Services
 
-The framework registers a small set of long-lived objects in the application
-container at boot: a cache store, a filesystem, a session, an event
-dispatcher. Extensions reach them through facades rather than constructing
-them, so that a hub can swap the implementation without touching extension
-code.
+Services are framework objects that do shared work: caching data, accessing
+files, keeping a visitor's session, and dispatching events. At startup, the
+framework registers them in an application **container**, a registry from
+which code requests an object by name. They are shared for the lifetime of
+that request. Extensions usually reach them through
+[facades](../03-foundation/06-facades.md), so a hub can swap an implementation
+without changing extension code.
 
 That indirection is the point, and it is also the thing that surprises
 people. A service can be configured into a do-nothing version, and the
@@ -59,10 +61,10 @@ Prefer the facade. It is shorter, and a test can put a double in the
 container under the same key and the facade will pick it up.
 
 > **Note:** The facades are aliased in the **root** namespace. Almost every
-> file you write is namespaced, and there an unqualified `Filesystem` means
-> `Your\Namespace\Filesystem`, which does not exist — a fatal error the
-> moment the line runs. Import each facade you use (`use Filesystem;`) or
-> write it fully qualified (`\Filesystem::exists(...)`). See
+> file you write is namespaced. There an unqualified `Filesystem` means
+> `Your\Namespace\Filesystem`. A fallback may resolve it, but a real class
+> with that name can take precedence. Import each facade you use
+> (`use Filesystem;`) or write it fully qualified (`\Filesystem::exists(...)`). See
 > [facades](../03-foundation/06-facades.md).
 
 Not every client registers every service. `Cache`, `Session`, `Module`,

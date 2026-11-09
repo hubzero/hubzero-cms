@@ -9,9 +9,15 @@ summary: Putting a hub on a server and keeping it current: installing it, and up
 
 This book is for the person who looks after the server a hub runs on: the
 one with a shell on it, who installs the hub, keeps its code current, and
-puts it back when something goes wrong. Everything here happens on the
-server, as `www-data` or as root. The hub's own administrator interface, at
+restores it when something goes wrong. Commands run on the server; each
+guide explains when to use root privileges and which account owns the hub's
+files. The hub's own administrator interface, at
 `/administrator`, is the subject of [Hub managers](../managers/index.md).
+
+For a first installation, start with the
+[installation overview](01-installing.md#choose-an-installation-path).
+It helps you choose between server packages, a container image, and the
+local development setup. You only need one of those paths.
 
 - [Installation overview](01-installing.md) — what a hub needs, and how
   installing goes: prepare the server, then install the hub.

@@ -183,10 +183,12 @@
 together. It covers what is on disk, what a request runs through, and how
 your classes are found. It also covers how extensions reach each other, and
 the handful of names an extension uses constantly.</p>
-<p>Read this section once before you write an extension. Most of what goes
-wrong early is explained here: a class that will not load, a facade that
-fatals, a plugin nothing calls, a directory that is not an extension because
-no database row says so. None of it can be learned by reading a component.</p>
+<p>Start with <a href="structure/index.html">Structure</a> to see the request lifecycle and
+where files belong. Then read <a href="extensions/index.html">Extensions</a> for the four
+extension types and <a href="facades/index.html">Facades</a> for calls such as
+<code>Request::getString()</code> and <code>Lang::txt()</code>. A <strong>facade</strong> is a short class name
+that forwards a call to a framework service. The remaining chapters explain
+how the framework finds classes, registers services, and calls plugins.</p>
 <h2 id="in-this-section">In this section</h2>
 <ul>
 <li><a href="structure/index.html">Structure</a> — the directory layout, what belongs in

@@ -11,20 +11,20 @@ components and two plugins, plus two custom linters that catch faults nothing
 else does. This page says what is there, how to run it, what is worth adding
 to it, and how to run one test instead of all of them.
 
-A full run on 2.4-main passes:
+A recorded run during the September 2026 review produced:
 
 ```
 Tests: 855, Assertions: 2905, PHPUnit Deprecations: 83, Skipped: 6.
 ```
 
-The deprecations come from PHPUnit 11 warning about older test syntax, not
-from failures. Six tests skip themselves when what they need is absent.
+The counts change as tests are added. Use your own run to assess a change.
+In that recorded run, the deprecations were PHPUnit 11 warnings about older
+test syntax, and six tests skipped when their requirements were absent.
 
 ## What is worth testing
 
-The suite is not a safety net over the whole CMS and pretending otherwise
-wastes your afternoon. It is 855 tests over a codebase of several thousand
-files, and it splits sharply:
+The suite primarily tests framework classes and extension helpers. The
+September 2026 breakdown shows the shape of that coverage:
 
 | Suite | Tests | What it covers |
 |---|---|---|
@@ -82,6 +82,19 @@ core/plugins/user/hubzero/tests/HubzeroIsThirdPartyPlaceholderTest.php
 ```
 
 ## Running them
+
+From the checkout root, install the development dependencies:
+
+```bash
+php core/bin/composer install --working-dir=core
+```
+
+Use the PHP environment prepared for the CMS, with `pdo_sqlite` as well
+for the database fixtures. You do not need to install a hub or connect the
+suite to its MariaDB database. The test configuration loads
+`core/tests/bootstrap.php`, which supplies a minimal framework environment.
+If you develop in Docker, use the
+[container test command](01-getting-started/06-devenvironment.md#commands).
 
 Everything, through the shipped configuration:
 
@@ -248,9 +261,11 @@ not happen to execute the affected line. Both have a linter.
 
 The CMS registers `Route`, `Lang`, `User`, `Config` and the rest as
 **root-namespace** aliases. Inside a namespaced file, an unqualified
-`Route::url()` resolves to `Current\Namespace\Route` and fatals when the line
-runs. The file parses; nothing complains until that branch executes, which
-on a rarely used error path can be years.
+`Route::url()` resolves to `Current\Namespace\Route`. A fallback autoloader
+often finds the facade anyway, but the call can fail if that client lacks
+the alias or can reach a different class with the same name. Import facades
+explicitly with `use Route;`. See
+[Importing a facade](03-foundation/06-facades.md#importing-a-facade).
 
 ```bash
 php core/bin/lint/missing-facade-imports.php            # core components, plugins, modules, libraries
@@ -278,11 +293,11 @@ request, so a key defined in some other extension may still fail at runtime.
 Keys built at runtime (`'COM_X_' . strtoupper($type)`) cannot be checked and
 are skipped, so a clean run does not prove every string resolves.
 
-It runs in CI against a ceiling rather than against zero. 444 keys are
-undefined today, so `--max=444` in the workflow lets the check pass while
-refusing to let the number grow. Define the keys your change asks for, and
-when you have fixed some, lower the ceiling so the count cannot creep back
-up.
+It runs in CI against a ceiling rather than against zero. The `--max`
+value in [`php-lint.yml`](../../.github/workflows/php-lint.yml) allows
+existing findings while refusing to let the number grow. Define the keys
+your change asks for, and when you fix existing ones, lower that ceiling
+in the same change.
 
 ## Continuous integration
 
@@ -299,25 +314,13 @@ Three workflows run on GitHub:
   tests, regenerates the references and fails if the committed copy is
   stale, and checks every internal link.
 
-A third, `dev-push.yml`, deploys to a Purdue development host and is
+A fourth, `dev-push.yml`, deploys to a Purdue development host and is
 disabled (`if: false`).
 
 Run the suite before sending a change anyway; CI is the backstop, not the
 first line.
 
-## What the old page claimed that is not true
-
-This page was carried over from the earlier documentation and described the
-2015 state.
-For the record:
-
-- Tests extend `PHPUnit\Framework\TestCase`, not `PHPUnit_Framework_TestCase`.
-  PHPUnit here is 11.5, not 4.6.
-- The "tests are only supported in individual extensions with 2.1.10+" note
-  is long spent. Extension tests work and several ship.
-- `muse test show` output has changed; the list above is the real one.
-
-Two loose ends worth knowing about:
+## Choosing a test directory and configuration
 
 - `tests/Unit` and `tests/Feature` in the installation root are **empty**,
   and no configuration file refers to them. They are a stub of a layout that

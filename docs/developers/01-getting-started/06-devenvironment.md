@@ -6,10 +6,16 @@ screenshots: none
 -->
 # Development environment
 
-The CMS does not run standalone. You develop against a working hub — a web
-server, PHP, a database, and a configured `app/` directory — with this
-repository checked out in place of its CMS. This page separates what the
-repository gives you from what you have to get elsewhere.
+This page gets a local Hubzero CMS running so you can edit its code and
+try the result in a browser. The installation needs a web server, PHP, a
+database, and a configured `app/` directory. The Docker setup below creates
+all of these from a fresh checkout.
+
+For a first installation on your own machine, go straight to
+[Developing in Docker](#developing-in-docker). For a server that will serve
+other people, use the [installation overview](../../sysadmins/01-installing.md).
+If you already have a development hub, see
+[Replacing a hub's CMS with a checkout](#replacing-a-hub-s-cms-with-a-checkout).
 
 ## What this repository provides
 
@@ -18,7 +24,7 @@ Everything here is in the tree and you can read it:
 | Path | What it does |
 |---|---|
 | [`core/bin/muse`](../../../core/bin/muse) | The console. `muse install` bootstraps a hub from a checkout; `muse migration` applies schema changes. See the [Muse reference](../../reference/muse.md). |
-| [`core/bin/composer`](../../../core/bin/composer) | A bundled Composer. Run it as `php core/bin/composer install` from `core/`. |
+| [`core/bin/composer`](../../../core/bin/composer) | A bundled Composer, the PHP dependency manager. From the checkout root, run `php core/bin/composer install --working-dir=core`; it reads `core/composer.json` and creates `core/vendor/`. |
 | [`core/composer.json`](../../../core/composer.json) | The PHP dependencies. The platform is pinned to PHP `8.2.30`; the dev requirements are PHPUnit 11, PHP_CodeSniffer 3.13, PHPStan 2, `parallel-lint`, and Mockery. |
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
 | [`core/bin/lint/`](../../../core/bin/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
@@ -35,21 +41,23 @@ the [System administrators](../../sysadmins/index.md) book.
 
 ## Requirements
 
-`muse install` runs a pre-flight check before it does anything, and that
-check is the authoritative statement of what the CMS needs. From
+`muse install` checks the environment during installation. The CMS checks
+include the following, declared in
 [`Install/Preflight.php`](../../../core/libraries/Hubzero/Console/Command/Install/Preflight.php):
 
 - PHP **8.2.0** or later.
 - These extensions: `pdo`, `pdo_mysql`, `json`, `mbstring`, `openssl`,
   `curl`, `gd`, `fileinfo`, `zip`.
 
-`pdo_mysql` is the only database driver required, and the installer connects
-with a `mysql:` DSN, so in practice the database is MySQL or MariaDB. The PHP
-lint workflow runs on 8.3, and Composer's platform is pinned to 8.2.30, so
-8.2 and 8.3 are the versions the project actually exercises.
+Composer also checks the extensions required by the locked dependencies.
+The [server preparation pages](../../sysadmins/02-preparing/index.md)
+install these along with the CMS requirements. `pdo_mysql` is the installer's
+database driver, so use MySQL or MariaDB for the hub. The PHPUnit workflow
+runs on PHP 8.2 and the PHP lint workflow runs on 8.3.
 
-Run `php core/bin/muse install check` on a candidate machine to see the
-pre-flight result without installing anything.
+Run `php core/bin/muse install check` from the checkout root to see the
+pre-flight result without installing anything. On a fresh checkout it also
+reports that Composer dependencies are missing; `muse install` installs them.
 
 ## Getting a hub to develop against
 
@@ -95,18 +103,17 @@ php core/bin/muse install
 | `muse install admin` | Create the first administrator account |
 | `muse install verify` | Check an installed hub: how it is served, its scheduled tasks, database server, mail and file ownership |
 
-This gets you the CMS. It does not get you the parts of a hub that are not
-the CMS: the tool session middleware, Workspaces, the mail gateway, LDAP, or
-Solr. For those you need the packages or Autohub.
-
-> **Note:** The old version of this page pointed at a VMware image on
-> `hubzero.org/download`. Nothing in this repository builds or references
-> such an image; check whether it still exists before relying on it.
+This gets you the CMS. Tool sessions, Workspaces, an external mail gateway,
+LDAP, and Solr need separate services and configuration. Ask the people who
+operate your target hub which integrations it uses before developing against
+one of them.
 
 ## Developing in Docker
 
-You need Docker with its Compose plugin. On Debian and Ubuntu that is
-`sudo apt install docker.io docker-compose-v2`. Then, from a fresh clone:
+You need Git and a running Docker engine with its Compose plugin. Check
+that `docker compose version` and `docker info` work in your terminal.
+The documented setup was tested on Linux; see the verification notes below
+for its limits. Then, from a fresh clone:
 
 ```bash
 git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git
@@ -131,8 +138,14 @@ to stop watching:
 | The mail it sends | `http://localhost:8025`, Mailpit's inbox |
 | Its database | `docker compose exec db mariadb -u hub -phub hub` |
 
-The certificate is one FrankenPHP makes itself, so the browser warns about
-it once. Both ports answer only on `127.0.0.1`, and every password is in
+Open the hub's address in your browser and check that the home page loads.
+Then sign in at `/administrator` with the credentials above. You now have
+a working CMS to develop against. The database command opens MariaDB's
+interactive SQL prompt; type `exit` to leave it.
+
+The certificate is one FrankenPHP makes itself, so your browser may ask you
+to accept it for local development. The published web ports answer only on
+`127.0.0.1`, and every password is in
 [`compose.yaml`](../../../compose.yaml) for anyone to read: this is a hub for
 your own machine, not for serving. For a real hub in Docker, see
 [A self-contained hub in Docker](../../sysadmins/05-docker-image.md).
@@ -157,6 +170,24 @@ The hub runs as the account that owns the checkout, not as `www-data`, so
 The scheduled tasks are ticked every minute inside the container; the ticks
 show in `docker compose logs hub`.
 
+The checkout root is the directory containing `compose.yaml`, `core/`, and
+`index.php`. Run every `docker compose` command on this page from that
+directory, in your host terminal. `docker compose exec hub` runs the rest
+of its command inside the `hub` container, whose working directory is
+`/var/www/hub`.
+
+### Your first edit
+
+The checkout is mounted into the container, so saving a PHP source file
+changes what the next request runs. Reload the affected page to try it.
+You do not need to rebuild the Docker image for an ordinary PHP edit.
+
+For a contribution to Hubzero, edit the shipped code under `core/`. For a
+customization used only by your own hub, use `app/`; read
+[Application structure](../03-foundation/01-structure.md#overriding-a-core-extension)
+before copying an extension there, because an extension override replaces
+the whole extension. Changes under `app/` are Git-ignored.
+
 ### Commands
 
 `muse` runs in the hub's container:
@@ -171,8 +202,12 @@ not, so give them your own user number, which `id -u` prints, with
 `--user`. For example, with the number 1000:
 
 ```bash
-docker compose exec --user 1000 hub core/vendor/bin/phpunit core/libraries/Hubzero/Utility/Tests
+docker compose exec --user 1000 --workdir /var/www/hub/core hub vendor/bin/phpunit -c phpunit.xml.dist libraries/Hubzero/Utility/Tests
 ```
+
+Replace `1000` with your own user number. This runs the utility tests with
+the project's test configuration. See [Testing](../15-testing.md) for the
+full suite and how to select a single test.
 
 ### Xdebug
 
@@ -191,7 +226,7 @@ Map `/var/www/hub` in the container to the checkout in your editor.
 Compose reads a file named `.env` beside `compose.yaml`, if there is one.
 Set any of these in it before the first start:
 
-```
+```dotenv
 HUB_DEV_PORT=8444
 HUB_DEV_MAIL_PORT=8026
 HUB_DEV_SAMPLE_DATA=0
@@ -207,6 +242,11 @@ after the first start and you must change `live_site` there too.
 starts them again. `docker compose down` removes the containers but keeps the
 database. To start again from nothing, remove the database volume and the
 hub's `app/` directory as well:
+
+> **Warning:** The following reset deletes this development hub's database,
+> accounts, uploads, configuration, and customizations under `app/`. Back up
+> anything you want to keep. Run it only in the development checkout you
+> intend to reset.
 
 ```bash
 docker compose down -v
@@ -239,12 +279,10 @@ carry across.
    sudo mv example example.bak
    ```
 
-2. Clone the repository into its place. The repository is
-   **`hubzero/hubzero-cms`**; the older `hubzero/hubzero` name in the previous
-   version of this page is wrong.
+2. Clone the release branch into its place:
 
    ```bash
-   sudo git clone https://github.com/hubzero/hubzero-cms.git example
+   sudo git clone --branch 2.4-main https://github.com/hubzero/hubzero-cms.git example
    ```
 
 3. Copy the hub's own state back in. This is the configuration, the uploaded
@@ -271,8 +309,8 @@ carry across.
    ```
 
    `muse migration` with no options is a dry run that lists what it would do;
-   `-f` performs the run. The `-i` flag the old page used is deprecated and
-   now behaves as `-a` (list all), so `-f` alone is what you want.
+   `-f` performs the run. If you encounter `-i` in older instructions, leave
+   it out: it is deprecated and now behaves as `-a` (list all).
 
 6. Give the web server ownership and let your account write:
 
@@ -297,34 +335,43 @@ needs.
 
 ## Continuous integration
 
-Three workflows, in `.github/workflows/`:
+Three active workflows live in `.github/workflows/`. The workflow files
+declare the paths that trigger each check:
 
 - **`php-lint.yml`** — runs on PHP 8.3. Three checks: `php -l` over every PHP
   file under `core/` and `app/` outside `vendor/`;
   `core/bin/lint/missing-facade-imports.php`, which fails on any namespaced file
   that uses a facade without importing it; and
-  `core/bin/lint/undefined-language-keys.php --quiet --max=442`, which fails if
-  the number of language keys nothing defines rises above the current count.
+  `core/bin/lint/undefined-language-keys.php`, which fails if
+  the number of undefined language keys rises above the workflow's ceiling.
   The second exists because such a file parses cleanly and misbehaves only
   when the line runs — see
   [Facades](../03-foundation/06-facades.md#importing-a-facade). The
   third is a ceiling rather than a gate: lower the number as keys are
   defined.
+- **[`tests.yml`](../../../.github/workflows/tests.yml)** — installs the
+  Composer dependencies and runs the PHPUnit suite on PHP 8.2, using
+  `core/phpunit.xml.dist`.
 - **`pages.yml`** — builds this documentation, regenerates the references,
   checks every internal link, and fails if the committed `gh-pages/public/`
   is stale.
-- **`dev-push.yml`** — a deployment hook to a Purdue-operated development
-  host. It is disabled at the top with `if: false`.
-
-None of the three runs the PHP test suite, and none starts a browser.
+A fourth workflow, `dev-push.yml`, is a deployment hook to a Purdue-operated
+development host. It is disabled with `if: false`. None of these workflows
+starts a browser, so try interface changes on your local hub as well.
 
 ## Running the tests
 
 PHPUnit is a dev dependency and the tests live beside the code they cover, as
 `*Test.php` under `core/libraries/Hubzero/` and in each extension's `tests/`
-directory. Run them with `core/vendor/bin/phpunit`. The database library's
-tests need their backend available and are run as a separate suite. See
-[Testing](../15-testing.md).
+directory. From the checkout root, run the suite with:
+
+```bash
+php core/vendor/bin/phpunit -c core/phpunit.xml.dist
+```
+
+The shipped test database helper uses SQLite fixtures rather than your hub's
+MariaDB database. See [Testing](../15-testing.md) for dependencies, selecting
+a single test, and the limits of that coverage.
 
 For style, `core/bin/php_tests.sh <files>` gives you the PSR-12 check and the
 syntax check in one call. No workflow runs it: much of the older code is
