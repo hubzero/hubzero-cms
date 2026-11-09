@@ -21,4 +21,9 @@
 			</fieldset>
 		</fields>
 	</config>
+	<!-- The com_cron job form reads event parameters from here (\Hubzero\Html\Parameter), not from <config> -->
+	<params group="expireinactive">
+		<param name="members_expireinactive_months" type="text" default="36" label="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_MONTHS_LABEL" description="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_MONTHS_DESC" />
+		<param name="members_expireinactive_exempt_group" type="text" default="Service accounts" label="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_EXEMPT_LABEL" description="PLG_CRON_MEMBERS_EXPIRE_INACTIVE_EXEMPT_DESC" />
+	</params>
 </extension>

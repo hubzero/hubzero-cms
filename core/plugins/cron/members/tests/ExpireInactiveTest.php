@@ -45,6 +45,30 @@ class ExpireInactiveTest extends Basic
 	}
 
 	/**
+	 * The com_cron job form reads an event's parameters with
+	 * \Hubzero\Html\Parameter, which only sees <params group="..."> in the
+	 * plugin XML, not <config><fields>. Both must declare the same fields,
+	 * under the group the event names in onCronEvents().
+	 *
+	 * @return  void
+	 */
+	public function testCronFormFindsTheParameters()
+	{
+		$file = dirname(__DIR__) . DS . 'members.xml';
+
+		$this->assertStringContainsString("'params' => 'expireinactive'", file_get_contents(dirname(__DIR__) . DS . 'members.php'));
+
+		$form = new \Hubzero\Html\Parameter('', $file);
+		$this->assertSame(2, $form->getNumParams('expireinactive'), 'com_cron shows "There are no Parameters for this item"');
+
+		$xml    = simplexml_load_file($file);
+		$legacy = array_map('strval', $xml->xpath('/extension/params[@group="expireinactive"]/param/@name'));
+		$config = array_map('strval', $xml->xpath('/extension/config/fields/fieldset[@group="expireinactive"]/field/@name'));
+		$this->assertSame(array('members_expireinactive_months', 'members_expireinactive_exempt_group'), $legacy);
+		$this->assertSame($legacy, $config);
+	}
+
+	/**
 	 * Exactly the accounts with no activity since the cutoff, and no
 	 * account expiry already set, are selected
 	 *
