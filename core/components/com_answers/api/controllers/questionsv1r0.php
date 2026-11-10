@@ -215,7 +215,11 @@ class Questionsv1r0 extends ApiController
             'anonymous'  => Request::getInt('anonymous', 0, 'post'),
             'subject'    => Request::getString('subject', null, 'post', 'none', 2),
             'question'   => Request::getString('question', null, 'post', 'none', 2),
-            'created'    => ($manager ? Request::getString('created', with(new Date('now'))->toSql(), 'post') : with(new Date('now'))->toSql()),
+            'created'    => ($manager ? Request::getString(
+                'created',
+                with(new Date('now'))->toSql(),
+                'post',
+            ) : with(new Date('now'))->toSql()),
             // updateTask below pins created_by so a question's author cannot be
             // reassigned. Leaving it open here left the same forgery reachable
             // through create: any authenticated caller could file a question in

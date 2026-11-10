@@ -105,16 +105,30 @@ class Video extends WikiMacro
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i',
+            [&$this, 'parseSingleAttribute'],
+            $content,
+        );
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
 
         $width  = (isset($this->attr['width']) && $this->attr['width'] != '') ? $this->attr['width'] : $default_width;
-        $height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
+        $height = (isset($this->attr['height']) && $this->attr['height'] != '')
+            ? $this->attr['height']
+            : $default_height;
 
         //check is user entered full youtube url or just Video Id
         if (!strstr($url, 'http')) {
@@ -200,7 +214,19 @@ class Video extends WikiMacro
                             break;
                     }
                 }
-                $video_url = 'https://www.kaltura.com/p/' . $partner_id . '/sp/' . $partner_id . '00/embedIframeJs/uiconf_id/' . $uiconf_id . '/partner_id/' . $partner_id . '?iframeembed=true&playerId=movie' . rand(0, 1000) . '&entry_id=' . $entry_id . '&flashvars[autoPlay]=false';
+                $video_url = 'https://www.kaltura.com/p/'
+                    . $partner_id
+                    . '/sp/'
+                    . $partner_id
+                    . '00/embedIframeJs/uiconf_id/'
+                    . $uiconf_id
+                    . '/partner_id/'
+                    . $partner_id
+                    . '?iframeembed=true&playerId=movie'
+                    . rand(0, 1000)
+                    . '&entry_id='
+                    . $entry_id
+                    . '&flashvars[autoPlay]=false';
             }
         }
 
@@ -214,21 +240,33 @@ class Video extends WikiMacro
             Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 
             $html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
-            $html .= '<video id="movie' . rand(0, 1000) . '" width="' . $width . '" height="' . $height . '" preload controls>';
+            $html .= '<video id="movie'
+                . rand(0, 1000)
+                . '" width="'
+                . $width
+                . '" height="'
+                . $height
+                . '" preload controls>';
             switch ($ext) {
                 case 'mov':
                 case 'mp4':
                 case 'm4v':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
+                    $html .= '<source src="'
+                        . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8')
+                        . '" type="video/mp4" />';
                     break;
 
                 case 'ogg':
                 case 'ogv':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
+                    $html .= '<source src="'
+                        . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8')
+                        . '" type="video/ogg" />';
                     break;
 
                 case 'webm':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
+                    $html .= '<source src="'
+                        . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8')
+                        . '" type="video/webm" />';
                     break;
             }
             $html .= '</video>';
@@ -244,7 +282,17 @@ class Video extends WikiMacro
             $safeWidth  = preg_replace('/[^0-9%]/', '', (string) $width);
             $safeHeight = preg_replace('/[^0-9%]/', '', (string) $height);
 
-            $html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . $safeUrl . '" width="' . $safeWidth . '" height="' . $safeHeight . '" title="' . htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8') . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+            $html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie'
+                . rand(0, 1000)
+                . '" src="'
+                . $safeUrl
+                . '" width="'
+                . $safeWidth
+                . '" height="'
+                . $safeHeight
+                . '" title="'
+                . htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8')
+                . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
         }
 
         // Return the emdeded youtube video
@@ -423,7 +471,8 @@ class Video extends WikiMacro
      */
     private function link($file)
     {
-        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)"
+            . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
             return $file;
         }

@@ -78,7 +78,11 @@ class Forum extends Plugin
             $viewlevels = '0,' . implode(',', User::getAuthorisedViewLevels());
 
             if ($gids) {
-                $addtl_where[] = '(e.access IN (' . $viewlevels . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,' . join(',', $gids) . ')))';
+                $addtl_where[] = '(e.access IN ('
+                    . $viewlevels
+                    . ') OR ((e.access = 4 OR e.access = 5) AND e.scope_id IN (0,'
+                    . join(',', $gids)
+                    . ')))';
             } else {
                 $addtl_where[] = '(e.access IN (' . $viewlevels . '))';
             }

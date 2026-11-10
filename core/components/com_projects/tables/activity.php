@@ -40,7 +40,13 @@ class Activity extends Table
         if ($id === null || !intval($id) || $projectid === null) {
             return false;
         }
-        $this->db->setQuery("SELECT * FROM $this->tableName WHERE id=" . intval($id) . " AND projectid=" . intval($projectid) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT * FROM $this->tableName WHERE id="
+                . intval($id)
+                . " AND projectid="
+                . intval($projectid)
+                . " LIMIT 1",
+        );
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {
@@ -181,8 +187,18 @@ class Activity extends Table
      * @param   boolean  $managers_only
      * @return  integer  (activity id) or false
      */
-    public function recordActivity($projectid = null, $by = null, $activity = null, $referenceid = 0, $highlighted = '', $url = '', $class = 'project', $commentable = 0, $admin = 0, $managers_only = 0)
-    {
+    public function recordActivity(
+        $projectid = null,
+        $by = null,
+        $activity = null,
+        $referenceid = 0,
+        $highlighted = '',
+        $url = '',
+        $class = 'project',
+        $commentable = 0,
+        $admin = 0,
+        $managers_only = 0,
+    ) {
         if ($projectid === null || $activity === null || $by === null || intval($projectid) == 0) {
             return false;
         }
@@ -239,7 +255,12 @@ class Activity extends Table
         }
 
         $query  = ($permanent) ? "DELETE FROM $this->tableName " : "UPDATE $this->tableName SET state = 2 ";
-        $query .= " WHERE projectid=" . $this->db->quote($projectid) . " AND referenceid=" . $this->db->quote($refid) . " AND class=" . $this->db->quote($class);
+        $query .= " WHERE projectid="
+            . $this->db->quote($projectid)
+            . " AND referenceid="
+            . $this->db->quote($refid)
+            . " AND class="
+            . $this->db->quote($class);
 
         $this->db->setQuery($query);
         if (!$this->db->query()) {

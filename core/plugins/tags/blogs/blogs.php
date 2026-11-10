@@ -95,7 +95,9 @@ class Blogs extends Plugin
                 $gwhere = '';
             }
 
-            $e_where .= " AND ((e.access IN (1,2)) OR (e.access IN (5) AND scope='member' AND scope_id=" . User::get('id') . ") $gwhere) ";
+            $e_where .= " AND ((e.access IN (1,2)) OR (e.access IN (5) AND scope='member' AND scope_id="
+                . User::get('id')
+                . ") $gwhere) ";
         }
 
         $e_where .= " AND (e.publish_up IS NULL OR e.publish_up <= " . $database->quote($now) . ") ";

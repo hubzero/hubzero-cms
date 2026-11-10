@@ -384,7 +384,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             $name = htmlentities($contributor->name);
             if ($contributor->get('authorid') > 0) {
                 if (!$solr) {
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $contributor->get('authorid')) . '" data-rel="contributor" class="resource-contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+                    $name = '<a href="'
+                        . Route::url('index.php?option=com_members&id=' . $contributor->get('authorid'))
+                        . '" data-rel="contributor" class="resource-contributor" title="View the profile of '
+                        . $name
+                        . '">'
+                        . $name
+                        . '</a>';
                 }
             }
             if ($contributor->get('role')) {
@@ -414,7 +420,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 $db = App::get('db');
                 $sql = "SELECT n.id, t.name AS name, n.name AS xname, NULL AS xorg, n.givenName, n.givenName AS firstname, n.middleName, n.middleName AS middlename, n.surname, n.surname AS lastname, t.organization, t.*, a.role"
                     . " FROM `#__tool_authors` AS t LEFT JOIN `#__users` AS n ON n.id=t.uid JOIN `#__tool_version` AS v ON v.id=t.version_id"
-                    . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid=" . $db->quote($this->get('id'))
+                    . " LEFT JOIN `#__author_assoc` AS a ON a.authorid=t.uid AND a.subtable='resources' AND a.subid="
+                    . $db->quote($this->get('id'))
                     . " WHERE t.toolname=" . $db->quote($this->get('alias')) . " AND v.state<>3"
                     . " AND t.revision=" . $db->quote($this->get('revision'))
                     . " ORDER BY t.ordering";
@@ -606,7 +613,18 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         // Make sure the resource is published and standalone
-        if (in_array($this->get('published'), [self::STATE_UNPUBLISHED, self::STATE_PENDING, self::STATE_DRAFT, self::STATE_TRASHED, self::STATE_DRAFT_INTERNAL])) {
+        if (
+            in_array(
+                $this->get('published'),
+                [
+                    self::STATE_UNPUBLISHED,
+                    self::STATE_PENDING,
+                    self::STATE_DRAFT,
+                    self::STATE_TRASHED,
+                    self::STATE_DRAFT_INTERNAL,
+                ],
+            )
+        ) {
             return false;
         }
 
@@ -986,7 +1004,10 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     {
         $date = $this->get('created');
 
-        if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
+        if (
+            $date
+            && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)
+        ) {
             $date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
         if ($date) {
@@ -1030,7 +1051,8 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function link()
     {
-        return 'index.php?option=com_resources&' . ($this->get('alias') ? 'alias=' . $this->get('alias') : 'id=' . $this->get('id'));
+        return 'index.php?option=com_resources&'
+            . ($this->get('alias') ? 'alias=' . $this->get('alias') : 'id=' . $this->get('id'));
     }
 
     /**
@@ -1317,7 +1339,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                         $this->thistool = $tool;
                     }
                     // Current version
-                    if ($tool->state == 1 && (count($revisions) == 1 || (count($revisions) > 1 && $revisions[1]->version == $tool->version))) {
+                    if (
+                        $tool->state == 1
+                        && (
+                            count($revisions) == 1
+                            || (count($revisions) > 1 && $revisions[1]->version == $tool->version)
+                        )
+                    ) {
                         $this->curtool = $tool;
                         $revision = $revision ? $revision : $tool->revision;
                     }
@@ -1489,7 +1517,13 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 // authorship rather than the join below.
                 $uid = (int) $filters['authororsubmitter'];
                 $query->whereRaw('(' . $r . '.created_by = ' . $uid
-                    . ' OR ' . $r . '.id IN (SELECT subid FROM ' . $a . ' WHERE authorid = ' . $uid . " AND subtable = 'resources'))");
+                    . ' OR '
+                    . $r
+                    . '.id IN (SELECT subid FROM '
+                    . $a
+                    . ' WHERE authorid = '
+                    . $uid
+                    . " AND subtable = 'resources'))");
             } else {
                 $query
                     ->join($a, $a . '.subid', $r . '.id', 'left')
@@ -1718,7 +1752,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         }
 
         $publicationDate = !empty($fields['yearofpublication']) ? $fields['yearofpublication'] : '';
-        $publicationDate = empty($publicationDate) && !empty($fields['publicationdate']) ? $fields['publicationdate'] : $publicationDate;
+        $publicationDate = empty($publicationDate) && !empty($fields['publicationdate'])
+            ? $fields['publicationdate']
+            : $publicationDate;
         if (strlen($publicationDate) == 4) {
             $publicationDate = $publicationDate . '-01-01 00:00:00';
             $publicationDate = Date::of($publicationDate)->format($solrDateFormat);

@@ -50,7 +50,9 @@ foreach ($menuItems as $k => $v) {
 $mmSendingOn = (int) \Component::params('com_massmail')->get('sending_enabled', 0);
 
 $mmDb = \App::get('db');
-$mmDb->setQuery("SELECT state FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
+$mmDb->setQuery(
+    "SELECT state FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1",
+);
 $mmCron   = $mmDb->loadObject();
 $mmCronOn = ($mmCron && (int) $mmCron->state == 1);
 

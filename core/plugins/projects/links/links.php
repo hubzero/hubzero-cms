@@ -226,7 +226,10 @@ class Links extends Plugin
             ? 'index.php?option=com_publications&task=submit'
             : 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 
-        $url = Route::url($route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations', false);
+        $url = Route::url(
+            $route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations',
+            false,
+        );
 
         App::redirect($url);
         return;
@@ -269,7 +272,12 @@ class Links extends Plugin
             ? 'index.php?option=com_publications&task=submit'
             : 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 
-        App::redirect(Route::url($route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations', false));
+        App::redirect(
+            Route::url(
+                $route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations',
+                false,
+            ),
+        );
         return;
     }
 
@@ -340,7 +348,12 @@ class Links extends Plugin
             ? 'index.php?option=com_publications&task=submit'
             : 'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications';
 
-        App::redirect(Route::url($route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations', false));
+        App::redirect(
+            Route::url(
+                $route . '&pid=' . $pid . ($vid ? '&vid=' . $vid : '&version=' . $version) . '&section=citations',
+                false,
+            ),
+        );
         return;
     }
 
@@ -692,7 +705,11 @@ class Links extends Plugin
         }
 
         // Get publication
-        $view->publication = $objP->getPublication($view->version->publication_id, $view->version->version_number, $this->model->get('id'));
+        $view->publication = $objP->getPublication(
+            $view->version->publication_id,
+            $view->version->version_number,
+            $this->model->get('id'),
+        );
 
         if (!$view->publication) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
@@ -951,7 +968,9 @@ class Links extends Plugin
                 $titleNode = $html->find('title', 0);
                 $title = $titleNode ? htmlspecialchars(trim((string) $titleNode->innertext), ENT_QUOTES, 'UTF-8') : '';
 
-                $out .= $title ? stripslashes('<h5>' . addslashes($title) . '</h5>') : '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
+                $out .= $title
+                    ? stripslashes('<h5>' . addslashes($title) . '</h5>')
+                    : '<h5>' . \Components\Projects\Helpers\Html::shortenText($finalUrl, 100) . '</h5>';
 
                 //Get all images found on this page
                 $jpgs = $html->find('img[src$=jpg],img[src$=png]');
@@ -987,7 +1006,9 @@ class Links extends Plugin
                 }
 
                 if ($images) {
-                    $out .= '<div id="link-image"><img src="' . htmlspecialchars((string) $images[0], ENT_QUOTES, 'UTF-8') . '" alt="" /></div>';
+                    $out .= '<div id="link-image"><img src="'
+                        . htmlspecialchars((string) $images[0], ENT_QUOTES, 'UTF-8')
+                        . '" alt="" /></div>';
                 }
 
                 $description = null;
@@ -1018,7 +1039,14 @@ class Links extends Plugin
                 }
 
                 $out .= $description
-                        ? stripslashes('<p>' . \Hubzero\Utility\Str::truncate(addslashes(htmlspecialchars((string) $description, ENT_QUOTES, 'UTF-8')), 200) . '</p>')
+                        ? stripslashes(
+                            '<p>'
+                                . \Hubzero\Utility\Str::truncate(
+                                    addslashes(htmlspecialchars((string) $description, ENT_QUOTES, 'UTF-8')),
+                                    200,
+                                )
+                                . '</p>',
+                        )
                         : '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
 
                 if ($images) {

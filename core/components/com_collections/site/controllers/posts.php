@@ -52,7 +52,15 @@ class Posts extends SiteController
     public function loginTask($return = null)
     {
         if (!$return) {
-            $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server');
+            $return = Request::getString(
+                'REQUEST_URI',
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
+                    false,
+                    true,
+                ),
+                'server',
+            );
         }
         $return = base64_encode($return);
         App::redirect(
@@ -517,7 +525,11 @@ class Posts extends SiteController
                 'action'      => ($comment['id'] ? 'updated' : 'created'),
                 'scope'       => 'collections.comment',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), $row->get('id'), $item),
+                'description' => Lang::txt(
+                    'COM_COLLECTIONS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'),
+                    $row->get('id'),
+                    $item,
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
@@ -545,7 +557,18 @@ class Posts extends SiteController
 
         // Ensure the user is logged in
         if (User::isGuest()) {
-            $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
+            $this->loginTask(
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&post='
+                        . Request::getInt('post', 0),
+                    false,
+                    true,
+                ),
+            );
             return;
         }
 
@@ -622,7 +645,18 @@ class Posts extends SiteController
     public function voteTask()
     {
         if (User::isGuest()) {
-            $this->loginTask(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&post=' . Request::getInt('post', 0), false, true));
+            $this->loginTask(
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&post='
+                        . Request::getInt('post', 0),
+                    false,
+                    true,
+                ),
+            );
             return;
         }
 
@@ -666,7 +700,15 @@ class Posts extends SiteController
                 'action'      => 'voted',
                 'scope'       => 'collections.item',
                 'scope_id'    => $post->get('item_id'),
-                'description' => Lang::txt('COM_COLLECTIONS_ACTIVITY_VOTED', $post->get('item_id'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_COLLECTIONS_ACTIVITY_VOTED',
+                    $post->get('item_id'),
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id' => $post->get('id'),
@@ -836,7 +878,10 @@ class Posts extends SiteController
 
         // Display updated item stats if called via AJAX
         if ($no_html) {
-            echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]));
+            echo Lang::txt(
+                'COM_COLLECTIONS_NUM_REPOSTS',
+                $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]),
+            );
             exit();
         }
 

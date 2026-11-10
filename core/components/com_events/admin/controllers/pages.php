@@ -298,7 +298,15 @@ class Pages extends AdminController
     public function cancelTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&event_id=' . Request::getInt('event_id', 0), false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&event_id='
+                    . Request::getInt('event_id', 0),
+                false,
+            ),
         );
     }
 }

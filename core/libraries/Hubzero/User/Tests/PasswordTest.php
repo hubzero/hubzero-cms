@@ -45,8 +45,14 @@ class PasswordTest extends Basic
             foreach (range(0, 400) as $max) {
                 $day = Password::passwordExpiryDay($lastChange, $max);
 
-                $this->assertFalse(self::pamExpired($day - 1, $lastChange, $max), "lastChange $lastChange, max $max: day before $day must allow");
-                $this->assertTrue(self::pamExpired($day, $lastChange, $max), "lastChange $lastChange, max $max: day $day must deny");
+                $this->assertFalse(
+                    self::pamExpired($day - 1, $lastChange, $max),
+                    "lastChange $lastChange, max $max: day before $day must allow",
+                );
+                $this->assertTrue(
+                    self::pamExpired($day, $lastChange, $max),
+                    "lastChange $lastChange, max $max: day $day must deny",
+                );
             }
         }
     }
@@ -108,7 +114,10 @@ class PasswordTest extends Basic
         $this->assertTrue(Password::isInactive(self::record(Password::INACTIVE_EXPIRE_DAY)));
 
         foreach ([null, '', '0', '1', (string) Password::BLOCKED_EXPIRE_DAY] as $other) {
-            $this->assertFalse(Password::isInactive(self::record($other)), var_export($other, true) . ' is not inactive');
+            $this->assertFalse(
+                Password::isInactive(self::record($other)),
+                var_export($other, true) . ' is not inactive',
+            );
         }
     }
 }

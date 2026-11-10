@@ -92,7 +92,12 @@ class Languages extends AdminController
 
         // Select the language home pages
         $query->select($m . '.home');
-        $query->join($m, $m . '.language', $l . '.lang_code AND ' . $m . '.home=1 AND ' . $m . '.language <> \'*\'', 'left');
+        $query->join(
+            $m,
+            $m . '.language',
+            $l . '.lang_code AND ' . $m . '.home=1 AND ' . $m . '.language <> \'*\'',
+            'left',
+        );
         //->whereEquals($m . '.home', 1)
         //->where($m . '.language', '<>', '*');
 

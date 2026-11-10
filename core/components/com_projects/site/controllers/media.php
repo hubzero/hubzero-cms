@@ -69,7 +69,11 @@ class Media extends Base
             return;
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is ') . $max]);
             return;
         }
@@ -80,7 +84,9 @@ class Media extends Base
         $ext      = $pathinfo['extension'] ?? '';
         if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
-            echo json_encode(['error' => Lang::txt('File has an invalid extension, it should be one of ' . $these . '.')]);
+            echo json_encode(
+                ['error' => Lang::txt('File has an invalid extension, it should be one of ' . $these . '.')],
+            );
             return;
         }
 
@@ -94,7 +100,10 @@ class Media extends Base
         }
 
         // Make sure user is authorized (project manager)
-        if (!$this->model->access('manager') && !($this->model->access('content') && $this->config->get('edit_description'))) {
+        if (
+            !$this->model->access('manager')
+            && !($this->model->access('content') && $this->config->get('edit_description'))
+        ) {
             echo json_encode(['error' => Lang::txt('Unauthorized action')]);
             return;
         }
@@ -242,7 +251,10 @@ class Media extends Base
         }
 
         // Incoming project ID
-        $hasAccess = ($this->model->access('manager') || ($this->model->access('content') && $this->config->get('edit_description')));
+        $hasAccess = (
+            $this->model->access('manager')
+            || ($this->model->access('content') && $this->config->get('edit_description'))
+        );
 
         if (!$this->model->exists() || !$hasAccess) {
             $this->setError(Lang::txt('COM_PROJECTS_ERROR_NO_ID'));
@@ -390,7 +402,9 @@ class Media extends Base
 
                 if (!is_file($source)) {
                     // Get default tool image
-                    $source = PATH_CORE . DS . trim($this->config->get('toolpic', 'plugins/projects/tools/images/default.gif'), DS);
+                    $source = PATH_CORE
+                        . DS
+                        . trim($this->config->get('toolpic', 'plugins/projects/tools/images/default.gif'), DS);
                 }
             } else {
                 // Authorization required
@@ -403,7 +417,15 @@ class Media extends Base
                 // %2e%2e%2f becomes ../ here and Hubzero\Content\Server performs
                 // no containment of its own -- this serves the file inline.
                 $path     = trim($this->config->get('imagepath', '/site/projects'), DS);
-                $source   = PATH_APP . DS . $path . DS . $this->model->get('alias') . DS . $dir . DS . basename(str_replace('\\', '/', urldecode($media)));
+                $source   = PATH_APP
+                    . DS
+                    . $path
+                    . DS
+                    . $this->model->get('alias')
+                    . DS
+                    . $dir
+                    . DS
+                    . basename(str_replace('\\', '/', urldecode($media)));
                 $redirect = true;
             }
         }

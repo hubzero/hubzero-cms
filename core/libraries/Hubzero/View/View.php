@@ -374,7 +374,10 @@ class View extends Obj
                 }
 
                 if (strpos($r[3], 'view')) {
-                    throw new Exception('Classname contains the substring "view" which causes problems when extracting the classname.', 500);
+                    throw new Exception(
+                        'Classname contains the substring "view" which causes problems when extracting the classname.',
+                        500,
+                    );
                 }
 
                 $this->viewName = strtolower($r[3]);
@@ -496,7 +499,11 @@ class View extends Obj
             && $layoutTemplate != '_'
             && $layoutTemplate != $template
         ) {
-            $this->searchPaths['template'] = str_replace($template ?? '', $layoutTemplate, $this->searchPaths['template']);
+            $this->searchPaths['template'] = str_replace(
+                $template ?? '',
+                $layoutTemplate,
+                $this->searchPaths['template'],
+            );
         }
         // Load the template script
         $this->templateFile = $this->find(
@@ -573,7 +580,10 @@ class View extends Obj
 
             // Lowest priority first: addPath() pushes onto the top of the stack
             foreach (array_reverse($this->overrideRoot) as $root) {
-                $this->addPath($type, $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName());
+                $this->addPath(
+                    $type,
+                    $root . DIRECTORY_SEPARATOR . $component . DIRECTORY_SEPARATOR . $this->getName(),
+                );
             }
         }
     }

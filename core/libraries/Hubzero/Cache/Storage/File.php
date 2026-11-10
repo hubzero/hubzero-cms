@@ -308,7 +308,9 @@ class File extends None
                     continue;
                 }
 
-                $item->tally(filesize($path . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . $file->getFilename()) / 1024);
+                $item->tally(
+                    filesize($path . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . $file->getFilename()) / 1024,
+                );
             }
 
             $data[$name] = $item;

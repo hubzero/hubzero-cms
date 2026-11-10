@@ -153,7 +153,9 @@ class IpTest extends Basic
         $this->assertEquals('2001:db8::1', \Hubzero\Utility\Ip::fromPacked16($v6));
 
         $this->assertTrue(\Hubzero\Utility\Ip::toPacked16('192.0.2.7') < \Hubzero\Utility\Ip::toPacked16('192.0.2.10'));
-        $this->assertTrue(\Hubzero\Utility\Ip::toPacked16('255.255.255.255') < \Hubzero\Utility\Ip::toPacked16('2001:db8::'));
+        $this->assertTrue(
+            \Hubzero\Utility\Ip::toPacked16('255.255.255.255') < \Hubzero\Utility\Ip::toPacked16('2001:db8::'),
+        );
         $this->assertFalse(\Hubzero\Utility\Ip::toPacked16('nonsense'));
         $this->assertEquals('', \Hubzero\Utility\Ip::fromPacked16('abc'));
     }
@@ -193,8 +195,14 @@ class IpTest extends Basic
         $this->assertEquals('4294967295', \Hubzero\Utility\Ip::toDecimal('255.255.255.255'));
         $this->assertEquals('1000000000', \Hubzero\Utility\Ip::toDecimal('::3b9a:ca00'));
         $this->assertEquals('42540766411282592856903984951653826561', \Hubzero\Utility\Ip::toDecimal('2001:db8::1'));
-        $this->assertEquals('42540993323220755487007895883628937216', \Hubzero\Utility\Ip::toDecimal('2001:18e8:804:145::'));
-        $this->assertEquals('340282366920938463463374607431768211455', \Hubzero\Utility\Ip::toDecimal('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'));
+        $this->assertEquals(
+            '42540993323220755487007895883628937216',
+            \Hubzero\Utility\Ip::toDecimal('2001:18e8:804:145::'),
+        );
+        $this->assertEquals(
+            '340282366920938463463374607431768211455',
+            \Hubzero\Utility\Ip::toDecimal('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'),
+        );
         $this->assertFalse(\Hubzero\Utility\Ip::toDecimal('nonsense'));
     }
 

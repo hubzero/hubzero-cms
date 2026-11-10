@@ -71,10 +71,34 @@ class Autocompleter extends Plugin
         if ($this->pushscripts) {
             $scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 
-            $templatecss = DS . 'templates' . DS . App::get('template')->template . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
-            $plugincss = DS . 'plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'assets' . DS . 'css' . DS . 'autocompleter.css';
+            $templatecss = DS
+                . 'templates'
+                . DS
+                . App::get('template')->template
+                . DS
+                . 'html'
+                . DS
+                . 'plg_hubzero_autocompleter'
+                . DS
+                . 'autocompleter.css';
+            $plugincss = DS
+                . 'plugins'
+                . DS
+                . 'hubzero'
+                . DS
+                . 'autocompleter'
+                . DS
+                . 'assets'
+                . DS
+                . 'css'
+                . DS
+                . 'autocompleter.css';
             if (file_exists(PATH_APP . $templatecss)) {
-                $scripts .= $base . substr(PATH_APP, strlen(PATH_ROOT)) . $templatecss . '?v=' . filemtime(PATH_APP . $templatecss);
+                $scripts .= $base
+                    . substr(PATH_APP, strlen(PATH_ROOT))
+                    . $templatecss
+                    . '?v='
+                    . filemtime(PATH_APP . $templatecss);
             } elseif (file_exists(PATH_CORE . $templatecss)) {
                 $scripts .= $base . '/core' . $templatecss . '?v=' . filemtime(PATH_CORE . $templatecss);
             } else {
@@ -82,7 +106,17 @@ class Autocompleter extends Plugin
             }
 
             $scripts .= '";</script>' . "\n";
-            $scripts .= '<script type="text/javascript" src="' . $base . '/core/plugins' . DS . $this->pluginType . DS . $this->pluginName . '/assets/js/' . $this->pluginName . '.js"></script>' . "\n";
+            $scripts .= '<script type="text/javascript" src="'
+                . $base
+                . '/core/plugins'
+                . DS
+                . $this->pluginType
+                . DS
+                . $this->pluginName
+                . '/assets/js/'
+                . $this->pluginName
+                . '.js"></script>'
+                . "\n";
 
             $this->pushscripts = false;
         }
@@ -95,7 +129,12 @@ class Autocompleter extends Plugin
         $placeholder = Lang::txt('PLG_HUBZERO_AUTOCOMPLETER_' . strtoupper($opt) . '_PLACEHOLDER');
         $html .= ' placeholder="' . $placeholder . '"';
         $html .= ' aria-label="' . $placeholder . '"';
-        $html .= ' value="' . htmlentities($value, ENT_COMPAT, 'UTF-8') . '" autocomplete="off" data-css="" data-script="' . $datascript . '" />' . "\n";
+        $html .= ' value="'
+            . htmlentities($value, ENT_COMPAT, 'UTF-8')
+            . '" autocomplete="off" data-css="" data-script="'
+            . $datascript
+            . '" />'
+            . "\n";
         $html .= $scripts;
 
         /*$json = '';

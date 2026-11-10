@@ -107,7 +107,11 @@ class Manage extends AdminController
 
         $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
         if (!$canDo->get('core.admin')) {
-            if ($this->view->filters['type'][0] == 'system' || $this->view->filters['type'][0] == "0" || $this->view->filters['type'][0] == null) {
+            if (
+                $this->view->filters['type'][0] == 'system'
+                || $this->view->filters['type'][0] == "0"
+                || $this->view->filters['type'][0] == null
+            ) {
                 $this->view->filters['type'] = ['all'];
             }
 
@@ -142,7 +146,9 @@ class Manage extends AdminController
             'int',
         );
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start']  = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $this->view->filters['start']  = ($this->view->filters['limit'] != 0 ? (floor(
+            $this->view->filters['start'] / $this->view->filters['limit'],
+        ) * $this->view->filters['limit']) : 0);
         $this->view->filters['fields'] = ['cn', 'description', 'published', 'gidNumber', 'type'];
 
         // Get a list of all groups
@@ -375,7 +381,10 @@ class Manage extends AdminController
         $group->set('logo', $g['logo']);
         $group->set('plugins', $g['plugins']);
         // Integer column: '' is rejected by strict SQL mode, so cast (unset means 0)
-        $group->set('discussion_email_autosubscribe', isset($g['discussion_email_autosubscribe']) ? (int) $g['discussion_email_autosubscribe'] : 0);
+        $group->set(
+            'discussion_email_autosubscribe',
+            isset($g['discussion_email_autosubscribe']) ? (int) $g['discussion_email_autosubscribe'] : 0,
+        );
         $group->set('params', $params);
         $group->update();
 
@@ -437,7 +446,15 @@ class Manage extends AdminController
 
         if ($this->getTask() == 'apply') {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $group->get('gidNumber'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&task=edit&id='
+                        . $group->get('gidNumber'),
+                    false,
+                ),
             );
             return;
         }
@@ -454,7 +471,11 @@ class Manage extends AdminController
     private function handleSuperGroup($group)
     {
         // get the upload path for groups
-        $uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+        $uploadPath = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/groups'), DS)
+            . DS
+            . $group->get('gidNumber');
 
         // get the source path
         $srcTplPath = null;
@@ -510,7 +531,13 @@ class Manage extends AdminController
         // make sure files are group read and writable
         // make sure files are all group owned properly
         shell_exec("chmod -R 2770 " . escapeshellarg($uploadPath) . " 2>&1");
-        shell_exec("chgrp -R " . escapeshellarg($this->config->get('super_group_file_owner', 'access-content')) . " " . escapeshellarg($uploadPath) . " 2>&1");
+        shell_exec(
+            "chgrp -R "
+                . escapeshellarg($this->config->get('super_group_file_owner', 'access-content'))
+                . " "
+                . escapeshellarg($uploadPath)
+                . " 2>&1",
+        );
 
         // get all current users granted permissionss
         $this->database->setQuery("SHOW GRANTS FOR CURRENT_USER();");
@@ -664,7 +691,11 @@ class Manage extends AdminController
         }
 
         // path to group folder
-        $uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+        $uploadPath = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/groups'), DS)
+            . DS
+            . $group->get('gidNumber');
 
         // build author info for making first commit
         $authorInfo = escapeshellarg(Config::get('sitename') . ' Groups <groups@' . $_SERVER['HTTP_HOST'] . '>');
@@ -677,11 +708,25 @@ class Manage extends AdminController
 
         // url
         $url_bits = parse_url($gitLabProject['http_url_to_repo']);
-        $gitLabUrl = $url_bits["scheme"] . '://oauth2:' . $client->get('token') . '@' . $url_bits["host"] . $url_bits["path"];
+        $gitLabUrl = $url_bits["scheme"]
+            . '://oauth2:'
+            . $client->get('token')
+            . '@'
+            . $url_bits["host"]
+            . $url_bits["path"];
 
         // build command to run via shell
         // this will init the git repo, make the initial commit and push to the repo management machine
-        $cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup.sh ';
+        $cmd  = 'sh '
+            . dirname(dirname(__DIR__))
+            . DS
+            . 'admin'
+            . DS
+            . 'assets'
+            . DS
+            . 'scripts'
+            . DS
+            . 'gitlab_setup.sh ';
         $cmd .= escapeshellarg($uploadPath) . ' ' . $authorInfo . ' ' . escapeshellarg($gitLabUrl) . ' 2>&1';
 
         // execute command
@@ -750,12 +795,19 @@ class Manage extends AdminController
             }
 
             // path to group folder
-            $uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+            $uploadPath = PATH_APP
+                . DS
+                . trim($this->config->get('uploadpath', '/site/groups'), DS)
+                . DS
+                . $group->get('gidNumber');
 
             // make sure we have an upload path
             if (!is_dir($uploadPath)) {
                 if (!Filesystem::makeDirectory($uploadPath)) {
-                    $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST')];
+                    $failed[] = [
+                        'group' => $group->get('cn'),
+                        'message' => Lang::txt('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'),
+                    ];
                     continue;
                 }
             }
@@ -765,7 +817,10 @@ class Manage extends AdminController
                 // only do stage setup on stage
                 $environment = strtolower(Config::get('application_env', 'development'));
                 if (substr($environment, 0, 7) != 'staging') {
-                    $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT')];
+                    $failed[] = [
+                        'group' => $group->get('cn'),
+                        'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'),
+                    ];
                     continue;
                 }
 
@@ -785,18 +840,42 @@ class Manage extends AdminController
 
                 // if we didnt get both a matching project & group continue
                 if (!$gitlabGroup || !$gitlabProject) {
-                    $failed[] = ['group' => $group->get('cn'), 'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT')];
+                    $failed[] = [
+                        'group' => $group->get('cn'),
+                        'message' => Lang::txt('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'),
+                    ];
                     continue;
                 }
 
                 // url
                 $url_bits = parse_url($gitlabProject['http_url_to_repo']);
-                $gitLabUrl = $url_bits["scheme"] . '://oauth2:' . $gitlabKey . '@' . $url_bits["host"] . $url_bits["path"];
+                $gitLabUrl = $url_bits["scheme"]
+                    . '://oauth2:'
+                    . $gitlabKey
+                    . '@'
+                    . $url_bits["host"]
+                    . $url_bits["path"];
 
                 // setup stage environment
-                $cmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
+                $cmd  = 'sh '
+                    . dirname(dirname(__DIR__))
+                    . DS
+                    . 'admin'
+                    . DS
+                    . 'assets'
+                    . DS
+                    . 'scripts'
+                    . DS
+                    . 'gitlab_setup_stage.sh ';
                 // as _handleSuperGroup/_handSuperGroupGitlab above
-                $cmd .= escapeshellarg(str_replace('/' . $group->get('gidNumber'), '', $uploadPath)) . ' ' . escapeshellarg((string) $group->get('gidNumber')) . ' ' . escapeshellarg((string) $group->get('cn')) . ' ' . escapeshellarg((string) $gitLabUrl) . ' 2>&1';
+                $cmd .= escapeshellarg(str_replace('/' . $group->get('gidNumber'), '', $uploadPath))
+                    . ' '
+                    . escapeshellarg((string) $group->get('gidNumber'))
+                    . ' '
+                    . escapeshellarg((string) $group->get('cn'))
+                    . ' '
+                    . escapeshellarg((string) $gitLabUrl)
+                    . ' 2>&1';
 
                 // execute command
                 $output = shell_exec($cmd);
@@ -819,11 +898,28 @@ class Manage extends AdminController
             $url_bits = isset($remote[1]) ? parse_url($remote[1]) : false;
             $gitLabKey = $client->get('token');
             if (
-                is_array($url_bits) && isset($url_bits['scheme'], $url_bits['user'], $url_bits['host'], $url_bits['path'])
+                is_array($url_bits)
+                    && isset($url_bits['scheme'], $url_bits['user'], $url_bits['host'], $url_bits['path'])
                 && (!isset($url_bits['pass']) || $url_bits['pass'] !== $gitLabKey)
             ) {
-                $gitLabUrl = $url_bits["scheme"] . '://' . $url_bits["user"] . ':' . $gitLabKey . '@' . $url_bits["host"] . $url_bits["path"];
-                $rcmd  = 'sh ' . dirname(dirname(__DIR__)) . DS . 'admin' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_reset_remote.sh ';
+                $gitLabUrl = $url_bits["scheme"]
+                    . '://'
+                    . $url_bits["user"]
+                    . ':'
+                    . $gitLabKey
+                    . '@'
+                    . $url_bits["host"]
+                    . $url_bits["path"];
+                $rcmd  = 'sh '
+                    . dirname(dirname(__DIR__))
+                    . DS
+                    . 'admin'
+                    . DS
+                    . 'assets'
+                    . DS
+                    . 'scripts'
+                    . DS
+                    . 'gitlab_reset_remote.sh ';
                 $rcmd .= escapeshellarg((string) $uploadPath) . ' ' . escapeshellarg((string) $gitLabUrl) . ' 2>&1';
                 $output = shell_exec($rcmd);
             }
@@ -912,7 +1008,11 @@ class Manage extends AdminController
             }
 
             // path to group folder
-            $uploadPath = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+            $uploadPath = PATH_APP
+                . DS
+                . trim($this->config->get('uploadpath', '/site/groups'), DS)
+                . DS
+                . $group->get('gidNumber');
 
             // make sure we have an upload path
             if (!is_dir($uploadPath)) {
@@ -1027,7 +1127,10 @@ class Manage extends AdminController
                 $log .= Lang::txt('COM_GROUPS_ID') . ': ' . $group->get('cn') . "\n";
                 $log .= Lang::txt('COM_GROUPS_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc')) . "\n";
                 $log .= Lang::txt('COM_GROUPS_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc')) . "\n";
-                $log .= Lang::txt('COM_GROUPS_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";
+                $log .= Lang::txt('COM_GROUPS_RESTRICTED_MESSAGE')
+                    . ': '
+                    . stripslashes($group->get('restrict_msg'))
+                    . "\n";
 
                 // Log ids of group members
                 if ($groupusers) {

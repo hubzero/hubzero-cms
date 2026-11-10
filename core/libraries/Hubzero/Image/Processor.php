@@ -199,7 +199,9 @@ class Processor extends Obj
     public function autoRotate()
     {
         if (!$this->checkPackageRequirements('exif')) {
-            $this->setError(Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+            $this->setError(
+                Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'),
+            );
             return false;
         }
 
@@ -423,7 +425,9 @@ class Processor extends Obj
     public function getGeoLocation()
     {
         if (!$this->checkPackageRequirements('exif')) {
-            $this->setError(Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'));
+            $this->setError(
+                Lang::txt('You need the PHP exif library installed to rotate image based on Exif Orientation value.'),
+            );
             return false;
         }
 
@@ -582,7 +586,9 @@ class Processor extends Obj
             }
 
             if (!is_dir($info['dirname']) && $make_paths == false) {
-                $this->setError(Lang::txt('You must supply a valid path or allow save function to create recursive path'));
+                $this->setError(
+                    Lang::txt('You must supply a valid path or allow save function to create recursive path'),
+                );
                 return;
             }
 

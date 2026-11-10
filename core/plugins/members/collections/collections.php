@@ -91,7 +91,19 @@ class Collections extends Plugin
         //are we returning html
         if ($returnhtml) {
             // This needs to be called to ensure scripts are pushed to the document
-            $foo = App::get('editor')->display('description', '', '', '', 35, 5, false, 'field_description', null, null, ['class' => 'minimal no-footer']);
+            $foo = App::get('editor')->display(
+                'description',
+                '',
+                '',
+                '',
+                35,
+                5,
+                false,
+                'field_description',
+                null,
+                null,
+                ['class' => 'minimal no-footer'],
+            );
 
             // Set some variables so other functions have access
             $this->option   = $option;
@@ -134,7 +146,21 @@ class Collections extends Plugin
                                 } else {
                                     Request::setVar('post', $bits[1]);
                                     if (isset($bits[2])) {
-                                        if (in_array($bits[2], ['post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment'])) {
+                                        if (
+                                            in_array(
+                                                $bits[2],
+                                                [
+                                                    'post',
+                                                    'vote',
+                                                    'collect',
+                                                    'remove',
+                                                    'move',
+                                                    'comment',
+                                                    'savecomment',
+                                                    'deletecomment',
+                                                ],
+                                            )
+                                        ) {
                                             $this->action = $bits[2];
                                         } else {
                                             $this->action = $bits[2] . $this->action;
@@ -300,7 +326,9 @@ class Collections extends Plugin
      */
     private function login()
     {
-        $route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->pluginName);
+        $route = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->pluginName,
+        );
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
@@ -1009,7 +1037,9 @@ class Collections extends Plugin
         $post = new \Components\Collections\Models\Post(isset($p['id']) ? intval($p['id']) : 0);
         if (
             $post->exists()
-            && ($post->get('created_by') != User::get('id') || intval($post->get('item_id')) !== intval($item->get('id')))
+            && ($post->get('created_by') != User::get('id') || intval(
+                $post->get('item_id'),
+            ) !== intval($item->get('id')))
         ) {
             App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
@@ -1064,11 +1094,18 @@ class Collections extends Plugin
         // @TODO: Find a better way to do this
         if ($tmp) {
             $db = App::get('db');
-            $db->setQuery("SELECT id FROM `#__collections_items` WHERE `title`=" . $db->quote($tmp) . " AND `id`!=" . $db->quote($item->get('id')));
+            $db->setQuery(
+                "SELECT id FROM `#__collections_items` WHERE `title`="
+                    . $db->quote($tmp)
+                    . " AND `id`!="
+                    . $db->quote($item->get('id')),
+            );
             $others = $db->loadColumn();
 
             if (count($others) > 0) {
-                $db->setQuery("SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")");
+                $db->setQuery(
+                    "SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")",
+                );
                 $assets = $db->loadObjectList();
                 foreach ($assets as $asset) {
                     $asset = new \Components\Collections\Models\Asset($asset);
@@ -1137,7 +1174,14 @@ class Collections extends Plugin
                 'action'      => ($p['id'] ? 'updated' : 'created'),
                 'scope'       => 'collections.item',
                 'scope_id'    => $item->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
@@ -1319,7 +1363,14 @@ class Collections extends Plugin
                 'action'      => 'created',
                 'scope'       => 'collections.post',
                 'scope_id'    => $post->id,
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_CREATED', '<a href="' . Route::url($collection->link()) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_CREATED',
+                    '<a href="'
+                        . Route::url($collection->link())
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->collection_id,
                     'item_id'       => $post->item_id,
@@ -1390,7 +1441,9 @@ class Collections extends Plugin
             $type = 'error';
         }
 
-        $route = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'));
+        $route = Route::url(
+            $this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'),
+        );
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1398,7 +1451,14 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.post',
                 'scope_id'    => $post->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_POST_DELETED',
+                    '<a href="'
+                        . $route
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'item_id'       => $post->get('item_id'),
@@ -1581,7 +1641,9 @@ class Collections extends Plugin
         }
 
         // Redirect to collection
-        $route = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'));
+        $route = Route::url(
+            $this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'),
+        );
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1589,7 +1651,14 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.item',
                 'scope_id'    => $item->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_DELETED', '<a href="' . $route . '">' . htmlspecialchars((string) ($item->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_DELETED',
+                    '<a href="'
+                        . $route
+                        . '">'
+                        . htmlspecialchars((string) ($item->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
@@ -1664,7 +1733,9 @@ class Collections extends Plugin
         // Instantiate a new comment object and pass it the data. Only the
         // form's own fields are bound: every other comment[] key is a column
         // (state, access, positive, negative, ...) the poster must not set.
-        $row = \Hubzero\Item\Comment::blank()->set(array_intersect_key($comment, array_flip(['id', 'content', 'parent', 'anonymous'])));
+        $row = \Hubzero\Item\Comment::blank()->set(
+            array_intersect_key($comment, array_flip(['id', 'content', 'parent', 'anonymous'])),
+        );
 
         // Pin what the comment hangs off, on both paths
         $row->set('item_type', 'collection');
@@ -1692,14 +1763,26 @@ class Collections extends Plugin
         $title = $post->item()->get('title');
         $title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
         $title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
-        $url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
+        $url = Route::url(
+            'index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment',
+        );
 
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => (!empty($data['id']) ? 'updated' : 'created'),
                 'scope'       => 'collections.comment',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . (!empty($comment['id']) ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . $url . '#c' . $row->get('id') . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_COMMENT_' . (!empty($comment['id']) ? 'UPDATED' : 'CREATED'),
+                    $row->get('id'),
+                    '<a href="'
+                        . $url
+                        . '#c'
+                        . $row->get('id')
+                        . '">'
+                        . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
@@ -1837,7 +1920,9 @@ class Collections extends Plugin
 
         // ($collection is resolved and access-checked above)
 
-        $url = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'));
+        $url = Route::url(
+            $this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'),
+        );
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1845,7 +1930,14 @@ class Collections extends Plugin
                 'action'      => 'voted',
                 'scope'       => 'collections.item',
                 'scope_id'    => $post->item()->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_VOTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_ITEM_VOTED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
@@ -2020,7 +2112,14 @@ class Collections extends Plugin
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'collections.collection',
                 'scope_id'    => $collection->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
@@ -2124,7 +2223,14 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.collection',
                 'scope_id'    => $collection->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED', '<a href="' . Route::url($collection->link()) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED',
+                    '<a href="'
+                        . Route::url($collection->link())
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),

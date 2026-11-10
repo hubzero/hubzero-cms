@@ -197,7 +197,10 @@ class Resources extends Plugin
             foreach ($results as $reportcard) {
                 // Loop through each test result and save to the database
                 foreach ($reportcard['tests'] as $result) {
-                    $prev = \Hubzero\Content\Auditor\Result::oneByScope($result->get('scope'), $result->get('scope_id'));
+                    $prev = \Hubzero\Content\Auditor\Result::oneByScope(
+                        $result->get('scope'),
+                        $result->get('scope_id'),
+                    );
 
                     if ($prev->get('id')) {
                         $result->set('id', $prev->get('id'));

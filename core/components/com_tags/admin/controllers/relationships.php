@@ -252,7 +252,9 @@ class Relationships extends AdminController
         $suggestions = [];
 
         if (isset($_GET['term'])) {
-            $this->database->setQuery("SELECT raw_tag FROM `#__tags` WHERE raw_tag LIKE " . $this->database->quote('%' . $_GET['term'] . '%'));
+            $this->database->setQuery(
+                "SELECT raw_tag FROM `#__tags` WHERE raw_tag LIKE " . $this->database->quote('%' . $_GET['term'] . '%'),
+            );
             $later = [];
             foreach ($this->database->loadColumn() as $tag) {
                 $tag = stripslashes($tag);
@@ -284,7 +286,12 @@ class Relationships extends AdminController
         Request::checkToken();
 
         if (isset($_POST['tag']) && ($tid = (int) $_POST['tag'])) {
-            $this->database->setQuery('UPDATE `#__tags` SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
+            $this->database->setQuery(
+                'UPDATE `#__tags` SET description = '
+                    . $this->database->quote($_POST['description'])
+                    . ' WHERE id = '
+                    . $tid,
+            );
             $this->database->execute();
             $tag = $this->getTag($tid);
             $preload = $tag['raw_tag'];
@@ -356,11 +363,17 @@ class Relationships extends AdminController
                     if (!isset($_POST['merge_tag'])) {
                         throw new Exception('Merge target not found', 404);
                     }
-                    $this->database->setQuery('SELECT id FROM `#__tags` WHERE tag = \'' . preg_replace('/[^a-zA-Z0-9]/', '', strtolower(trim($_POST['merge_tag']))) . '\'');
+                    $this->database->setQuery(
+                        'SELECT id FROM `#__tags` WHERE tag = \''
+                            . preg_replace('/[^a-zA-Z0-9]/', '', strtolower(trim($_POST['merge_tag'])))
+                            . '\'',
+                    );
                     if (!($merge_id = $this->database->loadResult())) {
                         throw new Exception('Merge target not found', 404);
                     }
-                    $this->database->setQuery('UPDATE `#__tags_object` SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid);
+                    $this->database->setQuery(
+                        'UPDATE `#__tags_object` SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid,
+                    );
                     $this->database->execute();
                 } else {
                     $this->database->setQuery('DELETE FROM `#__tags_object` WHERE tagid = ' . $tid);
@@ -409,7 +422,13 @@ class Relationships extends AdminController
             $this->database->execute();
             if (isset($_POST['types-' . $id])) {
                 foreach ($_POST['types-' . $id] as $type_id) {
-                    $this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int) $type_id) . ')');
+                    $this->database->setQuery(
+                        'INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES ('
+                            . $id
+                            . ', '
+                            . ((int) $type_id)
+                            . ')',
+                    );
                     $this->database->execute();
                 }
             }
@@ -422,14 +441,38 @@ class Relationships extends AdminController
             $tag = $this->getTag($_POST['name-new-' . $idx], false);
 
             $this->database->setQuery('INSERT INTO `#__focus_areas` (mandatory_depth, multiple_depth, tag_id) VALUES ('
-                . (($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-new-' . $idx] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-new-' . $idx] : 'NULL')) . ', '
-                . (($_POST['multiple-new-' . $idx] ?? '')  === 'multiple' ? 1 : (($_POST['multiple-new-' . $idx] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-new-' . $idx] : 'NULL')) . ', '
+                . (
+                    ($_POST['mandatory-new-' . $idx] ?? '') === 'mandatory'
+                    ? 1
+                    : (
+                        ($_POST['mandatory-new-' . $idx] ?? '') === 'depth'
+                        ? (int) $_POST['mandatory-depth-new-' . $idx]
+                        : 'NULL'
+                    )
+                )
+                . ', '
+                . (
+                    ($_POST['multiple-new-' . $idx] ?? '')  === 'multiple'
+                    ? 1
+                    : (
+                        ($_POST['multiple-new-' . $idx] ?? '')  === 'depth'
+                        ? (int) $_POST['multiple-depth-new-' . $idx]
+                        : 'NULL'
+                    )
+                )
+                . ', '
                 . $tag['id'] . ')');
             $this->database->execute();
             $id = $this->database->insertid();
             if (isset($_POST['types-new-' . $idx])) {
                 foreach ($_POST['types-new-' . $idx] as $type_id) {
-                    $this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int) $type_id) . ')');
+                    $this->database->setQuery(
+                        'INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES ('
+                            . $id
+                            . ', '
+                            . ((int) $type_id)
+                            . ')',
+                    );
                     $this->database->execute();
                 }
             }
@@ -445,8 +488,14 @@ class Relationships extends AdminController
     {
         $this->database->setQuery(
             is_int($tag_str)
-                ? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE t.id = ' . $tag_str . ' GROUP BY t.id, tag, raw_tag, description'
-                : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description',
+                ? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE t.id = '
+                    . $tag_str
+                    . ' GROUP BY t.id, tag, raw_tag, description'
+                : 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = '
+                    . $this->database->quote($tag_str)
+                    . ' OR raw_tag = '
+                    . $this->database->quote($tag_str)
+                    . ' GROUP BY t.id, tag, raw_tag, description',
         );
         if (($tag = $this->database->loadAssoc())) {
             $rv = [
@@ -502,7 +551,13 @@ class Relationships extends AdminController
 
         // A lookup from the graph is read-only; only a save creates the tag
         if ($create) {
-            $this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (' . $this->database->quote($norm_tag) . ', ' . $this->database->quote($tag_str) . ')');
+            $this->database->setQuery(
+                'INSERT INTO `#__tags` (tag, raw_tag) VALUES ('
+                    . $this->database->quote($norm_tag)
+                    . ', '
+                    . $this->database->quote($tag_str)
+                    . ')',
+            );
             $this->database->execute();
             $id = $this->database->insertid();
         }

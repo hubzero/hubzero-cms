@@ -193,7 +193,10 @@ class ArticleSnippetTest extends Basic
     {
         $article = $this->article('<p>See <b>bold</b> text.</p>');
 
-        $this->assertSame('See <mark>&lt;b&gt;bold</mark> text.', $this->article('See &lt;b&gt;bold text.')->snippet('<b>bold'));
+        $this->assertSame(
+            'See <mark>&lt;b&gt;bold</mark> text.',
+            $this->article('See &lt;b&gt;bold text.')->snippet('<b>bold'),
+        );
         $this->assertStringNotContainsString('<script', $article->snippet('<script>'));
     }
 

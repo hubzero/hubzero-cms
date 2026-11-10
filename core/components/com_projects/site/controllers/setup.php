@@ -116,7 +116,11 @@ class Setup extends Base
             // Make sure we have up-to-date group membership information
             if ($this->model->exists()) {
                 $objO = $this->model->table('Owner');
-                $objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
+                $objO->reconcileGroups(
+                    $this->model->get('id'),
+                    $this->model->get('owned_by_group'),
+                    $this->model->get('sync_group'),
+                );
             } else {
                 // Set group syncing to "undecided" state
                 $this->model->set('sync_group', -1);
@@ -267,7 +271,11 @@ class Setup extends Base
             // Make sure we have up-to-date group membership information
             if ($this->model->exists()) {
                 $objO = $this->model->table('Owner');
-                $objO->reconcileGroups($this->model->get('id'), $this->model->get('owned_by_group'), $this->model->get('sync_group'));
+                $objO->reconcileGroups(
+                    $this->model->get('id'),
+                    $this->model->get('owned_by_group'),
+                    $this->model->get('sync_group'),
+                );
             } else {
                 // Set group syncing to "undecided" state
                 $this->model->set('sync_group', $this->config->get('sync_behavior', -1));
@@ -275,7 +283,14 @@ class Setup extends Base
         }
 
         // Check authorization
-        if ($this->model->exists() && !($this->model->access('owner') || $this->model->access('manager') || ($this->model->access('content') && $this->config->get('edit_description')))) {
+        if (
+            $this->model->exists()
+            && !(
+                $this->model->access('owner')
+                || $this->model->access('manager')
+                || ($this->model->access('content') && $this->config->get('edit_description'))
+            )
+        ) {
             throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
         } elseif (!$this->model->exists() && $this->_gid) {
             // Check group authorization to create a project
@@ -337,7 +352,17 @@ class Setup extends Base
         $task   = $setup ? 'setup' : 'edit';
         $append = $new && $this->model->exists() && $this->next == 'describe' ? '#describearea' : '';
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&task=' . $task . '&alias=' . $this->model->get('alias') . '&active=' . $this->next) . $append,
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&task='
+                    . $task
+                    . '&alias='
+                    . $this->model->get('alias')
+                    . '&active='
+                    . $this->next,
+            )
+                . $append,
         );
         return;
     }
@@ -737,12 +762,36 @@ class Setup extends Base
                         foreach ($team as $user_id) {
                             // Only add the creator(s)
                             // They'll choose if they want to sync the entire group or not in the next step
-                            if (!$objO->saveOwners($this->model->get('id'), $user_id, $user_id, $this->_gid, 1, 1, 1, '', 0)) {
-                                $this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
+                            if (
+                                !$objO->saveOwners(
+                                    $this->model->get('id'),
+                                    $user_id,
+                                    $user_id,
+                                    $this->_gid,
+                                    1,
+                                    1,
+                                    1,
+                                    '',
+                                    0,
+                                )
+                            ) {
+                                $this->setError(
+                                    Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError(),
+                                );
                                 return false;
                             }
                         }
-                    } elseif (!$objO->saveOwners($this->model->get('id'), User::get('id'), User::get('id'), $this->_gid, 1, 1, 1)) {
+                    } elseif (
+                        !$objO->saveOwners(
+                            $this->model->get('id'),
+                            User::get('id'),
+                            User::get('id'),
+                            $this->_gid,
+                            1,
+                            1,
+                            1,
+                        )
+                    ) {
                         $this->setError(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
                         return false;
                     }
@@ -786,10 +835,17 @@ class Setup extends Base
                             // If grant information changed
                             if ($key == 'grant_status') {
                                 // Meta data for comment
-                                $meta = '<meta>' . Date::of('now')->toLocal('M d, Y') . ' - ' . User::get('name') . '</meta>';
+                                $meta = '<meta>'
+                                    . Date::of('now')->toLocal('M d, Y')
+                                    . ' - '
+                                    . User::get('name')
+                                    . '</meta>';
 
                                 $cbase   = $this->model->get('admin_notes');
-                                $cbase  .= '<nb:sponsored>' . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE') . $meta . '</nb:sponsored>';
+                                $cbase  .= '<nb:sponsored>'
+                                    . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
+                                    . $meta
+                                    . '</nb:sponsored>';
                                 $this->model->set('admin_notes', $cbase);
 
                                 // Save admin notes
@@ -914,10 +970,17 @@ class Setup extends Base
                         // If grant information changed
                         if ($key == 'grant_status') {
                             // Meta data for comment
-                            $meta = '<meta>' . Date::of('now')->toLocal('M d, Y') . ' - ' . User::get('name') . '</meta>';
+                            $meta = '<meta>'
+                                . Date::of('now')->toLocal('M d, Y')
+                                . ' - '
+                                . User::get('name')
+                                . '</meta>';
 
                             $cbase   = $this->model->get('admin_notes');
-                            $cbase  .= '<nb:sponsored>' . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE') . $meta . '</nb:sponsored>';
+                            $cbase  .= '<nb:sponsored>'
+                                . Lang::txt('COM_PROJECTS_PROJECT_MANAGER_GRANT_INFO_UPDATE')
+                                . $meta
+                                . '</nb:sponsored>';
                             $this->model->set('admin_notes', $cbase);
 
                             // Save admin notes
@@ -998,7 +1061,10 @@ class Setup extends Base
         }
 
         // Only managers can edit project
-        if (!$this->model->access('manager') && !($this->model->access('content') && $this->config->get('edit_description'))) {
+        if (
+            !$this->model->access('manager')
+            && !($this->model->access('content') && $this->config->get('edit_description'))
+        ) {
             throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
@@ -1009,7 +1075,10 @@ class Setup extends Base
         }
         $this->section = in_array($this->section, $sections) ? $this->section : 'info';
 
-        if ($this->config->get('custom_profile') == 'custom' && ($this->section == 'info' || $this->section == 'info_custom')) {
+        if (
+            $this->config->get('custom_profile') == 'custom'
+            && ($this->section == 'info' || $this->section == 'info_custom')
+        ) {
             //$sections = array('info_custom', 'team', 'settings');
             $this->view->fields = Field::all()->order('ordering', 'ASC');
 
@@ -1143,7 +1212,8 @@ class Setup extends Base
         $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
-            $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($term);
+            $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:"
+                . urlencode($term);
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $queryURL);
@@ -1206,7 +1276,8 @@ class Setup extends Base
         $verNum = Component::params('com_members')->get('rorApiVersion');
 
         if (!empty($verNum)) {
-            $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:" . urlencode($agencyQry);
+            $queryURL = "https://api.ror.org/$verNum/organizations?filter=types:funder&query.advanced=names.value:"
+                . urlencode($agencyQry);
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $queryURL);

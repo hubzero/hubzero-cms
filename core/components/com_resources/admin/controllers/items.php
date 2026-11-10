@@ -469,7 +469,15 @@ class Items extends AdminController
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&task=children&pid='
+                        . $pid,
+                    false,
+                ),
             );
         }
 
@@ -493,7 +501,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid,
+                false,
+            ),
         );
     }
 
@@ -524,7 +535,15 @@ class Items extends AdminController
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_CHILD_ID'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, true),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&task=children&pid='
+                        . $pid,
+                    true,
+                ),
             );
         }
 
@@ -550,7 +569,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid, true),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $pid,
+                true,
+            ),
         );
     }
 
@@ -634,16 +656,64 @@ class Items extends AdminController
         }
 
         // Get params definitions
-        $params = new \Hubzero\Html\Parameter($row->get('params'), dirname(dirname(__DIR__)) . DS . 'config' . DS . 'entry.xml');
+        $params = new \Hubzero\Html\Parameter(
+            $row->get('params'),
+            dirname(dirname(__DIR__)) . DS . 'config' . DS . 'entry.xml',
+        );
 
         // Build selects of various types
         if ($row->standalone != 1) {
-            $lists['type']         = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'fields[type]', $row->get('type'), 'type', '', '', '', '');
-            $lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 28)->order('type', 'asc')->rows(), 'fields[logical_type]', $row->get('logical_type'), 'logical_type', '[ none ]', '', '', '');
-            $lists['sub_type']     = Html::selectType(Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(), 'fields[logical_type]', $row->get('logical_type'), 'sub_type', '[ none ]', '', '', '');
+            $lists['type']         = Html::selectType(
+                Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(),
+                'fields[type]',
+                $row->get('type'),
+                'type',
+                '',
+                '',
+                '',
+                '',
+            );
+            $lists['logical_type'] = Html::selectType(
+                Type::all()->whereEquals('category', 28)->order('type', 'asc')->rows(),
+                'fields[logical_type]',
+                $row->get('logical_type'),
+                'logical_type',
+                '[ none ]',
+                '',
+                '',
+                '',
+            );
+            $lists['sub_type']     = Html::selectType(
+                Type::all()->whereEquals('category', 30)->order('type', 'asc')->rows(),
+                'fields[logical_type]',
+                $row->get('logical_type'),
+                'sub_type',
+                '[ none ]',
+                '',
+                '',
+                '',
+            );
         } else {
-            $lists['type']         = Html::selectType(Type::all()->whereEquals('category', 27)->order('type', 'asc')->rows(), 'fields[type]', $row->get('type'), 'type', '', '', '', '');
-            $lists['logical_type'] = Html::selectType(Type::all()->whereEquals('category', 21)->order('type', 'asc')->rows(), 'fields[logical_type]', $row->get('logical_type'), 'logical_type', '[ none ]', '', '', '');
+            $lists['type']         = Html::selectType(
+                Type::all()->whereEquals('category', 27)->order('type', 'asc')->rows(),
+                'fields[type]',
+                $row->get('type'),
+                'type',
+                '',
+                '',
+                '',
+                '',
+            );
+            $lists['logical_type'] = Html::selectType(
+                Type::all()->whereEquals('category', 21)->order('type', 'asc')->rows(),
+                'fields[logical_type]',
+                $row->get('logical_type'),
+                'logical_type',
+                '[ none ]',
+                '',
+                '',
+                '',
+            );
         }
 
         // Build the <select> of admin users
@@ -1111,7 +1181,12 @@ class Items extends AdminController
             $message .= $base . '/resources/' . $row->id;
 
             // Send message
-            if (!Event::trigger('xmessage.onSendMessage', ['resources_submission_approved', $subject, $message, $from, $contributors, $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['resources_submission_approved', $subject, $message, $from, $contributors, $this->option],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_FAILED_TO_MESSAGE_USERS'));
                 return false;
             }
@@ -1403,7 +1478,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id,
+                false,
+            ),
         );
     }
 
@@ -1440,7 +1518,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id,
+                false,
+            ),
         );
     }
 
@@ -1476,7 +1557,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id,
+                false,
+            ),
         );
     }
 

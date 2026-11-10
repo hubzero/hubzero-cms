@@ -116,7 +116,10 @@ class Error extends Base
         }
 
         // Set variables
-        $this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(Request::root(true), '/') . rtrim(substr(dirname($directory), strlen(PATH_ROOT)), '/'));
+        $this->baseurl  = (isset($params['baseurl']) ? $params['baseurl'] : rtrim(
+            Request::root(true),
+            '/',
+        ) . rtrim(substr(dirname($directory), strlen(PATH_ROOT)), '/'));
         $this->template = $template;
         $this->debug    = isset($params['debug']) ? $params['debug'] : false;
 
@@ -185,19 +188,37 @@ class Error extends Base
             $html[] = '	<tbody>';
             $html[] = '		<tr>';
             $html[] = '			<th scope="row">0</th>';
-            $html[] = '			<td><span class="msg">!! ' . htmlspecialchars((string) $this->error->getMessage(), ENT_QUOTES, 'UTF-8') . ' !!</span></td>';
-            $html[] = '			<td><span class="fl">' . $this->rooted($this->error->getFile()) . '</span>:<span class="ln">' . $this->error->getLine() . '</span></td>';
+            $html[] = '			<td><span class="msg">!! '
+                . htmlspecialchars((string) $this->error->getMessage(), ENT_QUOTES, 'UTF-8')
+                . ' !!</span></td>';
+            $html[] = '			<td><span class="fl">'
+                . $this->rooted($this->error->getFile())
+                . '</span>:<span class="ln">'
+                . $this->error->getLine()
+                . '</span></td>';
             $html[] = '		</tr>';
             for ($i = count($backtrace) - 1; $i >= 0; $i--) {
                 $html[] = '		<tr>';
                 $html[] = '			<th scope="row">' . $j . '</th>';
                 if (isset($backtrace[$i]['class'])) {
-                    $html[] = '			<td><span class="cls">' . htmlspecialchars((string) $backtrace[$i]['class'], ENT_QUOTES, 'UTF-8') . '</span><span class="opn">' . htmlspecialchars((string) $backtrace[$i]['type'], ENT_QUOTES, 'UTF-8') . '</span><span class="mtd">' . htmlspecialchars((string) $backtrace[$i]['function'], ENT_QUOTES, 'UTF-8') . '</span>()</td>';
+                    $html[] = '			<td><span class="cls">'
+                        . htmlspecialchars((string) $backtrace[$i]['class'], ENT_QUOTES, 'UTF-8')
+                        . '</span><span class="opn">'
+                        . htmlspecialchars((string) $backtrace[$i]['type'], ENT_QUOTES, 'UTF-8')
+                        . '</span><span class="mtd">'
+                        . htmlspecialchars((string) $backtrace[$i]['function'], ENT_QUOTES, 'UTF-8')
+                        . '</span>()</td>';
                 } else {
-                    $html[] = '			<td><span class="fnc">' . htmlspecialchars((string) $backtrace[$i]['function'], ENT_QUOTES, 'UTF-8') . '</span>()</td>';
+                    $html[] = '			<td><span class="fnc">'
+                        . htmlspecialchars((string) $backtrace[$i]['function'], ENT_QUOTES, 'UTF-8')
+                        . '</span>()</td>';
                 }
                 if (isset($backtrace[$i]['file'])) {
-                    $html[] = '			<td><span class="fl">' . $this->rooted($backtrace[$i]['file']) . '</span>:<span class="ln">' . $backtrace[$i]['line'] . '</span></td>';
+                    $html[] = '			<td><span class="fl">'
+                        . $this->rooted($backtrace[$i]['file'])
+                        . '</span>:<span class="ln">'
+                        . $backtrace[$i]['line']
+                        . '</span></td>';
                 } else {
                     $html[] = '			<td>&#160;</td>';
                 }

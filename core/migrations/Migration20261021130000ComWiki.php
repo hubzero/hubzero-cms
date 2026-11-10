@@ -45,7 +45,11 @@ class Migration20261021130000ComWiki extends Base
                 case 'Help:WikiMacros':
                     // The hand-written list is replaced by the generated one
                     if (strpos($text, "`[[BR]]`::") !== false) {
-                        $text = preg_replace('/== Available Macros ==\s*\r?\n `\[\[BR\]\]`::.*$/s', "== Available Macros ==\n\n[[Macrolist]]", $text);
+                        $text = preg_replace(
+                            '/== Available Macros ==\s*\r?\n `\[\[BR\]\]`::.*$/s',
+                            "== Available Macros ==\n\n[[Macrolist]]",
+                            $text,
+                        );
                     }
                     break;
 
@@ -56,7 +60,11 @@ class Migration20261021130000ComWiki extends Base
 
                 case 'Help:Processors':
                     if (strpos($text, '||=Processor=||') === false) {
-                        $text = preg_replace('/(=== Available Processors ===\s*\r?\n\r?\n)(\|\| `#!default`)/', "$1||=Processor=||=Description=||\n$2", $text);
+                        $text = preg_replace(
+                            '/(=== Available Processors ===\s*\r?\n\r?\n)(\|\| `#!default`)/',
+                            "$1||=Processor=||=Description=||\n$2",
+                            $text,
+                        );
                     }
                     break;
 
@@ -92,7 +100,11 @@ class Migration20261021130000ComWiki extends Base
 
                 case 'MainPage':
                     $text = str_replace($this->newForm, $this->oldForm, $text);
-                    $text = str_replace(" * [Help:Index Help Articles]\n\n", " * [Help:Index Help Articles]\n * [Special:AllPages Full Article List]\n\n", $text);
+                    $text = str_replace(
+                        " * [Help:Index Help Articles]\n\n",
+                        " * [Help:Index Help Articles]\n * [Special:AllPages Full Article List]\n\n",
+                        $text,
+                    );
                     break;
             }
 
@@ -128,7 +140,10 @@ class Migration20261021130000ComWiki extends Base
                 continue;
             }
 
-            $query = "UPDATE `#__wiki_versions` SET `pagetext`=" . $this->db->quote($text) . " WHERE `id`=" . (int) $version->id;
+            $query = "UPDATE `#__wiki_versions` SET `pagetext`="
+                . $this->db->quote($text)
+                . " WHERE `id`="
+                . (int) $version->id;
             $this->db->setQuery($query);
             $this->db->query();
 

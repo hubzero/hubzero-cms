@@ -822,7 +822,8 @@ class Ticket extends Relational
         }
 
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            $filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $db->quote($filters['tag']);
+            $filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag="
+                . $db->quote($filters['tag']);
         }
 
         return $filter;

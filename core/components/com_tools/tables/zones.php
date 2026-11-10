@@ -138,7 +138,12 @@ class Zones extends Table
             // this keeps their 0 (no range) from matching every address, since
             // MySQL reads the hex as the number 0.
             $ranged = false;
-            foreach (['ipFROM' => ['ipFROM' => '='], 'ipTO' => ['ipTO' => '='], 'ip' => ['ipFROM' => '<=', 'ipTO' => '>=']] as $filter => $compare) {
+            $ranges = [
+                'ipFROM' => ['ipFROM' => '='],
+                'ipTO' => ['ipTO' => '='],
+                'ip' => ['ipFROM' => '<=', 'ipTO' => '>='],
+            ];
+            foreach ($ranges as $filter => $compare) {
                 if (!isset($filters[$filter]) || $filters[$filter] == '') {
                     continue;
                 }
@@ -222,7 +227,10 @@ class Zones extends Table
                 if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) {
                     $filters['sort_Dir'] = 'ASC';
                 }
-                $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
+                $query .= " ORDER BY "
+                    . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1')
+                    . " "
+                    . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
                 if (isset($filters['limit']) && $filters['limit'] != 0) {
                     $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];

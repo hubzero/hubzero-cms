@@ -441,7 +441,9 @@ class Publications extends Plugin
     public function updateFtpLinks(\Components\Cron\Models\Job $job)
     {
         $params = $job->params;
-        $yesterday = !empty($job->params['startdate']) ? $job->params['startdate'] : Date::of()->modify('-1 day')->format('Y-m-d 00:00:00');
+        $yesterday = !empty($job->params['startdate'])
+            ? $job->params['startdate']
+            : Date::of()->modify('-1 day')->format('Y-m-d 00:00:00');
         $today = Date::of()->format('Y-m-d 00:00:00');
 
         $versions = \Components\Publications\Models\Orm\Version::all()
@@ -461,7 +463,10 @@ class Publications extends Plugin
         $typeBlackList = explode(',', $publicationParams->get('sftptypeblacklist'));
         $typeBlackList = array_filter($typeBlackList, 'trim');
         foreach ($versions as $version) {
-            $publication = new \Components\Publications\Models\Publication($version->publication_id, $version->version_number);
+            $publication = new \Components\Publications\Models\Publication(
+                $version->publication_id,
+                $version->version_number,
+            );
             $publication->setCuration();
             if ($version->isPublished() && !in_array($version->master_alias, $typeBlackList)) {
                 $publication->_curationModel->createLink();

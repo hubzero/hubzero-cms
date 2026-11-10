@@ -35,7 +35,12 @@ class Wishlist extends AbstractComponent
         }
 
         $controllerName = Request::getCmd('controller', 'lists');
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             $controllerName = 'lists';
         }
 

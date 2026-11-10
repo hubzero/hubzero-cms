@@ -96,23 +96,35 @@ class Files extends Plugin
             $area['children'] = [];
             $area['children'][] = [
                 'name'  => 'default',
-                'title' => sprintf($this->params->get('default_connection_name', '%s Master Repository'), $model->get('title')),
+                'title' => sprintf(
+                    $this->params->get('default_connection_name', '%s Master Repository'),
+                    $model->get('title'),
+                ),
                 'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse', $userIsMember),
-                'class' => 'filesystem default' . (Request::getString('action') == 'browse' && !$active ? ' active' : ''),
+                'class' => 'filesystem default'
+                    . (Request::getString('action') == 'browse' && !$active ? ' active' : ''),
                 //'image' => '/core/plugins/filesystem/local/assets/img/icon.png',
                 'icon'  => 'f0a0',
             ];
 
             if ($model->exists()) {
-                $connections = \Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))->connections()->thatICanView();
+                $connections = \Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))
+                    ->connections()
+                    ->thatICanView();
 
                 if ($connections->count()) {
                     foreach ($connections as $connection) {
                         $area['children'][] = [
                             'title' => $connection->name,
                             'name'  => $connection->provider->alias,
-                            'url'   => UrlHelper::updatePerMembership($model->link('files') . '&action=browse&connection=' . $connection->id, $userIsMember),
-                            'class' => 'filesystem ' . $connection->provider->alias . (!$connection->isShared() ? ' private' : '') . ($active == $connection->id ? ' active' : ''),
+                            'url'   => UrlHelper::updatePerMembership(
+                                $model->link('files') . '&action=browse&connection=' . $connection->id,
+                                $userIsMember,
+                            ),
+                            'class' => 'filesystem '
+                                . $connection->provider->alias
+                                . (!$connection->isShared() ? ' private' : '')
+                                . ($active == $connection->id ? ' active' : ''),
                             //'image' => $img,
                             'icon'  => 'f0a0',
                         ];
@@ -515,7 +527,9 @@ class Files extends Plugin
         $directory = urldecode((string) Request::getString('directory', ''));
         // fileselector.js asks for the root as directory=.; that is the
         // repository root, not an unsafe segment.
-        $directory = ($directory === '.' || $directory === './') ? '.' : \Hubzero\Filesystem\SafePath::relative($directory);
+        $directory = ($directory === '.' || $directory === './')
+            ? '.'
+            : \Hubzero\Filesystem\SafePath::relative($directory);
         $directory = ($directory === false) ? '' : $directory;
 
         // Parse props for curation
@@ -538,7 +552,9 @@ class Files extends Plugin
         $hiddenFields = [];
         $min = '';
         $max = '';
-        $route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
+        $route = $this->model->isProvisioned()
+            ? 'index.php?option=com_publications&task=submit&active=files'
+            : $this->model->link('files');
         // Plain separators: the view escapes this once into the attribute, and
         // $props is raw request input that must not reach the page unescaped
         $filterUrl = Route::url($route) . '?action=filter&p=' . $props . '&ajax=1&no_html=1';
@@ -583,7 +599,9 @@ class Files extends Plugin
             $attachments = $view->publication->attachments();
             $attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
             $attachments = $attModel->getElementAttachments($elId, $attachments, $params->type);
-            $route = $this->model->isProvisioned() ? 'index.php?option=com_publications&task=submit&active=files' : $this->model->link('files');
+            $route = $this->model->isProvisioned()
+                ? 'index.php?option=com_publications&task=submit&active=files'
+                : $this->model->link('files');
             $filterUrl .= '&pid=' . $view->publication->get('id') . '&vid=' . $view->publication->get('version_id');
 
             // Set params
@@ -733,7 +751,9 @@ class Files extends Plugin
         $directory = urldecode((string) Request::getString('directory', ''));
         // fileselector.js asks for the root as directory=.; that is the
         // repository root, not an unsafe segment.
-        $directory = ($directory === '.' || $directory === './') ? '.' : \Hubzero\Filesystem\SafePath::relative($directory);
+        $directory = ($directory === '.' || $directory === './')
+            ? '.'
+            : \Hubzero\Filesystem\SafePath::relative($directory);
         $directory = ($directory === false) ? '' : $directory;
         if (!empty($directory)) {
             $cid = Request::getInt('cid', 0);
@@ -1372,7 +1392,11 @@ class Files extends Plugin
 
         // Output message
         if ($moved > 0) {
-            Notify::message(Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' ' . $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'), 'success', 'projects');
+            Notify::message(
+                Lang::txt('PLG_PROJECTS_FILES_MOVED') . ' ' . $moved . ' ' . Lang::txt('PLG_PROJECTS_FILES_S'),
+                'success',
+                'projects',
+            );
 
             // Force sync
             if ($this->repo->isLocal()) {
@@ -1883,9 +1907,14 @@ class Files extends Plugin
                 );
 
                 // Tex file?
-                $tex    = \Components\Projects\Helpers\Compiler::isTexFile($file->get('remoteTitle'), $file->get('originalFormat'));
+                $tex    = \Components\Projects\Helpers\Compiler::isTexFile(
+                    $file->get('remoteTitle'),
+                    $file->get('originalFormat'),
+                );
 
-                $cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($file->get('mimeType'));
+                $cExt   = $tex
+                    ? 'tex'
+                    : \Components\Projects\Helpers\Google::getGoogleImportExt($file->get('mimeType'));
                 $url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
                 $data = $this->connect->sendHttpRequest(
@@ -2213,7 +2242,15 @@ class Files extends Plugin
                     $pdfPath    = PATH_APP . $outputDir . DS . $contentFile;
                     $exportPath = PATH_APP . $outputDir . DS . $tempBase . '%d.jpg';
 
-                    exec($gspath . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile=" . escapeshellarg($exportPath) . " " . escapeshellarg($pdfPath) . " 2>&1", $out);
+                    exec(
+                        $gspath
+                            . "gs -dNOPAUSE -sDEVICE=jpeg -r300 -dFirstPage=1 -dLastPage=1 -sOutputFile="
+                            . escapeshellarg($exportPath)
+                            . " "
+                            . escapeshellarg($pdfPath)
+                            . " 2>&1",
+                        $out,
+                    );
 
                     if (is_file(PATH_APP . $outputDir . DS . $tempBase . '1.jpg')) {
                         $hi = new \Hubzero\Image\Processor(PATH_APP . $outputDir . DS . $tempBase . '1.jpg');
@@ -2435,7 +2472,11 @@ class Files extends Plugin
                     }
 
                     // Output message
-                    Notify::message(Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title, 'success', 'projects');
+                    Notify::message(
+                        Lang::txt('PLG_PROJECTS_FILES_UNSHARE_SUCCESS') . ' ' . $title,
+                        'success',
+                        'projects',
+                    );
 
                     // Force sync
                     $sync = true;
@@ -2464,7 +2505,10 @@ class Files extends Plugin
                             $file->set('mimeType', 'application/x-msmetafile');
                         }
                         if ($file->get('ext') == 'ppt' || $file->get('ext') == 'pps' || $file->get('ext') == 'pptx') {
-                            $file->set('mimeType', 'application/vnd.openxmlformats-officedocument.presentationml.presentation');
+                            $file->set(
+                                'mimeType',
+                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                            );
                         }
 
                         // Convert file
@@ -2580,7 +2624,13 @@ class Files extends Plugin
             $this->repo = new \Components\Projects\Models\Repo($model, $repoName);
         }
 
-        $url = Route::url('index.php?option=' . $this->componentOption . '&alias=' . $model->get('alias') . '&active=files&action=diskspace');
+        $url = Route::url(
+            'index.php?option='
+                . $this->componentOption
+                . '&alias='
+                . $model->get('alias')
+                . '&active=files&action=diskspace',
+        );
 
         // Report usage with all history?
         if ($this->params->get('disk_usage') == true || $by == 'admin') {
@@ -2595,10 +2645,16 @@ class Files extends Plugin
         } else {
             if ($this->params->get('project_quota')) {
                 // Report usage only with current files and not with history
-                $view->totalspace = $this->repo->call('getDiskUsage', $params = ['working' => true, 'history' => false]);
+                $view->totalspace = $this->repo->call(
+                    'getDiskUsage',
+                    $params = ['working' => true, 'history' => false],
+                );
             } else {
                 // Original Code
-                $view->totalspace = $this->repo->call('getDiskUsage', $params = ['working' => false, 'history' => true]);
+                $view->totalspace = $this->repo->call(
+                    'getDiskUsage',
+                    $params = ['working' => false, 'history' => true],
+                );
             }
 
             $view->dirsize = $view->totalspace;
@@ -2619,11 +2675,22 @@ class Files extends Plugin
             $view->pubDiskUsage = \Components\Publications\Helpers\Html::getDiskUsage($pubs);
             $view->pubQuota     = $model->params->get('pubQuota')
                                 ? $model->params->get('pubQuota')
-                                : \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
+                                : \Components\Projects\Helpers\Html::convertSize(
+                                    floatval($model->config()->get('pubQuota', '1')),
+                                    'GB',
+                                    'b',
+                                );
         }
 
         $view->total  = $this->repo->count();
-        $view->quota  = $model->params->get('quota', \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('defaultQuota', '1')), 'GB', 'b'));
+        $view->quota  = $model->params->get(
+            'quota',
+            \Components\Projects\Helpers\Html::convertSize(
+                floatval($model->config()->get('defaultQuota', '1')),
+                'GB',
+                'b',
+            ),
+        );
 
         $view->by     = $by;
         $view->model  = $model;
@@ -3142,7 +3209,11 @@ class Files extends Plugin
 
             if ($uploaded) {
                 if (count($uploadParts) > 2) {
-                    $message = 'uploaded ' . basename($uploadParts[0]) . ' and ' . (count($uploadParts) - 1) . ' more files ';
+                    $message = 'uploaded '
+                        . basename($uploadParts[0])
+                        . ' and '
+                        . (count($uploadParts) - 1)
+                        . ' more files ';
                 } else {
                     $message = 'uploaded ';
                     $u = 0;
@@ -3197,7 +3268,11 @@ class Files extends Plugin
             $activity = 'restored deleted file ' . basename($resParts[0]);
 
             // Output message
-            Notify::message(Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED') . ' ' . basename($resParts[0]), 'success', 'projects');
+            Notify::message(
+                Lang::txt('PLG_PROJECTS_FILES_SUCCESS_RESTORED') . ' ' . basename($resParts[0]),
+                'success',
+                'projects',
+            );
         }
 
         // Add activity to feed
@@ -3324,7 +3399,10 @@ class Files extends Plugin
                     $combined[] = ['file' => urldecode($ch)];
                 }
             }
-        } elseif (($file = Request::getString('file', '')) && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $file)) !== false) {
+        } elseif (
+            ($file = Request::getString('file', ''))
+            && \Hubzero\Filesystem\SafePath::relative(urldecode((string) $file)) !== false
+        ) {
             $combined[] = ['file' => urldecode($file)];
         }
 

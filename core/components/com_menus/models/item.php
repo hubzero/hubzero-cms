@@ -504,7 +504,11 @@ class Item extends Nested
                 ->getQuery()
                 ->update($this->getTableName())
                 ->set(['rgt' => new Raw('rgt + 2')])
-                ->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val']);
+                ->where(
+                    $reposition->right_where['col'],
+                    $reposition->right_where['op'],
+                    $reposition->right_where['val'],
+                );
 
             if (!$query->execute()) {
                 $this->addError($query->getError());
@@ -1070,7 +1074,9 @@ class Item extends Nested
                 $formFile = false;
 
                 // Check for the layout XML file. Use standard xml file if it exists.
-                $path = \Hubzero\Filesystem\Util::normalizePath($base . '/views/' . $view . '/tmpl/' . $layout . '.xml');
+                $path = \Hubzero\Filesystem\Util::normalizePath(
+                    $base . '/views/' . $view . '/tmpl/' . $layout . '.xml',
+                );
 
                 if (Filesystem::exists($path)) {
                     $formFile = $path;
@@ -1080,7 +1086,18 @@ class Item extends Nested
                 // template folder is first part of file name -- template:folder
                 if (!$formFile && (strpos($layout, ':') > 0)) {
                     $temp = explode(':', $layout);
-                    $templatePath = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . '/templates/' . $temp[0] . '/html/' . $option . '/' . $view . '/' . $temp[1] . '.xml');
+                    $templatePath = \Hubzero\Filesystem\Util::normalizePath(
+                        PATH_APP
+                            . '/templates/'
+                            . $temp[0]
+                            . '/html/'
+                            . $option
+                            . '/'
+                            . $view
+                            . '/'
+                            . $temp[1]
+                            . '.xml',
+                    );
 
                     if (Filesystem::exists($templatePath)) {
                         $formFile = $templatePath;
@@ -1422,7 +1439,9 @@ class Item extends Nested
             // Get the reference node by primary key.
             $reference = self::oneOrNew($referenceId);
             if (!$reference->get('id')) {
-                $this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED') . ': Reference not found #' . $referenceId);
+                $this->addError(
+                    Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED') . ': Reference not found #' . $referenceId,
+                );
                 return false;
             }
 
@@ -1451,7 +1470,9 @@ class Item extends Nested
             $reference = $db->loadObject();
 
             // Get the reposition data for re-inserting the node after the found root.
-            if (!$repositionData = $this->getTreeRepositionData($reference, ($node->rgt - $node->lft + 1), 'last-child')) {
+            if (
+                !$repositionData = $this->getTreeRepositionData($reference, ($node->rgt - $node->lft + 1), 'last-child')
+            ) {
                 $this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED') . ': Reposition data');
                 return false;
             }
@@ -1466,7 +1487,11 @@ class Item extends Nested
             ->set([
                 'lft' => new Raw('lft + ' . (int) ($node->rgt - $node->lft + 1)),
             ])
-            ->where($repositionData->left_where['col'], $repositionData->left_where['op'], $repositionData->left_where['val']);
+            ->where(
+                $repositionData->left_where['col'],
+                $repositionData->left_where['op'],
+                $repositionData->left_where['val'],
+            );
 
         if (!$query->execute()) {
             $this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED'));
@@ -1480,7 +1505,11 @@ class Item extends Nested
             ->set([
                 'rgt' => new Raw('rgt + ' . (int) ($node->rgt - $node->lft + 1)),
             ])
-            ->where($repositionData->right_where['col'], $repositionData->right_where['op'], $repositionData->right_where['val']);
+            ->where(
+                $repositionData->right_where['col'],
+                $repositionData->right_where['op'],
+                $repositionData->right_where['val'],
+            );
 
         if (!$query->execute()) {
             $this->addError(Lang::txt('JLIB_DATABASE_ERROR_MOVE_FAILED'));
@@ -1825,7 +1854,11 @@ class Item extends Nested
                 $copy->set('checked_out_time', null);
 
                 // a unique title/alias under the new parent
-                list($title, $alias) = $this->generateNewTitle($newParentId, $member->get('alias'), $member->get('title'));
+                list($title, $alias) = $this->generateNewTitle(
+                    $newParentId,
+                    $member->get('alias'),
+                    $member->get('title'),
+                );
                 $copy->set('title', $title);
                 $copy->set('alias', $alias);
 
@@ -2056,7 +2089,9 @@ class Item extends Nested
      */
     protected static function increment($string, $style = 'default', $n = 0)
     {
-        $styleSpec = isset(self::$incrementStyles[$style]) ? self::$incrementStyles[$style] : self::$incrementStyles['default'];
+        $styleSpec = isset(self::$incrementStyles[$style])
+            ? self::$incrementStyles[$style]
+            : self::$incrementStyles['default'];
 
         // Regular expression search and replace patterns.
         if (is_array($styleSpec[0])) {

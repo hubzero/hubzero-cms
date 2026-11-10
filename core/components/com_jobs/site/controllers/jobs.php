@@ -220,7 +220,11 @@ class Jobs extends SiteController
      */
     public function login()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true), 'server');
+        $rtrn = Request::getString(
+            'REQUEST_URI',
+            Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true),
+            'server',
+        );
 
         // A posted action can't be replayed by the GET that follows logging
         // in; come back to the job it was about instead
@@ -704,7 +708,9 @@ class Jobs extends SiteController
 
             if ($subid) {
                 // get cost per unit (to compute required refund)
-                $prevunitcost = $serviceid != $subscription->serviceid ? Service::oneOrNew($subscription->serviceid)->get('unitprice', 0) : $newunitcost;
+                $prevunitcost = $serviceid != $subscription->serviceid
+                    ? Service::oneOrNew($subscription->serviceid)->get('unitprice', 0)
+                    : $newunitcost;
                 $unitsleft    = 0;
                 $refund       = 0;
 
@@ -712,7 +718,10 @@ class Jobs extends SiteController
                 if ($serviceid != $subscription->serviceid or $subscription->status == 2) {
                     if ($prevunitcost > 0 && $subscription->status != 2) {
                         $unitsleft = $subscription->getRemaining('unit', $service->maxunits, $service->unitsize);
-                        $refund = ($subscription->totalpaid > 0 && ($subscription->totalpaid - $unitsleft * $prevunitcost) < 0)
+                        $refund = (
+                            $subscription->totalpaid > 0
+                            && ($subscription->totalpaid - $unitsleft * $prevunitcost) < 0
+                        )
                                 ? $unitsleft * $prevunitcost
                                 : 0;
 
@@ -734,10 +743,14 @@ class Jobs extends SiteController
                     // extending?
                     $subscription->status = $autoapprove && !$total ? 1 : $subscription->status;
                     $subscription->status = $subscription->status == 2 ? 1 : $subscription->status;
-                    $subscription->units = $autoapprove && !$total ? $subscription->units + $units : $subscription->units;
+                    $subscription->units = $autoapprove && !$total
+                        ? $subscription->units + $units
+                        : $subscription->units;
                     $subscription->pendingunits = $autoapprove && !$total ? 0 : $units;
                     $subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
-                    $newexprire = Date::of(strtotime('+' . $subscription->units * $service->unitsize . ' month'))->toSql();
+                    $newexprire = Date::of(
+                        strtotime('+' . $subscription->units * $service->unitsize . ' month'),
+                    )->toSql();
                     $subscription->expires = $newexprire;
                     $subscription->updated = $now;
                 } else {
@@ -758,7 +771,9 @@ class Jobs extends SiteController
             $subscription->units          = $autoapprove && !$total ? $units : 0;
             $subscription->pendingunits   = $autoapprove && !$total ? 0 : $units;
             $subscription->pendingpayment = $autoapprove && !$total ? 0 : $units * $newunitcost;
-            $subscription->pendingpayment = $credit ? $subscription->pendingpayment < $credit : $subscription->pendingpayment;
+            $subscription->pendingpayment = $credit
+                ? $subscription->pendingpayment < $credit
+                : $subscription->pendingpayment;
             $subscription->pendingpayment = $subscription->pendingpayment < 0 ? 0 : $subscription->pendingpayment;
             $subscription->expires        = $newexprire;
         }
@@ -784,10 +799,17 @@ class Jobs extends SiteController
             throw new Exception($employer->getError(), 500);
         }
 
-        $this->_msg = $subid ? Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_PROCESSED') : Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_ACCEPTED');
+        $this->_msg = $subid
+            ? Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_PROCESSED')
+            : Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_ACCEPTED');
         if ($units) {
             $this->_msg .= $autoapprove && !$total
-                    ? ' ' . Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_YOU_HAVE_ACCESS') . ' ' . $subscription->units . ' ' . Lang::txt('COM_JOBS_MONTHS')
+                    ? ' '
+                        . Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_YOU_HAVE_ACCESS')
+                        . ' '
+                        . $subscription->units
+                        . ' '
+                        . Lang::txt('COM_JOBS_MONTHS')
                     : ' ' . Lang::txt('COM_JOBS_MSG_SUBSCRIPTION_WE_WILL_CONTACT');
         }
 
@@ -849,7 +871,13 @@ class Jobs extends SiteController
         // get cost per unit (to compute required refund)
         $unitcost     = $service->unitprice;
         $prevunitcost = $unitcost;
-        $refund = ($subscription->totalpaid > 0 && $unitsleft > 0 && ($subscription->totalpaid - $unitsleft * $unitcost) > 0) ? $unitsleft * $prevunitcost : 0;
+        $refund = (
+            $subscription->totalpaid > 0
+            && $unitsleft > 0
+            && ($subscription->totalpaid - $unitsleft * $unitcost) > 0
+        )
+            ? $unitsleft * $prevunitcost
+            : 0;
 
         // cancel previous subscription & issue a refund if applicable
         if ($subscription->cancel($refund, $unitsleft)) {
@@ -1409,7 +1437,30 @@ class Jobs extends SiteController
 
             // missing required information
             if (!$job->description or !$job->title or !$job->companyName or !$job->companyLocation) {
-                $job->bind(array_intersect_key($_POST, array_flip(['title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'])));
+                $job->bind(
+                    array_intersect_key(
+                        $_POST,
+                        array_flip([
+                            'title',
+                            'companyName',
+                            'companyLocation',
+                            'companyLocationCountry',
+                            'companyWebsite',
+                            'description',
+                            'type',
+                            'cid',
+                            'closedate',
+                            'expiredate',
+                            'opendate',
+                            'startdate',
+                            'applyExternalUrl',
+                            'applyInternal',
+                            'contactName',
+                            'contactEmail',
+                            'contactPhone',
+                        ]),
+                    ),
+                );
                 $this->_job     = $job;
                 $this->_jobCode = $code;
                 $this->setError(Lang::txt('COM_JOBS_ERROR_MISSING_INFORMATION'));
@@ -1422,7 +1473,30 @@ class Jobs extends SiteController
 
         // Save new information
         if (!$min) {
-            $job->bind(array_intersect_key($_POST, array_flip(['title', 'companyName', 'companyLocation', 'companyLocationCountry', 'companyWebsite', 'description', 'type', 'cid', 'closedate', 'expiredate', 'opendate', 'startdate', 'applyExternalUrl', 'applyInternal', 'contactName', 'contactEmail', 'contactPhone'])));
+            $job->bind(
+                array_intersect_key(
+                    $_POST,
+                    array_flip([
+                        'title',
+                        'companyName',
+                        'companyLocation',
+                        'companyLocationCountry',
+                        'companyWebsite',
+                        'description',
+                        'type',
+                        'cid',
+                        'closedate',
+                        'expiredate',
+                        'opendate',
+                        'startdate',
+                        'applyExternalUrl',
+                        'applyInternal',
+                        'contactName',
+                        'contactEmail',
+                        'contactPhone',
+                    ]),
+                ),
+            );
             $job->description      = rtrim(stripslashes($_POST['description']));
             $job->title            = rtrim(stripslashes($_POST['title']));
             $job->companyName      = rtrim(stripslashes($_POST['companyName']));
@@ -1863,13 +1937,19 @@ class Jobs extends SiteController
                 : Request::getInt('category', 0);
         }
 
-        $filters['type']     = $this->getProperty('type') && $checkstored ? $this->getProperty('type') : Request::getInt('type', 0);
-        $filters['search']   = $this->getProperty('search') && $checkstored ? $this->getProperty('search') : trim(Request::getString('q', ''));
+        $filters['type']     = $this->getProperty('type') && $checkstored
+            ? $this->getProperty('type')
+            : Request::getInt('type', 0);
+        $filters['search']   = $this->getProperty('search') && $checkstored
+            ? $this->getProperty('search')
+            : trim(Request::getString('q', ''));
         $filters['filterby'] = trim(Request::getString('filterby', 'all'));
         $filters['sortdir']  = Request::getString('sortdir', 'ASC');
 
         // did we get stored prefs?
-        $filters['match']    = $this->getProperty('match') && $checkstored ? $this->getProperty("match") : Request::getInt('match', 0);
+        $filters['match']    = $this->getProperty('match') && $checkstored
+            ? $this->getProperty("match")
+            : Request::getInt('match', 0);
 
         // Paging vars
         $filters['limit']    = Request::getInt('limit', $this->config->get('jobslimit'));

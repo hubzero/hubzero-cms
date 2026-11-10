@@ -85,7 +85,11 @@ class Member extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->tableName WHERE `user_id`=" . $this->db->quote((int) $uid) . " AND `section_id`=" . $this->db->quote((int) $oid) . " LIMIT 1";
+        $query = "SELECT * FROM $this->tableName WHERE `user_id`="
+            . $this->db->quote((int) $uid)
+            . " AND `section_id`="
+            . $this->db->quote((int) $oid)
+            . " LIMIT 1";
 
         $this->db->setQuery($query);
         if ($result = $this->db->loadAssoc()) {
@@ -119,7 +123,11 @@ class Member extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->tableName WHERE `user_id`=" . $this->db->quote((int) $uid) . " AND `offering_id`=" . $this->db->quote((int) $oid) . " LIMIT 1";
+        $query = "SELECT * FROM $this->tableName WHERE `user_id`="
+            . $this->db->quote((int) $uid)
+            . " AND `offering_id`="
+            . $this->db->quote((int) $oid)
+            . " LIMIT 1";
 
         $this->db->setQuery($query);
         if ($result = $this->db->loadAssoc()) {
@@ -275,7 +283,10 @@ class Member extends Table
             }
         }
         if (isset($filters['search']) && $filters['search']) {
-            $q  = "(LOWER(u.name) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(u.username) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%');
+            $q  = "(LOWER(u.name) LIKE "
+                . $this->db->quote('%' . strtolower($filters['search']) . '%')
+                . " OR LOWER(u.username) LIKE "
+                . $this->db->quote('%' . strtolower($filters['search']) . '%');
             if (is_numeric($filters['search'])) {
                 $q .= " OR u.id=" . $this->db->quote($filters['search']);
             }
@@ -339,7 +350,10 @@ class Member extends Table
             $query .= " " . $filters['sort_Dir'];
         }
 
-        if ((isset($filters['start']) && is_numeric($filters['start']) && $filters['start'] >= 0) && !empty($filters['limit'])) {
+        if (
+            (isset($filters['start']) && is_numeric($filters['start']) && $filters['start'] >= 0)
+            && !empty($filters['limit'])
+        ) {
             $query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
         }
 

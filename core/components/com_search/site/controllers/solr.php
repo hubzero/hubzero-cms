@@ -95,7 +95,15 @@ class Solr extends SiteController
             $maxLat = Request::getString('maxlat', false);
 
             if ($minLon && $maxLon && $minLat && $maxLat) {
-                $locationFilter = 'coverage:"INTERSECTS(ENVELOPE(' . $minLon . ',' . $maxLon . ',' . $maxLat . ',' . $minLat . '))"';
+                $locationFilter = 'coverage:"INTERSECTS(ENVELOPE('
+                    . $minLon
+                    . ','
+                    . $maxLon
+                    . ','
+                    . $maxLat
+                    . ','
+                    . $minLat
+                    . '))"';
             }
         }
 
@@ -109,7 +117,11 @@ class Solr extends SiteController
             ->rows();
         foreach ($searchComponents as $searchComponent) {
             $componentQuery = $searchComponent->getSearchQuery('hubtype');
-            $multifacet->createQuery($searchComponent->getQueryName(), $componentQuery, ['exclude' => 'filter_type', 'include' => 'child_type']);
+            $multifacet->createQuery(
+                $searchComponent->getQueryName(),
+                $componentQuery,
+                ['exclude' => 'filter_type', 'include' => 'child_type'],
+            );
         }
 
         $queryTerms = $this->solrEscape($terms);
@@ -262,7 +274,9 @@ class Solr extends SiteController
         );
 
         // Set the document title
-        Document::setTitle($terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'));
+        Document::setTitle(
+            $terms ? Lang::txt('COM_SEARCH_RESULTS_FOR', $this->view->escape($terms)) : Lang::txt('COM_SEARCH'),
+        );
         $viewOverrides = [];
         foreach ($searchComponents as $component) {
             if (!$viewOverride = $component->getViewOverride()) {
@@ -308,7 +322,10 @@ class Solr extends SiteController
         // Format the results for the view
         foreach ($results as &$result) {
             // Event for special formatting
-            $override = Event::trigger('search.onFormatResult', [$result['hubtype'], &$result, $terms, $highlightOptions]);
+            $override = Event::trigger(
+                'search.onFormatResult',
+                [$result['hubtype'], &$result, $terms, $highlightOptions],
+            );
 
             // Only allow one override per result
             if (count($override) == 1) {

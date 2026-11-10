@@ -110,8 +110,14 @@ class Writer
      * @param   string  $format
      * @return  void
      */
-    public function useDailyFiles($path, $days = 0, $level = 'debug', $format = '', $dateFormat = 'Y-m-d H:i:s', $permissions = null)
-    {
+    public function useDailyFiles(
+        $path,
+        $days = 0,
+        $level = 'debug',
+        $format = '',
+        $dateFormat = 'Y-m-d H:i:s',
+        $permissions = null,
+    ) {
         $level = $this->parseLevel($level);
 
         $handler = new RotatingFileHandler($path, $days, $level, true, $permissions);

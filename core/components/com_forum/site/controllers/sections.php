@@ -108,7 +108,10 @@ class Sections extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option, false, true))),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode(Route::url('index.php?option=' . $this->option, false, true)),
+                ),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
@@ -155,7 +158,14 @@ class Sections extends SiteController
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url('index.php?option=' . $this->option)
+                        . '">'
+                        . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url('index.php?option=' . $this->option),
@@ -184,7 +194,10 @@ class Sections extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option, false, true))),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode(Route::url('index.php?option=' . $this->option, false, true)),
+                ),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
@@ -241,7 +254,14 @@ class Sections extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED',
+                    '<a href="'
+                        . Route::url('index.php?option=' . $this->option)
+                        . '">'
+                        . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url('index.php?option=' . $this->option),

@@ -62,7 +62,9 @@ class Bundle extends Base implements CommandInterface
 
             if (!$entry || !$entry->get('id') || !$entry->claim()) {
                 // Not queued, or another worker won the claim. Nothing to do.
-                $this->output->addLine('Nothing to build for version ' . $versionId . ' (not queued or already building).');
+                $this->output->addLine(
+                    'Nothing to build for version ' . $versionId . ' (not queued or already building).',
+                );
                 return;
             }
 
@@ -87,7 +89,10 @@ class Bundle extends Base implements CommandInterface
         }
 
         if ($result['ok']) {
-            $this->output->addLine(sprintf('Bundle ready: %s (%s bytes)', $result['file'], number_format($result['size'])), 'success');
+            $this->output->addLine(
+                sprintf('Bundle ready: %s (%s bytes)', $result['file'], number_format($result['size'])),
+                'success',
+            );
         } else {
             $this->output->error($result['error']);
         }
@@ -162,7 +167,19 @@ class Bundle extends Base implements CommandInterface
             return;
         }
 
-        foreach (['status', 'attempts', 'max_attempts', 'source_hash', 'bundle_file', 'bundle_size', 'queued_at', 'last_attempt_at', 'built_at', 'last_error'] as $k) {
+        $fields = [
+            'status',
+            'attempts',
+            'max_attempts',
+            'source_hash',
+            'bundle_file',
+            'bundle_size',
+            'queued_at',
+            'last_attempt_at',
+            'built_at',
+            'last_error',
+        ];
+        foreach ($fields as $k) {
             $this->output->addLine(sprintf('%-16s %s', $k . ':', $row->get($k)));
         }
     }
@@ -222,7 +239,9 @@ class Bundle extends Base implements CommandInterface
         if ($version) {
             $ids = [$version];
         } elseif ($pub) {
-            $db->setQuery("SELECT `id` FROM `#__publication_versions` WHERE `publication_id` = " . $pub . " ORDER BY `id`");
+            $db->setQuery(
+                "SELECT `id` FROM `#__publication_versions` WHERE `publication_id` = " . $pub . " ORDER BY `id`",
+            );
             $ids = $db->loadColumn();
         } else {
             $db->setQuery("SELECT `id` FROM `#__publication_versions` WHERE `state` = 1 ORDER BY `id`");
@@ -274,7 +293,17 @@ class Bundle extends Base implements CommandInterface
             // (e.g. --deep across the whole hub) shows it is working and
             // surfaces problems as they are found, not only in the final table.
             if (!$ok) {
-                fwrite(STDERR, sprintf("  [%d/%d] %d/%d  %s\n", $audited, count($ids), $a['publication_id'], $vid, implode(',', $issues)));
+                fwrite(
+                    STDERR,
+                    sprintf(
+                        "  [%d/%d] %d/%d  %s\n",
+                        $audited,
+                        count($ids),
+                        $a['publication_id'],
+                        $vid,
+                        implode(',', $issues),
+                    ),
+                );
             }
             if ($audited % 100 === 0) {
                 fwrite(STDERR, sprintf("  ...%d/%d audited, %d with issues\n", $audited, count($ids), $probc));
@@ -326,7 +355,11 @@ class Bundle extends Base implements CommandInterface
             ->addArgument('--queue', 'Worker mode: claim the queued row and record the result.', '')
             ->addArgument('--level=<0-9>', 'zip compression level for the inner bundle (default 6).', '')
             ->addArgument('-a, --all', 'audit: show every version, not just those with problems.', '')
-            ->addArgument('--deep', 'audit: also CRC-verify each file against the bundle (reads source bytes; slow).', '')
+            ->addArgument(
+                '--deep',
+                'audit: also CRC-verify each file against the bundle (reads source bytes; slow).',
+                '',
+            )
             ->render();
     }
 }

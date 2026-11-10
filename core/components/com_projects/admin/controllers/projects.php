@@ -79,8 +79,16 @@ class Projects extends AdminController
         $this->view->config = $this->config;
 
         // Get quotas
-        $this->view->defaultQuota = Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
-        $this->view->premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
+        $this->view->defaultQuota = Helpers\Html::convertSize(
+            floatval($this->config->get('defaultQuota', 1)),
+            'GB',
+            'b',
+        );
+        $this->view->premiumQuota = Helpers\Html::convertSize(
+            floatval($this->config->get('premiumQuota', 30)),
+            'GB',
+            'b',
+        );
 
         // Get filters
         $this->view->filters = [
@@ -134,7 +142,12 @@ class Projects extends AdminController
             'quota'      => Request::getString('quota', 'all', 'post'),
         ];
 
-        if (!in_array($this->view->filters['filterby'], ['setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval'])) {
+        if (
+            !in_array(
+                $this->view->filters['filterby'],
+                ['setting_up_in_progress', 'active', 'deleted', 'archived', 'rejected', 'pending_approval'],
+            )
+        ) {
             $this->view->filters['filterby'] = '';
         }
 
@@ -198,7 +211,10 @@ class Projects extends AdminController
 
         // Check that master path is there
         if ($this->config->get('offroot') && !is_dir($this->config->get('webpath'))) {
-            $this->view->setError(Lang::txt('Master directory does not exist. Administrator must fix this! ') . $this->config->get('webpath'));
+            $this->view->setError(
+                Lang::txt('Master directory does not exist. Administrator must fix this! ')
+                    . $this->config->get('webpath'),
+            );
         }
 
         // Output the HTML
@@ -541,7 +557,10 @@ class Projects extends AdminController
             $body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
 
             // Send HUB message
-            Event::trigger('xmessage.onSendMessage', ['projects_admin_notice', $subject, $body, $from, $managers, $this->option]);
+            Event::trigger(
+                'xmessage.onSendMessage',
+                ['projects_admin_notice', $subject, $body, $from, $managers, $this->option],
+            );
         }
 
         Notify::message($this->message, 'success');
@@ -949,7 +968,13 @@ class Projects extends AdminController
         // Redirect
         App::redirect(
             Route::url('index.php?option=' . $this->option, false),
-            Lang::txt('COM_PROJECTS_PROJECT') . ' #' . $id . ' (' . $alias . ') ' . Lang::txt('COM_PROJECTS_PROJECT_ERASED'),
+            Lang::txt('COM_PROJECTS_PROJECT')
+                . ' #'
+                . $id
+                . ' ('
+                . $alias
+                . ') '
+                . Lang::txt('COM_PROJECTS_PROJECT_ERASED'),
         );
     }
 
@@ -1194,11 +1219,17 @@ class Projects extends AdminController
                 'type'          => (string) $element->field_type,
                 'label'         => (string) $element->label,
                 'name'          => (string) $element->name,
-                'description'   => (isset($element->field_options->description) ? (string) $element->field_options->description : ''),
+                'description'   => (isset(
+                    $element->field_options->description,
+                ) ? (string) $element->field_options->description : ''),
                 'ordering'      => ($i + 1),
                 'access'        => (isset($element->access) ? (int) $element->access : 0),
-                'option_other'  => (isset($element->field_options->include_other_option) ? (int) $element->field_options->include_other_option : ''),
-                'option_blank'  => (isset($element->field_options->include_blank_option) ? (int) $element->field_options->include_blank_option : ''),
+                'option_other'  => (isset(
+                    $element->field_options->include_other_option,
+                ) ? (int) $element->field_options->include_other_option : ''),
+                'option_blank'  => (isset(
+                    $element->field_options->include_blank_option,
+                ) ? (int) $element->field_options->include_blank_option : ''),
                 'action_create' => (isset($element->create) ? (int) $element->create : 1),
                 'action_update' => (isset($element->update) ? (int) $element->update : 1),
                 'action_edit'   => (isset($element->edit) ? (int) $element->edit : 1),
@@ -1289,7 +1320,14 @@ class Projects extends AdminController
         if ($this->getTask() == 'applydescription') {
             // Redirect, instead of falling through, to avoid caching issues
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=customizeDescription', false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&task=customizeDescription',
+                    false,
+                ),
             );
         }
 

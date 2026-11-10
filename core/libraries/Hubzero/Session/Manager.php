@@ -270,7 +270,10 @@ class Manager extends Obj
 
             if (\App::get('session')->isNew()) {
                 // Redirect to login screen.
-                \App::redirect(\Route::url('index.php'), \App::get('language')->txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
+                \App::redirect(
+                    \Route::url('index.php'),
+                    \App::get('language')->txt('JLIB_ENVIRONMENT_SESSION_EXPIRED'),
+                );
                 \App::close();
             }
         }
@@ -846,7 +849,11 @@ class Manager extends Obj
         }
 
         // Check for client address
-        if (in_array('fix_adress', $this->security) && isset($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
+        if (
+            in_array('fix_adress', $this->security)
+            && isset($_SERVER['REMOTE_ADDR'])
+            && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false
+        ) {
             $ip = $this->get('session.client.address');
 
             if ($ip === null) {
@@ -858,7 +865,10 @@ class Manager extends Obj
         }
 
         // Record proxy forwarded for in the session in case we need it later
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
+        if (
+            isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+            && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false
+        ) {
             $this->set('session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
         }
 

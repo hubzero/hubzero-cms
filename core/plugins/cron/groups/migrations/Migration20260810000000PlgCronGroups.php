@@ -46,7 +46,9 @@ class Migration20260810000000PlgCronGroups extends Base
         foreach (self::$jobs as $event => $job) {
             list($title, $recurrence) = $job;
 
-            $query = "SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`=" . $this->db->quote($event) . ";";
+            $query = "SELECT `id` FROM `#__cron_jobs` WHERE `plugin`='groups' AND `event`="
+                . $this->db->quote($event)
+                . ";";
             $this->db->setQuery($query);
 
             if ($this->db->loadResult()) {

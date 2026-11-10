@@ -414,7 +414,10 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if ($start > 0 && ($space = mb_strpos($excerpt, ' ', 0, 'UTF-8')) !== false) {
             $excerpt = mb_substr($excerpt, $space + 1, null, 'UTF-8');
         }
-        if ($start + $length < mb_strlen($text, 'UTF-8') && ($space = mb_strrpos($excerpt, ' ', 0, 'UTF-8')) !== false) {
+        if (
+            $start + $length < mb_strlen($text, 'UTF-8')
+            && ($space = mb_strrpos($excerpt, ' ', 0, 'UTF-8')) !== false
+        ) {
             $excerpt = mb_substr($excerpt, 0, $space, 'UTF-8');
         }
 
@@ -426,7 +429,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
 
         $excerpt = preg_replace('/(' . implode('|', $patterns) . ')/iu', '<mark>$1</mark>', $excerpt);
 
-        return ($start > 0 ? '&hellip; ' : '') . $excerpt . ($start + $length < mb_strlen($text, 'UTF-8') ? ' &hellip;' : '');
+        return ($start > 0 ? '&hellip; ' : '')
+            . $excerpt
+            . ($start + $length < mb_strlen($text, 'UTF-8') ? ' &hellip;' : '');
     }
 
     /**

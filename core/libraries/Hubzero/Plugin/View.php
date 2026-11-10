@@ -104,10 +104,22 @@ class View extends AbstractView
         // Set a base path for use by the view
         if (!array_key_exists('base_path', $config)) {
             if (defined('PATH_APP')) {
-                $config['base_path'] = PATH_APP . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $this->pluginFolder . DIRECTORY_SEPARATOR . $this->pluginElement;
+                $config['base_path'] = PATH_APP
+                    . DIRECTORY_SEPARATOR
+                    . 'plugins'
+                    . DIRECTORY_SEPARATOR
+                    . $this->pluginFolder
+                    . DIRECTORY_SEPARATOR
+                    . $this->pluginElement;
 
                 if (!file_exists($config['base_path']) && defined('PATH_CORE')) {
-                    $config['base_path'] = PATH_CORE . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $this->pluginFolder . DIRECTORY_SEPARATOR . $this->pluginElement;
+                    $config['base_path'] = PATH_CORE
+                        . DIRECTORY_SEPARATOR
+                        . 'plugins'
+                        . DIRECTORY_SEPARATOR
+                        . $this->pluginFolder
+                        . DIRECTORY_SEPARATOR
+                        . $this->pluginElement;
                 }
             }
         }
@@ -266,10 +278,19 @@ class View extends AbstractView
     {
         if (!static::hasHelper($method)) {
             // Namespaced
-            $invokable1 = '\\Plugins\\' . ucfirst($this->pluginFolder) . '\\' . ucfirst($this->pluginElement) . '\\Helpers\\' . ucfirst($method);
+            $invokable1 = '\\Plugins\\'
+                . ucfirst($this->pluginFolder)
+                . '\\'
+                . ucfirst($this->pluginElement)
+                . '\\Helpers\\'
+                . ucfirst($method);
 
             // Old naming scheme "PluginFolderElementHelperMethod"
-            $invokable2 = 'Plugin' . ucfirst($this->pluginFolder) . ucfirst($this->pluginElement) . 'Helper' . ucfirst($method);
+            $invokable2 = 'Plugin'
+                . ucfirst($this->pluginFolder)
+                . ucfirst($this->pluginElement)
+                . 'Helper'
+                . ucfirst($method);
 
             $callback = null;
             if (class_exists($invokable1)) {

@@ -283,10 +283,14 @@ class Helper
         }
 
         // Get all groups the user is a member of
-        $query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-        $query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-        $query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
-        $query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
+        $query1 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_applicants AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber="
+            . $uid;
+        $query2 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_members AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber="
+            . $uid;
+        $query3 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__xgroups AS g, #__xgroups_managers AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber="
+            . $uid;
+        $query4 = "SELECT g.gidNumber, g.published, g.approved, g.cn, g.description, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__xgroups AS g, #__xgroups_invitees AS m WHERE $g m.gidNumber=g.gidNumber AND m.uidNumber="
+            . $uid;
 
         switch ($type) {
             case 'all':
@@ -360,10 +364,14 @@ class Helper
         }
 
         // Get all courses the user is a member of
-        $query1 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_applicants AS m WHERE $g m.course_id=g.id AND m.user_id=" . $uid;
-        $query2 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_members AS m WHERE $g m.course_id=g.id AND m.user_id=" . $uid;
-        $query3 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__courses AS g, #__courses_managers AS m WHERE $g m.course_id=g.id AND m.user_id=" . $uid;
-        $query4 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_invitees AS m WHERE $g m.course_id=g.id AND m.user_id=" . $uid;
+        $query1 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '0' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_applicants AS m WHERE $g m.course_id=g.id AND m.user_id="
+            . $uid;
+        $query2 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_members AS m WHERE $g m.course_id=g.id AND m.user_id="
+            . $uid;
+        $query3 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '1' AS registered, '1' AS regconfirmed, '1' AS manager FROM #__courses AS g, #__courses_managers AS m WHERE $g m.course_id=g.id AND m.user_id="
+            . $uid;
+        $query4 = "SELECT g.id, g.state, g.alias, g.title, g.join_policy, '0' AS registered, '1' AS regconfirmed, '0' AS manager FROM #__courses AS g, #__courses_invitees AS m WHERE $g m.course_id=g.id AND m.user_id="
+            . $uid;
 
         switch ($type) {
             case 'all':

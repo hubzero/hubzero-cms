@@ -553,7 +553,11 @@ class Connect extends Obj
         $objO = $this->model->table('Owner');
 
         // Get email/name pairs of connected project owners
-        $connected = $objO->getConnected($this->model->get('id'), $service, $exclude = [$this->model->get('owned_by_user')]);
+        $connected = $objO->getConnected(
+            $this->model->get('id'),
+            $service,
+            $exclude = [$this->model->get('owned_by_user')],
+        );
 
         // Setup remote directory & update permissions
         $dir = $this->getRemoteDirectory($service, $this->model->get('owned_by_user'), $connected);
@@ -737,8 +741,14 @@ class Connect extends Obj
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  array
      */
-    public function addRemoteFile($projectid = null, $service = 'google', $uid = 0, $file = null, $parentId = 0, $convert = false)
-    {
+    public function addRemoteFile(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $file = null,
+        $parentId = 0,
+        $convert = false,
+    ) {
         // Get api
         $apiService = $this->getAPI($service, $uid);
 
@@ -773,7 +783,16 @@ class Connect extends Obj
 
         // Perform request
         if ($service == 'google') {
-            $newItemId = Google::insertFile($apiService, $this->client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+            $newItemId = Google::insertFile(
+                $apiService,
+                $this->client[$service],
+                $title,
+                $localPath,
+                $mimeType,
+                $parentId,
+                $metadata,
+                $convert,
+            );
         }
 
         // Error!
@@ -847,8 +866,15 @@ class Connect extends Obj
      * @param   boolean  $convert    Convert for remote editing? (Google only)
      * @return  array
      */
-    public function updateRemoteFile($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $local = [], $parentId = 0, $convert = false)
-    {
+    public function updateRemoteFile(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $remoteid = 0,
+        $local = [],
+        $parentId = 0,
+        $convert = false,
+    ) {
         if (!$projectid || !$remoteid || empty($local) || !$parentId) {
             return false;
         }
@@ -878,7 +904,12 @@ class Connect extends Obj
 
                 if ($check['labels']['trashed']) {
                     $success = Google::untrashItem($apiService, $remoteid);
-                } elseif ($check && isset($check['md5Checksum']) && isset($local['md5Checksum']) && $check['md5Checksum'] == $local['md5Checksum']) {
+                } elseif (
+                    $check
+                    && isset($check['md5Checksum'])
+                    && isset($local['md5Checksum'])
+                    && $check['md5Checksum'] == $local['md5Checksum']
+                ) {
                     $success = $remoteid;
                 }
             } catch (Exception $e) {
@@ -887,7 +918,17 @@ class Connect extends Obj
 
             // There was a change in content, update
             if (!$success) {
-                $success = Google::updateFile($apiService, $this->client[$service], $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+                $success = Google::updateFile(
+                    $apiService,
+                    $this->client[$service],
+                    $remoteid,
+                    $title,
+                    $localPath,
+                    $mimeType,
+                    $parentId,
+                    $metadata,
+                    $convert,
+                );
             }
         }
 
@@ -938,8 +979,14 @@ class Connect extends Obj
      * @param   string   $parentId   Parent folder ID
      * @return  array
      */
-    public function renameRemoteItem($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $local = [], $parentId = 0)
-    {
+    public function renameRemoteItem(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $remoteid = 0,
+        $local = [],
+        $parentId = 0,
+    ) {
         if (!$projectid || !$remoteid || empty($local)) {
             return false;
         }
@@ -1016,8 +1063,14 @@ class Connect extends Obj
      * @param   string   $parentId   Parent folder ID
      * @return  array
      */
-    public function moveRemoteItem($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $local = [], $parentId = 0)
-    {
+    public function moveRemoteItem(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $remoteid = 0,
+        $local = [],
+        $parentId = 0,
+    ) {
         if (!$projectid || !$remoteid || empty($local) || !$parentId) {
             return false;
         }
@@ -1083,8 +1136,13 @@ class Connect extends Obj
      *
      * @return     array
      */
-    public function deleteRemoteItem($projectid = null, $service = 'google', $uid = 0, $remoteid = 0, $permanent = false)
-    {
+    public function deleteRemoteItem(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $remoteid = 0,
+        $permanent = false,
+    ) {
         if (!$projectid || !$remoteid) {
             return false;
         }
@@ -1127,8 +1185,15 @@ class Connect extends Obj
      * @param   array    &$remoteFolders  Collector array
      * @return  integer (folder ID)
      */
-    public function createRemoteFolder($projectid = null, $service = 'google', $uid = 0, $title = '', $path = '', $parentId = 0, &$remoteFolders = [])
-    {
+    public function createRemoteFolder(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $title = '',
+        $path = '',
+        $parentId = 0,
+        &$remoteFolders = [],
+    ) {
         if (!$projectid) {
             $projectid = $this->model->get('id');
         }
@@ -1209,8 +1274,13 @@ class Connect extends Obj
      * @param   array    &$remoteFolders  Collector array
      * @return  integer
      */
-    public function prepRemoteParent($projectid = null, $service = 'google', $uid = 0, $local = [], &$remoteFolders = [])
-    {
+    public function prepRemoteParent(
+        $projectid = null,
+        $service = 'google',
+        $uid = 0,
+        $local = [],
+        &$remoteFolders = [],
+    ) {
         if (!$projectid) {
             $projectid = $this->model->get('id');
         }
@@ -1358,8 +1428,17 @@ class Connect extends Obj
      * @param   integer  $original        Source file?
      * @return  void
      */
-    public function sortRemoteRevisions($id, $converted, $lastModifiedBy, $uid, $service, $file, &$versions = [], &$timestamps = [], $original = 0)
-    {
+    public function sortRemoteRevisions(
+        $id,
+        $converted,
+        $lastModifiedBy,
+        $uid,
+        $service,
+        $file,
+        &$versions = [],
+        &$timestamps = [],
+        $original = 0,
+    ) {
         // Get remote revisions
         $revisions = $this->getFileHistory($id, $uid, $service);
 
@@ -1437,8 +1516,16 @@ class Connect extends Obj
      * @param   string   $original_id      Original ID
      * @return  mixed False if error, Object on success
      */
-    public function savePairing($projectid = null, $service = '', $id = null, $path = '', $paired = 0, $original_path = '', $original_format = '', $original_id = '')
-    {
+    public function savePairing(
+        $projectid = null,
+        $service = '',
+        $id = null,
+        $path = '',
+        $paired = 0,
+        $original_path = '',
+        $original_format = '',
+        $original_id = '',
+    ) {
         if (!$projectid || !$id) {
             return false;
         }
@@ -1467,8 +1554,14 @@ class Connect extends Obj
      * @param   string   $parentId  Parent ID
      * @return  void
      */
-    public function fixConvertedItems($service = 'google', $uid = 0, $dir = '', $action = '', $newdir = '', $parentId = '')
-    {
+    public function fixConvertedItems(
+        $service = 'google',
+        $uid = 0,
+        $dir = '',
+        $action = '',
+        $newdir = '',
+        $parentId = '',
+    ) {
         if (!$dir || !$action) {
             return false;
         }
@@ -1533,7 +1626,15 @@ class Connect extends Obj
             // Get remote folder ID
             $folderID = $this->getConfigParam($service, 'remote_dir_id');
 
-            $changeID = Google::collectChanges($apiService, $folderID, $remotes, $deletes, $path, $startChangeId, $connections);
+            $changeID = Google::collectChanges(
+                $apiService,
+                $folderID,
+                $remotes,
+                $deletes,
+                $path,
+                $startChangeId,
+                $connections,
+            );
         }
 
         return $changeID;
@@ -1773,8 +1874,15 @@ class Connect extends Obj
      * @param   boolean  $getContent  Output file content? Or write to file
      * @return  string or boolean
      */
-    public function importFile($service = 'google', $uid = 0, $remote = [], $fpath = '', $path = '', $ext = '', $getContent = false)
-    {
+    public function importFile(
+        $service = 'google',
+        $uid = 0,
+        $remote = [],
+        $fpath = '',
+        $path = '',
+        $ext = '',
+        $getContent = false,
+    ) {
         if (empty($remote) || !$fpath || !is_dir($path) || !isset($remote['exportLinks'])) {
             return false;
         }

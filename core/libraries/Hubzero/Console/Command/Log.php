@@ -190,7 +190,9 @@ class Log extends Base implements CommandInterface
                             // i - input mode
                         case 105:
                             $this->output->backspace((2 + strlen($prompt)));
-                            $this->output->addLine('You\'re entering input mode. Pausing log streaming. Type "done" or "i" to return.');
+                            $this->output->addLine(
+                                'You\'re entering input mode. Pausing log streaming. Type "done" or "i" to return.',
+                            );
                             $this->output->addString('input mode >>> ');
 
                             // Set input mode to true and undo icanon setting

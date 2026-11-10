@@ -138,7 +138,10 @@ class License extends Table
         if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) {
             $filters['sort_Dir'] = 'DESC';
         }
-        $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
+        $query .= " ORDER BY "
+            . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1')
+            . " "
+            . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
             $query .= ' LIMIT ' . (int) $filters['start'] . ',' . (int) $filters['limit'];
@@ -260,7 +263,9 @@ class License extends Table
             return false;
         }
 
-        $this->db->setQuery("SELECT * FROM $this->tableName WHERE ordering=" . $this->db->quote($ordering) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT * FROM $this->tableName WHERE ordering=" . $this->db->quote($ordering) . " LIMIT 1",
+        );
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {

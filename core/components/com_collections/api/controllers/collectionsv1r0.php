@@ -416,7 +416,10 @@ class Collectionsv1r0 extends ApiController
         }
         if (
             !empty($fields['object_id'])
-            && !$this->canManageObject(!empty($fields['object_type']) ? $fields['object_type'] : $row->get('object_type'), $fields['object_id'])
+            && !$this->canManageObject(
+                !empty($fields['object_type']) ? $fields['object_type'] : $row->get('object_type'),
+                $fields['object_id'],
+            )
         ) {
             throw new Exception(Lang::txt('Access denied'), 403);
         }

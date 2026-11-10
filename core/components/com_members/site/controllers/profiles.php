@@ -185,7 +185,10 @@ class Profiles extends SiteController
                 $obj['id']       = $user->get('id');
                 $obj['name']     = $user->get('name');
                 $obj['username'] = $user->get('username');
-                $obj['org']      = (in_array($user->get('access'), User::getAuthorisedViewLevels()) ? $user->get('organization', '') : '');
+                $obj['org']      = (in_array(
+                    $user->get('access'),
+                    User::getAuthorisedViewLevels(),
+                ) ? $user->get('organization', '') : '');
                 $obj['picture']  = $user->picture();
 
                 $json[] = $obj;
@@ -248,7 +251,11 @@ class Profiles extends SiteController
         // Require a logged-in user — member directory is not available to guests
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=browse', false, true)), false),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode(Route::url('index.php?option=' . $this->option . '&task=browse', false, true)),
+                    false,
+                ),
                 Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
                 'warning',
             );
@@ -440,7 +447,13 @@ class Profiles extends SiteController
                             $term = '%' . trim($term) . '%';
 
                             if ($v == 0) {
-                                $entries->where($a . '.name', ' ' . $q['o'] . ' ', strtolower((string) $term), 'and', 1);
+                                $entries->where(
+                                    $a . '.name',
+                                    ' ' . $q['o'] . ' ',
+                                    strtolower((string) $term),
+                                    'and',
+                                    1,
+                                );
                             } else {
                                 $entries->orWhere($a . '.name', ' ' . $q['o'] . ' ', strtolower((string) $term), 1);
                             }
@@ -448,11 +461,23 @@ class Profiles extends SiteController
                             foreach ($searches as $z => $searching) {
                                 $entries->joinRaw(
                                     $b . ' AS s' . ($v . '_' . $z),
-                                    's' . ($v . '_' . $z) . '.user_id=' . $a . '.id AND s' . ($v . '_' . $z) . '.profile_key=' . $db->quote($searching),
+                                    's'
+                                        . ($v . '_' . $z)
+                                        . '.user_id='
+                                        . $a
+                                        . '.id AND s'
+                                        . ($v . '_' . $z)
+                                        . '.profile_key='
+                                        . $db->quote($searching),
                                     'left',
                                 );
 
-                                $entries->orWhere('s' . ($v . '_' . $z) . '.profile_value', ' ' . $q['o'] . ' ', strtolower((string) $term), 1);
+                                $entries->orWhere(
+                                    's' . ($v . '_' . $z) . '.profile_value',
+                                    ' ' . $q['o'] . ' ',
+                                    strtolower((string) $term),
+                                    1,
+                                );
                             }
                         }
                         $entries->resetDepth();
@@ -462,11 +487,23 @@ class Profiles extends SiteController
                         foreach ($searches as $searching) {
                             $entries->joinRaw(
                                 $b . ' AS s' . $i,
-                                's' . $i . '.user_id=' . $a . '.id AND s' . $i . '.profile_key=' . $db->quote($searching),
+                                's'
+                                    . $i
+                                    . '.user_id='
+                                    . $a
+                                    . '.id AND s'
+                                    . $i
+                                    . '.profile_key='
+                                    . $db->quote($searching),
                                 'left',
                             );
 
-                            $entries->orWhere('s' . $i . '.profile_value', ' ' . $q['o'] . ' ', (string) $q['value'], 1);
+                            $entries->orWhere(
+                                's' . $i . '.profile_value',
+                                ' ' . $q['o'] . ' ',
+                                (string) $q['value'],
+                                1,
+                            );
                         }
                         $entries->resetDepth();
                     }
@@ -481,7 +518,20 @@ class Profiles extends SiteController
                 if (in_array($q['o'], ['>', '>=', '<', '<=']) && is_numeric($q['value'])) {
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
-                        't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . (int) $q['value'],
+                        't'
+                            . $i
+                            . '.user_id='
+                            . $a
+                            . '.id AND t'
+                            . $i
+                            . '.profile_key='
+                            . $db->quote($q['field'])
+                            . ' AND t'
+                            . $i
+                            . '.profile_value '
+                            . $q['o']
+                            . ' '
+                            . (int) $q['value'],
                         'inner',
                     );
                 } elseif (is_array($q['value'])) {
@@ -490,13 +540,38 @@ class Profiles extends SiteController
                     }
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
-                        't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value IN (' . implode(', ', $q['value']) . ')',
+                        't'
+                            . $i
+                            . '.user_id='
+                            . $a
+                            . '.id AND t'
+                            . $i
+                            . '.profile_key='
+                            . $db->quote($q['field'])
+                            . ' AND t'
+                            . $i
+                            . '.profile_value IN ('
+                            . implode(', ', $q['value'])
+                            . ')',
                         'inner',
                     );
                 } else {
                     $entries->joinRaw(
                         $b . ' AS t' . $i,
-                        't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($q['field']) . ' AND t' . $i . '.profile_value ' . $q['o'] . ' ' . $db->quote($q['value']),
+                        't'
+                            . $i
+                            . '.user_id='
+                            . $a
+                            . '.id AND t'
+                            . $i
+                            . '.profile_key='
+                            . $db->quote($q['field'])
+                            . ' AND t'
+                            . $i
+                            . '.profile_value '
+                            . $q['o']
+                            . ' '
+                            . $db->quote($q['value']),
                         'inner',
                     );
                 }
@@ -514,7 +589,11 @@ class Profiles extends SiteController
         // If the sort value wasn't already an applied filter
         // we need to join on the profiles table to be able to sort by that value
         if (!$sortFound) {
-            $entries->joinRaw($b . ' AS t' . $i, 't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']), 'inner');
+            $entries->joinRaw(
+                $b . ' AS t' . $i,
+                't' . $i . '.user_id=' . $a . '.id AND t' . $i . '.profile_key=' . $db->quote($filters['sort']),
+                'inner',
+            );
             $filters['sqlsort'] = 't' . $i . '.profile_value';
         }
 
@@ -677,7 +756,13 @@ class Profiles extends SiteController
     {
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount', false, true)), false),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode(
+                            Route::url('index.php?option=' . $this->option . '&task=myaccount', false, true),
+                        ),
+                    false,
+                ),
                 Lang::txt('COM_MEMBERS_NOT_LOGGEDIN'),
                 'warning',
             );
@@ -727,7 +812,10 @@ class Profiles extends SiteController
         }*/
 
         // Check if the profile is public/private and the user has access
-        if (User::get('id') != $profile->get('id') && !in_array($profile->get('access'), User::getAuthorisedViewLevels())) {
+        if (
+            User::get('id') != $profile->get('id')
+            && !in_array($profile->get('access'), User::getAuthorisedViewLevels())
+        ) {
             // Check if they're logged in
             if (User::isGuest()) {
                 // geodynamics 2026-08-02: use the canonical target, not
@@ -751,7 +839,11 @@ class Profiles extends SiteController
         // Check if unconfirmed
 
         $loggedInUserId = User::getInstance()->get('id');
-        if ($profile->get('activation') < 1 && $loggedInUserId != $profile->get('id') && (User::isGuest() || !User::authorise('core.manage', $this->option))) {
+        if (
+            $profile->get('activation') < 1
+            && $loggedInUserId != $profile->get('id')
+            && (User::isGuest() || !User::authorise('core.manage', $this->option))
+        ) {
             App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
 
             // Offer explanation and eternal redemption to the user, instead of leaving them high and dry
@@ -969,7 +1061,10 @@ class Profiles extends SiteController
         // authenticator and are setting a new local password
         $hzup = \Hubzero\User\Password::getInstance($profile->get('id'));
 
-        if (($hzup && !empty($hzup->passhash)) && !\Hubzero\User\Password::passwordMatches($profile->get('id'), $oldpass, true)) {
+        if (
+            ($hzup && !empty($hzup->passhash))
+            && !\Hubzero\User\Password::passwordMatches($profile->get('id'), $oldpass, true)
+        ) {
             $this->setError(Lang::txt('COM_MEMBERS_PASS_INCORRECT'));
         } elseif (!$newpass || !$newpass2) {
             $this->setError(Lang::txt('COM_MEMBERS_PASS_MUST_BE_ENTERED_TWICE'));
@@ -980,7 +1075,11 @@ class Profiles extends SiteController
             // this should really be done in the password rules validation step
             $this->setError(Lang::txt('Your new password must be different from your current password'));
         } elseif (!empty($msg)) {
-            $this->setError(Lang::txt('Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.'));
+            $this->setError(
+                Lang::txt(
+                    'Password does not meet site password requirements. Please choose a password meeting all the requirements listed below.',
+                ),
+            );
             $this->view->set('validated', $msg);
             $passrules = true;
         }
@@ -1141,7 +1240,13 @@ class Profiles extends SiteController
                         $preferences->class_id = 0;
                         $preferences->jobs     = $newlimit;
                         $preferences->store();
-                        $resourcemessage = 'The session limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . ' sessions.';
+                        $resourcemessage = 'The session limit for ['
+                            . $profile->get('username')
+                            . '] has been raised from '
+                            . $oldlimit
+                            . ' to '
+                            . $newlimit
+                            . ' sessions.';
                     } elseif ($request === null) {
                         $this->view
                             ->set('title', $title)
@@ -1159,7 +1264,13 @@ class Profiles extends SiteController
                     $resourcemessage = ' storage limit has been raised from ' . $oldlimit . ' to ' . $newlimit . '.';
 
                     if (User::authorise('core.manage', $this->option)) {
-                        $resourcemessage = 'The storage limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . '.';
+                        $resourcemessage = 'The storage limit for ['
+                            . $profile->get('username')
+                            . '] has been raised from '
+                            . $oldlimit
+                            . ' to '
+                            . $newlimit
+                            . '.';
                     } else {
                         $this->view
                             ->set('title', $title)
@@ -1180,7 +1291,13 @@ class Profiles extends SiteController
                         // $profile->set('max_meetings', $newlimit);
                         // $profile->update();
 
-                        $resourcemessage = 'The meeting limit for [' . $profile->get('username') . '] has been raised from ' . $oldlimit . ' to ' . $newlimit . '.';
+                        $resourcemessage = 'The meeting limit for ['
+                            . $profile->get('username')
+                            . '] has been raised from '
+                            . $oldlimit
+                            . ' to '
+                            . $newlimit
+                            . '.';
                     } else {
                         $this->view
                             ->set('title', $title)
@@ -1228,7 +1345,9 @@ class Profiles extends SiteController
             }
             $message .= "Click the following link to grant this request:\r\n";
 
-            $sef = Route::url('index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task);
+            $sef = Route::url(
+                'index.php?option=' . $this->option . '&id=' . $profile->get('id') . '&task=' . $this->task,
+            );
             $url = Request::base() . ltrim($sef, DS);
 
             $message .= $url . "\r\n\r\n";
@@ -1623,9 +1742,15 @@ class Profiles extends SiteController
             $result = \Components\Members\Helpers\Utility::sendConfirmEmail($member, null, false);
 
             if ($result) {
-                Notify::success('A confirmation email has been sent to "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '". You must click the link in that email to re-activate your account.');
+                Notify::success(
+                    'A confirmation email has been sent to "'
+                        . htmlentities($email, ENT_COMPAT, 'UTF-8')
+                        . '". You must click the link in that email to re-activate your account.',
+                );
             } else {
-                Notify::error('An error occurred emailing "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '" your confirmation.');
+                Notify::error(
+                    'An error occurred emailing "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '" your confirmation.',
+                );
             }
 
             //$this->sendConfirmationCode($member->get('username'), $email, $confirm, $member->get('registerDate'),$member->get('name'));
@@ -1696,10 +1821,16 @@ class Profiles extends SiteController
 
         // Send the email
         if ($msg->send()) {
-            Notify::success('A confirmation email has been sent to "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '". You must click the link in that email to re-activate your account.');
+            Notify::success(
+                'A confirmation email has been sent to "'
+                    . htmlentities($email, ENT_COMPAT, 'UTF-8')
+                    . '". You must click the link in that email to re-activate your account.',
+            );
             $result = true;
         } else {
-            Notify::error('An error occurred emailing "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '" your confirmation.');
+            Notify::error(
+                'An error occurred emailing "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '" your confirmation.',
+            );
         }
 
         return $result;
@@ -1851,7 +1982,10 @@ class Profiles extends SiteController
         // Only logged-in users should ever get to this page
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false),
+                Route::url(
+                    'index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)),
+                    false,
+                ),
             );
         }
 

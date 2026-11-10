@@ -72,8 +72,12 @@ class Youtube extends WikiMacro
         // Fall back to the default when the supplied value carries no digits at
         // all. Stripping alone turned a non-numeric argument such as "auto"
         // into an empty string and rendered width="" height="".
-        $width  = (isset($args[1]) && preg_replace('/[^0-9%]/', '', $args[1]) !== '') ? preg_replace('/[^0-9%]/', '', $args[1]) : $default_width;
-        $height = (isset($args[2]) && preg_replace('/[^0-9%]/', '', $args[2]) !== '') ? preg_replace('/[^0-9%]/', '', $args[2]) : $default_height;
+        $width  = (isset($args[1]) && preg_replace('/[^0-9%]/', '', $args[1]) !== '')
+            ? preg_replace('/[^0-9%]/', '', $args[1])
+            : $default_width;
+        $height = (isset($args[2]) && preg_replace('/[^0-9%]/', '', $args[2]) !== '')
+            ? preg_replace('/[^0-9%]/', '', $args[2])
+            : $default_height;
 
         // check is user entered full youtube url or just Video Id
         if (strstr($url, 'http')) {
@@ -82,7 +86,10 @@ class Youtube extends WikiMacro
             $full_url_parts = explode('?', $url);
 
             // split apart any key=>value pairs in query string
-            $query_string_parts = explode("%26%2338%3B", urlencode(isset($full_url_parts[1]) ? $full_url_parts[1] : ''));
+            $query_string_parts = explode(
+                "%26%2338%3B",
+                urlencode(isset($full_url_parts[1]) ? $full_url_parts[1] : ''),
+            );
 
             // foreach query string parts
             // explode at equals sign
@@ -109,6 +116,14 @@ class Youtube extends WikiMacro
         $iframeTitle = 'YouTube video (' . htmlspecialchars($video_id) . ')';
 
         // return the emdeded youtube video
-        return '<iframe sandbox="allow-scripts allow-same-origin" src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="' . $iframeTitle . '"></iframe>';
+        return '<iframe sandbox="allow-scripts allow-same-origin" src="'
+            . $youtube_url
+            . '" width="'
+            . $width
+            . '" height="'
+            . $height
+            . '" title="'
+            . $iframeTitle
+            . '"></iframe>';
     }
 }

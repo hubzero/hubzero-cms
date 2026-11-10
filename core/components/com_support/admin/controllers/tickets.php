@@ -278,9 +278,21 @@ class Tickets extends AdminController
         $lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
         if (trim($ticket->get('group_id') == null ? '' : $ticket->get('group_id'))) {
-            $lists['owner'] = $this->userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($ticket->get('group_id')));
+            $lists['owner'] = $this->userSelectGroup(
+                'ticket[owner]',
+                $ticket->get('owner'),
+                1,
+                '',
+                trim($ticket->get('group_id')),
+            );
         } elseif (trim($this->config->get('group', ''))) {
-            $lists['owner'] = $this->userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($this->config->get('group', '')));
+            $lists['owner'] = $this->userSelectGroup(
+                'ticket[owner]',
+                $ticket->get('owner'),
+                1,
+                '',
+                trim($this->config->get('group', '')),
+            );
         } else {
             $lists['owner'] = $this->userSelect('ticket[owner]', $ticket->get('owner'), 1);
         }
@@ -368,7 +380,14 @@ class Tickets extends AdminController
             if ($lastcomment && $lastcomment->get('created') >= $started) {
                 $comment->set('comment', $text);
 
-                Notify::error(Lang::txt('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.' . $lastcomment->get('created') . ' > ' . $started));
+                Notify::error(
+                    Lang::txt(
+                        'Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'
+                            . $lastcomment->get('created')
+                            . ' > '
+                            . $started,
+                    ),
+                );
                 return $this->editTask($comment);
             }
         }
@@ -430,7 +449,13 @@ class Tickets extends AdminController
             if ($defs) {
                 // Get some email settings
                 $msg = new \Hubzero\Mail\Message();
-                $msg->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT') . ', ' . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')));
+                $msg->setSubject(
+                    Config::get('sitename')
+                        . ' '
+                        . Lang::txt('COM_SUPPORT')
+                        . ', '
+                        . Lang::txt('COM_SUPPORT_TICKET_NUMBER', $ticket->get('id')),
+                );
                 $msg->addFrom(
                     Config::get('mailfrom'),
                     Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
@@ -501,7 +526,12 @@ class Tickets extends AdminController
         if ($text) {
             // If a comment was posted always change status to open.  This is the typical expected behavior.
             // Preventing new comments from re-opening a ticket can result in comments that are never responded to.
-            if ((!$ticket->isOpen()) && $ticket->get('open') == $old->get('open') || $ticket->isWaiting() && User::get('username') == $ticket->get('login')) {
+            if (
+                (!$ticket->isOpen())
+                && $ticket->get('open') == $old->get('open')
+                || $ticket->isWaiting()
+                && User::get('username') == $ticket->get('login')
+            ) {
                 $ticket->open();
             }
         }
@@ -560,7 +590,14 @@ class Tickets extends AdminController
 
             // Redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . ($filters ? '&' . $filters : ''), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . ($filters ? '&' . $filters : ''),
+                    false,
+                ),
                 Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $ticket->get('id')),
             );
             return;
@@ -848,7 +885,14 @@ class Tickets extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . (Request::getInt('no_html', 0) ? '&no_html=1' : ''), false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . (Request::getInt('no_html', 0) ? '&no_html=1' : ''),
+                false,
+            ),
             Lang::txt('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids)),
         );
     }
@@ -1113,7 +1157,9 @@ class Tickets extends AdminController
         }
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)),
+            );
             return '';
         }
 

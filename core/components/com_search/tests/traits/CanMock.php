@@ -46,11 +46,23 @@ trait CanMock
         'Rows'               => ['Hubzero\\Database\\Rows', null],
         'Relational'         => ['Hubzero\\Database\\Relational', null],
         'Boost'              => ['Components\\Search\\Tests\\Doubles\\BoostDouble', 'tests/doubles/BoostDouble.php'],
-        'Map'                => ['Components\\Search\\Helpers\\BoostDocumentTypeMap', 'helpers/boostDocumentTypeMap.php'],
+        'Map'                => [
+            'Components\\Search\\Helpers\\BoostDocumentTypeMap',
+            'helpers/boostDocumentTypeMap.php',
+        ],
         'ErrorMessageHelper' => ['Components\\Search\\Helpers\\ErrorMessageHelper', 'helpers/errorMessageHelper.php'],
-        'SolariumBoostQuery' => ['Components\\Search\\Tests\\Doubles\\SolariumBoostQueryDouble', 'tests/doubles/SolariumBoostQueryDouble.php'],
-        'BoostQueries'       => ['Components\\Search\\Tests\\Doubles\\SolariumBoostQueriesDouble', 'tests/doubles/SolariumBoostQueriesDouble.php'],
-        'Controller'         => ['Components\\Search\\Tests\\Doubles\\ControllerDouble', 'tests/doubles/ControllerDouble.php'],
+        'SolariumBoostQuery' => [
+            'Components\\Search\\Tests\\Doubles\\SolariumBoostQueryDouble',
+            'tests/doubles/SolariumBoostQueryDouble.php',
+        ],
+        'BoostQueries'       => [
+            'Components\\Search\\Tests\\Doubles\\SolariumBoostQueriesDouble',
+            'tests/doubles/SolariumBoostQueriesDouble.php',
+        ],
+        'Controller'         => [
+            'Components\\Search\\Tests\\Doubles\\ControllerDouble',
+            'tests/doubles/ControllerDouble.php',
+        ],
         'Type'               => ['Components\\Search\\Tests\\Doubles\\TypeDouble', 'tests/doubles/TypeDouble.php'],
     ];
 

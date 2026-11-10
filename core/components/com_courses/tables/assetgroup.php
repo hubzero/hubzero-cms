@@ -82,7 +82,11 @@ class AssetGroup extends Table
      */
     public function getHighestOrder($unit_id, $parent = 0)
     {
-        $sql = "SELECT ordering from $this->tableName WHERE `unit_id`=" . $this->db->quote(intval($unit_id)) . " AND `parent`=" . $this->db->quote(intval($parent)) . " ORDER BY ordering DESC LIMIT 1";
+        $sql = "SELECT ordering from $this->tableName WHERE `unit_id`="
+            . $this->db->quote(intval($unit_id))
+            . " AND `parent`="
+            . $this->db->quote(intval($parent))
+            . " ORDER BY ordering DESC LIMIT 1";
         $this->db->setQuery($sql);
         return $this->db->loadResult();
     }

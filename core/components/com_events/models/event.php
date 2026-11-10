@@ -89,7 +89,12 @@ class Event extends Model
     public function link()
     {
         $group = Group::getInstance($this->get('scope_id'));
-        return Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $this->get('id'));
+        return Route::url(
+            'index.php?option=com_groups&cn='
+                . $group->get('cn')
+                . '&active=calendar&action=details&event_id='
+                . $this->get('id'),
+        );
     }
 
     /**
@@ -173,7 +178,11 @@ class Event extends Model
             if ($rule['freq'] == 'daily') {
                 $rule['freq'] = 'days';
             }
-            $readable .= Lang::txt('COM_EVENTS_REPEATS_EVERY', $rule['interval'], ucfirst(str_replace('ly', 's', $rule['freq'])));
+            $readable .= Lang::txt(
+                'COM_EVENTS_REPEATS_EVERY',
+                $rule['interval'],
+                ucfirst(str_replace('ly', 's', $rule['freq'])),
+            );
         } else {
             $readable .= ucfirst($rule['freq']);
         }
@@ -222,8 +231,14 @@ class Event extends Model
         $url      = $this->get('extra_info');
         $location = $this->get('adresse_info');
         $now      = gmdate('Ymd') . 'T' . gmdate('His') . 'Z';
-        $created  = gmdate('Ymd', strtotime((string) $this->get('created'))) . 'T' . gmdate('His', strtotime((string) $this->get('created'))) . 'Z';
-        $modified = gmdate('Ymd', strtotime((string) $this->get('modified'))) . 'T' . gmdate('His', strtotime((string) $this->get('modified'))) . 'Z';
+        $created  = gmdate('Ymd', strtotime((string) $this->get('created')))
+            . 'T'
+            . gmdate('His', strtotime((string) $this->get('created')))
+            . 'Z';
+        $modified = gmdate('Ymd', strtotime((string) $this->get('modified')))
+            . 'T'
+            . gmdate('His', strtotime((string) $this->get('modified')))
+            . 'Z';
 
         //create ouput
         $output  = "BEGIN:VCALENDAR\r\n";

@@ -86,7 +86,9 @@ class Calendar extends Field
                 if (intval($this->value)) {
                     // Get a date object based on the correct timezone.
                     $date = new Date($this->value, 'UTC');
-                    $date->setTimezone(new DateTimeZone(App::get('user')->getParam('timezone', App::get('config')->get('offset'))));
+                    $date->setTimezone(
+                        new DateTimeZone(App::get('user')->getParam('timezone', App::get('config')->get('offset'))),
+                    );
 
                     // Transform the date string.
                     $this->value = $date->format('Y-m-d H:i:s', true, false);

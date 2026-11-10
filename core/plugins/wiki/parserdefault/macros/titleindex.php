@@ -101,13 +101,23 @@ class TitleIndex extends WikiMacro
                 }
 
                 if ($row->get('namespace') == 'Help') {
-                    $row->set('path', ($row->get('path') ? rtrim($this->scope, '/') . '/' . ltrim($row->get('path'), '/') : $this->scope));
+                    $row->set(
+                        'path',
+                        ($row->get('path') ? rtrim($this->scope, '/') . '/' . ltrim(
+                            $row->get('path'),
+                            '/',
+                        ) : $this->scope),
+                    );
                     $row->set('scope', $this->domain);
                     $row->set('scope_id', $this->domain_id);
                 }
 
                 $items .= '<li><a href="' . Route::url($row->link()) . '">';
-                $items .= htmlspecialchars(stripslashes(($row->get('title') ?: $row->get('pagename')) ?? ''), ENT_QUOTES, 'UTF-8');
+                $items .= htmlspecialchars(
+                    stripslashes(($row->get('title') ?: $row->get('pagename')) ?? ''),
+                    ENT_QUOTES,
+                    'UTF-8',
+                );
                 $items .= '</a></li>' . "\n";
             }
 

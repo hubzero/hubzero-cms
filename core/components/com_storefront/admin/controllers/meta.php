@@ -174,7 +174,12 @@ class Meta extends AdminController
         if ($redirect) {
             // Redirect
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller=products&task=edit&id='
+                        . Request::getInt('id', 0),
+                ),
                 Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
             return;
@@ -193,7 +198,9 @@ class Meta extends AdminController
     {
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=products&task=edit&id=' . Request::getInt('id', 0)),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=products&task=edit&id=' . Request::getInt('id', 0),
+            ),
         );
     }
 }

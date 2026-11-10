@@ -282,7 +282,9 @@ class Cloud extends \Hubzero\Base\Obj
                             $filters['sort'] = 'objects';
                         }
 
-                        $filters['sort_Dir'] = (isset($filters['sort_Dir']) && $filters['sort_Dir']) ? $filters['sort_Dir'] : "ASC";
+                        $filters['sort_Dir'] = (isset($filters['sort_Dir']) && $filters['sort_Dir'])
+                            ? $filters['sort_Dir']
+                            : "ASC";
                         $results->order($filters['sort'], $filters['sort_Dir']);
                     }
 

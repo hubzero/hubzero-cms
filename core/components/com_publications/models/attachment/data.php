@@ -107,7 +107,14 @@ class Data extends Base
 
         $html = '';
 
-        $url =  Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number . '&el=' . $elementId);
+        $url =  Route::url(
+            'index.php?option=com_publications&task=serve&id='
+                . $pub->id
+                . '&v='
+                . $pub->version_number
+                . '&el='
+                . $elementId,
+        );
         $url = preg_replace('/\/administrator/', '', $url);
 
         if ($attachments) {
@@ -124,7 +131,13 @@ class Data extends Base
 
                 $html .= '<li>';
                 $html .= $authorized === 'administrator' ? '[' . $this->name . '] ' : '';
-                $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="noopener" target="_blank" class="data-type">' . $title . '</a>';
+                $html .= '<a href="'
+                    . $itemUrl
+                    . '" title="'
+                    . $pop
+                    . '" rel="noopener" target="_blank" class="data-type">'
+                    . $title
+                    . '</a>';
                 $html .= '</li>';
             }
         }
@@ -183,7 +196,9 @@ class Data extends Base
         // Which role?
         $role = $element->params->role;
 
-        $url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
+        $url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number)
+            . '?el='
+            . $elementId;
 
         // Primary button
         if ($role == 1) {
@@ -202,14 +217,30 @@ class Data extends Base
 
             if (file_exists($pub->bundlePath()) && $pub->base == 'databases') {
                 $show = new \stdClass();
-                $show->href = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
+                $show->href = Route::url(
+                    'index.php?option=com_publications&id='
+                        . $pub->id
+                        . '&task=serve&v='
+                        . $pub->version_number
+                        . '&render=archive',
+                );
                 $show->class = 'archival-package';
                 $show->title = Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE');
 
                 $options[] = $show;
             }
 
-            $html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, 'rel="external"', $disabled, $pop, $options);
+            $html  = \Components\Publications\Helpers\Html::primaryButton(
+                $class,
+                $url,
+                $label,
+                null,
+                $title,
+                'rel="external"',
+                $disabled,
+                $pop,
+                $options,
+            );
         } elseif ($role == 2 && $attachments) {
             $html .= '<ul>';
             $html .= self::drawList($attachments, $element, $elementId, $pub, $blockParams, $authorized);
@@ -245,7 +276,10 @@ class Data extends Base
             'data',
             1,
         );
-        $newConfigs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $newVersion->id . '&amp;task=serve';
+        $newConfigs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id)
+            . '/?vid='
+            . $newVersion->id
+            . '&amp;task=serve';
 
         // Create new version path
         if (!is_dir($newConfigs->dataPath)) {
@@ -278,7 +312,10 @@ class Data extends Base
             }
 
             // New database instance - need to clone again and get a new version number
-            $result    = Event::trigger('projects.clone_database', [$pAttach->object_name, $pub->_project, $newConfigs->servePath]);
+            $result    = Event::trigger(
+                'projects.clone_database',
+                [$pAttach->object_name, $pub->_project, $newConfigs->servePath],
+            );
             $dbVersion = $result && isset($result[0]) ? $result[0] : null;
 
             // Failed to clone
@@ -291,7 +328,16 @@ class Data extends Base
             $pAttach->modified_by = null;
             $pAttach->modified = null;
             $pAttach->object_revision = $dbVersion;
-            $pAttach->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $pAttach->object_name . DS . '?v=' . $dbVersion;
+            $pAttach->path = 'dataviewer'
+                . DS
+                . 'view'
+                . DS
+                . 'publication:dsl'
+                . DS
+                . $pAttach->object_name
+                . DS
+                . '?v='
+                . $dbVersion;
             $pAttach->store();
         }
 
@@ -478,7 +524,10 @@ class Data extends Base
             $rtime = $objPA->modified ? strtotime($objPA->modified) : null;
             if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime) {
                 // New database instance - need to clone again and get a new version number
-                $result             = Event::trigger('projects.clone_database', [$database_name, $pub->_project, $configs->servePath]);
+                $result             = Event::trigger(
+                    'projects.clone_database',
+                    [$database_name, $pub->_project, $configs->servePath],
+                );
                 $dbVersion          = $result && isset($result[0]) ? $result[0] : null;
                 $objPA->modified_by = $uid;
                 $objPA->modified    = Date::toSql();
@@ -501,7 +550,16 @@ class Data extends Base
         $objPA->title           = $objPA->title ? $objPA->title : $objData->title;
 
         // Build link path
-        $objPA->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
+        $objPA->path = 'dataviewer'
+            . DS
+            . 'view'
+            . DS
+            . 'publication:dsl'
+            . DS
+            . $database_name
+            . DS
+            . '?v='
+            . $dbVersion;
 
         if (!$objPA->store()) {
             $this->parent->setError(Lang::txt('There was a problem attaching the database'));
@@ -537,7 +595,10 @@ class Data extends Base
 
         // Remove link
         if (!$this->getError()) {
-            $result = Event::trigger('projects.remove_database', [$row->object_name, $pub->_project, $row->object_revision]);
+            $result = Event::trigger(
+                'projects.remove_database',
+                [$row->object_name, $pub->_project, $row->object_revision],
+            );
 
             $row->delete();
 
@@ -916,7 +977,11 @@ class Data extends Base
                     // Don't bother turning anything but an image into a thumbnail
                     if (stripos(Filesystem::mimetype($file), 'image') !== false) {
                         // Generate thumbnail
-                        $thumb  = \Components\Publications\Helpers\Html::createThumbName($file, '_tn', $extension = 'gif');
+                        $thumb  = \Components\Publications\Helpers\Html::createThumbName(
+                            $file,
+                            '_tn',
+                            $extension = 'gif',
+                        );
                         Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $thumb);
 
                         $hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $thumb);
@@ -930,7 +995,11 @@ class Data extends Base
                         }
 
                         // Generate medium image
-                        $med = \Components\Publications\Helpers\Html::createThumbName($file, '_medium', $extension = 'gif');
+                        $med = \Components\Publications\Helpers\Html::createThumbName(
+                            $file,
+                            '_medium',
+                            $extension = 'gif',
+                        );
                         Filesystem::copy($repoPath . DS . $file, $configs->dataPath . DS . $med);
 
                         $hi = new \Hubzero\Image\Processor($configs->dataPath . DS . $med);

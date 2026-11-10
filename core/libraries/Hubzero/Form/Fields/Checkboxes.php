@@ -56,14 +56,24 @@ class Checkboxes extends Field
         if (!empty($this->description)) {
             $label .= ' title="'
                 . htmlspecialchars(
-                    trim($text, ':') . '::' . ($this->translateDescription ? App::get('language')->txt($this->description) : $this->description),
+                    trim($text, ':')
+                        . '::'
+                        . (
+                            $this->translateDescription
+                            ? App::get('language')->txt($this->description)
+                            : $this->description
+                        ),
                     ENT_COMPAT,
                     'UTF-8',
                 ) . '"';
         }
 
         if ($this->required) {
-            $label .= '>' . $text . ' <span class="required star">' . App::get('language')->txt('JOPTION_REQUIRED') . '</span></span>';
+            $label .= '>'
+                . $text
+                . ' <span class="required star">'
+                . App::get('language')->txt('JOPTION_REQUIRED')
+                . '</span></span>';
         } else {
             $label .= '>' . $text . '</span>';
         }
@@ -124,9 +134,24 @@ class Checkboxes extends Field
 
             $html[] = '<li>';
             $html[] = '<input type="checkbox" id="' . $this->id . $i . '" name="' . $this->name . '"'
-                . ' value="' . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $class . $onclick . $disabled . $dataAttributes . '/>';
+                . ' value="'
+                . htmlspecialchars($option->value, ENT_COMPAT, 'UTF-8')
+                . '"'
+                . $checked
+                . $class
+                . $onclick
+                . $disabled
+                . $dataAttributes
+                . '/>';
 
-            $html[] = '<label for="' . $this->id . $i . '"' . $class . '>' . App::get('language')->txt($option->text) . '</label>';
+            $html[] = '<label for="'
+                . $this->id
+                . $i
+                . '"'
+                . $class
+                . '>'
+                . App::get('language')->txt($option->text)
+                . '</label>';
             $html[] = '</li>';
         }
 
@@ -139,9 +164,38 @@ class Checkboxes extends Field
                 $checked = ' checked="checked"';
             }
             $html[] = '<li>';
-            $html[] = '<input type="checkbox" id="' . $this->id . ($i + 1) . '" name="' . $this->name . '" value=""' . $checked . $class . $onclick . $disabled . '/>';
-            $html[] = '<label for="' . $this->id . ($i + 1) . '"' . $class . '>' . App::get('language')->txt('JOTHER') . '</label>';
-            $html[] = '<input type="text" id="' . $this->id . '_other" name="' . substr($this->getName($this->fieldname . '_other'), 0, -2) . '" value="' . ($checked ? htmlspecialchars($values, ENT_COMPAT, 'UTF-8') : '') . '" aria-label="' . App::get('language')->txt('Other') . '"' . $class . $onclick . $disabled . '/>';
+            $html[] = '<input type="checkbox" id="'
+                . $this->id
+                . ($i + 1)
+                . '" name="'
+                . $this->name
+                . '" value=""'
+                . $checked
+                . $class
+                . $onclick
+                . $disabled
+                . '/>';
+            $html[] = '<label for="'
+                . $this->id
+                . ($i + 1)
+                . '"'
+                . $class
+                . '>'
+                . App::get('language')->txt('JOTHER')
+                . '</label>';
+            $html[] = '<input type="text" id="'
+                . $this->id
+                . '_other" name="'
+                . substr($this->getName($this->fieldname . '_other'), 0, -2)
+                . '" value="'
+                . ($checked ? htmlspecialchars($values, ENT_COMPAT, 'UTF-8') : '')
+                . '" aria-label="'
+                . App::get('language')->txt('Other')
+                . '"'
+                . $class
+                . $onclick
+                . $disabled
+                . '/>';
             $html[] = '</li>';
         }
 

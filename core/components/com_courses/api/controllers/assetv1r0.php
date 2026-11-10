@@ -150,7 +150,10 @@ class Assetv1r0 extends Base
         $assocScopeId = (int) Request::getInt('scope_id', 0);
 
         if ($assocScope === 'asset_group') {
-            $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
+            $database->setQuery(
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                    . $assocScopeId,
+            );
         } elseif ($assocScope === 'offering') {
             $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
         } else {
@@ -369,7 +372,10 @@ class Assetv1r0 extends Base
 
         // If we're saving progress calculation var
         if ($progress = Request::getInt('progress_factors', false)) {
-            $asset->set('progress_factors', ['asset_id' => $asset->get('id'), 'section_id' => $this->course->offering()->section()->get('id')]);
+            $asset->set(
+                'progress_factors',
+                ['asset_id' => $asset->get('id'), 'section_id' => $this->course->offering()->section()->get('id')],
+            );
         } elseif (Request::getInt('edit_progress_factors', false)) {
             $asset->set('section_id', $this->course->offering()->section()->get('id'));
             $asset->set('progress_factors', 'delete');
@@ -408,7 +414,12 @@ class Assetv1r0 extends Base
             if ($config->get('tool_path')) {
                 $tool_alias = Request::getCmd('tool_alias');
                 $tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
-                $asset_path = DS . trim($config->get('uploadpath'), DS) . DS . $this->course_id . DS . $asset->get('id');
+                $asset_path = DS
+                    . trim($config->get('uploadpath'), DS)
+                    . DS
+                    . $this->course_id
+                    . DS
+                    . $asset->get('id');
                 $file       = Filesystem::files(PATH_APP . $asset_path);
 
                 // We're assuming there's only one file there...
@@ -437,7 +448,11 @@ class Assetv1r0 extends Base
                     $asset->set('url', '/tools/' . $tool_alias . '/invoke?params=file:' . $param_path);
                 }
             }
-        } elseif ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool' && Request::getInt('edit_tool_param', false)) {
+        } elseif (
+            $asset->get('type') == 'url'
+            && $asset->get('subtype') == 'tool'
+            && Request::getInt('edit_tool_param', false)
+        ) {
             // This is the scenario where it was a tool launch link, but the box was unchecked
             $config     = Component::params('com_courses');
             $tool_path  = DS . trim($config->get('tool_path'), DS) . DS;
@@ -493,7 +508,10 @@ class Assetv1r0 extends Base
             $assocScopeId = (int) Request::getInt('scope_id', 0);
 
             if ($assocScope === 'asset_group') {
-                $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
+                $database->setQuery(
+                    "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                        . $assocScopeId,
+                );
             } elseif ($assocScope === 'offering') {
                 $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
             } else {
@@ -541,7 +559,10 @@ class Assetv1r0 extends Base
                 $assocScopeId = (int) $scope_id;
 
                 if ($assocScope === 'asset_group') {
-                    $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . $assocScopeId);
+                    $database->setQuery(
+                        "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                            . $assocScopeId,
+                    );
                 } elseif ($assocScope === 'offering') {
                     $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . $assocScopeId);
                 } else {
@@ -563,7 +584,14 @@ class Assetv1r0 extends Base
         }
 
         // Build the asset url
-        $url = Route::url('index.php?option=com_courses&controller=offering&gid=' . $this->course->get('alias') . '&offering=' . $this->offering_alias . '&asset=' . $asset->get('id'));
+        $url = Route::url(
+            'index.php?option=com_courses&controller=offering&gid='
+                . $this->course->get('alias')
+                . '&offering='
+                . $this->offering_alias
+                . '&asset='
+                . $asset->get('id'),
+        );
 
         $files = [
             'asset_id'       => $asset->get('id'),
@@ -640,7 +668,10 @@ class Assetv1r0 extends Base
             }
         }
         if ($scope_id && $scope == 'asset_group') {
-            $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $scope_id);
+            $database->setQuery(
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                    . (int) $scope_id,
+            );
             if ((int) $database->loadResult() !== (int) $this->course_id) {
                 App::abort(403, 'Asset group is not a part of this course');
             }
@@ -679,7 +710,12 @@ class Assetv1r0 extends Base
         // If no other associations exist, we'll delete the asset file and folder on the file system
         $deleted = [];
         $params  = Component::params('com_courses');
-        $path    = DS . trim($params->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $assetObj->id;
+        $path    = DS
+            . trim($params->get('uploadpath', '/site/courses'), DS)
+            . DS
+            . $this->course_id
+            . DS
+            . $assetObj->id;
 
         // If the path exists, delete it!
         if (Filesystem::exists($path)) {
@@ -792,7 +828,10 @@ class Assetv1r0 extends Base
         // course, so resolve the course from the group before authorizing
         if (!Request::getInt('course_id', 0) && Request::getCmd('scope', 'asset_group') == 'asset_group') {
             $db = App::get('db');
-            $db->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) Request::getInt('scope_id', 0));
+            $db->setQuery(
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                    . (int) Request::getInt('scope_id', 0),
+            );
             Request::setVar('course_id', (int) $db->loadResult());
         }
 
@@ -814,7 +853,10 @@ class Assetv1r0 extends Base
         // waved through. The outline builder only ever sends asset_group
         // (assets/js/build.js).
         if ($scope == 'asset_group') {
-            $database->setQuery("SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = " . (int) $scope_id);
+            $database->setQuery(
+                "SELECT o.course_id FROM `#__courses_asset_groups` AS ag JOIN `#__courses_units` AS u ON u.id = ag.unit_id JOIN `#__courses_offerings` AS o ON o.id = u.offering_id WHERE ag.id = "
+                    . (int) $scope_id,
+            );
         } elseif ($scope == 'offering') {
             $database->setQuery("SELECT course_id FROM `#__courses_offerings` WHERE id = " . (int) $scope_id);
         } else {
@@ -946,7 +988,9 @@ class Assetv1r0 extends Base
         }
 
         // Now check to see if this exam has already been deployed
-        $database->setQuery("SELECT `id` FROM `#__courses_form_deployments` WHERE `form_id` = " . $database->quote($formId));
+        $database->setQuery(
+            "SELECT `id` FROM `#__courses_form_deployments` WHERE `form_id` = " . $database->quote($formId),
+        );
 
         // Get the form ID from the content
         $result = $database->loadResult();
@@ -1009,7 +1053,9 @@ class Assetv1r0 extends Base
         }
 
         // Now check to see if this exam has already been deployed
-        $database->setQuery("SELECT `id` FROM `#__courses_form_deployments` WHERE `form_id` = " . $database->Quote($formId));
+        $database->setQuery(
+            "SELECT `id` FROM `#__courses_form_deployments` WHERE `form_id` = " . $database->Quote($formId),
+        );
 
         // Get the form ID from the content
         $depId = $database->loadResult();

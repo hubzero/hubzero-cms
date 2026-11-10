@@ -52,12 +52,24 @@ class Test extends Base implements CommandInterface
         switch ($parts[0]) {
             case 'tpl':
                 unset($parts[0]);
-                $path = ($path == 'app' ? PATH_APP : PATH_CORE) . DS . 'templates' . DS . implode('_', $parts) . DS . 'tests';
+                $path = ($path == 'app' ? PATH_APP : PATH_CORE)
+                    . DS
+                    . 'templates'
+                    . DS
+                    . implode('_', $parts)
+                    . DS
+                    . 'tests';
                 break;
 
             case 'plg':
                 unset($parts[0]);
-                $path = ($path == 'app' ? PATH_APP : PATH_CORE) . DS . 'plugins' . DS . implode(DS, $parts) . DS . 'tests';
+                $path = ($path == 'app' ? PATH_APP : PATH_CORE)
+                    . DS
+                    . 'plugins'
+                    . DS
+                    . implode(DS, $parts)
+                    . DS
+                    . 'tests';
                 break;
 
             case 'mod':
@@ -74,7 +86,9 @@ class Test extends Base implements CommandInterface
                 break;
 
             default:
-                $this->output->error('Sorry, we were not able to find an extension by that name or that extension type is not currently supported');
+                $this->output->error(
+                    'Sorry, we were not able to find an extension by that name or that extension type is not currently supported',
+                );
                 break;
         }
 
@@ -84,7 +98,13 @@ class Test extends Base implements CommandInterface
         }
 
         // Build the command
-        $cmd = 'php ' . PATH_CORE . '/vendor/bin/phpunit --display-deprecations --bootstrap ' . PATH_CORE . '/bootstrap/phpunit-bootstrap.php ' . escapeshellarg($path) . ' 2>&1';
+        $cmd = 'php '
+            . PATH_CORE
+            . '/vendor/bin/phpunit --display-deprecations --bootstrap '
+            . PATH_CORE
+            . '/bootstrap/phpunit-bootstrap.php '
+            . escapeshellarg($path)
+            . ' 2>&1';
 
         // We want to stream the output, so set up what we need to do that
         $descriptorspec = [
@@ -180,7 +200,12 @@ class Test extends Base implements CommandInterface
                         is_dir($base . DS . $directory . DS . $subdirectory . DS . 'Tests')
                         || is_dir($base . DS . $directory . DS . $subdirectory . DS . 'tests')
                     ) {
-                        $tests[] = $key . ($key == 'lib' ? '_' : ':') . 'plg_' . strtolower($directory) . '_' . strtolower($subdirectory);
+                        $tests[] = $key
+                            . ($key == 'lib' ? '_' : ':')
+                            . 'plg_'
+                            . strtolower($directory)
+                            . '_'
+                            . strtolower($subdirectory);
                     }
                 }
             }

@@ -59,7 +59,9 @@ class Local implements AdapterInterface
             return file_get_contents($path);
         }
 
-        throw new \Hubzero\Filesystem\Exception\FileNotFoundException(Lang::txt('File does not exist at path %s', $path));
+        throw new \Hubzero\Filesystem\Exception\FileNotFoundException(
+            Lang::txt('File does not exist at path %s', $path),
+        );
     }
 
     /**
@@ -370,8 +372,13 @@ class Local implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'])
-    {
+    public function listContents(
+        $path,
+        $filter = '.',
+        $recursive = false,
+        $full = false,
+        $exclude = ['.svn', '.git', 'CVS', '.DS_Store', '__MACOSX'],
+    ) {
         $result = [];
 
         if (!is_dir($path)) {

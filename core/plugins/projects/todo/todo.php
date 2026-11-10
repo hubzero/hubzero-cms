@@ -503,7 +503,9 @@ class Todo extends Plugin
             $objTD->priority = $todoid ? $objTD->priority : $neworder;
 
             // Get list name
-            $objTD->todolist = $listcolor == 'none' ? null : $objTD->getListName($this->model->get('id'), $objTD->color);
+            $objTD->todolist = $listcolor == 'none'
+                ? null
+                : $objTD->getListName($this->model->get('id'), $objTD->color);
 
             // Store content
             if (!$objTD->store()) {
@@ -552,7 +554,15 @@ class Todo extends Plugin
                             Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'),
                             $objTD->id,
                             'to do',
-                            Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
+                            Route::url(
+                                'index.php?option='
+                                    . $this->componentOption
+                                    . '&alias='
+                                    . $this->model->get('alias')
+                                    . '&active=todo'
+                                    . '&action=view&todoid='
+                                    . $objTD->id,
+                            ),
                             'todo',
                             1,
                         );
@@ -590,7 +600,15 @@ class Todo extends Plugin
                 Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'),
                 $objTD->id,
                 'to do',
-                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=todo'
+                        . '&action=view&todoid='
+                        . $objTD->id,
+                ),
                 'todo',
                 1,
             );
@@ -603,9 +621,24 @@ class Todo extends Plugin
 
         // Set redirect path
         if ($page == 'item') {
-            $url = Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id);
+            $url = Route::url(
+                'index.php?option='
+                    . $this->componentOption
+                    . '&alias='
+                    . $this->model->get('alias')
+                    . '&active=todo'
+                    . '&action=view&todoid='
+                    . $objTD->id,
+            );
         } else {
-            $url = Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo&list=' . $objTD->color);
+            $url = Route::url(
+                'index.php?option='
+                    . $this->componentOption
+                    . '&alias='
+                    . $this->model->get('alias')
+                    . '&active=todo&list='
+                    . $objTD->color,
+            );
         }
 
         // Go to view

@@ -59,8 +59,20 @@ class Blog extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -135,7 +147,11 @@ class Blog extends Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true,
+                );
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -151,7 +167,9 @@ class Blog extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
 
@@ -452,11 +470,23 @@ class Blog extends Plugin
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
+        $doc->link = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+        );
 
         // Build some basic RSS document information
-        $doc->title       = Config::get('sitename') . ': ' . Lang::txt('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . Lang::txt('Blog');
-        $doc->description = Lang::txt('PLG_GROUPS_BLOG_RSS_DESCRIPTION', $this->group->get('cn'), Config::get('sitename'));
+        $doc->title       = Config::get('sitename')
+            . ': '
+            . Lang::txt('Groups')
+            . ': '
+            . stripslashes($this->group->get('description'))
+            . ': '
+            . Lang::txt('Blog');
+        $doc->description = Lang::txt(
+            'PLG_GROUPS_BLOG_RSS_DESCRIPTION',
+            $this->group->get('cn'),
+            Config::get('sitename'),
+        );
         $doc->copyright   = Lang::txt('PLG_GROUPS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
         $doc->category    = Lang::txt('PLG_GROUPS_BLOG_RSS_CATEGORY');
 
@@ -473,7 +503,9 @@ class Blog extends Plugin
 
                 // Strip html from feed item description text
                 $item->description = $row->content;
-                $item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
+                $item->description = \Hubzero\Utility\Sanitize::stripAll(
+                    strip_tags(html_entity_decode($item->description)),
+                );
                 if ($this->params->get('feed_entries') == 'partial') {
                     $item->description = \Hubzero\Utility\Str::truncate($item->description, 300);
                 }
@@ -560,7 +592,13 @@ class Blog extends Plugin
         // Check authorization
         if (
             ($row->get('access') == 2 && User::isGuest())
-            || ($row->get('state') == 0 && User::get('id') != $row->get('created_by') && $this->authorized != 'member' && $this->authorized != 'manager' && $this->authorized != 'admin')
+            || (
+                $row->get('state') == 0
+                && User::get('id') != $row->get('created_by')
+                && $this->authorized != 'member'
+                && $this->authorized != 'manager'
+                && $this->authorized != 'admin'
+            )
         ) {
             App::abort(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
             return;
@@ -630,7 +668,9 @@ class Blog extends Plugin
      */
     private function edit($entry = null)
     {
-        $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
+        $blog = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+        );
 
         if (User::isGuest()) {
             App::redirect(
@@ -680,7 +720,11 @@ class Blog extends Plugin
     private function save()
     {
         if (User::isGuest()) {
-            $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName, false, true);
+            $blog = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+                false,
+                true,
+            );
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
@@ -782,7 +826,14 @@ class Blog extends Plugin
                 'action'      => ($entry['id'] ? 'updated' : 'created'),
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_BLOG_ACTIVITY_ENTRY_' . ($entry['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($row->link())
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url($row->link()),
@@ -906,7 +957,11 @@ class Blog extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName, false, true);
+            $blog = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+                false,
+                true,
+            );
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
@@ -991,7 +1046,15 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
-                'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'),
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($entry->link() . '#c' . $comment->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
@@ -1074,7 +1137,15 @@ class Blog extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_BLOG_ACTIVITY_COMMENT_DELETED',
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($entry->link())
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
@@ -1137,7 +1208,11 @@ class Blog extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->pluginType, $this->pluginName);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew(
+            $this->group->get('gidNumber'),
+            $this->pluginType,
+            $this->pluginName,
+        );
 
         // Get parameters
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
@@ -1166,7 +1241,13 @@ class Blog extends Plugin
         ]);
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&action=settings'),
+            Route::url(
+                'index.php?option=com_groups&cn='
+                    . $this->group->get('cn')
+                    . '&active='
+                    . $this->pluginName
+                    . '&action=settings',
+            ),
             Lang::txt('PLG_GROUPS_BLOG_SETTINGS_SAVED'),
             'passed',
         );

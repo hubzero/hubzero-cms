@@ -297,7 +297,11 @@ class Group extends Obj
                 $cn = '_gid' . $gidNumber;
             }
 
-            $query = "INSERT INTO `#__xgroups` (gidNumber,cn) VALUES (" . $db->quote($gidNumber) . "," . $db->quote($cn) . ");";
+            $query = "INSERT INTO `#__xgroups` (gidNumber,cn) VALUES ("
+                . $db->quote($gidNumber)
+                . ","
+                . $db->quote($cn)
+                . ");";
 
             $db->setQuery($query);
 
@@ -530,7 +534,10 @@ class Group extends Obj
                 $aExistingUserMembership = $db->loadColumn() ?: [];
 
                 // see who is new, merge with previous additions so we have a complete list after we are done
-                $aNewUserGroupEnrollments = array_merge($aNewUserGroupEnrollments, array_diff($list, $aExistingUserMembership));
+                $aNewUserGroupEnrollments = array_merge(
+                    $aNewUserGroupEnrollments,
+                    array_diff($list, $aExistingUserMembership),
+                );
             }
 
             // Count what this save really changes, from the lists rather than
@@ -1057,7 +1064,11 @@ class Group extends Obj
             if (is_numeric($filters['search'])) {
                 $where[] = "gidNumber=" . $db->quote($filters['search']);
             } else {
-                $where[] = "(LOWER(description) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(cn) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . ")";
+                $where[] = "(LOWER(description) LIKE "
+                    . $db->quote('%' . strtolower($filters['search']) . '%')
+                    . " OR LOWER(cn) LIKE "
+                    . $db->quote('%' . strtolower($filters['search']) . '%')
+                    . ")";
             }
         }
 
@@ -1156,7 +1167,10 @@ class Group extends Obj
         }
 
         if (isset($filters['limit']) && $filters['limit'] != 'all') {
-            $query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
+            $query .= " LIMIT "
+                . (int) (isset($filters['start']) ? $filters['start'] : 0)
+                . ","
+                . (int) $filters['limit'];
         }
 
         $query .= ";";
@@ -1327,7 +1341,11 @@ class Group extends Obj
             return false;
         }
 
-        $query = 'SELECT u.email FROM #__users AS u, #__xgroups_' . $tbl . ' AS gm WHERE gm.gidNumber=' . $db->quote($this->gidNumber) . ' AND u.id=gm.uidNumber;';
+        $query = 'SELECT u.email FROM #__users AS u, #__xgroups_'
+            . $tbl
+            . ' AS gm WHERE gm.gidNumber='
+            . $db->quote($this->gidNumber)
+            . ' AND u.id=gm.uidNumber;';
 
         $db->setQuery($query);
 
@@ -1395,7 +1413,13 @@ class Group extends Obj
         $link = Route::url('index.php?option=com_groups&cn=' . $this->get('cn'));
 
         //path to group uploaded logo
-        $path = substr(PATH_APP, strlen(PATH_ROOT)) . '/site/groups/' . $this->get('gidNumber') . DS . 'uploads' . DS . $this->get('logo');
+        $path = substr(PATH_APP, strlen(PATH_ROOT))
+            . '/site/groups/'
+            . $this->get('gidNumber')
+            . DS
+            . 'uploads'
+            . DS
+            . $this->get('logo');
 
         //if logo exists and file is uploaded use that logo instead of default
         $src = ($this->get('logo') != '' && is_file(PATH_ROOT . $path)) ? $path : $default_logo;
@@ -1483,7 +1507,11 @@ class Group extends Obj
                     'scope'    => '', //$this->get('cn') . DS . 'wiki',
                     'pagename' => $this->get('cn'),
                     'pageid'   => 0, //$this->get('gidNumber'),
-                    'filepath' => Component::params('com_groups')->get('uploadpath', '/site/groups') . DS . $this->get('gidNumber') . DS . 'uploads',
+                    'filepath' => Component::params('com_groups')->get('uploadpath', '/site/groups')
+                        . DS
+                        . $this->get('gidNumber')
+                        . DS
+                        . 'uploads',
                     'domain'   => $this->get('cn'),
                     'camelcase' => 0,
                 ];

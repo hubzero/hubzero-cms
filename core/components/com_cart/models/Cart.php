@@ -164,14 +164,20 @@ abstract class Cart
 
         // Get info
         $sql = "SELECT DISTINCT ";
-        if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search'])) {
+        if (
+            (!empty($filters['userInfo']) && $filters['userInfo'])
+            || (isset($filters['search']) && $filters['search'])
+        ) {
             $sql .= " x.`id` AS uidNumber, x.`name`, crt.`crtId`, ";
         }
         if (!empty($filters['report-notes']) && $filters['report-notes']) {
             $sql .= " ti.`tiNotes`, ";
         }
         $sql .= "t.`tId`, `tLastUpdated`, `tStatus`, ti.`tiPayment` FROM `#__cart_transactions` t";
-        if ((!empty($filters['userInfo']) && $filters['userInfo']) || (isset($filters['search']) && $filters['search'])) {
+        if (
+            (!empty($filters['userInfo']) && $filters['userInfo'])
+            || (isset($filters['search']) && $filters['search'])
+        ) {
             $sql .= " LEFT JOIN `#__cart_carts` crt ON (crt.`crtId` = t.`crtId`)";
             $sql .= ' LEFT JOIN `#__users` x ON (crt.`uidNumber` = x.`id`)';
         }
@@ -312,7 +318,9 @@ abstract class Cart
      */
     protected function cartIsLinked($crtId)
     {
-        $sql = "SELECT COUNT(`crtId`) FROM `#__cart_carts` WHERE `crtId` = " . (int) $crtId . " AND `uidNumber` IS NOT NULL";
+        $sql = "SELECT COUNT(`crtId`) FROM `#__cart_carts` WHERE `crtId` = "
+            . (int) $crtId
+            . " AND `uidNumber` IS NOT NULL";
         $this->db->setQuery($sql);
         $isLinked = $this->db->loadResult();
 
@@ -439,7 +447,9 @@ abstract class Cart
                 // Check this SKU qty to make sure no multiple SKUs are there
                 if ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1)) {
                     //throw new \Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
-                    throw new \Exception($skuInfo->pName . " is already in the cart and cannot be added multiple times");
+                    throw new \Exception(
+                        $skuInfo->pName . " is already in the cart and cannot be added multiple times",
+                    );
                 }
                 // Check if there is this product already in the cart (different SKU)
                 $allSkus = $warehouse->getProductSkus($skuInfo->pId);
@@ -451,14 +461,19 @@ abstract class Cart
                             // Error if there is already another SKU of the same product in the cart
                             if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0) {
                                 //throw new \Exception($skuInfo->pName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
-                                throw new \Exception($skuInfo->pName . " is already in the cart and cannot be added multiple times");
+                                throw new \Exception(
+                                    $skuInfo->pName . " is already in the cart and cannot be added multiple times",
+                                );
                             }
                         }
                     }
                 }
             }
             // Don't allow purchasing multiple SKUs for those that are not allowed
-            if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))) {
+            if (
+                !$skuInfo->sAllowMultiple
+                && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))
+            ) {
                 //throw new \Exception($skuName . Lang::txt('COM_CART_NO_MULTIPLE_ITEMS'));
                 throw new \Exception($skuName . " is already in the cart and cannot be added multiple times");
             }
@@ -468,11 +483,15 @@ abstract class Cart
                 // See if qty can be added
                 if ($qty > $skuInfo->sInventory) {
                     //throw new \Exception(Lang::txt('COM_CART_NOT_ENOUGH_INVENTORY'));
-                    throw new \Exception('You are trying to add too many products to your cart. We do not have enough inventory.');
+                    throw new \Exception(
+                        'You are trying to add too many products to your cart. We do not have enough inventory.',
+                    );
                 } elseif (!empty($skuCartInfo->crtiQty) && ($qty + $skuCartInfo->crtiQty > $skuInfo->sInventory)) {
                     // This is how much they can add: $skuInfo->sInventory - $skuCartInfo->crtiQty
                     //throw new \Exception(Lang::txt('COM_CART_ADD_TOO_MANY_CART'));
-                    throw new \Exception('You are trying to add too many products to your cart. You already have this product in your cart.');
+                    throw new \Exception(
+                        'You are trying to add too many products to your cart. You already have this product in your cart.',
+                    );
                 }
             }
         }
@@ -824,7 +843,10 @@ abstract class Cart
     {
         $db = App::get('db');
 
-        $sql = "UPDATE `#__cart_transaction_info` SET `tiItems` = " . $db->quote(serialize($items)) . " WHERE `tId` = " . $db->quote($tId);
+        $sql = "UPDATE `#__cart_transaction_info` SET `tiItems` = "
+            . $db->quote(serialize($items))
+            . " WHERE `tId` = "
+            . $db->quote($tId);
 
         $db->setQuery($sql);
         $db->query();
@@ -876,7 +898,13 @@ abstract class Cart
 
                     // note the changes
                     if ($returnChanges && $transactionItems[$sId]->$key != $val) {
-                        $transactionItemsChanges[] = ['object' => 'cart_transaction_item', 'sId' => $sId, 'key' => $key, 'old' => $transactionItems[$sId]->$key, 'new' => $val];
+                        $transactionItemsChanges[] = [
+                            'object' => 'cart_transaction_item',
+                            'sId' => $sId,
+                            'key' => $key,
+                            'old' => $transactionItems[$sId]->$key,
+                            'new' => $val,
+                        ];
                     }
                 } else {
                     // get the current object to save the other values that are not being saved
@@ -890,7 +918,13 @@ abstract class Cart
                         // note the changes
                         $current = isset($currentMetaObj->$k) ? $currentMetaObj->$k : null;
                         if ($returnChanges && $current != $v) {
-                            $transactionItemsChanges[] = ['object' => 'cart_transaction_item', 'sId' => $sId, 'key' => ['tiMeta' => $k], 'old' => $current, 'new' => $v];
+                            $transactionItemsChanges[] = [
+                                'object' => 'cart_transaction_item',
+                                'sId' => $sId,
+                                'key' => ['tiMeta' => $k],
+                                'old' => $current,
+                                'new' => $v,
+                            ];
                         }
 
                         $currentMetaObj->$k = $v;
@@ -902,7 +936,12 @@ abstract class Cart
 
             $setSql = (implode(', ', $setSql));
 
-            $sql = "UPDATE `#__cart_transaction_items` SET " . $setSql . " WHERE `tId` = " . $db->quote($tId) . " AND `sId` = " . $db->quote($sId);
+            $sql = "UPDATE `#__cart_transaction_items` SET "
+                . $setSql
+                . " WHERE `tId` = "
+                . $db->quote($tId)
+                . " AND `sId` = "
+                . $db->quote($sId);
             $db->setQuery($sql);
             $db->query();
         }
@@ -961,7 +1000,13 @@ abstract class Cart
 
             // note the changes
             if ($returnChanges && $currerntTransactionInfo->$key != $val) {
-                $transactionChanges[] = ['object' => 'cart_transaction_info', 'tId' => $tId, 'key' => $key, 'old' => $currerntTransactionInfo->$key, 'new' => $val];
+                $transactionChanges[] = [
+                    'object' => 'cart_transaction_info',
+                    'tId' => $tId,
+                    'key' => $key,
+                    'old' => $currerntTransactionInfo->$key,
+                    'new' => $val,
+                ];
             }
         }
 
@@ -982,7 +1027,11 @@ abstract class Cart
             $subtotal += $transactionItemInfo->qty * $transactionItemInfo->tiPrice;
         }
 
-        $tiTotal = $subtotal + $currerntTransactionInfo->tiTax + $currerntTransactionInfo->tiShipping - $currerntTransactionInfo->tiShippingDiscount - $currerntTransactionInfo->tiDiscounts;
+        $tiTotal = $subtotal
+            + $currerntTransactionInfo->tiTax
+            + $currerntTransactionInfo->tiShipping
+            - $currerntTransactionInfo->tiShippingDiscount
+            - $currerntTransactionInfo->tiDiscounts;
 
         $sql = "UPDATE `#__cart_transaction_info` SET
 				`tiTotal` = " . $db->quote($tiTotal) . ",

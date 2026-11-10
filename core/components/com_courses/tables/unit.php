@@ -166,7 +166,10 @@ class Unit extends Table
         $query .= " ORDER BY cu.ordering";
 
         if (isset($filters['limit']) && (int) $filters['limit'] > 0) {
-            $query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
+            $query .= " LIMIT "
+                . (int) (isset($filters['start']) ? $filters['start'] : 0)
+                . ","
+                . (int) $filters['limit'];
         }
 
         $this->db->setQuery($query);
@@ -181,7 +184,8 @@ class Unit extends Table
      */
     public function getHighestOrdering($offering_id)
     {
-        $sql = "SELECT MAX(ordering)+1 FROM $this->tableName WHERE offering_id=" . $this->db->quote(intval($offering_id));
+        $sql = "SELECT MAX(ordering)+1 FROM $this->tableName WHERE offering_id="
+            . $this->db->quote(intval($offering_id));
         $this->db->setQuery($sql);
         return $this->db->loadResult();
     }
@@ -193,7 +197,10 @@ class Unit extends Table
      */
     private function makeAliasUnique()
     {
-        $sql = "SELECT alias from $this->tableName WHERE `offering_id`=" . $this->db->quote(intval($this->offering_id)) . " AND `id`!=" . $this->db->quote(intval($this->id));
+        $sql = "SELECT alias from $this->tableName WHERE `offering_id`="
+            . $this->db->quote(intval($this->offering_id))
+            . " AND `id`!="
+            . $this->db->quote(intval($this->id));
         $this->db->setQuery($sql);
         $result = $this->db->loadColumn();
 

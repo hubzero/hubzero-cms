@@ -28,7 +28,9 @@ class Citations extends Plugin
     public static function onSearch($request, &$results, $authz)
     {
         $terms = $request->getTermAr();
-        $weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
+        $weight = 'match(c.title, c.isbn, c.doi, c.abstract, c.author, c.publisher) AGAINST (\''
+            . join(' ', $terms['stemmed'])
+            . '\')';
 
         //get com_citations params
         $citationParams = Component::params('com_citations');
@@ -65,7 +67,9 @@ class Citations extends Plugin
 						tago.tbl='citations'
 					AND
 						tago.label=''";
-            $sql2 .= "AND c.published=1 AND (c.scope='' OR c.scope IS NULL OR c.scope='hub') AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
+            $sql2 .= "AND c.published=1 AND (c.scope='' OR c.scope IS NULL OR c.scope='hub') AND (tag.tag='"
+                . implode("' OR tag.tag='", $terms['stemmed'])
+                . "')";
         } else {
             $sql = "SELECT
 						c.title AS title,
@@ -95,7 +99,9 @@ class Citations extends Plugin
 						tago.tbl='citations'
 					AND
 						tago.label=''";
-            $sql2 .= "AND c.published=1 AND (c.scope='' OR c.scope IS NULL OR c.scope='hub') AND (tag.tag='" . implode("' OR tag.tag='", $terms['stemmed']) . "')";
+            $sql2 .= "AND c.published=1 AND (c.scope='' OR c.scope IS NULL OR c.scope='hub') AND (tag.tag='"
+                . implode("' OR tag.tag='", $terms['stemmed'])
+                . "')";
         }
 
         //add final query to ysearch

@@ -127,7 +127,9 @@ class Miner extends Obj implements Provider
             }
 
             $set = trim($matches[1]);
-            $this->database->setQuery("SELECT t.id FROM `#__publication_categories` AS t WHERE t.alias=" . $this->database->quote($set));
+            $this->database->setQuery(
+                "SELECT t.id FROM `#__publication_categories` AS t WHERE t.alias=" . $this->database->quote($set),
+            );
             $this->set('type', $this->database->loadResult());
             if (!$this->get('type')) {
                 return '';
@@ -149,7 +151,9 @@ class Miner extends Obj implements Provider
             $filters['from'] .= '-' . (isset($d[1]) ? $d[1] : '00');
             $filters['from'] .= '-' . (isset($d[2]) ? $d[2] : '00');
 
-            if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $filters['from'])) {
+            if (
+                !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $filters['from'])
+            ) {
                 $filters['from'] .= ' 00:00:00';
             }
 
@@ -163,7 +167,9 @@ class Miner extends Obj implements Provider
             $filters['until'] .= '-' . (isset($d[1]) ? $d[1] : '00');
             $filters['until'] .= '-' . (isset($d[2]) ? $d[2] : '00');
 
-            if (!preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $filters['until'])) {
+            if (
+                !preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $filters['until'])
+            ) {
                 $filters['until'] .= ' 00:00:00';
             }
 
@@ -271,10 +277,19 @@ class Miner extends Obj implements Provider
             );
             $masterType = $this->database->loadResult();
 
-            $this->database->setQuery("SELECT * FROM `#__publication_attachments` WHERE publication_version_id = " . $this->database->quote($record->version_id));
+            $this->database->setQuery(
+                "SELECT * FROM `#__publication_attachments` WHERE publication_version_id = "
+                    . $this->database->quote($record->version_id),
+            );
             $results = $this->database->loadObjectList();
 
-            $path = \Components\Publications\Helpers\Html::buildPubPath($record->publication_id, $record->version_id, '', '', 1);
+            $path = \Components\Publications\Helpers\Html::buildPubPath(
+                $record->publication_id,
+                $record->version_id,
+                '',
+                '',
+                1,
+            );
             $path .= DIRECTORY_SEPARATOR . str_replace(['.', '/'], '_', $record->identifier) . ".zip";
 
             if ($masterType == 1 && file_exists($path)) {
@@ -303,11 +318,28 @@ class Miner extends Obj implements Provider
             }
 
             if ($masterType == 1) {
-                $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($masterType, $record->publication_id, $record->version_id, $record->secret, $attachments, true);
+                $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
+                    $masterType,
+                    $record->publication_id,
+                    $record->version_id,
+                    $record->secret,
+                    $attachments,
+                    true,
+                );
             } elseif ($masterType == 7) {
-                $files = \Components\Publications\Helpers\Html::getdatabaseFiles($record->publication_id, $record->version_id);
+                $files = \Components\Publications\Helpers\Html::getdatabaseFiles(
+                    $record->publication_id,
+                    $record->version_id,
+                );
 
-                $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($masterType, $record->publication_id, $record->version_id, $record->secret, $attachments, true);
+                $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
+                    $masterType,
+                    $record->publication_id,
+                    $record->version_id,
+                    $record->secret,
+                    $attachments,
+                    true,
+                );
 
                 if ($files != false && !empty($files)) {
                     foreach ($files as $file) {
@@ -344,7 +376,11 @@ class Miner extends Obj implements Provider
         if ($dates->accepted && $dates->accepted != '0000-00-00 00:00:00') {
             $record->date = $dates->accepted;
         }
-        if ($dates->published_up && $dates->published_up != '0000-00-00 00:00:00' && $dates->published_up > $record->date) {
+        if (
+            $dates->published_up
+            && $dates->published_up != '0000-00-00 00:00:00'
+            && $dates->published_up > $record->date
+        ) {
             $record->date = $dates->published_up;
         }
 
@@ -356,7 +392,11 @@ class Miner extends Obj implements Provider
         );
         $creators = $this->database->loadObjectList();
         foreach ($creators as $creator) {
-            $this->database->setQuery("SELECT profile_value FROM `#__user_profiles` WHERE user_id = " . $this->database->quote($creator->user_id) . " AND profile_key='orcid'");
+            $this->database->setQuery(
+                "SELECT profile_value FROM `#__user_profiles` WHERE user_id = "
+                    . $this->database->quote($creator->user_id)
+                    . " AND profile_key='orcid'",
+            );
             $orcid = $this->database->loadResult();
             $record->creator[] = $creator->name . (!empty($orcid) ? ", " . $orcid : "");
         }
@@ -404,7 +444,13 @@ class Miner extends Obj implements Provider
             $formatter->setTemplate('apa');
 
             foreach ($references as $reference) {
-                $cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
+                $cite = strip_tags(
+                    html_entity_decode(
+                        $reference->formatted
+                            ? $reference->formatted
+                            : \Components\Citations\Helpers\Format::formatReference($reference, ''),
+                    ),
+                );
                 $cite = str_replace('&quot;', '"', $cite);
 
                 $record->relation[] = [
@@ -427,7 +473,13 @@ class Miner extends Obj implements Provider
             $formatter->setTemplate('apa');
 
             foreach ($references as $reference) {
-                $cite = strip_tags(html_entity_decode($reference->formatted ? $reference->formatted : \Components\Citations\Helpers\Format::formatReference($reference, '')));
+                $cite = strip_tags(
+                    html_entity_decode(
+                        $reference->formatted
+                            ? $reference->formatted
+                            : \Components\Citations\Helpers\Format::formatReference($reference, ''),
+                    ),
+                );
                 $cite = str_replace('&quot;', '"', $cite);
 
                 $record->relation[] = [
@@ -453,7 +505,9 @@ class Miner extends Obj implements Provider
         if ($doi) {
             $identifier = $this->doiResolver() . $doi;
         } else {
-            $identifier = self::$base . '/' . ltrim(Route::url('index.php?option=com_publications&pid=' . $id . ($rev ? '&v=' . $rev : '')), '/');
+            $identifier = self::$base
+                . '/'
+                . ltrim(Route::url('index.php?option=com_publications&pid=' . $id . ($rev ? '&v=' . $rev : '')), '/');
         }
 
         return $identifier;

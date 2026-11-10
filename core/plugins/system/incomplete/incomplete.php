@@ -86,7 +86,10 @@ class Incomplete extends Plugin
                 $originalOption = Request::getWord('option', '');
 
                 // First check if we're heading to the registration pages, and allow that through
-                if (Request::getWord('option') == 'com_members' && (Request::getWord('controller') == 'register' || Request::getWord('view') == 'register')) {
+                if (
+                    Request::getWord('option') == 'com_members'
+                    && (Request::getWord('controller') == 'register' || Request::getWord('view') == 'register')
+                ) {
                     // Set linkaccount far to false at this point, otherwise we'd get stuck in a loop
                     Session::set('linkaccount', false);
                     $this->event->stop();

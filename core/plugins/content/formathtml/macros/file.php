@@ -101,13 +101,25 @@ class File extends Macro
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|nodetails|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](left|right|top|center|bottom|nodetails|[0-9]+(px|%|em)?)(?:[, ]|$)/i',
+            [&$this, 'parseSingleAttribute'],
+            $content,
+        );
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=(?:["\'])([^"\']*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=(?:["\'])([^"\']*)(?:["\'])/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|althref|desc|title|width|height|align|border|longdesc|class|id|usemap|link|rel|details)=([^"\',]*)(?:[, ]|$)/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
 
         $attr = $this->attr;
 
@@ -128,7 +140,11 @@ class File extends Macro
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
             // Check for file existence
-            if ($attach->filename && file_exists($this->path($attach->filename)) || file_exists($this->path($attach->filename, true))) {
+            if (
+                $attach->filename
+                && file_exists($this->path($attach->filename))
+                || file_exists($this->path($attach->filename, true))
+            ) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
                     $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
@@ -242,7 +258,8 @@ class File extends Macro
 
                 $this->attr['href'] = $val;
 
-                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)"
+                    . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
                 if (preg_match("/$urlPtrn/", $val)) {
                     $this->attr['rel']  = 'external';
                 }
@@ -401,7 +418,8 @@ class File extends Macro
      */
     private function link($file)
     {
-        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)"
+            . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
             return $file;
         }
@@ -447,7 +465,9 @@ class File extends Macro
                 if (isset($attr['style']['height'])) {
                     $attr['height'] = intval($attr['style']['height']);
                 }
-                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none') ? $attr['href'] : $this->link($file);
+                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')
+                    ? $attr['href']
+                    : $this->link($file);
 
                 /*if (!array_key_exists('alt', $attr)
                  && array_key_exists('altimage', $attr)
@@ -477,8 +497,14 @@ class File extends Macro
 							</div>
 						</div>' . "\n";
 
-                Document::addScript(Request::scheme() . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js');
-                Document::addScript(Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
+                Document::addScript(
+                    Request::scheme() . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js',
+                );
+                Document::addScript(
+                    Request::root()
+                        . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t='
+                        . filemtime(__DIR__ . '/macro-assets/file/file.js'),
+                );
                 break;
 
             case 'cdf':
@@ -490,7 +516,9 @@ class File extends Macro
                 if (isset($attr['style']['height'])) {
                     $attr['height'] = intval($attr['style']['height']);
                 }
-                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none') ? $attr['href'] : $this->link($file);
+                $attr['href']   = (isset($attr['href']) && $attr['href'] && $attr['href'] != 'none')
+                    ? $attr['href']
+                    : $this->link($file);
 
                 $rand = rand(0, 100000);
 
@@ -507,15 +535,31 @@ class File extends Macro
                     $attr['alt'] .= '</a>';
                 } else {
                     $attr['alt']  = '<a class="missing-plugin" href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
-                    $attr['alt'] .= '<img alt="CDF Web Player. Install now!" src="' . Request::scheme() . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';
+                    $attr['alt'] .= '<img alt="CDF Web Player. Install now!" src="'
+                        . Request::scheme()
+                        . '://www.wolfram.com/cdf/images/cdf-player-black.png" width="187" height="41" />';
                     $attr['alt'] .= '</a>';
                 }
 
                 Document::addScript(Request::scheme() . '://www.wolfram.com/cdf-player/plugin/v2.1/cdfplugin.js');
-                Document::addScript(Request::root() . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js'));
+                Document::addScript(
+                    Request::root()
+                        . 'core/plugins/content/formathtml/macros/macro-assets/file/file.js?t='
+                        . filemtime(__DIR__ . '/macro-assets/file/file.js'),
+                );
 
                 $html = '<noscript>';
-                $html .= '<div class="embedded-plugin" data-width="' . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '" style="width: ' . intval($attr['width']) . 'px; height: ' . intval($attr['height']) . ';">';
+                $html .= '<div class="embedded-plugin" data-width="'
+                    . intval($attr['width'])
+                    . '" data-height="'
+                    . intval($attr['height'])
+                    . '" data-href="'
+                    . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8')
+                    . '" style="width: '
+                    . intval($attr['width'])
+                    . 'px; height: '
+                    . intval($attr['height'])
+                    . ';">';
                 $html .= $attr['alt'];
                 $html .= '</div>';
                 $html .= '</noscript>' . "\n";
@@ -542,7 +586,10 @@ class File extends Macro
                     foreach ($attr as $k => $v) {
                         $k = strtolower($k);
                         if ($k != 'href' && $k != 'rel' && $k != 'desc' && $v) {
-                            $attribs[] = $k . '="' . htmlspecialchars((string) trim($v, '"'), ENT_COMPAT, 'UTF-8', false) . '"';
+                            $attribs[] = $k
+                                . '="'
+                                . htmlspecialchars((string) trim($v, '"'), ENT_COMPAT, 'UTF-8', false)
+                                . '"';
                         }
                     }
                     $html  = '<span class="figure"' . ($styles ? ' style="' . $styles . '"' : '') . '>';
@@ -553,10 +600,18 @@ class File extends Macro
                         $attr['href'] = ($attr['href']) ? $attr['href'] : $this->link($file);
                         $attr['rel'] = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-                        $html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
+                        $html .= '<a rel="'
+                            . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8')
+                            . '" href="'
+                            . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8')
+                            . '">'
+                            . $img
+                            . '</a>';
                     }
                     if (isset($attr['desc']) && $attr['desc']) {
-                        $html .= '<span class="figcaption">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</span>';
+                        $html .= '<span class="figcaption">'
+                            . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false)
+                            . '</span>';
                     }
                     $html .= '</span>';
                 } else {
@@ -574,7 +629,15 @@ class File extends Macro
                     $attr['title'] = (!isset($attr['title']) || !$attr['title'] ? $attr['alt'] : $attr['title']);
 
                     // The attachment description is free text entered by the uploader
-                    $html = '<a class="attachment" rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '" title="' . htmlspecialchars((string) $attr['title'], ENT_QUOTES, 'UTF-8', false) . '">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</a>';
+                    $html = '<a class="attachment" rel="'
+                        . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8')
+                        . '" href="'
+                        . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8')
+                        . '" title="'
+                        . htmlspecialchars((string) $attr['title'], ENT_QUOTES, 'UTF-8', false)
+                        . '">'
+                        . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false)
+                        . '</a>';
                     if ($size !== null && $attr['details']) {
                         $html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
                         if (isset($attr['created_by'])) {

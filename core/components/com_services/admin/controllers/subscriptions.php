@@ -242,7 +242,13 @@ class Subscriptions extends AdminController
 
                 // get cost per unit (to compute required refund)
                 $unitcost = $prevunitcost = (float) $service->get('unitprice');
-                $refund = ($subscription->get('totalpaid') > 0 && $unitsleft > 0 && ($subscription->get('totalpaid') - $unitsleft * $unitcost) > 0) ? $unitsleft * $prevunitcost : 0;
+                $refund = (
+                    $subscription->get('totalpaid') > 0
+                    && $unitsleft > 0
+                    && ($subscription->get('totalpaid') - $unitsleft * $unitcost) > 0
+                )
+                    ? $unitsleft * $prevunitcost
+                    : 0;
 
                 $subscription->set('status', 2);
                 $subscription->set('pendingpayment', $refund);
@@ -287,7 +293,12 @@ class Subscriptions extends AdminController
                 $emailbody .= $message;
             }
 
-            if (!Event::trigger('xmessage.onSendMessage', ['subscriptions_message', $subject, $emailbody, $from, [$subscription->uid], $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['subscriptions_message', $subject, $emailbody, $from, [$subscription->uid], $this->option],
+                )
+            ) {
                 Notify::error(Lang::txt('COM_SERVICES_ERROR_FAILED_TO_MESSAGE'));
             }
         }

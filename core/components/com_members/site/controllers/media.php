@@ -137,7 +137,11 @@ class Media extends SiteController
         }
 
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => 'File is too large. Max file upload size is ' . $max]);
             return;
         }
@@ -345,7 +349,9 @@ class Media extends SiteController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('COM_MEMBERS_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
+            );
             return $this->displayTask($file['name'], $id);
         }
 
@@ -502,7 +508,10 @@ class Media extends SiteController
         // Output HTML
         $this->view
             ->set('webpath', '/' . $this->filespace())
-            ->set('default_picture', $this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'))
+            ->set(
+                'default_picture',
+                $this->config->get('defaultpic', '/core/components/com_members/site/assets/img/profile.gif'),
+            )
             ->set('path', $dir)
             ->set('file', $file)
             ->set('id', $id)
@@ -634,7 +643,11 @@ class Media extends SiteController
             $blog_params = Plugin::params('members', 'blog');
 
             //build the base path to file based of upload path param
-            $base_path = str_replace('{{uid}}', \Hubzero\Utility\Str::pad($member->get('id'), 5), $blog_params->get('uploadpath'));
+            $base_path = str_replace(
+                '{{uid}}',
+                \Hubzero\Utility\Str::pad($member->get('id'), 5),
+                $blog_params->get('uploadpath'),
+            );
         }
 
         //build file path

@@ -439,17 +439,35 @@ class Mailinglists extends AdminController
         // do we have something to add
         if ($inserts > 0) {
             // inform user of successfully addes
-            Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_SUCCESS', count($emails), implode('<br />&mdash; ', $emails)));
+            Notify::success(
+                Lang::txt(
+                    'COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_SUCCESS',
+                    count($emails),
+                    implode('<br />&mdash; ', $emails),
+                ),
+            );
         }
 
         // if we had an duplicate emails
         if (count($duplicateEmails) > 0) {
-            Notify::warning(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_DUPLICATE', count($duplicateEmails), implode('<br />&mdash; ', $duplicateEmails)));
+            Notify::warning(
+                Lang::txt(
+                    'COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_DUPLICATE',
+                    count($duplicateEmails),
+                    implode('<br />&mdash; ', $duplicateEmails),
+                ),
+            );
         }
 
         // if we had an issue with emails
         if (count($badEmails) > 0) {
-            Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_FAILED', count($badEmails), implode('<br />&mdash; ', $badEmails)));
+            Notify::error(
+                Lang::txt(
+                    'COM_NEWSLETTER_MAILINGLSIT_MANAGE_ADD_FAILED',
+                    count($badEmails),
+                    implode('<br />&mdash; ', $badEmails),
+                ),
+            );
         }
 
         // send confirmation emails
@@ -611,7 +629,15 @@ class Mailinglists extends AdminController
 
         if ($email->save()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&id=' . $mid, false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&task=manage&id='
+                        . $mid,
+                    false,
+                ),
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS'),
             );
         } else {
@@ -680,7 +706,11 @@ class Mailinglists extends AdminController
             ->rows();
 
         // file name
-        $filename  = Lang::txt('COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME', $mailinglist->name, Date::of('now')->format('m-d-Y'));
+        $filename  = Lang::txt(
+            'COM_NEWSLETTER_MAILINGLIST_EXPORT_FILENAME',
+            $mailinglist->name,
+            Date::of('now')->format('m-d-Y'),
+        );
         $filename .= '.csv';
 
         // file contents
@@ -710,7 +740,10 @@ class Mailinglists extends AdminController
         $mid = (isset($email['mid']) ? $email['mid'] : Request::getInt('mid', 0));
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&id=' . $mid, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&id=' . $mid,
+                false,
+            ),
         );
     }
 

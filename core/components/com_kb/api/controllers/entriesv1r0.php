@@ -184,7 +184,11 @@ class Entriesv1r0 extends ApiController
             $id = 0;
 
             foreach ($categories as $cid => $cat) {
-                if ((string) $cid === $category || $cat->get('alias') === $category || $cat->get('path') === $category) {
+                if (
+                    (string) $cid === $category
+                    || $cat->get('alias') === $category
+                    || $cat->get('path') === $category
+                ) {
                     $id = (int) $cid;
                     break;
                 }
@@ -981,7 +985,10 @@ class Entriesv1r0 extends ApiController
         }
 
         if (!$article->save()) {
-            throw new Exception(implode('. ', (array) $article->getErrors()) ?: Lang::txt('COM_KB_ERROR_SAVE_FAILED'), 422);
+            throw new Exception(
+                implode('. ', (array) $article->getErrors()) ?: Lang::txt('COM_KB_ERROR_SAVE_FAILED'),
+                422,
+            );
         }
 
         $tags = Request::getVar('tags', null);
@@ -1071,7 +1078,13 @@ class Entriesv1r0 extends ApiController
      */
     private function assertArticleFields($article)
     {
-        if (!in_array((int) $article->get('state'), [Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_DELETED], true)) {
+        if (
+            !in_array(
+                (int) $article->get('state'),
+                [Article::STATE_UNPUBLISHED, Article::STATE_PUBLISHED, Article::STATE_DELETED],
+                true,
+            )
+        ) {
             throw new Exception(Lang::txt('COM_KB_ERROR_INVALID_STATE'), 422);
         }
 

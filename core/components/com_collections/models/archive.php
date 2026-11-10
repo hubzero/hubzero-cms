@@ -166,7 +166,11 @@ class Archive extends Obj
         //    OR the ID passed doesn't equal the current offering's ID or alias
         if (
             !isset($this->collection)
-            || ($id !== null && (int) $this->collection->get('id') != $id && (string) $this->collection->get('alias') != $id)
+            || (
+                $id !== null
+                && (int) $this->collection->get('id') != $id
+                && (string) $this->collection->get('alias') != $id
+            )
         ) {
             // Reset current offering
             $this->collection = null;
@@ -340,10 +344,14 @@ class Archive extends Obj
             }
             if (count($members) > 0 || count($groups) > 0) {
                 if (count($members) > 0) {
-                    $query1 = "SELECT id FROM `#__collections` WHERE object_id IN (" . implode(',', $members) . ") AND object_type='member'";
+                    $query1 = "SELECT id FROM `#__collections` WHERE object_id IN ("
+                        . implode(',', $members)
+                        . ") AND object_type='member'";
                 }
                 if (count($groups) > 0) {
-                    $query2 = "SELECT id FROM `#__collections` WHERE object_id IN (" . implode(',', $groups) . ") AND object_type='group'";
+                    $query2 = "SELECT id FROM `#__collections` WHERE object_id IN ("
+                        . implode(',', $groups)
+                        . ") AND object_type='group'";
                 }
                 if (count($members) > 0 && count($groups) > 0) {
                     $query = "( $query1 ) UNION ( $query2 );";
@@ -470,7 +478,11 @@ class Archive extends Obj
                         ]);
                         if ($groups) {
                             if (!isset($usergroup->params) || !is_object($usergroup->params)) {
-                                $usergroup->params = Params::getCustomParams($usergroup->gidNumber, 'groups', 'collections');
+                                $usergroup->params = Params::getCustomParams(
+                                    $usergroup->gidNumber,
+                                    'groups',
+                                    'collections',
+                                );
                             }
                             foreach ($groups as $s) {
                                 if (!isset($collections[$s->group_alias])) {

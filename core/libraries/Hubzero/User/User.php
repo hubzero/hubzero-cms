@@ -570,7 +570,13 @@ class User extends \Hubzero\Database\Relational
                 $jwt = \Firebase\JWT\JWT::decode($_COOKIE['jwt'], new \Firebase\JWT\Key($pubkey, 'RS512'));
 
                 // if we have information for a user, populate the user variable
-                if (isset($jwt->email) && isset($jwt->id) && isset($jwt->username) && isset($jwt->name) && isset($jwt->exp)) {
+                if (
+                    isset($jwt->email)
+                    && isset($jwt->id)
+                    && isset($jwt->username)
+                    && isset($jwt->name)
+                    && isset($jwt->exp)
+                ) {
                     if ($jwt->exp < time()) {
                         setcookie('jwt', -86400, 0, '/', '.' . \Hubzero\Utility\Dns::domain(), true, true);
                         return (bool) $this->guest;
@@ -609,7 +615,11 @@ class User extends \Hubzero\Database\Relational
 
                         $usersConfig = Component::params('com_members');
                         $newUsertype = $usersConfig->get('new_usertype', '2');
-                        $query = "INSERT INTO `#__user_usergroup_map` (`user_id`, `group_id`) VALUES (" . $db->quote($jwtid) . ", " . $db->quote($newUsertype) . ")";
+                        $query = "INSERT INTO `#__user_usergroup_map` (`user_id`, `group_id`) VALUES ("
+                            . $db->quote($jwtid)
+                            . ", "
+                            . $db->quote($newUsertype)
+                            . ")";
                         $db->setQuery($query);
                         $result = $db->query();
                         // Clear the session that was not logged in
@@ -988,7 +998,9 @@ class User extends \Hubzero\Database\Relational
 
             // No password row and no profile to create one from yet
             $db = App::get('db');
-            $db->setQuery("INSERT IGNORE INTO `#__users_password` (user_id, passhash) VALUES (" . $db->quote($id) . ", '')");
+            $db->setQuery(
+                "INSERT IGNORE INTO `#__users_password` (user_id, passhash) VALUES (" . $db->quote($id) . ", '')",
+            );
             $db->query();
 
             $hzup = Password::getInstance($id);

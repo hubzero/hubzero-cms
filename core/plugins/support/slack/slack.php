@@ -49,12 +49,16 @@ class Slack extends Plugin
                 // Ticket created
                 'notify_created'  => $this->params->get('notify_created' . $sfx),
                 'group_created'   => $this->params->get('group_created' . $sfx),
-                'channel_created' => ($this->params->get('channel_created' . $sfx) ? $this->params->get('channel_created' . $sfx) : $this->params->get('channel' . $sfx)),
+                'channel_created' => ($this->params->get(
+                    'channel_created' . $sfx,
+                ) ? $this->params->get('channel_created' . $sfx) : $this->params->get('channel' . $sfx)),
                 // Ticket updated
                 'notify_updated'  => $this->params->get('notify_updated' . $sfx),
                 'notify_private'  => $this->params->get('notify_private' . $sfx),
                 'group_updated'   => $this->params->get('group_updated' . $sfx),
-                'channel_updated' => ($this->params->get('channel_updated' . $sfx) ? $this->params->get('channel_updated' . $sfx) : $this->params->get('channel' . $sfx)),
+                'channel_updated' => ($this->params->get(
+                    'channel_updated' . $sfx,
+                ) ? $this->params->get('channel_updated' . $sfx) : $this->params->get('channel' . $sfx)),
             ];
         }
 
@@ -144,7 +148,10 @@ class Slack extends Plugin
                 $url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
             }
             $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
-            $text    = \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
+            $text    = \Hubzero\Utility\Str::truncate(
+                \Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')),
+                300,
+            );
 
             if (Component::params('com_support')->get('email_terse')) {
                 $text = Lang::txt('PLG_SUPPORT_SLACK_TICKET_NEW');

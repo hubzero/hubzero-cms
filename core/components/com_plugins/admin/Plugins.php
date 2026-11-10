@@ -37,7 +37,12 @@ class Plugins extends AbstractComponent
             Request::setVar('task', strstr($task, '.'));
         }
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'plugins'));
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

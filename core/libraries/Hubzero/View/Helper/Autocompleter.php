@@ -77,7 +77,13 @@ class Autocompleter extends AbstractHelper
         if (count($results) > 0) {
             $results = implode("\n", $results);
         } else {
-            $results = '<input type="text" name="' . htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8') . '" id="' . htmlspecialchars((string) $id, ENT_QUOTES, 'UTF-8') . '" value="' . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false) . '" />';
+            $results = '<input type="text" name="'
+                . htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8')
+                . '" id="'
+                . htmlspecialchars((string) $id, ENT_QUOTES, 'UTF-8')
+                . '" value="'
+                . htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8', false)
+                . '" />';
         }
 
         return $results;

@@ -261,7 +261,11 @@ class Format
                     $this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
 
                     $doiEsc = htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
-                    $replace_values[$v] = '<a rel="external" href="https://doi.org/' . $doiEsc . '">' . $doiEsc . '</a>';
+                    $replace_values[$v] = '<a rel="external" href="https://doi.org/'
+                        . $doiEsc
+                        . '">'
+                        . $doiEsc
+                        . '</a>';
                 }
 
                 if ($k == 'author') {
@@ -282,7 +286,11 @@ class Format
                             if (is_numeric($id)) {
                                 $user = User::getInstance($id);
                                 if (is_object($user)) {
-                                    $a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . htmlspecialchars(str_replace($matches[0], '', $author), ENT_QUOTES, 'UTF-8') . '</a>';
+                                    $a[] = '<a rel="external" href="'
+                                        . Route::url('index.php?option=com_members&id=' . $matches[1])
+                                        . '">'
+                                        . htmlspecialchars(str_replace($matches[0], '', $author), ENT_QUOTES, 'UTF-8')
+                                        . '</a>';
                                 } else {
                                     $a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
                                 }
@@ -350,7 +358,11 @@ class Format
                     //do we want to display single citation
                     $singleCitationView = $config->get('citation_single_view', 0);
                     if ($singleCitationView && isset($citation->id)) {
-                        $title = '<a href="' . Route::url('index.php?option=com_citations&task=view&id=' . $citation->id) . '">' . $tEsc . '</a>';
+                        $title = '<a href="'
+                            . Route::url('index.php?option=com_citations&task=view&id=' . $citation->id)
+                            . '">'
+                            . $tEsc
+                            . '</a>';
                     }
 
                     //send back title to replace title placeholder ({TITLE})
@@ -365,7 +377,9 @@ class Format
                 }
 
                 if ($k == 'version') {
-                    $replace_values[$v] = "(Version " . htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8') . ")";
+                    $replace_values[$v] = "(Version "
+                        . htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8')
+                        . ")";
                 }
             }
         }
@@ -490,9 +504,29 @@ class Format
 
         // are we allowing downloading
         if ($downloading) {
-            $html .= '<a rel="nofollow" href="' . Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&citationFormat=bibtex&no_html=1') . '" title="' . Lang::txt('COM_CITATIONS_BIBTEX') . '">' . Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+            $html .= '<a rel="nofollow" href="'
+                . Route::url(
+                    'index.php?option=com_citations&task=download&id='
+                        . $citation->id
+                        . '&citationFormat=bibtex&no_html=1',
+                )
+                . '" title="'
+                . Lang::txt('COM_CITATIONS_BIBTEX')
+                . '">'
+                . Lang::txt('COM_CITATIONS_BIBTEX')
+                . '</a>';
             $html .= '<span> | </span>';
-            $html .= '<a rel="nofollow" href="' . Route::url('index.php?option=com_citations&task=download&id=' . $citation->id . '&citationFormat=endnote&no_html=1') . '" title="' . Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+            $html .= '<a rel="nofollow" href="'
+                . Route::url(
+                    'index.php?option=com_citations&task=download&id='
+                        . $citation->id
+                        . '&citationFormat=endnote&no_html=1',
+                )
+                . '" title="'
+                . Lang::txt('COM_CITATIONS_ENDNOTE')
+                . '">'
+                . Lang::txt('COM_CITATIONS_ENDNOTE')
+                . '</a>';
         }
 
         // if we have an open url link and we want to use open urls
@@ -593,7 +627,13 @@ class Format
             $link .= implode("&", $query);
 
             // do we have an icon or just using text as the link
-            $link_text = ($icon != '') ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" alt="' . htmlspecialchars($text) . '" />' : $text;
+            $link_text = ($icon != '')
+                ? '<img src="index.php?option=com_citations&controller=citations&task=downloadimage&image='
+                    . $icon
+                    . '" alt="'
+                    . htmlspecialchars($text)
+                    . '" />'
+                : $text;
 
             // WCAG 2.4.4: ensure link always has an accessible name
             $link_title = $text;
@@ -603,7 +643,13 @@ class Format
             }
 
             // final link
-            $html .= '<a rel="external nofollow" href="' . $link . '" title="' . htmlspecialchars($link_title) . '">' . $link_text . '</a>';
+            $html .= '<a rel="external nofollow" href="'
+                . $link
+                . '" title="'
+                . htmlspecialchars($link_title)
+                . '">'
+                . $link_text
+                . '</a>';
         }
 
         return $html;
@@ -632,7 +678,9 @@ class Format
 
         if (count($assocs) > 0) {
             if (count($assocs) > 1) {
-                $html .= '<span>|</span> <span class="cited-resources">' . Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span> ';
+                $html .= '<span>|</span> <span class="cited-resources">'
+                    . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
+                    . ':</span> ';
                 $k = 0;
                 $rrs = [];
                 foreach ($assocs as $rid) {
@@ -642,9 +690,19 @@ class Format
                         if ($state == 1) {
                             $k++;
                             if ($internally_cited_image) {
-                                $rrs[] = '<a class="internally-cited" href="' . Route::url('index.php?option=com_resources&id=' . $rid->oid) . '">[<img src="' . $internally_cited_image_multiple . '" alt="' . Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '" />]</a>';
+                                $rrs[] = '<a class="internally-cited" href="'
+                                    . Route::url('index.php?option=com_resources&id=' . $rid->oid)
+                                    . '">[<img src="'
+                                    . $internally_cited_image_multiple
+                                    . '" alt="'
+                                    . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
+                                    . '" />]</a>';
                             } else {
-                                $rrs[] = '<a class="internally-cited" href="' . Route::url('index.php?option=com_resources&id=' . $rid->oid) . '">[' . $k . ']</a>';
+                                $rrs[] = '<a class="internally-cited" href="'
+                                    . Route::url('index.php?option=com_resources&id=' . $rid->oid)
+                                    . '">['
+                                    . $k
+                                    . ']</a>';
                             }
                         }
                     }
@@ -657,9 +715,19 @@ class Format
                     $state = $database->loadResult();
                     if ($state == 1) {
                         if ($internally_cited_image) {
-                            $html .= ' <span>|</span> <a class="internally-cited" href="' . Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid) . '"><img src="' . $internally_cited_image_single . '" alt="' . Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '" /></a>';
+                            $html .= ' <span>|</span> <a class="internally-cited" href="'
+                                . Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid)
+                                . '"><img src="'
+                                . $internally_cited_image_single
+                                . '" alt="'
+                                . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
+                                . '" /></a>';
                         } else {
-                            $html .= ' <span>|</span> <a class="internally-cited" href="' . Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid) . '">' . Lang::txt('COM_CITATIONS_RESOURCES_CITED') . '</a>';
+                            $html .= ' <span>|</span> <a class="internally-cited" href="'
+                                . Route::url('index.php?option=com_resources&id=' . $assocs->first()->oid)
+                                . '">'
+                                . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
+                                . '</a>';
                         }
                     }
                 }
@@ -668,7 +736,11 @@ class Format
 
         if ($citation->eprint && preg_match('/^https?:\/\//i', trim($citation->eprint))) {
             $html .= '<span>|</span>';
-            $html .= '<a href="' . htmlspecialchars(Str::ampReplace(trim($citation->eprint)), ENT_QUOTES, 'UTF-8') . '">' . Lang::txt('Electronic Paper') . '</a>';
+            $html .= '<a href="'
+                . htmlspecialchars(Str::ampReplace(trim($citation->eprint)), ENT_QUOTES, 'UTF-8')
+                . '">'
+                . Lang::txt('Electronic Paper')
+                . '</a>';
         }
 
         return $html;
@@ -693,7 +765,9 @@ class Format
             if ($includeHtml) {
                 $html = '<ul class="tags badges">';
                 foreach ($badges as $badge) {
-                    $html .= '<li><a href="#">' . htmlspecialchars(stripslashes((string) $badge->raw_tag), ENT_QUOTES, 'UTF-8') . '</a></li>';
+                    $html .= '<li><a href="#">'
+                        . htmlspecialchars(stripslashes((string) $badge->raw_tag), ENT_QUOTES, 'UTF-8')
+                        . '</a></li>';
                 }
                 $html .= "</ul>";
                 return $html;
@@ -735,7 +809,15 @@ class Format
 
                     //display tag if not admin tag or if admin tag and user is administrator
                     if (!$tag->admin || ($tag->admin && $isAdmin)) {
-                        $html .= '<li class="' . $cls . '"><a class="tag' . ($tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . urlencode($tag->tag)) . '">' . htmlspecialchars(stripslashes((string) $tag->raw_tag), ENT_QUOTES, 'UTF-8') . '</a></li>';
+                        $html .= '<li class="'
+                            . $cls
+                            . '"><a class="tag'
+                            . ($tag->admin ? ' admin' : '')
+                            . '" href="'
+                            . Route::url('index.php?option=com_tags&tag=' . urlencode($tag->tag))
+                            . '">'
+                            . htmlspecialchars(stripslashes((string) $tag->raw_tag), ENT_QUOTES, 'UTF-8')
+                            . '</a></li>';
                     }
                 }
                 $html .= '</ul>';
@@ -849,7 +931,11 @@ class Format
                     }
                     $auth = preg_replace('/{{(.*?)}}/s', '', $auth);
                     if ($aid) {
-                        $a[] = '<a href="' . Route::url('index.php?option=com_members&id=' . $aid) . '">' . htmlspecialchars(trim($auth), ENT_QUOTES, 'UTF-8') . '</a>';
+                        $a[] = '<a href="'
+                            . Route::url('index.php?option=com_members&id=' . $aid)
+                            . '">'
+                            . htmlspecialchars(trim($auth), ENT_QUOTES, 'UTF-8')
+                            . '</a>';
                     } else {
                         $a[] = htmlspecialchars(trim($auth), ENT_QUOTES, 'UTF-8');
                     }
@@ -872,7 +958,11 @@ class Format
             if (!$row->url || !preg_match('/^https?:\/\//i', trim($row->url))) {
                 $html .= ', "' . self::esc($row->title);
             } else {
-                $html .= ', "<a href="' . htmlspecialchars(self::cleanUrl(trim($row->url)), ENT_QUOTES, 'UTF-8') . '">' . Str::highlight(self::esc($row->title), $highlight) . '</a>';
+                $html .= ', "<a href="'
+                    . htmlspecialchars(self::cleanUrl(trim($row->url)), ENT_QUOTES, 'UTF-8')
+                    . '">'
+                    . Str::highlight(self::esc($row->title), $highlight)
+                    . '</a>';
             }
         }
         if (
@@ -962,7 +1052,13 @@ class Format
             $row->doi = str_replace('http://dx.doi.org/', '', $row->doi);
 
             $html  = self::grammarCheck($html, '.');
-            $html .= ' (' . Lang::txt('DOI') . ': <a rel="external" href="https://doi.org/' . self::esc($row->doi) . '">' . self::esc($row->doi) . '</a>)';
+            $html .= ' ('
+                . Lang::txt('DOI')
+                . ': <a rel="external" href="https://doi.org/'
+                . self::esc($row->doi)
+                . '">'
+                . self::esc($row->doi)
+                . '</a>)';
         }
         $html  = self::grammarCheck($html, '.');
         $html .= '</p>' . "\n";

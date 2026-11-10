@@ -49,8 +49,20 @@ class Wiki extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -164,7 +176,9 @@ class Wiki extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
 
@@ -178,7 +192,9 @@ class Wiki extends Plugin
             // Group wiki settings (managers only): automatic table-of-contents and page crumbs
             if ($action == 'settings' || $action == 'savesettings') {
                 if (User::isGuest() || ($authorized != 'manager' && $authorized != 'admin')) {
-                    $arr['html'] = '<p class="warning">' . Lang::txt('PLG_GROUPS_WIKI_SETTINGS_NOT_AUTHORIZED') . '</p>';
+                    $arr['html'] = '<p class="warning">'
+                        . Lang::txt('PLG_GROUPS_WIKI_SETTINGS_NOT_AUTHORIZED')
+                        . '</p>';
                     return $arr;
                 }
 
@@ -192,7 +208,10 @@ class Wiki extends Plugin
                     $params->set('automatic_toc', in_array($mode, ['inline', 'sidebar', 'off'], true) ? $mode : '');
 
                     $threshold = Request::getString('toc_threshold', '');
-                    $params->set('toc_threshold', ($threshold !== '' && ctype_digit($threshold)) ? (int) $threshold : '');
+                    $params->set(
+                        'toc_threshold',
+                        ($threshold !== '' && ctype_digit($threshold)) ? (int) $threshold : '',
+                    );
 
                     $crumbs = Request::getString('wiki_crumbs', '');
                     $params->set('wiki_crumbs', in_array($crumbs, ['0', '1'], true) ? (int) $crumbs : '');
@@ -201,7 +220,9 @@ class Wiki extends Plugin
                     $group->update();
 
                     App::redirect(
-                        Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=wiki&action=settings'),
+                        Route::url(
+                            'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=wiki&action=settings',
+                        ),
                         Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVED'),
                     );
                     return;
@@ -270,7 +291,11 @@ class Wiki extends Plugin
             Lang::load('com_wiki')
             || Lang::load('com_wiki', Component::path('com_wiki') . DS . 'site');
 
-            if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php')) {
+            if (
+                !file_exists(
+                    Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php',
+                )
+            ) {
                 $controllerName = 'pages';
             }
             $controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);

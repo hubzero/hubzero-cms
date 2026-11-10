@@ -176,7 +176,12 @@ class Extension extends Base implements CommandInterface
                         }
                     }
 
-                    $this->callMigration($migration, 'modules', $mthd, [str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0)]);
+                    $this->callMigration(
+                        $migration,
+                        'modules',
+                        $mthd,
+                        [str_replace('mod_', '', $name), $position, true, '', (($client == 'admin') ? 1 : 0)],
+                    );
                 } else {
                     $mthd = $method . 'Module' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
 
@@ -187,7 +192,9 @@ class Extension extends Base implements CommandInterface
             case 'tpl':
                 // The template macros are addTemplateEntry, installTemplateEntry,
                 // deleteTemplateEntry, enableTemplate and disableTemplate
-                $mthd = $method . 'Template' . (($method == 'add' || $method == 'delete' || $method == 'install') ? 'Entry' : '');
+                $mthd = $method
+                    . 'Template'
+                    . (($method == 'add' || $method == 'delete' || $method == 'install') ? 'Entry' : '');
 
                 $element = $name = substr($name, 4);
                 $name    = ucwords($name);
@@ -227,7 +234,10 @@ class Extension extends Base implements CommandInterface
                 break;
         }
 
-        $this->output->addLine("Successfully {$method}" . ((substr($method, -1) == 'e') ? 'd' : 'ed') . " {$name}!", 'success');
+        $this->output->addLine(
+            "Successfully {$method}" . ((substr($method, -1) == 'e') ? 'd' : 'ed') . " {$name}!",
+            'success',
+        );
     }
 
     /**

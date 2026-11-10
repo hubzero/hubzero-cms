@@ -32,7 +32,12 @@ class Activity extends AbstractComponent
 
         $controllerName = Request::getCmd('controller', 'entries');
 
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             $controllerName = 'entries';
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

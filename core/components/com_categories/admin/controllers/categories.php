@@ -474,7 +474,10 @@ class Categories extends AdminController
         Request::checkToken();
 
         // The Check-in button is offered on core.edit.state for the extension
-        $extension = Request::getState($this->option . '.' . $this->controller . '.extension', 'extension') ?: $this->option;
+        $extension = Request::getState(
+            $this->option . '.' . $this->controller . '.extension',
+            'extension',
+        ) ?: $this->option;
         if (!User::authorise('core.edit.state', $extension)) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -570,7 +573,14 @@ class Categories extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . ($this->controller ? '&controller=' . $this->controller : '') . '&extension=' . $extension, false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . ($this->controller ? '&controller=' . $this->controller : '')
+                    . '&extension='
+                    . $extension,
+                false,
+            ),
         );
     }
 

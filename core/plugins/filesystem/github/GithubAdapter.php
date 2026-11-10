@@ -84,8 +84,13 @@ class GithubAdapter implements FilesystemAdapter
      * @param   Client|null  $client      Pre-built knplabs client (optional)
      * @throws  \InvalidArgumentException  When the repository name is malformed
      **/
-    public function __construct($repository, $token = null, $reference = 'HEAD', $branch = 'master', ?Client $client = null)
-    {
+    public function __construct(
+        $repository,
+        $token = null,
+        $reference = 'HEAD',
+        $branch = 'master',
+        ?Client $client = null,
+    ) {
         $repository = $this->normalizeRepository($repository);
 
         if (

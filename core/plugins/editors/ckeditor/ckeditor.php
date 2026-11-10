@@ -42,8 +42,20 @@ class Ckeditor extends Plugin
         $this->css();
 
         // Add ckeditor
-        Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->basePath . 'ckeditor.js?v=' . filemtime(__DIR__ . '/assets/ckeditor.js'));
-        Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->basePath . 'adapters/jquery.js?v=' . filemtime(__DIR__ . '/assets/adapters/jquery.js'));
+        Document::addScript(
+            str_replace('/administrator', '', Request::base(true))
+                . '/'
+                . $this->basePath
+                . 'ckeditor.js?v='
+                . filemtime(__DIR__ . '/assets/ckeditor.js'),
+        );
+        Document::addScript(
+            str_replace('/administrator', '', Request::base(true))
+                . '/'
+                . $this->basePath
+                . 'adapters/jquery.js?v='
+                . filemtime(__DIR__ . '/assets/adapters/jquery.js'),
+        );
     }
 
     /**
@@ -129,8 +141,19 @@ class Ckeditor extends Plugin
      * @param   array    $params  Associative array of editor parameters.
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = [],
+    ) {
         // Make sure we have an id too
         if (empty($id)) {
             $id = $name;
@@ -214,7 +237,20 @@ class Ckeditor extends Plugin
         }
 
         // Output html and script
-        $editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
+        $editor  = '<textarea name="'
+            . $name
+            . '" id="'
+            . $id
+            . '" '
+            . ($row ? 'rows="' . $row . '"' : '')
+            . ' '
+            . ($col ? 'cols="' . $col . '"' : '')
+            . ' '
+            . implode(' ', $atts)
+            . '>'
+            . $content
+            . '</textarea>'
+            . $script;
         if (App::isAdmin()) {
             $editor .= $this->displayButtons($id, $buttons, $asset, $author);
         }
@@ -255,9 +291,24 @@ class Ckeditor extends Plugin
                 if ($button->get('name')) {
                     $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
                     $href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
-                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"' : 'onclick="return false;"';
+                    $onclick = ($button->get('onclick'))
+                        ? ' onclick="' . $button->get('onclick') . '"'
+                        : 'onclick="return false;"';
                     $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
-                    $return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
+                    $return .= '<div class="button2-left"><div class="'
+                        . $button->get('name')
+                        . '"><a'
+                        . $modal
+                        . ' title="'
+                        . $title
+                        . '"'
+                        . $href
+                        . $onclick
+                        . ' rel="'
+                        . $button->get('options')
+                        . '">'
+                        . $button->get('text')
+                        . "</a></div></div>\n";
                 }
             }
 
@@ -319,9 +370,226 @@ class Ckeditor extends Plugin
         $config->resize_enabled                = true;
         $config->emailProtection               = '';
         $config->iframe_attributes             = new \stdClass();
-        $config->protectedSource               = ['/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi', '/<map[^>]*>(.|\n)*<\/map>/ig', '/<area([^>]*)\/?>/ig'];
+        $config->protectedSource               = [
+            '/<group:include([^>]*)\\/>/g',
+            '/{xhub:([^}]*)}/gi',
+            '/<map[^>]*>(.|\n)*<\/map>/ig',
+            '/<area([^>]*)\/?>/ig',
+        ];
         $config->extraAllowedContent           = 'img(*)[*]; style(*)[*]; mark(*)[*]; span(*)[*]; map(*)[*]; area(*)[*]; *(*)[*]{*}';
-        $config->specialChars                  = ['!', '&quot;', '#', '$', '%', '&amp;', "'", '(', ')', '*', '+', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '&lt;', '=', '&gt;', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', "&euro;", "&lsquo;", "&rsquo;", "&ldquo;", "&rdquo;", "&ndash;", "&mdash;", "&iexcl;", "&cent;", "&pound;", "&curren;", "&yen;", "&brvbar;", "&sect;", "&uml;", "&copy;", "&ordf;", "&laquo;", "&not;", "&reg;", "&macr;", "&deg;", "&sup2;", "&sup3;", "&acute;", "&micro;", "&para;", "&middot;", "&cedil;", "&sup1;", "&ordm;", "&raquo;", "&frac14;", "&frac12;", "&frac34;", "&iquest;", "&Agrave;", "&Aacute;", "&Acirc;", "&Atilde;", "&Auml;", "&Aring;", "&AElig;", "&Ccedil;", "&Egrave;", "&Eacute;", "&Ecirc;", "&Euml;", "&Igrave;", "&Iacute;", "&Icirc;", "&Iuml;", "&ETH;", "&Ntilde;", "&Ograve;", "&Oacute;", "&Ocirc;", "&Otilde;", "&Ouml;", "&times;", "&Oslash;", "&Ugrave;", "&Uacute;", "&Ucirc;", "&Uuml;", "&Yacute;", "&THORN;", "&szlig;", "&agrave;", "&aacute;", "&acirc;", "&atilde;", "&auml;", "&aring;", "&aelig;", "&ccedil;", "&egrave;", "&eacute;", "&ecirc;", "&euml;", "&igrave;", "&iacute;", "&icirc;", "&iuml;", "&eth;", "&ntilde;", "&ograve;", "&oacute;", "&ocirc;", "&otilde;", "&ouml;", "&divide;", "&oslash;", "&ugrave;", "&uacute;", "&ucirc;", "&uuml;", "&yacute;", "&thorn;", "&yuml;", "&OElig;", "&oelig;", "&#372;", "&#374", "&#373", "&#375;", "&sbquo;", "&#8219;", "&bdquo;", "&hellip;", "&trade;", "&#9658;", "&bull;", "&rarr;", "&rArr;", "&hArr;", "&diams;", "&asymp;", "&Omega;"];
+        $config->specialChars                  = [
+            '!',
+            '&quot;',
+            '#',
+            '$',
+            '%',
+            '&amp;',
+            "'",
+            '(',
+            ')',
+            '*',
+            '+',
+            '-',
+            '.',
+            '/',
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            ':',
+            ';',
+            '&lt;',
+            '=',
+            '&gt;',
+            '?',
+            '@',
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
+            '[',
+            ']',
+            '^',
+            '_',
+            '`',
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h',
+            'i',
+            'j',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'q',
+            'r',
+            's',
+            't',
+            'u',
+            'v',
+            'w',
+            'x',
+            'y',
+            'z',
+            '{',
+            '|',
+            '}',
+            '~',
+            "&euro;",
+            "&lsquo;",
+            "&rsquo;",
+            "&ldquo;",
+            "&rdquo;",
+            "&ndash;",
+            "&mdash;",
+            "&iexcl;",
+            "&cent;",
+            "&pound;",
+            "&curren;",
+            "&yen;",
+            "&brvbar;",
+            "&sect;",
+            "&uml;",
+            "&copy;",
+            "&ordf;",
+            "&laquo;",
+            "&not;",
+            "&reg;",
+            "&macr;",
+            "&deg;",
+            "&sup2;",
+            "&sup3;",
+            "&acute;",
+            "&micro;",
+            "&para;",
+            "&middot;",
+            "&cedil;",
+            "&sup1;",
+            "&ordm;",
+            "&raquo;",
+            "&frac14;",
+            "&frac12;",
+            "&frac34;",
+            "&iquest;",
+            "&Agrave;",
+            "&Aacute;",
+            "&Acirc;",
+            "&Atilde;",
+            "&Auml;",
+            "&Aring;",
+            "&AElig;",
+            "&Ccedil;",
+            "&Egrave;",
+            "&Eacute;",
+            "&Ecirc;",
+            "&Euml;",
+            "&Igrave;",
+            "&Iacute;",
+            "&Icirc;",
+            "&Iuml;",
+            "&ETH;",
+            "&Ntilde;",
+            "&Ograve;",
+            "&Oacute;",
+            "&Ocirc;",
+            "&Otilde;",
+            "&Ouml;",
+            "&times;",
+            "&Oslash;",
+            "&Ugrave;",
+            "&Uacute;",
+            "&Ucirc;",
+            "&Uuml;",
+            "&Yacute;",
+            "&THORN;",
+            "&szlig;",
+            "&agrave;",
+            "&aacute;",
+            "&acirc;",
+            "&atilde;",
+            "&auml;",
+            "&aring;",
+            "&aelig;",
+            "&ccedil;",
+            "&egrave;",
+            "&eacute;",
+            "&ecirc;",
+            "&euml;",
+            "&igrave;",
+            "&iacute;",
+            "&icirc;",
+            "&iuml;",
+            "&eth;",
+            "&ntilde;",
+            "&ograve;",
+            "&oacute;",
+            "&ocirc;",
+            "&otilde;",
+            "&ouml;",
+            "&divide;",
+            "&oslash;",
+            "&ugrave;",
+            "&uacute;",
+            "&ucirc;",
+            "&uuml;",
+            "&yacute;",
+            "&thorn;",
+            "&yuml;",
+            "&OElig;",
+            "&oelig;",
+            "&#372;",
+            "&#374",
+            "&#373",
+            "&#375;",
+            "&sbquo;",
+            "&#8219;",
+            "&bdquo;",
+            "&hellip;",
+            "&trade;",
+            "&#9658;",
+            "&bull;",
+            "&rarr;",
+            "&rArr;",
+            "&hArr;",
+            "&diams;",
+            "&asymp;",
+            "&Omega;",
+        ];
         $config->disableNativeSpellChecker     = false;
         $config->scayt_autoStartup             = false;
         $config->scayt_contextCommands         = 'all';
@@ -340,11 +608,33 @@ class Ckeditor extends Plugin
         $config->filebrowserWindowHeight       = 600;
         $config->toolbar                       = [
             ['Find', 'Replace', '-', 'Scayt', 'Maximize', 'ShowBlocks'],
-            ['Image','Table','HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe', 'HubzeroEquation', 'HubzeroGrid', 'Templates'],
+            [
+                'Image',
+                'Table',
+                'HorizontalRule',
+                'Smiley',
+                'SpecialChar',
+                'PageBreak',
+                'Iframe',
+                'HubzeroEquation',
+                'HubzeroGrid',
+                'Templates',
+            ],
             ['Link', 'Unlink', 'Anchor'],
             '/',
             ['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            [
+                'NumberedList',
+                'BulletedList',
+                '-',
+                'Blockquote',
+                'CreateDiv',
+                '-',
+                'JustifyLeft',
+                'JustifyCenter',
+                'JustifyRight',
+                'JustifyBlock',
+            ],
         ];
 
         $tlbr = [];

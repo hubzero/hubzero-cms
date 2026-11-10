@@ -68,8 +68,20 @@ class Calendar extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -157,7 +169,11 @@ class Calendar extends Plugin
                     User::isGuest()
                     && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
                 ) {
-                    $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                    $url = Route::url(
+                        'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                        false,
+                        true,
+                    );
 
                     App::redirect(
                         Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -169,7 +185,9 @@ class Calendar extends Plugin
 
                 //check to see if user is member and plugin access requires members
                 if (!in_array($user->get('id'), $members) && $group_plugin_acl == 'members') {
-                    $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                    $arr['html'] = '<p class="info">'
+                        . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                        . '</p>';
                     return $arr;
                 }
             }
@@ -376,7 +394,12 @@ class Calendar extends Plugin
         foreach ($calendars as $calendar) {
             $source            = new \stdClass();
             $source->title     = $calendar->get('title');
-            $source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=' . $calendar->get('id'));
+            $source->url       = Route::url(
+                'index.php?option=com_groups&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&action=events&calendar_id='
+                    . $calendar->get('id'),
+            );
             $source->className = ($calendar->get('color')) ? 'fc-event-' . $calendar->get('color') : 'fc-event-default';
             array_push($sources, $source);
         }
@@ -384,7 +407,11 @@ class Calendar extends Plugin
         // add uncategorized source
         $source            = new \stdClass();
         $source->title     = 'Uncategorized';
-        $source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=0');
+        $source->url       = Route::url(
+            'index.php?option=com_groups&cn='
+                . $this->group->get('cn')
+                . '&active=calendar&action=events&calendar_id=0',
+        );
         $source->className = 'fc-event-default';
         array_push($sources, $source);
 
@@ -467,10 +494,16 @@ class Calendar extends Plugin
             $event->allDay    = $rawEvent->get('allday') == 1;
             $event->title     = $rawEvent->get('title') . ($event->allDay ? '' : ' (' . $abbr . ')');
             $event->url       = $rawEvent->link();
-            $event->start     = ($event->allDay == 1) ? $up->setTimezone('UTC')->format($timeFormat, true) : Date::of($rawEvent->get('publish_up'))->toTimeZone($eventTz, $localFormat);
-            $event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
+            $event->start     = ($event->allDay == 1)
+                ? $up->setTimezone('UTC')->format($timeFormat, true)
+                : Date::of($rawEvent->get('publish_up'))->toTimeZone($eventTz, $localFormat);
+            $event->className = ($rawEvent->get('calendar_id'))
+                ? 'calendar-' . $rawEvent->get('calendar_id')
+                : 'calendar-0';
             if ($rawEvent->get('publish_down') && $rawEvent->get('publish_down') != '0000-00-00 00:00:00') {
-                $event->end = ($event->allDay == 1) ? $down->setTimezone('UTC')->format($timeFormat, true) : Date::of($rawEvent->get('publish_down'))->toTimeZone($eventTz, $localFormat);
+                $event->end = ($event->allDay == 1)
+                    ? $down->setTimezone('UTC')->format($timeFormat, true)
+                    : Date::of($rawEvent->get('publish_down'))->toTimeZone($eventTz, $localFormat);
             }
 
             // add start & end for displaying dates user clicked on
@@ -525,7 +558,16 @@ class Calendar extends Plugin
         //if we are not a member we cant create events
         if (!in_array($this->user->get('id'), $this->group->get('members'))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&year='
+                        . $this->year
+                        . '&month='
+                        . $this->month,
+                ),
                 Lang::txt('Only group members are allowed to create & edit events.'),
                 'warning',
             );
@@ -555,7 +597,16 @@ class Calendar extends Plugin
             if ($this->user->get('id') != $view->event->get('created_by') && $this->authorized != 'manager') {
                 //do not have permission to edit the event
                 App::redirect(
-                    Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&cn='
+                            . $this->group->get('cn')
+                            . '&active=calendar&year='
+                            . $this->year
+                            . '&month='
+                            . $this->month,
+                    ),
                     Lang::txt('You do not have the correct permissions to edit this event.'),
                     'error',
                 );
@@ -566,7 +617,14 @@ class Calendar extends Plugin
             $eventCalendar = $view->event->calendar();
             if ($eventCalendar->isSubscription()) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&cn='
+                            . $this->group->get('cn')
+                            . '&active=calendar&action=details&event_id='
+                            . $view->event->get('id'),
+                    ),
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
                     'error',
                 );
@@ -637,7 +695,16 @@ class Calendar extends Plugin
         // As edit(): only group members create and edit events
         if (!in_array($this->user->get('id'), $this->group->get('members'))) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&year='
+                        . $this->year
+                        . '&month='
+                        . $this->month,
+                ),
                 Lang::txt('Only group members are allowed to create & edit events.'),
                 'warning',
             );
@@ -694,7 +761,14 @@ class Calendar extends Plugin
             // As edit(): imported events are not editable
             if ($existing->calendar()->isSubscription()) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $existing->get('id')),
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&cn='
+                            . $this->group->get('cn')
+                            . '&active=calendar&action=details&event_id='
+                            . $existing->get('id'),
+                    ),
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
                     'error',
                 );
@@ -764,7 +838,11 @@ class Calendar extends Plugin
             $event['content'] = \Hubzero\Utility\Sanitize::clean($event['content']);
         }
 
-        if (isset($event['extra_info']) && $event['extra_info'] && ! \Hubzero\Utility\Validate::url($event['extra_info'])) {
+        if (
+            isset($event['extra_info'])
+            && $event['extra_info']
+            && ! \Hubzero\Utility\Validate::url($event['extra_info'])
+        ) {
             $this->setError('Website entered does not appear to be a valid URL.');
             $this->event = $eventsModelEvent;
             return $this->edit();
@@ -778,7 +856,11 @@ class Calendar extends Plugin
         }
 
         //check to make sure end time is greater than start time
-        if (isset($event['publish_down']) && $event['publish_down'] && $event['publish_down'] != '0000-00-00 00:00:00') {
+        if (
+            isset($event['publish_down'])
+            && $event['publish_down']
+            && $event['publish_down'] != '0000-00-00 00:00:00'
+        ) {
             $up     = strtotime($event['publish_up']);
             $down   = strtotime($event['publish_down']);
 
@@ -792,7 +874,12 @@ class Calendar extends Plugin
         }
 
         //make sure registration email is valid
-        if ($registration && isset($event['email']) && $event['email'] != '' && !filter_var($event['email'], FILTER_VALIDATE_EMAIL)) {
+        if (
+            $registration
+            && isset($event['email'])
+            && $event['email'] != ''
+            && !filter_var($event['email'], FILTER_VALIDATE_EMAIL)
+        ) {
             $this->setError('You must enter a valid email address for the events registration admin email.');
             $this->event = $eventsModelEvent;
             return $this->edit();
@@ -826,7 +913,14 @@ class Calendar extends Plugin
 
         //inform user and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&action=details&event_id='
+                    . $eventsModelEvent->get('id'),
+            ),
             $message,
             'passed',
         );
@@ -863,7 +957,16 @@ class Calendar extends Plugin
         if ($this->user->get('id') != $eventsModelEvent->get('created_by') && $this->authorized != 'manager') {
             // do not have permission to delete the event
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&year='
+                        . $year
+                        . '&month='
+                        . $month,
+                ),
                 Lang::txt('You do not have the correct permissions to delete this event.'),
                 'error',
             );
@@ -874,7 +977,14 @@ class Calendar extends Plugin
         $eventCalendar = $eventsModelEvent->calendar();
         if ($eventCalendar->isSubscription()) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $eventsModelEvent->get('id')),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&action=details&event_id='
+                        . $eventsModelEvent->get('id'),
+                ),
                 Lang::txt('You cannot delete imported events from remote calendar subscriptions.'),
                 'error',
             );
@@ -890,7 +1000,16 @@ class Calendar extends Plugin
         //save changes
         if (!$eventsModelEvent->store(true)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&year='
+                        . $year
+                        . '&month='
+                        . $month,
+                ),
                 Lang::txt('An error occurred while trying to delete the event. Please try again.'),
                 'error',
             );
@@ -899,7 +1018,16 @@ class Calendar extends Plugin
 
         //inform user and return
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $year . '&month=' . $month),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&year='
+                    . $year
+                    . '&month='
+                    . $month,
+            ),
             Lang::txt('You have successfully deleted the event.'),
             'passed',
         );
@@ -928,7 +1056,16 @@ class Calendar extends Plugin
             || $view->event->get('scope_id') != $this->group->get('gidNumber')
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&year='
+                        . $this->year
+                        . '&month='
+                        . $this->month,
+                ),
                 Lang::txt('Event not found.'),
                 'error',
             );
@@ -1021,7 +1158,10 @@ class Calendar extends Plugin
 
             //make sure we are a member (authenticateSubscriptionRequest() always
             //returns a user object, so the membership test has to run on it)
-            if ($plugin_access == 'members' && (!is_object($auth) || !in_array($auth->id, $this->group->get('members')))) {
+            if (
+                $plugin_access == 'members'
+                && (!is_object($auth) || !in_array($auth->id, $this->group->get('members')))
+            ) {
                 header('HTTP/1.1 403 Unauthorized');
                 die(Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', 'Calendar'));
             }
@@ -1053,7 +1193,12 @@ class Calendar extends Plugin
         $httpBasicPassword = $_SERVER['PHP_AUTH_PW'];
 
         //make sure we have a username and password
-        if (!isset($httpBasicUsername) || !isset($httpBasicPassword) || $httpBasicUsername == '' || $httpBasicPassword == '') {
+        if (
+            !isset($httpBasicUsername)
+            || !isset($httpBasicPassword)
+            || $httpBasicUsername == ''
+            || $httpBasicPassword == ''
+        ) {
             header('HTTP/1.1 401 Unauthorized');
             header('WWW-Authenticate: Basic realm="' . $realm . '"');
             die(Lang::txt('You must enter a valid username and password.'));
@@ -1069,7 +1214,15 @@ class Calendar extends Plugin
 
         //make sure we found a user
         if (!is_object($user) || $user->id == '' || $user->id == 0) {
-            App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
+            App::get('log')
+                ->logger('auth')
+                ->info(
+                    $httpBasicUsername
+                        . ' '
+                        . $_SERVER['REMOTE_ADDR']
+                        . ' invalid group calendar subscription auth for '
+                        . $this->group->get('cn'),
+                );
 
             header('HTTP/1.1 401 Unauthorized');
             header('WWW-Authenticate: Basic realm="' . $realm . '"');
@@ -1078,7 +1231,15 @@ class Calendar extends Plugin
 
         //make sure password matches stored password
         if (!\Hubzero\User\Password::comparePasswords($user->passhash, $httpBasicPassword)) {
-            App::get('log')->logger('auth')->info($httpBasicUsername . ' ' . $_SERVER['REMOTE_ADDR'] . ' invalid group calendar subscription auth for ' . $this->group->get('cn'));
+            App::get('log')
+                ->logger('auth')
+                ->info(
+                    $httpBasicUsername
+                        . ' '
+                        . $_SERVER['REMOTE_ADDR']
+                        . ' invalid group calendar subscription auth for '
+                        . $this->group->get('cn'),
+                );
 
             header('HTTP/1.1 401 Unauthorized');
             header('WWW-Authenticate: Basic realm="' . $realm . '"');
@@ -1109,8 +1270,12 @@ class Calendar extends Plugin
         $description = (isset($icalEvent['DESCRIPTION'])) ? $icalEvent['DESCRIPTION'] : '';
         $location    = (isset($icalEvent['LOCATION'])) ? $icalEvent['LOCATION'] : '';
         $website     = (isset($icalEvent['URL'])) ? $icalEvent['URL'] : '';
-        $start       = (isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof \DateTime)) ? $icalEvent['DTSTART'] : new \DateTime();
-        $end         = (isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof \DateTime)) ? $icalEvent['DTEND'] : new \DateTime();
+        $start       = (isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof \DateTime))
+            ? $icalEvent['DTSTART']
+            : new \DateTime();
+        $end         = (isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof \DateTime))
+            ? $icalEvent['DTEND']
+            : new \DateTime();
         $recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : [];
 
         // normalize until date
@@ -1161,7 +1326,16 @@ class Calendar extends Plugin
             || $view->event->get('scope_id') != $this->group->get('gidNumber')
         ) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&year='
+                        . $this->year
+                        . '&month='
+                        . $this->month,
+                ),
                 Lang::txt('Event not found.'),
                 'error',
             );
@@ -1175,7 +1349,14 @@ class Calendar extends Plugin
         //do we have a registration deadline
         if (!$view->event->get('registerby') || $view->event->get('registerby') == '0000-00-00 00:00:00') {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $view->event->get('id')),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=calendar&action=details&event_id='
+                        . $view->event->get('id'),
+                ),
                 Lang::txt('This event does not have registration.'),
                 'warning',
             );
@@ -1191,7 +1372,11 @@ class Calendar extends Plugin
             $password = Request::getString('passwrd', '', 'post');
 
             //is the event restricted
-            if ($view->event->get('restricted') != '' && $view->event->get('restricted') != $password && !isset($this->register)) {
+            if (
+                $view->event->get('restricted') != ''
+                && $view->event->get('restricted') != $password
+                && !isset($this->register)
+            ) {
                 //if we entered a password and it was bad lets tell the user
                 if (isset($password) && $password != '') {
                     $this->setError('The password entered is incorrect.');
@@ -1291,7 +1476,11 @@ class Calendar extends Plugin
 
         //check for email if email is supposed to be on
         if ($params->get('show_email', 1) == 1) {
-            if (!isset($register['email']) || $register['email'] == '' || !filter_var($register['email'], FILTER_VALIDATE_EMAIL)) {
+            if (
+                !isset($register['email'])
+                || $register['email'] == ''
+                || !filter_var($register['email'], FILTER_VALIDATE_EMAIL)
+            ) {
                 $errors[] = Lang::txt('Missing email address or email is not valid.');
             }
 
@@ -1331,7 +1520,9 @@ class Calendar extends Plugin
         $eventsRespondent->highest_degree   = (isset($register['degree'])) ? $register['degree'] : '';
         $eventsRespondent->gender           = (isset($register['sex'])) ? $register['sex'] : '';
         $eventsRespondent->disability_needs = (isset($disability) && strtolower($disability) == 'yes') ? 1 : null;
-        $eventsRespondent->dietary_needs    = (isset($dietary['needs']) && strtolower($dietary['needs']) == 'yes') ? $dietary['specific'] : null;
+        $eventsRespondent->dietary_needs    = (isset($dietary['needs']) && strtolower($dietary['needs']) == 'yes')
+            ? $dietary['specific']
+            : null;
         $eventsRespondent->attending_dinner = (isset($dinner) && $dinner == 'yes') ? 1 : 0;
         $eventsRespondent->bind($register);
 
@@ -1377,7 +1568,12 @@ class Calendar extends Plugin
             $message           = str_replace("\n", "\r\n", $email->loadTemplate());
 
             //declare subject
-            $subject = Lang::txt("[" . $email->sitename . "] Group \"{$this->group->get('description')}\" Event Registration: " . $eventsEvent->title);
+            $subject = Lang::txt(
+                "["
+                    . $email->sitename
+                    . "] Group \"{$this->group->get('description')}\" Event Registration: "
+                    . $eventsEvent->title,
+            );
 
             //make from array
             $from = [
@@ -1415,7 +1611,10 @@ class Calendar extends Plugin
 
             // build to, from, & subject
             $to      = User::get('email');
-            $from    = ['email' => 'groups@' . $_SERVER['HTTP_HOST'], 'name'  => $email->sitename . ' Group Calendar: ' . $this->group->get('description')];
+            $from    = [
+                'email' => 'groups@' . $_SERVER['HTTP_HOST'],
+                'name'  => $email->sitename . ' Group Calendar: ' . $this->group->get('description'),
+            ];
             $subject = Lang::txt('Thank you for Registering for the "%s" event', $eventsEvent->title);
 
             // send mail to user registering
@@ -1424,7 +1623,14 @@ class Calendar extends Plugin
 
         // redirect back to the event
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $event_id),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&action=details&event_id='
+                    . $event_id,
+            ),
             Lang::txt('You have successfully registered for the event.'),
             'passed',
         );
@@ -1515,7 +1721,8 @@ class Calendar extends Plugin
         $registrants = $eventsRespondent->getRecords();
 
         //var to hold output
-        $output = 'First Name,Last Name,Title,Affiliation,Email,Website,Telephone,Fax,City,State,Zip,Country,Current Position,Highest Degree Earned,Gender,Race,Arrival Info,Departure Info,Disability Needs,Dietary Needs,Attending Dinner,Abstract,Comments,Register Date' . "\n";
+        $output = 'First Name,Last Name,Title,Affiliation,Email,Website,Telephone,Fax,City,State,Zip,Country,Current Position,Highest Degree Earned,Gender,Race,Arrival Info,Departure Info,Disability Needs,Dietary Needs,Attending Dinner,Abstract,Comments,Register Date'
+            . "\n";
 
         $fields = [
             'first_name',
@@ -1771,7 +1978,13 @@ class Calendar extends Plugin
 
         //inform and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&action=calendars',
+            ),
             Lang::txt('You have successfully added a new calendar.'),
             'passed',
         );
@@ -1811,7 +2024,13 @@ class Calendar extends Plugin
 
         //inform and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&action=calendars',
+            ),
             Lang::txt('You have successfully deleted the calendar.'),
             'passed',
         );
@@ -1844,13 +2063,24 @@ class Calendar extends Plugin
 
         // refresh Calendar (force refresh even if we dont need to yet)
         if (!$calendar->refresh(true)) {
-            $this->setError(Lang::txt('Unable to sync the group calendar "%s". Please verify the calendar subscription URL is valid.', $calendar->getError()));
+            $this->setError(
+                Lang::txt(
+                    'Unable to sync the group calendar "%s". Please verify the calendar subscription URL is valid.',
+                    $calendar->getError(),
+                ),
+            );
             return $this->calendars();
         }
 
         //inform and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=calendars'),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=calendar&action=calendars',
+            ),
             Lang::txt('You have successfully refreshed the calendar.'),
             'passed',
         );

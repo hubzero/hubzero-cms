@@ -110,7 +110,11 @@ class Tool extends Content
                     return ['error' => 'File is empty'];
                 }
                 if ($size > $sizeLimit) {
-                    $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+                    $max = preg_replace(
+                        '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                        '$1',
+                        \Hubzero\Utility\Number::formatBytes($sizeLimit),
+                    );
                     return ['error' => "File is too large. Max file upload size is $max"];
                 }
 

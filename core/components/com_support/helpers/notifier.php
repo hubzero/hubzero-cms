@@ -217,7 +217,10 @@ class Notifier
 
                 // The handler answers true when sent, false or an error string
                 // otherwise; a non-empty array of failures is not success
-                $sent = Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], $options['option']]);
+                $sent = Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['support_reply_submitted', $subject, $message, $from, [$to['id']], $options['option']],
+                );
                 $failed = empty($sent);
                 foreach ((array) $sent as $result) {
                     if ($result !== true) {
@@ -241,7 +244,13 @@ class Notifier
             foreach ($comment->to('emails') as $to) {
                 if ($allowEmailResponses) {
                     $token = $encryptor->buildEmailToken(1, 1, -9999, $ticket->get('id'));
-                    Utilities::sendEmail($to['email'], $subject, $message, $from, 'htc-' . $token . strstr(Config::get('mailfrom'), '@'));
+                    Utilities::sendEmail(
+                        $to['email'],
+                        $subject,
+                        $message,
+                        $from,
+                        'htc-' . $token . strstr(Config::get('mailfrom'), '@'),
+                    );
                 } else {
                     Utilities::sendEmail($to['email'], $subject, $message, $from);
                 }
@@ -264,7 +273,11 @@ class Notifier
         }
 
         $link = Route::url($ticket->link());
-        $label = '<a href="' . $link . '">#' . htmlspecialchars((string) ($ticket->get('id') . ' - ' . $ticket->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>';
+        $label = '<a href="'
+            . $link
+            . '">#'
+            . htmlspecialchars((string) ($ticket->get('id') . ' - ' . $ticket->get('summary')), ENT_QUOTES, 'UTF-8')
+            . '</a>';
 
         $desc = $comment->get('comment')
             ? Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $comment->get('id'), $label)

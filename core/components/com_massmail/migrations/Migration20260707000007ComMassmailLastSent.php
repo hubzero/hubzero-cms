@@ -25,7 +25,9 @@ class Migration20260707000007ComMassmailLastSent extends Base
             $this->db->tableExists('#__massmail_postfix_state')
             && !$this->db->tableHasField('#__massmail_postfix_state', 'last_sent')
         ) {
-            $this->db->setQuery("ALTER TABLE `#__massmail_postfix_state` ADD COLUMN `last_sent` datetime DEFAULT NULL AFTER `last_offset`;");
+            $this->db->setQuery(
+                "ALTER TABLE `#__massmail_postfix_state` ADD COLUMN `last_sent` datetime DEFAULT NULL AFTER `last_offset`;",
+            );
             $this->db->query();
         }
     }

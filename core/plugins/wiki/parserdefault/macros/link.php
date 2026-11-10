@@ -80,10 +80,19 @@ Examples:
         // those three out here rendered href="" for links the wiki syntax
         // supports; none of them executes script, so only javascript:,
         // vbscript: and data: are actually being kept out.
-        if (preg_match('/^[a-z][a-z0-9+.\-]*:/i', $chk) && !preg_match('/^(https?|ftp|mailto|gopher|news|file):/i', $chk)) {
+        if (
+            preg_match('/^[a-z][a-z0-9+.\-]*:/i', $chk)
+            && !preg_match('/^(https?|ftp|mailto|gopher|news|file):/i', $chk)
+        ) {
             $href = '';
         }
 
-        return '<a class="' . $cls . '" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . htmlspecialchars(trim($title), ENT_QUOTES, 'UTF-8') . '</a>';
+        return '<a class="'
+            . $cls
+            . '" href="'
+            . htmlspecialchars($href, ENT_QUOTES, 'UTF-8')
+            . '">'
+            . htmlspecialchars(trim($title), ENT_QUOTES, 'UTF-8')
+            . '</a>';
     }
 }

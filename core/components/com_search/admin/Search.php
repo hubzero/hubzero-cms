@@ -53,7 +53,12 @@ class Search extends AbstractComponent
             $controllerName = 'basic';
         }
 
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             App::abort(404, Lang::txt('Controller not found'));
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

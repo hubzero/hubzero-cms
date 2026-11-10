@@ -100,7 +100,11 @@ class Groupsv1r1 extends ApiController
         foreach ($response as $i => $r) {
             $group = \Hubzero\User\Group::getInstance($r->gidNumber);
 
-            $response[$i]->url  = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $group->get('cn')), '/'));
+            $response[$i]->url  = str_replace(
+                '/api',
+                '',
+                $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $group->get('cn')), '/'),
+            );
             $response[$i]->logo = str_replace('/api', '', $base . '/' . ltrim($group->getLogo(), '/'));
         }
 
@@ -222,7 +226,10 @@ class Groupsv1r1 extends ApiController
         if (!in_array($joinPolicy, $policies)) {
             $errors[] = [
                 'field'   => 'join_policy',
-                'message' => Lang::txt('Group "join_policy" value must be one of the following: %s', implode(', ', $policies)),
+                'message' => Lang::txt(
+                    'Group "join_policy" value must be one of the following: %s',
+                    implode(', ', $policies),
+                ),
             ];
         }
 
@@ -236,7 +243,10 @@ class Groupsv1r1 extends ApiController
         if (!in_array($discoverability, $discoverabilities)) {
             $errors[] = [
                 'field'   => 'discoverability',
-                'message' => Lang::txt('Group "discoverability" value must be one of the following: %s', implode(', ', $discoverabilities)),
+                'message' => Lang::txt(
+                    'Group "discoverability" value must be one of the following: %s',
+                    implode(', ', $discoverabilities),
+                ),
             ];
         }
 
@@ -244,7 +254,10 @@ class Groupsv1r1 extends ApiController
         if (!empty($errors)) {
             // each error is a [field, message] pair; implode() of the pairs was an
             // "Array to string conversion" 500 instead of this 422
-            throw new Exception(Lang::txt('Validation Failed') . ': ' . implode("\n", array_column($errors, 'message')), 422);
+            throw new Exception(
+                Lang::txt('Validation Failed') . ': ' . implode("\n", array_column($errors, 'message')),
+                422,
+            );
         }
 
         // make sure we have a public desc of none was entered
@@ -328,14 +341,22 @@ class Groupsv1r1 extends ApiController
         // the group's page, offered as 'link' when asked for and always as 'url'
         // ($base is used for the section URLs below too)
         $base = rtrim(Request::base(), '/');
-        $url  = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'));
+        $url  = str_replace(
+            '/api',
+            '',
+            $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn')), '/'),
+        );
 
         foreach ($fields as $field) {
             // link is computed, not a Group property
             if ($field == 'link' || property_exists($record, $field)) {
                 switch ($field) {
                     case 'logo':
-                        $group[$field] = str_replace('/api', '', rtrim(Request::base(), '/') . ltrim($record->getLogo(), '/'));
+                        $group[$field] = str_replace(
+                            '/api',
+                            '',
+                            rtrim(Request::base(), '/') . ltrim($record->getLogo(), '/'),
+                        );
                         break;
                     case 'link':
                         $group[$field] = $url;
@@ -391,7 +412,18 @@ class Groupsv1r1 extends ApiController
                     continue;
                 }
 
-                $section['url'] = str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=' . $section['name']), '/'));
+                $section['url'] = str_replace(
+                    '/api',
+                    '',
+                    $base
+                        . '/'
+                        . ltrim(
+                            Route::url(
+                                'index.php?option=com_groups&cn=' . $record->get('cn') . '&active=' . $section['name'],
+                            ),
+                            '/',
+                        ),
+                );
 
                 $sections[] = $section;
             }
@@ -402,7 +434,16 @@ class Groupsv1r1 extends ApiController
             'title'            => 'Overview',
             'default_access'   => 'anyone',
             'display_menu_tab' => true,
-            'url'              => str_replace('/api', '', $base . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=overview'), '/')),
+            'url'              => str_replace(
+                '/api',
+                '',
+                $base
+                    . '/'
+                    . ltrim(
+                        Route::url('index.php?option=com_groups&cn=' . $record->get('cn') . '&active=overview'),
+                        '/',
+                    ),
+            ),
         ]);
 
         $group['sections'] = $sections;
@@ -414,7 +455,9 @@ class Groupsv1r1 extends ApiController
             $group['owner_type'] = 'group';
             $group['owner'] = $group['gidNumber'];
             $group['access_level'] = 'public';
-            $group['description'] = \Hubzero\Utility\Sanitize::stripAll($group['description'] . ' ' . $group['public_desc']);
+            $group['description'] = \Hubzero\Utility\Sanitize::stripAll(
+                $group['description'] . ' ' . $group['public_desc'],
+            );
             $group['id'] = 'group-' . $group['gidNumber'];
             $group['url'] = '/groups/' . $record->get('cn');
             $group['hubtype'] = 'group';
@@ -532,7 +575,10 @@ class Groupsv1r1 extends ApiController
         ) {
             $errors[] = [
                 'field'   => 'join_policy',
-                'message' => Lang::txt('Group "join_policy" value must be one of the following: %s', implode(', ', $policies)),
+                'message' => Lang::txt(
+                    'Group "join_policy" value must be one of the following: %s',
+                    implode(', ', $policies),
+                ),
             ];
         }
 
@@ -549,7 +595,10 @@ class Groupsv1r1 extends ApiController
         ) {
             $errors[] = [
                 'field'   => 'discoverability',
-                'message' => Lang::txt('Group "discoverability" value must be one of the following: %s', implode(', ', $discoverabilities)),
+                'message' => Lang::txt(
+                    'Group "discoverability" value must be one of the following: %s',
+                    implode(', ', $discoverabilities),
+                ),
             ];
         }
 
@@ -557,7 +606,10 @@ class Groupsv1r1 extends ApiController
         if (!empty($errors)) {
             // each error is a [field, message] pair; implode() of the pairs was an
             // "Array to string conversion" 500 instead of this 422
-            throw new Exception(Lang::txt('Validation Failed') . ': ' . implode("\n", array_column($errors, 'message')), 422);
+            throw new Exception(
+                Lang::txt('Validation Failed') . ': ' . implode("\n", array_column($errors, 'message')),
+                422,
+            );
         }
 
         // map the join policy & discoverability values to their int value

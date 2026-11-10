@@ -140,8 +140,28 @@ class Points extends AdminController
             'thismonthpts'  => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $thismonth),
             'lastmonthpts'  => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth),
             'alltimetran'   => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
-            'thismonthtran' => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
-            'lastmonthtran' => Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
+            'thismonthtran' => Transaction::getTotals(
+                '',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $thismonth,
+                $calc = 2,
+            ),
+            'lastmonthtran' => Transaction::getTotals(
+                '',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $lastmonth,
+                $calc = 2,
+            ),
             'avg'           => round(Transaction::getTotals('', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
         ];
 
@@ -153,9 +173,31 @@ class Points extends AdminController
             'thismonthpts'  => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $thismonth),
             'lastmonthpts'  => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth),
             'alltimetran'   => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
-            'thismonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
-            'lastmonthtran' => Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
+            'thismonthtran' => Transaction::getTotals(
+                'answers',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $thismonth,
+                $calc = 2,
+            ),
+            'lastmonthtran' => Transaction::getTotals(
+                'answers',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $lastmonth,
+                $calc = 2,
+            ),
+            'avg'           => round(
+                Transaction::getTotals('answers', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1),
+            ),
         ];
 
         // Get royalties on reviews
@@ -166,9 +208,31 @@ class Points extends AdminController
             'thismonthpts'  => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $thismonth),
             'lastmonthpts'  => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth),
             'alltimetran'   => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
-            'thismonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
-            'lastmonthtran' => Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
+            'thismonthtran' => Transaction::getTotals(
+                'review',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $thismonth,
+                $calc = 2,
+            ),
+            'lastmonthtran' => Transaction::getTotals(
+                'review',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $lastmonth,
+                $calc = 2,
+            ),
+            'avg'           => round(
+                Transaction::getTotals('review', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1),
+            ),
         ];
 
         // Get royalties on resource contributions
@@ -178,10 +242,42 @@ class Points extends AdminController
             'alltimepts'    => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, ''),
             'thismonthpts'  => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $thismonth),
             'lastmonthpts'  => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth),
-            'alltimetran'   => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 2),
-            'thismonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $thismonth, $calc = 2),
-            'lastmonthtran' => Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, $lastmonth, $calc = 2),
-            'avg'           => round(Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1)),
+            'alltimetran'   => Transaction::getTotals(
+                'resource',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                '',
+                $calc = 2,
+            ),
+            'thismonthtran' => Transaction::getTotals(
+                'resource',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $thismonth,
+                $calc = 2,
+            ),
+            'lastmonthtran' => Transaction::getTotals(
+                'resource',
+                'deposit',
+                '',
+                $royalty = 1,
+                '',
+                '',
+                1,
+                $lastmonth,
+                $calc = 2,
+            ),
+            'avg'           => round(
+                Transaction::getTotals('resource', 'deposit', '', $royalty = 1, '', '', 1, '', $calc = 1),
+            ),
         ];
 
         // Set any errors
@@ -209,7 +305,9 @@ class Points extends AdminController
                 $this->view->row->set('earnings', 0);
             }
 
-            $this->database->setQuery("SELECT * FROM `#__users_transactions` WHERE uid=" . $uid . " ORDER BY created DESC, id DESC");
+            $this->database->setQuery(
+                "SELECT * FROM `#__users_transactions` WHERE uid=" . $uid . " ORDER BY created DESC, id DESC",
+            );
             $this->view->history = $this->database->loadObjectList();
         } else {
             $this->view->setLayout('find');
@@ -300,7 +398,15 @@ class Points extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&uid=' . $row->uid, false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&task=edit&uid='
+                    . $row->uid,
+                false,
+            ),
             Lang::txt('User info saved'),
         );
     }
@@ -348,13 +454,26 @@ class Points extends AdminController
             if ($point) {
                 $id = intval($i);
                 $id++; // $i starts at '0'. Can't have an ID of zero.
-                $this->database->setQuery("INSERT INTO `#__users_points_config` (`id`,`description`,`alias`,`points`) VALUES (" . $id . "," . $this->database->quote($description) . "," . $this->database->quote($alias) . "," . $point . ")");
+                $this->database->setQuery(
+                    "INSERT INTO `#__users_points_config` (`id`,`description`,`alias`,`points`) VALUES ("
+                        . $id
+                        . ","
+                        . $this->database->quote($description)
+                        . ","
+                        . $this->database->quote($alias)
+                        . ","
+                        . $point
+                        . ")",
+                );
                 $this->database->query();
             }
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=config', false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=config',
+                false,
+            ),
             Lang::txt('Config Saved'),
         );
     }
@@ -400,7 +519,13 @@ class Points extends AdminController
         $when = Date::toSql();
 
         // make sure this function was not already run
-        $duplicate = MarketHistory::getRecord(intval($log['ref']), $log['action'], $log['category'], '', $data['description']);
+        $duplicate = MarketHistory::getRecord(
+            intval($log['ref']),
+            $log['action'],
+            $log['category'],
+            '',
+            $data['description'],
+        );
 
         if ($data['amount'] && $data['description'] && $data['users']) {
             if (!$duplicate) { // run only once
@@ -458,7 +583,11 @@ class Points extends AdminController
                     Notify::success(Lang::txt('Batch transaction was processed successfully.'));
                 }
             } else {
-                Notify::warning(Lang::txt('This batch transaction was already processed earlier. Use a different identifier if you need to run it again.'));
+                Notify::warning(
+                    Lang::txt(
+                        'This batch transaction was already processed earlier. Use a different identifier if you need to run it again.',
+                    ),
+                );
             }
         } else {
             Notify::error(Lang::txt('Could not process. Some required fields are missing.'));

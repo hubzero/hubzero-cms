@@ -73,7 +73,10 @@ class ImageViewer extends Base
             ],
         ];
 
-        $this->config = json_decode(json_encode($this->parent->parseConfig($this->name, $configs, $savedConfig)), false);
+        $this->config = json_decode(
+            json_encode($this->parent->parseConfig($this->name, $configs, $savedConfig)),
+            false,
+        );
         return $this->config;
     }
 
@@ -258,13 +261,21 @@ class ImageViewer extends Base
             if (is_file(PATH_APP . DS . $fpath) && is_file(PATH_APP . DS . $thumbPath)) {
                 // Get extentsion
                 $ext = Filesystem::extension(PATH_APP . DS . $fpath);
-                $title = $attach->attribs ? $attach->attribs : ($attach->title ? $attach->title : basename($attach->path));
+                $title = $attach->attribs
+                    ? $attach->attribs
+                    : ($attach->title ? $attach->title : basename($attach->path));
                 $link  = Route::url($pub->link('versionid')) . '/Image:' . basename($fpath);
                 $rel   = ($ext == 'swf' || $ext == 'mov') ? '' : ' rel="lightbox"';
                 $class = ($ext == 'swf' || $ext == 'mov') ? ' class="video"' : '';
 
                 $html .= ' <a ' . $class . ' ' . $rel . '  href="' . $link . '" title="' . $title . '">';
-                $html .= '<img src="' . Route::url($pub->link('versionid')) . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></a>';
+                $html .= '<img src="'
+                    . Route::url($pub->link('versionid'))
+                    . '/Image:'
+                    . $thumbName
+                    . '" alt="'
+                    . $title
+                    . '" class="thumbima" /></a>';
 
                 $i++;
             }
@@ -326,10 +337,26 @@ class ImageViewer extends Base
             $params = new \Hubzero\Config\Registry($attach->params);
 
             $html .= '<li>';
-            $html .= ' <a rel="lightbox" href="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . basename($fpath) . '">';
+            $html .= ' <a rel="lightbox" href="/publications'
+                . DS
+                . $pub->id
+                . DS
+                . $pub->version_id
+                . '/Image:'
+                . basename($fpath)
+                . '">';
             $html .= '<span class="item-image';
             $html .= $params->get('pubThumb', null) && $authorized == 'administrator' ? ' starred' : '';
-            $html .= '"><img src="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></span>';
+            $html .= '"><img src="/publications'
+                . DS
+                . $pub->id
+                . DS
+                . $pub->version_id
+                . '/Image:'
+                . $thumbName
+                . '" alt="'
+                . $title
+                . '" class="thumbima" /></span>';
             $html .= '<span class="item-title">' . $title . '<span class="details">' . $attach->path . '</span></span>';
             $html .= '</a>';
 
@@ -339,7 +366,13 @@ class ImageViewer extends Base
             $html .= $file->get('ext') ? ')' : '';
             if ($authorized === 'administrator') {
                 $html .= ' <span class="edititem">';
-                $html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">';
+                $html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id='
+                    . $pub->id
+                    . '&el='
+                    . $elementId
+                    . '&v='
+                    . $pub->version_number
+                    . '">';
                 $html .= Lang::txt('COM_PUBLICATIONS_EDIT');
                 $html .= '</a>';
                 $html .= '</span>';
@@ -459,7 +492,9 @@ class ImageViewer extends Base
             }
 
             // Do not preserve dir hierarchy, but append number for same-name files
-            $name  = $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+            $name  = $suffix
+                ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')')
+                : basename($path);
             $fpath = $configs->pubPath . DS . $name;
         } else {
             // Attach record number to file name

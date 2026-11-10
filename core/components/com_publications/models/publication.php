@@ -632,14 +632,23 @@ class Publication extends Obj
                                 break;
 
                             case 'elementStatus':
-                                if ($elementId && isset($this->_curationModel->progress->blocks->$blockId->status->elements->$elementId)) {
+                                if (
+                                    $elementId
+                                    && isset(
+                                        $this->_curationModel->progress->blocks->$blockId->status->elements->$elementId,
+                                    )
+                                ) {
                                     return $this->_curationModel->progress->blocks->$blockId->status->elements->$elementId->status;
                                 }
                                 break;
 
                             case 'elements':
                                 if ($elementId) {
-                                    if (isset($this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId)) {
+                                    if (
+                                        isset(
+                                            $this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId,
+                                        )
+                                    ) {
                                         return $this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId;
                                     } else {
                                         $first = $this->curation('blocks', $blockId, 'firstElement');
@@ -654,11 +663,17 @@ class Publication extends Obj
                                 break;
 
                             case 'required':
-                                return isset($this->_curationModel->progress->blocks->$blockId->manifest->params->required) ? $this->_curationModel->progress->blocks->$blockId->manifest->params->required : 0;
+                                return isset(
+                                    $this->_curationModel->progress->blocks->$blockId->manifest->params->required,
+                                )
+                                    ? $this->_curationModel->progress->blocks->$blockId->manifest->params->required
+                                    : 0;
                                 break;
 
                             case 'hasElements':
-                                return empty($this->_curationModel->progress->blocks->$blockId->manifest->elements) ? false : true;
+                                return empty($this->_curationModel->progress->blocks->$blockId->manifest->elements)
+                                    ? false
+                                    : true;
                                 break;
 
                             default:
@@ -788,7 +803,9 @@ class Publication extends Obj
                     continue;
                 }
                 if ($contributor->lastName || $contributor->firstName) {
-                    $name  = (!empty($contributor->surname)) ? stripslashes($contributor->surname) : stripslashes($contributor->lastName);
+                    $name  = (!empty($contributor->surname))
+                        ? stripslashes($contributor->surname)
+                        : stripslashes($contributor->lastName);
                     if (strstr($contributor->firstName, ' ')) {
                         $parts = explode(' ', $contributor->firstName);
                         $contributor->firstName = array_shift($parts);
@@ -1729,7 +1746,9 @@ class Publication extends Obj
         if (!isset($this->_bundlePath)) {
             // Archival package
             $tarname  = Lang::txt('Publication') . '_' . $this->get('id') . '.zip';
-            $this->_bundlePath = Helpers\Html::buildPubPath($this->get('id'), $this->get('version_id'), '', '', 1) . DS . $tarname;
+            $this->_bundlePath = Helpers\Html::buildPubPath($this->get('id'), $this->get('version_id'), '', '', 1)
+                . DS
+                . $tarname;
         }
 
         return $this->_bundlePath;
@@ -1765,7 +1784,9 @@ class Publication extends Obj
         }
 
         $query .= " FROM #__wiki_pages as p WHERE p.scope LIKE " . $this->db->quote($masterscope . '%') . " ";
-        $query .=  is_numeric($pageid) ? " AND p.id=" . $this->db->quote($pageid) . " " : " AND p.pagename=" . $this->db->quote($pageid) . " ";
+        $query .=  is_numeric($pageid)
+            ? " AND p.id=" . $this->db->quote($pageid) . " "
+            : " AND p.pagename=" . $this->db->quote($pageid) . " ";
         $query .= " LIMIT 1";
 
         $this->db->setQuery($query);
@@ -1784,11 +1805,20 @@ class Publication extends Obj
     public function path($type = '', $root = false)
     {
         if (!isset($this->_basePath)) {
-            $this->_basePath = DS . trim($this->config('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($this->get('id')) . DS . \Hubzero\Utility\Str::pad($this->get('version_id'));
+            $this->_basePath = DS
+                . trim($this->config('webpath'), DS)
+                . DS
+                . \Hubzero\Utility\Str::pad($this->get('id'))
+                . DS
+                . \Hubzero\Utility\Str::pad($this->get('version_id'));
         }
         switch (strtolower($type)) {
             case 'relative':
-                $path = '..' . DS . \Hubzero\Utility\Str::pad($this->get('id')) . DS . \Hubzero\Utility\Str::pad($this->get('version_id'));
+                $path = '..'
+                    . DS
+                    . \Hubzero\Utility\Str::pad($this->get('id'))
+                    . DS
+                    . \Hubzero\Utility\Str::pad($this->get('version_id'));
                 break;
 
             case 'base':
@@ -1843,8 +1873,16 @@ class Publication extends Obj
                 if (is_dir(PATH_APP . DS . $path . DS . 'gallery')) {
                     $file_list = scandir(PATH_APP . DS . $path . DS . 'gallery');
                     foreach ($file_list as $file) {
-                        if (is_file(PATH_APP . DS . $path . DS . 'gallery' . DS . $file) && exif_imagetype(PATH_APP . DS . $path . DS . 'gallery' . DS . $file)) {
-                            list($width, $height, $type, $attr) = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
+                        if (
+                            is_file(PATH_APP . DS . $path . DS . 'gallery' . DS . $file)
+                            && exif_imagetype(PATH_APP . DS . $path . DS . 'gallery' . DS . $file)
+                        ) {
+                            list(
+                                $width,
+                                $height,
+                                $type,
+                                $attr,
+                            ) = getimagesize(PATH_APP . DS . $path . DS . 'gallery' . DS . $file);
                             if ($width > 200) {
                                 $source = PATH_APP . DS . $path . DS . 'gallery' . DS . $file;
                                 break;
@@ -1892,7 +1930,11 @@ class Publication extends Obj
                 break;
 
             case 'masterimage':
-                $link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id') . '&media=Image:master';
+                $link = 'index.php?option=com_publications&id='
+                    . $this->get('id')
+                    . '&v='
+                    . $this->get('version_id')
+                    . '&media=Image:master';
                 break;
 
             case 'serve':
@@ -2221,23 +2263,31 @@ class Publication extends Obj
 
         switch ($status) {
             case self::STATE_UNPUBLISHED:
-                $date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED')) . ' ' . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                $date = strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'))
+                    . ' '
+                    . Date::of($row->published_down)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                 break;
 
             case self::STATE_PUBLISHED:
                 $date  = (Date::of($row->published_up)->toUnix() > Date::toUnix()) ? Lang::txt('to be') . ' ' : '';
-                $date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED')) . ' ' . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                $date .= strtolower(Lang::txt('COM_PUBLICATIONS_RELEASED'))
+                    . ' '
+                    . Date::of($row->published_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                 break;
 
             case self::STATE_DRAFT:
             case self::STATE_POSTED:
             default:
-                $date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED')) . ' ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                $date = strtolower(Lang::txt('COM_PUBLICATIONS_STARTED'))
+                    . ' '
+                    . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                 break;
 
             case self::STATE_PENDING:
             case self::STATE_WORKED:
-                $date = strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED')) . ' ' . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                $date = strtolower(Lang::txt('COM_PUBLICATIONS_SUBMITTED'))
+                    . ' '
+                    . Date::of($row->submitted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                 break;
         }
 
@@ -2333,19 +2383,30 @@ class Publication extends Obj
 
             $contributor['credit-name'] = !empty($author->p_name) ? $author->p_name : $author->name;
 
-            $email = !empty($author->p_email) ? $author->p_email : (!empty($author->invited_email) ? $author->invited_email : '');
+            $email = !empty($author->p_email)
+                ? $author->p_email
+                : (!empty($author->invited_email) ? $author->invited_email : '');
             if (!empty($email)) {
                 $contributor['contributor-email'] = $email;
             }
 
             $sequence = $i == 0 ? 'first' : 'additional';
-            $contributor['contributor-attributes'] = ['contributor-sequence' => $sequence, 'contributor-role' => 'author'];
+            $contributor['contributor-attributes'] = [
+                'contributor-sequence' => $sequence,
+                'contributor-role' => 'author',
+            ];
             $contributors['contributor'][] = $contributor;
             $i++;
         }
 
         // url
-        $url = trim(Request::root(), DS) . DS . 'publications' . DS . $this->version->publication_id . DS . $this->version->version_number;
+        $url = trim(Request::root(), DS)
+            . DS
+            . 'publications'
+            . DS
+            . $this->version->publication_id
+            . DS
+            . $this->version->version_number;
 
         // citation
         $citationType = 'bibtex';
@@ -2467,7 +2528,13 @@ class Publication extends Obj
     {
         $memberConfig = Component::params('com_members');
         $srv = $memberConfig->get('orcid_service', 'members');
-        $serviceURL = Request::scheme() . '://' . $this->orcidServices[$srv] . '/v3.0/' . $orcidID . '/work/' . $putCode;
+        $serviceURL = Request::scheme()
+            . '://'
+            . $this->orcidServices[$srv]
+            . '/v3.0/'
+            . $orcidID
+            . '/work/'
+            . $putCode;
         $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
         $data = $this->getWorkData($putCode);
 
@@ -2497,7 +2564,13 @@ class Publication extends Obj
     {
         $memberConfig = Component::params('com_members');
         $srv = $memberConfig->get('orcid_service', 'members');
-        $serviceURL = Request::scheme() . '://' . $this->orcidServices[$srv] . '/v3.0/' . $orcidID . '/work/' . $putCode;
+        $serviceURL = Request::scheme()
+            . '://'
+            . $this->orcidServices[$srv]
+            . '/v3.0/'
+            . $orcidID
+            . '/work/'
+            . $putCode;
         $header = ['Content-Type: application/vnd.orcid+json', 'Authorization: Bearer ' . $accessToken];
 
         $ch = curl_init();

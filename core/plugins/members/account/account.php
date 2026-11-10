@@ -155,12 +155,20 @@ class Account extends Plugin
                         $title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
                         $link  = Route::url($member->link() . '&active=account#password');
 
-                        $arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
+                        $arr['metadata']['alert'] = '<a class="alrt" href="'
+                            . $link
+                            . '"><span><h5>Password Expiration</h5>'
+                            . $title
+                            . '</span></a>';
                     } elseif ($passinfo['diff'] < 0) {
                         $title = 'Your password has expired!';
                         $link  = Route::url($member->link() . '&active=account#password');
 
-                        $arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
+                        $arr['metadata']['alert'] = '<a class="alrt" href="'
+                            . $link
+                            . '"><span><h5>Password Expiration</h5>'
+                            . $title
+                            . '</span></a>';
                     }
                 }
             }
@@ -296,7 +304,16 @@ class Account extends Plugin
             Notify::warning(Lang::txt('You must be logged in to access this area.'));
 
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken', false)), false),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode(
+                            Route::url(
+                                'index.php?option=' . $this->option . '&task=myaccount&active=account&action=sendtoken',
+                                false,
+                            ),
+                        ),
+                    false,
+                ),
             );
             return;
         }
@@ -318,7 +335,13 @@ class Account extends Plugin
         $this->sendEmail($token);
 
         // Redirect user to confirm token view page
-        Notify::warning(Lang::txt('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'));
+        Notify::warning(
+            Lang::txt(
+                'Please check the email associated with this account ('
+                    . $this->member->get('email')
+                    . ') for your confirmation token!',
+            ),
+        );
 
         App::redirect(
             Route::url($this->member->link() . '&active=account&task=confirmtoken', false),
@@ -340,7 +363,11 @@ class Account extends Plugin
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return='
-                    . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken')), false),
+                    . base64_encode(
+                        Route::url(
+                            'index.php?option=' . $this->option . '&task=myaccount&active=account&action=confirmtoken',
+                        ),
+                    ), false),
             );
             return;
         }
@@ -450,7 +477,11 @@ class Account extends Plugin
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return='
-                    . base64_encode(Route::url('index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass')), false),
+                    . base64_encode(
+                        Route::url(
+                            'index.php?option=' . $this->option . '&task=myaccount&active=account&action=setlocalpass',
+                        ),
+                    ), false),
             );
             return;
         }
@@ -464,7 +495,14 @@ class Account extends Plugin
             Notify::error(Lang::txt('You must first verify your email address by inputting the token.'));
 
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&id=' . $this->user->get('id') . '&active=account&task=sendtoken', false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&id='
+                        . $this->user->get('id')
+                        . '&active=account&task=sendtoken',
+                    false,
+                ),
             );
             return;
         }
@@ -525,7 +563,11 @@ class Account extends Plugin
         } elseif ($password1 != $password2) { // passwords don't match
             $this->setError(Lang::txt('MEMBERS_PASS_NEW_CONFIRMATION_MISMATCH'));
         } elseif (!empty($msg)) { // password doesn't meet site requirements
-            $this->setError(Lang::txt('Password does not meet site password requirements. Please choose a password meeting all the requirements listed.'));
+            $this->setError(
+                Lang::txt(
+                    'Password does not meet site password requirements. Please choose a password meeting all the requirements listed.',
+                ),
+            );
             $passrules = true;
         }
 
@@ -955,7 +997,10 @@ class Account extends Plugin
     {
         // Create database object and check that token matches that of the user stored in the db
         $db = App::get('db');
-        $db->setQuery('SELECT id, params FROM `#__users` WHERE block = 0 AND username = ' . $db->Quote($this->user->get('username')));
+        $db->setQuery(
+            'SELECT id, params FROM `#__users` WHERE block = 0 AND username = '
+                . $db->Quote($this->user->get('username')),
+        );
 
         return $db->loadObject();
     }

@@ -292,7 +292,11 @@ class Captcha extends Plugin
         $question = $this->questions[$use];
 
         $html  = '<label for="captcha-answer">' . "\n";
-        $html .= Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_PLEASE_ANSWER') . ' <span class="required">' . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_REQUIRED') . '</span><br />' . "\n";
+        $html .= Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_PLEASE_ANSWER')
+            . ' <span class="required">'
+            . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_REQUIRED')
+            . '</span><br />'
+            . "\n";
         switch ($question['type']) {
             case 'math':
                 // Generate a CAPTCHA
@@ -302,7 +306,9 @@ class Captcha extends Plugin
                 $key = $problem['operand1'] + $problem['operand2'];
 
                 $html .= "\t" . Lang::txt($question['question'], $problem['operand1'], $problem['operand2']);
-                $html .= "\t" . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" size="3" class="option" />' . "\n";
+                $html .= "\t"
+                    . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" size="3" class="option" />'
+                    . "\n";
                 break;
 
             case 'list':
@@ -312,9 +318,19 @@ class Captcha extends Plugin
 
                 $html .= "\t" . Lang::txt($question['question']) . "\n";
                 $html .= "\t" . '<select name="captcha[answer]" id="captcha-answer">' . "\n";
-                $html .= "\t\t" . '<option value="">' . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER') . '</option>' . "\n";
+                $html .= "\t\t"
+                    . '<option value="">'
+                    . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER')
+                    . '</option>'
+                    . "\n";
                 foreach ($this->sequence[$set] as $row) {
-                    $html .= "\t\t" . '<option value="' . Lang::txt($question['options'][$row]) . '">' . Lang::txt($question['options'][$row]) . '</option>' . "\n";
+                    $html .= "\t\t"
+                        . '<option value="'
+                        . Lang::txt($question['options'][$row])
+                        . '">'
+                        . Lang::txt($question['options'][$row])
+                        . '</option>'
+                        . "\n";
                 }
                 $html .= "\t" . '</select>' . "\n";
                 break;
@@ -329,16 +345,26 @@ class Captcha extends Plugin
         }
 
         $html .= '</label>' . "\n";
-        $html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->generateHash($key, date('j')) . '" />' . "\n";
+        $html .= "\t"
+            . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="'
+            . $this->generateHash($key, date('j'))
+            . '" />'
+            . "\n";
         //$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
-        App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $this->generateHash($key, date('j')));
+        App::get('session')->set(
+            'securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']),
+            $this->generateHash($key, date('j')),
+        );
 
         if ($this->verified) {
             $html  = '<input type="hidden" name="captcha[answer]" id="captcha-answer" value="' . $key . '" />' . "\n";
         }
 
-        $html .= '<input type="hidden" name="captcha[instance]" id="captcha-instance" value="' . $GLOBALS['totalCaptchas'] . '" />' . "\n";
+        $html .= '<input type="hidden" name="captcha[instance]" id="captcha-instance" value="'
+            . $GLOBALS['totalCaptchas']
+            . '" />'
+            . "\n";
 
         return $html;
     }
@@ -359,7 +385,11 @@ class Captcha extends Plugin
         $enc = strrev(md5($input));
 
         // Get only a few chars out of the string
-        $enc = substr($enc, 26, 1) . substr($enc, 10, 1) . substr($enc, 23, 1) . substr($enc, 3, 1) . substr($enc, 19, 1);
+        $enc = substr($enc, 26, 1)
+            . substr($enc, 10, 1)
+            . substr($enc, 23, 1)
+            . substr($enc, 3, 1)
+            . substr($enc, 19, 1);
 
         return $enc;
     }
@@ -663,7 +693,10 @@ class Captcha extends Plugin
         $security_code = $this->generateHash($this->keystring, date('j'));
 
         //Set the session to store the security code
-        App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
+        App::get('session')->set(
+            'securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']),
+            $security_code,
+        );
         $width = 120;
         $height = 40;
     }
@@ -707,7 +740,16 @@ class Captcha extends Plugin
             $angle = rand(-45, 45);
             $y = intval(rand((int) ($size * 1.5), (int) ($this->ly - ($size / 7))));
 
-            @imagettftext($image, $size, $angle, $x + (int) ($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
+            @imagettftext(
+                $image,
+                $size,
+                $angle,
+                $x + (int) ($size / 15),
+                $y,
+                $white,
+                __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF',
+                $security_code[$i],
+            );
             $x += ($size * 2);
         }
 

@@ -399,7 +399,11 @@ class Query extends Relational
                 if (strtolower($expr->fldval) == 'tag') {
                     //$e[] = '(' . $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $db->quoteName('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
                 } else {
-                    $e[] = $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', ($selfBuilt ? $expr->val : $db->escape($expr->val)), $expr->opval);
+                    $e[] = $prfx
+                        . '.'
+                        . $db->quoteName($expr->fldval)
+                        . ' '
+                        . str_replace('$1', ($selfBuilt ? $expr->val : $db->escape($expr->val)), $expr->opval);
                 }
             } else {
                 $uid = 'username';
@@ -420,9 +424,29 @@ class Query extends Relational
                 if (strtolower($expr->fldval) == 'status' && $expr->val == '-1') {
                     $condition->expressions[$i]->val = '0';
 
-                    $e[] = '(' . $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . $expr->opval . ' ' . $db->quote($expr->val) . ' AND ' . $prfx . '.' . $db->quoteName('open') . ' = ' . $db->quote('0') . ')';
+                    $e[] = '('
+                        . $prfx
+                        . '.'
+                        . $db->quoteName($expr->fldval)
+                        . ' '
+                        . $expr->opval
+                        . ' '
+                        . $db->quote($expr->val)
+                        . ' AND '
+                        . $prfx
+                        . '.'
+                        . $db->quoteName('open')
+                        . ' = '
+                        . $db->quote('0')
+                        . ')';
                 } else {
-                    $e[] = $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . $expr->opval . ' ' . $db->quote($expr->val);
+                    $e[] = $prfx
+                        . '.'
+                        . $db->quoteName($expr->fldval)
+                        . ' '
+                        . $expr->opval
+                        . ' '
+                        . $db->quote($expr->val);
                 }
             }
         }
@@ -436,7 +460,15 @@ class Query extends Relational
 							AND (t.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
                 $having = " GROUP BY f.id ";
             } elseif (count($tags) && count($nottags)) {
-                $e[] = '(t.' . $db->quoteName('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+                $e[] = '(t.'
+                    . $db->quoteName('tag')
+                    . ' '
+                    . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
+                    . ' OR t.'
+                    . $db->quoteName('raw_tag')
+                    . ' '
+                    . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
+                    . ')';
                 $e[] = 'f.' . $db->quoteName('id') . ' NOT IN (
 							SELECT jto.' . $db->quoteName('objectid') . ' FROM #__tags_object AS jto
 							JOIN #__tags AS jt ON jto.' . $db->quoteName('tagid') . '=jt.' . $db->quoteName('id') . '
@@ -444,7 +476,15 @@ class Query extends Relational
 							AND (jt.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR jt.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
                 $having = " GROUP BY f.id ";
             } else {
-                $e[] = '(t.' . $db->quoteName('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
+                $e[] = '(t.'
+                    . $db->quoteName('tag')
+                    . ' '
+                    . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
+                    . ' OR t.'
+                    . $db->quoteName('raw_tag')
+                    . ' '
+                    . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
+                    . ')';
 
                 $having  = " GROUP BY f.id ";
                 if (strtoupper($condition->operator) == 'OR') {

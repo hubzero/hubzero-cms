@@ -407,8 +407,14 @@ class Html extends Obj
      * @param   boolean  $useletters
      * @return  string   HTML
      */
-    public static function generateCode($minlength = 10, $maxlength = 10, $usespecial = 0, $usenumbers = 0, $useletters = 1, $mixedcaps = false)
-    {
+    public static function generateCode(
+        $minlength = 10,
+        $maxlength = 10,
+        $usespecial = 0,
+        $usenumbers = 0,
+        $useletters = 1,
+        $mixedcaps = false,
+    ) {
         $key = '';
         $charset = '';
         if ($useletters) {
@@ -457,7 +463,11 @@ class Html extends Obj
         // punctuation and parentheses.
 
         // Replace email links
-        $string = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $string);
+        $string = preg_replace(
+            '/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/',
+            '<a href="mailto:$1">$1</a>',
+            $string,
+        );
 
         // Replace url links — split around existing <a> tags so URLs inside them are not double-wrapped
         $urlPattern = '#\b((?<!href=")(https?://www[.]|[\w-]+://?|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
@@ -1114,8 +1124,14 @@ class Html extends Obj
      * @param   string  $separator
      * @return  string
      */
-    public static function buildFileBrowserCrumbs($dir = '', $url = '', &$parent = null, $linkit = true, $adapter = null, $separator = '&raquo;')
-    {
+    public static function buildFileBrowserCrumbs(
+        $dir = '',
+        $url = '',
+        &$parent = null,
+        $linkit = true,
+        $adapter = null,
+        $separator = '&raquo;',
+    ) {
         $bc = null;
         $href = '';
 
@@ -1164,8 +1180,16 @@ class Html extends Obj
      * @param   string  $reviewer
      * @return  void
      */
-    public static function sendHUBMessage($option, $project, $addressees = [], $subject = '', $component = '', $layout = 'admin', $message = '', $reviewer = '')
-    {
+    public static function sendHUBMessage(
+        $option,
+        $project,
+        $addressees = [],
+        $subject = '',
+        $component = '',
+        $layout = 'admin',
+        $message = '',
+        $reviewer = '',
+    ) {
         if (!$layout || !$subject || !$component || empty($addressees)) {
             return false;
         }

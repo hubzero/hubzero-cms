@@ -246,9 +246,23 @@ class Changelog extends Obj
 
                     // Logged values are stored as submitted (severity, category, cc addresses)
                     if ($type == 'changes' && $items->before != $items->after) {
-                        $clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $this->esc($items->field), $this->esc($items->before), $this->esc($items->after)) . '</li>';
+                        $clog[] = '<li>'
+                            . Lang::txt(
+                                'COM_SUPPORT_CHANGELOG_BEFORE_AFTER',
+                                $this->esc($items->field),
+                                $this->esc($items->before),
+                                $this->esc($items->after),
+                            )
+                            . '</li>';
                     } elseif ($type == 'notifications') {
-                        $clog[] = '<li>' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $this->esc($items->role), $this->esc($items->name), $this->esc($items->address)) . '</li>';
+                        $clog[] = '<li>'
+                            . Lang::txt(
+                                'COM_SUPPORT_CHANGELOG_NOTIFIED',
+                                $this->esc($items->role),
+                                $this->esc($items->name),
+                                $this->esc($items->address),
+                            )
+                            . '</li>';
                     }
                 }
                 $clog[] = '</ul>';
@@ -392,7 +406,9 @@ class Changelog extends Obj
     public function remove($from, $field)
     {
         if (!isset($this->log[$from])) {
-            throw new InvalidArgumentException(Lang::txt('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from));
+            throw new InvalidArgumentException(
+                Lang::txt('COM_SUPPORT_ERROR_CHANGELOG_UNKNOWN_CATEGORY', (string) $from),
+            );
         }
 
         foreach ($this->log[$from] as $key => $item) {

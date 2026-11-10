@@ -501,7 +501,11 @@ class Page extends Relational
                 // (the API, the media controller) died on any group page.
                 // App plugins shadow core ones, so look there first.
                 foreach ([PATH_APP, PATH_CORE] as $root) {
-                    foreach (glob($root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $file) ?: [] as $plugged) {
+                    foreach (
+                        glob(
+                            $root . DS . 'plugins' . DS . '*' . DS . '*' . DS . 'adapters' . DS . $file,
+                        ) ?: [] as $plugged
+                    ) {
                         static::addAdapterPath($plugged);
                     }
                 }
@@ -797,7 +801,11 @@ class Page extends Relational
             $this->config()->set('access-comment-delete', false);
             $this->config()->set('access-comment-edit', false);
 
-            if ($this->get('scope') == 'site' && $this->get('access') && !in_array($this->get('access'), User::getAuthorisedViewLevels())) {
+            if (
+                $this->get('scope') == 'site'
+                && $this->get('access')
+                && !in_array($this->get('access'), User::getAuthorisedViewLevels())
+            ) {
                 $this->config()->set('access-page-view', false);
             }
 
@@ -862,7 +870,11 @@ class Page extends Relational
                                 // author is locked out of a page they created
                                 // unless they hold the global core.edit
                                 // permission, even when granted core.edit.own.
-                                $isOwner = (!User::isGuest() && $this->get('created_by') && $this->get('created_by') == User::get('id'));
+                                $isOwner = (
+                                    !User::isGuest()
+                                    && $this->get('created_by')
+                                    && $this->get('created_by') == User::get('id')
+                                );
 
                                 $this->config()->set('access-page-delete', User::authorise('core.delete', $option));
                                 $this->config()->set('access-page-edit', User::authorise('core.edit', $option)

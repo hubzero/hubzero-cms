@@ -210,9 +210,15 @@ class Owner extends Table
         }
 
         if ($name && intval($uid) == 0) {
-            $query = "SELECT id FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid) . " AND invited_name=" . $this->db->quote($name);
+            $query = "SELECT id FROM $this->tableName WHERE projectid="
+                . $this->db->quote($projectid)
+                . " AND invited_name="
+                . $this->db->quote($name);
         } elseif (intval($uid)) {
-            $query = "SELECT id FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid) . " AND userid=" . $this->db->quote($uid);
+            $query = "SELECT id FROM $this->tableName WHERE projectid="
+                . $this->db->quote($projectid)
+                . " AND userid="
+                . $this->db->quote($uid);
         } else {
             return false;
         }
@@ -312,14 +318,30 @@ class Owner extends Table
                 $names .= htmlspecialchars($name);
                 if ($show_uid) {
                     // userid is the 'invited' marker for pending invites (see the select above)
-                    $names .= ' (' . (is_numeric($entry->userid) ? (int) $entry->userid : htmlspecialchars((string) $entry->userid)) . ')';
+                    $names .= ' ('
+                        . (is_numeric($entry->userid) ? (int) $entry->userid : htmlspecialchars(
+                            (string) $entry->userid,
+                        ))
+                        . ')';
                 } elseif ($withUsername) {
-                    $names .= ' (<a href="/members/' . (int) $entry->userid . '">' . htmlspecialchars($entry->username) . '</a>)';
+                    $names .= ' (<a href="/members/'
+                        . (int) $entry->userid
+                        . '">'
+                        . htmlspecialchars($entry->username)
+                        . '</a>)';
                 }
 
                 if ($limit && $i == $limit && $i != count($result)) {
-                    $names .= ', ' . Lang::txt('COM_PROJECTS_AND') . ' ' . (count($result) - $limit) . ' ' . Lang::txt('COM_PROJECTS_MORE') . ' ';
-                    $names .= (count($result) - $limit) == 1 ? Lang::txt('COM_PROJECTS_ACTIVITY_PERSON') : Lang::txt('COM_PROJECTS_ACTIVITY_PERSONS');
+                    $names .= ', '
+                        . Lang::txt('COM_PROJECTS_AND')
+                        . ' '
+                        . (count($result) - $limit)
+                        . ' '
+                        . Lang::txt('COM_PROJECTS_MORE')
+                        . ' ';
+                    $names .= (count($result) - $limit) == 1
+                        ? Lang::txt('COM_PROJECTS_ACTIVITY_PERSON')
+                        : Lang::txt('COM_PROJECTS_ACTIVITY_PERSONS');
                     break;
                 } else {
                     $names .= count($result) == $i ? '' : ', ';
@@ -419,7 +441,9 @@ class Owner extends Table
         $limitstart = isset($filters['start']) ? $filters['start'] : 0;
         $select     = isset($filters['select']) ? $filters['select'] : '';
         $native     = isset($filters['native']) ? $filters['native'] : '-';
-        $pub        = isset($filters['pub_versionid']) && intval($filters['pub_versionid']) ? $filters['pub_versionid'] : '';
+        $pub        = isset($filters['pub_versionid']) && intval($filters['pub_versionid'])
+            ? $filters['pub_versionid']
+            : '';
         $connected  = isset($filters['connected']) ? $filters['connected'] : 0;
 
         $query   =  "SELECT DISTINCT ";
@@ -435,7 +459,8 @@ class Owner extends Table
         $query .= " FROM $this->tableName AS o ";
         $query .= " JOIN #__projects as p ON o.projectid=p.id";
         if ($pub) {
-            $query .= " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id=" . $this->db->quote($pub);
+            $query .= " LEFT JOIN #__publication_authors as pa ON o.id=pa.project_owner_id AND pa.publication_version_id="
+                . $this->db->quote($pub);
         }
         $query .=  " LEFT JOIN #__xprofiles as x ON o.userid=x.uidNumber ";
         $query .=  " LEFT JOIN #__xgroups as g ON o.groupid=g.gidNumber ";
@@ -648,7 +673,9 @@ class Owner extends Table
                 $array_members = [];
                 $array_member_groups = [];
                 if (!empty($where_groups)) {
-                    $query  = "SELECT DISTINCT m.uidNumber, m.gidNumber FROM `#__xgroups_members` AS m WHERE m.gidNumber IN (" . implode(',', $where_groups) . ")";
+                    $query  = "SELECT DISTINCT m.uidNumber, m.gidNumber FROM `#__xgroups_members` AS m WHERE m.gidNumber IN ("
+                        . implode(',', $where_groups)
+                        . ")";
                     $this->db->setQuery($query);
                     $members = $this->db->loadObjectList();
                 }
@@ -677,7 +704,15 @@ class Owner extends Table
             if (!empty($owners_to_add)) {
                 foreach ($owners_to_add as $newcomer) {
                     $role = isset($array_group_managers[$newcomer]) ? 1 : 0;
-                    $added = $this->saveOwners($projectid, 0, $newcomer, $array_member_groups[$newcomer], $role, 1, $array_groups_native[$array_member_groups[$newcomer]]);
+                    $added = $this->saveOwners(
+                        $projectid,
+                        0,
+                        $newcomer,
+                        $array_member_groups[$newcomer],
+                        $role,
+                        1,
+                        $array_groups_native[$array_member_groups[$newcomer]],
+                    );
                 }
             }
 
@@ -764,10 +799,17 @@ class Owner extends Table
             foreach ($users as $user) {
                 if ($remove == 1) {
                     $query  = "DELETE FROM $this->tableName WHERE projectid = " . $this->db->quote($projectid);
-                    $query .= !$byownerid ? " AND userid = " . $this->db->quote($user) : " AND id = " . $this->db->quote($user);
+                    $query .= !$byownerid
+                        ? " AND userid = " . $this->db->quote($user)
+                        : " AND id = " . $this->db->quote($user);
                 } else {
-                    $query  = "UPDATE $this->tableName SET status = " . $this->db->quote($status) . ", lastvisit = null, params = null, num_visits = 0, groupid = 0  WHERE projectid = " . $this->db->quote($projectid);
-                    $query .= !$byownerid ? " AND userid = " . $this->db->quote($user) : " AND id = " . $this->db->quote($user);
+                    $query  = "UPDATE $this->tableName SET status = "
+                        . $this->db->quote($status)
+                        . ", lastvisit = null, params = null, num_visits = 0, groupid = 0  WHERE projectid = "
+                        . $this->db->quote($projectid);
+                    $query .= !$byownerid
+                        ? " AND userid = " . $this->db->quote($user)
+                        : " AND id = " . $this->db->quote($user);
                 }
                 $this->db->setQuery($query);
                 if (!$this->db->query()) {
@@ -812,8 +854,13 @@ class Owner extends Table
 
         if (!empty($users)) {
             foreach ($users as $user) {
-                $query  = "UPDATE $this->tableName SET role=" . $this->db->quote($role) . "  WHERE projectid = " . $this->db->quote($projectid);
-                $query .= !$byownerid ? " AND userid =" . $this->db->quote($user) : " AND id = " . $this->db->quote($user);
+                $query  = "UPDATE $this->tableName SET role="
+                    . $this->db->quote($role)
+                    . "  WHERE projectid = "
+                    . $this->db->quote($projectid);
+                $query .= !$byownerid
+                    ? " AND userid =" . $this->db->quote($user)
+                    : " AND id = " . $this->db->quote($user);
                 $this->db->setQuery($query);
                 if (!$this->db->query()) {
                     return false;
@@ -861,7 +908,11 @@ class Owner extends Table
             return false;
         }
 
-        $query  = "SELECT id FROM $this->tableName WHERE invited_email=" . $this->db->quote($email) . " AND projectid=" . $this->db->quote($projectid) . " LIMIT 1";
+        $query  = "SELECT id FROM $this->tableName WHERE invited_email="
+            . $this->db->quote($email)
+            . " AND projectid="
+            . $this->db->quote($projectid)
+            . " LIMIT 1";
         $this->db->setQuery($query);
         return $this->db->loadResult();
     }
@@ -882,7 +933,11 @@ class Owner extends Table
             return false;
         }
 
-        $query  = "SELECT id FROM $this->tableName WHERE invited_name=" . $this->db->quote($name) . " AND projectid=" . $this->db->quote($projectid) . " LIMIT 1";
+        $query  = "SELECT id FROM $this->tableName WHERE invited_name="
+            . $this->db->quote($name)
+            . " AND projectid="
+            . $this->db->quote($projectid)
+            . " LIMIT 1";
         $this->db->setQuery($query);
         return $this->db->loadResult();
     }
@@ -957,8 +1012,17 @@ class Owner extends Table
      * @param   boolean  $split_group_roles  preserve group roles when adding to a project (manager/member)
      * @return  mixed    false if error, integer on success (number of saved records)
      */
-    public function saveOwners($projectid = null, $actor = 0, $userid = 0, $groupid = 0, $role = 0, $status = 1, $native = 0, $invited_email = '', $split_group_roles = 0)
-    {
+    public function saveOwners(
+        $projectid = null,
+        $actor = 0,
+        $userid = 0,
+        $groupid = 0,
+        $role = 0,
+        $status = 1,
+        $native = 0,
+        $invited_email = '',
+        $split_group_roles = 0,
+    ) {
         if ($projectid === null || !intval($projectid)) {
             return false;
         }
@@ -976,14 +1040,41 @@ class Owner extends Table
 
             if ($found === null) {
                 // User not in project
-                $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT " . (int) $projectid . ", " . (int) $userid . ", " . (int) $groupid . ", " . $this->db->quote($now) . ", " . (int) $status . ", " . (int) $native . ", " . (int) $role . ", " . $this->db->quote($invited_email) . " FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->tableName WHERE `projectid` = " . (int) $projectid . " AND `userid` = " . (int) $userid . " LIMIT 1)";
+                $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT "
+                    . (int) $projectid
+                    . ", "
+                    . (int) $userid
+                    . ", "
+                    . (int) $groupid
+                    . ", "
+                    . $this->db->quote($now)
+                    . ", "
+                    . (int) $status
+                    . ", "
+                    . (int) $native
+                    . ", "
+                    . (int) $role
+                    . ", "
+                    . $this->db->quote($invited_email)
+                    . " FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->tableName WHERE `projectid` = "
+                    . (int) $projectid
+                    . " AND `userid` = "
+                    . (int) $userid
+                    . " LIMIT 1)";
                 $this->db->setQuery($query);
                 if ($this->db->query()) {
                     $added[] = $userid;
                 }
             } elseif ($found != 1) {
                 // Inactive/deleted - activate
-                $query = "UPDATE $this->tableName SET added = '$now', status = 1, role = " . $this->db->quote($role) . ", groupid = " . $this->db->quote($groupid) . "  WHERE projectid = " . $this->db->quote($projectid) . " AND userid= " . $this->db->quote($userid);
+                $query = "UPDATE $this->tableName SET added = '$now', status = 1, role = "
+                    . $this->db->quote($role)
+                    . ", groupid = "
+                    . $this->db->quote($groupid)
+                    . "  WHERE projectid = "
+                    . $this->db->quote($projectid)
+                    . " AND userid= "
+                    . $this->db->quote($userid);
                 $this->db->setQuery($query);
                 if ($this->db->query()) {
                     $added[] = $userid;
@@ -1020,14 +1111,43 @@ class Owner extends Table
 
                     if ($found === null) {
                         // User not in project
-                        $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT " . (int) $projectid . ", " . (int) $owner . ", " . (int) $gidNumber . ", " . $this->db->quote($now) . ", " . (int) $status . ", " . (int) $native . ", " . (int) $role . ", " . $this->db->quote($invited_email) . " FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->tableName WHERE `projectid` = " . (int) $projectid . " AND `userid` = " . (int) $owner . " LIMIT 1)";
+                        $query  = "INSERT INTO $this->tableName (`projectid`, `userid`, `groupid`, `added`, `status`, `native`, `role`, `invited_email`) SELECT "
+                            . (int) $projectid
+                            . ", "
+                            . (int) $owner
+                            . ", "
+                            . (int) $gidNumber
+                            . ", "
+                            . $this->db->quote($now)
+                            . ", "
+                            . (int) $status
+                            . ", "
+                            . (int) $native
+                            . ", "
+                            . (int) $role
+                            . ", "
+                            . $this->db->quote($invited_email)
+                            . " FROM DUAL WHERE NOT EXISTS (SELECT `id` FROM $this->tableName WHERE `projectid` = "
+                            . (int) $projectid
+                            . " AND `userid` = "
+                            . (int) $owner
+                            . " LIMIT 1)";
                         $this->db->setQuery($query);
                         if ($this->db->query()) {
                             $added[] = $owner;
                         }
                     } elseif ($found != 1) {
                         // Inactive/deleted - activate
-                        $query = "UPDATE $this->tableName SET added = " . $this->db->quote($now) . ", status = 1, groupid = " . $this->db->quote($gidNumber) . ", role = " . $this->db->quote($role) . "  WHERE projectid = " . $this->db->quote($projectid) . " AND userid = " . $this->db->quote($owner);
+                        $query = "UPDATE $this->tableName SET added = "
+                            . $this->db->quote($now)
+                            . ", status = 1, groupid = "
+                            . $this->db->quote($gidNumber)
+                            . ", role = "
+                            . $this->db->quote($role)
+                            . "  WHERE projectid = "
+                            . $this->db->quote($projectid)
+                            . " AND userid = "
+                            . $this->db->quote($owner);
                         $this->db->setQuery($query);
                         if ($this->db->query()) {
                             $added[] = $owner;
@@ -1035,7 +1155,11 @@ class Owner extends Table
                     } elseif ($found == 1 && !in_array($owner, $managers)) {
                         // Only downgrade role during sync, never upgrade
                         // This prevents demoting project creators or manually promoted managers
-                        $query = "SELECT role FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid) . " AND userid=" . $this->db->quote($owner) . " LIMIT 1";
+                        $query = "SELECT role FROM $this->tableName WHERE projectid="
+                            . $this->db->quote($projectid)
+                            . " AND userid="
+                            . $this->db->quote($owner)
+                            . " LIMIT 1";
                         $this->db->setQuery($query);
                         $currentRole = (int) $this->db->loadResult();
 
@@ -1077,7 +1201,13 @@ class Owner extends Table
             return false;
         }
 
-        $this->db->setQuery("SELECT * FROM $this->tableName WHERE projectid=" . $this->db->quote($projectid) . " AND userid=" . $this->db->quote($owner) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT * FROM $this->tableName WHERE projectid="
+                . $this->db->quote($projectid)
+                . " AND userid="
+                . $this->db->quote($owner)
+                . " LIMIT 1",
+        );
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {

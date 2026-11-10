@@ -101,7 +101,10 @@ class Articles extends SiteController
             if ($item->catid == 0 || $item->category_access === null) {
                 $item->params->set('access-view', in_array($item->access, $groups));
             } else {
-                $item->params->set('access-view', in_array($item->access, $groups) && in_array($item->category_access, $groups));
+                $item->params->set(
+                    'access-view',
+                    in_array($item->access, $groups) && in_array($item->category_access, $groups),
+                );
             }
         }
 
@@ -212,7 +215,10 @@ class Articles extends SiteController
         $title = $params->get('page_title', $item->title);
 
         // if the menu item does not concern this article
-        if ($menu && ($menu->query['option'] != 'com_content' || $menu->query['view'] != 'article' || $id != $item->id)) {
+        if (
+            $menu
+            && ($menu->query['option'] != 'com_content' || $menu->query['view'] != 'article' || $id != $item->id)
+        ) {
             // If this is not a single article menu item, set the page title to the article title
             if ($item->title) {
                 $title = $item->title;
@@ -227,7 +233,16 @@ class Articles extends SiteController
             // category entries already covered by the menu trail
             $menuSegments = $menu ? array_map('strtolower', explode('/', $menu->route)) : [];
 
-            while ($category && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id) && $category->id !== 'root' && $category->id > 1) {
+            while (
+                $category
+                && (
+                    $menu->query['option'] != 'com_content'
+                    || $menu->query['view'] == 'article'
+                    || $id != $category->id
+                )
+                && $category->id !== 'root'
+                && $category->id > 1
+            ) {
                 // Skip this category if its alias already appears in the
                 // menu route (the menu pathway already covers it)
                 if (!in_array(strtolower($category->alias), $menuSegments)) {
@@ -391,7 +406,12 @@ class Articles extends SiteController
         $filters['layout'] = Request::getCmd('layout');
 
         $itemid = Request::getInt('Itemid', 0);
-        $limit  = Request::getState('com_content.archive.list' . $itemid . '.limit', 'limit', $params->get('display_num'), 'uint');
+        $limit  = Request::getState(
+            'com_content.archive.list' . $itemid . '.limit',
+            'limit',
+            $params->get('display_num'),
+            'uint',
+        );
         $filters['month']  = Request::getInt('month');
         $filters['year']   = Request::getInt('year');
 
@@ -548,12 +568,17 @@ class Articles extends SiteController
                 if ($item->catid == 0 || $item->category_access === null) {
                     $item->params->set('access-view', in_array($item->access, $groups));
                 } else {
-                    $item->params->set('access-view', in_array($item->access, $groups) && in_array($item->category_access, $groups));
+                    $item->params->set(
+                        'access-view',
+                        in_array($item->access, $groups) && in_array($item->category_access, $groups),
+                    );
                 }
             }
 
             $item->catslug = ($item->category_alias) ? ($item->catid . ':' . $item->category_alias) : $item->catid;
-            $item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
+            $item->parent_slug = ($item->parent_alias)
+                ? ($item->parent_id . ':' . $item->parent_alias)
+                : $item->parent_id;
         }
 
         $form = new stdClass();
@@ -741,7 +766,9 @@ class Articles extends SiteController
         foreach ($items as $i => & $item) {
             $item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
             $item->catslug = ($item->category_alias) ? ($item->catid . ':' . $item->category_alias) : $item->catid;
-            $item->parent_slug = ($item->parent_alias) ? ($item->parent_id . ':' . $item->parent_alias) : $item->parent_id;
+            $item->parent_slug = ($item->parent_alias)
+                ? ($item->parent_id . ':' . $item->parent_alias)
+                : $item->parent_id;
 
             // No link for ROOT category
             if ($item->parent_alias == 'root') {
@@ -760,13 +787,22 @@ class Articles extends SiteController
             // Old plugins: Use processed text as introtext
             $item->introtext = $item->text;
 
-            $results = Event::trigger('content.onContentAfterTitle', ['com_content.featured', &$item, &$item->params, 0]);
+            $results = Event::trigger(
+                'content.onContentAfterTitle',
+                ['com_content.featured', &$item, &$item->params, 0],
+            );
             $item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentBeforeDisplay', ['com_content.featured', &$item, &$item->params, 0]);
+            $results = Event::trigger(
+                'content.onContentBeforeDisplay',
+                ['com_content.featured', &$item, &$item->params, 0],
+            );
             $item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentAfterDisplay', ['com_content.featured', &$item, &$item->params, 0]);
+            $results = Event::trigger(
+                'content.onContentAfterDisplay',
+                ['com_content.featured', &$item, &$item->params, 0],
+            );
             $item->event->afterDisplayContent = trim(implode("\n", $results));
         }
 
@@ -890,7 +926,8 @@ class Articles extends SiteController
         }
 
         $options = [];
-        $options['countItems'] = $mparams->get('show_cat_num_articles_cat', 1) || !$mparams->get('show_empty_categories_cat', 0);
+        $options['countItems'] = $mparams->get('show_cat_num_articles_cat', 1)
+            || !$mparams->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
         $parent = $categories->get($filters['parentId'], 'root');
@@ -1005,7 +1042,12 @@ class Articles extends SiteController
 
         // filter.order
         $itemid = Request::getInt('id', 0) . ':' . Request::getInt('Itemid', 0);
-        $orderCol = Request::getState('com_content.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+        $orderCol = Request::getState(
+            'com_content.category.list.' . $itemid . '.filter_order',
+            'filter_order',
+            '',
+            'string',
+        );
         $filter_fields = [
             'id',
             'a.id',
@@ -1051,7 +1093,12 @@ class Articles extends SiteController
         }
         $filters['ordering'] = $orderCol;
 
-        $listOrder = Request::getState('com_content.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+        $listOrder = Request::getState(
+            'com_content.category.list.' . $itemid . '.filter_order_Dir',
+            'filter_order_Dir',
+            '',
+            'cmd',
+        );
         if (!in_array(strtoupper($listOrder), ['ASC', 'DESC', ''])) {
             $listOrder = 'ASC';
         }
@@ -1059,10 +1106,18 @@ class Articles extends SiteController
 
         // set limit for query. If list, use parameter. If blog, add blog parameters for limit.
         if (Request::getCmd('layout') == 'blog' || $params->get('layout_type') == 'blog') {
-            $limit = $params->get('num_leading_articles') + $params->get('num_intro_articles') + $params->get('num_links');
+            $limit = $params
+                ->get('num_leading_articles') + $params
+                ->get('num_intro_articles') + $params
+                ->get('num_links');
             $filters['links'] = $params->get('num_links');
         } else {
-            $limit = Request::getState('com_content.category.list.' . $itemid . '.limit', 'limit', $params->get('display_num'), 'uint');
+            $limit = Request::getState(
+                'com_content.category.list.' . $itemid . '.limit',
+                'limit',
+                $params->get('display_num'),
+                'uint',
+            );
         }
 
         $filters['limit'] = $limit;
@@ -1079,7 +1134,8 @@ class Articles extends SiteController
 
         // Get category
         $options = [];
-        $options['countItems'] = $params->get('show_cat_num_articles', 1) || !$params->get('show_empty_categories_cat', 0);
+        $options['countItems'] = $params->get('show_cat_num_articles', 1)
+            || !$params->get('show_empty_categories_cat', 0);
 
         $categories = \Components\Categories\Helpers\Categories::getInstance('Content', $options);
         $category = $categories->get($filters['category_id'], 'root');
@@ -1097,7 +1153,11 @@ class Articles extends SiteController
         $children = $category->getChildren();
         if (count($children)) {
             if ($params->get('orderby_pri') == 'alpha' || $params->get('orderby_pri') == 'ralpha') {
-                \Hubzero\Utility\Arr::sortObjects($children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
+                \Hubzero\Utility\Arr::sortObjects(
+                    $children,
+                    'title',
+                    ($params->get('orderby_pri') == 'alpha') ? 1 : -1,
+                );
             }
         }
         $parent = false;
@@ -1192,13 +1252,22 @@ class Articles extends SiteController
             // Old plugins: Use processed text as introtext
             $item->introtext = $item->text;
 
-            $results = Event::trigger('content.onContentAfterTitle', ['com_content.category', &$item, &$item->params, 0]);
+            $results = Event::trigger(
+                'content.onContentAfterTitle',
+                ['com_content.category', &$item, &$item->params, 0],
+            );
             $item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentBeforeDisplay', ['com_content.category', &$item, &$item->params, 0]);
+            $results = Event::trigger(
+                'content.onContentBeforeDisplay',
+                ['com_content.category', &$item, &$item->params, 0],
+            );
             $item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-            $results = Event::trigger('content.onContentAfterDisplay', ['com_content.category', &$item, &$item->params, 0]);
+            $results = Event::trigger(
+                'content.onContentAfterDisplay',
+                ['com_content.category', &$item, &$item->params, 0],
+            );
             $item->event->afterDisplayContent = trim(implode("\n", $results));
         }
 
@@ -1206,7 +1275,13 @@ class Articles extends SiteController
         // If it is the active menu item, then the view and category id will match
         $menu = App::get('menu')->getActive();
 
-        if ((!$menu) || ((strpos($menu->link, 'view=category') === false) || (strpos($menu->link, '&id=' . (string) $category->id) === false))) {
+        if (
+            (!$menu)
+            || ((strpos(
+                $menu->link,
+                'view=category',
+            ) === false) || (strpos($menu->link, '&id=' . (string) $category->id) === false))
+        ) {
             // Get the layout from the merged category params
             if ($layout = $category->params->get('category_layout')) {
                 $this->view->setLayout($layout);
@@ -1230,14 +1305,21 @@ class Articles extends SiteController
         }
 
 
-        if ($menu && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id)) {
+        if (
+            $menu
+            && ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $category->id)
+        ) {
             $path = [[
                 'title' => $category->title,
                 'link'  => '',
             ]];
             $parent = $category->getParent();
 
-            while (($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $parent->id) && $parent->id !== 'root' && $parent->id > 1) {
+            while (
+                ($menu->query['option'] != 'com_content' || $menu->query['view'] == 'article' || $id != $parent->id)
+                && $parent->id !== 'root'
+                && $parent->id > 1
+            ) {
                 $path[] = [
                     'title' => $parent->title,
                     'link'  => HelperRoute::getCategoryRoute($parent->id),
@@ -1412,7 +1494,10 @@ class Articles extends SiteController
         } else {
             // New item.
             if ($catId) {
-                $item->params->set('access-change', User::authorise('core.edit.state', 'com_content.category.' . $catId));
+                $item->params->set(
+                    'access-change',
+                    User::authorise('core.edit.state', 'com_content.category.' . $catId),
+                );
                 $item->catid = $catId;
             } else {
                 $item->params->set('access-change', User::authorise('core.edit.state', 'com_content'));
@@ -1425,7 +1510,8 @@ class Articles extends SiteController
         }
 
         if (empty($item->id)) {
-            $authorised = User::authorise('core.create', 'com_content') || count(User::getAuthorisedCategories('com_content', 'core.create'));
+            $authorised = User::authorise('core.create', 'com_content')
+                || count(User::getAuthorisedCategories('com_content', 'core.create'));
         } else {
             $authorised = $item->params->get('access-edit');
         }
@@ -1536,7 +1622,8 @@ class Articles extends SiteController
 
         // New items require create permission
         if (empty($model->id)) {
-            $authorised = User::authorise('core.create', 'com_content') || count(User::getAuthorisedCategories('com_content', 'core.create'));
+            $authorised = User::authorise('core.create', 'com_content')
+                || count(User::getAuthorisedCategories('com_content', 'core.create'));
         }
 
         if ($authorised !== true) {

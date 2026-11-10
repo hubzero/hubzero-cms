@@ -609,7 +609,17 @@ class Team extends Plugin
 
                     // Save new author
                     $native = ($this->model->access('owner')) ? 1 : 0;
-                    if ($objO->saveOwners($this->model->get('id'), $this->uid, $uid, $forgroup, $role, $status = 1, $native)) {
+                    if (
+                        $objO->saveOwners(
+                            $this->model->get('id'),
+                            $this->uid,
+                            $uid,
+                            $forgroup,
+                            $role,
+                            $status = 1,
+                            $native,
+                        )
+                    ) {
                         $uids[] = $uid;
                     }
                 }
@@ -617,7 +627,15 @@ class Team extends Plugin
 
             if ($groups) {
                 // Save new authors from group
-                $g_added = $objO->saveOwners($this->model->get('id'), $this->uid, 0, $groups, $role, $status = 1, $native = 0);
+                $g_added = $objO->saveOwners(
+                    $this->model->get('id'),
+                    $this->uid,
+                    0,
+                    $groups,
+                    $role,
+                    $status = 1,
+                    $native = 0,
+                );
                 if ($objO->getError()) {
                     $this->setError($objO->getError());
                 }
@@ -631,7 +649,13 @@ class Team extends Plugin
         // Did we add anyone new?
         $uids = array_unique($uids);
         if (count($uids) > 0) {
-            $this->msg = Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED') . ' ' . count($uids) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_NEW') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS');
+            $this->msg = Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED')
+                . ' '
+                . count($uids)
+                . ' '
+                . Lang::txt('PLG_PROJECTS_TEAM_NEW')
+                . ' '
+                . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS');
 
             if (count($invalid) > 0) {
                 $this->msg .= '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
@@ -651,7 +675,13 @@ class Team extends Plugin
                     if ($i > 1) {
                         $left = count($uids) - 3;
                         if ($left) {
-                            $note .= ' ' . Lang::txt('PLG_PROJECTS_TEAM_AND') . ' ' . $left . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MORE') . ' ';
+                            $note .= ' '
+                                . Lang::txt('PLG_PROJECTS_TEAM_AND')
+                                . ' '
+                                . $left
+                                . ' '
+                                . Lang::txt('PLG_PROJECTS_TEAM_MORE')
+                                . ' ';
                             $note .= $left == 1
                                 ? Lang::txt('PLG_PROJECTS_TEAM_ACTIVITY_PERSON')
                                 : Lang::txt('PLG_PROJECTS_TEAM_ACTIVITY_PERSONS');
@@ -677,7 +707,11 @@ class Team extends Plugin
             // Sync with system group
             $objO->sysGroup($this->model->get('alias'), $this->config->get('group_prefix', 'pr-'));
         } elseif (count($invalid) > 0) {
-            $this->setError(Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES') . '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
+            $this->setError(
+                Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES')
+                    . '<br />'
+                    . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'),
+            );
         }
 
         // Pass error or success message
@@ -717,7 +751,17 @@ class Team extends Plugin
                 // Are we syncing group membership?
                 if ($this->model->get('sync_group')) {
                     $objO = $this->model->table('Owner');
-                    $objO->saveOwners($this->model->get('id'), User::get('id'), 0, $this->model->get('owned_by_group'), 0, 1, 1, '', $split_group_roles = 0);
+                    $objO->saveOwners(
+                        $this->model->get('id'),
+                        User::get('id'),
+                        0,
+                        $this->model->get('owned_by_group'),
+                        0,
+                        1,
+                        1,
+                        '',
+                        $split_group_roles = 0,
+                    );
                 }
             }
         }

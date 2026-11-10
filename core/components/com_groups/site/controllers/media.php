@@ -92,7 +92,11 @@ class Media extends Base
         }
 
         //build path to the group folder
-        $this->path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber');
+        $this->path = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/groups'), DS)
+            . DS
+            . $this->group->get('gidNumber');
 
         // Mutating file operations require group membership (authorized).
         // Resolve the task the way SiteController::execute() does -- it falls back
@@ -263,7 +267,11 @@ class Media extends Base
 
         $html = '<ul>';
         foreach ($tree as $treeLevel) {
-            $folder       = str_replace($base . '/site/groups/' . $hubzeroGroup->get('gidNumber'), '', $treeLevel['relname']);
+            $folder       = str_replace(
+                $base . '/site/groups/' . $hubzeroGroup->get('gidNumber'),
+                '',
+                $treeLevel['relname'],
+            );
             $nodeToggle   = '<span class="tree-folder-toggle-spacer"></span>';
             $childrenHtml = '';
 
@@ -273,7 +281,12 @@ class Media extends Base
             }
 
             $html .= '<li>';
-            $html .= $nodeToggle . '<a data-folder="' . $folder . '" href="javascript:void(0);" class="tree-folder">' . $treeLevel['name'] . '</a>';
+            $html .= $nodeToggle
+                . '<a data-folder="'
+                . $folder
+                . '" href="javascript:void(0);" class="tree-folder">'
+                . $treeLevel['name']
+                . '</a>';
             $html .= $childrenHtml;
             $html .= '</li>';
         }
@@ -468,7 +481,14 @@ class Media extends Base
 
             // build url to return to editor
             $url  = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
-            $url .= $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn') . DS . 'File:' . $fileInfo['basename'];
+            $url .= $_SERVER['HTTP_HOST']
+                . DS
+                . 'groups'
+                . DS
+                . $this->group->get('cn')
+                . DS
+                . 'File:'
+                . $fileInfo['basename'];
         } else {
             $message = $upload->message;
         }
@@ -531,7 +551,11 @@ class Media extends Base
 
         // file is under file size limit
         if ($file['size'] > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             $returnObj->error   = true;
             $returnObj->message = Lang::txt('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max);
             return $returnObj;
@@ -665,7 +689,13 @@ class Media extends Base
         }
 
         // Build the upload path if it doesn't exist
-        $uploadDirectory = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber') . DS . ltrim($folder, DS);
+        $uploadDirectory = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/groups'), DS)
+            . DS
+            . $this->group->get('gidNumber')
+            . DS
+            . ltrim($folder, DS);
 
         //make sure upload directory is writable
         if (!is_dir($uploadDirectory)) {
@@ -685,7 +715,11 @@ class Media extends Base
             return;
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => Lang::txt('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max)]);
             return;
         }
@@ -762,12 +796,28 @@ class Media extends Base
 
                 $subject = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE', Config::get('sitename'));
 
-                $link     = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $this->group->get('cn') . '/files';
+                $link     = 'https://'
+                    . trim($_SERVER['HTTP_HOST'], '/')
+                    . '/groups/'
+                    . $this->group->get('cn')
+                    . '/files';
                 // Escape the user-supplied filename and description for the HTML part
                 $fileHtml = htmlspecialchars($filename . '.' . $ext, ENT_QUOTES, 'UTF-8');
                 $descHtml = htmlspecialchars($this->group->get('description'), ENT_QUOTES, 'UTF-8');
-                $html     = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_HTML_DESC', $fileHtml, $this->group->get('cn'), $descHtml, $link);
-                $plain    = Lang::txt('COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_DESC', $filename . '.' . $ext, $this->group->get('cn'), $this->group->get('description'), $link);
+                $html     = Lang::txt(
+                    'COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_HTML_DESC',
+                    $fileHtml,
+                    $this->group->get('cn'),
+                    $descHtml,
+                    $link,
+                );
+                $plain    = Lang::txt(
+                    'COM_GROUPS_ACTIVITY_UPLOAD_FILE_NOTICE_DESC',
+                    $filename . '.' . $ext,
+                    $this->group->get('cn'),
+                    $this->group->get('description'),
+                    $link,
+                );
 
                 foreach ($reviewers as $reviewer) {
                     $message = new \Hubzero\Mail\Message();
@@ -924,7 +974,9 @@ class Media extends Base
 
         // A rename must not sidestep the upload extension allowlist: no
         // dot-files and only a type the uploader would have accepted.
-        $allowedExtensions = array_values(array_filter(explode(',', \Component::params('com_media')->get('upload_extensions'))));
+        $allowedExtensions = array_values(
+            array_filter(explode(',', \Component::params('com_media')->get('upload_extensions'))),
+        );
         $newExt = strtolower(pathinfo($name, PATHINFO_EXTENSION));
         if ($name[0] == '.' || ($allowedExtensions && !in_array($newExt, $allowedExtensions))) {
             header('HTTP/1.1 500 ' . Lang::txt('COM_GROUPS_MEDIA_INVALID_FILE', implode(', ', $allowedExtensions)));
@@ -1019,7 +1071,16 @@ class Media extends Base
         if (isset($editorName) && $editorName != '') {
             $base = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
             $base .= $_SERVER['HTTP_HOST'];
-            $listFilesUrl = $base . DS . 'index.php?option=com_groups&controller=media&task=listfiles&listdir=' . $folder . '&tmpl=component&type=' . $type . '&editor=' . $editorName . '&editorFuncNum=' . $editorFunc;
+            $listFilesUrl = $base
+                . DS
+                . 'index.php?option=com_groups&controller=media&task=listfiles&listdir='
+                . $folder
+                . '&tmpl=component&type='
+                . $type
+                . '&editor='
+                . $editorName
+                . '&editorFuncNum='
+                . $editorFunc;
 
             App::redirect($listFilesUrl);
         } else {
@@ -1345,13 +1406,21 @@ class Media extends Base
                 strtoupper('COM_GROUPS_ACTIVITY_' . $key . '_' . $action),
                 trim($item[0], '/'),
                 trim($item[1], '/'),
-                '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                '<a href="'
+                    . $url
+                    . '">'
+                    . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8')
+                    . '</a>',
             );
         } else {
             $description = Lang::txt(
                 strtoupper('COM_GROUPS_ACTIVITY_' . $key . '_' . $action),
                 trim($item, '/'),
-                '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                '<a href="'
+                    . $url
+                    . '">'
+                    . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8')
+                    . '</a>',
             );
         }
 

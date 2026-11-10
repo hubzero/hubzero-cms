@@ -584,7 +584,33 @@ class Profile extends Obj
      */
     private function xregistrationLoad($registration)
     {
-        static $_propertyregmap = ['username' => 'login', 'name' => 'name', 'email' => 'email', 'orcid' => 'orcid', 'orgtype' => 'orgtype', 'organization' => 'org', 'countryresident' => 'countryresident', 'countryorigin' => 'countryorigin', 'gender' => 'sex', 'url' => 'web', 'reason' => 'reason', 'mailPreferenceOption' => 'mailPreferenceOption', 'usageAgreement' => 'usageAgreement', 'nativeTribe' => 'nativeTribe', 'phone' => 'phone', 'disability' => 'disability', 'hispanic' => 'hispanic', 'race' => 'race', 'admin' => 'admin', 'host' => 'host', 'edulevel' => 'edulevel', 'role' => 'role', 'givenName' => 'givenName', 'middleName' => 'middleName', 'surname' => 'surname'];
+        static $_propertyregmap = [
+            'username' => 'login',
+            'name' => 'name',
+            'email' => 'email',
+            'orcid' => 'orcid',
+            'orgtype' => 'orgtype',
+            'organization' => 'org',
+            'countryresident' => 'countryresident',
+            'countryorigin' => 'countryorigin',
+            'gender' => 'sex',
+            'url' => 'web',
+            'reason' => 'reason',
+            'mailPreferenceOption' => 'mailPreferenceOption',
+            'usageAgreement' => 'usageAgreement',
+            'nativeTribe' => 'nativeTribe',
+            'phone' => 'phone',
+            'disability' => 'disability',
+            'hispanic' => 'hispanic',
+            'race' => 'race',
+            'admin' => 'admin',
+            'host' => 'host',
+            'edulevel' => 'edulevel',
+            'role' => 'role',
+            'givenName' => 'givenName',
+            'middleName' => 'middleName',
+            'surname' => 'surname',
+        ];
 
         if (!is_object($registration)) {
             $this->setError("Invalid XRegistration object");
@@ -597,7 +623,10 @@ class Profile extends Obj
             }
         }
 
-        $this->set('mailPreferenceOption', $this->get('mailPreferenceOption') ? $this->get('mailPreferenceOption') : '-1');
+        $this->set(
+            'mailPreferenceOption',
+            $this->get('mailPreferenceOption') ? $this->get('mailPreferenceOption') : '-1',
+        );
         $this->set('usageAgreement', $this->get('usageAgreement') ? '1' : '0');
 
         return true;
@@ -615,7 +644,24 @@ class Profile extends Obj
             return false;
         }
 
-        $keys = ['email', 'name', 'orgtype', 'countryresident', 'countryorigin', 'disability', 'hispanic', 'race', 'phone', 'reason', 'edulevel', 'role', 'surname', 'givenName', 'middleName', 'orcid'];
+        $keys = [
+            'email',
+            'name',
+            'orgtype',
+            'countryresident',
+            'countryorigin',
+            'disability',
+            'hispanic',
+            'race',
+            'phone',
+            'reason',
+            'edulevel',
+            'role',
+            'surname',
+            'givenName',
+            'middleName',
+            'orcid',
+        ];
 
         foreach ($keys as $key) {
             if ($registration->get($key) !== null) {
@@ -652,7 +698,10 @@ class Profile extends Obj
         }
 
         if ($registration->get('mailPreferenceOption') !== null) {
-            $this->set('mailPreferenceOption', $registration->get('mailPreferenceOption') ? $registration->get('mailPreferenceOption') : '-1');
+            $this->set(
+                'mailPreferenceOption',
+                $registration->get('mailPreferenceOption') ? $registration->get('mailPreferenceOption') : '-1',
+            );
         }
 
         if ($registration->get('usageAgreement') !== null) {
@@ -766,7 +815,13 @@ class Profile extends Obj
         $modifiedDate = gmdate('Y-m-d H:i:s');
 
         if (is_numeric($this->get('uidNumber'))) {
-            $query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) VALUE (" . $db->quote($this->get('uidNumber')) . ',' . $db->quote($this->get('username')) . ',' . $db->quote($modifiedDate) . ");";
+            $query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) VALUE ("
+                . $db->quote($this->get('uidNumber'))
+                . ','
+                . $db->quote($this->get('username'))
+                . ','
+                . $db->quote($modifiedDate)
+                . ");";
 
             $db->setQuery($query);
 
@@ -774,7 +829,9 @@ class Profile extends Obj
                 $errno = $db->getErrorNum();
 
                 if ($errno == 1062) {
-                    $this->setError('uidNumber (' . $this->get('uidNumber') . ') already exists' . ' in xprofiles table');
+                    $this->setError(
+                        'uidNumber (' . $this->get('uidNumber') . ') already exists' . ' in xprofiles table',
+                    );
                 } else {
                     $this->setError('Error inserting user data to xprofiles table: ' . $db->getErrorMsg());
                 }
@@ -784,7 +841,12 @@ class Profile extends Obj
         } else {
             $token = uniqid();
 
-            $query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) SELECT " . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," . $db->quote($token) . ',' . $db->quote($modifiedDate) . " FROM #__xprofiles;";
+            $query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) SELECT "
+                . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1),"
+                . $db->quote($token)
+                . ','
+                . $db->quote($modifiedDate)
+                . " FROM #__xprofiles;";
 
             $db->setQuery($query);
 
@@ -794,7 +856,10 @@ class Profile extends Obj
                 return false;
             }
 
-            $query = "SELECT uidNumber FROM `#__xprofiles` WHERE username=" . $db->quote($token) . " AND modifiedDate=" . $db->quote($modifiedDate);
+            $query = "SELECT uidNumber FROM `#__xprofiles` WHERE username="
+                . $db->quote($token)
+                . " AND modifiedDate="
+                . $db->quote($modifiedDate);
 
             $db->setQuery($query);
 
@@ -964,7 +1029,11 @@ class Profile extends Obj
                     $valuelist = "''";
                 }
 
-                $query = "DELETE FROM #__xprofiles_" . $property . " WHERE uidNumber=" . $this->get('uidNumber') . " AND $property NOT IN ($valuelist);";
+                $query = "DELETE FROM #__xprofiles_"
+                    . $property
+                    . " WHERE uidNumber="
+                    . $this->get('uidNumber')
+                    . " AND $property NOT IN ($valuelist);";
 
                 $db->setQuery($query);
 
@@ -1070,7 +1139,9 @@ class Profile extends Obj
 
             $property_name = self::auxField($property);
 
-            $query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
+            $query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber="
+                . $db->quote($this->get('uidNumber'))
+                . " ORDER BY $property_name ASC;";
 
             $db->setQuery($query);
 
@@ -1358,7 +1429,10 @@ class Profile extends Obj
     public static function getGroupMemberRoles($uid, $gid)
     {
         $db = App::get('db');
-        $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->quote($uid) . " AND r.gidNumber=" . $db->quote($gid);
+        $sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber="
+            . $db->quote($uid)
+            . " AND r.gidNumber="
+            . $db->quote($gid);
         $db->setQuery($sql);
 
         return $db->loadAssocList();

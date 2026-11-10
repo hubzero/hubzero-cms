@@ -288,7 +288,11 @@ class PostfixCollector
         $depth = Queue::size();
         if ($depth >= 0) {
             $db->setQuery(
-                "INSERT INTO `#__massmail_queue_samples` (`recorded`, `depth`) VALUES (" . $db->quote(\Date::toSql()) . ", " . (int) $depth . ")",
+                "INSERT INTO `#__massmail_queue_samples` (`recorded`, `depth`) VALUES ("
+                    . $db->quote(\Date::toSql())
+                    . ", "
+                    . (int) $depth
+                    . ")",
             );
             $db->execute();
 

@@ -270,7 +270,12 @@ class File extends Obj
                     case 'components':
                         $path = $this->extensionType() . DS . $this->extensionName() . DS . $client . DS;
                         if (substr($this->extensionName(), 0, 4) == 'com_') {
-                            $path2 = $this->extensionType() . DS . substr($this->extensionName(), 4) . DS . $client . DS;
+                            $path2 = $this->extensionType()
+                                . DS
+                                . substr($this->extensionName(), 4)
+                                . DS
+                                . $client
+                                . DS;
                         }
                         break;
 
@@ -289,28 +294,72 @@ class File extends Obj
                 }
 
                 // App
-                $paths_app[] = $basea . $path . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+                $paths_app[] = $basea
+                    . $path
+                    . 'assets'
+                    . ($this->directory ? DS . $this->directory : '')
+                    . DS
+                    . $this->file();
                 $paths_app[] = $basea . $path . ($this->directory ? $this->directory . DS : '') . $this->file();
 
                 // Core
-                $paths_core[] = $basec . $path . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+                $paths_core[] = $basec
+                    . $path
+                    . 'assets'
+                    . ($this->directory ? DS . $this->directory : '')
+                    . DS
+                    . $this->file();
                 $paths_core[] = $basec . $path . ($this->directory ? $this->directory . DS : '') . $this->file();
 
                 if ($path2) {
                     // App
-                    $paths_app[] = $basea . $path2 . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+                    $paths_app[] = $basea
+                        . $path2
+                        . 'assets'
+                        . ($this->directory ? DS . $this->directory : '')
+                        . DS
+                        . $this->file();
                     $paths_app[] = $basea . $path2 . ($this->directory ? $this->directory . DS : '') . $this->file();
                     if ($this->name == $this->extension) {
-                        $paths_app[] = $basea . $path2 . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . substr($this->name, 4) . '.' . $this->type;
-                        $paths_app[] = $basea . $path2 . ($this->directory ? $this->directory . DS : '') . substr($this->name, 4) . '.' . $this->type;
+                        $paths_app[] = $basea
+                            . $path2
+                            . 'assets'
+                            . ($this->directory ? DS . $this->directory : '')
+                            . DS
+                            . substr($this->name, 4)
+                            . '.'
+                            . $this->type;
+                        $paths_app[] = $basea
+                            . $path2
+                            . ($this->directory ? $this->directory . DS : '')
+                            . substr($this->name, 4)
+                            . '.'
+                            . $this->type;
                     }
 
                     // Core
-                    $paths_core[] = $basec . $path2 . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . $this->file();
+                    $paths_core[] = $basec
+                        . $path2
+                        . 'assets'
+                        . ($this->directory ? DS . $this->directory : '')
+                        . DS
+                        . $this->file();
                     $paths_core[] = $basec . $path2 . ($this->directory ? $this->directory . DS : '') . $this->file();
                     if ($this->name == $this->extension) {
-                        $paths_core[] = $basec . $path2 . 'assets' . ($this->directory ? DS . $this->directory : '') . DS . substr($this->name, 4) . '.' . $this->type;
-                        $paths_core[] = $basec . $path2 . ($this->directory ? $this->directory . DS : '') . substr($this->name, 4) . '.' . $this->type;
+                        $paths_core[] = $basec
+                            . $path2
+                            . 'assets'
+                            . ($this->directory ? DS . $this->directory : '')
+                            . DS
+                            . substr($this->name, 4)
+                            . '.'
+                            . $this->type;
+                        $paths_core[] = $basec
+                            . $path2
+                            . ($this->directory ? $this->directory . DS : '')
+                            . substr($this->name, 4)
+                            . '.'
+                            . $this->type;
                     }
                 }
                 $paths = array_merge($paths_app, $paths_core);
@@ -334,7 +383,13 @@ class File extends Obj
     public function overridePath()
     {
         if (!isset($this->paths['override'])) {
-            $suffix = DS . 'html' . DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
+            $suffix = DS
+                . 'html'
+                . DS
+                . $this->extensionName()
+                . DS
+                . ($this->extensionType() == 'system' ? $this->type() . DS : '')
+                . $this->file();
 
             // The first template root (the supergroup's, then the site's)
             // that carries an override; failing that the site template's
@@ -430,7 +485,8 @@ class File extends Obj
         }
 
         if ($this->extensionType() == 'system') {
-            $relative = rtrim(str_replace('/administrator', '', Request::base(true)), '/') . substr($output, strlen(PATH_ROOT));
+            $relative = rtrim(str_replace('/administrator', '', Request::base(true)), '/')
+                . substr($output, strlen(PATH_ROOT));
         } else {
             if (strpos($output, PATH_ROOT) === 0) {
                 $relative = rtrim(Request::root(true), '/') . rtrim(substr($output, strlen(PATH_ROOT)), '/');

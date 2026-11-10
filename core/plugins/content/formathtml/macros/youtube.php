@@ -101,6 +101,14 @@ class Youtube extends Macro
         $iframeTitle = 'YouTube video (' . htmlspecialchars($video_id) . ')';
 
         // return the emdeded youtube video
-        return '<iframe sandbox="allow-scripts allow-same-origin" src="' . $youtube_url . '" width="' . $width . '" height="' . $height . '" title="' . $iframeTitle . '"></iframe>';
+        return '<iframe sandbox="allow-scripts allow-same-origin" src="'
+            . $youtube_url
+            . '" width="'
+            . $width
+            . '" height="'
+            . $height
+            . '" title="'
+            . $iframeTitle
+            . '"></iframe>';
     }
 }

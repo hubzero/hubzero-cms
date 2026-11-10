@@ -104,7 +104,11 @@ class Applications extends SiteController
 
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id, false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id,
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -162,7 +166,11 @@ class Applications extends SiteController
     {
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit', false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit',
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -254,7 +262,11 @@ class Applications extends SiteController
 
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id, false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $id,
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -266,7 +278,9 @@ class Applications extends SiteController
         // columns are generated or admin-managed and must not come from the
         // request (a hub_account app is the one every session token is issued
         // under).
-        $model = Application::oneOrNew($id)->set(array_intersect_key($data, array_flip(['name', 'description', 'redirect_uri'])));
+        $model = Application::oneOrNew($id)->set(
+            array_intersect_key($data, array_flip(['name', 'description', 'redirect_uri'])),
+        );
 
         // is the app available
         if ($model->isDeleted()) {
@@ -366,7 +380,11 @@ class Applications extends SiteController
 
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $id, false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&id=' . $id,
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -441,7 +459,11 @@ class Applications extends SiteController
 
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id, false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id,
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -491,7 +513,11 @@ class Applications extends SiteController
 
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id, false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id,
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -555,7 +581,11 @@ class Applications extends SiteController
 
         // must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id, false, true);
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id,
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -607,7 +637,17 @@ class Applications extends SiteController
 
         // Must be logged in
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $id . '&active=tokens', false, true);
+            $return = Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&task=view&id='
+                    . $id
+                    . '&active=tokens',
+                false,
+                true,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -823,7 +863,14 @@ class Applications extends SiteController
             // add "Applications"
             Pathway::append(
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_' . strtoupper($this->task)),
-                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $appid . '&task=' . $this->task,
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&id='
+                    . $appid
+                    . '&task='
+                    . $this->task,
             );
         }
 
@@ -832,7 +879,14 @@ class Applications extends SiteController
             // add "Applications"
             Pathway::append(
                 Lang::txt(ucfirst($active)),
-                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $appid . '&task=' . $this->task,
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&id='
+                    . $appid
+                    . '&task='
+                    . $this->task,
             );
         }
     }

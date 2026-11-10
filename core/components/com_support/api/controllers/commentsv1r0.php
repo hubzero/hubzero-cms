@@ -422,7 +422,12 @@ class Commentsv1r0 extends ApiController
                 }
 
                 // Get the user's email address
-                if (!Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], 'com_support'])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        ['support_reply_submitted', $subject, $message, $from, [$to['id']], 'com_support'],
+                    )
+                ) {
                     // not notified: an API controller has no error bag, so say so
                     // in the log rather than losing it
                     Log::warning(Lang::txt(
@@ -539,7 +544,21 @@ class Commentsv1r0 extends ApiController
 
         $response->content = $comment->get('comment');
 
-        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $comment->get('ticket') . '#c' . $comment->get('id')), '/'));
+        $response->url = str_replace(
+            '/api',
+            '',
+            rtrim(Request::base(), '/')
+                . '/'
+                . ltrim(
+                    Route::url(
+                        'index.php?option=com_support&controller=tickets&task=tickets&id='
+                            . $comment->get('ticket')
+                            . '#c'
+                            . $comment->get('id'),
+                    ),
+                    '/',
+                ),
+        );
 
         $response->private = ($comment->get('access') ? true : false);
 

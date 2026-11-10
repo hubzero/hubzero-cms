@@ -101,7 +101,9 @@ class Resources extends Plugin
      */
     public function onMembersContributionsCount($user_id = 'm.uidNumber', $username = 'm.username')
     {
-        $query = "SELECT COUNT(R.id) FROM `#__resources` AS R, `#__author_assoc` AS AA WHERE AA.authorid=" . $user_id . " AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
+        $query = "SELECT COUNT(R.id) FROM `#__resources` AS R, `#__author_assoc` AS AA WHERE AA.authorid="
+            . $user_id
+            . " AND R.id = AA.subid AND AA.subtable = 'resources' AND R.published=1 AND R.standalone=1";
         return $query;
     }
 
@@ -239,7 +241,14 @@ class Resources extends Plugin
             if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
                 $s = \Components\Resources\Models\Stat::blank()->getTableName();
 
-                $query->select('(SELECT rs.users FROM ' . $s . ' AS rs WHERE rs.resid=' . $query->getTableName() . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)', 'users');
+                $query->select(
+                    '(SELECT rs.users FROM '
+                        . $s
+                        . ' AS rs WHERE rs.resid='
+                        . $query->getTableName()
+                        . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)',
+                    'users',
+                );
             }
 
             $rows = $query
@@ -348,7 +357,13 @@ class Resources extends Plugin
                 // authorship rather than the join below.
                 $uid = (int) $filters['authororsubmitter'];
                 $query->whereRaw('(' . $r . '.created_by = ' . $uid
-                    . ' OR ' . $r . '.id IN (SELECT subid FROM ' . $a . ' WHERE authorid = ' . $uid . " AND subtable = 'resources'))");
+                    . ' OR '
+                    . $r
+                    . '.id IN (SELECT subid FROM '
+                    . $a
+                    . ' WHERE authorid = '
+                    . $uid
+                    . " AND subtable = 'resources'))");
             } else {
                 $query
                     ->join($a, $a . '.subid', $r . '.id', 'left')

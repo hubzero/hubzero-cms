@@ -134,7 +134,13 @@ class Tags extends SiteController
         }
 
         // Combining tags is a search; who may do that is a view access level
-        if (count($added) > 1 && !$this->requireViewLevel($this->config->get('search_access', 1), Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED'))) {
+        if (
+            count($added) > 1
+            && !$this->requireViewLevel(
+                $this->config->get('search_access', 1),
+                Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED'),
+            )
+        ) {
             return;
         }
 
@@ -409,7 +415,13 @@ class Tags extends SiteController
         }
 
         // Combining tags is a search; who may do that is a view access level
-        if (count($added) > 1 && !$this->requireViewLevel($this->config->get('search_access', 1), Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED'))) {
+        if (
+            count($added) > 1
+            && !$this->requireViewLevel(
+                $this->config->get('search_access', 1),
+                Lang::txt('COM_TAGS_SEARCH_LOGIN_REQUIRED'),
+            )
+        ) {
             return;
         }
 

@@ -195,7 +195,9 @@ class File extends Obj
                     break;
 
                 default:
-                    $hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png') : null;
+                    $hashed = $hash
+                        ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png')
+                        : null;
                     $maxWidth  = 180;
                     $maxHeight = 180;
                     break;
@@ -251,7 +253,12 @@ class File extends Obj
         } elseif ($get == 'fullPath') {
             return $image;
         } elseif ($get == 'url') {
-            return Route::url('index.php?option=com_projects&alias=' . $model->get('alias') . '&controller=media&media=' . urlencode(basename($image)));
+            return Route::url(
+                'index.php?option=com_projects&alias='
+                    . $model->get('alias')
+                    . '&controller=media&media='
+                    . urlencode(basename($image)),
+            );
         }
 
         return basename($image);
@@ -541,7 +548,13 @@ class File extends Obj
     public static function drawIcon($ext = '')
     {
         $icon = self::getIconImage($ext);
-        return '<img class="file-type' . ($ext ? ' file-type-' . $ext : '') . '" src="' . $icon . '" alt="' . $ext . '" />';
+        return '<img class="file-type'
+            . ($ext ? ' file-type-' . $ext : '')
+            . '" src="'
+            . $icon
+            . '" alt="'
+            . $ext
+            . '" />';
     }
 
     /**

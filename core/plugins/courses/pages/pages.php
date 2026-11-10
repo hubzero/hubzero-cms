@@ -462,7 +462,11 @@ class Pages extends Plugin
         }
 
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             ob_clean();
             header('Content-type: text/plain');
             echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', $max)]);
@@ -491,7 +495,9 @@ class Pages extends Plugin
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             ob_clean();
             header('Content-type: text/plain');
-            echo json_encode(['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))]);
+            echo json_encode(
+                ['error' => Lang::txt('PLG_COURSES_PAGES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))],
+            );
             exit();
         }
 
@@ -589,7 +595,9 @@ class Pages extends Plugin
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
+            );
             return $this->files();
         }
 
@@ -645,7 +653,13 @@ class Pages extends Plugin
             }
         } else {
             if (!$this->view->offering->access('manage') && $this->view->offering->access('manage', 'section')) {
-                $path .= $this->view->course->get('id') . DS . 'sections' . DS . $this->view->offering->section()->get('id') . DS . 'pagefiles';
+                $path .= $this->view->course->get('id')
+                    . DS
+                    . 'sections'
+                    . DS
+                    . $this->view->offering->section()->get('id')
+                    . DS
+                    . 'pagefiles';
             } else {
                 $section = Request::getInt('section_id', 0);
 

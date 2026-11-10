@@ -486,7 +486,13 @@ class Admin extends SiteController
         // Register DOI handle
         if ($result && $this->config->get('new_doi', 0)) {
             // Collect metadata
-            $url = Request::base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
+            $url = Request::base()
+                . ltrim(
+                    Route::url(
+                        'index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision'],
+                    ),
+                    DS,
+                );
 
             // Check if DOI exists for this revision
             $objDOI = \Components\Resources\Models\Doi::all()
@@ -531,7 +537,10 @@ class Admin extends SiteController
 
                 // Save [new] DOI record
                 if ($doiSuccess) {
-                    $objDOI = \Components\Resources\Models\Doi::oneByResource($status['resourceid'], $status['revision']);
+                    $objDOI = \Components\Resources\Models\Doi::oneByResource(
+                        $status['resourceid'],
+                        $status['revision'],
+                    );
                     if (!$objDOI->get('id')) {
                         $objDOI = \Components\Resources\Models\Doi::blank()
                             ->set([
@@ -596,7 +605,17 @@ class Admin extends SiteController
             $new_hztv->codeaccess    = $status['code'];
             $new_hztv->wikiaccess    = $status['wiki'];
             $new_hztv->vnc_geometry  = $status['vncGeometry'];
-            $new_hztv->vnc_command   = $invokedir . DS . $status['toolname'] . DS . 'r' . $status['revision'] . DS . 'middleware' . DS . 'invoke -T r' . $status['revision'];
+            $new_hztv->vnc_command   = $invokedir
+                . DS
+                . $status['toolname']
+                . DS
+                . 'r'
+                . $status['revision']
+                . DS
+                . 'middleware'
+                . DS
+                . 'invoke -T r'
+                . $status['revision'];
             $new_hztv->mw            = $status['mw'];
             $new_hztv->released      = Date::toSql();
             $new_hztv->released_by   = User::get('username');
@@ -646,7 +665,15 @@ class Admin extends SiteController
 
                 // save authors for this version
                 $objA = new \Components\Tools\Tables\Author($this->database);
-                if ($objA->saveAuthors($status['developers'], $currentid, $status['resourceid'], $status['revision'], $status['toolname'])) {
+                if (
+                    $objA->saveAuthors(
+                        $status['developers'],
+                        $currentid,
+                        $status['resourceid'],
+                        $status['revision'],
+                        $status['toolname'],
+                    )
+                ) {
                     $this->setMessage(Lang::txt('COM_TOOLS_AUTHORS_SAVED'));
                 } else {
                     $this->setError(Lang::txt('COM_TOOLS_ERROR_SAVING_AUTHORS', $currentid));

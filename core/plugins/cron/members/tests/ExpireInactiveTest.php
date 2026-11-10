@@ -54,14 +54,24 @@ class ExpireInactiveTest extends Basic
     {
         $file = dirname(__DIR__) . DS . 'members.xml';
 
-        $this->assertStringContainsString("'params' => 'expireinactive'", file_get_contents(dirname(__DIR__) . DS . 'members.php'));
+        $this->assertStringContainsString(
+            "'params' => 'expireinactive'",
+            file_get_contents(dirname(__DIR__) . DS . 'members.php'),
+        );
 
         $form = new \Hubzero\Html\Parameter('', $file);
-        $this->assertSame(2, $form->getNumParams('expireinactive'), 'com_cron shows "There are no Parameters for this item"');
+        $this->assertSame(
+            2,
+            $form->getNumParams('expireinactive'),
+            'com_cron shows "There are no Parameters for this item"',
+        );
 
         $xml    = simplexml_load_file($file);
         $legacy = array_map('strval', $xml->xpath('/extension/params[@group="expireinactive"]/param/@name'));
-        $config = array_map('strval', $xml->xpath('/extension/config/fields/fieldset[@group="expireinactive"]/field/@name'));
+        $config = array_map(
+            'strval',
+            $xml->xpath('/extension/config/fields/fieldset[@group="expireinactive"]/field/@name'),
+        );
         $this->assertSame(['members_expireinactive_months', 'members_expireinactive_exempt_group'], $legacy);
         $this->assertSame($legacy, $config);
     }
@@ -113,8 +123,12 @@ class ExpireInactiveTest extends Basic
             14 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // in another group only
         ];
 
-        $insertUser = $db->prepare("INSERT INTO jos_users (id, username, block, registerDate, lastvisitDate, params) VALUES (?, ?, ?, ?, ?, '')");
-        $insertPass = $db->prepare("INSERT INTO jos_users_password (user_id, passhash, shadowLastChange, shadowExpire) VALUES (?, '', ?, ?)");
+        $insertUser = $db->prepare(
+            "INSERT INTO jos_users (id, username, block, registerDate, lastvisitDate, params) VALUES (?, ?, ?, ?, ?, '')",
+        );
+        $insertPass = $db->prepare(
+            "INSERT INTO jos_users_password (user_id, passhash, shadowLastChange, shadowExpire) VALUES (?, '', ?, ?)",
+        );
 
         foreach ($users as $id => $u) {
             $insertUser->execute([$id, 'user' . $id, $u[0], $u[1], $u[2]]);
@@ -124,11 +138,17 @@ class ExpireInactiveTest extends Basic
             }
         }
 
-        $db->exec("INSERT INTO jos_usergroups (id, parent_id, title) VALUES (2, 1, 'Registered'), (9, 2, 'Service accounts')");
+        $db->exec(
+            "INSERT INTO jos_usergroups (id, parent_id, title) VALUES (2, 1, 'Registered'), (9, 2, 'Service accounts')",
+        );
         $db->exec("INSERT INTO jos_user_usergroup_map (user_id, group_id) VALUES (12, 9), (13, 9), (14, 2), (2, 2)");
 
         $select = function ($exemptGroup) use ($db, $cutoff, $cutoffDay) {
-            $query = Members::inactiveAccountsQuery($db->quote($cutoff), $cutoffDay, $exemptGroup === null ? null : $db->quote($exemptGroup));
+            $query = Members::inactiveAccountsQuery(
+                $db->quote($cutoff),
+                $cutoffDay,
+                $exemptGroup === null ? null : $db->quote($exemptGroup),
+            );
             $ids   = array_map('intval', $db->query(str_replace('#__', 'jos_', $query))->fetchAll(PDO::FETCH_COLUMN));
             sort($ids);
             return $ids;

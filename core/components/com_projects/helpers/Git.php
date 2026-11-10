@@ -377,7 +377,12 @@ class Git extends Obj
         if (count($oCount) <= 2 && count($nCount) <= 2) {
             $out = $this->callGit(' diff -M -C ' . escapeshellarg($old['hash']) . ' ' . escapeshellarg($new['hash']));
         } else {
-            $out = $this->callGit(' diff -M -C ' . escapeshellarg($old['hash'] . ':' . $old['fpath']) . ' ' . escapeshellarg($new['hash'] . ':' . $new['fpath']));
+            $out = $this->callGit(
+                ' diff -M -C '
+                    . escapeshellarg($old['hash'] . ':' . $old['fpath'])
+                    . ' '
+                    . escapeshellarg($new['hash'] . ':' . $new['fpath']),
+            );
         }
 
         return $out;
@@ -879,7 +884,9 @@ class Git extends Obj
                     $author = $this->gitLog('', $hash, 'author');
 
                     // Get filename and change
-                    $fileinfo = $this->callGit('diff --name-status ' . escapeshellarg($hash . '^') . ' ' . escapeshellarg($hash));
+                    $fileinfo = $this->callGit(
+                        'diff --name-status ' . escapeshellarg($hash . '^') . ' ' . escapeshellarg($hash),
+                    );
 
                     // First commit
                     if (!empty($fileinfo) && !empty($fileinfo[0]) && substr($fileinfo[0], 0, 5) == 'fatal') {
@@ -951,7 +958,9 @@ class Git extends Obj
 
                         // Rename/move connection not found  - check against new name in case of repeat sync
                         if (!$found && ($status == 'R' || $status == 'W')) {
-                            $found = isset($conn[$filename]) && $conn[$filename]['type'] == $type ? $conn[$filename] : false;
+                            $found = isset($conn[$filename]) && $conn[$filename]['type'] == $type
+                                ? $conn[$filename]
+                                : false;
                         }
 
                         $remoteid  = $found ? $found['remote_id'] : null;
@@ -1352,7 +1361,10 @@ class Git extends Obj
                 $versions[$k - 1]['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_RESTORED');
             }
 
-            if (preg_match("/" . Lang::txt('PLG_PROJECTS_FILES_FILES_SHARE_EXPORTED') . "/", $current['message']) && $next) {
+            if (
+                preg_match("/" . Lang::txt('PLG_PROJECTS_FILES_FILES_SHARE_EXPORTED') . "/", $current['message'])
+                && $next
+            ) {
                 $versions[$k + 1]['change']  = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_SENT_REMOTE');
                 $versions[$k + 1]['movedTo'] = 'remote';
                 $versions[$k + 1]['author']  = $current['author'];

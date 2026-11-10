@@ -107,11 +107,29 @@ class Events extends AdminController
         $this->view->rows = $ee->getRecords($this->view->filters);
 
         // Get list of categories
-        $categories[] = \Html::select('option', '0', '- ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
-        $this->database->setQuery("SELECT id AS value, title AS text FROM `#__categories` WHERE extension='$this->option'");
+        $categories[] = \Html::select(
+            'option',
+            '0',
+            '- ' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'),
+            'value',
+            'text',
+        );
+        $this->database->setQuery(
+            "SELECT id AS value, title AS text FROM `#__categories` WHERE extension='$this->option'",
+        );
 
         $categories = array_merge($categories, $this->database->loadObjectList());
-        $this->view->clist = \Html::select('genericlist', $categories, 'catid', 'class="inputbox"', 'value', 'text', $this->view->filters['catid'], false, false);
+        $this->view->clist = \Html::select(
+            'genericlist',
+            $categories,
+            'catid',
+            'class="inputbox"',
+            'value',
+            'text',
+            $this->view->filters['catid'],
+            false,
+            false,
+        );
 
         //get list of groups
         $groups[] = \Html::select('option', '0', '- ' . Lang::txt('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
@@ -121,7 +139,17 @@ class Events extends AdminController
 				AND e.scope_id=g.gidNumber";
         $this->database->setQuery($sql);
         $groups = array_merge($groups, $this->database->loadObjectList());
-        $this->view->glist = \Html::select('genericlist', $groups, 'group_id', 'class="inputbox"', 'value', 'text', $this->view->filters['scope_id'], false, false);
+        $this->view->glist = \Html::select(
+            'genericlist',
+            $groups,
+            'group_id',
+            'class="inputbox"',
+            'value',
+            'text',
+            $this->view->filters['scope_id'],
+            false,
+            false,
+        );
 
         // Set any errors
         foreach ($this->getErrors() as $error) {
@@ -253,9 +281,22 @@ class Events extends AdminController
         if (!empty($this->view->fields)) {
             for ($i = 0, $n = count($this->view->fields); $i < $n; $i++) {
                 // explore the text and pull out all matches
-                array_push($this->view->fields[$i], $this->parseTag($this->view->row->content, $this->view->fields[$i][0]));
+                array_push(
+                    $this->view->fields[$i],
+                    $this->parseTag($this->view->row->content, $this->view->fields[$i][0]),
+                );
                 // clean the original text of any matches
-                $this->view->row->content = str_replace('<ef:' . $this->view->fields[$i][0] . '>' . end($this->view->fields[$i]) . '</ef:' . $this->view->fields[$i][0] . '>', '', $this->view->row->content);
+                $this->view->row->content = str_replace(
+                    '<ef:'
+                        . $this->view->fields[$i][0]
+                        . '>'
+                        . end($this->view->fields[$i])
+                        . '</ef:'
+                        . $this->view->fields[$i][0]
+                        . '>',
+                    '',
+                    $this->view->row->content,
+                );
             }
             $this->view->row->content = trim($this->view->row->content);
         }

@@ -255,8 +255,13 @@ class SearchComponent extends Relational
      * @param   string  $childTerms  any currently applied filters
      * @return  string  HTML list with links to apply a facet with currently selected searchTerms
      */
-    public function formatWithCounts($counts, $activeType = null, $terms = null, $childTerms = null, $selectedOptions = [])
-    {
+    public function formatWithCounts(
+        $counts,
+        $activeType = null,
+        $terms = null,
+        $childTerms = null,
+        $selectedOptions = [],
+    ) {
         $countIndex = $this->getQueryName();
         $count = isset($counts[$countIndex]) ? $counts[$countIndex] : 0;
         $html = '';
@@ -271,7 +276,9 @@ class SearchComponent extends Relational
             // Display filter controls, if the admin has configured a filter for this component:
             if ($activeType && $this->filters->count() > 0) {
                 foreach ($this->filters()->order('ordering', 'ASC') as $filter) {
-                    $filterSelectedOptions = isset($selectedOptions[$filter->get('field')]) ? $selectedOptions[$filter->get('field')] : [];
+                    $filterSelectedOptions = isset($selectedOptions[$filter->get('field')])
+                        ? $selectedOptions[$filter->get('field')]
+                        : [];
                     $filterHtml = $filter->renderHtml($counts, $filterSelectedOptions);
                     $html .= $filterHtml;
                 }

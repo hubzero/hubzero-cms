@@ -84,7 +84,10 @@ class Migration20261104160100ComUsage extends Base
                 $this->log('No usage tables in the metrics database; nothing to widen.');
             }
         } catch (QueryFailedException $e) {
-            $this->setError('Could not widen the usage IP columns, will try again on the next run: ' . $e->getMessage(), 'skipped');
+            $this->setError(
+                'Could not widen the usage IP columns, will try again on the next run: ' . $e->getMessage(),
+                'skipped',
+            );
         } finally {
             if ($sqlMode !== null) {
                 $statsDb->setQuery('SET SESSION sql_mode = ' . $statsDb->quote($sqlMode));

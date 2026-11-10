@@ -64,7 +64,10 @@ class AssetOverrideTest extends Basic
             $asset->targetPath(),
         );
         $this->assertIsString($asset->overridePath());
-        $this->assertSame($this->env->siteTemplate . '/html/mod_announcements/mod_announcements.css', $asset->overridePath());
+        $this->assertSame(
+            $this->env->siteTemplate . '/html/mod_announcements/mod_announcements.css',
+            $asset->overridePath(),
+        );
     }
 
     /**

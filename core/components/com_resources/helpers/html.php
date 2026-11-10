@@ -144,7 +144,13 @@ class Html
      */
     public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
     {
-        $html  = '<select class="' . $class . '" name="fields[' . $name . ']" id="field-' . str_replace(['[',']'], '', $name) . '"';
+        $html  = '<select class="'
+            . $class
+            . '" name="fields['
+            . $name
+            . ']" id="field-'
+            . str_replace(['[',']'], '', $name)
+            . '"';
         if (!$groups) {
             $html .= ' disabled="disabled"';
         }
@@ -175,8 +181,16 @@ class Html
      * @param      string $skip     ITems to skip
      * @return     string HTML
      */
-    public static function selectType($arr, $name, $value = '', $id = '', $shownone = '', $class = '', $js = '', $skip = '')
-    {
+    public static function selectType(
+        $arr,
+        $name,
+        $value = '',
+        $id = '',
+        $shownone = '',
+        $class = '',
+        $js = '',
+        $skip = '',
+    ) {
         $id = empty($id) ? $name : $id;
         $html  = '<select name="' . $name . '" id="' . $id . '"' . $js;
         $html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
@@ -195,7 +209,15 @@ class Html
                 $selected = ($value && ($anode->id == $value || $anode->type == $value))
                     ? ' selected="selected"'
                     : '';
-                $html .= "\t" . '<option value="' . $anode->id . '"' . $selected . '>' . stripslashes($anode->type) . '</option>' . "\n";
+                $html .= "\t"
+                    . '<option value="'
+                    . $anode->id
+                    . '"'
+                    . $selected
+                    . '>'
+                    . stripslashes($anode->type)
+                    . '</option>'
+                    . "\n";
             }
         }
         $html .= '</select>' . "\n";
@@ -245,7 +267,10 @@ class Html
      */
     public static function dateToPath($date)
     {
-        if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
+        if (
+            $date
+            && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)
+        ) {
             $date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
         $dir_year  = Date::of($date)->format('Y');
@@ -279,7 +304,10 @@ class Html
     {
         $dir_id = self::niceidformat($id);
 
-        if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
+        if (
+            $date
+            && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)
+        ) {
             $date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
 
@@ -287,7 +315,11 @@ class Html
             $dir_year  = Date::of($date)->format('Y');
             $dir_month = Date::of($date)->format('m');
 
-            if (!is_dir($base . DS . $dir_year . DS . $dir_month . DS . $dir_id) && intval($dir_year) <= 2013 && intval($dir_month) <= 11) {
+            if (
+                !is_dir($base . DS . $dir_year . DS . $dir_month . DS . $dir_id)
+                && intval($dir_year) <= 2013
+                && intval($dir_month) <= 11
+            ) {
                 $dir_year  = Date::of($date)->toLocal('Y');
                 $dir_month = Date::of($date)->toLocal('m');
             }
@@ -337,7 +369,17 @@ class Html
                 $doctitle = $params->get('title', $title);
 
                 // Things we want to highlight
-                $toShow = ['User Guide', 'Syllabus', 'iTunes', 'iTunes U', 'Audio', 'Video', 'Slides', 'YouTube', 'Vimeo'];
+                $toShow = [
+                    'User Guide',
+                    'Syllabus',
+                    'iTunes',
+                    'iTunes U',
+                    'Audio',
+                    'Video',
+                    'Slides',
+                    'YouTube',
+                    'Vimeo',
+                ];
 
                 $url = self::processPath($option, $child, $publication->id);
                 $extra = '';
@@ -358,13 +400,46 @@ class Html
                         $url = str_replace('&', '&amp;', $url);
 
                         if ($linkAction == 1) {
-                            $supli[] = ' <li><a class="' . $class . '" rel="external" href="' . $url . '" title="' . $child->title . '"' . $extra . '>' . $item . '</a></li>' . "\n";
+                            $supli[] = ' <li><a class="'
+                                . $class
+                                . '" rel="external" href="'
+                                . $url
+                                . '" title="'
+                                . $child->title
+                                . '"'
+                                . $extra
+                                . '>'
+                                . $item
+                                . '</a></li>'
+                                . "\n";
                         } elseif ($linkAction == 2) {
                             $class .= ' play';
                             $class .= ' ' . $width . 'x' . $height;
-                            $supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"' . $extra . '>' . $item . '</a></li>' . "\n";
+                            $supli[] = ' <li><a class="'
+                                . $class
+                                . '" href="'
+                                . $url
+                                . '" title="'
+                                . $child->title
+                                . '"'
+                                . $extra
+                                . '>'
+                                . $item
+                                . '</a></li>'
+                                . "\n";
                         } else {
-                            $supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"' . $extra . '>' . $item . '</a></li>' . "\n";
+                            $supli[] = ' <li><a class="'
+                                . $class
+                                . '" href="'
+                                . $url
+                                . '" title="'
+                                . $child->title
+                                . '"'
+                                . $extra
+                                . '>'
+                                . $item
+                                . '</a></li>'
+                                . "\n";
                         }
 
                         $shown[] = $item;
@@ -385,7 +460,13 @@ class Html
         if ($docs > 0 && $otherdocs > 0) {
             $supln .= ' <li class="otherdocs"><a href="' . Route::url('index.php?option=' . $option
                 . '&id=' . $publication->id . '&active=supportingdocs')
-                . '" title="' . Lang::txt('COM_RESOURCES_VIEW_ALL') . ' ' . $docs . ' ' . Lang::txt('COM_RESOURCES_SUPPORTING_DOCUMENTS') . ' ">'
+                . '" title="'
+                . Lang::txt('COM_RESOURCES_VIEW_ALL')
+                . ' '
+                . $docs
+                . ' '
+                . Lang::txt('COM_RESOURCES_SUPPORTING_DOCUMENTS')
+                . ' ">'
                 . $otherdocs . ' ' . Lang::txt('COM_RESOURCES_MORE') . '</a></li>' . "\n";
         }
 
@@ -429,13 +510,27 @@ class Html
             if (substr($rl->name, 0, 6) != 'custom') {
                 $html = '<p class="' . $rl->name . ' license">Licensed';
                 if ($rl->url) {
-                    $html .= ' under <a rel="license" href="' . $rl->url . '" title="' . $rl->title . '">' . $rl->title . '</a>';
+                    $html .= ' under <a rel="license" href="'
+                        . $rl->url
+                        . '" title="'
+                        . $rl->title
+                        . '">'
+                        . $rl->title
+                        . '</a>';
                 } else {
                     $html .= ' under ' . $rl->title;
                 }
                 $html .= '.</p>';
             } else {
-                $html = '<p class="' . $rl->name . ' license">Licensed under <a rel="license" class="popup" href="' . Route::url('index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1') . '">' . $rl->title . '</a>.</p>';
+                $html = '<p class="'
+                    . $rl->name
+                    . ' license">Licensed under <a rel="license" class="popup" href="'
+                    . Route::url(
+                        'index.php?option=com_resources&task=license&resource=' . substr($rl->name, 6) . '&no_html=1',
+                    )
+                    . '">'
+                    . $rl->title
+                    . '</a>.</p>';
             }
         }
         return $html;
@@ -474,7 +569,13 @@ class Html
                 if ($section['area'] != $active) {
                     $cls .= ($h) ? $h . ' ' : '';
                 }
-                $html .= '<div class="' . $cls . 'section" id="' . $section['area'] . '-section">' . $section['html'] . '</div>';
+                $html .= '<div class="'
+                    . $cls
+                    . 'section" id="'
+                    . $section['area']
+                    . '-section">'
+                    . $section['html']
+                    . '</div>';
             }
             $k++;
         }
@@ -514,7 +615,14 @@ class Html
                 }
                 $html .= "\t\t" . '<li id="sm-' . $i . '"';
                 $html .= (strtolower($name) == $active) ? ' class="active"' : '';
-                $html .= '><a class="tab" data-rel="' . $name . '" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
+                $html .= '><a class="tab" data-rel="'
+                    . $name
+                    . '" href="'
+                    . $url
+                    . '"><span>'
+                    . $cat[$name]
+                    . '</span></a></li>'
+                    . "\n";
                 $i++;
             }
         }
@@ -565,8 +673,28 @@ class Html
             $html .= \Components\Citations\Helpers\Format::formatReference($cite);
             if (is_numeric($rev) || (is_string($rev) && $rev != 'dev')) {
                 $html .= "\t\t" . '<p class="details">' . "\n";
-                $html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&citationFormat=bibtex&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT') . '">BibTex</a> <span>|</span> ' . "\n";
-                $html .= "\t\t\t" . '<a href="index.php?option=' . $option . '&task=citation&id=' . $id . '&citationFormat=endnote&no_html=1&rev=' . $rev . '" title="' . Lang::txt('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT') . '">EndNote</a>' . "\n";
+                $html .= "\t\t\t"
+                    . '<a href="index.php?option='
+                    . $option
+                    . '&task=citation&id='
+                    . $id
+                    . '&citationFormat=bibtex&no_html=1&rev='
+                    . $rev
+                    . '" title="'
+                    . Lang::txt('COM_RESOURCES_DOWNLOAD_BIBTEX_FORMAT')
+                    . '">BibTex</a> <span>|</span> '
+                    . "\n";
+                $html .= "\t\t\t"
+                    . '<a href="index.php?option='
+                    . $option
+                    . '&task=citation&id='
+                    . $id
+                    . '&citationFormat=endnote&no_html=1&rev='
+                    . $rev
+                    . '" title="'
+                    . Lang::txt('COM_RESOURCES_DOWNLOAD_ENDNOTE_FORMAT')
+                    . '">EndNote</a>'
+                    . "\n";
                 $html .= "\t\t" . '</p>' . "\n";
             }
             $html .= "\t" . '</li>' . "\n";
@@ -628,7 +756,9 @@ class Html
             // player too, unless the caller explicitly asked for the file itself
             // ($action 3 - the OAI-PMH miner harvests direct file URLs).
             if ($action != 3 && self::isLegacyPlayableVideo($item)) {
-                return Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
+                return Route::url(
+                    'index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video',
+                );
             }
 
             switch ($type) {
@@ -643,25 +773,45 @@ class Html
                     break;
 
                 case 'video':
-                    $url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video');
+                    $url = Route::url(
+                        'index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=video',
+                    );
                     break;
 
                 case 'hubpresenter':
-                    $url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch') . '#watch-section';
+                    $url = Route::url(
+                        'index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=watch',
+                    )
+                        . '#watch-section';
                     break;
 
                 case 'breeze':
-                    $url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
+                    $url = Route::url(
+                        'index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play',
+                    );
                     break;
 
                 default:
                     if ($action == 2) {
-                        $url = Route::url('index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play');
+                        $url = Route::url(
+                            'index.php?option=' . $option . '&id=' . $pid . '&resid=' . $item->id . '&task=play',
+                        );
                     } else {
-                        if (strstr($item->path, 'http') || substr($item->path, 0, 3) == 'mms' || substr($item->path, 0, 1) == '/') {
+                        if (
+                            strstr($item->path, 'http')
+                            || substr($item->path, 0, 3) == 'mms'
+                            || substr($item->path, 0, 1) == '/'
+                        ) {
                             $url = $item->path;
                         } else {
-                            $url = Route::url('index.php?option=' . $option . '&id=' . $item->id . '&task=download&file=' . basename($item->path));
+                            $url = Route::url(
+                                'index.php?option='
+                                    . $option
+                                    . '&id='
+                                    . $item->id
+                                    . '&task=download&file='
+                                    . basename($item->path),
+                            );
                         }
                     }
                     break;
@@ -700,7 +850,16 @@ class Html
                     || ($mconfig->get('mw_on') > 1 && !$authorized)
                 ) {
                     $pop   = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_SESSION_INVOKE_DISABLED') . '</p>';
-                    $html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+                    $html .= self::primaryButton(
+                        'link_disabled',
+                        '',
+                        Lang::txt('COM_RESOURCES_LAUNCH_TOOL'),
+                        '',
+                        '',
+                        '',
+                        1,
+                        $pop,
+                    );
                     return $html;
                 }
 
@@ -717,7 +876,9 @@ class Html
                 if (in_array($table, $tables)) {
                     if (isset($resource->revision) && $resource->toolpublished) {
                         $sess = $resource->tool ? $resource->tool : $resource->alias . '_r' . $resource->revision;
-                        $v = (!isset($resource->revision) or $resource->revision == 'dev') ? 'test' : $resource->revision;
+                        $v = (!isset($resource->revision) or $resource->revision == 'dev')
+                            ? 'test'
+                            : $resource->revision;
 
                         $lurl = 'index.php?option=com_tools&app=' . $resource->alias . '&task=invoke&version=' . $v;
                     } elseif (!isset($resource->revision) or $resource->revision == 'dev') {
@@ -734,7 +895,10 @@ class Html
                 if ($hztv) {
                     $ht = \Components\Tools\Models\Tool::getInstance($hztv->toolid);
                     if ($ht) { // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
-                        $toolgroups = $ht->getToolGroupsRestriction($hztv->toolid, $resource->get('tool', $resource->get('alias')));
+                        $toolgroups = $ht->getToolGroupsRestriction(
+                            $hztv->toolid,
+                            $resource->get('tool', $resource->get('alias')),
+                        );
                     }
                 }
 
@@ -765,15 +929,28 @@ class Html
 
                 if (!User::isGuest() && !$ingroup && $toolgroups) { // see if tool is restricted to a group and if current user is in that group
                     $pop = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
-                    $html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+                    $html .= self::primaryButton(
+                        'link_disabled',
+                        '',
+                        Lang::txt('COM_RESOURCES_LAUNCH_TOOL'),
+                        '',
+                        '',
+                        '',
+                        1,
+                        $pop,
+                    );
                 } elseif ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
                     //if (User::isGuest()) {
                     // Not logged-in = show message
                     //$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
                     //$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
                     //} else {
-                    $pop = (User::isGuest()) ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
-                    $pop = ($resource->revision == 'dev') ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
+                    $pop = (User::isGuest())
+                        ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>'
+                        : '';
+                    $pop = ($resource->revision == 'dev')
+                        ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>'
+                        : $pop;
 
                     $existingSession = self::findExistingToolSession($resource);
                     if ($existingSession) {
@@ -783,19 +960,53 @@ class Html
                             . '&sess=' . $existingSession->sessnum,
                         );
                         $routedLurl = Route::url($lurl);
-                        $newUrl = $routedLurl . (strpos($routedLurl, '?') !== false ? '&newinstance=1' : '?newinstance=1');
-                        $html .= self::primaryButton('resumetool', $resumeUrl, Lang::txt('COM_RESOURCES_RESUME_TOOL'), '', Lang::txt('COM_RESOURCES_RESUME_TOOL_TITLE'), '', 0, $pop);
-                        $html .= '<p class="launch-new-instance"><a class="btn btn-secondary" href="' . $newUrl . '">' . Lang::txt('COM_RESOURCES_LAUNCH_NEW_INSTANCE') . '</a></p>';
+                        $newUrl = $routedLurl
+                            . (strpos($routedLurl, '?') !== false ? '&newinstance=1' : '?newinstance=1');
+                        $html .= self::primaryButton(
+                            'resumetool',
+                            $resumeUrl,
+                            Lang::txt('COM_RESOURCES_RESUME_TOOL'),
+                            '',
+                            Lang::txt('COM_RESOURCES_RESUME_TOOL_TITLE'),
+                            '',
+                            0,
+                            $pop,
+                        );
+                        $html .= '<p class="launch-new-instance"><a class="btn btn-secondary" href="'
+                            . $newUrl
+                            . '">'
+                            . Lang::txt('COM_RESOURCES_LAUNCH_NEW_INSTANCE')
+                            . '</a></p>';
                     } else {
                         // com_tools' launch page shows its own progress, so the
                         // template's loading overlay stays off for it
-                        $launchPage = Component::params('com_tools')->get('async_launch', 1) ? 'data-launch="page"' : '';
-                        $html .= self::primaryButton('launchtool', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', $launchPage, 0, $pop);
+                        $launchPage = Component::params('com_tools')->get('async_launch', 1)
+                            ? 'data-launch="page"'
+                            : '';
+                        $html .= self::primaryButton(
+                            'launchtool',
+                            $lurl,
+                            Lang::txt('COM_RESOURCES_LAUNCH_TOOL'),
+                            '',
+                            '',
+                            $launchPage,
+                            0,
+                            $pop,
+                        );
                     }
                     //}
                 } else { // tool unpublished
                     $pop   = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
-                    $html .= self::primaryButton('link_disabled', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
+                    $html .= self::primaryButton(
+                        'link_disabled',
+                        '',
+                        Lang::txt('COM_RESOURCES_LAUNCH_TOOL'),
+                        '',
+                        '',
+                        '',
+                        1,
+                        $pop,
+                    );
                 }
                 break;
 
@@ -806,17 +1017,38 @@ class Html
 
             case 6:
                 $mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Course Lectures';
-                $html .= self::primaryButton('download', Route::url($resource->link()) . '#courselecture', $mesg, '', $mesg, '');
+                $html .= self::primaryButton(
+                    'download',
+                    Route::url($resource->link()) . '#courselecture',
+                    $mesg,
+                    '',
+                    $mesg,
+                    '',
+                );
                 break;
 
             case 31:
                 $mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Series';
-                $html .= self::primaryButton('download', Route::url($resource->link()) . '#series', $mesg, '', $mesg, '');
+                $html .= self::primaryButton(
+                    'download',
+                    Route::url($resource->link()) . '#series',
+                    $mesg,
+                    '',
+                    $mesg,
+                    '',
+                );
                 break;
 
             case 2:
                 $mesg  = Lang::txt('COM_RESOURCES_VIEW') . ' Workshop ';
-                $html .= self::primaryButton('download', Route::url($resource->link()) . '#workshop', $mesg, '', $mesg, '');
+                $html .= self::primaryButton(
+                    'download',
+                    Route::url($resource->link()) . '#workshop',
+                    $mesg,
+                    '',
+                    $mesg,
+                    '',
+                );
                 break;
 
             default:
@@ -867,7 +1099,18 @@ class Html
                     default:
                         $linkAction = 0;
 
-                        $mediatypes = ['elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter'];
+                        $mediatypes = [
+                            'elink',
+                            'quicktime',
+                            'presentation',
+                            'presentation_audio',
+                            'breeze',
+                            'quiz',
+                            'player',
+                            'video_stream',
+                            'video',
+                            'hubpresenter',
+                        ];
                         $downtypes = ['thesis','handout','manual','software_download'];
 
                         if (in_array($lt->alias, $downtypes)) {
@@ -912,8 +1155,20 @@ class Html
                 // IF (not a simulator) THEN show the first child as the primary button
                 if ($firstChild->access == 1 && User::isGuest()) {
                     // first child is for registered users only and the visitor is not logged in
-                    $pop  = '<p class="warning">' . Lang::txt('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
-                    $html .= self::primaryButton($class . ' disabled', Route::url('index.php?option=com_login&return=') . base64_encode(Request::current()), $mesg, '', '', '', '', $pop);
+                    $pop  = '<p class="warning">'
+                        . Lang::txt('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD')
+                        . '</p>'
+                        . "\n";
+                    $html .= self::primaryButton(
+                        $class . ' disabled',
+                        Route::url('index.php?option=com_login&return=') . base64_encode(Request::current()),
+                        $mesg,
+                        '',
+                        '',
+                        '',
+                        '',
+                        $pop,
+                    );
                 } else {
                     // If the child is marked as protected
                     if ($firstChild->access == 3) {
@@ -939,13 +1194,22 @@ class Html
                         if (!in_array($resource->get('group_owner'), $usersgroups) || count($common) <= 0) {
                             $html .= '<p class="warning">';
                             if (User::isGuest()) {
-                                $html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path()));
+                                $html .= Lang::txt(
+                                    'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
+                                    base64_encode(Request::path()),
+                                );
                             } else {
                                 $ghtml = [];
                                 foreach ($allowedgroups as $allowedgroup) {
-                                    $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                                    $ghtml[] = '<a href="'
+                                        . Route::url('index.php?option=com_groups&cn=' . $allowedgroup)
+                                        . '">'
+                                        . $allowedgroup
+                                        . '</a>';
                                 }
-                                $html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml);
+                                $html .= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP')
+                                    . ' '
+                                    . implode(', ', $ghtml);
                             }
                             $html .= '</p>';
 
@@ -1104,8 +1368,16 @@ class Html
      * @param   string   $pop       Pop-up content
      * @return  string
      */
-    public static function primaryButton($class, $href, $msg, $xtra = '', $title = '', $action = '', $disabled = false, $pop = '')
-    {
+    public static function primaryButton(
+        $class,
+        $href,
+        $msg,
+        $xtra = '',
+        $title = '',
+        $action = '',
+        $disabled = false,
+        $pop = '',
+    ) {
         $view = new \Hubzero\Component\View([
             'base_path' => Component::path('com_resources') . DS . 'site',
             'name'   => 'view',
@@ -1147,10 +1419,17 @@ class Html
         if (substr($path, 0, 16) == 'https://doi.org/') {
             $type = 'DOI';
             $fs = '';
-        } elseif ((substr($path, 0, 18) == 'https://vimeo.com/') ||  (substr($path, 0, 25) == 'https://player.vimeo.com/')) {
+        } elseif (
+            (substr($path, 0, 18) == 'https://vimeo.com/')
+            ||  (substr($path, 0, 25) == 'https://player.vimeo.com/')
+        ) {
             $type = 'Vimeo';
             $fs = '';
-        } elseif ((substr($path, 0, 20) == 'https://youtube.com/') ||  (substr($path, 0, 24) == 'https://www.youtube.com/') ||  (substr($path, 0, 17) == 'https://youtu.be/')) {
+        } elseif (
+            (substr($path, 0, 20) == 'https://youtube.com/')
+            ||  (substr($path, 0, 24) == 'https://www.youtube.com/')
+            ||  (substr($path, 0, 17) == 'https://youtu.be/')
+        ) {
             $type = 'YouTube';
             $fs = '';
         } elseif (preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $path)) {

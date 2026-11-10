@@ -540,7 +540,11 @@ class Postsv1r0 extends ApiController
             'title'          => Request::getString('title', $row->get('title'), 'put'),
             'description'    => Request::getString('description', $row->get('description'), 'put'),
             'url'            => Request::getString('url', $row->get('url'), 'put'),
-            'created'        => Request::getString('created', $row->get('created', with(new Date('now'))->toSql()), 'put'),
+            'created'        => Request::getString(
+                'created',
+                $row->get('created', with(new Date('now'))->toSql()),
+                'put',
+            ),
             'created_by'     => Request::getInt('created_by', 0, 'put'),
             'state'          => Request::getInt('state', (int) $row->get('state', 1), 'put'),
             'access'         => Request::getInt('access', (int) $row->get('access', 0), 'put'),

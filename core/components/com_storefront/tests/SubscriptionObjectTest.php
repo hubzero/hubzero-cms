@@ -38,7 +38,11 @@ class SubscriptionObjectTest extends TestCase
     public function testOtherTypesUseTheBaseSubscription(): void
     {
         foreach (['Membership', 'Course'] as $type) {
-            $this->assertSame(BaseSubscription::class, get_class(Memberships::getSubscriptionObject($type, 1, 2)), $type);
+            $this->assertSame(
+                BaseSubscription::class,
+                get_class(Memberships::getSubscriptionObject($type, 1, 2)),
+                $type,
+            );
         }
     }
 }

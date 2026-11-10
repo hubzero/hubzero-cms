@@ -229,7 +229,11 @@ class Pucas extends Plugin
             // Only a rejected login is logged, with the data that rejected it;
             // logging every login's attributes filled the error log
             if (count($chars) <= 3) {
-                error_log($response->username . ' login REJECTED due to insufficient I2A2 data: ' . var_export($characteristics, true));
+                error_log(
+                    $response->username
+                        . ' login REJECTED due to insufficient I2A2 data: '
+                        . var_export($characteristics, true),
+                );
                 $response->status = \Hubzero\Auth\Status::FAILURE;
                 $response->error_message = Lang::txt('PLG_AUTHENTICATION_PUCAS_AUTHENTICATION_FAILED');
                 return;
@@ -309,7 +313,12 @@ class Pucas extends Plugin
                     $hzal->set('email', phpCAS::getAttribute('email'));
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", "pucas", null, %s) returned false', $username));
+                    Log::error(
+                        sprintf(
+                            'Hubzero\Auth\Link::findOrCreate("authentication", "pucas", null, %s) returned false',
+                            $username,
+                        ),
+                    );
                 }
             }
         } else {
@@ -364,7 +373,10 @@ class Pucas extends Plugin
                 if ($debug_location) {
                     if ($this->logger == null) {
                         $this->logger = new \Monolog\Logger('pucas');
-                        $this->stream_handler = new \Monolog\Handler\StreamHandler($debug_location, \Psr\Log\LogLevel::WARNING);
+                        $this->stream_handler = new \Monolog\Handler\StreamHandler(
+                            $debug_location,
+                            \Psr\Log\LogLevel::WARNING,
+                        );
                         $this->logger->pushHandler($this->stream_handler);
                     }
 
@@ -372,7 +384,14 @@ class Pucas extends Plugin
                 }
             }
 
-            phpCAS::client(CAS_VERSION_2_0, 'sso.purdue.edu', 443, '/idp/profile/cas', Request::getSchemeAndHttpHost(), false);
+            phpCAS::client(
+                CAS_VERSION_2_0,
+                'sso.purdue.edu',
+                443,
+                '/idp/profile/cas',
+                Request::getSchemeAndHttpHost(),
+                false,
+            );
 
             phpCAS::setCasServerCACert(__DIR__ . '/assets/PuCAS_CA.crt');
         }
@@ -388,7 +407,9 @@ class Pucas extends Plugin
     {
         Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/pucas/assets/css/pucas.css');
 
-        $html = '<a class="pucas account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return) . '">';
+        $html = '<a class="pucas account" href="'
+            . Route::url('index.php?option=com_users&view=login&authenticator=pucas' . $return)
+            . '">';
         $html .= '<div class="signin">';
         $html .= Lang::txt('PLG_AUTHENTICATION_PUCAS_SIGN_IN');
         $html .= '</div>';

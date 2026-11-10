@@ -306,7 +306,11 @@ class Sessionsv1r0 extends ApiController
             $dbname = App::get('config')->get('database.db');
             // take new screenshots for user
             //$cmd = "/bin/sh ". dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . $username . " dbname=$dbname 2>&1 </dev/null";
-            $cmd = "/bin/sh " . dirname(dirname(__DIR__)) . "/scripts/mw screenshot " . escapeshellarg($username) . " 2>&1 </dev/null";
+            $cmd = "/bin/sh "
+                . dirname(dirname(__DIR__))
+                . "/scripts/mw screenshot "
+                . escapeshellarg($username)
+                . " 2>&1 </dev/null";
             exec($cmd, $results, $status);
             $object->screenshots_taken = true;
         }
@@ -374,7 +378,15 @@ class Sessionsv1r0 extends ApiController
 
         if (!$sess) {
             if ($notFound) {
-                $screenshot = dirname(dirname(__DIR__)) . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
+                $screenshot = dirname(dirname(__DIR__))
+                    . DS
+                    . 'site'
+                    . DS
+                    . 'assets'
+                    . DS
+                    . 'img'
+                    . DS
+                    . 'screenshot-notfound.png';
             } else {
                 throw new Exception(Lang::txt('Session not found.'), 404);
             }
@@ -392,7 +404,10 @@ class Sessionsv1r0 extends ApiController
                 clearstatcache();
 
                 if (!($sessions = \Hubzero\Filesystem\SafePath::directory($base, $relative))) {
-                    throw new Exception(Lang::txt('Unable to find users sessions directory: %s', $base . DS . $relative), 404);
+                    throw new Exception(
+                        Lang::txt('Unable to find users sessions directory: %s', $base . DS . $relative),
+                        404,
+                    );
                 }
             }
 
@@ -413,7 +428,15 @@ class Sessionsv1r0 extends ApiController
 
             if (!$screenshot || !file_exists($screenshot)) {
                 if ($notFound) {
-                    $screenshot = dirname(dirname(__DIR__)) . DS . 'site' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
+                    $screenshot = dirname(dirname(__DIR__))
+                        . DS
+                        . 'site'
+                        . DS
+                        . 'assets'
+                        . DS
+                        . 'img'
+                        . DS
+                        . 'screenshot-notfound.png';
                 } else {
                     throw new Exception(Lang::txt('No screenshot Found.'), 404);
                 }
@@ -711,7 +734,10 @@ class Sessionsv1r0 extends ApiController
             $ms->set('hardTimeout', (int) $tv->hardTimeout);
         }
         if (!$ms->store()) {
-            throw new Exception(Lang::txt('There was a issue while trying to start the tool session. Please try again later.'), 500);
+            throw new Exception(
+                Lang::txt('There was a issue while trying to start the tool session. Please try again later.'),
+                500,
+            );
         }
 
         //add tool title to output
@@ -927,7 +953,15 @@ class Sessionsv1r0 extends ApiController
         // We know from the checks above that this directory already exists
         $params  = 'file(execute):' . $homeDir . DS . 'data' . DS . '.queued_drivers' . DS . $inst;
         $encoded = ' params=' . rawurlencode($params) . ' ';
-        $command = 'start user=' . escapeshellarg($profile->get('username')) . ' ip=' . escapeshellarg($app->ip) . ' app=' . escapeshellarg($app->name) . ' version=' . escapeshellarg($app->version) . $encoded;
+        $command = 'start user='
+            . escapeshellarg($profile->get('username'))
+            . ' ip='
+            . escapeshellarg($app->ip)
+            . ' app='
+            . escapeshellarg($app->name)
+            . ' version='
+            . escapeshellarg($app->version)
+            . $encoded;
         $status  = \Components\Tools\Helpers\Utils::middleware($command, $output);
 
         if (!$status) {
@@ -1014,7 +1048,11 @@ class Sessionsv1r0 extends ApiController
 
         if ($finished) {
             $count = count($parsed);
-            preg_match('/\[status\] output saved in [\-_0-9a-zA-Z\.\/]*\/(run[0-9]*\.xml)/', $parsed[($count - 2)], $matches);
+            preg_match(
+                '/\[status\] output saved in [\-_0-9a-zA-Z\.\/]*\/(run[0-9]*\.xml)/',
+                $parsed[($count - 2)],
+                $matches,
+            );
             $runFile = (isset($matches[1])) ? $matches[1] : '';
         }
 
@@ -1162,7 +1200,12 @@ class Sessionsv1r0 extends ApiController
         $tv->loadFromInstance($row->appname);
 
         //command to run on middleware
-        $command = "view user=" . escapeshellarg($result->get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int) $app->sess;
+        $command = "view user="
+            . escapeshellarg($result->get('username'))
+            . " ip="
+            . escapeshellarg($app->ip)
+            . " sess="
+            . (int) $app->sess;
 
         //app vars
         $app->caption  = $row->sessname;
@@ -1417,7 +1460,9 @@ class Sessionsv1r0 extends ApiController
         $timeout = (int) $row->timeout;
 
         // Null until the session table has the column
-        $hardTimeout = (property_exists($row, 'hardTimeout') && (int) $row->hardTimeout > 0) ? (int) $row->hardTimeout : null;
+        $hardTimeout = (property_exists($row, 'hardTimeout') && (int) $row->hardTimeout > 0)
+            ? (int) $row->hardTimeout
+            : null;
 
         $hard  = ($hardTimeout !== null);
         $basis = $hard ? 'start' : 'accesstime';
@@ -1427,7 +1472,12 @@ class Sessionsv1r0 extends ApiController
         // measure the elapsed time there rather than guess its time zone here
         $expiry = null;
         if ($limit) {
-            $mwdb->setQuery("SELECT TIMESTAMPDIFF(SECOND, " . $mwdb->quoteName($basis) . ", NOW()) FROM `session` WHERE sessnum=" . $mwdb->quote($sess));
+            $mwdb->setQuery(
+                "SELECT TIMESTAMPDIFF(SECOND, "
+                    . $mwdb->quoteName($basis)
+                    . ", NOW()) FROM `session` WHERE sessnum="
+                    . $mwdb->quote($sess),
+            );
             $elapsed = $mwdb->loadResult();
             if ($elapsed !== null) {
                 $expiry = time() + ($limit - (int) $elapsed);
@@ -1808,7 +1858,9 @@ class Sessionsv1r0 extends ApiController
             ];
 
             // no JSON back (helper missing or failed): report no password rather than a 500
-            $object['smb_password'] = (is_object($joutput) && isset($joutput->smb_password)) ? $joutput->smb_password : null;
+            $object['smb_password'] = (is_object($joutput) && isset($joutput->smb_password))
+                ? $joutput->smb_password
+                : null;
         } else {
             $object = [
                 'fileserver'     => '128.46.19.124',

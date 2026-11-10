@@ -250,7 +250,11 @@ class Questions extends Plugin
     {
         // Login required
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url($this->model->link() . '&active=' . $this->pluginName, false, true), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url($this->model->link() . '&active=' . $this->pluginName, false, true),
+                'server',
+            );
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -445,7 +449,9 @@ class Questions extends Plugin
             ];
 
             // Build the message subject
-            $subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
+            $subject = Lang::txt('COM_ANSWERS_ANSWERS')
+                . ', '
+                . Lang::txt('new question about content you author or manage');
 
             // Build the message
             $eview = new \Hubzero\Mail\View([
@@ -468,7 +474,12 @@ class Questions extends Plugin
             $message['multipart'] = $eview->loadTemplate();
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-            if (!Event::trigger('xmessage.onSendMessage', ['new_question_admin', $subject, $message, $from, $receivers, 'com_answers'])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['new_question_admin', $subject, $message, $from, $receivers, 'com_answers'],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -479,7 +490,15 @@ class Questions extends Plugin
                 'scope'       => 'question',
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
-                'description' => Lang::txt('PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_' . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_RESOURCES_QUESTIONS_ACTIVITY_QUESTION_'
+                        . (isset($fields['id']) && $fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($row->link())
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $row->link(),

@@ -371,7 +371,9 @@ class Html extends Base
      */
     public function addActionStyleSheet()
     {
-        $url = rtrim(\Request::root(true), '/') . '/core/assets/css/actions.css?v=' . filemtime(PATH_CORE . '/assets/css/actions.css');
+        $url = rtrim(\Request::root(true), '/')
+            . '/core/assets/css/actions.css?v='
+            . filemtime(PATH_CORE . '/assets/css/actions.css');
 
         $this->styleSheets = [
             $url => ['mime' => 'text/css', 'media' => null, 'attribs' => []],

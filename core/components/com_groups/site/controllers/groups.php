@@ -120,7 +120,9 @@ class Groups extends Base
         $this->view->populargroups  = Group\Helper::getPopularGroups(3);
 
         // Get featured groups
-        $this->view->featuredgroups = Group\Helper::getFeaturedGroups($this->config->get('intro_featuredgroups_list', ''));
+        $this->view->featuredgroups = Group\Helper::getFeaturedGroups(
+            $this->config->get('intro_featuredgroups_list', ''),
+        );
 
         // Set some vars for view
         $this->view->config = $this->config;
@@ -451,7 +453,10 @@ class Groups extends Base
 
             // Check authorization
             // Published = 2 = archived. Archived is a read-only mode.
-            if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.edit'))) {
+            if (
+                $this->view->group->published == 2
+                || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.edit'))
+            ) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
             }
 
@@ -478,13 +483,24 @@ class Groups extends Base
         }
 
         // Path to group assets
-        $asset_path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $this->view->lid . DS . 'uploads';
+        $asset_path = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/groups'), DS)
+            . DS
+            . $this->view->lid
+            . DS
+            . 'uploads';
 
         // If path is a directory then load images
         $this->view->logos = [];
         if (is_dir($asset_path)) {
             // Get all images that are in group asset folder and could be a possible group logo
-            $this->view->logos = Filesystem::files($asset_path, '.jpg|.jpeg|.png|.gif|.svg|.PNG|.JPG|.JPEG|.GIF|.SVG', true, true);
+            $this->view->logos = Filesystem::files(
+                $asset_path,
+                '.jpg|.jpeg|.png|.gif|.svg|.PNG|.JPG|.JPEG|.GIF|.SVG',
+                true,
+                true,
+            );
         }
 
         // Trigger the functions that return the areas we'll be using
@@ -555,7 +571,11 @@ class Groups extends Base
         }
 
         $g_cn              = trim(Request::getString('cn', '', 'post'));
-        $g_description     = preg_replace('/\s+/', ' ', trim(strip_tags(Request::getString('description', Lang::txt('NONE'), 'post'))));
+        $g_description     = preg_replace(
+            '/\s+/',
+            ' ',
+            trim(strip_tags(Request::getString('description', Lang::txt('NONE'), 'post'))),
+        );
         $g_discoverability = Request::getInt('discoverability', 0, 'post');
         $g_public_desc     = Sanitize::clean(trim(Request::getString('public_desc', '', 'post', 'none', 2)));
         $g_private_desc    = Sanitize::clean(trim(Request::getString('private_desc', '', 'post', 'none', 2)));
@@ -594,16 +614,29 @@ class Groups extends Base
 
         // Check authorization
         // Published = 2 = archived. Archived is a read-only mode.
-        if ($group->published == 2 || ($this->authorize() != 'manager' && $g_gidNumber != 0 && !$this->authorizedForTask('group.edit'))) {
+        if (
+            $group->published == 2
+            || ($this->authorize() != 'manager' && $g_gidNumber != 0 && !$this->authorizedForTask('group.edit'))
+        ) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
         // Check for any missing info
         if (!$g_cn) {
-            $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_MISSING_INFORMATION') . ': ' . Lang::txt('COM_GROUPS_DETAILS_FIELD_CN'), 'error');
+            $this->setNotification(
+                Lang::txt('COM_GROUPS_SAVE_ERROR_MISSING_INFORMATION')
+                    . ': '
+                    . Lang::txt('COM_GROUPS_DETAILS_FIELD_CN'),
+                'error',
+            );
         }
         if (!$g_description) {
-            $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_MISSING_INFORMATION') . ': ' . Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'), 'error');
+            $this->setNotification(
+                Lang::txt('COM_GROUPS_SAVE_ERROR_MISSING_INFORMATION')
+                    . ': '
+                    . Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'),
+                'error',
+            );
         }
 
         // Ensure the data passed is valid
@@ -620,7 +653,14 @@ class Groups extends Base
         // Get the logo
         $logo = '';
         if (isset($customization['logo'])) {
-            $logo_path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber') . DS . 'uploads' . DS;
+            $logo_path = PATH_APP
+                . DS
+                . trim($this->config->get('uploadpath', '/site/groups'), DS)
+                . DS
+                . $group->get('gidNumber')
+                . DS
+                . 'uploads'
+                . DS;
             $logo_path = substr($logo_path, strlen(PATH_ROOT));
             $logo = substr($customization['logo'], strlen($logo_path));
         }
@@ -832,11 +872,25 @@ class Groups extends Base
 
                 // build approval message
                 $link  = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/groups/' . $group->get('cn');
-                $link2 = 'https://' . trim($_SERVER['HTTP_HOST'], '/') . '/administrator/index.php?option=' . $this->option;
+                $link2 = 'https://'
+                    . trim($_SERVER['HTTP_HOST'], '/')
+                    . '/administrator/index.php?option='
+                    . $this->option;
                 // Escape the user-supplied description for the HTML part
                 $descHtml = htmlspecialchars($group->get('description'), ENT_QUOTES, 'UTF-8');
-                $html  = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_HTML_DESC', $link, $group->get('cn'), $descHtml, $link2);
-                $plain = Lang::txt('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('cn'), $group->get('description'), $link2);
+                $html  = Lang::txt(
+                    'COM_GROUPS_SAVE_WAITING_APPROVAL_HTML_DESC',
+                    $link,
+                    $group->get('cn'),
+                    $descHtml,
+                    $link2,
+                );
+                $plain = Lang::txt(
+                    'COM_GROUPS_SAVE_WAITING_APPROVAL_DESC',
+                    $group->get('cn'),
+                    $group->get('description'),
+                    $link2,
+                );
 
                 foreach ($reviewers as $reviewer) {
                     // Create new message
@@ -903,7 +957,14 @@ class Groups extends Base
                 'action'      => ($this->task == 'new' ? 'created' : 'updated'),
                 'scope'       => 'group',
                 'scope_id'    => $group->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_' . ($this->task == 'new' ? 'CREATED' : 'UPDATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_GROUPS_ACTIVITY_GROUP_' . ($this->task == 'new' ? 'CREATED' : 'UPDATED'),
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'     => $group->get('description'),
                     'url'       => $url,
@@ -1054,7 +1115,10 @@ class Groups extends Base
         $log .= Lang::txt('COM_GROUPS_GROUP_DISCOVERABILITY') . ': ' . $group->get('discoverability') . "\n";
         $log .= Lang::txt('COM_GROUPS_GROUP_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc')) . "\n";
         $log .= Lang::txt('COM_GROUPS_GROUP_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc')) . "\n";
-        $log .= Lang::txt('COM_GROUPS_GROUP_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";
+        $log .= Lang::txt('COM_GROUPS_GROUP_RESTRICTED_MESSAGE')
+            . ': '
+            . stripslashes($group->get('restrict_msg'))
+            . "\n";
 
         // Get number of group members
         $members  = $group->get('members');
@@ -1074,7 +1138,11 @@ class Groups extends Base
         }
 
         // Build the file path
-        $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+        $path = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/groups'), DS)
+            . DS
+            . $group->get('gidNumber');
         if (is_dir($path)) {
             // Attempt to delete the file
             if (!Filesystem::deleteDirectory($path)) {
@@ -1156,7 +1224,14 @@ class Groups extends Base
                 'action'      => 'deleted',
                 'scope'       => 'group',
                 'scope_id'    => $deletedgroup->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_DELETED', '<a href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $deletedgroup->get('cn')) . '">' . htmlspecialchars((string) ($deletedgroup->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_GROUPS_ACTIVITY_GROUP_DELETED',
+                    '<a href="'
+                        . Route::url('index.php?option=' . $this->option . '&cn=' . $deletedgroup->get('cn'))
+                        . '">'
+                        . htmlspecialchars((string) ($deletedgroup->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'     => $deletedgroup->get('description'),
                     'url'       => Route::url('index.php?option=' . $this->option . '&cn=' . $deletedgroup->get('cn')),
@@ -1184,7 +1259,15 @@ class Groups extends Base
 
         // Set notification
         $this->setNotification(
-            Lang::txt('COM_GROUPS_CREATE_SUGGEST', Route::url('index.php?option=' . $this->option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn))),
+            Lang::txt(
+                'COM_GROUPS_CREATE_SUGGEST',
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&task=new'
+                        . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn),
+                ),
+            ),
             'warning',
         );
 
@@ -1305,7 +1388,10 @@ class Groups extends Base
         }
         if (count($rows) > 0) {
             foreach ($rows as $row) {
-                $json[] = json_encode(['username' => $row->username, 'name' => htmlentities(stripslashes($row->name), ENT_COMPAT, 'UTF-8')]);
+                $json[] = json_encode([
+                    'username' => $row->username,
+                    'name' => htmlentities(stripslashes($row->name), ENT_COMPAT, 'UTF-8'),
+                ]);
             }
         }
 
@@ -1420,7 +1506,11 @@ class Groups extends Base
             }
 
             // Check specific wiki page access
-            if ($page->get('access') == 1 && !in_array(User::get('id'), $group->get('members')) && $authorized != 'admin') {
+            if (
+                $page->get('access') == 1
+                && !in_array(User::get('id'), $group->get('members'))
+                && $authorized != 'admin'
+            ) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
                 return;
             }
@@ -1446,7 +1536,13 @@ class Groups extends Base
             // Build path to blog folder
             $base_path = $this->config->get('uploadpath') . DS . $groupID . DS . 'blog';
             if (!file_exists(PATH_APP . DS . $base_path . DS . $file)) {
-                $base_path = $this->config->get('uploadpath') . DS . $group->get('gidNumber') . DS . 'uploads' . DS . 'blog';
+                $base_path = $this->config->get('uploadpath')
+                    . DS
+                    . $group->get('gidNumber')
+                    . DS
+                    . 'uploads'
+                    . DS
+                    . 'blog';
             }
         } else {
             // Get access level for overview or other group pages

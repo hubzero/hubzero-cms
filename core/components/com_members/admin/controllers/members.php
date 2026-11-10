@@ -579,7 +579,10 @@ class Members extends AdminController
                     $passinfo->set('shadowMax', null);
                     $changed = true;
                 } else {
-                    $passinfo->set('shadowMax', \Hubzero\User\Password::shadowMaxForExpiryDay($passinfo->get('shadowLastChange'), $expiryDay));
+                    $passinfo->set(
+                        'shadowMax',
+                        \Hubzero\User\Password::shadowMaxForExpiryDay($passinfo->get('shadowLastChange'), $expiryDay),
+                    );
                     $passinfo->set('shadowInactive', 0);
                     $changed = true;
                 }
@@ -998,7 +1001,11 @@ class Members extends AdminController
             return Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_FORMAT');
         }
 
-        if ($passinfo->get('passhash') === null || $passinfo->get('passhash') === '' || !$passinfo->get('shadowLastChange')) {
+        if (
+            $passinfo->get('passhash') === null
+            || $passinfo->get('passhash') === ''
+            || !$passinfo->get('shadowLastChange')
+        ) {
             return Lang::txt('COM_MEMBERS_PASSWORD_EXPIRES_ERROR_NO_PASSWORD');
         }
 
@@ -1151,10 +1158,23 @@ class Members extends AdminController
                 // ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
                 // Unset the keys and updates the final user records until after all plugins run.
                 // If anything fail, jos_users still exist which is enough to re-run deidentification.
-                $update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" . $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" . $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($id);
+                $update_UsersById_Query = "UPDATE `#__users` set name="
+                    . $db->quote($anonUserNameSpace)
+                    . ", givenName="
+                    . $db->quote($anonUserName)
+                    . ", middleName='', surname='anonSurName', username="
+                    . $db->quote($anonUserName)
+                    . ", password="
+                    . $db->quote($anonPassword)
+                    . ", block='1', registerIP='', params='', homeDirectory='', email="
+                    . $db->quote($anonUserName . "@example.com")
+                    . " where id ="
+                    . $db->quote($id);
                 $this->runUpdateOrDeleteQuery($update_UsersById_Query);
 
-                $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=" . $db->quote($id) . " AND profile_key='deletion'";
+                $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id="
+                    . $db->quote($id)
+                    . " AND profile_key='deletion'";
                 $this->runUpdateOrDeleteQuery($update_UserProfiles_Query);
             } else {
                 Notify::warning("Could not deidentify several user id");
@@ -1582,22 +1602,32 @@ class Members extends AdminController
                 'type'          => (string) $element->field_type,
                 'label'         => (string) $element->label,
                 'name'          => (string) $element->name,
-                'description'   => (isset($element->field_options->description) ? (string) $element->field_options->description : ''),
+                'description'   => (isset(
+                    $element->field_options->description,
+                ) ? (string) $element->field_options->description : ''),
                 //'required'     => (isset($element->required) ? (int) $element->required : 0),
                 //'readonly'     => (isset($element->readonly) ? (int) $element->readonly : 0),
                 //'disabled'     => (isset($element->disabled) ? (int) $element->disabled : 0),
                 'ordering'      => ($i + 1),
                 'access'        => (isset($element->access) ? (int) $element->access : 0),
-                'option_other'  => (isset($element->field_options->include_other_option) ? (int) $element->field_options->include_other_option : ''),
-                'option_blank'  => (isset($element->field_options->include_blank_option) ? (int) $element->field_options->include_blank_option : ''),
+                'option_other'  => (isset(
+                    $element->field_options->include_other_option,
+                ) ? (int) $element->field_options->include_other_option : ''),
+                'option_blank'  => (isset(
+                    $element->field_options->include_blank_option,
+                ) ? (int) $element->field_options->include_blank_option : ''),
                 'action_create' => (isset($element->create) ? (int) $element->create : 1),
                 'action_update' => (isset($element->update) ? (int) $element->update : 1),
                 'action_edit'   => (isset($element->edit) ? (int) $element->edit : 1),
                 'action_browse' => (isset($element->browse) ? (int) $element->browse : 0),
                 'min'           => (isset($element->field_options->min) ? (int) $element->field_options->min : 0),
                 'max'           => (isset($element->field_options->max) ? (int) $element->field_options->max : 0),
-                'default_value' => (isset($element->field_options->value) ? (string) $element->field_options->value : ''),
-                'placeholder'   => (isset($element->field_options->placeholder) ? (string) $element->field_options->placeholder : ''),
+                'default_value' => (isset(
+                    $element->field_options->value,
+                ) ? (string) $element->field_options->value : ''),
+                'placeholder'   => (isset(
+                    $element->field_options->placeholder,
+                ) ? (string) $element->field_options->placeholder : ''),
             ]);
 
             if ($field->get('type') == 'dropdown') {
@@ -1685,7 +1715,10 @@ class Members extends AdminController
         if ($this->getTask() == 'applyprofile') {
             // Redirect, instead of falling through, to avoid caching issues
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile', false),
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile',
+                    false,
+                ),
             );
         }
 
@@ -1837,7 +1870,8 @@ class Members extends AdminController
         $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
-            $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode('"' . $orgQry . '"');
+            $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:"
+                . urlencode('"' . $orgQry . '"');
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $queryURL);

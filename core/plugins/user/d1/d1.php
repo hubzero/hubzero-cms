@@ -55,7 +55,13 @@ class D1 extends Plugin
         // not taken away for signing in from elsewhere, nor from an address
         // with no known country
         if ($country === '') {
-            Log::debug('plgUserD1: no country for ' . $ip . ', leaving [' . $username . '] membership to group [d1_nation] unchanged.');
+            Log::debug(
+                'plgUserD1: no country for '
+                    . $ip
+                    . ', leaving ['
+                    . $username
+                    . '] membership to group [d1_nation] unchanged.',
+            );
             return true;
         }
 
@@ -64,7 +70,14 @@ class D1 extends Plugin
 
             \Hubzero\User\Group::setMember('d1_nation', $uid, true);
         } else {
-            Log::debug($ip . ' is in [' . $country . '], not a D1 nation, leaving [' . $username . '] membership to group [d1_nation] unchanged.');
+            Log::debug(
+                $ip
+                    . ' is in ['
+                    . $country
+                    . '], not a D1 nation, leaving ['
+                    . $username
+                    . '] membership to group [d1_nation] unchanged.',
+            );
         }
 
         return true;
@@ -107,7 +120,12 @@ class D1 extends Plugin
 
         $username = isset($user['username']) ? (string) $user['username'] : '';
 
-        Log::warning(get_class($this) . ': no user in the session at sign-in of [' . $username . ']; is this plugin ordered before user/hubzero? Looking the user up by name.');
+        Log::warning(
+            get_class($this)
+                . ': no user in the session at sign-in of ['
+                . $username
+                . ']; is this plugin ordered before user/hubzero? Looking the user up by name.',
+        );
 
         return $username === '' ? 0 : (int) User::getInstance($username)->get('id');
     }

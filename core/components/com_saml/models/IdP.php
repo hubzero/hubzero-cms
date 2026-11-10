@@ -577,7 +577,11 @@ class IdP
         }
 
         $response = new \LightSaml\Model\Protocol\Response()
-            ->setStatus(new \LightSaml\Model\Protocol\Status(new \LightSaml\Model\Protocol\StatusCode(\LightSaml\SamlConstants::STATUS_SUCCESS)))
+            ->setStatus(
+                new \LightSaml\Model\Protocol\Status(
+                    new \LightSaml\Model\Protocol\StatusCode(\LightSaml\SamlConstants::STATUS_SUCCESS),
+                ),
+            )
             ->setID(\LightSaml\Helper::generateID())
             ->setIssueInstant(new \DateTime())
             ->setIssuer(new \LightSaml\Model\Assertion\Issuer($this->getEntityID()))

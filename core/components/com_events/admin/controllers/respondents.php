@@ -195,7 +195,15 @@ class Respondents extends AdminController
 
         // Output messsage and redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&id[]=' . Request::getInt('event', 0), false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&id[]='
+                    . Request::getInt('event', 0),
+                false,
+            ),
         );
     }
 }

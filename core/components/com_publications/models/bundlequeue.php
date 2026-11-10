@@ -313,7 +313,9 @@ class BundleQueue extends Relational
     public static function buildingCount()
     {
         $db = App::get('db');
-        $db->setQuery("SELECT COUNT(*) FROM `#__publication_bundle_queue` WHERE `status` = '" . self::STATUS_BUILDING . "'");
+        $db->setQuery(
+            "SELECT COUNT(*) FROM `#__publication_bundle_queue` WHERE `status` = '" . self::STATUS_BUILDING . "'",
+        );
 
         return (int) $db->loadResult();
     }

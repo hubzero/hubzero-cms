@@ -329,7 +329,9 @@ class Lists extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            Notify::error($state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+            Notify::error(
+                $state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'),
+            );
             return $this->cancelTask();
         }
 
@@ -365,7 +367,10 @@ class Lists extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . ($cid ? '&id=' . $cid : ''), false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . ($cid ? '&id=' . $cid : ''),
+                false,
+            ),
         );
     }
 }

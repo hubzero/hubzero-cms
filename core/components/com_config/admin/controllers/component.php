@@ -160,7 +160,15 @@ class Component extends AdminController
                         User::setState($this->option . '.config.global.data', $data);
 
                         App::redirect(
-                            Route::url('index.php?option=' . $this->option . '&view=component&component=' . $option . '&tmpl=component&path=' . $model->get('component.path'), false),
+                            Route::url(
+                                'index.php?option='
+                                    . $this->option
+                                    . '&view=component&component='
+                                    . $option
+                                    . '&tmpl=component&path='
+                                    . $model->get('component.path'),
+                                false,
+                            ),
                         );
                         return false;
                     }

@@ -103,7 +103,9 @@ class Publication extends Table
 
         $project  = isset($filters['project']) && intval($filters['project']) ? intval($filters['project']) : "";
         $dev      = isset($filters['dev']) && $filters['dev'] == 1 ? 1 : 0;
-        $projects = isset($filters['projects']) && !empty($filters['projects']) ? array_map('intval', (array) $filters['projects']) : [];
+        $projects = isset($filters['projects']) && !empty($filters['projects'])
+            ? array_map('intval', (array) $filters['projects'])
+            : [];
         $mine     = isset($filters['mine']) && $filters['mine'] ? $filters['mine'] : 0;
         $featured = isset($filters['featured']) && $filters['featured'] ? 1 : 0;
         $sortby   = isset($filters['sortby']) ? $filters['sortby'] : 'title';
@@ -222,8 +224,12 @@ class Publication extends Table
             $query .= " AND C.ranking > " . (float) $filters['minranking'] . " ";
         }
         if (!$dev) {
-            $query .= " AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '" . $now . "') ";
-            $query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '" . $now . "') ";
+            $query .= " AND (V.published_up IS NULL OR V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '"
+                . $now
+                . "') ";
+            $query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '"
+                . $now
+                . "') ";
         }
         if (isset($filters['startdate'])) {
             $query .= "AND V.published_up > " . $this->db->quote($filters['startdate']) . " ";
@@ -374,7 +380,9 @@ class Publication extends Table
         $query = $this->buildQuery($filters, $admin);
 
         $sql  = "SELECT C.id ";
-        $sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query : $query;
+        $sql .= (isset($filters['tag']) && $filters['tag'] != '')
+            ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " . $query
+            : $query;
 
         $this->db->setQuery($sql);
         return count((array) $this->db->loadObjectList());
@@ -406,10 +414,14 @@ class Publication extends Table
             $sql .= ", (SELECT S.users FROM `#__publication_stats` AS S WHERE S.publication_id=C.id AND S.period=14 ORDER BY S.datetime DESC LIMIT 1) as stat ";
         }
 
-        $sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
+        $sql .= (isset($filters['tag']) && $filters['tag'] != '')
+            ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques "
+            : " ";
         $sql .= $this->buildQuery($filters, $admin);
         $start = isset($filters['start']) ? (int) $filters['start'] : 0;
-        $sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . (int) $filters['limit'] : "";
+        $sql .= (isset($filters['limit']) && $filters['limit'] > 0)
+            ? " LIMIT " . $start . ", " . (int) $filters['limit']
+            : "";
 
         $this->db->setQuery($sql);
         return $this->db->loadObjectList();
@@ -510,7 +522,9 @@ class Publication extends Table
      */
     public function calculateRating()
     {
-        $this->db->setQuery("SELECT rating FROM `#__publication_ratings` WHERE publication_id=" . $this->db->quote($this->id));
+        $this->db->setQuery(
+            "SELECT rating FROM `#__publication_ratings` WHERE publication_id=" . $this->db->quote($this->id),
+        );
         $ratings = $this->db->loadObjectList();
 
         $totalcount = count($ratings);
@@ -539,7 +553,14 @@ class Publication extends Table
      */
     public function updateRating()
     {
-        $this->db->setQuery("UPDATE $this->tableName SET rating=" . $this->db->quote($this->rating) . ", times_rated=" . $this->db->quote($this->times_rated) . " WHERE id=" . $this->db->quote($this->id));
+        $this->db->setQuery(
+            "UPDATE $this->tableName SET rating="
+                . $this->db->quote($this->rating)
+                . ", times_rated="
+                . $this->db->quote($this->times_rated)
+                . " WHERE id="
+                . $this->db->quote($this->id),
+        );
         if (!$this->db->query()) {
             echo $this->db->getErrorMsg();
             exit();
@@ -622,7 +643,9 @@ class Publication extends Table
         }
 
         if ($get == 'advanced' || $get == 'released') {
-            $query .= $get == 'advanced' ? " AND (V.state = 4 OR V.state = 6 OR V.state = 5)  " : " AND V.state = 1 AND V.main = 1";
+            $query .= $get == 'advanced'
+                ? " AND (V.state = 4 OR V.state = 6 OR V.state = 5)  "
+                : " AND V.state = 1 AND V.main = 1";
 
             if ($when) {
                 $query .= " AND V.published_up LIKE '" . $when . "%' ";

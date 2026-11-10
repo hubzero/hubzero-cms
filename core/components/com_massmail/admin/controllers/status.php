@@ -44,7 +44,9 @@ class Status extends AdminController
         $hourly = (int) $params->get('hourly_limit', 300);
 
         // Cron cadence -> per-run pace (mirrors Sender::run()).
-        $db->setQuery("SELECT state, last_run, recurrence FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1");
+        $db->setQuery(
+            "SELECT state, last_run, recurrence FROM `#__cron_jobs` WHERE plugin = 'massmail' AND event = 'processMassmailQueue' LIMIT 1",
+        );
         $cron         = $db->loadObject();
         $ticksPerHour = $cron ? Rate::firingsPerHour($cron->recurrence) : 0;
         if ($ticksPerHour < 1) {
@@ -94,9 +96,13 @@ class Status extends AdminController
 
         // --- Queue depth over time (last 24h of cron snapshots) --------------
         // Peak queue depth over each postfix chart's window (for the pill).
-        $db->setQuery("SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)");
+        $db->setQuery(
+            "SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 1 HOUR)",
+        );
         $qPeakLastHour = (int) $db->loadResult();
-        $db->setQuery("SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR)");
+        $db->setQuery(
+            "SELECT COALESCE(MAX(depth), 0) FROM `#__massmail_queue_samples` WHERE recorded >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR)",
+        );
         $qPeak48h = (int) $db->loadResult();
 
         // Queue-depth lines aligned to the postfix chart buckets (for overlay).
@@ -104,7 +110,9 @@ class Status extends AdminController
         $qHourly   = $this->queueLine(48, 3600, '%Y-%m-%d %H', 'Y-m-d H');
 
         // Daily queue peak (30d) for the 30-day chart overlay + pill.
-        $db->setQuery("SELECT `day`, `max` FROM `#__massmail_queue_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY)");
+        $db->setQuery(
+            "SELECT `day`, `max` FROM `#__massmail_queue_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY)",
+        );
         $qdmap = [];
         foreach ($db->loadObjectList() as $r) {
             $qdmap[$r->day] = (int) $r->max;
@@ -118,7 +126,9 @@ class Status extends AdminController
 
         // --- Postfix outbound volume (all senders, from the log collector) ---
         // Buckets are keyed in UTC (see PostfixCollector); look them up the same way.
-        $db->setQuery("SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY) ORDER BY `day`");
+        $db->setQuery(
+            "SELECT `day`, sent FROM `#__massmail_postfix_daily` WHERE `day` >= (UTC_DATE() - INTERVAL 29 DAY) ORDER BY `day`",
+        );
         $dmap = [];
         foreach ($db->loadObjectList() as $r) {
             $dmap[$r->day] = (int) $r->sent;
@@ -129,7 +139,9 @@ class Status extends AdminController
             $dailyVolume[] = ['label' => date('n/j', strtotime($d)), 'value' => isset($dmap[$d]) ? $dmap[$d] : 0];
         }
 
-        $db->setQuery("SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR) ORDER BY `hour`");
+        $db->setQuery(
+            "SELECT `hour`, sent FROM `#__massmail_postfix_hourly` WHERE `hour` >= (UTC_TIMESTAMP() - INTERVAL 48 HOUR) ORDER BY `hour`",
+        );
         $hmap = [];
         foreach ($db->loadObjectList() as $r) {
             $hmap[$r->hour] = (int) $r->sent;
@@ -148,7 +160,9 @@ class Status extends AdminController
         $pfState = $db->loadObject();
         $collectorRun = $pfState ? $pfState->last_run : null;
         // Stored in UTC by the collector; show it in the site's timezone.
-        $lastSent     = ($pfState && $pfState->last_sent) ? \Date::of($pfState->last_sent)->toLocal('D, M j, Y g:i a T') : null;
+        $lastSent     = ($pfState && $pfState->last_sent)
+            ? \Date::of($pfState->last_sent)->toLocal('D, M j, Y g:i a T')
+            : null;
 
         $this->view
             ->set('params', $params)

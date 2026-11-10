@@ -85,7 +85,9 @@ class Assets
         $root = self::base();
 
         if ($document = self::app('document')) {
-            $document->addStyleSheet(rtrim(Request::base(true), '/') . $stylesheet . '?v=' . filemtime($root . $stylesheet));
+            $document->addStyleSheet(
+                rtrim(Request::base(true), '/') . $stylesheet . '?v=' . filemtime($root . $stylesheet),
+            );
         }
     }
 
@@ -108,7 +110,12 @@ class Assets
         $root = self::base();
 
         if ($document = self::app('document')) {
-            $document->addScript(rtrim(Request::base(true), '/') . $script . '?v=' . filemtime($root . $script), "text/javascript", $defer, $async);
+            $document->addScript(
+                rtrim(Request::base(true), '/') . $script . '?v=' . filemtime($root . $script),
+                "text/javascript",
+                $defer,
+                $async,
+            );
         }
     }
 
@@ -400,7 +407,21 @@ class Assets
         }
 
         $paths = [];
-        $paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . 'images' . DS . $image;
+        $paths[] = DS
+            . 'templates'
+            . DS
+            . $template
+            . DS
+            . 'html'
+            . DS
+            . 'plg_'
+            . $folder
+            . '_'
+            . $plugin
+            . DS
+            . 'images'
+            . DS
+            . $image;
         $paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $image;
         $paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'images' . DS . $image;
 
@@ -542,7 +563,13 @@ class Assets
 
             // If debugging is turned off and a cache file exist
             if ($env == 'production' && file_exists($output)) {
-                $output = rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . filemtime($output);
+                $output = rtrim(Request::root(true), '/')
+                    . '/app/cache/'
+                    . $client
+                    . '/'
+                    . $primary
+                    . '.css?v='
+                    . filemtime($output);
             } else {
                 $lesspath = PATH_CORE . DS . 'assets' . DS . 'less';
 
@@ -622,10 +649,20 @@ class Assets
                 // Did the cache change?
                 if (!is_array($cache) || $newCache['updated'] > $cache['updated']) {
                     file_put_contents($cacheFile, serialize($newCache));  // Update the compiled LESS timestamp
-                    $newCache['compiled'] = str_replace(["'/media/system/", "'/core/assets/"], "'" . rtrim(Request::root(true), '/') . '/core/assets/', $newCache['compiled']);
+                    $newCache['compiled'] = str_replace(
+                        ["'/media/system/", "'/core/assets/"],
+                        "'" . rtrim(Request::root(true), '/') . '/core/assets/',
+                        $newCache['compiled'],
+                    );
                     file_put_contents($output, $newCache['compiled']);    // Update the compiled LESS
                 }
-                $output = rtrim(Request::root(true), '/') . '/app/cache/' . $client . '/' . $primary . '.css?v=' . $newCache['updated'];
+                $output = rtrim(Request::root(true), '/')
+                    . '/app/cache/'
+                    . $client
+                    . '/'
+                    . $primary
+                    . '.css?v='
+                    . $newCache['updated'];
             }
         } catch (Exception $e) {
             // Anything passed?
@@ -703,7 +740,11 @@ class Assets
                     '$1'*/
                 ];
                 $contents = preg_replace($patterns, $replacements, $contents);
-                $contents = str_replace(["url('/media/system/", "url('/core/assets/"], "url('" . rtrim(Request::root(true), '/') . "/core/assets/", $contents);
+                $contents = str_replace(
+                    ["url('/media/system/", "url('/core/assets/"],
+                    "url('" . rtrim(Request::root(true), '/') . "/core/assets/",
+                    $contents,
+                );
 
                 if ($fp = fopen($cachedir . DS . $cachefile, 'wb')) {
                     fwrite($fp, $contents);

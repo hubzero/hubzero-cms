@@ -63,7 +63,13 @@ class EventsDate
      */
     public function __construct($datetime = '')
     {
-        if (preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", (string) $datetime, $regs)) {
+        if (
+            preg_match(
+                "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",
+                (string) $datetime,
+                $regs,
+            )
+        ) {
             $this->setDate($regs[1], $regs[2], $regs[3]);
             $this->hour   = intval($regs[4]);
             $this->minute = intval($regs[5]);
@@ -179,11 +185,22 @@ class EventsDate
                 $url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1);
                 break;
             case 'week':
-                $url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1) . '&amp;day=' . $this->getDay(1) . '&amp;task=week';
+                $url = 'year='
+                    . $this->getYear(1)
+                    . '&amp;month='
+                    . $this->getMonth(1)
+                    . '&amp;day='
+                    . $this->getDay(1)
+                    . '&amp;task=week';
                 break;
             case 'day':
             default:
-                $url = 'year=' . $this->getYear(1) . '&amp;month=' . $this->getMonth(1) . '&amp;day=' . $this->getDay(1);
+                $url = 'year='
+                    . $this->getYear(1)
+                    . '&amp;month='
+                    . $this->getMonth(1)
+                    . '&amp;day='
+                    . $this->getDay(1);
                 break;
         }
 
@@ -316,7 +333,9 @@ class EventsDate
             }
         }
 
-        return (floor((146097 * $century) / 4) + floor((1461 * $year) / 4) + floor((153 * $month + 2) / 5) + $day + 1721119);
+        return (floor(
+            (146097 * $century) / 4,
+        ) + floor((1461 * $year) / 4) + floor((153 * $month + 2) / 5) + $day + 1721119);
     }
 
     /**

@@ -82,7 +82,10 @@ class Connections
             $projectId = $this->model ? (int) $this->model->get('id') : 0;
             if (
                 (int) $this->connection->get('project_id') !== $projectId
-                || (!$this->connection->isShared() && (int) $this->connection->get('owner_id') !== (int) User::get('id'))
+                || (
+                    !$this->connection->isShared()
+                    && (int) $this->connection->get('owner_id') !== (int) User::get('id')
+                )
             ) {
                 App::abort(403, Lang::txt('ALERTNOTAUTH'));
             }
@@ -418,7 +421,9 @@ class Connections
             $plugin::authorize(is_array($params) ? $params : []); // redirects away
         }
 
-        App::redirect(Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->get('id')));
+        App::redirect(
+            Route::url($this->model->link('files') . '&action=browse&connection=' . $this->connection->get('id')),
+        );
     }
 
     /**
@@ -490,19 +495,29 @@ class Connections
 
         if ($this->isRateLimited($error)) {
             $message = $canManage
-                ? Lang::txt('GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to authenticate it, which raises the limit.')
-                : Lang::txt('This connection is temporarily unavailable because GitHub\'s anonymous request limit was reached. A project manager needs to authenticate it with GitHub.');
+                ? Lang::txt(
+                    'GitHub\'s anonymous request limit has been reached. Connect this repository to GitHub to authenticate it, which raises the limit.',
+                )
+                : Lang::txt(
+                    'This connection is temporarily unavailable because GitHub\'s anonymous request limit was reached. A project manager needs to authenticate it with GitHub.',
+                );
         } elseif ($canManage) {
-            $message = Lang::txt('This connection could not be reached. If it points to a private repository, connect it to GitHub to grant read access.');
+            $message = Lang::txt(
+                'This connection could not be reached. If it points to a private repository, connect it to GitHub to grant read access.',
+            );
         } else {
-            $message = Lang::txt('This connection is not currently available. A project manager needs to authorize it before its files can be shown.');
+            $message = Lang::txt(
+                'This connection is not currently available. A project manager needs to authorize it before its files can be shown.',
+            );
         }
 
         $html  = '<div class="error width-content connection-unavailable">';
         $html .= '<p class="witherror">' . htmlspecialchars($message) . '</p>';
 
         if ($canManage) {
-            $authorize = Route::url($this->model->link('files') . '&action=authorize&connection=' . $this->connection->id);
+            $authorize = Route::url(
+                $this->model->link('files') . '&action=authorize&connection=' . $this->connection->id,
+            );
             $html .= '<p><a class="btn" href="' . $authorize . '">' . Lang::txt('Connect with GitHub') . '</a></p>';
         }
 
@@ -697,7 +712,9 @@ class Connections
 
         if (count($items) > 1) {
             if ($archive = $items->compress()) {
-                $result = $archive->serve('project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip');
+                $result = $archive->serve(
+                    'project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip',
+                );
 
                 // Delete the tmp file for serving
                 $archive->delete();
@@ -1034,7 +1051,9 @@ class Connections
                 }
 
                 $temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-                $temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=') . '_' . $_GET['flowIdentifier'];
+                $temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=')
+                    . '_'
+                    . $_GET['flowIdentifier'];
 
                 $chunk_file = $temp_dir . DS . $_GET['flowFilename'] . '.part' . $_GET['flowChunkNumber'];
 
@@ -1068,7 +1087,9 @@ class Connections
                     // project ID, the base64 encoded destination and the filename
                     if (isset($_POST['flowIdentifier']) && trim($_POST['flowIdentifier']) != '') {
                         $temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-                        $temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=') . '_' . $_POST['flowIdentifier'];
+                        $temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=')
+                            . '_'
+                            . $_POST['flowIdentifier'];
                     }
 
                     $dest_file = $temp_dir . DS . $_POST['flowFilename'] . '.part' . $_POST['flowChunkNumber'];
@@ -1461,7 +1482,10 @@ class Connections
         }
 
         // Create
-        $entity = Entity::fromPath(trim($this->subdir, '/') . '/' . trim(Request::getString('newdir', '')), $this->connection->adapter());
+        $entity = Entity::fromPath(
+            trim($this->subdir, '/') . '/' . trim(Request::getString('newdir', '')),
+            $this->connection->adapter(),
+        );
 
         if (!$entity->create()) {
             Notify::message('', 'error', 'projects');

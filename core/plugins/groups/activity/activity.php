@@ -120,7 +120,9 @@ class Activity extends Plugin
                 && $group_plugin_acl == 'members'
                 && !$siteAdmin
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
 
@@ -342,7 +344,10 @@ class Activity extends Plugin
     {
         $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
 
-        if (!in_array($entry->get('scope'), ['group', 'group_managers']) || $entry->get('scope_id') != $this->group->get('gidNumber')) {
+        if (
+            !in_array($entry->get('scope'), ['group', 'group_managers'])
+            || $entry->get('scope_id') != $this->group->get('gidNumber')
+        ) {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
         }
 
@@ -522,7 +527,9 @@ class Activity extends Plugin
         // here: the log is this group's, by this user, and the body is
         // editor HTML that the feed echoes as-is, so purify it.
         $row->set([
-            'description' => \Hubzero\Utility\Sanitize::html((string) (isset($comment['description']) ? $comment['description'] : '')),
+            'description' => \Hubzero\Utility\Sanitize::html(
+                (string) (isset($comment['description']) ? $comment['description'] : ''),
+            ),
             'anonymous'   => (isset($comment['anonymous']) ? (int) $comment['anonymous'] : 0),
         ]);
 
@@ -626,7 +633,9 @@ class Activity extends Plugin
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => $row->get('description'),
                 'details'     => [
-                    'url'         => Route::url($this->base . '&active=' . $this->pluginName . '#activity' . $row->get('id')),
+                    'url'         => Route::url(
+                        $this->base . '&active=' . $this->pluginName . '#activity' . $row->get('id'),
+                    ),
                     'title'       => $this->group->get('description'),
                     'attachments' => $row->details->get('attachments'),
                 ],

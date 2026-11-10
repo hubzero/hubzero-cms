@@ -581,7 +581,12 @@ class Auth extends SiteController
         $plugin       = Plugin::byType('authentication', $hzad->authenticator);
         $pparams      = new Registry($plugin->params);
         $refl         = new \ReflectionClass("plgAuthentication{$plugin->name}");
-        $display_name = $pparams->get('display_name', $refl->hasMethod('onGetLinkDescription') ? $refl->getMethod('onGetLinkDescription')->invoke(null) : ucfirst($plugin->name));
+        $display_name = $pparams->get(
+            'display_name',
+            $refl->hasMethod('onGetLinkDescription')
+                ? $refl->getMethod('onGetLinkDescription')->invoke(null)
+                : ucfirst($plugin->name),
+        );
 
         // Look for conflicts - first check in the hub accounts
         $profile_conflicts = \Hubzero\User\User::all()
@@ -596,7 +601,9 @@ class Auth extends SiteController
         if ($profile_conflicts) {
             foreach ($profile_conflicts as $auser) {
                 $auth_link  = \Hubzero\Auth\Link::findByUserId($auser->id);
-                $dname      = (is_object($auth_link) && $auth_link->auth_domain_name) ? $auth_link->auth_domain_name : 'hubzero';
+                $dname      = (is_object($auth_link) && $auth_link->auth_domain_name)
+                    ? $auth_link->auth_domain_name
+                    : 'hubzero';
                 $conflict[] = [
                     'auth_domain_name' => $dname,
                     'name'  => $auser->name,
@@ -683,7 +690,9 @@ class Auth extends SiteController
                     // No Link method is available
                     Notify::error(Lang::txt('Linked accounts are not currently available for this provider.'));
 
-                    App::redirect(Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account', false));
+                    App::redirect(
+                        Route::url('index.php?option=com_members&id=' . $user->get('id') . '&active=account', false),
+                    );
                 }
             }
         } else {
@@ -777,7 +786,13 @@ class Auth extends SiteController
                                 $result = $myplugin->logout();
                                 break;
                             } elseif ($singleSignOn === false) {
-                                App::redirect(Route::url('index.php?option=com_login&task=endsinglesignon&authenticator=' . $authenticator, false));
+                                App::redirect(
+                                    Route::url(
+                                        'index.php?option=com_login&task=endsinglesignon&authenticator='
+                                            . $authenticator,
+                                        false,
+                                    ),
+                                );
                                 return;
                             } else {
                                 break;
@@ -850,10 +865,20 @@ class Auth extends SiteController
                     $auto_logoff = $pparams->get('auto_logoff', false);
 
                     if ($auto_logoff) {
-                        App::redirect(Route::url('index.php?option=com_login&task=logout&authenticator=' . $auth_domain_name, false));
+                        App::redirect(
+                            Route::url(
+                                'index.php?option=com_login&task=logout&authenticator=' . $auth_domain_name,
+                                false,
+                            ),
+                        );
                         return;
                     } else {
-                        App::redirect(Route::url('index.php?option=com_login&task=endsinglesignon&authenticator=' . $auth_domain_name, false));
+                        App::redirect(
+                            Route::url(
+                                'index.php?option=com_login&task=endsinglesignon&authenticator=' . $auth_domain_name,
+                                false,
+                            ),
+                        );
                         return;
                     }
                 }

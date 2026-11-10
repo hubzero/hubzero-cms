@@ -64,7 +64,13 @@ class FileIndex extends WikiMacro
             $page = \Components\Wiki\Models\Page::oneOrFail($this->pageid);
 
             if ($page->get('namespace') == 'help') {
-                $page->set('path', ($page->get('path') ? rtrim($this->scope, '/') . '/' . ltrim($page->get('path'), '/') : $this->scope));
+                $page->set(
+                    'path',
+                    ($page->get('path') ? rtrim($this->scope, '/') . '/' . ltrim(
+                        $page->get('path'),
+                        '/',
+                    ) : $this->scope),
+                );
             }
 
             // Build and return the link
@@ -75,15 +81,33 @@ class FileIndex extends WikiMacro
                 $link  = $page->link();
                 $fpath = $row->filespace() . DS . $this->pageid . DS . $row->get('filename');
 
-                $html .= '<li><a href="' . Route::url($link) . '">' . htmlspecialchars($row->get('filename'), ENT_QUOTES, 'UTF-8') . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+                $html .= '<li><a href="'
+                    . Route::url($link)
+                    . '">'
+                    . htmlspecialchars($row->get('filename'), ENT_QUOTES, 'UTF-8')
+                    . '</a> ('
+                    . (
+                        file_exists($fpath)
+                        ? \Hubzero\Utility\Number::formatBytes(filesize($fpath))
+                        : '-- file not found --'
+                    )
+                    . ') ';
                 $huser = $row->creator();
                 if ($huser->get('id')) {
-                    $html .= '- added by <a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . htmlspecialchars(stripslashes((string) $huser->get('name')), ENT_QUOTES, 'UTF-8') . '</a> ';
+                    $html .= '- added by <a href="'
+                        . Route::url('index.php?option=com_members&id=' . $huser->get('id'))
+                        . '">'
+                        . htmlspecialchars(stripslashes((string) $huser->get('name')), ENT_QUOTES, 'UTF-8')
+                        . '</a> ';
                 }
                 if ($row->get('created') && $row->get('created') != '0000-00-00 00:00:00') {
                     $html .= Date::of($row->get('created'))->relative() . '. ';
                 }
-                $html .= $row->get('description') ? '<span>"' . htmlspecialchars(stripslashes($row->get('description')), ENT_QUOTES, 'UTF-8') . '"</span>' : '';
+                $html .= $row->get('description')
+                    ? '<span>"'
+                        . htmlspecialchars(stripslashes($row->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '"</span>'
+                    : '';
                 $html .= '</li>' . "\n";
             }
             $html .= '</ul>';

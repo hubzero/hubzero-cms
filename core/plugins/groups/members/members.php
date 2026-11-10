@@ -66,8 +66,20 @@ class Members extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -144,7 +156,11 @@ class Members extends Plugin
 
             // Group member directories are not available to guests (performance + enumeration risk)
             if (User::isGuest()) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true,
+                );
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -160,7 +176,9 @@ class Members extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
 
@@ -258,7 +276,10 @@ class Members extends Plugin
                 $view->member_roles = $this->getRoles();
 
                 $group_inviteemails = new \Hubzero\User\Group\InviteEmail();
-                $view->current_inviteemails = $group_inviteemails->getInviteEmails($this->group->get('gidNumber'), true);
+                $view->current_inviteemails = $group_inviteemails->getInviteEmails(
+                    $this->group->get('gidNumber'),
+                    true,
+                );
 
                 // Membership terms, fetched for the whole roster in one query
                 $view->expiration_enabled = \Hubzero\User\Group\Membership::enabled()
@@ -289,12 +310,16 @@ class Members extends Plugin
                         $view->managers = [];
                         break;
                     case 'pending':
-                        $view->groupusers = ($view->q) ? $group->search('applicants', $view->q) : $group->get('applicants');
+                        $view->groupusers = ($view->q)
+                            ? $group->search('applicants', $view->q)
+                            : $group->get('applicants');
                         $view->managers   = [];
                         break;
                     case 'managers':
                         $view->groupusers = ($view->q) ? $group->search('managers', $view->q) : $group->get('managers');
-                        $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter) : $view->groupusers;
+                        $view->groupusers = ($view->role_filter)
+                            ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter)
+                            : $view->groupusers;
                         $view->managers   = $group->get('managers');
                         break;
                     case 'members':
@@ -302,8 +327,12 @@ class Members extends Plugin
                         // Require a search query or role filter before returning the member list.
                         // Managers/admins see the full list so they can administer membership.
                         if ($view->authorized == 'manager' || $view->authorized == 'admin') {
-                            $view->groupusers = ($view->q) ? $group->search('members', $view->q) : $group->get('members');
-                            $view->groupusers = ($view->role_filter) ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter) : $view->groupusers;
+                            $view->groupusers = ($view->q)
+                                ? $group->search('members', $view->q)
+                                : $group->get('members');
+                            $view->groupusers = ($view->role_filter)
+                                ? \Hubzero\User\Group\Helper::searchRoles($group, $view->role_filter)
+                                : $view->groupusers;
                         } elseif ($view->q) {
                             $view->groupusers = $group->search('members', $view->q);
                         } elseif ($view->role_filter) {
@@ -358,8 +387,16 @@ class Members extends Plugin
         $pending = $group->get("applicants");
         if (count($pending) > 0 && in_array(User::get('id'), $group->get("managers"))) {
             $title = Lang::txt('PLG_GROUPS_MEMBERS_GROUP_HAS_REQUESTS', $group->get('description'), count($pending));
-            $link  = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=pending');
-            $arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . Lang::txt('PLG_GROUPS_MEMBERS_ALERT') . '</h5>' . $title . '</span></a>';
+            $link  = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=pending',
+            );
+            $arr['metadata']['alert'] = '<a class="alrt" href="'
+                . $link
+                . '"><span><h5>'
+                . Lang::txt('PLG_GROUPS_MEMBERS_ALERT')
+                . '</h5>'
+                . $title
+                . '</span></a>';
         }
 
         // Return the output
@@ -530,8 +567,16 @@ class Members extends Plugin
                         'scope_id'    => $this->group->get('gidNumber'),
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_APPROVED',
-                            '<a href="' . Route::url('index.php?option=com_members&id=' . $uid) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_members&id=' . $uid)
+                                . '">'
+                                . $targetuser->get('name')
+                                . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                                . '">'
+                                . $this->group->get('description')
+                                . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $uid,
@@ -639,8 +684,16 @@ class Members extends Plugin
                         'scope_id'    => $this->group->get('gidNumber'),
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_PROMOTED',
-                            '<a href="' . Route::url('index.php?option=com_members&id=' . $uid) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_members&id=' . $uid)
+                                . '">'
+                                . $targetuser->get('name')
+                                . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                                . '">'
+                                . $this->group->get('description')
+                                . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $uid,
@@ -672,7 +725,16 @@ class Members extends Plugin
         $filter = Request::getWord('filter', 'members');
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start),
+            Route::url(
+                'index.php?option=com_groups&cn='
+                    . $this->group->get('cn')
+                    . '&active=members&filter='
+                    . $filter
+                    . '&limit='
+                    . $limit
+                    . '&limitstart='
+                    . $start,
+            ),
         );
     }
 
@@ -745,8 +807,16 @@ class Members extends Plugin
                         'scope_id'    => $this->group->get('gidNumber'),
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_DEMOTED',
-                            '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))
+                                . '">'
+                                . $targetuser->get('name')
+                                . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                                . '">'
+                                . $this->group->get('description')
+                                . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $targetuser->get('id'),
@@ -784,7 +854,16 @@ class Members extends Plugin
         $filter = Request::getWord("filter", "members");
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter . '&limit=' . $limit . '&limitstart=' . $start),
+            Route::url(
+                'index.php?option=com_groups&cn='
+                    . $this->group->get('cn')
+                    . '&active=members&filter='
+                    . $filter
+                    . '&limit='
+                    . $limit
+                    . '&limitstart='
+                    . $start,
+            ),
         );
     }
 
@@ -831,7 +910,13 @@ class Members extends Plugin
             App::abort(403, Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_NOT_AUTHORIZED'));
         }
 
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION'));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION'),
+        );
 
         $users = Request::getArray('users', []);
         $users = array_values(array_filter(array_map('intval', (array) $users)));
@@ -920,7 +1005,14 @@ class Members extends Plugin
         $filter = Request::getWord('filter', 'members');
 
         App::redirect(
-            Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter),
+            Route::url(
+                'index.php?option='
+                    . $this->componentOption
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=members&filter='
+                    . $filter,
+            ),
             ($mode == 'clear'
                 ? Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_CLEARED', $done)
                 : Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_SAVED', $done)),
@@ -949,7 +1041,13 @@ class Members extends Plugin
         }
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt(strtoupper($this->action)),
+        );
 
         // Cancel membership confirmation screen
         $view = $this->view('default', 'remove');
@@ -1049,8 +1147,16 @@ class Members extends Plugin
                         'scope_id'    => $this->group->get('gidNumber'),
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_REMOVED',
-                            '<a href="' . Route::url('index.php?option=com_members&id=' . $uid) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_members&id=' . $uid)
+                                . '">'
+                                . $targetuser->get('name')
+                                . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                                . '">'
+                                . $this->group->get('description')
+                                . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $uid,
@@ -1106,7 +1212,12 @@ class Members extends Plugin
             return false;
         }
 
-        App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'), '', 'message', true);
+        App::redirect(
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'),
+            '',
+            'message',
+            true,
+        );
     }
 
     /**
@@ -1130,7 +1241,13 @@ class Members extends Plugin
         $msg = $this->group->get('restrict_msg');
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt(strtoupper($this->action)),
+        );
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'deny');
@@ -1185,7 +1302,13 @@ class Members extends Plugin
             return false;
         }
 
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'),
+        );
 
         $view = $this->view('default', 'responses');
         $view->option = $this->componentOption;
@@ -1342,8 +1465,16 @@ class Members extends Plugin
                         'scope_id'    => $this->group->get('gidNumber'),
                         'description' => Lang::txt(
                             'PLG_GROUPS_MEMBERS_ACTIVITY_DENIED',
-                            '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
-                            '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))
+                                . '">'
+                                . $targetuser->get('name')
+                                . '</a>',
+                            '<a href="'
+                                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                                . '">'
+                                . $this->group->get('description')
+                                . '</a>',
                         ),
                         'details'     => [
                             'user_id'  => $targetuser->get('id'),
@@ -1390,7 +1521,13 @@ class Members extends Plugin
         }
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt(strtoupper($this->action)),
+        );
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'cancel');
@@ -1474,8 +1611,16 @@ class Members extends Plugin
                             'scope_id'    => $this->group->get('gidNumber'),
                             'description' => Lang::txt(
                                 'PLG_GROUPS_MEMBERS_ACTIVITY_CANCELLED',
-                                '<a href="' . Route::url('index.php?option=com_members&id=' . $targetuser->get('id')) . '">' . $targetuser->get('name') . '</a>',
-                                '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                                '<a href="'
+                                    . Route::url('index.php?option=com_members&id=' . $targetuser->get('id'))
+                                    . '">'
+                                    . $targetuser->get('name')
+                                    . '</a>',
+                                '<a href="'
+                                    . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                                    . '">'
+                                    . $this->group->get('description')
+                                    . '</a>',
                             ),
                             'details'     => [
                                 'user_id'  => $targetuser->get('id'),
@@ -1503,7 +1648,10 @@ class Members extends Plugin
         $db = App::get('db');
         foreach ($user_emails as $ue) {
             // Only this group's invitation for the address
-            $sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email=" . $db->Quote($ue) . " AND gidNumber=" . $db->Quote($this->group->get('gidNumber'));
+            $sql = "DELETE FROM `#__xgroups_inviteemails` WHERE email="
+                . $db->Quote($ue)
+                . " AND gidNumber="
+                . $db->Quote($this->group->get('gidNumber'));
             $db->setQuery($sql);
             $db->query();
         }
@@ -1515,7 +1663,12 @@ class Members extends Plugin
             'comments'  => array_merge($users, $user_emails),
         ]);
 
-        App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'), '', '', true);
+        App::redirect(
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'),
+            '',
+            '',
+            true,
+        );
     }
 
     /**
@@ -1564,7 +1717,9 @@ class Members extends Plugin
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=members'),
+            Route::url(
+                'index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=members',
+            ),
             Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_DONE'),
             'passed',
         );
@@ -1719,7 +1874,11 @@ class Members extends Plugin
                 'description' => Lang::txt(
                     'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
                     $role->get('name'),
-                    '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                    '<a href="'
+                        . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                        . '">'
+                        . $this->group->get('description')
+                        . '</a>',
                 ),
                 'details'     => [
                     'role_id'  => $role->get('id'),
@@ -1791,7 +1950,11 @@ class Members extends Plugin
                     'description' => Lang::txt(
                         'PLG_GROUPS_MEMBERS_ACTIVITY_ROLE_DELETED',
                         $role->get('name'),
-                        '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->group->get('description') . '</a>',
+                        '<a href="'
+                            . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'))
+                            . '">'
+                            . $this->group->get('description')
+                            . '</a>',
                     ),
                     'details'     => [
                         'role_id'  => $role->get('id'),
@@ -1830,7 +1993,13 @@ class Members extends Plugin
         }
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($this->action)));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt(strtoupper($this->action)),
+        );
 
         // Cancel membership confirmation screen
         $view = $this->view('assign', 'role');
@@ -1901,7 +2070,13 @@ class Members extends Plugin
         }
 
         $db = App::get('db');
-        $db->setQuery("INSERT INTO `#__xgroups_member_roles` (roleid,uidNumber) VALUES (" . $db->Quote($role) . "," . $db->Quote($uid) . ")");
+        $db->setQuery(
+            "INSERT INTO `#__xgroups_member_roles` (roleid,uidNumber) VALUES ("
+                . $db->Quote($role)
+                . ","
+                . $db->Quote($uid)
+                . ")",
+        );
         $db->query();
 
         if ($no_html == 0) {
@@ -1953,7 +2128,12 @@ class Members extends Plugin
         }
 
         $db = App::get('db');
-        $db->setQuery("DELETE FROM `#__xgroups_member_roles` WHERE roleid=" . $db->Quote($role) . " AND uidNumber=" . $db->Quote($uid));
+        $db->setQuery(
+            "DELETE FROM `#__xgroups_member_roles` WHERE roleid="
+                . $db->Quote($role)
+                . " AND uidNumber="
+                . $db->Quote($uid),
+        );
         if (!$db->query()) {
             $this->setError('An error occurred while trying to remove the members role. Please try again.');
         }
@@ -1991,7 +2171,9 @@ class Members extends Plugin
                 $subject .= Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_APPROVED');
 
                 // Message
-                $plain  = "Your request for membership in the " . $group->get('description') . " group has been approved.\r\n";
+                $plain  = "Your request for membership in the "
+                    . $group->get('description')
+                    . " group has been approved.\r\n";
                 $plain .= "To view this group go to: \r\n";
                 $plain .= Request::base() . $sef . "\r\n";
                 break;
@@ -2004,7 +2186,9 @@ class Members extends Plugin
                 $subject .= Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_MEMBERSHIP_DENIED');
 
                 // Message
-                $plain  = "Your request for membership in the " . $group->get('description') . " group has been denied.\r\n\r\n";
+                $plain  = "Your request for membership in the "
+                    . $group->get('description')
+                    . " group has been denied.\r\n\r\n";
                 if ($reason) {
                     $plain .= stripslashes($reason) . "\r\n\r\n";
                 }
@@ -2038,7 +2222,9 @@ class Members extends Plugin
                 $subject .= Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');
 
                 // Message
-                $plain  = "Your invitation for membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
+                $plain  = "Your invitation for membership in the "
+                    . $group->get('description')
+                    . " group has been cancelled.\r\n\r\n";
                 if ($reason) {
                     $plain .= stripslashes($reason) . "\r\n\r\n";
                 }
@@ -2093,7 +2279,9 @@ class Members extends Plugin
         $subject = Lang::txt('PLG_GROUPS_MESSAGES_SUBJECT_INVITATION_CANCELLED');
 
         //create the message body
-        $plain  = "Your invitation for membership in the " . $group->get('description') . " group has been cancelled.\r\n\r\n";
+        $plain  = "Your invitation for membership in the "
+            . $group->get('description')
+            . " group has been cancelled.\r\n\r\n";
         if ($reason) {
             $plain .= stripslashes($reason) . "\r\n\r\n";
         }
@@ -2147,7 +2335,13 @@ class Members extends Plugin
             ->rows();
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($profile->get('name'))));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . $this->group->get('description')
+                . ': '
+                . Lang::txt(strtoupper($profile->get('name'))),
+        );
 
         $params = \Plugin::params('members', 'profile');
         $params->merge(new \Hubzero\Config\Registry($profile->get('params')));

@@ -332,7 +332,10 @@ class Geocode
             return [];
         }
 
-        $gdb->setQuery("SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) =" . $gdb->quote(strtolower($continent)));
+        $gdb->setQuery(
+            "SELECT DISTINCT country FROM country_continent WHERE LOWER(continent) ="
+                . $gdb->quote(strtolower($continent)),
+        );
         return $gdb->loadColumn();
     }
 
@@ -348,7 +351,10 @@ class Geocode
             return [];
         }
 
-        $gdb->setQuery("SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) =" . $gdb->quote(strtolower($country)));
+        $gdb->setQuery(
+            "SELECT DISTINCT continent FROM country_continent WHERE LOWER(country) ="
+                . $gdb->quote(strtolower($country)),
+        );
         return $gdb->loadColumn();
     }
 
@@ -572,7 +578,9 @@ class Geocode
 
             self::unusable($table, true);
 
-            Log::warning('Geocode: IPv6 lookups skipped for five minutes, querying ' . $table . ' failed: ' . $e->getMessage());
+            Log::warning(
+                'Geocode: IPv6 lookups skipped for five minutes, querying ' . $table . ' failed: ' . $e->getMessage(),
+            );
 
             return null;
         }
@@ -676,7 +684,14 @@ class Geocode
             }
             list($table, $n_ip) = $lookup;
 
-            $sql = "SELECT COUNT(*) FROM " . $table . " WHERE ipfrom <= " . $n_ip . " AND ipto >= " . $n_ip . " AND LOWER(location) = " . $gdb->quote(strtolower($location));
+            $sql = "SELECT COUNT(*) FROM "
+                . $table
+                . " WHERE ipfrom <= "
+                . $n_ip
+                . " AND ipto >= "
+                . $n_ip
+                . " AND LOWER(location) = "
+                . $gdb->quote(strtolower($location));
 
             $result = self::lookupResult($gdb, $table, $sql, $failed);
 

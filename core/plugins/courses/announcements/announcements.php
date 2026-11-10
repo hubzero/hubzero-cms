@@ -257,12 +257,18 @@ class Announcements extends Plugin
 
         // Incoming dates are in local time. We need to convert to UTC
         if ($model->get('publish_up') && $model->get('publish_up') != '0000-00-00 00:00:00') {
-            $model->set('publish_up', \Hubzero\Facades\Date::of($model->get('publish_up'), Config::get('offset'))->toSql());
+            $model->set(
+                'publish_up',
+                \Hubzero\Facades\Date::of($model->get('publish_up'), Config::get('offset'))->toSql(),
+            );
         }
 
         // Incoming dates are in local time. We need to convert to UTC
         if ($model->get('publish_down') && $model->get('publish_down') != '0000-00-00 00:00:00') {
-            $model->set('publish_down', \Hubzero\Facades\Date::of($model->get('publish_down'), Config::get('offset'))->toSql());
+            $model->set(
+                'publish_down',
+                \Hubzero\Facades\Date::of($model->get('publish_down'), Config::get('offset'))->toSql(),
+            );
         }
 
         if (!isset($fields['priority']) || !$fields['priority']) {

@@ -86,7 +86,10 @@ class Media extends SiteController
             // If we have a positive value and its less then our ten second threshold,
             // add viewing time to total watched time
             if ($time_viewed < 10 && $time_viewed > 0) {
-                $trackingInformation->set('total_viewing_time', $trackingInformation->get('total_viewing_time') + $time_viewed);
+                $trackingInformation->set(
+                    'total_viewing_time',
+                    $trackingInformation->get('total_viewing_time') + $time_viewed,
+                );
             }
 
             // Set the new current position
@@ -141,7 +144,11 @@ class Media extends SiteController
             }
 
             // Check to see if we need to set a new farthest position
-            if ($trackingInformationDetailed->get('current_position') > $trackingInformationDetailed->get('farthest_position')) {
+            if (
+                $trackingInformationDetailed
+                    ->get('current_position') > $trackingInformationDetailed
+                    ->get('farthest_position')
+            ) {
                 $trackingInformationDetailed->set('farthest_position', $time);
                 $trackingInformationDetailed->set('farthest_position_timestamp', Date::toSql());
             }
@@ -205,7 +212,9 @@ class Media extends SiteController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            Notify::error(
+                Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
+            );
             return $this->displayTask();
         }
 
@@ -333,7 +342,12 @@ class Media extends SiteController
         }
 
         // Build the upload path if it doesn't exist
-        $uploadDirectory = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $listdir . DS;
+        $uploadDirectory = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/courses'), DS)
+            . DS
+            . $listdir
+            . DS;
 
         // make sure upload directory is writable
         if (!is_dir($uploadDirectory)) {
@@ -355,7 +369,11 @@ class Media extends SiteController
         }
 
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => 'File is too large. Max file upload size is ' . $max]);
             return;
         }
@@ -480,7 +498,12 @@ class Media extends SiteController
             return;
         }
 
-        $del_folder = DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . trim($listdir, DS) . DS . ltrim($folder, DS);
+        $del_folder = DS
+            . trim($this->config->get('uploadpath', '/site/courses'), DS)
+            . DS
+            . trim($listdir, DS)
+            . DS
+            . ltrim($folder, DS);
 
         // Delete the folder
         if (is_dir(PATH_APP . $del_folder)) {
@@ -589,7 +612,10 @@ class Media extends SiteController
         // There is no media layout for this controller; send the user back to
         // the course page (or the course list) carrying whatever was notified.
         App::redirect(
-            \Route::url('index.php?option=' . $this->option . ($course->exists() ? '&gid=' . $course->get('alias') : ''), false),
+            \Route::url(
+                'index.php?option=' . $this->option . ($course->exists() ? '&gid=' . $course->get('alias') : ''),
+                false,
+            ),
         );
     }
 

@@ -188,7 +188,13 @@ class Loader
         $compName  = ucfirst(substr($option, 4));
         $namespace = '\\Components\\' . $compName . '\\' . ucfirst($client) . '\\' . $compName;
         $found     = false;
-        $react_path = PATH_COMPONENT . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'react' . DIRECTORY_SEPARATOR . $file;
+        $react_path = PATH_COMPONENT
+            . DIRECTORY_SEPARATOR
+            . 'assets'
+            . DIRECTORY_SEPARATOR
+            . 'react'
+            . DIRECTORY_SEPARATOR
+            . $file;
 
         // Make sure the component is enabled
         if ($this->isEnabled($option)) {
@@ -309,13 +315,19 @@ class Loader
         }
 
         if (preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", $component) !== 1) {
-            throw new \InvalidArgumentException(sprintf('Invalid component name [%s] requested', htmlspecialchars($component, ENT_HTML5)), 404);
+            throw new \InvalidArgumentException(
+                sprintf('Invalid component name [%s] requested', htmlspecialchars($component, ENT_HTML5)),
+                404,
+            );
         }
 
         $controller = \Request::getCmd('controller', $component);
 
         if (preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", $controller) !== 1) {
-            throw new \InvalidArgumentException(sprintf('Invalid controller name [%s] requested', htmlspecialchars($controller, ENT_HTML5)), 404);
+            throw new \InvalidArgumentException(
+                sprintf('Invalid controller name [%s] requested', htmlspecialchars($controller, ENT_HTML5)),
+                404,
+            );
         }
 
         $path = PATH_COMPONENT;
@@ -446,7 +458,13 @@ class Loader
             // lets the autoloader pull in router.php -- which it always did, so
             // the versioned routers were never used
             if (!is_null($version) && !class_exists($name, false)) {
-                $vpath = $this->path($option) . DIRECTORY_SEPARATOR . strtolower($client) . DIRECTORY_SEPARATOR . 'routerv' . $version . '.php';
+                $vpath = $this->path($option)
+                    . DIRECTORY_SEPARATOR
+                    . strtolower($client)
+                    . DIRECTORY_SEPARATOR
+                    . 'routerv'
+                    . $version
+                    . '.php';
                 if (file_exists($vpath)) {
                     require_once $vpath;
                 }
@@ -456,9 +474,19 @@ class Loader
                 // Use the component routing handler if it exists
                 $paths = [];
                 if (!is_null($version)) {
-                    $paths[] = $this->path($option) . DIRECTORY_SEPARATOR . strtolower($client) . DIRECTORY_SEPARATOR . 'routerv' . $version . '.php';
+                    $paths[] = $this->path($option)
+                        . DIRECTORY_SEPARATOR
+                        . strtolower($client)
+                        . DIRECTORY_SEPARATOR
+                        . 'routerv'
+                        . $version
+                        . '.php';
                 }
-                $paths[] = $this->path($option) . DIRECTORY_SEPARATOR . strtolower($client) . DIRECTORY_SEPARATOR . 'router.php';
+                $paths[] = $this->path($option)
+                    . DIRECTORY_SEPARATOR
+                    . strtolower($client)
+                    . DIRECTORY_SEPARATOR
+                    . 'router.php';
                 $paths[] = $this->path($option) . DIRECTORY_SEPARATOR . 'router.php';
 
                 // Use the custom routing handler if it exists
@@ -542,7 +570,10 @@ class Loader
             self::$components[$option] = $data;
 
             if ($error = $db->getErrorMsg()) {
-                throw new Exception($this->app['language']->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING', $option, $error), 500);
+                throw new Exception(
+                    $this->app['language']->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_LOADING', $option, $error),
+                    500,
+                );
             }
         } catch (\Hubzero\Database\Exception\ConnectionFailedException $e) {
         }

@@ -151,7 +151,10 @@ class Grid
             $result = $row->isCheckedOut($userid);
         } else {
             // the static form of the same test (isCheckedOut() is an instance method)
-            $result = \Hubzero\Database\Table::checkedOut($userid, isset($row->checked_out) ? (int) $row->checked_out : 0);
+            $result = \Hubzero\Database\Table::checkedOut(
+                $userid,
+                isset($row->checked_out) ? (int) $row->checked_out : 0,
+            );
         }
 
         $checked = '';

@@ -216,7 +216,11 @@ class Helper
             return false;
         }
 
-        $sql = 'DELETE FROM `#__xgroups_inviteemails` WHERE email=' . $db->quote($email) . ' AND gidNumber IN (' . $gids . ');';
+        $sql = 'DELETE FROM `#__xgroups_inviteemails` WHERE email='
+            . $db->quote($email)
+            . ' AND gidNumber IN ('
+            . $gids
+            . ');';
 
         $db->setQuery($sql);
 
@@ -244,7 +248,10 @@ class Helper
 
         $db =  App::get('db');
 
-        $query = "SELECT uidNumber FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=" . $db->quote($role) . " AND r.id=m.roleid AND r.gidNumber=" . $db->quote($group->gidNumber);
+        $query = "SELECT uidNumber FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id="
+            . $db->quote($role)
+            . " AND r.id=m.roleid AND r.gidNumber="
+            . $db->quote($group->gidNumber);
 
         $db->setQuery($query);
 
@@ -308,7 +315,10 @@ class Helper
             foreach ($hub_group_plugins as $hgp) {
                 //if group defined access level is not an acceptable value or not set use default value that is set per plugin
                 //else use group defined access level
-                if (!isset($active_group_plugins[$hgp['name']]) || !in_array($active_group_plugins[$hgp['name']], $acceptable_levels)) {
+                if (
+                    !isset($active_group_plugins[$hgp['name']])
+                    || !in_array($active_group_plugins[$hgp['name']], $acceptable_levels)
+                ) {
                     $value = $hgp['default_access'];
                 } else {
                     $value = $active_group_plugins[$hgp['name']];
@@ -363,7 +373,15 @@ class Helper
         if (empty($config)) {
             // build path to config file
             $uploadPath = Component::params('com_groups')->get('uploadpath');
-            $configPath = PATH_APP . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'config' . DS . 'db.php';
+            $configPath = PATH_APP
+                . DS
+                . trim($uploadPath, DS)
+                . DS
+                . $group->get('gidNumber')
+                . DS
+                . 'config'
+                . DS
+                . 'db.php';
 
             // make sure file exists
             if (!file_exists($configPath)) {

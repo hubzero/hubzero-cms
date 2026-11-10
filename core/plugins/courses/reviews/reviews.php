@@ -75,7 +75,11 @@ class Reviews extends Plugin
             $this->view->controller = $this->controller;
             $this->view->obj      = $this->obj      = $course;
             $this->view->obj_type = $this->obj_type = substr($this->option, 4);
-            $this->view->url      = $this->url      = Route::url($course->link() . '&active=' . $this->pluginName, false, true);
+            $this->view->url      = $this->url      = Route::url(
+                $course->link() . '&active=' . $this->pluginName,
+                false,
+                true,
+            );
             $this->view->depth    = 0;
             $this->view->tbl      = $tbl;
 
@@ -223,7 +227,9 @@ class Reviews extends Plugin
      */
     public function redirect($url, $msg = '', $msgType = '')
     {
-        $url = ($url != '') ? $url : Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
+        $url = ($url != '')
+            ? $url
+            : Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
 
         App::redirect($url, $msg, $msgType);
     }

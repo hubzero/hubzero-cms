@@ -385,7 +385,11 @@ class View
                 }
 
                 // return message letting user know they dont have access
-                $content = '<p class="info">' . Lang::txt('You do not have the permissions to access this group page. Please log in to access or request membership.') . '</p>';
+                $content = '<p class="info">'
+                    . Lang::txt(
+                        'You do not have the permissions to access this group page. Please log in to access or request membership.',
+                    )
+                    . '</p>';
             }
         }
 
@@ -610,7 +614,13 @@ class View
      */
     public static function handleCustomError(Exception $error)
     {
-        $lerror = new \Hubzero\Error\Exception\LegacyException($error->getMessage(), $error->getCode(), null, null, $error->getTrace());
+        $lerror = new \Hubzero\Error\Exception\LegacyException(
+            $error->getMessage(),
+            $error->getCode(),
+            null,
+            null,
+            $error->getTrace(),
+        );
         $lerror->set('line', $error->getLine());
         $lerror->set('file', $error->getFile());
         //$lerror = new \Hubzero\Error\Exception\LegacyException($error->getMessage(), $error->getCode(), $error);
@@ -711,7 +721,16 @@ class View
         $uploadPath = Component::params('com_groups')->get('uploadpath');
 
         // build path to group component
-        $templateComponentFolder = PATH_APP . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'components' . DS . 'com_' . $tab;
+        $templateComponentFolder = PATH_APP
+            . DS
+            . trim($uploadPath, DS)
+            . DS
+            . $group->get('gidNumber')
+            . DS
+            . 'components'
+            . DS
+            . 'com_'
+            . $tab;
         $templateComponentFile   = $templateComponentFolder . DS . $tab . '.php';
 
         // do we have a group component?
@@ -789,7 +808,16 @@ class View
         $uploadPath = Component::params('com_groups')->get('uploadpath');
 
         // build path to php page in template
-        $templatePhpPagePath = PATH_APP . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'pages' . DS . $path . '.php';
+        $templatePhpPagePath = PATH_APP
+            . DS
+            . trim($uploadPath, DS)
+            . DS
+            . $group->get('gidNumber')
+            . DS
+            . 'pages'
+            . DS
+            . $path
+            . '.php';
 
         // if the file is not a valid path
         if (!is_file($templatePhpPagePath)) {

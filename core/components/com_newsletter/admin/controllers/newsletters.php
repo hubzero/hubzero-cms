@@ -68,7 +68,10 @@ class Newsletters extends AdminController
             return false;
         }
 
-        $sql = "SELECT * FROM `#__cron_jobs` WHERE `plugin`=" . $database->quote('newsletter') . " AND `event`=" . $database->quote('processMailings');
+        $sql = "SELECT * FROM `#__cron_jobs` WHERE `plugin`="
+            . $database->quote('newsletter')
+            . " AND `event`="
+            . $database->quote('processMailings');
         $database->setQuery($sql);
         $sendMailingsCronJob = $database->loadObject();
 
@@ -410,7 +413,9 @@ class Newsletters extends AdminController
 
         if ($success) {
             // Set success message
-            $msg = ($publish) ? Lang::txt('COM_NEWSLETTER_PUBLISHED_SUCCESS') : Lang::txt('COM_NEWSLETTER_UNPUBLISHED_SUCCESS');
+            $msg = ($publish)
+                ? Lang::txt('COM_NEWSLETTER_PUBLISHED_SUCCESS')
+                : Lang::txt('COM_NEWSLETTER_UNPUBLISHED_SUCCESS');
 
             Notify::success($msg);
         }
@@ -436,7 +441,9 @@ class Newsletters extends AdminController
         // Generate output
         if (!$no_html) {
             $content  = '<h2 class="modal-title">' . Lang::txt('COM_NEWSLETTER_PREVIEW') . '</h2><br /><br />';
-            $content .= '<iframe width="100%" height="100%" src="' . Route::url('index.php?option=' . $this->option . '&task=preview&id=' . $id . '&no_html=1') . '"></iframe>';
+            $content .= '<iframe width="100%" height="100%" src="'
+                . Route::url('index.php?option=' . $this->option . '&task=preview&id=' . $id . '&no_html=1')
+                . '"></iframe>';
         } else {
             $content = $newsletter->buildNewsletter($newsletter);
         }
@@ -532,7 +539,9 @@ class Newsletters extends AdminController
 
         // Do we have good emails to tell user about
         if (count($goodEmails)) {
-            Notify::success(Lang::txt('COM_NEWSLETTER_TEST_SEND_SUCCESS', $newsletter->name, implode('<br />', $goodEmails)));
+            Notify::success(
+                Lang::txt('COM_NEWSLETTER_TEST_SEND_SUCCESS', $newsletter->name, implode('<br />', $goodEmails)),
+            );
         }
 
         // Do we have any bad emails to tell user about
@@ -761,7 +770,9 @@ class Newsletters extends AdminController
         if (!$newsletter->save()) {
             Notify::error($newsletter->getError());
         } else {
-            Notify::success(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletter->name, number_format($totalcount)));
+            Notify::success(
+                Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletter->name, number_format($totalcount)),
+            );
         }
 
         $this->cancelTask();
@@ -778,8 +789,14 @@ class Newsletters extends AdminController
      * @param   boolean  $sendingTest
      * @return  object
      */
-    private function send($newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false)
-    {
+    private function send(
+        $newsletter,
+        $newsletterHtmlContent,
+        $newsletterPlainContent,
+        $newsletterContacts,
+        $newsletterMailinglist,
+        $sendingTest = false,
+    ) {
         //set default mail from and reply-to names and addresses
         // HTTP_HOST carries the port on a hub served on a non-standard port,
         // which is not valid in an address and split the From header below
@@ -845,7 +862,12 @@ class Newsletters extends AdminController
 
                 // create unsubscribe link
                 $unsubscribeMailtoLink = '';
-                $unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . urlencode($contact) . '&t=' . $emailToken;
+                $unsubscribeLink       = 'https://'
+                    . $_SERVER['SERVER_NAME']
+                    . '/newsletter/unsubscribe?e='
+                    . urlencode($contact)
+                    . '&t='
+                    . $emailToken;
 
                 // add unsubscribe link - placeholder & in header (must do after adding tracking!!)
                 $mailHtmlBody  = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $mailHtmlBody);

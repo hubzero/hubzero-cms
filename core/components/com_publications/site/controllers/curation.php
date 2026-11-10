@@ -142,7 +142,9 @@ class Curation extends SiteController
     protected function buildTitle()
     {
         if (!$this->_title) {
-            $this->_title = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->option . '_' . $this->controller));
+            $this->_title = Lang::txt(strtoupper($this->option))
+                . ': '
+                . Lang::txt(strtoupper($this->option . '_' . $this->controller));
         }
         Document::setTitle($this->_title);
     }
@@ -168,7 +170,12 @@ class Curation extends SiteController
         if ($this->pub) {
             Pathway::append(
                 $this->pub->title,
-                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $this->pub->id,
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&task=view&id='
+                    . $this->pub->id,
             );
         }
     }
@@ -386,8 +393,18 @@ class Curation extends SiteController
                     $item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
                     $message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
-                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim(Request::base(), DS) . DS . trim(Route::url($this->pub->link('curate')), DS) . "\n" . "\n";
-                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . rtrim(Request::base(), DS) . DS . trim(Route::url($this->pub->link('version')), DS);
+                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE')
+                        . ' '
+                        . rtrim(Request::base(), DS)
+                        . DS
+                        . trim(Route::url($this->pub->link('curate')), DS)
+                        . "\n"
+                        . "\n";
+                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW')
+                        . ' '
+                        . rtrim(Request::base(), DS)
+                        . DS
+                        . trim(Route::url($this->pub->link('version')), DS);
 
                     Helpers\Html::notify(
                         $this->pub,
@@ -400,7 +417,11 @@ class Curation extends SiteController
                 if (!$this->getError() && $owner != $previousOwner) {
                     $obj = new Tables\CurationHistory($this->database);
                     if (!empty($ownerProfile)) {
-                        $changelog = '<p>Curation assigned to ' . $ownerProfile->get('name') . ' (' . $ownerProfile->get('username') . ')</p>';
+                        $changelog = '<p>Curation assigned to '
+                            . $ownerProfile->get('name')
+                            . ' ('
+                            . $ownerProfile->get('username')
+                            . ')</p>';
                     } else {
                         $changelog = '<p>Curator assignment was removed</p>';
                     }
@@ -507,7 +528,16 @@ class Curation extends SiteController
         $this->pub->version->set('curation_version_id', $versionNumber);
 
         // Save dataset bundle size
-        $zipPath = PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid) . DS . \Hubzero\Utility\Str::pad($vid) . DS . str_replace(['.', '/'], '_', $this->pub->version->doi) . ".zip";
+        $zipPath = PATH_APP
+            . DS
+            . trim($this->config->get('webpath'), DS)
+            . DS
+            . \Hubzero\Utility\Str::pad($pid)
+            . DS
+            . \Hubzero\Utility\Str::pad($vid)
+            . DS
+            . str_replace(['.', '/'], '_', $this->pub->version->doi)
+            . ".zip";
 
         if (file_exists($zipPath)) {
             $this->pub->version->set('datasize', filesize($zipPath));
@@ -527,20 +557,29 @@ class Curation extends SiteController
         // Get DOI service
         $doiService = new \Components\Publications\Models\Doi($this->pub);
 
-        $updateDoiMetadata = ($this->pub->version->doi ? preg_match("/" . $doiService->configs()->shoulder . "/", $this->pub->version->doi) : false);
+        $updateDoiMetadata = ($this->pub->version->doi ? preg_match(
+            "/" . $doiService->configs()->shoulder . "/",
+            $this->pub->version->doi,
+        ) : false);
 
         if ($updateDoiMetadata) {
             $doiService->update($this->pub->version->doi, true);
 
             if ($doiService->getError()) {
-                throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA') . ' ' . $doiService->getError(), 403);
+                throw new Exception(
+                    Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA') . ' ' . $doiService->getError(),
+                    403,
+                );
             }
 
             // Register URL and DOI name for DataCite DOI service
             $doiService->register(false, true, $this->pub->version->doi);
 
             if ($doiService->getError()) {
-                throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL') . ' ' . $doiService->getError(), 403);
+                throw new Exception(
+                    Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL') . ' ' . $doiService->getError(),
+                    403,
+                );
             }
         }
 
@@ -602,7 +641,13 @@ class Curation extends SiteController
                                 $permissionURL .= 'sandbox.';
                             }
 
-                            $permissionURL .= 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . "response_type=code" . htmlspecialchars('&') . "scope=/read-limited%20/activities/update%20/person/update&redirect_uri=" . urlencode($redirectURI);
+                            $permissionURL .= 'orcid.org/oauth/authorize?client_id='
+                                . $clientID
+                                . htmlspecialchars('&')
+                                . "response_type=code"
+                                . htmlspecialchars('&')
+                                . "scope=/read-limited%20/activities/update%20/person/update&redirect_uri="
+                                . urlencode($redirectURI);
 
                             $params = Component::params('com_publications');
                             $address = $params->get('curatorreplyto');
@@ -846,7 +891,9 @@ class Curation extends SiteController
         $sef     = 'publications' . DS . $pub->id . DS . $pub->version_number;
         $link    = rtrim(Request::base(), DS) . DS . trim(Route::url($pub->link('version')), DS);
         $manage  = rtrim(Request::base(), DS) . DS . trim(Route::url($pub->link('editversion')), DS);
-        $message = $status == 1 ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED', $link) : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
+        $message = $status == 1
+            ? Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED', $link)
+            : Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
 
         if ($status != 1) {
             $message .= "\n" . "\n";
@@ -945,7 +992,13 @@ class Curation extends SiteController
      */
     protected function login()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
+        $rtrn = Request::getString(
+            'REQUEST_URI',
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
+            ),
+            'server',
+        );
 
         Notify::warning($this->_msg);
 

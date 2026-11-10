@@ -156,7 +156,9 @@ class Post extends Relational
                     ->get('id');
 
                 if ($id) {
-                    return Lang::txt('A post with the same content, from the same user, on the same thread seems to already exist.');
+                    return Lang::txt(
+                        'A post with the same content, from the same user, on the same thread seems to already exist.',
+                    );
                 }
             }
 
@@ -720,7 +722,11 @@ class Post extends Relational
                     ->getQuery()
                     ->update($this->getTableName())
                     ->set(['lft' => new Raw('lft + 2')])
-                    ->where($reposition->left_where['col'], $reposition->left_where['op'], $reposition->left_where['val'])
+                    ->where(
+                        $reposition->left_where['col'],
+                        $reposition->left_where['op'],
+                        $reposition->left_where['val'],
+                    )
                     ->whereEquals('scope', $parent->get('scope'))
                     ->whereEquals('scope_id', $parent->get('scope_id'))
                     ->whereEquals('thread', $parent->get('thread'));
@@ -734,7 +740,11 @@ class Post extends Relational
                     ->getQuery()
                     ->update($this->getTableName())
                     ->set(['rgt' => new Raw('rgt + 2')])
-                    ->where($reposition->right_where['col'], $reposition->right_where['op'], $reposition->right_where['val'])
+                    ->where(
+                        $reposition->right_where['col'],
+                        $reposition->right_where['op'],
+                        $reposition->right_where['val'],
+                    )
                     ->whereEquals('scope', $parent->get('scope'))
                     ->whereEquals('scope_id', $parent->get('scope_id'))
                     ->whereEquals('thread', $parent->get('thread'));

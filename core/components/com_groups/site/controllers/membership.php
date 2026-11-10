@@ -96,7 +96,10 @@ class Membership extends Base
         }
 
         // Check authorization
-        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.invite'))) {
+        if (
+            $this->view->group->published == 2
+            || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.invite'))
+        ) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -166,7 +169,10 @@ class Membership extends Base
         }
 
         // Check authorization
-        if ($this->view->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.invite'))) {
+        if (
+            $this->view->group->published == 2
+            || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.invite'))
+        ) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -242,7 +248,13 @@ class Membership extends Base
                 // If not a userid check if proper email
                 if (\Components\Members\Helpers\Utility::validemail($l)) {
                     // Try to find an account that might match this e-mail
-                    $this->database->setQuery("SELECT u.id FROM `#__users` AS u WHERE LOWER(u.email)=" . $this->database->quote($l) . " OR LOWER(u.email) LIKE " . $this->database->quote($l . '%') . " LIMIT 1;");
+                    $this->database->setQuery(
+                        "SELECT u.id FROM `#__users` AS u WHERE LOWER(u.email)="
+                            . $this->database->quote($l)
+                            . " OR LOWER(u.email) LIKE "
+                            . $this->database->quote($l . '%')
+                            . " LIMIT 1;",
+                    );
                     $uid = $this->database->loadResult();
                     if (!$this->database->query()) {
                         $this->setNotification($this->database->getErrorMsg(), 'error');
@@ -380,7 +392,14 @@ class Membership extends Base
                     'action'      => 'invited',
                     'scope'       => 'group',
                     'scope_id'    => $this->view->group->get('gidNumber'),
-                    'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_INVITED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_GROUPS_ACTIVITY_GROUP_USER_INVITED',
+                        '<a href="'
+                            . $url
+                            . '">'
+                            . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title'     => $this->view->group->get('description'),
                         'url'       => $url,
@@ -407,7 +426,15 @@ class Membership extends Base
                 'action'      => 'invited',
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USERS_INVITED', implode(', ', $activity), '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_GROUPS_ACTIVITY_GROUP_USERS_INVITED',
+                    implode(', ', $activity),
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
@@ -477,9 +504,13 @@ class Membership extends Base
             foreach ($all_invites as $invite) {
                 if (is_numeric($invite)) {
                     $user = User::getInstance($invite);
-                    $success_message .= ' - ' . htmlspecialchars((string) $user->get('name'), ENT_QUOTES, 'UTF-8') . '<br />';
+                    $success_message .= ' - '
+                        . htmlspecialchars((string) $user->get('name'), ENT_QUOTES, 'UTF-8')
+                        . '<br />';
                 } else {
-                    $success_message .= ' - ' . htmlspecialchars((string) $invite['email'], ENT_QUOTES, 'UTF-8') . '<br />';
+                    $success_message .= ' - '
+                        . htmlspecialchars((string) $invite['email'], ENT_QUOTES, 'UTF-8')
+                        . '<br />';
                 }
             }
         }
@@ -492,12 +523,24 @@ class Membership extends Base
                 if (is_numeric($entry[0])) {
                     $user = User::getInstance($entry[0]);
                     if ($user->get('name') != '') {
-                        $error_message .= ' - ' . htmlspecialchars((string) $user->get('name'), ENT_QUOTES, 'UTF-8') . ' &rarr; ' . $reason . '<br />';
+                        $error_message .= ' - '
+                            . htmlspecialchars((string) $user->get('name'), ENT_QUOTES, 'UTF-8')
+                            . ' &rarr; '
+                            . $reason
+                            . '<br />';
                     } else {
-                        $error_message .= ' - ' . htmlspecialchars((string) $entry[0], ENT_QUOTES, 'UTF-8') . ' &rarr; ' . $reason . '<br />';
+                        $error_message .= ' - '
+                            . htmlspecialchars((string) $entry[0], ENT_QUOTES, 'UTF-8')
+                            . ' &rarr; '
+                            . $reason
+                            . '<br />';
                     }
                 } else {
-                    $error_message .= ' - ' . htmlspecialchars((string) $entry[0], ENT_QUOTES, 'UTF-8') . ' &rarr; ' . $reason . '<br />';
+                    $error_message .= ' - '
+                        . htmlspecialchars((string) $entry[0], ENT_QUOTES, 'UTF-8')
+                        . ' &rarr; '
+                        . $reason
+                        . '<br />';
                 }
             }
         }
@@ -620,11 +663,18 @@ class Membership extends Base
         $this->view->group->update();
 
         if ($invite) {
-            $this->database->setQuery("DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']));
+            $this->database->setQuery(
+                "DELETE FROM `#__xgroups_inviteemails` WHERE id=" . $this->database->quote($invite['id']),
+            );
             $this->database->query();
         }
         if ($invitedByEmail) {
-            $this->database->setQuery("DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)=" . $this->database->quote(strtolower(User::get('email'))) . " AND gidNumber=" . $this->database->quote($this->view->group->get('gidNumber')));
+            $this->database->setQuery(
+                "DELETE FROM `#__xgroups_inviteemails` WHERE LOWER(email)="
+                    . $this->database->quote(strtolower(User::get('email')))
+                    . " AND gidNumber="
+                    . $this->database->quote($this->view->group->get('gidNumber')),
+            );
             $this->database->query();
         }
 
@@ -651,7 +701,14 @@ class Membership extends Base
                 'action'      => 'accepted',
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_ACCEPTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_GROUPS_ACTIVITY_GROUP_USER_ACCEPTED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
@@ -779,7 +836,10 @@ class Membership extends Base
 
         // delete member roles
 
-        \Components\Groups\Models\Member\Role::destroyByUserAndGroup(User::get('id'), $this->view->group->get('gidNumber'));
+        \Components\Groups\Models\Member\Role::destroyByUserAndGroup(
+            User::get('id'),
+            $this->view->group->get('gidNumber'),
+        );
 
         // Log the membership cancellation
         Log::log([
@@ -813,7 +873,12 @@ class Membership extends Base
         $from['email'] = Config::get('mailfrom');
 
         // E-mail the administrator
-        if (!Event::trigger('xmessage.onSendMessage', ['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option])) {
+        if (
+            !Event::trigger(
+                'xmessage.onSendMessage',
+                ['groups_cancelled_me', $subject, $message, $from, $this->view->group->get('managers'), $this->option],
+            )
+        ) {
             $this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MANAGERS_FAILED') . ' ' . $emailadmin);
         }
 
@@ -833,7 +898,14 @@ class Membership extends Base
                 'action'      => 'cancelled',
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_CANCELLED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_GROUPS_ACTIVITY_GROUP_USER_CANCELLED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,
@@ -969,7 +1041,14 @@ class Membership extends Base
                     'action'      => 'joined',
                     'scope'       => 'group',
                     'scope_id'    => $this->view->group->get('gidNumber'),
-                    'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_JOINED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_GROUPS_ACTIVITY_GROUP_USER_JOINED',
+                        '<a href="'
+                            . $url
+                            . '">'
+                            . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title'     => $this->view->group->get('description'),
                         'url'       => $url,
@@ -1100,7 +1179,14 @@ class Membership extends Base
                 'action'      => 'requested',
                 'scope'       => 'group',
                 'scope_id'    => $this->view->group->get('gidNumber'),
-                'description' => Lang::txt('COM_GROUPS_ACTIVITY_GROUP_USER_REQUESTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_GROUPS_ACTIVITY_GROUP_USER_REQUESTED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($this->view->group->get('description')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'     => $this->view->group->get('description'),
                     'url'       => $url,

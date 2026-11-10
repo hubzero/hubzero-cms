@@ -49,7 +49,9 @@ class Kb extends Plugin
                 if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches)) {
                     $rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
                 }
-                $rows[$key]->href = Route::url('index.php?option=com_kb&category=' . $row->category . '&alias=' . $row->article);
+                $rows[$key]->href = Route::url(
+                    'index.php?option=com_kb&category=' . $row->category . '&alias=' . $row->article,
+                );
             }
         }
         return $rows;

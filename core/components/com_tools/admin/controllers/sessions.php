@@ -89,7 +89,9 @@ class Sessions extends AdminController
 
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
-        $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
+        $filters['start'] = ($filters['limit'] != 0 ? (floor(
+            $filters['start'] / $filters['limit'],
+        ) * $filters['limit']) : 0);
 
         // Get the middleware database
         $mwdb = Utils::getMWDBO();
@@ -343,7 +345,10 @@ class Sessions extends AdminController
     public function cancelclassTask()
     {
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=classes', false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=classes',
+                false,
+            ),
         );
     }
 }

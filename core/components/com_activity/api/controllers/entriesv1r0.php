@@ -220,7 +220,9 @@ class Entriesv1r0 extends ApiController
             'scope'          => Request::getString('scope', '', 'post'),
             'scope_id'       => Request::getInt('scope_id', 0, 'post'),
             'action'         => Request::getString('action', null, 'post', 'none', 2),
-            'description'    => \Hubzero\Utility\Sanitize::html((string) Request::getString('description', null, 'post', 'none', 2)),
+            'description'    => \Hubzero\Utility\Sanitize::html(
+                (string) Request::getString('description', null, 'post', 'none', 2),
+            ),
             // The timestamp is pinned along with the author below: only a
             // manager may back-date an entry.
             'created'        => (User::authorise('core.manage', 'com_activity')
@@ -489,7 +491,9 @@ class Entriesv1r0 extends ApiController
             'scope'          => Request::getString('scope', $row->get('scope')),
             'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
             'action'         => Request::getString('action', $row->get('action')),
-            'description'    => \Hubzero\Utility\Sanitize::html((string) Request::getString('description', $row->get('description'))),
+            'description'    => \Hubzero\Utility\Sanitize::html(
+                (string) Request::getString('description', $row->get('description')),
+            ),
             'created'        => (User::authorise('core.manage', 'com_activity')
                 ? Request::getString('created', $row->get('created'))
                 : $row->get('created')),

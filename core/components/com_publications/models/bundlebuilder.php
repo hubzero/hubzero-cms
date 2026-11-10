@@ -161,7 +161,14 @@ class BundleBuilder
         $log       = (isset($opts['log']) && is_callable($opts['log'])) ? $opts['log'] : fn($m) => null;
 
         $fail = function ($msg) {
-            return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
+            return [
+                'ok' => false,
+                'error' => $msg,
+                'file' => null,
+                'size' => null,
+                'source_hash' => null,
+                'inner' => null,
+            ];
         };
 
         $version = $this->versionRow($versionId);
@@ -263,7 +270,13 @@ class BundleBuilder
         // version already uses (default to nested for a fresh multi-file build).
         if ($this->servedLayout($outerPath, $primary, $allFiles) === 'flat') {
             $log(sprintf('Rebuilding %s with %d file(s), flat...', basename($outerPath), count($allFiles)));
-            $res = $this->buildOuterFlat($allFiles, $outerPath, $name, $this->hasNonFileAttachments($versionId), $metadata);
+            $res = $this->buildOuterFlat(
+                $allFiles,
+                $outerPath,
+                $name,
+                $this->hasNonFileAttachments($versionId),
+                $metadata,
+            );
             if (!$res['ok']) {
                 return $fail($res['error']);
             }
@@ -577,7 +590,13 @@ class BundleBuilder
         $r['doi']            = $version['doi'];
 
         $webpath = trim(Component::params('com_publications')->get('webpath', '/site/publications'), '/');
-        $base    = PATH_APP . DS . $webpath . DS . Str::pad((int) $version['publication_id']) . DS . Str::pad($versionId);
+        $base    = PATH_APP
+            . DS
+            . $webpath
+            . DS
+            . Str::pad((int) $version['publication_id'])
+            . DS
+            . Str::pad($versionId);
         $content = $base . DS . $version['secret'];
         $name    = $this->bundleName($version);
         $outer   = $base . DS . $name . '.zip';
@@ -818,7 +837,10 @@ class BundleBuilder
                 if ($s === false || substr($s['name'], -1) === '/') {
                     continue;
                 }
-                $entries[$this->stripWrapper((string) $s['name'], $name)] = ['size' => (int) $s['size'], 'crc' => $s['crc']];
+                $entries[$this->stripWrapper((string) $s['name'], $name)] = [
+                    'size' => (int) $s['size'],
+                    'crc' => $s['crc'],
+                ];
             }
             $zip->close();
         }
@@ -1438,7 +1460,12 @@ class BundleBuilder
         // present and the central directory intact (catches a truncated build).
         if (!$this->verifyZip($tmp, count($files))) {
             @unlink($tmp);
-            return ['ok' => false, 'error' => 'Built inner bundle failed verification (incomplete); kept the existing ' . basename($innerPath) . '.'];
+            return [
+                'ok' => false,
+                'error' => 'Built inner bundle failed verification (incomplete); kept the existing '
+                    . basename($innerPath)
+                    . '.',
+            ];
         }
 
         @chgrp($tmp, 'access-content');
@@ -1526,7 +1553,10 @@ class BundleBuilder
         // Verify intact before it replaces the live outer.
         if (!$this->verifyZip($tmp, 1)) {
             @unlink($tmp);
-            return ['ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.'];
+            return [
+                'ok' => false,
+                'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.',
+            ];
         }
 
         @chgrp($tmp, 'access-content');
@@ -1650,7 +1680,10 @@ class BundleBuilder
         // Verify intact before it replaces the live outer.
         if (!$this->verifyZip($tmp, 1)) {
             @unlink($tmp);
-            return ['ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.'];
+            return [
+                'ok' => false,
+                'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.',
+            ];
         }
 
         @chgrp($tmp, 'access-content');
@@ -2258,7 +2291,14 @@ class BundleBuilder
     protected function buildDatabase($versionId, $version, $base, $content, $force, $level, $log)
     {
         $fail = function ($msg) {
-            return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
+            return [
+                'ok' => false,
+                'error' => $msg,
+                'file' => null,
+                'size' => null,
+                'source_hash' => null,
+                'inner' => null,
+            ];
         };
 
         $name      = $this->bundleName($version);
@@ -2306,9 +2346,15 @@ class BundleBuilder
             $csvName = $title . '-' . $da->object_revision . '.csv';
             $csvAbs  = $dataDir . DS . $csvName;
 
-            $ok = \Components\Publications\Helpers\Datastore::generateCsv($da->object_name, $da->object_revision, $csvAbs);
+            $ok = \Components\Publications\Helpers\Datastore::generateCsv(
+                $da->object_name,
+                $da->object_revision,
+                $csvAbs,
+            );
             if (!$ok || !is_file($csvAbs)) {
-                return $fail('Could not generate datastore CSV for ' . $da->object_name . ' rev ' . $da->object_revision);
+                return $fail(
+                    'Could not generate datastore CSV for ' . $da->object_name . ' rev ' . $da->object_revision,
+                );
             }
             @chgrp($csvAbs, 'access-content');
             @chmod($csvAbs, 0664);
@@ -2400,7 +2446,10 @@ class BundleBuilder
         // Verify intact before it replaces the live outer.
         if (!$this->verifyZip($tmp, 1)) {
             @unlink($tmp);
-            return ['ok' => false, 'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.'];
+            return [
+                'ok' => false,
+                'error' => 'Built archive failed verification; kept the existing ' . basename($outerPath) . '.',
+            ];
         }
 
         @chgrp($tmp, 'access-content');
@@ -2516,7 +2565,12 @@ class BundleBuilder
         // out-of-space build is discarded with the served outer left untouched.
         if (!$this->verifyZip($tmp, count($seen))) {
             @unlink($tmp);
-            return ['ok' => false, 'error' => 'Built archive failed verification (incomplete); kept the existing ' . basename($outerPath) . '.'];
+            return [
+                'ok' => false,
+                'error' => 'Built archive failed verification (incomplete); kept the existing '
+                    . basename($outerPath)
+                    . '.',
+            ];
         }
 
         @chgrp($tmp, 'access-content');
@@ -2598,7 +2652,14 @@ class BundleBuilder
     protected function buildMetadataOnly($versionId, $version, $base, $content, $force, $level, $log)
     {
         $fail = function ($msg) {
-            return ['ok' => false, 'error' => $msg, 'file' => null, 'size' => null, 'source_hash' => null, 'inner' => null];
+            return [
+                'ok' => false,
+                'error' => $msg,
+                'file' => null,
+                'size' => null,
+                'source_hash' => null,
+                'inner' => null,
+            ];
         };
 
         $name      = $this->bundleName($version);

@@ -50,7 +50,9 @@ class Migration20260708160000ComEvents extends Base
      */
     protected function groupId($title)
     {
-        $this->db->setQuery("SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote($title) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote($title) . " LIMIT 1",
+        );
         return (int) $this->db->loadResult();
     }
 
@@ -87,7 +89,12 @@ class Migration20260708160000ComEvents extends Base
      */
     protected function saveRules($id, $rules)
     {
-        $this->db->setQuery("UPDATE `#__assets` SET `rules` = " . $this->db->quote(json_encode($rules)) . " WHERE `id` = " . $this->db->quote($id));
+        $this->db->setQuery(
+            "UPDATE `#__assets` SET `rules` = "
+                . $this->db->quote(json_encode($rules))
+                . " WHERE `id` = "
+                . $this->db->quote($id),
+        );
         $this->db->query();
     }
 

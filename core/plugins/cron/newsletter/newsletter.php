@@ -98,20 +98,36 @@ class Newsletter extends Plugin
 
             // if tracking is on add it to email
             if ($queuedEmail->tracking) {
-                $queuedEmail->html_body = \Components\Newsletter\Helpers\Helper::addTrackingToEmailMessage($queuedEmail->html_body, $emailToken);
+                $queuedEmail->html_body = \Components\Newsletter\Helpers\Helper::addTrackingToEmailMessage(
+                    $queuedEmail->html_body,
+                    $emailToken,
+                );
             }
 
             // create unsubscribe link
             $unsubscribeMailtoLink = '';
-            $unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . urlencode($queuedEmail->email) . '&t=' . $emailToken;
+            $unsubscribeLink       = 'https://'
+                . $_SERVER['SERVER_NAME']
+                . '/newsletter/unsubscribe?e='
+                . urlencode($queuedEmail->email)
+                . '&t='
+                . $emailToken;
 
             // add unsubscribe link - placeholder & in header (must do after adding tracking!!)
             $queuedEmail->html_body = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->html_body);
             $queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->headers);
-            $queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_MAILTO_LINK}}", $unsubscribeMailtoLink, $queuedEmail->headers);
+            $queuedEmail->headers   = str_replace(
+                "{{UNSUBSCRIBE_MAILTO_LINK}}",
+                $unsubscribeMailtoLink,
+                $queuedEmail->headers,
+            );
 
             // add mailing id to header
-            $queuedEmail->headers  = str_replace("{{CAMPAIGN_MAILING_ID}}", $queuedEmail->mailingid, $queuedEmail->headers);
+            $queuedEmail->headers  = str_replace(
+                "{{CAMPAIGN_MAILING_ID}}",
+                $queuedEmail->mailingid,
+                $queuedEmail->headers,
+            );
 
             // create new message
             $message = new \Hubzero\Mail\Message();
@@ -159,7 +175,9 @@ class Newsletter extends Plugin
                 // Some trickery for supporting rescheduled emails
                 if ($queuedEmail->autogen == 0 || $queuedEmail->autogen == null) {
                     // load recipient object
-                    $newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::one($queuedEmail->mailing_recipientid);
+                    $newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::one(
+                        $queuedEmail->mailing_recipientid,
+                    );
 
                     // mark as sent and save
                     $newsletterMailingRecipient->set('status', 'sent');
@@ -205,21 +223,30 @@ class Newsletter extends Plugin
                         // @TODO Verify there is no helper method to determine whether or not to send email
                         foreach ($emails as $email) {
                             if ($email->status == 'active') {
-                                $values[] = "(" . $database->quote($newMailing->id) . "," . $database->quote($email->email) . ",'queued', " . $database->quote(Date::of(time())->toLocal()) . ")";
+                                $values[] = "("
+                                    . $database->quote($newMailing->id)
+                                    . ","
+                                    . $database->quote($email->email)
+                                    . ",'queued', "
+                                    . $database->quote(Date::of(time())->toLocal())
+                                    . ")";
                             }
                         }
 
                         // make sure we have some values
                         if (count($values) > 0) {
                             // build full query & execute
-                            $sql = "INSERT INTO `#__newsletter_mailing_recipients` (`mid`,`email`,`status`,`date_added`) VALUES " . implode(',', $values);
+                            $sql = "INSERT INTO `#__newsletter_mailing_recipients` (`mid`,`email`,`status`,`date_added`) VALUES "
+                                . implode(',', $values);
                             $database->setQuery($sql);
                             $database->query();
                         }
                     }
 
                     // load recipient object
-                    $newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::oneOrNew($queuedEmail->mailing_recipientid);
+                    $newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::oneOrNew(
+                        $queuedEmail->mailing_recipientid,
+                    );
 
                     // mark as sent and save
                     $newsletterMailingRecipient->set('status', 'sent');

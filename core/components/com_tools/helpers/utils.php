@@ -372,7 +372,9 @@ class Utils
             if (!$indevgroup && !$admin) {
                 $access->valid = 0;
                 $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_DEV_GROUP');
-                Log::debug("mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)");
+                Log::debug(
+                    "mw::_getToolAccess($tool,$login): DEV TOOL ACCESS DENIED (USER NOT IN DEVELOPMENT OR ADMIN GROUPS)",
+                );
             } else {
                 $access->valid = 1;
             }
@@ -388,7 +390,9 @@ class Utils
                 if (!$ingroup && !$admin) {
                     $access->valid = 0;
                     $access->error->message = Lang::txt('COM_TOOLS_ERROR_ACCESS_DENIED_ACCESS_GROUP');
-                    Log::debug("mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)");
+                    Log::debug(
+                        "mw::_getToolAccess($tool,$login): PUBLISHED TOOL ACCESS DENIED (USER NOT IN ACCESS OR ADMIN GROUPS)",
+                    );
                 } else {
                     if (!$exportAllowed->valid) {
                         $access->valid = 0;
@@ -612,7 +616,9 @@ class Utils
         }
 
         if ($execFailed) {
-            $defs = array_filter(array_map('trim', explode(',', Component::params('com_support')->get('emails', '{config.mailfrom}'))));
+            $defs = array_filter(
+                array_map('trim', explode(',', Component::params('com_support')->get('emails', '{config.mailfrom}'))),
+            );
             if ($defs) {
                 $sitename = Config::get('sitename');
                 $mailfrom = Config::get('mailfrom');

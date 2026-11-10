@@ -142,7 +142,9 @@ class Event extends Table
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope="
+                            . $this->db->quote($filters['scope'])
+                            . ")";
                     } else {
                         $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
@@ -167,7 +169,9 @@ class Event extends Table
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope="
+                            . $this->db->quote($filters['scope'])
+                            . ")";
                     } else {
                         $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
@@ -197,7 +201,9 @@ class Event extends Table
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope="
+                            . $this->db->quote($filters['scope'])
+                            . ")";
                     } else {
                         $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
@@ -228,7 +234,9 @@ class Event extends Table
                 //did we pass in a scope filter
                 if (isset($filters['scope']) && $filters['scope'] != '') {
                     if ($filters['scope'] == 'event') {
-                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope=" . $this->db->quote($filters['scope']) . ")";
+                        $sql .= " AND ({$this->tableName}.scope IS NULL OR {$this->tableName}.scope="
+                            . $this->db->quote($filters['scope'])
+                            . ")";
                     } else {
                         $sql .= " AND {$this->tableName}.scope=" . $this->db->quote($filters['scope']);
                     }
@@ -402,10 +410,23 @@ class Event extends Table
 
         // publish up/down
         if (isset($filters['publish_up']) && isset($filters['publish_down'])) {
-            $q  = "(publish_up >=" . $this->db->quote($filters['publish_up']) . " AND publish_up <= " . $this->db->quote($filters['publish_down']);
-            $q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down >=" . $this->db->quote($filters['publish_up']) . " AND publish_down <=" . $this->db->quote($filters['publish_down']) . ")";
-            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->db->quote($filters['publish_up']) . " AND publish_down >=" . $this->db->quote($filters['publish_down']) . ")";
-            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= " . $this->db->quote($filters['publish_up']) . " AND publish_down = '0000-00-00 00:00:00'))";
+            $q  = "(publish_up >="
+                . $this->db->quote($filters['publish_up'])
+                . " AND publish_up <= "
+                . $this->db->quote($filters['publish_down']);
+            $q .= " OR (publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00' AND publish_down >="
+                . $this->db->quote($filters['publish_up'])
+                . " AND publish_down <="
+                . $this->db->quote($filters['publish_down'])
+                . ")";
+            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= "
+                . $this->db->quote($filters['publish_up'])
+                . " AND publish_down >="
+                . $this->db->quote($filters['publish_down'])
+                . ")";
+            $q .= " OR (publish_up IS NOT NULL AND publish_down IS NOT NULL AND publish_up <= "
+                . $this->db->quote($filters['publish_up'])
+                . " AND publish_down = '0000-00-00 00:00:00'))";
             $where[] = $q;
         }
 

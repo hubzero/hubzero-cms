@@ -55,7 +55,11 @@ class Mailings extends AdminController
             'search' => urldecode(Request::getState($this->option . '.' . $this->controller . '.search', 'search', '')),
             'status' => Request::getState($this->option . '.' . $this->controller . '.status', 'status', ''),
             'sort'   => Request::getState($this->option . '.' . $this->controller . '.sort', 'filter_order', 'created'),
-            'sort_Dir' => Request::getState($this->option . '.' . $this->controller . '.sortdir', 'filter_order_Dir', 'DESC'),
+            'sort_Dir' => Request::getState(
+                $this->option . '.' . $this->controller . '.sortdir',
+                'filter_order_Dir',
+                'DESC',
+            ),
         ];
 
         $rows = Mailing::all();
@@ -409,7 +413,11 @@ class Mailings extends AdminController
         $footer = (string) \Component::params('com_massmail')->get('footer_text', '');
         $text = Formatter::buildText($row->get('body'), $footer);
         $html = Formatter::buildHtml($row->get('body'), $footer);
-        $text = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '[' . Lang::txt('COM_MASSMAIL_UNSUB_PLACEHOLDER') . ']', $text);
+        $text = str_replace(
+            Formatter::UNSUBSCRIBE_TOKEN,
+            '[' . Lang::txt('COM_MASSMAIL_UNSUB_PLACEHOLDER') . ']',
+            $text,
+        );
         $html = str_replace(Formatter::UNSUBSCRIBE_TOKEN, '#', $html);
 
         $disposition = [
@@ -603,15 +611,29 @@ class Mailings extends AdminController
             $numeric = ctype_digit($q);
 
             $gw = "cn LIKE $like OR description LIKE $like" . ($numeric ? ' OR gidNumber = ' . (int) $q : '');
-            $db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8");
+            $db->setQuery(
+                "SELECT gidNumber, cn, description FROM `#__xgroups` WHERE published = 1 AND ($gw) ORDER BY cn ASC LIMIT 8",
+            );
             foreach ((array) $db->loadObjectList() as $g) {
-                $out[] = ['kind' => 'group', 'token' => $g->cn, 'label' => ($g->description ? $g->description : $g->cn), 'sub' => $g->cn];
+                $out[] = [
+                    'kind' => 'group',
+                    'token' => $g->cn,
+                    'label' => ($g->description ? $g->description : $g->cn),
+                    'sub' => $g->cn,
+                ];
             }
 
             $uw = "username LIKE $like OR name LIKE $like" . ($numeric ? ' OR id = ' . (int) $q : '');
-            $db->setQuery("SELECT id, username, name FROM `#__users` WHERE block = 0 AND ($uw) ORDER BY username ASC LIMIT 8");
+            $db->setQuery(
+                "SELECT id, username, name FROM `#__users` WHERE block = 0 AND ($uw) ORDER BY username ASC LIMIT 8",
+            );
             foreach ((array) $db->loadObjectList() as $u) {
-                $out[] = ['kind' => 'user', 'token' => (int) $u->id, 'label' => ($u->name ? $u->name : $u->username), 'sub' => $u->username];
+                $out[] = [
+                    'kind' => 'user',
+                    'token' => (int) $u->id,
+                    'label' => ($u->name ? $u->name : $u->username),
+                    'sub' => $u->username,
+                ];
             }
         }
 
@@ -953,7 +975,11 @@ class Mailings extends AdminController
      */
     public function pauseTask()
     {
-        $this->transition([Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING], Mailing::STATUS_PAUSED, 'COM_MASSMAIL_PAUSED');
+        $this->transition(
+            [Mailing::STATUS_SENDING, Mailing::STATUS_PREPARING],
+            Mailing::STATUS_PAUSED,
+            'COM_MASSMAIL_PAUSED',
+        );
     }
 
     /**
@@ -1044,7 +1070,10 @@ class Mailings extends AdminController
         try {
             $message = new \Hubzero\Mail\Message();
             $message->setSubject('[TEST] ' . $row->get('subject'));
-            $message->addFrom($row->get('from_email') ?: Config::get('mailfrom'), $row->get('from_name') ?: Config::get('fromname'));
+            $message->addFrom(
+                $row->get('from_email') ?: Config::get('mailfrom'),
+                $row->get('from_name') ?: Config::get('fromname'),
+            );
             $message->addPart($text, 'text/plain');
             $message->addPart($html, 'text/html');
             foreach ($row->attachments()->rows() as $att) {

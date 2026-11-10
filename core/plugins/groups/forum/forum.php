@@ -77,8 +77,20 @@ class Forum extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -158,7 +170,11 @@ class Forum extends Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $return = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $return = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true,
+                );
                 // A submitted action can't be replayed by the GET that follows login
                 if (Request::method() !== 'POST') {
                     $return = Request::getString('REQUEST_URI', $return, 'server');
@@ -177,7 +193,9 @@ class Forum extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="warning">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active_real)) . '</p>';
+                $arr['html'] = '<p class="warning">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active_real))
+                    . '</p>';
                 return $arr;
             }
 
@@ -186,7 +204,11 @@ class Forum extends Plugin
             $this->authorized = $authorized;
 
             // Get the plugins params
-            $this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->pluginName);
+            $this->params = \Hubzero\Plugin\Params::getParams(
+                $this->group->get('gidNumber'),
+                'groups',
+                $this->pluginName,
+            );
             $this->params->def('allow_anonymous', 1);
             $this->params->def('threading', 'list');
             $this->params->def('threading_depth', 3);
@@ -196,7 +218,12 @@ class Forum extends Plugin
             $this->option = $option;
             $this->limitstart = $limitstart;
             $this->limit = $limit;
-            $this->base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName;
+            $this->base = 'index.php?option='
+                . $this->option
+                . '&cn='
+                . $this->group->get('cn')
+                . '&active='
+                . $this->pluginName;
 
             $path = Request::path();
             if (strstr($path, '/')) {
@@ -657,7 +684,14 @@ class Forum extends Plugin
                     'action'      => ($fields['id'] ? 'updated' : 'created'),
                     'scope'       => 'forum.section',
                     'scope_id'    => $section->get('id'),
-                    'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'PLG_GROUPS_FORUM_ACTIVITY_SECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                        '<a href="'
+                            . Route::url($this->base)
+                            . '">'
+                            . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title' => $section->get('title'),
                         'url'   => Route::url($this->base),
@@ -738,7 +772,14 @@ class Forum extends Plugin
                     'action'      => 'deleted',
                     'scope'       => 'forum.section',
                     'scope_id'    => $section->get('id'),
-                    'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'PLG_GROUPS_FORUM_ACTIVITY_SECTION_DELETED',
+                        '<a href="'
+                            . Route::url($this->base)
+                            . '">'
+                            . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title' => $section->get('title'),
                         'url'   => Route::url($this->base),
@@ -1114,7 +1155,14 @@ class Forum extends Plugin
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base),
@@ -1199,7 +1247,14 @@ class Forum extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_FORUM_ACTIVITY_CATEGORY_DELETED',
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base),
@@ -1231,7 +1286,12 @@ class Forum extends Plugin
         // Incoming
         $filters = [
             'limit'    => (int) Request::getState('groups.forum.thread', 'limit', Config::get('list_limit'), 'int'),
-            'start'    => (int) Request::getState('groups.forum.thread.' . Request::getInt('thread', 0), 'limitstart', 0, 'int'),
+            'start'    => (int) Request::getState(
+                'groups.forum.thread.' . Request::getInt('thread', 0),
+                'limitstart',
+                0,
+                'int',
+            ),
             'section'  => Request::getString('section', ''),
             'category' => Request::getCmd('category', ''),
             'thread'   => Request::getInt('thread', 0),
@@ -1550,7 +1610,9 @@ class Forum extends Plugin
                 && !$this->params->get('access-edit-thread'))
             ) {
                 App::redirect(
-                    Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum'),
+                    Route::url(
+                        'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum',
+                    ),
                     Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                     'warning',
                 );
@@ -1699,7 +1761,9 @@ class Forum extends Plugin
                 $message = Lang::txt('PLG_GROUPS_FORUM_THREAD_STARTED');
             }
         } else {
-            $message = ($post->get('modified_by')) ? Lang::txt('PLG_GROUPS_FORUM_POST_EDITED') : Lang::txt('PLG_GROUPS_FORUM_POST_ADDED');
+            $message = ($post->get('modified_by'))
+                ? Lang::txt('PLG_GROUPS_FORUM_POST_EDITED')
+                : Lang::txt('PLG_GROUPS_FORUM_POST_ADDED');
         }
 
         $section = $category->section();
@@ -1743,7 +1807,12 @@ class Forum extends Plugin
                 }
 
                 $from = [
-                    'name'  => (!$post->get('anonymous') ? $post->creator->get('name', Lang::txt('PLG_GROUPS_FORUM_UNKNOWN')) : Lang::txt('JANONYMOUS')) . ' @ ' . Config::get('sitename'),
+                    'name'  => (!$post->get('anonymous') ? $post->creator->get(
+                        'name',
+                        Lang::txt('PLG_GROUPS_FORUM_UNKNOWN'),
+                    ) : Lang::txt('JANONYMOUS'))
+                        . ' @ '
+                        . Config::get('sitename'),
                     'email' => Config::get('mailfrom'),
                     'replytoname'  => Config::get('sitename'),
                     'replytoemail' => Config::get('mailfrom'),
@@ -1763,11 +1832,23 @@ class Forum extends Plugin
 
                         // add unsubscribe link
                         $unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
-                        $unsubscribeLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
+                        $unsubscribeLink  = rtrim(Request::base(), '/')
+                            . '/'
+                            . ltrim(
+                                Route::url(
+                                    'index.php?option=com_groups&cn='
+                                        . $this->group->get('cn')
+                                        . '&active=forum&action=unsubscribe&t='
+                                        . $unsubscribeToken,
+                                ),
+                                DS,
+                            );
 
 
                         if (Component::params('com_groups')->get('email_comment_processing')) {
-                            $from['replytoname']  = Lang::txt('PLG_GROUPS_FORUM_REPLYTO') . ' @ ' . Config::get('sitename');
+                            $from['replytoname']  = Lang::txt('PLG_GROUPS_FORUM_REPLYTO')
+                                . ' @ '
+                                . Config::get('sitename');
                             $from['replytoemail'] = 'hgm-' . $token . '@' . $_SERVER['HTTP_HOST'];
                         } else {
                             $from['replytoname']  = 'noreply';
@@ -1802,18 +1883,47 @@ class Forum extends Plugin
                     $html = $eview->loadTemplate();
                     $msg['multipart'] = str_replace("\n", "\r\n", $html);
 
-                    $subject = Lang::txt('PLG_GROUPS_FORUM') . ': ' . $this->group->get('cn') . ' - ' . $thread->get('title');
+                    $subject = Lang::txt('PLG_GROUPS_FORUM')
+                        . ': '
+                        . $this->group->get('cn')
+                        . ' - '
+                        . $thread->get('title');
 
-                    if (!Event::trigger('xmessage.onSendMessage', ['group_message', $subject, $msg, $from, [$userID], $this->option, null, '', $this->group->get('gidNumber'), false, $post->get('anonymous', 0)])) {
+                    if (
+                        !Event::trigger(
+                            'xmessage.onSendMessage',
+                            [
+                                'group_message',
+                                $subject,
+                                $msg,
+                                $from,
+                                [$userID],
+                                $this->option,
+                                null,
+                                '',
+                                $this->group->get('gidNumber'),
+                                false,
+                                $post->get('anonymous', 0),
+                            ],
+                        )
+                    ) {
                         $this->setError(Lang::txt('GROUPS_ERROR_EMAIL_MEMBERS_FAILED'));
                     }
                 }
             } catch (\Throwable $e) {
-                Log::error('Group forum post notification failed for post ' . $post->get('id', 0) . ': ' . $e->getMessage());
+                Log::error(
+                    'Group forum post notification failed for post ' . $post->get('id', 0) . ': ' . $e->getMessage(),
+                );
             }
         }
 
-        $url = $this->base . '&scope=' . $section->get('alias') . '/' . $category->get('alias') . '/' . $thread->get('id');
+        $url = $this->base
+            . '&scope='
+            . $section->get('alias')
+            . '/'
+            . $category->get('alias')
+            . '/'
+            . $thread->get('id');
 
         // Record the activity
         $recipients = [
@@ -1827,7 +1937,11 @@ class Forum extends Plugin
         $type = 'thread';
         $desc = Lang::txt(
             'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+            '<a href="'
+                . Route::url($url)
+                . '">'
+                . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8')
+                . '</a>',
         );
         // If this is a post in a thread and not the thread starter...
         if ($post->get('parent')) {
@@ -1839,7 +1953,11 @@ class Forum extends Plugin
             $desc = Lang::txt(
                 'PLG_GROUPS_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
                 $post->get('id'),
-                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+                '<a href="'
+                    . Route::url($url)
+                    . '">'
+                    . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8')
+                    . '</a>',
             );
 
             // If the parent post is not the same as the
@@ -1859,11 +1977,27 @@ class Forum extends Plugin
             $groupAlias = $this->group->get('cn');
             $groupTitle = $this->group->get('description');
 
-            $urlExt = 'groups/' . $this->group->get('cn') . '/forum/' . $section->get('alias') . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
+            $urlExt = 'groups/'
+                . $this->group->get('cn')
+                . '/forum/'
+                . $section->get('alias')
+                . '/'
+                . $category->get('alias')
+                . '/'
+                . $post->get('thread')
+                . '#c'
+                . $post->get('id');
             $host = $_SERVER['HTTP_HOST'];
             $externalUrl = 'https://' . $host . '/' . $urlExt;
 
-            $this->emailToAllMentionedUsersInGroup($mentionEmailList, $comment, $externalUrl, $createdUserName, $groupAlias, $groupTitle);
+            $this->emailToAllMentionedUsersInGroup(
+                $mentionEmailList,
+                $comment,
+                $externalUrl,
+                $createdUserName,
+                $groupAlias,
+                $groupTitle,
+            );
         }
 
         Event::trigger('system.logActivity', [
@@ -1977,7 +2111,12 @@ class Forum extends Plugin
                 }
             }
 
-            $sendEmail = $this->shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category);
+            $sendEmail = $this->shouldUserReceiveEmail(
+                $userId,
+                $memberoptions,
+                $categorySubscriptionsEnabled,
+                $category,
+            );
 
             if ($sendEmail == 1) {
                 $userIDsToEmail[] = $userId;
@@ -2163,7 +2302,14 @@ class Forum extends Plugin
                     'action'      => 'deleted',
                     'scope'       => 'forum.thread',
                     'scope_id'    => $post->get('thread'),
-                    'description' => Lang::txt('PLG_GROUPS_FORUM_THREAD_DELETED', '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($post->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'PLG_GROUPS_FORUM_THREAD_DELETED',
+                        '<a href="'
+                            . Route::url($url)
+                            . '">'
+                            . htmlspecialchars((string) ($post->get('title')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'thread' => $post->get('thread'),
                         'url'    => Route::url($url),
@@ -2245,7 +2391,11 @@ class Forum extends Plugin
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
 
             $this->setError(Lang::txt('PLG_GROUPS_FORUM_ERROR_UPLOADING_FILE_TOO_BIG', $max));
             return false;
@@ -2390,7 +2540,12 @@ class Forum extends Plugin
                 if ($categories->count()) {
                     // Build a list of category IDs
                     foreach ($categories as $category) {
-                        $log .= 'forum.section.' . $section->get('id') . '.category.' . $category->get('id') . '.post' . "\n";
+                        $log .= 'forum.section.'
+                            . $section->get('id')
+                            . '.category.'
+                            . $category->get('id')
+                            . '.post'
+                            . "\n";
                         $log .= 'forum.section.' . $section->get('id') . '.category.' . $category->get('id') . "\n";
                     }
                 }
@@ -2462,7 +2617,11 @@ class Forum extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->pluginType, $this->pluginName);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew(
+            $this->group->get('gidNumber'),
+            $this->pluginType,
+            $this->pluginName,
+        );
 
         // Get parameters
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
@@ -2495,7 +2654,13 @@ class Forum extends Plugin
 
         // Redirect to setting spage
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&action=settings'),
+            Route::url(
+                'index.php?option=com_groups&cn='
+                    . $this->group->get('cn')
+                    . '&active='
+                    . $this->pluginName
+                    . '&action=settings',
+            ),
             Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SAVED'),
         );
     }
@@ -2623,7 +2788,14 @@ class Forum extends Plugin
                     'action'      => 'reordered',
                     'scope'       => 'forum.section',
                     'scope_id'    => $section->get('id'),
-                    'description' => Lang::txt('PLG_GROUPS_FORUM_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'PLG_GROUPS_FORUM_ACTIVITY_SECTION_REORDERED',
+                        '<a href="'
+                            . Route::url($this->base)
+                            . '">'
+                            . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title' => $section->get('title'),
                         'url'   => Route::url($this->base),

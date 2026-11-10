@@ -152,13 +152,25 @@ Examples:
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|nofigure|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](left|right|top|center|bottom|nofigure|[0-9]+(px|%|em)?)(?:[, ]|$)/i',
+            [&$this, 'parseSingleAttribute'],
+            $content,
+        );
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
 
         $attr = $this->attr;
 
@@ -282,7 +294,8 @@ Examples:
             if ($val) {
                 $this->attr['href'] = $val;
 
-                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)"
+                    . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
                 if (preg_match("/$urlPtrn/", $val)) {
                     $this->attr['rel']  = 'external';
                 }
@@ -437,8 +450,13 @@ Examples:
      */
     private function link($file)
     {
-        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-        if (preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file) || preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
+        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)"
+            . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        if (
+            preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file)
+            || preg_match("/$urlPtrn/", $file)
+            || substr($file, 0, 1) == DS
+        ) {
             return $file;
         }
 
@@ -498,7 +516,10 @@ Examples:
             }
         }
 
-        $html  = '<span' . ((isset($attr['nofigure']) && $attr['nofigure']) ? '' : ' class="figure"') . ($styles ? ' style="' . $styles . '"' : '') . '>';
+        $html  = '<span'
+            . ((isset($attr['nofigure']) && $attr['nofigure']) ? '' : ' class="figure"')
+            . ($styles ? ' style="' . $styles . '"' : '')
+            . '>';
 
         $img = '<img src="' . $this->link($file) . '" ' . implode(' ', $attribs) . ' />';
 

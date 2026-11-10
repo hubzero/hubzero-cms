@@ -190,7 +190,25 @@ class Articles extends AdminController
         ];
 
         // Only the columns the list headings offer
-        if (!in_array($filters['sort'], ['title', 'state', 'a.featured', 'catid', 'ordering', 'access_level', 'created_by', 'created', 'hits', 'language', 'id'], true)) {
+        if (
+            !in_array(
+                $filters['sort'],
+                [
+                    'title',
+                    'state',
+                    'a.featured',
+                    'catid',
+                    'ordering',
+                    'access_level',
+                    'created_by',
+                    'created',
+                    'hits',
+                    'language',
+                    'id',
+                ],
+                true,
+            )
+        ) {
             $filters['sort'] = 'title';
         }
         $filters['sort_Dir'] = (strtolower((string) $filters['sort_Dir']) == 'desc' ? 'DESC' : 'ASC');
@@ -313,7 +331,25 @@ class Articles extends AdminController
         ];
 
         // Only the columns the list headings offer
-        if (!in_array($filters['sort'], ['ordering', 'a.title', 'a.state', 'a.catid', 'fp.ordering', 'a.access', 'a.created_by', 'a.created', 'a.hits', 'a.language', 'a.id'], true)) {
+        if (
+            !in_array(
+                $filters['sort'],
+                [
+                    'ordering',
+                    'a.title',
+                    'a.state',
+                    'a.catid',
+                    'fp.ordering',
+                    'a.access',
+                    'a.created_by',
+                    'a.created',
+                    'a.hits',
+                    'a.language',
+                    'a.id',
+                ],
+                true,
+            )
+        ) {
             $filters['sort'] = 'ordering';
         }
         $filters['sort_Dir'] = (strtolower((string) $filters['sort_Dir']) == 'desc' ? 'DESC' : 'ASC');

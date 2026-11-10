@@ -109,7 +109,10 @@ class Projects extends Base
 
         $project = Request::getString('alias');
         $task = $this->task;
-        $return = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $project . '&' . Session::getFormToken() . '=1', false);
+        $return = Route::url(
+            'index.php?option=com_projects&task=requestaccess&alias=' . $project . '&' . Session::getFormToken() . '=1',
+            false,
+        );
         if (User::isGuest()) {
             $redirectUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return), false);
             App::redirect($redirectUrl);
@@ -135,7 +138,11 @@ class Projects extends Base
                         $emails[] = $manager->user->email;
                     }
                     $subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_SUBJECT');
-                    $message = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_MESSAGE', $member->user->name, $member->user->email);
+                    $message = Lang::txt(
+                        'COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_MESSAGE',
+                        $member->user->name,
+                        $member->user->email,
+                    );
                     \Components\Projects\Helpers\Html::sendHUBMessage(
                         $this->option,
                         $this->model,
@@ -282,11 +289,19 @@ class Projects extends Base
         $filters['reviewer'] = $reviewer;
         $filters['filterby'] = Request::getWord('filterby', 'all');
 
-        if (User::isGuest() || (!User::authorise('core.manage', $this->option) && !$this->model->reviewerAccess($reviewer))) {
+        if (
+            User::isGuest()
+            || (!User::authorise('core.manage', $this->option) && !$this->model->reviewerAccess($reviewer))
+        ) {
             $filters['active'] = true;
         }
 
-        if (!in_array($filters['sortby'], ['title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status'])) {
+        if (
+            !in_array(
+                $filters['sortby'],
+                ['title', 'id', 'myprojects', 'owner', 'created', 'type', 'role', 'privacy', 'status', 'grant_status'],
+            )
+        ) {
             $filters['sortby'] = 'title';
         }
 
@@ -294,9 +309,18 @@ class Projects extends Base
             $filters['sortdir'] = 'ASC';
         }
 
-        if ($reviewer == 'sponsored' && !in_array($filters['filterby'], ['all', 'open', 'public', 'archived', 'pending'])) {
+        if (
+            $reviewer == 'sponsored'
+            && !in_array($filters['filterby'], ['all', 'open', 'public', 'archived', 'pending'])
+        ) {
             $filters['filterby'] = 'all';
-        } elseif ($reviewer == 'sensitive' && !in_array($filters['filterby'], ['setting_up_in_progress', 'active', 'archived', 'deleted', 'rejected', 'pending'])) {
+        } elseif (
+            $reviewer == 'sensitive'
+            && !in_array(
+                $filters['filterby'],
+                ['setting_up_in_progress', 'active', 'archived', 'deleted', 'rejected', 'pending'],
+            )
+        ) {
             $filters['filterby'] = '';
         }
         // We're filtering by a specific state
@@ -408,7 +432,9 @@ class Projects extends Base
 
         // Check if project is in setup
         if ($this->model->inSetup() && !$ajax) {
-            App::redirect(Route::url('index.php?option=' . $this->option . '&task=setup&alias=' . $this->model->get('alias')));
+            App::redirect(
+                Route::url('index.php?option=' . $this->option . '&task=setup&alias=' . $this->model->get('alias')),
+            );
             return;
         }
 
@@ -431,7 +457,9 @@ class Projects extends Base
         }
 
         // Determine layout to load
-        $layout = ($this->model->access('member') || AccessHelper::allowPublicAccess($subdir)) ? 'internal' : 'external';
+        $layout = ($this->model->access('member') || AccessHelper::allowPublicAccess($subdir))
+            ? 'internal'
+            : 'external';
         //$layout = $this->model->access('member') && $preview && $this->model->isPublic() ? 'external' : $layout;
         $layout = $this->model->access('member') && $preview ? 'external' : $layout;
 
@@ -701,7 +729,9 @@ class Projects extends Base
         // Check incoming data
         $verified = $this->model->check($name, $this->model->get('id'));
         if ($confirm && !$verified) {
-            $error = $this->model->getError() ? $this->model->getError() : Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY');
+            $error = $this->model->getError()
+                ? $this->model->getError()
+                : Lang::txt('COM_PROJECTS_ERROR_NAME_INVALID_OR_EMPTY');
             $this->setError($error);
         } elseif ($confirm && ($title == '' || strlen($title) < 3)) {
             $this->setError(Lang::txt('COM_PROJECTS_ERROR_TITLE_SHORT_OR_EMPTY'));
@@ -943,7 +973,13 @@ class Projects extends Base
             if (!$this->model->exists()) {
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
             }
-            $return  = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect');
+            $return  = Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&alias='
+                    . $this->model->get('alias')
+                    . '&active=files&action=connect',
+            );
             $return .= '?service=' . $service;
             $return .= '&code=' . $code;
         } elseif (isset($json->return)) {
@@ -1039,8 +1075,16 @@ class Projects extends Base
                     $apvSpon = 1;
 
                     // Bump up quota
-                    $premiumQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumQuota', '30')), 'GB', 'b');
-                    $defaultQuota = Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+                    $premiumQuota = Helpers\Html::convertSize(
+                        floatval($this->config->get('premiumQuota', '30')),
+                        'GB',
+                        'b',
+                    );
+                    $defaultQuota = Helpers\Html::convertSize(
+                        floatval($this->config->get('defaultQuota', '1')),
+                        'GB',
+                        'b',
+                    );
                     $currentQuota = $params->get('quota', $defaultQuota);
 
                     if (floatval($currentQuota) <= floatval($premiumQuota)) {
@@ -1048,8 +1092,16 @@ class Projects extends Base
                     }
 
                     // Bump up publication quota
-                    $premiumPubQuota = Helpers\Html::convertSize(floatval($this->config->get('premiumPubQuota', '10')), 'GB', 'b');
-                    $defaultPubQuota = Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+                    $premiumPubQuota = Helpers\Html::convertSize(
+                        floatval($this->config->get('premiumPubQuota', '10')),
+                        'GB',
+                        'b',
+                    );
+                    $defaultPubQuota = Helpers\Html::convertSize(
+                        floatval($this->config->get('pubQuota', '1')),
+                        'GB',
+                        'b',
+                    );
                     $currentPubQuota = $params->get('pubQuota', $defaultPubQuota);
 
                     if (floatval($currentPubQuota) <= floatval($premiumPubQuota)) {
@@ -1080,17 +1132,70 @@ class Projects extends Base
 
                 if ($reviewer == 'sensitive') {
                     if ($apvSens == 1) {
-                        $cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA') . ' ' . $comment . ' ' . $meta . '</nb:' . $reviewer . '>';
+                        $cbase  .= '<nb:'
+                            . $reviewer
+                            . '>'
+                            . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_HIPAA')
+                            . ' '
+                            . $comment
+                            . ' '
+                            . $meta
+                            . '</nb:'
+                            . $reviewer
+                            . '>';
                     } elseif ($apvSens == 0) {
-                        $cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_REJECTED_HIPAA') . ' ' . $comment . ' ' . $meta . '</nb:' . $reviewer . '>';
+                        $cbase  .= '<nb:'
+                            . $reviewer
+                            . '>'
+                            . Lang::txt('COM_PROJECTS_PROJECT_REJECTED_HIPAA')
+                            . ' '
+                            . $comment
+                            . ' '
+                            . $meta
+                            . '</nb:'
+                            . $reviewer
+                            . '>';
                     } else {
-                        $cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_NO_DECISION_MADE_HIPAA') . ' ' . $comment . ' ' . $meta . '</nb:' . $reviewer . '>';
+                        $cbase  .= '<nb:'
+                            . $reviewer
+                            . '>'
+                            . Lang::txt('COM_PROJECTS_PROJECT_NO_DECISION_MADE_HIPAA')
+                            . ' '
+                            . $comment
+                            . ' '
+                            . $meta
+                            . '</nb:'
+                            . $reviewer
+                            . '>';
                     }
                 } elseif ($reviewer == 'sponsored') {
                     if ($apvSpon == 1) {
-                        $cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE')) . ': ' . $grant_approval . '. ' . $comment . $meta . '</nb:' . $reviewer . '>';
+                        $cbase  .= '<nb:'
+                            . $reviewer
+                            . '>'
+                            . Lang::txt('COM_PROJECTS_PROJECT_APPROVED_SPS')
+                            . ' '
+                            . ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE'))
+                            . ': '
+                            . $grant_approval
+                            . '. '
+                            . $comment
+                            . $meta
+                            . '</nb:'
+                            . $reviewer
+                            . '>';
                     } elseif ($apvSpon == 2) {
-                        $cbase  .= '<nb:' . $reviewer . '>' . Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS') . ' ' . $comment . ' ' . $meta . '</nb:' . $reviewer . '>';
+                        $cbase  .= '<nb:'
+                            . $reviewer
+                            . '>'
+                            . Lang::txt('COM_PROJECTS_PROJECT_REJECTED_SPS')
+                            . ' '
+                            . $comment
+                            . ' '
+                            . $meta
+                            . '</nb:'
+                            . $reviewer
+                            . '>';
                     } else {
                         $cbase  .= '<nb:' . $reviewer . '>' . $comment . $meta . '</nb:' . $reviewer . '>';
                     }
@@ -1168,7 +1273,16 @@ class Projects extends Base
                     }
 
                     if ($activity) {
-                        $aid = $this->model->recordActivity($activity, $this->model->get('id'), '', '', 'admin', 0, 1, 1);
+                        $aid = $this->model->recordActivity(
+                            $activity,
+                            $this->model->get('id'),
+                            '',
+                            '',
+                            'admin',
+                            0,
+                            1,
+                            1,
+                        );
 
                         // Append comment to activity
                         if ($comment && $aid) {
@@ -1199,7 +1313,16 @@ class Projects extends Base
             }
 
             // Go back to project listing
-            App::redirect(Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $reviewer . '&filterby=' . $filterby));
+            App::redirect(
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&task=browse&reviewer='
+                        . $reviewer
+                        . '&filterby='
+                        . $filterby,
+                ),
+            );
             return;
         } else {
             // Instantiate a new view

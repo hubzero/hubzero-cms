@@ -117,6 +117,11 @@ class Autolink extends AbstractHelper
             $href = 'mailto:' . Str::obfuscate($url);
         }
 
-        return $prfx . '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8', false) . '" rel="external">' . $txt . '</a>';
+        return $prfx
+            . '<a class="ext-link" href="'
+            . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8', false)
+            . '" rel="external">'
+            . $txt
+            . '</a>';
     }
 }

@@ -26,7 +26,9 @@ class Migration20260710000000ComMassmailSchedule extends Base
             $this->db->tableExists('#__massmail_mailings')
             && !$this->db->tableHasField('#__massmail_mailings', 'scheduled_at')
         ) {
-            $this->db->setQuery("ALTER TABLE `#__massmail_mailings` ADD COLUMN `scheduled_at` datetime DEFAULT NULL AFTER `status`;");
+            $this->db->setQuery(
+                "ALTER TABLE `#__massmail_mailings` ADD COLUMN `scheduled_at` datetime DEFAULT NULL AFTER `status`;",
+            );
             $this->db->query();
         }
     }

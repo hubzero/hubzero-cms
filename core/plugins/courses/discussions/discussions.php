@@ -863,7 +863,13 @@ class Discussions extends Plugin
             ->set('config', $this->params)
             ->set('depth', 0)
             ->set('cls', 'odd')
-            ->set('base', $this->base . '&thread=' . $post->get('id') . ($filters['search'] ? '&action=search&search=' . $filters['search'] : ''))
+            ->set(
+                'base',
+                $this->base
+                    . '&thread='
+                    . $post->get('id')
+                    . ($filters['search'] ? '&action=search&search=' . $filters['search'] : ''),
+            )
             ->set('comments', $comments)
             ->set('course', $this->course)
             ->set('search', $filters['search'])
@@ -1367,7 +1373,10 @@ class Discussions extends Plugin
         $sections = [];
         foreach ($sects as $key => $section) {
             $section->set('threads', 0);
-            $section->set('categories', isset($categories[$section->get('id')]) ? $categories[$section->get('id')] : []);
+            $section->set(
+                'categories',
+                isset($categories[$section->get('id')]) ? $categories[$section->get('id')] : [],
+            );
 
             if (
                 (!$section->get('categories') || !count($section->get('categories')))
@@ -1648,7 +1657,14 @@ class Discussions extends Plugin
                 'action'      => ($__sid ? 'updated' : 'created'),
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($__sid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_' . ($__sid ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url($this->base),
@@ -1728,7 +1744,14 @@ class Discussions extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_DELETED',
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url($this->base),
@@ -1821,7 +1844,10 @@ class Discussions extends Plugin
 
         $threads = $category
             ->threads()
-            ->select("*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)", 'activity')
+            ->select(
+                "*, (CASE WHEN last_activity IS NOT NULL AND last_activity != '0000-00-00 00:00:00' THEN last_activity ELSE created END)",
+                'activity',
+            )
             ->whereEquals('state', $filters['state'])
             ->whereIn('access', $filters['access'])
             ->order('sticky', 'desc') // pinned threads first, then the chosen sort
@@ -2010,7 +2036,14 @@ class Discussions extends Plugin
                 'action'      => ($__cid ? 'updated' : 'created'),
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
-                'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($__cid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_' . ($__cid ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base),
@@ -2091,7 +2124,14 @@ class Discussions extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
-                'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_COURSES_DISCUSSIONS_ACTIVITY_CATEGORY_DELETED',
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($this->base),
@@ -2253,7 +2293,15 @@ class Discussions extends Plugin
                 $list[$id]->set('treename', "$indent$txt");
                 $list[$id]->set('children', count($children[$id] ?? []));
 
-                $list = $this->treeRecurseIndented($id, $indent . $spacer, $list, $children, $maxlevel, $level + 1, $type);
+                $list = $this->treeRecurseIndented(
+                    $id,
+                    $indent . $spacer,
+                    $list,
+                    $children,
+                    $maxlevel,
+                    $level + 1,
+                    $type,
+                );
             }
         }
         return $list;
@@ -2272,9 +2320,29 @@ class Discussions extends Plugin
         $section  = Request::getString('section', '');
 
         if (User::isGuest()) {
-            $return = Route::url($this->offering->link() . '&active=' . $this->pluginName . '&unit=' . $section . '&b=' . $category . '&c=new');
+            $return = Route::url(
+                $this->offering->link()
+                    . '&active='
+                    . $this->pluginName
+                    . '&unit='
+                    . $section
+                    . '&b='
+                    . $category
+                    . '&c=new',
+            );
             if ($id) {
-                $return = Route::url($this->offering->link() . '&active=' . $this->pluginName . '&unit=' . $section . '&b=' . $category . '&c=' . $id . '/edit');
+                $return = Route::url(
+                    $this->offering->link()
+                        . '&active='
+                        . $this->pluginName
+                        . '&unit='
+                        . $section
+                        . '&b='
+                        . $category
+                        . '&c='
+                        . $id
+                        . '/edit',
+                );
             }
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
@@ -2337,7 +2405,10 @@ class Discussions extends Plugin
         // Must be logged in
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode(Route::url($this->base, false, true)),
+                ),
             );
             return;
         }
@@ -2688,7 +2759,15 @@ class Discussions extends Plugin
 
         // Check logged in status
         if (User::isGuest()) {
-            $return = Route::url($this->offering->link() . '&active=' . $this->pluginName . '&unit=download&b=' . $thread . '&file=' . $file);
+            $return = Route::url(
+                $this->offering->link()
+                    . '&active='
+                    . $this->pluginName
+                    . '&unit=download&b='
+                    . $thread
+                    . '&file='
+                    . $file,
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
@@ -2815,7 +2894,14 @@ class Discussions extends Plugin
                 'action'      => 'reordered',
                 'scope'       => 'forum.section',
                 'scope_id'    => $section->get('id'),
-                'description' => Lang::txt('PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_REORDERED', '<a href="' . Route::url($this->base) . '">' . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_COURSES_DISCUSSIONS_ACTIVITY_SECTION_REORDERED',
+                    '<a href="'
+                        . Route::url($this->base)
+                        . '">'
+                        . htmlspecialchars((string) ($section->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $section->get('title'),
                     'url'   => Route::url($this->base),
@@ -2874,7 +2960,12 @@ class Discussions extends Plugin
                 if ($categories->count()) {
                     // Build a list of category IDs
                     foreach ($categories as $category) {
-                        $log .= 'forum.section.' . $section->get('id') . '.category.' . $category->get('id') . '.post' . "\n";
+                        $log .= 'forum.section.'
+                            . $section->get('id')
+                            . '.category.'
+                            . $category->get('id')
+                            . '.post'
+                            . "\n";
                         $log .= 'forum.section.' . $section->get('id') . '.category.' . $category->get('id') . "\n";
                     }
                 }

@@ -184,11 +184,16 @@ class Events extends GroupMacro
             $event->about = nl2br($rawEvent->get('content'));
             $strcap = 255;
             if (strlen($event->about) > $strcap) {
-                $event->about = \Hubzero\Utility\Str::truncate($event->about, $strcap, ['html' => true]) . ' <a href="' . $event->url . '">[more]</a>';
+                $event->about = \Hubzero\Utility\Str::truncate($event->about, $strcap, ['html' => true])
+                    . ' <a href="'
+                    . $event->url
+                    . '">[more]</a>';
             }
 
             $event->allDay    = $rawEvent->get('allday') == 1;
-            $event->className = ($rawEvent->get('calendar_id')) ? 'calendar-' . $rawEvent->get('calendar_id') : 'calendar-0';
+            $event->className = ($rawEvent->get('calendar_id'))
+                ? 'calendar-' . $rawEvent->get('calendar_id')
+                : 'calendar-0';
             $event->start_month = $up->format('M');
             $event->start_day = $up->format('d');
             $event->iso_8601 = $up->format('c');
@@ -248,7 +253,9 @@ class Events extends GroupMacro
      */
     private function renderEvents($group, $events)
     {
-        Document::addStyleSheet(rtrim(str_replace(PATH_ROOT, '', __DIR__)) . DS . '../macro-assets' . DS . 'events' . DS . 'events.css');
+        Document::addStyleSheet(
+            rtrim(str_replace(PATH_ROOT, '', __DIR__)) . DS . '../macro-assets' . DS . 'events' . DS . 'events.css',
+        );
 
         $content = '';
         $curr_year = '';
@@ -288,8 +295,17 @@ class Events extends GroupMacro
                 $content .= '        </div>';
                 if ($event->location) {
                     $content .= '        <div class="event-location location">';
-                    if (preg_match_all('/(http|ftp|https):\/\/([\w-]+(?:(?:\.[\w_-]+)+))([\w.,@?()<>;^=%&:\/~+#-]*[\w@?(<^=%&\/~+#-])?/', $event->location)) {
-                        $content .= '		  <a href="' . $event->location . '" target="_blank">' . $event->location . '</a>';
+                    if (
+                        preg_match_all(
+                            '/(http|ftp|https):\/\/([\w-]+(?:(?:\.[\w_-]+)+))([\w.,@?()<>;^=%&:\/~+#-]*[\w@?(<^=%&\/~+#-])?/',
+                            $event->location,
+                        )
+                    ) {
+                        $content .= '		  <a href="'
+                            . $event->location
+                            . '" target="_blank">'
+                            . $event->location
+                            . '</a>';
                     } else {
                         $content .= '		  <span>' . $event->location . '</span>';
                     }
@@ -304,7 +320,9 @@ class Events extends GroupMacro
             $content .= '</div>';
             $content .= '</ul>';
         } else {
-            $content .= '<p>Currently there are no upcoming group events. Add an event by <a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add') . '">clicking here.</a></p>';
+            $content .= '<p>Currently there are no upcoming group events. Add an event by <a href="'
+                . Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=add')
+                . '">clicking here.</a></p>';
         }
 
         return $content;
@@ -357,7 +375,11 @@ class Events extends GroupMacro
 
                 // Validation - Check if from is a number, space, then word, or the word "today"
                 if (
-                    !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $from, $matches) && (strtotime($matches[1]) !== false))
+                    !(preg_match(
+                        '/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/',
+                        $from,
+                        $matches,
+                    ) && (strtotime($matches[1]) !== false))
                     && !in_array($from, ["today", "yesterday", "tomorrow"])
                 ) {
                     $from = false; // Invalid
@@ -394,7 +416,11 @@ class Events extends GroupMacro
 
                 // Validation - Check if to is a number, space, then word, or the word "today"
                 if (
-                    !(preg_match('/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/', $to, $matches) && (strtotime($matches[1]) !== false))
+                    !(preg_match(
+                        '/([\d]{4}[-\/][\d]{2}[-\/][\d]{2})/',
+                        $to,
+                        $matches,
+                    ) && (strtotime($matches[1]) !== false))
                     && !in_array($to, ["today", "yesterday", "tomorrow"])
                 ) {
                     $to = false; // Invalid

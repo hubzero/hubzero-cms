@@ -66,9 +66,19 @@ class Head extends Renderer
             foreach ($tag as $name => $content) {
                 if ($type == 'http-equiv') {
                     $content .= '; charset=' . $document->getCharset();
-                    $buffer[] = $tab . '<meta http-equiv="' . $name . '" content="' . htmlspecialchars($content) . '" />';
+                    $buffer[] = $tab
+                        . '<meta http-equiv="'
+                        . $name
+                        . '" content="'
+                        . htmlspecialchars($content)
+                        . '" />';
                 } elseif ($type == 'standard' && !empty($content) && isset($content['content'])) {
-                    $buffer[] = $tab . '<meta name="' . htmlspecialchars((string) $content['name'], ENT_QUOTES, 'UTF-8') . '" content="' . htmlspecialchars($content['content']) . '" />';
+                    $buffer[] = $tab
+                        . '<meta name="'
+                        . htmlspecialchars((string) $content['name'], ENT_QUOTES, 'UTF-8')
+                        . '" content="'
+                        . htmlspecialchars($content['content'])
+                        . '" />';
                 }
             }
         }

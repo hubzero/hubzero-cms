@@ -72,7 +72,9 @@ class Kb extends Plugin
 					LEFT JOIN `#__categories` AS cc ON cc.id = e.category
 					LEFT JOIN `#__tags_object` AS t ON t.objectid=e.id AND t.tbl='kb' AND t.tagid IN ($ids)";
         $viewlevels = User::getAuthorisedViewLevels();
-        $e_where  = " WHERE e.state=1 AND e.access IN (" . (!empty($viewlevels) ? implode(',', $viewlevels) : '1') . ")";
+        $e_where  = " WHERE e.state=1 AND e.access IN ("
+            . (!empty($viewlevels) ? implode(',', $viewlevels) : '1')
+            . ")";
         $e_where .= " GROUP BY e.id HAVING uniques=" . count($tags);
         $order_by  = " ORDER BY ";
         switch ($sort) {
@@ -110,13 +112,24 @@ class Kb extends Plugin
      */
     public static function out($row)
     {
-        $row->href = Route::url('index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias);
+        $row->href = Route::url(
+            'index.php?option=com_kb&section=' . $row->data2 . '&category=' . $row->data1 . '&alias=' . $row->alias,
+        );
 
         // Start building the HTML
         $html  = "\t" . '<li class="kb-entry">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+        $html .= "\t\t"
+            . '<p class="title"><a href="'
+            . $row->href
+            . '">'
+            . stripslashes($row->title)
+            . '</a></p>'
+            . "\n";
         if ($row->ftext) {
-            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "</p>\n";
+            $html .= "\t\t"
+                . '<p>'
+                . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200)
+                . "</p>\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";

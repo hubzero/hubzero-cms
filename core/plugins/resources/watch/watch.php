@@ -170,7 +170,14 @@ class Watch extends Plugin
                 'action'      => $this->action . 'd',
                 'scope'       => 'resource',
                 'scope_id'    => $this->resource->id,
-                'description' => Lang::txt('PLG_RESOURCES_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->resource->title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_RESOURCES_WATCH_' . strtoupper($this->action) . 'D',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($this->resource->title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $this->resource->title,
                     'url'   => $url,

@@ -771,7 +771,16 @@ class Threads extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $fields['category_id'] . ($thread ? '&task=thread&thread=' . $thread : ''), false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&category_id='
+                    . $fields['category_id']
+                    . ($thread ? '&task=thread&thread=' . $thread : ''),
+                false,
+            ),
         );
     }
 }

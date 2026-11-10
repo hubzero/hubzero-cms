@@ -163,7 +163,13 @@ class Memberoptions extends Plugin
         }
 
         if (!$postSaveRedirect || !\Hubzero\Utility\Uri::isInternal($postSaveRedirect)) {
-            $postSaveRedirect = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions&action=edit');
+            $postSaveRedirect = Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&active=memberoptions&action=edit',
+            );
         }
 
         App::redirect(

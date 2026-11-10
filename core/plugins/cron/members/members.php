@@ -264,7 +264,11 @@ class Members extends Plugin
         $months = self::inactivityMonths($value);
 
         if (!$months) {
-            Log::error('PLG_CRON_MEMBERS expireInactiveAccounts: members_expireinactive_months must be a whole number of months, at least 1; got "' . $value . '". Nothing changed.');
+            Log::error(
+                'PLG_CRON_MEMBERS expireInactiveAccounts: members_expireinactive_months must be a whole number of months, at least 1; got "'
+                    . $value
+                    . '". Nothing changed.',
+            );
             return false;
         }
 
@@ -275,7 +279,11 @@ class Members extends Plugin
         $exempt = trim((string) $job->params->get('members_expireinactive_exempt_group', 'Service accounts'));
 
         $db    = App::get('db');
-        $query = self::inactiveAccountsQuery($db->quote($cutoff), $cutoffDay, $exempt === '' ? null : $db->quote($exempt));
+        $query = self::inactiveAccountsQuery(
+            $db->quote($cutoff),
+            $cutoffDay,
+            $exempt === '' ? null : $db->quote($exempt),
+        );
 
         $db->setQuery($query);
         $ids = $db->loadColumn();
@@ -298,7 +306,13 @@ class Members extends Plugin
             $marked++;
         }
 
-        Log::info('PLG_CRON_MEMBERS expireInactiveAccounts: ' . $marked . ' account(s) with no activity since ' . $cutoff . ' expired.');
+        Log::info(
+            'PLG_CRON_MEMBERS expireInactiveAccounts: '
+                . $marked
+                . ' account(s) with no activity since '
+                . $cutoff
+                . ' expired.',
+        );
 
         return true;
     }

@@ -372,8 +372,16 @@ class Blog extends Plugin
         $doc->link = Route::url($this->member->link() . '&active=' . $this->pluginName);
 
         // Build some basic RSS document information
-        $doc->title       = Config::get('sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . Lang::txt('Blog');
-        $doc->description = Lang::txt('PLG_MEMBERS_BLOG_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($this->member->get('name')));
+        $doc->title       = Config::get('sitename')
+            . ' - '
+            . stripslashes($this->member->get('name'))
+            . ': '
+            . Lang::txt('Blog');
+        $doc->description = Lang::txt(
+            'PLG_MEMBERS_BLOG_RSS_DESCRIPTION',
+            Config::get('sitename'),
+            stripslashes($this->member->get('name')),
+        );
         $doc->copyright   = Lang::txt('PLG_MEMBERS_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
         $doc->category    = Lang::txt('PLG_MEMBERS_BLOG_RSS_CATEGORY');
 
@@ -389,7 +397,9 @@ class Blog extends Plugin
 
             // Strip html from feed item description text
             $item->description = $row->content;
-            $item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
+            $item->description = \Hubzero\Utility\Sanitize::stripAll(
+                strip_tags(html_entity_decode($item->description)),
+            );
             if ($this->params->get('feed_entries') == 'partial') {
                 $item->description = \Hubzero\Utility\Str::truncate($item->description, 300);
             }
@@ -434,7 +444,10 @@ class Blog extends Plugin
                 ->whereEquals('alias', $alias)
                 ->whereEquals('scope', $this->model->get('scope'))
                 ->whereEquals('scope_id', $this->model->get('scope_id'))
-                ->whereIn('state', [\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED])
+                ->whereIn(
+                    'state',
+                    [\Components\Blog\Models\Entry::STATE_UNPUBLISHED, \Components\Blog\Models\Entry::STATE_PUBLISHED],
+                )
                 ->order('state', 'desc')
                 ->row();
         }
@@ -448,7 +461,10 @@ class Blog extends Plugin
         if (
             ($row->get('access') == 2 && User::isGuest())
             || ($row->get('state') == 0 && User::get('id') != $this->member->get('id'))
-            || (!$row->isAvailable() && User::get('id') != $this->member->get('id') && !User::authorise('core.manage', 'com_blog'))
+            || (!$row->isAvailable() && User::get('id') != $this->member->get('id') && !User::authorise(
+                'core.manage',
+                'com_blog',
+            ))
         ) {
             App::abort(403, Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTH'));
         }
@@ -629,7 +645,14 @@ class Blog extends Plugin
                 'action'      => ($isNew ? 'created' : 'updated'),
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($isNew ? 'CREATED' : 'UPDATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_BLOG_ACTIVITY_ENTRY_' . ($isNew ? 'CREATED' : 'UPDATED'),
+                    '<a href="'
+                        . Route::url($row->link())
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url($row->link()),
@@ -807,7 +830,15 @@ class Blog extends Plugin
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
-                'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($isNew ? 'CREATED' : 'UPDATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_' . ($isNew ? 'CREATED' : 'UPDATED'),
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($entry->link() . '#c' . $comment->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
@@ -891,7 +922,15 @@ class Blog extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
-                'description' => Lang::txt('PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_MEMBERS_BLOG_ACTIVITY_COMMENT_DELETED',
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($entry->link())
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),

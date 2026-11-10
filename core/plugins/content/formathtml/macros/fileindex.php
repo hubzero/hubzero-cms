@@ -47,10 +47,16 @@ class FileIndex extends Macro
         if ($et) {
             $et = strip_tags($et);
             // Get pages with a prefix
-            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE " . $this->db->quote(strtolower($et) . '%') . " AND page_id=" . $this->db->quote($this->pageid) . " ORDER BY created ASC";
+            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE "
+                . $this->db->quote(strtolower($et) . '%')
+                . " AND page_id="
+                . $this->db->quote($this->pageid)
+                . " ORDER BY created ASC";
         } else {
             // Get all pages
-            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE page_id=" . $this->db->quote($this->pageid) . " ORDER BY created ASC";
+            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE page_id="
+                . $this->db->quote($this->pageid)
+                . " ORDER BY created ASC";
         }
 
         // Perform query
@@ -67,19 +73,49 @@ class FileIndex extends Macro
             // Build and return the link
             $html = '<ul>';
             foreach ($rows as $row) {
-                $link = $live_site . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->page_id . DS . $row->filename;
-                $fpath = PATH_APP . DS . trim($config->get('filepath', '/site/wiki'), DS) . DS . $this->page_id . DS . $row->filename;
+                $link = $live_site
+                    . DS
+                    . trim($config->get('filepath', '/site/wiki'), DS)
+                    . DS
+                    . $this->page_id
+                    . DS
+                    . $row->filename;
+                $fpath = PATH_APP
+                    . DS
+                    . trim($config->get('filepath', '/site/wiki'), DS)
+                    . DS
+                    . $this->page_id
+                    . DS
+                    . $row->filename;
 
                 // Filename, uploader name and description are stored free text
-                $html .= '<li><a href="' . Route::url($link) . '">' . htmlspecialchars((string) $row->filename, ENT_QUOTES, 'UTF-8') . '</a> (' . (file_exists($fpath) ? \Hubzero\Utility\Number::formatBytes(filesize($fpath)) : '-- file not found --') . ') ';
+                $html .= '<li><a href="'
+                    . Route::url($link)
+                    . '">'
+                    . htmlspecialchars((string) $row->filename, ENT_QUOTES, 'UTF-8')
+                    . '</a> ('
+                    . (
+                        file_exists($fpath)
+                        ? \Hubzero\Utility\Number::formatBytes(filesize($fpath))
+                        : '-- file not found --'
+                    )
+                    . ') ';
                 $huser = User::getInstance($row->created_by);
                 if ($huser->get('id')) {
-                    $html .= '- added by <a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('id')) . '">' . htmlspecialchars((string) stripslashes($huser->get('name')), ENT_QUOTES, 'UTF-8') . '</a> ';
+                    $html .= '- added by <a href="'
+                        . Route::url('index.php?option=com_members&id=' . $huser->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) stripslashes($huser->get('name')), ENT_QUOTES, 'UTF-8')
+                        . '</a> ';
                 }
                 if ($row->created && $row->created != '0000-00-00 00:00:00') {
                     $html .= Date::of($row->created)->relative() . '. ';
                 }
-                $html .= ($row->description) ? '<span>"' . htmlspecialchars((string) stripslashes($row->description), ENT_QUOTES, 'UTF-8') . '"</span>' : '';
+                $html .= ($row->description)
+                    ? '<span>"'
+                        . htmlspecialchars((string) stripslashes($row->description), ENT_QUOTES, 'UTF-8')
+                        . '"</span>'
+                    : '';
                 $html .= '</li>' . "\n";
             }
             $html .= '</ul>';

@@ -169,10 +169,16 @@ class Following extends Table
         if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) {
             $filters['sort_Dir'] = 'DESC';
         }
-        $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
+        $query .= " ORDER BY "
+            . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1')
+            . " "
+            . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
         if (isset($filters['limit']) && $filters['limit'] != 0) {
-            $query .= ' LIMIT ' . (isset($filters['start']) ? intval($filters['start']) : 0) . ',' . intval($filters['limit']);
+            $query .= ' LIMIT '
+                . (isset($filters['start']) ? intval($filters['start']) : 0)
+                . ','
+                . intval($filters['limit']);
         }
 
         $this->db->setQuery($query);

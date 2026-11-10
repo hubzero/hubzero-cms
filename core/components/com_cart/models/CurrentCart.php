@@ -219,14 +219,20 @@ class CurrentCart extends Cart
 
             if (!empty($item->crtiOldQty) && $item->crtiOldQty > $item->crtiQty) {
                 if ($item->crtiQty) {
-                    $changes[] = [$itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty, 'info'];
+                    $changes[] = [
+                        $itemName . ' inventory reduced from ' . $item->crtiOldQty . ' to ' . $item->crtiQty,
+                        'info',
+                    ];
                 } else {
                     $changes[] = [$itemName . ' is no longer in stock', 'info'];
                 }
             }
 
             if (!empty($item->crtiOldPrice) && $item->crtiOldPrice != $item->crtiPrice) {
-                $changes[] = [$itemName . ' price changed from ' . $item->crtiOldPrice . ' to ' . $item->crtiPrice, 'info'];
+                $changes[] = [
+                    $itemName . ' price changed from ' . $item->crtiOldPrice . ' to ' . $item->crtiPrice,
+                    'info',
+                ];
             }
         }
 
@@ -474,7 +480,14 @@ class CurrentCart extends Cart
         $status = 1;
 
         // Check required fields
-        $requiredFields = ['shippingToFirst', 'shippingToLast', 'shippingAddress', 'shippingCity', 'shippingState', 'shippingZip'];
+        $requiredFields = [
+            'shippingToFirst',
+            'shippingToLast',
+            'shippingAddress',
+            'shippingCity',
+            'shippingState',
+            'shippingZip',
+        ];
 
         foreach ($requiredFields as $field) {
             $fieldValue = Request::getString($field, false, 'post');
@@ -716,7 +729,10 @@ class CurrentCart extends Cart
         }
 
         // update status
-        $sql = "UPDATE `#__cart_transaction_info` SET `tiCustomerStatus` = " . $this->db->quote($status) . " WHERE `tId` = " . $this->db->quote($tId);
+        $sql = "UPDATE `#__cart_transaction_info` SET `tiCustomerStatus` = "
+            . $this->db->quote($status)
+            . " WHERE `tId` = "
+            . $this->db->quote($tId);
 
         $this->db->setQuery($sql);
         $this->db->query();
@@ -811,7 +827,10 @@ class CurrentCart extends Cart
             throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
         }
 
-        $tiTotal = $this->tInfo->tiSubtotal + $this->tInfo->tiShipping - $this->tInfo->tiShippingDiscount - $this->tInfo->tiDiscounts;
+        $tiTotal = $this->tInfo->tiSubtotal
+            + $this->tInfo->tiShipping
+            - $this->tInfo->tiShippingDiscount
+            - $this->tInfo->tiDiscounts;
 
         $sql = "UPDATE `#__cart_transaction_info` SET
 				`titotal` = " . $this->db->quote($tiTotal) . "
@@ -1170,7 +1189,9 @@ class CurrentCart extends Cart
 
                                 $perks['items'][$perk->forSku] = $perk;
                             } else {
-                                throw new \Exception(Lang::txt('Invalid coupon. Only discounts are available for SKUs and products'));
+                                throw new \Exception(
+                                    Lang::txt('Invalid coupon. Only discounts are available for SKUs and products'),
+                                );
                             }
 
                             if ($couponObjectType == 'sku') {
@@ -1294,7 +1315,10 @@ class CurrentCart extends Cart
         }
 
         // Remove coupon
-        $sql = "DELETE FROM `#__cart_coupons` WHERE `cnId` = " . $this->db->quote($cnId) . " AND `crtId` = " . $this->db->quote($this->crtId);
+        $sql = "DELETE FROM `#__cart_coupons` WHERE `cnId` = "
+            . $this->db->quote($cnId)
+            . " AND `crtId` = "
+            . $this->db->quote($this->crtId);
 
         $this->db->setQuery($sql);
         //echo $this->_db->_sql;
@@ -1338,12 +1362,19 @@ class CurrentCart extends Cart
                 $user = User::getInstance();
 
                 // Get the correct membership Object
-                $subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject($type, $itemInfo->pId, $user->id);
+                $subscription = \Components\Storefront\Models\Memberships::getSubscriptionObject(
+                    $type,
+                    $itemInfo->pId,
+                    $user->id,
+                );
                 // Get the expiration for the current subscription (if any)
                 $currentExpiration = $subscription->getExpiration();
 
                 // Calculate new expiration
-                $newExpires = \Components\Storefront\Models\Memberships::calculateNewExpiration($currentExpiration, $item);
+                $newExpires = \Components\Storefront\Models\Memberships::calculateNewExpiration(
+                    $currentExpiration,
+                    $item,
+                );
 
                 $membershipSIdInfo = new \stdClass();
                 $membershipSIdInfo->newExpires = strtotime($newExpires);

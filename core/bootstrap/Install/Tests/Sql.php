@@ -76,7 +76,13 @@ class Sql
                 continue;
             }
 
-            if (preg_match('/^(INSERT|REPLACE)(?: IGNORE)? INTO `([^`]+)`\s*(\([^)]*\))?\s*VALUES\s*\((.*)\);$/i', $line, $m)) {
+            if (
+                preg_match(
+                    '/^(INSERT|REPLACE)(?: IGNORE)? INTO `([^`]+)`\s*(\([^)]*\))?\s*VALUES\s*\((.*)\);$/i',
+                    $line,
+                    $m,
+                )
+            ) {
                 $this->insert(
                     $this->name($m[2]),
                     $m[3],
@@ -119,7 +125,9 @@ class Sql
             // A key the schema says is unique, so the rows can be held to it
             // A column in a key may carry a prefix length - `saAddress`(100) -
             // whose closing bracket is not the end of the list.
-            if (preg_match('/^(?:UNIQUE KEY|PRIMARY KEY)\s*(?:`[^`]+`)?\s*\(((?:[^()]|\(\d+\))+)\)/i', trim($line), $k)) {
+            if (
+                preg_match('/^(?:UNIQUE KEY|PRIMARY KEY)\s*(?:`[^`]+`)?\s*\(((?:[^()]|\(\d+\))+)\)/i', trim($line), $k)
+            ) {
                 $columns = [];
 
                 foreach (explode(',', $k[1]) as $column) {

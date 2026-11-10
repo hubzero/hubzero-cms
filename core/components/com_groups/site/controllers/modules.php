@@ -302,7 +302,11 @@ class Modules extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_MODULE_' . ($module['id'] ? 'UPDATED' : 'CREATED'),
                     $this->module->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
                 ),
                 'details'     => [
                     'title'     => $this->module->get('title'),
@@ -418,7 +422,11 @@ class Modules extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_MODULE_' . $activityAction,
                     $module->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
                 ),
                 'details'     => [
                     'title'     => $module->get('title'),

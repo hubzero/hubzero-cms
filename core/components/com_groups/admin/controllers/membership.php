@@ -109,7 +109,9 @@ class Membership extends AdminController
             'int',
         );
         // In case limit has been changed, adjust limitstart accordingly
-        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+        $this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor(
+            $this->view->filters['start'] / $this->view->filters['limit'],
+        ) * $this->view->filters['limit']) : 0);
 
         $tbl = new Tables\Group($this->database);
 
@@ -301,7 +303,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 Lang::txt('COM_GROUPS_MEMBER_ADDED', $tbl),
             );
         }
@@ -361,10 +371,19 @@ class Membership extends AdminController
         $this->group = new Group();
         $this->group->read($gid);
 
-        $return = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn');
+        $return = 'index.php?option='
+            . $this->option
+            . '&controller='
+            . $this->controller
+            . '&gid='
+            . $this->group->get('cn');
 
         if (!\Hubzero\User\Group\Membership::supported()) {
-            App::redirect(Route::url($return, false), Lang::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_UNAVAILABLE'), 'error');
+            App::redirect(
+                Route::url($return, false),
+                Lang::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_UNAVAILABLE'),
+                'error',
+            );
             return;
         }
 
@@ -483,7 +502,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 Lang::txt('COM_GROUPS_MEMBER_APPROVED'),
             );
         }
@@ -549,7 +576,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 Lang::txt('COM_GROUPS_MEMBER_PROMOTED'),
             );
         }
@@ -629,7 +664,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 Lang::txt('COM_GROUPS_MEMBER_DEMOTED'),
             );
         }
@@ -712,7 +755,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 ($this->getError() ? $this->getError() : Lang::txt('COM_GROUPS_MEMBER_REMOVED')),
                 ($this->getError() ? 'error' : null),
             );
@@ -788,7 +839,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 Lang::txt('COM_GROUPS_MEMBER_UNINVITED'),
             );
         }
@@ -849,7 +908,15 @@ class Membership extends AdminController
 
         if (!Request::getInt('no_html', 0)) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->get('cn'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&gid='
+                        . $this->group->get('cn'),
+                    false,
+                ),
                 Lang::txt('COM_GROUPS_MEMBER_DENIED'),
             );
         }

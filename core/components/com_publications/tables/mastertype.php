@@ -300,7 +300,9 @@ class MasterType extends Table
             return false;
         }
 
-        $this->db->setQuery("SELECT * FROM $this->tableName WHERE ordering=" . $this->db->quote($ordering) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT * FROM $this->tableName WHERE ordering=" . $this->db->quote($ordering) . " LIMIT 1",
+        );
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         } else {

@@ -234,8 +234,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      * @param   array  $searchableFields
      * @return  $this
      */
-    public function filterBySearch($term, $depth = 0, $searchableFields = ['title', 'isbn', 'doi', 'abstract', 'author', 'publisher','keywords'])
-    {
+    public function filterBySearch(
+        $term,
+        $depth = 0,
+        $searchableFields = ['title', 'isbn', 'doi', 'abstract', 'author', 'publisher','keywords'],
+    ) {
         if (is_array($term)) {
             $searchTerms = array_intersect_key($term, array_flip($searchableFields));
             $term = '';
@@ -836,7 +839,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     $this->$k = str_replace('http://dx.doi.org/', '', $this->$k);
 
                     $doiEsc = htmlspecialchars((string) $this->$k, ENT_QUOTES, 'UTF-8');
-                    $replace_values[$v] = '<a rel="external" href="https://doi.org/' . $doiEsc . '">' . $doiEsc . '</a>';
+                    $replace_values[$v] = '<a rel="external" href="https://doi.org/'
+                        . $doiEsc
+                        . '">'
+                        . $doiEsc
+                        . '</a>';
                 }
 
                 if ($k == 'author') {
@@ -881,7 +888,15 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                                     if (is_numeric($id)) {
                                         $user = User::getInstance($id);
                                         if (is_object($user)) {
-                                            $a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . htmlspecialchars(str_replace($matches[0], '', $author), ENT_QUOTES, 'UTF-8') . '</a>';
+                                            $a[] = '<a rel="external" href="'
+                                                . Route::url('index.php?option=com_members&id=' . $matches[1])
+                                                . '">'
+                                                . htmlspecialchars(
+                                                    str_replace($matches[0], '', $author),
+                                                    ENT_QUOTES,
+                                                    'UTF-8',
+                                                )
+                                                . '</a>';
                                         } else {
                                             $a[] = htmlspecialchars($author, ENT_QUOTES, 'UTF-8');
                                         }
@@ -894,7 +909,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                                 $coins_data[] = 'rft.au=' . trim(preg_replace('/\{\{\d+\}\}/', '', trim($author)));
                             } elseif (is_object($author)) { // the ORM form; above was the legacy string
                                 if ($author->uidNumber > 0) {
-                                    $a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $author->uidNumber) . '">' . htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8') . '</a>';
+                                    $a[] = '<a rel="external" href="'
+                                        . Route::url('index.php?option=com_members&id=' . $author->uidNumber)
+                                        . '">'
+                                        . htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8')
+                                        . '</a>';
                                 } else {
                                     $a[] = htmlspecialchars($author->author, ENT_QUOTES, 'UTF-8');
                                 }
@@ -959,7 +978,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                     $singleCitationView = isset($config['citation_single_view']) ? $config['citation_single_view'] : 0;
 
                     if ($singleCitationView && isset($this->id)) {
-                        $title = '<a href="' . Route::url('index.php?option=com_citations&task=view&id=' . $this->id) . '">' . $tEsc . '</a>';
+                        $title = '<a href="'
+                            . Route::url('index.php?option=com_citations&task=view&id=' . $this->id)
+                            . '">'
+                            . $tEsc
+                            . '</a>';
                     }
 
                     //send back title to replace title placeholder ({TITLE})
@@ -1099,9 +1122,25 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
         $details  = '';
 
         // are we allowing downloading
-        $details .= '<a class="icon-download bibtex" rel="nofollow" href="' . Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1') . '" title="' . Lang::txt('COM_CITATIONS_BIBTEX') . '">' . Lang::txt('COM_CITATIONS_BIBTEX') . '</a>';
+        $details .= '<a class="icon-download bibtex" rel="nofollow" href="'
+            . Route::url(
+                'index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=bibtex&no_html=1',
+            )
+            . '" title="'
+            . Lang::txt('COM_CITATIONS_BIBTEX')
+            . '">'
+            . Lang::txt('COM_CITATIONS_BIBTEX')
+            . '</a>';
         $details .= '<span class="separator"> | </span>';
-        $details .= '<a class="icon-download endnote" rel="nofollow" href="' . Route::url('index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1') . '" title="' . Lang::txt('COM_CITATIONS_ENDNOTE') . '">' . Lang::txt('COM_CITATIONS_ENDNOTE') . '</a>';
+        $details .= '<a class="icon-download endnote" rel="nofollow" href="'
+            . Route::url(
+                'index.php?option=com_citations&task=download&id=' . $this->id . '&citationFormat=endnote&no_html=1',
+            )
+            . '" title="'
+            . Lang::txt('COM_CITATIONS_ENDNOTE')
+            . '">'
+            . Lang::txt('COM_CITATIONS_ENDNOTE')
+            . '</a>';
 
         // if we have an open url link and we want to use open urls
         if ($openurl['link']) {
@@ -1115,7 +1154,11 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
         if ($this->eprint && preg_match('/^https?:\/\//i', trim($this->eprint))) {
             $details .= '<span>|</span>';
-            $details .= '<a href="' . htmlspecialchars(Str::ampReplace(trim($this->eprint)), ENT_QUOTES, 'UTF-8') . '">' . Lang::txt('Electronic Paper') . '</a>';
+            $details .= '<a href="'
+                . htmlspecialchars(Str::ampReplace(trim($this->eprint)), ENT_QUOTES, 'UTF-8')
+                . '">'
+                . Lang::txt('Electronic Paper')
+                . '</a>';
         }
 
         return $details;
@@ -1144,12 +1187,18 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                 $multiple = false;
 
                 if ($resourceCount > 1) {
-                    $links .= '<span>|</span><span class="cited-resources">' . Lang::txt('COM_CITATIONS_RESOURCES_CITED') . ':</span>';
+                    $links .= '<span>|</span><span class="cited-resources">'
+                        . Lang::txt('COM_CITATIONS_RESOURCES_CITED')
+                        . ':</span>';
                     $multiple = true;
                 } else {
                     $links .= '<span>|</span>';
                 }
-                $imageSrc = $multiple ? (!empty($internallyCitedImageMultiple)) ? $internallyCitedImageMultiple : $internallyCitedImageSingle : $internallyCitedImageSingle;
+                $imageSrc = $multiple
+                    ? (!empty($internallyCitedImageMultiple))
+                        ? $internallyCitedImageMultiple
+                        : $internallyCitedImageSingle
+                    : $internallyCitedImageSingle;
 
                 $linkText = Lang::txt('COM_CITATIONS_RESOURCES_CITED');
                 $linkImage = '<img src="' . $imageSrc . '" />';
@@ -1205,7 +1254,15 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                 if ($tag->tbl == 'citations' && $tag->label == '') {
                     //display tag if not admin tag or if admin tag and user is administrator
                     if (!$tag->tag->admin || ($tag->tag->admin && $isAdmin)) {
-                        $html .= '<li' . ($tag->tag->admin ? ' class="admin"' : '') . '><a class="tag ' . ($tag->tag->admin ? ' admin' : '') . '" href="' . Route::url('index.php?option=com_tags&tag=' . urlencode($tag->tag->tag)) . '">' . htmlspecialchars(stripslashes((string) $tag->tag->raw_tag), ENT_QUOTES, 'UTF-8') . '</a></li>';
+                        $html .= '<li'
+                            . ($tag->tag->admin ? ' class="admin"' : '')
+                            . '><a class="tag '
+                            . ($tag->tag->admin ? ' admin' : '')
+                            . '" href="'
+                            . Route::url('index.php?option=com_tags&tag=' . urlencode($tag->tag->tag))
+                            . '">'
+                            . htmlspecialchars(stripslashes((string) $tag->tag->raw_tag), ENT_QUOTES, 'UTF-8')
+                            . '</a></li>';
                     }
                 }
             }
@@ -1301,7 +1358,13 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
             $link .= implode("&", $query);
 
             // do we have an icon or just using text as the link
-            $link_text = ($icon != '') ? '<img alt="' . $text . '" src="index.php?option=com_citations&controller=citations&task=downloadimage&image=' . $icon . '" />' : $text;
+            $link_text = ($icon != '')
+                ? '<img alt="'
+                    . $text
+                    . '" src="index.php?option=com_citations&controller=citations&task=downloadimage&image='
+                    . $icon
+                    . '" />'
+                : $text;
 
             // final link
             $html .= '<a rel="external nofollow" href="' . $link . '" title="' . $text . '">' . $link_text . '</a>';

@@ -87,7 +87,15 @@ class Share extends Plugin
                         'action'      => 'shared',
                         'scope'       => 'publication',
                         'scope_id'    => $publication->id,
-                        'description' => Lang::txt('PLG_PUBLICATIONS_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . htmlspecialchars((string) ($publication->title), ENT_QUOTES, 'UTF-8') . '</a>', $sharewith),
+                        'description' => Lang::txt(
+                            'PLG_PUBLICATIONS_SHARE_ENTRY_SHARED',
+                            '<a href="'
+                                . $sef
+                                . '">'
+                                . htmlspecialchars((string) ($publication->title), ENT_QUOTES, 'UTF-8')
+                                . '</a>',
+                            $sharewith,
+                        ),
                         'details'     => [
                             'with'    => $sharewith,
                             'title'   => $publication->title,
@@ -148,7 +156,14 @@ class Share extends Plugin
                 break;
 
             case 'twitter':
-                $link = 'http://twitter.com/intent/tweet?text=' . urlencode(Lang::txt('PLG_PUBLICATION_SHARE_VIEWING', Config::get('sitename'), stripslashes($publication->title) . ' ' . $url));
+                $link = 'http://twitter.com/intent/tweet?text='
+                    . urlencode(
+                        Lang::txt(
+                            'PLG_PUBLICATION_SHARE_VIEWING',
+                            Config::get('sitename'),
+                            stripslashes($publication->title) . ' ' . $url,
+                        ),
+                    );
                 break;
 
             case 'google':
@@ -164,11 +179,23 @@ class Share extends Plugin
                 break;
 
             case 'linkedin':
-                $link = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&summary=' . $description;
+                $link = 'https://www.linkedin.com/shareArticle?mini=true&url='
+                    . $url
+                    . '&title='
+                    . $title
+                    . '&summary='
+                    . $description;
                 break;
 
             case 'pinterest':
-                $link = 'https://pinterest.com/pin/create/button/?url=' . $url . '&media=' . $mediaUrl . '&description=' . $title . ': ' . $description;
+                $link = 'https://pinterest.com/pin/create/button/?url='
+                    . $url
+                    . '&media='
+                    . $mediaUrl
+                    . '&description='
+                    . $title
+                    . ': '
+                    . $description;
                 break;
         }
 

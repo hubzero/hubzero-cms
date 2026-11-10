@@ -58,8 +58,20 @@ class Announcements extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -195,7 +207,11 @@ class Announcements extends Plugin
                     User::isGuest()
                     && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
                 ) {
-                    $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                    $url = Route::url(
+                        'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                        false,
+                        true,
+                    );
 
                     App::redirect(
                         Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -207,7 +223,9 @@ class Announcements extends Plugin
 
                 // Check to see if user is member and plugin access requires members
                 if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members') {
-                    $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                    $arr['html'] = '<p class="info">'
+                        . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                        . '</p>';
                     return $arr;
                 }
             }
@@ -433,13 +451,27 @@ class Announcements extends Plugin
         $fields['priority'] = (isset($fields['priority']) && $fields['priority'] == 1) ? 1 : 0;
 
         // Format publish up
-        if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00') {
-            $fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
+        if (
+            isset($fields['publish_up'])
+            && $fields['publish_up'] != ''
+            && $fields['publish_up'] != '0000-00-00 00:00:00'
+        ) {
+            $fields['publish_up'] = Date::of(
+                str_replace('@', '', $fields['publish_up']),
+                Config::get('offset'),
+            )->toSql();
         }
 
         // Format publish down
-        if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00') {
-            $fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
+        if (
+            isset($fields['publish_down'])
+            && $fields['publish_down'] != ''
+            && $fields['publish_down'] != '0000-00-00 00:00:00'
+        ) {
+            $fields['publish_down'] = Date::of(
+                str_replace('@', '', $fields['publish_down']),
+                Config::get('offset'),
+            )->toSql();
         }
 
         // Bind data
@@ -483,7 +515,14 @@ class Announcements extends Plugin
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'announcement',
                 'scope_id'    => $model->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70)
+                        . '</a>',
+                ),
                 'details'     => [
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
@@ -539,7 +578,9 @@ class Announcements extends Plugin
 
         // Make sure we are the one who created it
         if ($model->get('created_by') != User::get('id') && $this->authorized != 'manager') {
-            $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $model->creator()->get('name')));
+            $this->setError(
+                Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $model->creator()->get('name')),
+            );
             return $this->list();
         }
 
@@ -569,7 +610,14 @@ class Announcements extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'announcement',
                 'scope_id'    => $model->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED',
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70)
+                        . '</a>',
+                ),
                 'details'     => [
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
@@ -624,7 +672,13 @@ class Announcements extends Plugin
         $lang = App::get('language');
         $lang->load($extension, $basePath, null, false, true)
         || $lang->load($extension, PATH_APP . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true)
-        || $lang->load($extension, PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true);
+        || $lang->load(
+            $extension,
+            PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements',
+            null,
+            false,
+            true,
+        );
 
         // Create view object
         $eview = new \Hubzero\Mail\View([
@@ -759,13 +813,27 @@ class Announcements extends Plugin
         ];
 
         // Format publish up
-        if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00') {
-            $fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
+        if (
+            isset($fields['publish_up'])
+            && $fields['publish_up'] != ''
+            && $fields['publish_up'] != '0000-00-00 00:00:00'
+        ) {
+            $fields['publish_up'] = Date::of(
+                str_replace('@', '', $fields['publish_up']),
+                Config::get('offset'),
+            )->toSql();
         }
 
         // Format publish down
-        if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00') {
-            $fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
+        if (
+            isset($fields['publish_down'])
+            && $fields['publish_down'] != ''
+            && $fields['publish_down'] != '0000-00-00 00:00:00'
+        ) {
+            $fields['publish_down'] = Date::of(
+                str_replace('@', '', $fields['publish_down']),
+                Config::get('offset'),
+            )->toSql();
         }
 
         // Bind data
@@ -858,13 +926,27 @@ class Announcements extends Plugin
         ];
 
         // Format publish up
-        if (isset($fields['publish_up']) && $fields['publish_up'] != '' && $fields['publish_up'] != '0000-00-00 00:00:00') {
-            $fields['publish_up'] = Date::of(str_replace('@', '', $fields['publish_up']), Config::get('offset'))->toSql();
+        if (
+            isset($fields['publish_up'])
+            && $fields['publish_up'] != ''
+            && $fields['publish_up'] != '0000-00-00 00:00:00'
+        ) {
+            $fields['publish_up'] = Date::of(
+                str_replace('@', '', $fields['publish_up']),
+                Config::get('offset'),
+            )->toSql();
         }
 
         // Format publish down
-        if (isset($fields['publish_down']) && $fields['publish_down'] != '' && $fields['publish_down'] != '0000-00-00 00:00:00') {
-            $fields['publish_down'] = Date::of(str_replace('@', '', $fields['publish_down']), Config::get('offset'))->toSql();
+        if (
+            isset($fields['publish_down'])
+            && $fields['publish_down'] != ''
+            && $fields['publish_down'] != '0000-00-00 00:00:00'
+        ) {
+            $fields['publish_down'] = Date::of(
+                str_replace('@', '', $fields['publish_down']),
+                Config::get('offset'),
+            )->toSql();
         }
 
         // Bind data

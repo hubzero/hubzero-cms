@@ -141,7 +141,10 @@ class IdPResponseTest extends Basic
         $this->assertEquals(1, $x->query('/samlp:Response[@InResponseTo="_req1"]')->length);
         $this->assertEquals(1, $x->query('//saml:SubjectConfirmationData[@InResponseTo="_req1"]')->length);
         $this->assertEquals(1, $x->query('//saml:Audience[text()="https://sp.example.com/saml2"]')->length);
-        $this->assertEquals(1, $x->query('//samlp:StatusCode[@Value="urn:oasis:names:tc:SAML:2.0:status:Success"]')->length);
+        $this->assertEquals(
+            1,
+            $x->query('//samlp:StatusCode[@Value="urn:oasis:names:tc:SAML:2.0:status:Success"]')->length,
+        );
     }
 
     /**

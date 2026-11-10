@@ -310,9 +310,49 @@ class Asset extends Base
         $this->logView($course);
 
         // Check to see that the view template exists, otherwise, use the default
-        if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '_' . $subtype . '.php')) {
+        if (
+            file_exists(
+                PATH_CORE
+                    . DS
+                    . 'components'
+                    . DS
+                    . 'com_courses'
+                    . DS
+                    . 'site'
+                    . DS
+                    . 'views'
+                    . DS
+                    . 'assets'
+                    . DS
+                    . 'tmpl'
+                    . DS
+                    . $type
+                    . '_'
+                    . $subtype
+                    . '.php',
+            )
+        ) {
             $layout = $type . '_' . $subtype;
-        } elseif (file_exists(PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'site' . DS . 'views' . DS . 'assets' . DS . 'tmpl' . DS . $type . '.php')) {
+        } elseif (
+            file_exists(
+                PATH_CORE
+                    . DS
+                    . 'components'
+                    . DS
+                    . 'com_courses'
+                    . DS
+                    . 'site'
+                    . DS
+                    . 'views'
+                    . DS
+                    . 'assets'
+                    . DS
+                    . 'tmpl'
+                    . DS
+                    . $type
+                    . '.php',
+            )
+        ) {
             $layout = $type;
         }
 
@@ -522,8 +562,22 @@ class Asset extends Base
 
             // Build the upload path if it doesn't exist
             // Need to be the original course Id, NOT the next one
-            $originalDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $originalCourseId . DS . $originalId . DS;
-            $uploadDirectory = PATH_APP . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $courseId . DS . $assetId . DS;
+            $originalDirectory = PATH_APP
+                . DS
+                . trim($cconfig->get('uploadpath', '/site/courses'), DS)
+                . DS
+                . $originalCourseId
+                . DS
+                . $originalId
+                . DS;
+            $uploadDirectory = PATH_APP
+                . DS
+                . trim($cconfig->get('uploadpath', '/site/courses'), DS)
+                . DS
+                . $courseId
+                . DS
+                . $assetId
+                . DS;
 
             // Figuring out ERROR handling
             Log::debug(var_export($originalDirectory, true));

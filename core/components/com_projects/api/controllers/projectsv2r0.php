@@ -158,7 +158,11 @@ class Projectsv2r0 extends ApiController
                     $obj->owner         = $entry->owner()->get('name');
                     $obj->created       = $entry->get('created');
                     $obj->userRole      = (int) $entry->member()->get('role');
-                    $obj->thumbUrl      = str_replace('/api', '', $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'));
+                    $obj->thumbUrl      = str_replace(
+                        '/api',
+                        '',
+                        $base . '/' . ltrim(Route::url($entry->link('thumb')), '/'),
+                    );
                     $obj->privacy       = $entry->get('private');
                     $obj->access        = $entry->get('access');
                     $obj->provisioned   = $entry->isProvisioned();
@@ -506,7 +510,10 @@ class Projectsv2r0 extends ApiController
                     ($restrictions['ferpa_data'] == 'yes' && !$agree_ferpa)
                     || ($restrictions['irb_data'] == 'yes' && !$agree_irb)
                 ) {
-                    throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'), 409);
+                    throw new Exception(
+                        Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'),
+                        409,
+                    );
                 }
 
                 // Stop if hipaa/export controlled, or send to extra approval screen
@@ -620,7 +627,16 @@ class Projectsv2r0 extends ApiController
                 'action'      => 'created',
                 'scope'       => 'project',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
+                'description' => Lang::txt(
+                    'COM_PROJECTS_ACTIVITY_ENTRY_CREATED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
+                        . ' ('
+                        . $row->get('alias')
+                        . ')</a>',
+                ),
                 'details'     => $fields,
             ],
             'recipients' => [
@@ -998,7 +1014,10 @@ class Projectsv2r0 extends ApiController
                     ($restrictions['ferpa_data'] == 'yes' && !$agree_ferpa)
                     || ($restrictions['irb_data'] == 'yes' && !$agree_irb)
                 ) {
-                    throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'), 409);
+                    throw new Exception(
+                        Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_RESTRICTED_DATA_AGREE_REQUIRED'),
+                        409,
+                    );
                 }
 
                 // Stop if hipaa/export controlled, or send to extra approval screen
@@ -1108,7 +1127,16 @@ class Projectsv2r0 extends ApiController
                 'action'      => 'updated',
                 'scope'       => 'project',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . ' (' . $row->get('alias') . ')</a>'),
+                'description' => Lang::txt(
+                    'COM_PROJECTS_ACTIVITY_ENTRY_UPDATED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
+                        . ' ('
+                        . $row->get('alias')
+                        . ')</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $url,
@@ -1181,7 +1209,16 @@ class Projectsv2r0 extends ApiController
                     'action'      => 'deleted',
                     'scope'       => 'project',
                     'scope_id'    => $id,
-                    'description' => Lang::txt('COM_PROJECTS_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) $data['title'], ENT_QUOTES, 'UTF-8') . ' (' . $data['alias'] . ')</a>'),
+                    'description' => Lang::txt(
+                        'COM_PROJECTS_ACTIVITY_ENTRY_DELETED',
+                        '<a href="'
+                            . $url
+                            . '">'
+                            . htmlspecialchars((string) $data['title'], ENT_QUOTES, 'UTF-8')
+                            . ' ('
+                            . $data['alias']
+                            . ')</a>',
+                    ),
                     'details'     => $data,
                 ],
                 'recipients' => [

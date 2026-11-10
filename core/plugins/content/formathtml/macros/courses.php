@@ -156,7 +156,11 @@ class Courses extends Macro
                 }
 
                 // add course title with link
-                $html .= '<a class="entry-title" href="' . $course->link() . '">' . htmlentities(stripslashes($course->get('title'))) . '</a><br />';
+                $html .= '<a class="entry-title" href="'
+                    . $course->link()
+                    . '">'
+                    . htmlentities(stripslashes($course->get('title')))
+                    . '</a><br />';
 
                 // do we have any instructors
                 // also make sure we dont want to hide instructors
@@ -165,7 +169,11 @@ class Courses extends Macro
                     foreach ($instructors as $instructor) {
                         $profile = User::getInstance($instructor->get('user_id'));
                         if ($profile->get('id')) {
-                            $instr[] = '<a href="' . Route::url('index.php?option=com_members&id=' . $profile->get('id')) . '">' . htmlentities(stripslashes($profile->get('name'))) . '</a>';
+                            $instr[] = '<a href="'
+                                . Route::url('index.php?option=com_members&id=' . $profile->get('id'))
+                                . '">'
+                                . htmlentities(stripslashes($profile->get('name')))
+                                . '</a>';
                         }
                     }
                     $html .= '<span class="entry-details">Instructors: ' . implode(', ', $instr) . '</span>';
@@ -173,7 +181,13 @@ class Courses extends Macro
 
                 // make sure we dont want to hide the description
                 if (!(bool) $this->getArg('hidedescription')) {
-                    $html .= '<p>' . htmlspecialchars(\Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200), ENT_QUOTES, 'UTF-8') . '</p>';
+                    $html .= '<p>'
+                        . htmlspecialchars(
+                            \Hubzero\Utility\Str::truncate(stripslashes($course->get('blurb')), 200),
+                            ENT_QUOTES,
+                            'UTF-8',
+                        )
+                        . '</p>';
                 }
             }
         } else {

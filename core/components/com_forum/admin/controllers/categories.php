@@ -374,7 +374,9 @@ class Categories extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            $action = ($state == Category::STATE_PUBLISHED) ? Lang::txt('COM_FORUM_PUBLISH') : Lang::txt('COM_FORUM_UNPUBLISH');
+            $action = ($state == Category::STATE_PUBLISHED)
+                ? Lang::txt('COM_FORUM_PUBLISH')
+                : Lang::txt('COM_FORUM_UNPUBLISH');
 
             Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
             return $this->cancelTask();
@@ -468,7 +470,15 @@ class Categories extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section_id=' . $fields['section_id'], false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&section_id='
+                    . $fields['section_id'],
+                false,
+            ),
         );
     }
 }

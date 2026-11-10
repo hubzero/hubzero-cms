@@ -80,7 +80,9 @@ class Publications extends Plugin
         $area = [];
 
         // Check if plugin is restricted to certain projects
-        $projects = $this->params->get('restricted') ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted')) : [];
+        $projects = $this->params->get('restricted')
+            ? \Components\Projects\Helpers\Html::getParamArray($this->params->get('restricted'))
+            : [];
 
         if (!empty($projects) && $alias) {
             if (!in_array($alias, $projects)) {
@@ -179,8 +181,12 @@ class Publications extends Plugin
         $this->pubconfig = Component::params('com_publications');
 
         // Common extensions (for gallery)
-        $this->imageExt = \Components\Projects\Helpers\Html::getParamArray($this->params->get('image_types', 'bmp, jpeg, jpg, png'));
-        $this->videoExt = \Components\Projects\Helpers\Html::getParamArray($this->params->get('video_types', 'avi, mpeg, mov, wmv'));
+        $this->imageExt = \Components\Projects\Helpers\Html::getParamArray(
+            $this->params->get('image_types', 'bmp, jpeg, jpg, png'),
+        );
+        $this->videoExt = \Components\Projects\Helpers\Html::getParamArray(
+            $this->params->get('video_types', 'avi, mpeg, mov, wmv'),
+        );
 
         // Check if exists or new
         if (!$this->model->exists()) {
@@ -430,7 +436,11 @@ class Publications extends Plugin
         $view->new_pubs = $this->params->get('new_pubs');
         $view->quota   = $view->params->get('pubQuota')
                         ? $view->params->get('pubQuota')
-                        : \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
+                        : \Components\Projects\Helpers\Html::convertSize(
+                            floatval($this->model->config()->get('pubQuota', '1')),
+                            'GB',
+                            'b',
+                        );
 
         // Output HTML
         $view->option   = $this->componentOption;
@@ -991,7 +1001,16 @@ class Publications extends Plugin
                 $this->activity,
                 $pub->id,
                 $pubTitle,
-                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $pub->id . '&version=' . $pub->get('version_number')),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=publications&pid='
+                        . $pub->id
+                        . '&version='
+                        . $pub->get('version_number'),
+                ),
                 'publication',
                 1,
             );
@@ -1009,7 +1028,10 @@ class Publications extends Plugin
         // Record activity
         if (!$this->model->isProvisioned() && $pub->exists() && !$this->getError()) {
             $aid = $this->model->recordActivity(
-                Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB') . ' (id ' . $pub->get('id') . ')',
+                Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
+                    . ' (id '
+                    . $pub->get('id')
+                    . ')',
                 $pub->get('id'),
                 'publication',
                 Route::url($pub->link('edit')),
@@ -1269,7 +1291,13 @@ class Publications extends Plugin
             $firstBlock = $pub->_curationModel->blocks->$blockId->name;
 
             // Redirect to first block
-            App::redirect(htmlspecialchars_decode(Route::url($pub->link('editversion') . '&move=continue&step=' . $blockId . '&section=' . $firstBlock)));
+            App::redirect(
+                htmlspecialchars_decode(
+                    Route::url(
+                        $pub->link('editversion') . '&move=continue&step=' . $blockId . '&section=' . $firstBlock,
+                    ),
+                ),
+            );
             return;
         }
 
@@ -1744,7 +1772,10 @@ class Publications extends Plugin
 
                     // Set activity message
                     $pubTitle = \Hubzero\Utility\Str::truncate($new->title, 100);
-                    $action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION') . ' ' . $new->version_label . ' ';
+                    $action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION')
+                        . ' '
+                        . $new->version_label
+                        . ' ';
                     $action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
                     $this->activity = $action;
 
@@ -1815,7 +1846,11 @@ class Publications extends Plugin
         $dirsize = \Components\Publications\Helpers\Html::getDiskUsage($rows);
         $quota   = $this->model->params->get('pubQuota')
                 ? $this->model->params->get('pubQuota')
-                : \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
+                : \Components\Projects\Helpers\Html::convertSize(
+                    floatval($this->model->config()->get('pubQuota', '1')),
+                    'GB',
+                    'b',
+                );
 
         if (($quota - $dirsize) <= 0) {
             return true;
@@ -1980,21 +2015,82 @@ class Publications extends Plugin
                 // Prompt error message if an invited author is chosen as contact but the department, organization, or email address is empty
                 $owner = $author->getAuthorByOwnerId($pub->version->id, $author->project_owner_id);
 
-                if ((empty($owner->user_id) && empty($owner->invited_email)) || empty($owner->department) || empty($owner->organization)) {
-                    if ((empty($owner->user_id) && empty($owner->invited_email)) && empty($owner->department) && empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_EMAIL_ADDRESS_MISSING'), 'projects');
-                    } elseif ((empty($owner->user_id) && empty($owner->invited_email)) && empty($owner->department) && !empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_EMAIL_ADDRESS_MISSING'), 'projects');
-                    } elseif ((empty($owner->user_id) && empty($owner->invited_email)) && !empty($owner->department) && empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_ORGANIZATION_EMAIL_ADDRESS_MISSING'), 'projects');
-                    } elseif (!(empty($owner->user_id) && empty($owner->invited_email)) && empty($owner->department) && empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_MISSING'), 'projects');
-                    } elseif ((empty($owner->user_id) && empty($owner->invited_email)) && !empty($owner->department) && !empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_EMAIL_ADDRESS_MISSING'), 'projects');
-                    } elseif (!(empty($owner->user_id) && empty($owner->invited_email)) && empty($owner->department) && !empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_MISSING'), 'projects');
-                    } elseif (!(empty($owner->user_id) && empty($owner->invited_email)) && !empty($owner->department) && empty($owner->organization)) {
-                        Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INSTITUTION_MISSING'), 'projects');
+                if (
+                    (empty($owner->user_id) && empty($owner->invited_email))
+                    || empty($owner->department)
+                    || empty($owner->organization)
+                ) {
+                    if (
+                        (empty($owner->user_id) && empty($owner->invited_email))
+                        && empty($owner->department)
+                        && empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt(
+                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_EMAIL_ADDRESS_MISSING',
+                            ),
+                            'projects',
+                        );
+                    } elseif (
+                        (empty($owner->user_id) && empty($owner->invited_email))
+                        && empty($owner->department)
+                        && !empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt(
+                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_EMAIL_ADDRESS_MISSING',
+                            ),
+                            'projects',
+                        );
+                    } elseif (
+                        (empty($owner->user_id) && empty($owner->invited_email))
+                        && !empty($owner->department)
+                        && empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt(
+                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_ORGANIZATION_EMAIL_ADDRESS_MISSING',
+                            ),
+                            'projects',
+                        );
+                    } elseif (
+                        !(empty($owner->user_id) && empty($owner->invited_email))
+                        && empty($owner->department)
+                        && empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt(
+                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_MISSING',
+                            ),
+                            'projects',
+                        );
+                    } elseif (
+                        (empty($owner->user_id) && empty($owner->invited_email))
+                        && !empty($owner->department)
+                        && !empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_EMAIL_ADDRESS_MISSING'),
+                            'projects',
+                        );
+                    } elseif (
+                        !(empty($owner->user_id) && empty($owner->invited_email))
+                        && empty($owner->department)
+                        && !empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_MISSING'),
+                            'projects',
+                        );
+                    } elseif (
+                        !(empty($owner->user_id) && empty($owner->invited_email))
+                        && !empty($owner->department)
+                        && empty($owner->organization)
+                    ) {
+                        Notify::error(
+                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INSTITUTION_MISSING'),
+                            'projects',
+                        );
                     }
 
                     App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
@@ -2062,7 +2158,10 @@ class Publications extends Plugin
             }
         }
 
-        if ($state == 1 && (!$pub->version->get('accepted') || $pub->version->get('accepted') == '0000-00-00 00:00:00')) {
+        if (
+            $state == 1
+            && (!$pub->version->get('accepted') || $pub->version->get('accepted') == '0000-00-00 00:00:00')
+        ) {
             $pub->version->set('accepted', Date::toSql());
         }
 
@@ -2097,12 +2196,17 @@ class Publications extends Plugin
             if ($doi) {
                 $pub->version->set('doi', $doi);
             } else {
-                $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_DOI') . ' ' . $doiService->getError());
+                $this->setError(
+                    Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_DOI') . ' ' . $doiService->getError(),
+                );
                 $doiErr = true;
             }
         }
 
-        $updateDoiMetadata = ($pub->version->doi ? preg_match("/" . $doiService->configs()->shoulder . "/", $pub->version->doi) : false);
+        $updateDoiMetadata = ($pub->version->doi ? preg_match(
+            "/" . $doiService->configs()->shoulder . "/",
+            $pub->version->doi,
+        ) : false);
 
         // When dataset is automatically approved.
         if (!$review && ($autoApprove || $this->pubconfig->get('autoapprove') == 1) && $updateDoiMetadata) {
@@ -2110,14 +2214,18 @@ class Publications extends Plugin
             $doiService->update($pub->version->get('doi'), true);
 
             if ($doiService->getError()) {
-                $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DOI') . ' ' . $doiService->getError());
+                $this->setError(
+                    Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UPDATE_DOI') . ' ' . $doiService->getError(),
+                );
                 $doiErr = true;
             } else {
                 // Register DOI name and target URL for DataCite DOI
                 $doiService->register(false, true, $pub->version->get('doi'));
 
                 if ($doiService->getError()) {
-                    $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError());
+                    $this->setError(
+                        Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_REGISTER_NAME_URL') . ' ' . $doiService->getError(),
+                    );
                     $doiErr = true;
                 }
             }
@@ -2127,7 +2235,9 @@ class Publications extends Plugin
             $doiService->revert($pub->version->doi, $doiService::STATE_FROM_PUBLISHED_TO_DRAFTREADY);
 
             if ($doiService->getError()) {
-                $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError());
+                $this->setError(
+                    Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError(),
+                );
                 $doiErr = true;
             }
         }
@@ -2136,7 +2246,9 @@ class Publications extends Plugin
             $doiService->revert($pub->version->doi, $doiService::STATE_FROM_DRAFTREADY_TO_PUBLISHED);
 
             if ($doiService->getError()) {
-                $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError());
+                $this->setError(
+                    Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_UNREGISTER_DOI') . ' ' . $doiService->getError(),
+                );
                 $doiErr = true;
             }
         }
@@ -2224,7 +2336,11 @@ class Publications extends Plugin
                             : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
                 break;
         }
-        $this->msg .= ' <a href="' . Route::url($pub->link('version')) . '">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT') . '</a>';
+        $this->msg .= ' <a href="'
+            . Route::url($pub->link('version'))
+            . '">'
+            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT')
+            . '</a>';
 
         $pubtitle = \Hubzero\Utility\Str::truncate($pub->version->get('title'), 100);
         $action  .= ' ' . $pub->version->get('version_label') . ' ';
@@ -2277,7 +2393,14 @@ class Publications extends Plugin
 
             // Notify curators by email
             $curationPubLink = rtrim(Request::base(), DS) . DS . Route::url($pub->link('curate'));
-            $curatorMessage = ($pub->version->get('state') == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . $curationPubLink : $message;
+            $curatorMessage = ($pub->version->get('state') == 5)
+                ? $message
+                    . "\n"
+                    . "\n"
+                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW')
+                    . ' '
+                    . $curationPubLink
+                : $message;
 
             $curatorgroups = [$pub->masterType()->curatorgroup];
             if ($this->pubconfig->get('curatorgroup', '')) {
@@ -2437,7 +2560,17 @@ class Publications extends Plugin
 
                         // Add activity
                         $action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
-                        $action .= ' ' . strtolower(Lang::txt('version')) . ' ' . $pub->version->get('version_label') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF') . ' ' . strtolower(Lang::txt('publication')) . ' "' . $pubtitle . '" ';
+                        $action .= ' '
+                            . strtolower(Lang::txt('version'))
+                            . ' '
+                            . $pub->version->get('version_label')
+                            . ' '
+                            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF')
+                            . ' '
+                            . strtolower(Lang::txt('publication'))
+                            . ' "'
+                            . $pubtitle
+                            . '" ';
 
                         $aid = $this->model->recordActivity(
                             $action,
@@ -2453,7 +2586,10 @@ class Publications extends Plugin
 
                     // Delete draft version
                     if (!$pub->version->delete()) {
-                        throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
+                        throw new \Exception(
+                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'),
+                            403,
+                        );
                     }
 
                     // Delete authors
@@ -2469,7 +2605,11 @@ class Publications extends Plugin
                     $pScreenshot->deleteScreenshots($vid);
 
                     // Build publication path
-                    $path =  PATH_APP . DS . trim($this->pubconfig->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid);
+                    $path =  PATH_APP
+                        . DS
+                        . trim($this->pubconfig->get('webpath'), DS)
+                        . DS
+                        . \Hubzero\Utility\Str::pad($pid);
 
                     // Build version path
                     $vPath = $path . DS . \Hubzero\Utility\Str::pad($vid);
@@ -2785,7 +2925,11 @@ class Publications extends Plugin
         $view->params  = $model->params;
         $view->quota   = $view->params->get('pubQuota')
                         ? $view->params->get('pubQuota')
-                        : \Components\Projects\Helpers\Html::convertSize(floatval($model->config()->get('pubQuota', '1')), 'GB', 'b');
+                        : \Components\Projects\Helpers\Html::convertSize(
+                            floatval($model->config()->get('pubQuota', '1')),
+                            'GB',
+                            'b',
+                        );
 
         // Get total count
         $view->total = $pub_model->entries('count', $filters);
@@ -2840,7 +2984,13 @@ class Publications extends Plugin
         // Get referenced path
         $pubconfig = Component::params('com_publications');
         $base_path = $pubconfig->get('webpath');
-        $pubPath = \Components\Publications\Helpers\Html::buildPubPath($data->pid, $data->vid, $base_path, $folder, $root = 0);
+        $pubPath = \Components\Publications\Helpers\Html::buildPubPath(
+            $data->pid,
+            $data->vid,
+            $base_path,
+            $folder,
+            $root = 0,
+        );
 
         $serve = PATH_APP . $pubPath . DS . $fpath;
 

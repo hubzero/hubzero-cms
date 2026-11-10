@@ -208,7 +208,10 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             Session::clear('oauth2state', $this->name);
 
             $response->status = \Hubzero\Auth\Status::FAILURE;
-            $response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state');
+            $response->error_message = Lang::txt(
+                'PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE',
+                'Mismatched state',
+            );
 
             return;
         }
@@ -237,7 +240,10 @@ class Facebook extends \Hubzero\Plugin\OauthClient
             } catch (\Exception $e) {
                 // Error message?
                 $response->status = \Hubzero\Auth\Status::FAILURE;
-                $response->error_message = Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage());
+                $response->error_message = Lang::txt(
+                    'PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE',
+                    $e->getMessage(),
+                );
                 return;
             }
 
@@ -366,7 +372,14 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                     $hzal->set('email', $email);
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", ' . $this->name . ', null, %s) returned false', $id));
+                    Log::error(
+                        sprintf(
+                            'Hubzero\Auth\Link::findOrCreate("authentication", '
+                                . $this->name
+                                . ', null, %s) returned false',
+                            $id,
+                        ),
+                    );
                 }
             }
         } else {
@@ -439,7 +452,9 @@ class Facebook extends \Hubzero\Plugin\OauthClient
     {
         Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/facebook/assets/css/facebook.css');
 
-        $html = '<a class="facebook account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=facebook' . $return) . '">';
+        $html = '<a class="facebook account" href="'
+            . Route::url('index.php?option=com_users&view=login&authenticator=facebook' . $return)
+            . '">';
         $html .= '<div class="signin">';
         $html .= Lang::txt('PLG_AUTHENTICATION_FACEBOOK_SIGN_IN');
         $html .= '</div>';

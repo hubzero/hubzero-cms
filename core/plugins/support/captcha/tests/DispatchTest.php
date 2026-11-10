@@ -59,7 +59,10 @@ class DispatchTest extends TestCase
     {
         $class = new ReflectionClass(Captcha::class);
         foreach ($this->options('imageFunction') as $value) {
-            $this->assertTrue($class->hasMethod('createImage' . $value), "imageFunction $value has no createImage$value()");
+            $this->assertTrue(
+                $class->hasMethod('createImage' . $value),
+                "imageFunction $value has no createImage$value()",
+            );
         }
         $this->assertTrue($class->hasMethod('createImageAdv'), 'the fallback createImageAdv() is missing');
     }

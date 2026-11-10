@@ -96,7 +96,13 @@ class Xusers extends Plugin
             // The plugin order is fine, so an earlier user plugin refused the
             // login (no linked account, blocked, no backend access) and has
             // already queued its message. Fail the login rather than 500.
-            Log::auth('[' . (isset($user['username']) ? $user['username'] : '') . '] ' . Request::ip() . ' login refused by an earlier user plugin');
+            Log::auth(
+                '['
+                    . (isset($user['username']) ? $user['username'] : '')
+                    . '] '
+                    . Request::ip()
+                    . ' login refused by an earlier user plugin',
+            );
 
             return false;
         }

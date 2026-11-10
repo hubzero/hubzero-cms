@@ -84,7 +84,9 @@ class Hosts extends AdminController
         ];
         // In case limit has been changed, adjust limitstart accordingly
         $filters['limit'] = ($filters['limit'] == 'all') ? 0 : $filters['limit'];
-        $filters['start'] = ($filters['limit'] != 0 ? (floor($filters['start'] / $filters['limit']) * $filters['limit']) : 0);
+        $filters['start'] = ($filters['limit'] != 0 ? (floor(
+            $filters['start'] / $filters['limit'],
+        ) * $filters['limit']) : 0);
 
         // Get the middleware database
         $mwdb = Utils::getMWDBO();
@@ -167,12 +169,16 @@ class Hosts extends AdminController
         $statusCounts = [];
         if ($row->hostname != '') {
             //get tool instance counts
-            $sql = "SELECT appname, count(*) as count from session where exechost=" . $mwdb->quote($row->hostname) . " group by appname";
+            $sql = "SELECT appname, count(*) as count from session where exechost="
+                . $mwdb->quote($row->hostname)
+                . " group by appname";
             $mwdb->setQuery($sql);
             $toolCounts = $mwdb->loadObjectList();
 
             //get status counts
-            $sql = "SELECT status, count(*) as count from display where hostname=" . $mwdb->quote($row->hostname) . " group by status";
+            $sql = "SELECT status, count(*) as count from display where hostname="
+                . $mwdb->quote($row->hostname)
+                . " group by status";
             $mwdb->setQuery($sql);
             $statusCounts = $mwdb->loadObjectList();
         }

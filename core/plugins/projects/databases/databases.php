@@ -406,7 +406,9 @@ class Databases extends Plugin
         // versionid= resolves any publication version on the hub; only this
         // project's publications list their database attachments here
         $pubVersion = \Components\Publications\Models\Orm\Version::oneOrNew($versionid);
-        $pubParent  = \Components\Publications\Models\Orm\Publication::oneOrNew((int) $pubVersion->get('publication_id'));
+        $pubParent  = \Components\Publications\Models\Orm\Publication::oneOrNew(
+            (int) $pubVersion->get('publication_id'),
+        );
         if (
             $pubVersion->isNew() || $pubParent->isNew()
             || (int) $pubParent->get('project_id') !== (int) $this->model->get('id')
@@ -1196,7 +1198,11 @@ class Databases extends Plugin
                 $file,
                 'files',
                 Route::url(
-                    'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=files',
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=files',
                 ),
                 'files',
                 'files',
@@ -1259,7 +1265,11 @@ class Databases extends Plugin
                 $id,
                 'databases',
                 Route::url(
-                    'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=databases',
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=databases',
                 ),
                 'databases',
                 'databases',

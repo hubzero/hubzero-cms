@@ -338,7 +338,11 @@ class Loader
                     }
                 }
 
-                $cache->put('com_templates.templates' . $client_id . $this->lang, $templates, $this->app['config']->get('cachetime', 15));
+                $cache->put(
+                    'com_templates.templates' . $client_id . $this->lang,
+                    $templates,
+                    $this->app['config']->get('cachetime', 15),
+                );
             } catch (Exception $e) {
                 $templates = [];
             }

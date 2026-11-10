@@ -64,7 +64,18 @@ class Formv1r0 extends Base
         if (strpos($filename, '..') !== false) {
             App::abort(404, 'Image not found');
         }
-        $filename = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'forms' . DS . $id . DS . (($version) ? $version . DS : '') . ltrim($filename, DS);
+        $filename = PATH_APP
+            . DS
+            . 'site'
+            . DS
+            . 'courses'
+            . DS
+            . 'forms'
+            . DS
+            . $id
+            . DS
+            . (($version) ? $version . DS : '')
+            . ltrim($filename, DS);
 
         // Add silly simple security check -- before the existence test, so an
         // unauthorised caller cannot probe which files exist

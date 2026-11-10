@@ -145,7 +145,9 @@ class File extends Base
         $configs->allowRename = false;
 
         // Include in bundle?
-        $configs->includeInPackage = isset($typeParams->includeInPackage) && $typeParams->includeInPackage == 0 ? false : true;
+        $configs->includeInPackage = isset($typeParams->includeInPackage) && $typeParams->includeInPackage == 0
+            ? false
+            : true;
 
         // Bundle with dir hierarchy?
         $configs->bundleDirHierarchy = isset($typeParams->bundleDirHierarchy)
@@ -196,7 +198,12 @@ class File extends Base
                 if ($configs->bundleDirectory) {
                     $where .= DS . $configs->bundleDirectory;
                 }
-                if ($configs->directory && strtolower($configs->bundleDirectory == null ? '' : $configs->bundleDirectory) != strtolower($configs->directory == null ? '' : $configs->directory)) {
+                if (
+                    $configs->directory
+                    && strtolower(
+                        $configs->bundleDirectory == null ? '' : $configs->bundleDirectory,
+                    ) != strtolower($configs->directory == null ? '' : $configs->directory)
+                ) {
                     $where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
                 }
                 $where .= DS . basename($filePath);
@@ -244,7 +251,12 @@ class File extends Base
                 if ($configs->bundleDirectory) {
                     $where .= DS . $configs->bundleDirectory;
                 }
-                if ($configs->directory && strtolower($configs->bundleDirectory ? $configs->bundleDirectory : '') != strtolower($configs->directory)) {
+                if (
+                    $configs->directory
+                    && strtolower(
+                        $configs->bundleDirectory ? $configs->bundleDirectory : '',
+                    ) != strtolower($configs->directory)
+                ) {
                     $where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
                 }
                 $where .= $configs->subdir ? DS . $configs->subdir : '';
@@ -321,7 +333,12 @@ class File extends Base
                 $fPath .= basename($filePath);
 
                 $where = '';
-                if ($configs->directory && strtolower($configs->bundleDirectory ? $configs->bundleDirectory : '') != strtolower($configs->directory)) {
+                if (
+                    $configs->directory
+                    && strtolower(
+                        $configs->bundleDirectory ? $configs->bundleDirectory : '',
+                    ) != strtolower($configs->directory)
+                ) {
                     $where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
                 }
 
@@ -340,7 +357,9 @@ class File extends Base
                 $list .= '<span class="item-icon">' . $file::drawIcon($file->get('ext')) . '</span>';
                 $list .= '<span class="item-title" id="file-' . $attach->id . '">' . trim($where, DS) . '</span>';
                 //$list .= '<span class="item-details">' . $attach->path . '</span>';
-                $list .= '<span class="item-details">' . trim(\Hubzero\Utility\Number::formatBytes(filesize($filePath))) . '</span>';
+                $list .= '<span class="item-details">'
+                    . trim(\Hubzero\Utility\Number::formatBytes(filesize($filePath)))
+                    . '</span>';
                 $list .= '</li>';
             }
         }
@@ -393,7 +412,15 @@ class File extends Base
             // Serve as bundle
             $html .= '<li>';
             $html .= $file->exists() && $authorized
-                    ? '<a href="' . Route::url($pub->link('serve') . '&el=' . $elementId) . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
+                    ? '<a href="'
+                        . Route::url($pub->link('serve') . '&el=' . $elementId)
+                        . '" title="'
+                        . $pop
+                        . '">'
+                        . $icon
+                        . ' '
+                        . $title
+                        . '</a>'
                     : $icon . ' ' . $title . $notice;
             $html .= '<span class="extras">';
             $html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
@@ -401,7 +428,13 @@ class File extends Base
             $html .= $file->get('ext') ? ')' : '';
             if ($authorized === 'administrator') {
                 $html .= ' <span class="edititem">';
-                $html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->get('id') . '&el=' . $elementId . '&v=' . $pub->get('version_number') . '">';
+                $html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id='
+                    . $pub->get('id')
+                    . '&el='
+                    . $elementId
+                    . '&v='
+                    . $pub->get('version_number')
+                    . '">';
                 $html .= Lang::txt('COM_PUBLICATIONS_EDIT');
                 $html .= '</a>';
                 $html .= '</span>';
@@ -429,7 +462,17 @@ class File extends Base
 
                 $html .= '<li>';
                 $html .= $file->exists() && $authorized
-                        ? '<a href="' . Route::url($pub->link('serve') . '&el=' . $elementId . '&a=' . $attach->id . '&download=1') . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
+                        ? '<a href="'
+                            . Route::url(
+                                $pub->link('serve') . '&el=' . $elementId . '&a=' . $attach->id . '&download=1',
+                            )
+                            . '" title="'
+                            . $pop
+                            . '">'
+                            . $icon
+                            . ' '
+                            . $title
+                            . '</a>'
                         : $icon . ' ' . $title . $notice;
                 $html .= '<span class="extras">';
                 $html .= $file->get('ext') ? '(' . strtoupper($file->get('ext')) : '';
@@ -437,7 +480,13 @@ class File extends Base
                 $html .= $file->get('ext') ? ')' : '';
                 if ($authorized === 'administrator') {
                     $html .= ' <span class="edititem">';
-                    $html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id=' . $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">';
+                    $html .= '<a href="index.php?option=com_publications&controller=items&task=editcontent&id='
+                        . $pub->id
+                        . '&el='
+                        . $elementId
+                        . '&v='
+                        . $pub->version_number
+                        . '">';
                     $html .= Lang::txt('COM_PUBLICATIONS_EDIT');
                     $html .= '</a>';
                     $html .= '</span>';
@@ -475,7 +524,11 @@ class File extends Base
 
         try {
             $db = App::get('db');
-            $db->setQuery("SELECT `status` FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $vid . " LIMIT 1");
+            $db->setQuery(
+                "SELECT `status` FROM `#__publication_bundle_queue` WHERE `publication_version_id` = "
+                    . $vid
+                    . " LIMIT 1",
+            );
             $status = $db->loadResult();
         } catch (\Throwable $e) {
             return false;
@@ -561,7 +614,9 @@ class File extends Base
         // Which role?
         $role = $element->params->role;
 
-        $url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number) . '?el=' . $elementId;
+        $url = Route::url('index.php?option=com_publications&task=serve&id=' . $pub->id . '&v=' . $pub->version_number)
+            . '?el='
+            . $elementId;
 
         // Primary button
         if ($role == 1) {
@@ -580,14 +635,29 @@ class File extends Base
             }
 
             if ($configs->fancyLauncher) {
-                $html = \Components\Publications\Helpers\Html::drawLauncher('ic-download', $pub, $url, $title, $disabled, $pop, 'download', $showArchive);
+                $html = \Components\Publications\Helpers\Html::drawLauncher(
+                    'ic-download',
+                    $pub,
+                    $url,
+                    $title,
+                    $disabled,
+                    $pop,
+                    'download',
+                    $showArchive,
+                );
             } else {
                 $label = Lang::txt('Download');
                 $showDoc = false;
                 $ftpDoc = "";
                 // Link to bundle
                 if ($showArchive == 1 || ($showArchive == 2 && count($attachments) > 1)) {
-                    $url = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
+                    $url = Route::url(
+                        'index.php?option=com_publications&id='
+                            . $pub->id
+                            . '&task=serve&v='
+                            . $pub->version_number
+                            . '&render=archive',
+                    );
                     $label .= ' ' . Lang::txt('Bundle');
                     $title = $pub->title . ' ' . Lang::txt('Bundle');
 
@@ -616,7 +686,13 @@ class File extends Base
                     }
 
                     $show = new \stdClass();
-                    $show->href = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=showcontents');
+                    $show->href = Route::url(
+                        'index.php?option=com_publications&id='
+                            . $pub->id
+                            . '&task=serve&v='
+                            . $pub->version_number
+                            . '&render=showcontents',
+                    );
                     $show->class = 'showBundle';
                     $show->title = Lang::txt('Show bundle contents');
 
@@ -634,7 +710,12 @@ class File extends Base
                         // Poll build status; when ready, send the browser to the
                         // download so the "preparing" button becomes live without
                         // a manual refresh.
-                        $statusUrl = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=bundlestatus&v=' . $pub->version_number);
+                        $statusUrl = Route::url(
+                            'index.php?option=com_publications&id='
+                                . $pub->id
+                                . '&task=bundlestatus&v='
+                                . $pub->version_number,
+                        );
                         Document::addScriptDeclaration(
                             "(function(){var u=" . json_encode($statusUrl) . ";function p(){"
                             . "fetch(u,{headers:{'X-Requested-With':'XMLHttpRequest'},credentials:'same-origin'})"
@@ -657,7 +738,19 @@ class File extends Base
                 $class = 'btn btn-primary active'; //icon-next
                 $class .= $disabled ? ' link_disabled' : '';
 
-                $html  = \Components\Publications\Helpers\Html::primaryButton($class, $url, $label, null, $title, '', $disabled, $pop, $options, $showDoc, $ftpDoc);
+                $html  = \Components\Publications\Helpers\Html::primaryButton(
+                    $class,
+                    $url,
+                    $label,
+                    null,
+                    $title,
+                    '',
+                    $disabled,
+                    $pop,
+                    $options,
+                    $showDoc,
+                    $ftpDoc,
+                );
             }
         } elseif ($role == 2 && $attachments) {
             $html .= '<ul>';
@@ -855,7 +948,12 @@ class File extends Base
                 $overwrite = $pub->state == 1 ? false : true;
                 $download  = $this->bundle($attachments, $configs, $overwrite);
             } elseif (count($attachments) == 1) {
-                $download = $this->getFilePath($attachments[0]->path, $attachments[0]->id, $configs, $attachments[0]->params);
+                $download = $this->getFilePath(
+                    $attachments[0]->path,
+                    $attachments[0]->id,
+                    $configs,
+                    $attachments[0]->params,
+                );
             }
 
             // Perform download
@@ -906,7 +1004,9 @@ class File extends Base
             $fpath = $configs->pubPath . DS . $name;
         } elseif ($configs->dirHierarchy == 2) {
             // Do not preserve dir hierarchy, but append number for same-name files
-            $name  = $suffix ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+            $name  = $suffix
+                ? \Components\Projects\Helpers\Html::fixFileName(basename($path), ' (' . $suffix . ')')
+                : basename($path);
             $fpath = $configs->pubPath . DS . $name;
         } else {
             // Attach record number to file name
@@ -1283,7 +1383,10 @@ class File extends Base
             $ordering = $i + 1;
 
             // Keep the identifier within the repository - drop any parent refs
-            $identifier = implode('/', array_filter(explode('/', str_replace('\\', '/', (string) $identifier)), function ($s) {
+            $identifier = implode('/', array_filter(explode(
+                '/',
+                str_replace('\\', '/', (string) $identifier),
+            ), function ($s) {
                 return $s !== '' && $s !== '.' && $s !== '..';
             }));
 
@@ -1435,7 +1538,15 @@ class File extends Base
         $update = 0;
 
         $objPA = new \Components\Publications\Tables\Attachment($this->parent->db);
-        if ($objPA->loadElementAttachment($pub->version_id, ['path' => $filePath], $elementId, $this->name, $element->role)) {
+        if (
+            $objPA->loadElementAttachment(
+                $pub->version_id,
+                ['path' => $filePath],
+                $elementId,
+                $this->name,
+                $element->role,
+            )
+        ) {
             // Update if new hash
             if ($vcs_hash && $vcs_hash != $objPA->vcs_hash) {
                 $objPA->vcs_hash    = $vcs_hash;
@@ -1788,7 +1899,10 @@ class File extends Base
         $data->set('viewer', $view->viewer);
         $data->set('pubPath', $configs->pubPath);
         $data->set('props', $view->master->block . '-' . $view->master->blockId . '-' . $view->elementId);
-        $data->set('downloadUrl', Route::url($view->pub->link('serve') . '&el=' . $view->elementId . '&a=' . $att->id . '&download=1'));
+        $data->set(
+            'downloadUrl',
+            Route::url($view->pub->link('serve') . '&el=' . $view->elementId . '&a=' . $att->id . '&download=1'),
+        );
         $data->set('attribs', $att->attribs);
 
         // Is attachment (image) also publication thumbnail

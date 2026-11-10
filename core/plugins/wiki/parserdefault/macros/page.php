@@ -71,10 +71,18 @@ class Page extends WikiMacro
         }
 
         if ($nolink) {
-            return htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8');
+            return htmlspecialchars(
+                stripslashes((string) $row->get('title', $row->get('pagename'))),
+                ENT_QUOTES,
+                'UTF-8',
+            );
         }
 
         // Build and return the link
-        return '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
+        return '<a href="'
+            . Route::url($row->link())
+            . '">'
+            . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8')
+            . '</a>';
     }
 }

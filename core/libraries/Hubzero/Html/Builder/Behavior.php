@@ -606,11 +606,15 @@ class Behavior
 
         if (!empty($params) || App::isAdmin()) {
             $opt = ['arrows' => false];
-            $opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions']))) ? $params['ajaxOptions'] : null;
+            $opt['ajax']       = (isset($params['ajaxOptions']) && (is_array($params['ajaxOptions'])))
+                ? $params['ajaxOptions']
+                : null;
             $opt['type']       = (isset($params['handler'])) ? $params['handler'] : 'iframe';
             $opt['modal']      = (isset($params['closable'])) ? (bool) $params['closable'] : null;
             $opt['closeBtn']   = (isset($params['closeBtn'])) ? (bool) $params['closeBtn'] : null;
-            $opt['iframe']     = (isset($params['iframeOptions']) && (is_array($params['iframeOptions']))) ? $params['iframeOptions'] : null;
+            $opt['iframe']     = (isset($params['iframeOptions']) && (is_array($params['iframeOptions'])))
+                ? $params['iframeOptions']
+                : null;
             if (
                 isset($params['size'])
                 && is_array($params['size'])
@@ -634,7 +638,9 @@ class Behavior
                     $opt['maxHeight'] = $params['size']['maxHeight'];
                 }
             }
-            $opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("data-rel"); if (atts) { atts = jQuery.parseJSON(atts); console.log(atts); }}';
+            $opt['beforeLoad'] = (isset($params['onOpen']))
+                ? $params['onOpen']
+                : '\\function(){ var atts = $(this.element).attr("data-rel"); if (atts) { atts = jQuery.parseJSON(atts); console.log(atts); }}';
             $opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
             $opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
             $opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;
@@ -872,8 +878,13 @@ class Behavior
      * @param   string  $tag        Tag that will be used to wrap the highlighted words.
      * @return  void
      */
-    public static function highlighter(array $terms, $start = 'highlighter-start', $end = 'highlighter-end', $className = 'highlight', $tag = 'span')
-    {
+    public static function highlighter(
+        array $terms,
+        $start = 'highlighter-start',
+        $end = 'highlighter-end',
+        $className = 'highlight',
+        $tag = 'span',
+    ) {
         $sig = md5(serialize([$terms, $start, $end]));
         if (isset(self::$loaded[__METHOD__][$sig])) {
             return;
@@ -971,7 +982,9 @@ class Behavior
                 }
             } elseif (!is_array($v) && !is_object($v)) {
                 $object .= ' ' . $k . ': ';
-                $object .= (is_numeric($v) || strpos($v, '\\') === 0) ? (is_numeric($v) ? $v : substr($v, 1)) : "'" . $v . "'";
+                $object .= (is_numeric($v) || strpos($v, '\\') === 0)
+                    ? (is_numeric($v) ? $v : substr($v, 1))
+                    : "'" . $v . "'";
                 $object .= ',';
             } else {
                 $object .= ' ' . $k . ': ' . self::getJSObject($v) . ',';
@@ -997,21 +1010,91 @@ class Behavior
         static $jsscript = 0;
 
         if ($jsscript == 0) {
-            $return = 'Calendar._DN = new Array ("' . Lang::txt('SUNDAY', true) . '", "' . Lang::txt('MONDAY', true) . '", "'
-                . Lang::txt('TUESDAY', true) . '", "' . Lang::txt('WEDNESDAY', true) . '", "' . Lang::txt('THURSDAY', true) . '", "'
-                . Lang::txt('FRIDAY', true) . '", "' . Lang::txt('SATURDAY', true) . '", "' . Lang::txt('SUNDAY', true) . '");'
-                . ' Calendar._SDN = new Array ("' . Lang::txt('SUN', true) . '", "' . Lang::txt('MON', true) . '", "' . Lang::txt('TUE', true) . '", "'
-                . Lang::txt('WED', true) . '", "' . Lang::txt('THU', true) . '", "' . Lang::txt('FRI', true) . '", "' . Lang::txt('SAT', true) . '", "'
-                . Lang::txt('SUN', true) . '");' . ' Calendar._FD = 0;' . ' Calendar._MN = new Array ("' . Lang::txt('JANUARY', true) . '", "'
-                . Lang::txt('FEBRUARY', true) . '", "' . Lang::txt('MARCH', true) . '", "' . Lang::txt('APRIL', true) . '", "' . Lang::txt('MAY', true)
-                . '", "' . Lang::txt('JUNE', true) . '", "' . Lang::txt('JULY', true) . '", "' . Lang::txt('AUGUST', true) . '", "'
-                . Lang::txt('SEPTEMBER', true) . '", "' . Lang::txt('OCTOBER', true) . '", "' . Lang::txt('NOVEMBER', true) . '", "'
-                . Lang::txt('DECEMBER', true) . '");' . ' Calendar._SMN = new Array ("' . Lang::txt('JANUARY_SHORT', true) . '", "'
-                . Lang::txt('FEBRUARY_SHORT', true) . '", "' . Lang::txt('MARCH_SHORT', true) . '", "' . Lang::txt('APRIL_SHORT', true) . '", "'
-                . Lang::txt('MAY_SHORT', true) . '", "' . Lang::txt('JUNE_SHORT', true) . '", "' . Lang::txt('JULY_SHORT', true) . '", "'
-                . Lang::txt('AUGUST_SHORT', true) . '", "' . Lang::txt('SEPTEMBER_SHORT', true) . '", "' . Lang::txt('OCTOBER_SHORT', true) . '", "'
+            $return = 'Calendar._DN = new Array ("'
+                . Lang::txt('SUNDAY', true)
+                . '", "'
+                . Lang::txt('MONDAY', true)
+                . '", "'
+                . Lang::txt('TUESDAY', true)
+                . '", "'
+                . Lang::txt('WEDNESDAY', true)
+                . '", "'
+                . Lang::txt('THURSDAY', true)
+                . '", "'
+                . Lang::txt('FRIDAY', true)
+                . '", "'
+                . Lang::txt('SATURDAY', true)
+                . '", "'
+                . Lang::txt('SUNDAY', true)
+                . '");'
+                . ' Calendar._SDN = new Array ("'
+                . Lang::txt('SUN', true)
+                . '", "'
+                . Lang::txt('MON', true)
+                . '", "'
+                . Lang::txt('TUE', true)
+                . '", "'
+                . Lang::txt('WED', true)
+                . '", "'
+                . Lang::txt('THU', true)
+                . '", "'
+                . Lang::txt('FRI', true)
+                . '", "'
+                . Lang::txt('SAT', true)
+                . '", "'
+                . Lang::txt('SUN', true)
+                . '");'
+                . ' Calendar._FD = 0;'
+                . ' Calendar._MN = new Array ("'
+                . Lang::txt('JANUARY', true)
+                . '", "'
+                . Lang::txt('FEBRUARY', true)
+                . '", "'
+                . Lang::txt('MARCH', true)
+                . '", "'
+                . Lang::txt('APRIL', true)
+                . '", "'
+                . Lang::txt('MAY', true)
+                . '", "'
+                . Lang::txt('JUNE', true)
+                . '", "'
+                . Lang::txt('JULY', true)
+                . '", "'
+                . Lang::txt('AUGUST', true)
+                . '", "'
+                . Lang::txt('SEPTEMBER', true)
+                . '", "'
+                . Lang::txt('OCTOBER', true)
+                . '", "'
+                . Lang::txt('NOVEMBER', true)
+                . '", "'
+                . Lang::txt('DECEMBER', true)
+                . '");'
+                . ' Calendar._SMN = new Array ("'
+                . Lang::txt('JANUARY_SHORT', true)
+                . '", "'
+                . Lang::txt('FEBRUARY_SHORT', true)
+                . '", "'
+                . Lang::txt('MARCH_SHORT', true)
+                . '", "'
+                . Lang::txt('APRIL_SHORT', true)
+                . '", "'
+                . Lang::txt('MAY_SHORT', true)
+                . '", "'
+                . Lang::txt('JUNE_SHORT', true)
+                . '", "'
+                . Lang::txt('JULY_SHORT', true)
+                . '", "'
+                . Lang::txt('AUGUST_SHORT', true)
+                . '", "'
+                . Lang::txt('SEPTEMBER_SHORT', true)
+                . '", "'
+                . Lang::txt('OCTOBER_SHORT', true)
+                . '", "'
                 . Lang::txt('NOVEMBER_SHORT', true) . '", "' . Lang::txt('DECEMBER_SHORT', true) . '");'
-                . ' Calendar._TT = {};Calendar._TT["INFO"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_ABOUT_THE_CALENDAR', true) . '";'
+                . ' Calendar._TT = {};Calendar._TT["INFO"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_ABOUT_THE_CALENDAR', true)
+                . '";'
                 . ' Calendar._TT["ABOUT"] =
  "DHTML Date/Time Selector\n" +
  "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" +
@@ -1030,18 +1113,35 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or click and drag for faster selection.";
 
 		Calendar._TT["PREV_YEAR"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU', true) . '";' . ' Calendar._TT["PREV_MONTH"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU', true) . '";' . ' Calendar._TT["GO_TODAY"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU', true)
+                . '";'
+                . ' Calendar._TT["GO_TODAY"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_GO_TODAY', true) . '";' . ' Calendar._TT["NEXT_MONTH"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU', true) . '";' . ' Calendar._TT["NEXT_YEAR"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_NEXT_MONTH_HOLD_FOR_MENU', true)
+                . '";'
+                . ' Calendar._TT["NEXT_YEAR"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_NEXT_YEAR_HOLD_FOR_MENU', true) . '";' . ' Calendar._TT["SEL_DATE"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_SELECT_DATE', true) . '";' . ' Calendar._TT["DRAG_TO_MOVE"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_DRAG_TO_MOVE', true) . '";' . ' Calendar._TT["PART_TODAY"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_TODAY', true) . '";' . ' Calendar._TT["DAY_FIRST"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST', true) . '";' . ' Calendar._TT["WEEKEND"] = "0,6";' . ' Calendar._TT["CLOSE"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_CLOSE', true) . '";' . ' Calendar._TT["TODAY"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_TODAY', true)
-                . '";' . ' Calendar._TT["TIME_PART"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE', true) . '";'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_DISPLAY_S_FIRST', true)
+                . '";'
+                . ' Calendar._TT["WEEKEND"] = "0,6";'
+                . ' Calendar._TT["CLOSE"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_CLOSE', true)
+                . '";'
+                . ' Calendar._TT["TODAY"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_TODAY', true)
+                . '";'
+                . ' Calendar._TT["TIME_PART"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_SHIFT_CLICK_OR_DRAG_TO_CHANGE_VALUE', true)
+                . '";'
                 . ' Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";' . ' Calendar._TT["TT_DATE_FORMAT"] = "'
-                . Lang::txt('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT', true) . '";' . ' Calendar._TT["WK"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_WK', true) . '";'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_TT_DATE_FORMAT', true)
+                . '";'
+                . ' Calendar._TT["WK"] = "'
+                . Lang::txt('JLIB_HTML_BEHAVIOR_WK', true)
+                . '";'
                 . ' Calendar._TT["TIME"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_TIME', true) . '";';
             $jsscript = 1;
             return $return;

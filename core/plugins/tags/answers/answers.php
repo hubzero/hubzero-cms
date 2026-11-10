@@ -109,7 +109,13 @@ class Answers extends Plugin
         $row->href = Route::url('index.php?option=com_answers&task=question&id=' . $row->id);
 
         $html  = "\t" . '<li class="answer">' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . strip_tags(stripslashes($row->title)) . '</a></p>' . "\n";
+        $html .= "\t\t"
+            . '<p class="title"><a href="'
+            . $row->href
+            . '">'
+            . strip_tags(stripslashes($row->title))
+            . '</a></p>'
+            . "\n";
         $html .= "\t\t" . '<p class="details"><strong class="type">Q&A</strong><span>|</span>';
         if ($row->state == 1) {
             $html .= Lang::txt('PLG_TAGS_ANSWERS_OPEN');
@@ -118,7 +124,11 @@ class Answers extends Plugin
         }
         $html .= ' <span>|</span> ' . Lang::txt('PLG_TAGS_ANSWERS_RESPONSES') . ' ' . $row->rcount . '</p>' . "\n";
         if ($row->ftext) {
-            $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
+            $html .= "\t\t"
+                . '<p>'
+                . \Hubzero\Utility\Str::truncate(strip_tags(stripslashes($row->ftext)), 200)
+                . '</p>'
+                . "\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";

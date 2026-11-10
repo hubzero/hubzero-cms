@@ -380,7 +380,10 @@ class Db
                     } else {
                         $where_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
                     }
-                } elseif ($val['fieldtype'] == 'numrange' && isset($dd['cols'][$key]['numrange']['min'], $dd['cols'][$key]['numrange']['max'])) {
+                } elseif (
+                    $val['fieldtype'] == 'numrange'
+                    && isset($dd['cols'][$key]['numrange']['min'], $dd['cols'][$key]['numrange']['max'])
+                ) {
                     $val['val'] = strtolower($val['val']);
 
                     $min_col = $dd['cols'][$key]['numrange']['min'];
@@ -493,7 +496,10 @@ class Db
                     } else {
                         $having_filter_arr[] = $val['col'] . " LIKE '%" . $val['val'] . "%'";
                     }
-                } elseif ($val['fieldtype'] == 'numrange' && isset($dd['cols'][$key]['numrange']['min'], $dd['cols'][$key]['numrange']['max'])) {
+                } elseif (
+                    $val['fieldtype'] == 'numrange'
+                    && isset($dd['cols'][$key]['numrange']['min'], $dd['cols'][$key]['numrange']['max'])
+                ) {
                     $min_col = $dd['cols'][$key]['numrange']['min'];
                     $max_col = $dd['cols'][$key]['numrange']['max'];
                     if (strstr($val['val'], 'to')) {

@@ -415,8 +415,13 @@ class Attachments extends Obj
      * @param   boolean  $includeUnattached
      * @return  object
      */
-    public function getElementAttachments($elementId = 0, $attachments = [], $type = '', $role = '', $includeUnattached = true)
-    {
+    public function getElementAttachments(
+        $elementId = 0,
+        $attachments = [],
+        $type = '',
+        $role = '',
+        $includeUnattached = true,
+    ) {
         $collect = [];
 
         if (!$attachments || !$elementId) {

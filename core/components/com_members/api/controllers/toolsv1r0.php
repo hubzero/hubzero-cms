@@ -83,7 +83,11 @@ class Toolsv1r0 extends ApiController
         $sessions = $ms->getRecords($result->get("username"), '', false);
 
         // Run middleware command to create screenshots
-        $cmd = "/bin/sh " . Component::path('com_tools') . "/scripts/mw screenshot " . escapeshellarg($result->get('username')) . " 2>&1 </dev/null";
+        $cmd = "/bin/sh "
+            . Component::path('com_tools')
+            . "/scripts/mw screenshot "
+            . escapeshellarg($result->get('username'))
+            . " 2>&1 </dev/null";
         exec($cmd, $results, $status);
 
         $results = [];

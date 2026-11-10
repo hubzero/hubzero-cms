@@ -312,7 +312,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         // If we have a name but no individual parts...
-        if (!$this->record->entry->get('givenName') && !$this->record->entry->get('surname') && $this->record->entry->get('name')) {
+        if (
+            !$this->record->entry->get('givenName')
+            && !$this->record->entry->get('surname')
+            && $this->record->entry->get('name')
+        ) {
             $name = explode(' ', $this->record->entry->get('name'));
             $this->record->entry->set('givenName', array_shift($name));
             $this->record->entry->set('surname', array_pop($name));
@@ -320,7 +324,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
         }
 
         // If we have the individual name parts but not the combined whole...
-        if (($this->record->entry->get('givenName') || $this->record->entry->get('surname')) && !$this->record->entry->get('name')) {
+        if (
+            ($this->record->entry->get('givenName') || $this->record->entry->get('surname'))
+            && !$this->record->entry->get('name')
+        ) {
             $name = [
                 $this->record->entry->get('givenName'),
                 $this->record->entry->get('middleName'),
@@ -335,7 +342,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $username = $this->record->entry->get('username');
             if ($username && isset($this->raw->username) && $username != $this->raw->username) {
                 // Uh-oh. Notify the user.
-                array_push($this->record->notices, Lang::txt('Usernames for existing members cannot be changed at this time.'));
+                array_push(
+                    $this->record->notices,
+                    Lang::txt('Usernames for existing members cannot be changed at this time.'),
+                );
             }
         } elseif (isset($this->raw->username) && $this->raw->username) {
             $this->record->entry->set('username', $this->raw->username);
@@ -423,7 +433,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 // Try to create from the name with a numeric suffix
                 if (!$valid) {
                     for ($i = 0; $i <= 99; $i++) {
-                        $username = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('name'))) . $i;
+                        $username = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('name')))
+                            . $i;
                         if (Validate::username($username)) {
                             if (!$this->usernameExists($username)) {
                                 $valid = true;

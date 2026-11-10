@@ -64,7 +64,12 @@ class Categories extends SiteController
         if ($category) {
             Pathway::append(
                 Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
+                'index.php?option='
+                    . $this->option
+                    . '&section='
+                    . $section->get('alias')
+                    . '&category='
+                    . $category->get('alias'),
             );
         }
     }
@@ -165,7 +170,20 @@ class Categories extends SiteController
 
         // Check logged in status
         if (!in_array($category->get('access'), User::getAuthorisedViewLevels())) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $filters['section'] . '&category=' . $filters['category'], false, true));
+            $return = base64_encode(
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&section='
+                        . $filters['section']
+                        . '&category='
+                        . $filters['category'],
+                    false,
+                    true,
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
@@ -387,7 +405,14 @@ class Categories extends SiteController
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
-                'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_FORUM_ACTIVITY_CATEGORY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($url),
@@ -418,7 +443,9 @@ class Categories extends SiteController
         // Is the user logged in?
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($url, false, true))),
+                Route::url(
+                    'index.php?option=com_users&view=login&return=' . base64_encode(Route::url($url, false, true)),
+                ),
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
@@ -472,7 +499,14 @@ class Categories extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'forum.category',
                 'scope_id'    => $category->get('id'),
-                'description' => Lang::txt('COM_FORUM_ACTIVITY_CATEGORY_DELETED', '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_FORUM_ACTIVITY_CATEGORY_DELETED',
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . htmlspecialchars((string) ($category->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $category->get('title'),
                     'url'   => Route::url($url),

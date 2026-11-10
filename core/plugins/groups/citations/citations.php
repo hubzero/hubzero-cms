@@ -86,8 +86,20 @@ class Citations extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -193,13 +205,28 @@ class Citations extends Plugin
 
                 // check to see if user is member and plugin access requires members
                 if (!in_array(User::get('id'), $members) && $group_plugin_acl == 'members') {
-                    $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                    $arr['html'] = '<p class="info">'
+                        . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                        . '</p>';
                     return $arr;
                 }
             }
 
             if ($this->group->isSuperGroup()) {
-                $this->path = PATH_APP . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . 'plg_' . $this->pluginType . '_' . $this->pluginName;
+                $this->path = PATH_APP
+                    . DS
+                    . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS)
+                    . DS
+                    . $this->group->get('gidNumber')
+                    . DS
+                    . 'template'
+                    . DS
+                    . 'html'
+                    . DS
+                    . 'plg_'
+                    . $this->pluginType
+                    . '_'
+                    . $this->pluginName;
             }
 
             // run task based on action
@@ -332,7 +359,9 @@ class Citations extends Plugin
         $view->filters['publishedin'] = isset($view->filters['publishedin']) ? $view->filters['publishedin'] : "";
         $view->filters['year_start'] = isset($view->filters['year_start']) ? $view->filters['year_start'] : "";
         $view->filters['year_end'] = isset($view->filters['year_end']) ? $view->filters['year_end'] : "";
-        $view->filters['startuploaddate'] = isset($view->filters['startuploaddate']) ? $view->filters['startuploaddate'] : "";
+        $view->filters['startuploaddate'] = isset($view->filters['startuploaddate'])
+            ? $view->filters['startuploaddate']
+            : "";
         $view->filters['enduploaddate'] = isset($view->filters['enduploaddate']) ? $view->filters['enduploaddate'] : "";
         $view->filters['sort'] = isset($view->filters['sort']) ? $view->filters['sort'] : 'year DESC';
         $view->filters['filter'] = isset($view->filters['filter']) ? $view->filters['filter'] : "";
@@ -495,7 +524,9 @@ class Citations extends Plugin
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $view->title = Lang::txt(strtoupper($this->pluginName)) . ': ' . Lang::txt(strtoupper($this->pluginName) . '_' . strtoupper($this->action));
+        $view->title = Lang::txt(strtoupper($this->pluginName))
+            . ': '
+            . Lang::txt(strtoupper($this->pluginName) . '_' . strtoupper($this->action));
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
@@ -690,7 +721,8 @@ class Citations extends Plugin
 
         if ($authors->count()) {
             foreach ($authors as $author) {
-                $auths[] = $author->get('author') . ($author->get('uidNumber') ? '{{' . $author->get('uidNumber') . '}}' : '');
+                $auths[] = $author->get('author')
+                    . ($author->get('uidNumber') ? '{{' . $author->get('uidNumber') . '}}' : '');
             }
             $citation->set('author', implode('; ', $auths));
             $citation->save();
@@ -1072,7 +1104,9 @@ class Citations extends Plugin
             $view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
             $view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
             $view->citations_show_tags = (isset($params->citations_show_tags) ? $params->citations_show_tags : "true");
-            $view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges : "true");
+            $view->citations_show_badges = (isset(
+                $params->citations_show_badges,
+            ) ? $params->citations_show_badges : "true");
             $citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
             // intended for the case that the group's custom
@@ -1171,7 +1205,13 @@ class Citations extends Plugin
         $filename = $file ? $file->getClientOriginalName() : '';
         if ($filename == '') {
             App::redirect(
-                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=citations&action=import',
+                ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_MISSING_FILE'),
                 'error',
             );
@@ -1181,7 +1221,13 @@ class Citations extends Plugin
         // make sure file is under 4MB
         if ($file->getSize() > 4000000) {
             App::redirect(
-                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=citations&action=import',
+                ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_FILE_TOO_BIG'),
                 'error',
             );
@@ -1191,7 +1237,13 @@ class Citations extends Plugin
         // make sure we dont have any file errors
         if ($file->getError() > 0) {
             App::redirect(
-                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=citations&action=import',
+                ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
@@ -1205,7 +1257,13 @@ class Citations extends Plugin
         // did we get citations from the citation plugins
         if (!$citations) {
             App::redirect(
-                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active=citations&action=import',
+                ),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
@@ -1319,8 +1377,12 @@ class Citations extends Plugin
             );
 
             // view variables
-            $view->citations_require_attention = (isset($citations_action_attention) ? $citations_action_attention : null);
-            $view->citation_require_no_attention = (isset($citation_action_no_attention) ? $citations_action_no_attention : null);
+            $view->citations_require_attention = (isset(
+                $citations_action_attention,
+            ) ? $citations_action_attention : null);
+            $view->citation_require_no_attention = (isset(
+                $citation_action_no_attention,
+            ) ? $citations_action_no_attention : null);
 
             // if we have citations not getting saved
             if (count($results['not_saved']) > 0) {
@@ -1366,7 +1428,23 @@ class Citations extends Plugin
     private function loginTask()
     {
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS . $this->pluginName . '&action=' . $this->action, false, true))),
+            Route::url(
+                'index.php?option=com_users&view=login&return='
+                    . base64_encode(
+                        Route::url(
+                            'index.php?option='
+                                . $this->option
+                                . DS
+                                . $this->group->get('cn')
+                                . DS
+                                . $this->pluginName
+                                . '&action='
+                                . $this->action,
+                            false,
+                            true,
+                        ),
+                    ),
+            ),
             Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
@@ -1550,7 +1628,13 @@ class Citations extends Plugin
                 $value = \Hubzero\Utility\Sanitize::clean($value);
 
                 // we handle things differently in search and sorting
-                if ($filter != 'search' && $filter != 'sort' && $filter != 'tag' && $value != "" && $filter != 'filter') {
+                if (
+                    $filter != 'search'
+                    && $filter != 'sort'
+                    && $filter != 'tag'
+                    && $value != ""
+                    && $filter != 'filter'
+                ) {
                     switch ($filter) {
                         case 'author':
                             $citations->where('author', 'LIKE', "%{$value}%", 'and', 1);
@@ -1567,7 +1651,13 @@ class Citations extends Plugin
                         default:
                             // filters[] keys are request-supplied; only real, filterable
                             // columns reach the query
-                            if (in_array($filter, ['type', 'scope', 'scope_id', 'published', 'year', 'affiliated', 'fundedby'], true)) {
+                            if (
+                                in_array(
+                                    $filter,
+                                    ['type', 'scope', 'scope_id', 'published', 'year', 'affiliated', 'fundedby'],
+                                    true,
+                                )
+                            ) {
                                 $citations->where($filter, '=', $value);
                             }
                             break;

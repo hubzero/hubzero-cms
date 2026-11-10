@@ -129,9 +129,15 @@ class Citations extends SiteController
             'year_end'        => Request::getInt('year_end', gmdate("Y")),
             'filter'          => Request::getString('filter', ''),
             'sort'            => Request::getString('sort', 'created DESC'),
-            'reftype'         => Request::getSimpleArray('reftype', ['research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1]),
+            'reftype'         => Request::getSimpleArray(
+                'reftype',
+                ['research' => 1, 'education' => 1, 'eduresearch' => 1, 'cyberinfrastructure' => 1],
+            ),
             'geo'             => Request::getSimpleArray('geo', ['us' => 1, 'na' => 1,'eu' => 1, 'as' => 1]),
-            'aff'             => Request::getSimpleArray('aff', ['university' => 1, 'industry' => 1, 'government' => 1]),
+            'aff'             => Request::getSimpleArray(
+                'aff',
+                ['university' => 1, 'industry' => 1, 'government' => 1],
+            ),
             'startuploaddate' => Request::getString('startuploaddate', '0000-00-00'),
             'enduploaddate'   => Request::getString('enduploaddate', '0000-00-00'),
             'scope'           => 'hub',
@@ -188,7 +194,10 @@ class Citations extends SiteController
         // Convert upload dates to correct time format
         if (
             !is_string($this->view->filters['startuploaddate'])
-            || !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $this->view->filters['startuploaddate'])
+            || !preg_match(
+                "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
+                $this->view->filters['startuploaddate'],
+            )
             || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['startuploaddate'])
         ) {
             $this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
@@ -200,12 +209,17 @@ class Citations extends SiteController
         ) {
             $this->view->filters['startuploaddate'] = '0000-00-00 00:00:00';
         } else {
-            $this->view->filters['startuploaddate'] = Date::of($this->view->filters['startuploaddate'])->format('Y-m-d 00:00:00');
+            $this->view->filters['startuploaddate'] = Date::of(
+                $this->view->filters['startuploaddate'],
+            )->format('Y-m-d 00:00:00');
         }
 
         if (
             !is_string($this->view->filters['enduploaddate'])
-            || !preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $this->view->filters['enduploaddate'])
+            || !preg_match(
+                "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
+                $this->view->filters['enduploaddate'],
+            )
             || !preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $this->view->filters['enduploaddate'])
         ) {
             $this->view->filters['enduploaddate'] = '';
@@ -217,7 +231,9 @@ class Citations extends SiteController
         ) {
             $this->view->filters['enduploaddate'] = Date::of('now')->modify('+1 DAY')->format('Y-m-d 00:00:00');
         } else {
-            $this->view->filters['enduploaddate'] = Date::of($this->view->filters['enduploaddate'])->format('Y-m-d 00:00:00');
+            $this->view->filters['enduploaddate'] = Date::of(
+                $this->view->filters['enduploaddate'],
+            )->format('Y-m-d 00:00:00');
         }
 
         // Make sure the end date for the upload search isn't before the start date
@@ -360,7 +376,9 @@ class Citations extends SiteController
             return;
         }
 
-        $this->view->associations = $this->view->citation->resources()->whereEquals('#__citations_assoc.tbl', 'resource');
+        $this->view->associations = $this->view->citation
+            ->resources()
+            ->whereEquals('#__citations_assoc.tbl', 'resource');
         $this->view->sponsors = $this->view->citation->sponsors;
 
         //open url stuff
@@ -368,7 +386,9 @@ class Citations extends SiteController
 
         //make sure title isnt too long
         $this->view->maxTitleLength = 50;
-        $this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength) ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;' : $this->view->citation->title;
+        $this->view->shortenedTitle = (strlen($this->view->citation->title) > $this->view->maxTitleLength)
+            ? substr($this->view->citation->title, 0, $this->view->maxTitleLength) . '&hellip;'
+            : $this->view->citation->title;
 
         // Set the page title
         Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . ": " . $this->view->shortenedTitle);
@@ -378,14 +398,35 @@ class Citations extends SiteController
             Pathway::append(Lang::txt(strtoupper($this->name)), 'index.php?option=' . $this->option);
         }
         Pathway::append(Lang::txt('COM_CITATIONS_BROWSE'), 'index.php?option=' . $this->option . '&task=browse');
-        Pathway::append($this->view->shortenedTitle, 'index.php?option=' . $this->option . '&task=view&id=' . $this->view->citation->id);
+        Pathway::append(
+            $this->view->shortenedTitle,
+            'index.php?option=' . $this->option . '&task=view&id=' . $this->view->citation->id,
+        );
 
         $this->view->citationType = $this->view->citation->relatedType;
         $typeAlias = $this->view->citationType->type;
 
         // Build paths to type specific overrides
-        $componentTypeOverride = Component::path('com_citations') . DS . 'views' . DS . 'citations' . DS . 'tmpl' . DS . $typeAlias . '.php';
-        $tempalteTypeOverride  = App::get('template')->path . DS . 'html' . DS . 'com_citations' . DS . 'citations' . DS . $typeAlias . '.php';
+        $componentTypeOverride = Component::path('com_citations')
+            . DS
+            . 'views'
+            . DS
+            . 'citations'
+            . DS
+            . 'tmpl'
+            . DS
+            . $typeAlias
+            . '.php';
+        $tempalteTypeOverride  = App::get('template')->path
+            . DS
+            . 'html'
+            . DS
+            . 'com_citations'
+            . DS
+            . 'citations'
+            . DS
+            . $typeAlias
+            . '.php';
 
         //if we found an override use it
         if (file_exists($tempalteTypeOverride) || file_exists($componentTypeOverride)) {
@@ -484,7 +525,12 @@ class Citations extends SiteController
     public function loginTask()
     {
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true))),
+            Route::url(
+                'index.php?option=com_users&view=login&return='
+                    . base64_encode(
+                        Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true),
+                    ),
+            ),
             Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
@@ -584,9 +630,15 @@ class Citations extends SiteController
         // Set the pathway
         Pathway::append(Lang::txt(strtoupper($this->option)), 'index.php?option=' . $this->option);
         if ($id && $id != 0) {
-            Pathway::append($shortenedTitle, 'index.php?option=' . $this->option . '&task=view&id=' . $this->view->row->id);
+            Pathway::append(
+                $shortenedTitle,
+                'index.php?option=' . $this->option . '&task=view&id=' . $this->view->row->id,
+            );
         }
-        Pathway::append(Lang::txt('JACTION_EDIT'), 'index.php?option=' . $this->option . '&task=edit&id=' . $this->view->row->id);
+        Pathway::append(
+            Lang::txt('JACTION_EDIT'),
+            'index.php?option=' . $this->option . '&task=edit&id=' . $this->view->row->id,
+        );
 
         // Set the page title
         Document::setTitle(Lang::txt('COM_CITATIONS_CITATION') . $shortenedTitle);
@@ -595,7 +647,9 @@ class Citations extends SiteController
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $this->view->title  = Lang::txt(strtoupper($this->option)) . ': ' . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
+        $this->view->title  = Lang::txt(strtoupper($this->option))
+            . ': '
+            . Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task));
         $this->view->config = $this->config;
 
         // No ID, so we're creating a new entry

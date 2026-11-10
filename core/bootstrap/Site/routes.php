@@ -74,13 +74,25 @@ $router->rules('build')->append('content', function ($uri) {
     $route = $uri->getPath();
     $query = $uri->getQuery(true);
 
-    if (!isset($query['option']) || (isset($query['option']) && $query['option'] == 'com_content' && isset($query['task']) && $query['task'] == 'view')) {
+    if (
+        !isset($query['option'])
+        || (
+            isset($query['option'])
+            && $query['option'] == 'com_content'
+            && isset($query['task'])
+            && $query['task'] == 'view'
+        )
+    ) {
         $segments = [];
 
         // Don't parse calls to other com_content views
         if (isset($query['view']) && $query['view'] == 'article' && !empty($query['id'])) {
             $db = App::get('db');
-            $db->setQuery("SELECT `path` FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . (int) $query['id'] . "' AND published=1");
+            $db->setQuery(
+                "SELECT `path` FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id="
+                    . (int) $query['id']
+                    . "' AND published=1",
+            );
             if ($menuitem = $db->loadResult()) {
                 $segments = explode('/', $menuitem);
             } else {
@@ -383,7 +395,10 @@ $router->rules('parse')->append('limit', function ($uri) {
         App::get('router')->forget('start');
     }
     // Make sure the values are sane
-    if (intval($uri->getUriVar('limitstart')) > 9223372036854775807 || intval($uri->getUriVar('limit')) > 9223372036854775807) {
+    if (
+        intval($uri->getUriVar('limitstart')) > 9223372036854775807
+        || intval($uri->getUriVar('limit')) > 9223372036854775807
+    ) {
         App::abort(404, Lang::txt('Pagination value beyond the bounds of supported integer values.'));
     }
     if (intval($uri->getUriVar('limitstart')) < 0 || intval($uri->getUriVar('limit')) < 0) {
@@ -506,7 +521,10 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
                     if (
                         trim($item->route, '/') != trim($item->link, '/')
                         && trim(App::get('request')->base(true) . '/' . $item->route, '/') != trim($item->link, '/') // Added because it would cause redirect loop for installs not in top-level webroot
-                        && trim(App::get('request')->base(true) . '/index.php/' . $item->route, '/') != trim($item->link, '/')
+                        && trim(
+                            App::get('request')->base(true) . '/index.php/' . $item->route,
+                            '/',
+                        ) != trim($item->link, '/')
                     ) { // Added because it would cause redirect loop for installs not in top-level webroot
                         App::redirect($item->link);
                     }

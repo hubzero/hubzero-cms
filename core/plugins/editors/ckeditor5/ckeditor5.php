@@ -134,8 +134,19 @@ class Ckeditor5 extends Plugin
      * @param   array    $params  Associative array of editor parameters.
      * @return  string
      */
-    public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])
-    {
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = [],
+    ) {
         // Make sure we have an id too
         if (empty($id)) {
             $id = $name;
@@ -291,7 +302,16 @@ class Ckeditor5 extends Plugin
         $this->css('.ck-content { height: ' . $row . 'em; }');
 
         // Output html and script
-        $editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
+        $editor  = '<textarea name="'
+            . $name
+            . '" id="'
+            . $id
+            . '" '
+            . implode(' ', $atts)
+            . '>'
+            . $content
+            . '</textarea>'
+            . $script;
         if (App::isAdmin()) {
             $editor .= $this->displayButtons($id, $buttons, $asset, $author);
         }
@@ -332,9 +352,24 @@ class Ckeditor5 extends Plugin
                 if ($button->get('name')) {
                     $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
                     $href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
-                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"' : 'onclick="return false;"';
+                    $onclick = ($button->get('onclick'))
+                        ? ' onclick="' . $button->get('onclick') . '"'
+                        : 'onclick="return false;"';
                     $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
-                    $return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
+                    $return .= '<div class="button2-left"><div class="'
+                        . $button->get('name')
+                        . '"><a'
+                        . $modal
+                        . ' title="'
+                        . $title
+                        . '"'
+                        . $href
+                        . $onclick
+                        . ' rel="'
+                        . $button->get('options')
+                        . '">'
+                        . $button->get('text')
+                        . "</a></div></div>\n";
                 }
             }
 

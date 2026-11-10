@@ -54,7 +54,10 @@ class Categories extends Base
         }
 
         // Check authorization
-        if ($this->group->published == 2 || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.pages'))) {
+        if (
+            $this->group->published == 2
+            || ($this->authorize() != 'manager' && !$this->authorizedForTask('group.pages'))
+        ) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -69,7 +72,9 @@ class Categories extends Base
      */
     public function displayTask()
     {
-        App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages#categories'));
+        App::redirect(
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages#categories'),
+        );
     }
 
     /**
@@ -160,7 +165,9 @@ class Categories extends Base
             return $this->editTask();
         }
 
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
+        $url = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories',
+        );
 
         // Log activity
         $recipients = [
@@ -179,7 +186,11 @@ class Categories extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_CATEGORY_' . ($this->task == 'new' ? 'CREATED' : 'UPDATED'),
                     $this->category->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
                 ),
                 'details'     => [
                     'title'     => $this->category->get('title'),
@@ -211,7 +222,9 @@ class Categories extends Base
         // load category object
         $category = new Page\Category($categoryid);
 
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories');
+        $url = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories',
+        );
 
         // make sure this is our groups cat
         if ($category->get('gidNumber') != $this->group->get('gidNumber')) {
@@ -242,7 +255,11 @@ class Categories extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_CATEGORY_DELETED',
                     $category->get('title'),
-                    '<a href="' . $url . '">' . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) $this->group->get('description'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
                 ),
                 'details'     => [
                     'title'     => $category->get('title'),

@@ -210,7 +210,12 @@ class OverrideRootsTest extends Basic
      */
     public function testPluginViewExplicitOverridePath()
     {
-        $base = ['folder' => 'groups', 'element' => 'members', 'name' => 'browse', 'base_path' => $this->env->root . '/plg'];
+        $base = [
+            'folder' => 'groups',
+            'element' => 'members',
+            'name' => 'browse',
+            'base_path' => $this->env->root . '/plg',
+        ];
 
         $only = $this->templatePaths(new PluginView($base + ['override_path' => '/alt']));
         $this->assertSame('/alt/html/plg_groups_members/browse/', $only[0]);

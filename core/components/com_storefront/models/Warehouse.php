@@ -327,7 +327,8 @@ class Warehouse extends \Hubzero\Base\Obj
             $lookupField = 'pAlias';
         }
 
-        $sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->database->quote($product);
+        $sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = "
+            . $this->database->quote($product);
         if (!$showInactive) {
             $sql .= " AND p.`pActive` = 1";
         }
@@ -379,7 +380,10 @@ class Warehouse extends \Hubzero\Base\Obj
         // Get the SKUs whitelist for a user
         if ($this->userScope) {
             $allProductSkus = $this->getProductSkus($pInfo->pId);
-            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser(
+                $this->userScope,
+                $allProductSkus,
+            );
         }
 
         // Check if the product can be viewed (if access level scope is set)
@@ -596,7 +600,10 @@ class Warehouse extends \Hubzero\Base\Obj
                     // Get all SKUs for this product and check if the user is whitelisted
                     // Get the SKUs whitelist for a user
                     $allProductSkus = $this->getProductSkus($product->pId);
-                    $whitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+                    $whitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser(
+                        $this->userScope,
+                        $allProductSkus,
+                    );
                     if (empty($whitelistedSkus)) {
                         $notAuthorizedProducts[] = $product;
                     }
@@ -933,7 +940,9 @@ class Warehouse extends \Hubzero\Base\Obj
     public function mapSku($pId, $options, $throwExceptionOnNomatch = true)
     {
         // Find the number of options required for this product
-        $sql = "SELECT COUNT(pog.`ogId`) AS cnt FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '" . (int) $pId . "'";
+        $sql = "SELECT COUNT(pog.`ogId`) AS cnt FROM `#__storefront_product_option_groups` pog WHERE pog.`pId` = '"
+            . (int) $pId
+            . "'";
 
         /*
         $sql = "SELECT COUNT(s.`sId`) AS cnt FROM `#__storefront_skus` s
@@ -1128,7 +1137,13 @@ class Warehouse extends \Hubzero\Base\Obj
         // Check if the product can be viewed (if access level scope is set)
         if ($this->accessLevelsScope) {
             if (!in_array($sInfo['info']->access, $this->accessLevelsScope)) {
-                throw new \Exception(Lang::txt('COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED') . ': ' . $sInfo['info']->pName . ', ' . $sInfo['info']->oName);
+                throw new \Exception(
+                    Lang::txt('COM_STOREFRONT_PRODUCT_ACCESS_NOT_AUTHORIZED')
+                        . ': '
+                        . $sInfo['info']->pName
+                        . ', '
+                        . $sInfo['info']->oName,
+                );
             }
         }
 
@@ -1429,7 +1444,9 @@ class Warehouse extends \Hubzero\Base\Obj
             $deleteSql .= ", " . $this->database->quote($activeObjectId);
         }
         $deleteSql .= ')';
-        $sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = " . $this->database->quote($cnId) . " AND `cnoObjectId` NOT IN {$deleteSql}";
+        $sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = "
+            . $this->database->quote($cnId)
+            . " AND `cnoObjectId` NOT IN {$deleteSql}";
         $this->database->setQuery($sql);
         $this->database->query();
 

@@ -175,7 +175,10 @@ class Form extends SiteController
                 exit();
             } else { // Otherwise, redirect
                 App::redirect(
-                    Route::url('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
+                    Route::url(
+                        'index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(),
+                        false,
+                    ),
                     Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
                     'passed',
                 );
@@ -228,7 +231,9 @@ class Form extends SiteController
         }
 
         if (isset($_FILES['pdf'])) {
-            $pdf->setFname((is_array($_FILES['pdf']['tmp_name'])) ? $_FILES['pdf']['tmp_name'][0] : $_FILES['pdf']['tmp_name']);
+            $pdf->setFname(
+                (is_array($_FILES['pdf']['tmp_name'])) ? $_FILES['pdf']['tmp_name'][0] : $_FILES['pdf']['tmp_name'],
+            );
             $pdf->renderPageImages();
         }
 
@@ -289,7 +294,15 @@ class Form extends SiteController
             } else {
                 $tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
                 App::redirect(
-                    Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save() . '&formId=' . $pdf->getId() . $tmpl, false),
+                    Route::url(
+                        $this->base
+                            . '&task=form.showDeployment&id='
+                            . $dep->save()
+                            . '&formId='
+                            . $pdf->getId()
+                            . $tmpl,
+                        false,
+                    ),
                     Lang::txt('COM_COURSES_DEPLOYMENT_CREATED'),
                     'passed',
                 );
@@ -324,7 +337,15 @@ class Form extends SiteController
         } else {
             $tmpl = (Request::getWord('tmpl', false)) ? '&tmpl=component' : '';
             App::redirect(
-                Route::url($this->base . '&task=form.showDeployment&id=' . $dep->save($deploymentId) . '&formId=' . $pdf->getId() . $tmpl, false),
+                Route::url(
+                    $this->base
+                        . '&task=form.showDeployment&id='
+                        . $dep->save($deploymentId)
+                        . '&formId='
+                        . $pdf->getId()
+                        . $tmpl,
+                    false,
+                ),
                 Lang::txt('COM_COURSES_DEPLOYMENT_UPDATED'),
                 'passed',
             );

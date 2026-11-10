@@ -384,7 +384,11 @@ class Parser
         $this->addMacroPath(__DIR__ . DS . 'macros');
 
         // Get macros [[name(args)]]
-        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, 'getMacro'], $text);
+        return preg_replace_callback(
+            '/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',
+            [&$this, 'getMacro'],
+            $text,
+        );
     }
 
     /**
@@ -425,7 +429,9 @@ class Parser
                         if (is_file($path . $altfile)) {
                             $found = true;
 
-                            $macroname = __NAMESPACE__ . '\\Macros\\' . implode('\\', array_map('ucfirst', $macroPieces));
+                            $macroname = __NAMESPACE__
+                                . '\\Macros\\'
+                                . implode('\\', array_map('ucfirst', $macroPieces));
                             include_once $path . $altfile;
                             break;
                         }

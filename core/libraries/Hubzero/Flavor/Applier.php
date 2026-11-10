@@ -88,7 +88,14 @@ class Applier
         );
         $this->applyStates('#__kb_articles', 'state', $flavor->get('kb', [], 'articles'), '', 'knowledge base article');
         $this->applyStates('#__content', 'state', $flavor->get('content', [], 'articles'), '', 'article');
-        $this->applyStates('#__menu', 'published', $flavor->get('menu', [], 'items'), '`client_id` = 0', 'menu item', 'path');
+        $this->applyStates(
+            '#__menu',
+            'published',
+            $flavor->get('menu', [], 'items'),
+            '`client_id` = 0',
+            'menu item',
+            'path',
+        );
         $this->applyResourceTypes($flavor->get('resource_types', []));
     }
 
@@ -117,7 +124,14 @@ class Applier
             "`extension` = 'com_kb'",
             'knowledge base category',
         );
-        $this->checkStates($found, '#__kb_articles', 'state', $flavor->get('kb', [], 'articles'), '', 'knowledge base article');
+        $this->checkStates(
+            $found,
+            '#__kb_articles',
+            'state',
+            $flavor->get('kb', [], 'articles'),
+            '',
+            'knowledge base article',
+        );
         $this->checkStates($found, '#__content', 'state', $flavor->get('content', [], 'articles'), '', 'article');
         $this->checkStates(
             $found,
@@ -210,7 +224,11 @@ class Applier
                     $now = isset($current[$key]) ? $current[$key] : null;
 
                     if ((string) $now !== (string) $value) {
-                        $found[] = "{$type} {$name}: {$key} is " . $this->show($now) . " (the flavor sets " . $this->show($value) . ")"
+                        $found[] = "{$type} {$name}: {$key} is "
+                            . $this->show($now)
+                            . " (the flavor sets "
+                            . $this->show($value)
+                            . ")"
                             . ($where !== '' ? " [{$where}]" : '');
                     }
                 }
@@ -483,7 +501,9 @@ class Applier
         $home = Style::current($this->db, 0);
 
         if ($home !== (string) $template) {
-            $found[] = "the default template is " . ($home !== '' ? $home : 'not set') . " (the flavor sets {$template})";
+            $found[] = "the default template is "
+                . ($home !== '' ? $home : 'not set')
+                . " (the flavor sets {$template})";
         }
     }
 
@@ -699,7 +719,10 @@ class Applier
             }
 
             $this->db->setQuery(
-                "UPDATE `#__resource_types` SET " . implode(', ', $set) . " WHERE `alias` = " . $this->db->quote($alias),
+                "UPDATE `#__resource_types` SET "
+                    . implode(', ', $set)
+                    . " WHERE `alias` = "
+                    . $this->db->quote($alias),
             );
             $this->db->query();
 

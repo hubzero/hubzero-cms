@@ -265,7 +265,12 @@ class Hubzero extends Plugin
                     return false;
                 }
 
-                $command = 'sudo ' . escapeshellarg($path) . ' set ' . escapeshellarg($jailname) . ' banip ' . escapeshellarg($ip);
+                $command = 'sudo '
+                    . escapeshellarg($path)
+                    . ' set '
+                    . escapeshellarg($jailname)
+                    . ' banip '
+                    . escapeshellarg($ip);
                 exec($command);
             }
         } else {

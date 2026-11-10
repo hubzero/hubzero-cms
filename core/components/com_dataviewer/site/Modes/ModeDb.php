@@ -21,7 +21,9 @@ class ModeDb
     {
         $db_dv_conf = [];
 
-        $db_name = isset($db_id['name']) ? str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name'])) : '';
+        $db_name = isset($db_id['name'])
+            ? str_replace('..', '', preg_replace('/[^A-Za-z0-9_.-]/', '', (string) $db_id['name']))
+            : '';
 
         if (empty($db_name)) {
             return [];

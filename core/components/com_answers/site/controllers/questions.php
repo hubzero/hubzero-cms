@@ -62,7 +62,11 @@ class Questions extends SiteController
     public function loginTask($rtrn = null)
     {
         if (!$rtrn) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false, true), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false, true),
+                'server',
+            );
         }
 
         App::redirect(
@@ -168,7 +172,15 @@ class Questions extends SiteController
         ];
 
         // Build the message subject
-        $subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
+        $subject = Config::get('sitename')
+            . ' '
+            . Lang::txt('COM_ANSWERS_ANSWERS')
+            . ', '
+            . Lang::txt('COM_ANSWERS_QUESTION')
+            . ' #'
+            . $question->get('id')
+            . ' '
+            . Lang::txt('COM_ANSWERS_RESPONSE');
         $message = [];
 
         // Plain text message
@@ -210,7 +222,12 @@ class Questions extends SiteController
         // send the response, unless the author is also in the admin list.
         foreach ($notify as $authorid) {
             if (!in_array($authorid, $receivers) && $question->get('email')) {
-                if (!Event::trigger('xmessage.onSendMessage', ['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        ['answers_reply_comment', $subject, $message, $from, [$authorid], $this->option],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
                 }
             }
@@ -218,7 +235,12 @@ class Questions extends SiteController
 
         // admin emails
         if (!empty($receivers)) {
-            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['new_answer_admin', $subject, $message, $from, $receivers, $this->option],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -240,7 +262,14 @@ class Questions extends SiteController
                 'scope'       => 'question.answer.comment',
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
-                'description' => Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_ANSWERS_ACTIVITY_COMMENT_' . ($comment['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($question->link())
+                        . '">'
+                        . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $question->get('title'),
                     'url'   => $question->link(),
@@ -386,7 +415,11 @@ class Questions extends SiteController
             }
             if ($row instanceof Response) {
                 $question = Question::oneOrFail($row->get('question_id'));
-                $txt = Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ON', $row->get('id'), htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'));
+                $txt = Lang::txt(
+                    'COM_ANSWERS_ACTIVITY_ANSWER_ON',
+                    $row->get('id'),
+                    htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'),
+                );
             }
             if ($row instanceof Comment) {
                 // A comment carries no question_id of its own; link() derives
@@ -396,7 +429,11 @@ class Questions extends SiteController
                 // $txt is dropped into an activity description that the feed
                 // renders as HTML, so the subject has to be escaped here --
                 // after this it is indistinguishable from the language string.
-                $txt = Lang::txt('COM_ANSWERS_ACTIVITY_COMMENT_ON', $row->get('id'), htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'));
+                $txt = Lang::txt(
+                    'COM_ANSWERS_ACTIVITY_COMMENT_ON',
+                    $row->get('id'),
+                    htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'),
+                );
             }
 
             Event::trigger('system.logActivity', [
@@ -404,7 +441,10 @@ class Questions extends SiteController
                     'action'      => 'voted',
                     'scope'       => $scope,
                     'scope_id'    => $id,
-                    'description' => Lang::txt('COM_ANSWERS_ACTIVITY_VOTED_' . ($vote == 'yes' ? 'UP' : 'DOWN'), '<a href="' . Route::url($row->link()) . '">' . $txt . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_ANSWERS_ACTIVITY_VOTED_' . ($vote == 'yes' ? 'UP' : 'DOWN'),
+                        '<a href="' . Route::url($row->link()) . '">' . $txt . '</a>',
+                    ),
                     'details'     => [
                         'title'       => $question->get('title'),
                         'question_id' => $question->get('id'),
@@ -823,7 +863,9 @@ class Questions extends SiteController
             ];
 
             // Build the message subject
-            $subject = Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('new question about content you author or manage');
+            $subject = Lang::txt('COM_ANSWERS_ANSWERS')
+                . ', '
+                . Lang::txt('new question about content you author or manage');
 
             $message = [];
 
@@ -847,7 +889,12 @@ class Questions extends SiteController
             $message['multipart'] = $eview->loadTemplate();
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-            if (!Event::trigger('xmessage.onSendMessage', ['new_question_admin', $subject, $message, $from, $recipients, $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['new_question_admin', $subject, $message, $from, $recipients, $this->option],
+                )
+            ) {
                 Notify::error(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -859,7 +906,14 @@ class Questions extends SiteController
                 'scope'       => 'question',
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
-                'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_ANSWERS_ACTIVITY_QUESTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($row->link())
+                        . '">'
+                        . htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $row->link(),
@@ -1012,7 +1066,14 @@ class Questions extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'question',
                 'scope_id'    => $question->get('id'),
-                'description' => Lang::txt('COM_ANSWERS_ACTIVITY_QUESTION_DELETED', '<a href="' . Route::url($question->link()) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_ANSWERS_ACTIVITY_QUESTION_DELETED',
+                    '<a href="'
+                        . Route::url($question->link())
+                        . '">'
+                        . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $question->get('title'),
                     'url'   => $question->link(),
@@ -1122,7 +1183,15 @@ class Questions extends SiteController
         ];
 
         // Build the message subject
-        $subject = Config::get('sitename') . ' ' . Lang::txt('COM_ANSWERS_ANSWERS') . ', ' . Lang::txt('COM_ANSWERS_QUESTION') . ' #' . $question->get('id') . ' ' . Lang::txt('COM_ANSWERS_RESPONSE');
+        $subject = Config::get('sitename')
+            . ' '
+            . Lang::txt('COM_ANSWERS_ANSWERS')
+            . ', '
+            . Lang::txt('COM_ANSWERS_QUESTION')
+            . ' #'
+            . $question->get('id')
+            . ' '
+            . Lang::txt('COM_ANSWERS_RESPONSE');
 
         $message = [];
 
@@ -1163,14 +1232,24 @@ class Questions extends SiteController
                 $messageType = 'answers_reply_submitted';
             }
 
-            if (!Event::trigger('xmessage.onSendMessage', [$messageType , $subject, $message, $from, [$authorid], $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    [$messageType , $subject, $message, $from, [$authorid], $this->option],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
 
         // Send the answers admins message
         if (!empty($receivers)) {
-            if (!Event::trigger('xmessage.onSendMessage', ['new_answer_admin', $subject, $message, $from, $receivers, $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['new_answer_admin', $subject, $message, $from, $receivers, $this->option],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_ANSWERS_MESSAGE_FAILED'));
             }
         }
@@ -1187,7 +1266,14 @@ class Questions extends SiteController
                 'action'      => ($response['id'] ? 'updated' : 'created'),
                 'scope'       => 'question.answer',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_SUBMITTED', '<a href="' . Route::url($question->link() . '#a' . $row->get('id')) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_ANSWERS_ACTIVITY_ANSWER_SUBMITTED',
+                    '<a href="'
+                        . Route::url($question->link() . '#a' . $row->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'       => $question->get('title'),
                     'question_id' => $question->get('id'),
@@ -1253,7 +1339,15 @@ class Questions extends SiteController
                     'action'      => 'accepted',
                     'scope'       => 'question.answer',
                     'scope_id'    => $rid,
-                    'description' => Lang::txt('COM_ANSWERS_ACTIVITY_ANSWER_ACCEPTED', $rid, '<a href="' . Route::url($question->link() . '#a' . $rid) . '">' . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_ANSWERS_ACTIVITY_ANSWER_ACCEPTED',
+                        $rid,
+                        '<a href="'
+                            . Route::url($question->link() . '#a' . $rid)
+                            . '">'
+                            . htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title'       => $question->get('title'),
                         'question_id' => $question->get('id'),
@@ -1320,7 +1414,11 @@ class Questions extends SiteController
         $doc->link        = Route::url('index.php?option=com_answers');
         $doc->title       = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_TITLE', Config::get('sitename'));
         $doc->description = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_DESCRIPTION', Config::get('sitename'));
-        $doc->copyright   = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
+        $doc->copyright   = Lang::txt(
+            'COM_ANSWERS_LATEST_QUESTIONS_RSS_COPYRIGHT',
+            gmdate("Y"),
+            Config::get('sitename'),
+        );
         $doc->category    = Lang::txt('COM_ANSWERS_LATEST_QUESTIONS_RSS_CATEGORY');
 
         //add each question to the feed

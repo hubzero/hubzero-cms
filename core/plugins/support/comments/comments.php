@@ -29,7 +29,21 @@ class Comments extends Plugin
      */
     public function getReportedItem($refid, $category, $parent)
     {
-        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
+        if (
+            !in_array(
+                $category,
+                [
+                    'wishcomment',
+                    'answercomment',
+                    'reviewcomment',
+                    'citations',
+                    'citationscomment',
+                    'collection',
+                    'itemcomment',
+                    'coursescomment',
+                ],
+            )
+        ) {
             return null;
         }
 
@@ -48,7 +62,9 @@ class Comments extends Plugin
 
                     switch ($row->parent_category) {
                         case 'collection':
-                            $rows[$key]->href = Route::url('index.php?option=com_collections&controller=posts&post=' . $parent);
+                            $rows[$key]->href = Route::url(
+                                'index.php?option=com_collections&controller=posts&post=' . $parent,
+                            );
                             break;
 
                         case 'coursescomment':
@@ -58,17 +74,23 @@ class Comments extends Plugin
 
                         case 'citations':
                         case 'citationscomment':
-                            $rows[$key]->href = Route::url('index.php?option=com_citations&task=view&id=' . $parent . '&area=reviews');
+                            $rows[$key]->href = Route::url(
+                                'index.php?option=com_citations&task=view&id=' . $parent . '&area=reviews',
+                            );
                             break;
 
                         case 'review':
                         case 'reviewcomment':
-                            $rows[$key]->href = Route::url('index.php?option=com_resources&id=' . $parent . '&active=reviews');
+                            $rows[$key]->href = Route::url(
+                                'index.php?option=com_resources&id=' . $parent . '&active=reviews',
+                            );
                             break;
 
                         case 'pubreview':
                         case 'pubreviewcomment':
-                            $rows[$key]->href = Route::url('index.php?option=com_publications&id=' . $parent . '&active=reviews');
+                            $rows[$key]->href = Route::url(
+                                'index.php?option=com_publications&id=' . $parent . '&active=reviews',
+                            );
                             break;
 
                         case 'answer':
@@ -96,7 +118,21 @@ class Comments extends Plugin
      */
     public function onReportItem($refid, $category)
     {
-        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
+        if (
+            !in_array(
+                $category,
+                [
+                    'wishcomment',
+                    'answercomment',
+                    'reviewcomment',
+                    'citations',
+                    'citationscomment',
+                    'collection',
+                    'itemcomment',
+                    'coursescomment',
+                ],
+            )
+        ) {
             return null;
         }
 
@@ -117,7 +153,21 @@ class Comments extends Plugin
      */
     public function releaseReportedItem($refid, $parent, $category)
     {
-        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
+        if (
+            !in_array(
+                $category,
+                [
+                    'wishcomment',
+                    'answercomment',
+                    'reviewcomment',
+                    'citations',
+                    'citationscomment',
+                    'collection',
+                    'itemcomment',
+                    'coursescomment',
+                ],
+            )
+        ) {
             return null;
         }
 
@@ -139,7 +189,21 @@ class Comments extends Plugin
      */
     public function deleteReportedItem($refid, $parent, $category, $message)
     {
-        if (!in_array($category, ['wishcomment', 'answercomment', 'reviewcomment', 'citations', 'citationscomment', 'collection', 'itemcomment', 'coursescomment'])) {
+        if (
+            !in_array(
+                $category,
+                [
+                    'wishcomment',
+                    'answercomment',
+                    'reviewcomment',
+                    'citations',
+                    'citationscomment',
+                    'collection',
+                    'itemcomment',
+                    'coursescomment',
+                ],
+            )
+        ) {
             return null;
         }
 

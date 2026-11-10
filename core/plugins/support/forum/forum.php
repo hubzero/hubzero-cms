@@ -58,17 +58,34 @@ class Forum extends Plugin
                         $offering = \Components\Courses\Models\Offering::getInstance($row->scope_id);
                         $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
-                        $url = 'index.php?option=com_courses&gid=' . $course->get('alias') . '&controller=offering&offering=' . $offering->get('alias') . '&active=discussions&thread=' . $row->thread;
+                        $url = 'index.php?option=com_courses&gid='
+                            . $course->get('alias')
+                            . '&controller=offering&offering='
+                            . $offering->get('alias')
+                            . '&active=discussions&thread='
+                            . $row->thread;
                         break;
 
                     case 'group':
                         $group = \Hubzero\User\Group::getInstance($row->scope_id);
-                        $url = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=forum&scope=' . $row->section . '/' . $row->category . '/' . $parent;
+                        $url = 'index.php?option=com_groups&cn='
+                            . $group->get('cn')
+                            . '&active=forum&scope='
+                            . $row->section
+                            . '/'
+                            . $row->category
+                            . '/'
+                            . $parent;
                         break;
 
                     case 'site':
                     default:
-                        $url = 'index.php?option=com_forum&section=' . $row->section . '&category=' . $row->category . '&thread=' . $parent;
+                        $url = 'index.php?option=com_forum&section='
+                            . $row->section
+                            . '&category='
+                            . $row->category
+                            . '&thread='
+                            . $parent;
                         break;
                 }
 

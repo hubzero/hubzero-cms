@@ -242,7 +242,11 @@ class Project extends Table
         }
 
         if ($search) {
-            $query .= " AND (p.title LIKE " . $this->db->quote('%' . $search . '%') . " OR p.alias LIKE " . $this->db->quote('%' . $search . '%') . ") ";
+            $query .= " AND (p.title LIKE "
+                . $this->db->quote('%' . $search . '%')
+                . " OR p.alias LIKE "
+                . $this->db->quote('%' . $search . '%')
+                . ") ";
         }
 
         if (isset($filters['private']) && $filters['private'] >= 0) {
@@ -490,7 +494,9 @@ class Project extends Table
 					AND pa.created >= o.lastvisit AND o.lastvisit IS NOT NULL
 					AND o.id IS NOT NULL AND pa.state != 2) as newactivity ";
         $query .= " FROM #__project_owners as po, $this->tableName AS p";
-        $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid=" . $this->db->quote($uid) . " AND o.userid != 0 AND p.state!= 2 ";
+        $query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id AND o.userid="
+            . $this->db->quote($uid)
+            . " AND o.userid != 0 AND p.state!= 2 ";
         $query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
         $query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 
@@ -498,7 +504,8 @@ class Project extends Table
             if ($filters['filterby'] == 'archived') {
                 $query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
             } elseif ($filters['filterby'] == 'active') {
-                $query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . (int) $groupid;
+                $query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid="
+                    . (int) $groupid;
             }
         } else {
             $query .=  " WHERE p.id=po.projectid AND p.state !=2 AND po.status=1 AND po.groupid=" . (int) $groupid;
@@ -570,7 +577,9 @@ class Project extends Table
             $query .= " FROM $this->tableName AS p, #__project_owners as o ";
             $query .= " WHERE p.id=o.projectid ";
             $query .= $active == 1
-                    ? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user=" . $this->db->quote($uid) . " AND p.state !=2)) "
+                    ? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user="
+                        . $this->db->quote($uid)
+                        . " AND p.state !=2)) "
                     : "AND p.state !=2 ";
             $query .= $include_provisioned ? "" : " AND p.provisioned=0";
             $query .= " AND o.userid=" . (int) $uid;
@@ -620,7 +629,8 @@ class Project extends Table
             $query .=  " JOIN #__users as x ON x.id=p.created_by_user ";
             $query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
             if ($active) {
-                $query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid=" . (int) $groupid;
+                $query .=  " WHERE p.id=po.projectid AND p.state NOT IN (2, 3) AND po.status=1 AND po.groupid="
+                    . (int) $groupid;
             } else {
                 $query .=  " WHERE p.id=po.projectid AND p.state=3 AND po.status=1 AND po.groupid=" . (int) $groupid;
             }
@@ -824,7 +834,11 @@ class Project extends Table
             return false;
         }
 
-        $this->db->setQuery("SELECT p.* FROM `#__publications` AS pu JOIN $this->tableName AS p ON pu.project_id=p.id WHERE pu.id=" . $this->db->quote($pid) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT p.* FROM `#__publications` AS pu JOIN $this->tableName AS p ON pu.project_id=p.id WHERE pu.id="
+                . $this->db->quote($pid)
+                . " LIMIT 1",
+        );
         if ($result = $this->db->loadAssoc()) {
             return $this->bind($result);
         }

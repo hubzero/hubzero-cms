@@ -43,7 +43,13 @@ class Ticketmessage extends Element
         $html[] = '<option value="0"' . (!$value ? ' selected="selected"' : '') . '>[ none ]</option>';
 
         foreach ($messages as $anode) {
-            $html[] = '<option value="' . $anode->id . '"' . ($value == $anode->id ? ' selected="selected"' : '') . '>' . htmlspecialchars(stripslashes($anode->title), ENT_QUOTES, 'UTF-8') . '</option>';
+            $html[] = '<option value="'
+                . $anode->id
+                . '"'
+                . ($value == $anode->id ? ' selected="selected"' : '')
+                . '>'
+                . htmlspecialchars(stripslashes($anode->title), ENT_QUOTES, 'UTF-8')
+                . '</option>';
         }
 
         $html[] = '</select>';

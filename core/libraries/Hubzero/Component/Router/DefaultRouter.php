@@ -37,15 +37,24 @@ class DefaultRouter extends Base
     {
         $segments = [];
 
-        if (isset($query['controller']) && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['controller']) == 1) {
+        if (
+            isset($query['controller'])
+            && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['controller']) == 1
+        ) {
             $segments[] = (string) $query['controller'];
             unset($query['controller']);
 
-            if (isset($query['task']) && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['task']) == 1) {
+            if (
+                isset($query['task'])
+                && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['task']) == 1
+            ) {
                 $segments[] = (string) $query['task'];
                 unset($query['task']);
 
-                if (isset($query['id']) && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['id']) == 1) {
+                if (
+                    isset($query['id'])
+                    && preg_match("/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/", (string) $query['id']) == 1
+                ) {
                     $segments[] = (string) $query['id'];
                     unset($query['id']);
                 }

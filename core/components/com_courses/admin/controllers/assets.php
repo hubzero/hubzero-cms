@@ -163,7 +163,21 @@ class Assets extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&tmpl='
+                    . $tmpl
+                    . '&scope='
+                    . $scope
+                    . '&scope_id='
+                    . $scope_id
+                    . '&course_id='
+                    . $course_id,
+                false,
+            ),
             ($this->getError() ? $this->getError() : null),
             ($this->getError() ? 'error' : 'message'),
         );
@@ -205,7 +219,21 @@ class Assets extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&tmpl='
+                    . $tmpl
+                    . '&scope='
+                    . $scope
+                    . '&scope_id='
+                    . $scope_id
+                    . '&course_id='
+                    . $course_id,
+                false,
+            ),
             ($this->getError() ? $this->getError() : null),
             ($this->getError() ? 'error' : 'message'),
         );
@@ -316,7 +344,11 @@ class Assets extends AdminController
         // Rename the temporary upload directory if it exist
         $lid = $fields['lid'];
         if ($lid != $row->get('id')) {
-            $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $fields['course_id'];
+            $path = PATH_APP
+                . DS
+                . trim($this->config->get('uploadpath', '/site/courses'), DS)
+                . DS
+                . $fields['course_id'];
             if (is_dir($path . DS . $lid)) {
                 if (!Filesystem::move($path . DS . $lid, $path . DS . $row->get('id'))) {
                     $this->setError(Lang::txt('UNABLE_TO_MOVE_PATH'));
@@ -391,7 +423,21 @@ class Assets extends AdminController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&tmpl='
+                    . $tmpl
+                    . '&scope='
+                    . $fields['scope']
+                    . '&scope_id='
+                    . $fields['scope_id']
+                    . '&course_id='
+                    . $fields['course_id'],
+                false,
+            ),
         );
     }
 
@@ -420,13 +466,35 @@ class Assets extends AdminController
         $tbl = new Tables\AssetAssociation($this->database);
         $tbl->loadByAssetScope($id, $scope_id, $scope);
 
-        if (!$tbl->move($move, "scope=" . $this->database->Quote($scope) . " AND scope_id=" . $this->database->Quote(intval($scope_id)))) {
+        if (
+            !$tbl->move(
+                $move,
+                "scope="
+                    . $this->database->Quote($scope)
+                    . " AND scope_id="
+                    . $this->database->Quote(intval($scope_id)),
+            )
+        ) {
             echo $tbl->getError();
             return;
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&tmpl='
+                    . $tmpl
+                    . '&scope='
+                    . $scope
+                    . '&scope_id='
+                    . $scope_id
+                    . '&course_id='
+                    . $course_id,
+                false,
+            ),
         );
     }
 
@@ -443,7 +511,21 @@ class Assets extends AdminController
         $course_id = Request::getInt('course_id', 0);
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&tmpl='
+                    . $tmpl
+                    . '&scope='
+                    . $scope
+                    . '&scope_id='
+                    . $scope_id
+                    . '&course_id='
+                    . $course_id,
+                false,
+            ),
         );
     }
 }

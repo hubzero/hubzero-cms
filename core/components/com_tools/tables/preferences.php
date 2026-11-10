@@ -126,9 +126,15 @@ class Preferences extends Table
             if (!in_array($filters['search_field'], ['username', 'name'])) {
                 $filters['search_field'] = 'name';
             }
-            $where[] = $this->db->quoteName($filters['search_field']) . ' LIKE ' . $this->db->quote('%' . $filters['search'] . '%');
+            $where[] = $this->db->quoteName($filters['search_field'])
+                . ' LIKE '
+                . $this->db->quote('%' . $filters['search'] . '%');
         }
-        if (isset($filters['class_alias']) && is_string($filters['class_alias']) && strlen($filters['class_alias']) > 0) {
+        if (
+            isset($filters['class_alias'])
+            && is_string($filters['class_alias'])
+            && strlen($filters['class_alias']) > 0
+        ) {
             $where[] = 'tsc.alias = ' . $this->db->quote($filters['class_alias']);
         }
         if (isset($filters['jobs']) && $filters['jobs']) {
@@ -207,7 +213,10 @@ class Preferences extends Table
                 }
 
                 $query  = "SELECT " . implode(', ', $select) . " " . $this->buildQuery($filters);
-                $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
+                $query .= " ORDER BY "
+                    . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1')
+                    . " "
+                    . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
                 if (isset($filters['limit']) && $filters['limit'] > 0) {
                     $filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);

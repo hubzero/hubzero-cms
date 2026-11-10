@@ -102,7 +102,11 @@ class Author extends Table
             return false;
         }
         $uids = "'" . implode("','", $uids) . "'";
-        $query  = "SELECT id FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND id IN (" . $uids . ")";
+        $query  = "SELECT id FROM $this->tableName WHERE publication_version_id="
+            . $this->db->quote($vid)
+            . " AND id IN ("
+            . $uids
+            . ")";
         $query .= " AND (role != 'submitter')";
         $query .= " ORDER BY ordering";
         $this->db->setQuery($query);
@@ -157,8 +161,13 @@ class Author extends Table
      * @param   boolean  $incSubmitter
      * @return  mixed    Object or array
      */
-    public function getAuthorsWithProfiles($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
-    {
+    public function getAuthorsWithProfiles(
+        $vid = null,
+        $get_uids = 0,
+        $active = 1,
+        $return_uid_array = false,
+        $incSubmitter = false,
+    ) {
         if (!$vid) {
             $vid = $this->publication_version_id;
         }
@@ -220,8 +229,13 @@ class Author extends Table
      * @param   boolean  $incSubmitter
      * @return  mixed    False if error, Array on success
      */
-    public function getAuthors($vid = null, $get_uids = 0, $active = 1, $return_uid_array = false, $incSubmitter = false)
-    {
+    public function getAuthors(
+        $vid = null,
+        $get_uids = 0,
+        $active = 1,
+        $return_uid_array = false,
+        $incSubmitter = false,
+    ) {
         if (!$vid) {
             $vid = $this->publication_version_id;
         }
@@ -455,7 +469,9 @@ class Author extends Table
             return false;
         }
 
-        $query = "SELECT * FROM $this->tableName WHERE role='submitter' AND publication_version_id=" . $this->db->quote($vid) . " LIMIT 1";
+        $query = "SELECT * FROM $this->tableName WHERE role='submitter' AND publication_version_id="
+            . $this->db->quote($vid)
+            . " LIMIT 1";
         $this->db->setQuery($query);
 
         $result = $this->db->loadObjectList();
@@ -506,7 +522,8 @@ class Author extends Table
         $owner_id = $objO->getOwnerId($projectid, $by);
 
         // Load submitter record if exists
-        $query = "SELECT * FROM $this->tableName WHERE role='submitter' AND publication_version_id=" . $this->db->quote($vid);
+        $query = "SELECT * FROM $this->tableName WHERE role='submitter' AND publication_version_id="
+            . $this->db->quote($vid);
         $this->db->setQuery($query);
         if ($result = $this->db->loadAssoc()) {
             $this->bind($result);
@@ -723,10 +740,16 @@ class Author extends Table
             return false;
         }
         if ($delete == 1) {
-            $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND user_id=" . $this->db->quote($uid);
+            $query  = "DELETE FROM $this->tableName WHERE publication_version_id="
+                . $this->db->quote($vid)
+                . " AND user_id="
+                . $this->db->quote($uid);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         } else {
-            $query  = "UPDATE $this->tableName SET status=0 WHERE publication_version_id=" . $this->db->quote($vid) . " AND user_id=" . $this->db->quote($uid);
+            $query  = "UPDATE $this->tableName SET status=0 WHERE publication_version_id="
+                . $this->db->quote($vid)
+                . " AND user_id="
+                . $this->db->quote($uid);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         }
 
@@ -761,10 +784,16 @@ class Author extends Table
             return false;
         }
         if ($delete == 1) {
-            $query  = "DELETE FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND project_owner_id=" . $this->db->quote($owner_id);
+            $query  = "DELETE FROM $this->tableName WHERE publication_version_id="
+                . $this->db->quote($vid)
+                . " AND project_owner_id="
+                . $this->db->quote($owner_id);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         } else {
-            $query  = "UPDATE $this->tableName SET status=0 WHERE publication_version_id=" . $this->db->quote($vid) . " AND project_owner_id=" . $this->db->quote($owner_id);
+            $query  = "UPDATE $this->tableName SET status=0 WHERE publication_version_id="
+                . $this->db->quote($vid)
+                . " AND project_owner_id="
+                . $this->db->quote($owner_id);
             $query .= " AND (role IS NULL OR role != 'submitter')  ";
         }
 
@@ -875,7 +904,11 @@ class Author extends Table
         if (!$vid) {
             return false;
         }
-        $this->db->setQuery("SELECT count(*) FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($vid) . " AND status=1 ");
+        $this->db->setQuery(
+            "SELECT count(*) FROM $this->tableName WHERE publication_version_id="
+                . $this->db->quote($vid)
+                . " AND status=1 ",
+        );
         return $this->db->loadResult();
     }
 
@@ -909,11 +942,19 @@ class Author extends Table
     {
         switch ($move) {
             case 'orderup':
-                $sql = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($this->publication_version_id) . " AND ordering < " . $this->db->quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+                $sql = "SELECT * FROM $this->tableName WHERE publication_version_id="
+                    . $this->db->quote($this->publication_version_id)
+                    . " AND ordering < "
+                    . $this->db->quote($this->ordering)
+                    . " ORDER BY ordering DESC LIMIT 1";
                 break;
 
             case 'orderdown':
-                $sql = "SELECT * FROM $this->tableName WHERE publication_version_id=" . $this->db->quote($this->publication_version_id) . " AND ordering > " . $this->db->quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+                $sql = "SELECT * FROM $this->tableName WHERE publication_version_id="
+                    . $this->db->quote($this->publication_version_id)
+                    . " AND ordering > "
+                    . $this->db->quote($this->ordering)
+                    . " ORDER BY ordering LIMIT 1";
                 break;
         }
         $this->db->setQuery($sql);

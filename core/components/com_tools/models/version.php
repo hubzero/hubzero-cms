@@ -892,10 +892,16 @@ class Version
         $db->query();
 
         if ($this->state == 3) {
-            $db->setQuery("DELETE FROM #__trac_user_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name=" . $db->Quote($this->toolname));
+            $db->setQuery(
+                "DELETE FROM #__trac_user_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name="
+                    . $db->Quote($this->toolname),
+            );
             $db->query();
 
-            $db->setQuery("DELETE FROM #__trac_group_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name=" . $db->Quote($this->toolname));
+            $db->setQuery(
+                "DELETE FROM #__trac_group_action as a,#__trac as t WHERE a.trac_id=t.id AND t.scope='tool' AND t.name="
+                    . $db->Quote($this->toolname),
+            );
             $db->query();
 
             $db->setQuery("DELETE FROM #__trac as t WHERE t.scope='tool' AND t.name=" . $db->Quote($this->toolname));
@@ -1173,9 +1179,13 @@ class Version
         $db = App::get('db');
 
         if ($byid == false) {
-            $query = "SELECT cn FROM #__tool_groups AS tg WHERE tg.role='1' AND tg.toolid=" . $db->Quote($this->toolid) . " LIMIT 1";
+            $query = "SELECT cn FROM #__tool_groups AS tg WHERE tg.role='1' AND tg.toolid="
+                . $db->Quote($this->toolid)
+                . " LIMIT 1";
         } else {
-            $query = "SELECT gidNumber FROM #__xgroups AS xg, #_tool_groups AS tg WHERE tg.cn=xg.cn AND tg.role='1' AND tg.toolid=" . $db->Quote($this->toolid) . " LIMIT 1";
+            $query = "SELECT gidNumber FROM #__xgroups AS xg, #_tool_groups AS tg WHERE tg.cn=xg.cn AND tg.role='1' AND tg.toolid="
+                . $db->Quote($this->toolid)
+                . " LIMIT 1";
         }
         $db->setQuery($query);
         $result = $db->loadResult();

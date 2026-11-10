@@ -38,7 +38,12 @@ class Searchv1r0 extends ApiController
         $adapter = '\\Hubzero\\Search\\Adapters\\' . ucfirst((string) $config->get('engine')) . 'QueryAdapter';
 
         if (!class_exists($adapter)) {
-            throw new \Exception('The search API needs the Solr search engine; this hub is configured for "' . $config->get('engine') . '".', 501);
+            throw new \Exception(
+                'The search API needs the Solr search engine; this hub is configured for "'
+                    . $config->get('engine')
+                    . '".',
+                501,
+            );
         }
 
         return new Query($config);
@@ -153,7 +158,11 @@ class Searchv1r0 extends ApiController
                 }
 
                 if ($field == 'description' || $field == 'fulltext' || $field == 'abstract') {
-                    if (isset($result['description']) && isset($result['fulltext']) && $result['description'] != $result['fulltext']) {
+                    if (
+                        isset($result['description'])
+                        && isset($result['fulltext'])
+                        && $result['description'] != $result['fulltext']
+                    ) {
                         $snippet .= $r;
                     }
                 }

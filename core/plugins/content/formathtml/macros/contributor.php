@@ -110,7 +110,11 @@ class Contributor extends Macro
 
         // Did we get a result from the database?
         if ($name && $id) {
-            return '<a href="' . Route::url('index.php?option=com_members&id=' . (int) $id) . '">' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '</a>';
+            return '<a href="'
+                . Route::url('index.php?option=com_members&id=' . (int) $id)
+                . '">'
+                . htmlspecialchars($name, ENT_QUOTES, 'UTF-8')
+                . '</a>';
         } else {
             // Return error message
             return '(contributor:' . htmlspecialchars((string) $et, ENT_QUOTES, 'UTF-8') . ' not found)';

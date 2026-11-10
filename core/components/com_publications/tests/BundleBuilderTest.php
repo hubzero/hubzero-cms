@@ -351,7 +351,10 @@ class BundleBuilderTest extends Basic
     {
         $this->assertTrue($this->hasFreeSpace($this->root, 0), 'zero need fits');
         $this->assertFalse($this->hasFreeSpace($this->root, PHP_INT_MAX), 'impossible need rejected');
-        $this->assertTrue($this->hasFreeSpace($this->root . DIRECTORY_SEPARATOR . 'no-such-dir', 1 << 20), 'unknowable free space does not block');
+        $this->assertTrue(
+            $this->hasFreeSpace($this->root . DIRECTORY_SEPARATOR . 'no-such-dir', 1 << 20),
+            'unknowable free space does not block',
+        );
     }
 
     /**
@@ -508,9 +511,21 @@ class BundleBuilderTest extends Basic
 
         $a = new \ZipArchive();
         $a->open($z);
-        $this->assertSame('FRESH ARCHIVAL README', $a->getFromName($name . '/hubREADME.txt'), 'archival readme refreshed');
-        $this->assertSame('AUTHOR PAYLOAD', $a->getFromName($name . '/README.txt'), 'author payload README.txt untouched');
-        $this->assertSame('ORIGINAL IMG', $a->getFromName($name . '/gallery/pic.png'), 'gallery kept, not overwritten (backfill only)');
+        $this->assertSame(
+            'FRESH ARCHIVAL README',
+            $a->getFromName($name . '/hubREADME.txt'),
+            'archival readme refreshed',
+        );
+        $this->assertSame(
+            'AUTHOR PAYLOAD',
+            $a->getFromName($name . '/README.txt'),
+            'author payload README.txt untouched',
+        );
+        $this->assertSame(
+            'ORIGINAL IMG',
+            $a->getFromName($name . '/gallery/pic.png'),
+            'gallery kept, not overwritten (backfill only)',
+        );
 
         $count = 0;
         for ($i = 0; $i < $a->numFiles; $i++) {

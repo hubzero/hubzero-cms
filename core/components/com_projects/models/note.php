@@ -149,7 +149,9 @@ class Note extends \Components\Wiki\Models\Book
         if ($remaining) {
             $query  = "SELECT DISTINCT p.pagename, p.title, p.path, p.scope, p.scope_id ";
             $query .= "FROM `#__wiki_pages` AS p ";
-            $query .= "WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . " AND p.state!=2 ";
+            $query .= "WHERE p.scope='project' AND p.scope_id="
+                . $this->db->quote($this->project_id)
+                . " AND p.state!=2 ";
             $k = 1;
             $where = '';
             foreach ($remaining as $r) {
@@ -220,7 +222,9 @@ class Note extends \Components\Wiki\Models\Book
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 
-        $query .= is_numeric($id) ? " AND p.id=" . (int) $id . " LIMIT 1" : " AND p.pagename=" . $this->db->quote($id) . " LIMIT 1";
+        $query .= is_numeric($id)
+            ? " AND p.id=" . (int) $id . " LIMIT 1"
+            : " AND p.pagename=" . $this->db->quote($id) . " LIMIT 1";
 
         $this->db->setQuery($query);
         $result = $this->db->loadObjectList();

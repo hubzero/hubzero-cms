@@ -262,7 +262,18 @@ class Notes extends Plugin
                 $this->task = 'download';
             }
 
-            if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->controllerName . '.php')) {
+            if (
+                !file_exists(
+                    Component::path('com_wiki')
+                        . DS
+                        . 'site'
+                        . DS
+                        . 'controllers'
+                        . DS
+                        . $this->controllerName
+                        . '.php',
+                )
+            ) {
                 $this->controllerName = 'pages';
             }
             // Listing/unlisting?
@@ -372,7 +383,20 @@ class Notes extends Plugin
                     : Lang::txt('COM_PROJECTS_NOTE_ADDED');
                 $what .= $exists ? ' "' . $controller->page->get('title') . '" ' : '';
                 $what .= ' ' . Lang::txt('COM_PROJECTS_NOTE_IN_NOTES');
-                $aid = $this->model->recordActivity($what, $controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=notes'), 'notes', 0);
+                $aid = $this->model->recordActivity(
+                    $what,
+                    $controller->page->get('id'),
+                    'notes',
+                    Route::url(
+                        'index.php?option='
+                            . $this->componentOption
+                            . '&alias='
+                            . $this->model->get('alias')
+                            . '&active=notes',
+                    ),
+                    'notes',
+                    0,
+                );
 
                 // Record page order for new pages
                 $lastorder = $this->note->getLastNoteOrder($scope);
@@ -437,11 +461,22 @@ class Notes extends Plugin
 
         // Get/update public stamp for page
         if ($this->note->getPublicStamp($page->get('id'), true, $listed)) {
-            $this->msg = $this->task == 'publist' ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED') : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
+            $this->msg = $this->task == 'publist'
+                ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED')
+                : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
 
             Notify::message($this->msg, 'success', 'projects');
 
-            App::redirect(Route::url('index.php?option=' . $this->componentOption . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename')));
+            App::redirect(
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&scope='
+                        . $page->get('scope')
+                        . '&pagename='
+                        . $page->get('pagename'),
+                ),
+            );
         }
 
         App::redirect(Route::url($this->model->link('notes')));
@@ -543,22 +578,49 @@ class Notes extends Plugin
         if ($this->tool && $this->tool->id) {
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
-                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=tools'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=tools',
+                ),
             );
 
             Pathway::append(
                 \Hubzero\Utility\Str::truncate($this->tool->title, 50),
-                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->tool->id),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=tools&tool='
+                        . $this->tool->id,
+                ),
             );
 
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
-                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->tool->id . '&action=wiki'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=tools&tool='
+                        . $this->tool->id
+                        . '&action=wiki',
+                ),
             );
         } else {
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
-                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=notes'),
+                Route::url(
+                    'index.php?option='
+                        . $this->componentOption
+                        . '&alias='
+                        . $this->model->get('alias')
+                        . '&active=notes',
+                ),
             );
         }
     }

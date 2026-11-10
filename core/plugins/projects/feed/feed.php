@@ -390,7 +390,9 @@ class Feed extends Plugin
             if (!$row->save()) {
                 $this->setError($row->getError());
             } else {
-                $this->msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED') : Lang::txt('PLG_PROJECTS_BLOG_BLOG_ENTRY_SAVED'));
+                $this->msg = ($isNew ? Lang::txt(
+                    'PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED',
+                ) : Lang::txt('PLG_PROJECTS_BLOG_BLOG_ENTRY_SAVED'));
             }
 
             // Record activity
@@ -436,7 +438,9 @@ class Feed extends Plugin
                         'anonymous'   => $row->get('anonymous', 0),
                         'description' => $row->get('description'),
                         'details'     => [
-                            'url'   => Route::url($this->model->link() . '&active=' . $this->pluginName . '#activity' . $row->get('id')),
+                            'url'   => Route::url(
+                                $this->model->link() . '&active=' . $this->pluginName . '#activity' . $row->get('id'),
+                            ),
                             'class' => ($row->get('parent') ? 'quote' : 'blog'),
                         ],
                     ],

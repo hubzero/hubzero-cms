@@ -524,7 +524,9 @@ class Validate
         $type = strtolower(trim($type));
 
         if (!isset($reserved[$type])) {
-            throw new InvalidArgumentException(sprintf('Type must be "username" or "group". Type of "%s" provided.', $type));
+            throw new InvalidArgumentException(
+                sprintf('Type must be "username" or "group". Type of "%s" provided.', $type),
+            );
         }
 
         $val = trim(strtolower($val));
@@ -570,7 +572,9 @@ class Validate
         }
 
         if ($regex === null) {
-            $regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@' . self::$pattern['hostname'] . '$/i';
+            $regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@'
+                . self::$pattern['hostname']
+                . '$/i';
         }
         $return = self::check($check, $regex);
         if ($deep === false || $deep === null) {
@@ -630,7 +634,13 @@ class Validate
         // shared with the address validator and should not start accepting mail
         // for a host that cannot receive it.
         $regex = '/^(?:(?:https?|ftps?|sftp|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?')
-            . '(?:' . self::$pattern['IPv4'] . '|\[' . self::$pattern['IPv6'] . '\]|localhost|' . self::$pattern['hostname'] . ')(?::[1-9][0-9]{0,4})?'
+            . '(?:'
+            . self::$pattern['IPv4']
+            . '|\['
+            . self::$pattern['IPv6']
+            . '\]|localhost|'
+            . self::$pattern['hostname']
+            . ')(?::[1-9][0-9]{0,4})?'
             . '(?:\/?|\/' . $validChars . '*)?'
             . '(?:\?' . $validChars . '*)?'
             . '(?:#' . $validChars . '*)?$/iu';
@@ -700,10 +710,16 @@ class Validate
     {
         $className = ucwords($classPrefix) . 'Validation';
         if (!class_exists($className)) {
-            throw new InvalidArgumentException(sprintf('Could not find %s class, unable to complete validation.', $className), E_USER_WARNING);
+            throw new InvalidArgumentException(
+                sprintf('Could not find %s class, unable to complete validation.', $className),
+                E_USER_WARNING,
+            );
         }
         if (!method_exists($className, $method)) {
-            throw new InvalidArgumentException(sprintf('Method %s does not exist on %s unable to complete validation.', $method, $className), E_USER_WARNING);
+            throw new InvalidArgumentException(
+                sprintf('Method %s does not exist on %s unable to complete validation.', $method, $className),
+                E_USER_WARNING,
+            );
         }
         $check = (array) $check;
         return call_user_func_array([$className, $method], $check);

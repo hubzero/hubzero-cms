@@ -616,12 +616,22 @@ class Media extends SiteController
             return true;
         }
         $db = \App::get('db');
-        $db->setQuery("SELECT c.created_by, c.object_type, c.object_id FROM `#__collections_posts` AS p INNER JOIN `#__collections` AS c ON c.id = p.collection_id WHERE p.original = 1 AND p.item_id = " . (int) $asset->get('item_id'));
+        $db->setQuery(
+            "SELECT c.created_by, c.object_type, c.object_id FROM `#__collections_posts` AS p INNER JOIN `#__collections` AS c ON c.id = p.collection_id WHERE p.original = 1 AND p.item_id = "
+                . (int) $asset->get('item_id'),
+        );
         if ($c = $db->loadObject()) {
-            if ($c->created_by == User::get('id') || ($c->object_type == 'member' && $c->object_id == User::get('id'))) {
+            if (
+                $c->created_by == User::get('id')
+                || ($c->object_type == 'member' && $c->object_id == User::get('id'))
+            ) {
                 return true;
             }
-            if ($c->object_type == 'group' && ($g = \Hubzero\User\Group::getInstance($c->object_id)) && $g->isManager(User::get('id'))) {
+            if (
+                $c->object_type == 'group'
+                && ($g = \Hubzero\User\Group::getInstance($c->object_id))
+                && $g->isManager(User::get('id'))
+            ) {
                 return true;
             }
         }

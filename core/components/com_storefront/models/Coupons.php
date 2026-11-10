@@ -96,8 +96,13 @@ class Coupons
      * @param   bool        $returnInfo flag whether to query/return  coupon generic info
      * @return  object      coupon info
      */
-    public function getCouponInfo($cnId, $returnObjects = true, $returnConditions = true, $returnAction = true, $returnInfo = false)
-    {
+    public function getCouponInfo(
+        $cnId,
+        $returnObjects = true,
+        $returnConditions = true,
+        $returnAction = true,
+        $returnInfo = false,
+    ) {
         $couponInfo = new \stdClass();
 
         // Get objects
@@ -190,7 +195,8 @@ class Coupons
      */
     public function apply($cnId)
     {
-        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = " . $this->db->quote($cnId);
+        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = "
+            . $this->db->quote($cnId);
         $this->db->setQuery($sql);
         $this->db->query();
 
@@ -205,7 +211,8 @@ class Coupons
      */
     public function recycle($cnId)
     {
-        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = " . $this->db->quote($cnId);
+        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = "
+            . $this->db->quote($cnId);
         $this->db->setQuery($sql);
         $this->db->query();
 

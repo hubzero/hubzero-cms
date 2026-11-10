@@ -274,7 +274,11 @@ class Idp extends SiteController
         // encoding) and the posted fields for the POST binding.
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode('/saml/idp/login?rk=' . $this->stashRequest()), false),
+                Route::url(
+                    'index.php?option=com_users&view=login&return='
+                        . base64_encode('/saml/idp/login?rk=' . $this->stashRequest()),
+                    false,
+                ),
             );
         }
 
@@ -308,7 +312,15 @@ class Idp extends SiteController
             $samlSession->get('session_index'),
         );
 
-        $this->log('login issued: ' . User::get('username') . ' -> ' . $issuer . ' (session ' . $samlSession->get('session_index') . ')');
+        $this->log(
+            'login issued: '
+                . User::get('username')
+                . ' -> '
+                . $issuer
+                . ' (session '
+                . $samlSession->get('session_index')
+                . ')',
+        );
 
         // Return it to the registered ACS via the HTTP-POST binding
         $postBinding = $this->idp->bindingFactory()->create(\LightSaml\SamlConstants::BINDING_SAML2_HTTP_POST);
@@ -415,7 +427,11 @@ class Idp extends SiteController
                 // the SP the user is signed out of the hub when they are not.
                 $status = \LightSaml\SamlConstants::STATUS_PARTIAL_LOGOUT;
 
-                $this->log('logout partial: hub session for ' . $samlSession->get('session_index') . ' not present in this request');
+                $this->log(
+                    'logout partial: hub session for '
+                        . $samlSession->get('session_index')
+                        . ' not present in this request',
+                );
             }
         } else {
             $this->log('logout: unknown session index from ' . $issuer);

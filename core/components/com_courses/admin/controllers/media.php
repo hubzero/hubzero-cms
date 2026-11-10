@@ -29,7 +29,13 @@ class Media extends AdminController
     {
         $course_id = Request::getInt('course', 0);
 
-        $path = PATH_APP . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $course_id . DS . $listdir;
+        $path = PATH_APP
+            . DS
+            . trim($this->config->get('uploadpath', '/site/courses'), DS)
+            . DS
+            . $course_id
+            . DS
+            . $listdir;
 
         if ($subdir) {
             // Refuse rather than drop. Silently ignoring a traversing subdir
@@ -109,7 +115,11 @@ class Media extends AdminController
             return;
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
@@ -133,7 +143,9 @@ class Media extends AdminController
         $allowed = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
-            echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))]);
+            echo json_encode(
+                ['error' => Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed))],
+            );
             return;
         }
 
@@ -239,7 +251,12 @@ class Media extends AdminController
             $sizeLimit = $sizeLimit * 1024 * 1024;
 
             if ($file['size'] > $sizeLimit) {
-                $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+                $this->setError(
+                    Lang::txt(
+                        'COM_COLLECTIONS_ERROR_UPLOADING_FILE_TOO_BIG',
+                        \Hubzero\Utility\Number::formatBytes($sizeLimit),
+                    ),
+                );
                 return $this->displayTask();
             }
 

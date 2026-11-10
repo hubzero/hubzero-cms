@@ -146,6 +146,12 @@ class Macrolist extends WikiMacro
     {
         $id = strtolower(str_replace('.', '-', $label));
 
-        return '<dt id="macro-' . $id . '"><code>&#91;&#91;' . $label . '&#93;&#93;</code></dt><dd>' . $description . '</dd>';
+        return '<dt id="macro-'
+            . $id
+            . '"><code>&#91;&#91;'
+            . $label
+            . '&#93;&#93;</code></dt><dd>'
+            . $description
+            . '</dd>';
     }
 }

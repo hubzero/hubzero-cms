@@ -796,7 +796,8 @@ class Authors extends Base
         $verNum = Component::params('com_members')->get('rorApiVersion', 'v2');
 
         if (!empty($verNum)) {
-            $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:" . urlencode('"' . $orgQry . '"');
+            $queryURL = "https://api.ror.org/$verNum/organizations?query.advanced=names.value:"
+                . urlencode('"' . $orgQry . '"');
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $queryURL);

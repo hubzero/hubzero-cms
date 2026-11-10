@@ -86,7 +86,10 @@ class Ip
         static $networks = null;
 
         if ($networks === null) {
-            $networks = array_map([Network::class, 'parse'], ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7']);
+            $networks = array_map(
+                [Network::class, 'parse'],
+                ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16', 'fc00::/7'],
+            );
         }
 
         foreach ($networks as $network) {

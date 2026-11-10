@@ -49,7 +49,12 @@ class Tags extends Cloud
     {
         $now = Date::toSql();
 
-        $this->db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag=" . $this->db->quote($tag) . " AND o.tbl=" . $this->db->quote($this->scope));
+        $this->db->setQuery(
+            "SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag="
+                . $this->db->quote($tag)
+                . " AND o.tbl="
+                . $this->db->quote($this->scope),
+        );
         $objs = $this->db->loadObjectList();
 
         $ids = '';
@@ -84,7 +89,9 @@ class Tags extends Cloud
                 } else {
                     $groups = count($usersgroups) ? $usersgroups[0] : '';
                 }
-                $sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
+                $sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('"
+                    . $groups
+                    . "') ";
                 foreach ($usersgroups as $group) {
                     $sql .= " OR r.group_access LIKE " . $this->db->quote('%;' . $group . ';%');
                 }
@@ -241,8 +248,12 @@ class Tags extends Cloud
             $fquery .= "))";
             $query .= $fquery;
         }
-        $query .= "AND (C.publish_up IS NULL OR C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->db->quote($now) . ") ";
-        $query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->db->quote($now) . ") AND ";
+        $query .= "AND (C.publish_up IS NULL OR C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= "
+            . $this->db->quote($now)
+            . ") ";
+        $query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= "
+            . $this->db->quote($now)
+            . ") AND ";
 
         if (!User::isGuest()) {
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
@@ -253,7 +264,9 @@ class Tags extends Cloud
                 } else {
                     $groups = count($usersgroups) ? $usersgroups[0] : '';
                 }
-                $query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('" . $groups . "') ";
+                $query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('"
+                    . $groups
+                    . "') ";
                 foreach ($usersgroups as $group) {
                     $query .= " OR C.group_access LIKE " . $this->db->quote('%;' . $group . ';%');
                 }
@@ -266,13 +279,21 @@ class Tags extends Cloud
         }
         if ($tag || $tag2) {
             if ($tag && !$tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN (" . $this->db->quote($tag) . "))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN ("
+                    . $this->db->quote($tag)
+                    . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
             } elseif ($tag2 && !$tag) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN (" . $this->db->quote($tag2) . "))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN ("
+                    . $this->db->quote($tag2)
+                    . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
             } elseif ($tag && $tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN (" . $this->db->quote($tag) . "," . $this->db->quote($tag2) . "))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN ("
+                    . $this->db->quote($tag)
+                    . ","
+                    . $this->db->quote($tag2)
+                    . "))";
                 $query .= " GROUP BY C.id HAVING uniques=2";
             }
         }

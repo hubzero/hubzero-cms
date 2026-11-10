@@ -163,7 +163,13 @@ class Customexts extends AdminController
                 $result[$i] = $item;
             }
 
-            \Hubzero\Utility\Arr::sortObjects($result, $filters['sort'], $filters['sort_Dir'] == 'desc' ? -1 : 1, true, $lang->getLocale());
+            \Hubzero\Utility\Arr::sortObjects(
+                $result,
+                $filters['sort'],
+                $filters['sort_Dir'] == 'desc' ? -1 : 1,
+                true,
+                $lang->getLocale(),
+            );
 
             $total = count($result);
 
@@ -393,7 +399,10 @@ class Customexts extends AdminController
                     $extdir = implode("/", $pieces);
 
                     if (is_dir($extdir . '/__' . $repodir)) {
-                        $museCmd = 'renameRepo currPath=' . escapeshellarg($extdir . '/__' . $repodir) . ' targetPath=' . escapeshellarg($model->path);
+                        $museCmd = 'renameRepo currPath='
+                            . escapeshellarg($extdir . '/__' . $repodir)
+                            . ' targetPath='
+                            . escapeshellarg($model->path);
 
                         $rename_response = Cli::call($museCmd, $task = 'repository');
                         $rename_response = json_decode($rename_response);
@@ -409,7 +418,10 @@ class Customexts extends AdminController
                         $repoPath = array_pop($pieces);
                         $extdir = implode("/", $pieces);
 
-                        $museCmd = 'renameRepo currPath=' . escapeshellarg($model->path) . ' targetPath=' . escapeshellarg($extdir . '/__' . $repoPath);
+                        $museCmd = 'renameRepo currPath='
+                            . escapeshellarg($model->path)
+                            . ' targetPath='
+                            . escapeshellarg($extdir . '/__' . $repoPath);
 
                         $rename_response = Cli::call($museCmd, $task = 'repository');
                         $rename_response = json_decode($rename_response);
@@ -490,10 +502,20 @@ class Customexts extends AdminController
             // Do we have a git repo?  If not clone the specified repo.
             if (!is_dir($extension->path . DS . '.git')) {
                 if ($extension->get('apikey')) {
-                    $newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
-                    $museCmd = 'cloneRepo repoPath=' . escapeshellarg($extension->path) . ' sourceUrl=' . escapeshellarg($newURL);
+                    $newURL = "https://oauth2:"
+                        . $extension->get('apikey')
+                        . "@"
+                        . parse_url($extension->get('url'), PHP_URL_HOST)
+                        . parse_url($extension->get('url'), PHP_URL_PATH);
+                    $museCmd = 'cloneRepo repoPath='
+                        . escapeshellarg($extension->path)
+                        . ' sourceUrl='
+                        . escapeshellarg($newURL);
                 } else {
-                    $museCmd = 'cloneRepo repoPath=' . escapeshellarg($extension->path) . ' sourceUrl=' . escapeshellarg($extension->get('url'));
+                    $museCmd = 'cloneRepo repoPath='
+                        . escapeshellarg($extension->path)
+                        . ' sourceUrl='
+                        . escapeshellarg($extension->get('url'));
                 }
 
                 $clone_response = Cli::call($museCmd, $task = 'repository');
@@ -512,14 +534,22 @@ class Customexts extends AdminController
                 } elseif (preg_grep("/fatal: Authentication failed.../uis", $clone_response)) {
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE')];
                     $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                } elseif (preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)) {
+                } elseif (
+                    preg_grep("/Cloning into '" . preg_quote($extension->path, '/') . "'.../uis", $clone_response)
+                ) {
                     // Try and determine a successful clone.  The string "cloning into" is always in the ouptut message.
                     // Ex: Cloning into '/var/www/dev/app/modules/mod_home_hero_stats'...
                     $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_SUCCESSFUL')];
                     $success[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
 
                     // Run migrations
-                    $migrations_response = Cli::migration($dryRun = false, $ignoreDates = true, $file = null, $dir = 'up', $folder = $extension->path);
+                    $migrations_response = Cli::migration(
+                        $dryRun = false,
+                        $ignoreDates = true,
+                        $file = null,
+                        $dir = 'up',
+                        $folder = $extension->path,
+                    );
                     $migrations_response = json_decode($migrations_response);
                 } else {
                     // Try and catch other errors.  If other errors are found, it's best to add them above.
@@ -529,32 +559,57 @@ class Customexts extends AdminController
                 // If  have a cloned repo, let's check for incoming form changes.
                 // Update the repo to the specified Access token.
                 if ($extension->get('apikey')) {
-                    $newURL = "https://oauth2:" . $extension->get('apikey') . "@" . parse_url($extension->get('url'), PHP_URL_HOST) . parse_url($extension->get('url'), PHP_URL_PATH);
+                    $newURL = "https://oauth2:"
+                        . $extension->get('apikey')
+                        . "@"
+                        . parse_url($extension->get('url'), PHP_URL_HOST)
+                        . parse_url($extension->get('url'), PHP_URL_PATH);
                 } else {
                     $newURL = $extension->get('url');
                 }
 
-                $museCmd = 'updateGitURLconf repoPath=' . escapeshellarg($extension->path) . ' newsourceUrl=' . escapeshellarg($newURL);
+                $museCmd = 'updateGitURLconf repoPath='
+                    . escapeshellarg($extension->path)
+                    . ' newsourceUrl='
+                    . escapeshellarg($newURL);
                 $updateGitURLconf_response = Cli::call($museCmd, $task = 'repository');
-                $updateGitURLconf_response = json_decode($updateGitURLconf_response == null ? '' : $updateGitURLconf_response);
+                $updateGitURLconf_response = json_decode(
+                    $updateGitURLconf_response == null ? '' : $updateGitURLconf_response,
+                );
 
                 // did we fail
                 if ($updateGitURLconf_response === null) {
                     // add failed MUSE message
-                    $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => ["MUSE updateGitURLconf returned NULL", $museCmd]];
+                    $failed[] = [
+                        'ext_id' => $id,
+                        'extension' => $extension->get('name'),
+                        'message' => ["MUSE updateGitURLconf returned NULL", $museCmd],
+                    ];
                 } elseif ($updateGitURLconf_response[0] != '' || json_last_error() != JSON_ERROR_NONE) {
                     // add failed message
-                    $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $updateGitURLconf_response];
+                    $failed[] = [
+                        'ext_id' => $id,
+                        'extension' => $extension->get('name'),
+                        'message' => $updateGitURLconf_response,
+                    ];
                 } else {
                     // Check if specified branch is being used.  If not checkout out specified branch
-                    $museCmd = 'checkoutRepoBranch repoPath=' . escapeshellarg($extension->path) . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . escapeshellarg($extension->get('git_branch')) : '');
+                    $museCmd = 'checkoutRepoBranch repoPath='
+                        . escapeshellarg($extension->path)
+                        . ((!empty($extension->get('git_branch'))) ? ' git_branch=' . escapeshellarg(
+                            $extension->get('git_branch'),
+                        ) : '');
                     $checkoutRepoBranch_response = Cli::call($museCmd, $task = 'repository');
                     $checkoutRepoBranch_response = json_decode($checkoutRepoBranch_response);
 
                     // check for command not found failure
                     if (preg_grep("/command not found/uis", $checkoutRepoBranch_response)) {
                         // add failed message
-                        $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $checkoutRepoBranch_response];
+                        $failed[] = [
+                            'ext_id' => $id,
+                            'extension' => $extension->get('name'),
+                            'message' => $checkoutRepoBranch_response,
+                        ];
                     } else {
                         // Check for updates in remote branch. muse wants the source as
                         // "remote/branch" (it refuses a bare branch name as an invalid
@@ -575,32 +630,62 @@ class Customexts extends AdminController
                         if (!is_null($fetch_response) && preg_grep("/command not found/uis", $fetch_response)) {
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_CLONE_EMPTY_BRANCH2')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } elseif (!is_null($fetch_response) && preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response)) {
+                        } elseif (
+                            !is_null($fetch_response)
+                            && preg_grep("/unknown revision or path not in the working tree/uis", $fetch_response)
+                        ) {
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_UNKNOWN_BRANCH')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } elseif (!is_null($fetch_response) && preg_grep("/could not read Username/uis", $fetch_response)) {
+                        } elseif (
+                            !is_null($fetch_response)
+                            && preg_grep("/could not read Username/uis", $fetch_response)
+                        ) {
                             // muse now reports a fetch that could not reach or log in to the
                             // remote (it used to be silent and look "up to date"); that is a
                             // failure, not a list of incoming changes to merge.
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_MISSING_TOKEN')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
-                        } elseif (!is_null($fetch_response) && preg_grep("/Authentication failed|Permission denied \(publickey\)|HTTP Basic: Access denied/uis", $fetch_response)) {
+                        } elseif (
+                            !is_null($fetch_response)
+                            && preg_grep(
+                                "/Authentication failed|Permission denied \(publickey\)|HTTP Basic: Access denied/uis",
+                                $fetch_response,
+                            )
+                        ) {
                             $output = [Lang::txt('COM_INSTALLER_CUSTOMEXTS_TOKEN_FAILURE')];
                             $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
                         } elseif (!is_null($fetch_response) && preg_grep("/^fetch failed:/uis", $fetch_response)) {
-                            $failed[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $fetch_response];
+                            $failed[] = [
+                                'ext_id' => $id,
+                                'extension' => $extension->get('name'),
+                                'message' => $fetch_response,
+                            ];
                         } else {
                             // Run migrations
-                            $migrations_response = Cli::migration($dryRun = false, $ignoreDates = true, $file = null, $dir = 'up', $folder = $extension->path);
-                            $migrations_response = json_decode($migrations_response == null ? '' : $migrations_response);
+                            $migrations_response = Cli::migration(
+                                $dryRun = false,
+                                $ignoreDates = true,
+                                $file = null,
+                                $dir = 'up',
+                                $folder = $extension->path,
+                            );
+                            $migrations_response = json_decode(
+                                $migrations_response == null ? '' : $migrations_response,
+                            );
 
                             // if the response from the fetch was empty no changes needed, otherwise display error.
                             // Possible the message here is considered an error because we're only testing for several specific
                             // errors above, but everything else will fall through to here.
-                            $output = ($fetch_response == '') ? [Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')] : $fetch_response;
+                            $output = ($fetch_response == '')
+                                ? [Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')]
+                                : $fetch_response;
 
                             // add success message
-                            $success[] = ['ext_id' => $id, 'extension' => $extension->get('name'), 'message' => $output];
+                            $success[] = [
+                                'ext_id' => $id,
+                                'extension' => $extension->get('name'),
+                                'message' => $output,
+                            ];
                         }
                     }
                 }
@@ -665,7 +750,9 @@ class Customexts extends AdminController
             // the exit status is consulted here.
             if ($result['status'] !== 0) {
                 $update_response = trim($result['output']) !== '' ? json_decode($result['output']) : null;
-                $update_response = is_array($update_response) ? $update_response : [$result['output'] !== '' ? $result['output'] : 'muse exited with status ' . $result['status']];
+                $update_response = is_array($update_response)
+                    ? $update_response
+                    : [$result['output'] !== '' ? $result['output'] : 'muse exited with status ' . $result['status']];
             } elseif (trim($result['output']) === '') {
                 $update_response = [];
             } else {
@@ -675,16 +762,27 @@ class Customexts extends AdminController
             if (is_null($update_response) || !empty($update_response)) {
                 $failed[] = [
                     'extension' => $extension->get('name'),
-                    'message'   => is_array($update_response) ? $update_response : [Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL_GENERIC')],
+                    'message'   => is_array($update_response)
+                        ? $update_response
+                        : [Lang::txt('COM_INSTALLER_CUSTOMEXTS_PULL_FAIL_GENERIC')],
                 ];
             } else {
                 // Run migrations only when the update succeeded
-                $migrations_response = Cli::migration($dryRun = false, $ignoreDates = true, $file = null, $dir = 'up', $folder = $extension->path);
+                $migrations_response = Cli::migration(
+                    $dryRun = false,
+                    $ignoreDates = true,
+                    $file = null,
+                    $dir = 'up',
+                    $folder = $extension->path,
+                );
                 $migrations_response = json_decode($migrations_response == null ? '' : $migrations_response);
 
                 // Every update tags a cmsrollbackpoint-<time> first; keep only the
                 // newest so the tags do not pile up in the extension's repository.
-                Cli::call('clean -r=' . escapeshellarg($extension->path) . ' --purge-rollback-points', $task = 'repository');
+                Cli::call(
+                    'clean -r=' . escapeshellarg($extension->path) . ' --purge-rollback-points',
+                    $task = 'repository',
+                );
 
                 $success[] = [
                     'extension' => $extension->get('name'),
@@ -736,7 +834,13 @@ class Customexts extends AdminController
             }
 
             // Run migrations
-            $migrations_response = Cli::migration($dryRun = false, $ignoreDates = true, $file = null, $dir = 'down', $folder = $extension->path);
+            $migrations_response = Cli::migration(
+                $dryRun = false,
+                $ignoreDates = true,
+                $file = null,
+                $dir = 'down',
+                $folder = $extension->path,
+            );
             $migrations_response = json_decode($migrations_response);
 
             // removeRepo prints the boolean from deleteDirectory() (json "[true]"
@@ -756,8 +860,13 @@ class Customexts extends AdminController
             }
 
             if (!$removed) {
-                $detail = is_array($remove_response) ? implode(' ', array_map('strval', $remove_response)) : trim($result['output']);
-                Notify::error(Lang::txt('COM_INSTALLER_CUSTOMEXTS_REMOVE_FAILED', $extension->get('name')) . ($detail !== '' ? ' (' . $detail . ')' : ''));
+                $detail = is_array($remove_response)
+                    ? implode(' ', array_map('strval', $remove_response))
+                    : trim($result['output']);
+                Notify::error(
+                    Lang::txt('COM_INSTALLER_CUSTOMEXTS_REMOVE_FAILED', $extension->get('name'))
+                        . ($detail !== '' ? ' (' . $detail . ')' : ''),
+                );
                 continue;
             }
 

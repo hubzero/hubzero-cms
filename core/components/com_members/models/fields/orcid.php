@@ -66,7 +66,9 @@ class Orcid extends Text
         $html[] = '<div class="orcid-field">';
         $html[] = '	<div class="orcid-input">';
         $html[] = '		<input ' . $attr . ' placeholder="####-####-####-####" />';
-        $html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="' . rtrim(Request::base(true), '/') . '" />';
+        $html[] = '		<input type="hidden" name="base_uri" id="base_uri" value="'
+            . rtrim(Request::base(true), '/')
+            . '" />';
         $html[] = '	</div>';
         // Build the ORCID Create or Connect hyperlink
         $config = Component::params('com_members');
@@ -89,8 +91,19 @@ class Orcid extends Text
             if ($isSandbox) {
                 $html[] = 'sandbox.';
             }
-            $html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/authenticate' . htmlspecialchars('&') . 'redirect_uri=' . urlencode($redirectURI)
-            . '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
+            $html[] = 'orcid.org/oauth/authorize?client_id='
+                . $clientID
+                . htmlspecialchars('&')
+                . 'response_type=code'
+                . htmlspecialchars('&')
+                . 'scope=/authenticate'
+                . htmlspecialchars('&')
+                . 'redirect_uri='
+                . urlencode($redirectURI)
+            . '" rel="nofollow external">'
+            . '<img src="'
+            . Request::root(true)
+            . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
             . ' ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT') . '</a>';
         }
 
@@ -104,14 +117,29 @@ class Orcid extends Text
             if ($isSandbox) {
                 $html[] = 'sandbox.';
             }
-            $html[] = 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . 'response_type=code' . htmlspecialchars('&') . 'scope=/read-limited%20/activities/update%20/person/update' . htmlspecialchars('&') . 'redirect_uri=' . urlencode($permissionURI)
-            . '" rel="nofollow external">' . '<img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
+            $html[] = 'orcid.org/oauth/authorize?client_id='
+                . $clientID
+                . htmlspecialchars('&')
+                . 'response_type=code'
+                . htmlspecialchars('&')
+                . 'scope=/read-limited%20/activities/update%20/person/update'
+                . htmlspecialchars('&')
+                . 'redirect_uri='
+                . urlencode($permissionURI)
+            . '" rel="nofollow external">'
+            . '<img src="'
+            . Request::root(true)
+            . 'core/components/com_members/site/assets/img/orcid_16x16.png" class="logo" width="20" height="20" alt="" role="presentation"/>'
             . ' ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_GRANT_PERMISSION') . '</a>';
         }
         $html[] = '	</div>';
 
         $html[] = '</div>';
-        $html[] = '<p class="orcid-about"><img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" role="presentation" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
+        $html[] = '<p class="orcid-about"><img src="'
+            . Request::root(true)
+            . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" role="presentation" /> '
+            . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT')
+            . '</p>';
 
         Behavior::framework(true);
         Behavior::modal();
@@ -119,7 +147,9 @@ class Orcid extends Text
         $path = dirname(dirname(__DIR__)) . '/site/assets/js/orcid.js';
 
         if (file_exists($path)) {
-            Document::addScript(Request::root(true) . 'core/components/com_members/site/assets/js/orcid.js?t=' . filemtime($path));
+            Document::addScript(
+                Request::root(true) . 'core/components/com_members/site/assets/js/orcid.js?t=' . filemtime($path),
+            );
         }
 
         return implode($html);

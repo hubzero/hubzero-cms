@@ -355,7 +355,10 @@ class ApiController implements ControllerInterface
             $phpdoc = $factory->create($docblock);
 
             // skip constructor
-            if (substr($method->getName(), -4) != 'Task' || in_array($method->getName(), ['registerTask', 'unregisterTask'])) {
+            if (
+                substr($method->getName(), -4) != 'Task'
+                || in_array($method->getName(), ['registerTask', 'unregisterTask'])
+            ) {
                 continue;
             }
 
@@ -1027,7 +1030,10 @@ class ApiController implements ControllerInterface
             // Does the model name include the namespace?
             // We need a fully qualified name
             if ($this->modelClass && !strstr($this->modelClass, '\\')) {
-                $this->modelClass = 'Components\\' . ucfirst($this->name) . '\\Models\\' . ucfirst(strtolower($this->modelClass));
+                $this->modelClass = 'Components\\'
+                    . ucfirst($this->name)
+                    . '\\Models\\'
+                    . ucfirst(strtolower($this->modelClass));
             }
         }
 

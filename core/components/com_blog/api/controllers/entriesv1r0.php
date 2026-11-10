@@ -153,7 +153,13 @@ class Entriesv1r0 extends ApiController
 
         // ordered() treats a dotted sort as relationship.field and calls the
         // relationship by name, so the field is confined to the documented list
-        if (!in_array(Request::getCmd('sort', 'created'), ['created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state'], true)) {
+        if (
+            !in_array(
+                Request::getCmd('sort', 'created'),
+                ['created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state'],
+                true,
+            )
+        ) {
             Request::setVar('sort', 'created', 'get');
         }
         if (!in_array(strtolower(Request::getCmd('sort_Dir', 'desc')), ['asc', 'desc'], true)) {
@@ -362,7 +368,14 @@ class Entriesv1r0 extends ApiController
                 'action'      => 'created',
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_CREATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_ENTRY_CREATED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $url,
@@ -631,7 +644,14 @@ class Entriesv1r0 extends ApiController
                 'action'      => 'updated',
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_UPDATED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_ENTRY_UPDATED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => $url,
@@ -701,7 +721,14 @@ class Entriesv1r0 extends ApiController
                     'action'      => 'deleted',
                     'scope'       => 'blog.entry',
                     'scope_id'    => $id,
-                    'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . $url . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_BLOG_ACTIVITY_ENTRY_DELETED',
+                        '<a href="'
+                            . $url
+                            . '">'
+                            . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title' => $row->get('title'),
                         'url'   => $url,

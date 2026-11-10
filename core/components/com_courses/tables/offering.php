@@ -181,8 +181,12 @@ class Offering extends Table
         if (isset($filters['available']) && $filters['available']) {
             $now = Date::toSql();
 
-            $where[] = "(ci.publish_up IS NULL OR ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= " . $this->db->quote($now) . ")";
-            $where[] = "(ci.publish_down IS NULL OR ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= " . $this->db->quote($now) . ")";
+            $where[] = "(ci.publish_up IS NULL OR ci.publish_up = '0000-00-00 00:00:00' OR ci.publish_up <= "
+                . $this->db->quote($now)
+                . ")";
+            $where[] = "(ci.publish_down IS NULL OR ci.publish_down = '0000-00-00 00:00:00' OR ci.publish_down >= "
+                . $this->db->quote($now)
+                . ")";
 
             $filters['state'] = 1;
         }
@@ -247,7 +251,9 @@ class Offering extends Table
         } else {
             // Whitelist sortable columns so $filters['sort'] never reaches SQL raw
             $sortable = ['id', 'title', 'alias', 'state', 'publish_up', 'publish_down', 'created', 'ordering'];
-            $sort = (isset($filters['sort']) && in_array($filters['sort'], $sortable, true)) ? $filters['sort'] : 'created';
+            $sort = (isset($filters['sort']) && in_array($filters['sort'], $sortable, true))
+                ? $filters['sort']
+                : 'created';
 
             $orderby = "ci." . $sort . " " . $sortDir;
         }

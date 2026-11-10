@@ -55,7 +55,11 @@ class Tag extends Macro
                 // raw_tag is whatever the user who created the tag typed, and the
                 // macro argument is raw wiki source -- the parser hands args
                 // through unescaped, so both are sinks here.
-                return '<a href="' . Route::url('index.php?option=com_tags&tag=' . $tag) . '">' . htmlspecialchars(stripslashes((string) $a), ENT_QUOTES, 'UTF-8') . '</a>';
+                return '<a href="'
+                    . Route::url('index.php?option=com_tags&tag=' . $tag)
+                    . '">'
+                    . htmlspecialchars(stripslashes((string) $a), ENT_QUOTES, 'UTF-8')
+                    . '</a>';
             } else {
                 // Return error message
                 return '(' . htmlspecialchars((string) $tag, ENT_QUOTES, 'UTF-8') . ' not found)';

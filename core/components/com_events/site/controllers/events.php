@@ -121,7 +121,14 @@ class Events extends SiteController
                 if ($this->day) {
                     Pathway::append(
                         $this->day,
-                        'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day,
+                        'index.php?option='
+                            . $this->option
+                            . '&year='
+                            . $this->year
+                            . '&month='
+                            . $this->month
+                            . '&day='
+                            . $this->day,
                     );
                 }
                 break;
@@ -141,12 +148,27 @@ class Events extends SiteController
                 if ($this->day) {
                     Pathway::append(
                         $this->day,
-                        'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day,
+                        'index.php?option='
+                            . $this->option
+                            . '&year='
+                            . $this->year
+                            . '&month='
+                            . $this->month
+                            . '&day='
+                            . $this->day,
                     );
                 }
                 Pathway::append(
                     Lang::txt('EVENTS_WEEK_OF', $this->day),
-                    'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week',
+                    'index.php?option='
+                        . $this->option
+                        . '&year='
+                        . $this->year
+                        . '&month='
+                        . $this->month
+                        . '&day='
+                        . $this->day
+                        . '&task=week',
                 );
                 break;
         }
@@ -406,7 +428,12 @@ class Events extends SiteController
 
         // Set some dates
         $select_date = $year . '-' . $month . '-01 00:00:00';
-        $select_date_fin = $year . '-' . $month . '-' . date("t", mktime(0, 0, 0, ($month + 1), 0, (int) $year)) . ' 23:59:59';
+        $select_date_fin = $year
+            . '-'
+            . $month
+            . '-'
+            . date("t", mktime(0, 0, 0, ($month + 1), 0, (int) $year))
+            . ' 23:59:59';
         $select_date = Date::of($select_date, Config::get('offset'));
         $select_date_fin = Date::of($select_date_fin, Config::get('offset'));
 
@@ -483,8 +510,12 @@ class Events extends SiteController
         $this_enddate = clone($this_date);
         $this_enddate->addDays(+6);
 
-        $sdt = Date::of($this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00')->toLocal($this->dateFormatShort);
-        $edt = Date::of($this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00')->toLocal($this->dateFormatShort);
+        $sdt = Date::of(
+            $this_date->year . '-' . $this_date->month . '-' . $this_date->day . ' 00:00:00',
+        )->toLocal($this->dateFormatShort);
+        $edt = Date::of(
+            $this_enddate->year . '-' . $this_enddate->month . '-' . $this_enddate->day . ' 00:00:00',
+        )->toLocal($this->dateFormatShort);
 
         $this_currentdate = $this_date;
 
@@ -668,7 +699,13 @@ class Events extends SiteController
             //if we have a group and we are a member
             if (is_object($group)) {
                 //redirect to group calendar
-                $redirect = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=calendar&action=details&event_id=' . $row->id, false);
+                $redirect = Route::url(
+                    'index.php?option=com_groups&cn='
+                        . $group->get('cn')
+                        . '&active=calendar&action=details&event_id='
+                        . $row->id,
+                    false,
+                );
                 App::redirect($redirect);
                 return;
             } else {
@@ -701,18 +738,38 @@ class Events extends SiteController
         $alphadigit = "([a-z]|[A-Z]|[0-9])";
 
         // Adresse
-        $row->adresse_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->adresse_info);
-        $row->adresse_info = preg_replace("/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"$1$2$5$8\">$1$2$5$8</a>", $row->adresse_info == null ? '' : $row->adresse_info);
+        $row->adresse_info = preg_replace(
+            "/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i",
+            "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>",
+            $row->adresse_info,
+        );
+        $row->adresse_info = preg_replace(
+            "/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i",
+            "<a href=\"$1$2$5$8\">$1$2$5$8</a>",
+            $row->adresse_info == null ? '' : $row->adresse_info,
+        );
 
         // Contact
         $row->contact_info = stripslashes(strip_tags($row->contact_info));
         if (substr($row->contact_info, 0, strlen('mailto:')) == 'mailto:') {
-            $row->contact_info = '<a href="mailto:' . $this->obfuscate(substr($row->contact_info, strlen('mailto:'))) . '">' . $this->obfuscate(substr($row->contact_info, strlen('mailto:'))) . '</a>';
+            $row->contact_info = '<a href="mailto:'
+                . $this->obfuscate(substr($row->contact_info, strlen('mailto:')))
+                . '">'
+                . $this->obfuscate(substr($row->contact_info, strlen('mailto:')))
+                . '</a>';
         } elseif (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $row->contact_info)) {
-            $row->contact_info = '<a href="mailto:' . $this->obfuscate($row->contact_info) . '">' . $this->obfuscate($row->contact_info) . '</a>';
+            $row->contact_info = '<a href="mailto:'
+                . $this->obfuscate($row->contact_info)
+                . '">'
+                . $this->obfuscate($row->contact_info)
+                . '</a>';
         }
         //$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
-        $row->contact_info = preg_replace("/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"$1$2$5$8\">$1$2$5$8</a>", $row->contact_info);
+        $row->contact_info = preg_replace(
+            "/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i",
+            "<a href=\"$1$2$5$8\">$1$2$5$8</a>",
+            $row->contact_info,
+        );
 
         $fields = $this->config->getCfg('fields');
         if (!empty($fields)) {
@@ -721,7 +778,11 @@ class Events extends SiteController
                 array_push($fields[$i], self::parseTag($row->content == null ? '' : $row->content, $fields[$i][0]));
 
                 // Clean the original text of any matches
-                $row->content = str_replace('<ef:' . $fields[$i][0] . '>' . end($fields[$i]) . '</ef:' . $fields[$i][0] . '>', '', $row->content == null ? '' : $row->content);
+                $row->content = str_replace(
+                    '<ef:' . $fields[$i][0] . '>' . end($fields[$i]) . '</ef:' . $fields[$i][0] . '>',
+                    '',
+                    $row->content == null ? '' : $row->content,
+                );
             }
             $row->content = trim($row->content == null ? '' : $row->content);
         }
@@ -754,7 +815,13 @@ class Events extends SiteController
         $tags = $rt->render();
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)) . ': ' . stripslashes($row->title));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task))
+                . ': '
+                . stripslashes($row->title),
+        );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
@@ -808,7 +875,9 @@ class Events extends SiteController
         }
         $this->view->setProperties([
             'option' => $this->option,
-            'title' => Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)),
+            'title' => Lang::txt(strtoupper($this->name))
+                . ': '
+                . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)),
             'task' => $this->task,
             'year' => $eyear,
             'month' => $emonth,
@@ -905,7 +974,13 @@ class Events extends SiteController
         }
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('EVENTS_REGISTER') . ': ' . stripslashes($event->title));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . Lang::txt('EVENTS_REGISTER')
+                . ': '
+                . stripslashes($event->title),
+        );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
@@ -1086,7 +1161,13 @@ class Events extends SiteController
         $pages = $page->loadPages($event->id);
 
         // Set the page title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt('EVENTS_REGISTER') . ': ' . stripslashes($event->title));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . Lang::txt('EVENTS_REGISTER')
+                . ': '
+                . stripslashes($event->title),
+        );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
@@ -1128,7 +1209,10 @@ class Events extends SiteController
         $race       = Request::getArray('race', null, 'post');
 
         $validEmail = false;
-        $register   = array_merge(['firstname' => '', 'lastname' => '', 'email' => ''], array_filter($register, 'is_scalar'));
+        $register   = array_merge(
+            ['firstname' => '', 'lastname' => '', 'email' => ''],
+            array_filter($register, 'is_scalar'),
+        );
 
         // The form renders the email field only when show_email is set; otherwise use the logged-in user's address
         $eparams = new \Hubzero\Config\Registry($event->params);
@@ -1318,7 +1402,9 @@ class Events extends SiteController
         foreach ($values as $val) {
             switch ($val) {
                 case 'position':
-                    $rv[] = ((isset($reg['position']) || isset($reg['position_other'])) && ($reg['position'] || $reg['position_other']))
+                    $rv[] = ((isset($reg['position']) || isset(
+                        $reg['position_other'],
+                    )) && ($reg['position'] || $reg['position_other']))
                         ? $this->database->quote(
                             $reg['position'] ? $reg['position'] : $reg['position_other'],
                         )
@@ -1349,7 +1435,9 @@ class Events extends SiteController
                     $rv[] = ($disability) ? '1' : '0';
                     break;
                 default:
-                    $rv[] = array_key_exists($val, $reg) && isset($reg[$val]) ? $this->database->quote($reg[$val]) : 'null';
+                    $rv[] = array_key_exists($val, $reg) && isset($reg[$val])
+                        ? $this->database->quote($reg[$val])
+                        : 'null';
                     break;
             }
         }
@@ -1363,7 +1451,11 @@ class Events extends SiteController
      */
     public function loginTask()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
+        $rtrn = Request::getString(
+            'REQUEST_URI',
+            Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
+            'server',
+        );
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
             Lang::txt('EVENTS_LOGIN_NOTICE'),
@@ -1436,15 +1528,31 @@ class Events extends SiteController
             $end_time = Date::of($row->publish_down, $time_zone)->format('H:i', true);
 
 
-            $registerby_date = Date::of($row->registerby == null ? '' : $row->registerby, $time_zone)->format('Y-m-d', true);
-            $registerby_time = Date::of($row->registerby == null ? '' : $row->registerby, $time_zone)->format('H:i', true);
+            $registerby_date = Date::of(
+                $row->registerby == null ? '' : $row->registerby,
+                $time_zone,
+            )->format('Y-m-d', true);
+            $registerby_time = Date::of(
+                $row->registerby == null ? '' : $row->registerby,
+                $time_zone,
+            )->format('H:i', true);
 
             $arr = [
                 \Html::select('option', 0, strtolower(Lang::txt('EVENTS_NO')), 'value', 'text'),
                 \Html::select('option', 1, strtolower(Lang::txt('EVENTS_YES')), 'value', 'text'),
             ];
 
-            $lists['state'] = \Html::select('genericlist', $arr, 'state', '', 'value', 'text', $row->state, false, false);
+            $lists['state'] = \Html::select(
+                'genericlist',
+                $arr,
+                'state',
+                '',
+                'value',
+                'text',
+                $row->state,
+                false,
+                false,
+            );
         } else {
             // No ID - we're creating a new event; must be allowed to create
             if (!$this->authorize('core.create')) {
@@ -1464,7 +1572,12 @@ class Events extends SiteController
                 $time_zone = $row->time_zone;
 
                 $event_registerby = new EventsDate($row->registerby == null ? '' : $row->registerby);
-                $registerby_date = sprintf("%4d-%02d-%02d", $event_registerby->year, $event_registerby->month, $event_registerby->day);
+                $registerby_date = sprintf(
+                    "%4d-%02d-%02d",
+                    $event_registerby->year,
+                    $event_registerby->month,
+                    $event_registerby->day,
+                );
                 $registerby_time = $event_registerby->hour . ':' . $event_registerby->minute;
             } else {
                 $year  = $this->year;
@@ -1504,7 +1617,11 @@ class Events extends SiteController
                 array_push($fields[$i], self::parseTag($row->content == null ? '' : $row->content, $fields[$i][0]));
 
                 // Clean the original text of any matches
-                $row->content = str_replace('<ef:' . $fields[$i][0] . '>' . end($fields[$i]) . '</ef:' . $fields[$i][0] . '>', '', $row->content == null ? '' : $row->content);
+                $row->content = str_replace(
+                    '<ef:' . $fields[$i][0] . '>' . end($fields[$i]) . '</ef:' . $fields[$i][0] . '>',
+                    '',
+                    $row->content == null ? '' : $row->content,
+                );
             }
             $row->content = trim($row->content == null ? '' : $row->content);
         }
@@ -1606,7 +1723,11 @@ class Events extends SiteController
         }
 
         // Set the title
-        Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)));
+        Document::setTitle(
+            Lang::txt(strtoupper($this->name))
+                . ': '
+                . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task)),
+        );
 
         // Set the pathway
         if (Pathway::count() <= 0) {
@@ -1633,7 +1754,9 @@ class Events extends SiteController
         // Output HTML
         $this->view->setLayout('default')->setName('edit');
         $this->view->option = $this->option;
-        $this->view->title = Lang::txt(strtoupper($this->name)) . ': ' . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task));
+        $this->view->title = Lang::txt(strtoupper($this->name))
+            . ': '
+            . Lang::txt(strtoupper($this->name) . '_' . strtoupper($this->task));
         $this->view->task = $this->task;
         $this->view->config = $this->config;
         $this->view->row = $row;
@@ -1714,7 +1837,12 @@ class Events extends SiteController
         */
 
         // E-mail subject line
-        $subject  = '[' . Config::get('sitename') . ' ' . Lang::txt('EVENTS') . '] - ' . Lang::txt('EVENTS_EVENT_DELETED');
+        $subject  = '['
+            . Config::get('sitename')
+            . ' '
+            . Lang::txt('EVENTS')
+            . '] - '
+            . Lang::txt('EVENTS_EVENT_DELETED');
 
         // Build the message to be e-mailed
         $eview = new View([
@@ -2007,11 +2135,21 @@ class Events extends SiteController
 
         // Build the message to be e-mailed
         if ($state == 'add') {
-            $subject  = '[' . Config::get('sitename') . ' ' . Lang::txt('EVENTS_CAL_LANG_CAL_TITLE') . '] - ' . Lang::txt('EVENTS_CAL_LANG_MAIL_ADDED');
+            $subject  = '['
+                . Config::get('sitename')
+                . ' '
+                . Lang::txt('EVENTS_CAL_LANG_CAL_TITLE')
+                . '] - '
+                . Lang::txt('EVENTS_CAL_LANG_MAIL_ADDED');
 
             $eview = new View(['name' => 'emails','layout' => 'created']);
         } else {
-            $subject  = '[' . Config::get('sitename') . ' ' . Lang::txt('EVENTS_CAL_LANG_CAL_TITLE') . '] - ' . Lang::txt('EVENTS_CAL_LANG_MAIL_ADDED');
+            $subject  = '['
+                . Config::get('sitename')
+                . ' '
+                . Lang::txt('EVENTS_CAL_LANG_CAL_TITLE')
+                . '] - '
+                . Lang::txt('EVENTS_CAL_LANG_MAIL_ADDED');
 
             $eview = new View(['name' => 'emails','layout' => 'edited']);
         }
@@ -2081,7 +2219,9 @@ class Events extends SiteController
      */
     private function getCategories()
     {
-        $sql = "SELECT * FROM `#__categories` WHERE extension='" . $this->option . "' AND published = '1' ORDER BY lft ASC";
+        $sql = "SELECT * FROM `#__categories` WHERE extension='"
+            . $this->option
+            . "' AND published = '1' ORDER BY lft ASC";
 
         $this->database->setQuery($sql);
         $cats = $this->database->loadObjectList();

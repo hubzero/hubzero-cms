@@ -58,7 +58,9 @@ class Institutions extends Field
         // against what just got POSTed (if anything).
         try {
             $db = App::get('db');
-            $db->setQuery("SELECT params FROM `#__extensions` WHERE folder='authentication' AND element='shibboleth' LIMIT 1");
+            $db->setQuery(
+                "SELECT params FROM `#__extensions` WHERE folder='authentication' AND element='shibboleth' LIMIT 1",
+            );
             $dbParams = $db->loadResult();
             self::shibLog('DB row params=' . $dbParams);
         } catch (\Exception $e) {
@@ -69,7 +71,12 @@ class Institutions extends Field
         // when getInput runs after an "apply" task in the same request).
         $posted = Request::getVar('fields', null, 'post', 'array', 2);
         if (is_array($posted) && isset($posted['params']['institutions'])) {
-            self::shibLog('POSTed fields[params][institutions]=' . (is_string($posted['params']['institutions']) ? $posted['params']['institutions'] : json_encode($posted['params']['institutions'])));
+            self::shibLog(
+                'POSTed fields[params][institutions]='
+                    . (is_string(
+                        $posted['params']['institutions'],
+                    ) ? $posted['params']['institutions'] : json_encode($posted['params']['institutions'])),
+            );
         } else {
             self::shibLog('no POSTed fields[params][institutions] in this request');
         }
@@ -102,7 +109,9 @@ class Institutions extends Field
 
         $html   = [];
         $html[] = '<div class="shibboleth">';
-        $html[] = '<p class="xml-source"><label>Federation metadata XML path: <input type="text" id="shib-xmlpath" value="' . $xmlPathEsc . '" /></label></p>';
+        $html[] = '<p class="xml-source"><label>Federation metadata XML path: <input type="text" id="shib-xmlpath" value="'
+            . $xmlPathEsc
+            . '" /></label></p>';
         $html[] = '<input type="hidden" class="serialized" name="' . $nameEsc . '" value="' . $hiddenJson . '" />';
 
         if (is_array($entities)) {
@@ -112,7 +121,15 @@ class Institutions extends Field
                 $checked   = isset($activeMap[$entityId]) ? ' checked' : '';
                 $eidEsc    = htmlspecialchars($entityId, ENT_QUOTES, 'UTF-8');
                 $nameDisp  = htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8');
-                $html[]    = '<label style="display:block"><input type="checkbox" class="shib-idp-checkbox" value="' . $eidEsc . '" data-label="' . $nameDisp . '"' . $checked . '> ' . $nameDisp . '</label>';
+                $html[]    = '<label style="display:block"><input type="checkbox" class="shib-idp-checkbox" value="'
+                    . $eidEsc
+                    . '" data-label="'
+                    . $nameDisp
+                    . '"'
+                    . $checked
+                    . '> '
+                    . $nameDisp
+                    . '</label>';
             }
             $html[] = '</div>';
         } else {

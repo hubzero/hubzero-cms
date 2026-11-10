@@ -92,7 +92,11 @@ class Usage extends Plugin
 
         if (!in_array($table, $tables)) {
             $arr['html'] = '<p class="error">' . Lang::txt('PLG_RESOURCES_USAGE_MISSING_TABLE') . '</p>';
-            $arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt('PLG_RESOURCES_USAGE_DETAILED') . '</a></p>';
+            $arr['metadata'] = '<p class="usage"><a href="'
+                . $url
+                . '">'
+                . Lang::txt('PLG_RESOURCES_USAGE_DETAILED')
+                . '</a></p>';
             return $arr;
         }
 
@@ -223,7 +227,11 @@ class Usage extends Plugin
                     $langKey = 'PLG_RESOURCES_USAGE_NUM_USERS_DETAILED';
                 }
 
-                $arr['metadata'] = '<p class="usage"><a href="' . $url . '">' . Lang::txt($langKey, $stats->users) . '</a></p>';
+                $arr['metadata'] = '<p class="usage"><a href="'
+                    . $url
+                    . '">'
+                    . Lang::txt($langKey, $stats->users)
+                    . '</a></p>';
             } else {
                 if ($statsUpdating) {
                     $langKey = 'PLG_RESOURCES_USAGE_NUM_USERS_UPDATING';
@@ -234,7 +242,9 @@ class Usage extends Plugin
                 $arr['metadata'] = '<p class="usage">' . Lang::txt($langKey, $stats->users) . '</p>';
             }
             if (isset($clusters->users) && $clusters->users && isset($clusters->classes) && $clusters->classes) {
-                $arr['metadata'] .= '<p class="usage">' . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes) . '</p>';
+                $arr['metadata'] .= '<p class="usage">'
+                    . Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_IN_CLASSES', $clusters->users, $clusters->classes)
+                    . '</p>';
             }
         }
 
@@ -326,7 +336,13 @@ class Usage extends Plugin
     {
         $database = App::get('db');
 
-        $sql = "SELECT t.id FROM `#__resource_stats_tools` AS t WHERE t.resid = " . $database->quote($id) . " AND t.period = " . $database->quote($period) . " AND t.datetime = " . $database->quote($datetime . '-00 00:00:00') . " ORDER BY t.id LIMIT 1";
+        $sql = "SELECT t.id FROM `#__resource_stats_tools` AS t WHERE t.resid = "
+            . $database->quote($id)
+            . " AND t.period = "
+            . $database->quote($period)
+            . " AND t.datetime = "
+            . $database->quote($datetime . '-00 00:00:00')
+            . " ORDER BY t.id LIMIT 1";
         $database->setQuery($sql);
         return $database->loadResult();
     }
@@ -354,7 +370,8 @@ class Usage extends Plugin
 
         foreach ($results as $result) {
             // $point = new stdClass;
-            $result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . ' 00:00:00';
+            $result->datetime = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+                . ' 00:00:00';
             // $point->users = $result->users;
             // $point->users = $result->users;
 
@@ -409,7 +426,13 @@ class Usage extends Plugin
         ob_clean();
 
         header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename="resource-' . intval($id) . '-usage-period-' . intval($period) . '.csv"');
+        header(
+            'Content-Disposition: attachment; filename="resource-'
+                . intval($id)
+                . '-usage-period-'
+                . intval($period)
+                . '.csv"',
+        );
 
         $out = fopen('php://output', 'w');
         fputcsv($out, $columns);
@@ -478,7 +501,14 @@ class Usage extends Plugin
             $i = 0;
             foreach ($orgs as $row) {
                 $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-                if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) {
+                if (
+                    $row->datetime
+                    && preg_match(
+                        "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",
+                        $row->datetime,
+                        $regs,
+                    )
+                ) {
                     $ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
                 }
                 if (!isset($r[$ky])) {
@@ -515,7 +545,14 @@ class Usage extends Plugin
             $i = 0;
             foreach ($countries as $row) {
                 $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-                if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) {
+                if (
+                    $row->datetime
+                    && preg_match(
+                        "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",
+                        $row->datetime,
+                        $regs,
+                    )
+                ) {
                     $ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
                 }
 
@@ -546,7 +583,14 @@ class Usage extends Plugin
             $i = 0;
             foreach ($domains as $row) {
                 $ky = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $row->datetime));
-                if ($row->datetime && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $row->datetime, $regs)) {
+                if (
+                    $row->datetime
+                    && preg_match(
+                        "/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/",
+                        $row->datetime,
+                        $regs,
+                    )
+                ) {
                     $ky = $regs[1] . '/' . $regs[2] . '/01'; //mktime($regs[4], $regs[5], $regs[6], , $regs[3], );
                 }
                 if (!isset($r[$ky])) {

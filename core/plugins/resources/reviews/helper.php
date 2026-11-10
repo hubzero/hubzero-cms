@@ -112,7 +112,12 @@ class Helper extends \Hubzero\Base\Obj
 
         // A reply may only be edited by its author or a resources moderator (the
         // browse view offers Edit to core.manage as well)
-        if (!$row->isNew() && $row->get('created_by') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin')) {
+        if (
+            !$row->isNew()
+            && $row->get('created_by') != User::get('id')
+            && !User::authorise('core.manage', 'com_resources')
+            && !User::authorise('core.admin')
+        ) {
             $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
             return;
         }
@@ -126,7 +131,11 @@ class Helper extends \Hubzero\Base\Obj
             // A new reply goes on a review of this resource, under a reply to that review
             $itemId = isset($comment['item_id']) ? (int) $comment['item_id'] : 0;
             $parentReview = \Components\Resources\Models\Review::oneOrNew($itemId);
-            if (!isset($comment['item_type']) || $comment['item_type'] != 'review' || $parentReview->get('resource_id') != $this->resource->id) {
+            if (
+                !isset($comment['item_type'])
+                || $comment['item_type'] != 'review'
+                || $parentReview->get('resource_id') != $this->resource->id
+            ) {
                 $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
                 return;
             }
@@ -197,7 +206,11 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         // Permissions check (the browse view offers Delete to core.manage as well)
-        if ($reply->get('created_by') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin')) {
+        if (
+            $reply->get('created_by') != User::get('id')
+            && !User::authorise('core.manage', 'com_resources')
+            && !User::authorise('core.admin')
+        ) {
             return;
         }
 
@@ -349,7 +362,12 @@ class Helper extends \Hubzero\Base\Obj
 
         // A review may only be edited by its author or a resources moderator (the
         // browse view offers Edit to core.manage as well)
-        if (!$row->isNew() && $row->get('user_id') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin')) {
+        if (
+            !$row->isNew()
+            && $row->get('user_id') != User::get('id')
+            && !User::authorise('core.manage', 'com_resources')
+            && !User::authorise('core.admin')
+        ) {
             $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN_NOTICE'));
             return;
         }
@@ -473,7 +491,11 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         // Permissions check (the browse view offers Delete to core.manage as well)
-        if ($review->get('user_id') != User::get('id') && !User::authorise('core.manage', 'com_resources') && !User::authorise('core.admin')) {
+        if (
+            $review->get('user_id') != User::get('id')
+            && !User::authorise('core.manage', 'com_resources')
+            && !User::authorise('core.admin')
+        ) {
             return;
         }
 

@@ -100,7 +100,15 @@ class Comments extends SiteController
 
         if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller=media&scope='
+                        . $this->page->get('scope')
+                        . '&pagename='
+                        . $this->page->get('pagename')
+                        . '&task=download',
+                ),
             );
         }
 
@@ -375,7 +383,15 @@ class Comments extends SiteController
                 'scope'       => 'wiki.comment',
                 'scope_id'    => $this->page->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
-                'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_' . ($__cid ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WIKI_ACTIVITY_COMMENT_' . ($__cid ? 'UPDATED' : 'CREATED'),
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($this->page->link('comments'))
+                        . '">'
+                        . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link('comments')),
@@ -439,7 +455,15 @@ class Comments extends SiteController
                         'action'      => 'deleted',
                         'scope'       => 'wiki.comment',
                         'scope_id'    => $this->page->get('id'),
-                        'description' => Lang::txt('COM_WIKI_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($this->page->link('comments')) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                        'description' => Lang::txt(
+                            'COM_WIKI_ACTIVITY_COMMENT_DELETED',
+                            $comment->get('id'),
+                            '<a href="'
+                                . Route::url($this->page->link('comments'))
+                                . '">'
+                                . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8')
+                                . '</a>',
+                        ),
                         'details'     => [
                             'title'    => $this->page->title,
                             'url'      => Route::url($this->page->link('comments')),

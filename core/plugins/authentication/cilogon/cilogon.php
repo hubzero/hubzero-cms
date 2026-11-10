@@ -197,7 +197,10 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             $token = $this->cilogon()->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
         } catch (\Exception $e) {
             $response->status = \Hubzero\Auth\Status::FAILURE;
-            $response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage());
+            $response->error_message = Lang::txt(
+                'PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE',
+                $e->getMessage(),
+            );
             return;
         }
         if (isset($token) && $token) {
@@ -225,7 +228,10 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
             } catch (\Exception $e) {
                 // Error message?
                 $response->status = \Hubzero\Auth\Status::FAILURE;
-                $response->error_message = Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage());
+                $response->error_message = Lang::txt(
+                    'PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE',
+                    $e->getMessage(),
+                );
                 return;
             }
             // Create the hubzero auth link
@@ -362,7 +368,12 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                     $hzal->set('email', $email);
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", "cilogon", null, %s) returned false', $id));
+                    Log::error(
+                        sprintf(
+                            'Hubzero\Auth\Link::findOrCreate("authentication", "cilogon", null, %s) returned false',
+                            $id,
+                        ),
+                    );
                 }
             }
         } else {

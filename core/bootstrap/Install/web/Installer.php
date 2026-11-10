@@ -160,7 +160,10 @@ class Installer
                 return;
             }
             if ($this->isInstalled()) {
-                $this->security->logSecurityEvent('AJAX_AFTER_INSTALL', 'Refused a migration stream on an installed site');
+                $this->security->logSecurityEvent(
+                    'AJAX_AFTER_INSTALL',
+                    'Refused a migration stream on an installed site',
+                );
                 header('Content-Type: text/event-stream');
                 header('Cache-Control: no-cache');
                 echo "event: error\ndata: This site is already installed.\n\n";

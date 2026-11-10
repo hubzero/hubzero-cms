@@ -108,7 +108,9 @@ class Create extends SiteController
         if ($this->step) {
             $stepLabel = $this->steps[$this->step] ?? 'UNKNOWN';
             Pathway::append(
-                Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($stepLabel)),
+                Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step)
+                    . ': '
+                    . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($stepLabel)),
                 'index.php?option=' . $this->option . '&task=' . $this->task . '&step=' . $this->step,
             );
         }
@@ -132,7 +134,10 @@ class Create extends SiteController
             $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE' . '_' . strtoupper($this->task));
         }
         if ($this->step && isset($this->steps[$this->step])) {
-            $this->_title .= ': ' . Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step) . ': ' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
+            $this->_title .= ': '
+                . Lang::txt('COM_CONTRIBUTE_STEP_NUMBER', $this->step)
+                . ': '
+                . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$this->step]));
         }
 
         App::get('document')->setTitle($this->_title);
@@ -686,7 +691,21 @@ class Create extends SiteController
         // `published` is set below for new rows and kept as stored for existing
         // ones, so a draft cannot publish itself here.
         unset($fields['created_by'], $fields['created'], $fields['path'], $fields['ranking'], $fields['standalone']);
-        unset($fields['published'], $fields['access'], $fields['alias'], $fields['featured'], $fields['hits'], $fields['rating'], $fields['times_rated'], $fields['params'], $fields['attribs'], $fields['checked_out'], $fields['checked_out_time'], $fields['modified'], $fields['modified_by']);
+        unset(
+            $fields['published'],
+            $fields['access'],
+            $fields['alias'],
+            $fields['featured'],
+            $fields['hits'],
+            $fields['rating'],
+            $fields['times_rated'],
+            $fields['params'],
+            $fields['attribs'],
+            $fields['checked_out'],
+            $fields['checked_out_time'],
+            $fields['modified'],
+            $fields['modified_by'],
+        );
 
         $row = Entry::oneOrNew($rid)->set($fields);
 
@@ -706,7 +725,13 @@ class Create extends SiteController
         }
 
         $row->set('published', (int) $row->get('published', 2));
-        $row->set('publish_up', ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00' ? $row->get('publish_up') : Date::toSql()));
+        $row->set(
+            'publish_up',
+            (
+                $row->get('publish_up')
+                && $row->get('publish_up') != '0000-00-00 00:00:00' ? $row->get('publish_up') : Date::toSql()
+            ),
+        );
         // The compose form posts an empty publish_down. Strict SQL mode refuses
         // '', and the stock column is NOT NULL with a zero-date default, so
         // NULL fails too: leave "no end date" to the column default.
@@ -856,7 +881,14 @@ class Create extends SiteController
                 'action'      => ($isNew ? 'updated' : 'created'),
                 'scope'       => 'resource',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_RESOURCES_ACTIVITY_ENTRY_' . (!$isNew ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url('index.php?option=com_resources&id=' . $row->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url('index.php?option=com_resources&id=' . $row->get('id')),
@@ -972,8 +1004,16 @@ class Create extends SiteController
                     'scope_id'    => $row->get('id'),
                     'description' => Lang::txt(
                         'COM_RESOURCES_ACTIVITY_ENTRY_GROUP_' . $action,
-                        '<a href="' . Route::url('index.php?option=com_resources&id=' . $row->get('id')) . '">' . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
-                        '<a href="' . Route::url('index.php?option=com_groups&cn=' . $group->get('cn')) . '">' . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8') . '</a>',
+                        '<a href="'
+                            . Route::url('index.php?option=com_resources&id=' . $row->get('id'))
+                            . '">'
+                            . htmlspecialchars((string) $row->get('title'), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                        '<a href="'
+                            . Route::url('index.php?option=com_groups&cn=' . $group->get('cn'))
+                            . '">'
+                            . htmlspecialchars((string) $group->get('description'), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
                     ),
                     'details'     => [
                         'title' => $row->get('title'),
@@ -1331,7 +1371,11 @@ class Create extends SiteController
 
             if (!empty($defs)) {
                 $message = new \Hubzero\Mail\Message();
-                $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id));
+                $message->setSubject(
+                    Config::get('sitename')
+                        . ' '
+                        . Lang::txt('COM_RESOURCES_EMAIL_SUBJECT_NEW_SUBMISSION', $resource->id),
+                );
                 $message->addFrom(
                     Config::get('mailfrom'),
                     Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
@@ -1394,7 +1438,14 @@ class Create extends SiteController
                     'action'      => $activity,
                     'scope'       => 'resource',
                     'scope_id'    => $resource->get('title'),
-                    'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity), '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_RESOURCES_ACTIVITY_ENTRY_' . strtoupper($activity),
+                        '<a href="'
+                            . Route::url($resource->link())
+                            . '">'
+                            . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'title' => $resource->get('title'),
                         'url'   => Route::url($resource->link()),
@@ -1565,7 +1616,14 @@ class Create extends SiteController
                         'action'      => 'deleted',
                         'scope'       => 'resource',
                         'scope_id'    => $resource->get('id'),
-                        'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($resource->link()) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                        'description' => Lang::txt(
+                            'COM_RESOURCES_ACTIVITY_ENTRY_DELETED',
+                            '<a href="'
+                                . Route::url($resource->link())
+                                . '">'
+                                . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                                . '</a>',
+                        ),
                         'details'     => [
                             'title' => $resource->get('title'),
                             'url'   => Route::url($resource->link()),

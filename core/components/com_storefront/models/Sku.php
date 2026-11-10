@@ -342,7 +342,9 @@ class Sku
         }
         $deleteSql .= ')';
 
-        $sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = " . $db->quote($sId) . " AND `smId` NOT IN {$deleteSql}";
+        $sql = "DELETE FROM `#__storefront_sku_meta` WHERE `sId` = "
+            . $db->quote($sId)
+            . " AND `smId` NOT IN {$deleteSql}";
         $db->setQuery($sql);
         $db->query();
 

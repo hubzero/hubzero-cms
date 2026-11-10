@@ -443,11 +443,15 @@ class Registration
             $uid = User::getInstance($login)->get('id');
 
             if ($uid && $uid != $id) {
-                $this->invalid['login'] = 'The user login "' . htmlentities($login) . '" already exists. Please try another.';
+                $this->invalid['login'] = 'The user login "'
+                    . htmlentities($login)
+                    . '" already exists. Please try another.';
             }
 
             if (\Hubzero\Utility\Validate::reserved('username', $login)) {
-                $this->invalid['login'] = 'The user login "' . htmlentities($login) . '" already exists. Please try another.';
+                $this->invalid['login'] = 'The user login "'
+                    . htmlentities($login)
+                    . '" already exists. Please try another.';
             }
 
             // system username check
@@ -548,7 +552,10 @@ class Registration
             // The name was entity-encoded when it was read (O'Brien -> O&#039;Brien,
             // José -> Jos&eacute;), which the validator's '&' rule rejects; check the
             // name as the person typed it
-            if (!empty($registration['name']) && !Helpers\Utility::validname(html_entity_decode($registration['name'], ENT_QUOTES, 'UTF-8'))) {
+            if (
+                !empty($registration['name'])
+                && !Helpers\Utility::validname(html_entity_decode($registration['name'], ENT_QUOTES, 'UTF-8'))
+            ) {
                 $this->invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
             }
         }

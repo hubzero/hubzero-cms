@@ -56,13 +56,23 @@ class Incremental extends AdminController
                 $hours *= 24;
             }
 
-            $this->database->setQuery('INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')');
-            $this->database->execute('INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')');
+            $this->database->setQuery(
+                'INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')',
+            );
+            $this->database->execute(
+                'INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')',
+            );
             $gid = $this->database->insertid();
 
             foreach ($_POST['group-cols-' . $idx] as $colKey) {
                 if ($colKey = trim($colKey)) {
-                    $this->database->setQuery('INSERT INTO `#__incremental_registration_group_label_rel` (group_id, label_id) VALUES (' . $gid . ', (SELECT id FROM `#__incremental_registration_labels` WHERE field = ' . $this->database->quote($colKey) . '))');
+                    $this->database->setQuery(
+                        'INSERT INTO `#__incremental_registration_group_label_rel` (group_id, label_id) VALUES ('
+                            . $gid
+                            . ', (SELECT id FROM `#__incremental_registration_labels` WHERE field = '
+                            . $this->database->quote($colKey)
+                            . '))',
+                    );
                     $this->database->execute();
                 }
             }
@@ -74,11 +84,28 @@ class Incremental extends AdminController
             $testGroup   = (int) $_POST['test-group'];
             $repeatType  = (isset($_POST['repeat-type']) && (int) $_POST['repeat-type'] === 1) ? 1 : 0;
 
-            $this->database->setQuery('SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
+            $this->database->setQuery(
+                'SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1',
+            );
             list($exPopover, $exAward, $exGroup, $exRepeat) = $row = $this->database->loadRow();
 
-            if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup || $repeatType != (int) $exRepeat) {
-                $this->database->setQuery('INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group, repeat_type) VALUES (' . $this->database->quote($popoverText) . ', ' . $awardPer . ', ' . $testGroup . ', ' . $repeatType . ')');
+            if (
+                $popoverText != $exPopover
+                || $awardPer != $exAward
+                || $testGroup != $exGroup
+                || $repeatType != (int) $exRepeat
+            ) {
+                $this->database->setQuery(
+                    'INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group, repeat_type) VALUES ('
+                        . $this->database->quote($popoverText)
+                        . ', '
+                        . $awardPer
+                        . ', '
+                        . $testGroup
+                        . ', '
+                        . $repeatType
+                        . ')',
+                );
                 $this->database->execute();
             }
         }
@@ -94,7 +121,13 @@ class Incremental extends AdminController
             }
 
             if ($hours) {
-                $this->database->setQuery('INSERT INTO `#__incremental_registration_popover_recurrence` (idx, hours) VALUES (' . $idx . ', ' . $hours . ')');
+                $this->database->setQuery(
+                    'INSERT INTO `#__incremental_registration_popover_recurrence` (idx, hours) VALUES ('
+                        . $idx
+                        . ', '
+                        . $hours
+                        . ')',
+                );
                 $this->database->execute();
             }
         }

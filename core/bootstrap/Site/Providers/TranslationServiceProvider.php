@@ -57,7 +57,11 @@ class TranslationServiceProvider extends ServiceProvider
 
         // Detect cookie language
         if (!$language) { // && $this->app->has('language.filter'))
-            $lang = preg_replace('/[^a-zA-Z_-]/', '', (string) $this->app['request']->getString($this->app->hash('language'), null, 'cookie'));
+            $lang = preg_replace(
+                '/[^a-zA-Z_-]/',
+                '',
+                (string) $this->app['request']->getString($this->app->hash('language'), null, 'cookie'),
+            );
 
             if ($lang && is_dir($appLangDir . DS . $lang)) {
                 $language = $lang;

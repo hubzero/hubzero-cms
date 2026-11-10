@@ -104,7 +104,9 @@ class Novnc extends Plugin
      */
     protected function clipboardAllowed($tool)
     {
-        $blocked = array_filter(array_map('trim', explode(',', strtolower((string) $this->params->get('clipboard_block_hostreq', '')))));
+        $blocked = array_filter(
+            array_map('trim', explode(',', strtolower((string) $this->params->get('clipboard_block_hostreq', '')))),
+        );
 
         if (!$blocked || empty($tool->name)) {
             return true;

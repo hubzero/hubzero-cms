@@ -184,8 +184,19 @@ class Editor extends Obj
      * @param   array    $params   Associative array of editor parameters.
      * @return  string
      */
-    public function display($name, $html, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = [])
-    {
+    public function display(
+        $name,
+        $html,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = [],
+    ) {
         $this->asset  = $asset;
         $this->author = $author;
         $this->load($params);
@@ -205,7 +216,19 @@ class Editor extends Obj
         // Initialise variables.
         $return = null;
 
-        $results[] = $this->editor->onDisplay($name, $html, $width, $height, $col, $row, $buttons, $id, $asset, $author, $params);
+        $results[] = $this->editor->onDisplay(
+            $name,
+            $html,
+            $width,
+            $height,
+            $col,
+            $row,
+            $buttons,
+            $id,
+            $asset,
+            $author,
+            $params,
+        );
 
         foreach ($results as $result) {
             if (trim((string) $result)) {

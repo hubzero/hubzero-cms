@@ -34,7 +34,10 @@ class DispatchTest extends TestCase
 
         $class = new ReflectionClass(Image::class);
         foreach ($values as $value) {
-            $this->assertTrue($class->hasMethod('createImage' . $value), "imageFunction $value has no createImage$value()");
+            $this->assertTrue(
+                $class->hasMethod('createImage' . $value),
+                "imageFunction $value has no createImage$value()",
+            );
         }
         $this->assertTrue($class->hasMethod('createImageAdv'), 'the fallback createImageAdv() is missing');
     }

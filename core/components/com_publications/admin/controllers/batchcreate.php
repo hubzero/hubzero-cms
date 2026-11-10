@@ -589,7 +589,10 @@ class Batchcreate extends AdminController
         }
 
         // The path must stay inside the project repository: no empty, '.' or '..' segments
-        $relPath = implode(DS, array_filter(explode('/', str_replace('\\', '/', (string) $file->path)), function ($seg) {
+        $relPath = implode(DS, array_filter(explode(
+            '/',
+            str_replace('\\', '/', (string) $file->path),
+        ), function ($seg) {
             return $seg !== '' && $seg !== '.' && $seg !== '..';
         }));
 

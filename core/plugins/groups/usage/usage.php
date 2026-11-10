@@ -52,8 +52,20 @@ class Usage extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -125,7 +137,11 @@ class Usage extends Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true,
+                );
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -141,7 +157,9 @@ class Usage extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
 
@@ -202,7 +220,8 @@ class Usage extends Plugin
             $view = $this->view('default', 'index');
 
             //get the group pages
-            $query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber=" . $database->quote($group->get('gidNumber'));
+            $query = "SELECT id, title FROM `#__xgroups_pages` WHERE state=1 AND gidNumber="
+                . $database->quote($group->get('gidNumber'));
             $database->setQuery($query);
             $view->pages = $database->loadAssocList();
 
@@ -257,7 +276,12 @@ class Usage extends Plugin
         }
 
         $database = App::get('db');
-        $database->setQuery("SELECT COUNT(*) FROM `#__wiki_pages` AS p WHERE p.scope=" . $database->quote('group') . " AND p.scope_id=" . $database->quote($gid));
+        $database->setQuery(
+            "SELECT COUNT(*) FROM `#__wiki_pages` AS p WHERE p.scope="
+                . $database->quote('group')
+                . " AND p.scope_id="
+                . $database->quote($gid),
+        );
         return $database->loadResult();
     }
 
@@ -275,7 +299,12 @@ class Usage extends Plugin
         }
 
         $database = App::get('db');
-        $database->setQuery("SELECT id FROM `#__wiki_pages` AS p WHERE p.scope=" . $database->quote('group') . " AND p.scope_id=" . $database->quote($gid));
+        $database->setQuery(
+            "SELECT id FROM `#__wiki_pages` AS p WHERE p.scope="
+                . $database->quote('group')
+                . " AND p.scope_id="
+                . $database->quote($gid),
+        );
         $pageids = $database->loadObjectList();
         if ($pageids) {
             $ids = [];
@@ -283,7 +312,9 @@ class Usage extends Plugin
                 $ids[] = $pageid->id;
             }
 
-            $database->setQuery("SELECT COUNT(*) FROM `#__wiki_attachments` WHERE page_id IN (" . implode(',', $ids) . ")");
+            $database->setQuery(
+                "SELECT COUNT(*) FROM `#__wiki_attachments` WHERE page_id IN (" . implode(',', $ids) . ")",
+            );
             return $database->loadResult();
         }
 
@@ -360,9 +391,23 @@ class Usage extends Plugin
         $database = App::get('db');
 
         if ($pageid != '') {
-            $query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " AND `pageid`=" . $database->quote($pageid) . " GROUP BY ip ORDER BY `date` ASC";
+            $query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`="
+                . $database->quote($gid)
+                . " AND `date` > "
+                . $database->quote($start)
+                . " AND `date` < "
+                . $database->quote($end)
+                . " AND `pageid`="
+                . $database->quote($pageid)
+                . " GROUP BY ip ORDER BY `date` ASC";
         } else {
-            $query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`=" . $database->quote($gid) . " AND `date` > " . $database->quote($start) . " AND `date` < " . $database->quote($end) . " GROUP BY ip ORDER BY `date` ASC";
+            $query = "SELECT * FROM `#__xgroups_pages_hits` WHERE `gidNumber`="
+                . $database->quote($gid)
+                . " AND `date` > "
+                . $database->quote($start)
+                . " AND `date` < "
+                . $database->quote($end)
+                . " GROUP BY ip ORDER BY `date` ASC";
         }
         $database->setQuery($query);
         $views = $database->loadAssocList();
@@ -513,7 +558,9 @@ class Usage extends Plugin
 
         $database = App::get('db');
 
-        $query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.scope_id=" . $database->quote($gid) . " AND be.id=bc.entry_id";
+        $query = "SELECT count(*) FROM `#__blog_entries` as be, `#__blog_comments` as bc WHERE be.scope='group' AND be.scope_id="
+            . $database->quote($gid)
+            . " AND be.id=bc.entry_id";
         $database->setQuery($query);
 
         $count = $database->loadResult();
@@ -530,7 +577,11 @@ class Usage extends Plugin
     {
         $database = App::get('db');
 
-        $query = "SELECT COUNT(*) FROM `#__events` WHERE scope=" . $database->quote('group') . " AND scope_id=" . $database->quote($gid) . " AND state=1";
+        $query = "SELECT COUNT(*) FROM `#__events` WHERE scope="
+            . $database->quote('group')
+            . " AND scope_id="
+            . $database->quote($gid)
+            . " AND state=1";
         $database->setQuery($query);
         return $database->loadResult();
     }

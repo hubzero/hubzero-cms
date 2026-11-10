@@ -39,7 +39,12 @@ class Unconfirmed extends Plugin
                 Session::set('members.confirmcode', null); // one-shot; avoid loops
                 $activation = User::one(User::get('id'))->get('activation');
                 if ($activation < 0 && (int) $activation === -(int) $pending) {
-                    App::redirect(Route::url('index.php?option=com_members&controller=register&task=confirm&confirm=' . (int) $pending, false));
+                    App::redirect(
+                        Route::url(
+                            'index.php?option=com_members&controller=register&task=confirm&confirm=' . (int) $pending,
+                            false,
+                        ),
+                    );
                     return;
                 }
             }

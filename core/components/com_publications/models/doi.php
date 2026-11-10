@@ -122,7 +122,10 @@ class Doi extends Obj
             $configs->publisherIdentifierScheme = $params->get('doi_publisher_identifier_scheme');
             $configs->publisherIdentifierSchemeURI = $params->get('doi_publisher_identifier_scheme_uri');
             $configs->livesite  = trim(Request::root(), DS);
-            $configs->xmlSchema = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'), DS);
+            $configs->xmlSchema = trim(
+                $params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'),
+                DS,
+            );
 
             $this->configs = $configs;
         }
@@ -177,7 +180,14 @@ class Doi extends Obj
         $this->configs();
 
         // Check required
-        if ($this->configs->dataciteEZIDSwitch && $this->configs->shoulder && (($this->configs->dataciteServiceURL && $this->configs->dataciteUserPW) || ($this->configs->prefix && $this->configs->ezidServiceURL && $this->configs->ezidUserPW))) {
+        if (
+            $this->configs->dataciteEZIDSwitch
+            && $this->configs->shoulder
+            && (
+                ($this->configs->dataciteServiceURL && $this->configs->dataciteUserPW)
+                || ($this->configs->prefix && $this->configs->ezidServiceURL && $this->configs->ezidUserPW)
+            )
+        ) {
             return true;
         }
 
@@ -255,10 +265,16 @@ class Doi extends Obj
         $this->set('doi', $pub->version->doi);
         $this->set('title', htmlspecialchars($pub->version->title));
         $this->set('version', htmlspecialchars($pub->version->version_label));
-        $this->set('abstract', html_entity_decode(strip_tags($pub->version->description), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $this->set(
+            'abstract',
+            html_entity_decode(strip_tags($pub->version->description), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+        );
         $this->set('synopsis', htmlspecialchars($pub->version->abstract));
 
-        $this->set('url', $this->configs->livesite . DS . 'publications' . DS . $pub->id . DS . $pub->version->version_number);
+        $this->set(
+            'url',
+            $this->configs->livesite . DS . 'publications' . DS . $pub->id . DS . $pub->version->version_number,
+        );
 
         // Set dates
         $pubYear = $pub->version->published_up && $pub->version->published_up != $this->db->getNullDate()
@@ -334,7 +350,13 @@ class Doi extends Obj
             $quantity = $pub->attachmentsCount();
 
             // get mime-type for all files
-            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $pub->version->publication_id, $pub->version->id, $pub->version->secret, $attachments);
+            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
+                $type->id,
+                $pub->version->publication_id,
+                $pub->version->id,
+                $pub->version->secret,
+                $attachments,
+            );
         } elseif ($type->id == 5) {
             // get the quantity of publication in series publication.
             $quantity = count($attachments[1]);
@@ -343,14 +365,23 @@ class Doi extends Obj
             $quantity = $pub->attachmentsCount();
             $quantity--;
 
-            $files = \Components\Publications\Helpers\Html::getdatabaseFiles($pub->version->publication_id, $pub->version->id);
+            $files = \Components\Publications\Helpers\Html::getdatabaseFiles(
+                $pub->version->publication_id,
+                $pub->version->id,
+            );
 
             if ($files != false && !empty($files)) {
                 $quantity += count($files);
             }
 
             // get MIME type for support and gallery file
-            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes($type->id, $pub->version->publication_id, $pub->version->id, $pub->version->secret, $attachments);
+            $mimeTypes = \Components\Publications\Helpers\Html::getMimeTypes(
+                $type->id,
+                $pub->version->publication_id,
+                $pub->version->id,
+                $pub->version->secret,
+                $attachments,
+            );
 
             // get MIME type of files in data directory
             if ($files != false && !empty($files)) {
@@ -371,7 +402,13 @@ class Doi extends Obj
         }
 
         // Size
-        $path = \Components\Publications\Helpers\Html::buildPubPath($pub->version->publication_id, $pub->version->id, '', '', 1);
+        $path = \Components\Publications\Helpers\Html::buildPubPath(
+            $pub->version->publication_id,
+            $pub->version->id,
+            '',
+            '',
+            1,
+        );
         $path .= DIRECTORY_SEPARATOR . str_replace(['.', '/'], '_', $pub->version->doi) . ".zip";
 
         if ($type->id == 1 && file_exists($path)) {
@@ -385,13 +422,21 @@ class Doi extends Obj
         $project = $pub->project();
         $grantInfo = [];
         if ($project->params->get('grant_title')) {
-            $grantInfo['grant_title'] = html_entity_decode($project->params->get('grant_title'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $grantInfo['grant_title'] = html_entity_decode(
+                $project->params->get('grant_title'),
+                ENT_QUOTES | ENT_HTML5,
+                'UTF-8',
+            );
         }
         if ($project->params->get('award_number')) {
             $grantInfo['award_number'] = $project->params->get('award_number');
         }
         if ($project->params->get('grant_agency')) {
-            $grantInfo['grant_agency'] = html_entity_decode($project->params->get('grant_agency'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $grantInfo['grant_agency'] = html_entity_decode(
+                $project->params->get('grant_agency'),
+                ENT_QUOTES | ENT_HTML5,
+                'UTF-8',
+            );
         }
         if ($project->params->get('grant_agency_id')) {
             $grantInfo['grant_agency_id'] = $project->params->get('grant_agency_id');
@@ -459,9 +504,24 @@ class Doi extends Obj
         $this->set('language', 'en');
         $this->set('pubYear', date('Y'));
         $this->set('publisher', htmlspecialchars($this->configs->publisher));
-        $this->set('publisherIdentifier', htmlspecialchars($this->configs->publisherIdentifier == null ? '' : $this->configs->publisherIdentifier));
-        $this->set('publisherIdentifierScheme', htmlspecialchars($this->configs->publisherIdentifierScheme == null ? '' : $this->configs->publisherIdentifierScheme));
-        $this->set('publisherIdentifierSchemeURI', htmlspecialchars($this->configs->publisherIdentifierSchemeURI == null ? '' : $this->configs->publisherIdentifierSchemeURI));
+        $this->set(
+            'publisherIdentifier',
+            htmlspecialchars($this->configs->publisherIdentifier == null ? '' : $this->configs->publisherIdentifier),
+        );
+        $this->set(
+            'publisherIdentifierScheme',
+            htmlspecialchars(
+                $this->configs->publisherIdentifierScheme == null ? '' : $this->configs->publisherIdentifierScheme,
+            ),
+        );
+        $this->set(
+            'publisherIdentifierSchemeURI',
+            htmlspecialchars(
+                $this->configs->publisherIdentifierSchemeURI == null
+                    ? ''
+                    : $this->configs->publisherIdentifierSchemeURI,
+            ),
+        );
         $this->set('resourceType', 'Dataset');
         $this->set('resourceTypeTitle', 'Dataset');
         $this->set('datePublished', date('Y-m-d'));
@@ -555,11 +615,18 @@ class Doi extends Obj
                 }
 
                 if (isset($author->orcid) && !empty($author->orcid)) {
-                    $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' . $author->orcid . '</nameIdentifier>';
+                    $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">'
+                        . $author->orcid
+                        . '</nameIdentifier>';
                 }
 
                 if ($author->organization) {
-                    $orgidAtr = (isset($author->orgid) && !empty($author->orgid)) ? ' affiliationIdentifier="' . $author->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
+                    $orgidAtr = (isset($author->orgid) && !empty($author->orgid))
+                        ? ' affiliationIdentifier="'
+                            . $author->orgid
+                            . '"'
+                            . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"'
+                        : "";
                     $xmlfile .= ' <affiliation' . $orgidAtr . '>' . $author->organization . '</affiliation>';
                 }
 
@@ -569,7 +636,9 @@ class Doi extends Obj
             $xmlfile .= '<creator>';
             $xmlfile .= '	<creatorName>' . $this->get('creator') . '</creatorName>';
             if ($this->get('creatorOrcid')) {
-                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' . $this->get('creatorOrcid') . '</nameIdentifier>';
+                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">'
+                    . $this->get('creatorOrcid')
+                    . '</nameIdentifier>';
             }
             $xmlfile .= '</creator>';
         }
@@ -579,10 +648,22 @@ class Doi extends Obj
 		</titles>';
 
         if ($this->get('publisher')) {
-            $publisherIdentifier = $this->get('publisherIdentifier') ? ' publisherIdentifier="' . $this->get('publisherIdentifier') . '"' : "";
-            $publisherIdentifierScheme = $this->get('publisherIdentifierScheme') ? ' publisherIdentifierScheme="' . $this->get('publisherIdentifierScheme') . '"' : "";
-            $publisherIdentifierSchemeURI = $this->get('publisherIdentifierSchemeURI') ? ' schemeURI="' . $this->get('publisherIdentifierSchemeURI') . '"' : "";
-            $xmlfile .= ' <publisher xml:lang="en"' . $publisherIdentifier . $publisherIdentifierScheme . $publisherIdentifierSchemeURI . '>' . $this->get('publisher') . '</publisher>';
+            $publisherIdentifier = $this->get('publisherIdentifier')
+                ? ' publisherIdentifier="' . $this->get('publisherIdentifier') . '"'
+                : "";
+            $publisherIdentifierScheme = $this->get('publisherIdentifierScheme')
+                ? ' publisherIdentifierScheme="' . $this->get('publisherIdentifierScheme') . '"'
+                : "";
+            $publisherIdentifierSchemeURI = $this->get('publisherIdentifierSchemeURI')
+                ? ' schemeURI="' . $this->get('publisherIdentifierSchemeURI') . '"'
+                : "";
+            $xmlfile .= ' <publisher xml:lang="en"'
+                . $publisherIdentifier
+                . $publisherIdentifierScheme
+                . $publisherIdentifierSchemeURI
+                . '>'
+                . $this->get('publisher')
+                . '</publisher>';
         }
 
         $xmlfile .= '<publicationYear>' . $this->get('pubYear') . '</publicationYear>';
@@ -602,11 +683,18 @@ class Doi extends Obj
                 }
 
                 if (isset($contactPerson->orcid) && !empty($contactPerson->orcid)) {
-                    $xmlfile .= '		<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' . $contactPerson->orcid . '</nameIdentifier>';
+                    $xmlfile .= '		<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">'
+                        . $contactPerson->orcid
+                        . '</nameIdentifier>';
                 }
 
                 if ($contactPerson->organization) {
-                    $orgidAtr = (isset($contactPerson->orgid) && !empty($contactPerson->orgid)) ? ' affiliationIdentifier="' . $contactPerson->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
+                    $orgidAtr = (isset($contactPerson->orgid) && !empty($contactPerson->orgid))
+                        ? ' affiliationIdentifier="'
+                            . $contactPerson->orgid
+                            . '"'
+                            . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"'
+                        : "";
                     $xmlfile .= '		<affiliation' . $orgidAtr . '>' . $contactPerson->organization . '</affiliation>';
                 }
 
@@ -632,11 +720,15 @@ class Doi extends Obj
             $xmlfile .= '<relatedIdentifiers>';
 
             if ($doiOfPrevPub) {
-                $xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">' . $doiOfPrevPub . '</relatedIdentifier>';
+                $xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">'
+                    . $doiOfPrevPub
+                    . '</relatedIdentifier>';
             }
 
             if ($doiOfNextPub) {
-                $xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsPreviousVersionOf">' . $doiOfNextPub . '</relatedIdentifier>';
+                $xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsPreviousVersionOf">'
+                    . $doiOfNextPub
+                    . '</relatedIdentifier>';
             }
 
             if ($citations) {
@@ -644,10 +736,19 @@ class Doi extends Obj
                     $pos = strpos(trim($citation->resourceTypeGeneral), self::DATACITE);
 
                     if ($pos == 0) {
-                        $citation->resourceTypeGeneral = substr(trim($citation->resourceTypeGeneral), $pos + strlen(self::DATACITE));
+                        $citation->resourceTypeGeneral = substr(
+                            trim($citation->resourceTypeGeneral),
+                            $pos + strlen(self::DATACITE),
+                        );
                     }
 
-                    if (!empty($citation->relationType) && (preg_match("/" . self::REFERENCES . "/i", $citation->relationType) || preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType))) {
+                    if (
+                        !empty($citation->relationType)
+                        && (preg_match(
+                            "/" . self::REFERENCES . "/i",
+                            $citation->relationType,
+                        ) || preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType))
+                    ) {
                         if (preg_match("/" . self::REFERENCES . "/i", $citation->relationType)) {
                             $citation->relationType = ucfirst(self::REFERENCES);
                         } elseif (preg_match("/" . self::REFERENCEDBY . "/i", $citation->relationType)) {
@@ -656,11 +757,23 @@ class Doi extends Obj
 
                         if (!empty($citation->resourceTypeGeneral)) {
                             if (!empty($citation->relatedIdentifier)) {
-                                $xmlfile .= '<relatedIdentifier relatedIdentifierType="DOI" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->relatedIdentifier) . '</relatedIdentifier>';
+                                $xmlfile .= '<relatedIdentifier relatedIdentifierType="DOI" relationType="'
+                                    . $citation->relationType
+                                    . '" resourceTypeGeneral="'
+                                    . $citation->resourceTypeGeneral
+                                    . '">'
+                                    . trim($citation->relatedIdentifier)
+                                    . '</relatedIdentifier>';
                             } else {
                                 if (!empty($citation->url)) {
                                     if (preg_match("/purl/i", $citation->url)) {
-                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="PURL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . trim($citation->url) . '</relatedIdentifier>';
+                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="PURL" relationType="'
+                                            . $citation->relationType
+                                            . '" resourceTypeGeneral="'
+                                            . $citation->resourceTypeGeneral
+                                            . '">'
+                                            . trim($citation->url)
+                                            . '</relatedIdentifier>';
                                     } elseif (preg_match("/handle/i", $citation->url)) {
                                         if (preg_match("/hdl\.handle\.net/i", $citation->url)) {
                                             $pos = strpos($citation->url, self::HANDLE_DOMAIN_NAME);
@@ -669,15 +782,45 @@ class Doi extends Obj
                                             $pos = strpos($citation->url, self::HANDLE);
                                             $val = substr($citation->url, $pos + strlen(self::HANDLE) + 1);
                                         }
-                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="Handle" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $val . '</relatedIdentifier>';
+                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="Handle" relationType="'
+                                            . $citation->relationType
+                                            . '" resourceTypeGeneral="'
+                                            . $citation->resourceTypeGeneral
+                                            . '">'
+                                            . $val
+                                            . '</relatedIdentifier>';
                                     } elseif (preg_match("/ark:/i", $citation->url) && !empty($citation->eprint)) {
-                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="ARK" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="ARK" relationType="'
+                                            . $citation->relationType
+                                            . '" resourceTypeGeneral="'
+                                            . $citation->resourceTypeGeneral
+                                            . '">'
+                                            . $citation->eprint
+                                            . '</relatedIdentifier>';
                                     } elseif (preg_match("/arxiv/i", $citation->url) && !empty($citation->eprint)) {
-                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="arXiv" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="arXiv" relationType="'
+                                            . $citation->relationType
+                                            . '" resourceTypeGeneral="'
+                                            . $citation->resourceTypeGeneral
+                                            . '">'
+                                            . $citation->eprint
+                                            . '</relatedIdentifier>';
                                     } elseif (preg_match("/urn:/i", $citation->url) && !empty($citation->eprint)) {
-                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="URN" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->eprint . '</relatedIdentifier>';
+                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="URN" relationType="'
+                                            . $citation->relationType
+                                            . '" resourceTypeGeneral="'
+                                            . $citation->resourceTypeGeneral
+                                            . '">'
+                                            . $citation->eprint
+                                            . '</relatedIdentifier>';
                                     } else {
-                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="URL" relationType="' . $citation->relationType . '" resourceTypeGeneral="' . $citation->resourceTypeGeneral . '">' . $citation->url . '</relatedIdentifier>';
+                                        $xmlfile .= '<relatedIdentifier relatedIdentifierType="URL" relationType="'
+                                            . $citation->relationType
+                                            . '" resourceTypeGeneral="'
+                                            . $citation->resourceTypeGeneral
+                                            . '">'
+                                            . $citation->url
+                                            . '</relatedIdentifier>';
                                     }
                                 }
                             }
@@ -694,7 +837,11 @@ class Doi extends Obj
         }
         if ($this->get('license')) {
             $rightsURI = $this->get('licenseURI') ? 'rightsURI="' . $this->get('licenseURI') . '"' : "";
-            $xmlfile .= '<rightsList><rights ' . $rightsURI . '>' . htmlspecialchars($this->get('license')) . '</rights></rightsList>';
+            $xmlfile .= '<rightsList><rights '
+                . $rightsURI
+                . '>'
+                . htmlspecialchars($this->get('license'))
+                . '</rights></rightsList>';
         }
         if ($this->get('grantInfo')) {
             $grantInfo = $this->get('grantInfo');
@@ -705,7 +852,9 @@ class Doi extends Obj
                 $xmlfile .= '	<funderName>' . $this->xmlText($grantInfo['grant_agency']) . '</funderName>';
 
                 if (array_key_exists('grant_agency_id', $grantInfo)) {
-                    $xmlfile .= '	<funderIdentifier funderIdentifierType="ROR">' . $this->xmlText($grantInfo['grant_agency_id']) . '</funderIdentifier>';
+                    $xmlfile .= '	<funderIdentifier funderIdentifierType="ROR">'
+                        . $this->xmlText($grantInfo['grant_agency_id'])
+                        . '</funderIdentifier>';
                 }
 
                 if (array_key_exists('award_number', $grantInfo)) {
@@ -734,7 +883,14 @@ class Doi extends Obj
             $xmlfile .= '<sizes>';
             $pubType = $this->get('pubType');
             if ($this->get('fileCount')) {
-                $xmlfile .= '	<size>' . $this->get('fileCount') . ($pubType == 5 ? ($this->get('fileCount') == 1 ? " publication" : " publications") : ($this->get('fileCount') == 1 ? " file" : " files")) . '</size>';
+                $xmlfile .= '	<size>'
+                    . $this->get('fileCount')
+                    . (
+                        $pubType == 5
+                        ? ($this->get('fileCount') == 1 ? " publication" : " publications")
+                        : ($this->get('fileCount') == 1 ? " file" : " files")
+                    )
+                    . '</size>';
             }
             if ($this->get('size')) {
                 $xmlfile .= '	<size>' . $this->get('size') . '</size>';
@@ -747,7 +903,11 @@ class Doi extends Obj
             foreach ($this->get('regTags') as $regTag) {
                 if (!empty($regTag->description) && preg_match("/^lcsh::/i", trim(strip_tags($regTag->description)))) {
                     $url = substr(trim(strip_tags($regTag->description)), 6);
-                    $xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="' . $url . '">' . $this->xmlText($regTag->raw_tag) . '</subject>';
+                    $xmlfile .= '<subject subjectScheme="Library of Congress Subject Headings (LCSH)" schemeURI="https://id.loc.gov/authorities/" valueURI="'
+                        . $url
+                        . '">'
+                        . $this->xmlText($regTag->raw_tag)
+                        . '</subject>';
                 } else {
                     $xmlfile .= '	<subject>' . $this->xmlText($regTag->raw_tag) . '</subject>';
                 }
@@ -762,7 +922,11 @@ class Doi extends Obj
             if (!empty($valArr) && preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1])) {
                 $classificationCode = substr(trim($valArr[0]), 5);
                 $fosTagVal = trim($valArr[1]);
-                $xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="' . $classificationCode . '">' . $this->xmlText($fosTagVal) . '</subject>';
+                $xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" schemeURI="https://web-archive.oecd.org/2012-06-15/138575-38235147.pdf" classificationCode="'
+                    . $classificationCode
+                    . '">'
+                    . $this->xmlText($fosTagVal)
+                    . '</subject>';
             }
         }
         $xmlfile .= '</subjects>';
@@ -773,7 +937,9 @@ class Doi extends Obj
         $xmlfile .= '</description>';
 
         if ($this->get('synopsis')) {
-            $xmlfile .= '<description descriptionType="Other">' . stripslashes($this->get('synopsis')) . '</description>';
+            $xmlfile .= '<description descriptionType="Other">'
+                . stripslashes($this->get('synopsis'))
+                . '</description>';
         }
         $xmlfile .= '
 			</descriptions>
@@ -1038,7 +1204,10 @@ class Doi extends Obj
             CURLOPT_USERPWD         => $this->configs->ezidUserPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
+            CURLOPT_HTTPHEADER      => [
+                'Content-Type: text/plain; charset=UTF-8',
+                'Content-Length: ' . strlen($postvals),
+            ],
         ];
         curl_setopt_array($ch, $options);
 
@@ -1194,7 +1363,10 @@ class Doi extends Obj
             CURLOPT_USERPWD         => $this->configs->ezidUserPW,
             CURLOPT_POSTFIELDS      => $postVals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postVals)],
+            CURLOPT_HTTPHEADER      => [
+                'Content-Type: text/plain; charset=UTF-8',
+                'Content-Length: ' . strlen($postVals),
+            ],
         ];
         curl_setopt_array($ch, $options);
 

@@ -37,7 +37,11 @@ class Type extends Table
     {
         $types = [];
 
-        $query  = "SELECT id, category FROM `$this->tableName` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . " ";
+        $query  = "SELECT id, category FROM `$this->tableName` ORDER BY "
+            . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1')
+            . " "
+            . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC')
+            . " ";
         $this->db->setQuery($query);
         $result = $this->db->loadObjectList();
         if ($result) {

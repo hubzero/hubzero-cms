@@ -38,7 +38,9 @@ class Unreferenced extends WikiMacro
         $dt = '';
 
         if ($this->args) {
-            $dt .= ' <span class="mbox-date">(' . htmlspecialchars((string) $this->args, ENT_QUOTES, 'UTF-8') . ')</span>';
+            $dt .= ' <span class="mbox-date">('
+                . htmlspecialchars((string) $this->args, ENT_QUOTES, 'UTF-8')
+                . ')</span>';
         }
 
         return '<div class="mbox-content mbox-unreferenced"><p class="mbox-text">'

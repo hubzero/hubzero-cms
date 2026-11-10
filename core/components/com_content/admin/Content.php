@@ -52,7 +52,12 @@ class Content extends AbstractComponent
             Route::url('index.php?option=com_categories&extension=com_content'),
         );
 
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             $controllerName = $defaultController;
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

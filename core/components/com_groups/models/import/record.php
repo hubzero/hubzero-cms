@@ -309,7 +309,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
             $cn = $this->record->entry->get('cn');
             if ($cn && isset($this->raw->cn) && $cn != $this->raw->cn) {
                 // Uh-oh. Notify the user.
-                array_push($this->record->notices, Lang::txt('Group aliases (CNs) for existing groups cannot be changed at this time.'));
+                array_push(
+                    $this->record->notices,
+                    Lang::txt('Group aliases (CNs) for existing groups cannot be changed at this time.'),
+                );
             }
         } elseif (isset($this->raw->cn) && $this->raw->cn) {
             $this->record->entry->set('cn', $this->raw->cn);

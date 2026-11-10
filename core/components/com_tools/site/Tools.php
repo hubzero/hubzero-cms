@@ -24,7 +24,12 @@ class Tools extends AbstractComponent
     protected function execute(): void
     {
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'tools'));
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             $controllerName = 'tools';
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

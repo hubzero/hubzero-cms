@@ -21,7 +21,10 @@ class Migration20261030000002PlgResourcesCollections extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__resource_types') || !$this->db->tableHasField('#__resource_types', 'collection')) {
+        if (
+            !$this->db->tableExists('#__resource_types')
+            || !$this->db->tableHasField('#__resource_types', 'collection')
+        ) {
             return;
         }
 

@@ -280,7 +280,16 @@ class Image extends Plugin
                 } else {
                     $shift = 1;
                 }
-                imagecopy($img, $font, $x - $shift, round($y), $m['start'], 1, $m['end'] - $m['start'], $fontfile_height);
+                imagecopy(
+                    $img,
+                    $font,
+                    $x - $shift,
+                    round($y),
+                    $m['start'],
+                    1,
+                    $m['end'] - $m['start'],
+                    $fontfile_height,
+                );
                 $x += $m['end'] - $m['start'] - $shift;
             }
         } while ($x >= $width - 10); // while not fit in canvas
@@ -429,7 +438,16 @@ class Image extends Plugin
             $angle = rand(-45, 45);
             $y = intval(rand((int) ($size * 1.5), (int) ($this->ly - ($size / 7))));
 
-            @imagettftext($image, $size, $angle, $x + (int) ($size / 15), $y, $white, __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF', $security_code[$i]);
+            @imagettftext(
+                $image,
+                $size,
+                $angle,
+                $x + (int) ($size / 15),
+                $y,
+                $white,
+                __DIR__ . DS . 'assets' . DS . 'fonts' . DS . 'adlibBT.TTF',
+                $security_code[$i],
+            );
             $x += ($size * 2);
         }
 

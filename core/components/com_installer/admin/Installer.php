@@ -40,7 +40,12 @@ class Installer extends AbstractComponent
             }
         }
         $controllerName = Request::getCmd('controller', 'manage');
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 

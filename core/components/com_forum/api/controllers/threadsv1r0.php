@@ -777,7 +777,11 @@ class Threadsv1r0 extends ApiController
             $desc = Lang::txt(
                 'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_CREATED',
                 $row->get('id'),
-                '<a href="' . $url . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+                '<a href="'
+                    . $url
+                    . '">'
+                    . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8')
+                    . '</a>',
             );
 
             // If the parent post is not the same as the

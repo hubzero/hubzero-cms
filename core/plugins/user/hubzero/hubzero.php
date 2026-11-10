@@ -507,7 +507,9 @@ class Hubzero extends Plugin
         }
 
         // If autoregister is set let's register the user
-        $autoregister = isset($options['autoregister']) ? $options['autoregister'] : $this->params->get('autoregister', 1);
+        $autoregister = isset($options['autoregister'])
+            ? $options['autoregister']
+            : $this->params->get('autoregister', 1);
 
         if ($autoregister) {
             if (!$instance->save()) {
@@ -594,13 +596,17 @@ class Hubzero extends Plugin
 
         // ======= Sanitation Queries // deletes, updates, inserts =======
         // NOTE: moved the insert (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
-        $delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id =" . $db->quote($userId) . " AND profile_key !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
+        $delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id ="
+            . $db->quote($userId)
+            . " AND profile_key !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key !='organization' AND profile_key !='orgtype' AND profile_key !='race' AND profile_key !='reason'";
         $this->runUpdateOrDeleteQuery($delete_UserProfile_Query);
 
-        $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email=" . $db->quote($userEmail);
+        $update_SupportTicketsByEmail_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where email="
+            . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByEmail_Query);
 
-        $update_SupportTicketsByLogin_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where login=" . $db->quote($userName);
+        $update_SupportTicketsByLogin_Query = "UPDATE `#__support_tickets` set login='',ip='', email='', hostname='', name='' where login="
+            . $db->quote($userName);
         ;
         $this->runUpdateOrDeleteQuery($update_SupportTicketsByLogin_Query);
 
@@ -613,28 +619,35 @@ class Hubzero extends Plugin
         $delete_SessionById_Query = "DELETE from `#__session` where userid=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_SessionById_Query);
 
-        $delete_ProfileCompletionAward_Query = "DELETE from `#__profile_completion_awards` where user_id=" . $db->quote($userId);
+        $delete_ProfileCompletionAward_Query = "DELETE from `#__profile_completion_awards` where user_id="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_ProfileCompletionAward_Query);
 
-        $update_NewsletterMailingRecipientActions_Query = "UPDATE `#__newsletter_mailing_recipient_actions` set email='',ip='' where email=" . $db->quote($userEmail);
+        $update_NewsletterMailingRecipientActions_Query = "UPDATE `#__newsletter_mailing_recipient_actions` set email='',ip='' where email="
+            . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingRecipientActions_Query);
 
-        $update_NewsletterMailingRecipients_Query = "UPDATE `#__newsletter_mailing_recipients` set email='' where email=" . $db->quote($userEmail);
+        $update_NewsletterMailingRecipients_Query = "UPDATE `#__newsletter_mailing_recipients` set email='' where email="
+            . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingRecipients_Query);
 
-        $update_NewsletterMailingListEmails_Query = "UPDATE `#__newsletter_mailinglist_emails` set email='' where email=" . $db->quote($userEmail);
+        $update_NewsletterMailingListEmails_Query = "UPDATE `#__newsletter_mailinglist_emails` set email='' where email="
+            . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingListEmails_Query);
 
-        $update_NewsletterMailingListUnsubscribes_Query = "UPDATE `#__newsletter_mailinglist_unsubscribes` set email='' where email=" . $db->quote($userEmail);
+        $update_NewsletterMailingListUnsubscribes_Query = "UPDATE `#__newsletter_mailinglist_unsubscribes` set email='' where email="
+            . $db->quote($userEmail);
         $this->runUpdateOrDeleteQuery($update_NewsletterMailingListUnsubscribes_Query);
 
         $delete_Messages_Query = "DELETE from `#__messages` where user_id_from=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_Messages_Query);
 
-        $update_MediaTrackingDetailed_Query = "UPDATE `#__media_tracking_detailed` set ip_address='' where user_id=" . $db->quote($userId);
+        $update_MediaTrackingDetailed_Query = "UPDATE `#__media_tracking_detailed` set ip_address='' where user_id="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_MediaTrackingDetailed_Query);
 
-        $update_MediaTracking_Query = "UPDATE `#__media_tracking` set ip_address='' where user_id=" . $db->quote($userId);
+        $update_MediaTracking_Query = "UPDATE `#__media_tracking` set ip_address='' where user_id="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_MediaTracking_Query);
 
         $delete_JobsSeeker_Query = "DELETE from `#__jobs_seekers` where uid=" . $db->quote($userId);
@@ -649,10 +662,14 @@ class Hubzero extends Plugin
         $delete_Feedback_Query = "DELETE from `#__feedback` where user_id=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_Feedback_Query);
 
-        $update_EventRegistration_Query = "UPDATE `#__event_registration` set name='', email='', phone='', address='', city='', zip='', username=" . $db->quote($anonUserName) . " where username=" . $db->quote($userName);
+        $update_EventRegistration_Query = "UPDATE `#__event_registration` set name='', email='', phone='', address='', city='', zip='', username="
+            . $db->quote($anonUserName)
+            . " where username="
+            . $db->quote($userName);
         $this->runUpdateOrDeleteQuery($update_EventRegistration_Query);
 
-        $delete_CartSavedAddresses_Query = "DELETE from `#__cart_saved_addresses` where uidNumber=" . $db->quote($userId);
+        $delete_CartSavedAddresses_Query = "DELETE from `#__cart_saved_addresses` where uidNumber="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_CartSavedAddresses_Query);
 
         $delete_BlogEntries_Query = "DELETE from `#__blog_entries` where created_by=" . $db->quote($userId);
@@ -687,7 +704,8 @@ class Hubzero extends Plugin
         $delete_XProfilesAdmin_Query = "DELETE from `#__xprofiles_admin` where uidNumber=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_XProfilesAdmin_Query);
 
-        $delete_XProfilesDisability_Query = "DELETE from `#__xprofiles_disability` where uidNumber=" . $db->quote($userId);
+        $delete_XProfilesDisability_Query = "DELETE from `#__xprofiles_disability` where uidNumber="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_XProfilesDisability_Query);
 
         $delete_XProfilesTokens_Query = "DELETE from `#__xprofiles_tokens` where user_id=" . $db->quote($userId);
@@ -699,10 +717,12 @@ class Hubzero extends Plugin
         $delete_WikiAttachment_Query = "DELETE from `#__wiki_attachments` where created_by=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_WikiAttachment_Query);
 
-        $delete_UsersQuotasLogByUserName_Query = "DELETE from `#__users_quotas_log` where name=" . $db->quote($userName);
+        $delete_UsersQuotasLogByUserName_Query = "DELETE from `#__users_quotas_log` where name="
+            . $db->quote($userName);
         $this->runUpdateOrDeleteQuery($delete_UsersQuotasLogByUserName_Query);
 
-        $delete_UsersQuotasLogByActorId_Query = "DELETE from `#__users_quotas_log` where actor_id=" . $db->quote($userId);
+        $delete_UsersQuotasLogByActorId_Query = "DELETE from `#__users_quotas_log` where actor_id="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_UsersQuotasLogByActorId_Query);
 
         $delete_UsersLogAuth_Query = "DELETE from `#__users_log_auth` where user_id=" . $db->quote($userId);
@@ -711,10 +731,14 @@ class Hubzero extends Plugin
         $delete_UsersPassword_Query = "DELETE from `#__users_password` where user_id=" . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_UsersPassword_Query);
 
-        $delete_UsersPasswordHistory_Query = "DELETE from `#__users_password_history` where user_id=" . $db->quote($userId);
+        $delete_UsersPasswordHistory_Query = "DELETE from `#__users_password_history` where user_id="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($delete_UsersPasswordHistory_Query);
 
-        $update_UsersPointsSubscription_Query = "UPDATE `#__users_points_subscriptions` set contact=" . $db->quote($anonUserName) . " where uid=" . $db->quote($userId);
+        $update_UsersPointsSubscription_Query = "UPDATE `#__users_points_subscriptions` set contact="
+            . $db->quote($anonUserName)
+            . " where uid="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_UsersPointsSubscription_Query);
 
         // replace user secret with null
@@ -731,7 +755,18 @@ class Hubzero extends Plugin
             system($cmd2, $retval);
         }
 
-        $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name=" . $db->quote($anonUserNameSpace) . ", username=" . $db->quote($anonUserName) . ", userPassword=" . $db->quote($anonPassword) . ", url='', phone='', regHost='', regIP='', givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email=" . $db->quote($anonUserName . "@example.com") . " where uidNumber =" . $db->quote($userId);
+        $update_XProfilesById_Query = "UPDATE `#__xprofiles` set name="
+            . $db->quote($anonUserNameSpace)
+            . ", username="
+            . $db->quote($anonUserName)
+            . ", userPassword="
+            . $db->quote($anonPassword)
+            . ", url='', phone='', regHost='', regIP='', givenName="
+            . $db->quote($anonUserName)
+            . ", middleName='', surname='anonSurName', picture='', public=0, params='', note='', orcid='', homeDirectory='/home/anonymous', email="
+            . $db->quote($anonUserName . "@example.com")
+            . " where uidNumber ="
+            . $db->quote($userId);
         $this->runUpdateOrDeleteQuery($update_XProfilesById_Query);
 
         return true;

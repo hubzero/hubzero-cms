@@ -308,7 +308,11 @@ class Provider
             return OAUTH_ERR_INTERNAL_ERROR;
         }
 
-        $db->setQuery("SELECT * FROM `#__oauthp_consumers` WHERE token=" . $db->quote($this->provider->consumer_key) . " LIMIT 1;");
+        $db->setQuery(
+            "SELECT * FROM `#__oauthp_consumers` WHERE token="
+                . $db->quote($this->provider->consumer_key)
+                . " LIMIT 1;",
+        );
 
         $result = $db->loadObject();
 
@@ -395,7 +399,9 @@ class Provider
             return OAUTH_ERR_INTERNAL_ERROR;
         }
 
-        $db->setQuery("SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($this->provider->token) . " LIMIT 1;");
+        $db->setQuery(
+            "SELECT * FROM `#__oauthp_tokens` WHERE token=" . $db->quote($this->provider->token) . " LIMIT 1;",
+        );
 
         $result = $db->loadObject();
 

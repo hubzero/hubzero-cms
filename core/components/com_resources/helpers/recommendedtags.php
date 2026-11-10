@@ -73,8 +73,12 @@ class RecommendedTags
 
         $tags = [];
         foreach ($dbh->loadAssocList() as $row) {
-            $tags[\Hubzero\Utility\Inflector::singularize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
-            $tags[\Hubzero\Utility\Inflector::pluralize($row['raw_tag'])] = $row['is_endorsed'] ? self::ENDORSED_TAG : self::REGULAR_TAG;
+            $tags[\Hubzero\Utility\Inflector::singularize($row['raw_tag'])] = $row['is_endorsed']
+                ? self::ENDORSED_TAG
+                : self::REGULAR_TAG;
+            $tags[\Hubzero\Utility\Inflector::pluralize($row['raw_tag'])] = $row['is_endorsed']
+                ? self::ENDORSED_TAG
+                : self::REGULAR_TAG;
         }
 
         $dbh->setQuery(
@@ -99,12 +103,19 @@ class RecommendedTags
             }
             $stems = [[$stemmer->stem($word), strtolower($word)]];
             if (isset($words[$idx + 1]) && !self::isStopWord($words[$idx + 1], $opts['min_len'])) {
-                $stems[] = [$stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]), strtolower($word) . ' ' . strtolower($words[$idx + 1])];
+                $stems[] = [
+                    $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]),
+                    strtolower($word) . ' ' . strtolower($words[$idx + 1]),
+                ];
             }
             if (isset($words[$idx + 2]) && !self::isStopWord($words[$idx + 2], $opts['min_len'])) {
                 $stems[] = [
                     $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]) . ' ' . $stemmer->stem($words[$idx + 2]),
-                    \Hubzero\Utility\Inflector::singularize(strtolower($word)) . ' ' . strtolower($words[$idx + 1]) . ' ' . strtolower($words[$idx + 2]),
+                    \Hubzero\Utility\Inflector::singularize(strtolower($word))
+                        . ' '
+                        . strtolower($words[$idx + 1])
+                        . ' '
+                        . strtolower($words[$idx + 2]),
                 ];
             }
             foreach ($stems as $set_idx => $set) {

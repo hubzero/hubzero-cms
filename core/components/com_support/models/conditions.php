@@ -73,7 +73,10 @@ class Conditions extends Obj
         } elseif (is_object($record)) {
             $this->record = $record;
         } else {
-            throw new InvalidArgumentException(Lang::txt(__METHOD__ . '; Record must be JSON encoded string or object.'), 500);
+            throw new InvalidArgumentException(
+                Lang::txt(__METHOD__ . '; Record must be JSON encoded string or object.'),
+                500,
+            );
         }
 
         return $this;
@@ -168,7 +171,11 @@ class Conditions extends Obj
                     $items[] = $this->value(-1, 'closed: No resolution', false);
                     $switched = true;
                 }
-                $items[] = $this->value($anode->id, ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title), false);
+                $items[] = $this->value(
+                    $anode->id,
+                    ($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title),
+                    false,
+                );
             }
         }
         $conditions->status = $this->expression([

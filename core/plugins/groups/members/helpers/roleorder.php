@@ -91,7 +91,10 @@ class RoleOrder
                 }
 
                 $abbr = substr($word, 0, 4) == 'sept' ? 'sept' : substr($word, 0, 3);
-                if (isset(self::$months[$abbr]) && (strlen($word) == 3 || $abbr == 'sept' || strpos(self::fullMonth($abbr), $word) === 0)) {
+                if (
+                    isset(self::$months[$abbr])
+                    && (strlen($word) == 3 || $abbr == 'sept' || strpos(self::fullMonth($abbr), $word) === 0)
+                ) {
                     $month = self::$months[$abbr];
                     break;
                 }

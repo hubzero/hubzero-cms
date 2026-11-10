@@ -106,7 +106,13 @@ class Course extends SiteController
     public function loginTask($message = '', $task = null)
     {
         $task   = $task ?: $this->task;
-        $return = base64_encode(Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('id') . '&task=' . $task, false, true));
+        $return = base64_encode(
+            Route::url(
+                'index.php?option=' . $this->option . '&gid=' . $this->course->get('id') . '&task=' . $task,
+                false,
+                true,
+            ),
+        );
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -621,7 +627,12 @@ class Course extends SiteController
         $message = str_replace("\n", "\r\n", $message);
 
         // Send the message
-        if (!Event::trigger('xmessage.onSendMessage', ['courses_deleted', $subject, $message, $from, $managers, $this->option])) {
+        if (
+            !Event::trigger(
+                'xmessage.onSendMessage',
+                ['courses_deleted', $subject, $message, $from, $managers, $this->option],
+            )
+        ) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_EMAIL_MEMBERS_FAILED'));
         }
 
@@ -711,7 +722,13 @@ class Course extends SiteController
         if (!$model->bind($page)) {
             // Redirect back to the course page
             App::redirect(
-                Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
+                Route::url(
+                    $course->link()
+                        . '&active='
+                        . $model->get('url')
+                        . '&action='
+                        . ($model->get('id') ? 'addpage' : 'editpage'),
+                ),
                 $model->getError(),
                 'error',
             );
@@ -721,7 +738,13 @@ class Course extends SiteController
         if (!$model->store(true)) {
             // Redirect back to the course page
             App::redirect(
-                Route::url($course->link() . '&active=' . $model->get('url') . '&action=' . ($model->get('id') ? 'addpage' : 'editpage')),
+                Route::url(
+                    $course->link()
+                        . '&active='
+                        . $model->get('url')
+                        . '&action='
+                        . ($model->get('id') ? 'addpage' : 'editpage'),
+                ),
                 $model->getError(),
                 'error',
             );
@@ -901,7 +924,12 @@ class Course extends SiteController
         $filename = str_replace(' ', '_', $filename);
 
         // Get the configured upload path
-        $base_path = DS . trim($this->config->get('filepath', '/site/courses'), DS) . DS . $this->course->get('id') . DS . 'pagefiles';
+        $base_path = DS
+            . trim($this->config->get('filepath', '/site/courses'), DS)
+            . DS
+            . $this->course->get('id')
+            . DS
+            . 'pagefiles';
 
         // Does the path start with a slash?
         $filename = DS . ltrim($filename, DS);
@@ -1006,7 +1034,10 @@ class Course extends SiteController
         }
 
         if (!$rtrn) {
-            $rtrn = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $fields['alias'], false);
+            $rtrn = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $fields['alias'],
+                false,
+            );
         }
 
         // Success
@@ -1024,7 +1055,23 @@ class Course extends SiteController
     {
         // Forking makes the caller the new course's manager, so there has to be one
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&task=fork', false, true), 'server'));
+            $return = base64_encode(
+                Request::getString(
+                    'REQUEST_URI',
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&gid='
+                            . $this->course->get('alias')
+                            . '&task=fork',
+                        false,
+                        true,
+                    ),
+                    'server',
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
@@ -1120,7 +1167,10 @@ class Course extends SiteController
         $this->course->store();
 
         if (!$rtrn) {
-            $rtrn = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $fields['alias'], false);
+            $rtrn = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $fields['alias'],
+                false,
+            );
         }
 
         // Success

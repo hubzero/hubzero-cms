@@ -56,7 +56,11 @@ class Select extends Field
         // Create a read-only list (no name) with a hidden input to store the value.
         if ((string) $this->element['readonly'] == 'true') {
             $html[] = Dropdown::genericlist($options, '', trim($attr), 'value', 'text', $this->value, $this->id);
-            $html[] = '<input type="hidden" name="' . $this->name . '" value="' . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" />';
+            $html[] = '<input type="hidden" name="'
+                . $this->name
+                . '" value="'
+                . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')
+                . '" />';
         } else {
             // Create a regular list.
             if ($this->element['option_other']) {
@@ -73,12 +77,42 @@ class Select extends Field
                 // If current value doesn't match any option, select "other"
                 $selectValue = (!$found && $this->value) ? 'other' : $this->value;
 
-                $html[] = Dropdown::genericlist($options, $this->name, trim($attr), 'value', 'text', $selectValue, $this->id);
+                $html[] = Dropdown::genericlist(
+                    $options,
+                    $this->name,
+                    trim($attr),
+                    'value',
+                    'text',
+                    $selectValue,
+                    $this->id,
+                );
 
                 $showOther = (!$found && $this->value) ? '' : ' style="display:none;"';
-                $html[] = '<input type="text" class="option-other-input" name="' . $this->getName($this->fieldname . '_other') . '" value="' . ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8')) . '" placeholder="' . (empty($this->placeholder) ? App::get('language')->txt('Other...') : htmlspecialchars($this->placeholder, ENT_COMPAT, 'UTF-8')) . '" aria-label="' . App::get('language')->txt('Other') . '"' . $showOther . ' />';
+                $html[] = '<input type="text" class="option-other-input" name="'
+                    . $this->getName($this->fieldname . '_other')
+                    . '" value="'
+                    . ($found ? '' : htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8'))
+                    . '" placeholder="'
+                    . (empty($this->placeholder) ? App::get('language')->txt('Other...') : htmlspecialchars(
+                        $this->placeholder,
+                        ENT_COMPAT,
+                        'UTF-8',
+                    ))
+                    . '" aria-label="'
+                    . App::get('language')->txt('Other')
+                    . '"'
+                    . $showOther
+                    . ' />';
             } else {
-                $html[] = Dropdown::genericlist($options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
+                $html[] = Dropdown::genericlist(
+                    $options,
+                    $this->name,
+                    trim($attr),
+                    'value',
+                    'text',
+                    $this->value,
+                    $this->id,
+                );
             }
         }
 
@@ -110,7 +144,10 @@ class Select extends Field
             // Create a new option object based on the <option /> element.
             $tmp = Dropdown::option(
                 (string) $option['value'],
-                App::get('language')->alt(trim((string) $label), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)),
+                App::get('language')->alt(
+                    trim((string) $label),
+                    preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname),
+                ),
                 'value',
                 'text',
                 ((string) $option['disabled'] == 'true'),

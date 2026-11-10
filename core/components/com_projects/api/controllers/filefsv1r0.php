@@ -590,7 +590,9 @@ class Filefsv1r0 extends ApiController
 
         $this->database   = App::get('db');
         $this->uid        = User::get('id');
-        $this->subdir      = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
+        $this->subdir      = \Hubzero\Filesystem\SafePath::relative(
+            urldecode((string) Request::getString('subdir', '')),
+        );
         if ($this->subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);
         }
@@ -660,7 +662,9 @@ class Filefsv1r0 extends ApiController
 
         $this->database   = App::get('db');
         $this->uid        = User::get('id');
-        $this->subdir      = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
+        $this->subdir      = \Hubzero\Filesystem\SafePath::relative(
+            urldecode((string) Request::getString('subdir', '')),
+        );
         if ($this->subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);
         }
@@ -969,7 +973,10 @@ class Filefsv1r0 extends ApiController
 
         if (is_array($files)) {
             foreach ($files as $file) {
-                $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->connectionAdapter());
+                $entity = Entity::fromPath(
+                    Request::getString('subdir', '', 'post') . DS . $file,
+                    $this->connectionAdapter(),
+                );
 
                 if ($entity->exists()) {
                     try {
@@ -1049,14 +1056,20 @@ class Filefsv1r0 extends ApiController
         if (is_array($files)) {
             if (is_array($metadata)) {
                 foreach ($files as $file) {
-                    $entity = Entity::fromPath(Request::getString('subdir', '', 'post') . DS . $file, $this->connectionAdapter());
+                    $entity = Entity::fromPath(
+                        Request::getString('subdir', '', 'post') . DS . $file,
+                        $this->connectionAdapter(),
+                    );
 
                     if ($entity->exists()) {
                         try {
                             $tmpoldmetadata = Event::trigger('metadata.onMetadataGet', [$entity]);
                             $oldmetadata = $this->packMetadata($tmpoldmetadata[0]);
 
-                            $error = Event::trigger('metadata.onMetadataSave', [$entity, array_merge($oldmetadata, $metadata)]);
+                            $error = Event::trigger(
+                                'metadata.onMetadataSave',
+                                [$entity, array_merge($oldmetadata, $metadata)],
+                            );
 
                             if (empty($error)) {
                                 $response->success = 1;
@@ -1342,7 +1355,10 @@ class Filefsv1r0 extends ApiController
     private function connectionAdapter()
     {
         if (!$this->ormconn) {
-            throw new Exception('This action is only supported by connection adapters; pass a connection id (cid)', 400);
+            throw new Exception(
+                'This action is only supported by connection adapters; pass a connection id (cid)',
+                400,
+            );
         }
 
         return $this->ormconn->adapter();

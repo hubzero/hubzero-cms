@@ -85,7 +85,30 @@ class Media extends AdminController
             // download handler serves inline (the same rule as resource attachments
             // and site media uploads); archives are ordinary files here and are only
             // unpacked by batch mode below
-            $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
+            $blockedExtensions = [
+                'php',
+                'php3',
+                'php4',
+                'php5',
+                'php7',
+                'php8',
+                'phtml',
+                'pht',
+                'phar',
+                'phps',
+                'cgi',
+                'pl',
+                'asp',
+                'aspx',
+                'jsp',
+                'shtml',
+                'htaccess',
+                'htpasswd',
+                'html',
+                'htm',
+                'xhtml',
+                'xml',
+            ];
             if (in_array(strtolower((string) $ext), $blockedExtensions)) {
                 $this->setError(Lang::txt('File type not allowed: %s', $ext));
                 return $this->displayTask();

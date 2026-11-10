@@ -191,13 +191,19 @@ class Asset extends Table
         $query .= $this->buildQuery($filters['w']);
 
         if (!empty($filters['order_by']) && !empty($filters['order_dir'])) {
-            $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order_by']) ?: '1') . " " . (strtoupper((string) $filters['order_dir']) === 'ASC' ? 'ASC' : 'DESC');
+            $query .= " ORDER BY "
+                . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['order_by']) ?: '1')
+                . " "
+                . (strtoupper((string) $filters['order_dir']) === 'ASC' ? 'ASC' : 'DESC');
         } else {
             $query .= " ORDER BY caa.ordering";
         }
 
         if (isset($filters['limit']) && (int) $filters['limit'] > 0) {
-            $query .= " LIMIT " . (int) (isset($filters['start']) ? $filters['start'] : 0) . "," . (int) $filters['limit'];
+            $query .= " LIMIT "
+                . (int) (isset($filters['start']) ? $filters['start'] : 0)
+                . ","
+                . (int) $filters['limit'];
         }
 
         $this->db->setQuery($query);

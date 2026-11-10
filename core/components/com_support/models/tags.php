@@ -39,7 +39,13 @@ class Tags extends Cloud
         if (strtolower($rtrn) == 'linkedlist') {
             $bits = [];
             foreach ($this->tags('list', $filters, $clear) as $tag) {
-                $bits[] = '<a' . ($tag->get('admin') ? ' class="admin"' : '') . ' href="' . Route::url('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . htmlspecialchars(stripslashes((string) $tag->get('raw_tag')), ENT_COMPAT, 'UTF-8') . '</a>';
+                $bits[] = '<a'
+                    . ($tag->get('admin') ? ' class="admin"' : '')
+                    . ' href="'
+                    . Route::url('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag'))
+                    . '">'
+                    . htmlspecialchars(stripslashes((string) $tag->get('raw_tag')), ENT_COMPAT, 'UTF-8')
+                    . '</a>';
             }
             return implode(', ', $bits);
         }

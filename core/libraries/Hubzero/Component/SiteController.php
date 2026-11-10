@@ -532,7 +532,10 @@ class SiteController extends Obj implements ControllerInterface
 
         if (User::isGuest()) {
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)), false),
+                Route::url(
+                    'index.php?option=com_users&view=login&return=' . base64_encode(Request::current(true)),
+                    false,
+                ),
                 $message,
                 'warning',
             );

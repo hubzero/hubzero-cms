@@ -175,7 +175,11 @@ class Entries extends SiteController
     public function editTask($entry = null)
     {
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true),
+                'server',
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -223,7 +227,11 @@ class Entries extends SiteController
     public function saveTask()
     {
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
+                'server',
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -315,7 +323,14 @@ class Entries extends SiteController
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'blog.entry',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_ENTRY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($row->link())
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $row->get('title'),
                     'url'   => Route::url($row->link()),
@@ -345,7 +360,11 @@ class Entries extends SiteController
     public function deleteTask()
     {
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option, false, true), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url('index.php?option=' . $this->option, false, true),
+                'server',
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
@@ -408,7 +427,14 @@ class Entries extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'blog.entry',
                 'scope_id'    => $id,
-                'description' => Lang::txt('COM_BLOG_ACTIVITY_ENTRY_DELETED', '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_ENTRY_DELETED',
+                    '<a href="'
+                        . Route::url($entry->link())
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $entry->get('title'),
                     'url'   => Route::url($entry->link()),
@@ -616,7 +642,15 @@ class Entries extends SiteController
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
                 'anonymous'   => $comment->get('anonymous', 0),
-                'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . Route::url($entry->link() . '#c' . $comment->get('id')) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_COMMENT_' . ($data['id'] ? 'UPDATED' : 'CREATED'),
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($entry->link() . '#c' . $comment->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
@@ -658,7 +692,10 @@ class Entries extends SiteController
 
         if (!$id) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
+                Route::url(
+                    'index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias,
+                    false,
+                ),
             );
             return;
         }
@@ -668,7 +705,10 @@ class Entries extends SiteController
 
         if (User::get('id') != $comment->get('created_by') && !$this->config->get('access-delete-comment')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias, false),
+                Route::url(
+                    'index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias,
+                    false,
+                ),
             );
             return;
         }
@@ -690,7 +730,15 @@ class Entries extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'blog.entry.comment',
                 'scope_id'    => $comment->get('id'),
-                'description' => Lang::txt('COM_BLOG_ACTIVITY_COMMENT_DELETED', $comment->get('id'), '<a href="' . Route::url($entry->link()) . '">' . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_BLOG_ACTIVITY_COMMENT_DELETED',
+                    $comment->get('id'),
+                    '<a href="'
+                        . Route::url($entry->link())
+                        . '">'
+                        . htmlspecialchars((string) ($entry->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $entry->get('title'),
                     'entry_id' => $entry->get('id'),
@@ -702,7 +750,9 @@ class Entries extends SiteController
 
         // Return the topics list
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias),
+            Route::url(
+                'index.php?option=' . $this->option . '&year=' . $year . '&month=' . $month . '&alias=' . $alias,
+            ),
             ($this->getError() ? $this->getError() : null),
             ($this->getError() ? 'error' : null),
         );
@@ -748,7 +798,11 @@ class Entries extends SiteController
         $doc->title .= stripslashes($this->entry->get('title', ''));
         $doc->title .= ': ' . Lang::txt('Comments');
 
-        $doc->description = Lang::txt('COM_BLOG_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($this->entry->get('title')));
+        $doc->description = Lang::txt(
+            'COM_BLOG_COMMENTS_RSS_DESCRIPTION',
+            Config::get('sitename'),
+            stripslashes($this->entry->get('title')),
+        );
         $doc->copyright   = Lang::txt('COM_BLOG_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
         $rows = $this->entry
@@ -778,7 +832,11 @@ class Entries extends SiteController
     {
         // Load individual item creator class
         $item = new \Hubzero\Document\Type\Feed\Item();
-        $item->title = Lang::txt('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+        $item->title = Lang::txt('Comment #%s', $row->get('id'))
+            . ' @ '
+            . $row->created('time')
+            . ' on '
+            . $row->created('date');
         $item->link  = Route::url($this->entry->link() . '#c' . $row->get('id'));
 
         if ($row->isReported()) {

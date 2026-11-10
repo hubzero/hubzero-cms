@@ -310,12 +310,18 @@ class Pages extends Base
         }
 
         // update current rights
-        $sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>" . ($start - 1) . " AND gidNumber=" . $this->group->get('gidNumber');
+        $sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>"
+            . ($start - 1)
+            . " AND gidNumber="
+            . $this->group->get('gidNumber');
         $this->database->setQuery($sql);
         $this->database->query();
 
         // update current lefts
-        $sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>" . ($start - 1) . " AND gidNumber=" . $this->group->get('gidNumber');
+        $sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>"
+            . ($start - 1)
+            . " AND gidNumber="
+            . $this->group->get('gidNumber');
         $this->database->setQuery($sql2);
         $this->database->query();
 
@@ -409,7 +415,14 @@ class Pages extends Base
         // are we applying or saving?
         if ($apply) {
             $notification = Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED_AND_LINK', $task, $this->page->url());
-            $redirect = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id'));
+            $redirect = Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&controller=pages&task=edit&pageid='
+                    . $this->page->get('id'),
+            );
         } else {
             $notification = Lang::txt('COM_GROUPS_PAGES_PAGE_SAVED', $task);
             $redirect = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages');
@@ -432,11 +445,17 @@ class Pages extends Base
                 'description' => Lang::txt(
                     'COM_GROUPS_ACTIVITY_PAGE_' . ($page['id'] ? 'UPDATED' : 'CREATED'),
                     $this->page->get('title'),
-                    '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages') . '">' . $this->group->get('description') . '</a>',
+                    '<a href="'
+                        . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages')
+                        . '">'
+                        . $this->group->get('description')
+                        . '</a>',
                 ),
                 'details'     => [
                     'title'     => $this->page->get('title'),
-                    'url'       => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages'),
+                    'url'       => Route::url(
+                        'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages',
+                    ),
                     'gidNumber' => $this->group->get('gidNumber'),
                 ],
             ],
@@ -609,7 +628,8 @@ class Pages extends Base
                 'scope'       => 'group.page',
                 'scope_id'    => $page->get('id'),
                 'description' => Lang::txt(
-                    'COM_GROUPS_ACTIVITY_PAGE_' . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
+                    'COM_GROUPS_ACTIVITY_PAGE_'
+                        . ($state == 2 ? 'DELETED' : ($state == 1 ? 'PUBLISHED' : 'UNPUBLISHED')),
                     $page->get('title'),
                     '<a href="' . $url . '">' . $this->group->get('description') . '</a>',
                 ),
@@ -696,7 +716,9 @@ class Pages extends Base
         if ($version === null) {
             $this->setNotification(Lang::txt('COM_GROUPS_PAGES_PAGE_HOME_ERROR', $page->get('title')), 'error');
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages'),
+                Route::url(
+                    'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages',
+                ),
             );
         }
 
@@ -729,7 +751,9 @@ class Pages extends Base
         ) {
             App::redirect(base64_decode($return));
         }
-        App::redirect(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages'));
+        App::redirect(
+            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages'),
+        );
     }
 
     /**
@@ -846,7 +870,14 @@ class Pages extends Base
         }
 
         // the activity entry links back to the page's version history
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id'));
+        $url = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&cn='
+                . $this->group->get('cn')
+                . '&controller=pages&task=versions&pageid='
+                . $page->get('id'),
+        );
 
         // Log activity
         $recipients = [
@@ -884,8 +915,20 @@ class Pages extends Base
 
         // redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
-            Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, Date::of($pageVersion->get('created'))->format('M d, Y @ g:ia')),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&cn='
+                    . $this->group->get('cn')
+                    . '&controller=pages&task=versions&pageid='
+                    . $page->get('id'),
+            ),
+            Lang::txt(
+                'COM_GROUPS_PAGES_PAGE_VERSION_RESTORED',
+                $page->get('title'),
+                $version,
+                Date::of($pageVersion->get('created'))->format('M d, Y @ g:ia'),
+            ),
             'passed',
         );
     }

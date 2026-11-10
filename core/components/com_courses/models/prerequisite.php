@@ -115,7 +115,9 @@ class Prerequisite extends Base
      **/
     public function get($scope, $scope_id = null)
     {
-        return (isset($this->prerequisites[$scope . '.' . $scope_id])) ? $this->prerequisites[$scope . '.' . $scope_id] : false;
+        return (isset($this->prerequisites[$scope . '.' . $scope_id]))
+            ? $this->prerequisites[$scope . '.' . $scope_id]
+            : false;
     }
 
     /**

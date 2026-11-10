@@ -145,13 +145,25 @@ Examples:
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i',
+            [&$this, 'parseSingleAttribute'],
+            $content,
+        );
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=([^"\',]*)(?:[, ]|$)/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
 
         $attr = $this->attr;
 
@@ -172,7 +184,11 @@ Examples:
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
             // Check for file existence
-            if ($attach->filename && file_exists($this->path($attach->filename)) || file_exists($this->path($attach->filename, true))) {
+            if (
+                $attach->filename
+                && file_exists($this->path($attach->filename))
+                || file_exists($this->path($attach->filename, true))
+            ) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
                     $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
@@ -190,7 +206,9 @@ Examples:
         // Does the file exist?
         if ($ret) {
             if (!in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
-                return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File provided is not an allowed image type)';
+                return '(Image('
+                    . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8')
+                    . ') failed - File provided is not an allowed image type)';
             }
 
             // Return HTML
@@ -261,7 +279,8 @@ Examples:
 
                 $this->attr['href'] = $val;
 
-                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+                $urlPtrn  = "[^=\"\']*(https?:|mailto:|ftp:|gopher:|news:|file:)"
+                    . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
                 if (preg_match("/$urlPtrn/", $val)) {
                     $this->attr['rel']  = 'external';
                 }
@@ -408,7 +427,8 @@ Examples:
      */
     private function link($file)
     {
-        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)"
+            . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
             return $file;
         }
@@ -471,11 +491,19 @@ Examples:
             $attr['href'] = ($attr['href']) ? $attr['href'] : $this->link($file);
             $attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
-            $html .= '<a rel="' . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8') . '" href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">' . $img . '</a>';
+            $html .= '<a rel="'
+                . htmlspecialchars((string) $attr['rel'], ENT_QUOTES, 'UTF-8')
+                . '" href="'
+                . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8')
+                . '">'
+                . $img
+                . '</a>';
         }
         if (isset($attr['desc']) && $attr['desc']) {
             // The attachment description is free text entered by the uploader
-            $html .= '<span class="figcaption">' . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false) . '</span>';
+            $html .= '<span class="figcaption">'
+                . htmlspecialchars((string) $attr['desc'], ENT_QUOTES, 'UTF-8', false)
+                . '</span>';
         }
         $html .= '</span>';
 

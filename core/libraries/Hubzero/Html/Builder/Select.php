@@ -48,8 +48,14 @@ class Select
      * @param   string  $id        The id for the field
      * @return  string  HTML for the radio list
      */
-    public static function booleanlist($name, $attribs = null, $selected = null, $yes = 'JYES', $no = 'JNO', $id = false)
-    {
+    public static function booleanlist(
+        $name,
+        $attribs = null,
+        $selected = null,
+        $yes = 'JYES',
+        $no = 'JNO',
+        $id = false,
+    ) {
         $arr = [
             self::option('0', Lang::txt($no)),
             self::option('1', Lang::txt($yes)),
@@ -80,8 +86,16 @@ class Select
      * @param   boolean  $translate  True to translate
      * @return  string   HTML for the select list.
      */
-    public static function genericlist($data, $name, $attribs = null, $optKey = 'value', $optText = 'text', $selected = null, $idtag = false, $translate = false)
-    {
+    public static function genericlist(
+        $data,
+        $name,
+        $attribs = null,
+        $optKey = 'value',
+        $optText = 'text',
+        $selected = null,
+        $idtag = false,
+        $translate = false,
+    ) {
         // Set default options
         $options = ['id' => false];
 
@@ -220,7 +234,11 @@ class Select
             if ($noGroup) {
                 $html .= self::options($subList, $options);
             } else {
-                $html .= '<optgroup' . (empty($id) ? '' : ' id="' . $id . '"') . ' label="' . ($options['group.label.toHtml'] ? self::escape($label) : $label) . '">';
+                $html .= '<optgroup'
+                    . (empty($id) ? '' : ' id="' . $id . '"')
+                    . ' label="'
+                    . ($options['group.label.toHtml'] ? self::escape($label) : $label)
+                    . '">';
                 $html .= self::options($subList, $options);
                 $html .= '</optgroup>';
             }
@@ -463,7 +481,11 @@ class Select
                 foreach ($elementProperties as $property => $value) {
                     $dataField = strtolower(substr($property, 0, 4));
                     if ($dataField == 'data') {
-                        $dataAttributes .= ' ' . $property . '="' . htmlspecialchars((string) $element->get($property), ENT_COMPAT, 'UTF-8') . '"';
+                        $dataAttributes .= ' '
+                            . $property
+                            . '="'
+                            . htmlspecialchars((string) $element->get($property), ENT_COMPAT, 'UTF-8')
+                            . '"';
                     }
                 }
             }
@@ -539,7 +561,11 @@ class Select
                     $attr = trim($attr);
                 }
 
-                $extra = ($id ? ' id="' . $id . '"' : '') . ($label ? ' label="' . $label . '"' : '') . ($attr ? ' ' . $attr : '') . $dataAttributes . $extra;
+                $extra = ($id ? ' id="' . $id . '"' : '')
+                    . ($label ? ' label="' . $label . '"' : '')
+                    . ($attr ? ' ' . $attr : '')
+                    . $dataAttributes
+                    . $extra;
                 if (is_array($options['list.select'])) {
                     foreach ($options['list.select'] as $val) {
                         $okey = $options['option.key'];
@@ -558,8 +584,14 @@ class Select
                 }
 
                 // Generate the option, encoding as required
-                $html .= '<option value="' . ($options['option.key.toHtml'] ? self::escape($key) : $key) . '"' . $extra . '>';
-                $html .= $options['option.text.toHtml'] ? self::escape(html_entity_decode($text, ENT_COMPAT, 'UTF-8')) : $text;
+                $html .= '<option value="'
+                    . ($options['option.key.toHtml'] ? self::escape($key) : $key)
+                    . '"'
+                    . $extra
+                    . '>';
+                $html .= $options['option.text.toHtml']
+                    ? self::escape(html_entity_decode($text, ENT_COMPAT, 'UTF-8'))
+                    : $text;
                 $html .= '</option>' . "\n";
             }
         }
@@ -580,8 +612,16 @@ class Select
      * @param   boolean  $translate  True if options will be translated
      * @return  string   HTML for the select list
      */
-    public static function radiolist($data, $name, $attribs = null, $optKey = 'value', $optText = 'text', $selected = null, $idtag = false, $translate = false)
-    {
+    public static function radiolist(
+        $data,
+        $name,
+        $attribs = null,
+        $optKey = 'value',
+        $optText = 'text',
+        $selected = null,
+        $idtag = false,
+        $translate = false,
+    ) {
         reset($data);
 
         $html = '';
@@ -613,8 +653,31 @@ class Select
 
             $ek = htmlspecialchars((string) $k, ENT_COMPAT, 'UTF-8');
             $et = htmlspecialchars((string) $t, ENT_COMPAT, 'UTF-8');
-            $html .= '<label for="' . $id_text . $ek . '"' . ' id="' . $id_text . $ek . '-lbl" class="radiobtn option">' . "\n";
-            $html .= '<input type="radio" name="' . $name . '"' . ' id="' . $id_text . $ek . '" value="' . $ek . '"' . ' ' . $extra . ' ' . $attribs . '/>' . $et . "\n";
+            $html .= '<label for="'
+                . $id_text
+                . $ek
+                . '"'
+                . ' id="'
+                . $id_text
+                . $ek
+                . '-lbl" class="radiobtn option">'
+                . "\n";
+            $html .= '<input type="radio" name="'
+                . $name
+                . '"'
+                . ' id="'
+                . $id_text
+                . $ek
+                . '" value="'
+                . $ek
+                . '"'
+                . ' '
+                . $extra
+                . ' '
+                . $attribs
+                . '/>'
+                . $et
+                . "\n";
             $html .= '</label>' . "\n";
         }
         $html .= "\n";
@@ -672,7 +735,10 @@ class Select
 
                     $options[] = self::option($items[$i]->value, $items[$i]->value . '. ' . $text);
                 }
-                $options[] = self::option($items[$i - 1]->value + 1, ($items[$i - 1]->value + 1) . ' ' . Lang::txt('JOPTION_ORDER_LAST'));
+                $options[] = self::option(
+                    $items[$i - 1]->value + 1,
+                    ($items[$i - 1]->value + 1) . ' ' . Lang::txt('JOPTION_ORDER_LAST'),
+                );
             }
 
             $html = self::genericlist($options, $name, ['list.attr' => $attribs, 'list.select' => (int) $selected]);
@@ -682,7 +748,14 @@ class Select
             } elseif ($neworder <= 0) {
                 $text = Lang::txt('JGLOBAL_NEWITEMSFIRST_DESC');
             }
-            $html = '<input type="hidden" name="' . $name . '" value="' . (int) $selected . '" />' . '<span class="readonly">' . $text . '</span>';
+            $html = '<input type="hidden" name="'
+                . $name
+                . '" value="'
+                . (int) $selected
+                . '" />'
+                . '<span class="readonly">'
+                . $text
+                . '</span>';
         }
         return $html;
     }

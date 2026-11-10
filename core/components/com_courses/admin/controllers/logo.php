@@ -87,7 +87,11 @@ class Logo extends AdminController
         }
 
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
@@ -245,7 +249,9 @@ class Logo extends AdminController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
+            );
             return $this->displayTask($file['name'], $id);
         }
 

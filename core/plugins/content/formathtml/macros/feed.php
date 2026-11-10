@@ -127,7 +127,11 @@ class Feed extends Macro
         $title = $feed->getTitle();
         $link  = $this->safeLink($feed->get_permalink());
         if ($title) {
-            $html .= '<h3><a rel="external" href="' . $link . '">' . \Hubzero\Utility\Sanitize::html($title) . '</a></h3>';
+            $html .= '<h3><a rel="external" href="'
+                . $link
+                . '">'
+                . \Hubzero\Utility\Sanitize::html($title)
+                . '</a></h3>';
         }
 
         // Display description

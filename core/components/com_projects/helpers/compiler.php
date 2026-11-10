@@ -87,8 +87,14 @@ class Compiler extends Obj
      * @param   string   &$tempBase
      * @return  string   compressed data
      */
-    public function compileTex($fullpath = '', $data = '', $texpath = '', $outputDir = '', $getPath = 0, &$tempBase = '')
-    {
+    public function compileTex(
+        $fullpath = '',
+        $data = '',
+        $texpath = '',
+        $outputDir = '',
+        $getPath = 0,
+        &$tempBase = '',
+    ) {
         if (!$texpath || !$data) {
             return false;
         }
@@ -117,7 +123,11 @@ class Compiler extends Obj
         fclose($fp);
 
         chdir($cacheFolder);
-        $command = escapeshellarg($texpath . DS . 'pdflatex') . ' -output-directory=' . escapeshellarg($outputDir) . ' -interaction=batchmode ' . escapeshellarg($texFile . '.tex');
+        $command = escapeshellarg($texpath . DS . 'pdflatex')
+            . ' -output-directory='
+            . escapeshellarg($outputDir)
+            . ' -interaction=batchmode '
+            . escapeshellarg($texFile . '.tex');
         exec($command, $out);
 
         // Remove temp tex copy

@@ -360,7 +360,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         $id    = isset($data['id']) ? (int) $data['id'] : 0;
         $base  = $alias;
         $n     = 2;
-        while (self::all()->whereEquals('alias', $alias)->whereEquals('catid', $catid)->where('id', '!=', $id)->total()) {
+        while (
+            self::all()->whereEquals('alias', $alias)->whereEquals('catid', $catid)->where('id', '!=', $id)->total()
+        ) {
             $alias = $base . '-' . $n++;
         }
 
@@ -925,7 +927,9 @@ class Article extends Relational implements \Hubzero\Search\Searchable
             if (!is_array($filters['published'])) {
                 $filters['published'] = [$filters['published']];
             }
-            $query->whereRaw($publishedWhere . ' IN (' . implode(',', array_map('intval', $filters['published'])) . ')');
+            $query->whereRaw(
+                $publishedWhere . ' IN (' . implode(',', array_map('intval', $filters['published'])) . ')',
+            );
         }
 
         // Filter by featured state

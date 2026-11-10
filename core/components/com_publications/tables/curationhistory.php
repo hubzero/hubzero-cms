@@ -47,7 +47,10 @@ class CurationHistory extends Table
             $query .= " AND curator=1";
         }
 
-        $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'ASC' ? 'ASC' : 'DESC');
+        $query .= " ORDER BY "
+            . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1')
+            . " "
+            . (strtoupper((string) $sortdir) === 'ASC' ? 'ASC' : 'DESC');
         $this->db->setQuery($query);
 
         return $this->db->loadObjectList();

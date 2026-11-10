@@ -94,10 +94,14 @@ class Answers extends Plugin
                 }
                 switch ($category) {
                     case 'answer':
-                        $rows[$key]->href = ($parent) ? Route::url('index.php?option=com_answers&task=question&id=' . $parent) : '';
+                        $rows[$key]->href = ($parent)
+                            ? Route::url('index.php?option=com_answers&task=question&id=' . $parent)
+                            : '';
                         break;
                     case 'question':
-                        $rows[$key]->href = Route::url('index.php?option=com_answers&task=question&id=' . $rows[$key]->id);
+                        $rows[$key]->href = Route::url(
+                            'index.php?option=com_answers&task=question&id=' . $rows[$key]->id,
+                        );
                         break;
                 }
             }
@@ -301,7 +305,9 @@ class Answers extends Plugin
                 $email = false;
 
                 // Get all the answers for this question
-                $database->setQuery("SELECT r.id, r.created_by FROM `#__answers_responses` AS r WHERE r.question_id=" . $referenceid);
+                $database->setQuery(
+                    "SELECT r.id, r.created_by FROM `#__answers_responses` AS r WHERE r.question_id=" . $referenceid,
+                );
                 $answers = $database->loadObjectList();
 
                 if ($answers) {
@@ -330,9 +336,16 @@ class Answers extends Plugin
                         foreach ($responders as $r) {
                             $zuser = User::getInstance($r);
                             if (is_object($zuser)) {
-                                if (\Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email')) && $email) {
+                                if (
+                                    \Components\Support\Helpers\Utilities::checkValidEmail($zuser->get('email'))
+                                    && $email
+                                ) {
                                     $admin_email = Config::get('mailfrom');
-                                    $sub  = Lang::txt('PLG_SUPPORT_ANSWERS_SUBJECT', Config::get('sitename'), $referenceid);
+                                    $sub  = Lang::txt(
+                                        'PLG_SUPPORT_ANSWERS_SUBJECT',
+                                        Config::get('sitename'),
+                                        $referenceid,
+                                    );
                                     $from = Lang::txt('PLG_SUPPORT_ANSWERS_TITLE', Config::get('sitename'));
                                     $hub  = [
                                         'email' => $admin_email,
@@ -343,7 +356,12 @@ class Answers extends Plugin
                                     $mes .= '----------------------------' . "\r\n\r\n";
                                     $mes .= Lang::txt('PLG_SUPPORT_ANSWERS_QUESTION', $referenceid) . "\r\n";
 
-                                    \Components\Support\Helpers\Utilities::sendEmail($hub, $zuser->get('email'), $sub, $mes);
+                                    \Components\Support\Helpers\Utilities::sendEmail(
+                                        $hub,
+                                        $zuser->get('email'),
+                                        $sub,
+                                        $mes,
+                                    );
                                 }
                             }
                         }
@@ -361,7 +379,11 @@ class Answers extends Plugin
 
                         if (isset($asker_id)) {
                             // Remove hold
-                            $sql = "DELETE FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $parentid . " AND uid='" . $asker_id . "'";
+                            $sql = "DELETE FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid="
+                                . $parentid
+                                . " AND uid='"
+                                . $asker_id
+                                . "'";
                             $database->setQuery($sql);
                             if (!$database->query()) {
                                 $this->setError($database->getErrorMsg());
@@ -408,7 +430,8 @@ class Answers extends Plugin
         $database = App::get('db');
 
         // check if question owner assigned a reward for answering his Q
-        $sql = "SELECT amount FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid=" . $id;
+        $sql = "SELECT amount FROM `#__users_transactions` WHERE category='answers' AND type='hold' AND referenceid="
+            . $id;
         $database->setQuery($sql);
 
         return $database->loadResult();

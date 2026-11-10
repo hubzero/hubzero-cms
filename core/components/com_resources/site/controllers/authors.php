@@ -224,7 +224,15 @@ class Authors extends SiteController
                             'action'      => 'updated',
                             'scope'       => 'resource',
                             'scope_id'    => $resource->get('id'),
-                            'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED', $name, '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                            'description' => Lang::txt(
+                                'COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_ADDED',
+                                $name,
+                                '<a href="'
+                                    . Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+                                    . '">'
+                                    . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                                    . '</a>',
+                            ),
                             'details'     => [
                                 'title' => $resource->get('title'),
                                 'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id')),
@@ -285,7 +293,15 @@ class Authors extends SiteController
                             'action'      => 'updated',
                             'scope'       => 'resource',
                             'scope_id'    => $resource->get('id'),
-                            'description' => Lang::txt('COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED', $author->get('name'), '<a href="' . Route::url('index.php?option=com_resources&id=' . $resource->get('id')) . '">' . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                            'description' => Lang::txt(
+                                'COM_RESOURCES_ACTIVITY_ENTRY_AUTHOR_REMOVED',
+                                $author->get('name'),
+                                '<a href="'
+                                    . Route::url('index.php?option=com_resources&id=' . $resource->get('id'))
+                                    . '">'
+                                    . htmlspecialchars((string) ($resource->get('title')), ENT_QUOTES, 'UTF-8')
+                                    . '</a>',
+                            ),
                             'details'     => [
                                 'title' => $resource->get('title'),
                                 'url'   => Route::url('index.php?option=com_resources&id=' . $resource->get('id')),

@@ -183,7 +183,10 @@ class Media extends SiteController
             return;
         }
         if ($size > $sizeLimit) {
-            $this->logUploadIssue('file exceeds size limit', ['ticket' => $ticket, 'size' => $size, 'limit' => $sizeLimit]);
+            $this->logUploadIssue(
+                'file exceeds size limit',
+                ['ticket' => $ticket, 'size' => $size, 'limit' => $sizeLimit],
+            );
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
             echo json_encode(['error' => Lang::txt('File is too large. Max file upload size is %s', $max)]);
             return;
@@ -385,7 +388,9 @@ class Media extends SiteController
         }
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)),
+            );
             return $this->displayTask();
         }
 

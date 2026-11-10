@@ -60,7 +60,24 @@ class Div extends WikiMacro
                     $a = explode('=', $a);
                     $key = strtolower(trim($a[0]));
                     if (
-                        !in_array($key, ['class', 'id', 'style', 'title', 'lang', 'dir', 'align', 'width', 'height', 'role', 'name', 'tabindex'], true)
+                        !in_array(
+                            $key,
+                            [
+                                'class',
+                                'id',
+                                'style',
+                                'title',
+                                'lang',
+                                'dir',
+                                'align',
+                                'width',
+                                'height',
+                                'role',
+                                'name',
+                                'tabindex',
+                            ],
+                            true,
+                        )
                         && !preg_match('/^(data|aria)-[a-z0-9\-]+$/', $key)
                     ) {
                         continue;

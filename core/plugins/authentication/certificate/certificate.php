@@ -226,7 +226,10 @@ class Certificate extends Plugin
                 //    or the Link record failed to be created
                 if ($hzal) {
                     $hzal->set('user_id', User::get('id'));
-                    $hzal->set('email', isset($_SERVER['SSL_CLIENT_S_DN_Email']) ? $_SERVER['SSL_CLIENT_S_DN_Email'] : '');
+                    $hzal->set(
+                        'email',
+                        isset($_SERVER['SSL_CLIENT_S_DN_Email']) ? $_SERVER['SSL_CLIENT_S_DN_Email'] : '',
+                    );
                     $hzal->update();
                 } else {
                     Log::error(sprintf(

@@ -217,7 +217,18 @@ class Handler
             $url .=  isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/<null>';
             $url .= "]";
 
-            $logmsg = "Uncaught " . get_class($exception) . ": " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n" . $url . "\n" . $trace;
+            $logmsg = "Uncaught "
+                . get_class($exception)
+                . ": "
+                . $exception->getMessage()
+                . " in "
+                . $exception->getFile()
+                . " on line "
+                . $exception->getLine()
+                . "\n"
+                . $url
+                . "\n"
+                . $trace;
 
             if (is_object($this->logger)) {
                 $this->logger->log($loglevel, $logmsg);

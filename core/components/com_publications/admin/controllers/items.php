@@ -440,7 +440,18 @@ class Items extends AdminController
         $neworder = Request::getString('list', '');
 
         // Set redirect URL
-        $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
+        $url = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&controller='
+                . $this->controller
+                . '&task=edit'
+                . '&id[]='
+                . $id
+                . '&version='
+                . $version,
+            false,
+        );
 
         if (!$neworder) {
             // Nothing to save
@@ -647,7 +658,18 @@ class Items extends AdminController
         $this->model->publication->checkin();
 
         // Set redirect URL
-        $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version, false);
+        $url = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&controller='
+                . $this->controller
+                . '&task=edit'
+                . '&id[]='
+                . $id
+                . '&version='
+                . $version,
+            false,
+        );
 
         $authors = $this->model->authors();
         $project = $this->model->project();
@@ -745,7 +767,10 @@ class Items extends AdminController
         $doi = trim(Request::getString('doi', '', 'post'));
         if (
             $doi
-            && (!$this->model->version->doi || !preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi))
+            && (!$this->model->version->doi || !preg_match(
+                "/" . $doiService->configs->shoulder . "/",
+                $this->model->version->doi,
+            ))
         ) {
             $this->model->version->doi = $doi;
         }
@@ -948,7 +973,11 @@ class Items extends AdminController
                         // Check if publication is within grace period (published status)
                         $gracePeriod = $this->config->get('graceperiod', 0);
                         $allowArchive = $gracePeriod ? false : true;
-                        if ($allowArchive && $this->model->version->accepted && $this->model->version->accepted != '0000-00-00 00:00:00') {
+                        if (
+                            $allowArchive
+                            && $this->model->version->accepted
+                            && $this->model->version->accepted != '0000-00-00 00:00:00'
+                        ) {
                             $monthFrom = Date::of($this->model->version->accepted . '+1 month')->toSql();
                             if (strtotime($monthFrom) < Date::toUnix()) {
                                 $allowArchive = true;
@@ -960,7 +989,10 @@ class Items extends AdminController
                             !$this->getError()
                             && $this->model->version->doi
                             && $allowArchive == true
-                            && (!$this->model->version->archived || $this->model->version->archived == '0000-00-00 00:00:00')
+                            && (
+                                !$this->model->version->archived
+                                || $this->model->version->archived == '0000-00-00 00:00:00'
+                            )
                             && Helpers\Utilities::mkAip($this->model->version)
                         ) {
                             $this->model->version->archived = Date::toSql();
@@ -1007,8 +1039,12 @@ class Items extends AdminController
                                 }
                             } else {
                                 if (!empty($author->invited_email)) {
-                                    $subjectForPermissionEmail = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
-                                    $messageForPermissionEmail = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_EMAIL_MESSAGE');
+                                    $subjectForPermissionEmail = Lang::txt(
+                                        'COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION',
+                                    );
+                                    $messageForPermissionEmail = Lang::txt(
+                                        'COM_PUBLICATIONS_GRANT_ORCID_EMAIL_MESSAGE',
+                                    );
 
                                     $config = Component::params('com_members');
                                     $srv = $config->get('orcid_service', 'members');
@@ -1022,7 +1058,13 @@ class Items extends AdminController
                                             $permissionURL .= 'sandbox.';
                                         }
 
-                                        $permissionURL .= 'orcid.org/oauth/authorize?client_id=' . $clientID . htmlspecialchars('&') . "response_type=code" . htmlspecialchars('&') . "scope=/read-limited%20/activities/update%20/person/update&redirect_uri=" . urlencode($redirectURI);
+                                        $permissionURL .= 'orcid.org/oauth/authorize?client_id='
+                                            . $clientID
+                                            . htmlspecialchars('&')
+                                            . "response_type=code"
+                                            . htmlspecialchars('&')
+                                            . "scope=/read-limited%20/activities/update%20/person/update&redirect_uri="
+                                            . urlencode($redirectURI);
 
                                         $from = [];
                                         $from['name']  = Config::get('sitename') . ' ' . Lang::txt('COM_PUBLICATIONS');
@@ -1039,7 +1081,9 @@ class Items extends AdminController
                                         $eview->subject = $subjectForPermissionEmail;
                                         $eview->message = $messageForPermissionEmail;
                                         $eview->permissionURL = $permissionURL;
-                                        $eview->permissionTxt = Lang::txt('COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION');
+                                        $eview->permissionTxt = Lang::txt(
+                                            'COM_PUBLICATIONS_GRANT_ORCID_MANAGEMENT_PERMISSION',
+                                        );
 
                                         $body = [];
                                         $body['multipart'] = $eview->loadTemplate();
@@ -1125,12 +1169,25 @@ class Items extends AdminController
 
                     if ($selectedReason == 0) {
                         $otherReason = Request::getString('reason', '');
-                        $verTblObj->saveUnPubReason($id, $this->model->version->version_number, $selectedReason, $otherReason);
+                        $verTblObj->saveUnPubReason(
+                            $id,
+                            $this->model->version->version_number,
+                            $selectedReason,
+                            $otherReason,
+                        );
                     } else {
                         if ($selectedReason == 1) {
-                            $verTblObj->saveUnPubReason($id, $this->model->version->version_number, Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE'));
+                            $verTblObj->saveUnPubReason(
+                                $id,
+                                $this->model->version->version_number,
+                                Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE'),
+                            );
                         } elseif ($selectedReason == 2) {
-                            $verTblObj->saveUnPubReason($id, $this->model->version->version_number, Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR'));
+                            $verTblObj->saveUnPubReason(
+                                $id,
+                                $this->model->version->version_number,
+                                Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR'),
+                            );
                         }
                     }
 
@@ -1143,7 +1200,17 @@ class Items extends AdminController
                             $doiService->set('authors', $authors);
                             $doiService->update($this->model->version->doi, true);
 
-                            $resURL = $doiService->configs->livesite . DS . 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tombstone' . '&id=' . $id . '&v=' . $this->model->version->version_number;
+                            $resURL = $doiService->configs->livesite
+                                . DS
+                                . 'index.php?option='
+                                . $this->option
+                                . '&controller='
+                                . $this->controller
+                                . '&task=tombstone'
+                                . '&id='
+                                . $id
+                                . '&v='
+                                . $this->model->version->version_number;
                             $result = $doiService->registerURL($doi, $resURL);
 
                             if (!$result) {
@@ -1227,7 +1294,12 @@ class Items extends AdminController
                     . $pubtitle . '" ';
 
                 // Build return url
-                $link = '/projects/' . $project->get('alias') . '/publications/' . $id . '/?version=' . $this->model->version->version_number;
+                $link = '/projects/'
+                    . $project->get('alias')
+                    . '/publications/'
+                    . $id
+                    . '/?version='
+                    . $this->model->version->version_number;
 
                 if ($action != 'message' && !$this->getError()) {
                     $aid = $project->recordActivity(
@@ -1323,7 +1395,18 @@ class Items extends AdminController
         // Redirect to edit view?
         if ($redirect) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit' . '&id[]=' . $id . '&version=' . $this->model->get('version_number'), false),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&task=edit'
+                        . '&id[]='
+                        . $id
+                        . '&version='
+                        . $this->model->get('version_number'),
+                    false,
+                ),
             );
         } else {
             App::redirect(
@@ -1574,7 +1657,11 @@ class Items extends AdminController
                     }
 
                     // Build publication path
-                    $path =  PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($id);
+                    $path =  PATH_APP
+                        . DS
+                        . trim($this->config->get('webpath'), DS)
+                        . DS
+                        . \Hubzero\Utility\Str::pad($id);
 
                     // Delete all files
                     if (is_dir($path)) {
@@ -1688,7 +1775,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $id, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $id,
+                false,
+            ),
             $this->message,
         );
     }
@@ -1720,7 +1810,10 @@ class Items extends AdminController
 
         // Redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $id, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $id,
+                false,
+            ),
             $this->message,
         );
     }
@@ -1745,7 +1838,18 @@ class Items extends AdminController
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
-        $url = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version, false);
+        $url = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&controller='
+                . $this->controller
+                . '&task=edit'
+                . '&id[]='
+                . $pid
+                . '&version='
+                . $version,
+            false,
+        );
 
         // Get attachments
         $pub->attachments();

@@ -134,10 +134,22 @@ class Members extends Plugin
         $row->href = Route::url($member->link());
 
         $html  = "\t" . '<li class="member">' . "\n";
-        $html .= "\t\t" . '<p class="photo"><img width="50" height="50" src="' . $member->picture() . '" alt="" /></p>' . "\n";
-        $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+        $html .= "\t\t"
+            . '<p class="photo"><img width="50" height="50" src="'
+            . $member->picture()
+            . '" alt="" /></p>'
+            . "\n";
+        $html .= "\t\t"
+            . '<p class="title"><a href="'
+            . $row->href
+            . '">'
+            . stripslashes($row->title)
+            . '</a></p>'
+            . "\n";
         if ($row->ftext) {
-            $html .= "\t\t" . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
+            $html .= "\t\t"
+                . \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200)
+                . "\n";
         }
         $html .= "\t\t" . '<p class="href">' . Request::base() . ltrim($row->href, '/') . '</p>' . "\n";
         $html .= "\t" . '</li>' . "\n";

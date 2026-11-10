@@ -65,8 +65,20 @@ class Collections extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -81,7 +93,10 @@ class Collections extends Plugin
 
         // Get all the IDs for collections
         $database = App::get('db');
-        $database->setQuery("SELECT id FROM `#__collections` WHERE `object_type`='group' AND `object_id`=" . $database->quote($group->get('gidNumber')));
+        $database->setQuery(
+            "SELECT id FROM `#__collections` WHERE `object_type`='group' AND `object_id`="
+                . $database->quote($group->get('gidNumber')),
+        );
         $entries = $database->loadColumn();
 
         // Start the log text
@@ -91,12 +106,18 @@ class Collections extends Plugin
             $entries = array_map('intval', $entries);
 
             // Get a list of IDs for posts created by this group
-            $database->setQuery("SELECT i.id FROM `#__collections_items` AS i LEFT JOIN `#__collections_posts` AS p ON p.`item_id`=i.`id` WHERE p.`original`=1 AND p.`collection_id` IN (" . implode(',', $entries) . ")");
+            $database->setQuery(
+                "SELECT i.id FROM `#__collections_items` AS i LEFT JOIN `#__collections_posts` AS p ON p.`item_id`=i.`id` WHERE p.`original`=1 AND p.`collection_id` IN ("
+                    . implode(',', $entries)
+                    . ")",
+            );
             $ids = $database->loadColumn();
 
             if ($ids && count($ids)) {
                 // Mark all posts as "trashed"
-                $database->setQuery("UPDATE `#__collections_items` SET `state`=2 WHERE `id` IN (" . implode(',', $ids) . ")");
+                $database->setQuery(
+                    "UPDATE `#__collections_items` SET `state`=2 WHERE `id` IN (" . implode(',', $ids) . ")",
+                );
                 $database->query();
             }
 
@@ -123,7 +144,12 @@ class Collections extends Plugin
     {
 
         $database = App::get('db');
-        $database->setQuery("SELECT COUNT(*) FROM `#__collections` WHERE `object_type`=" . $database->quote('group') . " AND `object_id`=" . $database->quote($group->get('gidNumber')));
+        $database->setQuery(
+            "SELECT COUNT(*) FROM `#__collections` WHERE `object_type`="
+                . $database->quote('group')
+                . " AND `object_id`="
+                . $database->quote($group->get('gidNumber')),
+        );
 
         return Lang::txt('PLG_GROUPS_COLLECTIONS_LOG') . ': ' . intval($database->loadResult());
     }
@@ -195,7 +221,19 @@ class Collections extends Plugin
         //are we returning html
         if ($return == 'html') {
             // This needs to be called to ensure scripts are pushed to the document
-            $foo = App::get('editor')->display('description', '', '', '', 35, 5, false, 'field_description', null, null, ['class' => 'minimal no-footer']);
+            $foo = App::get('editor')->display(
+                'description',
+                '',
+                '',
+                '',
+                35,
+                5,
+                false,
+                'field_description',
+                null,
+                null,
+                ['class' => 'minimal no-footer'],
+            );
 
             //set group members plugin access level
             $group_plugin_acl = $access[$active];
@@ -214,7 +252,11 @@ class Collections extends Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true,
+                );
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
@@ -229,7 +271,9 @@ class Collections extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
             //user vars
@@ -288,7 +332,21 @@ class Collections extends Plugin
                                 } else {
                                     Request::setVar('post', $bits[1]);
                                     if (isset($bits[2])) {
-                                        if (in_array($bits[2], ['post', 'vote', 'collect', 'remove', 'move', 'comment', 'savecomment', 'deletecomment'])) {
+                                        if (
+                                            in_array(
+                                                $bits[2],
+                                                [
+                                                    'post',
+                                                    'vote',
+                                                    'collect',
+                                                    'remove',
+                                                    'move',
+                                                    'comment',
+                                                    'savecomment',
+                                                    'deletecomment',
+                                                ],
+                                            )
+                                        ) {
                                             $this->action = $bits[2];
                                         } else {
                                             $this->action = $bits[2] . $this->action;
@@ -451,7 +509,11 @@ class Collections extends Plugin
      */
     private function login()
     {
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName, false, true);
+        $route = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+            false,
+            true,
+        );
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
@@ -766,7 +828,9 @@ class Collections extends Plugin
 
         if (Request::getInt('no_html', 0)) {
             $response = new \stdClass();
-            $response->href = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=collections' . $sfx);
+            $response->href = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=collections' . $sfx,
+            );
             $response->success = true;
             if ($this->getError()) {
                 $response->success = false;
@@ -827,7 +891,9 @@ class Collections extends Plugin
 
         if (Request::getInt('no_html', 0)) {
             $response = new \stdClass();
-            $response->href = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=collections' . $sfx);
+            $response->href = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=collections' . $sfx,
+            );
             $response->success = true;
             if ($this->getError()) {
                 $response->success = false;
@@ -987,7 +1053,14 @@ class Collections extends Plugin
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active='
+                        . $this->pluginName,
+                ),
                 Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
                 'error',
             );
@@ -1159,11 +1232,18 @@ class Collections extends Plugin
         // @TODO: Find a better way to do this
         if ($tmp) {
             $db = App::get('db');
-            $db->setQuery("SELECT id FROM `#__collections_items` WHERE `title`=" . $db->quote($tmp) . " AND `id`!=" . $db->quote($item->get('id')));
+            $db->setQuery(
+                "SELECT id FROM `#__collections_items` WHERE `title`="
+                    . $db->quote($tmp)
+                    . " AND `id`!="
+                    . $db->quote($item->get('id')),
+            );
             $others = $db->loadColumn();
 
             if (count($others) > 0) {
-                $db->setQuery("SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")");
+                $db->setQuery(
+                    "SELECT * FROM `#__collections_assets` WHERE `item_id` in (" . implode(",", $others) . ")",
+                );
                 $assets = $db->loadObjectList();
                 foreach ($assets as $asset) {
                     $asset = new \Components\Collections\Models\Asset($asset);
@@ -1224,7 +1304,14 @@ class Collections extends Plugin
             $collection = new \Components\Collections\Models\Collection($p['collection_id']);
         }
 
-        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias');
+        $url = 'index.php?option='
+            . $this->option
+            . '&cn='
+            . $this->group->get('cn')
+            . '&active='
+            . $this->pluginName
+            . '&scope='
+            . $collection->get('alias');
 
         // Record the activity
         $recipients = [
@@ -1241,7 +1328,9 @@ class Collections extends Plugin
 
         $collectionLink = '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>';
 
-        $groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">'
+        $groupTitle = '<a href="'
+            . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false)
+            . '">'
             . $this->group->get('description') . '</a>';
 
         Event::trigger('system.logActivity', [
@@ -1249,7 +1338,12 @@ class Collections extends Plugin
                 'action'      => ($p['id'] ? 'updated' : 'created'),
                 'scope'       => 'collections.item',
                 'scope_id'    => $item->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'), $itemTitle, $collectionLink, $groupTitle),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_' . ($p['id'] ? 'UPDATED' : 'CREATED'),
+                    $itemTitle,
+                    $collectionLink,
+                    $groupTitle,
+                ),
                 'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
@@ -1450,7 +1544,9 @@ class Collections extends Plugin
 
         $collectionLink = '<a href="' . Route::url($collection->link()) . '">' . $collection->get('title') . '</a>';
 
-        $groupTitle = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false) . '">'
+        $groupTitle = '<a href="'
+            . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'), false)
+            . '">'
             . $this->group->get('description') . '</a>';
 
         Event::trigger('system.logActivity', [
@@ -1458,7 +1554,12 @@ class Collections extends Plugin
                 'action'      => 'created',
                 'scope'       => 'collections.post',
                 'scope_id'    => $post->id,
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED', $itemTitle, $collectionLink, $groupTitle),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_CREATED',
+                    $itemTitle,
+                    $collectionLink,
+                    $groupTitle,
+                ),
                 'details'     => [
                     'collection_id' => $post->collection_id,
                     'item_id'       => $post->item_id,
@@ -1470,7 +1571,10 @@ class Collections extends Plugin
 
         // Display updated bulletin stats if called via AJAX
         if ($no_html) {
-            echo Lang::txt('PLG_GROUPS_COLLECTIONS_POST_REPOSTS', $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]));
+            echo Lang::txt(
+                'PLG_GROUPS_COLLECTIONS_POST_REPOSTS',
+                $post->getCount(['item_id' => $post->get('item_id'), 'original' => 0]),
+            );
             exit();
         }
 
@@ -1534,7 +1638,16 @@ class Collections extends Plugin
             $type = 'error';
         }
 
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
+        $route = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&cn='
+                . $this->group->get('cn')
+                . '&active='
+                . $this->pluginName
+                . '&scope='
+                . $collection->get('alias'),
+        );
 
         // Record the activity
         $recipients = [
@@ -1551,7 +1664,14 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.post',
                 'scope_id'    => $post->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_DELETED', '<a href="' . $route . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_POST_DELETED',
+                    '<a href="'
+                        . $route
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'item_id'       => $post->get('item_id'),
@@ -1622,7 +1742,9 @@ class Collections extends Plugin
             $this->setError($post->getError());
         }
 
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
+        $route = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+        );
 
         if ($no_html = Request::getInt('no_html', 0)) {
             echo $route;
@@ -1748,7 +1870,16 @@ class Collections extends Plugin
             }
         }
 
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
+        $route = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&cn='
+                . $this->group->get('cn')
+                . '&active='
+                . $this->pluginName
+                . '&scope='
+                . $collection->get('alias'),
+        );
 
         // Record the activity
         $recipients = [
@@ -1765,7 +1896,14 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.item',
                 'scope_id'    => $item->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_DELETED', '<a href="' . $route . '">' . htmlspecialchars((string) ($item->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_DELETED',
+                    '<a href="'
+                        . $route
+                        . '">'
+                        . htmlspecialchars((string) ($item->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
@@ -1888,14 +2026,26 @@ class Collections extends Plugin
         $title = $post->item()->get('title');
         $title = ($title ? $title : $post->item()->get('description', '#' . $post->get('id')));
         $title = \Hubzero\Utility\Str::truncate(strip_tags($title), 70);
-        $url = Route::url('index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment');
+        $url = Route::url(
+            'index.php?option=com_collections&controller=posts&post=' . $post->get('id') . '&task=comment',
+        );
 
         Event::trigger('system.logActivity', [
             'activity' => [
                 'action'      => ($__cid ? 'updated' : 'created'),
                 'scope'       => 'collections.comment',
                 'scope_id'    => $comment->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_' . ($__cid ? 'UPDATED' : 'CREATED'), $comment->get('id'), '<a href="' . $url . '#c' . $comment->get('id') . '">' . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_COMMENT_' . ($__cid ? 'UPDATED' : 'CREATED'),
+                    $comment->get('id'),
+                    '<a href="'
+                        . $url
+                        . '#c'
+                        . $comment->get('id')
+                        . '">'
+                        . htmlspecialchars((string) ($title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
@@ -2070,7 +2220,16 @@ class Collections extends Plugin
         }
 
         // ($collection is resolved and access-checked above)
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
+        $url = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&cn='
+                . $this->group->get('cn')
+                . '&active='
+                . $this->pluginName
+                . '&scope='
+                . $collection->get('alias'),
+        );
 
         // Record the activity
         $recipients = [
@@ -2085,7 +2244,14 @@ class Collections extends Plugin
                 'action'      => 'voted',
                 'scope'       => 'collections.item',
                 'scope_id'    => $post->item()->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_VOTED', '<a href="' . $url . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_ITEM_VOTED',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'collection_id' => $collection->get('id'),
                     'post_id'       => $post->get('id'),
@@ -2127,7 +2293,14 @@ class Collections extends Plugin
         // Access check
         if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&cn='
+                        . $this->group->get('cn')
+                        . '&active='
+                        . $this->pluginName,
+                ),
                 Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
                 'error',
             );
@@ -2227,7 +2400,16 @@ class Collections extends Plugin
 
         $collection->item()->tag(trim(Request::getString('tags', '', 'post')));
 
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
+        $url = Route::url(
+            'index.php?option='
+                . $this->option
+                . '&cn='
+                . $this->group->get('cn')
+                . '&active='
+                . $this->pluginName
+                . '&scope='
+                . $collection->get('alias'),
+        );
 
         // Record the activity
         $recipients = [
@@ -2245,7 +2427,14 @@ class Collections extends Plugin
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'collections.collection',
                 'scope_id'    => $collection->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . $url . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
@@ -2350,7 +2539,14 @@ class Collections extends Plugin
                 'action'      => 'deleted',
                 'scope'       => 'collections.collection',
                 'scope_id'    => $collection->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED', '<a href="' . Route::url($collection->link()) . '">' . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_GROUPS_COLLECTIONS_ACTIVITY_COLLECTION_DELETED',
+                    '<a href="'
+                        . Route::url($collection->link())
+                        . '">'
+                        . htmlspecialchars((string) ($collection->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $collection->get('title'),
                     'id'    => $collection->get('id'),
@@ -2361,7 +2557,9 @@ class Collections extends Plugin
         ]);
 
         // Redirect to main view
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
+        $route = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName,
+        );
 
         if ($no_html) {
             echo $route;
@@ -2418,7 +2616,11 @@ class Collections extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->pluginType, $this->pluginName);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew(
+            $this->group->get('gidNumber'),
+            $this->pluginType,
+            $this->pluginName,
+        );
 
         // Get parameters
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));

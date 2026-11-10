@@ -457,7 +457,13 @@ class Repo extends Obj
 
         // Directory already exists ?
         if ($this->dirExists($localDirPath)) {
-            $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE') . ' "' . $newDir . '". ' . Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS'));
+            $this->setError(
+                Lang::txt('COM_PROJECTS_FILES_ERROR_DIR_CREATE')
+                    . ' "'
+                    . $newDir
+                    . '". '
+                    . Lang::txt('COM_PROJECTS_FILES_ERROR_DIRECTORY_EXISTS'),
+            );
             return false;
         }
 
@@ -1128,7 +1134,9 @@ class Repo extends Obj
             If no directory is found, create a unique one for the project to contain the files.
             ***/
             $matches = [];
-            $firstArchiveEntry = shell_exec("unzip -qql " . escapeshellarg($tmp_name) . " | head -n1 | tr -s ' ' | cut -d' ' -f5-");
+            $firstArchiveEntry = shell_exec(
+                "unzip -qql " . escapeshellarg($tmp_name) . " | head -n1 | tr -s ' ' | cut -d' ' -f5-",
+            );
             preg_match("/(^.*?\/)/", (string) $firstArchiveEntry, $matches);
 
             $topLevelDirectory = $matches[0] ?? (string) $firstArchiveEntry;
@@ -1549,7 +1557,10 @@ class Repo extends Obj
                 $versions[$k - 1]['change'] = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_RESTORED');
             }
 
-            if (preg_match("/" . Lang::txt('PLG_PROJECTS_FILES_FILES_SHARE_EXPORTED') . "/", $current['message']) && $next) {
+            if (
+                preg_match("/" . Lang::txt('PLG_PROJECTS_FILES_FILES_SHARE_EXPORTED') . "/", $current['message'])
+                && $next
+            ) {
                 $versions[$k + 1]['change']  = Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_SENT_REMOTE');
                 $versions[$k + 1]['movedTo'] = 'remote';
                 $versions[$k + 1]['author']  = $current['author'];

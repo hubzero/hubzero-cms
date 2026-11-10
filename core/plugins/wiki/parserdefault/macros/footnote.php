@@ -60,7 +60,15 @@ Examples:
         }
 
         if ($this->args) {
-            $p = new WikiParser('Footnotes', $this->option, $this->scope, $this->pagename, $this->pageid, $this->filepath, $this->domain);
+            $p = new WikiParser(
+                'Footnotes',
+                $this->option,
+                $this->scope,
+                $this->pagename,
+                $this->pageid,
+                $this->filepath,
+                $this->domain,
+            );
 
             // Args are either "note" or "label | note". The label (stub) lets a
             // later [[Footnote(label)]] reference the same footnote. When no label
@@ -80,7 +88,15 @@ Examples:
 
                 $wm->footnotes[$i - 1]->refs[] = 'fndef-' . $k;
 
-                return '<sup id="fndef-' . $k . '" class="tex2jax_ignore"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+                return '<sup id="fndef-'
+                    . $k
+                    . '" class="tex2jax_ignore"><a href="#fnref-'
+                    . $i
+                    . '" aria-label="Footnote '
+                    . $i
+                    . '">&#91;'
+                    . $i
+                    . '&#93;</a></sup>';
             }
 
             $note = $p->parse($note);
@@ -97,9 +113,44 @@ Examples:
             $wm->footnotes_stubs[] = $stub;
             $wm->footnotes[] = $footnote;
 
-            return '<sup id="fndef-' . $i . '" class="tex2jax_ignore"><a href="#fnref-' . $i . '" aria-label="Footnote ' . $i . '">&#91;' . $i . '&#93;</a></sup>';
+            return '<sup id="fndef-'
+                . $i
+                . '" class="tex2jax_ignore"><a href="#fnref-'
+                . $i
+                . '" aria-label="Footnote '
+                . $i
+                . '">&#91;'
+                . $i
+                . '&#93;</a></sup>';
         } else {
-            $letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+            $letters = [
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F',
+                'G',
+                'H',
+                'I',
+                'J',
+                'K',
+                'L',
+                'M',
+                'N',
+                'O',
+                'P',
+                'Q',
+                'R',
+                'S',
+                'T',
+                'U',
+                'V',
+                'W',
+                'X',
+                'Y',
+                'Z',
+            ];
 
             $html  = '<ol class="footnotes">';
             foreach ($wm->footnotes as $i => $footnote) {
@@ -107,7 +158,11 @@ Examples:
                 if (count($footnote->refs) > 1) {
                     $html .= '^ ';
                     foreach ($footnote->refs as $key => $ref) {
-                        $html .= '<sup class="tex2jax_ignore"><a href="#' . $ref . '">' . strtolower($letters[$key]) . '</a></sup> ';
+                        $html .= '<sup class="tex2jax_ignore"><a href="#'
+                            . $ref
+                            . '">'
+                            . strtolower($letters[$key])
+                            . '</a></sup> ';
                     }
                 } elseif (count($footnote->refs) == 1) {
                     $html .= '<a href="#' . $footnote->refs[0] . '">^</a> ';

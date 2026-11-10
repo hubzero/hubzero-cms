@@ -157,7 +157,11 @@ class Wishlists extends SiteController
     {
         if (User::isGuest()) {
             if (!$return) {
-                $return = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true), 'server');
+                $return = Request::getString(
+                    'REQUEST_URI',
+                    Route::url('index.php?option=' . $this->option . '&task=' . $this->task, false, true),
+                    'server',
+                );
             }
             $return = base64_encode($return);
             App::redirect(
@@ -236,8 +240,12 @@ class Wishlists extends SiteController
         $model->set('admin', $this->_admin);
 
         // Set page title
-        $this->_list_title = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2)) ? $model->get('title') : '';
-        $this->_subtitle   = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2)) ? $model->get('title') : '';
+        $this->_list_title = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2))
+            ? $model->get('title')
+            : '';
+        $this->_subtitle   = ($model->isPublic() or (!$model->isPublic() && $this->_admin == 2))
+            ? $model->get('title')
+            : '';
         $this->buildTitle();
 
         // Set the pathway
@@ -378,8 +386,22 @@ class Wishlists extends SiteController
 
         $entries
             ->select($entries->getTableName() . '.*')
-            ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'positive')
-            ->select("(SELECT COUNT(*) FROM `" . $vote->getTableName() . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid=" . $entries->getTableName() . ".id)", 'negative');
+            ->select(
+                "(SELECT COUNT(*) FROM `"
+                    . $vote->getTableName()
+                    . "` AS v WHERE v.helpful='yes' AND v.category='wish' AND v.referenceid="
+                    . $entries->getTableName()
+                    . ".id)",
+                'positive',
+            )
+            ->select(
+                "(SELECT COUNT(*) FROM `"
+                    . $vote->getTableName()
+                    . "` AS v WHERE v.helpful='no' AND v.category='wish' AND v.referenceid="
+                    . $entries->getTableName()
+                    . ".id)",
+                'negative',
+            );
 
         // list sorting
         if ($filters['sortby']) {
@@ -410,7 +432,12 @@ class Wishlists extends SiteController
                     break;
                 case 'bonus':
                     $entries
-                        ->select("(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid=" . $entries->getTableName() . ".id)", 'bonus')
+                        ->select(
+                            "(SELECT SUM(amount) FROM `#__users_transactions` WHERE category='wish' AND type='hold' AND referenceid="
+                                . $entries->getTableName()
+                                . ".id)",
+                            'bonus',
+                        )
                         ->order('status', 'asc')
                         ->order('bonus', 'desc')
                         ->order('positive', 'desc')
@@ -545,7 +572,11 @@ class Wishlists extends SiteController
             $counter = 0;
 
             foreach ($votes as $vote) {
-                if (count($owners['advisory']) > 0 && $this->config->get('votesplit', 0) && in_array($vote->get('userid'), $owners['advisory'])) {
+                if (
+                    count($owners['advisory']) > 0
+                    && $this->config->get('votesplit', 0)
+                    && in_array($vote->get('userid'), $owners['advisory'])
+                ) {
                     $imp += $vote->get('importance') * $co_adv;
                     $divisor += $co_adv;
                 } else {
@@ -669,7 +700,14 @@ class Wishlists extends SiteController
         // The settings form posts title, description and public; the list is
         // the one whose manage right was checked above, and what it is a list
         // OF is not the form's to change.
-        unset($fields['id'], $fields['category'], $fields['referenceid'], $fields['created_by'], $fields['created'], $fields['state']);
+        unset(
+            $fields['id'],
+            $fields['category'],
+            $fields['referenceid'],
+            $fields['created_by'],
+            $fields['created'],
+            $fields['state'],
+        );
 
         $wishlist->set($fields);
         $wishlist->removeAttribute('admin');
@@ -864,7 +902,13 @@ class Wishlists extends SiteController
             $admin_email = Config::get('mailfrom');
 
             // to wish assignee
-            $subject = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
+            $subject = Lang::txt(strtoupper($this->option))
+                . ', '
+                . Lang::txt('COM_WISHLIST_WISH')
+                . ' #'
+                . $wishid
+                . ' '
+                . Lang::txt('COM_WISHLIST_MSG_HAS_BEEN_ASSIGNED_TO_YOU');
 
             $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
@@ -894,7 +938,12 @@ class Wishlists extends SiteController
             $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
             // Send message
-            if (!Event::trigger('xmessage.onSendMessage', ['wishlist_wish_assigned', $subject, $message, $from, [$objWish->get('assigned')], $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['wishlist_wish_assigned', $subject, $message, $from, [$objWish->get('assigned')], $this->option],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
             }
         }
@@ -939,13 +988,20 @@ class Wishlists extends SiteController
         }
 
         // Build page title
-        $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage'))) ? $wishlist->get('title') : '';
+        $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage')))
+            ? $wishlist->get('title')
+            : '';
         $this->buildTitle();
 
         // Set the pathway
         $this->_taskpath = $wish->get('id')
                             ? $wish->link('edit')
-                            : 'index.php?option=' . $this->option . '&task=add&category=' . $category . '&rid=' . $refid;
+                            : 'index.php?option='
+                                . $this->option
+                                . '&task=add&category='
+                                . $category
+                                . '&rid='
+                                . $refid;
         $this->_taskname = $wish->get('id')
                             ? Lang::txt('COM_WISHLIST_EDITWISH')
                             : Lang::txt('COM_WISHLIST_ADD');
@@ -1118,7 +1174,11 @@ class Wishlists extends SiteController
             // Set the pathway
             $this->_taskpath = $wishid
                             ? 'index.php?option=' . $this->option . '&task=editwish&category='
-                            . $wishlist->get('category') . '&rid=' . $wishlist->get('referenceid') . '&wishid=' . $wishid
+                            . $wishlist->get('category')
+                            . '&rid='
+                            . $wishlist->get('referenceid')
+                            . '&wishid='
+                            . $wishid
                             : 'index.php?option=' . $this->option . '&task=add&category='
                             . $wishlist->get('category') . '&rid=' . $wishlist->get('referenceid');
             $this->_taskname = $wishid
@@ -1174,7 +1234,17 @@ class Wishlists extends SiteController
 
             $this->_list_title = $wishlist->get('title');
 
-            $subject = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_NEW_WISH') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title . ' ' . Lang::txt('from') . ' ' . $name;
+            $subject = Lang::txt(strtoupper($this->option))
+                . ', '
+                . Lang::txt('COM_WISHLIST_NEW_WISH')
+                . ' '
+                . Lang::txt('COM_WISHLIST_FOR')
+                . ' '
+                . $this->_list_title
+                . ' '
+                . Lang::txt('from')
+                . ' '
+                . $name;
             $from = [
                 'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
                 'email' => Config::get('mailfrom'),
@@ -1204,7 +1274,12 @@ class Wishlists extends SiteController
 
             $owners = $wishlist->getOwners();
 
-            if (!Event::trigger('xmessage.onSendMessage', ['wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->option])) {
+            if (
+                !Event::trigger(
+                    'xmessage.onSendMessage',
+                    ['wishlist_new_wish', $subject, $message, $from, $owners['individuals'], $this->option],
+                )
+            ) {
                 $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
             }
         }
@@ -1212,7 +1287,18 @@ class Wishlists extends SiteController
         if ($reward && $this->banking) {
             // put the  amount on hold
             $BTL = new Teller(User::get('id'));
-            $BTL->hold($reward, Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $row->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $this->_list_title, 'wish', $row->get('id'));
+            $BTL->hold(
+                $reward,
+                Lang::txt('COM_WISHLIST_BANKING_HOLD')
+                    . ' #'
+                    . $row->get('id')
+                    . ' '
+                    . Lang::txt('COM_WISHLIST_FOR')
+                    . ' '
+                    . $this->_list_title,
+                'wish',
+                $row->get('id'),
+            );
         }
 
         // Log activity
@@ -1221,7 +1307,14 @@ class Wishlists extends SiteController
                 'action'      => ($wishid ? 'updated' : 'created'),
                 'scope'       => 'wishlist.wish',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($row->link('permalink')) . '">' . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WISHLIST_ACTIVITY_WISH_' . ($wishid ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($row->link('permalink'))
+                        . '">'
+                        . htmlspecialchars((string) ($row->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'subject'    => $row->get('subject'),
                     'url'      => Route::url($row->link('permalink')),
@@ -1277,7 +1370,9 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             // Set page title
-            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2)) ? $wishlist->get('title') : '';
+            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2))
+                ? $wishlist->get('title')
+                : '';
             $this->buildTitle();
 
             // Set the pathway
@@ -1354,10 +1449,24 @@ class Wishlists extends SiteController
                 // Build e-mail components
 
                 // to wish author
-                $subject1 = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_YOUR_WISH') . ' #' . $wish->get('id') . ' is ' . $status;
+                $subject1 = Lang::txt(strtoupper($this->option))
+                    . ', '
+                    . Lang::txt('COM_WISHLIST_YOUR_WISH')
+                    . ' #'
+                    . $wish->get('id')
+                    . ' is '
+                    . $status;
 
                 // to wish assignee
-                $subject2 = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_HAS_BEEN') . ' ' . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
+                $subject2 = Lang::txt(strtoupper($this->option))
+                    . ', '
+                    . Lang::txt('COM_WISHLIST_WISH')
+                    . ' #'
+                    . $wish->get('id')
+                    . ' '
+                    . Lang::txt('COM_WISHLIST_HAS_BEEN')
+                    . ' '
+                    . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
                 $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
@@ -1397,7 +1506,19 @@ class Wishlists extends SiteController
             if (!$wish->save()) {
                 App::abort(500, $wish->getError());
             } elseif ($this->task == 'editwish') {
-                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_status_changed', $subject1, $message, $from, [$wish->get('proposed_by')], $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        [
+                            'wishlist_status_changed',
+                            $subject1,
+                            $message,
+                            $from,
+                            [$wish->get('proposed_by')],
+                            $this->option,
+                        ],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
 
@@ -1406,7 +1527,19 @@ class Wishlists extends SiteController
                     && $wish->get('proposed_by') != $wish->get('assigned')
                     && $status == 'accepted'
                 ) {
-                    if (!Event::trigger('xmessage.onSendMessage', ['wishlist_wish_assigned', $subject2, $message, $from, [$wish->get('assigned')], $this->option])) {
+                    if (
+                        !Event::trigger(
+                            'xmessage.onSendMessage',
+                            [
+                                'wishlist_wish_assigned',
+                                $subject2,
+                                $message,
+                                $from,
+                                [$wish->get('assigned')],
+                                $this->option,
+                            ],
+                        )
+                    ) {
                         $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
                     }
                 }
@@ -1554,8 +1687,26 @@ class Wishlists extends SiteController
                     $name = Lang::txt('JANONYMOUS');
                 }
 
-                $subject1 = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_NEW_WISH') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $newtitle . ' ' . Lang::txt('COM_WISHLIST_FROM') . ' ' . $name . ' - ' . Lang::txt('COM_WISHLIST_TRANSFERRED');
-                $subject2 = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
+                $subject1 = Lang::txt(strtoupper($this->option))
+                    . ', '
+                    . Lang::txt('COM_WISHLIST_NEW_WISH')
+                    . ' '
+                    . Lang::txt('COM_WISHLIST_FOR')
+                    . ' '
+                    . $newtitle
+                    . ' '
+                    . Lang::txt('COM_WISHLIST_FROM')
+                    . ' '
+                    . $name
+                    . ' - '
+                    . Lang::txt('COM_WISHLIST_TRANSFERRED');
+                $subject2 = Lang::txt(strtoupper($this->option))
+                    . ', '
+                    . Lang::txt('COM_WISHLIST_YOUR_WISH')
+                    . ' #'
+                    . $wishid
+                    . ' '
+                    . Lang::txt('COM_WISHLIST_WISH_TRANSFERRED_TO_DIFFERENT_LIST');
 
                 $from = [
                     'name'  => Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
@@ -1587,11 +1738,28 @@ class Wishlists extends SiteController
 
                 $owners = $newlist->getOwners();
 
-                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        ['wishlist_new_wish', $subject1, $message, $from, $owners['individuals'], $this->option],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MESSAGE_OWNERS'));
                 }
 
-                if (!Event::trigger('xmessage.onSendMessage', ['support_item_transferred', $subject2, $message, $from, [$wish->get('proposed_by')], $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        [
+                            'support_item_transferred',
+                            $subject2,
+                            $message,
+                            $from,
+                            [$wish->get('proposed_by')],
+                            $this->option,
+                        ],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
             }
@@ -1667,7 +1835,13 @@ class Wishlists extends SiteController
         $BTL = new Teller(User::get('id'));
         $BTL->hold(
             $amount,
-            Lang::txt('COM_WISHLIST_BANKING_HOLD') . ' #' . $wish->get('id') . ' ' . Lang::txt('COM_WISHLIST_FOR') . ' ' . $wishlist->get('title'),
+            Lang::txt('COM_WISHLIST_BANKING_HOLD')
+                . ' #'
+                . $wish->get('id')
+                . ' '
+                . Lang::txt('COM_WISHLIST_FOR')
+                . ' '
+                . $wishlist->get('title'),
             'wish',
             $wish->get('id'),
         );
@@ -1743,7 +1917,14 @@ class Wishlists extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'wishlist.wish',
                 'scope_id'    => $wish->get('id'),
-                'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_DELETED', '<a href="' . Route::url($wish->link('permalink')) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WISHLIST_ACTIVITY_WISH_DELETED',
+                    '<a href="'
+                        . Route::url($wish->link('permalink'))
+                        . '">'
+                        . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'subject' => $wish->get('subject'),
                     'url'     => Route::url($wish->link('permalink')),
@@ -1842,7 +2023,14 @@ class Wishlists extends SiteController
                 'action'      => 'voted',
                 'scope'       => 'wishlist.wish',
                 'scope_id'    => $wish->get('id'),
-                'description' => Lang::txt('COM_WISHLIST_ACTIVITY_WISH_VOTED', '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WISHLIST_ACTIVITY_WISH_VOTED',
+                    '<a href="'
+                        . Route::url($wish->link())
+                        . '">'
+                        . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'subject' => $wish->get('subject'),
                     'url'     => Route::url($wish->link()),
@@ -2006,7 +2194,15 @@ class Wishlists extends SiteController
                 $name = Lang::txt('JANONYMOUS');
             }
 
-            $subject = Lang::txt(strtoupper($this->option)) . ', ' . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_BY') . ' ' . $name;
+            $subject = Lang::txt(strtoupper($this->option))
+                . ', '
+                . Lang::txt('COM_WISHLIST_MSG_COMENT_POSTED_YOUR_WISH')
+                . ' #'
+                . $wishid
+                . ' '
+                . Lang::txt('COM_WISHLIST_BY')
+                . ' '
+                . $name;
 
             // email components
             $from = [
@@ -2015,16 +2211,42 @@ class Wishlists extends SiteController
             ];
 
             // for the wish owner
-            $subject1 = Lang::txt(strtoupper($this->option)) . ', ' . $name . ' ' . Lang::txt('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH') . ' #' . $wishid;
+            $subject1 = Lang::txt(strtoupper($this->option))
+                . ', '
+                . $name
+                . ' '
+                . Lang::txt('COM_WISHLIST_MSG_COMMENTED_YOUR_WISH')
+                . ' #'
+                . $wishid;
 
             // for the person to whom wish is assigned
-            $subject2 = Lang::txt(strtoupper($this->option)) . ', ' . $name . ' ' . Lang::txt('COM_WISHLIST_MSG_COMMENTED_ON_WISH') . ' #' . $wishid . ' ' . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
+            $subject2 = Lang::txt(strtoupper($this->option))
+                . ', '
+                . $name
+                . ' '
+                . Lang::txt('COM_WISHLIST_MSG_COMMENTED_ON_WISH')
+                . ' #'
+                . $wishid
+                . ' '
+                . Lang::txt('COM_WISHLIST_MSG_ASSIGNED_TO_YOU');
 
             // for original commentor
-            $subject3 = Lang::txt(strtoupper($this->option)) . ', ' . $name . ' ' . Lang::txt('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT') . ' #' . $wishid;
+            $subject3 = Lang::txt(strtoupper($this->option))
+                . ', '
+                . $name
+                . ' '
+                . Lang::txt('COM_WISHLIST_MSG_REPLIED_YOUR_COMMENT')
+                . ' #'
+                . $wishid;
 
             // for others included in the conversation thread.
-            $subject4 = Lang::txt(strtoupper($this->option)) . ', ' . $name . ' ' . Lang::txt('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU') . ' #' . $wishid;
+            $subject4 = Lang::txt(strtoupper($this->option))
+                . ', '
+                . $name
+                . ' '
+                . Lang::txt('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU')
+                . ' #'
+                . $wishid;
 
             $message = [];
 
@@ -2055,7 +2277,19 @@ class Wishlists extends SiteController
                 $contacted[] = $objWish->get('proposed_by');
 
                 // send message to wish owner
-                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_posted', $subject1, $message, $from, [$objWish->get('proposed_by')], $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        [
+                            'wishlist_comment_posted',
+                            $subject1,
+                            $message,
+                            $from,
+                            [$objWish->get('proposed_by')],
+                            $this->option,
+                        ],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
             }
@@ -2068,7 +2302,19 @@ class Wishlists extends SiteController
                 $contacted[] = $objWish->get('assigned');
 
                 // send message to person to who wish is assigned
-                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_posted', $subject2, $message, $from, [$objWish->get('assigned')], $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        [
+                            'wishlist_comment_posted',
+                            $subject2,
+                            $message,
+                            $from,
+                            [$objWish->get('assigned')],
+                            $this->option,
+                        ],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
                 }
             }
@@ -2083,7 +2329,19 @@ class Wishlists extends SiteController
                     && !in_array($parent->get('created_by'), $contacted)
                 ) {
                     $contacted[] = $parent->get('created_by');
-                    if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_thread', $subject3, $message, $from, [$parent->get('created_by')], $this->option])) {
+                    if (
+                        !Event::trigger(
+                            'xmessage.onSendMessage',
+                            [
+                                'wishlist_comment_thread',
+                                $subject3,
+                                $message,
+                                $from,
+                                [$parent->get('created_by')],
+                                $this->option,
+                            ],
+                        )
+                    ) {
                         $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
                     }
                 }
@@ -2098,7 +2356,12 @@ class Wishlists extends SiteController
             $comm = array_unique($comm);
 
             if (count($comm) > 0) {
-                if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_thread', $subject4, $message, $from, $comm, $this->option])) {
+                if (
+                    !Event::trigger(
+                        'xmessage.onSendMessage',
+                        ['wishlist_comment_thread', $subject4, $message, $from, $comm, $this->option],
+                    )
+                ) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_COMMENTOR'));
                 }
             }
@@ -2109,7 +2372,15 @@ class Wishlists extends SiteController
                     'action'      => 'created',
                     'scope'       => 'wishlist.comment',
                     'scope_id'    => $row->get('id'),
-                    'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_CREATED', $row->get('id'), '<a href="' . Route::url($objWish->link()) . '">' . htmlspecialchars((string) ($objWish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_WISHLIST_ACTIVITY_COMMENT_CREATED',
+                        $row->get('id'),
+                        '<a href="'
+                            . Route::url($objWish->link())
+                            . '">'
+                            . htmlspecialchars((string) ($objWish->get('subject')), ENT_QUOTES, 'UTF-8')
+                            . '</a>',
+                    ),
                     'details'     => [
                         'wish'    => $objWish->get('id'),
                         'url'     => Route::url($objWish->link()),
@@ -2179,7 +2450,15 @@ class Wishlists extends SiteController
                 'action'      => 'deleted',
                 'scope'       => 'wishlist.comment',
                 'scope_id'    => $row->get('id'),
-                'description' => Lang::txt('COM_WISHLIST_ACTIVITY_COMMENT_DELETED', $row->get('id'), '<a href="' . Route::url($wish->link()) . '">' . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WISHLIST_ACTIVITY_COMMENT_DELETED',
+                    $row->get('id'),
+                    '<a href="'
+                        . Route::url($wish->link())
+                        . '">'
+                        . htmlspecialchars((string) ($wish->get('subject')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'id'  => $row->get('id'),
                     'url' => Route::url($wish->link()),
@@ -2212,7 +2491,9 @@ class Wishlists extends SiteController
             $wishlist = Wishlist::oneOrFail($wish->get('wishlist'));
 
             // Set page title
-            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2)) ? $wishlist->get('title') : '';
+            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->get('admin') == 2))
+                ? $wishlist->get('title')
+                : '';
             $this->buildTitle();
 
             // Set the pathway
@@ -2245,7 +2526,9 @@ class Wishlists extends SiteController
         // Login required
         if (User::isGuest()) {
             // Get List Title
-            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage'))) ? $wishlist->get('title') : '';
+            $this->_list_title = ($wishlist->isPublic() or (!$wishlist->isPublic() && $wishlist->access('manage')))
+                ? $wishlist->get('title')
+                : '';
             $this->buildTitle();
 
             // Set the pathway
@@ -2290,7 +2573,16 @@ class Wishlists extends SiteController
             return;
         }
 
-        $filter = '&filterby=' . $filters['filterby'] . '&sortby=' . $filters['sortby'] . '&limitstart=' . $filters['start'] . '&limit=' . $filters['limit'] . '&tags=' . $filters['tag'];
+        $filter = '&filterby='
+            . $filters['filterby']
+            . '&sortby='
+            . $filters['sortby']
+            . '&limitstart='
+            . $filters['start']
+            . '&limit='
+            . $filters['limit']
+            . '&tags='
+            . $filters['tag'];
 
         if ($page == 'wishlist') {
             $route = $wishlist->link();
@@ -2329,7 +2621,12 @@ class Wishlists extends SiteController
             $filters['sortby'] = 'date';
         }
 
-        if (!in_array($filters['filterby'], ['all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private'])) {
+        if (
+            !in_array(
+                $filters['filterby'],
+                ['all', 'open', 'accepted', 'rejected', 'granted', 'submitter', 'public', 'private'],
+            )
+        ) {
             $filters['filterby'] = 'all';
         }
 
@@ -2458,7 +2755,11 @@ class Wishlists extends SiteController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
 
             $this->setError(Lang::txt('COM_WISHLIST_ERROR_UPLOADING_FILE_TOO_BIG', $max));
             return $this->getError();

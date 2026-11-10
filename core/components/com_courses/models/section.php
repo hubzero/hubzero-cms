@@ -372,7 +372,10 @@ class Section extends Base
     {
         if (
             !isset($this->date)
-            || ((int) $this->date->get('scope_id') != (int) $scope_id || (string) $this->date->get('scope') != (string) $scope)
+            || (
+                (int) $this->date->get('scope_id') != (int) $scope_id
+                || (string) $this->date->get('scope') != (string) $scope
+            )
         ) {
             $this->date = new Section\Date(null);
 
@@ -451,7 +454,12 @@ class Section extends Base
             $user_id = (int) $this->userId($result);
 
             // Create the entry
-            $model = Member::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
+            $model = Member::getInstance(
+                $user_id,
+                $this->get('course_id'),
+                $this->get('offering_id'),
+                $this->get('id'),
+            );
             $model->set('user_id', $user_id);
             $model->set('course_id', $this->get('course_id'));
             $model->set('offering_id', $this->get('offering_id'));
@@ -490,9 +498,22 @@ class Section extends Base
         foreach ($data as $result) {
             $user_id = $this->userId($result);
 
-            $model = Member::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
+            $model = Member::getInstance(
+                $user_id,
+                $this->get('course_id'),
+                $this->get('offering_id'),
+                $this->get('id'),
+            );
             if (!$model->exists()) {
-                $this->setError(Lang::txt('Entry for user #%s, course #%s, offering #%s, section #%s not found.', $user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id')));
+                $this->setError(
+                    Lang::txt(
+                        'Entry for user #%s, course #%s, offering #%s, section #%s not found.',
+                        $user_id,
+                        $this->get('course_id'),
+                        $this->get('offering_id'),
+                        $this->get('id'),
+                    ),
+                );
                 continue;
             }
             if (!$model->delete()) {
@@ -756,7 +777,12 @@ class Section extends Base
         }
 
         // Build the path
-        $path = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/sections/' . $this->get('id');
+        $path = '/'
+            . trim($this->config('uploadpath', '/site/courses'), '/')
+            . '/'
+            . $this->get('course_id')
+            . '/sections/'
+            . $this->get('id');
 
         // Return just the upload path?
         if ($rtrn == 'path') {

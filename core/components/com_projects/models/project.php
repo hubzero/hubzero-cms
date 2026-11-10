@@ -1141,8 +1141,16 @@ class Project extends Model
      * @param   integer  $managers_only
      * @return  mixed
      */
-    public function recordActivity($activity = '', $refid = '', $underline = '', $url = '', $class = 'project', $commentable = 0, $admin = 0, $managers_only = 0)
-    {
+    public function recordActivity(
+        $activity = '',
+        $refid = '',
+        $underline = '',
+        $url = '',
+        $class = 'project',
+        $commentable = 0,
+        $admin = 0,
+        $managers_only = 0,
+    ) {
         if ($activity) {
             $refid = $refid ? $refid : $this->get('id');
 
@@ -1293,7 +1301,13 @@ class Project extends Model
                         $action = 'published';
                         $scope = 'publication';
                     }
-                    if (substr($activity, 0, strlen('has been updated by administrator')) == 'has been updated by administrator') {
+                    if (
+                        substr(
+                            $activity,
+                            0,
+                            strlen('has been updated by administrator'),
+                        ) == 'has been updated by administrator'
+                    ) {
                         $action = 'updated';
                         $scope = 'publication';
                     }
@@ -1428,7 +1442,14 @@ class Project extends Model
     {
         if ($this->isMemberConfirmed() && !$this->isProvisioned() && $this->isActive()) {
             if (!$this->member()->lastvisit) {
-                $aid = $this->recordActivity(Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'), $this->get('id'), '', '', 'team', 1);
+                $aid = $this->recordActivity(
+                    Lang::txt('COM_PROJECTS_ACTIVITY_JOINED_THE_PROJECT'),
+                    $this->get('id'),
+                    '',
+                    '',
+                    'team',
+                    1,
+                );
                 if ($aid) {
                     $this->member()->saveParam(
                         $this->get('id'),
@@ -1527,7 +1548,13 @@ class Project extends Model
     public function picture($size = 'thumb', $realpath = false)
     {
         $src  = '';
-        $path = PATH_APP . DS . trim($this->config()->get('imagepath', '/site/projects'), DS) . DS . $this->get('alias') . DS . 'images';
+        $path = PATH_APP
+            . DS
+            . trim($this->config()->get('imagepath', '/site/projects'), DS)
+            . DS
+            . $this->get('alias')
+            . DS
+            . 'images';
 
         if ($size == 'thumb') {
             // Does a thumb exist?

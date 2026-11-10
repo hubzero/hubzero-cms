@@ -282,7 +282,9 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
     public function getGeocodedData($address)
     {
         if (!in_array($this->type, ['countries', 'country', 'continent'])) {
-            throw new \Geocoder\Exception\UnsupportedOperation(Lang::txt('The LocalProvider does not support "%s".', $this->type));
+            throw new \Geocoder\Exception\UnsupportedOperation(
+                Lang::txt('The LocalProvider does not support "%s".', $this->type),
+            );
         }
 
         $retriever = 'get' . ucfirst($this->type);
@@ -326,7 +328,22 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
         $address = strtolower(trim($address));
 
         // Make sure it's a valid continent
-        if (!in_array($address, ['all', 'asia', 'north america', 'south america', 'europe', 'australia', 'africa', 'antarctica', 'oceania'])) {
+        if (
+            !in_array(
+                $address,
+                [
+                    'all',
+                    'asia',
+                    'north america',
+                    'south america',
+                    'europe',
+                    'australia',
+                    'africa',
+                    'antarctica',
+                    'oceania',
+                ],
+            )
+        ) {
             $address = 'all';
         }
 

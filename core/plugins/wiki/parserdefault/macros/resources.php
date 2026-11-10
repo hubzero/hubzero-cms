@@ -112,7 +112,11 @@ class Resources extends WikiMacro
             if ($nolink) {
                 return htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8');
             } else {
-                return '<a href="' . Route::url($link) . '">' . htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8') . '</a>';
+                return '<a href="'
+                    . Route::url($link)
+                    . '">'
+                    . htmlspecialchars(stripslashes($r[1]), ENT_QUOTES, 'UTF-8')
+                    . '</a>';
             }
         }
 

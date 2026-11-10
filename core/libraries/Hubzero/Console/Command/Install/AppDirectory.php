@@ -306,7 +306,8 @@ class AppDirectory
             !self::writeConfigFile($ansi, $appPath, 'meta.php', [
                 'MetaAuthor'  => '1',
                 'MetaTitle'   => '0',
-                'MetaDesc'    => $config['MetaDesc'] ?? 'Hubzero - The platform for scientific research and collaboration.',
+                'MetaDesc'    => $config['MetaDesc']
+                    ?? 'Hubzero - The platform for scientific research and collaboration.',
                 'MetaKeys'    => $config['MetaKeys'] ?? 'hub, hubzero, research, collaboration',
                 'MetaVersion' => '0',
                 'MetaRights'  => '',

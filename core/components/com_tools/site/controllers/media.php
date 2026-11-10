@@ -95,7 +95,30 @@ class Media extends SiteController
         // hub origin, not upload typing in general. An allow-list would be
         // better and is worth doing, but com_media's list is not the one to
         // borrow: it is a media-manager list, not a tool-media list.
-        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
+        $blockedExtensions = [
+            'php',
+            'php3',
+            'php4',
+            'php5',
+            'php7',
+            'php8',
+            'phtml',
+            'pht',
+            'phar',
+            'phps',
+            'cgi',
+            'pl',
+            'asp',
+            'aspx',
+            'jsp',
+            'shtml',
+            'htaccess',
+            'htpasswd',
+            'html',
+            'htm',
+            'xhtml',
+            'xml',
+        ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
             return $this->displayTask();

@@ -256,7 +256,9 @@ class Wishes extends AdminController
                 $owners = $list->getOwners($this->admingroup);
 
                 if (count($owners['individuals']) > 0) {
-                    $query = "SELECT a.id, a.name FROM `#__users` AS a WHERE a.block = '0' AND a.id IN (" . implode(',', $owners['individuals']) . ") ORDER BY a.name";
+                    $query = "SELECT a.id, a.name FROM `#__users` AS a WHERE a.block = '0' AND a.id IN ("
+                        . implode(',', $owners['individuals'])
+                        . ") ORDER BY a.name";
                     $this->database->setQuery($query);
 
                     $users = $this->database->loadObjectList();
@@ -347,7 +349,10 @@ class Wishes extends AdminController
         $page->set($plan);
 
         // Forcefully create a new revision?
-        if ($create_revision && rtrim(stripslashes($old->get('pagetext'))) != rtrim(stripslashes($page->get('pagetext')))) {
+        if (
+            $create_revision
+            && rtrim(stripslashes($old->get('pagetext'))) != rtrim(stripslashes($page->get('pagetext')))
+        ) {
             $page->set('version', $page->get('version') + 1);
             $page->set('id', null);
         }
@@ -486,7 +491,9 @@ class Wishes extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            Notify::warning($state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'));
+            Notify::warning(
+                $state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'),
+            );
             return $this->cancelTask();
         }
 
@@ -534,7 +541,10 @@ class Wishes extends AdminController
 
         // Set the redirect
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&wishlist=' . $wishlist, false),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&wishlist=' . $wishlist,
+                false,
+            ),
         );
     }
 }

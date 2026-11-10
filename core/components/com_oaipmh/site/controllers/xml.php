@@ -68,7 +68,10 @@ class Xml extends SiteController
         Document::setType('xml');
 
         // Initiate the service
-        $service = new Service(rtrim(Request::getSchemeAndHttpHost(), '/') . Route::url('index.php?option=' . $this->option . '&task=stylesheet&metadataPrefix=' . $metadata));
+        $service = new Service(
+            rtrim(Request::getSchemeAndHttpHost(), '/')
+                . Route::url('index.php?option=' . $this->option . '&task=stylesheet&metadataPrefix=' . $metadata),
+        );
 
         $service
             ->set('metadataPrefix', $metadata)
@@ -94,23 +97,43 @@ class Xml extends SiteController
         switch ($verb) {
             case 'Identify':
                 if (!$service->getError() && $identifier) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $set) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $from) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $until) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $resumption) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError()) {
@@ -120,19 +143,35 @@ class Xml extends SiteController
 
             case 'ListMetadataFormats':
                 if (!$service->getError() && $set) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $from) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $until) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $resumption) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError()) {
@@ -152,8 +191,16 @@ class Xml extends SiteController
                         if (!$data || !is_array($data)) {
                             $service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
                         } else {
-                            $service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
-                            $service->set('start', isset($data['start']) ? (int) $data['start'] + (int) $service->get('limit') : $service->get('start'));
+                            $service->set(
+                                'limit',
+                                isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'),
+                            );
+                            $service->set(
+                                'start',
+                                isset($data['start'])
+                                    ? (int) $data['start'] + (int) $service->get('limit')
+                                    : $service->get('start'),
+                            );
                             $from     = isset($data['from']) ? $data['from'] : $from;
                             $until    = isset($data['until']) ? $data['until'] : $until;
                             $set      = isset($data['set']) ? $data['set'] : $set;
@@ -168,19 +215,35 @@ class Xml extends SiteController
                 }
 
                 if (!$service->getError() && $identifier) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $set) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $from) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $until) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError()) {
@@ -200,8 +263,16 @@ class Xml extends SiteController
                         if (!$data || !is_array($data)) {
                             $service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
                         } else {
-                            $service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
-                            $service->set('start', isset($data['start']) ? (int) $data['start'] + (int) $service->get('limit') : $service->get('start'));
+                            $service->set(
+                                'limit',
+                                isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'),
+                            );
+                            $service->set(
+                                'start',
+                                isset($data['start'])
+                                    ? (int) $data['start'] + (int) $service->get('limit')
+                                    : $service->get('start'),
+                            );
                             $from     = isset($data['from']) ? $data['from'] : $from;
                             $until    = isset($data['until']) ? $data['until'] : $until;
                             $set      = isset($data['set']) ? $data['set'] : $set;
@@ -212,14 +283,22 @@ class Xml extends SiteController
                 }
 
                 if (!$service->getError() && !$metadata) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'),
+                        $verb,
+                    );
                 }
                 if (!$service->getError()) {
                     $service->setSchema($metadata);
                 }
 
                 if (!$service->getError() && $identifier) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError()) {
@@ -239,8 +318,16 @@ class Xml extends SiteController
                         if (!$data || !is_array($data)) {
                             $service->error($service::ERROR_BAD_RESUMPTION_TOKEN, null, $verb);
                         } else {
-                            $service->set('limit', isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'));
-                            $service->set('start', isset($data['start']) ? (int) $data['start'] + (int) $service->get('limit') : $service->get('start'));
+                            $service->set(
+                                'limit',
+                                isset($data['limit']) ? (int) $data['limit'] : $service->get('limit'),
+                            );
+                            $service->set(
+                                'start',
+                                isset($data['start'])
+                                    ? (int) $data['start'] + (int) $service->get('limit')
+                                    : $service->get('start'),
+                            );
                             $from     = isset($data['from']) ? $data['from'] : $from;
                             $until    = isset($data['until']) ? $data['until'] : $until;
                             $set      = isset($data['set']) ? $data['set'] : $set;
@@ -251,14 +338,22 @@ class Xml extends SiteController
                 }
 
                 if (!$service->getError() && !$metadata) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'),
+                        $verb,
+                    );
                 }
                 if (!$service->getError()) {
                     $service->setSchema($metadata);
                 }
 
                 if (!$service->getError() && $identifier) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'identifier'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError()) {
@@ -268,26 +363,46 @@ class Xml extends SiteController
 
             case 'GetRecord':
                 if (!$metadata) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'metadataPrefix'),
+                        $verb,
+                    );
                 }
                 if (!$service->getError()) {
                     $service->setSchema($metadata);
                 }
 
                 if (!$service->getError() && $set) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'set'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $from) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'from'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $until) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'until'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError() && $resumption) {
-                    $service->error($service::ERROR_BAD_ARGUMENT, Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'), $verb);
+                    $service->error(
+                        $service::ERROR_BAD_ARGUMENT,
+                        Lang::txt('COM_OAIPMH_ILLEGAL_ARGUMENT', 'resumptionToken'),
+                        $verb,
+                    );
                 }
 
                 if (!$service->getError()) {

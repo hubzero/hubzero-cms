@@ -44,7 +44,13 @@ class ServiceAccountsMigrationTest extends Basic
 
         foreach (['users', 'usergroups', 'user_usergroup_map'] as $table) {
             $pdo->exec('DROP TABLE IF EXISTS `jos_' . $table . '`');
-            $pdo->exec(str_replace('#__', 'jos_', self::statement($sql . 'schema.sql', '/CREATE TABLE `#__' . $table . '` \(.*?\) ENGINE=[^;]*;/s')));
+            $pdo->exec(
+                str_replace(
+                    '#__',
+                    'jos_',
+                    self::statement($sql . 'schema.sql', '/CREATE TABLE `#__' . $table . '` \(.*?\) ENGINE=[^;]*;/s'),
+                ),
+            );
         }
 
         preg_match_all('/INSERT INTO `#__usergroups` .*?;/s', file_get_contents($sql . 'data.sql'), $inserts);
@@ -54,11 +60,19 @@ class ServiceAccountsMigrationTest extends Basic
         }
 
         // hubzerosolrworker is absent on this hub
-        $pdo->exec("INSERT INTO jos_users (id, username, params) VALUES (1001, 'apps', ''), (1002, 'gridstat', ''), (1003, 'someone', '')");
+        $pdo->exec(
+            "INSERT INTO jos_users (id, username, params) VALUES (1001, 'apps', ''), (1002, 'gridstat', ''), (1003, 'someone', '')",
+        );
 
         $before = self::tree($pdo);
 
-        $db = Driver::getInstance(['driver' => 'pdo', 'dsn' => $dsn, 'user' => getenv('HZ_TEST_DB_USER'), 'password' => getenv('HZ_TEST_DB_PASS'), 'prefix' => 'jos_']);
+        $db = Driver::getInstance([
+            'driver' => 'pdo',
+            'dsn' => $dsn,
+            'user' => getenv('HZ_TEST_DB_USER'),
+            'password' => getenv('HZ_TEST_DB_PASS'),
+            'prefix' => 'jos_',
+        ]);
         $migration = new Migration20261029000001PlgCronMembersServiceAccounts($db);
 
         $migration->up();
@@ -74,20 +88,39 @@ class ServiceAccountsMigrationTest extends Basic
         $this->assertSame(1, (int) $group[0]['parent_id'], 'directly under Public');
         $this->assertTrue(self::nestedSetIsValid($after), 'nested set consistent after up()');
 
-        $members = $pdo->query('SELECT user_id FROM jos_user_usergroup_map WHERE group_id = ' . (int) $group[0]['id'] . ' ORDER BY user_id')->fetchAll(PDO::FETCH_COLUMN);
+        $members = $pdo
+            ->query(
+                'SELECT user_id FROM jos_user_usergroup_map WHERE group_id = '
+                    . (int) $group[0]['id']
+                    . ' ORDER BY user_id',
+            )
+            ->fetchAll(PDO::FETCH_COLUMN);
         $this->assertSame([1001, 1002], array_map('intval', $members));
 
         // A group an admin creates later, to the right of "Service accounts"
         $rgt = (int) $pdo->query('SELECT rgt FROM jos_usergroups WHERE parent_id = 0')->fetchColumn();
         $pdo->exec('UPDATE jos_usergroups SET rgt = rgt + 2 WHERE rgt >= ' . $rgt);
-        $pdo->exec("INSERT INTO jos_usergroups (id, parent_id, lft, rgt, title) VALUES (50, 1, $rgt, " . ($rgt + 1) . ", 'Later')");
-        $this->assertTrue(self::nestedSetIsValid(self::tree($pdo)), 'fixture: nested set consistent with the later group');
+        $pdo->exec(
+            "INSERT INTO jos_usergroups (id, parent_id, lft, rgt, title) VALUES (50, 1, $rgt, "
+                . ($rgt + 1)
+                . ", 'Later')",
+        );
+        $this->assertTrue(
+            self::nestedSetIsValid(self::tree($pdo)),
+            'fixture: nested set consistent with the later group',
+        );
 
         $migration->down();
 
         $expected = $before;
         $expected[1]['rgt'] = (int) $before[1]['rgt'] + 2;
-        $expected[50] = ['id' => 50, 'parent_id' => 1, 'lft' => (int) $before[1]['rgt'], 'rgt' => (int) $before[1]['rgt'] + 1, 'title' => 'Later'];
+        $expected[50] = [
+            'id' => 50,
+            'parent_id' => 1,
+            'lft' => (int) $before[1]['rgt'],
+            'rgt' => (int) $before[1]['rgt'] + 1,
+            'title' => 'Later',
+        ];
         $this->assertEquals($expected, self::tree($pdo), 'down() removes the group and closes its gap');
         $this->assertTrue(self::nestedSetIsValid(self::tree($pdo)), 'nested set consistent after down()');
         $this->assertSame(0, (int) $pdo->query('SELECT COUNT(*) FROM jos_user_usergroup_map')->fetchColumn());
@@ -102,7 +135,11 @@ class ServiceAccountsMigrationTest extends Basic
     private static function tree($pdo)
     {
         $rows = [];
-        foreach ($pdo->query('SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        foreach (
+            $pdo
+                ->query('SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')
+                ->fetchAll(PDO::FETCH_ASSOC) as $row
+        ) {
             $rows[$row['id']] = $row;
         }
         return $rows;

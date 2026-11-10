@@ -71,7 +71,10 @@ class ToolLog extends Table
         $query .= $admin
             ? ' AND (L.admin = 1 OR (L.admin = 0 AND access = 0 )) '
             : ' AND (L.admin = 0 OR (L.admin = 1 AND access = 0 )) ';
-        $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'ASC' ? 'ASC' : 'DESC');
+        $query .= " ORDER BY "
+            . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1')
+            . " "
+            . (strtoupper((string) $sortdir) === 'ASC' ? 'ASC' : 'DESC');
 
         $this->db->setQuery($query);
         return $this->db->loadObjectList();

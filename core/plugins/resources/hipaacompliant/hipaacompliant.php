@@ -43,7 +43,9 @@ class Hipaacompliant extends Plugin
 
         if ($compliant == 2) {
             if (!$resource->group_owner || !in_array($resource->access, [4, 5])) {
-                return Lang::txt('If materials are marked as containing potentially sensitive data, the Resource must be private to a group.');
+                return Lang::txt(
+                    'If materials are marked as containing potentially sensitive data, the Resource must be private to a group.',
+                );
             }
         }
 

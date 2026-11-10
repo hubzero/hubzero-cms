@@ -96,7 +96,13 @@ class Region extends Plugin
             $dtyearprior = intval(substr($enddate, 0, 4)) - 1;
             $monthtext   = date("F", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
             $yeartext    = 'Jan - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
-            $twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear)) . ' ' . $dtyearprior . ' - ' . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear)) . ' ' . $dtyear;
+            $twelvetext  = date("M", mktime(0, 0, 0, $dtmonthnext, 1, $dtyear))
+                . ' '
+                . $dtyearprior
+                . ' - '
+                . date("M", mktime(0, 0, 0, $dtmonth, 1, $dtyear))
+                . ' '
+                . $dtyear;
             $period = [
                 ['key' => 1,  'name' => $monthtext],
                 ['key' => 0,  'name' => $yeartext],
@@ -161,7 +167,15 @@ class Region extends Plugin
                                 }
                             }
                             if ($regionlistset[0][1] > 0) {
-                                array_push($regionlistset, [$row->name, $row->value, $formattedval, sprintf("%0.1f%%", (100 * $row->value / $regionlistset[0][1]))]);
+                                array_push(
+                                    $regionlistset,
+                                    [
+                                        $row->name,
+                                        $row->value,
+                                        $formattedval,
+                                        sprintf("%0.1f%%", (100 * $row->value / $regionlistset[0][1])),
+                                    ],
+                                );
                             } else {
                                 array_push($regionlistset, [$row->name, $row->value, $formattedval, 'n/a']);
                             }
@@ -254,7 +268,10 @@ class Region extends Plugin
         }
 
         // Build HTML
-        $html  = '<form method="post" action="' . Route::url('index.php?option=' . $option . '&task=' . $task) . '">' . "\n";
+        $html  = '<form method="post" action="'
+            . Route::url('index.php?option=' . $option . '&task=' . $task)
+            . '">'
+            . "\n";
         $html .= '</form>' . "\n";
         $html .= $this->regionlist($db, 1, 1, $enddate);
         $html .= $this->regionlist($db, 2, 2, $enddate);

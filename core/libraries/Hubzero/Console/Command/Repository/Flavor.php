@@ -62,7 +62,9 @@ class Flavor extends Base implements CommandInterface
         }
 
         $this->output->addSpacer();
-        $this->output->addLine("muse repository:flavor set <name> applies one; status <name> compares the hub with it.");
+        $this->output->addLine(
+            "muse repository:flavor set <name> applies one; status <name> compares the hub with it.",
+        );
     }
 
     /**

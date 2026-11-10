@@ -247,7 +247,10 @@ class Application extends AdminController
         } elseif (!Filesystem::write(PATH_APP . '/help/helpsites.xml', $data)) {
             App::redirect($redirect, Lang::txt('COM_CONFIG_ERROR_HELPREFRESH_ERROR_STORE'), 'error');
         } else {
-            App::redirect(Route::url('index.php?option=com_config', false), Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'));
+            App::redirect(
+                Route::url('index.php?option=com_config', false),
+                Lang::txt('COM_CONFIG_HELPREFRESH_SUCCESS'),
+            );
         }
     }
 

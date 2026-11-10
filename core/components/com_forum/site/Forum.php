@@ -28,7 +28,12 @@ class Forum extends AbstractComponent
     protected function execute(): void
     {
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'sections'));
-        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
+        if (
+            !is_subclass_of(
+                __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)),
+                \Hubzero\Component\ControllerInterface::class,
+            )
+        ) {
             $controllerName = 'sections';
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

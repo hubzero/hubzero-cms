@@ -146,7 +146,10 @@ class SessionClassGroup extends Table
                 if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) {
                     $filters['sort_Dir'] = 'ASC';
                 }
-                $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1') . " " . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
+                $query .= " ORDER BY "
+                    . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1')
+                    . " "
+                    . (strtoupper((string) $filters['sort_Dir']) === 'ASC' ? 'ASC' : 'DESC');
 
                 if (isset($filters['limit']) && $filters['limit'] > 0) {
                     $filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);

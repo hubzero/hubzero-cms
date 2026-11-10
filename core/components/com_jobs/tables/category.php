@@ -39,7 +39,11 @@ class Category extends Table
         $cats = [];
 
         $query  = $getobject ? "SELECT * " : "SELECT id, category ";
-        $query .= "FROM `$this->tableName` ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1') . " " . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC') . "";
+        $query .= "FROM `$this->tableName` ORDER BY "
+            . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $sortby) ?: '1')
+            . " "
+            . (strtoupper((string) $sortdir) === 'DESC' ? 'DESC' : 'ASC')
+            . "";
         $this->db->setQuery($query);
         $result = $this->db->loadObjectList();
         if ($getobject) {

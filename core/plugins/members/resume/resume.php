@@ -466,18 +466,32 @@ class Resume extends Plugin
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(
+                Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
+            );
             return $this->renderView($database, $option, $member, $emp);
         }
 
         // Incoming
         $title = Request::getString('title', '');
-        $default_title = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
+        $default_title = $member->get('firstname')
+            ? $member->get('firstname')
+                . ' '
+                . $member->get('lastname')
+                . ' '
+                . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'))
+            : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
         $path = PATH_APP . $path;
 
         // Replace file title with user name
         $file_ext = substr($file['name'], strripos($file['name'], '.'));
-        $file['name']  = $member->get('firstname') ? $member->get('firstname') . ' ' . $member->get('lastname') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')) : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
+        $file['name']  = $member->get('firstname')
+            ? $member->get('firstname')
+                . ' '
+                . $member->get('lastname')
+                . ' '
+                . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'))
+            : $member->get('name') . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
         $file['name'] .= $file_ext;
 
         // Make the filename safe
@@ -757,7 +771,9 @@ class Resume extends Plugin
         }
 
         // Use user name as file name
-        $default_title  = $member->get('givenName') ? $member->get('givenName') . ' ' . $member->get('surname') . ' ' . ucfirst(Lang::txt('Resume')) : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
+        $default_title  = $member->get('givenName')
+            ? $member->get('givenName') . ' ' . $member->get('surname') . ' ' . ucfirst(Lang::txt('Resume'))
+            : $member->get('name') . ' ' . ucfirst(Lang::txt('Resume'));
         $default_title .= substr($resume->filename, strripos($resume->filename, '.'));
 
         // Initiate a new content server and serve up the file

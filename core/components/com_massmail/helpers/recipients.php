@@ -213,7 +213,9 @@ class Recipients
         } else {
             $gids = self::resolveGroups($spec['groups']);
             if ($gids) {
-                $conds[] = 'u.id IN (SELECT uidNumber FROM `#__xgroups_members` WHERE gidNumber IN (' . implode(',', $gids) . '))';
+                $conds[] = 'u.id IN (SELECT uidNumber FROM `#__xgroups_members` WHERE gidNumber IN ('
+                    . implode(',', $gids)
+                    . '))';
             }
             $uids = self::resolveUsers($spec['users']);
             if ($uids) {
@@ -391,7 +393,11 @@ class Recipients
         }
 
         $db = \App::get('db');
-        $db->setQuery("SELECT gidNumber, cn, description FROM `#__xgroups` WHERE gidNumber IN (" . implode(',', $gids) . ") ORDER BY cn ASC");
+        $db->setQuery(
+            "SELECT gidNumber, cn, description FROM `#__xgroups` WHERE gidNumber IN ("
+                . implode(',', $gids)
+                . ") ORDER BY cn ASC",
+        );
         $out = [];
         foreach ((array) $db->loadObjectList() as $g) {
             $out[] = ['token' => $g->cn, 'label' => (trim((string) $g->description) !== '' ? $g->description : $g->cn)];
@@ -414,7 +420,9 @@ class Recipients
         }
 
         $db = \App::get('db');
-        $db->setQuery("SELECT id, username, name FROM `#__users` WHERE id IN (" . implode(',', $ids) . ") ORDER BY name ASC");
+        $db->setQuery(
+            "SELECT id, username, name FROM `#__users` WHERE id IN (" . implode(',', $ids) . ") ORDER BY name ASC",
+        );
         $out = [];
         foreach ((array) $db->loadObjectList() as $u) {
             $name  = trim((string) $u->name);

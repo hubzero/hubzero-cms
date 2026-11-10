@@ -70,7 +70,9 @@ class Comments extends Plugin
         $this->view->obj      = $this->obj      = $obj;
         $this->view->obj_id   = $this->obj_id   = ($obj instanceof \Hubzero\Base\Model ? $obj->get('id') : $obj->id);
         $this->view->obj_type = $this->obj_type = substr($option, 4);
-        $this->view->url      = $this->url      = ($url ? $url : Route::url('index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments'));
+        $this->view->url      = $this->url      = ($url ? $url : Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments',
+        ));
         $this->view->depth    = 0;
 
         $this->authorize();
@@ -382,7 +384,9 @@ class Comments extends Plugin
 
             if (
                 !$this->params->get('access-edit-comment')
-                || ($row->get('created_by') != User::get('id') && !$this->params->get('access-admin-comment') && !$this->params->get('access-manage-comment'))
+                || ($row->get('created_by') != User::get('id') && !$this->params->get(
+                    'access-admin-comment',
+                ) && !$this->params->get('access-manage-comment'))
             ) {
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($this->url)),
@@ -572,7 +576,11 @@ class Comments extends Plugin
         $doc->title .= ($title) ? ': ' . stripslashes($title) : '';
         $doc->title .= ': ' . Lang::txt('PLG_HUBZERO_COMMENTS');
 
-        $doc->description = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($title));
+        $doc->description = Lang::txt(
+            'PLG_HUBZERO_COMMENTS_RSS_DESCRIPTION',
+            Config::get('sitename'),
+            stripslashes($title),
+        );
         $doc->copyright   = Lang::txt('PLG_HUBZERO_COMMENTS_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
 
         $comments = \Plugins\Hubzero\Comments\Models\Comment::all()
@@ -595,7 +603,11 @@ class Comments extends Plugin
             }
 
             // Prepare the title
-            $title = Lang::txt('PLG_HUBZERO_COMMENTS_COMMENT_BY', $author) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
+            $title = Lang::txt('PLG_HUBZERO_COMMENTS_COMMENT_BY', $author)
+                . ' @ '
+                . $row->created('time')
+                . ' on '
+                . $row->created('date');
 
             // Strip html from feed item description text
             if ($row->isReported()) {
@@ -629,13 +641,21 @@ class Comments extends Plugin
                 }
 
                 // Prepare the title
-                $title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $row->id, $author) . ' @ ' . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                $title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $row->id, $author)
+                    . ' @ '
+                    . Date::of($reply->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1'))
+                    . ' '
+                    . Lang::txt('PLG_HUBZERO_COMMENTS_ON')
+                    . ' '
+                    . Date::of($reply->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
                 // Strip html from feed item description text
                 if ($reply->reports) {
                     $description = Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE');
                 } else {
-                    $description = (is_object($p)) ? $p->parse(stripslashes($reply->content)) : nl2br(stripslashes($reply->content));
+                    $description = (is_object($p))
+                        ? $p->parse(stripslashes($reply->content))
+                        : nl2br(stripslashes($reply->content));
                 }
                 $description = html_entity_decode(\Hubzero\Utility\Sanitize::clean($description));
 
@@ -663,7 +683,13 @@ class Comments extends Plugin
                     }
 
                     // Prepare the title
-                    $title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $reply->id, $author) . ' @ ' . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_ON') . ' ' . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                    $title = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY_TO_COMMENT', $reply->id, $author)
+                        . ' @ '
+                        . Date::of($response->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1'))
+                        . ' '
+                        . Lang::txt('PLG_HUBZERO_COMMENTS_ON')
+                        . ' '
+                        . Date::of($response->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
                     // Strip html from feed item description text
                     if ($response->reports) {

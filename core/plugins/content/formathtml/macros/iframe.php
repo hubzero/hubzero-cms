@@ -72,6 +72,14 @@ class Iframe extends Macro
         $host   = parse_url($url, PHP_URL_HOST) ?: 'site';
         $title  = (isset($args[3]) && $args[3] != '') ? $args[3] : ('Embedded content from ' . $host);
 
-        return '<iframe src="' . $url . '" width="' . $width . '" height="' . $height . '" title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" frameborder="0" allowfullscreen="true" allowtransparency="true"></iframe>';
+        return '<iframe src="'
+            . $url
+            . '" width="'
+            . $width
+            . '" height="'
+            . $height
+            . '" title="'
+            . htmlspecialchars($title, ENT_QUOTES, 'UTF-8')
+            . '" frameborder="0" allowfullscreen="true" allowtransparency="true"></iframe>';
     }
 }

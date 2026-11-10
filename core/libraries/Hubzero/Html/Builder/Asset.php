@@ -224,7 +224,13 @@ class Asset
                 return null;
             }
         } else {
-            return '<img src="' . htmlspecialchars((string) (count($includes) ? $includes[0] : ''), ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars((string) $alt, ENT_QUOTES, 'UTF-8') . '" ' . $attribs . ' />';
+            return '<img src="'
+                . htmlspecialchars((string) (count($includes) ? $includes[0] : ''), ENT_QUOTES, 'UTF-8')
+                . '" alt="'
+                . htmlspecialchars((string) $alt, ENT_QUOTES, 'UTF-8')
+                . '" '
+                . $attribs
+                . ' />';
         }
     }
 

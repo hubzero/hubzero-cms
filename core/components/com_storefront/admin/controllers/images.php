@@ -84,7 +84,11 @@ class Images extends AdminController
             return;
         }
         if ($size > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
             echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_FILE_TOO_LARGE', $max)]);
             return;
         }
@@ -399,7 +403,14 @@ class Images extends AdminController
         $controller = ($type == 'collection') ? 'collections' : 'products';
 
         \App::redirect(
-            \Route::url('index.php?option=' . $this->option . '&controller=' . $controller . ($id ? '&task=edit&id=' . (int) $id : ''), false),
+            \Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $controller
+                    . ($id ? '&task=edit&id=' . (int) $id : ''),
+                false,
+            ),
             $this->getError(),
             'error',
         );

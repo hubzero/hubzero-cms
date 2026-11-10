@@ -446,7 +446,9 @@ class Dashboard extends Plugin
         $this->params->set('defaults', $modules);
 
         // save
-        $query = "UPDATE `#__extensions` SET params=" . $this->database->quote($this->params->toString()) . " WHERE `folder`='members' AND `element`='dashboard'";
+        $query = "UPDATE `#__extensions` SET params="
+            . $this->database->quote($this->params->toString())
+            . " WHERE `folder`='members' AND `element`='dashboard'";
         $this->database->setQuery($query);
         if ($this->database->query()) {
             $this->setError($this->database->getErrorMsg());

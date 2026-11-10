@@ -77,7 +77,16 @@ class WidenColumn extends Macro
         $db->setQuery($query);
         $db->query();
 
-        $this->log(sprintf('Widened %s.%s from %s to varchar(%d)%s', $table, $column, $field->Type, $width, $charset ? ' ' . $charset : ''));
+        $this->log(
+            sprintf(
+                'Widened %s.%s from %s to varchar(%d)%s',
+                $table,
+                $column,
+                $field->Type,
+                $width,
+                $charset ? ' ' . $charset : '',
+            ),
+        );
 
         return true;
     }

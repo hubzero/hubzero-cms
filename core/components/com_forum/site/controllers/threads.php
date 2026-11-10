@@ -79,13 +79,28 @@ class Threads extends SiteController
         if (isset($category)) {
             Pathway::append(
                 Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias'),
+                'index.php?option='
+                    . $this->option
+                    . '&section='
+                    . $section->get('alias')
+                    . '&category='
+                    . $category->get('alias'),
             );
         }
         if (isset($thread) && $thread->get('id')) {
             Pathway::append(
-                '#' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]),
-                'index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&thread=' . $thread->get('id'),
+                '#'
+                    . $thread->get('id')
+                    . ' - '
+                    . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]),
+                'index.php?option='
+                    . $this->option
+                    . '&section='
+                    . $section->get('alias')
+                    . '&category='
+                    . $category->get('alias')
+                    . '&thread='
+                    . $thread->get('id'),
             );
         }
     }
@@ -108,7 +123,10 @@ class Threads extends SiteController
             $this->_title .= ': ' . Str::truncate(stripslashes($category->get('title')), 100, ['exact' => true]);
         }
         if (isset($thread) && $thread->get('id')) {
-            $this->_title .= ': #' . $thread->get('id') . ' - ' . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]);
+            $this->_title .= ': #'
+                . $thread->get('id')
+                . ' - '
+                . Str::truncate(stripslashes($thread->get('title')), 100, ['exact' => true]);
         }
 
         Document::setTitle($this->_title);
@@ -173,7 +191,22 @@ class Threads extends SiteController
 
         // Check logged in status
         if (!in_array($thread->get('access'), User::getAuthorisedViewLevels())) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $filters['section'] . '&category=' . $filters['category'] . '&thread=' . $filters['thread'], false, true));
+            $return = base64_encode(
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&section='
+                        . $filters['section']
+                        . '&category='
+                        . $filters['category']
+                        . '&thread='
+                        . $filters['thread'],
+                    false,
+                    true,
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
@@ -237,12 +270,25 @@ class Threads extends SiteController
         $section  = Request::getCmd('section', '');
 
         if (User::isGuest()) {
-            $return = Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category . '&task=new');
+            $return = Route::url(
+                'index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category . '&task=new',
+            );
             if ($id) {
-                $return = Route::url('index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category . '&thread=' . $id . '&task=edit');
+                $return = Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&section='
+                        . $section
+                        . '&category='
+                        . $category
+                        . '&thread='
+                        . $id
+                        . '&task=edit',
+                );
             }
             App::redirect(
-                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)) . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
+                Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return))
+                    . Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
         }
@@ -310,7 +356,14 @@ class Threads extends SiteController
             // original concatenation raised "could not be converted to string"
             // and the refusal came back as a fatal rather than a redirect.
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias')),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&section='
+                        . $section->get('alias')
+                        . '&category='
+                        . $category->get('alias'),
+                ),
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
@@ -561,10 +614,21 @@ class Threads extends SiteController
                 $message = Lang::txt('COM_FORUM_THREAD_STARTED');
             }
         } else {
-            $message = ($post->get('modified_by')) ? Lang::txt('COM_FORUM_POST_EDITED') : Lang::txt('COM_FORUM_POST_ADDED');
+            $message = ($post->get('modified_by'))
+                ? Lang::txt('COM_FORUM_POST_EDITED')
+                : Lang::txt('COM_FORUM_POST_ADDED');
         }
 
-        $url = 'index.php?option=' . $this->option . '&section=' . $section . '&category=' . $category->get('alias') . '&thread=' . $post->get('thread') . '#c' . $post->get('id');
+        $url = 'index.php?option='
+            . $this->option
+            . '&section='
+            . $section
+            . '&category='
+            . $category->get('alias')
+            . '&thread='
+            . $post->get('thread')
+            . '#c'
+            . $post->get('id');
 
         // Record the activity
         $recipients = [
@@ -575,7 +639,11 @@ class Threads extends SiteController
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
-            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+            '<a href="'
+                . Route::url($url)
+                . '">'
+                . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8')
+                . '</a>',
         );
         // If this is a post in a thread and not the thread starter...
         if ($post->get('parent')) {
@@ -595,7 +663,11 @@ class Threads extends SiteController
             $desc = Lang::txt(
                 'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_' . ($fields['id'] ? 'UPDATED' : 'CREATED'),
                 $post->get('id'),
-                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+                '<a href="'
+                    . Route::url($url)
+                    . '">'
+                    . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8')
+                    . '</a>',
             );
 
             // If the parent post is not the same as the
@@ -613,7 +685,14 @@ class Threads extends SiteController
             $createdByUser = User::getInstance($createdByUserId);
             $createdUserName = $createdByUser->get('name');
 
-            $urlExt = 'forum/' . $section . '/' . $category->get('alias') . '/' . $post->get('thread') . '#c' . $post->get('id');
+            $urlExt = 'forum/'
+                . $section
+                . '/'
+                . $category->get('alias')
+                . '/'
+                . $post->get('thread')
+                . '#c'
+                . $post->get('id');
             $host = $_SERVER['HTTP_HOST'];
             $externalUrl = 'https://' . $host . '/' . $urlExt;
 
@@ -773,7 +852,11 @@ class Threads extends SiteController
         $type = 'thread';
         $desc = Lang::txt(
             'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
-            '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+            '<a href="'
+                . Route::url($url)
+                . '">'
+                . htmlspecialchars((string) $post->get('title'), ENT_QUOTES, 'UTF-8')
+                . '</a>',
         );
         if ($post->get('parent')) {
             $thread = Post::oneOrFail($post->get('thread'));
@@ -782,7 +865,11 @@ class Threads extends SiteController
             $desc = Lang::txt(
                 'COM_FORUM_ACTIVITY_' . strtoupper($type) . '_DELETED',
                 $post->get('id'),
-                '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8') . '</a>',
+                '<a href="'
+                    . Route::url($url)
+                    . '">'
+                    . htmlspecialchars((string) $thread->get('title'), ENT_QUOTES, 'UTF-8')
+                    . '</a>',
             );
         }
 
@@ -845,7 +932,24 @@ class Threads extends SiteController
 
         // Check logged in status
         if (User::isGuest() && !in_array($post->get('access'), User::getAuthorisedViewLevels())) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $section . '&category=' . $category . '&thread=' . $thread_id . '&post=' . $post_id . '&file=' . $file));
+            $return = base64_encode(
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller='
+                        . $this->controller
+                        . '&section='
+                        . $section
+                        . '&category='
+                        . $category
+                        . '&thread='
+                        . $thread_id
+                        . '&post='
+                        . $post_id
+                        . '&file='
+                        . $file,
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
@@ -931,7 +1035,11 @@ class Threads extends SiteController
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+            $max = preg_replace(
+                '/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/',
+                '$1',
+                \Hubzero\Utility\Number::formatBytes($sizeLimit),
+            );
 
             $this->setError(Lang::txt('COM_FORUM_ERROR_UPLOADING_FILE_TOO_BIG', $max));
             return false;

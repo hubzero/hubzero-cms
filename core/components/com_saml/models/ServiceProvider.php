@@ -225,7 +225,9 @@ class ServiceProvider extends Relational
             'subject'     => isset($parsed['subject']['CN']) ? $parsed['subject']['CN'] : $this->get('entity_id'),
             'issuer'      => isset($parsed['issuer']['CN']) ? $parsed['issuer']['CN'] : '',
             'valid_to'    => isset($parsed['validTo_time_t']) ? (int) $parsed['validTo_time_t'] : 0,
-            'fingerprint' => function_exists('openssl_x509_fingerprint') ? @openssl_x509_fingerprint($pem, 'sha256') : '',
+            'fingerprint' => function_exists('openssl_x509_fingerprint')
+                ? @openssl_x509_fingerprint($pem, 'sha256')
+                : '',
         ];
     }
 

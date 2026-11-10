@@ -94,7 +94,14 @@ class Jobs extends Base implements CommandInterface
                 }
 
                 if ($wasActive) {
-                    $this->output->addLine(Lang::txt('[%s] Reclaimed job "%s" left active by a dead process.', with(new Date('now'))->toLocal(), $job->get('event')), 'warning');
+                    $this->output->addLine(
+                        Lang::txt(
+                            '[%s] Reclaimed job "%s" left active by a dead process.',
+                            with(new Date('now'))->toLocal(),
+                            $job->get('event'),
+                        ),
+                        'warning',
+                    );
                 }
 
                 $now = with(new Date('now'))->toLocal();
@@ -106,9 +113,20 @@ class Jobs extends Base implements CommandInterface
                 try {
                     Event::trigger('cron.' . $job->get('event'), [$job]);
 
-                    $this->output->addLine(Lang::txt('[%s] Finished event "%s".', with(new Date('now'))->toLocal(), $job->get('event')), 'info');
+                    $this->output->addLine(
+                        Lang::txt('[%s] Finished event "%s".', with(new Date('now'))->toLocal(), $job->get('event')),
+                        'info',
+                    );
                 } catch (\Throwable $e) {
-                    $this->output->addLine(Lang::txt('[%s] Event "%s" generated an error: %s', with(new Date('now'))->toLocal(), $job->get('event'), $e->getMessage()), 'error');
+                    $this->output->addLine(
+                        Lang::txt(
+                            '[%s] Event "%s" generated an error: %s',
+                            with(new Date('now'))->toLocal(),
+                            $job->get('event'),
+                            $e->getMessage(),
+                        ),
+                        'error',
+                    );
                 } finally {
                     $job->mark('end_run');
 
@@ -128,7 +146,10 @@ class Jobs extends Base implements CommandInterface
                 $processed[] = $job->toArray();
             }
 
-            $this->output->addLine(Lang::txt('[%s] Finished scheduled jobs.', with(new Date('now'))->toLocal()), 'success');
+            $this->output->addLine(
+                Lang::txt('[%s] Finished scheduled jobs.', with(new Date('now'))->toLocal()),
+                'success',
+            );
         } else {
             $this->output->addLine(Lang::txt('No scheduled jobs found.'), 'info');
         }
@@ -162,7 +183,9 @@ class Jobs extends Base implements CommandInterface
         $base = rtrim((string) Config::get('live_site'), '/');
 
         if ($base === '') {
-            $this->output->error('live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows which URL to request.');
+            $this->output->error(
+                'live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows which URL to request.',
+            );
             return;
         }
 
@@ -177,7 +200,11 @@ class Jobs extends Base implements CommandInterface
         // An unopenable lock file (missing or unwritable tmp_path) is not a
         // running tick; say so, or the operator chases a phantom tick forever.
         if ($lock === false) {
-            $this->output->error('cannot open the tick lock file ' . $tmp . '/.cron-tick.lock; check that tmp_path exists and is writable');
+            $this->output->error(
+                'cannot open the tick lock file '
+                    . $tmp
+                    . '/.cron-tick.lock; check that tmp_path exists and is writable',
+            );
             return;
         }
 
@@ -220,7 +247,9 @@ class Jobs extends Base implements CommandInterface
             }
         }
 
-        $log(sprintf('GET %s %.6f %s HTTP %d%s', $url, $secs, $count, $code, ($body === false ? ' ERROR ' . $cerr : '')));
+        $log(
+            sprintf('GET %s %.6f %s HTTP %d%s', $url, $secs, $count, $code, ($body === false ? ' ERROR ' . $cerr : '')),
+        );
 
         if ($body === false || $code !== 200) {
             $this->output->error('cron tick request failed');
@@ -287,7 +316,10 @@ class Jobs extends Base implements CommandInterface
         $id = $this->arguments->getOpt('job');
 
         if (!$id) {
-            $this->output->addLine(Lang::txt('A job ID must be provided. Example: `muse cron:job deactivate --job=1`'), 'warning');
+            $this->output->addLine(
+                Lang::txt('A job ID must be provided. Example: `muse cron:job deactivate --job=1`'),
+                'warning',
+            );
             return;
         }
 
@@ -321,7 +353,10 @@ class Jobs extends Base implements CommandInterface
         $id = $this->arguments->getOpt('job');
 
         if (!$id) {
-            $this->output->addLine(Lang::txt('A job ID must be provided. Example: `muse cron:job unpublish --job=1`'), 'warning');
+            $this->output->addLine(
+                Lang::txt('A job ID must be provided. Example: `muse cron:job unpublish --job=1`'),
+                'warning',
+            );
             return;
         }
 

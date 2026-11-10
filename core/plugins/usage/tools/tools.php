@@ -57,7 +57,13 @@ class Tools extends Plugin
     {
         $html = '';
 
-        $sql = "SELECT * FROM `#__stats_topvals` WHERE top = " . $database->quote($s_top) . " AND datetime = " . $database->quote($dthis . '-00') . " AND period = " . $database->quote($period) . " ORDER BY rank";
+        $sql = "SELECT * FROM `#__stats_topvals` WHERE top = "
+            . $database->quote($s_top)
+            . " AND datetime = "
+            . $database->quote($dthis . '-00')
+            . " AND period = "
+            . $database->quote($period)
+            . " ORDER BY rank";
         $database->setQuery($sql);
         $results = $database->loadObjectList();
 
@@ -85,7 +91,11 @@ class Tools extends Plugin
                     }
                     $html .= "\t" . '<tfoot>' . "\n";
                     $html .= "\t\t" . '<tr class="summary">' . "\n";
-                    $html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . $row->name . '</th>' . "\n";
+                    $html .= "\t\t\t"
+                        . '<th scope="row" colspan="2" class="numerical-data">'
+                        . $row->name
+                        . '</th>'
+                        . "\n";
                     $html .= "\t\t\t" . '<td class="numerical-data">' . $value . '</td>' . "\n";
                     if ($total) {
                         $vl = number_format((($row->value / $total) * 100), 2);
@@ -108,7 +118,13 @@ class Tools extends Plugin
 
                     $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
                     $html .= "\t\t\t" . '<td>' . $row->rank . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data"><a href="' . Route::url('index.php?option=com_resources&id=' . $name[0] . '&active=usage') . '">' . $name[1] . '</a></td>' . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data"><a href="'
+                        . Route::url('index.php?option=com_resources&id=' . $name[0] . '&active=usage')
+                        . '">'
+                        . $name[1]
+                        . '</a></td>'
+                        . "\n";
                     $html .= "\t\t\t" . '<td>' . $value . '</td>' . "\n";
                     if ($total) {
                         $vl = number_format((($row->value / $total) * 100), 2);
@@ -168,7 +184,13 @@ class Tools extends Plugin
                 if ($row->published == "1") {
                     $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
                     $html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data"><a href="' . Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . $row->title . '</a></td>' . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data"><a href="'
+                        . Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage')
+                        . '">'
+                        . $row->title
+                        . '</a></td>'
+                        . "\n";
                     $html .= "\t\t\t" . '<td>' . $ranking . '</td>' . "\n";
                     $html .= "\t\t" . '</tr>' . "\n";
                 } else {
@@ -215,7 +237,11 @@ class Tools extends Plugin
         if ($result) {
             $html .= "\t" . '<tfoot>' . "\n";
             $html .= "\t\t" . '<tr class="summary">' . "\n";
-            $html .= "\t\t\t" . '<th scope="row" colspan="2" class="numerical-data">' . Lang::txt('Total Tools Citations') . '</th>' . "\n";
+            $html .= "\t\t\t"
+                . '<th scope="row" colspan="2" class="numerical-data">'
+                . Lang::txt('Total Tools Citations')
+                . '</th>'
+                . "\n";
             $html .= "\t\t\t" . '<td class="numerical-data">' . $result . '</td>' . "\n";
             $html .= "\t\t" . '</tr>' . "\n";
             $html .= "\t" . '</tfoot>' . "\n";
@@ -238,7 +264,12 @@ class Tools extends Plugin
                 if ($row->published == "1") {
                     $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
                     $html .= "\t\t\t" . '<td>' . $count . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data"><a href="' . Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage') . '">' . stripslashes($row->title) . '</a></td>';
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data"><a href="'
+                        . Route::url('index.php?option=com_resources&id=' . $row->id . '&active=usage')
+                        . '">'
+                        . stripslashes($row->title)
+                        . '</a></td>';
                     $html .= "\t\t\t" . '<td>' . $row->citations . '</td>' . "\n";
                     $html .= "\t\t" . '</tr>' . "\n";
                 } else {
@@ -311,7 +342,10 @@ class Tools extends Plugin
         $cur_month = floor(date("n"));
         $year_data_start = 2000;
 
-        $html = '<label class="sr-only" for="usage-dthis">' . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT') . '</label>' . "\n";
+        $html = '<label class="sr-only" for="usage-dthis">'
+            . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT')
+            . '</label>'
+            . "\n";
         $html .= '<select name="dthis" id="usage-dthis">' . "\n";
         $html .= "<option selected disabled hidden>" . Lang::txt('PLG_USAGE_TOOLS_DEFAULT_DATE_SELECT') . "</option>\n";
         switch ($period) {
@@ -506,7 +540,9 @@ class Tools extends Plugin
     {
         $database = App::get('db');
         if (!isset($this->totals)) {
-            $sql = "SELECT COUNT(datetime) AS total, DATE_FORMAT(datetime,'%Y-%m') as date FROM `#__stats_topvals` WHERE `period`=" . $database->quote($period) . " GROUP BY datetime";
+            $sql = "SELECT COUNT(datetime) AS total, DATE_FORMAT(datetime,'%Y-%m') as date FROM `#__stats_topvals` WHERE `period`="
+                . $database->quote($period)
+                . " GROUP BY datetime";
 
             $database->setQuery($sql);
             $results = $database->loadObjectList();
@@ -538,32 +574,74 @@ class Tools extends Plugin
         if ($period == 'prior12' || $period == '12') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=12&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
+        $html .= '><a href="'
+            . Route::url(
+                'index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=12&top=' . $top,
+            )
+            . '"><span>'
+            . Lang::txt('PLG_USAGE_PERIOD_PRIOR12')
+            . '</span></a></li>'
+            . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'month' || $period == '1') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=1&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
+        $html .= '><a href="'
+            . Route::url(
+                'index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=1&top=' . $top,
+            )
+            . '"><span>'
+            . Lang::txt('PLG_USAGE_PERIOD_MONTH')
+            . '</span></a></li>'
+            . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'qtr' || $period == '3') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=3&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
+        $html .= '><a href="'
+            . Route::url(
+                'index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=3&top=' . $top,
+            )
+            . '"><span>'
+            . Lang::txt('PLG_USAGE_PERIOD_QTR')
+            . '</span></a></li>'
+            . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'year' || $period == '0') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=0&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
+        $html .= '><a href="'
+            . Route::url(
+                'index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=0&top=' . $top,
+            )
+            . '"><span>'
+            . Lang::txt('PLG_USAGE_PERIOD_YEAR')
+            . '</span></a></li>'
+            . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'fiscal' || $period == '13') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=13&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
+        $html .= '><a href="'
+            . Route::url(
+                'index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=13&top=' . $top,
+            )
+            . '"><span>'
+            . Lang::txt('PLG_USAGE_PERIOD_FISCAL')
+            . '</span></a></li>'
+            . "\n";
         $html .= "\t\t" . '<li';
         if ($period == '14') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=14&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_OVERALL') . '</span></a></li>' . "\n";
+        $html .= '><a href="'
+            . Route::url(
+                'index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=14&top=' . $top,
+            )
+            . '"><span>'
+            . Lang::txt('PLG_USAGE_PERIOD_OVERALL')
+            . '</span></a></li>'
+            . "\n";
         $html .= "\t" . '</ul>' . "\n";
         $html .= '</div>' . "\n";
 
@@ -668,7 +746,10 @@ class Tools extends Plugin
         if ($s_top < 9) {
             $html .= $this->navlinks($period, $s_top);
         }
-        $html  = '<form method="post" action="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=' . $period) . '">' . "\n";
+        $html  = '<form method="post" action="'
+            . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=' . $period)
+            . '">'
+            . "\n";
         $html .= "\t" . '<fieldset class="filters">' . "\n";
         $html .= "\t\t" . '<legend class="sr-only">' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . '</legend>' . "\n";
         $html .= "\t\t" . '<label for="usage-top">' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': </label>' . "\n";
@@ -683,12 +764,24 @@ class Tools extends Plugin
                 $data[$top]['id'] = $row->id;
                 $data[$top]['name'] = $row->name;
                 if ($s_top == $top) {
-                    $html .= "\t\t\t\t" . '<option value="' . $data[$top]['id'] . '" selected="selected">' . htmlentities($data[$top]['name']) . '</option>' . "\n";
+                    $html .= "\t\t\t\t"
+                        . '<option value="'
+                        . $data[$top]['id']
+                        . '" selected="selected">'
+                        . htmlentities($data[$top]['name'])
+                        . '</option>'
+                        . "\n";
                     if (isset($row->description)) {
                         $description = $row->description;
                     }
                 } else {
-                    $html .= "\t\t\t\t" . '<option value="' . $data[$top]['id'] . '">' . htmlentities($data[$top]['name']) . '</option>' . "\n";
+                    $html .= "\t\t\t\t"
+                        . '<option value="'
+                        . $data[$top]['id']
+                        . '">'
+                        . htmlentities($data[$top]['name'])
+                        . '</option>'
+                        . "\n";
                 }
             }
         }

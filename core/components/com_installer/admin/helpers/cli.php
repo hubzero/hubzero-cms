@@ -69,8 +69,15 @@ class Cli
      * @param   string  $source     the repo source to get logs from
      * @return  string
      **/
-    public static function log($length = null, $start = null, $search = null, $upcoming = false, $installed = true, $count = false, $source = null)
-    {
+    public static function log(
+        $length = null,
+        $start = null,
+        $search = null,
+        $upcoming = false,
+        $installed = true,
+        $count = false,
+        $source = null,
+    ) {
         $args = [];
 
         if (isset($length)) {
@@ -241,10 +248,27 @@ class Cli
         }
 
         if ($user == 'apache') {
-            $cmd = PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
+            $cmd = PATH_CORE
+                . '/bin/muse'
+                . ' '
+                . $task
+                . ' '
+                . $cmd
+                . ' '
+                . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '')
+                . ' --format=json';
         } else {
             $sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . escapeshellarg($user) . ' ' : '';
-            $cmd = $sudo . PATH_CORE . '/bin/muse' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '') . ' --format=json';
+            $cmd = $sudo
+                . PATH_CORE
+                . '/bin/muse'
+                . ' '
+                . $task
+                . ' '
+                . $cmd
+                . ' '
+                . ((!empty($args)) ? implode(' ', array_map('escapeshellarg', $args)) : '')
+                . ' --format=json';
         }
 
         return $cmd;

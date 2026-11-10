@@ -101,16 +101,30 @@ class Video extends Macro
 
         // Get single attributes
         // EX: [[Image(myimage.png, nolink, right)]]
-        $argues = preg_replace_callback('/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i', [&$this, 'parseSingleAttribute'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](left|right|top|center|bottom|[0-9]+(px|%|em)?)(?:[, ]|$)/i',
+            [&$this, 'parseSingleAttribute'],
+            $content,
+        );
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
-        $argues = preg_replace_callback('/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i', [&$this, 'parseAttributeValuePair'], $content);
+        $argues = preg_replace_callback(
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i',
+            [&$this, 'parseAttributeValuePair'],
+            $content,
+        );
 
         $width  = (isset($this->attr['width']) && $this->attr['width'] != '') ? $this->attr['width'] : $default_width;
-        $height = (isset($this->attr['height']) && $this->attr['height'] != '') ? $this->attr['height'] : $default_height;
+        $height = (isset($this->attr['height']) && $this->attr['height'] != '')
+            ? $this->attr['height']
+            : $default_height;
 
         //check is user entered full youtube url or just Video Id
         if (!strstr($url, 'http')) {
@@ -198,7 +212,19 @@ class Video extends Macro
                             break;
                     }
                 }
-                $video_url = 'https://www.kaltura.com/p/' . $partner_id . '/sp/' . $partner_id . '00/embedIframeJs/uiconf_id/' . $uiconf_id . '/partner_id/' . $partner_id . '?iframeembed=true&playerId=movie' . rand(0, 1000) . '&entry_id=' . $entry_id . '&flashvars[autoPlay]=false';
+                $video_url = 'https://www.kaltura.com/p/'
+                    . $partner_id
+                    . '/sp/'
+                    . $partner_id
+                    . '00/embedIframeJs/uiconf_id/'
+                    . $uiconf_id
+                    . '/partner_id/'
+                    . $partner_id
+                    . '?iframeembed=true&playerId=movie'
+                    . rand(0, 1000)
+                    . '&entry_id='
+                    . $entry_id
+                    . '&flashvars[autoPlay]=false';
             }
         }
 
@@ -219,31 +245,51 @@ class Video extends Macro
             // responsively on narrow screens.
             $cssWidth = is_numeric($width) ? $width . 'px' : $width;
 
-            $html  = '<div class="hz-video" style="max-width:' . htmlspecialchars($cssWidth, ENT_QUOTES, 'UTF-8') . '"' . $transcript . '>';
+            $html  = '<div class="hz-video" style="max-width:'
+                . htmlspecialchars($cssWidth, ENT_QUOTES, 'UTF-8')
+                . '"'
+                . $transcript
+                . '>';
             // `controls` is a no-JS fallback; the player removes it once enhanced
-            $html .= '<video width="' . htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8') . '" height="' . htmlspecialchars((string) $height, ENT_QUOTES, 'UTF-8') . '" preload="metadata" playsinline controls>';
+            $html .= '<video width="'
+                . htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8')
+                . '" height="'
+                . htmlspecialchars((string) $height, ENT_QUOTES, 'UTF-8')
+                . '" preload="metadata" playsinline controls>';
             switch ($ext) {
                 case 'mov':
                 case 'mp4':
                 case 'm4v':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
+                    $html .= '<source src="'
+                        . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8')
+                        . '" type="video/mp4" />';
                     break;
 
                 case 'ogg':
                 case 'ogv':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
+                    $html .= '<source src="'
+                        . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8')
+                        . '" type="video/ogg" />';
                     break;
 
                 case 'webm':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
+                    $html .= '<source src="'
+                        . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8')
+                        . '" type="video/webm" />';
                     break;
             }
 
             // Optional WebVTT captions: [[Video(clip.mp4, captions="clip.en.vtt")]]
             if (isset($this->attr['captions']) && $this->attr['captions'] != '') {
-                $capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '') ? $this->attr['captionlang'] : 'en';
-                $capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '') ? $this->attr['captionlabel'] : 'Captions';
-                $html .= '<track kind="captions" src="' . htmlspecialchars((string) $this->link($this->attr['captions']), ENT_QUOTES, 'UTF-8') . '"'
+                $capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '')
+                    ? $this->attr['captionlang']
+                    : 'en';
+                $capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '')
+                    ? $this->attr['captionlabel']
+                    : 'Captions';
+                $html .= '<track kind="captions" src="'
+                    . htmlspecialchars((string) $this->link($this->attr['captions']), ENT_QUOTES, 'UTF-8')
+                    . '"'
                     . ' srclang="' . htmlspecialchars($capLang, ENT_QUOTES, 'UTF-8') . '"'
                     . ' label="' . htmlspecialchars($capLabel, ENT_QUOTES, 'UTF-8') . '" default />';
             }
@@ -273,7 +319,17 @@ class Video extends Macro
             if (!preg_match('#^https?://#i', $video_url)) {
                 return '(video:' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8') . ' not a valid video URL)';
             }
-            $html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie' . rand(0, 1000) . '" src="' . htmlspecialchars((string) $video_url, ENT_QUOTES, 'UTF-8') . '" width="' . htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8') . '" height="' . htmlspecialchars((string) $height, ENT_QUOTES, 'UTF-8') . '" title="' . htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8') . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+            $html = '<iframe sandbox="allow-scripts allow-same-origin" id="movie'
+                . rand(0, 1000)
+                . '" src="'
+                . htmlspecialchars((string) $video_url, ENT_QUOTES, 'UTF-8')
+                . '" width="'
+                . htmlspecialchars((string) $width, ENT_QUOTES, 'UTF-8')
+                . '" height="'
+                . htmlspecialchars((string) $height, ENT_QUOTES, 'UTF-8')
+                . '" title="'
+                . htmlspecialchars((string) $title, ENT_QUOTES, 'UTF-8')
+                . '" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
         }
 
         // Return the emdeded youtube video
@@ -450,7 +506,8 @@ class Video extends Macro
      */
     private function link($file)
     {
-        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
+        $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)"
+            . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
             return $file;
         }

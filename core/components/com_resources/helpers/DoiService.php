@@ -70,7 +70,10 @@ class DoiService extends Obj
             $configs->userPW        = $params->get('doi_userpw');
             $configs->publisher     = $params->get('doi_publisher', Config::get('sitename'));
             $configs->livesite      = trim(Request::root(), '/');
-            $configs->xmlSchema     = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'), '/');
+            $configs->xmlSchema     = trim(
+                $params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'),
+                '/',
+            );
 
             $this->configs = $configs;
         }
@@ -94,7 +97,12 @@ class DoiService extends Obj
             && $this->configs->shoulder
             && (
                 ($this->configs->serviceSwitch == 2 && $this->configs->serviceURL && $this->configs->userPW)
-                || ($this->configs->serviceSwitch == 1 && $this->configs->serviceURL && $this->configs->userPW && $this->configs->prefix)
+                || (
+                    $this->configs->serviceSwitch == 1
+                    && $this->configs->serviceURL
+                    && $this->configs->userPW
+                    && $this->configs->prefix
+                )
             )
         ) {
             return true;
@@ -172,7 +180,9 @@ class DoiService extends Obj
 
         // Set dates
         $pubYear = isset($pub['pubYear']) ? $pub['pubYear'] : gmdate('Y');
-        $pubDate = isset($pub['datePublished']) && $pub['datePublished'] && $pub['datePublished'] != '0000-00-00 00:00:00'
+        $pubDate = isset($pub['datePublished'])
+            && $pub['datePublished']
+            && $pub['datePublished'] != '0000-00-00 00:00:00'
                 ? gmdate('Y-m-d', strtotime($pub['datePublished']))
                 : gmdate('Y-m-d');
         $this->set('pubYear', $pubYear);
@@ -337,7 +347,10 @@ class DoiService extends Obj
             $xmlfile .= '<creator>';
             $xmlfile .= '	<creatorName>' . $this->get('creator') . '</creatorName>';
             if ($this->get('creatorOrcid')) {
-                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID">' . 'http://orcid.org/' . $this->get('creatorOrcid') . '</nameIdentifier>';
+                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID">'
+                    . 'http://orcid.org/'
+                    . $this->get('creatorOrcid')
+                    . '</nameIdentifier>';
             }
             $xmlfile .= '</creator>';
         }
@@ -359,10 +372,16 @@ class DoiService extends Obj
         $xmlfile .= '	<date dateType="Accepted">' . $this->get('dateAccepted') . '</date>';
         $xmlfile .= '</dates>';
         $xmlfile .= '<language>' . $this->get('language') . '</language>';
-        $xmlfile .= '<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
+        $xmlfile .= '<resourceType resourceTypeGeneral="'
+            . $this->get('resourceType')
+            . '">'
+            . $this->get('resourceTypeTitle')
+            . '</resourceType>';
         if ($this->get('relatedDoi')) {
             $xmlfile .= '<relatedIdentifiers>';
-            $xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">' . $this->get('relatedDoi') . '</relatedIdentifier>';
+            $xmlfile .= '	<relatedIdentifier relatedIdentifierType="DOI" relationType="IsNewVersionOf">'
+                . $this->get('relatedDoi')
+                . '</relatedIdentifier>';
             $xmlfile .= '</relatedIdentifiers>';
         }
         if ($this->get('version')) {
@@ -395,7 +414,11 @@ class DoiService extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/xml;charset=UTF-8', 'Content-Length: ' . strlen($postvals)]);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            ['Content-Type:application/xml;charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
+        );
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -441,7 +464,11 @@ class DoiService extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)]);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
+        );
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -545,7 +572,11 @@ class DoiService extends Obj
         curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)]);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)],
+        );
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_POST, true);
 
@@ -638,7 +669,10 @@ class DoiService extends Obj
             CURLOPT_USERPWD         => $this->configs->userPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
+            CURLOPT_HTTPHEADER      => [
+                'Content-Type: text/plain; charset=UTF-8',
+                'Content-Length: ' . strlen($postvals),
+            ],
         ];
         curl_setopt_array($ch, $options);
 

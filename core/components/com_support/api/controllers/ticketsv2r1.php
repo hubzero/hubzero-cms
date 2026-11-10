@@ -258,7 +258,25 @@ class Ticketsv2r1 extends ApiController
         $total = clone($tickets);
 
         $sort = Request::getWord('sort', 'created');
-        if (!in_array($sort, ['id', 'type', 'created', 'closed', 'status', 'open', 'owner', 'severity', 'target_date', 'name', 'login', 'email'])) {
+        if (
+            !in_array(
+                $sort,
+                [
+                    'id',
+                    'type',
+                    'created',
+                    'closed',
+                    'status',
+                    'open',
+                    'owner',
+                    'severity',
+                    'target_date',
+                    'name',
+                    'login',
+                    'email',
+                ],
+            )
+        ) {
             $sort = 'created';
         }
         $sort_dir = Request::getWord('sort_Dir', 'desc');
@@ -541,14 +559,36 @@ class Ticketsv2r1 extends ApiController
         $response->submitter_id = $submitter->get('id');
         $response->group_id = $ticket->get('group_id');
 
-        foreach (['status', 'created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed'] as $prop) {
+        $props = [
+            'status',
+            'created',
+            'severity',
+            'os',
+            'browser',
+            'ip',
+            'hostname',
+            'uas',
+            'referrer',
+            'open',
+            'closed',
+        ];
+        foreach ($props as $prop) {
             $response->$prop = $ticket->get($prop);
         }
 
         $response->summary = $ticket->get('summary');
         $response->report  = $ticket->get('report');
 
-        $response->url = str_replace('/api', '', rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), '/'));
+        $response->url = str_replace(
+            '/api',
+            '',
+            rtrim(Request::base(), '/')
+                . '/'
+                . ltrim(
+                    Route::url('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id),
+                    '/',
+                ),
+        );
 
         $this->send($response);
     }

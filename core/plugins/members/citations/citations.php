@@ -259,7 +259,9 @@ class Citations extends Plugin
         $view->filters['publishedin'] = isset($view->filters['publishedin']) ? $view->filters['publishedin'] : "";
         $view->filters['year_start'] = isset($view->filters['year_start']) ? $view->filters['year_start'] : "";
         $view->filters['year_end'] = isset($view->filters['year_end']) ? $view->filters['year_end'] : "";
-        $view->filters['startuploaddate'] = isset($view->filters['startuploaddate']) ? $view->filters['startuploaddate'] : "";
+        $view->filters['startuploaddate'] = isset($view->filters['startuploaddate'])
+            ? $view->filters['startuploaddate']
+            : "";
         $view->filters['enduploaddate'] = isset($view->filters['enduploaddate']) ? $view->filters['enduploaddate'] : "";
         $view->filters['sort'] = isset($view->filters['sort']) ? $view->filters['sort'] : "";
         $view->filters['filter'] = isset($view->filters['filter']) ? $view->filters['filter'] : "";
@@ -412,7 +414,9 @@ class Citations extends Plugin
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $view->title  = Lang::txt('PLG_MEMBERS_CITATIONS') . ': ' . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
+        $view->title  = Lang::txt('PLG_MEMBERS_CITATIONS')
+            . ': '
+            . Lang::txt('PLG_MEMBERS_CITATIONS_' . strtoupper($this->action));
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
@@ -425,7 +429,10 @@ class Citations extends Plugin
 
             $view->row->id = -time();
         } else {
-            if ((!$view->authors = $view->row->relatedAuthors()->order('ordering', 'asc')) && ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')) {
+            if (
+                (!$view->authors = $view->row->relatedAuthors()->order('ordering', 'asc'))
+                && ($view->row->relatedAuthors->count() == 0 && $view->row->author != '')
+            ) {
                 // Formats the author for the multi-author plugin
                 $authors = explode(';', $view->row->author);
 
@@ -807,7 +814,9 @@ class Citations extends Plugin
             $view->include_coins = (isset($params->include_coins) ? $params->include_coins : "false");
             $view->coins_only = (isset($params->coins_only) ? $params->coins_only : "false");
             $view->citations_show_tags = (isset($params->citations_show_tags) ? $params->citations_show_tags : "true");
-            $view->citations_show_badges = (isset($params->citations_show_badges) ? $params->citations_show_badges : "true");
+            $view->citations_show_badges = (isset(
+                $params->citations_show_badges,
+            ) ? $params->citations_show_badges : "true");
             $citationsFormat = (isset($params->citationFormat) ? $params->citationFormat : 1);
 
             // intended for the case that the group's custom
@@ -979,7 +988,12 @@ class Citations extends Plugin
         $action = (Request::method() == 'POST') ? '' : '&action=' . $this->action;
 
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->pluginName . $action, false, true))),
+            Route::url(
+                'index.php?option=com_users&view=login&return='
+                    . base64_encode(
+                        Route::url($this->member->link() . '&active=' . $this->pluginName . $action, false, true),
+                    ),
+            ),
             Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );

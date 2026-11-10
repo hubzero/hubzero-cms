@@ -247,7 +247,10 @@ class SafePathTest extends Basic
         foreach ($paths as $relative) {
             $reason = null;
 
-            $this->assertFalse(SafePath::directory($this->base, $relative, false, 0700, $reason), $relative . ' was accepted');
+            $this->assertFalse(
+                SafePath::directory($this->base, $relative, false, 0700, $reason),
+                $relative . ' was accepted',
+            );
             $this->assertEquals(SafePath::REASON_UNSAFE, $reason);
         }
     }

@@ -185,7 +185,12 @@ class Resources extends SiteController
     public function browseTask()
     {
         // Who may browse and search is a view access level, Public by default
-        if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'))) {
+        if (
+            !$this->requireViewLevel(
+                $this->config->get('browse_access', 1),
+                Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'),
+            )
+        ) {
             return;
         }
 
@@ -207,7 +212,12 @@ class Resources extends SiteController
             'tag_ignored' => [],
             'access' => [0, 3],
         ];
-        if (!in_array($filters['sortby'], ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {
+        if (
+            !in_array(
+                $filters['sortby'],
+                ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'],
+            )
+        ) {
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
         }
 
@@ -385,7 +395,12 @@ class Resources extends SiteController
         }
 
         // Who may browse and search is a view access level, Public by default
-        if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'))) {
+        if (
+            !$this->requireViewLevel(
+                $this->config->get('browse_access', 1),
+                Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'),
+            )
+        ) {
             return;
         }
 
@@ -517,7 +532,12 @@ class Resources extends SiteController
     public function browserTask()
     {
         // Who may browse and search is a view access level, Public by default
-        if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'))) {
+        if (
+            !$this->requireViewLevel(
+                $this->config->get('browse_access', 1),
+                Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'),
+            )
+        ) {
             return;
         }
 
@@ -624,7 +644,10 @@ class Resources extends SiteController
                 }
 
                 // Get the sections
-                $bits['sections'] = Event::trigger('resources.onResources', [$model, $this->option, ['about'], 'metadata']);
+                $bits['sections'] = Event::trigger(
+                    'resources.onResources',
+                    [$model, $this->option, ['about'], 'metadata'],
+                );
 
                 // Fill our container
                 $bits['resource'] = $model;
@@ -750,7 +773,13 @@ class Resources extends SiteController
         $resid = $firstChild->get('id');
 
         App::redirect(
-            Route::url('index.php?option=com_resources&id=' . $presentation . '&task=watch&resid=' . $resid . '&tmpl=component'),
+            Route::url(
+                'index.php?option=com_resources&id='
+                    . $presentation
+                    . '&task=watch&resid='
+                    . $resid
+                    . '&tmpl=component',
+            ),
         );
     }
 
@@ -864,11 +893,27 @@ class Resources extends SiteController
             //and has a backup image for the slide
             foreach ($slide_video as $k => $v) {
                 if (count($v) < 3) {
-                    $this->setError(Lang::txt('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
+                    $this->setError(
+                        Lang::txt(
+                            'Video Slides must be Uploaded in the Three Standard Formats. You currently only have '
+                                . count($v)
+                                . " ({$k}."
+                                . implode(", {$k}.", array_keys($v))
+                                . ').',
+                        ),
+                    );
                 }
 
                 if (!file_exists($slide_path . DS . $k . '.png') && !file_exists($slide_path . DS . $k . '.jpg')) {
-                    $this->setError(Lang::txt('Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "' . $k . '.png" or "' . $k . '.jpg".'));
+                    $this->setError(
+                        Lang::txt(
+                            'Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename "'
+                                . $k
+                                . '.png" or "'
+                                . $k
+                                . '.jpg".',
+                        ),
+                    );
                 }
             }
         }
@@ -927,7 +972,12 @@ class Resources extends SiteController
         $hasTime = (Request::getString('time', '') != '') ? true : false;
 
         //do we want to redirect user with time added to url
-        if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration) {
+        if (
+            is_object($tracking)
+            && !$hasTime
+            && $tracking->current_position > 0
+            && $tracking->current_position != $tracking->object_duration
+        ) {
             $redirect = 'index.php?option=com_resources&task=watch&id=' . $parent . '&resid=' . $child;
             if (Request::getCmd('tmpl', '') == 'component') {
                 $redirect .= '&tmpl=component';
@@ -1063,7 +1113,12 @@ class Resources extends SiteController
         $hasTime = (Request::getString('time', '') != '') ? true : false;
 
         // Do we want to redirect user with time added to url
-        if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration) {
+        if (
+            is_object($tracking)
+            && !$hasTime
+            && $tracking->current_position > 0
+            && $tracking->current_position != $tracking->object_duration
+        ) {
             $redirect = 'index.php?option=com_resources&task=video&id=' . $parent . '&resid=' . $child;
             if (Request::getCmd('tmpl', '') == 'component') {
                 $redirect .= '&tmpl=component';
@@ -1301,7 +1356,9 @@ class Resources extends SiteController
 
         // Is the visitor authorized to view this resource?
         if (User::isGuest() && ($this->model->get('access') == 1 || $this->model->get('access') == 4)) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->model->link(), false, true), 'server'));
+            $return = base64_encode(
+                Request::getString('REQUEST_URI', Route::url($this->model->link(), false, true), 'server'),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                 Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -1310,7 +1367,14 @@ class Resources extends SiteController
         }
 
         if ($this->model->get('group_owner') && !$this->model->access('view')) {
-            App::abort(403, Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner'))));
+            App::abort(
+                403,
+                Lang::txt(
+                    'COM_RESOURCES_ALERTNOTAUTH_GROUP',
+                    $this->model->get('group_owner'),
+                    Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner')),
+                ),
+            );
         }
 
         if (!$this->model->access('view')) {
@@ -1346,7 +1410,12 @@ class Resources extends SiteController
                 );
                 Pathway::append(
                     stripslashes($this->model->type->get('type')),
-                    Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=resources&area=' . $this->model->type->get('alias')),
+                    Route::url(
+                        'index.php?option=com_groups&cn='
+                            . $group->get('cn')
+                            . '&active=resources&area='
+                            . $this->model->type->get('alias'),
+                    ),
                 );
             } else {
                 Pathway::append(
@@ -1554,7 +1623,9 @@ class Resources extends SiteController
 
         if (
             $type_alias
-            && (is_file(App::get('template')->path . DS . 'html' . DS . $this->option . DS . 'view' . DS . $type_alias . '.php')
+            && (is_file(
+                App::get('template')->path . DS . 'html' . DS . $this->option . DS . 'view' . DS . $type_alias . '.php',
+            )
             || is_file(dirname(__DIR__) . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))
         ) {
             $layout = $type_alias;
@@ -1672,7 +1743,11 @@ class Resources extends SiteController
         $dtitle = \Hubzero\Utility\Sanitize::clean(stripslashes($title));
 
         $doc->title = trim(\Hubzero\Utility\Str::truncate(html_entity_decode($dtitle), 250));
-        $doc->description = htmlspecialchars(html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))), ENT_COMPAT, 'UTF-8');
+        $doc->description = htmlspecialchars(
+            html_entity_decode(\Hubzero\Utility\Sanitize::clean(stripslashes($resource->introtext))),
+            ENT_COMPAT,
+            'UTF-8',
+        );
         $doc->copyright = Lang::txt('COM_RESOURCES_RSS_COPYRIGHT', date("Y"), Config::get('sitename'));
         $doc->category = Lang::txt('COM_RESOURCES_RSS_CATEGORY');
         $doc->link = Route::url('index.php?option=' . $this->option . '&id=' . $resource->id);
@@ -1721,11 +1796,21 @@ class Resources extends SiteController
 
         $itunes_image_name = 'itunes_' . str_replace(' ', '_', strtolower($feedtype));
 
-        $dimg = $this->checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
+        $dimg = $this->checkForImage(
+            $itunes_image_name,
+            $this->config->get('uploadpath'),
+            $resource->created,
+            $resource->id,
+        );
         if ($dimg) {
             $dimage = new \Hubzero\Document\Type\Feed\Image();
             $dimage->url = $dimg;
-            $dimage->title = trim(\Hubzero\Utility\Str::truncate(html_entity_decode($dtitle . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK')), 250));
+            $dimage->title = trim(
+                \Hubzero\Utility\Str::truncate(
+                    html_entity_decode($dtitle . ' ' . Lang::txt('COM_RESOURCES_RSS_ARTWORK')),
+                    250,
+                ),
+            );
             $dimage->link = $base . $doc->link;
             $doc->itunes_image = $dimage;
         }
@@ -1806,7 +1891,11 @@ class Resources extends SiteController
                             if (stripslashes($grandchild->introtext) != '') {
                                 $gdescription = trim($grandchild->introtext);
                                 $gdescription = $gdescription ?: trim($grandchild->fulltxt);
-                                $gdescription = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', stripslashes($gdescription));
+                                $gdescription = preg_replace(
+                                    "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
+                                    '',
+                                    stripslashes($gdescription),
+                                );
                                 $gdescription = html_entity_decode(\Hubzero\Utility\Sanitize::clean($gdescription));
                                 $gdescription = strip_tags($gdescription);
                             }
@@ -1841,7 +1930,12 @@ class Resources extends SiteController
                     $item->category    = $row->type->get('type');
                     $item->author      = $author;
 
-                    $img = $this->checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
+                    $img = $this->checkForImage(
+                        'ituness_artwork',
+                        $this->config->get('uploadpath'),
+                        $row->created,
+                        $row->id,
+                    );
                     if ($img) {
                         $image = new \Hubzero\Document\Type\Feed\Image();
                         $image->url   = $img;
@@ -1864,7 +1958,13 @@ class Resources extends SiteController
                         $podcastp = $podcast;
                         $podcast = ltrim($this->fullPath($podcast), '/');
 
-                        if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath')) {
+                        if (
+                            substr(
+                                $podcastp,
+                                0,
+                                strlen($this->config->get('uploadpath')),
+                            ) == $this->config->get('uploadpath')
+                        ) {
                             // Do nothing
                         } else {
                             $podcastp = trim($this->config->get('uploadpath'), DS) . DS . ltrim($podcastp, DS);
@@ -2118,7 +2218,9 @@ class Resources extends SiteController
 
         $activeParams = $resource->params;
         $typeParams = $resource->type->params;
-        $restrictDirectDownload = $activeParams->get('restrict_direct_access') ? $activeParams->get('restrict_direct_access') : $typeParams->get('restrict_direct_access');
+        $restrictDirectDownload = $activeParams->get('restrict_direct_access')
+            ? $activeParams->get('restrict_direct_access')
+            : $typeParams->get('restrict_direct_access');
 
         if ($restrictDirectDownload == 2) {
             Request::checkToken('get');
@@ -2165,7 +2267,13 @@ class Resources extends SiteController
         $accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
 
         if ($accessLevel == 1 && $user->isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+            $return = base64_encode(
+                Request::getString(
+                    'REQUEST_URI',
+                    Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true),
+                    'server',
+                ),
+            );
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -2181,7 +2289,13 @@ class Resources extends SiteController
             || ($accessLevel == 3 && !$resource->get('standalone'))
         ) {  // protected -- We need to allow images from 'protected' resource abstracts to come through
             if ($user->isGuest()) {
-                $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true), 'server'));
+                $return = base64_encode(
+                    Request::getString(
+                        'REQUEST_URI',
+                        Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true),
+                        'server',
+                    ),
+                );
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . $return, false),
                     Lang::txt('COM_RESOURCES_ALERTLOGIN_REQUIRED'),
@@ -2270,7 +2384,31 @@ class Resources extends SiteController
 
         // Set disposition to attachment unless we think the browser can inline the file
 
-        if (!in_array($ext, ['tiff', 'tif', 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf', 'htm', 'html', 'txt', 'json', 'xml', 'ogv', 'mp4', 'webm', 'ogg', 'mp3'])) {
+        if (
+            !in_array(
+                $ext,
+                [
+                    'tiff',
+                    'tif',
+                    'jpg',
+                    'jpeg',
+                    'jpe',
+                    'gif',
+                    'png',
+                    'pdf',
+                    'htm',
+                    'html',
+                    'txt',
+                    'json',
+                    'xml',
+                    'ogv',
+                    'mp4',
+                    'webm',
+                    'ogg',
+                    'mp3',
+                ],
+            )
+        ) {
             $d = 'attachment';
         }
 
@@ -2434,7 +2572,10 @@ class Resources extends SiteController
             $rdoi = Doi::oneByResource($id, $revision);
 
             if ($rdoi->get('doi') && ($rdoi->get('doi_shoulder') || $tconfig->get('doi_shoulder'))) {
-                $handle = 'doi:' . ($rdoi->get('doi_shoulder') ? $rdoi->get('doi_shoulder') : $tconfig->get('doi_shoulder')) . '/' . strtoupper($rdoi->doi);
+                $handle = 'doi:'
+                    . ($rdoi->get('doi_shoulder') ? $rdoi->get('doi_shoulder') : $tconfig->get('doi_shoulder'))
+                    . '/'
+                    . strtoupper($rdoi->doi);
             }
         }
 

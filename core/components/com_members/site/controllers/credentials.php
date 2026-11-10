@@ -297,7 +297,9 @@ class Credentials extends SiteController
         ]);
 
         if (!$sent) {
-            Log::error('Members password reset email failed[2]: ' . Lang::txt('Failed to mail %s', $user->get('email')));
+            Log::error(
+                'Members password reset email failed[2]: ' . Lang::txt('Failed to mail %s', $user->get('email')),
+            );
 
             $this->finish(
                 Route::url('index.php?option=' . $this->option . '&task=remind', false),
@@ -511,7 +513,9 @@ class Credentials extends SiteController
         } elseif (!empty($msg)) {
             // Say which rules failed (e.g. reusing an earlier password): the
             // live checklist can't always tell, and showed them all as met
-            $error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_FAILS_REQUIREMENTS') . ' ' . strip_tags(implode(' ', $msg));
+            $error = Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_PASSWORD_FAILS_REQUIREMENTS')
+                . ' '
+                . strip_tags(implode(' ', $msg));
         }
 
         // If we're resetting password to the current password, just return true
@@ -663,12 +667,16 @@ class Credentials extends SiteController
         // limit like a reset would; verify and setpassword refuse inactive
         // accounts, and the token is never sent.
         $salt = \Hubzero\User\Password::getSalt('crypt-md5');
-        $user->tokens()->save(['token' => md5(App::hash(\Hubzero\User\Password::genRandomPassword()) . $salt) . ':' . $salt]);
+        $user
+            ->tokens()
+            ->save(['token' => md5(App::hash(\Hubzero\User\Password::genRandomPassword()) . $salt) . ':' . $salt]);
 
         $sent = $this->sendResetMail($user, 'inactive', 'password_reset_inactive');
 
         if (!$sent) {
-            Log::error('Members inactive account notice email failed: ' . Lang::txt('Failed to mail %s', $user->get('email')));
+            Log::error(
+                'Members inactive account notice email failed: ' . Lang::txt('Failed to mail %s', $user->get('email')),
+            );
         }
     }
 

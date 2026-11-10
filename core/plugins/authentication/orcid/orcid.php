@@ -383,7 +383,12 @@ class Orcid extends \Hubzero\Plugin\OauthClient
                     $hzal->set('email', $orcid->email());
                     $hzal->update();
                 } else {
-                    Log::error(sprintf('Hubzero\Auth\Link::findOrCreate("authentication", "orcid", null, %s) returned false', $username));
+                    Log::error(
+                        sprintf(
+                            'Hubzero\Auth\Link::findOrCreate("authentication", "orcid", null, %s) returned false',
+                            $username,
+                        ),
+                    );
                 }
             }
         } else {
@@ -406,7 +411,9 @@ class Orcid extends \Hubzero\Plugin\OauthClient
     {
         Document::addStyleSheet(Request::root(false) . 'core/plugins/authentication/orcid/assets/css/orcid.css');
 
-        $html = '<a class="orcid account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return) . '">';
+        $html = '<a class="orcid account" href="'
+            . Route::url('index.php?option=com_users&view=login&authenticator=orcid' . $return)
+            . '">';
         $html .= '<div class="signin">';
         $html .= Lang::txt('PLG_AUTHENTICATION_ORCID_SIGN_IN');
         $html .= '</div>';

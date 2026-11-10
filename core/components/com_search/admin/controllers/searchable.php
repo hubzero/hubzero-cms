@@ -47,7 +47,10 @@ class Searchable extends AdminController
         $query = new \Hubzero\Search\Query($config);
         $multifacet = $query->adapter->getFacetMultiQuery('hubtypes');
         // Load the subfacets, if applicable
-        $components = SearchComponent::all()->where('state', '!=', SearchComponent::STATE_TRASHED)->orWhere('state', 'IS', null)->rows();
+        $components = SearchComponent::all()
+            ->where('state', '!=', SearchComponent::STATE_TRASHED)
+            ->orWhere('state', 'IS', null)
+            ->rows();
         foreach ($components as $component) {
             $componentQuery = $component->getSearchQuery('hubtype');
             $multifacet->createQuery($component->getQueryName(), $componentQuery, ['include' => 'child_type']);
@@ -99,10 +102,21 @@ class Searchable extends AdminController
             if (!$recordsIndexed) {
                 $recordsIndexed = [];
                 $component->set('state', SearchComponent::STATE_INDEXED);
-                $componentLink = Route::url('index.php?option=com_search&controller=' . $this->controller . '&task=documentListing&facet=hubtype:' . $component->getSearchNamespace());
+                $componentLink = Route::url(
+                    'index.php?option=com_search&controller='
+                        . $this->controller
+                        . '&task=documentListing&facet=hubtype:'
+                        . $component->getSearchNamespace(),
+                );
                 $recordsIndexed['state'] = SearchComponent::STATE_INDEXED; //1;
                 $recordsIndexed['total'] = '<a href="' . $componentLink . '">' . $component->getSearchCount() . '</a>';
-                $recordsIndexed['link'] = Route::url('index.php?option=' . $this->option . '&controller=searchable&task=deleteIndex&id=' . $component->get('id'), false);
+                $recordsIndexed['link'] = Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller=searchable&task=deleteIndex&id='
+                        . $component->get('id'),
+                    false,
+                );
             } elseif (isset($recordsIndexed['error'])) {
                 $error = $recordsIndexed['error'];
                 Notify::error($error);
@@ -152,7 +166,11 @@ class Searchable extends AdminController
                 $filters[$filter->field]['params'] = $filter->params->toArray();
             }
             if ($filter->options->count() > 0) {
-                $filters[$filter->field]['options'] = $filter->options()->order('ordering', 'ASC')->rows()->fieldsByKey('value');
+                $filters[$filter->field]['options'] = $filter
+                    ->options()
+                    ->order('ordering', 'ASC')
+                    ->rows()
+                    ->fieldsByKey('value');
             }
         }
 

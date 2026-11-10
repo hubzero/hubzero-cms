@@ -90,7 +90,11 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
             return;
         }
 
-        $this->db->setQuery("SELECT `id`, `lft`, `rgt` FROM `#__usergroups` WHERE `title` = " . $this->db->quote(self::TITLE) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT `id`, `lft`, `rgt` FROM `#__usergroups` WHERE `title` = "
+                . $this->db->quote(self::TITLE)
+                . " LIMIT 1",
+        );
         $group = $this->db->loadObject();
 
         if (!$group) {
@@ -120,7 +124,9 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
      */
     protected function groupId()
     {
-        $this->db->setQuery("SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote(self::TITLE) . " LIMIT 1");
+        $this->db->setQuery(
+            "SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote(self::TITLE) . " LIMIT 1",
+        );
 
         return (int) $this->db->loadResult();
     }

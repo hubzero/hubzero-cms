@@ -83,12 +83,23 @@ class Entriesv1r0 extends ApiController
             'search' => Request::getString('search', ''),
         ];
 
-        if (!in_array($filters['sortby'], ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'])) {
+        if (
+            !in_array(
+                $filters['sortby'],
+                ['date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'],
+            )
+        ) {
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
         }
 
         // Searching is gated by the component's browse access level
-        if ($filters['search'] && !in_array((int) Component::params('com_resources')->get('browse_access', 1), User::getAuthorisedViewLevels())) {
+        if (
+            $filters['search']
+            && !in_array(
+                (int) Component::params('com_resources')->get('browse_access', 1),
+                User::getAuthorisedViewLevels(),
+            )
+        ) {
             App::abort(403, Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'));
         }
 
@@ -323,11 +334,21 @@ class Entriesv1r0 extends ApiController
             // Restrict TeX file access to the working dir (openin_any/openout_any=p) and
             // disable shell-escape so a \input{}/\write18{} in the expression cannot read
             // arbitrary files or run commands; escape the paths as defence in depth.
-            $command = 'cd ' . escapeshellarg($dir) . '; openin_any=p openout_any=p timeout 20 /usr/bin/latex -no-shell-escape -halt-on-error -interaction=nonstopmode ' . escapeshellarg($filename . '.tex') . ' < /dev/null |grep ^!|grep -v Emergency > ' . escapeshellarg($dir . DS . $filename . '.error') . ' 2> /dev/null 2>&1';
+            $command = 'cd '
+                . escapeshellarg($dir)
+                . '; openin_any=p openout_any=p timeout 20 /usr/bin/latex -no-shell-escape -halt-on-error -interaction=nonstopmode '
+                . escapeshellarg($filename . '.tex')
+                . ' < /dev/null |grep ^!|grep -v Emergency > '
+                . escapeshellarg($dir . DS . $filename . '.error')
+                . ' 2> /dev/null 2>&1';
             exec($command, $output_lines, $exit_status);
 
             // execute dvi2png to build png
-            $command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o " . escapeshellarg($dir . DS . $filename . '.png') . ' ' . escapeshellarg($dir . DS . $filename . '.dvi') . ' 2>&1';
+            $command = "/usr/bin/dvipng -bg 'transparent' -q -T tight -D 100 -o "
+                . escapeshellarg($dir . DS . $filename . '.png')
+                . ' '
+                . escapeshellarg($dir . DS . $filename . '.dvi')
+                . ' 2>&1';
             exec($command, $output_lines, $exit_status);
 
             if ($exit_status != 0) {

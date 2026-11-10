@@ -418,7 +418,15 @@ class Articles extends SiteController
                 'scope'       => 'kb.article.comment',
                 'scope_id'    => $row->get('id'),
                 'anonymous'   => $row->get('anonymous', 0),
-                'description' => Lang::txt('COM_KB_ACTIVITY_COMMENT_' . ($cid ? 'UPDATED' : 'CREATED'), $row->get('id'), '<a href="' . Route::url($article->link() . '#c' . $row->get('id')) . '">' . htmlspecialchars((string) ($article->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_KB_ACTIVITY_COMMENT_' . ($cid ? 'UPDATED' : 'CREATED'),
+                    $row->get('id'),
+                    '<a href="'
+                        . Route::url($article->link() . '#c' . $row->get('id'))
+                        . '">'
+                        . htmlspecialchars((string) ($article->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $article->get('title'),
                     'entry_id' => $article->get('id'),
@@ -471,8 +479,16 @@ class Articles extends SiteController
 
         Document::setTitle($title);
 
-        Document::instance()->description = Lang::txt('COM_KB_COMMENTS_RSS_DESCRIPTION', Config::get('sitename'), stripslashes($article->get('title')));
-        Document::instance()->copyright   = Lang::txt('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), Config::get('sitename'));
+        Document::instance()->description = Lang::txt(
+            'COM_KB_COMMENTS_RSS_DESCRIPTION',
+            Config::get('sitename'),
+            stripslashes($article->get('title')),
+        );
+        Document::instance()->copyright   = Lang::txt(
+            'COM_KB_COMMENTS_RSS_COPYRIGHT',
+            gmdate("Y"),
+            Config::get('sitename'),
+        );
 
         // Start outputing results if any found.
         //
@@ -551,7 +567,11 @@ class Articles extends SiteController
             }
 
             // Prepare the title
-            $item->title = Lang::txt('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
+            $item->title = Lang::txt('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author)
+                . ' @ '
+                . $comment->created('time')
+                . ' on '
+                . $comment->created('date');
 
             // URL link to article. This read $feed->link, and $feed has never
             // existed in this scope -- the article's link is the caller's to

@@ -105,7 +105,21 @@ class Html
             } else {
                 $sel = ($k == $selected ? ' checked="checked"' : '');
             }
-            $html .= '<label class="option"><input class="option" name="' . $tag_name . '" id="' . $tag_name . $i . '" type="radio" value="' . $k . '"' . $sel . ' ' . $tag_attribs . '/>' . $t . '</label>' . "\n";
+            $html .= '<label class="option"><input class="option" name="'
+                . $tag_name
+                . '" id="'
+                . $tag_name
+                . $i
+                . '" type="radio" value="'
+                . $k
+                . '"'
+                . $sel
+                . ' '
+                . $tag_attribs
+                . '/>'
+                . $t
+                . '</label>'
+                . "\n";
         }
         return $html;
     }
@@ -131,7 +145,13 @@ class Html
             Lang::txt('EVENTS_CAL_LANG_FRIDAYSHORT'),
             Lang::txt('EVENTS_CAL_LANG_SATURDAYSHORT'),
         ];
-        $daynamelist[] = \Html::select('option', '-1', '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />', 'value', 'text');
+        $daynamelist[] = \Html::select(
+            'option',
+            '-1',
+            '&nbsp;' . Lang::txt('EVENTS_CAL_LANG_BYDAYNUMBER') . '<br />',
+            'value',
+            'text',
+        );
         for ($a = 0; $a < 7; $a++) {
             $name_of_day = '&nbsp;' . $day_name[$a];
             $daynamelist[] = \Html::select('option', $a, $name_of_day, 'value', 'text');
@@ -453,7 +473,18 @@ class Html
                     $checked = 'checked="checked"';
                 }
             }
-            $tosend .= '<label class="option"><input type="checkbox" id="cb_wd' . $a . '" name="reccurweekdays" value="' . $a . '" ' . $args . ' ' . $checked . '/>&nbsp;' . $day_name[$a] . '</label>' . "\n";
+            $tosend .= '<label class="option"><input type="checkbox" id="cb_wd'
+                . $a
+                . '" name="reccurweekdays" value="'
+                . $a
+                . '" '
+                . $args
+                . ' '
+                . $checked
+                . '/>&nbsp;'
+                . $day_name[$a]
+                . '</label>'
+                . "\n";
         }
         return $tosend;
     }
@@ -496,7 +527,18 @@ class Html
                     $checked = 'checked="checked"';
                 }
             }
-            $tosend .= '<label class="option"><input class="option" type="checkbox" id="cb_wn' . $a . '" name="reccurweeks" value="' . $a . '" ' . $args . ' ' . $checked . '/>&nbsp;' . $week_name[$a] . '</label><br />' . "\n";
+            $tosend .= '<label class="option"><input class="option" type="checkbox" id="cb_wn'
+                . $a
+                . '" name="reccurweeks" value="'
+                . $a
+                . '" '
+                . $args
+                . ' '
+                . $checked
+                . '/>&nbsp;'
+                . $week_name[$a]
+                . '</label><br />'
+                . "\n";
         }
         return $tosend;
     }
@@ -654,13 +696,31 @@ class Html
             case '0':
                 if ($format_type == 0) {
                     // Fr style : Monday 23 Juillet 2003
-                    $newdate = self::getLongDayName($numero_jour) . '&nbsp;' . $jour_fr . '&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
+                    $newdate = self::getLongDayName($numero_jour)
+                        . '&nbsp;'
+                        . $jour_fr
+                        . '&nbsp;'
+                        . self::getMonthName($mois_0)
+                        . '&nbsp;'
+                        . $annee;
                 } elseif ($format_type == 1) {
                     // Us style : Monday, July 23 2003
-                    $newdate = self::getLongDayName($numero_jour) . ',&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $jour_fr . '&nbsp;' . $annee;
+                    $newdate = self::getLongDayName($numero_jour)
+                        . ',&nbsp;'
+                        . self::getMonthName($mois_0)
+                        . '&nbsp;'
+                        . $jour_fr
+                        . '&nbsp;'
+                        . $annee;
                 } else {
                     // De style : Montag, 23 Juli 2003
-                    $newdate = self::getLongDayName($numero_jour) . ',&nbsp;' . $jour_fr . '.&nbsp;' . self::getMonthName($mois_0) . '&nbsp;' . $annee;
+                    $newdate = self::getLongDayName($numero_jour)
+                        . ',&nbsp;'
+                        . $jour_fr
+                        . '.&nbsp;'
+                        . self::getMonthName($mois_0)
+                        . '&nbsp;'
+                        . $annee;
                 }
                 break;
 

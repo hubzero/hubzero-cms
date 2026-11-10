@@ -33,7 +33,10 @@ class JsonpCallable extends Middleware
         if ($callback = $request->getVar('callback', null)) {
             // Only allow a valid JS identifier (optionally dotted/namespaced) as
             // the callback, so the reflected value cannot inject script.
-            if (!is_string($callback) || !preg_match('/^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$/', $callback)) {
+            if (
+                !is_string($callback)
+                || !preg_match('/^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$/', $callback)
+            ) {
                 return $response;
             }
             $response->headers->set('content-type', 'application/javascript');

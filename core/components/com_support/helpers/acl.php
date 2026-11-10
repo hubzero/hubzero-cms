@@ -124,7 +124,12 @@ class ACL extends Obj
                         && $line['aco_model'] == $aco
                     ) {
                         if (isset($line['action_' . $action])) {
-                            $permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+                            $permission = (
+                                $line['action_' . $action] > $permission
+                                || ($line['action_' . $action] < 0 && $permission == 0)
+                            )
+                                ? $line['action_' . $action]
+                                : $permission;
                         }
                     }
                     // Get the specific aco model permission if specified (overrides aco permission)
@@ -136,7 +141,12 @@ class ACL extends Obj
                             && $line['aco_foreign_key'] == $aco_foreign_key
                         ) {
                             if (isset($line['action_' . $action])) {
-                                $permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+                                $permission = (
+                                    $line['action_' . $action] > $permission
+                                    || ($line['action_' . $action] < 0 && $permission == 0)
+                                )
+                                    ? $line['action_' . $action]
+                                    : $permission;
                             }
                         }
                     }
@@ -155,7 +165,12 @@ class ACL extends Obj
                 && $line['aco_model'] == $aco
             ) {
                 if (isset($line['action_' . $action])) {
-                    $permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+                    $permission = (
+                        $line['action_' . $action] > $permission
+                        || ($line['action_' . $action] < 0 && $permission == 0)
+                    )
+                        ? $line['action_' . $action]
+                        : $permission;
                     $userspecific = true;
                 }
             }
@@ -168,7 +183,12 @@ class ACL extends Obj
                     && $line['aco_foreign_key'] == $aco_foreign_key
                 ) {
                     if (isset($line['action_' . $action])) {
-                        $permission = ($line['action_' . $action] > $permission || ($line['action_' . $action] < 0 && $permission == 0)) ? $line['action_' . $action] : $permission;
+                        $permission = (
+                            $line['action_' . $action] > $permission
+                            || ($line['action_' . $action] < 0 && $permission == 0)
+                        )
+                            ? $line['action_' . $action]
+                            : $permission;
                         $userspecific = true;
                     }
                 }
@@ -208,8 +228,13 @@ class ACL extends Obj
      * @param   integer  $aro_foreign_key  User ID
      * @return  void
      */
-    public function setAccess($action = null, $aco = null, $permission = null, $aco_foreign_key = null, $aro_foreign_key = null)
-    {
+    public function setAccess(
+        $action = null,
+        $aco = null,
+        $permission = null,
+        $aco_foreign_key = null,
+        $aro_foreign_key = null,
+    ) {
         if ($aro_foreign_key) {
             $this->setUser($aro_foreign_key);
         }

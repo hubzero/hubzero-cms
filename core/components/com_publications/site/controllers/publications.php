@@ -306,7 +306,11 @@ class Publications extends SiteController
      */
     protected function login()
     {
-        $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=' . $this->task), 'server');
+        $rtrn = Request::getString(
+            'REQUEST_URI',
+            Route::url('index.php?option=' . $this->option . '&task=' . $this->task),
+            'server',
+        );
 
         Notify::warning($this->_msg);
 
@@ -385,7 +389,12 @@ class Publications extends SiteController
     public function browseTask()
     {
         // Who may browse and search is a view access level, Public by default
-        if (!$this->requireViewLevel($this->config->get('browse_access', 1), Lang::txt('COM_PUBLICATIONS_SEARCH_LOGIN_REQUIRED'))) {
+        if (
+            !$this->requireViewLevel(
+                $this->config->get('browse_access', 1),
+                Lang::txt('COM_PUBLICATIONS_SEARCH_LOGIN_REQUIRED'),
+            )
+        ) {
             return;
         }
 
@@ -669,7 +678,9 @@ class Publications extends SiteController
 
         // Get filters (for series & workshops listing)
         $defaultsort = ($this->model->_category->alias == 'series') ? 'date' : 'ordering';
-        $defaultsort = ($this->model->_category->alias == 'series' && $this->config->get('show_ranking')) ? 'ranking' : $defaultsort;
+        $defaultsort = ($this->model->_category->alias == 'series' && $this->config->get('show_ranking'))
+            ? 'ranking'
+            : $defaultsort;
 
         $filters = [
             'sortby' => Request::getString('sortby', $defaultsort),
@@ -920,7 +931,11 @@ class Publications extends SiteController
             // flag off (so a version queued before the flag flips is served async).
             try {
                 $db = App::get('db');
-                $db->setQuery("SELECT 1 FROM `#__publication_bundle_queue` WHERE `publication_version_id` = " . $versionId . " LIMIT 1");
+                $db->setQuery(
+                    "SELECT 1 FROM `#__publication_bundle_queue` WHERE `publication_version_id` = "
+                        . $versionId
+                        . " LIMIT 1",
+                );
                 $active = (bool) $db->loadResult();
             } catch (\Throwable $e) {
                 return false;
@@ -1084,7 +1099,10 @@ class Publications extends SiteController
             ->set('option', $this->option)
             ->set('config', $this->config)
             ->set('publication', $this->model)
-            ->set('title', stripslashes($this->model->version->get('title')) . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSE'))
+            ->set(
+                'title',
+                stripslashes($this->model->version->get('title')) . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSE'),
+            )
             ->setErrors($this->getErrors())
             ->display();
     }
@@ -1642,7 +1660,13 @@ class Publications extends SiteController
             Notify::warning(Lang::txt('The license applied to this publication does not allow for derivatives.'));
 
             App::redirect(
-                Route::url('index.php?option=com_publications&id=' . $version->get('publication_id') . '&v=' . $version->get('id'), false),
+                Route::url(
+                    'index.php?option=com_publications&id='
+                        . $version->get('publication_id')
+                        . '&v='
+                        . $version->get('id'),
+                    false,
+                ),
             );
         }
 
@@ -1905,8 +1929,14 @@ class Publications extends SiteController
                 $file2new = Filesystem::name($file) . '-' . $attachment->get('id') . '.' . Filesystem::extension($file);
 
                 $from3 = $pubfilespace . DS;
-                $file3 = \Components\Projects\Helpers\Html::fixFileName(basename($attachment->get('path')), '-' . $oldid);
-                $file3new = \Components\Projects\Helpers\Html::fixFileName(basename($attachment->get('path')), '-' . $attachment->get('id'));
+                $file3 = \Components\Projects\Helpers\Html::fixFileName(
+                    basename($attachment->get('path')),
+                    '-' . $oldid,
+                );
+                $file3new = \Components\Projects\Helpers\Html::fixFileName(
+                    basename($attachment->get('path')),
+                    '-' . $attachment->get('id'),
+                );
 
                 $from   = $pubfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
                 $toProj = $prjfilespace . '/' . ($path ? $path . '/' : ''); // . $file;
@@ -1925,13 +1955,25 @@ class Publications extends SiteController
                         $toPub  = $newpubfilespace . DS;
                     } else {
                         // OK, maybe it's in the gallery
-                        $from  = dirname($pubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
-                        $toPub = dirname($newpubfilespace) . '/' . $galleryParams['directory'] . '/' . ($path ? $path . '/' : '');
+                        $from  = dirname($pubfilespace)
+                            . '/'
+                            . $galleryParams['directory']
+                            . '/'
+                            . ($path ? $path . '/' : '');
+                        $toPub = dirname($newpubfilespace)
+                            . '/'
+                            . $galleryParams['directory']
+                            . '/'
+                            . ($path ? $path . '/' : '');
 
                         if (!file_exists($from . $file)) {
                             // Let's try an alternate file name
                             if (!file_exists($from . $file2)) {
-                                if (!file_exists(dirname($pubfilespace) . DS . $galleryParams['directory'] . DS . $file3)) {
+                                if (
+                                    !file_exists(
+                                        dirname($pubfilespace) . DS . $galleryParams['directory'] . DS . $file3,
+                                    )
+                                ) {
                                     Notify::error(Lang::txt('File does not exist: %s', $from . $file2));
                                     continue;
                                 } else {
@@ -2001,7 +2043,10 @@ class Publications extends SiteController
                         // Note: gallery items' filenames will have a suffix with attachment record ID but the database entry
                         // will point to the un-suffixed filename. DB: foo.jpg (in project space) = foo-123.jpg (in publication space)
                         if (!Filesystem::copy($from . $filename, $toProj . $orig)) { //$filename
-                            App::abort(500, Lang::txt('Failed to copy file "%s" to "%s"', $from . $filename, $toProj . $orig));
+                            App::abort(
+                                500,
+                                Lang::txt('Failed to copy file "%s" to "%s"', $from . $filename, $toProj . $orig),
+                            );
                         }
 
                         if ($pid && $project->params->get('versionTracking')) {
@@ -2076,7 +2121,14 @@ class Publications extends SiteController
                 'action'      => 'forked',
                 'scope'       => 'publication',
                 'scope_id'    => $pub_id,
-                'description' => Lang::txt('COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED', '<a href="' . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum) . '">' . htmlspecialchars((string) ($version->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_PUBLICATIONS_ACTIVITY_ENTRY_FORKED',
+                    '<a href="'
+                        . Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum)
+                        . '">'
+                        . htmlspecialchars((string) ($version->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $version->get('title'),
                     'url'   => Route::url('index.php?option=com_publications&id=' . $pub_id . '&v=' . $vnum),
@@ -2092,13 +2144,28 @@ class Publications extends SiteController
         // Redirect to the project
         if ($pid) {
             App::redirect(
-                Route::url($project->link('publications') . '&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'), false),
+                Route::url(
+                    $project->link('publications')
+                        . '&pid='
+                        . $version->get('publication_id')
+                        . '&version='
+                        . $version->get('version_number'),
+                    false,
+                ),
             );
         }
 
         // Redirect to the publication submission page
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&task=submit&pid=' . $version->get('publication_id') . '&version=' . $version->get('version_number'), false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&task=submit&pid='
+                    . $version->get('publication_id')
+                    . '&version='
+                    . $version->get('version_number'),
+                false,
+            ),
         );
     }
 

@@ -75,8 +75,20 @@ class Resources extends Plugin
         $pluginPath = DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -150,7 +162,9 @@ class Resources extends Plugin
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
                 $area = Request::getWord('area', 'resource');
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area);
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active . '&area=' . $area,
+                );
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -166,7 +180,9 @@ class Resources extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
         }
@@ -299,7 +315,10 @@ class Resources extends Plugin
                     Request::setVar('active', Request::get('tab_active', 'about'));
                     // Add some extra variables to let the tab view know we need a different base url
                     Request::setVar('tab_active_key', 'tab_active');
-                    Request::setVar('tab_base_url', 'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=resources');
+                    Request::setVar(
+                        'tab_base_url',
+                        'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=resources',
+                    );
                     // Added a noview variable to indicate to the controller that we do not want it to try to display the view, simply build it
                     Request::setVar('noview', 1);
 
@@ -412,7 +431,9 @@ class Resources extends Plugin
 
         $rr = Entry::blank();
 
-        $database->setQuery("SELECT id FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid));
+        $database->setQuery(
+            "SELECT id FROM " . $rr->getTableName() . " AS r WHERE r.group_owner=" . $database->quote($gid),
+        );
         return $database->loadObjectList();
     }
 
@@ -463,8 +484,16 @@ class Resources extends Plugin
      * @param   mixed    $areas       An array or string of areas that should retrieve records
      * @return  mixed    Returns integer when counting records, array when retrieving records
      */
-    public function getResources($group, $authorized, $limit = 0, $limitstart = 0, $sort = 'date', $access = 'all', $areas = null, $sortdir = 'asc')
-    {
+    public function getResources(
+        $group,
+        $authorized,
+        $limit = 0,
+        $limitstart = 0,
+        $sort = 'date',
+        $access = 'all',
+        $areas = null,
+        $sortdir = 'asc',
+    ) {
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas) && $limit) {
             $ars = $this->getResourcesAreas();
@@ -571,9 +600,19 @@ class Resources extends Plugin
                 foreach ($rows as $key => $row) {
                     if ($this->group->type == '3') {
                         if ($row->alias) {
-                            $href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&alias=' . $row->alias);
+                            $href = Route::url(
+                                'index.php?option=com_groups&cn='
+                                    . $this->group->cn
+                                    . '&active=resources&alias='
+                                    . $row->alias,
+                            );
                         } else {
-                            $href = Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=resources&id=' . $row->id);
+                            $href = Route::url(
+                                'index.php?option=com_groups&cn='
+                                    . $this->group->cn
+                                    . '&active=resources&id='
+                                    . $row->id,
+                            );
                         }
                     } else {
                         $href = Route::url($row->link());
@@ -600,7 +639,12 @@ class Resources extends Plugin
                         if ($limitstart == -1) {
                             if ($i == 0) {
                                 $counts[] = self::allWithFilters($filters)
-                                    ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                                    ->join(
+                                        '#__resource_acl_group',
+                                        '#__resource_acl_group.resource_id',
+                                        '#__resources.id',
+                                        'left',
+                                    )
                                     ->total(true);
                             } else {
                                 $counts[] = 0;
@@ -610,7 +654,12 @@ class Resources extends Plugin
 
                             // Execute a count query for each area/category
                             $counts[] = self::allWithFilters($filters)
-                                ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
+                                ->join(
+                                    '#__resource_acl_group',
+                                    '#__resource_acl_group.resource_id',
+                                    '#__resources.id',
+                                    'left',
+                                )
                                 ->total(true);
                         }
                         $i++;

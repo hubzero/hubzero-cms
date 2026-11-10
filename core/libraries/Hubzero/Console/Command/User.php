@@ -88,14 +88,22 @@ class User extends Base implements CommandInterface
             }
 
             if ((!$sourceUser || !$destinationUser) && !$this->output->isInteractive()) {
-                $this->output->error('Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]');
+                $this->output->error(
+                    'Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]',
+                );
             }
         } else {
             if ($this->output->isInteractive()) {
-                $destinationUser = (int) $this->output->getResponse('What is the destination user ID (this is the user that will remain after the merge)?');
-                $sourceUser      = (int) $this->output->getResponse('What is the source user ID (this is the user that will be deleted after the merge)?');
+                $destinationUser = (int) $this->output->getResponse(
+                    'What is the destination user ID (this is the user that will remain after the merge)?',
+                );
+                $sourceUser      = (int) $this->output->getResponse(
+                    'What is the source user ID (this is the user that will be deleted after the merge)?',
+                );
             } else {
-                $this->output->error('Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]');
+                $this->output->error(
+                    'Please provide a source and destination user in the format: muse user merge [sourceUserId] into [destUserId]',
+                );
             }
         }
 
@@ -206,7 +214,9 @@ class User extends Base implements CommandInterface
 
                     // We have a match, now check if there are rows to merge
                     $query  = "SELECT * FROM `{$table}` WHERE `{$column}` = '{$sourceUser}' OR `{$column}` LIKE '%{$sUserName}%'";
-                    $query .= ((isset($constraints[$table . '.' . $column])) ? ' ' . $constraints[$table . '.' . $column] : '');
+                    $query .= ((isset(
+                        $constraints[$table . '.' . $column],
+                    )) ? ' ' . $constraints[$table . '.' . $column] : '');
                     $dbo->setQuery($query);
                     $results = $dbo->loadObjectList();
 
@@ -214,7 +224,10 @@ class User extends Base implements CommandInterface
                         $count = count($results);
                         foreach ($results as $row) {
                             if (!$tablePK) {
-                                $this->output->addLine("Ignoring {$table}.{$column} due to lack of primary key", 'warning');
+                                $this->output->addLine(
+                                    "Ignoring {$table}.{$column} due to lack of primary key",
+                                    'warning',
+                                );
                                 continue 2;
                             }
 
@@ -243,7 +256,10 @@ class User extends Base implements CommandInterface
                                     $dbo->insertObject('#__users_merge_log', $log);
                                 } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
                                     if ($e->getPrevious()->getCode() == '23000') {
-                                        $this->output->addLine("Ignoring {$table}.{$column} due to integrity constraint violation", 'warning');
+                                        $this->output->addLine(
+                                            "Ignoring {$table}.{$column} due to integrity constraint violation",
+                                            'warning',
+                                        );
                                         continue 2;
                                     } else {
                                         $this->output->error("Error: " . $e->getMessage());
@@ -294,14 +310,22 @@ class User extends Base implements CommandInterface
             }
 
             if ((!$sourceUser || !$destinationUser) && !$this->output->isInteractive()) {
-                $this->output->error('Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]');
+                $this->output->error(
+                    'Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]',
+                );
             }
         } else {
             if ($this->output->isInteractive()) {
-                $destinationUser = (int) $this->output->getResponse('What is the destination user ID (this is the user that was deleted during the initial merge)?');
-                $sourceUser      = (int) $this->output->getResponse('What is the source user ID (this is the user that was the recipient of the initially merged data)?');
+                $destinationUser = (int) $this->output->getResponse(
+                    'What is the destination user ID (this is the user that was deleted during the initial merge)?',
+                );
+                $sourceUser      = (int) $this->output->getResponse(
+                    'What is the source user ID (this is the user that was the recipient of the initially merged data)?',
+                );
             } else {
-                $this->output->error('Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]');
+                $this->output->error(
+                    'Please provide a source and destination user in the format: muse user unmerge [destUserId] from [sourceUserId]',
+                );
             }
         }
 
@@ -405,7 +429,9 @@ class User extends Base implements CommandInterface
         $account = function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid()) : false;
 
         if (!$account || !in_array($account['name'], self::WEB_ACCOUNTS)) {
-            $this->output->error('This command must be run as the web server\'s account, e.g. sudo -u apache php core/bin/muse user create ...');
+            $this->output->error(
+                'This command must be run as the web server\'s account, e.g. sudo -u apache php core/bin/muse user create ...',
+            );
         }
 
         $usage = 'muse user create <username> --email=<address> --name="Given Surname" [--password=<password>]';
@@ -422,7 +448,11 @@ class User extends Base implements CommandInterface
             $this->output->error('Please provide a username: ' . $usage);
         }
         if (!\Hubzero\Utility\Validate::username($username)) {
-            $this->output->error('"' . $username . '" is not a valid username (lowercase letters, digits and underscores, not all digits, not reserved)');
+            $this->output->error(
+                '"'
+                    . $username
+                    . '" is not a valid username (lowercase letters, digits and underscores, not all digits, not reserved)',
+            );
         }
         if (\Hubzero\User\User::oneByUsername($username)->get('id')) {
             $this->output->error('The username "' . $username . '" is already taken');
@@ -489,7 +519,13 @@ class User extends Base implements CommandInterface
         }
 
         if (!\Hubzero\User\Password::changePassword($user->get('id'), $password)) {
-            $this->output->error('Created ' . $username . ' (' . $user->get('id') . '), but failed to set its password; set it with muse user password');
+            $this->output->error(
+                'Created '
+                    . $username
+                    . ' ('
+                    . $user->get('id')
+                    . '), but failed to set its password; set it with muse user password',
+            );
         }
 
         $this->output->addLine('Created ' . $username . ' (' . $user->get('id') . ')', 'success');

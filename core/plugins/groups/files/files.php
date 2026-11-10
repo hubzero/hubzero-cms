@@ -57,8 +57,20 @@ class Files extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
+            || $lang->load(
+                strtolower($extension),
+                PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            )
+            || $lang->load(
+                strtolower($extension),
+                PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName,
+                null,
+                false,
+                true,
+            );
     }
 
     /**
@@ -138,7 +150,11 @@ class Files extends Plugin
                 User::isGuest()
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
-                $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active, false, true);
+                $url = Route::url(
+                    'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active,
+                    false,
+                    true,
+                );
 
                 App::redirect(
                     Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
@@ -159,14 +175,20 @@ class Files extends Plugin
                 && $group_plugin_acl == 'members'
                 && $authorized != 'admin'
             ) {
-                $arr['html'] = '<p class="info">' . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
+                $arr['html'] = '<p class="info">'
+                    . Lang::txt('GROUPS_PLUGIN_REQUIRES_MEMBER', ucfirst($active))
+                    . '</p>';
                 return $arr;
             }
 
             // Append to document the title
             Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_GROUPS_FILES'));
 
-            $this->path = PATH_APP . DS . trim($this->params->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber');
+            $this->path = PATH_APP
+                . DS
+                . trim($this->params->get('uploadpath', '/site/groups'), DS)
+                . DS
+                . $this->group->get('gidNumber');
 
             $arr['html'] = $this->browse();
         }
@@ -287,7 +309,11 @@ class Files extends Plugin
 
         $html = '<ul>';
         foreach ($tree as $treeLevel) {
-            $folder       = str_replace($base . '/site/groups/' . $this->group->get('gidNumber'), '', $treeLevel['relname']);
+            $folder       = str_replace(
+                $base . '/site/groups/' . $this->group->get('gidNumber'),
+                '',
+                $treeLevel['relname'],
+            );
             $nodeToggle   = '<span class="tree-folder-toggle-spacer"></span>';
             $childrenHtml = '';
 
@@ -297,7 +323,12 @@ class Files extends Plugin
             }
 
             $html .= '<li>';
-            $html .= $nodeToggle . '<a data-folder="' . $folder . '" href="javascript:void(0);" class="tree-folder">' . $treeLevel['name'] . '</a>';
+            $html .= $nodeToggle
+                . '<a data-folder="'
+                . $folder
+                . '" href="javascript:void(0);" class="tree-folder">'
+                . $treeLevel['name']
+                . '</a>';
             $html .= $childrenHtml;
             $html .= '</li>';
         }

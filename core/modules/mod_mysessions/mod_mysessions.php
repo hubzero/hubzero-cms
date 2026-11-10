@@ -94,7 +94,13 @@ class Mysessions extends Module
         // A guest has no username to look sessions up by (getRecords() returns
         // false for one, and the layout counts the result)
         $this->error = false;
-        if (User::isGuest() || !$mwdb || !$mwdb->connected() || !$this->toolsConfig->get('mw_on') || ($this->toolsConfig->get('mw_on') > 1 && !$authorized)) {
+        if (
+            User::isGuest()
+            || !$mwdb
+            || !$mwdb->connected()
+            || !$this->toolsConfig->get('mw_on')
+            || ($this->toolsConfig->get('mw_on') > 1 && !$authorized)
+        ) {
             $this->error = true;
             return false;
         }
@@ -106,7 +112,11 @@ class Mysessions extends Module
             $this->params->get('show_screenshots', 1)
             && strstr(User::get('email'), '@') != '@invalid'
         ) {
-            $cmd = "/bin/sh " . Component::path('com_tools') . "/scripts/mw screenshot " . User::get('username') . " 2>&1 </dev/null";
+            $cmd = "/bin/sh "
+                . Component::path('com_tools')
+                . "/scripts/mw screenshot "
+                . User::get('username')
+                . " 2>&1 </dev/null";
             exec($cmd, $results, $status);
         }
 

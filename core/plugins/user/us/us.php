@@ -52,7 +52,18 @@ class Us extends Plugin
         // location_us follows where the user signs in from now, for access
         // control: an address not known to be in the US (no range, or no
         // geo database) is not a US address
-        Log::debug($ip . ' is ' . ($country == 'us' ? 'a' : 'not a') . ' US address' . ($country === '' ? ' (no country found)' : '') . ', [' . $username . '] ' . ($country == 'us' ? 'in' : 'not in') . ' group [location_us].');
+        Log::debug(
+            $ip
+                . ' is '
+                . ($country == 'us' ? 'a' : 'not a')
+                . ' US address'
+                . ($country === '' ? ' (no country found)' : '')
+                . ', ['
+                . $username
+                . '] '
+                . ($country == 'us' ? 'in' : 'not in')
+                . ' group [location_us].',
+        );
 
         \Hubzero\User\Group::setMember('location_us', $uid, $country == 'us');
 
@@ -96,7 +107,12 @@ class Us extends Plugin
 
         $username = isset($user['username']) ? (string) $user['username'] : '';
 
-        Log::warning(get_class($this) . ': no user in the session at sign-in of [' . $username . ']; is this plugin ordered before user/hubzero? Looking the user up by name.');
+        Log::warning(
+            get_class($this)
+                . ': no user in the session at sign-in of ['
+                . $username
+                . ']; is this plugin ordered before user/hubzero? Looking the user up by name.',
+        );
 
         return $username === '' ? 0 : (int) User::getInstance($username)->get('id');
     }

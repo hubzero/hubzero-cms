@@ -136,7 +136,22 @@ class Tickets extends SiteController
     {
         // Check authorization
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server'));
+            $return = base64_encode(
+                Request::getString(
+                    'REQUEST_URI',
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task='
+                            . $this->task,
+                        false,
+                        true,
+                    ),
+                    'server',
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -144,7 +159,9 @@ class Tickets extends SiteController
         }
 
         if (!$this->acl->check('read', 'tickets')) {
-            $this->_return = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets');
+            $this->_return = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets',
+            );
         }
 
         // Set the page title
@@ -292,7 +309,10 @@ class Tickets extends SiteController
             $sql .= " AND `group_id`=" . $this->database->quote($gidNumber);
         }
         if ($this->view->start && $end) {
-            $sql .= " AND created >= " . $this->database->quote($this->view->start . '-01 00:00:00') . " AND created < " . $this->database->quote($end . '-01 00:00:00');
+            $sql .= " AND created >= "
+                . $this->database->quote($this->view->start . '-01 00:00:00')
+                . " AND created < "
+                . $this->database->quote($end . '-01 00:00:00');
         }
         $sql .= " ORDER BY created ASC";
         $this->database->setQuery($sql);
@@ -345,7 +365,10 @@ class Tickets extends SiteController
             $sql .= " AND t.`group_id`=" . $this->database->quote($gidNumber);
         }
         if ($this->view->start && $end) {
-            $sql .= " AND t.closed >= " . $this->database->quote($this->view->start . '-01 00:00:00') . " AND t.closed < " . $this->database->quote($end . '-01 00:00:00');
+            $sql .= " AND t.closed >= "
+                . $this->database->quote($this->view->start . '-01 00:00:00')
+                . " AND t.closed < "
+                . $this->database->quote($end . '-01 00:00:00');
         }
         $sql .= " ORDER BY t.closed ASC";
 
@@ -396,7 +419,9 @@ class Tickets extends SiteController
                 if ($k == $year && $i > $endmonth) {
                     break;
                 } else {
-                    $this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i])) ? $closed[$k][$i] : 0;
+                    $this->view->closedmonths[$k][$i] = (isset($closed[$k]) && isset($closed[$k][$i]))
+                        ? $closed[$k][$i]
+                        : 0;
                     $this->view->openedmonths[$k][$i] = (isset($open[$k]) && isset($open[$k][$i])) ? $open[$k][$i] : 0;
                 }
 
@@ -472,7 +497,22 @@ class Tickets extends SiteController
     public function displayTask()
     {
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server'));
+            $return = base64_encode(
+                Request::getString(
+                    'REQUEST_URI',
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task='
+                            . $this->task,
+                        false,
+                        true,
+                    ),
+                    'server',
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -917,7 +957,12 @@ class Tickets extends SiteController
         // The form offers a fixed set of severities; anything else is stored as
         // submitted and echoed back into class attributes on the ticket pages
         $severities = Utilities::getSeverities($this->config->get('severities'));
-        $row->set('severity', (isset($problem['severity']) && in_array($problem['severity'], $severities) ? $problem['severity'] : 'normal'));
+        $row->set(
+            'severity',
+            (isset(
+                $problem['severity'],
+            ) && in_array($problem['severity'], $severities) ? $problem['severity'] : 'normal'),
+        );
         $row->set('owner', (isset($problem['owner']) ? $problem['owner'] : 0));
         $row->set('category', (isset($problem['category']) ? $problem['category'] : ''));
         $row->set('summary', $problem['short']);
@@ -957,7 +1002,10 @@ class Tickets extends SiteController
             ->row();
 
         // for the first ticket ever
-        if ($prevSubmission->get('report') == $row->get('report') && (time() - strtotime($prevSubmission->get('created')) <= 15)) {
+        if (
+            $prevSubmission->get('report') == $row->get('report')
+            && (time() - strtotime($prevSubmission->get('created')) <= 15)
+        ) {
             $this->setError(Lang::txt('COM_SUPPORT_TICKET_DUPLICATE_DETECTION'));
             return $this->newTask($row);
         }
@@ -977,7 +1025,9 @@ class Tickets extends SiteController
 
         if ($defs) {
             $message = new \Hubzero\Mail\Message();
-            $message->setSubject(Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')));
+            $message->setSubject(
+                Config::get('sitename') . ' ' . Lang::txt('COM_SUPPORT_EMAIL_SUBJECT_NEW_TICKET', $row->get('id')),
+            );
             $message->addFrom(
                 Config::get('mailfrom'),
                 Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->option)),
@@ -1010,7 +1060,13 @@ class Tickets extends SiteController
                     if ($attachment->size() < 2097152) {
                         if ($attachment->isImage()) {
                             $file = basename($attachment->path());
-                            $html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->path()) . '" alt="" />', $html);
+                            $html = preg_replace(
+                                '/<a class="img" data\-filename="'
+                                    . str_replace('.', '\.', $file)
+                                    . '" href="(.*?)"\>(.*?)<\/a>/i',
+                                '<img src="' . $message->getEmbed($attachment->path()) . '" alt="" />',
+                                $html,
+                            );
                         } else {
                             $message->addAttachment($attachment->path());
                         }
@@ -1046,7 +1102,18 @@ class Tickets extends SiteController
                     'action'      => 'created',
                     'scope'       => 'support.ticket',
                     'scope_id'    => $row->get('id'),
-                    'description' => Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_CREATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                    'description' => Lang::txt(
+                        'COM_SUPPORT_ACTIVITY_TICKET_CREATED',
+                        '<a href="'
+                            . Route::url($row->link())
+                            . '">#'
+                            . htmlspecialchars(
+                                (string) ($row->get('id') . ' - ' . $row->get('summary')),
+                                ENT_QUOTES,
+                                'UTF-8',
+                            )
+                            . '</a>',
+                    ),
                     'details'     => [
                         'id'      => $row->get('id'),
                         'summary' => $row->get('summary'),
@@ -1182,8 +1249,15 @@ class Tickets extends SiteController
                         }
 
                         // Get the user's email address
-                        if (!Event::trigger('xmessage.onSendMessage', ['support_reply_submitted', $subject, $message, $from, [$to['id']], $this->option])) {
-                            $this->setError(Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+                        if (
+                            !Event::trigger(
+                                'xmessage.onSendMessage',
+                                ['support_reply_submitted', $subject, $message, $from, [$to['id']], $this->option],
+                            )
+                        ) {
+                            $this->setError(
+                                Lang::txt('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'),
+                            );
                         }
                         $rowc->changelog()->notified(
                             $to['role'],
@@ -1233,9 +1307,32 @@ class Tickets extends SiteController
                     $recipients[] = ['user', $creator->get('id')];
                 }
 
-                $desc = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_UPDATED', '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
+                $desc = Lang::txt(
+                    'COM_SUPPORT_ACTIVITY_TICKET_UPDATED',
+                    '<a href="'
+                        . Route::url($row->link())
+                        . '">#'
+                        . htmlspecialchars(
+                            (string) ($row->get('id') . ' - ' . $row->get('summary')),
+                            ENT_QUOTES,
+                            'UTF-8',
+                        )
+                        . '</a>',
+                );
                 if ($rowc->get('comment')) {
-                    $desc = Lang::txt('COM_SUPPORT_ACTIVITY_COMMENT_CREATED', $rowc->get('id'), '<a href="' . Route::url($row->link()) . '">#' . htmlspecialchars((string) ($row->get('id') . ' - ' . $row->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
+                    $desc = Lang::txt(
+                        'COM_SUPPORT_ACTIVITY_COMMENT_CREATED',
+                        $rowc->get('id'),
+                        '<a href="'
+                            . Route::url($row->link())
+                            . '">#'
+                            . htmlspecialchars(
+                                (string) ($row->get('id') . ' - ' . $row->get('summary')),
+                                ENT_QUOTES,
+                                'UTF-8',
+                            )
+                            . '</a>',
+                    );
                 }
 
                 Event::trigger('system.logActivity', [
@@ -1490,7 +1587,13 @@ class Tickets extends SiteController
     {
         // Make sure we are still logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true));
+            $return = base64_encode(
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
+                    false,
+                    true,
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -1537,7 +1640,19 @@ class Tickets extends SiteController
             }
             $incoming = array_intersect_key($incoming, ['status' => 1]);
         }
-        unset($incoming['id'], $incoming['login'], $incoming['created'], $incoming['report'], $incoming['summary'], $incoming['email'], $incoming['name'], $incoming['ip'], $incoming['hostname'], $incoming['uas'], $incoming['referrer']);
+        unset(
+            $incoming['id'],
+            $incoming['login'],
+            $incoming['created'],
+            $incoming['report'],
+            $incoming['summary'],
+            $incoming['email'],
+            $incoming['name'],
+            $incoming['ip'],
+            $incoming['hostname'],
+            $incoming['uas'],
+            $incoming['referrer'],
+        );
 
         // Initiate class and bind posted items to database fields
         $row = Ticket::oneOrNew($id)->set($incoming);
@@ -1557,7 +1672,14 @@ class Tickets extends SiteController
 
         if ($lastcomment && $lastcomment->get('created') > $started) {
             $rowc->set('comment', $comment);
-            $this->setError(Lang::txt('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.' . $lastcomment->get('created') . ' > ' . $started));
+            $this->setError(
+                Lang::txt(
+                    'Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'
+                        . $lastcomment->get('created')
+                        . ' > '
+                        . $started,
+                ),
+            );
             return $this->ticketTask($rowc);
         }
 
@@ -1580,7 +1702,12 @@ class Tickets extends SiteController
             // If a comment was posted always change status to open.  This is the typical expected behavior.
             // Preventing new comments from re-opening a ticket can result in comments that are never responded to.
             // If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
-            if ((!$row->isOpen()) && $row->get('open') == $old->get('open') || $row->isWaiting() && User::get('username') == $row->get('login')) {
+            if (
+                (!$row->isOpen())
+                && $row->get('open') == $old->get('open')
+                || $row->isWaiting()
+                && User::get('username') == $row->get('login')
+            ) {
                 $row->open();
             }
         }
@@ -1644,7 +1771,9 @@ class Tickets extends SiteController
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $id),
+            Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $id,
+            ),
             ($this->getError() ? $this->getError() : null),
             ($this->getError() ? 'error' : null),
         );
@@ -1659,7 +1788,13 @@ class Tickets extends SiteController
     {
         // Must be logged in
         if (User::isGuest()) {
-            $return = base64_encode(Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets', false, true));
+            $return = base64_encode(
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets',
+                    false,
+                    true,
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -1693,7 +1828,14 @@ class Tickets extends SiteController
         // Load the record
         $ticket = Ticket::oneOrFail($id);
 
-        $description = Lang::txt('COM_SUPPORT_ACTIVITY_TICKET_DELETED', '<a href="' . Route::url($ticket->link()) . '">#' . htmlspecialchars((string) ($ticket->get('id') . ' - ' . $ticket->get('summary')), ENT_QUOTES, 'UTF-8') . '</a>');
+        $description = Lang::txt(
+            'COM_SUPPORT_ACTIVITY_TICKET_DELETED',
+            '<a href="'
+                . Route::url($ticket->link())
+                . '">#'
+                . htmlspecialchars((string) ($ticket->get('id') . ' - ' . $ticket->get('summary')), ENT_QUOTES, 'UTF-8')
+                . '</a>',
+        );
 
         // Delete ticket
         if (!$ticket->destroy()) {
@@ -1831,9 +1973,13 @@ class Tickets extends SiteController
         if (strstr($summary, '"') || strstr($summary, "'")) {
             $summary = str_replace("\'", "\\\\\\\\\'", $summary);
             $summary = str_replace('\"', '\\\\\\\\\"', $summary);
-            $query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE " . $this->database->quote('%' . strtolower($summary) . '%') . " AND type=1 LIMIT 1";
+            $query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE "
+                . $this->database->quote('%' . strtolower($summary) . '%')
+                . " AND type=1 LIMIT 1";
         }
-        $query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE " . $this->database->quote('%' . strtolower($summary) . '%') . " AND type=1 LIMIT 1";
+        $query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE "
+            . $this->database->quote('%' . strtolower($summary) . '%')
+            . " AND type=1 LIMIT 1";
         $this->database->setQuery($query);
 
         if ($ticket = $this->database->loadResult()) {
@@ -1879,9 +2025,17 @@ class Tickets extends SiteController
             $row->set('open', 1);
             $row->set('created', Date::toSql());
             $row->set('severity', ($row->get('severity') ? $row->get('severity') : 'normal'));
-            $row->set('category', ($row->get('category') ? $row->get('category') : Lang::txt('COM_SUPPORT_CATEGORY_TOOLS')));
+            $row->set(
+                'category',
+                ($row->get('category') ? $row->get('category') : Lang::txt('COM_SUPPORT_CATEGORY_TOOLS')),
+            );
             $row->set('resolved', '');
-            $row->set('email', ($row->get('email') ? $row->get('email') : (!isset($this->attributes['supportemail']) ? '' : $this->attributes['supportemail'])));
+            $row->set(
+                'email',
+                ($row->get('email') ? $row->get('email') : (!isset(
+                    $this->attributes['supportemail'],
+                ) ? '' : $this->attributes['supportemail'])),
+            );
             $row->set('name', ($row->get('name') ? $row->get('name') : Lang::txt('COM_SUPPORT_AUTOMATED_REPORT')));
             $row->set('cookies', ($row->get('cookies') ? $row->get('cookies') : 1));
             $row->set('instances', 1);
@@ -1915,7 +2069,22 @@ class Tickets extends SiteController
     {
         // Check logged in status
         if (User::isGuest()) {
-            $return = base64_encode(Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task, false, true), 'server'));
+            $return = base64_encode(
+                Request::getString(
+                    'REQUEST_URI',
+                    Route::url(
+                        'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task='
+                            . $this->task,
+                        false,
+                        true,
+                    ),
+                    'server',
+                ),
+            );
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -2056,7 +2225,9 @@ class Tickets extends SiteController
             }
 
             if ($file['size'][$i] > $sizeLimit) {
-                $this->setError(Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)));
+                $this->setError(
+                    Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)),
+                );
                 continue;
             }
 

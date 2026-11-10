@@ -93,7 +93,9 @@ class Source extends Obj
                 $this->template = false;
             } else {
                 $this->template = $result;
-                $this->template->path = \Hubzero\Filesystem\Util::normalizePath(($this->template->protected ? PATH_CORE : PATH_APP) . '/templates/' . $this->template->element);
+                $this->template->path = \Hubzero\Filesystem\Util::normalizePath(
+                    ($this->template->protected ? PATH_CORE : PATH_APP) . '/templates/' . $this->template->element,
+                );
             }
         }
 

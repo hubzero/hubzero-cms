@@ -189,14 +189,16 @@ class Debug extends Plugin
 
 
             . '</h1>';
-        $html .= '<a class="debug-close-btn" href="#system-debug"><span class="icon-remove">' . Lang::txt('PLG_DEBUG_CLOSE')
+        $html .= '<a class="debug-close-btn" href="#system-debug"><span class="icon-remove">'
+            . Lang::txt('PLG_DEBUG_CLOSE')
 
 
             . '</span></a>';
 
         if (Config::get('debug')) {
             if ($this->params->get('memory', 1)) {
-                $html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="' . Lang::txt('PLG_DEBUG_MEMORY_USAGE')
+                $html .= '<span class="debug-indicator"><span class="icon-memory text" data-hint="'
+                    . Lang::txt('PLG_DEBUG_MEMORY_USAGE')
 
 
                     . '">' . $this->displayMemoryUsage() . '</span></span>';
@@ -204,7 +206,8 @@ class Debug extends Plugin
 
             $dumper = \Hubzero\Debug\Dumper::getInstance();
             if ($dumper->hasMessages()) {
-                $html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">' . Lang::txt('PLG_DEBUG_CONSOLE')
+                $html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">'
+                    . Lang::txt('PLG_DEBUG_CONSOLE')
 
 
                     . '</span>';
@@ -215,22 +218,26 @@ class Debug extends Plugin
                 $html .= '</a>';
             }
 
-            $html .= '<a href="#debug-request" class="debug-tab debug-tab-request"><span class="text">' . Lang::txt('PLG_DEBUG_REQUEST_DATA')
+            $html .= '<a href="#debug-request" class="debug-tab debug-tab-request"><span class="text">'
+                . Lang::txt('PLG_DEBUG_REQUEST_DATA')
 
 
                 . '</span></a>';
-            $html .= '<a href="#debug-session" class="debug-tab debug-tab-session"><span class="text">' . Lang::txt('PLG_DEBUG_SESSION')
+            $html .= '<a href="#debug-session" class="debug-tab debug-tab-session"><span class="text">'
+                . Lang::txt('PLG_DEBUG_SESSION')
 
 
                 . '</span></a>';
             if ($this->params->get('profile', 1)) {
-                $html .= '<a href="#debug-profile_information" class="debug-tab debug-tab-timeline"><span class="text">' . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE')
+                $html .= '<a href="#debug-profile_information" class="debug-tab debug-tab-timeline"><span class="text">'
+                    . Lang::txt('PLG_DEBUG_PROFILE_TIMELINE')
 
 
                     . '</span></a>';
             }
             if ($this->params->get('queries', 1)) {
-                $html .= '<a href="#debug-queries" class="debug-tab debug-tab-database"><span class="text">' . Lang::txt('PLG_DEBUG_QUERIES')
+                $html .= '<a href="#debug-queries" class="debug-tab debug-tab-database"><span class="text">'
+                    . Lang::txt('PLG_DEBUG_QUERIES')
 
 
                     . '</span><span class="badge">' . App::get('db')->getCount()
@@ -238,7 +245,8 @@ class Debug extends Plugin
 
                     . '</span></a>';
             }
-            $html .= '<a href="#debug-events" class="debug-tab debug-tab-events"><span class="text">' . Lang::txt('PLG_DEBUG_EVENTS')
+            $html .= '<a href="#debug-events" class="debug-tab debug-tab-events"><span class="text">'
+                . Lang::txt('PLG_DEBUG_EVENTS')
 
 
                 . '</span><span class="badge">' . count(Event::getCalledListeners())
@@ -249,7 +257,8 @@ class Debug extends Plugin
 
         if (Config::get('debug_lang')) {
             if ($this->params->get('language_errorfiles', 1)) {
-                $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS')
+                $html .= '<a href="#debug-language_files_in_error" class="debug-tab debug-tab-lang-errors"><span class="text">'
+                    . Lang::txt('PLG_DEBUG_LANGUAGE_FILE_ERRORS')
 
 
                     . '</span>';
@@ -265,7 +274,8 @@ class Debug extends Plugin
                 foreach (Lang::getPaths() as $extension => $files) {
                     $total += count($files);
                 }
-                $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span class="text">' . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED')
+                $html .= '<a href="#debug-language_files_loaded" class="debug-tab debug-tab-lang-files"><span class="text">'
+                    . Lang::txt('PLG_DEBUG_LANGUAGE_FILES_LOADED')
 
 
                     . '</span>';
@@ -277,7 +287,8 @@ class Debug extends Plugin
             }
 
             if ($this->params->get('language_strings')) {
-                $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span class="text">' . Lang::txt('PLG_DEBUG_UNTRANSLATED')
+                $html .= '<a href="#debug-untranslated_strings" class="debug-tab debug-tab-lang-untranslated"><span class="text">'
+                    . Lang::txt('PLG_DEBUG_UNTRANSLATED')
 
 
                     . '</span>';
@@ -536,7 +547,9 @@ class Debug extends Plugin
 
         foreach (App::get('profiler')->marks() as $mark) {
             $data = sprintf(
-                '<code>%s %.3f seconds (<span class="tm">+%.3f</span>); ' . "" . '%0.2f MB (<span class="mmry">%s%0.3f</span>) - <span class="msg">%s</span></code>',
+                '<code>%s %.3f seconds (<span class="tm">+%.3f</span>); '
+                    . ""
+                    . '%0.2f MB (<span class="mmry">%s%0.3f</span>) - <span class="msg">%s</span></code>',
                 $name,
                 ($mark->ended() - $started),
                 ($mark->ended() - $previousTime),

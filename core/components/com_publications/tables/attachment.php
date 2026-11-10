@@ -800,7 +800,10 @@ class Attachment extends Table
 
         if ($rows) {
             foreach ($rows as $i => $row) {
-                $sql = "UPDATE `$this->tableName` SET `ordering`=" . ($i + 1) . " WHERE id=" . $this->db->quote($row->id);
+                $sql = "UPDATE `$this->tableName` SET `ordering`="
+                    . ($i + 1)
+                    . " WHERE id="
+                    . $this->db->quote($row->id);
                 $this->db->setQuery($sql);
                 if (!$this->db->query()) {
                     $this->setError($this->db->getErrorMsg());

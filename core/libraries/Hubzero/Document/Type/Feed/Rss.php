@@ -53,8 +53,14 @@ class Rss extends Renderer
         //$feed  = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
         $feed .= '	<channel>' . "\n";
         $feed .= '		<title>' . $this->escape($data->title) . '</title>' . "\n";
-        $feed .= '		<description><![CDATA[' . str_replace(']]>', ']]]]><![CDATA[>', $this->unwrapCdata((string) $data->description)) . ']]></description>' . "\n";
-        $feed .= '		<link>' . $this->escapeUrl(str_replace(' ', '%20', $url . ltrim($data->link, '/'))) . '</link>' . "\n";
+        $feed .= '		<description><![CDATA['
+            . str_replace(']]>', ']]]]><![CDATA[>', $this->unwrapCdata((string) $data->description))
+            . ']]></description>'
+            . "\n";
+        $feed .= '		<link>'
+            . $this->escapeUrl(str_replace(' ', '%20', $url . ltrim($data->link, '/')))
+            . '</link>'
+            . "\n";
         $feed .= '		<lastBuildDate>' . $this->escape($now->toRFC822()) . '</lastBuildDate>' . "\n";
         $feed .= '		<generator>' . $this->escape($data->getGenerator()) . '</generator>' . "\n";
 
@@ -104,7 +110,10 @@ class Rss extends Renderer
                 $feed .= '			<height>' . $this->escape($data->image->height) . '</height>' . "\n";
             }
             if ($data->image->description != '') {
-                $feed .= '			<description><![CDATA[' . str_replace(']]>', ']]]]><![CDATA[>', $this->unwrapCdata((string) $data->image->description)) . ']]></description>' . "\n";
+                $feed .= '			<description><![CDATA['
+                    . str_replace(']]>', ']]]]><![CDATA[>', $this->unwrapCdata((string) $data->image->description))
+                    . ']]></description>'
+                    . "\n";
             }
             $feed .= '		</image>' . "\n";
         }
@@ -160,26 +169,42 @@ class Rss extends Renderer
             $feed .= "		<item>\n";
             $feed .= "			<title>" . $this->escape(strip_tags($data->items[$i]->title)) . "</title>\n";
             $feed .= "			<link>" . $this->escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</link>\n";
-            $feed .= "			<description><![CDATA[" . str_replace(']]>', ']]]]><![CDATA[>', $this->unwrapCdata((string) $this->relToAbs($data->items[$i]->description))) . "]]></description>\n";
+            $feed .= "			<description><![CDATA["
+                . str_replace(
+                    ']]>',
+                    ']]]]><![CDATA[>',
+                    $this->unwrapCdata((string) $this->relToAbs($data->items[$i]->description)),
+                )
+                . "]]></description>\n";
 
             if (empty($data->items[$i]->guid) === true) {
-                $feed .= "			<guid isPermaLink=\"true\">" . $this->escapeUrl(str_replace(' ', '%20', $data->items[$i]->link)) . "</guid>\n";
+                $feed .= "			<guid isPermaLink=\"true\">"
+                    . $this->escapeUrl(str_replace(' ', '%20', $data->items[$i]->link))
+                    . "</guid>\n";
             } else {
                 $feed .= "			<guid isPermaLink=\"false\">" . $this->escape($data->items[$i]->guid) . "</guid>\n";
             }
 
             // iTunes specific tags
             if ($data->items[$i]->itunes_summary != '') {
-                $feed .= "			<itunes:summary>" . $this->escape($data->items[$i]->itunes_summary) . "</itunes:summary>\n";
+                $feed .= "			<itunes:summary>"
+                    . $this->escape($data->items[$i]->itunes_summary)
+                    . "</itunes:summary>\n";
             }
             if ($data->items[$i]->itunes_duration != '') {
-                $feed .= "			<itunes:duration>" . $this->escape($data->items[$i]->itunes_duration) . "</itunes:duration>\n";
+                $feed .= "			<itunes:duration>"
+                    . $this->escape($data->items[$i]->itunes_duration)
+                    . "</itunes:duration>\n";
             }
             if ($data->items[$i]->itunes_explicit != '') {
-                $feed .= "			<itunes:explicit>" . $this->escape($data->items[$i]->itunes_explicit) . "</itunes:explicit>\n";
+                $feed .= "			<itunes:explicit>"
+                    . $this->escape($data->items[$i]->itunes_explicit)
+                    . "</itunes:explicit>\n";
             }
             if ($data->items[$i]->itunes_keywords != '') {
-                $feed .= "			<itunes:keywords>" . $this->escape($data->items[$i]->itunes_keywords) . "</itunes:keywords>\n";
+                $feed .= "			<itunes:keywords>"
+                    . $this->escape($data->items[$i]->itunes_keywords)
+                    . "</itunes:keywords>\n";
             }
             if ($data->items[$i]->itunes_author != '') {
                 $feed .= "			<itunes:author>" . $this->escape($data->items[$i]->itunes_author) . "</itunes:author>\n";
@@ -206,7 +231,13 @@ class Rss extends Renderer
                     $feed .= "			<height>" . $this->escape($data->items[$i]->itunes_image->height) . "</height>\n";
                 }
                 if ($data->items[$i]->itunes_image->description != '') {
-                    $feed .= "			<description><![CDATA[" . str_replace(']]>', ']]]]><![CDATA[>', $this->unwrapCdata((string) $data->items[$i]->itunes_image->description)) . "]]></description>\n";
+                    $feed .= "			<description><![CDATA["
+                        . str_replace(
+                            ']]>',
+                            ']]]]><![CDATA[>',
+                            $this->unwrapCdata((string) $data->items[$i]->itunes_image->description),
+                        )
+                        . "]]></description>\n";
                 }
                 $feed .= "			</itunes:image>\n";
             }
@@ -236,7 +267,14 @@ class Rss extends Renderer
             // carry two. Readers key de-duplication on guid; a repeated element
             // is at best ignored and at worst treated as a different item.
             if ($data->items[$i]->enclosure != null) {
-                $feed .= '			<enclosure url="' . $this->escapeUrl($data->items[$i]->enclosure->url) . '" length="' . $this->escape($data->items[$i]->enclosure->length) . '" type="' . $this->escape($data->items[$i]->enclosure->type) . '"/>' . "\n";
+                $feed .= '			<enclosure url="'
+                    . $this->escapeUrl($data->items[$i]->enclosure->url)
+                    . '" length="'
+                    . $this->escape($data->items[$i]->enclosure->length)
+                    . '" type="'
+                    . $this->escape($data->items[$i]->enclosure->type)
+                    . '"/>'
+                    . "\n";
             }
 
             $feed .= "		</item>\n";

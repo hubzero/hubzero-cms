@@ -138,7 +138,11 @@ class IdPBindingTest extends Basic
      */
     public function testTamperedRedirectRequestIsNotTrusted()
     {
-        $location = str_replace('RelayState=state-123', 'RelayState=state-999', $this->signedRedirect($this->authnRequest(), 'sp'));
+        $location = str_replace(
+            'RelayState=state-123',
+            'RelayState=state-999',
+            $this->signedRedirect($this->authnRequest(), 'sp'),
+        );
 
         $message = $this->idp->readSAMLRequest($this->arrive('GET', $location))->getMessage();
 

@@ -84,7 +84,15 @@ class Share extends Plugin
                         'action'      => 'shared',
                         'scope'       => 'resource',
                         'scope_id'    => $model->id,
-                        'description' => Lang::txt('PLG_RESOURCES_SHARE_ENTRY_SHARED', '<a href="' . $sef . '">' . htmlspecialchars((string) ($model->title), ENT_QUOTES, 'UTF-8') . '</a>', $sharewith),
+                        'description' => Lang::txt(
+                            'PLG_RESOURCES_SHARE_ENTRY_SHARED',
+                            '<a href="'
+                                . $sef
+                                . '">'
+                                . htmlspecialchars((string) ($model->title), ENT_QUOTES, 'UTF-8')
+                                . '</a>',
+                            $sharewith,
+                        ),
                         'details'     => [
                             'with'  => $sharewith,
                             'title' => $model->title,
@@ -157,7 +165,16 @@ class Share extends Plugin
                 break;
 
             case 'twitter':
-                $link = 'http://twitter.com/intent/tweet?text=' . urlencode(Lang::txt('PLG_RESOURCES_SHARE_VIEWING', Config::get('sitename'), stripslashes($resource->title)) . ' ' . $url);
+                $link = 'http://twitter.com/intent/tweet?text='
+                    . urlencode(
+                        Lang::txt(
+                            'PLG_RESOURCES_SHARE_VIEWING',
+                            Config::get('sitename'),
+                            stripslashes($resource->title),
+                        )
+                            . ' '
+                            . $url,
+                    );
                 break;
 
             case 'google':
@@ -173,7 +190,12 @@ class Share extends Plugin
                 break;
 
             case 'linkedin':
-                $link = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title=' . $title . '&summary=' . $description;
+                $link = 'https://www.linkedin.com/shareArticle?mini=true&url='
+                    . $url
+                    . '&title='
+                    . $title
+                    . '&summary='
+                    . $description;
                 break;
         }
 

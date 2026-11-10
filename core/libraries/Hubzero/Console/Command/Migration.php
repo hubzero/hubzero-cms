@@ -290,7 +290,11 @@ class Migration extends Base implements CommandInterface
                                     $complete[] = $matches[1] . $matches[2];
                                 }
                                 if (
-                                    preg_match('/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has not been run/i', $log['message'], $matches)
+                                    preg_match(
+                                        '/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has not been run/i',
+                                        $log['message'],
+                                        $matches,
+                                    )
                                 ) {
                                     $missed[] = $matches[1] . $matches[2];
                                 }

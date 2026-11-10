@@ -136,7 +136,10 @@ class Watch extends Plugin
         $url = Route::url($this->publication->link());
         // Login required
         if (User::isGuest() || !$this->publication->exists()) {
-            $subscribeUrl = Route::url($this->publication->link('version') . '&active=watch&action=' . $this->action . '&confirm=' . $confirm, false);
+            $subscribeUrl = Route::url(
+                $this->publication->link('version') . '&active=watch&action=' . $this->action . '&confirm=' . $confirm,
+                false,
+            );
             $loginUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($subscribeUrl));
             App::redirect(
                 $loginUrl,
@@ -197,7 +200,14 @@ class Watch extends Plugin
                 'action'      => $this->action . 'd',
                 'scope'       => 'publication',
                 'scope_id'    => $this->publication->get('id'),
-                'description' => Lang::txt('PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D', '<a href="' . $url . '">' . htmlspecialchars((string) ($this->publication->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'PLG_PUBLICATIONS_WATCH_' . strtoupper($this->action) . 'D',
+                    '<a href="'
+                        . $url
+                        . '">'
+                        . htmlspecialchars((string) ($this->publication->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $this->publication->get('title'),
                     'url'   => $url,
@@ -239,7 +249,9 @@ class Watch extends Plugin
         switch ($activity) {
             case 'newversion':
                 $message = Lang::txt('PLG_PUBLICATIONS_WATCH_MESSAGE_NEWVERSION');
-                $subject = Lang::txt('PLG_PUBLICATIONS_WATCH_PUBLICATIONS') . ': ' . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBJECT_EMAIL');
+                $subject = Lang::txt('PLG_PUBLICATIONS_WATCH_PUBLICATIONS')
+                    . ': '
+                    . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBJECT_EMAIL');
                 $url = Route::url($this->publication->link('version'));
                 break;
         }
@@ -285,7 +297,9 @@ class Watch extends Plugin
         $name = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBSCRIBER');
         $email = $subscriber->email;
 
-        $eview->unsubscribeLink = Route::url($this->publication->link() . '&active=watch&action=unsubscribe&confirm=1&email=' . $email);
+        $eview->unsubscribeLink = Route::url(
+            $this->publication->link() . '&active=watch&action=unsubscribe&confirm=1&email=' . $email,
+        );
 
         // Get profile information
         if ($subscriber->created_by) {

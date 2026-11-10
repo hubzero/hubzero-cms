@@ -223,7 +223,11 @@ class Attachments extends SiteController
             ]);
 
             // Clean and validate path
-            $resource->path = str_replace(['|', '\\', '{', '}', '^'], ['%7C', '%5C', '%7B', '%7D', '%5E'], $resource->path);
+            $resource->path = str_replace(
+                ['|', '\\', '{', '}', '^'],
+                ['%7C', '%5C', '%7B', '%7D', '%5E'],
+                $resource->path,
+            );
 
             if (!Validate::url($resource->path)) {
                 echo json_encode([
@@ -346,7 +350,30 @@ class Attachments extends SiteController
         // Contributors upload archives, source and media of many types, so block
         // only server-executable extensions and the markup types the download
         // handler serves inline (a stored HTML file would run in the hub origin)
-        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
+        $blockedExtensions = [
+            'php',
+            'php3',
+            'php4',
+            'php5',
+            'php7',
+            'php8',
+            'phtml',
+            'pht',
+            'phar',
+            'phps',
+            'cgi',
+            'pl',
+            'asp',
+            'aspx',
+            'jsp',
+            'shtml',
+            'htaccess',
+            'htpasswd',
+            'html',
+            'htm',
+            'xhtml',
+            'xml',
+        ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             echo json_encode(['error' => Lang::txt('File type not allowed: %s', $ext)]);
             return;
@@ -618,7 +645,30 @@ class Attachments extends SiteController
         // Contributors upload archives, source and media of many types, so block
         // only server-executable extensions and the markup types the download
         // handler serves inline (a stored HTML file would run in the hub origin)
-        $blockedExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'php8', 'phtml', 'pht', 'phar', 'phps', 'cgi', 'pl', 'asp', 'aspx', 'jsp', 'shtml', 'htaccess', 'htpasswd', 'html', 'htm', 'xhtml', 'xml'];
+        $blockedExtensions = [
+            'php',
+            'php3',
+            'php4',
+            'php5',
+            'php7',
+            'php8',
+            'phtml',
+            'pht',
+            'phar',
+            'phps',
+            'cgi',
+            'pl',
+            'asp',
+            'aspx',
+            'jsp',
+            'shtml',
+            'htaccess',
+            'htpasswd',
+            'html',
+            'htm',
+            'xhtml',
+            'xml',
+        ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('File type not allowed: %s', $ext));
             return $this->displayTask($pid);
@@ -743,11 +793,19 @@ class Attachments extends SiteController
                 $doc_id = $database->loadResult();
 
                 if (!$doc_id) {
-                    $database->execute("INSERT INTO `#__document_text_data` (hash) VALUES (" . $database->quote($hash) . ")");
+                    $database->execute(
+                        "INSERT INTO `#__document_text_data` (hash) VALUES (" . $database->quote($hash) . ")",
+                    );
                     $doc_id = $database->insertId();
                 }
 
-                $database->execute("INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES (" . (int) $doc_id . ", " . (int) $id . ")");
+                $database->execute(
+                    "INSERT IGNORE INTO `#__document_resource_rel` (document_id, resource_id) VALUES ("
+                        . (int) $doc_id
+                        . ", "
+                        . (int) $id
+                        . ")",
+                );
 
                 system('/usr/bin/textifier ' . escapeshellarg($path) . ' >/dev/null');
             }
@@ -1018,7 +1076,10 @@ class Attachments extends SiteController
      */
     private function buildPathFromDate($date, $id, $base = '')
     {
-        if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
+        if (
+            $date
+            && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)
+        ) {
             $date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
         }
         if ($date) {

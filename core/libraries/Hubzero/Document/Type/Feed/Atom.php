@@ -71,7 +71,9 @@ class Atom extends Renderer
         }
         $feed .= ">\n";
         $feed .= "	<title type=\"text\">" . $feed_title . "</title>\n";
-        $feed .= "	<subtitle type=\"text\">" . htmlspecialchars($data->description, ENT_COMPAT, 'UTF-8') . "</subtitle>\n";
+        $feed .= "	<subtitle type=\"text\">"
+            . htmlspecialchars($data->description, ENT_COMPAT, 'UTF-8')
+            . "</subtitle>\n";
         if (empty($data->category) === false) {
             if (is_array($data->category)) {
                 foreach ($data->category as $cat) {
@@ -92,8 +94,12 @@ class Atom extends Renderer
             }
             $feed .= "	</author>\n";
         }
-        $feed .= "	<generator uri=\"http://hubzero.org\" version=\"2.5\">" . $this->escape($data->getGenerator()) . "</generator>\n";
-        $feed .= '	<link rel="self" type="application/atom+xml" href="' . $this->escapeUrl(str_replace(' ', '%20', $root . ltrim((string) $syndicationURL, '/'))) . "\"/>\n";
+        $feed .= "	<generator uri=\"http://hubzero.org\" version=\"2.5\">"
+            . $this->escape($data->getGenerator())
+            . "</generator>\n";
+        $feed .= '	<link rel="self" type="application/atom+xml" href="'
+            . $this->escapeUrl(str_replace(' ', '%20', $root . ltrim((string) $syndicationURL, '/')))
+            . "\"/>\n";
 
         for ($i = 0, $count = count($data->items); $i < $count; $i++) {
             // An item link may be absolute: Route::url() returns one when asked,
@@ -112,7 +118,9 @@ class Atom extends Renderer
             $itemLink = str_replace(' ', '%20', $itemLink);
 
             $feed .= "	<entry>\n";
-            $feed .= "		<title>" . htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8') . "</title>\n";
+            $feed .= "		<title>"
+                . htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8')
+                . "</title>\n";
             $feed .= '		<link rel="alternate" type="text/html" href="' . $this->escapeUrl($itemLink) . "\"/>\n";
 
             if ($data->items[$i]->date == "") {
@@ -121,7 +129,9 @@ class Atom extends Renderer
             $itemDate = new Date($data->items[$i]->date);
             $itemDate->setTimeZone($tz);
 
-            $feed .= "		<published>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</published>\n";
+            $feed .= "		<published>"
+                . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8')
+                . "</published>\n";
             $feed .= "		<updated>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</updated>\n";
             if (empty($data->items[$i]->guid) === true) {
                 $feed .= "		<id>" . $this->escapeUrl($itemLink) . "</id>\n";
@@ -133,14 +143,20 @@ class Atom extends Renderer
                 $feed .= "		<author>\n";
                 $feed .= "			<name>" . htmlspecialchars($data->items[$i]->author, ENT_COMPAT, 'UTF-8') . "</name>\n";
                 if ($data->items[$i]->authorEmail != "") {
-                    $feed .= "			<email>" . htmlspecialchars($data->items[$i]->authorEmail, ENT_COMPAT, 'UTF-8') . "</email>\n";
+                    $feed .= "			<email>"
+                        . htmlspecialchars($data->items[$i]->authorEmail, ENT_COMPAT, 'UTF-8')
+                        . "</email>\n";
                 }
                 $feed .= "		</author>\n";
             }
             if ($data->items[$i]->description != "") {
                 $description = $this->unwrapCdata((string) $data->items[$i]->description);
-                $feed .= "		<summary type=\"html\">" . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . "</summary>\n";
-                $feed .= "		<content type=\"html\">" . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . "</content>\n";
+                $feed .= "		<summary type=\"html\">"
+                    . htmlspecialchars($description, ENT_COMPAT, 'UTF-8')
+                    . "</summary>\n";
+                $feed .= "		<content type=\"html\">"
+                    . htmlspecialchars($description, ENT_COMPAT, 'UTF-8')
+                    . "</content>\n";
             }
             if (empty($data->items[$i]->category) === false) {
                 if (is_array($data->items[$i]->category)) {
@@ -148,11 +164,19 @@ class Atom extends Renderer
                         $feed .= "		<category term=\"" . htmlspecialchars($cat, ENT_COMPAT, 'UTF-8') . "\" />\n";
                     }
                 } else {
-                    $feed .= "		<category term=\"" . htmlspecialchars($data->items[$i]->category, ENT_COMPAT, 'UTF-8') . "\" />\n";
+                    $feed .= "		<category term=\""
+                        . htmlspecialchars($data->items[$i]->category, ENT_COMPAT, 'UTF-8')
+                        . "\" />\n";
                 }
             }
             if ($data->items[$i]->enclosure != null) {
-                $feed .= "		<link rel=\"enclosure\" href=\"" . $this->escapeUrl($data->items[$i]->enclosure->url) . "\" type=\"" . $this->escape($data->items[$i]->enclosure->type) . "\"  length=\"" . $this->escape($data->items[$i]->enclosure->length) . "\" />\n";
+                $feed .= "		<link rel=\"enclosure\" href=\""
+                    . $this->escapeUrl($data->items[$i]->enclosure->url)
+                    . "\" type=\""
+                    . $this->escape($data->items[$i]->enclosure->type)
+                    . "\"  length=\""
+                    . $this->escape($data->items[$i]->enclosure->length)
+                    . "\" />\n";
             }
             $feed .= "	</entry>\n";
         }

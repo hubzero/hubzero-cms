@@ -89,7 +89,9 @@ class Component extends Relational
         $c = $entries->getTableName();
 
         // sort by one of the list's columns, component by default
-        $sort = isset($filters['sort']) && in_array($filters['sort'], ['id', 'component', 'action', 'title']) ? $filters['sort'] : 'component';
+        $sort = isset($filters['sort']) && in_array($filters['sort'], ['id', 'component', 'action', 'title'])
+            ? $filters['sort']
+            : 'component';
         $dir  = isset($filters['sort_Dir']) && strtolower($filters['sort_Dir']) == 'desc' ? 'desc' : 'asc';
 
         if (!empty($filters['limit'])) {

@@ -178,7 +178,11 @@ class Password
             // passhash is NOT NULL with no default: name it, or the insert fails
             // on a strict-SQL server (every brand-new registration lands here
             // from changePassword() before any password row exists)
-            $query = "INSERT INTO #__users_password (user_id, passhash) VALUES ( " . $db->quote($this->user_id) . ", " . $db->quote((string) $this->passhash) . ");";
+            $query = "INSERT INTO #__users_password (user_id, passhash) VALUES ( "
+                . $db->quote($this->user_id)
+                . ", "
+                . $db->quote((string) $this->passhash)
+                . ");";
 
             $db->setQuery($query);
 
@@ -225,9 +229,18 @@ class Password
                 return false;
             }
 
-            $query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . "shadowMax,shadowWarning,shadowInactive,shadowExpire," . "shadowFlag FROM #__users_password WHERE user_id=" . $db->quote($instance) . ";";
+            $query = "SELECT user_id,passhash,shadowLastChange,shadowMin,"
+                . "shadowMax,shadowWarning,shadowInactive,shadowExpire,"
+                . "shadowFlag FROM #__users_password WHERE user_id="
+                . $db->quote($instance)
+                . ";";
         } else {
-            $query = "SELECT user_id,passhash,shadowLastChange,shadowMin," . "shadowMax,shadowWarning,shadowInactive,shadowExpire," . "shadowFlag FROM #__users_password,#__users WHERE user_id=id" . " AND username=" . $db->quote($instance) . ";";
+            $query = "SELECT user_id,passhash,shadowLastChange,shadowMin,"
+                . "shadowMax,shadowWarning,shadowInactive,shadowExpire,"
+                . "shadowFlag FROM #__users_password,#__users WHERE user_id=id"
+                . " AND username="
+                . $db->quote($instance)
+                . ";";
         }
 
         $db->setQuery($query);
@@ -728,10 +741,20 @@ class Password
 
         $db = App::get('db');
 
-        $db->setQuery("UPDATE `#__xprofiles` SET userPassword=" . $db->quote($passhash) . " WHERE uidNumber=" . $db->quote($hzup->get('user_id')));
+        $db->setQuery(
+            "UPDATE `#__xprofiles` SET userPassword="
+                . $db->quote($passhash)
+                . " WHERE uidNumber="
+                . $db->quote($hzup->get('user_id')),
+        );
         $db->query();
 
-        $db->setQuery("UPDATE `#__users` SET password=" . $db->quote($passhash) . " WHERE id=" . $db->quote($hzup->get('user_id')));
+        $db->setQuery(
+            "UPDATE `#__users` SET password="
+                . $db->quote($passhash)
+                . " WHERE id="
+                . $db->quote($hzup->get('user_id')),
+        );
         $db->query();
 
         if (!empty($oldhash)) {

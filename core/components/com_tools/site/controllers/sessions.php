@@ -71,7 +71,14 @@ class Sessions extends SiteController
             );
             Pathway::append(
                 Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
-                'index.php?option=' . $this->option . '&task=' . $this->task . '&app=' . $appname . '&version=' . $this->app->version,
+                'index.php?option='
+                    . $this->option
+                    . '&task='
+                    . $this->task
+                    . '&app='
+                    . $appname
+                    . '&version='
+                    . $this->app->version,
             );
         } else {
             if ($this->task && $this->task != 'tools') {
@@ -121,7 +128,13 @@ class Sessions extends SiteController
     public function loginTask($rtrn = '')
     {
         if (!$rtrn) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
+                ),
+                'server',
+            );
         }
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -334,7 +347,11 @@ class Sessions extends SiteController
 
         $this->view->sessions = $sessions;
         if ($this->config->get('access-manage-session')) {
-            $this->view->allsessions = $ms->getRecords(User::get('username'), '', $this->config->get('access-manage-session'));
+            $this->view->allsessions = $ms->getRecords(
+                User::get('username'),
+                '',
+                $this->config->get('access-manage-session'),
+            );
         }
         $this->view->active = Request::getString('active', '');
         $this->view->config = $this->config;
@@ -674,7 +691,9 @@ class Sessions extends SiteController
         if ($this->config->get('zones')) {
             $middleware = new \Components\Tools\Models\Middleware();
 
-            $this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
+            $this->database->setQuery(
+                "SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id),
+            );
             $middleware->set('allowed', $this->database->loadColumn());
 
             if ($zone = $middleware->zoning($app->ip, $middleware->get('allowed'))) {
@@ -726,7 +745,17 @@ class Sessions extends SiteController
 
         $rtrn = Request::getString('return', '');
 
-        $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $app->toolname . '&task=session&sess=' . $app->sess . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : '');
+        $url = 'index.php?option='
+            . $this->option
+            . '&controller='
+            . $this->controller
+            . '&app='
+            . $app->toolname
+            . '&task=session&sess='
+            . $app->sess
+            . '&return='
+            . $rtrn
+            . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : '');
 
         // Log activity
         Event::trigger('system.logActivity', [
@@ -734,7 +763,15 @@ class Sessions extends SiteController
                 'action'      => 'created',
                 'scope'       => 'tool.session',
                 'scope_id'    => $app->sess,
-                'description' => Lang::txt('COM_TOOLS_ACTIVITY_SESSION_CREATED', $app->sess, '<a href="' . Route::url($url) . '">' . htmlspecialchars((string) ($app->caption), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_TOOLS_ACTIVITY_SESSION_CREATED',
+                    $app->sess,
+                    '<a href="'
+                        . Route::url($url)
+                        . '">'
+                        . htmlspecialchars((string) ($app->caption), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'tool'    => $app->name,
                     'url'     => $url,
@@ -830,7 +867,20 @@ class Sessions extends SiteController
         $rtrn = Request::getString('return', '');
 
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $session->app() . '&task=session&sess=' . $new_id . '&return=' . $rtrn . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''), false),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&app='
+                    . $session->app()
+                    . '&task=session&sess='
+                    . $new_id
+                    . '&return='
+                    . $rtrn
+                    . (Request::getWord('viewer') ? '&viewer=' . Request::getWord('viewer') : ''),
+                false,
+            ),
         );
     }
 
@@ -1058,7 +1108,16 @@ class Sessions extends SiteController
         // Drop through and re-view the session...
         //$this->viewTask();
         App::redirect(
-            Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $app . '&task=session&sess=' . $sess),
+            Route::url(
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&app='
+                    . $app
+                    . '&task=session&sess='
+                    . $sess,
+            ),
         );
     }
 
@@ -1110,7 +1169,9 @@ class Sessions extends SiteController
 
         $tv = new \Components\Tools\Tables\Version($this->database);
         $tv->loadFromInstance($row->appname);
-        $this->database->setQuery("SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id));
+        $this->database->setQuery(
+            "SELECT zone_id FROM `#__tool_version_zone` WHERE tool_version_id=" . $this->database->quote($tv->id),
+        );
         $this->view->middleware->set('allowed', $this->database->loadColumn());
 
         $this->view->zone = $this->view->middleware->zone($row->zone_id);
@@ -1142,7 +1203,14 @@ class Sessions extends SiteController
 
         // Ensure we found an active session
         if (!$row->sesstoken) {
-            App::abort(404, Lang::txt('MW_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess . '. ' . Lang::txt('MW_SESSION_NOT_FOUND_EXPLANATION'));
+            App::abort(
+                404,
+                Lang::txt('MW_ERROR_SESSION_NOT_FOUND')
+                    . ': '
+                    . $app->sess
+                    . '. '
+                    . Lang::txt('MW_SESSION_NOT_FOUND_EXPLANATION'),
+            );
             return;
         }
 
@@ -1155,9 +1223,19 @@ class Sessions extends SiteController
 
         // Build the view command
         if ($this->config->get('access-manage-session')) {
-            $command = "view user=" . escapeshellarg($row->username) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int) $app->sess;
+            $command = "view user="
+                . escapeshellarg($row->username)
+                . " ip="
+                . escapeshellarg($app->ip)
+                . " sess="
+                . (int) $app->sess;
         } else {
-            $command = "view user=" . escapeshellarg(User::get('username')) . " ip=" . escapeshellarg($app->ip) . " sess=" . (int) $app->sess;
+            $command = "view user="
+                . escapeshellarg(User::get('username'))
+                . " ip="
+                . escapeshellarg($app->ip)
+                . " sess="
+                . (int) $app->sess;
         }
 
         // Check if we have access to run this tool.
@@ -1243,7 +1321,15 @@ class Sessions extends SiteController
             $output->$key = strval($value);
         }
 
-        $boolean_keys = ['debug','show_local_cursor','show_controls','view_only','trust_all_vnc_certs', 'view_only', 'wsproxy_encrypt'];
+        $boolean_keys = [
+            'debug',
+            'show_local_cursor',
+            'show_controls',
+            'view_only',
+            'trust_all_vnc_certs',
+            'view_only',
+            'wsproxy_encrypt',
+        ];
 
         foreach ($boolean_keys as $key) {
             if (isset($output->$key)) {
@@ -1387,7 +1473,14 @@ class Sessions extends SiteController
             $t = ($app->caption) ? $app->sess . ' "' . $app->caption . '"' : $app->sess;
             Pathway::append(
                 Lang::txt('COM_TOOLS_SESSION_NUMBER', $t),
-                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&app=' . $toolname . '&task=session&sess=' . $app->sess,
+                'index.php?option='
+                    . $this->option
+                    . '&controller='
+                    . $this->controller
+                    . '&app='
+                    . $toolname
+                    . '&task=session&sess='
+                    . $app->sess,
             );
         }
 

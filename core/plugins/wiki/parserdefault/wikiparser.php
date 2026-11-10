@@ -389,8 +389,16 @@ class WikiParser
             $text = $result;
         }
 
-        $text = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $text);
-        $text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!', "$1", $text);
+        $text = preg_replace(
+            '!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!',
+            "$1",
+            $text,
+        );
+        $text = preg_replace(
+            '!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>!',
+            "$1",
+            $text,
+        );
 
         // Anchor every heading (and substitute an inline [[TableOfContents]] macro if one
         // is present). This runs on every full parse -- not only when the macro appears --
@@ -412,7 +420,9 @@ class WikiParser
 
         if (trim($this->data['input']) && !trim($this->data['output'])) {
             $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
-            $this->data['output'] .= '<pre><code>' . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8') . '</code></pre>';
+            $this->data['output'] .= '<pre><code>'
+                . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8')
+                . '</code></pre>';
         }
 
         return $this->data['output'];
@@ -563,7 +573,10 @@ class WikiParser
             $href = $prfx . $href;
             $prfx = '';
         }
-        if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file)/i', $href) && substr($href, 0, strlen('://')) != '://') {
+        if (
+            !preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file)/i', $href)
+            && substr($href, 0, strlen('://')) != '://'
+        ) {
             $href = 'http://' . $href;
         }
 
@@ -579,7 +592,11 @@ class WikiParser
             $matches[0],
             'anchor',
             $this->randomString(),
-            '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs($txt) . '</a>',
+            '<a class="ext-link" href="'
+                . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8')
+                . '" rel="external">'
+                . $this->glyphs($txt)
+                . '</a>',
         ]);
     }
 
@@ -652,7 +669,13 @@ class WikiParser
                 $whole,
                 'anchor',
                 $this->randomString(),
-                '<a class="' . $cls . '" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '">' . $this->glyphs($title) . '</a>',
+                '<a class="'
+                    . $cls
+                    . '" href="'
+                    . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8')
+                    . '">'
+                    . $this->glyphs($title)
+                    . '</a>',
             ]);
         }
 
@@ -705,7 +728,11 @@ class WikiParser
         if ($namespace == 'help') {
             $p = \Components\Wiki\Models\Page::oneByPath($pagename, 'site', 0);
         } else {
-            $p = \Components\Wiki\Models\Page::oneByPath(($scope ? $scope . '/' . $pagename : $pagename), $this->get('domain'), $this->get('domain_id'));
+            $p = \Components\Wiki\Models\Page::oneByPath(
+                ($scope ? $scope . '/' . $pagename : $pagename),
+                $this->get('domain'),
+                $this->get('domain_id'),
+            );
         }
 
         $p->set('scope', $this->get('domain'));
@@ -790,7 +817,13 @@ class WikiParser
             $whole,
             'anchor',
             $this->randomString(),
-            '<a class="' . $cls . '" href="' . str_replace(['\\', '"', "'"], '', $href) . '">' . $this->glyphs($displayTitle) . '</a>',
+            '<a class="'
+                . $cls
+                . '" href="'
+                . str_replace(['\\', '"', "'"], '', $href)
+                . '">'
+                . $this->glyphs($displayTitle)
+                . '</a>',
         ]);
     }
 
@@ -828,7 +861,11 @@ class WikiParser
             $matches[0],
             'anchor',
             $this->randomString(),
-            '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs(trim($title)) . '</a>',
+            '<a class="ext-link" href="'
+                . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8')
+                . '" rel="external">'
+                . $this->glyphs(trim($title))
+                . '</a>',
         ]);
     }
 
@@ -1163,7 +1200,11 @@ class WikiParser
         ];
 
         foreach ($rules as $start => $end) {
-            $text = preg_replace_callback('/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms', [&$this, 'getCode'], $text);
+            $text = preg_replace_callback(
+                '/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms',
+                [&$this, 'getCode'],
+                $text,
+            );
         }
 
         return $text;
@@ -1266,14 +1307,34 @@ class WikiParser
         //$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", $string);
 
         // Remove javascript: and vbscript: protocol
-        $string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
-        $string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
+        $string = preg_replace(
+            '#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
+            '$1=$2nojavascript...',
+            $string,
+        );
+        $string = preg_replace(
+            '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
+            '$1=$2novbscript...',
+            $string,
+        );
 
         // <span style="width: expression(alert('Ping!'));"></span>
         // Only works in ie...
-        $string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
-        $string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
-        $string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
+        $string = preg_replace(
+            '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU',
+            "$1>",
+            $string,
+        );
+        $string = preg_replace(
+            '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU',
+            "$1>",
+            $string,
+        );
+        $string = preg_replace(
+            '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu',
+            "$1>",
+            $string,
+        );
 
         // Remove namespaced elements (we do not need them...)
         $string = preg_replace('#</*\w+:\w[^>]*>#i', "", $string);
@@ -1281,7 +1342,11 @@ class WikiParser
         // Remove really unwanted tags
         do {
             $oldstring = $string;
-            $string = preg_replace('#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
+            $string = preg_replace(
+                '#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i',
+                '',
+                $string,
+            );
         } while ($oldstring != $string);
 
         return $string;
@@ -1384,7 +1449,11 @@ class WikiParser
      */
     private function includes($text)
     {
-        return preg_replace_callback('/\[\[(include)(\]\]|\((.*)\)\]\])/Ui', [&$this, 'getInclude'], $text == null ? '' : $text);
+        return preg_replace_callback(
+            '/\[\[(include)(\]\]|\((.*)\)\]\])/Ui',
+            [&$this, 'getInclude'],
+            $text == null ? '' : $text,
+        );
     }
 
     /**
@@ -1457,7 +1526,11 @@ class WikiParser
         $this->macros = [];
 
         // Get macros [[name(args)]]
-        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, 'getMacro'], $text);
+        return preg_replace_callback(
+            '/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U',
+            [&$this, 'getMacro'],
+            $text,
+        );
     }
 
     /**
@@ -2137,7 +2210,11 @@ class WikiParser
         $sac = self::$patterns['spns'] . self::$patterns['algn'] . self::$patterns['clss'];
 
         $text .= "\n\n";
-        return preg_replace_callback("/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU", [&$this, 'getTable'], $text);
+        return preg_replace_callback(
+            "/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU",
+            [&$this, 'getTable'],
+            $text,
+        );
     }
 
     /**
@@ -2190,7 +2267,10 @@ class WikiParser
                 }
 
                 // Cell attributes
-                if (preg_match("/^(_?{$sac}\.)(.*)/", $cell, $cmtch) || preg_match("/^(=?{$sac}\.)(.*)=?/", $cell, $cmtch)) {
+                if (
+                    preg_match("/^(_?{$sac}\.)(.*)/", $cell, $cmtch)
+                    || preg_match("/^(=?{$sac}\.)(.*)=?/", $cell, $cmtch)
+                ) {
                     // Parse Block Attributes
                     $catts = $this->pba($cmtch[1], 'td');
                     $cell = $cmtch[2];
@@ -2274,7 +2354,12 @@ class WikiParser
 
                 $htmlCells[] = "\t\t\t<t$ctyp$catts>$cell</t$ctyp>";
             }
-            $htmlRows[] = "\t\t<tr" . $rowData['ratts'] . ">\n" . join("\n", $htmlCells) . ($htmlCells ? "\n" : '') . "\t\t</tr>";
+            $htmlRows[] = "\t\t<tr"
+                . $rowData['ratts']
+                . ">\n"
+                . join("\n", $htmlCells)
+                . ($htmlCells ? "\n" : '')
+                . "\t\t</tr>";
         }
 
         // Build table with thead/tbody when first row is a header
@@ -2580,7 +2665,16 @@ class WikiParser
                     // corresponding <ul><li> to close, so emitting </li></ul> for them
                     // would orphan subsequent <li> elements outside any list.
                     if (!empty($openlistReal[$i + 1])) {
-                        $output .= $this->closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
+                        $output .= $this->closeList($lastPrefix)
+                            . '<!-- common: '
+                            . $commonPrefixLength
+                            . ', last: '
+                            . $lastPrefixLength
+                            . ', prefx:'
+                            . $prefixLength
+                            . ', '
+                            . $lastPrefix
+                            . ' -->';
                     }
                     --$lastPrefixLength;
                 }
@@ -2627,10 +2721,15 @@ class WikiParser
             if (0 == $prefixLength) {
                 // No prefix (not in list)--go to paragraph mode
                 // XXX: use a stack for nestable elements like span, table and div
-                $openmatch  = preg_match('/(?:<table|<blockquote|<h1|<h2|<h3|<h4|<h5|<h6|<pre|<tr|<p|<dl|<ul|<ol|<li|<\\/tr|<\\/td|<\\/th)/iS', $t);
+                $openmatch  = preg_match(
+                    '/(?:<table|<blockquote|<h1|<h2|<h3|<h4|<h5|<h6|<pre|<tr|<p|<dl|<ul|<ol|<li|<\\/tr|<\\/td|<\\/th)/iS',
+                    $t,
+                );
                 $closematch = preg_match(
                     '/(?:<\\/table|<\\/blockquote|<\\/h1|<\\/h2|<\\/h3|<\\/h4|<\\/h5|<\\/h6|'
-                    . '<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|' . $this->token() . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS',
+                    . '<td|<th|<\\/?div|<hr|<\\/pre|<\\/p|'
+                    . $this->token()
+                    . '-pre|<\\/li|<\\/dl|<\\/ul|<\\/ol|<\\/?center)/iS',
                     $t,
                 );
                 if ($openmatch or $closematch) {
@@ -2727,7 +2826,17 @@ class WikiParser
         $placeholder = '';
         if (!$standalone) {
             $tocMode = 'none';
-            if (preg_match('/<p>MACRO' . preg_quote($this->token(), '/') . '\[\[TableOfContents(?:\(([^)]*)\))?\]\]' . "\n" . '<\/p>/', $text ?: '', $mm)) {
+            if (
+                preg_match(
+                    '/<p>MACRO'
+                        . preg_quote($this->token(), '/')
+                        . '\[\[TableOfContents(?:\(([^)]*)\))?\]\]'
+                        . "\n"
+                        . '<\/p>/',
+                    $text ?: '',
+                    $mm,
+                )
+            ) {
                 $directive   = \Components\Wiki\Helpers\Parser::parseTocArgs(isset($mm[1]) ? $mm[1] : '');
                 $tocMode     = $directive['mode'];
                 $depth       = $directive['depth'];
@@ -2752,7 +2861,11 @@ class WikiParser
         // Get all headlines for numbering them and adding funky stuff like [edit]
         // links - this is for later, but we need the number of headlines right now
         $matches = [];
-        $numMatches = preg_match_all('/<H(?P<level>[1-6])(?P<attrib>.*?' . '>)(?P<header>.*?)<\/H[1-6] *>/i', $text ?: '', $matches);
+        $numMatches = preg_match_all(
+            '/<H(?P<level>[1-6])(?P<attrib>.*?' . '>)(?P<header>.*?)<\/H[1-6] *>/i',
+            $text ?: '',
+            $matches,
+        );
 
         // If there are fewer than 4 headlines in the article, do not show TOC
         // unless it's been explicitly enabled.
@@ -2906,7 +3019,13 @@ class WikiParser
             {*/
             $editlink = '';
             //}
-            $head[$headlineCount] = $this->makeHeadline($level, $matches['attrib'][$headlineCount], $anchor, $headline, $editlink);
+            $head[$headlineCount] = $this->makeHeadline(
+                $level,
+                $matches['attrib'][$headlineCount],
+                $anchor,
+                $headline,
+                $editlink,
+            );
 
             $headlineCount++;
             if (!$istemplate) {
@@ -3000,7 +3119,18 @@ class WikiParser
      */
     private function makeHeadline($level, $attribs, $anchor, $text, $link)
     {
-        return '<h' . $level . $attribs . '<span id="' . $anchor . '" class="tp-headline">' . $text . '</span> ' . $link . '</h' . $level . '>';
+        return '<h'
+            . $level
+            . $attribs
+            . '<span id="'
+            . $anchor
+            . '" class="tp-headline">'
+            . $text
+            . '</span> '
+            . $link
+            . '</h'
+            . $level
+            . '>';
     }
 
     /**
@@ -3036,7 +3166,12 @@ class WikiParser
     private function tocLine($anchor, $tocLine, $tocnumber, $level)
     {
         $url = $this->get('url');
-        $url = $url ?: 'index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
+        $url = $url ?: 'index.php?option='
+            . $this->get('option')
+            . '&scope='
+            . $this->get('scope')
+            . '&pagename='
+            . $this->get('pagename');
 
         return "\n" . '<li class="toclevel toclevel-' . $level . '">'
                         . '<div class="toc-item">'

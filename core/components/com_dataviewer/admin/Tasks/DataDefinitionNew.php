@@ -80,7 +80,12 @@ class DataDefinitionNew
         $dd_text .= "\t" . '$dd[\'pk\'] = \'' . $sq($pk) . '\';' . "\n\n";
 
         foreach ($dd['cols'] as $col => $val) {
-            $dd_text .= "\t" . '$dd[\'cols\'][\'' . $sq($col) . '\'] = ' . self::formatVar(var_export($val, true)) . "\n";
+            $dd_text .= "\t"
+                . '$dd[\'cols\'][\''
+                . $sq($col)
+                . '\'] = '
+                . self::formatVar(var_export($val, true))
+                . "\n";
         }
 
         $dd_text .= "\n\t" . 'return $dd;' . "\n\n}\n?>";

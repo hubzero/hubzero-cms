@@ -43,7 +43,9 @@ class Editor extends Obj
     {
         if (!$editor) {
             $database = App::get('db');
-            $database->setQuery("SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1");
+            $database->setQuery(
+                "SELECT element FROM `#__extensions` WHERE folder='wiki' AND type='plugin' AND enabled=1 AND element LIKE 'editor%' ORDER BY enabled DESC LIMIT 1",
+            );
 
             $editor = $database->loadResult();
         }
@@ -118,7 +120,20 @@ class Editor extends Obj
     {
         // Return a standard textarea if no editor is found
         if (!$this->name) {
-            return '<textarea name="' . $name . '" id="' . $id . '" cols="' . $col . '" rows="' . $row . '" class="' . $cls . '">' . htmlspecialchars((string) $html, ENT_QUOTES, 'UTF-8') . '</textarea>' . "\n";
+            return '<textarea name="'
+                . $name
+                . '" id="'
+                . $id
+                . '" cols="'
+                . $col
+                . '" rows="'
+                . $row
+                . '" class="'
+                . $cls
+                . '">'
+                . htmlspecialchars((string) $html, ENT_QUOTES, 'UTF-8')
+                . '</textarea>'
+                . "\n";
         }
 
         $this->load($params);

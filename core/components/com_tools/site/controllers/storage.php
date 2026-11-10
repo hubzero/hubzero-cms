@@ -106,7 +106,13 @@ class Storage extends SiteController
     protected function login($rtrn = null)
     {
         if (!$rtrn) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task), 'server');
+            $rtrn = Request::getString(
+                'REQUEST_URI',
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $this->task,
+                ),
+                'server',
+            );
         }
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),

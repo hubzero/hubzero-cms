@@ -90,7 +90,9 @@ class Syncgroup extends Base implements CommandInterface
             }
 
             if ($dry) {
-                $this->output->addLine(sprintf('  %-42s would empty (%d: %s)', $cn, count($before), implode(',', $before)));
+                $this->output->addLine(
+                    sprintf('  %-42s would empty (%d: %s)', $cn, count($before), implode(',', $before)),
+                );
                 continue;
             }
 
@@ -139,7 +141,9 @@ class Syncgroup extends Base implements CommandInterface
     public function help()
     {
         $this->output
-            ->addOverview('Re-sync deleted projects\' pr-<alias> login groups so SFTP/LDAP access is revoked (ticket 2802).')
+            ->addOverview(
+                'Re-sync deleted projects\' pr-<alias> login groups so SFTP/LDAP access is revoked (ticket 2802).',
+            )
             ->addTasks($this);
     }
 }

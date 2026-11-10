@@ -395,7 +395,11 @@ class Tag extends Relational
             'Я' => 'ja',
         ];
 
-        $tag = str_replace(array_keys($transliterationTable), array_values($transliterationTable), $tag == null ? '' : $tag);
+        $tag = str_replace(
+            array_keys($transliterationTable),
+            array_values($transliterationTable),
+            $tag == null ? '' : $tag,
+        );
         return strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $tag));
     }
 

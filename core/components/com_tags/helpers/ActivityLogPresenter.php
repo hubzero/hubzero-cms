@@ -60,41 +60,89 @@ class ActivityLogPresenter
 
                 case 'substitute_moved':
                     $class = 'moved';
-                    $activityDescription = Lang::txt('COM_TAGS_LOG_ALIAS_MOVED', $entriesCount, $oldId, $timestamp, $actor);
+                    $activityDescription = Lang::txt(
+                        'COM_TAGS_LOG_ALIAS_MOVED',
+                        $entriesCount,
+                        $oldId,
+                        $timestamp,
+                        $actor,
+                    );
                     break;
 
                 case 'tags_removed':
                     $class = 'deleted';
-                    $activityDescription = Lang::txt('COM_TAGS_LOG_ASSOC_DELETED', $entriesCount, $table, $objectId, $timestamp, $actor);
+                    $activityDescription = Lang::txt(
+                        'COM_TAGS_LOG_ASSOC_DELETED',
+                        $entriesCount,
+                        $table,
+                        $objectId,
+                        $timestamp,
+                        $actor,
+                    );
                     break;
 
                 case 'objects_copied':
                     $class = 'copied';
-                    $activityDescription = Lang::txt('COM_TAGS_LOG_ASSOC_COPIED', $entriesCount, $oldId, $timestamp, $actor);
+                    $activityDescription = Lang::txt(
+                        'COM_TAGS_LOG_ASSOC_COPIED',
+                        $entriesCount,
+                        $oldId,
+                        $timestamp,
+                        $actor,
+                    );
                     break;
 
                 case 'objects_moved':
                     $class = 'moved';
-                    $activityDescription = Lang::txt('COM_TAGS_LOG_ASSOC_MOVED', $entriesCount, $oldId, $timestamp, $actor);
+                    $activityDescription = Lang::txt(
+                        'COM_TAGS_LOG_ASSOC_MOVED',
+                        $entriesCount,
+                        $oldId,
+                        $timestamp,
+                        $actor,
+                    );
                     break;
 
                 case 'objects_removed':
                     $class = 'deleted';
                     if ($objectId || $table) {
-                        $activityDescription = Lang::txt('COM_TAGS_LOG_OBJ_DELETED', $entriesCount, $table, $objectId, $timestamp, $actor);
+                        $activityDescription = Lang::txt(
+                            'COM_TAGS_LOG_OBJ_DELETED',
+                            $entriesCount,
+                            $table,
+                            $objectId,
+                            $timestamp,
+                            $actor,
+                        );
                     } else {
-                        $activityDescription = Lang::txt('COM_TAGS_LOG_OBJ_REMOVED', $entriesCount, $tagId, $timestamp, $actor);
+                        $activityDescription = Lang::txt(
+                            'COM_TAGS_LOG_OBJ_REMOVED',
+                            $entriesCount,
+                            $tagId,
+                            $timestamp,
+                            $actor,
+                        );
                     }
                     break;
 
                 default:
                     $class = 'edited';
-                    $activityDescription = Lang::txt('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $action), $timestamp, $actor);
+                    $activityDescription = Lang::txt(
+                        'COM_TAGS_LOG_TAG_EDITED',
+                        str_replace('_', ' ', $action),
+                        $timestamp,
+                        $actor,
+                    );
                     break;
             }
         } else {
             $class = 'edited';
-            $activityDescription = Lang::txt('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $action), $timestamp, $actor);
+            $activityDescription = Lang::txt(
+                'COM_TAGS_LOG_TAG_EDITED',
+                str_replace('_', ' ', $action),
+                $timestamp,
+                $actor,
+            );
         }
 
         $parsedLog = new stdClass();

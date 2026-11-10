@@ -176,7 +176,10 @@ class TraceableDispatcher implements DispatcherInterface
             $allListeners = $this->getListeners();
         } catch (\Exception $e) {
             if (null !== $this->logger) {
-                $this->logger->info(sprintf('An exception was thrown while getting the uncalled listeners (%s)', $e->getMessage()), ['exception' => $e]);
+                $this->logger->info(
+                    sprintf('An exception was thrown while getting the uncalled listeners (%s)', $e->getMessage()),
+                    ['exception' => $e],
+                );
             }
 
             // unable to retrieve the uncalled listeners
@@ -259,7 +262,9 @@ class TraceableDispatcher implements DispatcherInterface
             $name = isset($info['class']) ? $info['class'] : $info['type'];
 
             $this->dispatcher->getListeners()[$event->getName()]->remove($listener);
-            $this->dispatcher->getListeners()[$event->getName()]->add(new TraceableListener($listener, $name, $this->stopwatch), $priority);
+            $this->dispatcher
+                ->getListeners()[$event->getName()]
+                ->add(new TraceableListener($listener, $name, $this->stopwatch), $priority);
 
             //$this->dispatcher->addListener(new TraceableListener($listener, $name, $this->stopwatch), array($event->getName() => $priority));
         }
@@ -306,12 +311,16 @@ class TraceableDispatcher implements DispatcherInterface
             }
 
             if (null !== $this->logger && $skipped) {
-                $this->logger->debug(sprintf('Listener "%s" was not called for event "%s".', $info['pretty'], $eventName));
+                $this->logger->debug(
+                    sprintf('Listener "%s" was not called for event "%s".', $info['pretty'], $eventName),
+                );
             }
 
             if ($listener->stoppedPropagation()) {
                 if (null !== $this->logger) {
-                    $this->logger->debug(sprintf('Listener "%s" stopped propagation of the event "%s".', $info['pretty'], $eventName));
+                    $this->logger->debug(
+                        sprintf('Listener "%s" stopped propagation of the event "%s".', $info['pretty'], $eventName),
+                    );
                 }
 
                 $skipped = true;

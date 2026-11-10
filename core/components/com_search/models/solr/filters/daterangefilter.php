@@ -30,8 +30,12 @@ class Daterangefilter extends Filter
     {
         $minDate = $this->params->get('minDate');
         $maxDate = $this->params->get('maxDate');
-        $minDateString = !empty($minDate) ? 'data-mindate="' . htmlspecialchars((string) $minDate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" ' : '';
-        $maxDateString = !empty($maxDate) ? 'data-maxdate="' . htmlspecialchars((string) $maxDate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" ' : '';
+        $minDateString = !empty($minDate)
+            ? 'data-mindate="' . htmlspecialchars((string) $minDate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" '
+            : '';
+        $maxDateString = !empty($maxDate)
+            ? 'data-maxdate="' . htmlspecialchars((string) $maxDate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" '
+            : '';
         // is_scalar, because these come from Request::getArray('filters') and
         // nothing coerces the leaves: filters[<field>][startdate][]=x hands an
         // array to htmlspecialchars, which is a TypeError on PHP 8 and takes
@@ -46,7 +50,9 @@ class Daterangefilter extends Filter
         $enddate = (isset($dateValues['enddate']) && is_scalar($dateValues['enddate']))
             ? htmlspecialchars((string) $dateValues['enddate'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
             : '';
-        $html = '<ul><li><fieldset class="search-filters"><legend>' . htmlspecialchars((string) $this->label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</legend>';
+        $html = '<ul><li><fieldset class="search-filters"><legend>'
+            . htmlspecialchars((string) $this->label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            . '</legend>';
         $html .= '<label>Start Date</label><input type="text" class="option datetimepicker" name="filters['
             . $this->field . '][startdate]"' . $minDateString . ' value="' . $startdate . '" autocomplete="off"/>';
         $html .= '<label>End Date</label><input type="text" class="input option datetimepicker" name="filters['

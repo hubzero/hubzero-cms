@@ -242,7 +242,10 @@ class Entriesv1r1 extends ApiController
 
         if ($filters['start_date']) {
             if (
-                preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $filters['start_date'])
+                preg_match(
+                    "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
+                    $filters['start_date'],
+                )
                 || preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['start_date'])
             ) {
                 $query->where($l . '.created', '>=', with(new Date($filters['start_date']))->toSql());
@@ -253,7 +256,10 @@ class Entriesv1r1 extends ApiController
 
         if ($filters['end_date']) {
             if (
-                preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/", $filters['end_date'])
+                preg_match(
+                    "/^([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})$/",
+                    $filters['end_date'],
+                )
                 || preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $filters['end_date'])
             ) {
                 $query->where($l . '.created', '<', with(new Date($filters['end_date']))->toSql());
@@ -309,7 +315,9 @@ class Entriesv1r1 extends ApiController
             foreach ($obj->recipients as $k => $recipient) {
                 $obj->recipients[$k]->created = with(new Date($obj->recipients[$k]->created))->format('Y-m-d\TH:i:s\Z');
                 if ($obj->recipients[$k]->viewed) {
-                    $obj->recipients[$k]->viewed = with(new Date($obj->recipients[$k]->viewed))->format('Y-m-d\TH:i:s\Z');
+                    $obj->recipients[$k]->viewed = with(
+                        new Date($obj->recipients[$k]->viewed),
+                    )->format('Y-m-d\TH:i:s\Z');
                 }
             }
 
@@ -404,7 +412,9 @@ class Entriesv1r1 extends ApiController
             'scope'          => Request::getString('scope', '', 'post'),
             'scope_id'       => Request::getInt('scope_id', 0, 'post'),
             'action'         => Request::getString('action', null, 'post', 'none', 2),
-            'description'    => \Hubzero\Utility\Sanitize::html((string) Request::getString('description', null, 'post', 'none', 2)),
+            'description'    => \Hubzero\Utility\Sanitize::html(
+                (string) Request::getString('description', null, 'post', 'none', 2),
+            ),
             // The timestamp is pinned along with the author below: only a
             // manager may back-date an entry.
             'created'        => (User::authorise('core.manage', 'com_activity')
@@ -687,7 +697,9 @@ class Entriesv1r1 extends ApiController
             'scope'          => Request::getString('scope', $row->get('scope')),
             'scope_id'       => Request::getInt('scope_id', $row->get('scope_id')),
             'action'         => Request::getString('action', $row->get('action')),
-            'description'    => \Hubzero\Utility\Sanitize::html((string) Request::getString('description', $row->get('description'))),
+            'description'    => \Hubzero\Utility\Sanitize::html(
+                (string) Request::getString('description', $row->get('description')),
+            ),
             'created'        => (User::authorise('core.manage', 'com_activity')
                 ? Request::getString('created', $row->get('created'))
                 : $row->get('created')),

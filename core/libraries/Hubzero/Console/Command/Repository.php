@@ -328,7 +328,9 @@ class Repository extends Base implements CommandInterface
         $date = date('M jS, Y \a\t g:i:sa', $rollbackPoint);
 
         if ($this->output->isInteractive()) {
-            $proceed = $this->output->getResponse('Are you sure you want to rollback to the snapshot taken on ' . $date . '? [y|n]');
+            $proceed = $this->output->getResponse(
+                'Are you sure you want to rollback to the snapshot taken on ' . $date . '? [y|n]',
+            );
 
             if ($proceed == 'y' || $proceed == 'yes') {
                 $result = $this->mechanism->rollback($rollbackPoint);
@@ -361,7 +363,9 @@ class Repository extends Base implements CommandInterface
     {
         if ($this->output->isInteractive()) {
             $performed = 0;
-            $proceed   = $this->output->getResponse('Do you want to purge all rollback points except the latest? [y|n]');
+            $proceed   = $this->output->getResponse(
+                'Do you want to purge all rollback points except the latest? [y|n]',
+            );
 
             if ($proceed == 'y' || $proceed == 'yes') {
                 $this->mechanism->purgeRollbackPoints();
@@ -409,7 +413,9 @@ class Repository extends Base implements CommandInterface
     {
         // Get files
         $status = $this->mechanism->status();
-        $files  = (isset($status['added']) || isset($status['modified'])) ? array_merge($status['added'], $status['modified']) : [];
+        $files  = (isset($status['added']) || isset($status['modified']))
+            ? array_merge($status['added'], $status['modified'])
+            : [];
 
         // Whether or not to scan untracked files
         if (!$this->arguments->getOpt('exclude-untracked')) {
@@ -468,7 +474,12 @@ class Repository extends Base implements CommandInterface
                 // Now run them through PHP code sniffer
                 if (!$this->arguments->getOpt('no-sniffing')) {
                     // Append specific standard (with branchname) to command
-                    $cmd    = "php " . PATH_CORE . DS . 'bin' . DS . "phpcs --standard={$standards}{$branch}/ruleset.xml -n {$base}{$file}";
+                    $cmd    = "php "
+                        . PATH_CORE
+                        . DS
+                        . 'bin'
+                        . DS
+                        . "phpcs --standard={$standards}{$branch}/ruleset.xml -n {$base}{$file}";
                     $cmd    = escapeshellcmd($cmd);
                     $result = shell_exec($cmd);
 
@@ -515,7 +526,12 @@ class Repository extends Base implements CommandInterface
         $sourceUrl = $this->arguments->getOpt('sourceUrl');
         $repoPath = $this->arguments->getOpt('repoPath');
 
-        $command  = "umask 0002 && git clone" . " " . escapeshellarg($sourceUrl) . " " . escapeshellarg($repoPath) . ' 2>&1';
+        $command  = "umask 0002 && git clone"
+            . " "
+            . escapeshellarg($sourceUrl)
+            . " "
+            . escapeshellarg($repoPath)
+            . ' 2>&1';
         $response = shell_exec($command);
 
         $this->output->addLine($response);
@@ -533,7 +549,11 @@ class Repository extends Base implements CommandInterface
         $newsourceUrl = $this->arguments->getOpt('newsourceUrl');
         $repoPath = $this->arguments->getOpt('repoPath');
 
-        $newsourceUrl_command  = "cd " . escapeshellarg($repoPath) . " && git remote set-url origin " . escapeshellarg($newsourceUrl) . ' 2>&1';
+        $newsourceUrl_command  = "cd "
+            . escapeshellarg($repoPath)
+            . " && git remote set-url origin "
+            . escapeshellarg($newsourceUrl)
+            . ' 2>&1';
         $newsourceUrl_command_response = shell_exec($newsourceUrl_command);
         $this->output->addLine($newsourceUrl_command_response);
 
@@ -542,7 +562,11 @@ class Repository extends Base implements CommandInterface
         $lsremote_command_response = shell_exec($lsremote_command);
 
         if (preg_match("/fatal: Authentication failed.../uis", $lsremote_command_response)) {
-            $output = [Lang::txt("Authentication failure. Please check the specified Access Token has access to this extension's repository.")];
+            $output = [
+                Lang::txt(
+                    "Authentication failure. Please check the specified Access Token has access to this extension's repository.",
+                ),
+            ];
             $this->output->addLine($output);
         }
     }
@@ -568,10 +592,16 @@ class Repository extends Base implements CommandInterface
             $default_remote = shell_exec("umask 0002 && cd " . escapeshellarg($repoPath) . " && git remote show");
             // get remote default branch
             // "git remote show" may list several remotes; take the first line
-            $default_remote_branch_cmd = "git remote show " . escapeshellarg(strtok(trim((string) $default_remote), "\n")) . " | grep 'HEAD branch' | cut -d ':' -f 2";
+            $default_remote_branch_cmd = "git remote show "
+                . escapeshellarg(strtok(trim((string) $default_remote), "\n"))
+                . " | grep 'HEAD branch' | cut -d ':' -f 2";
             // cut leaves a leading space and a trailing newline, which the shell used
             // to discard by word-splitting but a quoted argument keeps
-            $git_branch = trim((string) shell_exec("umask 0002 && cd " . escapeshellarg($repoPath) . " && " . $default_remote_branch_cmd));
+            $git_branch = trim(
+                (string) shell_exec(
+                    "umask 0002 && cd " . escapeshellarg($repoPath) . " && " . $default_remote_branch_cmd,
+                ),
+            );
         }
 
         $cur_branch = "git rev-parse --abbrev-ref HEAD";
@@ -592,13 +622,20 @@ class Repository extends Base implements CommandInterface
         // this guard the stash below ran and then "git checkout ''" failed,
         // leaving the extension's local changes stranded in the stash.
         if ($git_branch === '') {
-            $this->output->addLine('Could not determine the branch to check out (no git_branch given and the remote default branch could not be read); leaving ' . $cur_branch . ' checked out.');
+            $this->output->addLine(
+                'Could not determine the branch to check out (no git_branch given and the remote default branch could not be read); leaving '
+                    . $cur_branch
+                    . ' checked out.',
+            );
             return;
         }
 
         // If the current branch doesn't match the specified branch, the checkout the specified branch
         if ($cur_branch != $git_branch) {
-            $command  = "umask 0002 && cd " . escapeshellarg($repoPath) . " && git stash -q && git checkout " . escapeshellarg($git_branch);
+            $command  = "umask 0002 && cd "
+                . escapeshellarg($repoPath)
+                . " && git stash -q && git checkout "
+                . escapeshellarg($git_branch);
             $response = shell_exec($command);
         }
         $this->output->addLine($response);

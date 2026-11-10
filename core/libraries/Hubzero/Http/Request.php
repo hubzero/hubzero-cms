@@ -838,7 +838,12 @@ class Request extends BaseRequest
         if ($honey = self::getVar($name, [], 'post')) {
             if (!Honeypot::isValid($honey['p'], $honey['t'], $delay)) {
                 if (App::has('log')) {
-                    $fallback = 'option=' . $this->getCmd('option') . '&controller=' . $this->getCmd('controller') . '&task=' . $this->getCmd('task');
+                    $fallback = 'option='
+                        . $this->getCmd('option')
+                        . '&controller='
+                        . $this->getCmd('controller')
+                        . '&task='
+                        . $this->getCmd('task');
 
                     $from = $this->getVar('REQUEST_URI', $fallback, 'server');
                     $from = $from ?: $fallback;

@@ -126,7 +126,17 @@ class Newsletters extends SiteController
             // horizontal scrolling.
             $responsive = '<meta name="viewport" content="width=device-width, initial-scale=1">'
                 . '<style>body{margin:0;padding:0}img{max-width:100%;height:auto}table{max-width:100%!important}td,th,p,a,li,div{overflow-wrap:break-word}</style>';
-            echo '<!DOCTYPE html><html lang="' . htmlspecialchars($lang) . '"><head><meta charset="utf-8">' . $responsive . '<title>' . $title . '</title></head><body><main><h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">' . $title . '</h1>' . $newsletter . '</main></body></html>';
+            echo '<!DOCTYPE html><html lang="'
+                . htmlspecialchars($lang)
+                . '"><head><meta charset="utf-8">'
+                . $responsive
+                . '<title>'
+                . $title
+                . '</title></head><body><main><h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">'
+                . $title
+                . '</h1>'
+                . $newsletter
+                . '</main></body></html>';
             return;
         }
 
@@ -169,7 +179,13 @@ class Newsletters extends SiteController
         $newsletter = Newsletter::oneOrFail($id);
 
         //build url to newsletter with no html
-        $newsletterUrl = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'newsletter' . DS . $newsletter->alias . '?no_html=1';
+        $newsletterUrl = 'https://'
+            . $_SERVER['HTTP_HOST']
+            . DS
+            . 'newsletter'
+            . DS
+            . $newsletter->alias
+            . '?no_html=1';
 
         //path to newsletter file
         $newsletterPdfFolder = PATH_APP . DS . 'site' . DS . 'newsletter' . DS . 'pdf';
@@ -208,7 +224,13 @@ class Newsletters extends SiteController
             $cmd = '/opt/wkhtmltopdf/bin/wkhtmltopdf ' . $escUrl . ' ' . $escPdf;
         } elseif (file_exists('/usr/bin/phantomjs')) {
             $rasterizeFile = dirname(__DIR__) . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-            $fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false ' . $rasterizeFile . ' ' . $escUrl . ' ' . $escPdf . ' 8.5in*11in';
+            $fallback = '/usr/bin/phantomjs --ssl-protocol=any --ignore-ssl-errors=yes --web-security=false '
+                . $rasterizeFile
+                . ' '
+                . $escUrl
+                . ' '
+                . $escPdf
+                . ' 8.5in*11in';
             if (!$cmd) {
                 $cmd = $fallback;
             }
@@ -236,7 +258,11 @@ class Newsletters extends SiteController
 
         //output as attachment
         header("Content-type: application/pdf");
-        header('Content-Disposition: attachment; filename="' . str_replace([' ', '"', ';', '\\'], '_', $newsletter->name) . '.pdf"');
+        header(
+            'Content-Disposition: attachment; filename="'
+                . str_replace([' ', '"', ';', '\\'], '_', $newsletter->name)
+                . '.pdf"',
+        );
         header("Pragma: no-cache");
         header("Expires: 0");
         echo file_get_contents($newsletterPdf);

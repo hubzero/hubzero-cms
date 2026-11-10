@@ -56,7 +56,10 @@ class Terms extends Base implements CommandInterface
         $confirm = 'no';
 
         if (!$this->output->isInteractive() && !$this->arguments->getOpt('f')) {
-            $this->output->addLine('To forcibly clear all terms of use agreements for all users, please provide the -f flag. This action is irreversable.', 'warning');
+            $this->output->addLine(
+                'To forcibly clear all terms of use agreements for all users, please provide the -f flag. This action is irreversable.',
+                'warning',
+            );
             return;
         } elseif (!$this->output->isInteractive() && $this->arguments->getOpt('f')) {
             $confirm = 'yes';

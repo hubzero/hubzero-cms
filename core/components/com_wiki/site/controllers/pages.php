@@ -103,7 +103,15 @@ class Pages extends SiteController
 
         if (in_array($this->page->getNamespace(), ['image', 'file'])) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&controller=media&scope=' . $this->page->get('scope') . '&pagename=' . $this->page->get('pagename') . '&task=download'),
+                Route::url(
+                    'index.php?option='
+                        . $this->option
+                        . '&controller=media&scope='
+                        . $this->page->get('scope')
+                        . '&pagename='
+                        . $this->page->get('pagename')
+                        . '&task=download',
+                ),
             );
         }
 
@@ -365,7 +373,11 @@ class Pages extends SiteController
             $ischild = true;
         }
         if (!$this->page->get('id') && $this->page->get('path')) {
-            $parent = Page::oneByPath($this->page->get('path'), $this->page->get('scope'), $this->page->get('scope_id'));
+            $parent = Page::oneByPath(
+                $this->page->get('path'),
+                $this->page->get('scope'),
+                $this->page->get('scope_id'),
+            );
             $this->page->set('parent', $parent->get('id'));
         }
 
@@ -386,7 +398,10 @@ class Pages extends SiteController
             if ($ischild && $this->page->get('pagename')) {
                 $revision->set('pagetext', '');
 
-                $this->page->set('path', $this->page->get('path') . ($this->page->get('path') ? '/' : '') . $this->page->get('pagename'));
+                $this->page->set(
+                    'path',
+                    $this->page->get('path') . ($this->page->get('path') ? '/' : '') . $this->page->get('pagename'),
+                );
                 $this->page->set('pagename', '');
                 $this->page->set('title', Lang::txt('COM_WIKI_NEW_PAGE'));
             }
@@ -450,7 +465,10 @@ class Pages extends SiteController
         if ($items) {
             foreach ($items as $k => $branch) {
                 // Since these will be parent pages, we need to add the item's pagename to the scope
-                $branch->set('pagename', ($branch->get('path') ? $branch->get('path') . '/' : '') . $branch->get('pagename'));
+                $branch->set(
+                    'pagename',
+                    ($branch->get('path') ? $branch->get('path') . '/' : '') . $branch->get('pagename'),
+                );
 
                 // Push the item to the tree
                 $tree[$branch->get('pagename')] = $branch;
@@ -763,7 +781,14 @@ class Pages extends SiteController
                 'action'      => ($page['id'] ? 'updated' : 'created'),
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
-                'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_' . ($page['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WIKI_ACTIVITY_PAGE_' . ($page['id'] ? 'UPDATED' : 'CREATED'),
+                    '<a href="'
+                        . Route::url($this->page->link())
+                        . '">'
+                        . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title'    => $this->page->title,
                     'url'      => Route::url($this->page->link()),
@@ -843,7 +868,14 @@ class Pages extends SiteController
                         'action'      => 'deleted',
                         'scope'       => 'wiki.page',
                         'scope_id'    => $this->page->get('id'),
-                        'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_DELETED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                        'description' => Lang::txt(
+                            'COM_WIKI_ACTIVITY_PAGE_DELETED',
+                            '<a href="'
+                                . Route::url($this->page->link())
+                                . '">'
+                                . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8')
+                                . '</a>',
+                        ),
                         'details'     => [
                             'title' => $this->page->title,
                             'url'   => Route::url($this->page->link()),
@@ -1053,7 +1085,14 @@ class Pages extends SiteController
                 'action'      => 'updated',
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
-                'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_RENAMED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->get('title')), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WIKI_ACTIVITY_PAGE_RENAMED',
+                    '<a href="'
+                        . Route::url($this->page->link())
+                        . '">'
+                        . htmlspecialchars((string) ($this->page->get('title')), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $this->page->get('title'),
                     'url'   => Route::url($this->page->link()),
@@ -1123,7 +1162,14 @@ class Pages extends SiteController
                 'action'      => 'downloaded',
                 'scope'       => 'wiki.page',
                 'scope_id'    => $this->page->get('id'),
-                'description' => Lang::txt('COM_WIKI_ACTIVITY_PAGE_DOWNLOADED', '<a href="' . Route::url($this->page->link()) . '">' . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8') . '</a>'),
+                'description' => Lang::txt(
+                    'COM_WIKI_ACTIVITY_PAGE_DOWNLOADED',
+                    '<a href="'
+                        . Route::url($this->page->link())
+                        . '">'
+                        . htmlspecialchars((string) ($this->page->title), ENT_QUOTES, 'UTF-8')
+                        . '</a>',
+                ),
                 'details'     => [
                     'title' => $this->page->title,
                     'url'   => Route::url($this->page->link()),
@@ -1183,13 +1229,22 @@ class Pages extends SiteController
         // Render math formulas as PNG images for PDF (MathJax can't run in TCPDF)
         $mathTmpDir = PATH_APP . '/site/wiki/tmp';
         $mathOutDir = PATH_APP . '/site/wiki/math';
-        $html = preg_replace_callback('#<span class="asciimath">\$\$(.*?)\$\$</span>#s', function ($m) use ($mathTmpDir, $mathOutDir) {
+        $html = preg_replace_callback('#<span class="asciimath">\$\$(.*?)\$\$</span>#s', function ($m) use (
+            $mathTmpDir,
+            $mathOutDir,
+        ) {
             $tex = trim($m[1]);
             if (empty($tex)) {
                 return '';
             }
             // Run texvc — it returns a status char + 32-char hash
-            $cmd = '/usr/bin/texvc ' . escapeshellarg($mathTmpDir) . ' ' . escapeshellarg($mathTmpDir) . ' ' . escapeshellarg($tex) . ' UTF-8';
+            $cmd = '/usr/bin/texvc '
+                . escapeshellarg($mathTmpDir)
+                . ' '
+                . escapeshellarg($mathTmpDir)
+                . ' '
+                . escapeshellarg($tex)
+                . ' UTF-8';
             $output = shell_exec($cmd);
 
             if ($output && preg_match('/^[+cmlCML]([a-f0-9]{32})/', $output, $hm)) {
@@ -1218,7 +1273,9 @@ class Pages extends SiteController
             if (strpos($errfile, 'tcpdf.php') !== false) {
                 return true; // suppress TCPDF warnings
             }
-            return $previousHandler ? call_user_func($previousHandler, $errno, $errstr, $errfile, func_get_arg(3)) : false;
+            return $previousHandler
+                ? call_user_func($previousHandler, $errno, $errstr, $errfile, func_get_arg(3))
+                : false;
         });
         $pdf->writeHTML($html, true, false, true, false, '');
         restore_error_handler();
@@ -1243,7 +1300,19 @@ class Pages extends SiteController
     private static function sanitizeHtmlForPdf($html)
     {
         // Replace HTML5 semantic tags with divs (unsupported by TCPDF)
-        $semanticTags = ['header', 'article', 'section', 'nav', 'aside', 'figure', 'figcaption', 'footer', 'main', 'details', 'summary'];
+        $semanticTags = [
+            'header',
+            'article',
+            'section',
+            'nav',
+            'aside',
+            'figure',
+            'figcaption',
+            'footer',
+            'main',
+            'details',
+            'summary',
+        ];
         foreach ($semanticTags as $tag) {
             $html = preg_replace('/<' . $tag . '\b([^>]*)>/i', '<div$1>', $html);
             $html = preg_replace('/<\/' . $tag . '>/i', '</div>', $html);
