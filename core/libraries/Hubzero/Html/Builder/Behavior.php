@@ -91,7 +91,7 @@ class Behavior
      * @param   string  $type
      * @param   boolean $defer
      * @param   boolean $async
-     * @return  void
+     * @return  boolean
      */
     private static function pushScriptTo($index, $url, $type = 'text/javascript', $defer = false, $async = false)
     {

@@ -1179,7 +1179,7 @@ class Members extends Plugin
      *
      * @param   array  $responses  Responses to show instead of the saved ones,
      *                             so a failed save can hand back what was typed
-     * @return  void
+     * @return  false|null
      */
     private function denyresponses($responses = null)
     {
