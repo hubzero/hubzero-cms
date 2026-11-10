@@ -30,6 +30,7 @@ use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
+use Exception;
 
 /**
  * Groups plugin class for citations

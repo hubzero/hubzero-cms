@@ -24,6 +24,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 use Hubzero\Utility\Arr;
+use Exception;
 
 /**
  * Projects todo's

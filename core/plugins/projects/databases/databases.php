@@ -17,6 +17,7 @@ use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Exception;
 
 /**
  * Projects - Databases plugin

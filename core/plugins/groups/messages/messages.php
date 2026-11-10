@@ -324,7 +324,7 @@ class Messages extends Plugin
         $view = $this->view('default', 'create');
 
         //get all member roles, in the order the group's managers set
-        $member_roles = Components\Groups\Models\Role::forGroup($this->group->get('gidNumber'))->rows()->toArray();
+        $member_roles = \Components\Groups\Models\Role::forGroup($this->group->get('gidNumber'))->rows()->toArray();
 
         //get all group members
         $members = $this->group->get('members');
