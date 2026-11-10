@@ -73,7 +73,7 @@ class Db
     public static function queryGen(&$dd)
     {
         // The connection these request values are escaped against
-        $escLink = isset($dd['db']) ? static::get_db($dd['db']) : static::get_db();
+        $escLink = isset($dd['db']) ? static::getDb($dd['db']) : static::getDb();
 
         if (!isset($dd['cols']) && isset($dd['table'])) {
             $link = isset($dd['db']) ? static::getDb($dd['db']) : static::getDb();
@@ -765,7 +765,7 @@ class Db
             // The field/value pairs come from the request (_dd_post: ?id= and
             // ?custom_field=); quote them as query_gen() does. 'raw' entries are
             // the definition's own.
-            $escLink = isset($dd['db']) ? static::get_db($dd['db']) : static::get_db();
+            $escLink = isset($dd['db']) ? static::getDb($dd['db']) : static::getDb();
             $where_str = ' WHERE ';
             $where = [];
             foreach ($dd['where'] as $w) {
