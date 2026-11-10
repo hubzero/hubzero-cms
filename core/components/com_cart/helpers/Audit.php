@@ -31,12 +31,26 @@ class Audit
         $model = $pType['ptModel'];
 
         // Find if there are auditors for this product's type and model
-        $auditorClass = str_replace(' ', '_', ucwords(strtolower($model))) . '_Auditor';
-        $className = "\\Components\\Cart\\Lib\\Auditors\\" . $auditorClass;
+        $className = self::auditorClass($model);
         if (class_exists($className)) {
             return new $className($type, $pId, $crtId);
         } else {
             return new \Components\Cart\Lib\Auditors\BaseAuditor($type);
         }
+    }
+
+    /**
+     * Name the class that audits products of a model
+     *
+     * The class need not exist: most models have no auditor of their own.
+     *
+     * @param   string  $model  Product model, as the product type records it
+     * @return  string  Fully qualified class name
+     */
+    public static function auditorClass($model)
+    {
+        $auditorClass = str_replace(' ', '_', ucwords(strtolower($model))) . '_Auditor';
+
+        return "\\Components\\Cart\\Lib\\Auditors\\" . $auditorClass;
     }
 }
