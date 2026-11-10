@@ -1812,29 +1812,21 @@ class Migration20130924000005Core extends Base
                         . '"authorUrl":"tinymce.moxiecode.com\/","version":"3.4.7",'
                         . '"description":"PLG_TINY_XML_DESCRIPTION","group":""}',
                     '{"mode":"1","skin":"0","entity_encoding":"raw","lang_mode":"0","lang_code":"en",'
-                        . '"text_direction":"ltr","content_css":"1","content_css_custom":"",'
-                        . '"relative_urls":"1","newlines":"0","invalid_elements":"script,applet,iframe",'
-                        . '"extended_elements":"","toolbar":"top","toolbar_align":"left",'
-                        . '"html_height":"550","html_width":"750","resizing":"true",'
-                        . '"resize_horizontal":"false","element_path":"1","fonts":"1","paste":"1",'
+                        . '"text_direction":"ltr","content_css":"1","content_css_custom":"","relative_urls":"1",'
+                        . '"newlines":"0","invalid_elements":"script,applet,iframe","extended_elements":"",'
+                        . '"toolbar":"top","toolbar_align":"left","html_height":"550","html_width":"750",'
+                        . '"resizing":"true","resize_horizontal":"false","element_path":"1","fonts":"1","paste":"1",'
                         . '"searchreplace":"1","insertdate":"1","format_date":"%Y-%m-%d","inserttime":"1",'
-                        . '"format_time":"%H:%M:%S","insert_params":"1","toolbar1":"bold,italic,underline,'
-                        . 'strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,'
-                        . 'formatselect,fontselect,fontsizeselect","toolbar2":"cut,copy,paste,pastetext,'
-                        . 'pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,'
-                        . 'redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,'
-                        . 'preview,|,forecolor,backcolor","toolbar3":"tablecontrols,|,hr,removeformat,'
-                        . 'visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,'
-                        . 'fullscreen","toolbar4":"","custom_plugin1":"searchreplace,insertdatetime,'
-                        . 'preview","custom_plugin2":"table,advhr,advimage,advlink,emotions,iespell,'
-                        . 'inlinepopups,media,print,contextmenu,paste,fullscreen,nonbreaking,visualchars,'
-                        . 'wordcount,advlist","custom_plugin3":"","custom_plugin4":"","custom_button1":"",'
-                        . '"custom_button2":"","custom_button3":"","custom_button4":""}',
+                        . '"format_time":"%H:%M:%S","colors":"1","table":"1","smilies":"1","media":"1","hr":"1",'
+                        . '"directionality":"1","fullscreen":"1","style":"1","layer":"1","xhtmlxtras":"1",'
+                        . '"visualchars":"1","nonbreaking":"1","template":"1","blockquote":"1","wordcount":"1",'
+                        . '"advimage":"1","advlink":"1","advlist":"1","autosave":"1","contextmenu":"1",'
+                        . '"inlinepopups":"1","custom_plugin":"","custom_button":""}',
                     '',
                     '',
                     0,
                     '0000-00-00 00:00:00',
-                    0,
+                    3,
                     0,
                 ],
                 // plg_editors-xtd_article (413)

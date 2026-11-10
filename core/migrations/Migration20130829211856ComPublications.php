@@ -169,16 +169,16 @@ class Migration20130829211856ComPublications extends Base
                 ->uniqueIndex('url_alias', 'url_alias')
                 ->execute();
 
-            $customFields = 'bio=Bio=textarea=0\ncredits=Credits=textarea=0'
-                . '\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0'
-                . '\nreferences=References=textarea=0\npublications=Publications=textarea=0';
-            $customFieldsTool = 'poweredby=Powered by=textarea=0\nbio=Bio=textarea=0'
-                . '\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0'
-                . '\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0'
-                . '\npublications=Publications=textarea=0';
-            $params = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1';
-            $paramsExt = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1'
-                . '\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1';
+            $customFields = "bio=Bio=textarea=0\ncredits=Credits=textarea=0"
+                . "\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0"
+                . "\nreferences=References=textarea=0\npublications=Publications=textarea=0";
+            $customFieldsTool = "poweredby=Powered by=textarea=0\nbio=Bio=textarea=0"
+                . "\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0"
+                . "\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0"
+                . "\npublications=Publications=textarea=0";
+            $params = "plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1";
+            $paramsExt = "plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1"
+                . "\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1";
 
             $categories = [
                 [
@@ -466,7 +466,7 @@ class Migration20130829211856ComPublications extends Base
                 ->string('icon', 250)->nullable()
                 ->execute();
 
-            $licText1 = '[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]';
+            $licText1 = "[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]";
             $licIcon1 = '/components/com_publications/assets/img/logos/license.gif';
 
             $ccInfo = 'CC0 enables scientists, educators, artists and other creators and owners of '

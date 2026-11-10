@@ -44,16 +44,16 @@ class Migration20130828201526ComPublications extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $customFields = 'bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0'
-                . '\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0'
-                . '\npublications=Publications=textarea=0';
-            $customFieldsTool = 'poweredby=Powered by=textarea=0\nbio=Bio=textarea=0'
-                . '\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0'
-                . '\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0'
-                . '\npublications=Publications=textarea=0';
-            $params = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1';
-            $paramsExt = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1'
-                . '\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1';
+            $customFields = "bio=Bio=textarea=0\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0"
+                . "\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0"
+                . "\npublications=Publications=textarea=0";
+            $customFieldsTool = "poweredby=Powered by=textarea=0\nbio=Bio=textarea=0"
+                . "\ncredits=Credits=textarea=0\ncitations=Citations=textarea=0"
+                . "\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0"
+                . "\npublications=Publications=textarea=0";
+            $params = "plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1";
+            $paramsExt = "plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1"
+                . "\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1";
 
             $categories = [
                 [
@@ -68,14 +68,25 @@ class Migration20130828201526ComPublications extends Base
                     $customFields,
                     $paramsExt,
                 ],
-                ['2', 'Workshops', 'Event', 'workshop', 'workshops', '', '0', '0', $customFields, $params],
+                [
+                    '2',
+                    'Workshops',
+                    'Event',
+                    'workshop',
+                    'workshops',
+                    'A collection of lectures, seminars, and materials that were presented at a workshop.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
                 [
                     '3',
                     'Publications',
                     'Dataset',
                     'publication',
                     'publications',
-                    '',
+                    'A publication is a paper relevant to the community that has been published in some manner.',
                     '0',
                     '0',
                     $customFields,
@@ -87,25 +98,94 @@ class Migration20130828201526ComPublications extends Base
                     'InteractiveResource',
                     'learning module',
                     'learningmodules',
-                    '',
+                    'A combination of presentations, tools, assignments, etc. geared toward teaching a '
+                        . 'specific concept.',
                     '0',
                     '0',
                     $customFields,
                     $params,
                 ],
-                ['5', 'Animations', 'MovingImage', 'animation', 'animations', '', '0', '0', $customFields, $params],
-                ['6', 'Courses', 'Collection', 'course', 'courses', '', '0', '0', $customFields, $params],
-                ['7', 'Tools', 'Software', 'tool', 'tools', '', '0', '1', $customFieldsTool, $params],
-                ['9', 'Downloads', 'PhysicalObject', 'download', 'downloads', '', '0', '0', $customFields, $params],
-                ['10', 'Notes', 'Text', 'note', 'notes', '', '0', '0', $customFields, $params],
-                ['11', 'Series', 'Collection', 'series', 'series', '', '0', '0', $customFields, $params],
+                [
+                    '5',
+                    'Animations',
+                    'MovingImage',
+                    'animation',
+                    'animations',
+                    'An animation is a Flash-based demo or short movie that illustrates some concept.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    '6',
+                    'Courses',
+                    'Collection',
+                    'course',
+                    'courses',
+                    'University courses that make videos of lectures and associated teaching materials available.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    '7',
+                    'Tools',
+                    'Software',
+                    'tool',
+                    'tools',
+                    'A simulation tool is software that allows users to run a specific type of calculation.',
+                    '0',
+                    '1',
+                    $customFieldsTool,
+                    $params,
+                ],
+                [
+                    '9',
+                    'Downloads',
+                    'PhysicalObject',
+                    'download',
+                    'downloads',
+                    'A download is a type of resource that users can download and use on their own computer.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    '10',
+                    'Notes',
+                    'Text',
+                    'note',
+                    'notes',
+                    'Notes are typically a category for any resource that might not fit any of the other categories.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    '11',
+                    'Series',
+                    'Collection',
+                    'series',
+                    'series',
+                    'Series are collections of other resources, typically online presentations, that cover a '
+                        . 'specific topic.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
                 [
                     '12',
                     'Teaching Materials',
                     'Text',
                     'teaching material',
                     'teachingmaterials',
-                    '',
+                    'Supplementary materials (study notes, guides, etc.) that don\'t quite fit into any of the '
+                        . 'other categories.',
                     '0',
                     '0',
                     $customFields,

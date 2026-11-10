@@ -204,8 +204,8 @@ class Migration20130829203107ComProjects extends Base
                 ->charset('utf8')
                 ->execute();
 
-            $params1 = 'apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0';
-            $params2 = 'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0';
+            $params1 = "apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0";
+            $params2 = "apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0";
 
             if (
                 $this->db

@@ -118,197 +118,158 @@ class Migration20120101000006Core extends Base
         // Insert resource licenses
         $licenses = [
             [
-                'name' => 'cc25-by-nc-sa',
-                'title' => 'Creative Commons BY-NC-SA 2.5',
-                'url' => 'http://creativecommons.org/licenses/by-nc-sa/2.5/',
+                'name'     => 'cc25-by-nc-sa',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto "
+                    . "Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You "
+                    . "must attribute the work in the manner specified by the author or licensor (but not in any way "
+                    . "that suggests that they endorse you or your use of the work).\r\nNoncommercial — You may not "
+                    . "use this work for commercial purposes.\r\n\r\nShare Alike — If you alter, transform, or "
+                    . "build upon this work, you may distribute the resulting work only under the same or similar "
+                    . "license to this one.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above "
+                    . "conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain "
+                    . "— Where the work or any of its elements is in the public domain under applicable law, that "
+                    . "status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the "
+                    . "following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other "
+                    . "applicable copyright exceptions and limitations;\r\n- The author's moral rights;\r\n- Rights "
+                    . "other persons may have either in the work itself or in how the work is used, such as publicity "
+                    . "or privacy rights.\r\n\r\nNotice — For any reuse or distribution, you must make clear to "
+                    . "others the license terms of this work. The best way to do this is with a link to this web page.",
+                'title'    => 'Creative Commons BY-NC-SA 2.5',
                 'ordering' => 6,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n"
-                    . "to Remix — to adapt the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n"
-                    . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
-                    . "Share Alike — If you alter, transform, or build upon this work, you may "
-                        . "distribute the resulting "
-                    . "work only under the same or similar license to this one.\r\n\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.\r\n\r\n"
-                    . "Notice — For any reuse or distribution, you must make clear to others the "
-                        . "license terms of this "
-                    . "work. The best way to do this is with a link to this web page.",
+                'url'      => 'http://creativecommons.org/licenses/by-nc-sa/2.5/',
             ],
             [
-                'name' => 'cc30-by-nc-sa',
-                'title' => 'Creative Commons BY-NC-SA 3.0',
-                'url' => 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
+                'name'     => 'cc30-by-nc-sa',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto "
+                    . "Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You "
+                    . "must attribute the work in the manner specified by the author or licensor (but not in any way "
+                    . "that suggests that they endorse you or your use of the work).\r\n\r\nNoncommercial — You may "
+                    . "not use this work for commercial purposes.\r\n\r\nShare Alike — If you alter, transform, or "
+                    . "build upon this work, you may distribute the resulting work only under the same or similar "
+                    . "license to this one.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above "
+                    . "conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain "
+                    . "— Where the work or any of its elements is in the public domain under applicable law, that "
+                    . "status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the "
+                    . "following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other "
+                    . "applicable copyright exceptions and limitations;\r\n- The author's moral rights;\r\n- Rights "
+                    . "other persons may have either in the work itself or in how the work is used, such as publicity "
+                    . "or privacy rights.",
+                'title'    => 'Creative Commons BY-NC-SA 3.0',
                 'ordering' => 7,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n"
-                    . "to Remix — to adapt the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
-                    . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
-                    . "Share Alike — If you alter, transform, or build upon this work, you may "
-                        . "distribute the resulting "
-                    . "work only under the same or similar license to this one.\r\n\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.",
+                'url'      => 'http://creativecommons.org/licenses/by-nc-sa/3.0/',
             ],
             [
-                'name' => 'cc',
-                'title' => 'Creative Commons',
-                'url' => 'http://creativecommons.org/licenses/by-nc-sa/2.5/',
+                'name'     => 'cc',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto "
+                    . "Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You "
+                    . "must attribute the work in the manner specified by the author or licensor (but not in any way "
+                    . "that suggests that they endorse you or your use of the work).\r\nNoncommercial — You may not "
+                    . "use this work for commercial purposes.\r\n\r\nShare Alike — If you alter, transform, or "
+                    . "build upon this work, you may distribute the resulting work only under the same or similar "
+                    . "license to this one.\r\n\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above "
+                    . "conditions can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain "
+                    . "— Where the work or any of its elements is in the public domain under applicable law, that "
+                    . "status is in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the "
+                    . "following rights affected by the license:\r\n- Your fair dealing or fair use rights, or other "
+                    . "applicable copyright exceptions and limitations;\r\n- The author's moral rights;\r\n- Rights "
+                    . "other persons may have either in the work itself or in how the work is used, such as publicity "
+                    . "or privacy rights.\r\n\r\nNotice — For any reuse or distribution, you must make clear to "
+                    . "others the license terms of this work. The best way to do this is with a link to this web page.",
+                'title'    => 'Creative Commons',
                 'ordering' => 1,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n"
-                    . "to Remix — to adapt the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n"
-                    . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
-                    . "Share Alike — If you alter, transform, or build upon this work, you may "
-                        . "distribute the resulting "
-                    . "work only under the same or similar license to this one.\r\n\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.\r\n\r\n"
-                    . "Notice — For any reuse or distribution, you must make clear to others the "
-                        . "license terms of this "
-                    . "work. The best way to do this is with a link to this web page.",
+                'url'      => 'http://creativecommons.org/licenses/by-nc-sa/2.5/',
             ],
             [
-                'name' => 'cc30-by-nc-nd',
-                'title' => 'Creative Commons BY-NC-ND 3.0',
-                'url' => 'http://creativecommons.org/licenses/by-nc-nd/3.0/',
+                'name'     => 'cc30-by-nc-nd',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\n\r\n"
+                    . "Under the following conditions:\r\n\r\nAttribution — You must attribute the work in the "
+                    . "manner specified by the author or licensor (but not in any way that suggests that they endorse "
+                    . "you or your use of the work).\r\n\r\nNoncommercial — You may not use this work for "
+                    . "commercial purposes.\r\n\r\nNo Derivative Works — You may not alter, transform, or build "
+                    . "upon this work.\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions "
+                    . "can be waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where "
+                    . "the work or any of its elements is in the public domain under applicable law, that status is "
+                    . "in no way affected by the license.\r\n\r\nOther Rights — In no way are any of the following "
+                    . "rights affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable "
+                    . "copyright exceptions and limitations;\r\n- The author's moral rights;\r\n- Rights other "
+                    . "persons may have either in the work itself or in how the work is used, such as publicity or "
+                    . "privacy rights.",
+                'title'    => 'Creative Commons BY-NC-ND 3.0',
                 'ordering' => 8,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
-                    . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
-                    . "No Derivative Works — You may not alter, transform, or build upon this work.\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.",
+                'url'      => 'http://creativecommons.org/licenses/by-nc-nd/3.0/',
             ],
             [
-                'name' => 'cc30-by',
-                'title' => 'Creative Commons BY 3.0',
-                'url' => 'http://creativecommons.org/licenses/by/3.0/',
+                'name'     => 'cc30-by',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto "
+                    . "Remix — to adapt the work\r\nto make commercial use of the work\r\n\r\nUnder the following "
+                    . "conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the "
+                    . "author or licensor (but not in any way that suggests that they endorse you or your use of the "
+                    . "work).\r\nWith the understanding that:\r\n\r\nWaiver — Any of the above conditions can be "
+                    . "waived if you get permission from the copyright holder.\r\n\r\nPublic Domain — Where the "
+                    . "work or any of its elements is in the public domain under applicable law, that status is in no "
+                    . "way affected by the license.\r\n\r\nOther Rights — In no way are any of the following rights "
+                    . "affected by the license:\r\n- Your fair dealing or fair use rights, or other applicable "
+                    . "copyright exceptions and limitations;\r\n- The author's moral rights;\r\n- Rights other "
+                    . "persons may have either in the work itself or in how the work is used, such as publicity or "
+                    . "privacy rights.",
+                'title'    => 'Creative Commons BY 3.0',
                 'ordering' => 2,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n"
-                    . "to Remix — to adapt the work\r\n"
-                    . "to make commercial use of the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.",
+                'url'      => 'http://creativecommons.org/licenses/by/3.0/',
             ],
             [
-                'name' => 'cc30-by-sa',
-                'title' => 'Creative Commons BY-SA 3.0',
-                'url' => 'http://creativecommons.org/licenses/by-sa/3.0/',
+                'name'     => 'cc30-by-sa',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto "
+                    . "Remix — to adapt the work\r\nto make commercial use of the work\r\n\r\nUnder the following "
+                    . "conditions:\r\n\r\nAttribution — You must attribute the work in the manner specified by the "
+                    . "author or licensor (but not in any way that suggests that they endorse you or your use of the "
+                    . "work).\r\n\r\nShare Alike — If you alter, transform, or build upon this work, you may "
+                    . "distribute the resulting work only under the same or similar license to this one.\r\nWith the "
+                    . "understanding that:\r\n\r\nWaiver — Any of the above conditions can be waived if you get "
+                    . "permission from the copyright holder.\r\n\r\nPublic Domain — Where the work or any of its "
+                    . "elements is in the public domain under applicable law, that status is in no way affected by "
+                    . "the license.\r\n\r\nOther Rights — In no way are any of the following rights affected by the "
+                    . "license:\r\n- Your fair dealing or fair use rights, or other applicable copyright exceptions "
+                    . "and limitations;\r\n- The author's moral rights;\r\n- Rights other persons may have either in "
+                    . "the work itself or in how the work is used, such as publicity or privacy rights.",
+                'title'    => 'Creative Commons BY-SA 3.0',
                 'ordering' => 3,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n"
-                    . "to Remix — to adapt the work\r\n"
-                    . "to make commercial use of the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
-                    . "Share Alike — If you alter, transform, or build upon this work, you may "
-                        . "distribute the resulting "
-                    . "work only under the same or similar license to this one.\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.",
+                'url'      => 'http://creativecommons.org/licenses/by-sa/3.0/',
             ],
             [
-                'name' => 'cc30-by-nc',
-                'title' => 'Creative Commons BY-NC 3.0',
-                'url' => 'http://creativecommons.org/licenses/by-nc/3.0/',
+                'name'     => 'cc30-by-nd',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto make "
+                    . "commercial use of the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You "
+                    . "must attribute the work in the manner specified by the author or licensor (but not in any way "
+                    . "that suggests that they endorse you or your use of the work).\r\n\r\nNo Derivative Works — "
+                    . "You may not alter, transform, or build upon this work.\r\n\r\nWith the understanding that:\r\n"
+                    . "\r\nWaiver — Any of the above conditions can be waived if you get permission from the "
+                    . "copyright holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the "
+                    . "public domain under applicable law, that status is in no way affected by the license.\r\n\r\n"
+                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n- Your "
+                    . "fair dealing or fair use rights, or other applicable copyright exceptions and limitations;\r\n"
+                    . "The author's moral rights;\r\n- Rights other persons may have either in the work itself or in "
+                    . "how the work is used, such as publicity or privacy rights.",
+                'title'    => 'Creative Commons BY-ND 3.0',
+                'ordering' => 4,
+                'url'      => 'http://creativecommons.org/licenses/by-nd/3.0/',
+            ],
+            [
+                'name'     => 'cc30-by-nc',
+                'text'     => "You are free:\r\n\r\nto Share — to copy, distribute and transmit the work\r\nto "
+                    . "Remix — to adapt the work\r\n\r\nUnder the following conditions:\r\n\r\nAttribution — You "
+                    . "must attribute the work in the manner specified by the author or licensor (but not in any way "
+                    . "that suggests that they endorse you or your use of the work).\r\n\r\nNoncommercial — You may "
+                    . "not use this work for commercial purposes.\r\n\r\nWith the understanding that:\r\n\r\nWaiver "
+                    . "— Any of the above conditions can be waived if you get permission from the copyright "
+                    . "holder.\r\n\r\nPublic Domain — Where the work or any of its elements is in the public domain "
+                    . "under applicable law, that status is in no way affected by the license.\r\n\r\nOther Rights "
+                    . "— In no way are any of the following rights affected by the license:\r\n- Your fair dealing "
+                    . "or fair use rights, or other applicable copyright exceptions and limitations;\r\n- The "
+                    . "author's moral rights;\r\n- Rights other persons may have either in the work itself or in how "
+                    . "the work is used, such as publicity or privacy rights.",
+                'title'    => 'Creative Commons BY-NC 3.0',
                 'ordering' => 5,
-                'text' => "You are free:\r\n\r\n"
-                    . "to Share — to copy, distribute and transmit the work\r\n"
-                    . "to Remix — to adapt the work\r\n\r\n"
-                    . "Under the following conditions:\r\n\r\n"
-                    . "Attribution — You must attribute the work in the manner specified by the author or licensor "
-                    . "(but not in any way that suggests that they endorse you or your use of the work).\r\n\r\n"
-                    . "Noncommercial — You may not use this work for commercial purposes.\r\n\r\n"
-                    . "With the understanding that:\r\n\r\n"
-                    . "Waiver — Any of the above conditions can be waived if you get permission from the copyright "
-                    . "holder.\r\n\r\n"
-                    . "Public Domain — Where the work or any of its elements is in the public domain "
-                        . "under applicable "
-                    . "law, that status is in no way affected by the license.\r\n\r\n"
-                    . "Other Rights — In no way are any of the following rights affected by the license:\r\n"
-                    . "- Your fair dealing or fair use rights, or other applicable copyright exceptions and "
-                    . "limitations;\r\n"
-                    . "- The author\'s moral rights;\r\n"
-                    . "- Rights other persons may have either in the work itself or in how the work is used, such as "
-                    . "publicity or privacy rights.",
+                'url'      => 'http://creativecommons.org/licenses/by-nc/3.0/',
             ],
         ];
 

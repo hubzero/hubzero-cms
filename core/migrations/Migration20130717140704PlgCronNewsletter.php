@@ -28,10 +28,10 @@ class Migration20130717140704PlgCronNewsletter extends Base
         $query = "";
 
         //add newsletter cron jobs
-        $params1 = 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n';
+        $params1 = "newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n";
 
         //add newsletter cron jobs
-        $params1 = 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n';
+        $params1 = "newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n";
 
         $query = $this->db
             ->getQuery(true)

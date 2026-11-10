@@ -69,52 +69,25 @@ class Migration20130716202127ComNewsletter extends Base
                 ->execute();
 
             // insert default templates
-            $htmlTemplate = '<html>\n'
-                . '	<head>\n'
-                . '		<title>{{TITLE}}</title>\n'
-                . '	</head>\n'
-                . '	<body>\n'
-                . '		<table width="100%" border="0" cellspacing="0">\n'
-                . '			<tr>\n'
-                . '				<td align="center">\n'
-                . '					\n'
-                . '					<table width="700" border="0" cellpadding="20" cellspacing="0">\n'
-                . '						<tr class="display-browser">\n'
-                . '							<td colspan="2" style="font-size:10px;padding:0 0 5px 0;" align="center">\n'
-                . '								Email not displaying correctly? '
-                . '<a href="{{LINK}}">View in a Web Browser</a>\n'
-                . '							</td>\n'
-                . '						</tr>\n'
-                . '						<tr>\n'
-                . '							<td colspan="2" style="background:#000000;">\n'
-                . '								<h1 style="color:#FFFFFF;">{{SITENAME}}</h1>\n'
-                . '								<h3 style="color:#888888;">{{TITLE}}</h3>\n'
-                . '							</td>\n'
-                . '						<tr>\n'
-                . '							<td width="500" valign="top" '
-                . 'style="font-size:14px;color:#222222;border-left:1px solid #000000;">\n'
-                . '								<span style="display:block;color:#CCCCCC;margin-bottom:20px;">'
-                . 'Issue {{ISSUE}}</span>\n'
-                . '								{{PRIMARY_STORIES}}\n'
-                . '							</td>\n'
-                . '							<td width="200" valign="top" '
-                . 'style="font-size:12px;color:#555555;border-left:1px solid #AAAAAA;'
-                . 'border-right:1px solid #000000;">\n'
-                . '								{{SECONDARY_STORIES}}\n'
-                . '							</td>\n'
-                . '						</tr>\n'
-                . '						<tr>\n'
-                . '							<td colspan="2" align="center" style="background:#000000;color:#FFFFFF;">\n'
-                . '								Copyright &copy; {{COPYRIGHT}} HUB. All Rights reserved.\n'
-                . '							</td>\n'
-                . '						</tr>\n'
-                . '					</table>\n'
-                . '				\n'
-                . '				</td>\n'
-                . '			</tr>\n'
-                . '		</table>\n'
-                . '	</body>\n'
-                . '</html>	';
+            $htmlTemplate = "<html>\n\t<head>\n\t\t<title>{{TITLE}}</title>\n\t</head>\n\t<body>\n\t\t<table "
+                . "width=\"100%\" border=\"0\" cellspacing=\"0\">\n\t\t\t<tr>\n\t\t\t\t<td align=\"center\">\n"
+                . "\t\t\t\t\t\n\t\t\t\t\t<table width=\"700\" border=\"0\" cellpadding=\"20\" cellspacing=\"0\">\n"
+                . "\t\t\t\t\t\t<tr class=\"display-browser\">\n\t\t\t\t\t\t\t<td colspan=\"2\" "
+                . "style=\"font-size:10px;padding:0 0 5px 0;\" align=\"center\">\n\t\t\t\t\t\t\t\tEmail not "
+                . "displaying correctly? <a href=\"{{LINK}}\">View in a Web Browser</a>\n\t\t\t\t\t\t\t</td>\n"
+                . "\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td colspan=\"2\" "
+                . "style=\"background:#000000;\">\n\t\t\t\t\t\t\t\t<h1 style=\"color:#FFFFFF;\">HUB Campaign "
+                . "Template</h1>\n\t\t\t\t\t\t\t\t<h3 style=\"color:#888888;\">{{TITLE}}</h3>\n\t\t\t\t\t\t\t</td>\n"
+                . "\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td width=\"500\" valign=\"top\" "
+                . "style=\"font-size:14px;color:#222222;border-left:1px solid #000000;\">\n\t\t\t\t\t\t\t\t<span "
+                . "style=\"display:block;color:#CCCCCC;margin-bottom:20px;\">Issue {{ISSUE}}</span>\n"
+                . "\t\t\t\t\t\t\t\t{{PRIMARY_STORIES}}\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t<td width=\"200\" "
+                . "valign=\"top\" style=\"font-size:12px;color:#555555;border-left:1px solid #AAAAAA;border-right:1px "
+                . "solid #000000;\">\n\t\t\t\t\t\t\t\t{{SECONDARY_STORIES}}\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t</tr>\n"
+                . "\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td colspan=\"2\" align=\"center\" "
+                . "style=\"background:#000000;color:#FFFFFF;\">\n\t\t\t\t\t\t\t\tCopyright &copy; {{COPYRIGHT}} HUB. "
+                . "All Rights reserved.\n\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</table>\n\t\t\t\t\n"
+                . "\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</table>\n\t</body>\n</html>\t";
 
             $this->db
                 ->getQuery(true)
@@ -132,21 +105,11 @@ class Migration20130716202127ComNewsletter extends Base
                 ->values([0, 'Default HTML Email Template', $htmlTemplate, '', '', '', '', 0])
                 ->execute();
 
-            $plainTemplate = 'View In Browser - {{LINK}}\n'
-                . '=====================================\n'
-                . '{{TITLE}} - {{ISSUE}}\n'
-                . '=====================================\n'
-                . '\n'
-                . '{{PRIMARY_STORIES}}\n'
-                . '\n'
-                . '--------------------------------------------------\n'
-                . '\n'
-                . '{{SECONDARY_STORIES}}\n'
-                . '\n'
-                . '--------------------------------------------------\n'
-                . '\n'
-                . 'Unsubscribe - {{UNSUBSCRIBE_LINK}}\n'
-                . 'Copyright - {{COPYRIGHT}}';
+            $plainTemplate = "View In Browser - {{LINK}}\n=====================================\n{{TITLE}} - "
+                . "{{ISSUE}}\n=====================================\n\n{{PRIMARY_STORIES}}\n\n"
+                . "--------------------------------------------------\n\n{{SECONDARY_STORIES}}\n\n"
+                . "--------------------------------------------------\n\nUnsubscribe - {{UNSUBSCRIBE_LINK}}\n"
+                . "Copyright - {{COPYRIGHT}}";
 
             $this->db
                 ->getQuery(true)
@@ -165,9 +128,8 @@ class Migration20130716202127ComNewsletter extends Base
                 ->execute();
 
             // add newsletter cron jobs
-            $params1 = 'newsletter_queue_limit=2\n'
-                . 'support_ticketreminder_severity=all\n'
-                . 'support_ticketreminder_group=\n\n';
+            $params1 = "newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n"
+                . "\n";
 
             $query = $this->db->getQuery(true);
             $query
