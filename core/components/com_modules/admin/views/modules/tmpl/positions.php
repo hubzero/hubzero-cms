@@ -114,7 +114,8 @@ $formAction = Route::url(
             </tr>
         </tfoot>
         <tbody>
-        <?php $i = 1; foreach ($this->items as $value => $templates) : ?>
+        <?php $i = 1;
+        foreach ($this->items as $value => $templates) : ?>
             <tr class="row<?php echo $i = 1 - $i; ?>">
                 <td>
                     <?php $onclick = "if (window.parent) window.parent.{$function}('{$value}');"; ?>

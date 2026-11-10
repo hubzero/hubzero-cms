@@ -73,7 +73,8 @@ $this->css('display.css', 'com_massmail');
         <?php if (!$this->rows->count()) { ?>
             <tr><td colspan="7"><?php echo Lang::txt('COM_MASSMAIL_NO_MAILINGS'); ?></td></tr>
         <?php } else {
-            $i = 0; foreach ($this->rows as $row) {
+            $i = 0;
+            foreach ($this->rows as $row) {
                         // Every row opens the same view/edit page (the editor): it shows the
                         // message, stays editable until the mailing starts sending, and its
                         // status side-panel exposes the admin approve/release/etc. controls

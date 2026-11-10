@@ -414,20 +414,21 @@ class Grid
         $inactive_title = Lang::txt('JLIB_HTML_CHECKED_OUT') . '
             ::' . $text . '
             <br />' . $date . '
-            <br />' . $time;return self::action(
-                $i,
-                'checkin',
-                $prefix,
-                Lang::txt('JLIB_HTML_CHECKED_OUT'),
-                $active_title,
-                $inactive_title,
-                true,
-                'checkedout',
-                'checkedout',
-                $enabled,
-                false,
-                $checkbox,
-            );
+            <br />' . $time;
+        return self::action(
+            $i,
+            'checkin',
+            $prefix,
+            Lang::txt('JLIB_HTML_CHECKED_OUT'),
+            $active_title,
+            $inactive_title,
+            true,
+            'checkedout',
+            'checkedout',
+            $enabled,
+            false,
+            $checkbox,
+        );
     }
 
     /**
@@ -753,7 +754,8 @@ class Grid
             $active_title   = array_key_exists(
                 'active_title',
                 $options,
-            ) ? $options['active_title'] : $active_title;            $inactive_title = array_key_exists(
+            ) ? $options['active_title'] : $active_title;
+            $inactive_title = array_key_exists(
                 'inactive_title',
                 $options,
             ) ? $options['inactive_title'] : $inactive_title;
@@ -761,7 +763,8 @@ class Grid
             $active_class   = array_key_exists(
                 'active_class',
                 $options,
-            ) ? $options['active_class'] : $active_class;            $inactive_class = array_key_exists(
+            ) ? $options['active_class'] : $active_class;
+            $inactive_class = array_key_exists(
                 'inactive_class',
                 $options,
             ) ? $options['inactive_class'] : $inactive_class;
