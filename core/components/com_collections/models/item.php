@@ -483,7 +483,7 @@ class Item extends Base
 
         if (!$this->get('id')) {
             if (!$this->_tbl->id) {
-                $this->_tbl->id = $this->_tbl->_db->insertid();
+                $this->_tbl->id = $this->_db->insertid();
             }
             $this->set('id', $this->_tbl->id);
         }
