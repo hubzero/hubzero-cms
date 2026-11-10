@@ -460,7 +460,8 @@ class Create extends SiteController
 					INNER JOIN `#__tags` t2 ON t2.id = to1.objectid
 					WHERE t.raw_tag = ' . $this->database->quote($parent_label) . '
 					ORDER BY CASE WHEN t2.raw_tag LIKE \'other%\' THEN 1 ELSE 0 END, t2.raw_tag'
-                // get tags that are labeled focus areas that are not also a parent of another tag labeled as a focus area
+                // get tags that are labeled focus areas that are not also a parent of another tag labeled as a focus
+                // area
                 : 'SELECT DISTINCT t.raw_tag AS label, t2.id, t2.tag, t2.raw_tag, t2.description
 					FROM `#__tags` t
 					LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id AND to1.label = \'label\' AND to1.tbl = \'tags\'
@@ -1499,7 +1500,8 @@ class Create extends SiteController
             return;
         }
 
-        // If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the onAfterContentSubmission event
+        // If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the
+        // onAfterContentSubmission event
         if ($resource->get('published')) {
             Event::trigger('content.onAfterContentSubmission', ['Resource']);
         }

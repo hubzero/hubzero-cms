@@ -53,8 +53,9 @@ class Output
     /**
      * Set the output mode
      *
-     * Assume normal, but minimal and verbose are also options. This isn't setting the format, but it's allowing us to distinguish what
-     * amount/sorts of data the command should return.  The individual format handler would then format the output appropriately.
+     * Assume normal, but minimal and verbose are also options. This isn't setting the format, but it's allowing us to
+     * distinguish what amount/sorts of data the command should return.  The individual format handler would then format
+     * the output appropriately.
      *
      * @var  string
      **/
@@ -63,7 +64,8 @@ class Output
     /**
      * Render out stored output to command line
      *
-     * @param   bool  $newLine  Whether or not to include new line with each response (really only applies to interactive output)
+     * @param   bool  $newLine  Whether or not to include new line with each response (really only applies to
+     *                          interactive output)
      * @return  void
      **/
     public function render($newLine = true)
@@ -88,7 +90,8 @@ class Output
      * Add a new line to the output buffer (not actually a real php output buffer)
      *
      * @param   string  $message  Text of line
-     * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+     * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for
+     *                            posibilities)
      * @param   bool    $newLine  Whether or not line should end with a new line
      * @return  $this
      **/
@@ -114,7 +117,8 @@ class Output
      * including a new line at the end of the output
      *
      * @param   string  $message  Text of string
-     * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+     * @param   mixed   $styles   Array of custom styles or string containing predefined term (see formatLine() for
+     *                            posibilities)
      * @return  $this
      **/
     public function addString($message, $styles = null)
@@ -129,7 +133,8 @@ class Output
      * This will chop the text up to maintain lines of approximately 80 characters.
      *
      * @param   string  $paragraph  Text to be chopped into lines and stored
-     * @param   mixed   $styles     Array of custom styles or string containing predefined term (see formatLine() for posibilities)
+     * @param   mixed   $styles     Array of custom styles or string containing predefined term (see formatLine() for
+     *                              posibilities)
      * @return  $this
      **/
     public function addParagraph($paragraph, $styles = [])

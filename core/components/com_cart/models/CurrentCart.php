@@ -70,8 +70,8 @@ class CurrentCart extends Cart
             // If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
             if (!$user->get('guest')) {
                 if (empty($this->cart->linked) || !$this->cart->linked) {
-                    // link carts if not linked (this should only happen when user logs in with a cart created while not logged in)
-                    // if linking fails create a new cart
+                    // link carts if not linked (this should only happen when user logs in with a cart created while not
+                    // logged in) if linking fails create a new cart
                     if (!$this->linkCarts()) {
                         $this->createCart();
                     }
@@ -849,7 +849,8 @@ class CurrentCart extends Cart
      * Mark step for current transaction as completed (default) or not-completed
      *
      * @param   string Step
-     * @param   mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA steps for each SKU)
+     * @param   mixed Meta key to match the step among multiple of the same type (eg transaction can have multiple EULA
+     *          steps for each SKU)
      * @param   bool Completed (true) or not completed (false)
      * @return  bool
      */
@@ -958,7 +959,8 @@ class CurrentCart extends Cart
 
                 $productOptions = $productOptions->options;
 
-                // See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to add if there are several of them)
+                // See if the product has only one SKU, then add this SKU to cart (There is no way do decide what SKU to
+                // add if there are several of them)
                 if (count($productOptions->skus) == 1) {
                     // Get product's SKU
                     $sId = array_shift($productOptions->skus);
@@ -1203,13 +1205,15 @@ class CurrentCart extends Cart
                             if ($couponObjectType == 'sku') {
                                 break;
                             }
-                            //no break for products -- keep going maybe there are several SKUs of the same product in the cart
+                            //no break for products -- keep going maybe there are several SKUs of the same product in
+                            // the cart
                         }
                         // No match
                     }
                 }
 
-                // calculate total item discounts, the final correct value will be calculated on the last iteration of the parent loop
+                // calculate total item discounts, the final correct value will be calculated on the last iteration of
+                // the parent loop
                 foreach ($itemCouponDiscountMappings as $mappedDiscount) {
                     $itemsDiscountsTotal += $mappedDiscount;
                 }
@@ -1259,13 +1263,14 @@ class CurrentCart extends Cart
                     $perks['generic'][$couponObjectType] = $perk;
                 }
 
-                // calculate total generic discounts, the final correct value will be calculated on the last iteration of the parent loop
+                // calculate total generic discounts, the final correct value will be calculated on the last iteration
+                // of the parent loop
                 foreach ($perks['generic'] as $perkDiscount) {
                     $genericDiscountsTotal += $perkDiscount->discount;
                 }
             } elseif ($couponObjectType == 'shipping') {
-                // Coupon is for shipping -- handled differently to be applied later after the shipping cost is calculated
-                // Initialize the perk
+                // Coupon is for shipping -- handled differently to be applied later after the shipping cost is
+                // calculated Initialize the perk
                 unset($perk);
                 $perk = new \stdClass();
                 $perk->name = $cn->cnDescription;
@@ -1417,7 +1422,8 @@ class CurrentCart extends Cart
     }
 
     /**
-     * Update cart based on current availability (and pricing) and return all items in the cart, update cart's 'lastUpdated' field
+     * Update cart based on current availability (and pricing) and return all items in the cart, update cart's
+     * 'lastUpdated' field
      *
      * @param void
      * @return array of items in the cart
@@ -1910,7 +1916,8 @@ class CurrentCart extends Cart
             if ($productInfo->ptModel == 'software') {
                 $eulaRequired = Product::getMetaValue($skuInfo['info']->pId, 'eulaRequired');
 
-                // If EULA is needed, add step, note the EULA required for each SKU, so for multiple SKUs of the same product, multiple EULA will be required
+                // If EULA is needed, add step, note the EULA required for each SKU, so for multiple SKUs of the same
+                // product, multiple EULA will be required
                 if ($eulaRequired) {
                     $step = new \stdClass();
                     $step->name = 'eula';
@@ -1988,7 +1995,8 @@ class CurrentCart extends Cart
      */
     private function rebuildTransaction()
     {
-        // Go through each item in the transaction and see if it is available in quantity needed and if price has not changed
+        // Go through each item in the transaction and see if it is available in quantity needed and if price has not
+        // changed
         $tItems = $this->getTransactionItems($this->cart->tId);
 
         foreach ($tItems as $item) {

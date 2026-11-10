@@ -116,7 +116,8 @@ class Subscription extends Relational
             $charset .= "0123456789";
         }
         if ($usespecial) {
-            $charset .= "~@#$%^*()_+-={}|]["; // Note: using all special characters this reads: "~!@#$%^&*()_+`-={}|\\]?[\":;'><,./";
+            // Note: using all special characters this reads: "~!@#$%^&*()_+`-={}|\\]?[\":;'><,./";
+            $charset .= "~@#$%^*()_+-={}|][";
         }
 
         if ($minlength > $maxlength) {

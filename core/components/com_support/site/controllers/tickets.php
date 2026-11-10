@@ -1902,8 +1902,8 @@ class Tickets extends SiteController
      *   hostname (optional)
      *   uas      (optional)
      *   referrer (optional)
-     *   cookies  (optional) default: 1 (since it's coming from rappture we assume they're already logged in and thus have cookies enabled)
-     *   section  (optional)
+     *   cookies  (optional) default: 1 (since it's coming from rappture we assume they're already logged in and thus
+     *   have cookies enabled) section  (optional)
      *   upload   (optional)
      *
      * @return  void

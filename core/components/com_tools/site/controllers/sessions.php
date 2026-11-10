@@ -595,7 +595,8 @@ class Sessions extends SiteController
         $hasaccess = $this->getToolAccess($app->name);
         //$status2 = ($hasaccess) ? "PASSED" : "FAILED";
 
-        //Log::debug("mw::invoke " . $app->name . " by " . User::get('username') . " from " . $app->ip . " _getToolAccess " . $status2);
+        //Log::debug("mw::invoke " . $app->name . " by " . User::get('username') . " from " . $app->ip
+        //    . " _getToolAccess " . $status2);
 
         if ($this->getError()) {
             echo '<!-- ' . $this->getError() . ' -->';
@@ -805,7 +806,8 @@ class Sessions extends SiteController
         $id = Request::getInt('sess', 0);
 
         // Try loading the session
-        //$session = \Components\Tools\Models\Middleware\Session::getInstance($id, $this->config->get('access-manage-session'));
+        //$session = \Components\Tools\Models\Middleware\Session::getInstance($id,
+        //    $this->config->get('access-manage-session'));
         $session = $middleware->session($id, $this->config->get('access-manage-session'));
 
         // Double-check that the user can view this session.
@@ -853,7 +855,8 @@ class Sessions extends SiteController
         $new_id = !empty($output->session) ? $output->session : '';
 
         // Load the new session and transfer some data
-        //$reinvoked = \Components\Tools\Models\Middleware\Session::getInstance($new_id, $this->config->get('access-manage-session'));
+        //$reinvoked = \Components\Tools\Models\Middleware\Session::getInstance($new_id,
+        //    $this->config->get('access-manage-session'));
         $reinvoked = $middleware->session($new_id, $this->config->get('access-manage-session'));
         $reinvoked->set('sessname', $session->get('sessname'));
         $reinvoked->set('params', $params);

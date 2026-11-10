@@ -484,16 +484,20 @@ class Behavior
      * @param   string  $selector  The class selector for the tooltip.
      * @param   array   $params    An array of options for the tooltip.
      *                             Options for the tooltip can be:
-     *                             - maxTitleChars  integer   The maximum number of characters in the tooltip title (defaults to 50).
-     *                             - offsets        object    The distance of your tooltip from the mouse (defaults to {'x': 16, 'y': 16}).
-     *                             - showDelay      integer   The millisecond delay the show event is fired (defaults to 100).
-     *                             - hideDelay      integer   The millisecond delay the hide hide is fired (defaults to 100).
+     *                             - maxTitleChars  integer   The maximum number of characters in the tooltip title
+     *                                                        (defaults to 50).
+     *                             - offsets        object    The distance of your tooltip from the mouse (defaults to
+     *                                                        {'x': 16, 'y': 16}).
+     *                             - showDelay      integer   The millisecond delay the show event is fired (defaults to
+     *                                                        100).
+     *                             - hideDelay      integer   The millisecond delay the hide hide is fired (defaults to
+     *                                                        100).
      *                             - className      string    The className your tooltip container will get.
      *                             - fixed          boolean   If set to true, the toolTip will not follow the mouse.
-     *                             - onShow         function  The default function for the show event, passes the tip element
-     *                               and the currently hovered element.
-     *                             - onHide         function  The default function for the hide event, passes the currently
-     *                               hovered element.
+     *                             - onShow         function  The default function for the show event, passes the tip
+     *                                                        element and the currently hovered element.
+     *                             - onHide         function  The default function for the hide event, passes the
+     *                                                        currently hovered element.
      * @return  void
      */
     public static function tooltip($selector = '.hasTip', $params = [])
@@ -507,7 +511,8 @@ class Behavior
         self::framework(true);
 
         // Setup options object
-        /*$opt['maxTitleChars'] = (isset($params['maxTitleChars']) && ($params['maxTitleChars'])) ? (int) $params['maxTitleChars'] : 50;
+        /*$opt['maxTitleChars'] = (isset($params['maxTitleChars']) && ($params['maxTitleChars']))
+            ? (int) $params['maxTitleChars'] : 50;
         // offsets needs an array in the format: array('x'=>20, 'y'=>30)
         $opt['offset']          = (isset($params['offset']) && (is_array($params['offset']))) ? $params['offset'] : null;
         if (!isset($opt['offset']))
@@ -933,7 +938,8 @@ class Behavior
         // Include MooTools framework
         self::framework();
 
-        //$js = "window.addEvent('domready', function () {if (top == self) {document.documentElement.style.display = 'block'; }" .
+        //$js = "window.addEvent('domready', function () {if (top == self) {" .
+        //  "document.documentElement.style.display = 'block'; }" .
         //  " else {top.location = self.location; }});";
         $js = "jQuery(document).ready(function($){
 			if (top == self) {

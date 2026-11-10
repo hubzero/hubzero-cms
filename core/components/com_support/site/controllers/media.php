@@ -322,7 +322,8 @@ class Media extends SiteController
             'directory'  => str_replace(PATH_APP, '', $path),
             'ticket'     => $ticket,
             'comment_id' => $comment,
-            'html'       => str_replace('>', '&gt;', $view->loadTemplate()), // Entities have to be encoded or IE 8 goes nuts
+            // Entities have to be encoded or IE 8 goes nuts
+            'html'       => str_replace('>', '&gt;', $view->loadTemplate()),
         ]);
     }
 

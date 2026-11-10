@@ -137,7 +137,8 @@ class Wishlists extends SiteController
                     break;
 
                 default:
-                    // XSS fix, passing raw user supplied/maniuplatable data to function that creates link. See ticket 1420
+                    // XSS fix, passing raw user supplied/maniuplatable data to function that creates link.
+                    // See ticket 1420
                     Pathway::append(
                         Lang::txt(strtoupper($this->option) . '_' . strtoupper($this->task)),
                         'index.php?option=' . $this->option . '&task=' . htmlentities($this->task),
@@ -463,13 +464,16 @@ class Wishlists extends SiteController
         /*
         $sp_filters = $this->view->filters;
         $sp_filters['filterby'] = 'granted';
-        $model->set('granted_count', $model->wishes('count', $sp_filters, true)); //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, User::getInstance());
-        $model->set('granted_percentage', ($total > 0 && $model->get('granted_count') > 0 ? round(($model->get('granted_count')/$total) * 100, 0) : 0));
+        //$objWish->get_count($model->get('id'), $sp_filters, $this->_admin, User::getInstance());
+        $model->set('granted_count', $model->wishes('count', $sp_filters, true));
+        $model->set('granted_percentage', ($total > 0 && $model->get('granted_count') > 0
+            ? round(($model->get('granted_count')/$total) * 100, 0) : 0));
         */
 
         // Some extras
         $model->set('banking', ($this->banking ? $this->banking : 0));
-        $model->set('banking', ($model->get('category') == 'user' ? 0 : $this->banking)); // do not allow points for individual wish lists
+        // do not allow points for individual wish lists
+        $model->set('banking', ($model->get('category') == 'user' ? 0 : $this->banking));
 
         $this->view
             ->set('filters', $filters)

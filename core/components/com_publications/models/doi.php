@@ -1342,7 +1342,8 @@ class Doi extends Obj
      * Update DOI status on EZID
      *
      * @param   string   $doi
-     * @param   string   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from draft to published
+     * @param   string   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from
+     *                                  draft to published
      * @return  boolean
      */
     public function ezidDoiStatusUpdate($doi, $stateSwitch)
@@ -1390,7 +1391,8 @@ class Doi extends Obj
      * Update DOI status on DataCite
      *
      * @param   string   $doi
-     * @param   integer  $stateSwitch   0 - Publication changed from published to draftready   1 - Publication changed from draftready to published
+     * @param   integer  $stateSwitch   0 - Publication changed from published to draftready   1 - Publication changed
+     *                                  from draftready to published
      *
      * @return  boolean
      */
@@ -1513,7 +1515,8 @@ class Doi extends Obj
      *          is set to findable/public.
      *
      * @param   string    $doi
-     * @param   integer   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from draft to published
+     * @param   integer   $stateSwitch   0 - Publication changed from published to draft   1 - Publication changed from
+     *                                   draft to published
      *
      * @return
      */

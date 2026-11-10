@@ -313,7 +313,8 @@ class Helper
         if ($active_group_plugins) {
             //for each plugin that is active on the hub
             foreach ($hub_group_plugins as $hgp) {
-                //if group defined access level is not an acceptable value or not set use default value that is set per plugin
+                //if group defined access level is not an acceptable value or not set use default value that is set per
+                // plugin
                 //else use group defined access level
                 if (
                     !isset($active_group_plugins[$hgp['name']])

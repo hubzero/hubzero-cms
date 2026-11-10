@@ -122,7 +122,8 @@ class Handler
         $classes = get_declared_classes();
 
         // Scan the current directory for other asset handlers
-        // @FIXME: also include files from template override directory (override if same name, or add to the list if different name)
+        // @FIXME: also include files from template override directory (override if same name, or add to the list if
+        // different name)
         foreach (scandir(dirname(__FILE__)) as $filename) {
             // Create the path
             $path = dirname(__FILE__) . DS . $filename;

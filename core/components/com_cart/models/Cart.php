@@ -863,7 +863,8 @@ abstract class Cart
     }
 
     /**
-     * Update the existing items in the transaction (#__cart_transaction_items). Update can be partial retaining the rest of the info.
+     * Update the existing items in the transaction (#__cart_transaction_items). Update can be partial retaining the
+     * rest of the info.
      *
      * @param   int    $tId  transaction ID
      * @param   obect  $tiInfo  transaction items info

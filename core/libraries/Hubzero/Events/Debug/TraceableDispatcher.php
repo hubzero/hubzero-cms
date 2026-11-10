@@ -266,7 +266,8 @@ class TraceableDispatcher implements DispatcherInterface
                 ->getListeners()[$event->getName()]
                 ->add(new TraceableListener($listener, $name, $this->stopwatch), $priority);
 
-            //$this->dispatcher->addListener(new TraceableListener($listener, $name, $this->stopwatch), array($event->getName() => $priority));
+            //$this->dispatcher->addListener(new TraceableListener($listener, $name, $this->stopwatch),
+            //    array($event->getName() => $priority));
         }
     }
 

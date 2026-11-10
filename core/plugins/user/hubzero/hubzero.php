@@ -534,7 +534,8 @@ class Hubzero extends Plugin
         $db->setQuery($query);
         $objRows = $db->loadObjectList();
 
-        // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the value encoded in json in appropriate PHP type
+        // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the
+        // value encoded in json in appropriate PHP type
         $objString = json_encode($objRows, true);
         return json_decode($objString, true);
     }
@@ -595,7 +596,8 @@ class Hubzero extends Plugin
         }
 
         // ======= Sanitation Queries // deletes, updates, inserts =======
-        // NOTE: moved the insert (pre deletes) and updated (post deletes) profile key SQL statement to controller com_members/admin/controllers/members.php
+        // NOTE: moved the insert (pre deletes) and updated (post deletes) profile key SQL statement to controller
+        // com_members/admin/controllers/members.php
         $delete_UserProfile_Query = "DELETE from `#__user_profiles` where user_id ="
             . $db->quote($userId)
             . " AND profile_key !='edulevel' AND profile_key !='gender' AND profile_key !='hispanic' AND profile_key "

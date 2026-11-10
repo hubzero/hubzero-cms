@@ -815,7 +815,8 @@ class Resources extends SiteController
         $base = trim($this->config->get('uploadpath', '/site/resources'), DS);
 
         //build the rest of the resource path and combine with base
-        $path = $path ? $path : $activechild->relativepath(); //Html::build_path($activechild->created, $activechild->id, '');
+        //Html::build_path($activechild->created, $activechild->id, '');
+        $path = $path ? $path : $activechild->relativepath();
         $path = $base . $path;
 
         // we must have a folder
@@ -1321,7 +1322,8 @@ class Resources extends SiteController
         $alias    = Request::getString('alias', '');        // Alternate method of identifying a resource
         $fsize    = Request::getString('fsize', '');        // A parameter to see file size without formatting
 
-        // XSS fix. Revision gets pumped all over and dumped in URLs via plugins, easier to fix at the input instead of risking missing an output. See ticket 1416
+        // XSS fix. Revision gets pumped all over and dumped in URLs via plugins, easier to fix at the input instead of
+        // risking missing an output. See ticket 1416
         $revision = htmlentities(Request::getString('rev', ''));          // Get svk revision of a tool
 
         $tab      = Request::getCmd('active', 'about');  // The active tab (section)
@@ -1385,7 +1387,8 @@ class Resources extends SiteController
         // // Make sure they have access to view this resource
         //if ($this->checkGroupAccess($this->model))
         //{
-        //  App::abort(403, \Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->get('group_owner'), Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner'))));
+        //  App::abort(403, \Lang::txt('COM_RESOURCES_ALERTNOTAUTH_GROUP', $this->model->get('group_owner'),
+        //      Route::url('index.php?option=com_groups&cn=' . $this->model->get('group_owner'))));
         //  return;
         //}
 

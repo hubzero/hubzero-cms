@@ -774,7 +774,8 @@ class Auth extends SiteController
                         $myplugin = new $className($this, (array) $plugin);
 
                         // Redirect to user third party signout view
-                        // Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
+                        // Only do this for PUCAS for the time being (it's the one that doesn't lose session info after
+                        // hub logout)
                         if ($authenticator == 'pucas') {
                             // Get plugin params
                             $plugin = Plugin::byType('authentication', $authenticator);
@@ -856,7 +857,8 @@ class Auth extends SiteController
                 }
 
                 // Redirect to user third party signout view
-                // Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
+                // Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub
+                // logout)
                 if ($auth_domain_name == 'pucas') {
                     // Get plugin params
                     $plugin = Plugin::byType('authentication', $auth_domain_name);

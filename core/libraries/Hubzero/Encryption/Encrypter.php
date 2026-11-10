@@ -214,7 +214,8 @@ class Encrypter
 
         // Note that we ALWAYS iterate over the user-supplied length to prevent leaking length info.
         for ($i = 0; $i < $unknownLength; $i++) {
-            // Using % here is a trick to prevent notices. It's safe, since if the lengths are different, $result is already non-0
+            // Using % here is a trick to prevent notices. It's safe, since if the lengths are different, $result is
+            // already non-0
             $result |= (ord($known[$i % $knownLength]) ^ ord($unknown[$i]));
         }
 

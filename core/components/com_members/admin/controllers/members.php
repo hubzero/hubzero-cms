@@ -1081,7 +1081,8 @@ class Members extends AdminController
         $db->setQuery($query);
         $objRows = $db->loadObjectList();
 
-        // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the value encoded in json in appropriate PHP type
+        // json_encode: returns a string containing the JSON representation from the mySQL -> json_decode: Returns the
+        // value encoded in json in appropriate PHP type
         $objString = json_encode($objRows, true);
         return json_decode($objString, true);
     }
@@ -1138,7 +1139,8 @@ class Members extends AdminController
 
         // Loop through the array of user Ids
         // Make sure plugin user/deidentify has been migrated / imported
-        // Run through main CMS tables, then run through client specific database tables that pertains to jobs, sessions, views with same trigger name
+        // Run through main CMS tables, then run through client specific database tables that pertains to jobs,
+        // sessions, views with same trigger name
         foreach ($ids as $id) {
             $id = (int) $id;
 
@@ -1147,7 +1149,8 @@ class Members extends AdminController
             $anonUserName = "anonUsername_" . $id;
             $anonUserNameSpace = "AnonFirst Middle Last" . $id;
 
-            // Can't rely on any order the plugins run in. Setting the deletion profile key in controller before calling the plugins
+            // Can't rely on any order the plugins run in. Setting the deletion profile key in controller before calling
+            // the plugins
             $insert_UserProfileWithStatus_Query = "INSERT INTO `#__user_profiles` (`user_id`, `profile_key`, "
                 . "`profile_value`) values (?, 'deletion', 'marked')";
             $this->runInsertQuery($insert_UserProfileWithStatus_Query, [$id]);

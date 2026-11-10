@@ -319,7 +319,8 @@ class Resources extends Plugin
                         'tab_base_url',
                         'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=resources',
                     );
-                    // Added a noview variable to indicate to the controller that we do not want it to try to display the view, simply build it
+                    // Added a noview variable to indicate to the controller that we do not want it to try to display
+                    // the view, simply build it
                     Request::setVar('noview', 1);
 
                     // Instantiate the controller and have it execute

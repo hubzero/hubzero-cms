@@ -273,7 +273,8 @@ class Sku
             }
         }
 
-        // At this point option groups options set must be the same as the product options groups, throw exception if not
+        // At this point option groups options set must be the same as the product options groups, throw exception if
+        // not
         $missingOptions = array_diff($productOptionGroups, $optionGroupOptionsSet);
         if (!empty($missingOptions)) {
             throw new \Exception(Lang::txt('Not all product options are set'));
@@ -758,7 +759,8 @@ class Sku
         return $sku;
     }
 
-    // Update all SKUs' references for a given product -- called when the product is updated to bring the SKUs up to speed
+    // Update all SKUs' references for a given product -- called when the product is updated to bring the SKUs up to
+    // speed
     public static function updateReferences($pId)
     {
         $product = new Product($pId);

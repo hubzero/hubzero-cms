@@ -894,7 +894,9 @@ class Html
                 $hztv = \Components\Tools\Models\Version::getInstance($resource->tool);
                 if ($hztv) {
                     $ht = \Components\Tools\Models\Tool::getInstance($hztv->toolid);
-                    if ($ht) { // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect (bad data in DB?)
+                    // @FIXME: this only seems to fail on hubbub VMs where workspace resource is incomplete/incorrect
+                    // (bad data in DB?)
+                    if ($ht) {
                         $toolgroups = $ht->getToolGroupsRestriction(
                             $hztv->toolid,
                             $resource->get('tool', $resource->get('alias')),
@@ -927,7 +929,8 @@ class Html
                     }
                 }
 
-                if (!User::isGuest() && !$ingroup && $toolgroups) { // see if tool is restricted to a group and if current user is in that group
+                // see if tool is restricted to a group and if current user is in that group
+                if (!User::isGuest() && !$ingroup && $toolgroups) {
                     $pop = '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
                     $html .= self::primaryButton(
                         'link_disabled',
@@ -939,11 +942,14 @@ class Html
                         1,
                         $pop,
                     );
-                } elseif ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) { // dev or published tool
+                } elseif ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision)) {
+                    // dev or published tool
                     //if (User::isGuest()) {
                     // Not logged-in = show message
-                    //$html .= self::primaryButton('launchtool disabled', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
-                    //$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
+                    //$html .= self::primaryButton('launchtool disabled', $lurl,
+                    //    Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+                    //$html .= self::warning('You must <a href="'.Route::url('index.php?option=com_login')
+                    //    .'">log in</a> before you can run this tool.')."\n";
                     //} else {
                     $pop = (User::isGuest())
                         ? '<p class="warning">' . Lang::txt('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>'

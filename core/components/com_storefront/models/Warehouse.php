@@ -63,7 +63,7 @@ class Warehouse extends \Hubzero\Base\Obj
         App::get('language')->load('com_storefront');
     }
 
-    /* ------------------------------------- Instance config functions ----------------------------------------------- */
+    /* ------------------------------------- Instance config functions ------------------------------------- */
 
 
     /**
@@ -585,8 +585,8 @@ class Warehouse extends \Hubzero\Base\Obj
         $this->database->setQuery($sql);
         $this->database->execute();
 
-        // WhiteList logic: run the expensive query twice, find the whitlisted SKUs for each product, white list the corresponding product,
-        // keep the white listed products, kill the non-authorized products (not very efficient)
+        // WhiteList logic: run the expensive query twice, find the whitlisted SKUs for each product, white list the
+        // corresponding product, keep the white listed products, kill the non-authorized products (not very efficient)
         if ($this->userScope && ($useAccessGroups || $this->accessLevelsScope)) {
             $products = $this->database->loadObjectList('pId');
 
@@ -1482,7 +1482,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
 
 
-    /* -------------------------------------------------------------- Private functions -------------------------------------------------------------- */
+    /* ----------------------------------------- Private functions ----------------------------------------- */
 
 
 

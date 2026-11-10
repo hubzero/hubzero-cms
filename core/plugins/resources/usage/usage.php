@@ -375,10 +375,14 @@ class Usage extends Plugin
             // $point->users = $result->users;
             // $point->users = $result->users;
 
-            // $data->users[]       = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->users . "]";
-            // $interactive[] = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->sessions . "]";
-            // $sessions[]    = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->simulations . "]";
-            // $data->runs[]        = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . " 00:00:00')," . $result->jobs . "]";
+            // $data->users[]       = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01',
+            //     $result->datetime)) . " 00:00:00')," . $result->users . "]";
+            // $interactive[] = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01',
+            //     $result->datetime)) . " 00:00:00')," . $result->sessions . "]";
+            // $sessions[]    = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01',
+            //     $result->datetime)) . " 00:00:00')," . $result->simulations . "]";
+            // $data->runs[]        = "[Date.parse('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01',
+            //     $result->datetime)) . " 00:00:00')," . $result->jobs . "]";
             $data->points[] = $result;
 
             // $usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
@@ -526,7 +530,9 @@ class Usage extends Plugin
                 $obj->color = $colors[$i];
                 $obj->code  = '';
 
-                $r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+                //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \''
+                //    . $colors[$i] . '\'}';
+                $r[$ky][] = $obj;
                 $i++;
             }
         }
@@ -571,7 +577,9 @@ class Usage extends Plugin
                 $obj->color = $colors[$i];
                 $obj->code  = (isset($codes[$row->name]) ? strtolower($codes[$row->name]['code']) : '');
 
-                $r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+                //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \''
+                //    . $colors[$i] . '\'}';
+                $r[$ky][] = $obj;
                 $i++;
             }
         }
@@ -608,7 +616,9 @@ class Usage extends Plugin
                 $obj->color = $colors[$i];
                 $obj->code  = '';
 
-                $r[$ky][] = $obj; //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+                //'{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \''
+                //    . $colors[$i] . '\'}';
+                $r[$ky][] = $obj;
                 $i++;
             }
         }

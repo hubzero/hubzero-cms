@@ -183,7 +183,8 @@ class Members extends Plugin
             }
 
             // Set the page title
-            //Document::setTitle(Lang::txt(strtoupper($this->_option)).': '.$this->group->description.': '.Lang::txt('PLG_GROUPS_MEMBERS'));
+            //Document::setTitle(Lang::txt(strtoupper($this->_option)).': '.$this->group->description
+            //    .': '.Lang::txt('PLG_GROUPS_MEMBERS'));
 
             $this
                 ->css('members.css')
@@ -505,9 +506,10 @@ class Members extends Plugin
         // Set a flag for emailing any changes made
         $admchange = '';
 
-        // Note: we use two different lists to avoid situations where the user is already a member but somehow an applicant too.
-        // Recording the list of applicants for removal separate allows for removing the duplicate entry from the applicants list
-        // without trying to add them to the members list (which they already belong to).
+        // Note: we use two different lists to avoid situations where the user is already a member but somehow an
+        // applicant too.
+        // Recording the list of applicants for removal separate allows for removing the duplicate entry from the
+        // applicants list without trying to add them to the members list (which they already belong to).
         $users = [];
         $applicants = [];
 

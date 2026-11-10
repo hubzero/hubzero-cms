@@ -2004,7 +2004,8 @@ class Publications extends SiteController
                 $dest = [];
                 $dest['main'] = $filenew;
                 $dest['hash'] = $filenew . '.hash';
-                $dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png'); // thumbnails aren't in sub?
+                // thumbnails aren't in sub?
+                $dest['thmb'] = \Components\Projects\Helpers\Html::createThumbName($filenew, '_tn', 'png');
 
                 if (!is_dir($toProj)) {
                     Filesystem::makeDirectory($toProj, 0755, true, true);
@@ -2040,8 +2041,9 @@ class Publications extends SiteController
                     // The hash and thumbnail go only to the publication space
                     if ($type == 'main') {
                         // Copy to the project space but to its original name
-                        // Note: gallery items' filenames will have a suffix with attachment record ID but the database entry
-                        // will point to the un-suffixed filename. DB: foo.jpg (in project space) = foo-123.jpg (in publication space)
+                        // Note: gallery items' filenames will have a suffix with attachment record ID but the database
+                        // entry will point to the un-suffixed filename. DB: foo.jpg (in project space) = foo-123.jpg
+                        // (in publication space)
                         if (!Filesystem::copy($from . $filename, $toProj . $orig)) { //$filename
                             App::abort(
                                 500,

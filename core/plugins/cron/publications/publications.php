@@ -101,7 +101,8 @@ class Publications extends Plugin
         $query  = "SELECT A.user_id ";
         $query .= " FROM `#__publication_authors` as A ";
         $query .= " JOIN `#__users` as P ON A.user_id = P.id ";
-        $query .= " WHERE P.block=0 AND P.activation > 0 AND P.sendEmail=1"; // either 1 (set to YES), 0 = NO, or -1 (never set)
+        // either 1 (set to YES), 0 = NO, or -1 (never set)
+        $query .= " WHERE P.block=0 AND P.activation > 0 AND P.sendEmail=1";
         $query .= " AND A.user_id > 0 AND A.status=1 ";
 
         // If we need to restrict to selected authors

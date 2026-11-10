@@ -112,12 +112,16 @@ class View extends Obj
      *                          name: the name (optional) of the view (defaults to the view class name suffix).<br/>
      *                          charset: the character set to use for display<br/>
      *                          escape: the name (optional) of the function to use for escaping strings<br/>
-     *                          base_path: the parent path (optional) of the views directory (defaults to the component folder)<br/>
-     *                          template_path: the path (optional) of the layout directory (defaults to base_path + /views/ + view name<br/>
+     *                          base_path: the parent path (optional) of the views directory (defaults to the component
+     *                          folder)<br/>
+     *                          template_path: the path (optional) of the layout directory (defaults to base_path +
+     *                          /views/ + view name<br/>
      *                          override_root: template override root(s) (optional): a path or array of paths, highest
-     *                                         priority first (defaults to the supergroup's and the site template's html directories)
+     *                                         priority first (defaults to the supergroup's and the site template's html
+     *                                         directories)
      *                          override_path: the path (optional) of the template files inside override_root
-     *                          helper_path: the path (optional) of the helper files (defaults to base_path + /helpers/)<br/>
+     *                          helper_path: the path (optional) of the helper files (defaults to base_path +
+     *                          /helpers/)<br/>
      *                          layout: the layout (optional) to use to display the view
      * @return  void
      */
@@ -476,7 +480,8 @@ class View extends Obj
     /**
      * Load a template file -- first look in the templates folder for an override
      *
-     * @param   string  $tpl  The name of the template source file; automatically searches the template paths and compiles as needed.
+     * @param   string  $tpl  The name of the template source file; automatically searches the template paths and
+     *                        compiles as needed.
      * @return  string  The output of the the template script.
      */
     public function loadTemplate($tpl = null)
@@ -549,7 +554,8 @@ class View extends Obj
      * Sets an entire array of search paths for templates or resources.
      *
      * @param   string  $type  The type of path to set, typically 'template'.
-     * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the current directory only.
+     * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the
+     *                         current directory only.
      * @return  void
      */
     protected function setPath($type, $path)

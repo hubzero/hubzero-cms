@@ -147,7 +147,8 @@ class Slack extends Plugin
             if (App::isAdmin()) {
                 $url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
             }
-            $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
+            //, $ticket->get('name', $ticket->get('email')));
+            $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename'));
             $text    = \Hubzero\Utility\Str::truncate(
                 \Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')),
                 300,
@@ -175,7 +176,9 @@ class Slack extends Plugin
                 'title'      => Lang::txt('PLG_SUPPORT_SLACK_TICKET_NUMBER', $ticket->get('id')),
                 'title_link' => $url,
                 'text'       => $text, // The text for inside the attachment
-                'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
+                // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or
+                // 'danger'
+                'color'      => $color,
                 'author_name' => $ticket->get('name', $ticket->get('email')),
             ];
 
@@ -218,7 +221,8 @@ class Slack extends Plugin
             if (App::isAdmin()) {
                 $url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
             }
-            $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
+            //, $comment->creator()->get('name'));
+            $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename'));
             $text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
             $text    = \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
 
@@ -242,7 +246,9 @@ class Slack extends Plugin
                 'title'      => $title,
                 'title_link' => $url,
                 'text'       => $text, // The text for inside the attachment
-                'color'      => $color, // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or 'danger'
+                // Change the color of the attachment, default is 'good'. May be a hex value or 'good', 'warning', or
+                // 'danger'
+                'color'      => $color,
                 'author_name' => $comment->creator->get('name'),
             ];
             if (!Component::params('com_support')->get('email_terse')) {

@@ -674,8 +674,8 @@ class Customexts extends AdminController
                             );
 
                             // if the response from the fetch was empty no changes needed, otherwise display error.
-                            // Possible the message here is considered an error because we're only testing for several specific
-                            // errors above, but everything else will fall through to here.
+                            // Possible the message here is considered an error because we're only testing for several
+                            // specific errors above, but everything else will fall through to here.
                             $output = ($fetch_response == '')
                                 ? [Lang::txt('COM_INSTALLER_CUSTOMEXTS_FETCH_CODE_UP_TO_DATE')]
                                 : $fetch_response;

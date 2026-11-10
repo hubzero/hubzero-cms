@@ -397,7 +397,9 @@ class Query extends Relational
 
             if (strstr($expr->opval, '$1')) {
                 if (strtolower($expr->fldval) == 'tag') {
-                    //$e[] = '(' . $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ' OR ' . $prfx . '.' . $db->quoteName('raw_' . $expr->fldval) . ' ' . str_replace('$1', $expr->val, $expr->opval) . ')';
+                    //$e[] = '(' . $prfx . '.' . $db->quoteName($expr->fldval) . ' ' . str_replace('$1', $expr->val,
+                    //    $expr->opval) . ' OR ' . $prfx . '.' . $db->quoteName('raw_' . $expr->fldval) . ' '
+                    //    . str_replace('$1', $expr->val, $expr->opval) . ')';
                 } else {
                     $e[] = $prfx
                         . '.'

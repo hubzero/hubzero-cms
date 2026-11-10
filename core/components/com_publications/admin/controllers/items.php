@@ -1024,7 +1024,8 @@ class Items extends AdminController
                         } else {
                             $collaborator = $this->model->getCollaboratorByName($author->invited_name);
 
-                            // Add pub to orcid record when both orcid and access_token are not null. Othewise, send email that includes ORCID management permission link
+                            // Add pub to orcid record when both orcid and access_token are not null. Othewise, send
+                            // email that includes ORCID management permission link
                             if (!empty($collaborator)) {
                                 $orcidID = $collaborator->orcid;
                                 $accessToken = $collaborator->access_token;

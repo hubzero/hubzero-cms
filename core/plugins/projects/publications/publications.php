@@ -2012,7 +2012,8 @@ class Publications extends Plugin
                     continue;
                 }
 
-                // Prompt error message if an invited author is chosen as contact but the department, organization, or email address is empty
+                // Prompt error message if an invited author is chosen as contact but the department, organization, or
+                // email address is empty
                 $owner = $author->getAuthorByOwnerId($pub->version->id, $author->project_owner_id);
 
                 if (

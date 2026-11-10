@@ -73,9 +73,11 @@ class Data extends Base
         $configs->dataPath = $pub->path('data', true);
 
         // Serve path for data files
-        /*$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
+        /*$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v='
+            . $pub->version_number);*/
         $configs->servePath = Route::url($pub->link('data'));
-        //$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid=' . $pub->version_id . '&amp;task=serve';
+        //$configs->servePath = Route::url('index.php?option=com_publications&id=' . $pub->id) . '/?vid='
+        //    . $pub->version_id . '&amp;task=serve';
 
         // Get default title
         $title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : null;

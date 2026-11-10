@@ -877,7 +877,8 @@ class Registration
             return $login;
         }
 
-        // generate username by simply appending a sequential number to local part of an address until there is an available username available
+        // generate username by simply appending a sequential number to local part of an address until there is an
+        // available username available
         for ($i = 1; true; $i++) {
             // Make sure login username is no longer than max allowed by DB
             $numberLen = strlen($i);

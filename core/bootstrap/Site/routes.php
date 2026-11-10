@@ -520,7 +520,8 @@ $router->rules('parse')->append('menu', function ($uri) use ($speaksFor) {
                 if (trim($item->route, '/') == trim($route, '/')) {
                     if (
                         trim($item->route, '/') != trim($item->link, '/')
-                        && trim(App::get('request')->base(true) . '/' . $item->route, '/') != trim($item->link, '/') // Added because it would cause redirect loop for installs not in top-level webroot
+                        // Added because it would cause redirect loop for installs not in top-level webroot
+                        && trim(App::get('request')->base(true) . '/' . $item->route, '/') != trim($item->link, '/')
                         && trim(
                             App::get('request')->base(true) . '/index.php/' . $item->route,
                             '/',
@@ -627,10 +628,10 @@ $router->rules('parse')->append('content', function ($uri) {
         }
     } elseif ($count == 1 && $segments[0] !== '') {
         // Count 1 - we're either looking for an article alias that matches and is in the uncategorised category,
-        // or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy reasons)
-        // (An empty path is the bare index.php: never match it against an article,
-        // or an article saved with an empty alias captures every POST to
-        // index.php -- the login module's included -- before the 'post' rule runs.)
+        // or, an article alias and category series that are all the same (ex: about/about/about - supported for legacy
+        // reasons)
+        // (An empty path is the bare index.php: never match it against an article, or an article saved with an empty
+        // alias captures every POST to index.php -- the login module's included -- before the 'post' rule runs.)
         // First, do query
         $query  = "SELECT con.`id`, cat.`alias`, cat.`path` FROM `#__content` AS con";
         $query .= " LEFT JOIN `#__categories` AS cat ON con.catid = cat.id";

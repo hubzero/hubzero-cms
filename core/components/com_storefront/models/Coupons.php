@@ -57,7 +57,8 @@ class Coupons
         $this->db->setQuery($sql);
         $couponsInfo = $this->db->loadObjectList('cnId');
 
-        // rearrange coupons in the order of applied within coupon types time keeping the item coupons on top (so that it is ordered by itemCoupon, dateAdded)
+        // rearrange coupons in the order of applied within coupon types time keeping the item coupons on top (so that
+        // it is ordered by itemCoupon, dateAdded)
 
         // Initialize temp storage arrays
         $temp = new \stdClass();

@@ -171,7 +171,8 @@ class Git extends Models\Adapter
                 $file->set('remoteid', $syncRecord->remote_id);
                 $file->set('author', $syncRecord->remote_author);
 
-                // Added this conditional so that the local repo date takes priority.  Otherwise the date will always show the day Google Drive was connected which is not helpful.
+                // Added this conditional so that the local repo date takes priority.  Otherwise the date will always
+                // show the day Google Drive was connected which is not helpful.
                 if (!$file->get('date')) {
                     $file->set('date', date('c', strtotime($syncRecord->remote_modified . ' UTC')));
                 }

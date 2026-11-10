@@ -273,7 +273,8 @@ class Arr
      *
      * @param   array   $source  The source array.
      * @param   string  $key     Where the elements of the source array are objects or arrays, the key to pivot on.
-     * @return  array   An array of arrays pivoted either on the value of the keys, or an individual key of an object or array.
+     * @return  array   An array of arrays pivoted either on the value of the keys, or an individual key of an object or
+     *                  array.
      */
     public static function pivot($source, $key = null)
     {
@@ -332,7 +333,8 @@ class Arr
      *
      * @param   array  &$a             An array of objects
      * @param   mixed  $k              The key (string) or a array of key to sort on
-     * @param   mixed  $direction      Direction (integer) or an array of direction to sort in [1 = Ascending] [-1 = Descending]
+     * @param   mixed  $direction      Direction (integer) or an array of direction to sort in [1 = Ascending] [-1 =
+     *                                 Descending]
      * @param   mixed  $caseSensitive  Boolean or array of booleans to let sort occur case sensitive or insensitive
      * @param   mixed  $locale         Boolean or array of booleans to let sort occur using the locale language or not
      * @return  array  The sorted array of objects

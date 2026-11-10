@@ -46,7 +46,8 @@ class View extends AbstractView
      *
      * [!] Override to wrap html view in mail template
      *
-     * @param   string  $tpl  The name of the template source file; automatically searches the template paths and compiles as needed.
+     * @param   string  $tpl  The name of the template source file; automatically searches the template paths and
+     *                        compiles as needed.
      * @return  string  The output of the the template script.
      */
     public function loadTemplate($tpl = null)

@@ -1924,7 +1924,8 @@ class Publication extends Obj
                 break;
 
             case 'thumb':
-                //$link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id') . '&media=Image:thumb';
+                //$link = 'index.php?option=com_publications&id=' . $this->get('id') . '&v=' . $this->get('version_id')
+                //    . '&media=Image:thumb';
                 $src = Helpers\Html::getThumb($this->get('id'), $this->get('version_id'), $this->config());
                 $link = with(new \Hubzero\Content\Moderator($src, 'public'))->getUrl();
                 break;

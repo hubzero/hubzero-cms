@@ -229,8 +229,10 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     /**
      * Applies filters based on search tearm provided.
      *
-     * @param   mixed  $term   string containing search term or an associative array containing multiple search terms for multiple columns.
-     * @param   int    $depth  value indicating if the produced query string should be nested in parenthesis with other querys of the same depth.
+     * @param   mixed  $term   string containing search term or an associative array containing multiple search terms
+     *                         for multiple columns.
+     * @param   int    $depth  value indicating if the produced query string should be nested in parenthesis with other
+     *                         querys of the same depth.
      * @param   array  $searchableFields
      * @return  $this
      */
@@ -859,7 +861,8 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
 
                     // prefer the use of the relational table
                     // Fix for the citation tab of a resource.
-                    // There were mismatch of author names to a citation, reason being it was using the id to match it with cid in table.
+                    // There were mismatch of author names to a citation, reason being it was using the id to match it
+                    // with cid in table.
                     $authors = $this
                         ->relatedAuthorsByCitation()
                         ->order('ordering', 'asc')

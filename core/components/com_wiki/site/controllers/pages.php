@@ -96,7 +96,8 @@ class Pages extends SiteController
                 $this->setError($result);
             }
 
-            //App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiSetup') : null;
+            //App::get('config')->get('debug') || App::get('config')->get('profile')
+            //    ? App::get('profiler')->mark('afterWikiSetup') : null;
         }
 
         $this->page = $this->book->page();
@@ -244,7 +245,8 @@ class Pages extends SiteController
             $revision->set('pagehtml', $revision->content($this->page));
         }
 
-        //App::get('config')->get('debug') || App::get('config')->get('profile') ? App::get('profiler')->mark('afterWikiParse') : null;
+        //App::get('config')->get('debug') || App::get('config')->get('profile')
+        //    ? App::get('profiler')->mark('afterWikiParse') : null;
 
         // Handle display events
         $event = new \stdClass();

@@ -853,7 +853,8 @@ class Page extends Relational
                                 $this->config()->set('access-page-edit', true);
                                 $this->config()->set('access-page-modify', true);
                             } elseif ($this->param('allow_changes')) {
-                                $this->config()->set('access-page-modify', true); // This allows users to suggest changes
+                                // This allows users to suggest changes
+                                $this->config()->set('access-page-modify', true);
                             }
 
                             if ($this->param('allow_comments')) {

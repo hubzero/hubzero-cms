@@ -912,7 +912,8 @@ class User extends \Hubzero\Database\Relational
      *
      * @param   string  $component  The component from which to retrieve the categories
      * @param   string  $action     The name of the section within the component from which to retrieve the actions.
-     * @return  array   List of categories that this group can do this action to (empty array if none). Categories must be published.
+     * @return  array   List of categories that this group can do this action to (empty array if none). Categories must
+     *                  be published.
      * @since   2.1.0
      */
     public function getAuthorisedCategories($component, $action)

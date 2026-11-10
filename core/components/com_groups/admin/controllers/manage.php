@@ -665,7 +665,8 @@ class Manage extends AdminController
                 'snippets_enabled'       => true,
             ]);
             // Possible error check here
-        } elseif ($gitLabProject) {  // search result must match hub group name to gitlab project name exactly or create new gitlab project
+        } elseif ($gitLabProject) {
+            // search result must match hub group name to gitlab project name exactly or create new gitlab project
             foreach ($gitLabProject as $glproj) {
                 if ($glproj['name'] == $projectName) {
                     $gitLabProject = $glproj;

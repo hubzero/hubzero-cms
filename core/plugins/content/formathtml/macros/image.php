@@ -204,7 +204,8 @@ Examples:
             ) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
-                    $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
+                    //$attach->filename;
+                    $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : '';
                 }
 
                 $ret = true;
@@ -230,7 +231,8 @@ Examples:
             // Return error message. strip_tags() on the argument drops the angle
             // brackets but not the quotes, and this string is spliced into page
             // HTML, so escape it properly.
-            return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)'; // . $this->path($file);
+            // . $this->path($file);
+            return '(Image(' . htmlspecialchars((string) $content, ENT_QUOTES, 'UTF-8') . ') failed - File not found)';
         }
     }
 

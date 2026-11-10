@@ -327,7 +327,8 @@ class Relationships extends AdminController
                     foreach ($_POST[$type] as $n_tag) {
                         $norm_n_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($n_tag));
 
-                        // co-occurring tags neither need to be added nor deleted, just remove them from the pool and carry on
+                        // co-occurring tags neither need to be added nor deleted, just remove them from the pool and
+                        // carry on
                         if (isset($ex[$norm_n_tag])) {
                             unset($ex[$norm_n_tag]);
                         } else {
@@ -338,7 +339,8 @@ class Relationships extends AdminController
                         }
                     }
                 }
-                // any tags that have not been unset were deleted on the form, so we need to reflect that in the database
+                // any tags that have not been unset were deleted on the form, so we need to reflect that in the
+                // database
                 foreach ($ex as $e_tag => $_v) {
                     $e_tag = $this->getTag($e_tag, false);
                     $this->database->setQuery(sprintf($sql[1], $tid, $e_tag['id']));

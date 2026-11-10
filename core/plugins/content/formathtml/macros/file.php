@@ -160,7 +160,8 @@ class File extends Macro
             ) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
-                    $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : ''; //$attach->filename;
+                    //$attach->filename;
+                    $attr['desc'] = ($attach->description) ? stripslashes($attach->description) : '';
                 }
                 $attr['created'] = $attach->created;
                 $attr['created_by'] = $attach->created_by;
@@ -487,16 +488,22 @@ class File extends Macro
                  && $attr['altimage'] != ''
                  && file_exists($this->path($attr['altimage'])))
                 {
-                    //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
-                    $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
-                    $attr['alt']  = '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
-                    $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
+                    //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref']
+                    //    : $attr['href'];
+                    $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref']
+                        : $attr['href'];
+                    $attr['alt']  = '<a class="attachment" rel="internal" href="' . $althref . '" title="'
+                        . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">';
+                    $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="'
+                        . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';
                     $attr['alt'] .= '</a>';
                 } else
                 {
-                    $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+                    $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref']
+                        : $attr['href'];
                     $attr['alt']  = (isset($attr['alt'])) ? $attr['alt'] : '';
-                    $attr['alt'] .= '<a class="attachment" rel="internal" href="' . $althref . '" title="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
+                    $attr['alt'] .= '<a class="attachment" rel="internal" href="' . $althref . '" title="'
+                        . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '">' . $attr['desc'] . '</a>';
                 }*/
 
                 $rand = rand(0, 100000);
@@ -541,7 +548,8 @@ class File extends Macro
                     && $attr['altimage'] != ''
                     && file_exists($this->path($attr['altimage']))
                 ) {
-                    //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
+                    //$attr['href'] = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref']
+                    //    : $attr['href'];
                     $althref = (array_key_exists('althref', $attr) && $attr['althref'] != '') ? $attr['althref'] : $attr['href'];
                     $attr['alt']  = '<a href="http://www.wolfram.com/cdf-player/" title="CDF Web Player. Install now!">';
                     $attr['alt'] .= '<img src="' . $this->link($attr['altimage']) . '" alt="' . htmlentities($attr['desc'], ENT_COMPAT, 'UTF-8') . '" />';

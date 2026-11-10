@@ -431,7 +431,8 @@ class Media extends AdminController
         $this->view->subdir = Request::getString('subdir', '');
 
         // Build the path
-        //$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->course_id . DS . $this->view->listdir;
+        //$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS
+        //    . $this->view->course_id . DS . $this->view->listdir;
         $this->view->path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
 
         // Get list of directories

@@ -41,7 +41,8 @@ class Utility
      * Check validity of login
      *
      * @param   string  $login                       Login name to check
-     * @param   bool    $allowNumericFirstCharacter  Whether or not to allow first character as number (used for grandfathered accounts)
+     * @param   bool    $allowNumericFirstCharacter  Whether or not to allow first character as number (used for
+     *                                               grandfathered accounts)
      * @return  integer
      */
     public static function validlogin($login, $allowNumericFirstCharacter = false)
@@ -176,7 +177,9 @@ class Utility
      */
     public static function genemailconfirm()
     {
-        return (-random_int(1, pow(2, 31) - 1)); // account activation / email confirmation token: use a CSPRNG (rand()/mt_rand() are not); kept negative for the existing activation column
+        // account activation / email confirmation token: use a CSPRNG (rand()/mt_rand() are not); kept negative for the
+        // existing activation column
+        return (-random_int(1, pow(2, 31) - 1));
     }
 
     /**

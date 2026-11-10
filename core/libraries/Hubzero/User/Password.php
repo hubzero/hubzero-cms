@@ -833,9 +833,11 @@ class Password
      * Formats a password using the current encryption.
      *
      * @param   string   $plaintext     The plaintext password to encrypt.
-     * @param   string   $salt          The salt to use to encrypt the password. If not present, a new salt will be generated.
+     * @param   string   $salt          The salt to use to encrypt the password. If not present, a new salt will be
+     *                                  generated.
      * @param   string   $encryption    The kind of password encryption to use. Defaults to md5-hex.
-     * @param   boolean  $show_encrypt  Some password systems prepend the kind of encryption to the crypted password ({SHA}, etc). Defaults to false.
+     * @param   boolean  $show_encrypt  Some password systems prepend the kind of encryption to the crypted password
+     *                                  ({SHA}, etc). Defaults to false.
      * @return  string   The encrypted password.
      */
     public static function getCryptedPassword($plaintext, $salt = '', $encryption = 'md5-hex', $show_encrypt = false)
@@ -923,7 +925,8 @@ class Password
      * in the generation of the salt.
      *
      * @param   string  $encryption  The kind of password encryption to use. Defaults to md5-hex.
-     * @param   string  $seed        The seed to get the salt from (probably a previously generated password). Defaults to generating a new seed.
+     * @param   string  $seed        The seed to get the salt from (probably a previously generated password). Defaults
+     *                               to generating a new seed.
      * @param   string  $plaintext   The plaintext password that we're generating  a salt for. Defaults to none.
      * @return  string  The generated or extracted salt.
      */

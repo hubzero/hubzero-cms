@@ -33,7 +33,8 @@ class ErrorServiceProvider extends ServiceProvider
             $loghandler = new \Monolog\Handler\ErrorLogHandler();
 
             $formatter = new \Monolog\Formatter\LineFormatter(
-                "%channel%.%level_name%: %message% %context% %extra%", // Format of message in log, default [%datetime%] %channel%.%level_name%: %message% %context% %extra%\n
+                // Format of message in log, default [%datetime%] %channel%.%level_name%: %message% %context% %extra%\n
+                "%channel%.%level_name%: %message% %context% %extra%",
                 null, // Datetime format
                 true, // allowInlineLineBreaks option, default false
                 true,  // discard empty Square brackets in the end, default false
@@ -42,7 +43,8 @@ class ErrorServiceProvider extends ServiceProvider
             $loghandler->setFormatter($formatter);
 
             // Alternatively, if you need to a specified file
-            //$loghandler = new \Monolog\Handler\StreamHandler($app['config']->get('log_path') . '/error.php', 'error', true);
+            //$loghandler = new \Monolog\Handler\StreamHandler($app['config']->get('log_path') . '/error.php', 'error',
+            //    true);
 
             $logger->pushHandler($loghandler);
 

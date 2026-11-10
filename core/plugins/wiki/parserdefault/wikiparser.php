@@ -1363,7 +1363,8 @@ class WikiParser
     private function admonitions($text)
     {
         $this->set('wikitohtml', true);
-        return preg_replace_callback('/\{admonition ([^\}]+)\}(.*?)\{\/admonition \1\}/s', [&$this, 'getAdmonition'], $text); //admonitionCallback
+        //admonitionCallback
+        return preg_replace_callback('/\{admonition ([^\}]+)\}(.*?)\{\/admonition \1\}/s', [&$this, 'getAdmonition'], $text);
     }
 
     /**

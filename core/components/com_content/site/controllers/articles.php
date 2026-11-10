@@ -126,7 +126,8 @@ class Articles extends SiteController
         // Check to see which parameters should take priority
         if ($active) {
             $currentLink = $active->link;
-            // If the current view is the active item and an article view for this article, then the menu item params take priority
+            // If the current view is the active item and an article view for this article, then the menu item params
+            // take priority
             if (strpos($currentLink, 'view=article') && (strpos($currentLink, '&id=' . (string) $item->id))) {
                 // $item->params are the article params, $temp are the menu item params
                 // Merge so that the menu item params take priority
@@ -191,7 +192,8 @@ class Articles extends SiteController
 
         // Increment the hit counter of the article.
         if (!$params->get('intro_only') && $offset == 0) {
-            // [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
+            // [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way
+            // of doing this.
             //$data->hit();
         }
 
@@ -439,7 +441,8 @@ class Articles extends SiteController
         $case_when .= 'CHAR_LENGTH(a.alias)';
         $case_when .= ' THEN ';
         //$a_id = $query->castAsChar('a.id');
-        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', ['a.id', 'a.alias']) . ')'; //$query->concatenate(array($a_id, 'a.alias'), ':');
+        //$query->concatenate(array($a_id, 'a.alias'), ':');
+        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', ['a.id', 'a.alias']) . ')';
         $case_when .= ' ELSE ';
         $case_when .= 'a.id END';
 
@@ -449,7 +452,8 @@ class Articles extends SiteController
         $case_when .= 'CHAR_LENGTH(c.alias)';
         $case_when .= ' THEN ';
         //$c_id = $query->castAsChar('c.id');
-        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', ['c.id', 'c.alias']) . ')'; //$query->concatenate(array($c_id, 'c.alias'), ':');
+        //$query->concatenate(array($c_id, 'c.alias'), ':');
+        $case_when .= 'CONCAT_WS(\':\', ' . implode(', ', ['c.id', 'c.alias']) . ')';
         $case_when .= ' ELSE ';
         $case_when .= 'c.id END';
         $query->select($case_when, 'catslug');
@@ -1288,7 +1292,8 @@ class Articles extends SiteController
             }
         } elseif (isset($menu->query['layout'])) {
             // At this point, we are in a menu item, so we don't override the layout
-            // We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
+            // We need to set the layout from the query in case this is an alternative menu item (with an alternative
+            // layout)
             $this->view->setLayout($menu->query['layout']);
         }
 

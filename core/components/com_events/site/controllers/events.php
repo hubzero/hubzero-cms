@@ -765,7 +765,9 @@ class Events extends SiteController
                 . $this->obfuscate($row->contact_info)
                 . '</a>';
         }
-        //$row->contact_info = preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i", "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
+        //$row->contact_info =
+        //    preg_replace("/(mailto:\/\/)?((-|$alphadigit|\.)+)@((-|$alphadigit|\.)+)(\.$alphadigit+)/i",
+        //    "<a href=\"mailto:$2@$5$8\">$2@$5$8</a>", $row->contact_info);
         $row->contact_info = preg_replace(
             "/(http:\/\/|https:\/\/)((-|$alphadigit|\.)+)(\.$alphadigit+)/i",
             "<a href=\"$1$2$5$8\">$1$2$5$8</a>",

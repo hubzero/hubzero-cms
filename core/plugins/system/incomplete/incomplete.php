@@ -112,7 +112,8 @@ class Incomplete extends Plugin
                     $target = 'index.php?option=com_members&controller=register&task=create';
 
                     $this->event->stop();
-                } elseif (substr(User::get('email'), -8) == '@invalid') { // force auth_link users to registration update page
+                } elseif (substr(User::get('email'), -8) == '@invalid') {
+                    // force auth_link users to registration update page
                     // Send third-party-auth users straight to the registration
                     // form to finish creating their hub account. We used to route
                     // them to the "have you logged in before?" account-link page

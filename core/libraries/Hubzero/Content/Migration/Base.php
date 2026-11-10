@@ -139,7 +139,8 @@ class Base
      **/
     public function callback($callback, $func, $args = [])
     {
-        // Make sure the callback is set (this is protecting us when running in non-interactive mode and callbacks aren't set)
+        // Make sure the callback is set (this is protecting us when running in non-interactive mode and callbacks
+        // aren't set)
         if (!isset($this->callbacks[$callback])) {
             return false;
         }

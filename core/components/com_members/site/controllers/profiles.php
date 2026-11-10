@@ -152,7 +152,8 @@ class Profiles extends SiteController
             //$filters['search'] = $filters['search'] . '*';
 
             // match member names on all three name parts
-            //$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
+            //$match = "MATCH(u.givenName,u.middleName,u.surname) AGAINST(" . $this->database->quote($filters['search'])
+            //    . " IN BOOLEAN MODE)";
             if (strstr($filters['search'], ' ')) {
                 $parts = explode(' ', $filters['search']);
 
@@ -796,7 +797,8 @@ class Profiles extends SiteController
         }
 
         // Make sure member is approved
-        // Removed the !$profile->get('approved') check from conditional since the Unapproved System plugin will handle this check.
+        // Removed the !$profile->get('approved') check from conditional since the Unapproved System plugin will handle
+        // this check.
         if ($profile->get('block')) {
             App::abort(404, Lang::txt('COM_MEMBERS_NOT_FOUND'));
         }
@@ -1755,7 +1757,8 @@ class Profiles extends SiteController
                 );
             }
 
-            //$this->sendConfirmationCode($member->get('username'), $email, $confirm, $member->get('registerDate'),$member->get('name'));
+            //$this->sendConfirmationCode($member->get('username'), $email, $confirm,
+            //    $member->get('registerDate'),$member->get('name'));
 
             Event::trigger('onUserAfterChangeEmail', [$member->toArray()]);
         }

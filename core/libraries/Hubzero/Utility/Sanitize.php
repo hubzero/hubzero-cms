@@ -528,7 +528,8 @@ class Sanitize
      * specified bad code.
      *
      * @param   mixed   $source  Input string/array-of-string to be 'cleaned'
-     * @param   string  $type    Return type for the variable (INT, UINT, FLOAT, BOOLEAN, WORD, ALNUM, CMD, BASE64, STRING, ARRAY, PATH, NONE)
+     * @param   string  $type    Return type for the variable (INT, UINT, FLOAT, BOOLEAN, WORD, ALNUM, CMD, BASE64,
+     *                           STRING, ARRAY, PATH, NONE)
      * @return  mixed   Cleaned version of input parameter
      */
     public static function filter($source, $type = 'string')

@@ -620,7 +620,8 @@ class Form extends SiteController
         if (User::get('usertype') == 'Super Administrator') {
             // Let them through
         } else {
-            // If they're not a super admin, they can only view this page if they're looking at a form associated with a course that they're authorized on
+            // If they're not a super admin, they can only view this page if they're looking at a form associated with a
+            // course that they're authorized on
             if (!$this->authorizeCourse()) {
                 // Otherwise, a course id should be provided, and we need to make sure they are authorized
                 App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));

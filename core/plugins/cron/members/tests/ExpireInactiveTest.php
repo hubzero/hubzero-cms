@@ -107,20 +107,34 @@ class ExpireInactiveTest extends Basic
 
         // id => [block, registerDate, lastvisitDate, password row: null or [shadowLastChange, shadowExpire]]
         $users = [
-            1  => [0, '2015-01-01 00:00:00', '2026-10-15 00:00:00', [16000, null]],        // visit after the cutoff
-            2  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // old visit
-            3  => [0, '2019-01-01 00:00:00', $zero, [null, null]],                         // never visited, old registration
-            4  => [0, '2026-10-15 00:00:00', $zero, [null, null]],                         // never visited, registered after the cutoff
-            5  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [$cutoffDay + 10, null]], // old visit, recent password change
-            6  => [1, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // blocked
-            7  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 1]],           // not yet reset
-            8  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 333]],         // already inactive
-            9  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 10957]],       // blocked marker
-            10 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null],                      // no password row
-            11 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [$cutoffDay, null]],   // password changed on the cutoff day
-            12 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // in the exempt group
-            13 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null],                      // in the exempt group, no password row
-            14 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],        // in another group only
+            // visit after the cutoff
+            1  => [0, '2015-01-01 00:00:00', '2026-10-15 00:00:00', [16000, null]],
+            // old visit
+            2  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],
+            // never visited, old registration
+            3  => [0, '2019-01-01 00:00:00', $zero, [null, null]],
+            // never visited, registered after the cutoff
+            4  => [0, '2026-10-15 00:00:00', $zero, [null, null]],
+            // old visit, recent password change
+            5  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [$cutoffDay + 10, null]],
+            // blocked
+            6  => [1, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],
+            // not yet reset
+            7  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 1]],
+            // already inactive
+            8  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 333]],
+            // blocked marker
+            9  => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, 10957]],
+            // no password row
+            10 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null],
+            // password changed on the cutoff day
+            11 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [$cutoffDay, null]],
+            // in the exempt group
+            12 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],
+            // in the exempt group, no password row
+            13 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', null],
+            // in another group only
+            14 => [0, '2015-01-01 00:00:00', '2020-01-01 00:00:00', [16000, null]],
         ];
 
         $insertUser = $db->prepare(
