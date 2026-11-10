@@ -351,9 +351,9 @@ if ($this->wishlist->get('id')) {
                                             echo $html;
                                             ?>
                                         </td>
-                                    <?php } // end if (!$item->isReported())?>
+                                    <?php } ?>
                                     </tr>
-                                <?php } // end foreach wish?>
+                                <?php } ?>
                             <?php } else { ?>
                                     <tr>
                                         <td>
@@ -371,7 +371,7 @@ if ($this->wishlist->get('id')) {
                                         <?php } ?>
                                         </td>
                                     </tr>
-                            <?php } // end if wishlist item?>
+                            <?php } ?>
                                 </tbody>
                             </table>
                             <?php
@@ -416,8 +416,8 @@ if ($this->wishlist->get('id')) {
                                     <p><?php echo Lang::txt('COM_WISHLIST_CLICK_TAG_TO_FILTER'); ?></p>
                                 </div><!-- / .container -->
                                 <?php
-                        } // end if ($tags)
-                    } // end if ($this->wishlist->category == 'general')
+                        }
+                    }
 
                     if ($this->wishlist->get('category') == 'resource') {
                         $html  = '<p>' . Lang::txt('COM_WISHLIST_THIS_LIST_IS_FOR_RES', '<a href="' . Route::url('index.php?option=com_resources&id=' . $this->wishlist->get('referenceid')) . '">' . $this->escape($this->wishlist->item('title')) . '</a>') . '</p>';
@@ -457,7 +457,7 @@ if ($this->wishlist->get('id')) {
                 </div>
             </section><!-- / .main section -->
         </form>
-    <?php } // end if public?>
+    <?php } ?>
 <?php } else { ?>
     <p class="error"><?php echo Lang::txt('COM_WISHLIST_ERROR_LIST_NOT_FOUND'); ?></p>
-<?php } // end if wish list
+<?php }

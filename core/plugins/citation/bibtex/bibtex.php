@@ -82,7 +82,7 @@ class Bibtex extends Plugin
                     }
                 }
                 $citations[$i]['author'] = implode('; ', $authors);
-            } // End if
+            }
         }
 
         // Array to hold final citataions
@@ -198,7 +198,7 @@ class Bibtex extends Plugin
                     }
                 }
             }
-        } // End foreach result as r
+        }
 
         return $match;
     }

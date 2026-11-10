@@ -27,8 +27,8 @@ $this
 <?php if (isset($this->notifications) && count($this->notifications) > 0) {
     foreach ($this->notifications as $notification) { ?>
     <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-    <?php } // close foreach
-} // close if count?>
+    <?php }
+} ?>
 
 <?php if ($this->getError()) : ?>
     <p class="error"><?php echo $this->getError(); ?></p>

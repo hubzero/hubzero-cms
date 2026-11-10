@@ -196,7 +196,7 @@ class Codemirror extends Plugin
 
                 default:
                     break;
-            } //switch
+            }
         }
 
         foreach ($styleSheet as &$style) {

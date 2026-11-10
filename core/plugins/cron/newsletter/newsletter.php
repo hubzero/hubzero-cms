@@ -216,7 +216,7 @@ class Newsletter extends Plugin
                             $database->setQuery($sql);
                             $database->query();
                         }
-                    } // End interval creation
+                    }
 
                     // load recipient object
                     $newsletterMailingRecipient = \Components\Newsletter\Models\Mailing\Recipient::oneOrNew($queuedEmail->mailing_recipientid);
@@ -225,7 +225,7 @@ class Newsletter extends Plugin
                     $newsletterMailingRecipient->set('status', 'sent');
                     $newsletterMailingRecipient->set('date_sent', Date::toSql());
                     $newsletterMailingRecipient->save();
-                } // end autogen logic
+                }
             }
         }
 

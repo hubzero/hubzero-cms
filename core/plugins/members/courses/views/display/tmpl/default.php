@@ -311,7 +311,7 @@ $this->css();
                             <?php echo Lang::txt('PLG_MEMBERS_COURSES_NO_RESULTS'); ?>
                         </td>
                     </tr>
-        <?php } // end if (count($this->results) > 0) {?>
+        <?php } ?>
                 </tbody>
             </table>
 

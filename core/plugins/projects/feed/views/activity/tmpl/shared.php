@@ -56,7 +56,7 @@ if (count($this->activities) > 0) {
 
                 $li = 'tail_' . $activity->log->get('id');
                 $i++;
-            } // end foreach
+            }
             ?>
         </div>
     </div>

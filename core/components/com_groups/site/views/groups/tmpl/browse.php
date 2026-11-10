@@ -101,7 +101,7 @@ foreach ($this->notifications as $notification) {
                                     ->view('_group')
                                     ->set('group', $group)
                                     ->display();
-                            } // for loop
+                            }
                             ?>
                         <?php } else { ?>
                             <div class="results-none">

@@ -213,7 +213,7 @@ $this
                                 </a>
                             </li>
                             <?php
-                        } //end status check
+                        }
                     }
                     ?>
                 </ul>

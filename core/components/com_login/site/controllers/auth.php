@@ -786,11 +786,11 @@ class Auth extends SiteController
                             // End PUCAS check
                             $result = $myplugin->logout();
                             break;
-                        } // Normal path
-                    } // End verification of logout() method
-                } // End plugin check
-            } // End foreach
-        } // End check for specified authenticator
+                        }
+                    }
+                }
+            }
+        }
 
         // Perform the log out
         //$error = $app->logout();

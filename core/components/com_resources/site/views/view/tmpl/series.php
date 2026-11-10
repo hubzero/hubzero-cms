@@ -232,7 +232,7 @@ if ($mode != 'preview') {
                             ->set('license', $this->model->license())
                             ->display();
                     }
-                } // --- end else (if group check passed)
+                }
                 ?>
             </div><!-- / .aside launcharea -->
         </div>
@@ -433,5 +433,5 @@ if ($mode != 'preview') {
                 </div>
             </section><!-- / .main section -->
         </form>
-    <?php } // if ($this->tab == 'about' && $ccount > 0)?>
+    <?php } ?>
 <?php }

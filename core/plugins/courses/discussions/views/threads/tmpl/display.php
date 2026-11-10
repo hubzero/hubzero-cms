@@ -173,7 +173,7 @@ $this->thread->set('category', $this->category->get('alias'));
                                 </a>
                             </li>
                             <?php
-                        } //end status check
+                        }
                     }
                     ?>
                 </ul>

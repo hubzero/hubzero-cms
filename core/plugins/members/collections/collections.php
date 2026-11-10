@@ -1054,7 +1054,7 @@ class Collections extends Plugin
                 $this->setError($item->getError());
                 return $this->edit($item);
             }
-        } // end of the item write (skipped for a repost)
+        }
 
         // It's possible that multiple temporary items could have been created
         // This can happen if someone drops multiple files at once on the file

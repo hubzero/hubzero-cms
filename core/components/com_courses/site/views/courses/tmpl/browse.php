@@ -205,7 +205,7 @@ $this->css('browse.css');
                             </article>
                         </li>
                         <?php
-                    } // for loop
+                    }
                 } else { ?>
                     <li class="no-results"><p class="warning"><?php echo Lang::txt('COM_COURSES_NO_RESULTS_FOUND'); ?></p></li>
                 <?php } ?>

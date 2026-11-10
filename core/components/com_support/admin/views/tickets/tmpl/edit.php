@@ -326,7 +326,7 @@ if (!$no_html) {
         </div>
         </div>
         <?php } ?>
-    <?php } // end if (count($comments) > 0)?>
+    <?php } ?>
 
     <?php if (!$no_html) { ?>
     <div class="grid">

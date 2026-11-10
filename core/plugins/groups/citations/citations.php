@@ -1572,7 +1572,7 @@ class Citations extends Plugin
                             }
                             break;
                     }
-                } // end if not search & not sort & non-empty value
+                }
 
                 // for searching
                 if ($filter == "search" && $value != "") {
@@ -1593,16 +1593,16 @@ class Citations extends Plugin
                             foreach ($cite as $c) {
                                 // put for collection later
                                 array_push($collection, $c->id);
-                            } // end foreach $cite
-                        } // end foreach terms
-                    } // end foreach columns
+                            }
+                        }
+                    }
 
                     // remove duplicates
                     $collection = array_unique($collection);
 
                     // pull the appropriate ones.
                     $citations->whereIn('id', $collection);
-                } // end searching
+                }
 
                 // for tags
                 if ($filter == "tag" && $value != "") {
@@ -1621,7 +1621,7 @@ class Citations extends Plugin
 
                     // get the tagged ones
                     $citations->whereIn('id', $collection);
-                } // end if tags
+                }
 
                 if ($filter == "sort" && $value != "") {
                     // "column direction" from the request: only the offered columns
@@ -1636,7 +1636,7 @@ class Citations extends Plugin
                         $citations->order($column, $dir);
                     }
                 }
-            } // end foreach filters as filter
+            }
 
             return ['citations' => $citations, 'filters' => $filters];
         } else {

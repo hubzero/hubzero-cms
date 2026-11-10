@@ -123,8 +123,8 @@ $config = $this->model->config();
                             <th class="htd"><?php echo $this->escape($field->label); ?></th>
                             <td><?php echo $field->value; ?></td>
                         </tr>
-                <?php } // end foreach
-            } // end if
+                <?php }
+            }
             ?>
 
             <?php if ($this->model->about('parsed')) { ?>

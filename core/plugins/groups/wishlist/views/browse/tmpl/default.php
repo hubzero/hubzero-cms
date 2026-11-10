@@ -203,7 +203,7 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                         </td>
                     <?php } ?>
                     </tr>
-            <?php } // foreach?>
+            <?php } ?>
         <?php } else { ?>
                         <tr>
                             <td><?php echo Lang::txt('COM_WISHLIST_NO_WISHES_BE_FIRST'); ?></td>

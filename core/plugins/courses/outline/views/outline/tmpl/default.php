@@ -479,7 +479,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                 </ul>
                                             </div><!-- / .asset-group -->
                                         <?php endif; ?>
-                                    <?php } // foreach ($agt->children() as $ag)?>
+                                    <?php } ?>
 
                                         <?php if ($agt->assets()->total()) { ?>
                                             <ul class="asset-list">
@@ -555,7 +555,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 
                                 <?php $k++; ?>
                             <?php } ?>
-                        <?php } // foreach ($unit->assetgroups() as $agt)?>
+                        <?php } ?>
 
                         <?php if ($unit->assets()->total()) { ?>
                             <ul class="asset-list">
@@ -603,14 +603,14 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                             </div>
                         <?php } ?>
 
-                    <?php } // close else?>
+                    <?php } ?>
                         </div><!-- / .details -->
                     </div><!-- / .unit-availability -->
                 </div><!-- / .unit-content -->
             </div><!-- / .unit-wrap -->
         </div><!-- / .unit -->
                 <?php } ?>
-            <?php } // close foreach?>
+            <?php } ?>
 
         <?php } else { ?>
         <p class="warning">The access time for this section has expired and the content is no longer available.</p>
@@ -638,4 +638,4 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
         echo implode("\n", $results);
     ?>
 
-<?php } // end if
+<?php }

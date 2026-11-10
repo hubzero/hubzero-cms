@@ -446,5 +446,5 @@ if (!$this->app->sess) {
         window.onload = UI.load;
     </script>
         <?php
-    } // end legacy engine
-} // end has-session
+    }
+}

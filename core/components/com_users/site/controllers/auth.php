@@ -874,10 +874,10 @@ class Auth extends SiteController
                 if (class_exists($className)) {
                     if (method_exists($className, 'logout')) {
                         $myplugin = new $className($this, (array) $plugin);
-                    } // End verification of logout() method
-                } // End plugin check
-            } // End foreach
-        } // End check for specified authenticator
+                    }
+                }
+            }
+        }
 
         // Build the credentials array.
         $parameters = [];

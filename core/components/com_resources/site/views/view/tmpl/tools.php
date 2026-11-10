@@ -197,7 +197,7 @@ $revision = $this->revision;
                         }
 
                         echo $html;
-                    } // --- end else (if group check passed)
+                    }
                     ?>
                 </div><!-- / .aside launcharea -->
             </div>

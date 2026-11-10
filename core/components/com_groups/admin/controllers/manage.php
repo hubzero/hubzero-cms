@@ -524,8 +524,8 @@ class Manage extends AdminController
                 if (preg_match('/sg\\\\_%/', $grant)) {
                     $canCreateSuperGroupDB = true;
                 }
-            } //end foreach
-        } //end if
+            }
+        }
 
         // create super group DB if doesnt already exist
         if ($canCreateSuperGroupDB) {

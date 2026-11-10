@@ -36,7 +36,7 @@ class Migration20150820154213ComCitations extends Base
             if (strtolower($format->style) == 'apa') {
                 $apa = true;
             }
-        } // end foreach
+        }
 
         if (!$apa) {
             //insert apa
@@ -93,7 +93,7 @@ class Migration20150820154213ComCitations extends Base
             if (strtolower($format->style) == 'apa') {
                 $apa = $format->id;
             }
-        } // end foreach
+        }
 
         if ($apa) {
             //insert apa

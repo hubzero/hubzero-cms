@@ -378,7 +378,7 @@ $cc = [];
     </aside><!-- / .aside -->
     </div>
 </section><!-- / .below section -->
-<?php } // ACL can read comments?>
+<?php } ?>
 
 <?php if ($this->row->access('create', 'comments') || $this->row->access('update', 'tickets')) { ?>
 <section class="below section">
@@ -526,7 +526,7 @@ $cc = [];
                                 </div>
                             <?php } ?>
                         <?php } ?>
-                    <?php } // ACL can update ticket (admin)?>
+                    <?php } ?>
 
                     <?php if ($this->row->access('update', 'tickets') > 0) { ?>
                             </div>
@@ -562,7 +562,7 @@ $cc = [];
                     </fieldset>
                 <?php } else { ?>
                     <input type="hidden" name="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
-                <?php } // ACL can update tickets?>
+                <?php } ?>
 
                 <?php if ($this->row->access('create', 'comments') || $this->row->access('create', 'private_comments')) { ?>
                     <?php
@@ -592,7 +592,7 @@ $cc = [];
                                     </select>
                                 <?php echo implode("\n", $hi); ?>
                             </div>
-                        <?php } // ACL can create comment (admin)?>
+                        <?php } ?>
                         <?php if ($this->row->access('create', 'private_comments')) { ?>
                             <div class="form-group form-check">
                                 <label for="make-private" class="form-check-label">
@@ -600,11 +600,11 @@ $cc = [];
                                     <?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?>
                                 </label>
                             </div>
-                        <?php } // ACL can create private comments?>
+                        <?php } ?>
                     <?php if ($this->row->access('create', 'comments') > 0 || $this->row->access('create', 'private_comments')) { ?>
                         </div>
                         <div class="clear"></div>
-                    <?php } // ACL can create comments (admin) or private comments?>
+                    <?php } ?>
                         <div class="form-group">
                             <label for="comment" class="sr-only"><?php echo Lang::txt('COM_SUPPORT_COMMENT'); ?></label>
                             <textarea name="comment" id="comment" class="form-control" rows="13" cols="35"><?php echo $this->comment->get('comment'); ?></textarea>
@@ -657,7 +657,7 @@ $cc = [];
                         </div>
                         <input type="hidden" name="tmp_dir" id="comment-tmp_dir" value="<?php echo $tmp; ?>" />
                     </fieldset>
-                <?php } //if ($this->row->access('create', 'comments') || $this->row->access('create', 'private_comments')) {?>
+                <?php } ?>
 
                 <?php if ($this->row->access('create', 'comments') > 0) { ?>
                     <fieldset>
@@ -698,7 +698,7 @@ $cc = [];
                     <input type="hidden" name="email_submitter" id="email_submitter" value="1" />
                     <input type="hidden" name="email_owner" id="email_owner" value="1" />
                     <input type="hidden" name="cc" id="acmembers" value="<?php echo implode(', ', $cc); ?>" />
-                <?php } // ACL can create comments (admin)?>
+                <?php } ?>
 
                     <?php echo Html::input('token'); ?>
 
@@ -713,4 +713,4 @@ $cc = [];
     </aside><!-- / .aside -->
     </div>
 </section><!-- / .section -->
-<?php } // ACL can create comments
+<?php }

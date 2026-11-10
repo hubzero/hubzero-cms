@@ -379,7 +379,7 @@ class Endnote extends Plugin
                     }
                 }
             }
-        } // End foreach result as r
+        }
         return $match;
     }
 

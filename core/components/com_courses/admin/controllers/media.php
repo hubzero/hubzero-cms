@@ -290,7 +290,7 @@ class Media extends AdminController
                             Filesystem::deleteDirectory($path . DS . '__MACOSX');
                         }
                     }
-                } // if ($batch) {
+                }
             }
         }
 

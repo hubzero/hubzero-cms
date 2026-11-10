@@ -181,7 +181,7 @@ $this->css();
                 <?php } ?>
                 </tr>
                 <?php
-            } // end foreach
+            }
         } else {
             ?>
             <tr>

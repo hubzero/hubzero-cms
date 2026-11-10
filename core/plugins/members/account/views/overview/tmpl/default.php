@@ -27,8 +27,8 @@ $this
 <?php if (isset($this->notifications) && count($this->notifications) > 0) {
     foreach ($this->notifications as $notification) { ?>
         <p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
-    <?php } // close foreach
-} // close if count?>
+    <?php }
+} ?>
 
 <div id="members-account-section">
 
@@ -115,7 +115,7 @@ $this
             ?>
         </div><!-- / .sub-section-content -->
     </div><!-- / .sub-section -->
-<?php } // close linked accounts subsection check?>
+<?php } ?>
 
     <div class="sub-section">
         <h4><?php
@@ -151,7 +151,7 @@ $this
                             ?>
                         <?php endif ?>
                     </p>
-                <?php } // close if is array passinfo?>
+                <?php } ?>
                 <p class="error" id="section-edit-errors"></p>
                 <?php
                 $groupClass = (count($this->password_rules) > 0)

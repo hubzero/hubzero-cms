@@ -332,7 +332,7 @@ $now = Date::of('now')->toSql();
                                 </a>
                             </li>
                                 <?php
-                            } // end status check
+                            }
                         }
                         ?>
                     </ul>

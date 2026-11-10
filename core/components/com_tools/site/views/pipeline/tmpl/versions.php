@@ -164,7 +164,7 @@ $this
                     </tr>
                     <?php
                     $i++;
-                } // end foreach
+                }
                 ?>
             </tbody>
         </table>

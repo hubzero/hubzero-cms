@@ -121,7 +121,7 @@ $counts = $this->model->get('counts');
                         </div>
                     <?php } ?>
                 </li>
-            <?php } // end foreach?>
+            <?php } ?>
         </ul>
     <?php } else {  ?>
         <?php if (isset($this->guest) && $this->guest) { ?>

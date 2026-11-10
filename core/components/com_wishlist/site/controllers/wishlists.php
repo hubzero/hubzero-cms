@@ -1600,7 +1600,7 @@ class Wishlists extends SiteController
                 // nothing changed
                 $this->task = 'wishlist';
             }
-        } // end if move within Wish List component
+        }
 
         // go back to wishlist
         $this->wishlistTask();
@@ -2058,7 +2058,7 @@ class Wishlists extends SiteController
                 if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_posted', $subject1, $message, $from, [$objWish->get('proposed_by')], $this->option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_AUTHOR'));
                 }
-            } // -- end send to wish author
+            }
 
             if (
                 $objWish->get('assigned')
@@ -2071,7 +2071,7 @@ class Wishlists extends SiteController
                 if (!Event::trigger('xmessage.onSendMessage', ['wishlist_comment_posted', $subject2, $message, $from, [$objWish->get('assigned')], $this->option])) {
                     $this->setError(Lang::txt('COM_WISHLIST_ERROR_FAILED_MSG_ASSIGNEE'));
                 }
-            } // -- end send message to person to who wish is assigned
+            }
 
             // get comment author if reply is posted to a comment
             if ($category == 'wishcomment') {
@@ -2121,7 +2121,7 @@ class Wishlists extends SiteController
                     ['user', $row->get('created_by')],
                 ],
             ]);
-        } // -- end if id & category
+        }
 
         App::redirect(
             Route::url($objWish->link()),

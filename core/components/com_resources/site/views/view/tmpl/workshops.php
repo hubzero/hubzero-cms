@@ -197,7 +197,7 @@ if ($mode != 'preview') {
                                 ->set('license', $this->model->license())
                                 ->display();
                         }
-                    } // --- end else (if group check passed)
+                    }
                     ?>
                 </div><!-- / .aside launcharea -->
             </div>

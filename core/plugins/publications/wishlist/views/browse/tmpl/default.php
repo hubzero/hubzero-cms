@@ -290,7 +290,7 @@ if ($this->rows->count() > 0) {
             <?php } ?>
                 </tr>
         <?php
-    } // end foreach
+    }
 } else {
     ?>
                 <tr>

@@ -21,10 +21,10 @@ defined('_HZEXEC_') or die();
                 <dt><?php echo $field->label; ?></dt>
                 <dd><?php echo $field->value; ?></dd>
                 <?php
-            } // end foreach
+            }
             ?>
         </dl>
         <?php
-    } // end if
+    }
     ?>
 </div><!-- / .basic info -->

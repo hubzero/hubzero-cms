@@ -445,7 +445,7 @@ if (!$this->app->sess) {
             </div><!-- / .col span4 -->
         </div><!-- / .grid -->
     </form>
-    <?php } // shareable?>
+    <?php } ?>
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>

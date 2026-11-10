@@ -151,8 +151,8 @@ $canEdit = $this->model->access('manager')
                             <th class="htd"><?php echo $field->label; ?></th>
                             <td><?php echo $field->value; ?></td>
                         </tr>
-                <?php } // end foreach
-            } // end if
+                <?php }
+            }
             ?>
 
             <?php if ($this->model->about('parsed')) {

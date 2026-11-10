@@ -448,14 +448,14 @@ $area = urlencode($this->filters['area']);
                                     ?>
                                 </td>
                             </tr>
-                    <?php } // end foreach?>
+                    <?php } ?>
                 <?php } else { ?>
                             <tr class="noresults">
                                 <td>
                                     <?php echo Lang::txt('COM_ANSWERS_NO_RESULTS'); ?>
                                 </td>
                             </tr>
-                <?php } // end if (count($this->results) > 0) {?>
+                <?php } ?>
                         </tbody>
                     </table>
                     <?php

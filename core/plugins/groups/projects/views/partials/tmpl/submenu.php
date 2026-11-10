@@ -57,5 +57,5 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
                 } ?>
             </a>
         </li>
-    <?php } //endforeach?>
+    <?php } ?>
 </ul>

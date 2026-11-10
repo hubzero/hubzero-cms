@@ -377,7 +377,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         <input type="hidden" name="wishid" value="<?php echo $this->wish->get('id'); ?>" />
                     </form>
                 </div><!-- / .container -->
-            <?php } //if ($this->admin) {?>
+            <?php } ?>
 
             <?php if ($this->wish->get('action') == 'delete') { ?>
                 <div class="warning" id="action">
@@ -619,7 +619,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         </form>
                     </div><!-- / .moveitem -->
                 <?php } ?>
-            <?php } // if not withdrawn?>
+            <?php } ?>
             </div><!-- / .wish -->
         </div><!-- / .subject -->
         <aside class="aside">
@@ -898,8 +898,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                     <?php } ?>
             </aside><!-- / .aside -->
         </section><!-- / .below section -->
-                <?php } // if ($this->admin)?>
-            <?php } // if not withdrawn?>
+                <?php } ?>
+            <?php } ?>
 
             <?php
         }
