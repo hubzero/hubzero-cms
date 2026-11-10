@@ -1008,6 +1008,13 @@ class Threads extends SiteController
         return User::authorise($action . $at, $asset) === true;
     }
 
+    /**
+     * Set the access permissions the views read from the configuration
+     *
+     * @param   string   $assetType
+     * @param   integer  $assetId
+     * @return  void
+     */
     protected function authorize($assetType = 'component', $assetId = null)
     {
         $this->config->set('access-view-' . $assetType, true);

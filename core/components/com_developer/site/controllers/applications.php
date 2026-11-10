@@ -743,6 +743,13 @@ class Applications extends SiteController
         return in_array($uid, $team, true) || (int) $app->get('created_by') === $uid;
     }
 
+    /**
+     * Set the access permissions the views read from the configuration
+     *
+     * @param   string   $assetType
+     * @param   integer  $assetId
+     * @return  void
+     */
     protected function authorize($assetType = 'application', $assetId = null)
     {
         // Logged in?
