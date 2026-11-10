@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the REST API reference from the API controller docblocks.
 
-Each component's ``api/controllers/<name>v<major>_<minor>.php`` declares its
+Each component's ``api/controllers/<name>v<major>r<minor>.php`` declares its
 endpoints with ``@apiMethod``, ``@apiUri``, and ``@apiParameter`` tags in the
 task docblocks, the same tags ``Hubzero\\Api\\Doc\\Generator`` reads for the
 ``com_developer`` API explorer. This script parses them directly and writes
@@ -23,7 +23,7 @@ OUT = ROOT / "docs" / "reference" / "api"
 HEADER = "<!--\nstatus: generated\nsource: {source}\n-->\n"
 
 METHOD_RE = re.compile(r"/\*\*(?P<doc>(?:(?!\*/).)*)\*/\s*public\s+function\s+(?P<name>\w+)Task\s*\(", re.S)
-FILE_RE = re.compile(r"^(?P<controller>.+?)v(?P<major>\d+)_(?P<minor>\d+)\.php$")
+FILE_RE = re.compile(r"^(?P<controller>.+?)v(?P<major>\d+)[_r](?P<minor>\d+)\.php$")
 
 
 def doc_lines(doc: str) -> list[str]:
