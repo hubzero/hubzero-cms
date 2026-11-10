@@ -370,7 +370,7 @@ class Password
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -382,7 +382,7 @@ class Password
             return null;
         }
 
-        $this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
+        $this->error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
         return null;
     }
@@ -400,7 +400,7 @@ class Password
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -424,7 +424,7 @@ class Password
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -444,7 +444,7 @@ class Password
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -460,7 +460,7 @@ class Password
      * @param   integer  $level
      * @return  void
      */
-    private function _error($message, $level = E_USER_NOTICE)
+    private function error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();
 

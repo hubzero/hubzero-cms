@@ -31,14 +31,14 @@ class Note extends \Components\Wiki\Models\Book
      *
      * @var  string
      */
-    private $_group_cn = '';
+    private $group_cn = '';
 
     /**
      * Project id
      *
      * @var  string
      */
-    private $_project_id = '';
+    private $project_id = '';
 
     /**
      * Constructor
@@ -52,7 +52,7 @@ class Note extends \Components\Wiki\Models\Book
     {
         $this->_db = App::get('db');
         $this->_scope = $scope;
-        $this->_project_id = $project_id;
+        $this->project_id = $project_id;
 
         parent::__construct($scope);
     }
@@ -67,7 +67,7 @@ class Note extends \Components\Wiki\Models\Book
     public function page($id = null, $scope = '')
     {
         $scope = $scope ? $scope : $this->_scope;
-        $this->_cache['page'] = \Components\Wiki\Models\Page::oneByPath($id, 'project', $this->_project_id);
+        $this->_cache['page'] = \Components\Wiki\Models\Page::oneByPath($id, 'project', $this->project_id);
 
         return $this->_cache['page'];
     }
@@ -102,17 +102,17 @@ class Note extends \Components\Wiki\Models\Book
         ];
 
         // Check valid stamp
-        $objSt->checkStamp($this->_project_id, json_encode($reference), 'notes');
+        $objSt->checkStamp($this->project_id, json_encode($reference), 'notes');
         $list = ($listed !== null && $listed != $objSt->listed) ? true : false;
 
         if ($list == true) {
-            return $objSt->registerStamp($this->_project_id, json_encode($reference), 'notes', $listed);
+            return $objSt->registerStamp($this->project_id, json_encode($reference), 'notes', $listed);
         }
 
         // Register new stamp?
         if (!$objSt->id && $register == true) {
-            $objSt->registerStamp($this->_project_id, json_encode($reference), 'notes', $listed);
-            $objSt->checkStamp($this->_project_id, json_encode($reference), 'notes');
+            $objSt->registerStamp($this->project_id, json_encode($reference), 'notes', $listed);
+            $objSt->checkStamp($this->project_id, json_encode($reference), 'notes');
         }
 
         return $objSt;
@@ -129,7 +129,7 @@ class Note extends \Components\Wiki\Models\Book
     public function getFirstNote($prefix = '')
     {
         $query  = "SELECT p.pagename FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2";
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . " AND p.state!=2";
 
         $query .= $prefix ? " AND p.pagename LIKE " . $this->_db->quote($prefix . '%') : "";
         $query .= " ORDER BY p.times_rated, p.id ASC LIMIT 1";
@@ -152,7 +152,7 @@ class Note extends \Components\Wiki\Models\Book
         if ($remaining) {
             $query  = "SELECT DISTINCT p.pagename, p.title, p.path, p.scope, p.scope_id ";
             $query .= "FROM `#__wiki_pages` AS p ";
-            $query .= "WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2 ";
+            $query .= "WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . " AND p.state!=2 ";
             $k = 1;
             $where = '';
             foreach ($remaining as $r) {
@@ -179,7 +179,7 @@ class Note extends \Components\Wiki\Models\Book
     {
         $query = "SELECT DISTINCT p.id, p.path, p.pagename, p.title, p.scope, p.times_rated
 				  FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
 				  AND p.pagename NOT LIKE 'Template:%'
 				  AND p.state!=2
 				  ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $orderby) ?: '1') . " ";
@@ -198,7 +198,7 @@ class Note extends \Components\Wiki\Models\Book
     public function getNoteCount()
     {
         $query = "SELECT COUNT(*) FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . " AND p.state!=2
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . " AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 
         $this->_db->setQuery($query);
@@ -219,7 +219,7 @@ class Note extends \Components\Wiki\Models\Book
 				  (SELECT vv.id FROM `#__wiki_versions` as vv WHERE vv.page_id=p.id
 				  ORDER by vv.id DESC LIMIT 1) as instance
 				  FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 
@@ -241,7 +241,7 @@ class Note extends \Components\Wiki\Models\Book
     {
         $scope = $scope ? $scope : $this->_scope;
         $query = "SELECT p.times_rated FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
 				  ORDER BY p.times_rated DESC LIMIT 1";
 
         $this->_db->setQuery($query);
@@ -259,7 +259,7 @@ class Note extends \Components\Wiki\Models\Book
     public function fixScopePaths($scope, $oldpagename, $newpagename)
     {
         $query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, " . $this->_db->quote('/' . $oldpagename) . ", " . $this->_db->quote('/' . $newpagename) . ")
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id);
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id);
 
         $this->_db->setQuery($query);
         if (!$this->_db->query()) {
@@ -278,7 +278,7 @@ class Note extends \Components\Wiki\Models\Book
     public function saveNoteOrder($scope, $order = 0)
     {
         $query = "UPDATE `#__wiki_pages` AS p SET p.times_rated=" . $this->_db->quote($order) . "
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->_project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
 				  AND p.times_rated='0'";
 
         $this->_db->setQuery($query);

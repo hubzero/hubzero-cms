@@ -54,7 +54,7 @@ class Events extends SiteController
         $this->monthFormat = "m";
         $this->dayFormat   = "d";
 
-        $this->_setup();
+        $this->setup();
 
         if (!Request::getString('task')) {
             Request::setVar('task', $this->config->getCfg('startview', 'month'));
@@ -208,7 +208,7 @@ class Events extends SiteController
      *
      * @return     void
      */
-    private function _setup()
+    private function setup()
     {
         // Load the events configuration
         $config = new Configs($this->database);
@@ -356,7 +356,7 @@ class Events extends SiteController
         $authorized = $this->_authorize('core.create');
 
         // Get a list of categories
-        $categories = $this->_getCategories();
+        $categories = $this->getCategories();
 
         // Build the page title
         $this->_buildTitle();
@@ -424,7 +424,7 @@ class Events extends SiteController
         $authorized = $this->_authorize('core.create');
 
         // Get a list of categories
-        $categories = $this->_getCategories();
+        $categories = $this->getCategories();
 
         // Build the page title
         $this->_buildTitle();
@@ -487,7 +487,7 @@ class Events extends SiteController
 
         $this_currentdate = $this_date;
 
-        $categories = $this->_getCategories();
+        $categories = $this->getCategories();
 
         $filters = [];
         $filters['gid'] = $this->gid;
@@ -602,7 +602,7 @@ class Events extends SiteController
         $authorized = $this->_authorize('core.create');
 
         // Get a list of categories
-        $categories = $this->_getCategories();
+        $categories = $this->getCategories();
 
         // Build the page title
         $this->_buildTitle();
@@ -746,7 +746,7 @@ class Events extends SiteController
         $auth = $this->_authorize('core.edit', $row->created_by);
 
         // Get a list of categories
-        $categories = $this->_getCategories();
+        $categories = $this->getCategories();
 
         // Get tags on this event
         $rt = new Tags($row->id);
@@ -1139,7 +1139,7 @@ class Events extends SiteController
             $register = array_map('trim', $register);
             $register = array_map(['\\Hubzero\\Utility\\Sanitize', 'stripAll'], $register);
 
-            $validEmail = $this->_validEmail($register['email']);
+            $validEmail = $this->validEmail($register['email']);
         }
         if ($arrival) {
             $arrival = array_map('trim', $arrival);
@@ -1207,13 +1207,13 @@ class Events extends SiteController
             // check to see if event manager email is configured
             if ($email != "" || $email != null || !isset($email)) {
                 // one for the event manager
-                $this->_sendEmail($hub, $email, $subject, $message);
+                $this->sendEmail($hub, $email, $subject, $message);
             }
 
             // one for the attendee
-            $this->_sendEmail($hub, $register['email'], $subject, $message);
+            $this->sendEmail($hub, $register['email'], $subject, $message);
 
-            $this->_log($register);
+            $this->log($register);
 
             $this->view->setLayout('thanks');
         } else {
@@ -1249,7 +1249,7 @@ class Events extends SiteController
      * @param      unknown $reg Parameter description (if any) ...
      * @return     void
      */
-    private function _log($reg)
+    private function log($reg)
     {
         $this->database->setQuery(
             'INSERT INTO `#__events_respondents`(
@@ -1709,7 +1709,7 @@ class Events extends SiteController
         $message = str_replace("\n", "\r\n", $message);
 
         // Send the e-mail
-        $this->_sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
+        $this->sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
 
         // Go back to the default front page
         App::redirect(Route::url('index.php?option=' . $this->_option));
@@ -2002,7 +2002,7 @@ class Events extends SiteController
         $message = str_replace("\n", "\r\n", $message);
 
         // Send the e-mail
-        $this->_sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
+        $this->sendMail(Config::get('sitename'), Config::get('mailfrom'), $subject, $message);
 
         // Set the session flag indicating the new submission
         Session::set('newsubmission.event', true);
@@ -2020,7 +2020,7 @@ class Events extends SiteController
      * @param      unknown $message Parameter description (if any) ...
      * @return     integer Return description (if any) ...
      */
-    private function _sendEmail(&$hub, $email, $subject, $message)
+    private function sendEmail(&$hub, $email, $subject, $message)
     {
         if ($hub) {
             $contact_email = $hub['email'];
@@ -2048,7 +2048,7 @@ class Events extends SiteController
      * @param   string   $email   Email address to check
      * @return  integer  1 = valid, 0 = invalid
      */
-    private function _validEmail($email)
+    private function validEmail($email)
     {
         return !!filter_var($email, FILTER_VALIDATE_EMAIL);
     }
@@ -2058,7 +2058,7 @@ class Events extends SiteController
      *
      * @return  array
      */
-    private function _getCategories()
+    private function getCategories()
     {
         $sql = "SELECT * FROM `#__categories` WHERE extension='" . $this->_option . "' AND published = '1' ORDER BY lft ASC";
 
@@ -2117,7 +2117,7 @@ class Events extends SiteController
      * @param   string  $message
      * @return  void
      */
-    private function _sendMail($name, $email, $subject, $message)
+    private function sendMail($name, $email, $subject, $message)
     {
         $name .= ' ' . Lang::txt('EVENTS_ADMINISTRATOR');
 

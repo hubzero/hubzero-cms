@@ -1707,7 +1707,7 @@ class Resources extends SiteController
 
         $itunes_image_name = 'itunes_' . str_replace(' ', '_', strtolower($feedtype));
 
-        $dimg = $this->_checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
+        $dimg = $this->checkForImage($itunes_image_name, $this->config->get('uploadpath'), $resource->created, $resource->id);
         if ($dimg) {
             $dimage = new \Hubzero\Document\Type\Feed\Image();
             $dimage->url = $dimg;
@@ -1826,7 +1826,7 @@ class Resources extends SiteController
                     $item->category    = $row->type->get('type');
                     $item->author      = $author;
 
-                    $img = $this->_checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
+                    $img = $this->checkForImage('ituness_artwork', $this->config->get('uploadpath'), $row->created, $row->id);
                     if ($img) {
                         $image = new \Hubzero\Document\Type\Feed\Image();
                         $image->url   = $img;
@@ -1847,7 +1847,7 @@ class Resources extends SiteController
 
                     if ($podcast) {
                         $podcastp = $podcast;
-                        $podcast = ltrim($this->_fullPath($podcast), '/');
+                        $podcast = ltrim($this->fullPath($podcast), '/');
 
                         if (substr($podcastp, 0, strlen($this->config->get('uploadpath'))) == $this->config->get('uploadpath')) {
                             // Do nothing
@@ -1958,7 +1958,7 @@ class Resources extends SiteController
      * @param   integer  $id
      * @return  string
      */
-    private function _checkForImage($filename, $upath, $created, $id)
+    private function checkForImage($filename, $upath, $created, $id)
     {
         $path = Html::build_path($created, $id, '');
 
@@ -2740,7 +2740,7 @@ class Resources extends SiteController
      * @param   string  $path  Relative path
      * @return  string
      */
-    private function _fullPath($path)
+    private function fullPath($path)
     {
         if (
             substr($path, 0, 7) == 'http://'

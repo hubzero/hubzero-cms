@@ -278,11 +278,11 @@ class Tickets extends AdminController
         $lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
         if (trim($ticket->get('group_id') == null ? '' : $ticket->get('group_id'))) {
-            $lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($ticket->get('group_id')));
+            $lists['owner'] = $this->userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($ticket->get('group_id')));
         } elseif (trim($this->config->get('group', ''))) {
-            $lists['owner'] = $this->_userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($this->config->get('group', '')));
+            $lists['owner'] = $this->userSelectGroup('ticket[owner]', $ticket->get('owner'), 1, '', trim($this->config->get('group', '')));
         } else {
-            $lists['owner'] = $this->_userSelect('ticket[owner]', $ticket->get('owner'), 1);
+            $lists['owner'] = $this->userSelect('ticket[owner]', $ticket->get('owner'), 1);
         }
 
         if ($watch = Request::getWord('watch', '')) {
@@ -590,7 +590,7 @@ class Tickets extends AdminController
         // Get severities
         $lists['severities'] = Utilities::getSeverities($this->config->get('severities'));
 
-        $lists['owner'] = $this->_userSelect('owner', '', 1);
+        $lists['owner'] = $this->userSelect('owner', '', 1);
 
         // Output the HTML
         $this->view
@@ -905,7 +905,7 @@ class Tickets extends AdminController
      * @param   string   $order       The sort order for items in the list
      * @return  string   HTML select list
      */
-    private function _userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
+    private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
         $database = App::get('db');
 
@@ -960,7 +960,7 @@ class Tickets extends AdminController
      * @param   string   $group       The group to pull member names from
      * @return  string   HTML select list
      */
-    private function _userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')
+    private function userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')
     {
         $users = [];
         if ($nouser) {

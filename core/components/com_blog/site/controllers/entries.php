@@ -761,7 +761,7 @@ class Entries extends SiteController
         }
 
         foreach ($rows as $row) {
-            $this->_comment($doc, $row);
+            $this->comment($doc, $row);
         }
     }
 
@@ -772,7 +772,7 @@ class Entries extends SiteController
      * @param   object  $row  Comment
      * @return  void
      */
-    private function _comment(&$doc, $row)
+    private function comment(&$doc, $row)
     {
         // Load individual item creator class
         $item = new \Hubzero\Document\Type\Feed\Item();
@@ -800,7 +800,7 @@ class Entries extends SiteController
 
         if ($replies->count() > 0) {
             foreach ($replies as $reply) {
-                $this->_comment($doc, $reply);
+                $this->comment($doc, $reply);
             }
         }
     }

@@ -243,7 +243,7 @@ class Codes extends AdminController
             $codes = [];
             for ($i = 0; $i < $num; $i++) {
                 $model = new \Components\Courses\Models\Section\Code(0);
-                $model->set('code', $this->_generateCode());
+                $model->set('code', $this->generateCode());
                 $model->set('section_id', $section);
                 $model->set('expires', $expires);
                 if (!$model->store(true)) {
@@ -288,7 +288,7 @@ class Codes extends AdminController
      *
      * @return  string
      */
-    private function _generateCode()
+    private function generateCode()
     {
         $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $res = '';

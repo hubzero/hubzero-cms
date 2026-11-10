@@ -88,10 +88,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
         // Wrap in try catch to avoid breaking in middle of import
         try {
             // Map profile data
-            $this->_mapEntryData();
+            $this->mapEntryData();
 
             // Map extras
-            $this->_mapExtraData();
+            $this->mapExtraData();
         } catch (Exception $e) {
             array_push($this->record->errors, $e->getMessage());
         }
@@ -213,10 +213,10 @@ class Record extends \Hubzero\Content\Import\Model\Record
         // Wrap in try catch to avoid break mid import
         try {
             // Save profile
-            $this->_saveEntryData();
+            $this->saveEntryData();
 
             // Save extras
-            $this->_saveExtraData();
+            $this->saveExtraData();
         } catch (\Exception $e) {
             array_push($this->record->errors, $e->getMessage());
         }
@@ -242,7 +242,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @return  void
      */
-    private function _mapEntryData()
+    private function mapEntryData()
     {
         // Do we have an ID?
         // Either passed in the raw data or gotten from the title match
@@ -307,7 +307,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                     continue;
                 }
 
-                $this->_profile[$key] = $this->_multiValueField($this->_profile[$key]);
+                $this->_profile[$key] = $this->multiValueField($this->_profile[$key]);
             }
         }
 
@@ -349,7 +349,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      * @param   string  $delim  List of delimiters, separated by a pipe "|"
      * @return  array
      */
-    private function _multiValueField($data, $delim = ',|;')
+    private function multiValueField($data, $delim = ',|;')
     {
         if (is_string($data)) {
             $data = array_map('trim', preg_split("/($delim)/", $data));
@@ -368,7 +368,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @return  array
      */
-    private function _profileFieldAccess()
+    private function profileFieldAccess()
     {
         if (self::$fieldAccess === null) {
             self::$fieldAccess = [];
@@ -390,7 +390,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @return  void
      */
-    private function _saveEntryData()
+    private function saveEntryData()
     {
         $isNew = (!$this->record->entry->get('id'));
 
@@ -405,7 +405,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 // Try to create from name
                 $username = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('name')));
                 if (Validate::username($username)) {
-                    if (!$this->_usernameExists($username)) {
+                    if (!$this->usernameExists($username)) {
                         $valid = true;
                     }
                 }
@@ -414,7 +414,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                 if (!$valid) {
                     $username = strstr($this->record->entry->get('email'), '@', true);
                     if (Validate::username($username)) {
-                        if (!$this->_usernameExists($username)) {
+                        if (!$this->usernameExists($username)) {
                             $valid = true;
                         }
                     }
@@ -425,7 +425,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
                     for ($i = 0; $i <= 99; $i++) {
                         $username = preg_replace('/[^a-z0-9_]/i', '', strtolower($this->record->entry->get('name'))) . $i;
                         if (Validate::username($username)) {
-                            if (!$this->_usernameExists($username)) {
+                            if (!$this->usernameExists($username)) {
                                 $valid = true;
                                 break;
                             }
@@ -508,7 +508,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
             // profile entry, so imported accounts had public/registered fields
             // wrongly set to private (ticket 370). Existing accounts keep their
             // current per-field access on re-import.
-            $access = $isNew ? $this->_profileFieldAccess() : [];
+            $access = $isNew ? $this->profileFieldAccess() : [];
 
             if (!$this->record->entry->saveProfile($this->_profile, $access)) {
                 throw new Exception($this->record->entry->getError());
@@ -564,7 +564,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @return  integer
      */
-    private function _usernameExists($username)
+    private function usernameExists($username)
     {
         return Member::oneByUsername($username)->get('id');
     }
@@ -574,7 +574,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @return  void
      */
-    private function _mapExtraData()
+    private function mapExtraData()
     {
         foreach ($this->handlers() as $handler) {
             $this->record = $handler->bind($this->raw, $this->record, $this->_mode);
@@ -592,7 +592,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
      *
      * @return  void
      */
-    private function _saveExtraData()
+    private function saveExtraData()
     {
         foreach ($this->handlers() as $handler) {
             $this->record = $handler->store($this->raw, $this->record, $this->_mode);

@@ -36,14 +36,14 @@ class Git extends Models\Adapter
      *
      * @var  string
      */
-    private $_name = 'git';
+    private $name = 'git';
 
     /**
      * Full path to repository
      *
      * @var  string
      */
-    private $_path = null;
+    private $path = null;
 
     /**
      * Constructor
@@ -61,10 +61,10 @@ class Git extends Models\Adapter
         $this->_gitpath = $configs->get('gitpath', '/opt/local/bin/git');
 
         // Set repo path
-        $this->_path = $path;
+        $this->path = $path;
 
         // Git helper
-        $this->_git = new Helpers\Git($this->_path);
+        $this->_git = new Helpers\Git($this->path);
 
         $this->set('remote', $remote);
     }
@@ -77,7 +77,7 @@ class Git extends Models\Adapter
      */
     public function count($params = [])
     {
-        $cmd  = 'cd ' . escapeshellarg($this->_path) . ' && ';
+        $cmd  = 'cd ' . escapeshellarg($this->path) . ' && ';
         $cmd .= 'find . \( -path ./.git -o -name ".gitignore" \) -prune -o -type f -print | wc -l';
 
         return shell_exec($cmd);
@@ -150,7 +150,7 @@ class Git extends Models\Adapter
             }
 
             // Load basic file metadata
-            $file = new Models\File($item, $this->_path);
+            $file = new Models\File($item, $this->path);
 
             // Untracked?
             if (in_array($file->get('localPath'), $untracked)) {
@@ -733,7 +733,7 @@ class Git extends Models\Adapter
     {
         $working = isset($params['working']) ? $params['working'] : true;
         $git     = isset($params['history']) ? $params['history'] : true;
-        $path    = isset($params['path']) ? $params['path'] : $this->_path;
+        $path    = isset($params['path']) ? $params['path'] : $this->path;
 
         $used = 0;
         if ($path && is_dir($path)) {
@@ -768,7 +768,7 @@ class Git extends Models\Adapter
      */
     public function isGit()
     {
-        if (!$this->_path || !is_dir($this->_path) || !is_dir($this->_path . DS . '.git')) {
+        if (!$this->path || !is_dir($this->path) || !is_dir($this->path . DS . '.git')) {
             return false;
         }
 
@@ -783,7 +783,7 @@ class Git extends Models\Adapter
      */
     public function erase($params = [])
     {
-        $path = isset($params['path']) ? $params['path'] : $this->_path;
+        $path = isset($params['path']) ? $params['path'] : $this->path;
 
         if ($path && is_dir($path . DS . '.git')) {
             // cd
@@ -806,7 +806,7 @@ class Git extends Models\Adapter
      */
     public function optimize($params = [])
     {
-        $path = isset($params['path']) ? $params['path'] : $this->_path;
+        $path = isset($params['path']) ? $params['path'] : $this->path;
         $aggressive = isset($params['adv']) ? $params['adv'] : false;
 
         if ($path && is_dir($path . DS . '.git')) {

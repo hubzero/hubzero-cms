@@ -67,13 +67,13 @@ class Behavior
         // page went out with no jQuery at all. Which is what the administrator
         // saw: "jQuery is not defined", on every page after the login.
         if ($type == 'core') {
-            $pushed = self::_pushScriptTo(0, $path);
+            $pushed = self::pushScriptTo(0, $path);
 
             if ($pushed && App::isAdmin()) {
                 Asset::script('assets/core.js', false, true);
             }
         } else {
-            $pushed = self::_pushScriptTo(1, $path);
+            $pushed = self::pushScriptTo(1, $path);
         }
 
         if ($pushed) {
@@ -93,7 +93,7 @@ class Behavior
      * @param   boolean $async
      * @return  void
      */
-    private static function _pushScriptTo($index, $url, $type = 'text/javascript', $defer = false, $async = false)
+    private static function pushScriptTo($index, $url, $type = 'text/javascript', $defer = false, $async = false)
     {
         if (!App::has('document')) {
             return false;

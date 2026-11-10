@@ -51,14 +51,14 @@ class WikiParser
      *
      * @var string
      */
-    private $_token = null;
+    private $token = null;
 
     /**
      * Configuration options
      *
      * @var array
      */
-    private $_config = [
+    private $config = [
         'option'    => null,
         'scope'     => null,
         'pagename'  => null,
@@ -80,7 +80,7 @@ class WikiParser
      *
      * @var array
      */
-    private $_data = [
+    private $data = [
         'input'  => null,
         'output' => null,
         'links'  => [],
@@ -91,7 +91,7 @@ class WikiParser
      *
      * @var array
      */
-    private $_tokens = [
+    private $tokens = [
         'pre'    => [],
         'code'   => [],
         'anchor' => [],
@@ -104,7 +104,7 @@ class WikiParser
      *
      * @var array
      */
-    private static $_patterns = [
+    private static $patterns = [
         'url'  => "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]",
 
         'hlgn' => "(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?!))",
@@ -185,7 +185,7 @@ class WikiParser
         }
 
         // Set the unique token
-        $this->_token = "\x07UNIQ" . $this->_randomString();
+        $this->token = "\x07UNIQ" . $this->_randomString();
     }
 
     /**
@@ -197,7 +197,7 @@ class WikiParser
      */
     public function set($property, $value = null)
     {
-        $this->_config[$property] = $value;
+        $this->config[$property] = $value;
         return $this;
     }
 
@@ -210,8 +210,8 @@ class WikiParser
      */
     public function get($property, $default = null)
     {
-        if (isset($this->_config[$property])) {
-            return $this->_config[$property];
+        if (isset($this->config[$property])) {
+            return $this->config[$property];
         }
         return $default;
     }
@@ -223,7 +223,7 @@ class WikiParser
      */
     public function token()
     {
-        return $this->_token;
+        return $this->token;
     }
 
     /**
@@ -233,7 +233,7 @@ class WikiParser
      */
     public function input()
     {
-        return $this->_data['input'];
+        return $this->data['input'];
     }
 
     /**
@@ -243,7 +243,7 @@ class WikiParser
      */
     public function output()
     {
-        return $this->_data['output'];
+        return $this->data['output'];
     }
 
     /**
@@ -269,7 +269,7 @@ class WikiParser
     public function parse($text, $fullparse = true, $linestart = 0, $camelcase = 1)
     {
         // Store the raw input
-        $this->_data['input'] = $text;
+        $this->data['input'] = $text;
 
         // Set some configs
         $this->set('fullparse', $fullparse);
@@ -361,9 +361,9 @@ class WikiParser
         $text = $this->definitions($text);
 
         // Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
-        //$text = preg_replace_callback('/MACRO' . $this->_token . '/i', array(&$this, 'restore_macros'), $text);
+        //$text = preg_replace_callback('/MACRO' . $this->token . '/i', array(&$this, 'restore_macros'), $text);
         $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
-        $this->_tokens['macro'] = [];
+        $this->tokens['macro'] = [];
 
         // Clean up special characters, only run once, next-to-last before block levels
         $fixtags = [
@@ -405,17 +405,17 @@ class WikiParser
         // If full parse and we have a page ID (i.e., this is a *wiki* page) and link logging is turned on...
         if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks')) {
             $links = \Components\Wiki\Models\Link::blank();
-            $links->updateLinks($this->get('pageid'), $this->_data['links']);
+            $links->updateLinks($this->get('pageid'), $this->data['links']);
         }
 
-        $this->_data['output'] = $text;
+        $this->data['output'] = $text;
 
-        if (trim($this->_data['input']) && !trim($this->_data['output'])) {
-            $this->_data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
-            $this->_data['output'] .= '<pre><code>' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</code></pre>';
+        if (trim($this->data['input']) && !trim($this->data['output'])) {
+            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
+            $this->data['output'] .= '<pre><code>' . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8') . '</code></pre>';
         }
 
-        return $this->_data['output'];
+        return $this->data['output'];
     }
 
     /**
@@ -567,7 +567,7 @@ class WikiParser
             $href = 'http://' . $href;
         }
 
-        $this->_data['links'][] = [
+        $this->data['links'][] = [
             'link'     => $whole,
             'url'      => $href,
             'page_id'  => $this->get('pageid'),
@@ -772,7 +772,7 @@ class WikiParser
                 break;
         }
 
-        $this->_data['links'][] = [
+        $this->data['links'][] = [
             'link'     => $whole,
             'url'      => $href,
             'page_id'  => $this->get('pageid'),
@@ -816,7 +816,7 @@ class WikiParser
         }
         $href = $protocol . $href;
 
-        $this->_data['links'][] = [
+        $this->data['links'][] = [
             'link'     => $whole,
             'url'      => $href,
             'page_id'  => $this->get('pageid'),
@@ -858,7 +858,7 @@ class WikiParser
 
         $link = Route::url($p->link());
 
-        $this->_data['links'][] = [
+        $this->data['links'][] = [
             'link'     => $name,
             'url'      => $link,
             'page_id'  => $this->get('pageid'),
@@ -1002,7 +1002,7 @@ class WikiParser
         $key = $matches[2];
         $val = $matches[3];
 
-        $this->_tokens[$tag][$key] = $val;
+        $this->tokens[$tag][$key] = $val;
         return '<' . $tag . ' ' . $key . '></' . $tag . ' ' . $key . '>';
     }
 
@@ -1018,8 +1018,8 @@ class WikiParser
         $tag = $matches[1];
         $key = $matches[2];
 
-        if (isset($this->_tokens[$tag]) && isset($this->_tokens[$tag][$key])) {
-            return $this->{'_restore' . ucfirst($tag)}($this->_tokens[$tag][$key]);
+        if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
+            return $this->{'_restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {
             return '';
@@ -1038,9 +1038,9 @@ class WikiParser
     {
         $this->set('wikitohtml', $html);
 
-        foreach ($this->_tokens as $tag => $vals) {
+        foreach ($this->tokens as $tag => $vals) {
             $text = preg_replace_callback('/<(' . $tag . ') (\w+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
-            $this->_tokens[$tag] = [];
+            $this->tokens[$tag] = [];
         }
 
         return $text;
@@ -1553,7 +1553,7 @@ class WikiParser
             // This is done to prevent any further wiki parsing of contents macro may return
             if (count($macro->linkLog) > 0) {
                 foreach ($macro->linkLog as $linkLog) {
-                    array_push($this->_data['links'], $linkLog);
+                    array_push($this->data['links'], $linkLog);
                 }
             }
 
@@ -1692,7 +1692,7 @@ class WikiParser
             }
 
             if ($element == 'td' or $element == 'tr') {
-                if (preg_match("/(" . self::$_patterns['vlgn'] . ")/", $matched, $vert)) {
+                if (preg_match("/(" . self::$patterns['vlgn'] . ")/", $matched, $vert)) {
                     $style[] = 'vertical-align:' . $this->vAlign($vert[1]) . ';';
                 }
             }
@@ -1722,7 +1722,7 @@ class WikiParser
                 $matched = str_replace($pr[0], '', $matched);
             }
 
-            if (preg_match("/(" . self::$_patterns['hlgn'] . ")/", $matched, $horiz)) {
+            if (preg_match("/(" . self::$patterns['hlgn'] . ")/", $matched, $horiz)) {
                 $style[] = 'text-align:' . $this->hAlign($horiz[1]) . ';';
             }
 
@@ -1798,7 +1798,7 @@ class WikiParser
         ];
         $pnct = ".,\"'?!;:";
 
-        $c = self::$_patterns['clss'];
+        $c = self::$patterns['clss'];
 
         foreach ($qtags as $f) {
             $text = preg_replace_callback("/
@@ -2131,8 +2131,8 @@ class WikiParser
      */
     private function tables($text)
     {
-        $ac  = self::$_patterns['algn'] . self::$_patterns['clss'];
-        $sac = self::$_patterns['spns'] . self::$_patterns['algn'] . self::$_patterns['clss'];
+        $ac  = self::$patterns['algn'] . self::$patterns['clss'];
+        $sac = self::$patterns['spns'] . self::$patterns['algn'] . self::$patterns['clss'];
 
         $text .= "\n\n";
         return preg_replace_callback("/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU", [&$this, '_getTable'], $text);
@@ -2148,8 +2148,8 @@ class WikiParser
     {
         $tatts = $this->pba($matches[1], 'table');
 
-        $ac  = self::$_patterns['algn'] . self::$_patterns['clss'];
-        $sac = self::$_patterns['spns'] . self::$_patterns['algn'] . self::$_patterns['clss'];
+        $ac  = self::$patterns['algn'] . self::$patterns['clss'];
+        $sac = self::$patterns['spns'] . self::$patterns['algn'] . self::$patterns['clss'];
 
         $rows = [];
         $rowMeta = []; // Track cell types per row for thead/tbody

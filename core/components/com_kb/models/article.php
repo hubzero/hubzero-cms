@@ -178,7 +178,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function created($as = '')
     {
-        return $this->_datetime($as, 'created');
+        return $this->datetime($as, 'created');
     }
 
     /**
@@ -202,7 +202,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00') {
             $this->set('modified', $this->get('created'));
         }
-        return $this->_datetime($as, 'modified');
+        return $this->datetime($as, 'modified');
     }
 
     /**
@@ -212,7 +212,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      * @param   string  $key  Field to parse
      * @return  string
      */
-    private function _datetime($as = '', $key = 'created')
+    private function datetime($as = '', $key = 'created')
     {
         $dt = $this->get($key);
 

@@ -70,7 +70,7 @@ class Commentsv1r0 extends ApiController
      * @param   string  $val  Date string (e.g., 'year', 'month', 'week', 'day', or Y-m-d)
      * @return  string|null
      */
-    private function _toTimestamp($val = null)
+    private function toTimestamp($val = null)
     {
         if ($val) {
             $val = strtolower($val);
@@ -78,7 +78,7 @@ class Commentsv1r0 extends ApiController
             if (strstr($val, ',')) {
                 $vals = explode(',', $val);
                 foreach ($vals as $i => $v) {
-                    $vals[$i] = $this->_toTimestamp(trim($v));
+                    $vals[$i] = $this->toTimestamp(trim($v));
                 }
                 return $vals;
             }

@@ -317,7 +317,7 @@ class Author extends Table
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function _author_check($id)
+    private function authorCheck($id)
     {
         $xprofile = User::getInstance($id);
         if (

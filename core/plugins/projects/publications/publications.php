@@ -1954,7 +1954,7 @@ class Publications extends Plugin
 
         // Embargo?
         if ($pubdate) {
-            $pubdate = $this->_parseDate($pubdate);
+            $pubdate = $this->parseDate($pubdate);
 
             $tenYearsFromNow = Date::of(strtotime("+10 years"))->toSql();
 
@@ -2345,7 +2345,7 @@ class Publications extends Plugin
      * @param   string  $pubdate
      * @return  string
      */
-    private function _parseDate($pubdate)
+    private function parseDate($pubdate)
     {
         $date = explode('-', $pubdate);
         if (count($date) == 3) {

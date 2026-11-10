@@ -29,7 +29,7 @@ class Comment extends ItemComment
      * @var  string
      */
     // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-    private $_base = null;
+    private $base = null;
     // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
@@ -41,14 +41,14 @@ class Comment extends ItemComment
      */
     public function link($type = '')
     {
-        if (!isset($this->_base)) {
+        if (!isset($this->base)) {
             if (!$this->get('course')) {
                 $course = Course::getInstance($this->get('item_id'));
                 $this->set('course', $course->get('alias'));
             }
-            $this->_base = 'index.php?option=com_courses&gid=' . $this->get('course') . '&active=reviews';
+            $this->base = 'index.php?option=com_courses&gid=' . $this->get('course') . '&active=reviews';
         }
-        $link = $this->_base;
+        $link = $this->base;
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {

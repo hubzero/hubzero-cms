@@ -118,7 +118,7 @@ class Blog extends Plugin
             $this->task = Request::getCmd('action', '');
 
             if (!($task = Request::getCmd('action', '', 'post'))) {
-                $bits = $this->_parseUrl();
+                $bits = $this->parseUrl();
                 if ($this->task != 'deletecomment') {
                     $num = count($bits);
                     switch ($num) {
@@ -141,56 +141,56 @@ class Blog extends Plugin
             switch ($this->task) {
                 // Feeds
                 case 'feed.rss':
-                    $this->_feed();
+                    $this->feed();
                     break;
                 case 'feed':
-                    $this->_feed();
+                    $this->feed();
                     break;
 
                     // Settings
                 case 'savesettings':
-                    $arr['html'] = $this->_savesettings();
+                    $arr['html'] = $this->savesettings();
                     break;
                 case 'settings':
-                    $arr['html'] = $this->_settings();
+                    $arr['html'] = $this->settings();
                     break;
 
                     // Comments
                 case 'savecomment':
-                    $arr['html'] = $this->_savecomment();
+                    $arr['html'] = $this->savecomment();
                     break;
                 case 'newcomment':
                     // the entry page carries the comment form (_newcomment() was never defined)
-                    $arr['html'] = $this->_entry();
+                    $arr['html'] = $this->entry();
                     break;
                 case 'editcomment':
-                    $arr['html'] = $this->_entry();
+                    $arr['html'] = $this->entry();
                     break;
                 case 'deletecomment':
-                    $arr['html'] = $this->_deletecomment();
+                    $arr['html'] = $this->deletecomment();
                     break;
 
                     // Entries
                 case 'save':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
                 case 'new':
-                    $arr['html'] = $this->_new();
+                    $arr['html'] = $this->new();
                     break;
                 case 'edit':
-                    $arr['html'] = $this->_edit();
+                    $arr['html'] = $this->edit();
                     break;
                 case 'delete':
-                    $arr['html'] = $this->_delete();
+                    $arr['html'] = $this->delete();
                     break;
                 case 'entry':
-                    $arr['html'] = $this->_entry();
+                    $arr['html'] = $this->entry();
                     break;
 
                 case 'archive':
                 case 'browse':
                 default:
-                    $arr['html'] = $this->_browse();
+                    $arr['html'] = $this->browse();
                     break;
             }
         }
@@ -221,7 +221,7 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _parseUrl()
+    private function parseUrl()
     {
         static $path;
 
@@ -273,7 +273,7 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _browse()
+    private function browse()
     {
         // Filters for returning results
         $filters = [
@@ -290,7 +290,7 @@ class Blog extends Plugin
         // See what information we can get from the path
         $path = Request::path();
         if (strstr($path, '/')) {
-            $bits = $this->_parseUrl();
+            $bits = $this->parseUrl();
 
             $filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $filters['year'];
             $filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $filters['month'];
@@ -324,10 +324,10 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _feed()
+    private function feed()
     {
         if (!$this->params->get('feeds_enabled', 1)) {
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Filters for returning results
@@ -351,7 +351,7 @@ class Blog extends Plugin
 
         $path = Request::path();
         if (strstr($path, '/')) {
-            $bits = $this->_parseUrl();
+            $bits = $this->parseUrl();
 
             $filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $filters['year'];
             $filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $filters['month'];
@@ -415,7 +415,7 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _entry()
+    private function entry()
     {
         if (isset($this->entry) && is_object($this->entry)) {
             $row = $this->entry;
@@ -423,7 +423,7 @@ class Blog extends Plugin
             $path = Request::path();
             $alias = '';
             if (strstr($path, '/')) {
-                $bits = $this->_parseUrl();
+                $bits = $this->parseUrl();
 
                 $alias = end($bits);
             }
@@ -485,7 +485,7 @@ class Blog extends Plugin
      *
      * @return  never
      */
-    private function _login()
+    private function login()
     {
         $return = base64_encode(Route::url($this->member->link() . '&active=' . $this->_name, false, true));
 
@@ -500,9 +500,9 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _new()
+    private function new()
     {
-        return $this->_edit();
+        return $this->edit();
     }
 
     /**
@@ -511,17 +511,17 @@ class Blog extends Plugin
      * @param   object  $entry
      * @return  string
      */
-    private function _edit($entry = null)
+    private function edit($entry = null)
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
             $this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Load the entry
@@ -556,17 +556,17 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _save()
+    private function save()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
             $this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Check for request forgeries
@@ -609,14 +609,14 @@ class Blog extends Plugin
         if (!$row->save()) {
             $this->setError($row->getError());
 
-            return $this->_edit($row);
+            return $this->edit($row);
         }
 
         // Process tags
         if (!$row->tag(Request::getString('tags', ''))) {
             $this->setError($row->getError());
 
-            return $this->_edit($row);
+            return $this->edit($row);
         }
 
         // Log activity
@@ -644,21 +644,21 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _delete()
+    private function delete()
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (User::get('id') != $this->member->get('id') && !User::authorize('core.admin', 'com_blog')) {
             $this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Incoming
         $id = Request::getInt('entry', 0);
         if (!$id) {
-            return $this->_browse();
+            return $this->browse();
         }
 
         $process    = Request::getString('process', '');
@@ -730,11 +730,11 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _savecomment()
+    private function savecomment()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Check for request forgeries
@@ -782,7 +782,7 @@ class Blog extends Plugin
         // Store new content
         if (!$comment->save()) {
             $this->setError($comment->getError());
-            return $this->_entry();
+            return $this->entry();
         }
 
         // Log the activity
@@ -812,7 +812,7 @@ class Blog extends Plugin
             'recipients' => $recipients,
         ]);
 
-        return $this->_entry();
+        return $this->entry();
     }
 
     /**
@@ -820,11 +820,11 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _deletecomment()
+    private function deletecomment()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST to prevent accidental deletion by crawlers
@@ -839,7 +839,7 @@ class Blog extends Plugin
         $id = Request::getInt('comment', 0);
 
         if (!$id) {
-            return $this->_entry();
+            return $this->entry();
         }
 
         // Initiate a blog comment object
@@ -862,7 +862,7 @@ class Blog extends Plugin
             && !$this->params->get('access-delete-comment')
         ) {
             $this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
-            return $this->_entry();
+            return $this->entry();
         }
 
         // Delete all comments on an entry
@@ -897,7 +897,7 @@ class Blog extends Plugin
         ]);
 
         // Return the topics list
-        return $this->_entry();
+        return $this->entry();
     }
 
     /**
@@ -905,16 +905,16 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _settings()
+    private function settings()
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
             $this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Output HTML
@@ -933,16 +933,16 @@ class Blog extends Plugin
      *
      * @return  string
      */
-    private function _savesettings()
+    private function savesettings()
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (User::get('id') != $this->member->get('id')) {
             $this->setError(Lang::txt('PLG_MEMBERS_BLOG_NOT_AUTHORIZED'));
 
-            return $this->_browse();
+            return $this->browse();
         }
 
         // Check for request forgeries
@@ -956,7 +956,7 @@ class Blog extends Plugin
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->_settings();
+            return $this->settings();
         }
 
         // Log the activity

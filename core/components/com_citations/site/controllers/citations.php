@@ -84,7 +84,7 @@ class Citations extends SiteController
             $this->view->isAdmin = true;
         }
 
-        $this->_displayMessages();
+        $this->displayMessages();
         $this->view
             ->setLayout('display')
             ->display();
@@ -321,7 +321,7 @@ class Citations extends SiteController
             Notify::error($error, 'com.citations');
         }
 
-        $this->_displayMessages();
+        $this->displayMessages();
 
         // Are we allowing importing?
         $this->view->allow_import = $this->config->get('citation_import', 1);
@@ -392,7 +392,7 @@ class Citations extends SiteController
             $this->view->setLayout($typeAlias);
         }
 
-        $this->_displayMessages();
+        $this->displayMessages();
         $this->view->config   = $this->config;
         $this->view->display();
     }
@@ -864,7 +864,7 @@ class Citations extends SiteController
         fwrite($fp, $doc);
         fclose($fp);
 
-        $this->_serveup(false, $path, $file, $mime);
+        $this->serveup(false, $path, $file, $mime);
 
         die; // REQUIRED
     }
@@ -934,7 +934,7 @@ class Citations extends SiteController
      * @param   array    $ignored  Array of keys to bypass
      * @return  boolean  True if empty, false if not
      */
-    private function _isempty($b, $ignored = [])
+    private function isempty($b, $ignored = [])
     {
         foreach ($ignored as $ignore) {
             if (array_key_exists($ignore, $b)) {
@@ -963,7 +963,7 @@ class Citations extends SiteController
      * @param   string   $mime    Mime type
      * @return  void
      */
-    private function _serveup($inline, $p, $f, $mime)
+    private function serveup($inline, $p, $f, $mime)
     {
         while (ob_get_level()) {
             ob_end_clean();
@@ -992,7 +992,7 @@ class Citations extends SiteController
         //header("Content-Encoding: none");
         //header("Vary: none");
 
-        $this->_readfile_chunked($p . DS . $f);
+        $this->readfileChunked($p . DS . $f);
         // The caller MUST 'die();'
     }
 
@@ -1003,7 +1003,7 @@ class Citations extends SiteController
      * @param   boolean  $retbytes
      * @return  mixed
      */
-    private function _readfile_chunked($filename, $retbytes = true)
+    private function readfileChunked($filename, $retbytes = true)
     {
         $chunksize = 1 * (1024 * 1024); // How many bytes per chunk
         $buffer = '';
@@ -1132,7 +1132,7 @@ class Citations extends SiteController
      * @param   string  $domain
      * @return  void
      */
-    private function _displayMessages($domain = 'com.citations')
+    private function displayMessages($domain = 'com.citations')
     {
         foreach (Notify::messages($domain) as $message) {
             Notify::message($message['message'], $message['type']);

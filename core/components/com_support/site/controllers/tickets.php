@@ -479,7 +479,7 @@ class Tickets extends SiteController
             return;
         }
 
-        $filters = $this->_getFilters();
+        $filters = $this->getFilters();
 
         // Paging
         $filters['limit'] = Request::getState(
@@ -715,7 +715,7 @@ class Tickets extends SiteController
 
         if ($row->get('verified') && $this->acl->check('update', 'tickets') > 0) {
             if (trim($this->config->get('group', ''))) {
-                $lists['owner'] = $this->_userSelectGroup(
+                $lists['owner'] = $this->userSelectGroup(
                     'problem[owner]',
                     '',
                     1,
@@ -723,7 +723,7 @@ class Tickets extends SiteController
                     trim($this->config->get('group', '')),
                 );
             } else {
-                $lists['owner'] = $this->_userSelect(
+                $lists['owner'] = $this->userSelect(
                     'problem[owner]',
                     '',
                     1,
@@ -861,7 +861,7 @@ class Tickets extends SiteController
         // Are they verified?
         if (!$verified) {
             // Quick spam filter
-            $spam = $this->_detectSpam($problem['long'], $ip);
+            $spam = $this->detectSpam($problem['long'], $ip);
             if ($spam) {
                 $this->setError(Lang::txt('COM_SUPPORT_ERROR_FLAGGED_AS_SPAM'));
                 return;
@@ -1273,7 +1273,7 @@ class Tickets extends SiteController
      * @param   string  $ip
      * @return  boolean
      */
-    private function _detectSpam($text, $ip)
+    private function detectSpam($text, $ip)
     {
         // Spammer IPs (banned): addresses or networks (192.0.2.0/24,
         // 2001:db8::/32), separated by commas or white space
@@ -1425,7 +1425,7 @@ class Tickets extends SiteController
 
         // Populate the list of assignees based on if the ticket belongs to a group or not
         if (trim($row->get('group_id'))) {
-            $lists['owner'] = $this->_userSelectGroup(
+            $lists['owner'] = $this->userSelectGroup(
                 'ticket[owner]',
                 $row->get('owner'),
                 1,
@@ -1433,7 +1433,7 @@ class Tickets extends SiteController
                 $row->get('group_id'),
             );
         } elseif (trim($this->config->get('group', ''))) {
-            $lists['owner'] = $this->_userSelectGroup(
+            $lists['owner'] = $this->userSelectGroup(
                 'ticket[owner]',
                 $row->get('owner'),
                 1,
@@ -1441,7 +1441,7 @@ class Tickets extends SiteController
                 trim($this->config->get('group', '')),
             );
         } else {
-            $lists['owner'] = $this->_userSelect(
+            $lists['owner'] = $this->userSelect(
                 'ticket[owner]',
                 $row->get('owner'),
                 1,
@@ -2106,7 +2106,7 @@ class Tickets extends SiteController
      *
      * @return  array  An array of filters to apply
      */
-    private function _getFilters()
+    private function getFilters()
     {
         // Query filters defaults
         $filters = [
@@ -2230,7 +2230,7 @@ class Tickets extends SiteController
      * @param   string   $order       The sort order for items in the list
      * @return  string   HTML select list
      */
-    private function _userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
+    private function userSelect($name, $active, $nouser = 0, $javascript = null, $order = 'a.name')
     {
         $query = "SELECT a.id AS value, a.name AS text"
             . " FROM `#__users` AS a"
@@ -2285,7 +2285,7 @@ class Tickets extends SiteController
      * @param  $group       The group to pull member names from
      * @return string       HTML select list
      */
-    private function _userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')
+    private function userSelectGroup($name, $active, $nouser = 0, $javascript = null, $group = '')
     {
         $users = [];
 

@@ -344,7 +344,7 @@ class Storage extends SiteController
      * @param   string  $subdir   Sub-directory
      * @return  string
      */
-    private function _buildUploadPath($listdir, $subdir = '')
+    private function buildUploadPath($listdir, $subdir = '')
     {
         // Get the configured upload path
         $base     = DS . trim($this->config->get('storagepath', 'webdav' . DS . 'home'), DS);
@@ -392,7 +392,7 @@ class Storage extends SiteController
      * @param   string  $name   Incoming file or folder name
      * @return  string|boolean  Path to act on, or false
      */
-    private function _resolveTarget($path, $name)
+    private function resolveTarget($path, $name)
     {
         $name = \Hubzero\Filesystem\SafePath::relative($name);
 
@@ -438,7 +438,7 @@ class Storage extends SiteController
         }*/
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir);
+        $path = $this->buildUploadPath($listdir);
 
         // Incoming directory to delete
         if (!($folder = urldecode(Request::getString('delFolder', '')))) {
@@ -450,7 +450,7 @@ class Storage extends SiteController
         // Resolve the folder below the listing directory: every directory leading to
         // it has to be real, and the folder itself is removed rather than followed
         // if it turns out to be a link, so this can never empty out another account
-        $target = $this->_resolveTarget($path, $folder);
+        $target = $this->resolveTarget($path, $folder);
 
         // Check if the folder even exists
         if (!$target || (!is_dir($target) && !is_link($target))) {
@@ -485,7 +485,7 @@ class Storage extends SiteController
         $listdir = urldecode(Request::getString('listdir', ''));
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir);
+        $path = $this->buildUploadPath($listdir);
 
         // Incoming file to delete
         if (!($file = urldecode(Request::getString('file', '')))) {
@@ -495,7 +495,7 @@ class Storage extends SiteController
         }
 
         // Resolve the file below the listing directory (see _resolveTarget)
-        $target = $this->_resolveTarget($path, $file);
+        $target = $this->resolveTarget($path, $file);
 
         // Check if the file even exists
         if (!$target || (!file_exists($target) && !is_link($target))) {
@@ -523,7 +523,7 @@ class Storage extends SiteController
         $listdir = Request::getString('listdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir);
+        $path = $this->buildUploadPath($listdir);
 
         $dirtree = [];
         $subdir = $listdir;

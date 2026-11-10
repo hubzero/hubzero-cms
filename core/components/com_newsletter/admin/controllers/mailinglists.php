@@ -387,7 +387,7 @@ class Mailinglists extends AdminController
             $emailFileContents = file_get_contents($this->emailFile['tmp_name']);
 
             // parse emails
-            $emailFileEmails = $this->_parseEmails($emailFileContents);
+            $emailFileEmails = $this->parseEmails($emailFileContents);
         }
 
         // do we have an email group
@@ -399,7 +399,7 @@ class Mailinglists extends AdminController
         // do we have a emails in the textarea
         if ($this->emailBox != '') {
             // parse emails
-            $emailBoxEmails = $this->_parseEmails($this->emailBox);
+            $emailBoxEmails = $this->parseEmails($this->emailBox);
 
             if ($emailBoxEmails === false) {
                 return $this->addEmailTask();
@@ -753,7 +753,7 @@ class Mailinglists extends AdminController
      * @param   $separator  Email Address Separator
      * @return  array
      */
-    private function _parseEmails($emails)
+    private function parseEmails($emails)
     {
         // array to hold parsed emails
         $parsedEmails = [];

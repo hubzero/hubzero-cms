@@ -119,17 +119,17 @@ class Video extends Macro
                 $video_url = $url;
             } else {
                 // Just a file name.
-                $video_url = $this->_path($url);
+                $video_url = $this->path($url);
 
                 if (!file_exists($video_url)) {
-                    $video_url = $this->_path($url, true);
+                    $video_url = $this->path($url, true);
 
                     if (!file_exists($video_url)) {
                         // The macro argument is raw wiki source -- the parser hands
                         // args through unescaped -- and _path() echoes it back
                         // inside a filesystem path, so both halves are sinks.
                         return '(video:' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8') . ' not found)'
-                            . htmlspecialchars((string) $this->_path($url), ENT_QUOTES, 'UTF-8');
+                            . htmlspecialchars((string) $this->path($url), ENT_QUOTES, 'UTF-8');
                     }
                 }
             }
@@ -226,16 +226,16 @@ class Video extends Macro
                 case 'mov':
                 case 'mp4':
                 case 'm4v':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
+                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
                     break;
 
                 case 'ogg':
                 case 'ogv':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
+                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
                     break;
 
                 case 'webm':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
+                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
                     break;
             }
 
@@ -243,7 +243,7 @@ class Video extends Macro
             if (isset($this->attr['captions']) && $this->attr['captions'] != '') {
                 $capLang  = (isset($this->attr['captionlang']) && $this->attr['captionlang'] != '') ? $this->attr['captionlang'] : 'en';
                 $capLabel = (isset($this->attr['captionlabel']) && $this->attr['captionlabel'] != '') ? $this->attr['captionlabel'] : 'Captions';
-                $html .= '<track kind="captions" src="' . htmlspecialchars((string) $this->_link($this->attr['captions']), ENT_QUOTES, 'UTF-8') . '"'
+                $html .= '<track kind="captions" src="' . htmlspecialchars((string) $this->link($this->attr['captions']), ENT_QUOTES, 'UTF-8') . '"'
                     . ' srclang="' . htmlspecialchars($capLang, ENT_QUOTES, 'UTF-8') . '"'
                     . ' label="' . htmlspecialchars($capLabel, ENT_QUOTES, 'UTF-8') . '" default />';
             }
@@ -288,7 +288,7 @@ class Video extends Macro
      * @param   bool    $alt
      * @return  string
      */
-    private function _path($file, $alt = false)
+    private function path($file, $alt = false)
     {
         if (substr($file, 0, 1) == DS) {
             $path = PATH_APP . $file;
@@ -448,7 +448,7 @@ class Video extends Macro
      * @param   string  $file  Filename
      * @return  string
      */
-    private function _link($file)
+    private function link($file)
     {
         $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
@@ -467,7 +467,7 @@ class Video extends Macro
         $this->imgs = ['jpg', 'jpe', 'jpeg', 'gif', 'png'];
         if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
             if (Request::getString('format') == 'pdf') {
-                return $this->_path($file);
+                return $this->path($file);
             }
             $type = 'Image';
         }

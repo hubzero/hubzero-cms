@@ -148,13 +148,13 @@ class Ckeditor extends Plugin
             //$params['class'] = array($params['class']);
             $cls = $params['class'];
             $params['class'] = [];
-            foreach ($this->_split(' ', $cls) as $piece) {
+            foreach ($this->split(' ', $cls) as $piece) {
                 $params['class'][] = $piece;
             }
         }
         /*if ($cls = $this->params->get('class'))
         {
-            foreach ($this->_split(' ', $cls) as $piece)
+            foreach ($this->split(' ', $cls) as $piece)
             {
                 $params['class'][] = $piece;
             }
@@ -168,7 +168,7 @@ class Ckeditor extends Plugin
         }
 
         // Build config & json encode
-        $config = json_encode($this->_buildConfig($params));
+        $config = json_encode($this->buildConfig($params));
 
         // Fix script and php protected source
         //$config = str_replace('"\\/<group:include([^\\/]*)\\/>\\/g"', '/<group:include([^/]*)/>/g', $config);
@@ -218,7 +218,7 @@ class Ckeditor extends Plugin
         // Output html and script
         $editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . ($row ? 'rows="' . $row . '"' : '') . ' ' . ($col ? 'cols="' . $col . '"' : '') . ' ' . implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
         if (App::isAdmin()) {
-            $editor .= $this->_displayButtons($id, $buttons, $asset, $author);
+            $editor .= $this->displayButtons($id, $buttons, $asset, $author);
         }
         return $editor;
     }
@@ -232,7 +232,7 @@ class Ckeditor extends Plugin
      * @param   string  $string
      * @return  string
      */
-    private function _displayButtons($name, $buttons, $asset, $author)
+    private function displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior
         Html::behavior('modal', 'a.modal-button');
@@ -276,13 +276,13 @@ class Ckeditor extends Plugin
      * @param   string $input
      * @return  array
      */
-    private function _split($delimiter, $input)
+    private function split($delimiter, $input)
     {
         $even = [];
 
         if (is_array($input)) {
             foreach ($input as $el) {
-                $even = array_merge($even, $this->_split($delimiter, $el));
+                $even = array_merge($even, $this->split($delimiter, $el));
             }
         } else {
             $pieces = explode($delimiter, $input);
@@ -299,7 +299,7 @@ class Ckeditor extends Plugin
      * @param   array   $params
      * @return  object  stdClass
      */
-    private function _buildConfig($params = [])
+    private function buildConfig($params = [])
     {
         static $template;
 

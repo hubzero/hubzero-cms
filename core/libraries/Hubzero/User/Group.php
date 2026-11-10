@@ -669,7 +669,7 @@ class Group extends Obj
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -717,7 +717,7 @@ class Group extends Obj
             return null;
         }
 
-        $this->_error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
+        $this->error("Undefined property " . __CLASS__ . "::$" . $property, E_USER_NOTICE);
 
         return null;
     }
@@ -735,7 +735,7 @@ class Group extends Obj
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -743,7 +743,7 @@ class Group extends Obj
             $value = array_diff((array) $value, ['']);
 
             if (in_array($property, ['managers', 'members', 'applicants', 'invitees'])) {
-                $value = $this->_userids($value);
+                $value = $this->userids($value);
             }
 
             $value = array_unique($value);
@@ -771,7 +771,7 @@ class Group extends Obj
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -791,7 +791,7 @@ class Group extends Obj
                 $property = '(null)';
             }
 
-            $this->_error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
+            $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
 
@@ -807,7 +807,7 @@ class Group extends Obj
      * @param   integer  $level
      * @return  void
      */
-    private function _error($message, $level = E_USER_NOTICE)
+    private function error($message, $level = E_USER_NOTICE)
     {
         $backtrace = debug_backtrace();
 
@@ -857,7 +857,7 @@ class Group extends Obj
      * @param   array  $users
      * @return  mixed
      */
-    private function _userids($users)
+    private function userids($users)
     {
         $db = App::get('db');
 
@@ -910,7 +910,7 @@ class Group extends Obj
      */
     public function add($key = null, $value = [])
     {
-        $users = $this->_userids($value);
+        $users = $this->userids($value);
 
         $this->__set($key, array_merge($this->__get($key), $users));
     }
@@ -924,7 +924,7 @@ class Group extends Obj
      */
     public function remove($key = null, $value = [])
     {
-        $users = $this->_userids($value);
+        $users = $this->userids($value);
 
         $this->__set($key, array_diff($this->__get($key), $users));
     }

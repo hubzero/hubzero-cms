@@ -851,7 +851,7 @@ class Team extends Plugin
                 $subject = Lang::txt('COM_PROJECTS_EMAIL_MEMBERSHIPREQUEST_ACCEPTED');
                 $message = '';
 
-                $this->_sendMemberRequestEmail($ownerEmail, $subject, $message);
+                $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
                 $url = Route::url('index.php?option=' . $this->_option
                     . '&task=team' . '&alias=' . $this->model->get('alias'), false);
                 Notify::success(Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_APPROVED'));
@@ -911,7 +911,7 @@ class Team extends Plugin
                 $subject = Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_DENIED');
                 $message = $owner->params->get('denyMessage');
 
-                $this->_sendMemberRequestEmail($ownerEmail, $subject, $message);
+                $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
                 Notify::success('Membership request has been denied');
                 $url = Route::url('index.php?option=' . $this->_option
                     . '&task=team' . '&alias=' . $this->model->get('alias'), false);
@@ -922,7 +922,7 @@ class Team extends Plugin
         }
     }
 
-    private function _sendMemberRequestEmail($email, $subject, $message)
+    private function sendMemberRequestEmail($email, $subject, $message)
     {
         \Components\Projects\Helpers\Html::sendHUBMessage(
             $this->_option,

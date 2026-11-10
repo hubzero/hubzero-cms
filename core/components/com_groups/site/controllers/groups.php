@@ -212,7 +212,7 @@ class Groups extends Base
         $this->view->setLayout('view');
 
         // Validate the incoming cname
-        if (!$this->_validCn($this->cn, true)) {
+        if (!$this->validCn($this->cn, true)) {
             $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
@@ -609,7 +609,7 @@ class Groups extends Base
         if ($g_cn == 'new' || $g_cn == 'browse') {
             $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
         }
-        if (!$this->_validCn($g_cn)) {
+        if (!$this->validCn($g_cn)) {
             $this->setNotification(Lang::txt('COM_GROUPS_SAVE_ERROR_INVALID_ID'), 'error');
         }
         if ($this->_task == 'new' && Group::exists($g_cn, true)) {
@@ -1326,7 +1326,7 @@ class Groups extends Base
         }
 
         // Ensure the data passed is valid
-        if (($group == 'new' || $group == 'browse') || (!$this->_validCn($group)) || (Group::exists($group, true))) {
+        if (($group == 'new' || $group == 'browse') || (!$this->validCn($group)) || (Group::exists($group, true))) {
             $availability = false;
         } else {
             $availability = true;
@@ -1539,7 +1539,7 @@ class Groups extends Base
      * @param   boolean  $allowDashes  Allow dashes in cn
      * @return  boolean  True if valid, false if not
      */
-    private function _validCn($cn, $allowDashes = false)
+    private function validCn($cn, $allowDashes = false)
     {
         $regex = '/^[0-9a-z]+[_0-9a-z]*$/u';
         if ($allowDashes) {

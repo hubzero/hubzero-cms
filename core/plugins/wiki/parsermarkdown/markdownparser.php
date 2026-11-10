@@ -21,21 +21,21 @@ class MarkdownParser
      *
      * @var  array
      */
-    private $_tokens = [];
+    private $tokens = [];
 
     /**
      * A unique token
      *
      * @var string
      */
-    private $_token = null;
+    private $token = null;
 
     /**
      * Configuration options
      *
      * @var array
      */
-    private $_config = [
+    private $config = [
         'option'    => null,
         'scope'     => null,
         'pagename'  => null,
@@ -58,7 +58,7 @@ class MarkdownParser
      *
      * @var array
      */
-    private $_data = [
+    private $data = [
         'input'  => null,
         'output' => null,
         'links'  => [],
@@ -80,7 +80,7 @@ class MarkdownParser
         }
 
         // Set the unique token
-        $this->_token = "\x07UNIQ" . $this->_randomString();
+        $this->token = "\x07UNIQ" . $this->_randomString();
     }
 
     /**
@@ -92,7 +92,7 @@ class MarkdownParser
      */
     public function set($property, $value = null)
     {
-        $this->_config[$property] = $value;
+        $this->config[$property] = $value;
         return $this;
     }
 
@@ -105,8 +105,8 @@ class MarkdownParser
      */
     public function get($property, $default = null)
     {
-        if (isset($this->_config[$property])) {
-            return $this->_config[$property];
+        if (isset($this->config[$property])) {
+            return $this->config[$property];
         }
         return $default;
     }
@@ -118,7 +118,7 @@ class MarkdownParser
      */
     public function token()
     {
-        return $this->_token;
+        return $this->token;
     }
 
     /**
@@ -128,7 +128,7 @@ class MarkdownParser
      */
     public function input()
     {
-        return $this->_data['input'];
+        return $this->data['input'];
     }
 
     /**
@@ -138,7 +138,7 @@ class MarkdownParser
      */
     public function output()
     {
-        return $this->_data['output'];
+        return $this->data['output'];
     }
 
     /**
@@ -164,7 +164,7 @@ class MarkdownParser
     public function parse($text, $fullparse = true, $linestart = 0, $camelcase = 1)
     {
         // Store the raw input
-        $this->_data['input'] = $text;
+        $this->data['input'] = $text;
 
         // Set some configs
         $this->set('fullparse', $fullparse);
@@ -210,7 +210,7 @@ class MarkdownParser
         /*if ($this->get('fullparse') && $this->get('pageid') && $this->get('loglinks'))
         {
             $links = \Components\Wiki\Models\Link::blank();
-            $links->updateLinks($this->get('pageid'), $this->_data['links']);
+            $links->updateLinks($this->get('pageid'), $this->data['links']);
         }*/
 
         // Process LaTeX math forumlas and strip out
@@ -221,14 +221,14 @@ class MarkdownParser
         // Put back removed blocks <pre>, <code>, <a>, <math>
         $text = $this->unstrip($text);
 
-        $this->_data['output'] = $text;
+        $this->data['output'] = $text;
 
-        if (trim($this->_data['input']) && !trim($this->_data['output'])) {
-            $this->_data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
-            $this->_data['output'] .= '<pre>' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
+        if (trim($this->data['input']) && !trim($this->data['output'])) {
+            $this->data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
+            $this->data['output'] .= '<pre>' . htmlentities($this->data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
         }
 
-        return $this->_data['output'];
+        return $this->data['output'];
     }
 
     /**
@@ -281,10 +281,10 @@ class MarkdownParser
     {
         $this->set('wikitohtml', $html);
 
-        if (!empty($this->_tokens)) {
-            foreach ($this->_tokens as $tag => $vals) {
+        if (!empty($this->tokens)) {
+            foreach ($this->tokens as $tag => $vals) {
                 $text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
-                $this->_tokens[$tag] = [];
+                $this->tokens[$tag] = [];
             }
         }
 
@@ -304,7 +304,7 @@ class MarkdownParser
         $key = $matches[2];
         $val = $matches[3];
 
-        $this->_tokens[$tag][$key] = $val;
+        $this->tokens[$tag][$key] = $val;
         return '<' . $tag . ' ' . $key . '></' . $tag . ' ' . $key . '>';
     }
 
@@ -320,8 +320,8 @@ class MarkdownParser
         $tag = $matches[1];
         $key = $matches[2];
 
-        if (isset($this->_tokens[$tag]) && isset($this->_tokens[$tag][$key])) {
-            return $this->{'_restore' . ucfirst($tag)}($this->_tokens[$tag][$key]);
+        if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
+            return $this->{'_restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {
             return '';

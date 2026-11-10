@@ -1034,7 +1034,7 @@ class Items extends AdminController
         if ($row->standalone == 1 && $this->config->get('email_when_approved')) {
             // If the state went from pending to published
             if ($row->published == 1 && $old->published == Entry::STATE_PENDING) {
-                $this->_emailContributors($row);
+                $this->emailContributors($row);
 
                 // Log activity
                 $recipients = [
@@ -1078,7 +1078,7 @@ class Items extends AdminController
      * @param   object  $row  Resource
      * @return  bool
      */
-    private function _emailContributors($row)
+    private function emailContributors($row)
     {
         $contributors = [];
 
@@ -1293,7 +1293,7 @@ class Items extends AdminController
                         $resource->get('published') == Entry::STATE_PUBLISHED
                         && $old == Entry::STATE_PENDING
                     ) {
-                        $this->_emailContributors($resource);
+                        $this->emailContributors($resource);
 
                         // Log activity
                         $recipients = [

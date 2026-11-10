@@ -206,7 +206,7 @@ class Gitlab
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _getRequest($resource, $ResourceName)
+    private function getRequest($resource, $ResourceName)
     {
         // Get response restricted by maintainer access of the current Gitlab API key bot
         // (MAKE SURE GROUP TOKEN ACCESS IS AT MAINTAINER LEVEL OR HIGHER)
@@ -224,7 +224,7 @@ class Gitlab
      * @return [type]           [description]
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _postRequest($resource, $params = [])
+    private function postRequest($resource, $params = [])
     {
         // init post request
 

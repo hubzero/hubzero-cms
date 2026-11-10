@@ -83,10 +83,10 @@ class Geo extends Base
         $size  = (isset($element->size) ? 'size="' . $element->size . '"' : '');
         $class = (isset($element->class) ? 'class="geolocation ' . $element->class . '"' : 'class="geolocation"');
 
-        $address = $this->_getValue('value', $value);
-        $lat = $this->_getValue('lat', $value);
+        $address = $this->getValue('value', $value);
+        $lat = $this->getValue('lat', $value);
         $lat = (trim($lat)) ? $lat : '0.0';
-        $lng = $this->_getValue('lng', $value);
+        $lng = $this->getValue('lng', $value);
         $lng = (trim($lng)) ? $lng : '0.0';
 
         $value = preg_replace('/<lat>(.*?)<\/lat>/i', '', $value);
@@ -120,7 +120,7 @@ class Geo extends Base
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _getValue($tag, $text)
+    private function getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";
         preg_match($pattern, $text, $matches);
@@ -135,6 +135,6 @@ class Geo extends Base
      */
     public function display($value)
     {
-        return trim($this->_getValue('value', $value));
+        return trim($this->getValue('value', $value));
     }
 }

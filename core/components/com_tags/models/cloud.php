@@ -423,7 +423,7 @@ class Cloud extends \Hubzero\Base\Obj
      * @param   string  $tag  Normalized tag
      * @return  mixed   False if errors, integer on success
      */
-    private function _getTagId($tag)
+    private function getTagId($tag)
     {
         if (!isset($tag)) {
             $this->setError(__CLASS__ . '::' . __METHOD__ . ' - Tag argument missing.');

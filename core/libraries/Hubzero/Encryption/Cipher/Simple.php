@@ -39,7 +39,7 @@ class Simple implements Cipher
         $tmp = $key->public;
 
         // Convert the HEX input into an array of integers and get the number of characters.
-        $chars = $this->_hexToIntArray($data);
+        $chars = $this->hexToIntArray($data);
         $charCount = count($chars);
 
         // Repeat the key as many times as necessary to ensure that the key is at least as long as the input.
@@ -85,7 +85,7 @@ class Simple implements Cipher
 
         // Get the XOR values between the ASCII values of the input and key characters for all input offsets.
         for ($i = 0; $i < $charCount; $i++) {
-            $encrypted .= $this->_intToHex(ord($tmp[$i]) ^ ord($chars[$i]));
+            $encrypted .= $this->intToHex(ord($tmp[$i]) ^ ord($chars[$i]));
         }
 
         return $encrypted;
@@ -103,7 +103,7 @@ class Simple implements Cipher
         $key = new Key('simple');
 
         // Just a random key of a given length.
-        $key->private = $this->_getRandomKey();
+        $key->private = $this->getRandomKey();
         $key->public  = $key->private;
 
         return $key;
@@ -115,7 +115,7 @@ class Simple implements Cipher
      * @param   integer  $length  The length of the key to generate.
      * @return  string
      */
-    private function _getRandomKey($length = 256)
+    private function getRandomKey($length = 256)
     {
         // Initialise variables.
         $key = '';
@@ -137,7 +137,7 @@ class Simple implements Cipher
      * @param   integer  $i  The offset?
      * @return  integer
      */
-    private function _hexToInt($s, $i)
+    private function hexToInt($s, $i)
     {
         // Initialise variables.
         $j = (int) $i * 2;
@@ -213,14 +213,14 @@ class Simple implements Cipher
      * @param   string  $hex  The hex string to convert to an integer array.
      * @return  array   An array of integers.
      */
-    private function _hexToIntArray($hex)
+    private function hexToIntArray($hex)
     {
         $array = [];
 
         $j = (int) strlen($hex) / 2;
 
         for ($i = 0; $i < $j; $i++) {
-            $array[$i] = (int) $this->_hexToInt($hex, $i);
+            $array[$i] = (int) $this->hexToInt($hex, $i);
         }
 
         return $array;
@@ -232,7 +232,7 @@ class Simple implements Cipher
      * @param   integer  $i  An integer value to convert to a hex string.
      * @return  string
      */
-    private function _intToHex($i)
+    private function intToHex($i)
     {
         // Sanitize the input.
         $i = (int) $i;

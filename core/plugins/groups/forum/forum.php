@@ -201,7 +201,7 @@ class Forum extends Plugin
 
             $path = Request::path();
             if (strstr($path, '/')) {
-                $bits = $this->_parseUrl();
+                $bits = $this->parseUrl();
                 // Section name
                 if (isset($bits[0]) && trim($bits[0])) {
                     if ($bits[0] == 'new') {
@@ -342,7 +342,7 @@ class Forum extends Plugin
      *
      * @return  string
      */
-    private function _parseUrl()
+    private function parseUrl()
     {
         static $path;
 

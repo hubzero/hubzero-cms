@@ -36,14 +36,14 @@ class Image extends Plugin
      *
      * @var  string
      */
-    private $_bgColor = '#000000';
+    private $bgColor = '#000000';
 
     /**
      * Text color
      *
      * @var  string
      */
-    private $_textColor = '#ff0000';
+    private $textColor = '#ff0000';
 
     /**
      * Initialise the captcha
@@ -164,8 +164,8 @@ class Image extends Plugin
      */
     private function _setColors()
     {
-        $this->_bgColor   = $this->params->get('bgColor', $this->_bgColor);
-        $this->_textColor = $this->params->get('textColor', $this->_textColor);
+        $this->bgColor   = $this->params->get('bgColor', $this->bgColor);
+        $this->textColor = $this->params->get('textColor', $this->textColor);
     }
 
     /**
@@ -186,8 +186,8 @@ class Image extends Plugin
 
         $this->_setColors();
 
-        $foreground_color = $this->_hexToRgb($this->_textColor);
-        $background_color = $this->_hexToRgb($this->_bgColor);
+        $foreground_color = $this->_hexToRgb($this->textColor);
+        $background_color = $this->_hexToRgb($this->bgColor);
 
         $jpeg_quality = 90;
 
@@ -411,8 +411,8 @@ class Image extends Plugin
         $height = 40;
         $image = imagecreate($width, $height);
         $this->_setColors();
-        $foreground_color = $this->_hexToRgb($this->_textColor);
-        $background_color = $this->_hexToRgb($this->_bgColor);
+        $foreground_color = $this->_hexToRgb($this->textColor);
+        $background_color = $this->_hexToRgb($this->bgColor);
 
         // We are making three colors, white, black and gray
         $white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);

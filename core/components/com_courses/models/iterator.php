@@ -19,7 +19,7 @@ class Iterator implements \Countable, \Iterator
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_pos = 0;
+    private $pos = 0;
 
     /**
      * Container for properties
@@ -27,7 +27,7 @@ class Iterator implements \Countable, \Iterator
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_total = 0;
+    private $total = 0;
 
     /**
      * Container for properties
@@ -35,7 +35,7 @@ class Iterator implements \Countable, \Iterator
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_data = [];
+    private $data = [];
 
     /**
      * Constructor
@@ -46,9 +46,9 @@ class Iterator implements \Countable, \Iterator
     public function __construct($data = null)
     {
         if (is_array($data)) {
-            $this->_data = $data;
+            $this->data = $data;
         }
-        $this->_total = count($this->_data);
+        $this->total = count($this->data);
     }
 
     /**
@@ -59,7 +59,7 @@ class Iterator implements \Countable, \Iterator
      */
     public function add($value)
     {
-        $this->_data[$this->_total++] = $value;
+        $this->data[$this->total++] = $value;
     }
 
     /**
@@ -71,7 +71,7 @@ class Iterator implements \Countable, \Iterator
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        $this->_pos = 0;
+        $this->pos = 0;
     }
 
     /**
@@ -85,11 +85,11 @@ class Iterator implements \Countable, \Iterator
     public function fetch($key)
     {
         // Get cursor position
-        $cur = $this->_pos;
+        $cur = $this->pos;
         // Is it a number?
         if (is_numeric($key)) {
             // Set the cursor
-            $this->_pos = $key;
+            $this->pos = $key;
             // Get current item
             $res = $this->current();
         } elseif (is_string($key)) {
@@ -123,7 +123,7 @@ class Iterator implements \Countable, \Iterator
             }
         }
         // Reset cursor to starting position
-        $this->_pos = $cur;
+        $this->pos = $cur;
         // Return result
         return $res;
     }
@@ -135,7 +135,7 @@ class Iterator implements \Countable, \Iterator
      */
     public function isFirst()
     {
-        return !isset($this->_data[$this->_pos - 1]);
+        return !isset($this->data[$this->pos - 1]);
     }
 
     /**
@@ -145,7 +145,7 @@ class Iterator implements \Countable, \Iterator
      */
     public function isLast()
     {
-        return !isset($this->_data[$this->_pos + 1]);
+        return !isset($this->data[$this->pos + 1]);
     }
 
     /**
@@ -159,7 +159,7 @@ class Iterator implements \Countable, \Iterator
     public function current()
     {
         if ($this->valid()) {
-            return $this->_data[$this->_pos];
+            return $this->data[$this->pos];
         }
         return null;
     }
@@ -171,7 +171,7 @@ class Iterator implements \Countable, \Iterator
      */
     public function total()
     {
-        return $this->_total;
+        return $this->total;
     }
 
     /**
@@ -183,7 +183,7 @@ class Iterator implements \Countable, \Iterator
     #[\ReturnTypeWillChange]
     public function count()
     {
-        return $this->_total;
+        return $this->total;
     }
 
     /**
@@ -206,7 +206,7 @@ class Iterator implements \Countable, \Iterator
     #[\ReturnTypeWillChange]
     public function last()
     {
-        $this->_pos = ($this->_total - 1);
+        $this->pos = ($this->total - 1);
     }
 
     /**
@@ -219,13 +219,13 @@ class Iterator implements \Countable, \Iterator
     public function key($idx = null)
     {
         if ($idx !== null) {
-            $old = $this->_pos;
-            $this->_pos = (int) $idx;
+            $old = $this->pos;
+            $this->pos = (int) $idx;
             if (!$this->valid()) {
-                $this->_pos = $old;
+                $this->pos = $old;
             }
         }
-        return $this->_pos;
+        return $this->pos;
     }
 
     /**
@@ -237,7 +237,7 @@ class Iterator implements \Countable, \Iterator
     #[\ReturnTypeWillChange]
     public function prev()
     {
-        --$this->_pos;
+        --$this->pos;
     }
 
     /**
@@ -249,7 +249,7 @@ class Iterator implements \Countable, \Iterator
     #[\ReturnTypeWillChange]
     public function next()
     {
-        ++$this->_pos;
+        ++$this->pos;
     }
 
     /**
@@ -261,6 +261,6 @@ class Iterator implements \Countable, \Iterator
     #[\ReturnTypeWillChange]
     public function valid()
     {
-        return isset($this->_data[$this->_pos]);
+        return isset($this->data[$this->pos]);
     }
 }

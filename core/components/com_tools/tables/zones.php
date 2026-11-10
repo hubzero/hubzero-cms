@@ -90,7 +90,7 @@ class Zones extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildQuery($filters = [])
+    private function buildQuery($filters = [])
     {
         $where = [];
 
@@ -202,7 +202,7 @@ class Zones extends Table
                 $filters['limit'] = 0;
 
                 // _buildQuery() groups by zone, so count the grouped rows
-                $query = "SELECT COUNT(*) FROM (SELECT c.id " . $this->_buildQuery($filters) . ") AS z";
+                $query = "SELECT COUNT(*) FROM (SELECT c.id " . $this->buildQuery($filters) . ") AS z";
 
                 $this->_db->setQuery($query);
                 return $this->_db->loadResult();
@@ -215,7 +215,7 @@ class Zones extends Table
 
             case 'list':
             default:
-                $query  = "SELECT c.* " . $this->_buildQuery($filters);
+                $query  = "SELECT c.* " . $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'zone';

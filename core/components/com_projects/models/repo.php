@@ -72,10 +72,10 @@ class Repo extends Obj
         $this->set('name', $name);
 
         // Initialiaze repo
-        $this->_ini();
+        $this->ini();
 
         // Set adapter
-        $this->_adapter();
+        $this->adapter();
 
         // Create and initialize local repo (edge case)
         if ($this->get('name') == 'local' && !is_dir($this->get('path', ''))) {
@@ -88,7 +88,7 @@ class Repo extends Obj
      *
      * @return  void
      */
-    private function _ini()
+    private function ini()
     {
         if (!is_object($this->get('project'))) {
             return false;
@@ -141,7 +141,7 @@ class Repo extends Obj
      *
      * @return  void
      */
-    private function _adapter()
+    private function adapter()
     {
         if (!$this->_adapter) {
             $engine = 'nogit';
@@ -173,7 +173,7 @@ class Repo extends Obj
     public function getAdapterName()
     {
         if (!$this->_adapter) {
-            $this->_adapter();
+            $this->adapter();
         }
         $class = get_class($this->_adapter);
         $lastSlash = strrpos($class, '\\');
@@ -214,7 +214,7 @@ class Repo extends Obj
             return false;
         }
         if (!isset($this->_adapter)) {
-            $this->_adapter();
+            $this->adapter();
         }
 
         // Perform request

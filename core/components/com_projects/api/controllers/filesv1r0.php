@@ -1255,8 +1255,8 @@ class Filesv1r0 extends ApiController
     protected function _getCollection()
     {
         // Incoming
-        $files       = $this->_prune((array) Request::getArray('asset', []));
-        $directories = $this->_prune((array) Request::getArray('folder', []));
+        $files       = $this->prune((array) Request::getArray('asset', []));
+        $directories = $this->prune((array) Request::getArray('folder', []));
         $collection  = new Collection();
 
         $entities = array_merge($files, $directories);
@@ -1278,7 +1278,7 @@ class Filesv1r0 extends ApiController
      * @param   array  $vars  the variables to trim
      * @return  array
      **/
-    private function _prune($vars)
+    private function prune($vars)
     {
         foreach ($vars as $k => $v) {
             if (trim($v) == '') {

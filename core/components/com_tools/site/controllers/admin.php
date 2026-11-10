@@ -24,9 +24,9 @@ use Hubzero\Facades\Date;
  */
 class Admin extends SiteController
 {
-    private $_toolid = 0;
-    private $_admin = 0;
-    private $_messages = [];
+    private $toolid = 0;
+    private $admin = 0;
+    private $messages = [];
 
     /**
      * Add a message
@@ -36,7 +36,7 @@ class Admin extends SiteController
      */
     public function setMessage($msg, $type = 'message')
     {
-        array_push($this->_messages, $msg);
+        array_push($this->messages, $msg);
     }
 
     /**
@@ -50,12 +50,12 @@ class Admin extends SiteController
         // Find the message
         if ($i === null) {
             // Default, return the last message
-            $message = end($this->_messages);
-        } elseif (!array_key_exists($i, $this->_messages)) {
+            $message = end($this->messages);
+        } elseif (!array_key_exists($i, $this->messages)) {
             // If $i has been specified but does not exist, return false
             return false;
         } else {
-            $message = $this->_messages[$i];
+            $message = $this->messages[$i];
         }
 
         return $message;
@@ -68,7 +68,7 @@ class Admin extends SiteController
      */
     public function getMessages()
     {
-        return $this->_messages;
+        return $this->messages;
     }
 
     /**
@@ -110,17 +110,17 @@ class Admin extends SiteController
 
         // Do we have an alias?
         if (($alias = Request::getString('app', ''))) {
-            $this->_toolid = $obj->getToolId($alias);
+            $this->toolid = $obj->getToolId($alias);
         }
         // Do we have a tool ID
-        if (!$this->_toolid) {
+        if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
             return;
         }
 
         // Get the tool status
         $obj->getToolStatus(
-            $this->_toolid,
+            $this->toolid,
             $this->_option,
             $status,
             'dev',
@@ -156,7 +156,7 @@ class Admin extends SiteController
             }
         }
 
-        $this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
+        $this->invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_PROJECT_AREA_CREATED'));
 
         // Set errors to view
         if ($this->getError()) {
@@ -193,17 +193,17 @@ class Admin extends SiteController
 
         // Do we have an alias?
         if (($alias = Request::getString('app', ''))) {
-            $this->_toolid = $obj->getToolId($alias);
+            $this->toolid = $obj->getToolId($alias);
         }
         // Do we have a tool ID
-        if (!$this->_toolid) {
+        if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
             return;
         }
 
         // Get the tool status
         $obj->getToolStatus(
-            $this->_toolid,
+            $this->toolid,
             $this->_option,
             $status,
             'dev',
@@ -226,7 +226,7 @@ class Admin extends SiteController
                             . ' -s ' . escapeshellarg($status['toolname'])
                             . ' -c ' . PATH_ROOT;
 
-                    if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION'))) {
+                    if (!$this->invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION'))) {
                         $this->setError(Lang::txt('COM_TOOLS_ERROR_GIT_REPOSITORY_CONNECTION'));
                     }
                 }
@@ -238,7 +238,7 @@ class Admin extends SiteController
                     $command .= ' --project ' . escapeshellarg($status['toolname']);
                     $command .= ' --gitURL ' . escapeshellarg($status['github']);
 
-                    if (!$this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION'))) {
+                    if (!$this->invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_GIT_REPOSITORY_CONNECTION'))) {
                         $this->setError(Lang::txt('COM_TOOLS_ERROR_GIT_REPOSITORY_CONNECTION'));
                     }
                 }
@@ -273,7 +273,7 @@ class Admin extends SiteController
         }
 
         // Invoke the script
-        if (!$this->getError() && $this->_invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED'))) {
+        if (!$this->getError() && $this->invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_REV_INSTALLED'))) {
             // Extract revision number and optional commitHash
             $rev = '';
             $commitHash = '';
@@ -283,7 +283,7 @@ class Admin extends SiteController
                 $this->setError(Lang::txt('COM_TOOLS_ERR_CANNOT_SAVE_REVISION_INFO'));
             } else {
                 // Update the revision number
-                $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->_toolid);
+                $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($this->toolid);
                 $hztv->revision = intval($rev);
                 if ($status['repohost'] == 'gitLocal' || $status['repohost'] == 'gitExternal') {
                     if ($commitHash != '') {
@@ -336,17 +336,17 @@ class Admin extends SiteController
 
         // Do we have an alias?
         if (($alias = Request::getString('app', ''))) {
-            $this->_toolid = $obj->getToolId($alias);
+            $this->toolid = $obj->getToolId($alias);
         }
         // Do we have a tool ID
-        if (!$this->_toolid) {
+        if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
             return;
         }
 
         // Get the tool status
         $obj->getToolStatus(
-            $this->_toolid,
+            $this->toolid,
             $this->_option,
             $status,
             'dev',
@@ -361,7 +361,7 @@ class Admin extends SiteController
         $objV = new \Components\Tools\Tables\Version($this->database);
 
         // Unpublish all previous versions
-        if (!$objV->unpublish($this->_toolid)) {
+        if (!$objV->unpublish($this->toolid)) {
             $this->setError(Lang::txt('COM_TOOLS_ERR_FAILED_TO_UNPUBLISH_PREV_VERSIONS'));
         } else {
             $this->setMessage(Lang::txt('COM_TOOLS_NOTICE_UNPUBLISHED_PREV_VERSIONS'));
@@ -402,17 +402,17 @@ class Admin extends SiteController
 
         // Do we have an alias?
         if (($alias = Request::getString('app', ''))) {
-            $this->_toolid = $obj->getToolId($alias);
+            $this->toolid = $obj->getToolId($alias);
         }
         // Do we have a tool ID
-        if (!$this->_toolid) {
+        if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
             return;
         }
 
         // Get the tool status
         $obj->getToolStatus(
-            $this->_toolid,
+            $this->toolid,
             $this->_option,
             $status,
             'dev',
@@ -432,7 +432,7 @@ class Admin extends SiteController
         // Create a Tool Version object
         $objV = new \Components\Tools\Tables\Version($this->database);
         $objV->getToolVersions(
-            $this->_toolid,
+            $this->toolid,
             $tools,
             '',
             1,
@@ -463,7 +463,7 @@ class Admin extends SiteController
         Log::debug("publish(): checkpoint 2:$result, check revision");
 
         // check if version is valid
-        if (!\Components\Tools\Models\Tool::validateVersion($status['version'], $error_v, $this->_toolid)) {
+        if (!\Components\Tools\Models\Tool::validateVersion($status['version'], $error_v, $this->toolid)) {
             $result = false;
             $this->setError($error_v);
         }
@@ -561,7 +561,7 @@ class Admin extends SiteController
         if ($result) {
             $invokedir = rtrim($this->config->get('invokescript_dir', DS . 'apps'), "\\/");
 
-            $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+            $hzt = \Components\Tools\Models\Tool::getInstance($this->toolid);
             $hztv_cur = $hzt->getCurrentVersion();
             $hztv_dev = $hzt->getDevelopmentVersion();
 
@@ -586,7 +586,7 @@ class Admin extends SiteController
             $new_hztv = \Components\Tools\Models\Version::createInstance($status['toolname'], $newtool);
             $new_hztv->toolname      = $status['toolname'];
             $new_hztv->instance      = $newtool;
-            $new_hztv->toolid        = $this->_toolid;
+            $new_hztv->toolid        = $this->toolid;
             $new_hztv->state         = 1;
             $new_hztv->title         = $status['title'];
             $new_hztv->version       = $status['version'];
@@ -618,7 +618,7 @@ class Admin extends SiteController
                 $this->_setTracAccess($new_hztv->toolname, $new_hztv->codeaccess, $new_hztv->wikiaccess);
 
                 // update tool entry
-                $hzt = \Components\Tools\Models\Tool::getInstance($this->_toolid);
+                $hzt = \Components\Tools\Models\Tool::getInstance($this->toolid);
                 $hzt->add('version', $new_hztv->instance);
                 $hzt->update();
 
@@ -699,7 +699,7 @@ class Admin extends SiteController
     {
         Log::debug("finalizeTool(): checkpoint 1");
 
-        if (!$this->_toolid) {
+        if (!$this->toolid) {
             return false;
         }
 
@@ -713,7 +713,7 @@ class Admin extends SiteController
 
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);
-        $obj->getToolStatus($this->_toolid, $this->_option, $status, 'dev');
+        $obj->getToolStatus($this->toolid, $this->_option, $status, 'dev');
 
         if (count($status) > 0) {
             // Make sure the path exist
@@ -725,7 +725,7 @@ class Admin extends SiteController
             }
 
             $token = md5(uniqid());
-            $fname = '/tmp/license' . $this->_toolid . '-r' . $status['revision'] . '-' . $token . '.txt';
+            $fname = '/tmp/license' . $this->toolid . '-r' . $status['revision'] . '-' . $token . '.txt';
             Log::debug("finalizeTool(): attempting fopen to " . $fname);
             $handle = fopen($fname, "w");
             if ($handle === false) {
@@ -760,7 +760,7 @@ class Admin extends SiteController
 
             Log::debug("finalizeTool(): checkpoint 3: $command");
 
-            if (!$this->_invokescript($command, Lang::txt('COM_TOOLS_NOTICE_VERSION_FINALIZED'))) {
+            if (!$this->invokeScript($command, Lang::txt('COM_TOOLS_NOTICE_VERSION_FINALIZED'))) {
                 $out .= " invoke script failure";
                 unlink($fname);
                 return false;
@@ -879,7 +879,7 @@ class Admin extends SiteController
      * @param      string  $successmsg Message to set upon success
      * @return     boolean True if command executed without errors
      */
-    private function _invokeScript($command, $successmsg)
+    private function invokeScript($command, $successmsg)
     {
         $success = true;
 

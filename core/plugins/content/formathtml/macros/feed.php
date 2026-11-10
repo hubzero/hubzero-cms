@@ -125,7 +125,7 @@ class Feed extends Macro
 
         // Display title
         $title = $feed->get_title();
-        $link  = $this->_safeLink($feed->get_permalink());
+        $link  = $this->safeLink($feed->get_permalink());
         if ($title) {
             $html .= '<h3><a rel="external" href="' . $link . '">' . \Hubzero\Utility\Sanitize::html($title) . '</a></h3>';
         }
@@ -158,7 +158,7 @@ class Feed extends Macro
         $html  = '<div class="item">';
         $html .= '<h4>' . \Hubzero\Utility\Sanitize::html((string) $item->get_title()) . '</h4>';
         $html .= '<p>' . \Hubzero\Utility\Sanitize::html((string) $item->get_description()) . '</p>';
-        $html .= '<a rel="external" href="' . $this->_safeLink($item->get_permalink()) . '">Read More &rsaquo;</a>';
+        $html .= '<a rel="external" href="' . $this->safeLink($item->get_permalink()) . '">Read More &rsaquo;</a>';
         $html .= '</div>';
         return $html;
     }
@@ -169,7 +169,7 @@ class Feed extends Macro
      * @param   string  $url
      * @return  string
      */
-    private function _safeLink($url)
+    private function safeLink($url)
     {
         $url = trim((string) $url);
         if (!preg_match('#^https?://#i', $url)) {

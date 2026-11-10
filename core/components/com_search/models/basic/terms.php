@@ -77,7 +77,7 @@ class Terms extends Obj
         // The search page builds this with no terms (null) on a bare visit
         $this->raw = preg_replace('/^\s+|\s+$/', '', preg_replace('/\s+/', ' ', (string) $raw));
         if ($this->is_set()) {
-            $this->parse_searchable_chunks();
+            $this->parseSearchableChunks();
         }
     }
 
@@ -215,7 +215,7 @@ class Terms extends Obj
      *
      * @return  void
      */
-    private function parse_searchable_chunks()
+    private function parseSearchableChunks()
     {
         $accumulating_phrase = false;
         $partial = '';
@@ -234,17 +234,17 @@ class Terms extends Obj
             if ($accumulating_phrase) {
                 if ($cur == '"') {
                     $accumulating_phrase = false;
-                    $this->add_chunk($partial, $sign, true);
+                    $this->addChunk($partial, $sign, true);
                 } else {
                     $partial .= $cur;
                 }
             } else if ($cur == '"') {
                 if ($partial) {
-                    $this->add_chunk($partial, $sign);
+                    $this->addChunk($partial, $sign);
                 }
                 $accumulating_phrase = true;
             } else if ($cur == ' ') {
-                $this->add_chunk($partial, $sign);
+                $this->addChunk($partial, $sign);
             } else if ($cur == '+' && $partial == '') {
                 $sign = '+';
             } else if ($cur == '-' && $partial == '') {
@@ -253,7 +253,7 @@ class Terms extends Obj
                 $partial .= $cur;
             }
         }
-        $this->add_chunk($partial, $sign);
+        $this->addChunk($partial, $sign);
     }
 
     /**
@@ -264,7 +264,7 @@ class Terms extends Obj
      * @param   boolean  $quoted
      * @return  void
      */
-    private function add_chunk(&$partial, &$sign = '', $quoted = false)
+    private function addChunk(&$partial, &$sign = '', $quoted = false)
     {
         if (!$partial) {
             return;

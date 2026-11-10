@@ -294,7 +294,7 @@ class Media extends SiteController
      * @return     array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _recursiveListDir($base)
+    private function recursiveListDir($base)
     {
         static $filelist = [];
         static $dirlist  = [];
@@ -305,7 +305,7 @@ class Media extends SiteController
                 if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
-                    $subdirlist = $this->_recursiveListDir($subbase);
+                    $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
             closedir($dh);

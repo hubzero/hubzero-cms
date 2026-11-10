@@ -215,19 +215,19 @@ class Announcements extends Plugin
             // Run task based on action
             switch ($this->action) {
                 case 'save':
-                    $arr['html'] .= $this->_save();
+                    $arr['html'] .= $this->save();
                     break;
                 case 'new':
-                    $arr['html'] .= $this->_edit();
+                    $arr['html'] .= $this->edit();
                     break;
                 case 'edit':
-                    $arr['html'] .= $this->_edit();
+                    $arr['html'] .= $this->edit();
                     break;
                 case 'delete':
-                    $arr['html'] .= $this->_delete();
+                    $arr['html'] .= $this->delete();
                     break;
                 default:
-                    $arr['html'] .= $this->_list();
+                    $arr['html'] .= $this->list();
             }
         }
 
@@ -263,7 +263,7 @@ class Announcements extends Plugin
      *
      * @return  string  HTML
      */
-    private function _list()
+    private function list()
     {
         //build array of filters
         $filters = [
@@ -318,7 +318,7 @@ class Announcements extends Plugin
      * @param   object  $model  Hubzero\Item\Announcement
      * @return  string  HTML
      */
-    private function _edit($model = null)
+    private function edit($model = null)
     {
         if (!is_object($model)) {
             // Get incoming
@@ -331,13 +331,13 @@ class Announcements extends Plugin
         // Make sure the group is published
         if ($this->group->published != 1) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Make sure its this groups announcement
         if (!$model->belongsToObject('group', $this->group->get('gidNumber'))) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Create view and assign data
@@ -358,7 +358,7 @@ class Announcements extends Plugin
      *
      * @return  mixed  An html view on error, redirects on success
      */
-    private function _save()
+    private function save()
     {
         // Check for request forgeries
         Request::checkToken();
@@ -366,13 +366,13 @@ class Announcements extends Plugin
         // Make sure the group is published
         if ($this->group->published != 1) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Verify were authorized
         if ($this->authorized != 'manager') {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_CREATE'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Incoming
@@ -413,7 +413,7 @@ class Announcements extends Plugin
                 || !$__existing->belongsToObject('group', $this->group->get('gidNumber'))
             ) {
                 $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-                return $this->_list();
+                return $this->list();
             }
 
             // Where it lives and who wrote it are not the form's to change.
@@ -445,12 +445,12 @@ class Announcements extends Plugin
             && $model->get('publish_up') > $model->get('publish_down')
         ) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'));
-            return $this->_edit($model);
+            return $this->edit($model);
         }
 
         if (!$model->save()) {
             $this->setError($model->getError());
-            return $this->_edit($model);
+            return $this->edit($model);
         }
 
         // Does user want to email and should we email yet?
@@ -501,18 +501,18 @@ class Announcements extends Plugin
      *
      * @return  mixed  An html view on error, redirects on success
      */
-    private function _delete()
+    private function delete()
     {
         // Make sure the group is published
         if ($this->group->published != 1) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Verify were authorized
         if ($this->authorized != 'manager') {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGERS_CAN_DELETE'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Incoming
@@ -528,13 +528,13 @@ class Announcements extends Plugin
         // makes this same test before it will show the row.
         if (!$model->belongsToObject('group', $this->group->get('gidNumber'))) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PERMISSION_DENIED'));
-            return $this->_list();
+            return $this->list();
         }
 
         // Make sure we are the one who created it
         if ($model->get('created_by') != User::get('id') && $this->authorized != 'manager') {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ONLY_MANAGER_CAN_DELETE', $model->creator()->get('name')));
-            return $this->_list();
+            return $this->list();
         }
 
         // Check for request forgeries
@@ -546,7 +546,7 @@ class Announcements extends Plugin
         // Attempt to delete announcement
         if (!$model->save()) {
             $this->setError(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_UNABLE_TO_DELETE'));
-            return $this->_list();
+            return $this->list();
         }
 
         $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;

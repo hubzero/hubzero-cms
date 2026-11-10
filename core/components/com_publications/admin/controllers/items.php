@@ -1306,7 +1306,7 @@ class Items extends AdminController
             $notify[] = $this->model->version->created_by;
             $notify   = array_unique($notify);
 
-            $this->_emailContributors($subject, $message, $notify, $action);
+            $this->emailContributors($subject, $message, $notify, $action);
         }
 
         // Append any errors
@@ -1339,7 +1339,7 @@ class Items extends AdminController
      * @param   string  $action
      * @return  void
      */
-    private function _emailContributors($subject = '', $message = '', $authors = [], $action = 'publish')
+    private function emailContributors($subject = '', $message = '', $authors = [], $action = 'publish')
     {
         if (!$this->model->exists() || !$this->model->project()->exists()) {
             return false;

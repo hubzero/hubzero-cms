@@ -165,7 +165,7 @@ class Offering extends Table
      * @param   array   $filters
      * @return  string  SQL
      */
-    private function _buildQuery($filters = [])
+    private function buildQuery($filters = [])
     {
         $query  = " FROM $this->_tbl AS ci";
         $query .= " INNER JOIN #__courses AS c ON c.id=ci.course_id";
@@ -218,7 +218,7 @@ class Offering extends Table
     public function count($filters = [])
     {
         $query  = "SELECT COUNT(ci.id)";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -233,7 +233,7 @@ class Offering extends Table
     public function find($filters = [])
     {
         $query  = "SELECT ci.*, c.alias AS course_alias";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         // Sort direction (whitelisted to ASC/DESC)
         $sortDir = (isset($filters['sort_Dir']) && strtoupper($filters['sort_Dir']) == 'ASC') ? 'ASC' : 'DESC';

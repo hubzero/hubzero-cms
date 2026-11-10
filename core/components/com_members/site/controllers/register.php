@@ -110,7 +110,7 @@ class Register extends SiteController
         } else {
             // Load data from the user object
             $xregistration->loadProfile($xprofile);
-            return $this->_show_registration_form($xregistration, 'edit');
+            return $this->showRegistrationForm($xregistration, 'edit');
         }
 
         if ($username != $xregistration->get('login')) {
@@ -119,7 +119,7 @@ class Register extends SiteController
         }
 
         if (!$xregistration->check('edit')) {
-            return $this->_show_registration_form($xregistration, 'edit');
+            return $this->showRegistrationForm($xregistration, 'edit');
         }
 
         $xprofile->loadRegistration($xregistration);
@@ -686,7 +686,7 @@ class Register extends SiteController
             return true;
         }
 
-        return $this->_show_registration_form($xregistration, 'update');
+        return $this->showRegistrationForm($xregistration, 'update');
     }
 
     /**
@@ -973,7 +973,7 @@ class Register extends SiteController
         // Set the page title
         $this->_buildTitle();
 
-        return $this->_show_registration_form($xregistration, 'create');
+        return $this->showRegistrationForm($xregistration, 'create');
     }
 
     /**
@@ -982,7 +982,7 @@ class Register extends SiteController
      * @param   object  &$xregistration
      * @param   string  $task
      */
-    private function _show_registration_form(&$xregistration = null, $task = 'create')
+    private function showRegistrationForm(&$xregistration = null, $task = 'create')
     {
         $username = Request::getString('username', User::get('username'), 'get');
         $isSelf = (User::get('username') == $username);

@@ -1627,7 +1627,7 @@ class Profiles extends SiteController
                 Notify::error('An error occurred emailing "' . htmlentities($email, ENT_COMPAT, 'UTF-8') . '" your confirmation.');
             }
 
-            //$this->_sendConfirmationCode($member->get('username'), $email, $confirm, $member->get('registerDate'),$member->get('name'));
+            //$this->sendConfirmationCode($member->get('username'), $email, $confirm, $member->get('registerDate'),$member->get('name'));
 
             Event::trigger('onUserAfterChangeEmail', [$member->toArray()]);
         }
@@ -1659,7 +1659,7 @@ class Profiles extends SiteController
      * @param   string   $confirm  Confirmation code
      * @return  boolean
      */
-    private function _sendConfirmationCode($login, $email, $confirm, $name, $registerDate)
+    private function sendConfirmationCode($login, $email, $confirm, $name, $registerDate)
     {
         // Email subject
         $subject = Config::get('sitename') . ' account email confirmation';

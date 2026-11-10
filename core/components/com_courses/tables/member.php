@@ -235,7 +235,7 @@ class Member extends Table
      * @param  array $filters
      * @return $query database query
      */
-    private function _buildQuery($filters = [])
+    private function buildQuery($filters = [])
     {
         $query = " FROM $this->_tbl AS m
 				JOIN #__users AS u ON u.id=m.user_id
@@ -302,7 +302,7 @@ class Member extends Table
     public function count($filters = [])
     {
         $query  = "SELECT COUNT(*) ";
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
@@ -326,7 +326,7 @@ class Member extends Table
             $query .= "null";
         }
         $query .= " AS course_manager ";*/
-        $query .= $this->_buildquery($filters);
+        $query .= $this->buildQuery($filters);
 
         if (isset($filters['sort'])) {
             $query .= " ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $filters['sort']) ?: '1');

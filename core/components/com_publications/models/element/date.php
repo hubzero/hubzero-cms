@@ -101,7 +101,7 @@ class Date extends Base
         }
 
         if (isset($element->year) && $element->year) {
-            $year = $this->_getValue('year', $value);
+            $year = $this->getValue('year', $value);
 
             // Get the year range
             // 0 = start
@@ -148,7 +148,7 @@ class Date extends Base
         }
 
         if (isset($element->month) && $element->month) {
-            $month = $this->_getValue('month', $value);
+            $month = $this->getValue('month', $value);
 
             // Build the list of years
             $options = [
@@ -157,7 +157,7 @@ class Date extends Base
             $i = 1;
             $y = 13;
             for ($i, $n = $y; $i < $n; $i++) {
-                $options[] = Html::select('option', $i, $this->_getMonth($i));
+                $options[] = Html::select('option', $i, $this->getMonth($i));
             }
 
             $fieldName = $control_name . '[' . $name . '][month]';
@@ -175,7 +175,7 @@ class Date extends Base
         }
 
         if (isset($element->day) && $element->day) {
-            $day = $this->_getValue('day', $value);
+            $day = $this->getValue('day', $value);
 
             // Build the list of years
             $options = [
@@ -215,7 +215,7 @@ class Date extends Base
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _getMonth($month)
+    private function getMonth($month)
     {
         switch ($month) {
             case 1:
@@ -269,7 +269,7 @@ class Date extends Base
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _getValue($tag, $text)
+    private function getValue($tag, $text)
     {
         $pattern = "/<$tag>(.*?)<\/$tag>/i";
         preg_match($pattern, $text, $matches);
@@ -284,16 +284,16 @@ class Date extends Base
      */
     public function display($value)
     {
-        $year  = intval($this->_getValue('year', $value));
-        $month = intval($this->_getValue('month', $value));
-        $day   = intval($this->_getValue('day', $value));
+        $year  = intval($this->getValue('year', $value));
+        $month = intval($this->getValue('month', $value));
+        $day   = intval($this->getValue('day', $value));
 
         $html = '';
         if ($day && $day != 0) {
             $html .= $day . ' ';
         }
         if ($month && $month != 0) {
-            $html .= $this->_getMonth($month) . ' ';
+            $html .= $this->getMonth($month) . ' ';
         }
         if ($year && $year != 0) {
             $html .= $year;

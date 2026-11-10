@@ -42,7 +42,7 @@ class Zones extends SiteController
      * @return  mixed
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private static function normalize_path($path, $isFile = false)
+    private static function normalizePath($path, $isFile = false)
     {
         if (!isset($path[0]) || $path[0] != '/') {
             return false;
@@ -81,7 +81,7 @@ class Zones extends SiteController
     public function assetsTask()
     {
         $file = Request::getString('file');
-        $file = self::normalize_path('/' . trim($file, '/'), true);
+        $file = self::normalizePath('/' . trim($file, '/'), true);
 
         if (empty($file)) {
             return $this->notFoundTask();

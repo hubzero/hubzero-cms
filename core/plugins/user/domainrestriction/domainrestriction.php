@@ -27,10 +27,10 @@ class Domainrestriction extends Plugin
     private $_badtlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_baddomains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_bademails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_email; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_domain; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_tld; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_allowed; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $email; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $domain; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $tld; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $allowed; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Utility method to act on a user before it has been saved.
@@ -77,39 +77,39 @@ class Domainrestriction extends Plugin
         // I'm open to suggestions
 
         // Presumption of innocence: allowed, unless disallowed
-        $this->_allowed = true;
+        $this->allowed = true;
 
         // Check if top level domain is disallowed
-        if (in_array($this->_tld, $this->_badtlds)) {
-            $this->_allowed = false;
+        if (in_array($this->tld, $this->_badtlds)) {
+            $this->allowed = false;
         }
 
         // Check if domain is disallowed
-        if (in_array($this->_domain, $this->_baddomains)) {
-            $this->_allowed = false;
+        if (in_array($this->domain, $this->_baddomains)) {
+            $this->allowed = false;
         }
 
         // Check if domain is allowed (may reverse two previous steps, and that is ok)
-        if (in_array($this->_domain, $this->_domains)) {
-            $this->_allowed = true;
+        if (in_array($this->domain, $this->_domains)) {
+            $this->allowed = true;
         }
 
         // Check if email is disallowed
-        if (in_array($this->_email, $this->_bademails)) {
-            $this->_allowed = false;
+        if (in_array($this->email, $this->_bademails)) {
+            $this->allowed = false;
         }
 
         // Check if email is allowed
-        if (in_array($this->_email, $this->_emails)) {
-            $this->_allowed = true;
+        if (in_array($this->email, $this->_emails)) {
+            $this->allowed = true;
         }
 
         // Check for affiliated registration and let it go
-        if ($this->_domain == 'invalid') {
-            $this->_allowed = true;
+        if ($this->domain == 'invalid') {
+            $this->allowed = true;
         }
 
-        if (!$this->_allowed) {
+        if (!$this->allowed) {
             Lang::load('plg_user_domainrestriction', __DIR__);
 
             $message = $isNew ? 'PLG_USER_DOMAINRESTRICTION_DENY' : 'PLG_USER_DOMAINRESTRICTION_DENYCHANGE';
@@ -292,9 +292,9 @@ class Domainrestriction extends Plugin
 
         if ($this->{$keys[0]} || $this->{$keys[1]} || $this->{$keys[2]}) {
             if (
-                in_array($this->_tld, $this->{$keys[0]})
-                || in_array($this->_domain, $this->{$keys[1]})
-                || in_array($this->_email, $this->{$keys[2]})
+                in_array($this->tld, $this->{$keys[0]})
+                || in_array($this->domain, $this->{$keys[1]})
+                || in_array($this->email, $this->{$keys[2]})
             ) {
                 $ret = true;
             }
@@ -340,12 +340,12 @@ class Domainrestriction extends Plugin
      */
     private function parseEmail($email)
     {
-        $this->_email = strtolower($email);
+        $this->email = strtolower($email);
 
-        $email = explode('@', $this->_email);
+        $email = explode('@', $this->email);
 
-        $this->_domain = $email[1];
-        $this->_tld = $this->getTldFromUrl($email[1]);
+        $this->domain = $email[1];
+        $this->tld = $this->getTldFromUrl($email[1]);
 
         return $email[0];
     }
@@ -451,9 +451,9 @@ class Domainrestriction extends Plugin
      */
     private function getAssignmentsKey($assignments)
     {
-        return array_key_exists($this->_email, $assignments) ? $this->_email : (
-            array_key_exists($this->_domain, $assignments) ? $this->_domain : (
-                array_key_exists($this->_tld, $assignments) ? $this->_tld : false
+        return array_key_exists($this->email, $assignments) ? $this->email : (
+            array_key_exists($this->domain, $assignments) ? $this->domain : (
+                array_key_exists($this->tld, $assignments) ? $this->tld : false
             )
         );
     }

@@ -612,7 +612,7 @@ class Setup extends Base
 
                 // Clean up title from any scripting
                 $title = preg_replace('/\s+/', ' ', $title);
-                $title = $this->_txtClean($title);
+                $title = $this->txtClean($title);
 
                 // Check incoming data
                 if ($setup && $new && !$this->model->check($name, $this->model->get('id'))) {
@@ -1112,7 +1112,7 @@ class Setup extends Base
      * @param   string  &$text  Text to clean
      * @return  string
      */
-    private function _txtClean(&$text)
+    private function txtClean(&$text)
     {
         // Handle special characters copied from MS Word
         $text = str_replace('“', '"', $text);

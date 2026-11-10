@@ -1903,7 +1903,7 @@ class Jobs extends SiteController
         }
 
         // Zip the requested resumes
-        $archive = $this->_archiveResumes($pile);
+        $archive = $this->archiveResumes($pile);
 
         if ($archive) {
             // Initiate a new content server and serve up the file
@@ -1938,7 +1938,7 @@ class Jobs extends SiteController
      * @param      string $pile Resumes to return
      * @return     mixed File path if successful, false if not
      */
-    private function _archiveResumes($pile = 'all')
+    private function archiveResumes($pile = 'all')
     {
         // Get available resume files
         $resume = new Resume($this->database);

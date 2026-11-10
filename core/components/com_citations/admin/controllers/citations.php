@@ -382,7 +382,7 @@ class Citations extends AdminController
         $row->set($citation);
 
         // Set params
-        $cparams = new Registry($this->_getParams($row->id));
+        $cparams = new Registry($this->getParams($row->id));
         $cparams->set('exclude', $exclude);
         $cparams->set('rollover', $rollover);
         $row->set('params', $cparams->toString());
@@ -486,7 +486,7 @@ class Citations extends AdminController
      * @param   integer  $citation  Citation ID
      * @return  string
      */
-    private function _getParams($citation = 0)
+    private function getParams($citation = 0)
     {
         $this->database->setQuery("SELECT c.params from `#__citations` c WHERE id=" . $this->database->quote($citation));
         return $this->database->loadResult();

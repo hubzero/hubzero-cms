@@ -1166,7 +1166,7 @@ class Membership extends Base
      * @param   int     $strLength  Length of string desired
      * @return  String  Random string
      */
-    private function _randomString($strLength = 25)
+    private function randomString($strLength = 25)
     {
         $str = '';
         for ($i = 0; $i < $strLength; $i++) {

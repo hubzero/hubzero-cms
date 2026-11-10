@@ -207,37 +207,37 @@ class Citations extends Plugin
             // run task based on action
             switch ($this->action) {
                 case 'save':
-                    $arr['html'] .= $this->_save();
+                    $arr['html'] .= $this->save();
                     break;
                 case 'add':
-                    $arr['html'] .= $this->_edit();
+                    $arr['html'] .= $this->edit();
                     break;
                 case 'edit':
-                    $arr['html'] .= $this->_edit();
+                    $arr['html'] .= $this->edit();
                     break;
                 case 'delete':
-                    $arr['html'] .= $this->_delete();
+                    $arr['html'] .= $this->delete();
                     break;
                 case 'publish':
-                    $arr['html'] .= $this->_publish();
+                    $arr['html'] .= $this->publish();
                     break;
                 case 'browse':
-                    $arr['html'] .= $this->_browse();
+                    $arr['html'] .= $this->browse();
                     break;
                 case 'import':
-                    $arr['html'] .= $this->_import();
+                    $arr['html'] .= $this->import();
                     break;
                 case 'upload':
-                    $arr['html'] .= $this->_upload();
+                    $arr['html'] .= $this->upload();
                     break;
                 case 'settings':
-                    $arr['html'] .= $this->_settings();
+                    $arr['html'] .= $this->settings();
                     break;
                 case 'process':
-                    $arr['html'] .= $this->_process();
+                    $arr['html'] .= $this->process();
                     break;
                 default:
-                    $arr['html'] .= $this->_browse();
+                    $arr['html'] .= $this->browse();
             }
         }
 
@@ -259,10 +259,10 @@ class Citations extends Plugin
      *
      * @return  string  HTML
      */
-    private function _browse()
+    private function browse()
     {
         // Instantiate a new citations object
-        $obj = $this->_filterHandler(Request::getArray('filters', []), $this->group->get('gidNumber'));
+        $obj = $this->filterHandler(Request::getArray('filters', []), $this->group->get('gidNumber'));
 
         $count = clone $obj['citations'];
         $count = $count->count();
@@ -390,7 +390,7 @@ class Citations extends Plugin
         $view->types = $ct;
 
         // OpenURL
-        $view->openurl = $this->_handleOpenURL();
+        $view->openurl = $this->handleOpenURL();
 
         // Output HTML
         foreach ($this->getErrors() as $error) {
@@ -409,14 +409,14 @@ class Citations extends Plugin
      *
      * @return  string  HTML
      */
-    private function _edit()
+    private function edit()
     {
         // create view object
         $view = $this->view('default', 'edit');
 
         // Check if they're logged in
         if (User::isGuest()) {
-            $this->_loginTask();
+            $this->loginTask();
         }
 
         // push objects to view
@@ -559,11 +559,11 @@ class Citations extends Plugin
     /**
      * Save an entry
      */
-    private function _save()
+    private function save()
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            $this->_loginTask();
+            $this->loginTask();
         }
 
         // set scope & scope id in save so no one can mess with hidden form inputs
@@ -650,7 +650,7 @@ class Citations extends Plugin
         // Store new content
         if (!$citation->save()) {
             $this->setError($citation->getError());
-            return $this->_edit();
+            return $this->edit();
         }
 
         $authorCount = $citation->relatedAuthors()->count();
@@ -739,7 +739,7 @@ class Citations extends Plugin
     /**
      * Publish method for group citations
      */
-    private function _publish()
+    private function publish()
     {
         // Require POST
         if (Request::method() !== 'POST') {
@@ -877,7 +877,7 @@ class Citations extends Plugin
     /**
      * Delete method for group citations
      */
-    private function _delete()
+    private function delete()
     {
         // verify that the user is a manager.
         $isManager = ($this->authorized == 'manager') ? true : false;
@@ -1002,7 +1002,7 @@ class Citations extends Plugin
     /**
      * Settings for group citations
      */
-    private function _settings()
+    private function settings()
     {
         if ($_POST) {
             if ($this->authorized != 'manager') {
@@ -1120,7 +1120,7 @@ class Citations extends Plugin
      *
      * @return  string
      */
-    private function _import()
+    private function import()
     {
         // instansiate the view
         $view = $this->view('display', 'import');
@@ -1149,7 +1149,7 @@ class Citations extends Plugin
      *
      * @return  string
      */
-    private function _upload()
+    private function upload()
     {
         // instansiate the view
         $view = $this->view('review', 'import');
@@ -1253,7 +1253,7 @@ class Citations extends Plugin
     /**
      * Upload task
      */
-    private function _process()
+    private function process()
     {
         // instansiate the view
         $view = $this->view('saved', 'import');
@@ -1363,7 +1363,7 @@ class Citations extends Plugin
      *
      * @return  void
      */
-    private function _loginTask()
+    private function loginTask()
     {
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS . $this->_name . '&action=' . $this->action, false, true))),
@@ -1386,7 +1386,7 @@ class Citations extends Plugin
      *
      * @return  array  $openURL
      */
-    private function _handleOpenURL()
+    private function handleOpenURL()
     {
         return [
             'link' => '',
@@ -1467,7 +1467,7 @@ class Citations extends Plugin
      * @param   integer  $scope_id  Value of scope id
      * @return  array    Sanitized and validated filter values
      */
-    private function _filterHandler($filters = [], $scope_id = 0)
+    private function filterHandler($filters = [], $scope_id = 0)
     {
         $citations = \Components\Citations\Models\Citation::all();
         // require citations
@@ -1701,7 +1701,7 @@ class Citations extends Plugin
         $view->types = \Components\Citations\Models\Type::all();
 
         // OpenURL
-        $openURL = $this->_handleOpenURL();
+        $openURL = $this->handleOpenURL();
         $view->openurl['link'] = $openURL['link'];
         $view->openurl['text'] = $openURL['text'];
         $view->openurl['icon'] = $openURL['icon'];

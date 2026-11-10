@@ -475,7 +475,7 @@ abstract class Model extends Obj
      */
     public function toString($ignore = ['_db'])
     {
-        return $this->print_r($this, $ignore);
+        return $this->printR($this, $ignore);
     }
 
     /**
@@ -488,7 +488,7 @@ abstract class Model extends Obj
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function print_r($subject, $ignore = [], $depth = 1, $refChain = [])
+    private function printR($subject, $ignore = [], $depth = 1, $refChain = [])
     {
         $str = '';
 
@@ -522,7 +522,7 @@ abstract class Model extends Obj
                         $str .= $key;
                     }
                     $str .= '] => ';
-                    $str .= $this->print_r($val, $ignore, $depth + 1, $refChain);
+                    $str .= $this->printR($val, $ignore, $depth + 1, $refChain);
                 }
             }
             $str .= str_repeat(" ", ($depth - 1) * 4) . ")\n";
@@ -533,7 +533,7 @@ abstract class Model extends Obj
             foreach ($subject as $key => $val) {
                 if (is_array($ignore) && !in_array($key, $ignore, 1)) {
                     $str .= str_repeat(" ", $depth * 4) . '[' . $key . '] => ';
-                    $str .= $this->print_r($val, $ignore, $depth + 1, $refChain);
+                    $str .= $this->printR($val, $ignore, $depth + 1, $refChain);
                 }
             }
             $str .= str_repeat(" ", ($depth - 1) * 4) . ")\n";

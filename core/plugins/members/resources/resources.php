@@ -32,21 +32,21 @@ class Resources extends Plugin
      *
      * @var array
      */
-    private $_areas = null;
+    private $areas = null;
 
     /**
      * Resource categories
      *
      * @var array
      */
-    private $_cats  = null;
+    private $cats  = null;
 
     /**
      * Record count
      *
      * @var integer
      */
-    private $_total = null;
+    private $total = null;
 
     /**
      * Constructor
@@ -67,16 +67,16 @@ class Resources extends Plugin
      */
     public function onMembersContributionsAreas()
     {
-        $areas = $this->_areas;
+        $areas = $this->areas;
         if (is_array($areas)) {
             return $areas;
         }
 
-        if (!$this->_cats) {
+        if (!$this->cats) {
             // Get categories
-            $this->_cats = \Components\Resources\Models\Type::getMajorTypes();
+            $this->cats = \Components\Resources\Models\Type::getMajorTypes();
         }
-        $categories = $this->_cats;
+        $categories = $this->cats;
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
@@ -88,7 +88,7 @@ class Resources extends Plugin
         $areas = [
             'resources' => $cats,
         ];
-        $this->_areas = $areas;
+        $this->areas = $areas;
         return $areas;
     }
 
@@ -196,7 +196,7 @@ class Resources extends Plugin
         }
 
         // Get categories
-        $categories = $this->_cats;
+        $categories = $this->cats;
         if (!$categories) {
             $categories = \Components\Resources\Models\Type::getMajorTypes();
         }
@@ -211,8 +211,8 @@ class Resources extends Plugin
 
         if ($limit) {
             $total = 0;
-            if ($this->_total != null) {
-                $t = $this->_total;
+            if ($this->total != null) {
+                $t = $this->total;
                 foreach ($t as $l) {
                     $total += $l;
                 }
@@ -276,7 +276,7 @@ class Resources extends Plugin
             }
 
             // Return the counts
-            $this->_total = $counts;
+            $this->total = $counts;
             return $counts;
         }
     }

@@ -125,7 +125,7 @@ class Curation extends Obj
         $this->_db = App::get('db');
 
         // Parse blocks
-        $this->_setBlocks($manifest, $masterManifest);
+        $this->setBlocks($manifest, $masterManifest);
     }
 
     /**
@@ -135,7 +135,7 @@ class Curation extends Obj
      * @param   string   $masterManifest  Master type manifest (current version)
      * @return  boolean
      */
-    private function _setBlocks($manifest = null, $masterManifest = null)
+    private function setBlocks($manifest = null, $masterManifest = null)
     {
         $blocks = [];
 
@@ -1921,7 +1921,7 @@ class Curation extends Obj
             return false;
         }
 
-        $link = $this->_linkPath();
+        $link = $this->linkPath();
         if ($link === false) {
             return false;
         }
@@ -1983,7 +1983,7 @@ class Curation extends Obj
      */
     public function removeLink()
     {
-        $link = $this->_linkPath();
+        $link = $this->linkPath();
         if ($link == false) {
             return false;
         }
@@ -2530,7 +2530,7 @@ class Curation extends Obj
      *
      * @return  mixed   string if sftp path provided, false if not
      */
-    private function _linkPath()
+    private function linkPath()
     {
         $sftpPath = PATH_APP . Component::params('com_publications')->get('sftppath');
         if (!is_dir($sftpPath)) {

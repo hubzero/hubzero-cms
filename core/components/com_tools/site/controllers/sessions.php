@@ -353,7 +353,7 @@ class Sessions extends SiteController
      * @param   boolean  $isFile
      * @return  string
      */
-    private function normalize_path($path, $isFile = false)
+    private function normalizePath($path, $isFile = false)
     {
         if (!isset($path[0]) || $path[0] != '/') {
             return false;
@@ -442,7 +442,7 @@ class Sessions extends SiteController
                         }
 
                         // Fail if unable to normalize $value
-                        $value = $this->normalize_path($value, $type == 'file');
+                        $value = $this->normalizePath($value, $type == 'file');
 
                         if ($value === false) {
                             break;
@@ -575,7 +575,7 @@ class Sessions extends SiteController
         $app->title   = stripslashes($tv->title);
 
         // Check if they have access to run this tool
-        $hasaccess = $this->_getToolAccess($app->name);
+        $hasaccess = $this->getToolAccess($app->name);
         //$status2 = ($hasaccess) ? "PASSED" : "FAILED";
 
         //Log::debug("mw::invoke " . $app->name . " by " . User::get('username') . " from " . $app->ip . " _getToolAccess " . $status2);
@@ -595,7 +595,7 @@ class Sessions extends SiteController
         //die($app->ip . $country);
 
         // Log the launch attempt
-        $this->_recordUsage($app->toolname, User::get('id'));
+        $this->recordUsage($app->toolname, User::get('id'));
 
         // Get the middleware database
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -643,7 +643,7 @@ class Sessions extends SiteController
         }
 
         // Get their disk space usage
-        $this->_getDiskUsage();
+        $this->getDiskUsage();
         $this->_redirect = '';
 
         $app->percent = 0;
@@ -1149,7 +1149,7 @@ class Sessions extends SiteController
         // Get their disk space usage
         $app->percent = 0;
         if ($this->config->get('show_storage')) {
-            $this->_getDiskUsage('soft', false);
+            $this->getDiskUsage('soft', false);
             $app->percent = $this->percent;
         }
 
@@ -1163,7 +1163,7 @@ class Sessions extends SiteController
         // Check if we have access to run this tool.
         // If not, force view to be read-only.
         // This will happen in the event of sharing.
-        $noaccess = ($this->_getToolAccess($row->appname) == false);
+        $noaccess = ($this->getToolAccess($row->appname) == false);
         if ($this->getError()) {
             echo '<!-- ' . $this->getError() . ' -->';
         }
@@ -1554,7 +1554,7 @@ class Sessions extends SiteController
      * @param   bool    $redirect  Redirect if over quota?
      * @return  void
      */
-    private function _getDiskUsage($type = 'soft', $redirect = true)
+    private function getDiskUsage($type = 'soft', $redirect = true)
     {
         // Check that the user is logged in
         if (User::isGuest()) {
@@ -1645,7 +1645,7 @@ class Sessions extends SiteController
      * @param   integer  $uid  User ID
      * @return  void
      */
-    private function _recordUsage($app, $uid)
+    private function recordUsage($app, $uid)
     {
 
         $tool = new \Components\Tools\Tables\Version($this->database);
@@ -1750,7 +1750,7 @@ class Sessions extends SiteController
      * @param   string  $login  Username; the current user when empty
      * @return  bool
      */
-    private function _getToolAccess($tool, $login = '')
+    private function getToolAccess($tool, $login = '')
     {
         $access = Utils::getToolAccess($tool, $login);
 

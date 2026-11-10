@@ -371,7 +371,7 @@ class Attachments extends SiteController
             'access'       => (int) $parentRow->get('access', 0),
             'group_owner'  => $parentRow->get('group_owner', ''),
             'path'         => '', // make sure no path is specified just yet
-            'type'         => $this->_getChildType($filename . '.' . $ext),
+            'type'         => $this->getChildType($filename . '.' . $ext),
         ]);
 
         // Setup videos to auto-play in hub
@@ -644,7 +644,7 @@ class Attachments extends SiteController
             'access'       => (int) $parentRow->get('access', 0),
             'group_owner'  => $parentRow->get('group_owner', ''),
             'path'         => '', // make sure no path is specified just yet
-            'type'         => $this->_getChildType($file['name']),
+            'type'         => $this->getChildType($file['name']),
         ]);
 
         // File already exists
@@ -662,8 +662,8 @@ class Attachments extends SiteController
         }
 
         // Build the path
-        $listdir = $this->_buildPathFromDate($resource->get('created'), $resource->get('id'), '');
-        $path    = $this->_buildUploadPath($listdir, '');
+        $listdir = $this->buildPathFromDate($resource->get('created'), $resource->get('id'), '');
+        $path    = $this->buildUploadPath($listdir, '');
 
         // Make sure the upload path exist
         if (!is_dir($path)) {
@@ -679,7 +679,7 @@ class Attachments extends SiteController
         } else {
             // File was uploaded
             // Check the file type
-            $resource->set('type', $this->_getChildType($file['name']));
+            $resource->set('type', $this->getChildType($file['name']));
         }
 
         // Scan for viruses
@@ -938,7 +938,7 @@ class Attachments extends SiteController
      * @param   string  $subdir   Sub directory of $listdir
      * @return  string
      */
-    private function _buildUploadPath($listdir, $subdir = '')
+    private function buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
             $subdir = DS . trim($subdir, DS);
@@ -968,7 +968,7 @@ class Attachments extends SiteController
      * @param   string  $filename  File name
      * @return  integer
      */
-    private function _getChildType($filename)
+    private function getChildType($filename)
     {
         $ftype = strtolower(Filesystem::extension($filename));
 
@@ -1016,7 +1016,7 @@ class Attachments extends SiteController
      * @param   string   $base  Base path to prepend
      * @return  string
      */
-    private function _buildPathFromDate($date, $id, $base = '')
+    private function buildPathFromDate($date, $id, $base = '')
     {
         if ($date && preg_match("/([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})/", $date, $regs)) {
             $date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);

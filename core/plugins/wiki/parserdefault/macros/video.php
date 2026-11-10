@@ -123,10 +123,10 @@ class Video extends WikiMacro
                 $video_url = $url;
             } else {
                 // Just a file name.
-                $video_url = $this->_path($url);
+                $video_url = $this->path($url);
 
                 if (!file_exists($video_url)) {
-                    $video_url = $this->_path($url, true);
+                    $video_url = $this->path($url, true);
 
                     if (!file_exists($video_url)) {
                         return '(video:' . htmlspecialchars((string) $url, ENT_QUOTES, 'UTF-8') . ' not found)';
@@ -219,16 +219,16 @@ class Video extends WikiMacro
                 case 'mov':
                 case 'mp4':
                 case 'm4v':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
+                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/mp4" />';
                     break;
 
                 case 'ogg':
                 case 'ogv':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
+                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/ogg" />';
                     break;
 
                 case 'webm':
-                    $html .= '<source src="' . htmlspecialchars((string) $this->_link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
+                    $html .= '<source src="' . htmlspecialchars((string) $this->link($url), ENT_QUOTES, 'UTF-8') . '" type="video/webm" />';
                     break;
             }
             $html .= '</video>';
@@ -259,7 +259,7 @@ class Video extends WikiMacro
      * @param      $alt  Switches between relative and absolute path?
      * @return     string
      */
-    private function _path($file, $alt = false)
+    private function path($file, $alt = false)
     {
         if (substr($file, 0, 1) == DS) {
             $path = PATH_APP . $file;
@@ -421,7 +421,7 @@ class Video extends WikiMacro
      * @param      $file  Filename
      * @return     string
      */
-    private function _link($file)
+    private function link($file)
     {
         $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
@@ -440,7 +440,7 @@ class Video extends WikiMacro
         $this->imgs = ['jpg', 'jpe', 'jpeg', 'gif', 'png'];
         if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
             if (Request::getString('format') == 'pdf') {
-                return $this->_path($file);
+                return $this->path($file);
             }
             $type = 'Image';
         }

@@ -31,7 +31,7 @@ class Autocompleter extends Plugin
      *
      * @var  boolean
      */
-    private $_pushscripts = true;
+    private $pushscripts = true;
 
     /**
      * Display the autocompleter. Defaults to multi-entry for tags
@@ -68,7 +68,7 @@ class Autocompleter extends Plugin
         }
 
         // Push some needed scripts and stylings to the template but ensure we do it only once
-        if ($this->_pushscripts) {
+        if ($this->pushscripts) {
             $scripts .= '<script type="text/javascript">var plgAutocompleterCss = "';
 
             $templatecss = DS . 'templates' . DS . App::get('template')->template . DS . 'html' . DS . 'plg_hubzero_autocompleter' . DS . 'autocompleter.css';
@@ -84,7 +84,7 @@ class Autocompleter extends Plugin
             $scripts .= '";</script>' . "\n";
             $scripts .= '<script type="text/javascript" src="' . $base . '/core/plugins' . DS . $this->_type . DS . $this->_name . '/assets/js/' . $this->_name . '.js"></script>' . "\n";
 
-            $this->_pushscripts = false;
+            $this->pushscripts = false;
         }
 
         // Build the input tag

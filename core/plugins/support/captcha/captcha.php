@@ -28,25 +28,25 @@ class Captcha extends Plugin
      * If the user is a verified, logged-in user
      * @var boolean
      */
-    private $_verified = false;
+    private $verified = false;
 
     /**
      * Image background color
      * @var string
      */
-    private $_bgColor = '#000000';
+    private $bgColor = '#000000';
 
     /**
      * Text color
      * @var string
      */
-    private $_textColor = '#ff0000';
+    private $textColor = '#ff0000';
 
     /**
      * Pseudo-randomized sequences for lists
      * @var array
      */
-    private $_sequence = [
+    private $sequence = [
         [0, 2, 4, 1, 3],
         [1, 2, 0, 3, 4],
         [2, 0, 4, 1, 3],
@@ -63,7 +63,7 @@ class Captcha extends Plugin
      * Text-based CAPTCHA questions
      * @var array
      */
-    private $_questions = [
+    private $questions = [
         [
             'type'     => 'math',
             'question' => 'PLG_SUPPORT_TEXTCAPTCHA_MATH',
@@ -188,7 +188,7 @@ class Captcha extends Plugin
 
         if (!User::isGuest()) {
             if (User::get('activation') == 1 || User::get('activation') == 3) {
-                $this->_verified = true;
+                $this->verified = true;
             }
         }
     }
@@ -221,7 +221,7 @@ class Captcha extends Plugin
      */
     public function onGetCaptcha($ext = 'com')
     {
-        if ($this->_verified) {
+        if ($this->verified) {
             return;
         }
 
@@ -245,7 +245,7 @@ class Captcha extends Plugin
      */
     public function onValidateCaptcha()
     {
-        if ($this->_verified) {
+        if ($this->verified) {
             return true;
         }
 
@@ -287,9 +287,9 @@ class Captcha extends Plugin
 
         $GLOBALS['totalCaptchas']++;
 
-        $nqs = count($this->_questions);
+        $nqs = count($this->questions);
         $use = rand(0, $nqs - 1);
-        $question = $this->_questions[$use];
+        $question = $this->questions[$use];
 
         $html  = '<label for="captcha-answer">' . "\n";
         $html .= Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_PLEASE_ANSWER') . ' <span class="required">' . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_REQUIRED') . '</span><br />' . "\n";
@@ -307,13 +307,13 @@ class Captcha extends Plugin
 
             case 'list':
                 $key = strtolower(Lang::txt($question['answer']));
-                $numseq = count($this->_sequence);
+                $numseq = count($this->sequence);
                 $set = rand(0, $numseq - 1);
 
                 $html .= "\t" . Lang::txt($question['question']) . "\n";
                 $html .= "\t" . '<select name="captcha[answer]" id="captcha-answer">' . "\n";
                 $html .= "\t\t" . '<option value="">' . Lang::txt('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER') . '</option>' . "\n";
-                foreach ($this->_sequence[$set] as $row) {
+                foreach ($this->sequence[$set] as $row) {
                     $html .= "\t\t" . '<option value="' . Lang::txt($question['options'][$row]) . '">' . Lang::txt($question['options'][$row]) . '</option>' . "\n";
                 }
                 $html .= "\t" . '</select>' . "\n";
@@ -334,7 +334,7 @@ class Captcha extends Plugin
 
         App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 
-        if ($this->_verified) {
+        if ($this->verified) {
             $html  = '<input type="hidden" name="captcha[answer]" id="captcha-answer" value="' . $key . '" />' . "\n";
         }
 
@@ -446,8 +446,8 @@ class Captcha extends Plugin
      */
     private function _setColors()
     {
-        $this->_bgColor   = $this->params->get('bgColor', $this->_bgColor);
-        $this->_textColor = $this->params->get('textColor', $this->_textColor);
+        $this->bgColor   = $this->params->get('bgColor', $this->bgColor);
+        $this->textColor = $this->params->get('textColor', $this->textColor);
     }
 
     /**
@@ -474,8 +474,8 @@ class Captcha extends Plugin
 
         $this->_setColors();
 
-        $foreground_color = $this->_hexToRgb($this->_textColor);
-        $background_color = $this->_hexToRgb($this->_bgColor);
+        $foreground_color = $this->_hexToRgb($this->textColor);
+        $background_color = $this->_hexToRgb($this->bgColor);
 
         $jpeg_quality = 90;
 
@@ -688,8 +688,8 @@ class Captcha extends Plugin
         $height = 40;
         $image  = imagecreate($width, $height);
         $this->_setColors();
-        $foreground_color = $this->_hexToRgb($this->_textColor);
-        $background_color = $this->_hexToRgb($this->_bgColor);
+        $foreground_color = $this->_hexToRgb($this->textColor);
+        $background_color = $this->_hexToRgb($this->bgColor);
 
         // We are making three colors, white, black and gray
         $white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);

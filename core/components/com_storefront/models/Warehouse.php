@@ -197,12 +197,12 @@ class Warehouse extends \Hubzero\Base\Obj
     public function getCategories($rtrn = 'list', $filters = [])
     {
         $filters['collectionType'] = 'category';
-        return $this->_getAllCollections($rtrn, $filters);
+        return $this->getAllCollections($rtrn, $filters);
     }
 
     public function getCollections($rtrn = 'list', $filters = [])
     {
-        return $this->_getAllCollections($rtrn, $filters);
+        return $this->getAllCollections($rtrn, $filters);
     }
 
     /**
@@ -1283,12 +1283,12 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function addCoupon($coupon)
     {
-        $this->_doCoupon($coupon, 'add');
+        $this->doCoupon($coupon, 'add');
     }
 
     public function updateCoupon($coupon)
     {
-        $this->_doCoupon($coupon, 'update');
+        $this->doCoupon($coupon, 'update');
     }
 
     /**
@@ -1338,7 +1338,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param   StorefrontModelCoupon   Instance of a product
      * @return  int                         coupon ID
      */
-    private function _doCoupon($coupon, $action)
+    private function doCoupon($coupon, $action)
     {
         $allowedActions = ['add', 'update'];
 
@@ -1495,7 +1495,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param  $collectionType -- type of collection, category by default
      * @return array|int
      */
-    private function _getAllCollections($return = 'list', $filters = [])
+    private function getAllCollections($return = 'list', $filters = [])
     {
         $sql = "SELECT c.*
 				FROM `#__storefront_collections` c

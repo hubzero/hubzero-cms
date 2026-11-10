@@ -1066,7 +1066,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public function access($action = 'view')
     {
         if (!$this->_authorized) {
-            $this->_authorize();
+            $this->authorize();
         }
         return $this->params->get('access-' . strtolower($action) . '-resource');
     }
@@ -1097,7 +1097,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @return  void
      */
-    private function _authorize()
+    private function authorize()
     {
         // public = 0
         // registered = 1

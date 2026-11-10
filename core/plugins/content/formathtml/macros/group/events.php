@@ -76,19 +76,19 @@ class Events extends GroupMacro
         $filters = [];
 
         // Get arguments
-        if (($filters['from'] = $this->_getFrom($args)) === false) {
+        if (($filters['from'] = $this->getFrom($args)) === false) {
             return "<p style='color:red;'>Error in Group.Events macro: Invalid 'from' argument. Please use either one of 'today', 'tomorrow', or 'yesterday', or a proper date of the form YYYY-MM-DD.</p>";
         }
-        if (($filters['to'] = $this->_getTo($args)) === false) {
+        if (($filters['to'] = $this->getTo($args)) === false) {
             return "<p style='color:red;'>Error in Group.Events macro: Invalid 'to' argument. Please use either one of 'today', 'tomorrow', or 'yesterday', or a proper date of the form YYYY-MM-DD.</p>";
         }
         if (!$filters['to']) { // Only get 'for' if 'to' is not specified
-            if (($filters['for'] = $this->_getFor($args)) === false) {
+            if (($filters['for'] = $this->getFor($args)) === false) {
                 return "<p style='color:red;'>Error in Group.Events macro: Invalid 'for' argument. Please use a number, whitespace, and then 'days', 'weeks', 'months', or 'years'.</p>";
             }
             $filters['to'] = Date::of($filters['from'])->add($filters['for'])->format('Y-m-d 23:59:59');
         }
-        if (($filters['order'] = $this->_getOrder($args)) === false) {
+        if (($filters['order'] = $this->getOrder($args)) === false) {
             return "<p style='color:red;'>Error in Group.Events macro: Invalid 'order' argument. Please use either 'forward' or 'backward'.</p>";
         }
 
@@ -316,7 +316,7 @@ class Events extends GroupMacro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getFor(&$args)
+    private function getFor(&$args)
     {
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
@@ -347,7 +347,7 @@ class Events extends GroupMacro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getFrom(&$args)
+    private function getFrom(&$args)
     {
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
@@ -384,7 +384,7 @@ class Events extends GroupMacro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getTo(&$args)
+    private function getTo(&$args)
     {
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces
@@ -417,7 +417,7 @@ class Events extends GroupMacro
      * @param   array  $args  Macro Arguments
      * @return  mixed
      */
-    private function _getOrder(&$args)
+    private function getOrder(&$args)
     {
         foreach ($args as $k => $arg) {
             // Match any word characters, digits, or spaces

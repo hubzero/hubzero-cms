@@ -91,7 +91,7 @@ class Composer
      * @return  bool
      **/
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _init()
+    private static function init()
     {
         //Set environment up for composer
         ini_set('memory_limit', '1024M');
@@ -124,9 +124,9 @@ class Composer
      * @return  object  Composer\Factory object in use
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getFactory()
+    private static function getFactory()
     {
-        self::_init();
+        self::init();
         return self::$factory;
     }
 
@@ -136,9 +136,9 @@ class Composer
      * @return  object  Composer\Composer object representing this composer instance
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getComposer()
+    private static function getComposer()
     {
-        self::_init();
+        self::init();
         return self::$composer;
     }
 
@@ -149,7 +149,7 @@ class Composer
      * @return  boolean Indicates success or failure
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _resetComposer()
+    private static function resetComposer()
     {
         self::$composer = null;
         self::$factory = null;
@@ -159,7 +159,7 @@ class Composer
         self::$io = null;
         self::$installer = null;
         self::$dispatcher = null;
-        return self::_init();
+        return self::init();
     }
 
     /**
@@ -168,9 +168,9 @@ class Composer
      * @return  object  Composer\IO object in use
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getIO()
+    private static function getIO()
     {
-        self::_init();
+        self::init();
         return self::$io;
     }
 
@@ -180,9 +180,9 @@ class Composer
      * @return  object  Composer\Repository\RepositoryManager in use
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getRepositoryManager()
+    private static function getRepositoryManager()
     {
-        self::_init();
+        self::init();
         if (!self::$repositoryManager) {
             self::$repositoryManager = self::$composer->getRepositoryManager();
         }
@@ -195,11 +195,11 @@ class Composer
      * @return  object  Composer\Repository\RepositoryInterface containing the local repository
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getLocalRepository()
+    private static function getLocalRepository()
     {
-        self::_init();
+        self::init();
         if (!self::$localRepository) {
-            self::$localRepository = self::_getRepositoryManager()->getLocalRepository();
+            self::$localRepository = self::getRepositoryManager()->getLocalRepository();
         }
         return self::$localRepository;
     }
@@ -210,11 +210,11 @@ class Composer
      * @return  array   Array of Composer\Repository\RepositoryInterfaces containing remote packages
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getRemoteRepositories()
+    private static function getRemoteRepositories()
     {
-        self::_init();
+        self::init();
         if (!self::$remoteRepositories) {
-            self::$remoteRepositories = self::_getRepositoryManager()->getRepositories();
+            self::$remoteRepositories = self::getRepositoryManager()->getRepositories();
         }
         return self::$remoteRepositories;
     }
@@ -225,11 +225,11 @@ class Composer
      * @return  object  Composer\Installer object in use
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getInstaller()
+    private static function getInstaller()
     {
-        self::_init();
+        self::init();
         if (!self::$installer) {
-            self::$installer = Installer::create(self::_getIO(), self::_getComposer());
+            self::$installer = Installer::create(self::getIO(), self::getComposer());
         }
         return self::$installer;
     }
@@ -240,11 +240,11 @@ class Composer
      * @return  object  Composer\EventDispatcher\EventDispatcher in use
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getDispatcher()
+    private static function getDispatcher()
     {
-        self::_init();
+        self::init();
         if (!self::$dispatcher) {
-            self::$dispatcher = self::_getComposer()->getEventDispatcher();
+            self::$dispatcher = self::getComposer()->getEventDispatcher();
         }
         return self::$dispatcher;
     }
@@ -255,11 +255,11 @@ class Composer
      * @return  object  Composer\Json\JsonFile in use
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getComposerJson()
+    private static function getComposerJson()
     {
-        self::_init();
+        self::init();
         if (!self::$json) {
-            $file = self::_getFactory()->getComposerFile();
+            $file = self::getFactory()->getComposerFile();
             self::$json = new JsonFile($file);
         }
         return self::$json;
@@ -272,10 +272,10 @@ class Composer
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _dispatch($command)
+    private static function dispatch($command)
     {
-        $dispatcher = self::_getDispatcher();
-        $commandEvent = new CommandEvent(PluginEvents::COMMAND, $command, self::_getIO(), self::_getIO());
+        $dispatcher = self::getDispatcher();
+        $commandEvent = new CommandEvent(PluginEvents::COMMAND, $command, self::getIO(), self::getIO());
         $dispatcher->dispatch($commandEvent->getName(), $commandEvent);
     }
 
@@ -288,13 +288,13 @@ class Composer
      * @return  boolean Indicates if the operation succeeded
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _requirePackage($packageName, $constraint = 'dev-master')
+    private static function requirePackage($packageName, $constraint = 'dev-master')
     {
         if (empty($packageName)) {
             return false;
         }
-        self::_init();
-        $json = self::_getComposerJson();
+        self::init();
+        $json = self::getComposerJson();
         $contents = file_get_contents($json->getPath());
         $manipulator = new JsonManipulator($contents);
         if (!$manipulator->addLink('require', $packageName, $constraint, false)) {
@@ -311,14 +311,14 @@ class Composer
      * @return  boolean Indicates if the operation succeeded
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _unrequirePackage($packageName)
+    private static function unrequirePackage($packageName)
     {
         if (empty($packageName)) {
             return false;
         }
-        self::_init();
-        self::_dispatch('remove');
-        $json = self::_getComposerJson();
+        self::init();
+        self::dispatch('remove');
+        $json = self::getComposerJson();
         $contents = file_get_contents($json->getPath());
         $manipulator = new JsonManipulator($contents);
         if (!$manipulator->removeSubNode('require', $packageName, false)) {
@@ -337,8 +337,8 @@ class Composer
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     private static function _updatePackage($packageName)
     {
-        self::_init();
-        self::_dispatch('update');
+        self::init();
+        self::dispatch('update');
         if (is_null($packageName)) {
             $package = [];
         } elseif (is_string($packageName)) {
@@ -346,7 +346,7 @@ class Composer
         } else {
             $package = $packageName;
         }
-        $installer = self::_getInstaller();
+        $installer = self::getInstaller();
         $installer
             ->setUpdate(true)
             ->setUpdateWhitelist($package);
@@ -359,9 +359,9 @@ class Composer
      * @return  object  Composer\Config object in use by composer
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getConfig()
+    private static function getConfig()
     {
-        self::_init();
+        self::init();
         return self::$composer->getConfig();
     }
 
@@ -397,8 +397,8 @@ class Composer
      */
     public static function installPackage($packageName, $constraint = 'dev-master')
     {
-        if (self::_requirePackage($packageName, $constraint)) {
-            self::_resetComposer();
+        if (self::requirePackage($packageName, $constraint)) {
+            self::resetComposer();
             return self::_updatePackage($packageName);
         }
         return false;
@@ -412,8 +412,8 @@ class Composer
      */
     public static function removePackage($packageName)
     {
-        if (self::_unrequirePackage($packageName)) {
-            self::_resetComposer();
+        if (self::unrequirePackage($packageName)) {
+            self::resetComposer();
             return self::_updatePackage($packageName);
         }
         return false;
@@ -426,7 +426,7 @@ class Composer
      */
     public static function getLocalPackages()
     {
-        $localRepo = self::_getLocalRepository();
+        $localRepo = self::getLocalRepository();
         return $localRepo->getPackages();
     }
 
@@ -437,7 +437,7 @@ class Composer
      */
     public static function getRemotePackages()
     {
-        $remoteRepos = self::_getRemoteRepositories();
+        $remoteRepos = self::getRemoteRepositories();
         $remotePackages = [];
         foreach ($remoteRepos as $repo) {
             if (method_exists($repo, "getRepoConfig")) {
@@ -476,7 +476,7 @@ class Composer
      */
     public static function getRepositories()
     {
-        $remoteRepos = self::_getRemoteRepositories();
+        $remoteRepos = self::getRemoteRepositories();
         return $remoteRepos;
     }
 
@@ -488,7 +488,7 @@ class Composer
      */
     public static function getRepositoryByUrl($url)
     {
-        $remoteRepos = self::_getRemoteRepositories();
+        $remoteRepos = self::getRemoteRepositories();
         foreach ($remoteRepos as $repo) {
             $config = $repo->getRepoConfig();
             if ($config['url'] == $url) {
@@ -506,7 +506,7 @@ class Composer
      */
     public static function getRepositoryConfigByAlias($alias)
     {
-        $config = self::_getConfig();
+        $config = self::getConfig();
         $repos = self::getRepositoryConfigs();
         if (isset($repos[$alias])) {
             return $repos[$alias];
@@ -521,7 +521,7 @@ class Composer
      */
     public static function getRepositoryConfigs()
     {
-        $config = self::_getConfig();
+        $config = self::getConfig();
         $repos = $config->getRepositories();
         return $repos;
     }
@@ -536,7 +536,7 @@ class Composer
      */
     public static function findRemotePackages($packageName, $versionConstraint)
     {
-        $repoManager = self::_getRepositoryManager();
+        $repoManager = self::getRepositoryManager();
         return $repoManager->findPackages($packageName, $versionConstraint);
     }
 
@@ -550,7 +550,7 @@ class Composer
      */
     public static function findLocalPackages($packageName, $versionConstraint = null)
     {
-        $localRepo = self::_getLocalRepository();
+        $localRepo = self::getLocalRepository();
         return $localRepo->findPackages($packageName, $versionConstraint);
     }
 
@@ -562,7 +562,7 @@ class Composer
      */
     public static function findLocalPackage($packageName)
     {
-        $localRepo = self::_getLocalRepository();
+        $localRepo = self::getLocalRepository();
         return $localRepo->findPackage($packageName, '*');
     }
 
@@ -575,7 +575,7 @@ class Composer
      */
     public static function addRepository($alias, $json)
     {
-        $config = self::_getConfig();
+        $config = self::getConfig();
         $configSource = $config->getConfigSource();
         $value = JsonFile::parseJson($json);
         $configSource->addRepository($alias, $value);
@@ -589,7 +589,7 @@ class Composer
      */
     public static function removeRepository($alias)
     {
-        $config = self::_getConfig();
+        $config = self::getConfig();
         $configSource = $config->getConfigSource();
         $configSource->removeRepository($alias);
     }

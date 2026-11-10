@@ -84,7 +84,7 @@ class ZoneLocations extends Table
      * @return  string  SQL
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildQuery($filters = [])
+    private function buildQuery($filters = [])
     {
         $where = [];
 
@@ -116,7 +116,7 @@ class ZoneLocations extends Table
             case 'count':
                 $filters['limit'] = 0;
 
-                $query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+                $query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
                 $this->_db->setQuery($query);
                 return $this->_db->loadResult();
@@ -129,7 +129,7 @@ class ZoneLocations extends Table
 
             case 'list':
             default:
-                $query  = "SELECT c.*, t.zone " . $this->_buildQuery($filters);
+                $query  = "SELECT c.*, t.zone " . $this->buildQuery($filters);
 
                 if (!isset($filters['sort']) || !$filters['sort']) {
                     $filters['sort'] = 'c.zone_id';

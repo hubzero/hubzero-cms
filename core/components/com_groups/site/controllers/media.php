@@ -162,7 +162,7 @@ class Media extends Base
         //}
 
         // make sure we have a path
-        $this->_createGroupFolder($this->path);
+        $this->createGroupFolder($this->path);
 
         // get list of folders
         $folders = Filesystem::directoryTree($this->path, '.', 10);
@@ -174,9 +174,9 @@ class Media extends Base
         }
 
         // build recursive folder trees
-        $folderTree             = $this->_buildFolderTree($folders);
-        $this->view->folderTree = $this->_buildFolderTreeHtml($folderTree);
-        $this->view->folderList = $this->_buildFolderTreeSelect($folderTree);
+        $folderTree             = $this->buildFolderTree($folders);
+        $this->view->folderTree = $this->buildFolderTreeHtml($folderTree);
+        $this->view->folderList = $this->buildFolderTreeSelect($folderTree);
 
         // add base path if super group
         /*if ($this->group->isSuperGroup())
@@ -200,7 +200,7 @@ class Media extends Base
      * @param   string  $path
      * @return  void
      */
-    private function _createGroupFolder($path)
+    private function createGroupFolder($path)
     {
         // create base group folder
         if (!Filesystem::exists($path)) {
@@ -220,12 +220,12 @@ class Media extends Base
      * @param   integer  $parent_id
      * @return  array
      */
-    private function _buildFolderTree($folders, $parent_id = 0)
+    private function buildFolderTree($folders, $parent_id = 0)
     {
         $branch = [];
         foreach ($folders as $folder) {
             if ($folder['parent'] == $parent_id) {
-                $children = $this->_buildFolderTree($folders, $folder['id']);
+                $children = $this->buildFolderTree($folders, $folder['id']);
                 if ($children) {
                     $folder['children'] = $children;
                 }
@@ -241,7 +241,7 @@ class Media extends Base
      * @param   array  $tree
      * @return  string
      */
-    private function _buildFolderTreeHtml($tree)
+    private function buildFolderTreeHtml($tree)
     {
         //load group object
         $hubzeroGroup = Group::getInstance($this->cn);
@@ -260,7 +260,7 @@ class Media extends Base
 
             if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
                 $nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);" aria-label="Toggle folder"></a>';
-                $childrenHtml = $this->_buildFolderTreeHtml($treeLevel['children']);
+                $childrenHtml = $this->buildFolderTreeHtml($treeLevel['children']);
             }
 
             $html .= '<li>';
@@ -278,7 +278,7 @@ class Media extends Base
      * @param   array  $tree
      * @return  string
      */
-    private function _buildFolderTreeSelect($tree)
+    private function buildFolderTreeSelect($tree)
     {
         // load group object
         $hubzeroGroup = Group::getInstance($this->cn);
@@ -291,7 +291,7 @@ class Media extends Base
         }
         */
 
-        $html .= $this->_buildFolderTreeSelectOptionList($tree);
+        $html .= $this->buildFolderTreeSelectOptionList($tree);
         $html .= '</select>';
         return $html;
     }
@@ -302,7 +302,7 @@ class Media extends Base
      * @param   array  $tree
      * @return  string
      */
-    private function _buildFolderTreeSelectOptionList($tree)
+    private function buildFolderTreeSelectOptionList($tree)
     {
         // load group object
         $hubzeroGroup = Group::getInstance($this->cn);
@@ -318,7 +318,7 @@ class Media extends Base
 
             $options .= '<option value="' . $value . '">' . $text . '</option>';
             if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
-                $options .= $this->_buildFolderTreeSelectOptionList($treeLevel['children']);
+                $options .= $this->buildFolderTreeSelectOptionList($treeLevel['children']);
             }
         }
         return $options;
@@ -810,8 +810,8 @@ class Media extends Base
             }
             unset($folders[$i]);
         }
-        $folderTree = $this->_buildFolderTree($folders);
-        $folderList = $this->_buildFolderTreeSelect($folderTree);
+        $folderTree = $this->buildFolderTree($folders);
+        $folderList = $this->buildFolderTreeSelect($folderTree);
 
         // pass vars to view
         $this->view->group      = $this->group;
@@ -1030,7 +1030,7 @@ class Media extends Base
 
         // get list of folders
         $folders    = Filesystem::directoryTree($this->path, '.', 10);
-        $folderTree = $this->_buildFolderTree($folders);
+        $folderTree = $this->buildFolderTree($folders);
 
         // Find the uploads directory and rebase the tree
         if ($protected === true) {
@@ -1046,7 +1046,7 @@ class Media extends Base
         // Pick which tree to use
         $folderTree = isset($protectedDir) && !empty($protectedDir) ? $protectedDir : $folderTree;
 
-        $folderList = $this->_buildFolderTreeSelect($folderTree);
+        $folderList = $this->buildFolderTreeSelect($folderTree);
 
         // pass vars to view
         $this->view->group      = $this->group;
@@ -1208,8 +1208,8 @@ class Media extends Base
             unset($folders[$i]);
         }
 
-        $folderTree = $this->_buildFolderTree($folders);
-        $folderList = $this->_buildFolderTreeSelect($folderTree);
+        $folderTree = $this->buildFolderTree($folders);
+        $folderList = $this->buildFolderTreeSelect($folderTree);
 
         // pass vars to view
         $this->view->group      = $this->group;

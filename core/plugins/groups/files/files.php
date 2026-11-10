@@ -170,7 +170,7 @@ class Files extends Plugin
 
             $this->path = PATH_APP . DS . trim($this->params->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber');
 
-            $arr['html'] = $this->_browse();
+            $arr['html'] = $this->browse();
         }
 
         // Return the output
@@ -182,7 +182,7 @@ class Files extends Plugin
      *
      * @return     string
      */
-    private function _browse()
+    private function browse()
     {
         $view = $this->view('filebrowser')
             ->set('option', $this->option)
@@ -212,7 +212,7 @@ class Files extends Plugin
         //}
 
         // make sure we have a path
-        $this->_createGroupFolder($this->path);
+        $this->createGroupFolder($this->path);
 
         // get list of folders
         $folders = Filesystem::directoryTree($this->path, '.', 10);
@@ -224,9 +224,9 @@ class Files extends Plugin
         }
 
         // build recursive folder trees
-        $folderTree       = $this->_buildFolderTree($folders);
-        $view->folderTree = $this->_buildFolderTreeHtml($folderTree);
-        $view->folderList = $this->_buildFolderTreeSelect($folderTree);
+        $folderTree       = $this->buildFolderTree($folders);
+        $view->folderTree = $this->buildFolderTreeHtml($folderTree);
+        $view->folderList = $this->buildFolderTreeSelect($folderTree);
 
         foreach ($this->getErrors() as $error) {
             $view->setError($error);
@@ -241,7 +241,7 @@ class Files extends Plugin
      * @param   string  $path
      * @return  void
      */
-    private function _createGroupFolder($path)
+    private function createGroupFolder($path)
     {
         // create base group folder
         if (!Filesystem::exists($path)) {
@@ -261,12 +261,12 @@ class Files extends Plugin
      * @param   integer  $parent_id
      * @return  array
      */
-    private function _buildFolderTree($folders, $parent_id = 0)
+    private function buildFolderTree($folders, $parent_id = 0)
     {
         $branch = [];
         foreach ($folders as $folder) {
             if ($folder['parent'] == $parent_id) {
-                $children = $this->_buildFolderTree($folders, $folder['id']);
+                $children = $this->buildFolderTree($folders, $folder['id']);
                 if ($children) {
                     $folder['children'] = $children;
                 }
@@ -282,7 +282,7 @@ class Files extends Plugin
      * @param   array  $tree
      * @return  string
      */
-    private function _buildFolderTreeHtml($tree)
+    private function buildFolderTreeHtml($tree)
     {
         $base = substr(PATH_APP, strlen(PATH_ROOT));
 
@@ -294,7 +294,7 @@ class Files extends Plugin
 
             if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
                 $nodeToggle   = '<a class="tree-folder-toggle" href="javascript:void(0);" aria-label="Toggle folder"></a>';
-                $childrenHtml = $this->_buildFolderTreeHtml($treeLevel['children']);
+                $childrenHtml = $this->buildFolderTreeHtml($treeLevel['children']);
             }
 
             $html .= '<li>';
@@ -313,13 +313,13 @@ class Files extends Plugin
      * @param   array  $tree
      * @return  string
      */
-    private function _buildFolderTreeSelect($tree)
+    private function buildFolderTreeSelect($tree)
     {
         $html  = '<select class="" name="folder" aria-label="' . Lang::txt('Select folder') . '">';
         if ($this->group->get('type') == 3) {
             $html .= '<option value="/">(root)</option>';
         }
-        $html .= $this->_buildFolderTreeSelectOptionList($tree);
+        $html .= $this->buildFolderTreeSelectOptionList($tree);
         $html .= '</select>';
 
         return $html;
@@ -331,7 +331,7 @@ class Files extends Plugin
      * @param   array  $tree
      * @return  string
      */
-    private function _buildFolderTreeSelectOptionList($tree)
+    private function buildFolderTreeSelectOptionList($tree)
     {
         $base = substr(PATH_APP, strlen(PATH_ROOT));
 
@@ -344,7 +344,7 @@ class Files extends Plugin
 
             $options .= '<option value="' . $value . '">' . $text . '</option>';
             if (isset($treeLevel['children']) && is_array($treeLevel['children'])) {
-                $options .= $this->_buildFolderTreeSelectOptionList($treeLevel['children']);
+                $options .= $this->buildFolderTreeSelectOptionList($treeLevel['children']);
             }
         }
 

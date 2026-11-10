@@ -1091,7 +1091,7 @@ class Publication extends Obj
      *
      * @return  void
      */
-    private function _authorize()
+    private function authorize()
     {
         // NOT logged in
         if (User::isGuest()) {
@@ -1201,7 +1201,7 @@ class Publication extends Obj
     public function access($action = 'view')
     {
         if (!$this->_authorized) {
-            $this->_authorize();
+            $this->authorize();
         }
         return $this->params->get('access-' . strtolower($action) . '-publication');
     }

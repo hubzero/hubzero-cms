@@ -781,7 +781,7 @@ class Course extends SiteController
      * @param   integer  $gid  Course alias
      * @return  boolean  True if valid, false if not
      */
-    private function _validCn($gid)
+    private function validCn($gid)
     {
         if (preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $gid)) {
             if (is_numeric($gid) && intval($gid) == $gid && $gid >= 0) {
@@ -830,7 +830,7 @@ class Course extends SiteController
 
         // Ensure the data passed is valid
         $c = Models\Course::getInstance($course);
-        if (($course == 'new' || $course == 'browse') || !$this->_validCn($course) || $c->exists()) {
+        if (($course == 'new' || $course == 'browse') || !$this->validCn($course) || $c->exists()) {
             $availability = false;
         } else {
             $availability = true;

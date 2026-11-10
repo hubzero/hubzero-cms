@@ -38,21 +38,21 @@ class Resources extends Plugin
      *
      * @var array
      */
-    private $_areas = null;
+    private $areas = null;
 
     /**
      * Resource categories
      *
      * @var array
      */
-    private $_cats  = null;
+    private $cats  = null;
 
     /**
      * Record count
      *
      * @var integer
      */
-    private $_total = null;
+    private $total = null;
 
     /**
      * Loads the plugin language file
@@ -424,16 +424,16 @@ class Resources extends Plugin
      */
     public function getResourcesAreas()
     {
-        $areas = $this->_areas;
+        $areas = $this->areas;
         if (is_array($areas)) {
             return $areas;
         }
 
-        if (!is_array($this->_cats)) {
+        if (!is_array($this->cats)) {
             // Get categories
-            $this->_cats = \Components\Resources\Models\Type::getMajorTypes();
+            $this->cats = \Components\Resources\Models\Type::getMajorTypes();
         }
-        $categories = $this->_cats;
+        $categories = $this->cats;
 
         // Normalize the category names
         // e.g., "Oneline Presentations" -> "onlinepresentations"
@@ -448,7 +448,7 @@ class Resources extends Plugin
         $areas = [
             'resources' => $cats,
         ];
-        $this->_areas = $areas;
+        $this->areas = $areas;
         return $areas;
     }
 
@@ -504,7 +504,7 @@ class Resources extends Plugin
         $filters['published'] = [1];
 
         // Get categories
-        $categories = $this->_cats;
+        $categories = $this->cats;
         if (!is_array($categories)) {
             $categories = \Components\Resources\Models\Type::getMajorTypes();
         }
@@ -521,9 +521,9 @@ class Resources extends Plugin
         }
 
         if ($limit) {
-            if ($this->_total != null) {
+            if ($this->total != null) {
                 $total = 0;
-                $t = $this->_total;
+                $t = $this->total;
                 foreach ($t as $l) {
                     $total += $l;
                 }
@@ -618,7 +618,7 @@ class Resources extends Plugin
             }
 
             // Return the counts
-            $this->_total = $counts;
+            $this->total = $counts;
             return $counts;
         }
     }

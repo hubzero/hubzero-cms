@@ -449,7 +449,7 @@ class Section extends Base
             $this->set('course_id', $offering->get('course_id'));
         }
         foreach ($data as $result) {
-            $user_id = (int) $this->_userId($result);
+            $user_id = (int) $this->userId($result);
 
             // Create the entry
             $model = Member::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
@@ -489,7 +489,7 @@ class Section extends Base
             $this->set('course_id', $offering->get('course_id'));
         }
         foreach ($data as $result) {
-            $user_id = $this->_userId($result);
+            $user_id = $this->userId($result);
 
             $model = Member::getInstance($user_id, $this->get('course_id'), $this->get('offering_id'), $this->get('id'));
             if (!$model->exists()) {
@@ -513,7 +513,7 @@ class Section extends Base
      * @param     mixed $user User ID or username
      * @return    integer
      */
-    private function _userId($user)
+    private function userId($user)
     {
         if (is_numeric($user)) {
             return $user;

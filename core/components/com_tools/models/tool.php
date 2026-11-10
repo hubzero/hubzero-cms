@@ -339,7 +339,7 @@ class Tool
      * @return  boolean
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function _sql_read()
+    private function sqlRead()
     {
         $db = App::get('db');
         $lazyloading = false;
@@ -413,7 +413,7 @@ class Tool
             $this->clear();
             $this->toolname = $toolname;
 
-            $result = $this->_sql_read();
+            $result = $this->sqlRead();
 
             if ($result === false) {
                 $this->clear();

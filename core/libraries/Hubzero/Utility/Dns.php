@@ -21,7 +21,7 @@ class Dns
      * @return string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getConfig()
+    private static function getConfig()
     {
         return Config::get('app.fqdn', '');
     }
@@ -32,9 +32,9 @@ class Dns
      * @return array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _getConfigArray()
+    private static function getConfigArray()
     {
-        return explode('.', self::_getConfig());
+        return explode('.', self::getConfig());
     }
 
     /**
@@ -44,11 +44,11 @@ class Dns
      */
     public static function hostname()
     {
-        $arr = self::_getConfigArray();
+        $arr = self::getConfigArray();
         if (empty($arr)) {
             return '';
         }
-        return self::_getConfigArray()[0];
+        return self::getConfigArray()[0];
     }
 
     /**
@@ -58,7 +58,7 @@ class Dns
      */
     public static function tld()
     {
-        $arr = self::_getConfigArray();
+        $arr = self::getConfigArray();
         if (empty($arr)) {
             return '';
         }
@@ -73,7 +73,7 @@ class Dns
      */
     public static function fqdn()
     {
-        return self::_getConfig();
+        return self::getConfig();
     }
 
     /**
@@ -83,7 +83,7 @@ class Dns
      */
     public static function domain()
     {
-        $arr = self::_getConfigArray();
+        $arr = self::getConfigArray();
         array_shift($arr);
         if (is_null($arr)) {
             $arr = [];
@@ -100,7 +100,7 @@ class Dns
      */
     public static function subdomains()
     {
-        $domains = self::_getConfigArray();
+        $domains = self::getConfigArray();
         array_pop($domains);
         // Config contained only a single domain (".com")
         if (is_null($domains)) {

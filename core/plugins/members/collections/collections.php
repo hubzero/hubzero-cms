@@ -176,100 +176,100 @@ class Collections extends Plugin
             switch ($this->action) {
                 // Comments
                 case 'savecomment':
-                    $arr['html'] = $this->_savecomment();
+                    $arr['html'] = $this->savecomment();
                     break;
                     // 'newcomment' and 'editcomment' used to dispatch to methods that
                     // have never existed in this plugin -- reaching either was a fatal.
                     // Commenting is savecomment/deletecomment.
                 case 'deletecomment':
-                    $arr['html'] = $this->_deletecomment();
+                    $arr['html'] = $this->deletecomment();
                     break;
 
                 case 'followers':
-                    $arr['html'] = $this->_followers();
+                    $arr['html'] = $this->followers();
                     break;
                 case 'following':
-                    $arr['html'] = $this->_following();
+                    $arr['html'] = $this->following();
                     break;
                 case 'follow':
-                    $arr['html'] = $this->_follow('member');
+                    $arr['html'] = $this->follow('member');
                     break;
                 case 'unfollow':
-                    $arr['html'] = $this->_unfollow('member');
+                    $arr['html'] = $this->unfollow('member');
                     break;
 
                     // Entries
                 case 'savepost':
-                    $arr['html'] = $this->_save();
+                    $arr['html'] = $this->save();
                     break;
                 case 'newpost':
-                    $arr['html'] = $this->_new();
+                    $arr['html'] = $this->new();
                     break;
                 case 'editpost':
-                    $arr['html'] = $this->_edit();
+                    $arr['html'] = $this->edit();
                     break;
                 case 'deletepost':
-                    $arr['html'] = $this->_delete();
+                    $arr['html'] = $this->delete();
                     break;
                 case 'posts':
-                    $arr['html'] = $this->_posts();
+                    $arr['html'] = $this->posts();
                     break;
 
                 case 'comment':
                 case 'post':
-                    $arr['html'] = $this->_post();
+                    $arr['html'] = $this->post();
                     break;
                 case 'vote':
-                    $arr['html'] = $this->_vote();
+                    $arr['html'] = $this->vote();
                     break;
                 case 'collect':
-                    $arr['html'] = $this->_repost();
+                    $arr['html'] = $this->repost();
                     break;
                 case 'remove':
-                    $arr['html'] = $this->_remove();
+                    $arr['html'] = $this->remove();
                     break;
                 case 'move':
-                    $arr['html'] = $this->_move();
+                    $arr['html'] = $this->move();
                     break;
 
                 case 'followcollection':
-                    $arr['html'] = $this->_follow('collection');
+                    $arr['html'] = $this->follow('collection');
                     break;
                 case 'unfollowcollection':
-                    $arr['html'] = $this->_unfollow('collection');
+                    $arr['html'] = $this->unfollow('collection');
                     break;
                 case 'collectcollection':
-                    $arr['html'] = $this->_repost();
+                    $arr['html'] = $this->repost();
                     break;
                 case 'newcollection':
-                    $arr['html'] = $this->_newcollection();
+                    $arr['html'] = $this->newcollection();
                     break;
                 case 'editcollection':
-                    $arr['html'] = $this->_editcollection();
+                    $arr['html'] = $this->editcollection();
                     break;
                 case 'savecollection':
-                    $arr['html'] = $this->_savecollection();
+                    $arr['html'] = $this->savecollection();
                     break;
                 case 'deletecollection':
-                    $arr['html'] = $this->_deletecollection();
+                    $arr['html'] = $this->deletecollection();
                     break;
 
                 case 'all':
                 case 'collections':
-                    $arr['html'] = $this->_collections();
+                    $arr['html'] = $this->collections();
                     break;
 
                 case 'collection':
-                    $arr['html'] = $this->_collection();
+                    $arr['html'] = $this->collection();
                     break;
                 case 'feed':
-                    $arr['html'] = $this->_feed();
+                    $arr['html'] = $this->feed();
                     break;
                 default:
                     if ($this->params->get('defaultView', 'feed') == 'collections') {
-                        $arr['html'] = $this->_collections();
+                        $arr['html'] = $this->collections();
                     } else {
-                        $arr['html'] = $this->_feed();
+                        $arr['html'] = $this->feed();
                     }
                     break;
             }
@@ -298,7 +298,7 @@ class Collections extends Plugin
      *
      * @return     never
      */
-    private function _login()
+    private function login()
     {
         $route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->_name);
 
@@ -315,7 +315,7 @@ class Collections extends Plugin
      *
      * @return     string
      */
-    private function _followers()
+    private function followers()
     {
         $view = $this->view('followers', 'follow');
         $view->name        = $this->_name;
@@ -360,7 +360,7 @@ class Collections extends Plugin
      *
      * @return     string
      */
-    private function _following()
+    private function following()
     {
         $view = $this->view('following', 'follow');
         $view->name        = $this->_name;
@@ -410,7 +410,7 @@ class Collections extends Plugin
      *
      * @return     string
      */
-    private function _collections()
+    private function collections()
     {
         $view = $this->view('collections', 'collection');
         $view->name        = $this->_name;
@@ -460,7 +460,7 @@ class Collections extends Plugin
      *
      * @return     string
      */
-    private function _collection()
+    private function collection()
     {
         $view = $this->view('default', 'collection');
         $view->name       = $this->_name;
@@ -490,7 +490,7 @@ class Collections extends Plugin
 
         // Is the board restricted to logged-in users only?
         if ($view->collection->get('access') != 0 && User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Is it a private board?
@@ -543,11 +543,11 @@ class Collections extends Plugin
      * @param      string  $what
      * @return     string
      */
-    private function _follow($what = 'collection')
+    private function follow($what = 'collection')
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -599,7 +599,7 @@ class Collections extends Plugin
             echo json_encode($response);
             exit;
         } else {
-            return $this->_feed();
+            return $this->feed();
         }
     }
 
@@ -609,11 +609,11 @@ class Collections extends Plugin
      * @param   string  $what
      * @return  string
      */
-    private function _unfollow($what = 'collection')
+    private function unfollow($what = 'collection')
     {
         // Is the board restricted to logged-in users only?
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -666,7 +666,7 @@ class Collections extends Plugin
             echo json_encode($response);
             exit;
         } else {
-            return $this->_feed();
+            return $this->feed();
         }
     }
 
@@ -675,7 +675,7 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _feed()
+    private function feed()
     {
         $view = $this->view('feed', 'collection');
         $view->name       = $this->_name;
@@ -732,7 +732,7 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _posts()
+    private function posts()
     {
         $view = $this->view('default', 'collection')
             ->set('name', $this->_name)
@@ -793,14 +793,14 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _post()
+    private function post()
     {
         $post_id = Request::getInt('post', 0);
 
         $post = \Components\Collections\Models\Post::getInstance($post_id);
 
         if (!$post->exists()) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         // A post is reached by bare numeric id and Post::getInstance() returns any
@@ -856,9 +856,9 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _new()
+    private function new()
     {
-        return $this->_edit();
+        return $this->edit();
     }
 
     /**
@@ -867,10 +867,10 @@ class Collections extends Plugin
      * @param   object  $entry
      * @return  string
      */
-    private function _edit($entry = null)
+    private function edit($entry = null)
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
         $restrictUsers = Component::params('com_answers')->get('restrict_users');
         if ($restrictUsers == 'active') {
@@ -977,18 +977,18 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _save()
+    private function save()
     {
         // Check for request forgeries
         Request::checkToken();
 
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1028,7 +1028,7 @@ class Collections extends Plugin
             // Bind content
             if (!$item->bind($fields)) {
                 $this->setError($item->getError());
-                return $this->_edit($item);
+                return $this->edit($item);
             }
 
             // Update for PHP 8.2: id cannot by an emptry string. It has to be null.
@@ -1050,7 +1050,7 @@ class Collections extends Plugin
             // Store new content
             if (!$item->store()) {
                 $this->setError($item->getError());
-                return $this->_edit($item);
+                return $this->edit($item);
             }
         } // end of the item write (skipped for a repost)
 
@@ -1072,7 +1072,7 @@ class Collections extends Plugin
                     $asset = new \Components\Collections\Models\Asset($asset);
                     if (!$asset->move($item->get('id'))) {
                         $this->setError($item->getError());
-                        return $this->_edit($item);
+                        return $this->edit($item);
                     }
                 }
 
@@ -1118,9 +1118,9 @@ class Collections extends Plugin
 
         // Check for any errors
         if ($this->getError()) {
-            //return $this->_edit($row);
+            //return $this->edit($row);
             Request::setVar('post', $p['id']);
-            return $this->_edit($post->item()->bind($fields));
+            return $this->edit($post->item()->bind($fields));
         }
 
         if (!isset($collection)) {
@@ -1177,10 +1177,10 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _repost()
+    private function repost()
     {
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -1345,11 +1345,11 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _remove()
+    private function remove()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Check for request forgeries
@@ -1358,7 +1358,7 @@ class Collections extends Plugin
         // Access check
         if (!$this->params->get('access-create-item')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1422,17 +1422,17 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _move()
+    private function move()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Authorization check
         if (!$this->params->get('access-edit-item')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1481,17 +1481,17 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _delete()
+    private function delete()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-delete-item')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1500,7 +1500,7 @@ class Collections extends Plugin
         $post = \Components\Collections\Models\Post::getInstance(Request::getInt('post', 0));
 
         if (!$post->get('id')) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Two different actions share this route. Marking the ITEM deleted removes
@@ -1614,11 +1614,11 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _savecomment()
+    private function savecomment()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Incoming
@@ -1637,7 +1637,7 @@ class Collections extends Plugin
 
         if (!$post->get('id') || !$post->get('item_id')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_post();
+            return $this->post();
         }
 
         if (!empty($comment['id'])) {
@@ -1655,7 +1655,7 @@ class Collections extends Plugin
                 && !User::authorise('core.manage', 'com_collections')
             ) {
                 $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-                return $this->_post();
+                return $this->post();
             }
         }
 
@@ -1674,7 +1674,7 @@ class Collections extends Plugin
         // Store new content
         if (!$comment->save()) {
             $this->setError($comment->getError());
-            return $this->_post();
+            return $this->post();
         }
 
         // Log activity ($post is resolved above)
@@ -1708,7 +1708,7 @@ class Collections extends Plugin
             'recipients' => $recipients,
         ]);
 
-        return $this->_post();
+        return $this->post();
     }
 
     /**
@@ -1716,11 +1716,11 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _deletecomment()
+    private function deletecomment()
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -1733,7 +1733,7 @@ class Collections extends Plugin
         // Incoming
         $id = Request::getInt('comment', 0);
         if (!$id) {
-            return $this->_post();
+            return $this->post();
         }
 
         // The post the comment is claimed to be on. The route that reaches this
@@ -1755,7 +1755,7 @@ class Collections extends Plugin
             && !User::authorise('core.manage', 'com_collections')
         ) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_post();
+            return $this->post();
         }
 
         $comment->set('state', $comment::STATE_DELETED);
@@ -1766,7 +1766,7 @@ class Collections extends Plugin
         }
 
         // Return the topics list
-        return $this->_post();
+        return $this->post();
     }
 
     /**
@@ -1774,14 +1774,14 @@ class Collections extends Plugin
      *
      * @return  never
      */
-    private function _vote()
+    private function vote()
     {
         // Login check. The collection view offers this control only to a logged-in
         // viewer -- a guest is given a login link instead -- and Item::vote() keys
         // its de-duplication row on the user id, which is 0 for a guest: every
         // guest would share one row and toggle it against the others.
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Require POST
@@ -1868,9 +1868,9 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _newcollection()
+    private function newcollection()
     {
-        return $this->_editcollection();
+        return $this->editcollection();
     }
 
     /**
@@ -1879,7 +1879,7 @@ class Collections extends Plugin
      * @param   object  $row
      * @return  string
      */
-    private function _editcollection($row = null)
+    private function editcollection($row = null)
     {
         $collection = Route::url($this->member->link() . '&active=' . $this->_name);
 
@@ -1948,20 +1948,20 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _savecollection()
+    private function savecollection()
     {
         // Check for request forgeries
         Request::checkToken();
 
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -1995,7 +1995,7 @@ class Collections extends Plugin
 
         if (!$collection->bind($fields)) {
             $this->setError($collection->getError());
-            return $this->_editcollection($collection);
+            return $this->editcollection($collection);
         }
 
         if ($collection->get('access') != 0 && $collection->get('access') != 1 && $collection->get('access') != 4) {
@@ -2005,7 +2005,7 @@ class Collections extends Plugin
         // Store new content
         if (!$collection->store()) {
             $this->setError($collection->getError());
-            return $this->_editcollection($collection);
+            return $this->editcollection($collection);
         }
 
         $collection->item()->tag(trim(Request::getString('tags', '', 'post')));
@@ -2042,17 +2042,17 @@ class Collections extends Plugin
      *
      * @return  string
      */
-    private function _deletecollection()
+    private function deletecollection()
     {
         // Login check
         if (User::isGuest()) {
-            return $this->_login();
+            return $this->login();
         }
 
         // Access check
         if (!$this->params->get('access-delete-collection')) {
             $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
-            return $this->_collections();
+            return $this->collections();
         }
 
         // Incoming
@@ -2061,7 +2061,7 @@ class Collections extends Plugin
 
         // Ensure we have an ID to work with
         if (!$id) {
-            return $this->_collections();
+            return $this->collections();
         }
 
         $process = Request::getString('process', '');

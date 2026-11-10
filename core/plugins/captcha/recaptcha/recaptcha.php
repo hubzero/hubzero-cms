@@ -26,7 +26,7 @@ class Recaptcha extends Plugin
      *
      * @var  string
      */
-    private static $_jsUrl = 'https://www.google.com/recaptcha/api.js';
+    private static $jsUrl = 'https://www.google.com/recaptcha/api.js';
 
     /**
      * Path to JS fallback library needed for ReCAPTCHA to display when JS is disabled
@@ -35,14 +35,14 @@ class Recaptcha extends Plugin
      *
      * @var  string
      */
-    private static $_jsFallbackUrl = 'https://www.google.com/recaptcha/api/fallback?k=';
+    private static $jsFallbackUrl = 'https://www.google.com/recaptcha/api/fallback?k=';
 
     /**
      * ReCAPTCHA verification url
      *
      * @var  string
      */
-    private static $_verifyUrl = 'https://www.google.com/recaptcha/api/siteverify?';
+    private static $verifyUrl = 'https://www.google.com/recaptcha/api/siteverify?';
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -90,7 +90,7 @@ class Recaptcha extends Plugin
         $html .= '<div class="field-wrap">';
         $html .= '<label for="g-recaptcha-response" class="sr-only">' . Lang::txt('CAPTCHA verification') . '</label>';
         $html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
-					<script type="text/javascript" src="' . static::$_jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
+					<script type="text/javascript" src="' . static::$jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
         // [a11y] Remove role="presentation" from reCAPTCHA iframe (injected by Google JS)
         $html .= '<script type="text/javascript" src="' . rtrim(Request::base(true), '/') . '/core/plugins/captcha/recaptcha/assets/js/recaptcha-a11y.js" defer></script>';
         $html .= '</div>';
@@ -118,7 +118,7 @@ class Recaptcha extends Plugin
         }
 
         // perform a get request to the verify server with the needed data
-        $verificationResponse = $this->_submitHttpGet(static::$_verifyUrl, [
+        $verificationResponse = $this->submitHttpGet(static::$verifyUrl, [
             'secret'   => $this->params->get('private'),
             'remoteip' => $remoteIp,
             'response' => $response,
@@ -146,9 +146,9 @@ class Recaptcha extends Plugin
      * @param   array   $data  array of parameters to be sent.
      * @return  array   response
      */
-    private function _submitHttpGet($url, $data)
+    private function submitHttpGet($url, $data)
     {
-        return file_get_contents($url . $this->_encodeQS($data));
+        return file_get_contents($url . $this->encodeQs($data));
     }
 
     /**
@@ -157,7 +157,7 @@ class Recaptcha extends Plugin
      * @param   array   $data  Array of string elements to be encoded
      * @return  string  Encoded request
      */
-    private function _encodeQs($data)
+    private function encodeQs($data)
     {
         $req = '';
         foreach ($data as $key => $value) {

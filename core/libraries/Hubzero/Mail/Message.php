@@ -20,21 +20,21 @@ class Message extends \Symfony\Component\Mime\Email
      *
      * @var  array
      */
-    private $_failures = null;
+    private $failures = null;
 
     /**
      * Message tags
      *
      * @var  array
      */
-    private $_tags = [];
+    private $tags = [];
 
     /**
      * Message transporters
      *
      * @var  array
      */
-    private static $_transporters = [];
+    private static $transporters = [];
 
     /**
      * Check if message needs to be sent as multipart
@@ -162,7 +162,7 @@ class Message extends \Symfony\Component\Mime\Email
         $mailer = new \Symfony\Component\Mailer\Mailer($transport);
 
         try {
-            $mailer->send($this, $this->_failures);
+            $mailer->send($this, $this->failures);
             $result = true;
         } catch (\Exception $e) {
             // Unqualified, this named Hubzero\Mail\Exception, which does not
@@ -182,7 +182,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public function getFailures()
     {
-        return $this->_failures;
+        return $this->failures;
     }
 
     /**
@@ -595,7 +595,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public function setTags($tags)
     {
-        $this->_tags = $tags;
+        $this->tags = $tags;
     }
 
     /**
@@ -605,7 +605,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public function getTags()
     {
-        return $this->_tags;
+        return $this->tags;
     }
 
     /**
@@ -617,7 +617,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public static function addTransporter($name, $transporter)
     {
-        self::$_transporters[$name] = $transporter;
+        self::$transporters[$name] = $transporter;
     }
 
     /**
@@ -628,7 +628,7 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public static function hasTransporter($name)
     {
-        return isset(self::$_transporters[$name]);
+        return isset(self::$transporters[$name]);
     }
 
     /**
@@ -639,6 +639,6 @@ class Message extends \Symfony\Component\Mime\Email
      */
     public static function getTransporter($name)
     {
-        return self::$_transporters[$name];
+        return self::$transporters[$name];
     }
 }

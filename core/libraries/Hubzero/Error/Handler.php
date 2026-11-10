@@ -129,7 +129,7 @@ class Handler
         register_shutdown_function([$this, 'handleShutdown']);
     }
 
-    private function _loglevel($error_level)
+    private function loglevel($error_level)
     {
 
         switch ($error_level) {
@@ -169,7 +169,7 @@ class Handler
         $trace = (new \Exception())->getTraceAsString();
         $trace = "    " . str_replace("\n", "\n    ", $trace);
 
-        $loglevel = $this->_loglevel($level);
+        $loglevel = $this->loglevel($level);
 
         $url = "    [";
         $url .=  isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] . "://" : '<null>://';

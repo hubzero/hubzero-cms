@@ -653,7 +653,7 @@ class Files extends Plugin
                 'showFullMetadata' => false,
                 'subdir'           => $directory,
             ];
-            $fileList = $this->_fileList($fileParams, $allowed, $selected, $used);
+            $fileList = $this->fileList($fileParams, $allowed, $selected, $used);
             if (!empty($fileList)) {
                 return $fileList;
             }
@@ -708,7 +708,7 @@ class Files extends Plugin
         $view->max = $max;
         $view->filterUrl = $filterUrl;
         $view->elId = $elId;
-        $view->connections = $this->_connections();
+        $view->connections = $this->connections();
 
         // Get messages and errors
         $view->msg = $this->_msg;
@@ -733,7 +733,7 @@ class Files extends Plugin
      *
      * @return  string  Filelist template
      */
-    private function _fileList($params = [], $allowed = [], $selected = [], $used = [])
+    private function fileList($params = [], $allowed = [], $selected = [], $used = [])
     {
         $template = null;
         // The listing root reaches Repo::filelist() and the git adapter; without
@@ -784,7 +784,7 @@ class Files extends Plugin
      *
      * @return  string  Connection List template
      */
-    private function _connections()
+    private function connections()
     {
         // Show files
         $view = new \Hubzero\Plugin\View([
@@ -1831,7 +1831,7 @@ class Files extends Plugin
 
         // File download
         if (count($items) > 1) {
-            $archive = $this->_archiveFiles($items);
+            $archive = $this->archiveFiles($items);
 
             if (!$archive) {
                 $this->setError($this->getError() . ' ' . Lang::txt('PLG_PROJECTS_FILES_ARCHIVE_ERROR'));
@@ -2906,7 +2906,7 @@ class Files extends Plugin
      * @param   array  $items
      * @return  mixed  array or false
      */
-    private function _archiveFiles($items)
+    private function archiveFiles($items)
     {
         if (!extension_loaded('zip')) {
             return false;

@@ -422,7 +422,7 @@ class Events extends AdminController
 
         //$row->content = Request::getString('econtent', '', 'post');
         $row->content = $_POST['econtent'];
-        $row->content = $this->_clean($row->content);
+        $row->content = $this->clean($row->content);
 
         // Get the custom fields defined in the events configuration
         $fields = Request::getArray('fields', [], 'post');
@@ -431,7 +431,7 @@ class Events extends AdminController
         $fs = $this->config->fields;
         foreach ($fields as $param => $value) {
             if (trim($value) != '') {
-                $row->content .= '<ef:' . $param . '>' . $this->_clean($value) . '</ef:' . $param . '>';
+                $row->content .= '<ef:' . $param . '>' . $this->clean($value) . '</ef:' . $param . '>';
             } else {
                 foreach ($fs as $f) {
                     if ($f[0] == $param && end($f) == 1) {
@@ -447,13 +447,13 @@ class Events extends AdminController
         }
 
         // Clean adresse
-        $row->adresse_info = $this->_clean($row->adresse_info);
+        $row->adresse_info = $this->clean($row->adresse_info);
 
         // Clean contact
-        $row->contact_info = $this->_clean($row->contact_info);
+        $row->contact_info = $this->clean($row->contact_info);
 
         // Clean extra
-        $row->extra_info = $this->_clean($row->extra_info);
+        $row->extra_info = $this->clean($row->extra_info);
 
         // Prepend http:// to URLs without it
         if ($row->extra_info != null) {
@@ -521,7 +521,7 @@ class Events extends AdminController
      * @param      string $string String to clean
      * @return     string
      */
-    private function _clean($string)
+    private function clean($string)
     {
         return \Hubzero\Utility\Sanitize::clean($string);
     }

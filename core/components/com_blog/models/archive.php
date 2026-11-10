@@ -174,7 +174,7 @@ class Archive extends Obj
      */
     public function __call($method, $arguments = [])
     {
-        $callback = [$this->_adapter(), $method];
+        $callback = [$this->adapter(), $method];
 
         if (is_callable($callback)) {
             return call_user_func_array($callback, $arguments);
@@ -191,7 +191,7 @@ class Archive extends Obj
      * @since   1.3.1
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _adapter()
+    private function adapter()
     {
         if (!$this->_adapter) {
             $scope = strtolower($this->get('scope'));

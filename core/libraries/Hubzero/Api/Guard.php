@@ -65,7 +65,7 @@ class Guard
      * @return void
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function clear_session()
+    private function clearSession()
     {
         // @TODO: Ultimately I don't think any of this is necessary
         // and will likely get removed in a future session refactoring
@@ -169,7 +169,7 @@ class Guard
         $userid = $user->get('id');
 
         // Clear session data, API calls should not be using any session state data
-        $this->clear_session();
+        $this->clearSession();
 
         Session::set('registry', new Registry('session'));
         Session::set('user', $user);

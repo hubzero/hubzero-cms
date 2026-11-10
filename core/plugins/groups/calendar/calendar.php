@@ -275,10 +275,10 @@ class Calendar extends Plugin
         }
 
         //get count of all future group events
-        $arr['metadata']['count'] = $this->_getAllFutureEvents();
+        $arr['metadata']['count'] = $this->getAllFutureEvents();
 
         //get the upcoming events
-        $upcoming_events = $this->_getFutureEventsThisMonth();
+        $upcoming_events = $this->getFutureEventsThisMonth();
         if ($upcoming_events > 0) {
             $title = $this->group->get('description') . " has {$upcoming_events} events this month.";
             $link = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar');
@@ -660,7 +660,7 @@ class Calendar extends Plugin
         $event['modified_by'] = $this->user->get('id');
 
         // repeating rule
-        $event['repeating_rule'] = $this->_buildRepeatingRule();
+        $event['repeating_rule'] = $this->buildRepeatingRule();
 
         //stringify params
         if (isset($event['params']) && count($event['params']) > 0) {
@@ -1391,7 +1391,7 @@ class Calendar extends Plugin
             }
 
             //send email
-            $this->_sendEmail($eventsEvent->email, $from, $subject, $message);
+            $this->sendEmail($eventsEvent->email, $from, $subject, $message);
         }
 
         // build message to send to event registerer
@@ -1419,7 +1419,7 @@ class Calendar extends Plugin
             $subject = Lang::txt('Thank you for Registering for the "%s" event', $eventsEvent->title);
 
             // send mail to user registering
-            $this->_sendEmail($to, $from, $subject, $message);
+            $this->sendEmail($to, $from, $subject, $message);
         }
 
         // redirect back to the event
@@ -1440,7 +1440,7 @@ class Calendar extends Plugin
      * @param   integer  $eventId  Event to load
      * @return  object
      */
-    private function _registrantEvent($eventId)
+    private function registrantEvent($eventId)
     {
         $event = new \Components\Events\Tables\Event($this->database);
         $event->load((int) $eventId);
@@ -1474,7 +1474,7 @@ class Calendar extends Plugin
         $eventId = Request::getInt('event_id', 0, 'get');
 
         //load event data, and check who is asking
-        $view->event = $this->_registrantEvent($eventId);
+        $view->event = $this->registrantEvent($eventId);
 
         //get registrants count
         $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
@@ -1508,7 +1508,7 @@ class Calendar extends Plugin
         $eventId = Request::getInt('event_id', 0, 'get');
 
         //check who is asking, on the same rule as the registrant list
-        $this->_registrantEvent($eventId);
+        $this->registrantEvent($eventId);
 
         //get registrants count
         $eventsRespondent = new \Components\Events\Tables\Respondent(['id' => $eventId]);
@@ -1894,7 +1894,7 @@ class Calendar extends Plugin
      *
      * @return  string
      */
-    private function _buildRepeatingRule()
+    private function buildRepeatingRule()
     {
         $rules = [];
 
@@ -1960,7 +1960,7 @@ class Calendar extends Plugin
      *
      * @return  array
      */
-    private function _getAllFutureEvents()
+    private function getAllFutureEvents()
     {
         $db = App::get('db');
         $sql = "SELECT COUNT(*)
@@ -1978,7 +1978,7 @@ class Calendar extends Plugin
      *
      * @return  array
      */
-    private function _getFutureEventsThisMonth()
+    private function getFutureEventsThisMonth()
     {
         $db = App::get('db');
         $sql = "SELECT COUNT(*)
@@ -2000,7 +2000,7 @@ class Calendar extends Plugin
      * @param   string   $body
      * @return  boolean
      */
-    private function _sendEmail($to, $from, $subject, $body)
+    private function sendEmail($to, $from, $subject, $body)
     {
         // create message object
         $message = new \Hubzero\Mail\Message();

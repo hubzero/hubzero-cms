@@ -521,7 +521,7 @@ class Newsletters extends AdminController
         $plainContent = $newsletter->buildNewsletterPlainTextPart($newsletter);
 
         // Send campaign
-        $this->_send(
+        $this->send(
             $newsletter,
             $htmlContent,
             $plainContent,
@@ -635,7 +635,7 @@ class Newsletters extends AdminController
 
         // send campaign
         // purposefully send no emails, will create later
-        $mailing = $this->_send(
+        $mailing = $this->send(
             $newsletter,
             $htmlContent,
             $plainContent,
@@ -707,7 +707,7 @@ class Newsletters extends AdminController
                 ->toArray();
             // add recipeients
 
-            $this->_sendTo($mailing, $emails);
+            $this->sendTo($mailing, $emails);
 
             // nullify vars
             $emails = null;
@@ -741,7 +741,7 @@ class Newsletters extends AdminController
                     ->toArray();
                 // add recipeients
 
-                $this->_sendTo($mailing, $emails);
+                $this->sendTo($mailing, $emails);
 
                 // nullify vars
                 $emails = null;
@@ -778,7 +778,7 @@ class Newsletters extends AdminController
      * @param   boolean  $sendingTest
      * @return  object
      */
-    private function _send($newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false)
+    private function send($newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false)
     {
         //set default mail from and reply-to names and addresses
         // HTTP_HOST carries the port on a hub served on a non-standard port,
@@ -943,7 +943,7 @@ class Newsletters extends AdminController
         }
 
         // create recipients
-        $this->_sendTo($mailing, $newsletterContacts);
+        $this->sendTo($mailing, $newsletterContacts);
 
         return $mailing;
     }
@@ -955,7 +955,7 @@ class Newsletters extends AdminController
      * @param   array   $emails
      * @return  void
      */
-    private function _sendTo($mailing, $emails)
+    private function sendTo($mailing, $emails)
     {
         // create date object once
         $date = Date::toSql();

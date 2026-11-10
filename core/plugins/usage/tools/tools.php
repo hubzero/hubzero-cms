@@ -81,7 +81,7 @@ class Tools extends Plugin
                 if ($row->rank == '0') {
                     $total = $row->value;
                     if ($s_top == "6" || $s_top == "7" || $s_top == "8") {
-                        $value = $this->time_units($row->value);
+                        $value = $this->timeUnits($row->value);
                     } else {
                         $value = number_format($row->value);
                     }
@@ -99,7 +99,7 @@ class Tools extends Plugin
                 } else {
                     $name = preg_split('/ ~ /', $row->name);
                     if ($s_top == "6" || $s_top == "7" || $s_top == "8") {
-                        $value = $this->time_units($row->value);
+                        $value = $this->timeUnits($row->value);
                     } else {
                         $value = number_format($row->value);
                     }
@@ -198,7 +198,7 @@ class Tools extends Plugin
      * @param   object $database Database
      * @return  string HTML
      */
-    private function gettopcited_tools($database)
+    private function gettopcitedTools($database)
     {
         $html = '';
 
@@ -268,7 +268,7 @@ class Tools extends Plugin
      * @param   mixed $time Value to format
      * @return  string
      */
-    private function time_units($time)
+    private function timeUnits($time)
     {
         if ($time < 60) {
             $data = $time . ' seconds';
@@ -292,7 +292,7 @@ class Tools extends Plugin
      * @param   string $dthis  Time (YYYY-MM)
      * @return  string HTML
      */
-    private function drop_down_dates(&$db, $period, $s_top, $dthis)
+    private function dropDownDates(&$db, $period, $s_top, $dthis)
     {
         $months = [
             "01" => "Jan", "02" => "Feb", "03" => "Mar", "04" => "Apr", "05" => "May", "06" => "Jun",
@@ -311,7 +311,7 @@ class Tools extends Plugin
                 $qtd_found = 0;
                 foreach ($monthsReverse as $key => $month) {
                     $value = $cur_year . '-' . $key;
-                    if (!$qtd_found && $this->check_for_data($value, 3)) {
+                    if (!$qtd_found && $this->checkForData($value, 3)) {
                         $html .= '<option value="' . $value . '"';
                         if ($value == $dthis) {
                             $html .= ' selected="selected"';
@@ -337,7 +337,7 @@ class Tools extends Plugin
                 for ($j = $cur_year; $j >= $year_data_start; $j--) {
                     for ($i = 12; $i > 0; $i = $i - 3) {
                         $value = $j . '-' . sprintf("%02d", $i);
-                        if ($this->check_for_data($value, 3)) {
+                        if ($this->checkForData($value, 3)) {
                             $html .= '<option value="' . $value . '"';
                             if ($value == $dthis) {
                                 $html .= ' selected="selected"';
@@ -388,7 +388,7 @@ class Tools extends Plugin
                             $nextmonth = $arrayMonths[floor(array_search($month, $arrayMonths)) + 1];
                         }
                         $value = $i . '-' . $key;
-                        if ($this->check_for_data($value, 12) && (intval($key) < $cur_month || $i < $cur_year)) {
+                        if ($this->checkForData($value, 12) && (intval($key) < $cur_month || $i < $cur_year)) {
                             $html .= '<option value="' . $value . '"';
                             if ($value == $dthis) {
                                 $html .= ' selected="selected"';
@@ -410,7 +410,7 @@ class Tools extends Plugin
                 for ($i = $cur_year; $i >= $year_data_start; $i--) {
                     foreach ($monthsReverse as $key => $month) {
                         $value = $i . '-' . $key;
-                        if ($this->check_for_data($value, 1)) {
+                        if ($this->checkForData($value, 1)) {
                             $html .= '<option value="' . $value . '"';
                             if ($value == $dthis) {
                                 $html .= ' selected="selected"';
@@ -425,7 +425,7 @@ class Tools extends Plugin
                 $ytd_found = 0;
                 foreach ($monthsReverse as $key => $month) {
                     $value = $cur_year . '-' . $key;
-                    if (!$ytd_found && $this->check_for_data($value, 0)) {
+                    if (!$ytd_found && $this->checkForData($value, 0)) {
                         $html .= '<option value="' . $value . '"';
                         if ($value == $dthis) {
                             $html .= ' selected="selected"';
@@ -436,7 +436,7 @@ class Tools extends Plugin
                 }
                 for ($i = $cur_year - 1; $i >= $year_data_start; $i--) {
                     $value = $i . '-12';
-                    if ($this->check_for_data($value, 0)) {
+                    if ($this->checkForData($value, 0)) {
                         $html .= '<option value="' . $value . '"';
                         if ($value == $dthis) {
                             $html .= ' selected="selected"';
@@ -450,7 +450,7 @@ class Tools extends Plugin
                 $ytd_found = 0;
                 foreach ($monthsReverse as $key => $month) {
                     $value = $cur_year . '-' . $key;
-                    if (!$ytd_found && $this->check_for_data($value, 0)) {
+                    if (!$ytd_found && $this->checkForData($value, 0)) {
                         $html .= '<option value="' . $value . '"';
                         if ($value == $dthis) {
                             $html .= ' selected="selected"';
@@ -469,7 +469,7 @@ class Tools extends Plugin
                 }
                 for ($i = $full_year; $i >= $year_data_start; $i--) {
                     $value = $i . '-09';
-                    if ($this->check_for_data($value, 0)) {
+                    if ($this->checkForData($value, 0)) {
                         $html .= '<option value="' . $value . '"';
                         if ($value == $dthis) {
                             $html .= ' selected="selected"';
@@ -494,7 +494,7 @@ class Tools extends Plugin
      * @param   string $period     Time period
      * @return  boolean
      */
-    private function check_for_data($yearmonth, $period)
+    private function checkForData($yearmonth, $period)
     {
         $database = App::get('db');
         if (!isset($this->totals)) {
@@ -589,7 +589,7 @@ class Tools extends Plugin
             for ($i = $cur_year; $i >= $year_data_start; $i--) {
                 foreach ($monthsReverse as $key => $month) {
                     $value = $i . '-' . $key;
-                    if ($this->check_for_data($value, $period) && (intval($key) < $cur_month || $i < $cur_year)) {
+                    if ($this->checkForData($value, $period) && (intval($key) < $cur_month || $i < $cur_year)) {
                         $dthis = $value;
                         break;
                     }
@@ -677,7 +677,7 @@ class Tools extends Plugin
 
         $html .= "\t\t\t" . '</select>' . "\n";
         if ($s_top < 9) {
-            $html .= $this->drop_down_dates($database, $period, $s_top, $dthis) . ' ';
+            $html .= $this->dropDownDates($database, $period, $s_top, $dthis) . ' ';
         }
         $html .= "\t\t" . '<input type="submit" value="' . Lang::txt('PLG_USAGE_VIEW') . '" />' . "\n";
         $html .= "\t" . '</fieldset>' . "\n";
@@ -693,7 +693,7 @@ class Tools extends Plugin
             }
 
             if ($s_top == '9') {
-                $html .= $this->gettopcited_tools($database);
+                $html .= $this->gettopcitedTools($database);
             } elseif ($s_top == '1') {
                 $html .= $this->gettoprank_tools($database);
             } else {

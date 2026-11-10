@@ -94,14 +94,14 @@ class RecommendedTags
         $freq = [];
         $last = [];
         foreach ($words as $idx => $word) {
-            if (self::is_stop_word($word, $opts['min_len'])) {
+            if (self::isStopWord($word, $opts['min_len'])) {
                 continue;
             }
             $stems = [[$stemmer->stem($word), strtolower($word)]];
-            if (isset($words[$idx + 1]) && !self::is_stop_word($words[$idx + 1], $opts['min_len'])) {
+            if (isset($words[$idx + 1]) && !self::isStopWord($words[$idx + 1], $opts['min_len'])) {
                 $stems[] = [$stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]), strtolower($word) . ' ' . strtolower($words[$idx + 1])];
             }
-            if (isset($words[$idx + 2]) && !self::is_stop_word($words[$idx + 2], $opts['min_len'])) {
+            if (isset($words[$idx + 2]) && !self::isStopWord($words[$idx + 2], $opts['min_len'])) {
                 $stems[] = [
                     $stems[0][0] . ' ' . $stemmer->stem($words[$idx + 1]) . ' ' . $stemmer->stem($words[$idx + 2]),
                     \Hubzero\Utility\Inflector::singularize(strtolower($word)) . ' ' . strtolower($words[$idx + 1]) . ' ' . strtolower($words[$idx + 2]),
@@ -135,7 +135,7 @@ class RecommendedTags
         $this->tags = array_slice($freq, 0, $opts['count']);
     }
 
-    private static function is_stop_word($word, $word_min_len)
+    private static function isStopWord($word, $word_min_len)
     {
         static $stop_words = [
             "a" =>       true, "able" =>    true, "about" =>     true, "across" =>    true, "after" =>   true,

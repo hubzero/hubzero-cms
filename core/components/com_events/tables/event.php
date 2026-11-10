@@ -338,7 +338,7 @@ class Event extends Table
     public function find($filters = [])
     {
         $sql  = "SELECT * FROM {$this->_tbl}";
-        $sql .= $this->_buildQuery($filters);
+        $sql .= $this->buildQuery($filters);
 
         $this->_db->setQuery($sql);
         return $this->_db->loadObjectList();
@@ -353,7 +353,7 @@ class Event extends Table
     public function count($filters = [])
     {
         $sql  = "SELECT COUNT(*) FROM {$this->_tbl}";
-        $sql .= $this->_buildQuery($filters);
+        $sql .= $this->buildQuery($filters);
 
         $this->_db->setQuery($sql);
         return $this->_db->loadResult();
@@ -365,7 +365,7 @@ class Event extends Table
      * @param   array   $filters
      * @return  string
      */
-    private function _buildQuery($filters = [])
+    private function buildQuery($filters = [])
     {
         // var to hold conditions
         $where = [];

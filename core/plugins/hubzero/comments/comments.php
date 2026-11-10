@@ -48,7 +48,7 @@ class Comments extends Plugin
      *
      * @var  array
      */
-    private $_allowedExtensions = null;
+    private $allowedExtensions = null;
 
     /**
      * Display comments on an object

@@ -69,7 +69,7 @@ class Screenshots extends SiteController
         $this->_toolid = $obj->getToolIdFromResource($pid);
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -139,7 +139,7 @@ class Screenshots extends SiteController
         // this the task is reachable unauthenticated for any pid.
         $obj = new \Components\Tools\Tables\Tool($this->database);
         $this->_toolid = $obj->getToolIdFromResource($pid);
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -215,7 +215,7 @@ class Screenshots extends SiteController
         // this the task is reachable unauthenticated for any pid.
         $obj = new \Components\Tools\Tables\Tool($this->database);
         $this->_toolid = $obj->getToolIdFromResource($pid);
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -273,7 +273,7 @@ class Screenshots extends SiteController
         // Only a member of the tool's dev team may delete a screenshot
         $obj = new \Components\Tools\Tables\Tool($this->database);
         $this->_toolid = $obj->getToolIdFromResource($pid);
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -292,7 +292,7 @@ class Screenshots extends SiteController
         // Build the path
         $listdir  = $row->relativepath();
         $listdir .= DS . $vid;
-        $path = $this->_buildUploadPath($listdir, '');
+        $path = $this->buildUploadPath($listdir, '');
 
         // Check if the folder even exists
         if (!is_dir($path) or !$path) {
@@ -348,7 +348,7 @@ class Screenshots extends SiteController
         // this the task is reachable unauthenticated for any pid.
         $obj = new \Components\Tools\Tables\Tool($this->database);
         $this->_toolid = $obj->getToolIdFromResource($pid);
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -423,7 +423,7 @@ class Screenshots extends SiteController
         // Build the path
         $listdir  = $resource->relativepath();
         $listdir .= DS . $vid;
-        $path = $this->_buildUploadPath($listdir, '');
+        $path = $this->buildUploadPath($listdir, '');
 
         // Make sure the upload path exist
         if (!is_dir($path)) {
@@ -453,9 +453,9 @@ class Screenshots extends SiteController
 
             $tn = preg_replace('#\.[^.]*$#', '', $file['name']) . '-tn.gif';
             if ($file_ext != '.swf') {
-                $this->_createThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
+                $this->createThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
             } else {
-                //$this->_createAnimThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
+                //$this->createAnimThumb($path . DS . $file['name'], $ss_width, $ss_height, $path, $tn);
             }
         }
 
@@ -482,7 +482,7 @@ class Screenshots extends SiteController
      * @return     boolean False if errors, True if successful
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
+    private function createAnimThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
     {
         $imorig = imagecreatefromjpeg(dirname(__DIR__) . DS . 'assets' . DS . 'img' . DS . 'anim.jpg');
         $x = imageSX($imorig);
@@ -517,7 +517,7 @@ class Screenshots extends SiteController
      * @return     boolean False if errors, True if successful
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _createThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
+    private function createThumb($tmpname, $maxwidth, $maxheight, $save_dir, $save_name)
     {
         $save_dir = rtrim($save_dir, DS) . DS;
         $gis = getimagesize($tmpname);
@@ -595,7 +595,7 @@ class Screenshots extends SiteController
             App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
         }
 
-        if ($toolid && $this->_checkAccess($toolid)) {
+        if ($toolid && $this->checkAccess($toolid)) {
             if ($this->transfer($from, $to, $rid)) {
                 // Push through to the screenshot view
                 $this->displayTask($rid, $version);
@@ -663,8 +663,8 @@ class Screenshots extends SiteController
         $listdir = $resource->relativepath();
         $srcdir  = $listdir . DS . $sourceid;
         $destdir = $listdir . DS . $destid;
-        $src     = $this->_buildUploadPath($srcdir, '');
-        $dest    = $this->_buildUploadPath($destdir, '');
+        $src     = $this->buildUploadPath($srcdir, '');
+        $dest    = $this->buildUploadPath($destdir, '');
 
         // Make sure the path exist
         if (!is_dir($src)) {
@@ -738,7 +738,7 @@ class Screenshots extends SiteController
         // Dev-version screenshots are only shown inside the tool pipeline,
         // so the list is limited to the tool's dev team like the other tasks.
         $obj = new \Components\Tools\Tables\Tool($this->database);
-        if (!$this->_checkAccess($obj->getToolIdFromResource($rid))) {
+        if (!$this->checkAccess($obj->getToolIdFromResource($rid))) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -790,7 +790,7 @@ class Screenshots extends SiteController
      * @return     string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildUploadPath($listdir, $subdir = '')
+    private function buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
             $subdir = DS . trim($subdir, DS);
@@ -829,7 +829,7 @@ class Screenshots extends SiteController
      * @return     boolean True if they have access
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
+    private function checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);

@@ -178,8 +178,8 @@ Examples:
 
             // Check for file existence
             if (
-                $attach->get('filename') && file_exists($this->_path($attach->get('filename')))
-                || file_exists($this->_path($attach->get('filename'), true))
+                $attach->get('filename') && file_exists($this->path($attach->get('filename')))
+                || file_exists($this->path($attach->get('filename'), true))
             ) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
                 if (!$attr['desc']) {
@@ -218,7 +218,7 @@ Examples:
                 $file = $bits[1];
             }
 
-            if (file_exists($this->_path($file)) || file_exists($this->_path($file, true))) {
+            if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
                 $attr['desc'] = (isset($attr['desc'])) ? $attr['desc'] : '';
 
                 $ret = true;
@@ -232,7 +232,7 @@ Examples:
             }
 
             // Return HTML
-            return $this->_embed($file, $attr);
+            return $this->embed($file, $attr);
         }
 
         // Return error message
@@ -401,7 +401,7 @@ Examples:
      * @param   boolean $alt   Switches between relative and absolute path?
      * @return  string
      */
-    private function _path($file, $alt = false)
+    private function path($file, $alt = false)
     {
         if (substr($file, 0, 1) == DS) {
             $path = PATH_ROOT . $file;
@@ -435,7 +435,7 @@ Examples:
      * @param   string  $file  Filename
      * @return  string
      */
-    private function _link($file)
+    private function link($file)
     {
         $urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
         if (preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file) || preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS) {
@@ -445,7 +445,7 @@ Examples:
         $file = trim($file, DS);
 
         if (Request::getString('format') == 'pdf') {
-            return $this->_path($file);
+            return $this->path($file);
         }
 
         if ($this->pageid) {
@@ -473,7 +473,7 @@ Examples:
      * @param   array   $attr  Attributes to apply to the HTML
      * @return  string
      */
-    private function _embed($file, $attr = [])
+    private function embed($file, $attr = [])
     {
         $attr['alt'] = (isset($attr['alt'])) ? htmlentities($attr['alt'], ENT_COMPAT, 'UTF-8') : $attr['desc'];
         if (!$attr['alt']) {
@@ -500,12 +500,12 @@ Examples:
 
         $html  = '<span' . ((isset($attr['nofigure']) && $attr['nofigure']) ? '' : ' class="figure"') . ($styles ? ' style="' . $styles . '"' : '') . '>';
 
-        $img = '<img src="' . $this->_link($file) . '" ' . implode(' ', $attribs) . ' />';
+        $img = '<img src="' . $this->link($file) . '" ' . implode(' ', $attribs) . ' />';
 
         if ($attr['href'] == 'none') {
             $html .= $img;
         } else {
-            $attr['href'] = ($attr['href']) ? $attr['href'] : $this->_link($file);
+            $attr['href'] = ($attr['href']) ? $attr['href'] : $this->link($file);
             $attr['rel']  = (isset($attr['rel'])) ? $attr['rel'] : 'lightbox';
 
             $html .= '<a rel="' . $attr['rel'] . '" href="' . $attr['href'] . '">' . $img . '</a>';

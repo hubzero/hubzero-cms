@@ -117,10 +117,10 @@ class Account extends Plugin
 
                     // Actions
                 case 'unlink':
-                    $this->_unlink();
+                    $this->unlink();
                     break;
                 case 'uploadkey':
-                    $this->_uploadKey();
+                    $this->uploadKey();
                     break;
 
                     // Set local password
@@ -590,7 +590,7 @@ class Account extends Plugin
      *
      * @return  void
      */
-    private function _unlink()
+    private function unlink()
     {
         // Determine what type of password change the user needs
         $hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
@@ -813,7 +813,7 @@ class Account extends Plugin
      *
      * @return  void
      */
-    private function _uploadKey()
+    private function uploadKey()
     {
         Request::checkToken();
 

@@ -187,7 +187,7 @@ class Citations extends Plugin
     private function browseAction()
     {
         // Instantiate a new citations object
-        $obj = $this->_filterHandler(Request::getArray('filters', []), $this->member->get('id'));
+        $obj = $this->filterHandler(Request::getArray('filters', []), $this->member->get('id'));
 
         $count = clone $obj['citations'];
         $count = $count->total();
@@ -315,7 +315,7 @@ class Citations extends Plugin
         $view->types = $ct;
 
         // OpenURL
-        $view->openurl = $this->_handleOpenURL();
+        $view->openurl = $this->handleOpenURL();
 
         // Output HTML
         foreach ($this->getErrors() as $error) {
@@ -1313,7 +1313,7 @@ class Citations extends Plugin
      * @param array  $filters array of POST values
      * @return  array sanitized and validated filter values
      */
-    private function _filterHandler($filters = [], $scope_id = 0)
+    private function filterHandler($filters = [], $scope_id = 0)
     {
         $citations = \Components\Citations\Models\Citation::all();
         // require citations
@@ -1450,7 +1450,7 @@ class Citations extends Plugin
      *
      * @return  array<string,string>
      */
-    private function _handleOpenURL()
+    private function handleOpenURL()
     {
         return [
             'link' => '',

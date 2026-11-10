@@ -442,10 +442,10 @@ class Processor extends Obj
             $long     = $this->exif_data['GPSLongitude'];
             $long_dir = $this->exif_data['GPSLongitudeRef'];
 
-            $latitude  = $this->geo_single_fracs2dec($lat);
-            $longitude = $this->geo_single_fracs2dec($long);
-            $latitude_formatted  = $this->geo_pretty_fracs2dec($lat) . $lat_dir;
-            $longitude_formatted = $this->geo_pretty_fracs2dec($long) . $long_dir;
+            $latitude  = $this->geoSingleFracs2dec($lat);
+            $longitude = $this->geoSingleFracs2dec($long);
+            $latitude_formatted  = $this->geoPrettyFracs2dec($lat) . $lat_dir;
+            $longitude_formatted = $this->geoPrettyFracs2dec($long) . $long_dir;
 
             if ($lat_dir == 'S') {
                 $latitude *= -1;
@@ -475,7 +475,7 @@ class Processor extends Obj
      * @return  integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function geo_frac2dec($str)
+    private function geoFrac2dec($str)
     {
         list($n, $d) = explode('/', $str);
 
@@ -493,13 +493,13 @@ class Processor extends Obj
      * @return  string
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function geo_pretty_fracs2dec($fracs)
+    private function geoPrettyFracs2dec($fracs)
     {
-        return $this->geo_frac2dec($fracs[0])
+        return $this->geoFrac2dec($fracs[0])
             . '&deg; '
-            . $this->geo_frac2dec($fracs[1])
+            . $this->geoFrac2dec($fracs[1])
             . '&prime; '
-            . $this->geo_frac2dec($fracs[2])
+            . $this->geoFrac2dec($fracs[2])
             . '&Prime; ';
     }
 
@@ -510,12 +510,12 @@ class Processor extends Obj
      * @return  integer
      */
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    private function geo_single_fracs2dec($fracs)
+    private function geoSingleFracs2dec($fracs)
     {
         return $this
-            ->geo_frac2dec($fracs[0]) + $this
-            ->geo_frac2dec($fracs[1]) / 60 + $this
-            ->geo_frac2dec($fracs[2]) / 3600;
+            ->geoFrac2dec($fracs[0]) + $this
+            ->geoFrac2dec($fracs[1]) / 60 + $this
+            ->geoFrac2dec($fracs[2]) / 3600;
     }
 
     /**

@@ -66,7 +66,7 @@ class Resources extends SiteController
         }
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -432,7 +432,7 @@ class Resources extends SiteController
         }
 
         // Make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -461,7 +461,7 @@ class Resources extends SiteController
         if (!User::isGuest()) {
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
             // Get the groups the user has access to
-            $usersgroups = $this->_getUsersGroups($xgroups);
+            $usersgroups = $this->getUsersGroups($xgroups);
         } else {
             $usersgroups = [];
         }
@@ -542,7 +542,7 @@ class Resources extends SiteController
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _getUsersGroups($groups)
+    private function getUsersGroups($groups)
     {
         $arr = [];
         if (!empty($groups)) {
@@ -564,7 +564,7 @@ class Resources extends SiteController
      * @return  boolean  True if they have access
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
+    private function checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);

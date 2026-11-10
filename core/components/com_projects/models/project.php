@@ -534,7 +534,7 @@ class Project extends Model
      * @param   boolean  $reviewer
      * @return  void
      */
-    private function _authorize($reviewer = false)
+    private function authorize($reviewer = false)
     {
         $this->_authorized = true;
 
@@ -721,7 +721,7 @@ class Project extends Model
     public function access($action = 'view')
     {
         if (!$this->_authorized) {
-            $this->_authorize();
+            $this->authorize();
         }
         return $this->params->get('access-' . strtolower($action) . '-project');
     }
@@ -738,7 +738,7 @@ class Project extends Model
             return false;
         }
 
-        $this->_authorize($reviewer);
+        $this->authorize($reviewer);
         return $this->params->get('access-reviewer-' . strtolower($reviewer) . '-project');
     }
 

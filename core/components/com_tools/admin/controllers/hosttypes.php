@@ -87,7 +87,7 @@ class Hosttypes extends AdminController
 
         if ($rows) {
             foreach ($rows as $key => $row) {
-                $rows[$key]->refs = $this->_refs($row->value);
+                $rows[$key]->refs = $this->refs($row->value);
             }
         }
 
@@ -123,7 +123,7 @@ class Hosttypes extends AdminController
             $bit = log($row->value) / log(2);
         }
 
-        $refs = $this->_refs($row->value);
+        $refs = $this->refs($row->value);
 
         // Display results
         $this->view
@@ -142,7 +142,7 @@ class Hosttypes extends AdminController
      * @return  integer
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _refs($value)
+    private function refs($value)
     {
         $refs = 0;
 

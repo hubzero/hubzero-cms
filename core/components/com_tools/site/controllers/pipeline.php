@@ -164,7 +164,7 @@ class Pipeline extends SiteController
         }
 
         // check access rights
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -254,7 +254,7 @@ class Pipeline extends SiteController
         }
 
         // check access rights
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -355,7 +355,7 @@ class Pipeline extends SiteController
         }
 
         // check access rights
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -427,7 +427,7 @@ class Pipeline extends SiteController
         }
 
         // check access rights
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -516,7 +516,7 @@ class Pipeline extends SiteController
         }
 
         // Only tool admins/developers may change license and code access
-        if (!$this->_checkAccess($id)) {
+        if (!$this->checkAccess($id)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -724,7 +724,7 @@ class Pipeline extends SiteController
         $this->view->editversion = ($this->view->editversion == 'current') ? 'current' : 'dev';
 
         // check access rights
-        if ($this->_toolid && !$this->_checkAccess($this->_toolid)) {
+        if ($this->_toolid && !$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -876,7 +876,7 @@ class Pipeline extends SiteController
 
         if ($id) {
             // make sure user is authorized to go further
-            if (!$this->_checkAccess($id)) {
+            if (!$this->checkAccess($id)) {
                 App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
                 return;
             }
@@ -1117,7 +1117,7 @@ class Pipeline extends SiteController
 
         // get ticket information
         if (empty($hzt->ticketid)) {
-            $hzt->ticketid = $this->_createTicket($this->_toolid, $tool);
+            $hzt->ticketid = $this->createTicket($this->_toolid, $tool);
         }
 
         // create resource page
@@ -1261,7 +1261,7 @@ class Pipeline extends SiteController
         }
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -1344,7 +1344,7 @@ class Pipeline extends SiteController
         }
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -1385,7 +1385,7 @@ class Pipeline extends SiteController
         }
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -1453,7 +1453,7 @@ class Pipeline extends SiteController
         //$id = $this->_toolid;
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -1590,7 +1590,7 @@ class Pipeline extends SiteController
         }
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -2197,7 +2197,7 @@ class Pipeline extends SiteController
      * @return  mixed    False if errors, integer on success
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _createTicket($toolid, $tool)
+    private function createTicket($toolid, $tool)
     {
         $row = \Components\Support\Models\Ticket::blank();
         $row->set('open', 1);
@@ -2263,7 +2263,7 @@ class Pipeline extends SiteController
         }
 
         // check access rights
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -2351,7 +2351,7 @@ class Pipeline extends SiteController
      * @return  boolean  True if they have access
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
+    private function checkAccess($toolid, $allowAdmins = 1, $allowAuthors = false)
     {
         // Create a Tool object
         $obj = new \Components\Tools\Tables\Tool($this->database);

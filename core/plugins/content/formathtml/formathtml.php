@@ -34,7 +34,7 @@ class Formathtml extends Plugin
 
         $content = '';
 
-        $key = $this->_key($context);
+        $key = $this->key($context);
 
         if (
             $article instanceof \Hubzero\Base\Obj
@@ -103,7 +103,7 @@ class Formathtml extends Plugin
 
         $content = '';
 
-        $key = $this->_key($context);
+        $key = $this->key($context);
 
         if (
             $article instanceof \Hubzero\Base\Obj
@@ -235,7 +235,7 @@ class Formathtml extends Plugin
      * @param   string  $context  A dot-notation string
      * @return  string
      */
-    private function _key($context)
+    private function key($context)
     {
         $key = 'content';
 

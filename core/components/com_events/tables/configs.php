@@ -20,21 +20,21 @@ class Configs
      *
      * @var  string
      */
-    private $_tbl = null;
+    private $tbl = null;
 
     /**
      * Database connection
      *
      * @var  object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * Properties container
      *
      * @var  array
      */
-    private $_data = [];
+    private $data = [];
 
     /**
      * Constructor
@@ -44,8 +44,8 @@ class Configs
      */
     public function __construct(&$db)
     {
-        $this->_tbl = '#__events_config';
-        $this->_db  = $db;
+        $this->tbl = '#__events_config';
+        $this->db  = $db;
     }
 
     /**
@@ -57,7 +57,7 @@ class Configs
      */
     public function __set($property, $value)
     {
-        $this->_data[$property] = $value;
+        $this->data[$property] = $value;
     }
 
     /**
@@ -68,8 +68,8 @@ class Configs
      */
     public function __get($property)
     {
-        if (isset($this->_data[$property])) {
-            return $this->_data[$property];
+        if (isset($this->data[$property])) {
+            return $this->data[$property];
         }
     }
 
@@ -80,13 +80,13 @@ class Configs
      */
     public function load()
     {
-        $this->_db->setQuery("SELECT * FROM $this->_tbl");
-        $configs = $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT * FROM $this->tbl");
+        $configs = $this->db->loadObjectList();
 
         if (empty($configs) || count($configs) <= 0) {
             if ($this->loadDefaults()) {
-                $this->_db->setQuery("SELECT * FROM $this->_tbl");
-                $configs = $this->_db->loadObjectList();
+                $this->db->setQuery("SELECT * FROM $this->tbl");
+                $configs = $this->db->loadObjectList();
             }
         }
 
@@ -132,11 +132,11 @@ class Configs
             'fields' => '',
         ];
         foreach ($config as $p => $v) {
-            $this->_db->setQuery(
-                "INSERT INTO $this->_tbl (param, value) VALUES ("
-                . $this->_db->quote($p) . ", " . $this->_db->quote($v) . ")",
+            $this->db->setQuery(
+                "INSERT INTO $this->tbl (param, value) VALUES ("
+                . $this->db->quote($p) . ", " . $this->db->quote($v) . ")",
             );
-            if (!$this->_db->query()) {
+            if (!$this->db->query()) {
                 return false;
             }
         }

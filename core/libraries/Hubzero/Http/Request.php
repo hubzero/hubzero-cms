@@ -183,7 +183,7 @@ class Request extends BaseRequest
     public function getInt($key, $default = 0, $hash = 'input')
     {
         $str = $this->getVar($key, $default, $hash);
-        $str = is_array($str) ? self::_flatten('', $str) : $str;
+        $str = is_array($str) ? self::flatten('', $str) : $str;
         $str = trim($str === null ? '' : (string) $str);
 
         // Read only a LEADING integer (whitespace already trimmed above). The
@@ -223,7 +223,7 @@ class Request extends BaseRequest
     public function getFloat($name, $default = 0.0, $hash = 'input')
     {
         $result = $this->getVar($name, $default, $hash);
-        $result = is_array($result) ? self::_flatten('', $result) : $result;
+        $result = is_array($result) ? self::flatten('', $result) : $result;
         $result = trim($result === null ? '' : (string) $result);
 
         // Anchored, for the reason getInt() is: an unanchored match scavenges
@@ -261,7 +261,7 @@ class Request extends BaseRequest
     public function getWord($key, $default = null, $hash = 'input')
     {
         $result = $this->getVar($key, $default, $hash);
-        $result = is_array($result) ? self::_flatten('', $result) : $result;
+        $result = is_array($result) ? self::flatten('', $result) : $result;
         return preg_replace(static::$filters['word'], '', $result ? $result : '');
     }
 
@@ -276,7 +276,7 @@ class Request extends BaseRequest
     public function getCmd($key = null, $default = null, $hash = 'input')
     {
         $result = $this->getVar($key, $default, $hash);
-        $result = is_array($result) ? self::_flatten('', $result) : $result;
+        $result = is_array($result) ? self::flatten('', $result) : $result;
         $result = (string) preg_replace(static::$filters['cmd'], '', $result ? $result : '');
         return ltrim($result, '.');
     }
@@ -325,7 +325,7 @@ class Request extends BaseRequest
     {
         $result = $this->getVar($name, null, $hash);
 
-        $result = is_array($result) ? self::_flatten('', $result) : $result;
+        $result = is_array($result) ? self::flatten('', $result) : $result;
 
         if ($result === null) {
             return $default;
@@ -744,22 +744,22 @@ class Request extends BaseRequest
         if ($new_state !== null) {
             switch ($type) {
                 case 'int':
-                    $new_state = self::_flatten('', $new_state);
+                    $new_state = self::flatten('', $new_state);
                     $new_state = intval($new_state);
                     break;
                 case 'word':
-                    $new_state = (string) self::_flatten('', $new_state);
+                    $new_state = (string) self::flatten('', $new_state);
                     $new_state = preg_replace('/[^A-Z_]/i', '', $new_state);
                     break;
                 case 'cmd':
-                    $new_state = (string) self::_flatten('', $new_state);
+                    $new_state = (string) self::flatten('', $new_state);
                     $new_state = preg_replace('/[^A-Z0-9_\.-]/i', '', $new_state);
                     break;
                 case 'bool':
                     $new_state = (bool) $new_state;
                     break;
                 case 'float':
-                    $new_state = (string) self::_flatten('', $new_state);
+                    $new_state = (string) self::flatten('', $new_state);
                     // Anchored match, as getFloat() does. This was a preg_replace()
                     // that stripped the digits out and cast what was left, so every
                     // float state resolved to 0.0 whatever was submitted.
@@ -768,7 +768,7 @@ class Request extends BaseRequest
                         : (float) $default;
                     break;
                 case 'string':
-                    $new_state = (string) self::_flatten('', $new_state);
+                    $new_state = (string) self::flatten('', $new_state);
                     break;
                 case 'array':
                     $new_state = (array) $new_state;
@@ -792,14 +792,14 @@ class Request extends BaseRequest
      * @param   mixed    $arrayvar
      * @return  string
      */
-    private function _flatten($separator, $arrayvar)
+    private function flatten($separator, $arrayvar)
     {
         $out = '';
 
         if (is_array($arrayvar)) {
             foreach ($arrayvar as $av) {
                 if (is_array($av)) {
-                    $out .= self::_flatten($separator, $av); // Recursive Use of the Array
+                    $out .= self::flatten($separator, $av); // Recursive Use of the Array
                 } else {
                     $out .= $separator . $av;
                 }

@@ -21,7 +21,7 @@ class View extends AbstractView
      *
      * @var  object  Hubzero\Mail\Template
      */
-    private $_mailTemplate;
+    private $mailTemplate;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ class View extends AbstractView
     {
         // create new mail template, loading email.php
         // in active template falling back to system email.php
-        $this->_mailTemplate = new Template();
+        $this->mailTemplate = new Template();
 
         // call parent construct
         parent::__construct($config);
@@ -65,11 +65,11 @@ class View extends AbstractView
 
         // if we want to wrap in mail template
         if ($tpl !== false) {
-            $this->_mailTemplate->setBuffer($content, 'component');
-            $content = $this->_mailTemplate->render();
-            //$this->_mailTemplate->setBuffer(null, array('type' => 'head', 'name' => 'email'));
-            $this->_mailTemplate->setBuffer(null, 'component');
-            $this->_mailTemplate->setBuffer(null, 'head');
+            $this->mailTemplate->setBuffer($content, 'component');
+            $content = $this->mailTemplate->render();
+            //$this->mailTemplate->setBuffer(null, array('type' => 'head', 'name' => 'email'));
+            $this->mailTemplate->setBuffer(null, 'component');
+            $this->mailTemplate->setBuffer(null, 'head');
         }
 
         // return content
@@ -84,7 +84,7 @@ class View extends AbstractView
      */
     public function css($css)
     {
-        $this->_mailTemplate->addStyleDeclaration($css);
+        $this->mailTemplate->addStyleDeclaration($css);
     }
 
     /**
@@ -101,10 +101,10 @@ class View extends AbstractView
     protected function addMailOverridePath()
     {
         // Only need to add it once, even though loadTemplate() runs per layout
-        if ($this->_mailOverrideAdded) {
+        if ($this->mailOverrideAdded) {
             return;
         }
-        $this->_mailOverrideAdded = true;
+        $this->mailOverrideAdded = true;
 
         // The component this email belongs to (set by the caller as a property)
         $option = isset($this->option) ? (string) $this->option : '';
@@ -174,5 +174,5 @@ class View extends AbstractView
      *
      * @var  boolean
      */
-    private $_mailOverrideAdded = false;
+    private $mailOverrideAdded = false;
 }

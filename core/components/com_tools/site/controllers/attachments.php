@@ -70,7 +70,7 @@ class Attachments extends SiteController
 
         // Authorize against the tool that owns this attachment
         $obj = new \Components\Tools\Tables\Tool($this->database);
-        if (!$this->_checkAccess($obj->getToolIdFromResource($pid))) {
+        if (!$this->checkAccess($obj->getToolIdFromResource($pid))) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -114,7 +114,7 @@ class Attachments extends SiteController
             // Authorize against the tool that owns this attachment
             $association = Association::all()->whereEquals('child_id', $id)->row();
             $obj = new \Components\Tools\Tables\Tool($this->database);
-            if (!$this->_checkAccess($obj->getToolIdFromResource($association->get('parent_id')))) {
+            if (!$this->checkAccess($obj->getToolIdFromResource($association->get('parent_id')))) {
                 App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             }
 
@@ -149,7 +149,7 @@ class Attachments extends SiteController
         $this->_toolid = $obj->getToolIdFromResource($pid);
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
             return;
         }
@@ -192,7 +192,7 @@ class Attachments extends SiteController
             'standalone'   => 0,
             'access'       => 0,
             'path'         => '', // make sure no path is specified just yet
-            'type'         => $this->_getChildType($file['name']),
+            'type'         => $this->getChildType($file['name']),
         ]);
 
         // Store new content
@@ -218,7 +218,7 @@ class Attachments extends SiteController
         } else {
             // File was uploaded
             // Check the file type
-            $row->set('type', $this->_getChildType($file['name']));
+            $row->set('type', $this->getChildType($file['name']));
         }
 
         if (!$row->get('path')) {
@@ -266,7 +266,7 @@ class Attachments extends SiteController
         $this->_toolid = $obj->getToolIdFromResource($pid);
 
         // make sure user is authorized to go further
-        if (!$this->_checkAccess($this->_toolid)) {
+        if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -345,7 +345,7 @@ class Attachments extends SiteController
         // The list (and its reorder/delete links) is for the people who may
         // edit the tool, the same as every other task here
         $obj = new \Components\Tools\Tables\Tool($this->database);
-        if (!$this->_checkAccess($obj->getToolIdFromResource($id), true)) {
+        if (!$this->checkAccess($obj->getToolIdFromResource($id), true)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
         }
 
@@ -379,7 +379,7 @@ class Attachments extends SiteController
      * @return     string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _buildUploadPath($listdir, $subdir = '')
+    private function buildUploadPath($listdir, $subdir = '')
     {
         if ($subdir) {
             $subdir = DS . trim($subdir, DS);
@@ -410,7 +410,7 @@ class Attachments extends SiteController
      * @return  integer
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _getChildType($filename)
+    private function getChildType($filename)
     {
         $ftype = strtolower(Filesystem::extension($filename));
 
@@ -458,7 +458,7 @@ class Attachments extends SiteController
      * @return  boolean  True if user has access, False if not
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private function _checkAccess($toolid, $allowAuthors = false)
+    private function checkAccess($toolid, $allowAuthors = false)
     {
         // allow to view if admin
         if ($this->config->get('access-manage-component')) {

@@ -181,7 +181,7 @@ class Tag extends Relational
      */
     public function created($as = '')
     {
-        return $this->_datetime($as, 'created');
+        return $this->datetime($as, 'created');
     }
 
     /**
@@ -195,7 +195,7 @@ class Tag extends Relational
         if (!$this->get('modified') || $this->get('modified') == '0000-00-00 00:00:00') {
             $this->set('modified', $this->get('created'));
         }
-        return $this->_datetime($as, 'modified');
+        return $this->datetime($as, 'modified');
     }
 
     /**
@@ -204,7 +204,7 @@ class Tag extends Relational
      * @param   string  $as  What data to return
      * @return  string
      */
-    private function _datetime($as = '', $key = 'created')
+    private function datetime($as = '', $key = 'created')
     {
         $as = strtolower($as);
         $dt = $this->get($key);

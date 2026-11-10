@@ -25,7 +25,7 @@ class Media extends AdminController
      *
      * @return  string
      */
-    private function _buildUploadPath($listdir, $subdir = '')
+    private function buildUploadPath($listdir, $subdir = '')
     {
         $course_id = Request::getInt('course', 0);
 
@@ -68,7 +68,7 @@ class Media extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Get media config
         $mediaConfig = Component::params('com_media');
@@ -195,7 +195,7 @@ class Media extends AdminController
         $subdir = Request::getString('subdir', '', 'post');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Are we creating a new folder?
         $foldername = Request::getString('foldername', '', 'post');
@@ -322,7 +322,7 @@ class Media extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Incoming directory to delete
         $folder = trim(Request::getString('delFolder', ''), DS);
@@ -371,7 +371,7 @@ class Media extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir, $subdir);
 
         // Incoming file to delete
         $file = basename(Request::getString('delFile', ''));
@@ -415,10 +415,10 @@ class Media extends AdminController
 
         // Build the path
         //$this->view->path = PATH_CORE . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->view->course_id . DS . $this->view->listdir;
-        $this->view->path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
+        $this->view->path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
 
         // Get list of directories
-        $dirs = $this->_recursiveListDir($this->view->path);
+        $dirs = $this->recursiveListDir($this->view->path);
 
         $folders   = [];
         $folders[] = Html::select('option', '/');
@@ -470,7 +470,7 @@ class Media extends AdminController
         $this->view->subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->_buildUploadPath($this->view->listdir, $this->view->subdir);
+        $path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
 
         $folders = [];
         $docs    = [];
@@ -523,7 +523,7 @@ class Media extends AdminController
      * @param      string $base Directory to scan
      * @return     array
      */
-    private function _recursiveListDir($base)
+    private function recursiveListDir($base)
     {
         static $filelist = [];
         static $dirlist  = [];
@@ -534,7 +534,7 @@ class Media extends AdminController
                 if (is_dir($base . DS . $dir) && $dir !== '.' && $dir !== '..' && strtolower($dir) !== 'cvs') {
                     $subbase    = $base . DS . $dir;
                     $dirlist[]  = $subbase;
-                    $subdirlist = $this->_recursiveListDir($subbase);
+                    $subdirlist = $this->recursiveListDir($subbase);
                 }
             }
             closedir($dh);
