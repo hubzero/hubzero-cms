@@ -313,7 +313,7 @@ class Domainrestriction extends Plugin
     private function sortParams()
     {
         foreach (['tld', 'domain', 'email', 'badtld', 'baddomain', 'bademail'] as $param) {
-            $paramvalue = $this->params->get($param, null);
+            $paramvalue = (string) $this->params->get($param, '');
             $arrayvar = $param . 's';
 
             $this->{$arrayvar} = [];
@@ -321,9 +321,11 @@ class Domainrestriction extends Plugin
 
             foreach ($this->{$arrayvar} as $key => $d) {
                 if (!strlen(trim($d))) {
-                    unset($this->{$arrayvar[$key]});
+                    unset($this->{$arrayvar}[$key]);
                 }
             }
+
+            $this->{$arrayvar} = array_values($this->{$arrayvar});
         }
     }
 

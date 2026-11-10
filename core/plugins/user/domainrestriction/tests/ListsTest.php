@@ -53,4 +53,27 @@ class ListsTest extends TestCase
         $this->assertSame(['spam.example', 'junk.example'], $list('baddomains'));
         $this->assertSame(['bad@example.edu'], $list('bademails'));
     }
+
+    /**
+     * An empty setting, or one with empty entries, gives a list without them
+     *
+     * @return  void
+     */
+    public function testEmptyEntriesAreDropped(): void
+    {
+        $plugin = (new \ReflectionClass(Domainrestriction::class))->newInstanceWithoutConstructor();
+        $plugin->params = new Registry(['tld' => 'edu,, org', 'domain' => '']);
+
+        $sort = new \ReflectionMethod($plugin, 'sortParams');
+        $sort->setAccessible(true);
+        $sort->invoke($plugin);
+
+        $tlds = new \ReflectionProperty($plugin, 'tlds');
+        $tlds->setAccessible(true);
+        $domains = new \ReflectionProperty($plugin, 'domains');
+        $domains->setAccessible(true);
+
+        $this->assertSame(['edu', 'org'], $tlds->getValue($plugin));
+        $this->assertSame([], $domains->getValue($plugin));
+    }
 }
