@@ -90,7 +90,8 @@ class Recaptcha extends Plugin
         $html .= '<div class="field-wrap">';
         $html .= '<label for="g-recaptcha-response" class="sr-only">' . Lang::txt('CAPTCHA verification') . '</label>';
         $html .= '<div class="g-recaptcha" id="' . $id . '" data-type="' . $this->params->get('type', 'image') . '" '
-            . 'data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
+            . 'data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public')
+            . '"></div>
 					<script type="text/javascript" src="' . static::$jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async '
         . 'defer></script>';
         // [a11y] Remove role="presentation" from reCAPTCHA iframe (injected by Google JS)

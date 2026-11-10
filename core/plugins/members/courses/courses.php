@@ -346,7 +346,8 @@ class Courses extends Plugin
 						LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id ')
                         . "AND r.alias=
-						" . $this->database->Quote($who) . "ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
+						" . $this->database->Quote($who) . "ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . ","
+                            . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
                 }

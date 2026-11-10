@@ -513,7 +513,8 @@ class Warehouse extends \Hubzero\Base\Obj
                     (ag2.`agId` IS NULL OR ag2.`agId` NOT IN(" . implode(',', $this->accessGroupsScope) . "))
                 )";*/
                 $sql .= " AND (
-					p.`pId` IN (SELECT ag.pId FROM `#__storefront_product_access_groups` ag WHERE ag.`exclude`=0 and ag.agId IN(" . implode(',', $this->accessGroupsScope) . ")) AND
+					p.`pId` IN (SELECT ag.pId FROM `#__storefront_product_access_groups` ag WHERE ag.`exclude`=0 and ag.agId IN("
+                    . implode(',', $this->accessGroupsScope) . ")) AND
 					p.`pId` NOT IN (SELECT ag2.pId FROM `#__storefront_product_access_groups` ag2 WHERE ag2.`exclude`=1 and ag2.agId "
                 . "IN(" . implode(',', $this->accessGroupsScope) . "))
 				)";

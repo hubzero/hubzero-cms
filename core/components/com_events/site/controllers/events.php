@@ -1382,7 +1382,9 @@ class Events extends SiteController
                 if (array_key_exists($race, $races) && $races[$race]) {
                     $this->database->execute(
                         'INSERT INTO `#__events_respondent_race_rel`(respondent_id, race, tribal_affiliation)
-						VALUES (' . $resp_id . ', \'' . $race . '\', ' . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'null') . ')',
+						VALUES (' . $resp_id . ', \'' . $race . '\', '
+                            . ($race == 'nativeamerican' ? $this->database->quote($races['nativetribe']) : 'null')
+                            . ')',
                     );
                 }
             }

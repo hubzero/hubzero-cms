@@ -64,7 +64,8 @@ class Related extends Plugin
 				FROM `#__wiki_pages` AS w
 				INNER JOIN `#__wiki_versions` AS v ON w.version_id=v.id
 				INNER JOIN `#__wiki_links` AS wl ON wl.page_id=w.id
-				WHERE v.approved=1 AND wl.scope='resource' AND w.scope !='group' AND wl.scope_id=" . $database->quote($resource->id);
+				WHERE v.approved=1 AND wl.scope='resource' AND w.scope !='group' AND wl.scope_id="
+            . $database->quote($resource->id);
 
         // Build the query that checks resource parents
         $sql2 = "SELECT DISTINCT r.id, r.title, r.alias, r.introtext, r.type, r.published, r.publish_up,

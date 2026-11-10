@@ -459,7 +459,9 @@ class Query extends Relational
 							SELECT st.' . $db->quoteName('objectid') . ' FROM #__tags_object AS st
 							LEFT JOIN #__tags AS t ON st.' . $db->quoteName('tagid') . '=t.' . $db->quoteName('id') . '
 							WHERE st.' . $db->quoteName('tbl') . '=\'support\'
-							AND (t.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . '))';
+							AND (t.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.'
+                    . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)')
+                    . '))';
                 $having = " GROUP BY f.id ";
             } elseif (count($tags) && count($nottags)) {
                 $e[] = '(t.'

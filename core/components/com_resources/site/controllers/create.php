@@ -1039,7 +1039,8 @@ class Create extends SiteController
             'SELECT 1 FROM `#__author_assoc` WHERE authorid = ' . User::get('id') . ' AND subtable = \'resources\' AND '
                 . 'subid = ' . $id . '
 			UNION
-			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . User::get('id') . ' OR modified_by = ' . User::get('id') . ')
+			SELECT 1 FROM `#__resources` WHERE id = ' . $id . ' AND (created_by = ' . User::get('id') . ' OR modified_by = '
+                . User::get('id') . ')
 			UNION
 			SELECT 1 FROM `#__users` u
 			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id

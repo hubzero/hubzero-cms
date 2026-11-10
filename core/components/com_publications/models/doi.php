@@ -714,7 +714,8 @@ class Doi extends Obj
         $xmlfile .= '</dates>';
 
         $xmlfile .= '<language>' . $this->get('language') . '</language>
-		<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle') . '</resourceType>';
+		<resourceType resourceTypeGeneral="' . $this->get('resourceType') . '">' . $this->get('resourceTypeTitle')
+            . '</resourceType>';
 
         $doiOfPrevPub = $this->get('doiOfPrevPub');
         $doiOfNextPub = $this->get('doiOfNextPub');

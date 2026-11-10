@@ -217,7 +217,8 @@ class Sender
             "SELECT COUNT(*) FROM `#__massmail_recipients` r
 			 JOIN `#__massmail_mailings` m ON m.id = r.mailing_id
 			 WHERE r.status = " . Recipient::PENDING . "
-			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", " . $db->quote(Mailing::STATUS_PAUSED) . ")",
+			 AND m.status IN (" . $db->quote(Mailing::STATUS_SENDING) . ", " . $db->quote(Mailing::STATUS_PREPARING) . ", "
+                . $db->quote(Mailing::STATUS_PAUSED) . ")",
         );
         $pending = (int) $db->loadResult();
 

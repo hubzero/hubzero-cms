@@ -240,14 +240,16 @@ class PostfixCollector
         // Upsert buckets (add, since we only ever read each byte once).
         foreach ($hours as $hk => $c) {
             $db->setQuery(
-                "INSERT INTO `#__massmail_postfix_hourly` (`hour`, `sent`) VALUES (" . $db->quote($hk) . ", " . (int) $c . ")
+                "INSERT INTO `#__massmail_postfix_hourly` (`hour`, `sent`) VALUES (" . $db->quote($hk) . ", " . (int) $c
+                    . ")
 				 ON DUPLICATE KEY UPDATE `sent` = `sent` + " . (int) $c,
             );
             $db->execute();
         }
         foreach ($days as $dk => $c) {
             $db->setQuery(
-                "INSERT INTO `#__massmail_postfix_daily` (`day`, `sent`) VALUES (" . $db->quote($dk) . ", " . (int) $c . ")
+                "INSERT INTO `#__massmail_postfix_daily` (`day`, `sent`) VALUES (" . $db->quote($dk) . ", " . (int) $c
+                    . ")
 				 ON DUPLICATE KEY UPDATE `sent` = `sent` + " . (int) $c,
             );
             $db->execute();
@@ -258,7 +260,8 @@ class PostfixCollector
         // Advance the read position.
         $db->setQuery(
             "UPDATE `#__massmail_postfix_state`
-			 SET last_inode = " . (int) $curInode . ", last_offset = " . (int) $curSize . ", last_run = " . $db->quote(\Date::toSql()) . "
+			 SET last_inode = " . (int) $curInode . ", last_offset = " . (int) $curSize . ", last_run = "
+                . $db->quote(\Date::toSql()) . "
 			 WHERE id = 1",
         );
         $db->execute();

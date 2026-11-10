@@ -259,7 +259,8 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function fixScopePaths($scope, $oldpagename, $newpagename)
     {
-        $query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, " . $this->db->quote('/' . $oldpagename) . ", " . $this->db->quote('/' . $newpagename) . ")
+        $query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, " . $this->db->quote('/' . $oldpagename) . ", "
+            . $this->db->quote('/' . $newpagename) . ")
 				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id);
 
         $this->db->setQuery($query);

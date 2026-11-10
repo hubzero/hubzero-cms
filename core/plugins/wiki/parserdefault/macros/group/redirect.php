@@ -89,7 +89,9 @@ class Redirect extends GroupMacro
         // Delayed redirect. json_encode is the correct sink for a JS string
         // literal; the quote replacement it replaces left the value inside a
         // double-quoted string where a backslash or newline still broke out.
-        return '<script type="text/javascript">setTimeout(function () { window.location.href = ' . json_encode((string) $url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '; }, ' . ($delay * 1000) . ');</script>
+        return '<script type="text/javascript">setTimeout(function () { window.location.href = '
+            . json_encode((string) $url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '; }, '
+            . ($delay * 1000) . ');</script>
                 <p class="warning">' . Lang::txt('This page will redirect in %s seconds', $delay) . '</p>';
     }
 }

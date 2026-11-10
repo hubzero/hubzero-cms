@@ -772,7 +772,8 @@ class CurrentCart extends Cart
             throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
-        $sql = "UPDATE `#__cart_transaction_info` ti, (SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = " . $this->db->quote($saId) . ") sa
+        $sql = "UPDATE `#__cart_transaction_info` ti, (SELECT * FROM `#__cart_saved_addresses` WHERE `saId` = "
+            . $this->db->quote($saId) . ") sa
 				SET
 				ti.`tiShippingToFirst` = sa.`saToFirst`,
 				ti.`tiShippingToLast` = sa.`saToLast`,

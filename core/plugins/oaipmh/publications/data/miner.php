@@ -256,7 +256,8 @@ class Miner extends Obj implements Provider
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
 			INNER JOIN `#__publication_categories` AS rt ON rt.id = p.category
-			WHERE p.id = " . $this->database->quote($id) . ($revision ? " AND pv.version_number=" . $this->database->quote($revision) : ""),
+			WHERE p.id = " . $this->database->quote($id)
+                . ($revision ? " AND pv.version_number=" . $this->database->quote($revision) : ""),
         );
         $record = $this->database->loadObject();
         $record->version_id = $record->id;
@@ -390,7 +391,8 @@ class Miner extends Obj implements Provider
         $this->database->setQuery(
             "SELECT pa.name, pa.user_id
 			FROM `#__publication_authors` AS pa
-			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.status=1 AND pa.publication_version_id=" . $this->database->quote($record->version_id) . "
+			WHERE (pa.role IS NULL OR pa.role != 'submitter') AND pa.status=1 AND pa.publication_version_id="
+                . $this->database->quote($record->version_id) . "
 			ORDER BY pa.ordering",
         );
         $creators = $this->database->loadObjectList();

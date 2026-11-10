@@ -399,22 +399,26 @@ class Debug extends Plugin
 		<dl class="debug-varlist">
 			<dt class="key">$_GET</dt>
 			<dd class="value">
-				<span id="debug-get-short" data-section="get" class="debug-toggle open">' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, ['exact' => true]) . '</span>
+				<span id="debug-get-short" data-section="get" class="debug-toggle open">'
+            . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, ['exact' => true]) . '</span>
 				<span id="debug-get-full" data-section="get" class="debug-toggle">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
-				<span id="debug-post-short" data-section="post" class="debug-toggle open">' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, ['exact' => true]) . '</span>
+				<span id="debug-post-short" data-section="post" class="debug-toggle open">'
+            . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, ['exact' => true]) . '</span>
 				<span id="debug-post-full" data-section="post" class="debug-toggle">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
-				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, ['exact' => true]) . '</span>
+				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">'
+            . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, ['exact' => true]) . '</span>
 				<span id="debug-cookies-full" data-section="cookies" class="debug-toggle">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
-				<span id="debug-server-short" data-section="server" class="debug-toggle open">' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, ['exact' => true]) . '</span>
+				<span id="debug-server-short" data-section="server" class="debug-toggle open">'
+            . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, ['exact' => true]) . '</span>
 				<span id="debug-server-full" data-section="server" class="debug-toggle">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';

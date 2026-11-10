@@ -509,10 +509,13 @@ class File extends Macro
                 $rand = rand(0, 100000);
 
 
-                $html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" data-width="' . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="' . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">
+                $html  = '<div id="unityPlayer' . $rand . '" class="unityPlayer_macro" data-width="'
+                    . intval($attr['width']) . '" data-height="' . intval($attr['height']) . '" data-href="'
+                    . htmlspecialchars((string) $attr['href'], ENT_QUOTES, 'UTF-8') . '">
 							<div class="missing">
 								<a href="http://unity3d.com/webplayer/" title="Unity Web Player. Install now!">
-									<img alt="Unity Web Player. Install now!" src="' . (Request::scheme() == 'https' ? 'https://ssl-' : 'http://') . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
+									<img alt="Unity Web Player. Install now!" src="' . (Request::scheme() == 'https' ? 'https://ssl-' : 'http://')
+                    . 'webplayer.unity3d.com/installation/getunity.png" width="193" height="63" />
 								</a>
 							</div>
 						</div>' . "\n";
