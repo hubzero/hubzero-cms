@@ -367,7 +367,7 @@ abstract class Model extends Obj
     {
         // Is data valid?
         if (!$this->table->check()) {
-            $this->_errors = $this->table->getErrors();
+            $this->errors = $this->table->getErrors();
             return false;
         }
         return true;

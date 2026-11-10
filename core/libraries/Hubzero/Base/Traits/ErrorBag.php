@@ -24,7 +24,7 @@ trait ErrorBag
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_errors = [];
+    protected $errors = [];
 
     /**
      * Get the most recent error message.
@@ -38,12 +38,12 @@ trait ErrorBag
         // Find the error
         if ($i === null) {
             // Default, return the last message
-            $error = end($this->_errors);
-        } elseif (!array_key_exists($i, $this->_errors)) {
+            $error = end($this->errors);
+        } elseif (!array_key_exists($i, $this->errors)) {
             // If $i has been specified but does not exist, return false
             return false;
         } else {
-            $error = $this->_errors[$i];
+            $error = $this->errors[$i];
         }
 
         // Check if only the string is requested
@@ -61,7 +61,7 @@ trait ErrorBag
      */
     public function getErrors()
     {
-        return $this->_errors;
+        return $this->errors;
     }
 
     /**
@@ -74,9 +74,9 @@ trait ErrorBag
     public function setError($error, $key = null)
     {
         if ($key !== null) {
-            $this->_errors[$key] = $error;
+            $this->errors[$key] = $error;
         } else {
-            array_push($this->_errors, $error);
+            array_push($this->errors, $error);
         }
         return $this;
     }
@@ -89,7 +89,7 @@ trait ErrorBag
      */
     public function setErrors($errors)
     {
-        $this->_errors = $errors;
+        $this->errors = $errors;
         return $this;
     }
 }

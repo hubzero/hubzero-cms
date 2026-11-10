@@ -49,7 +49,7 @@ abstract class Service extends Obj implements DetectorInterface
     public function setValue($value)
     {
         $this->value  = $value;
-        $this->_errors = [];
+        $this->errors = [];
         $this->message = '';
     }
 
