@@ -212,7 +212,8 @@ class CartMessenger
         if ($transactionInfo->tiNotes) {
             $notes[] = [
                 'label' => $genericNotesLabel,
-                'notes' => $transactionInfo->tiNotes];
+                'notes' => $transactionInfo->tiNotes,
+            ];
         }
 
         if (!empty($notes)) {

@@ -97,7 +97,8 @@ class Todo extends Plugin
         if ($admin == 1) {
             $counts['todos_completed'] = $objTD->getTodos($model->get('id'), $filters = [
                 'count' => 1,
-                'state' => 1]);
+                'state' => 1,
+            ]);
         }
 
         return $counts;

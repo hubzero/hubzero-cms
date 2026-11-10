@@ -26,7 +26,8 @@ class BoostFactoryTest extends Basic
         $userId = -33;
         $userHelper = $this->mock([
             'class' => 'User',
-            'methods' => ['get' => $userId]]);
+            'methods' => ['get' => $userId],
+        ]);
         $factory = new BoostFactory(['user' => $userHelper]);
         $boostData = [
             'document_type' => 'test',

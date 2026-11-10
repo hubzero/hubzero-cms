@@ -122,7 +122,8 @@ if ($this->paymentStatus == 'ok') {
         if ($this->transactionInfo->tiNotes) {
             $notes[] = [
                 'label' => $genericNotesLabel,
-                'notes' => $this->transactionInfo->tiNotes];
+                'notes' => $this->transactionInfo->tiNotes,
+            ];
         }
 
         if (!empty($notes)) {

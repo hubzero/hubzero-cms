@@ -526,7 +526,8 @@ class Orders extends AdminController
                         //'label' => $item['info']->pName . ', ' . $item['info']->sSku,
                         'label' => $transactionInfoItems[$sId]['info']->pName
                             . ', ' . $transactionInfoItems[$sId]['info']->sSku,
-                        'notes' => $meta->checkoutNotes];
+                        'notes' => $meta->checkoutNotes,
+                    ];
                 }
             }
 
@@ -538,7 +539,8 @@ class Orders extends AdminController
             if ($transactionInfo->tiNotes) {
                 $notes[] = [
                     'label' => $genericNotesLabel,
-                    'notes' => $transactionInfo->tiNotes];
+                    'notes' => $transactionInfo->tiNotes,
+                ];
             }
 
             $notesValue = '';

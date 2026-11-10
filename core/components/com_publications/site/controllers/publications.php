@@ -606,7 +606,8 @@ class Publications extends SiteController
         $cats = Event::trigger('publications.onPublicationAreas', [
             $this->model,
             $this->model->versionAlias,
-            $extended]);
+            $extended,
+        ]);
 
         // Get the sections
         $sections = Event::trigger('publications.onPublication', [
@@ -615,7 +616,8 @@ class Publications extends SiteController
             [$tab],
             'all',
             $this->model->versionAlias,
-            $extended]);
+            $extended,
+        ]);
 
         $available = ['play'];
         foreach ($cats as $cat) {

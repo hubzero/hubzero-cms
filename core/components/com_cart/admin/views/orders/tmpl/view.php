@@ -186,7 +186,8 @@ $this->css()
                 $notes[] = [
                     //'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
                     'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
-                    'notes' => $meta->checkoutNotes];
+                    'notes' => $meta->checkoutNotes,
+                ];
             }
         }
 
@@ -198,7 +199,8 @@ $this->css()
         if ($this->tInfo->tiNotes) {
             $notes[] = [
                 'label' => $genericNotesLabel,
-                'notes' => $this->tInfo->tiNotes];
+                'notes' => $this->tInfo->tiNotes,
+            ];
         }
 
         if (!empty($notes)) {

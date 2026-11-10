@@ -1398,7 +1398,8 @@ class Items extends AdminController
                     $body,
                     $from,
                     $authors,
-                    $this->option])
+                    $this->option,
+                ])
             ) {
                 $this->setError(Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_MESSAGE_AUTHORS'));
             }

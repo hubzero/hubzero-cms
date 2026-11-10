@@ -164,7 +164,8 @@ class Contributions extends Plugin
                 $limit,
                 $limitstart,
                 $sort,
-                $activeareas]);
+                $activeareas,
+            ]);
 
             // Do we have an active area?
             if (count($activeareas) == 1 && !is_array(current($activeareas))) {

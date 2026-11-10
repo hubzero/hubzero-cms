@@ -111,19 +111,22 @@ class Warnings extends AdminController
         if ($post_max_size < (4 * 1024 * 1024)) { // 4MB
             $messages[] = [
                 'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_SMALLPOSTSIZE'),
-                'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_SMALLPOSTSIZEDESC')];
+                'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_SMALLPOSTSIZEDESC'),
+            ];
         }
 
         if ($upload_max_filesize < (4 * 1024 * 1024)) { // 4MB
             $messages[] = [
                 'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_SMALLUPLOADSIZE'),
-                'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_SMALLUPLOADSIZEDESC')];
+                'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_SMALLUPLOADSIZEDESC'),
+            ];
         }
 
         if (!class_exists('imagick')) {
             $messages[] = [
                 'message' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_IMAGICK'),
-                'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_IMAGICK_DESC')];
+                'description' => Lang::txt('COM_INSTALLER_MSG_WARNINGS_MISSING_IMAGICK_DESC'),
+            ];
         }
 
         if (!file_exists(DS . 'usr' . DS . 'bin' . DS . 'unzip')) {

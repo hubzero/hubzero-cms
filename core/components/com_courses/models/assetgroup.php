@@ -441,7 +441,8 @@ class Assetgroup extends Base
                             $tbl->find([
                                 'scope_id' => $oldAssetGroupId,
                                 'scope' => 'asset_group',
-                                'asset_id' => $oldAssetId]) as $aa
+                                'asset_id' => $oldAssetId,
+                            ]) as $aa
                         ) {
                             $tbl->bind($aa);
                             $tbl->id = 0;

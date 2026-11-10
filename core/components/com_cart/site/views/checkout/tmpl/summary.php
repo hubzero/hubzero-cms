@@ -124,7 +124,8 @@ if (!empty($this->notifications)) {
         if ($this->transactionInfo->tiNotes) {
             $notes[] = [
                 'label' => $genericNotesLabel,
-                'notes' => $this->transactionInfo->tiNotes];
+                'notes' => $this->transactionInfo->tiNotes,
+            ];
         }
 
         if (!empty($notes)) {
