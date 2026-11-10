@@ -18,7 +18,7 @@ class Duration
      *
      * @var  array
      */
-    const UNITS = [
+    public const UNITS = [
         'days'    => 86400,
         'hours'   => 3600,
         'minutes' => 60,

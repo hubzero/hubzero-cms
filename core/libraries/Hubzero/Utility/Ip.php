@@ -22,7 +22,7 @@ class Ip
      *
      * @var  string
      */
-    const MAPPED_PREFIX = "\0\0\0\0\0\0\0\0\0\0\xff\xff";
+    public const MAPPED_PREFIX = "\0\0\0\0\0\0\0\0\0\0\xff\xff";
 
     /**
      * The instance ip address, as given
@@ -319,7 +319,7 @@ class Ip
      *
      * @var  array
      */
-    const NOT_PUBLIC = [
+    public const NOT_PUBLIC = [
         '::/96', '64:ff9b::/96', '64:ff9b:1::/48', '100::/64', '2001::/32', '2002::/16',
         '100.64.0.0/10', '192.0.0.0/24', '198.18.0.0/15', '224.0.0.0/4', 'ff00::/8', 'fec0::/10',
     ];

@@ -28,7 +28,7 @@ class WikiParser
      *
      * @var integer
      */
-    const CS_NONE = 0;
+    public const CS_NONE = 0;
 
     /**
      * Preformatted code state
@@ -36,7 +36,7 @@ class WikiParser
      *
      * @var integer
      */
-    const CS_CODE = 1;
+    public const CS_CODE = 1;
 
     /**
      * Preformatted code within code state
@@ -44,7 +44,7 @@ class WikiParser
      *
      * @var integer
      */
-    const CS_CODE_SUB = 2;
+    public const CS_CODE_SUB = 2;
 
     /**
      * A unique token

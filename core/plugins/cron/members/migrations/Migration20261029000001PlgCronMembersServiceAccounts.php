@@ -23,14 +23,14 @@ class Migration20261029000001PlgCronMembersServiceAccounts extends Base
      *
      * @var  string
      */
-    const TITLE = 'Service accounts';
+    public const TITLE = 'Service accounts';
 
     /**
      * Service accounts added when they exist on the hub
      *
      * @var  array
      */
-    const USERNAMES = ['apps', 'gridstat', 'hubzerosolrworker'];
+    public const USERNAMES = ['apps', 'gridstat', 'hubzerosolrworker'];
 
     /**
      * Up

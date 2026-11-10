@@ -24,7 +24,7 @@ class Anchor
      *
      * @var  array
      */
-    const ENTITY_ALIASES = [
+    public const ENTITY_ALIASES = [
         "\u{05E8}\u{05DC}\u{05DE}" => 'rlm',
         "\u{0631}\u{0644}\u{0645}" => 'rlm',
     ];
@@ -34,7 +34,7 @@ class Anchor
      *
      * @var  string
      */
-    const REFERENCE = '/&([A-Za-z0-9\x80-\xff]+);|&#([0-9]+);|&#[xX]([0-9A-Za-z]+);/';
+    public const REFERENCE = '/&([A-Za-z0-9\x80-\xff]+);|&#([0-9]+);|&#[xX]([0-9A-Za-z]+);/';
 
     /**
      * The anchor for a heading

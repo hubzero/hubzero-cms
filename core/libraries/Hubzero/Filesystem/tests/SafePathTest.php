@@ -34,7 +34,7 @@ class SafePathTest extends Basic
      *
      * @var  string
      */
-    const VICTIM = "victim content\n";
+    public const VICTIM = "victim content\n";
 
     /**
      * Base directory standing in for the webdav mount

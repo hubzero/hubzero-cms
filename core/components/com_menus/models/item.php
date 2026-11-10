@@ -30,7 +30,7 @@ class Item extends Nested
     /**
      * Database state constants
      **/
-    const STATE_TRASHED = -2;
+    public const STATE_TRASHED = -2;
 
     /**
      * The help screen key for the menu item.

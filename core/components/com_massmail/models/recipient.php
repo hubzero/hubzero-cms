@@ -15,10 +15,10 @@ use Hubzero\Database\Relational;
  */
 class Recipient extends Relational
 {
-    const PENDING = 0;
-    const SENT    = 1;
-    const FAILED  = 2;
-    const SKIPPED = 3;
+    public const PENDING = 0;
+    public const SENT    = 1;
+    public const FAILED  = 2;
+    public const SKIPPED = 3;
 
     /**
      * The table namespace

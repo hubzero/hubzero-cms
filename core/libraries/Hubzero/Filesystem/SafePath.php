@@ -34,28 +34,28 @@ class SafePath
      *
      * @var  string
      */
-    const REASON_BASE = 'base';
+    public const REASON_BASE = 'base';
 
     /**
      * A path component is a link, is missing, or leads out of the base
      *
      * @var  string
      */
-    const REASON_UNSAFE = 'unsafe';
+    public const REASON_UNSAFE = 'unsafe';
 
     /**
      * A path component does not exist and was not to be created
      *
      * @var  string
      */
-    const REASON_MISSING = 'missing';
+    public const REASON_MISSING = 'missing';
 
     /**
      * A missing directory could not be created
      *
      * @var  string
      */
-    const REASON_CREATE = 'create';
+    public const REASON_CREATE = 'create';
 
     /**
      * Resolve a directory below a base directory, refusing anything unsafe

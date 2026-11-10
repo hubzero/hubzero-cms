@@ -48,39 +48,39 @@ class Doi extends Obj
      *
      * @const
      */
-    const SWITCH_OPTION_NONE = 0;
-    const SWITCH_OPTION_EZID = 1;
-    const SWITCH_OPTION_DATACITE = 2;
+    public const SWITCH_OPTION_NONE = 0;
+    public const SWITCH_OPTION_EZID = 1;
+    public const SWITCH_OPTION_DATACITE = 2;
 
     /**
      * Publication state transition
      *
      * @const
      */
-    const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
-    const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
+    public const STATE_FROM_PUBLISHED_TO_DRAFTREADY = 0;
+    public const STATE_FROM_DRAFTREADY_TO_PUBLISHED = 1;
 
     /**
      * DataCite
      *
      * @const
      */
-    const DATACITE = "datacite::";
+    public const DATACITE = "datacite::";
 
     /**
      * Relation type
      *
      * @const
      */
-    const REFERENCES = "references";
-    const REFERENCEDBY = "referencedby";
-    const ISREFERENCEDBY = "IsReferencedBy";
+    public const REFERENCES = "references";
+    public const REFERENCEDBY = "referencedby";
+    public const ISREFERENCEDBY = "IsReferencedBy";
 
     /*
     * Handle
     */
-    const HANDLE = "handle";
-    const HANDLE_DOMAIN_NAME = "hdl.handle.net";
+    public const HANDLE = "handle";
+    public const HANDLE_DOMAIN_NAME = "hdl.handle.net";
 
     /**
      * Constructor

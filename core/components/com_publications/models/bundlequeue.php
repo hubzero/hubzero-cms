@@ -32,16 +32,16 @@ use Hubzero\Facades\Date;
  */
 class BundleQueue extends Relational
 {
-    const STATUS_QUEUED   = 'queued';
-    const STATUS_BUILDING = 'building';
-    const STATUS_READY    = 'ready';
-    const STATUS_FAILED   = 'failed';
+    public const STATUS_QUEUED   = 'queued';
+    public const STATUS_BUILDING = 'building';
+    public const STATUS_READY    = 'ready';
+    public const STATUS_FAILED   = 'failed';
 
     /**
      * Base for exponential retry backoff (seconds): a row that has failed N
      * times waits 2^N * BACKOFF_BASE before it is eligible again.
      */
-    const BACKOFF_BASE = 300;
+    public const BACKOFF_BASE = 300;
 
     /**
      * A 'building' row is reclaimed once it has been building longer than this —
@@ -57,7 +57,7 @@ class BundleQueue extends Relational
      * correct). The biggest bundles are hundreds of GB (~323 GB seen), whose zip
      * runs in a few hours even on slow/contended disk, so 12h leaves wide margin.
      */
-    const MAX_BUILD_SECONDS = 43200; // 12 hours
+    public const MAX_BUILD_SECONDS = 43200; // 12 hours
 
     /**
      * @var  string

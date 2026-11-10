@@ -21,8 +21,8 @@ class RecommendedTags
     private $fa_properties = [];
     private $existing_fa_map = [];
 
-    const ENDORSED_TAG = 2;
-    const REGULAR_TAG  = 1;
+    public const ENDORSED_TAG = 2;
+    public const REGULAR_TAG  = 1;
 
     public function __construct($rid, $existing, $opts = [])
     {

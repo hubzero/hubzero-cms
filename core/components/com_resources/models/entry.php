@@ -33,11 +33,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * State constants
      **/
-    const STATE_ARCHIVED = -1;
-    const STATE_DRAFT    = 2;
-    const STATE_PENDING  = 3;
-    const STATE_TRASHED  = 4;
-    const STATE_DRAFT_INTERNAL = 5;
+    public const STATE_ARCHIVED = -1;
+    public const STATE_DRAFT    = 2;
+    public const STATE_PENDING  = 3;
+    public const STATE_TRASHED  = 4;
+    public const STATE_DRAFT_INTERNAL = 5;
 
     /**
      * The table namespace

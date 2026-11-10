@@ -41,14 +41,14 @@ use League\MimeTypeDetection\ExtensionMimeTypeDetector;
  **/
 class GithubAdapter implements FilesystemAdapter
 {
-    const ERROR_NOT_FOUND = 'Not Found';
+    public const ERROR_NOT_FOUND = 'Not Found';
 
-    const KEY_BLOB = 'blob';
-    const KEY_MODE = 'mode';
-    const KEY_PATH = 'path';
-    const KEY_SIZE = 'size';
-    const KEY_TREE = 'tree';
-    const KEY_TYPE = 'type';
+    public const KEY_BLOB = 'blob';
+    public const KEY_MODE = 'mode';
+    public const KEY_PATH = 'path';
+    public const KEY_SIZE = 'size';
+    public const KEY_TREE = 'tree';
+    public const KEY_TYPE = 'type';
 
     /** @var Client */
     private $client;

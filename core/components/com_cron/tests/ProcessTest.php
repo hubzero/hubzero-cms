@@ -23,8 +23,8 @@ class ProcessTest extends Basic
      *
      * @var  string
      */
-    const STARTTIME = '8675309';
-    const STAT_TAIL = 'S 1 1 1 0 -1 0 0 0 0 0 0 0 0 0 0 0 1 0 8675309 0 0';
+    public const STARTTIME = '8675309';
+    public const STAT_TAIL = 'S 1 1 1 0 -1 0 0 0 0 0 0 0 0 0 0 0 1 0 8675309 0 0';
 
     /**
      * parseStartTime() pulls field 22 out of a normal stat line.

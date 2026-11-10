@@ -20,8 +20,8 @@ class ServiceProvider extends Relational
     /**
      * Enabled state
      */
-    const STATE_DISABLED = 0;
-    const STATE_ENABLED  = 1;
+    public const STATE_DISABLED = 0;
+    public const STATE_ENABLED  = 1;
 
     /**
      * The table namespace

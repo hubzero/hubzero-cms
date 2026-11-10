@@ -58,7 +58,7 @@ class Citations extends Plugin
      *
      * @var  string
      */
-    const PLUGIN_SCOPE = 'group';
+    public const PLUGIN_SCOPE = 'group';
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

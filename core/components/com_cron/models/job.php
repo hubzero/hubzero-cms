@@ -468,7 +468,7 @@ class Job extends Relational
      *
      * @var  integer
      */
-    const STALE_ACTIVE_SECONDS = 21600; // 6 hours
+    public const STALE_ACTIVE_SECONDS = 21600; // 6 hours
 
     /**
      * Hostname of the current machine, used to scope pid checks.

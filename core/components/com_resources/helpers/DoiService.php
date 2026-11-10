@@ -33,9 +33,9 @@ class DoiService extends Obj
      *
      * @const
      */
-    const SWITCH_OPTION_NONE = 0;
-    const SWITCH_OPTION_EZID = 1;
-    const SWITCH_OPTION_DATACITE = 2;
+    public const SWITCH_OPTION_NONE = 0;
+    public const SWITCH_OPTION_EZID = 1;
+    public const SWITCH_OPTION_DATACITE = 2;
 
     /**
      * Constructor

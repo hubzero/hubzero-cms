@@ -18,7 +18,7 @@ namespace Components\Massmail\Helpers;
  */
 class Formatter
 {
-    const UNSUBSCRIBE_TOKEN = '{{UNSUBSCRIBE_URL}}';
+    public const UNSUBSCRIBE_TOKEN = '{{UNSUBSCRIBE_URL}}';
 
     /**
      * Convert (light) HTML from the editor into readable plain text.

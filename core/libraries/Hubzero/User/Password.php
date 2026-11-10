@@ -25,14 +25,14 @@ class Password
      *
      * @var  integer
      */
-    const INACTIVE_EXPIRE_DAY = 333;
+    public const INACTIVE_EXPIRE_DAY = 333;
 
     /**
      * shadowExpire marking a blocked account (2000-01-01)
      *
      * @var  integer
      */
-    const BLOCKED_EXPIRE_DAY = 10957;
+    public const BLOCKED_EXPIRE_DAY = 10957;
 
     /**
      * Description for 'user_id'

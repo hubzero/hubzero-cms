@@ -31,7 +31,7 @@ class Idp extends SiteController
     /**
      * How many login round trips may be pending in one session at once
      */
-    const MAX_PENDING_REQUESTS = 5;
+    public const MAX_PENDING_REQUESTS = 5;
 
     /**
      * The protocol engine

@@ -19,23 +19,23 @@ class Metadata
     /**
      * SAML metadata XML namespace
      */
-    const NS_MD = 'urn:oasis:names:tc:SAML:2.0:metadata';
+    public const NS_MD = 'urn:oasis:names:tc:SAML:2.0:metadata';
 
     /**
      * XML digital signature namespace
      */
-    const NS_DS = 'http://www.w3.org/2000/09/xmldsig#';
+    public const NS_DS = 'http://www.w3.org/2000/09/xmldsig#';
 
     /**
      * SAML binding URNs (kept local so the helper needs no LightSAML classes)
      */
-    const BINDING_HTTP_POST     = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST';
-    const BINDING_HTTP_REDIRECT = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect';
+    public const BINDING_HTTP_POST     = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST';
+    public const BINDING_HTTP_REDIRECT = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect';
 
     /**
      * Largest metadata document we will read
      */
-    const MAX_BYTES = 2097152;
+    public const MAX_BYTES = 2097152;
 
     /**
      * NameID formats we can issue, mapped to the value source that produces

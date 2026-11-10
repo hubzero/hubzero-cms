@@ -18,15 +18,15 @@ require_once __DIR__ . DS . 'attachment.php';
  */
 class Mailing extends Relational
 {
-    const STATUS_DRAFT            = 'draft';
-    const STATUS_PENDING_APPROVAL = 'pending_approval';
-    const STATUS_HELD             = 'held';
-    const STATUS_SCHEDULED        = 'scheduled';
-    const STATUS_PREPARING        = 'preparing';
-    const STATUS_SENDING          = 'sending';
-    const STATUS_PAUSED           = 'paused';
-    const STATUS_SENT             = 'sent';
-    const STATUS_CANCELLED        = 'cancelled';
+    public const STATUS_DRAFT            = 'draft';
+    public const STATUS_PENDING_APPROVAL = 'pending_approval';
+    public const STATUS_HELD             = 'held';
+    public const STATUS_SCHEDULED        = 'scheduled';
+    public const STATUS_PREPARING        = 'preparing';
+    public const STATUS_SENDING          = 'sending';
+    public const STATUS_PAUSED           = 'paused';
+    public const STATUS_SENT             = 'sent';
+    public const STATUS_CANCELLED        = 'cancelled';
 
     /**
      * The table namespace

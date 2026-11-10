@@ -918,18 +918,18 @@ class File extends Base
      * (PHP's ZipArchive temp file pattern is "<archive>.<hex>.part").
      * Default 4 GB. Override with the 'bundle_max_bytes' component config.
      */
-    const BUNDLE_DEFAULT_MAX_BYTES = 4294967296;
+    public const BUNDLE_DEFAULT_MAX_BYTES = 4294967296;
 
     /**
      * How long an in-progress bundle build may run before its temp .part
      * files are considered stale and eligible for cleanup. Seconds.
      */
-    const BUNDLE_PART_STALE_SECONDS = 1800;
+    public const BUNDLE_PART_STALE_SECONDS = 1800;
 
     /**
      * Lock duration: a fresh lock file blocks new bundle attempts. Seconds.
      */
-    const BUNDLE_LOCK_FRESH_SECONDS = 600;
+    public const BUNDLE_LOCK_FRESH_SECONDS = 600;
 
     /**
      * Bundle files together

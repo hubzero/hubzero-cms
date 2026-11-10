@@ -25,7 +25,7 @@ class Review extends Relational
      *
      * @var  integer
      */
-    const STATE_FLAGGED = 3;
+    public const STATE_FLAGGED = 3;
 
     /**
      * The table namespace

@@ -25,14 +25,14 @@ class User extends Base implements CommandInterface
      *
      * @var  int
      **/
-    const MIN_PASSWORD_LENGTH = 8;
+    public const MIN_PASSWORD_LENGTH = 8;
 
     /**
      * Accounts web servers run as, for tasks that must run as the web server
      *
      * @var  array
      **/
-    const WEB_ACCOUNTS = ['apache', 'www-data', 'nginx'];
+    public const WEB_ACCOUNTS = ['apache', 'www-data', 'nginx'];
 
     /**
      * Default (required) command

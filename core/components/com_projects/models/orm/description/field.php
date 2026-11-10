@@ -21,28 +21,28 @@ class Field extends Relational
      *
      * @var  integer
      */
-    const STATE_HIDDEN = 0;
+    public const STATE_HIDDEN = 0;
 
     /**
      * Optional state
      *
      * @var  integer
      */
-    const STATE_OPTIONAL = 1;
+    public const STATE_OPTIONAL = 1;
 
     /**
      * Required state
      *
      * @var  integer
      */
-    const STATE_REQUIRED = 2;
+    public const STATE_REQUIRED = 2;
 
     /**
      * Read only state
      *
      * @var  integer
      */
-    const STATE_READONLY = 4;
+    public const STATE_READONLY = 4;
 
     /**
      * The table namespace

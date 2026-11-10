@@ -123,14 +123,14 @@ class SshKeyPathTest extends Basic
      *
      * @var  string
      */
-    const UNSAFE = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
+    public const UNSAFE = 'PLG_MEMBERS_ACCOUNT_KEY_UNSAFE_PATH';
 
     /**
      * The victim's key, so we can tell whether it was tampered with
      *
      * @var  string
      */
-    const VICTIM_KEY = "ssh-rsa AAAAvictim victim@example.org\n";
+    public const VICTIM_KEY = "ssh-rsa AAAAvictim victim@example.org\n";
 
     /**
      * Stand-in for /webdav/home

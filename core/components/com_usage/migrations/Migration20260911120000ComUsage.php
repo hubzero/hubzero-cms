@@ -39,7 +39,7 @@ class Migration20260911120000ComUsage extends Base
      *
      * @var  string
      */
-    const SHIPPED = 'localhost';
+    public const SHIPPED = 'localhost';
 
     /**
      * Up

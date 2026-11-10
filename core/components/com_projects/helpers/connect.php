@@ -93,17 +93,17 @@ class Connect extends Obj
     /**
      * URL to revoke Google token
      */
-    const GOOGLE_OAUTH2_REVOKE_URI = 'https://accounts.google.com/o/oauth2/revoke';
+    public const GOOGLE_OAUTH2_REVOKE_URI = 'https://accounts.google.com/o/oauth2/revoke';
 
     /**
      * URL to refresh Google token
      */
-    const GOOGLE_OAUTH2_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token';
+    public const GOOGLE_OAUTH2_TOKEN_URI = 'https://accounts.google.com/o/oauth2/token';
 
     /**
      * Google auth URL
      */
-    const GOOGLE_OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth';
+    public const GOOGLE_OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/auth';
 
     /**
      * Constructor

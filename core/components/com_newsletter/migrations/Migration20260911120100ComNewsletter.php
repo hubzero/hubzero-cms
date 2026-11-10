@@ -31,7 +31,7 @@ class Migration20260911120100ComNewsletter extends Base
      *
      * @var  string
      */
-    const SHIPPED = 'HUB Campaign Template';
+    public const SHIPPED = 'HUB Campaign Template';
 
     /**
      * Up

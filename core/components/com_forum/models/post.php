@@ -63,7 +63,7 @@ class Post extends Relational
      *
      * @var  int
      */
-    const MAX_COMMENT_BYTES = 60000;
+    public const MAX_COMMENT_BYTES = 60000;
 
     /**
      * Automatically fillable fields

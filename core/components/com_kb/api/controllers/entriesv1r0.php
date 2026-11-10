@@ -49,14 +49,14 @@ class Entriesv1r0 extends ApiController
      *
      * @var  string
      */
-    const DATE_FORMAT = 'Y-m-d\TH:i:s\Z';
+    public const DATE_FORMAT = 'Y-m-d\TH:i:s\Z';
 
     /**
      * The extension knowledge base categories belong to
      *
      * @var  string
      */
-    const EXTENSION = 'com_kb';
+    public const EXTENSION = 'com_kb';
 
     /**
      * Fields of an article the API will set from a request
@@ -67,14 +67,14 @@ class Entriesv1r0 extends ApiController
      *
      * @var  array
      */
-    const ARTICLE_FIELDS = ['title', 'alias', 'fulltxt', 'category', 'state', 'access', 'created', 'created_by'];
+    public const ARTICLE_FIELDS = ['title', 'alias', 'fulltxt', 'category', 'state', 'access', 'created', 'created_by'];
 
     /**
      * Request variables a JSON body may not set: they come from the route
      *
      * @var  array
      */
-    const ROUTE_FIELDS = ['option', 'controller', 'task', 'id', 'version', 'format', 'no_html', 'tmpl'];
+    public const ROUTE_FIELDS = ['option', 'controller', 'task', 'id', 'version', 'format', 'no_html', 'tmpl'];
 
     /**
      * Load the component's strings and the request body

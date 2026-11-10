@@ -30,14 +30,14 @@ class Publication extends Obj
     /**
      * Database state constants
      **/
-    const STATE_UNPUBLISHED = 0;
-    const STATE_PUBLISHED   = 1;
-    const STATE_DELETED     = 2;
-    const STATE_DRAFT       = 3;
-    const STATE_POSTED      = 4;  // Posted for review
-    const STATE_PENDING     = 5;  // Pending publishing
-    const STATE_ARCHIVED    = 6;
-    const STATE_WORKED      = 7;  // Pending author changes
+    public const STATE_UNPUBLISHED = 0;
+    public const STATE_PUBLISHED   = 1;
+    public const STATE_DELETED     = 2;
+    public const STATE_DRAFT       = 3;
+    public const STATE_POSTED      = 4;  // Posted for review
+    public const STATE_PENDING     = 5;  // Pending publishing
+    public const STATE_ARCHIVED    = 6;
+    public const STATE_WORKED      = 7;  // Pending author changes
 
     /**
      * Authorized

@@ -36,7 +36,7 @@ class Flavor
      *
      * @var  array
      */
-    const LEVERS = [
+    public const LEVERS = [
         'description'    => 'string',
         'extends'        => 'string',
         'template'       => 'string',

@@ -27,14 +27,14 @@ class Iprange
      *
      * @var  string
      */
-    const MAPPED = '00000000000000000000ffff';
+    public const MAPPED = '00000000000000000000ffff';
 
     /**
      * Every address, IPv4 and IPv6, as a range: what a /0 network is
      *
      * @var  array
      */
-    const EVERYONE = ['00000000000000000000000000000000', 'ffffffffffffffffffffffffffffffff'];
+    public const EVERYONE = ['00000000000000000000000000000000', 'ffffffffffffffffffffffffffffffff'];
 
     /**
      * An address as the column holds it

@@ -35,10 +35,10 @@ class Membership
     /**
      * Reasons a membership can leave the table
      */
-    const REASON_EXPIRED = 'expired';
-    const REASON_MANUAL  = 'manual';
-    const REASON_GROUP   = 'group_deleted';
-    const REASON_USER    = 'user_deleted';
+    public const REASON_EXPIRED = 'expired';
+    public const REASON_MANUAL  = 'manual';
+    public const REASON_GROUP   = 'group_deleted';
+    public const REASON_USER    = 'user_deleted';
 
     /**
      * Database driver

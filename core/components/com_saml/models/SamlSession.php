@@ -25,8 +25,8 @@ class SamlSession extends Relational
     /**
      * Session states
      */
-    const STATE_ENDED  = 0;
-    const STATE_ACTIVE = 1;
+    public const STATE_ENDED  = 0;
+    public const STATE_ACTIVE = 1;
 
     /**
      * The table namespace

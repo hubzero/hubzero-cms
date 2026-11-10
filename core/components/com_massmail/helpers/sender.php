@@ -27,7 +27,7 @@ require_once __DIR__ . DS . 'recipients.php';
  */
 class Sender
 {
-    const LOCK = 'com_massmail.send';
+    public const LOCK = 'com_massmail.send';
 
     /**
      * How many times we'll try to hand a single recipient's message to the local
@@ -35,7 +35,7 @@ class Sender
      * Postfix, not downstream delivery -- once Postfix accepts a message, its own
      * retry/bounce handling takes over. Fixed internally; not worth exposing.
      */
-    const MAX_ATTEMPTS = 3;
+    public const MAX_ATTEMPTS = 3;
 
     /**
      * Run one tick.

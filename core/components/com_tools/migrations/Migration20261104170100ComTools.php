@@ -40,7 +40,7 @@ class Migration20261104170100ComTools extends Base
      *
      * @var  string
      **/
-    const COLUMN = "char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT ''";
+    public const COLUMN = "char(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL DEFAULT ''";
 
     /**
      * Up

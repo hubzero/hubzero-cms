@@ -30,9 +30,9 @@ class SearchComponent extends Relational
      * State constants
      */
 
-    const STATE_NOTINDEXED = 0;
-    const STATE_INDEXED = 1;
-    const STATE_TRASHED = 2;
+    public const STATE_NOTINDEXED = 0;
+    public const STATE_INDEXED = 1;
+    public const STATE_TRASHED = 2;
     /**
      * Table namespace
      *
