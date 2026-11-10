@@ -23,7 +23,7 @@ class Confirm extends Button
      * @public string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Confirm';
+    protected $name = 'Confirm';
 
     /**
      * Fetch the HTML for the button
@@ -49,7 +49,7 @@ class Confirm extends Button
         $text   = Lang::txt($text);
         $msg    = Lang::txt($msg, true);
         $class  = $this->fetchIconClass($name);
-        $message = $this->_getCommand($msg, $name, $task, $list);
+        $message = $this->getCommand($msg, $name, $task, $list);
 
         $cls = 'toolbar toolbar-confirm';
 
@@ -86,7 +86,7 @@ class Confirm extends Button
      */
     public function fetchId($type = 'Confirm', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
     {
-        return $this->_parent->getName() . '-' . $name;
+        return $this->parent->getName() . '-' . $name;
     }
 
     /**
@@ -99,7 +99,7 @@ class Confirm extends Button
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getCommand($msg, $name, $task, $list)
+    protected function getCommand($msg, $name, $task, $list)
     {
         Behavior::framework();
 

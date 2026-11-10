@@ -20,7 +20,7 @@ class Resourcetype extends Element
      *
      * @var  string
      */
-    protected $_name = 'Resourcetype';
+    protected $name = 'Resourcetype';
 
     /**
      * Fetch the element

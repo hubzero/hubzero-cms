@@ -100,9 +100,9 @@ class Request
             $this->set('request', '_SERVER');
 
             if (isset($_GET['format'])) {
-                $this->accepts = $this->_parse_accept($_GET['format']);
+                $this->accepts = $this->parseAccept($_GET['format']);
             } elseif (isset($_POST['format'])) {
-                $this->accepts = $this->_parse_accept($_POST['format']);
+                $this->accepts = $this->parseAccept($_POST['format']);
             } elseif (isset($_SERVER['HTTP_ACCEPT'])) {
                 $this->accepts = $_SERVER['HTTP_ACCEPT'];
             }
@@ -111,7 +111,7 @@ class Request
                 $format = strrchr($_SERVER['REQUEST_URI'], '.');
 
                 if (strchr($format, '/') === false) {
-                    $this->accepts = $this->_parse_accept(substr($format, 1));
+                    $this->accepts = $this->parseAccept(substr($format, 1));
                 }
             }
 
@@ -353,7 +353,7 @@ class Request
      * @return     mixed Return description (if any) ...
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore,PSR1.Methods.CamelCapsMethodName.NotCamelCaps
-    protected function _parse_accept($input)
+    protected function parseAccept($input)
     {
         static $_types = [
             'xml' => 'application/xml',

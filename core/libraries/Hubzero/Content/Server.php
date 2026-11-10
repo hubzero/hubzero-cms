@@ -36,7 +36,7 @@ class Server extends Obj
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private static $_allowxsendfle = false;
+    private static $allowXsendfile = false;
 
     /**
      * inline or attachment
@@ -58,7 +58,7 @@ class Server extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private static $_contentType;
+    private static $contentType;
 
     /**
      * Constructor
@@ -113,7 +113,7 @@ class Server extends Obj
                 in_array('mod_xsendfile', apache_get_modules())
                 && Config::get('allow_xsendfile', 0) == 1
             ) {
-                self::$_allowxsendfle = true;
+                self::$allowXsendfile = true;
             }
         }
     }
@@ -198,7 +198,7 @@ class Server extends Obj
     public function setContentType($contentType = null)
     {
         if ($contentType !== null) {
-            self::$_contentType = $contentType;
+            self::$contentType = $contentType;
         }
     }
 
@@ -275,19 +275,19 @@ class Server extends Obj
         $filesize = filesize($filename);
 
         // Get the file's mimetype
-        if (!self::$_contentType) {
+        if (!self::$contentType) {
             $mime = new Mimetypes();
-            self::$_contentType = $mime->getMimeType($filename);
+            self::$contentType = $mime->getMimeType($filename);
         }
 
         // Mimetype couldn't be determined?
-        if (self::$_contentType == '##INVALID_FILE##') {
-            self::$_contentType = 'application/octet-stream';
+        if (self::$contentType == '##INVALID_FILE##') {
+            self::$contentType = 'application/octet-stream';
         }
 
         // send xsend file now (before any headers are sent)
-        if (self::$_allowxsendfle === true) {
-            header('Content-Type: ' . self::$_contentType);
+        if (self::$allowXsendfile === true) {
+            header('Content-Type: ' . self::$contentType);
             header('Content-Disposition: ' . $disposition . '; filename=' . $saveas);
             header('X-Sendfile: ' . $filename);
             exit(0);
@@ -341,7 +341,7 @@ class Server extends Obj
 
             if ($multipart) {
                 $content_length += strlen("\r\n--$boundary\r\n");
-                $content_length += strlen("Content-type: " . self::$_contentType . "\r\n");
+                $content_length += strlen("Content-type: " . self::$contentType . "\r\n");
                 $content_length += strlen("Content-range: bytes $first-$last/$filesize\r\n\r\n");
             }
 
@@ -380,7 +380,7 @@ class Server extends Obj
         if ($multipart) {
             header("Content-Type: multipart/x-byteranges; boundary=$boundary");
         } else {
-            header("Content-Type: " . self::$_contentType);
+            header("Content-Type: " . self::$contentType);
         }
 
         // IE6 "save as" chokes on pragma no-cache or no-cache being
@@ -417,7 +417,7 @@ class Server extends Obj
 
             if ($multipart) {
                 echo "\r\n--$boundary\r\n";
-                echo "Content-type: " . self::$_contentType . "\r\n";
+                echo "Content-type: " . self::$contentType . "\r\n";
                 echo "Content-range: bytes $first-$last/$filesize\r\n\r\n";
             }
 

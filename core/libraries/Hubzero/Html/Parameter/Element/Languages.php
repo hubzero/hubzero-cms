@@ -23,7 +23,7 @@ class Languages extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Languages';
+    protected $name = 'Languages';
 
     /**
      * Fetch a calendar element

@@ -23,7 +23,7 @@ class Folderlist extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Folderlist';
+    protected $name = 'Folderlist';
 
     /**
      * Fetch a calendar element

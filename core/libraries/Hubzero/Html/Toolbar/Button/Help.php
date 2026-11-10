@@ -28,7 +28,7 @@ class Help extends Button
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Help';
+    protected $name = 'Help';
 
     /**
      * Fetches the button HTML code.
@@ -52,7 +52,7 @@ class Help extends Button
         ) {
             $url = Route::url('index.php?option=com_help&component=' . Request::getCmd('option') . '&page=' . $url);
         } else {
-            $url = $this->_getCommand(
+            $url = $this->getCommand(
                 $ref = $type,
                 $com = false,
                 $override = false,
@@ -87,7 +87,7 @@ class Help extends Button
      */
     public function fetchId()
     {
-        return $this->_parent->getName() . '-' . 'help';
+        return $this->parent->getName() . '-' . 'help';
     }
 
     /**
@@ -100,7 +100,7 @@ class Help extends Button
      * @return  string   JavaScript command string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getCommand($ref, $com, $override, $component)
+    protected function getCommand($ref, $com, $override, $component)
     {
         // Get Help URL
         $url = self::createURL($ref, $com, $override, $component);

@@ -51,8 +51,8 @@ class Migration20230901000000ComMembers extends Base
                 $this->log('No column `secret` found in table `jos_users`, creating...', 'info');
 
                 // generate and run query to create column
-                $query = $this->_generateSafeAddColumns($tableName, $columnData);
-                $this->_queryIfTableExists($tableName, $query);
+                $query = $this->generateSafeAddColumns($tableName, $columnData);
+                $this->queryIfTableExists($tableName, $query);
             }
             // Generate and save user secrets
             $this->generateUserSecrets();
@@ -71,10 +71,10 @@ class Migration20230901000000ComMembers extends Base
         $columnData = self::$columnData;
 
         // generate query to drop column from table:
-        $query = $this->_generateSafeDropColumns($tableName, $columnData);
+        $query = $this->generateSafeDropColumns($tableName, $columnData);
 
         // execute the query, if column is found in the specified table:
-        $this->_queryIfTableExists($tableName, $query);
+        $this->queryIfTableExists($tableName, $query);
 
         $this->log('Column `secret` dropped from table `jos_users`', 'info');
     }

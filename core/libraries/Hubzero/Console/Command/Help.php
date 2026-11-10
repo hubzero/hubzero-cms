@@ -24,7 +24,7 @@ class Help extends Base implements CommandInterface
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_commands = [];
+    protected $commands = [];
 
     /**
      * Default (required) command
@@ -82,7 +82,7 @@ class Help extends Base implements CommandInterface
     {
         // Get all valid commands
         $this->getCommands();
-        $commands = $this->_commands;
+        $commands = $this->commands;
 
         // Sort commands
         sort($commands);
@@ -126,7 +126,7 @@ class Help extends Base implements CommandInterface
 
                         // Check for help ignore flag
                         if (!preg_match('/@museIgnoreHelp/', $comment)) {
-                            $this->_commands[] = $class;
+                            $this->commands[] = $class;
                         }
                     }
                 }

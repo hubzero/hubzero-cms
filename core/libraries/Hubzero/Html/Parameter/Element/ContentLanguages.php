@@ -23,7 +23,7 @@ class ContentLanguages extends Select
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'ContentLanguages';
+    protected $name = 'ContentLanguages';
 
     /**
      * Get the options for the element
@@ -32,7 +32,7 @@ class ContentLanguages extends Select
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getOptions(&$node)
+    protected function getOptions(&$node)
     {
         $db = App::get('db');
 
@@ -54,6 +54,6 @@ class ContentLanguages extends Select
         }
 
         // Merge any additional options in the XML definition.
-        return array_merge(parent::_getOptions($node), $options);
+        return array_merge(parent::getOptions($node), $options);
     }
 }

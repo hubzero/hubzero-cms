@@ -992,7 +992,7 @@ class Behavior
      *
      * @return  string  JavaScript that translates the object
      */
-    protected static function _calendartranslation()
+    protected static function calendarTranslation()
     {
         static $jsscript = 0;
 

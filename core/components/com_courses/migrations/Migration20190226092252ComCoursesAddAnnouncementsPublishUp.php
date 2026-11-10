@@ -28,31 +28,31 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
     public function up()
     {
         $announcementsTable = self::$announcementsTable;
-        $query = $this->_generateSafeAddColumns($announcementsTable, self::$announcementsColumns);
-        $this->_queryIfTableExists($announcementsTable, $query);
+        $query = $this->generateSafeAddColumns($announcementsTable, self::$announcementsColumns);
+        $this->queryIfTableExists($announcementsTable, $query);
     }
 
     public function down()
     {
         $announcementsTable = self::$announcementsTable;
-        $query = $this->_generateSafeDropColumns($announcementsTable, self::$announcementsColumns);
-        $this->_queryIfTableExists($announcementsTable, $query);
+        $query = $this->generateSafeDropColumns($announcementsTable, self::$announcementsColumns);
+        $this->queryIfTableExists($announcementsTable, $query);
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateSafeAddColumns($table, $columns)
+    protected function generateSafeAddColumns($table, $columns)
     {
-        $query = $this->_generateSafeAlterTableColumnOperation(
+        $query = $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeAddColumn',
+            'safeAddColumn',
         );
 
         return $query;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _safeAddColumn($table, $columnData)
+    protected function safeAddColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
         $addColumnStatement = '';
@@ -66,19 +66,19 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateSafeDropColumns($table, $columns)
+    protected function generateSafeDropColumns($table, $columns)
     {
-        $query = $this->_generateSafeAlterTableColumnOperation(
+        $query = $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeDropColumn',
+            'safeDropColumn',
         );
 
         return $query;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _safeDropColumn($table, $columnData)
+    protected function safeDropColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
         $dropColumnStatement = '';
@@ -92,7 +92,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
+    protected function generateSafeAlterTableColumnOperation($table, $columns, $functionName)
     {
         $query = "ALTER TABLE $table ";
 
@@ -106,7 +106,7 @@ class Migration20190226092252ComCoursesAddAnnouncementsPublishUp extends Base
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _queryIfTableExists($tableName, $query)
+    protected function queryIfTableExists($tableName, $query)
     {
         if ($this->db->tableExists($tableName)) {
             $this->db->setQuery($query);

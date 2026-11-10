@@ -20,7 +20,7 @@ class Textarea extends Element
      *
      * @var  string
      */
-    protected $_name = 'Textarea';
+    protected $name = 'Textarea';
 
     /**
      * Fetch a calendar element

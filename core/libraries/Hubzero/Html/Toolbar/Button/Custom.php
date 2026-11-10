@@ -23,7 +23,7 @@ class Custom extends Button
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Custom';
+    protected $name = 'Custom';
 
     /**
      * Fetch the HTML for the button
@@ -48,6 +48,6 @@ class Custom extends Button
      */
     public function fetchId($type = 'Custom', $html = '', $id = 'custom')
     {
-        return $this->_parent->getName() . '-' . $id;
+        return $this->parent->getName() . '-' . $id;
     }
 }

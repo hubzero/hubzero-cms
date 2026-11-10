@@ -22,7 +22,7 @@ class Spacer extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Spacer';
+    protected $name = 'Spacer';
 
     /**
      * Fetch tooltip for a radio button

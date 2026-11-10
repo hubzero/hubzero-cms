@@ -229,9 +229,9 @@ that matter, and a real migration reads like this:
 > driver and calling them raises a `BadMethodCallException`.
 
 `Base` also has protected helpers that build the statement for you:
-`_generateSafeAddColumns($table, $columns)` and `_generateSafeDropColumns()`
+`generateSafeAddColumns($table, $columns)` and `generateSafeDropColumns()`
 produce an `ALTER TABLE` containing only the columns that are actually missing
-or actually present, and `_queryIfTableExists($table, $query)` runs a
+or actually present, and `queryIfTableExists($table, $query)` runs a
 statement only when the table is there.
 
 ## Working with extensions

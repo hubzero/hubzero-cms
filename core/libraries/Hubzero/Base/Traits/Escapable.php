@@ -21,7 +21,7 @@ trait Escapable
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_escape = 'htmlspecialchars';
+    protected $escaper = 'htmlspecialchars';
 
     /**
      * Charset to use in escaping mechanisms; defaults to utf8 (UTF-8)
@@ -29,7 +29,7 @@ trait Escapable
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_charset = 'UTF-8';
+    protected $charset = 'UTF-8';
 
     /**
      * Escapes a value for output in a view script.
@@ -55,11 +55,11 @@ trait Escapable
             return array_map([$this, 'escape'], $var);
         }
 
-        if (in_array($this->_escape, ['htmlspecialchars', 'htmlentities'])) {
-            return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
+        if (in_array($this->escaper, ['htmlspecialchars', 'htmlentities'])) {
+            return call_user_func($this->escaper, $var, ENT_COMPAT, $this->charset);
         }
 
-        return call_user_func($this->_escape, $var);
+        return call_user_func($this->escaper, $var);
     }
 
     /**
@@ -70,7 +70,7 @@ trait Escapable
      */
     public function setEscape($spec)
     {
-        $this->_escape = $spec;
+        $this->escaper = $spec;
         return $this;
     }
 }

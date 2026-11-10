@@ -51,11 +51,11 @@ class Base extends SiteController
     public function getNotifications()
     {
         // Get messages in queue
-        if (!isset($this->_messages)) {
-            $this->_messages = Notify::messages('groups');
+        if (!isset($this->messages)) {
+            $this->messages = Notify::messages('groups');
         }
 
-        return $this->_messages;
+        return $this->messages;
     }
 
 

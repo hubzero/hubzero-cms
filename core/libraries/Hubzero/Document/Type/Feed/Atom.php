@@ -81,8 +81,8 @@ class Atom extends Renderer
                 $feed .= "	<category term=\"" . htmlspecialchars($data->category, ENT_COMPAT, 'UTF-8') . "\" />\n";
             }
         }
-        $feed .= "	<link rel=\"alternate\" type=\"text/html\" href=\"" . $this->_escapeUrl($url) . "\"/>\n";
-        $feed .= "	<id>" . $this->_escapeUrl(str_replace(' ', '%20', $data->getBase())) . "</id>\n";
+        $feed .= "	<link rel=\"alternate\" type=\"text/html\" href=\"" . $this->escapeUrl($url) . "\"/>\n";
+        $feed .= "	<id>" . $this->escapeUrl(str_replace(' ', '%20', $data->getBase())) . "</id>\n";
         $feed .= "	<updated>" . htmlspecialchars($now->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</updated>\n";
         if ($data->editor != "") {
             $feed .= "	<author>\n";
@@ -93,7 +93,7 @@ class Atom extends Renderer
             $feed .= "	</author>\n";
         }
         $feed .= "	<generator uri=\"http://hubzero.org\" version=\"2.5\">" . $this->escape($data->getGenerator()) . "</generator>\n";
-        $feed .= '	<link rel="self" type="application/atom+xml" href="' . $this->_escapeUrl(str_replace(' ', '%20', $root . ltrim((string) $syndicationURL, '/'))) . "\"/>\n";
+        $feed .= '	<link rel="self" type="application/atom+xml" href="' . $this->escapeUrl(str_replace(' ', '%20', $root . ltrim((string) $syndicationURL, '/'))) . "\"/>\n";
 
         for ($i = 0, $count = count($data->items); $i < $count; $i++) {
             // An item link may be absolute: Route::url() returns one when asked,
@@ -113,7 +113,7 @@ class Atom extends Renderer
 
             $feed .= "	<entry>\n";
             $feed .= "		<title>" . htmlspecialchars(strip_tags($data->items[$i]->title), ENT_COMPAT, 'UTF-8') . "</title>\n";
-            $feed .= '		<link rel="alternate" type="text/html" href="' . $this->_escapeUrl($itemLink) . "\"/>\n";
+            $feed .= '		<link rel="alternate" type="text/html" href="' . $this->escapeUrl($itemLink) . "\"/>\n";
 
             if ($data->items[$i]->date == "") {
                 $data->items[$i]->date = $now->toUnix();
@@ -124,7 +124,7 @@ class Atom extends Renderer
             $feed .= "		<published>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</published>\n";
             $feed .= "		<updated>" . htmlspecialchars($itemDate->toISO8601(true), ENT_COMPAT, 'UTF-8') . "</updated>\n";
             if (empty($data->items[$i]->guid) === true) {
-                $feed .= "		<id>" . $this->_escapeUrl($itemLink) . "</id>\n";
+                $feed .= "		<id>" . $this->escapeUrl($itemLink) . "</id>\n";
             } else {
                 $feed .= "		<id>" . htmlspecialchars($data->items[$i]->guid, ENT_COMPAT, 'UTF-8') . "</id>\n";
             }
@@ -138,7 +138,7 @@ class Atom extends Renderer
                 $feed .= "		</author>\n";
             }
             if ($data->items[$i]->description != "") {
-                $description = $this->_unwrapCdata((string) $data->items[$i]->description);
+                $description = $this->unwrapCdata((string) $data->items[$i]->description);
                 $feed .= "		<summary type=\"html\">" . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . "</summary>\n";
                 $feed .= "		<content type=\"html\">" . htmlspecialchars($description, ENT_COMPAT, 'UTF-8') . "</content>\n";
             }
@@ -152,7 +152,7 @@ class Atom extends Renderer
                 }
             }
             if ($data->items[$i]->enclosure != null) {
-                $feed .= "		<link rel=\"enclosure\" href=\"" . $this->_escapeUrl($data->items[$i]->enclosure->url) . "\" type=\"" . $this->escape($data->items[$i]->enclosure->type) . "\"  length=\"" . $this->escape($data->items[$i]->enclosure->length) . "\" />\n";
+                $feed .= "		<link rel=\"enclosure\" href=\"" . $this->escapeUrl($data->items[$i]->enclosure->url) . "\" type=\"" . $this->escape($data->items[$i]->enclosure->type) . "\"  length=\"" . $this->escape($data->items[$i]->enclosure->length) . "\" />\n";
             }
             $feed .= "	</entry>\n";
         }
@@ -174,7 +174,7 @@ class Atom extends Renderer
      * @param   string  $url
      * @return  string
      */
-    protected function _escapeUrl($url)
+    protected function escapeUrl($url)
     {
         return htmlspecialchars((string) $url, ENT_COMPAT, 'UTF-8', false);
     }
@@ -189,7 +189,7 @@ class Atom extends Renderer
      * @param   string  $text
      * @return  string
      */
-    protected function _unwrapCdata($text)
+    protected function unwrapCdata($text)
     {
         if (preg_match('/^\s*<!\[CDATA\[(.*)\]\]>\s*$/s', $text, $m)) {
             return $m[1];

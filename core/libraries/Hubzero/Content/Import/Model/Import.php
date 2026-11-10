@@ -57,7 +57,7 @@ class Import extends Relational
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_currentRun = null;
+    protected $currentRun = null;
 
     /**
      * Fields and their validation criteria
@@ -107,14 +107,14 @@ class Import extends Relational
      */
     public function currentRun()
     {
-        if (!$this->_currentRun) {
-            $this->_currentRun = $this->runs()
+        if (!$this->currentRun) {
+            $this->currentRun = $this->runs()
                 ->whereEquals('import_id', $this->get('id'))
                 ->ordered()
                 ->row();
         }
 
-        return $this->_currentRun;
+        return $this->currentRun;
     }
 
     /**

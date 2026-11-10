@@ -93,7 +93,7 @@ class View extends AbstractView
 
         // Set the charset (used by the variable escaping functions)
         if (array_key_exists('charset', $config)) {
-            $this->_charset = $config['charset'];
+            $this->charset = $config['charset'];
         }
 
         // User-defined escaping callback

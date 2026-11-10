@@ -813,7 +813,7 @@ class Detector
         }
 
         if (!empty($this->agent)) {
-            $this->_setPlatform();
+            $this->setPlatform();
 
             foreach ($this->regexes as $regex) {
                 if (preg_match($regex['regex'], $this->agent, $version)) {
@@ -852,7 +852,7 @@ class Detector
      * @return  void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _setPlatform()
+    protected function setPlatform()
     {
         $this->device = 'computer';
 

@@ -23,7 +23,7 @@ class Radio extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Radio';
+    protected $name = 'Radio';
 
     /**
      * Fetch a calendar element

@@ -297,7 +297,7 @@ class Todo extends Plugin
             'limit'      => Request::getInt('limit', $this->params->get('display_limit', 50)),
             'start'      => Request::getInt('limitstart', 0),
             'todolist'   => Request::getWord('list', ''),
-            'state'      => isset($this->_state) ? $this->_state : Request::getInt('state', 0),
+            'state'      => isset($this->state) ? $this->state : Request::getInt('state', 0),
             'mine'       => $mine,
             'assignedto' => $mine == 1 ? $this->_uid : 0,
             'sortby'     => Request::getString('sortby', 'priority'),

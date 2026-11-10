@@ -72,7 +72,7 @@ class Collection extends ItemList
      **/
     public function sortByCallback($callback)
     {
-        $cache = $this->_data;
+        $cache = $this->data;
 
         usort($cache, $callback);
 
@@ -251,7 +251,7 @@ class Collection extends ItemList
         $zip      = new \ZipArchive();
 
         if ($zip->open($temp . DS . $tarname, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
-            foreach ($this->_data as $entity) {
+            foreach ($this->data as $entity) {
                 if ($entity->isFile()) {
                     $fileSrc = $entity->readStream();
                     $parent = $entity->getParent();

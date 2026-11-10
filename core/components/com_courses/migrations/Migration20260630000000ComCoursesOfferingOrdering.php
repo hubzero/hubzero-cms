@@ -30,7 +30,7 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
         $table = self::$table;
 
         if (!$this->db->tableHasField($table, 'ordering')) {
-            $this->_queryIfTableExists(
+            $this->queryIfTableExists(
                 $table,
                 "ALTER TABLE `$table` ADD `ordering` INT(11) NOT NULL DEFAULT 0",
             );
@@ -40,7 +40,7 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
         // leaving the public course page unable to order them. Seed it from the
         // created date as the best available approximation; admins can correct
         // individual dates afterward.
-        $this->_queryIfTableExists(
+        $this->queryIfTableExists(
             $table,
             "UPDATE `$table`
 			 SET `publish_up` = `created`
@@ -56,7 +56,7 @@ class Migration20260630000000ComCoursesOfferingOrdering extends Base
         $table = self::$table;
 
         if ($this->db->tableHasField($table, 'ordering')) {
-            $this->_queryIfTableExists(
+            $this->queryIfTableExists(
                 $table,
                 "ALTER TABLE `$table` DROP `ordering`",
             );

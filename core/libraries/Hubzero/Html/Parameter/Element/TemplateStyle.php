@@ -24,7 +24,7 @@ class TemplateStyle extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'TemplateStyle';
+    protected $name = 'TemplateStyle';
 
     /**
      * Fetch a calendar element
@@ -51,7 +51,7 @@ class TemplateStyle extends Element
         $default = Builder\Select::option(0, App::get('language')->txt('JOPTION_USE_DEFAULT'), 'id', 'description');
         array_unshift($data, $default);
 
-        $selected = $this->_getSelected();
+        $selected = $this->getSelected();
         $html = Builder\Select::genericlist($data, $control_name
             . '['
             . $name
@@ -66,7 +66,7 @@ class TemplateStyle extends Element
      * @return  integer  The template style id.
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getSelected()
+    protected function getSelected()
     {
         $id = Request::getVar('cid', 0);
 

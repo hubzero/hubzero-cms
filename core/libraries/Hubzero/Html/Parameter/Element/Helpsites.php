@@ -23,7 +23,7 @@ class Helpsites extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Helpsites';
+    protected $name = 'Helpsites';
 
     /**
      * Fetch a calendar element

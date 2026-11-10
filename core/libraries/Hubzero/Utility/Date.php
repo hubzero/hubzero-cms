@@ -81,7 +81,7 @@ class Date extends DateTime
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tz;
+    protected $tz;
 
     /**
      * Constructor.
@@ -114,7 +114,7 @@ class Date extends DateTime
         date_default_timezone_set(self::$stz->getName());
 
         // Set the timezone object for access later.
-        $this->_tz = $timezone;
+        $this->tz = $timezone;
     }
 
     /**
@@ -311,7 +311,7 @@ class Date extends DateTime
     #[\ReturnTypeWillChange]
     public function getOffsetFromGMT($hours = false)
     {
-        return (float) $hours ? ($this->_tz->getOffset($this) / 3600) : $this->_tz->getOffset($this);
+        return (float) $hours ? ($this->tz->getOffset($this) / 3600) : $this->tz->getOffset($this);
     }
 
     /**
@@ -367,7 +367,7 @@ class Date extends DateTime
             $tz = new DateTimeZone($tz);
         }
 
-        $this->_tz = $tz;
+        $this->tz = $tz;
 
         return parent::setTimezone($tz);
     }
@@ -553,7 +553,7 @@ class Date extends DateTime
 
         // [!] HUBZERO - Changed default to format "% days ago"
         // Over a month, return the absolute time
-        $text = $this->_ago(strtotime($this), strtotime($time));
+        $text = $this->ago(strtotime($this), strtotime($time));
 
         $parts = explode(' ', $text);
 
@@ -570,7 +570,7 @@ class Date extends DateTime
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _ago($timestamp, $current_time = null)
+    protected function ago($timestamp, $current_time = null)
     {
         // Store the current time
         if (is_null($current_time)) {
@@ -617,7 +617,7 @@ class Date extends DateTime
 
         // Ensure there is still something to recurse through, and we have not found 1 minute and 0 seconds.
         if (($val >= 1) && (($current_time - $new_time) > 0)) {
-            $text .= $this->_ago($new_time, $current_time);
+            $text .= $this->ago($new_time, $current_time);
         }
 
         return $text;
@@ -675,7 +675,7 @@ class Date extends DateTime
         }
 
         if ($local == false) {
-            parent::setTimezone($this->_tz);
+            parent::setTimezone($this->tz);
         }
 
         return $return;

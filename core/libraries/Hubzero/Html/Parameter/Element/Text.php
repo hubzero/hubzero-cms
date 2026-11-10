@@ -21,7 +21,7 @@ class Text extends Element
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Text';
+    protected $name = 'Text';
 
     /**
      * Fetch a calendar element

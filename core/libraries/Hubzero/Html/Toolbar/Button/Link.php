@@ -22,7 +22,7 @@ class Link extends Button
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Link';
+    protected $name = 'Link';
 
     /**
      * Fetch the HTML for the button
@@ -37,7 +37,7 @@ class Link extends Button
     {
         $text   = Lang::txt($text);
         $class  = $this->fetchIconClass($name);
-        $doTask = $this->_getCommand($url);
+        $doTask = $this->getCommand($url);
 
         $html  = "<a data-title=\"$text\" href=\"$doTask\"";
         if ($target) {
@@ -61,7 +61,7 @@ class Link extends Button
      */
     public function fetchId($type = 'Link', $name = '')
     {
-        return $this->_parent->getName() . '-' . $name;
+        return $this->parent->getName() . '-' . $name;
     }
 
     /**
@@ -71,7 +71,7 @@ class Link extends Button
      * @return  string  JavaScript command string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getCommand($url)
+    protected function getCommand($url)
     {
         return $url;
     }

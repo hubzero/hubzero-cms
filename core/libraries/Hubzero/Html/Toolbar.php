@@ -24,7 +24,7 @@ class Toolbar extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = '';
+    protected $name = '';
 
     /**
      * Toolbar array
@@ -32,7 +32,7 @@ class Toolbar extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_bar = [];
+    protected $bar = [];
 
     /**
      * Loaded buttons
@@ -40,7 +40,7 @@ class Toolbar extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_buttons = [];
+    protected $buttons = [];
 
     /**
      * Directories, where button types can be stored.
@@ -48,7 +48,7 @@ class Toolbar extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_buttonPath = [];
+    protected $buttonPath = [];
 
     /**
      * Constructor
@@ -58,10 +58,10 @@ class Toolbar extends Obj
      */
     public function __construct($name = 'toolbar')
     {
-        $this->_name = $name;
+        $this->name = $name;
 
         // Set base path to find buttons.
-        $this->_buttonPath[] = __DIR__ . DS . 'Toolbar' . DS . 'Button';
+        $this->buttonPath[] = __DIR__ . DS . 'Toolbar' . DS . 'Button';
     }
 
     /**
@@ -73,7 +73,7 @@ class Toolbar extends Obj
     {
         $btn = func_get_args();
 
-        array_push($this->_bar, $btn);
+        array_push($this->bar, $btn);
 
         return true;
     }
@@ -85,7 +85,7 @@ class Toolbar extends Obj
      */
     public function getItems()
     {
-        return $this->_bar;
+        return $this->bar;
     }
 
     /**
@@ -95,7 +95,7 @@ class Toolbar extends Obj
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -107,7 +107,7 @@ class Toolbar extends Obj
     {
         $btn = func_get_args();
 
-        array_unshift($this->_bar, $btn);
+        array_unshift($this->bar, $btn);
 
         return true;
     }
@@ -122,24 +122,24 @@ class Toolbar extends Obj
         $html = [];
 
         // Start toolbar div.
-        $html[] = '<div class="toolbar-list" id="' . $this->_name . '">';
+        $html[] = '<div class="toolbar-list" id="' . $this->name . '">';
         $html[] = '<ul>';
 
-        foreach ($this->_bar as $key => $button) {
-            $this->_bar[$key][9] = [];
+        foreach ($this->bar as $key => $button) {
+            $this->bar[$key][9] = [];
             if ($button[0] == 'Separator') {
                 continue;
             }
-            if (!isset($this->_bar[$key - 1]) || $this->_bar[$key - 1][0] == 'Separator') {
-                $this->_bar[$key][9][] = 'first';
+            if (!isset($this->bar[$key - 1]) || $this->bar[$key - 1][0] == 'Separator') {
+                $this->bar[$key][9][] = 'first';
             }
-            if (!isset($this->_bar[$key + 1]) || $this->_bar[$key + 1][0] == 'Separator') {
-                $this->_bar[$key][9][] = 'last';
+            if (!isset($this->bar[$key + 1]) || $this->bar[$key + 1][0] == 'Separator') {
+                $this->bar[$key][9][] = 'last';
             }
         }
 
         // Render each button in the toolbar.
-        foreach ($this->_bar as $button) {
+        foreach ($this->bar as $button) {
             $html[] = $this->renderButton($button);
         }
 
@@ -180,13 +180,13 @@ class Toolbar extends Obj
     public function loadButtonType($type, $new = false)
     {
         $signature = md5($type);
-        if (isset($this->_buttons[$signature]) && $new === false) {
-            return $this->_buttons[$signature];
+        if (isset($this->buttons[$signature]) && $new === false) {
+            return $this->buttons[$signature];
         }
 
         $buttonClass = __NAMESPACE__ . '\\Toolbar\\Button\\' . $type;
         if (!class_exists($buttonClass)) {
-            $dirs = isset($this->_buttonPath) ? $this->_buttonPath : [];
+            $dirs = isset($this->buttonPath) ? $this->buttonPath : [];
             $file = preg_replace('/[^A-Z0-9_\.-]/i', '', str_replace('_', DIRECTORY_SEPARATOR, strtolower($type)))
                 . '.php';
 
@@ -215,9 +215,9 @@ class Toolbar extends Obj
             );
         }
 
-        $this->_buttons[$signature] = new $buttonClass($this);
+        $this->buttons[$signature] = new $buttonClass($this);
 
-        return $this->_buttons[$signature];
+        return $this->buttons[$signature];
     }
 
     /**
@@ -287,7 +287,7 @@ class Toolbar extends Obj
             }
 
             // Add to the top of the search dirs.
-            array_unshift($this->_buttonPath, $dir);
+            array_unshift($this->buttonPath, $dir);
         }
     }
 

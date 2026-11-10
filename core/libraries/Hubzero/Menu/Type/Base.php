@@ -24,7 +24,7 @@ class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_items = [];
+    protected $items = [];
 
     /**
      * Identifier of the default menu item
@@ -32,7 +32,7 @@ class Base extends Obj
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_default = [];
+    protected $defaultItem = [];
 
     /**
      * Identifier of the active menu item
@@ -40,7 +40,7 @@ class Base extends Obj
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_active = 0;
+    protected $active = 0;
 
     /**
      * Filter by set language
@@ -90,9 +90,9 @@ class Base extends Obj
         // Load the menu items
         $this->load();
 
-        foreach ($this->_items as $item) {
+        foreach ($this->items as $item) {
             if ($item->home) {
-                $this->_default[trim($item->language)] = $item->id;
+                $this->defaultItem[trim($item->language)] = $item->id;
             }
 
             // Decode the item params
@@ -110,8 +110,8 @@ class Base extends Obj
     {
         $result = null;
 
-        if (isset($this->_items[$id])) {
-            $result = & $this->_items[$id];
+        if (isset($this->items[$id])) {
+            $result = & $this->items[$id];
         }
 
         return $result;
@@ -126,8 +126,8 @@ class Base extends Obj
      */
     public function setDefault($id, $language = '')
     {
-        if (isset($this->_items[$id])) {
-            $this->_default[$language] = $id;
+        if (isset($this->items[$id])) {
+            $this->defaultItem[$language] = $id;
             return true;
         }
 
@@ -142,12 +142,12 @@ class Base extends Obj
      */
     public function getDefault($language = '*')
     {
-        if (array_key_exists($language, $this->_default)) {
-            return $this->_items[$this->_default[$language]];
+        if (array_key_exists($language, $this->defaultItem)) {
+            return $this->items[$this->defaultItem[$language]];
         }
 
-        if (array_key_exists('*', $this->_default)) {
-            return $this->_items[$this->_default['*']];
+        if (array_key_exists('*', $this->defaultItem)) {
+            return $this->items[$this->defaultItem['*']];
         }
 
         return 0;
@@ -161,10 +161,10 @@ class Base extends Obj
      */
     public function setActive($id)
     {
-        if (isset($this->_items[$id])) {
-            $this->_active = $id;
+        if (isset($this->items[$id])) {
+            $this->active = $id;
 
-            $result = & $this->_items[$id];
+            $result = & $this->items[$id];
 
             return $result;
         }
@@ -179,8 +179,8 @@ class Base extends Obj
      */
     public function getActive()
     {
-        if ($this->_active) {
-            $item = & $this->_items[$this->_active];
+        if ($this->active) {
+            $item = & $this->items[$this->active];
 
             return $item;
         }
@@ -229,7 +229,7 @@ class Base extends Obj
         $attributes = (array) $attributes;
         $values     = (array) $values;
 
-        foreach ($this->_items as $item) {
+        foreach ($this->items as $item) {
             if (!is_object($item)) {
                 continue;
             }
@@ -284,7 +284,7 @@ class Base extends Obj
      */
     public function getMenu()
     {
-        return $this->_items;
+        return $this->items;
     }
 
     /**

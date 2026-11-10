@@ -25,7 +25,7 @@ class MenuItem extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'MenuItem';
+    protected $name = 'MenuItem';
 
     /**
      * Fetch a calendar element
@@ -40,7 +40,7 @@ class MenuItem extends Element
     {
         $db = App::get('db');
 
-        $menuType = $this->_parent->get('menu_type');
+        $menuType = $this->parent->get('menu_type');
         if (!empty($menuType)) {
             $where = ' WHERE menutype = ' . $db->quote($menuType);
         } else {
@@ -72,7 +72,7 @@ class MenuItem extends Element
             ->select('type')
             ->from('#__menu');
 
-        $menuType = $this->_parent->get('menu_type');
+        $menuType = $this->parent->get('menu_type');
         if (!empty($menuType)) {
             $query->whereEquals('menutype', $menuType);
         }

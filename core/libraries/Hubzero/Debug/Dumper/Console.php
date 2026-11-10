@@ -51,13 +51,13 @@ class Console extends AbstractRenderer
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _deflate($arr)
+    protected function deflate($arr)
     {
         $output = 'Array( ' . "\n";
         $a = [];
         foreach ($arr as $key => $val) {
             if (is_array($val)) {
-                $a[] = "\t" . $key . ' => ' . $this->_deflate($val);
+                $a[] = "\t" . $key . ' => ' . $this->deflate($val);
             } else {
                 $a[] = "\t" . $key . ' => ' . htmlentities($val, ENT_COMPAT, 'UTF-8') . '';
             }

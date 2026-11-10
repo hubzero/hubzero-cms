@@ -24,7 +24,7 @@ class ModuleLayouts extends Select
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'ModuleLayouts';
+    protected $name = 'ModuleLayouts';
 
     /**
      * Get the options for the list.
@@ -33,7 +33,7 @@ class ModuleLayouts extends Select
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getOptions(&$node)
+    protected function getOptions(&$node)
     {
         $v = (int) $node['client_id'];
         $clientId = $v ? $v : 0;
@@ -79,7 +79,7 @@ class ModuleLayouts extends Select
         }
 
         // Merge any additional options in the XML definition.
-        $options = array_merge(parent::_getOptions($node), $options);
+        $options = array_merge(parent::getOptions($node), $options);
 
         return $options;
     }

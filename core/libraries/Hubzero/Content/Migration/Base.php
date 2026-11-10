@@ -490,12 +490,12 @@ class Base
      * @param   array   $columns  Columns to add to given table
      * @return  string
      **/
-    protected function _generateSafeAddColumns($table, $columns)
+    protected function generateSafeAddColumns($table, $columns)
     {
-        $query = $this->_generateSafeAlterTableColumnOperation(
+        $query = $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeAddColumn',
+            'safeAddColumn',
         );
 
         return $query;
@@ -508,7 +508,7 @@ class Base
      * @param   array   $columnData  Data for column to be added
      * @return  string
      **/
-    protected function _safeAddColumn($table, $columnData)
+    protected function safeAddColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
         $addColumnStatement = '';
@@ -528,12 +528,12 @@ class Base
      * @param   array   $columns  Columns to drop from given table
      * @return  string
      **/
-    protected function _generateSafeDropColumns($table, $columns)
+    protected function generateSafeDropColumns($table, $columns)
     {
-        $query = $this->_generateSafeAlterTableColumnOperation(
+        $query = $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeDropColumn',
+            'safeDropColumn',
         );
 
         return $query;
@@ -546,7 +546,7 @@ class Base
      * @param   array   $columnData  Data for column to be dropped
      * @return  string
      **/
-    protected function _safeDropColumn($table, $columnData)
+    protected function safeDropColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
         $dropColumnStatement = '';
@@ -567,7 +567,7 @@ class Base
      * @param   string  $functionName  Function to generate per column statements
      * @return  string
      **/
-    protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
+    protected function generateSafeAlterTableColumnOperation($table, $columns, $functionName)
     {
         $query = "ALTER TABLE $table ";
 
@@ -587,7 +587,7 @@ class Base
      * @param   string  $query  Query to execute
      * @return  void
      **/
-    protected function _queryIfTableExists($table, $query)
+    protected function queryIfTableExists($table, $query)
     {
         if ($this->db->tableExists($table)) {
             $this->db->setQuery($query);

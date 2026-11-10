@@ -21,7 +21,7 @@ class AbstractRenderer implements Renderable
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_messages = [];
+    protected $messages = [];
 
     /**
      * Constructor
@@ -53,7 +53,7 @@ class AbstractRenderer implements Renderable
      */
     public function getMessages()
     {
-        return $this->_messages;
+        return $this->messages;
     }
 
     /**
@@ -71,7 +71,7 @@ class AbstractRenderer implements Renderable
             ));
         }
 
-        $this->_messages = $messages;
+        $this->messages = $messages;
 
         return $this;
     }
@@ -105,7 +105,7 @@ class AbstractRenderer implements Renderable
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _deflate($arr)
+    protected function deflate($arr)
     {
         $arr = str_replace(["\n", "\r", "\t"], ' ', $arr);
         return preg_replace('/\s+/', ' ', $arr);

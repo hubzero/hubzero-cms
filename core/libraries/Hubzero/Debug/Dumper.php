@@ -20,7 +20,7 @@ class Dumper
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_renderer = null;
+    protected $renderer = null;
 
     /**
      * Messages
@@ -28,7 +28,7 @@ class Dumper
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_messages = [];
+    protected $messages = [];
 
     /**
      * Map of characters to be replaced through strtr
@@ -36,7 +36,7 @@ class Dumper
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_nameReplacements = [
+    protected $nameReplacements = [
         '-'  => '',
         '_'  => '',
         ' '  => '',
@@ -78,7 +78,7 @@ class Dumper
      */
     public function getRenderer()
     {
-        return $this->_renderer;
+        return $this->renderer;
     }
 
     /**
@@ -112,7 +112,7 @@ class Dumper
             ));
         }
 
-        $this->_renderer = $renderer;
+        $this->renderer = $renderer;
 
         return $this;
     }
@@ -126,7 +126,7 @@ class Dumper
     protected function scrub($name)
     {
         // this is just for performance instead of using str_replace
-        return strtolower(strtr($name, $this->_nameReplacements));
+        return strtolower(strtr($name, $this->nameReplacements));
     }
 
     /**
@@ -139,7 +139,7 @@ class Dumper
     public function addVar($var)
     {
         $varc = (is_object($var) ? clone($var) : $var);
-        $this->_messages[] = [
+        $this->messages[] = [
             'var'  => $varc,
             'time' => microtime(true),
         ];
@@ -154,7 +154,7 @@ class Dumper
      */
     public function messages()
     {
-        $messages = $this->_messages;
+        $messages = $this->messages;
 
         // sort messages by their timestamp
         usort($messages, function ($a, $b) {
@@ -174,7 +174,7 @@ class Dumper
      */
     public function clear()
     {
-        $this->_messages = [];
+        $this->messages = [];
     }
 
     /**

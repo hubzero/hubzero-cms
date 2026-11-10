@@ -156,7 +156,7 @@ class Grid
 
         $checked = '';
         if ($result) {
-            $checked = self::_checkedOut($row);
+            $checked = self::checkedOutIcon($row);
         } else {
             if ($identifier == 'id') {
                 $checked = self::id($i, $row->$identifier);
@@ -315,7 +315,7 @@ class Grid
      * @return  string   HTML for the icon and tooltip
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected static function _checkedOut(&$row, $tooltip = 1)
+    protected static function checkedOutIcon(&$row, $tooltip = 1)
     {
         $hover = '<span class="checkedout">';
 

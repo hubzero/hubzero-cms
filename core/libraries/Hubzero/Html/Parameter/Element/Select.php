@@ -23,7 +23,7 @@ class Select extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Select';
+    protected $name = 'Select';
 
     /**
      * Get the options for the element
@@ -32,7 +32,7 @@ class Select extends Element
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getOptions(&$node)
+    protected function getOptions(&$node)
     {
         $options = [];
         foreach ($node->children() as $option) {
@@ -71,7 +71,7 @@ class Select extends Element
         }
 
         return Builder\Select::genericlist(
-            $this->_getOptions($node),
+            $this->getOptions($node),
             $ctrl,
             [
                 'id' => $control_name . $name,

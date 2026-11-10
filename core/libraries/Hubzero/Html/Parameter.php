@@ -24,7 +24,7 @@ class Parameter extends Registry
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_raw = null;
+    protected $raw = null;
 
     /**
      * The XML params element
@@ -32,7 +32,7 @@ class Parameter extends Registry
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_xml = null;
+    protected $xml = null;
 
     /**
      * Loaded elements
@@ -40,7 +40,7 @@ class Parameter extends Registry
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elements = [];
+    protected $elements = [];
 
     /**
      * Directories, where element types can be stored
@@ -48,7 +48,7 @@ class Parameter extends Registry
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elementPath = [];
+    protected $elementPath = [];
 
     /**
      * Constructor
@@ -62,7 +62,7 @@ class Parameter extends Registry
         parent::__construct('_default');
 
         // Set base path.
-        $this->_elementPath[] = __DIR__ . DS . 'Parameter' . DS . 'Element';
+        $this->elementPath[] = __DIR__ . DS . 'Parameter' . DS . 'Element';
 
         if ($data = trim($data ? $data : "")) {
             $this->parse($data);
@@ -72,7 +72,7 @@ class Parameter extends Registry
             $this->loadSetupFile($path);
         }
 
-        $this->_raw = $data;
+        $this->raw = $data;
     }
 
     /**
@@ -100,9 +100,9 @@ class Parameter extends Registry
     {
         if (is_object($xml)) {
             if ($group = $xml['group']) {
-                $this->_xml[(string) $group] = $xml;
+                $this->xml[(string) $group] = $xml;
             } else {
-                $this->_xml['_default'] = $xml;
+                $this->xml['_default'] = $xml;
             }
 
             if ($dir = $xml['addpath']) {
@@ -120,14 +120,14 @@ class Parameter extends Registry
      */
     public function render($name = 'params', $group = '_default')
     {
-        if (!isset($this->_xml[$group])) {
+        if (!isset($this->xml[$group])) {
             return false;
         }
 
         $params = $this->getParams($name, $group);
         $html = [];
 
-        if ($description = $this->_xml[$group]['description']) {
+        if ($description = $this->xml[$group]['description']) {
             // Add the params description to the display
             $html[] = '<p class="paramrow_desc">' . App::get('language')->txt((string) $description) . '</p>';
         }
@@ -161,13 +161,13 @@ class Parameter extends Registry
      */
     public function renderToArray($name = 'params', $group = '_default')
     {
-        if (!isset($this->_xml[$group])) {
+        if (!isset($this->xml[$group])) {
             return false;
         }
 
         $results = [];
 
-        foreach ($this->_xml[$group]->children() as $param) {
+        foreach ($this->xml[$group]->children() as $param) {
             $result = $this->getParam($param, $name, $group);
             $results[$result[5]] = $result;
         }
@@ -183,11 +183,11 @@ class Parameter extends Registry
      */
     public function getNumParams($group = '_default')
     {
-        if (!isset($this->_xml[$group]) || !count($this->_xml[$group]->children())) {
+        if (!isset($this->xml[$group]) || !count($this->xml[$group]->children())) {
             return false;
         }
 
-        return count($this->_xml[$group]->children());
+        return count($this->xml[$group]->children());
     }
 
     /**
@@ -197,12 +197,12 @@ class Parameter extends Registry
      */
     public function getGroups()
     {
-        if (!is_array($this->_xml)) {
+        if (!is_array($this->xml)) {
             return false;
         }
 
         $results = [];
-        foreach ($this->_xml as $name => $group) {
+        foreach ($this->xml as $name => $group) {
             $results[$name] = $this->getNumParams($name);
         }
 
@@ -218,12 +218,12 @@ class Parameter extends Registry
      */
     public function getParams($name = 'params', $group = '_default')
     {
-        if (!isset($this->_xml[$group])) {
+        if (!isset($this->xml[$group])) {
             return false;
         }
 
         $results = [];
-        foreach ($this->_xml[$group]->children() as $param) {
+        foreach ($this->xml[$group]->children() as $param) {
             $results[] = $this->getParam($param, $name, $group);
         }
 
@@ -307,18 +307,18 @@ class Parameter extends Registry
 
         $signature = md5($type);
         if (
-            (isset($this->_elements[$signature])
-            && !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class))
+            (isset($this->elements[$signature])
+            && !($this->elements[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
-            return $this->_elements[$signature];
+            return $this->elements[$signature];
         }
 
         $elementClass = __NAMESPACE__ . '\\Parameter\\Element\\' . ucfirst($type);
 
         if (!class_exists($elementClass)) {
-            if (isset($this->_elementPath)) {
-                $dirs = $this->_elementPath;
+            if (isset($this->elementPath)) {
+                $dirs = $this->elementPath;
             } else {
                 $dirs = [];
             }
@@ -343,9 +343,9 @@ class Parameter extends Registry
             return $false;
         }
 
-        $this->_elements[$signature] = new $elementClass($this);
+        $this->elements[$signature] = new $elementClass($this);
 
-        return $this->_elements[$signature];
+        return $this->elements[$signature];
     }
 
     /**
@@ -378,7 +378,7 @@ class Parameter extends Registry
             }
 
             // Add to the top of the search dirs.
-            array_unshift($this->_elementPath, $dir);
+            array_unshift($this->elementPath, $dir);
         }
 
         return $this;

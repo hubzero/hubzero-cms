@@ -81,12 +81,12 @@ class Site extends Base
         // Set the query
         $db->setQuery($query->toString());
 
-        $this->_items = $db->loadObjectList('id');
+        $this->items = $db->loadObjectList('id');
 
         // An alias points at another item by id. If that item has just gone -
         // because its component was switched off - the alias is left pointing
         // at nothing, and the router builds a url out of the hole.
-        foreach ($this->_items as $id => $item) {
+        foreach ($this->items as $id => $item) {
             if ($item->type != 'alias') {
                 continue;
             }
@@ -96,16 +96,16 @@ class Site extends Base
                 ? (int) $params['aliasoptions']
                 : 0;
 
-            if ($target && !isset($this->_items[$target])) {
-                unset($this->_items[$id]);
+            if ($target && !isset($this->items[$target])) {
+                unset($this->items[$id]);
             }
         }
 
-        foreach ($this->_items as &$item) {
+        foreach ($this->items as &$item) {
             // Get parent information.
             $parent_tree = [];
-            if (isset($this->_items[$item->parent_id])) {
-                $parent_tree  = $this->_items[$item->parent_id]->tree;
+            if (isset($this->items[$item->parent_id])) {
+                $parent_tree  = $this->items[$item->parent_id]->tree;
             }
 
             // Create tree.
@@ -164,12 +164,12 @@ class Site extends Base
      */
     public function getDefault($language = '*')
     {
-        if (array_key_exists($language, $this->_default) && $this->get('language_filter')) {
-            return $this->_items[$this->_default[$language]];
+        if (array_key_exists($language, $this->defaultItem) && $this->get('language_filter')) {
+            return $this->items[$this->defaultItem[$language]];
         }
 
-        if (array_key_exists('*', $this->_default)) {
-            return $this->_items[$this->_default['*']];
+        if (array_key_exists('*', $this->defaultItem)) {
+            return $this->items[$this->defaultItem['*']];
         }
 
         return 0;

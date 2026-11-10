@@ -41,53 +41,53 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
     public function up()
     {
         $assetsTable = self::$assetsTable;
-        $assetsTableQuery = $this->_generateSafeAddColumns($assetsTable, self::$assetsColumns);
-        $this->_queryIfTableExists($assetsTable, $assetsTableQuery);
+        $assetsTableQuery = $this->generateSafeAddColumns($assetsTable, self::$assetsColumns);
+        $this->queryIfTableExists($assetsTable, $assetsTableQuery);
 
         $offeringSectionsTable = self::$offeringSectionsTable;
-        $offeringSectionsTableQuery = $this->_generateSafeAddColumns(
+        $offeringSectionsTableQuery = $this->generateSafeAddColumns(
             $offeringSectionsTable,
             self::$offeringSectionsColumns,
         );
-        $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
+        $this->queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
         $pagesTable = self::$pagesTable;
-        $pagesTableQuery = $this->_generateSafeAddColumns($pagesTable, self::$pagesColumns);
-        $this->_queryIfTableExists($pagesTable, $pagesTableQuery);
+        $pagesTableQuery = $this->generateSafeAddColumns($pagesTable, self::$pagesColumns);
+        $this->queryIfTableExists($pagesTable, $pagesTableQuery);
     }
 
     public function down()
     {
         $assetsTable = self::$assetsTable;
-        $assetsTableQuery = $this->_generateSafeDropColumns($assetsTable, self::$assetsColumns);
-        $this->_queryIfTableExists($assetsTable, $assetsTableQuery);
+        $assetsTableQuery = $this->generateSafeDropColumns($assetsTable, self::$assetsColumns);
+        $this->queryIfTableExists($assetsTable, $assetsTableQuery);
 
         $offeringSectionsTable = self::$offeringSectionsTable;
-        $offeringSectionsTableQuery = $this->_generateSafeDropColumns(
+        $offeringSectionsTableQuery = $this->generateSafeDropColumns(
             $offeringSectionsTable,
             self::$offeringSectionsColumns,
         );
-        $this->_queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
+        $this->queryIfTableExists($offeringSectionsTable, $offeringSectionsTableQuery);
 
         $pagesTable = self::$pagesTable;
-        $pagesTableQuery = $this->_generateSafeDropColumns($pagesTable, self::$pagesColumns);
-        $this->_queryIfTableExists($pagesTable, $pagesTableQuery);
+        $pagesTableQuery = $this->generateSafeDropColumns($pagesTable, self::$pagesColumns);
+        $this->queryIfTableExists($pagesTable, $pagesTableQuery);
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateSafeAddColumns($table, $columns)
+    protected function generateSafeAddColumns($table, $columns)
     {
-        $query = $this->_generateSafeAlterTableColumnOperation(
+        $query = $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeAddColumn',
+            'safeAddColumn',
         );
 
         return $query;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _safeAddColumn($table, $columnData)
+    protected function safeAddColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
         $addColumnStatement = '';
@@ -101,19 +101,19 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateSafeDropColumns($table, $columns)
+    protected function generateSafeDropColumns($table, $columns)
     {
-        $query = $this->_generateSafeAlterTableColumnOperation(
+        $query = $this->generateSafeAlterTableColumnOperation(
             $table,
             $columns,
-            '_safeDropColumn',
+            'safeDropColumn',
         );
 
         return $query;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _safeDropColumn($table, $columnData)
+    protected function safeDropColumn($table, $columnData)
     {
         $columnName = $columnData['name'];
         $dropColumnStatement = '';
@@ -127,7 +127,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateSafeAlterTableColumnOperation($table, $columns, $functionName)
+    protected function generateSafeAlterTableColumnOperation($table, $columns, $functionName)
     {
         $query = "ALTER TABLE $table ";
 
@@ -141,7 +141,7 @@ class Migration20190102152739ComCoursesMissingColumns extends Base
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _queryIfTableExists($tableName, $query)
+    protected function queryIfTableExists($tableName, $query)
     {
         if ($this->db->tableExists($tableName)) {
             $this->db->setQuery($query);

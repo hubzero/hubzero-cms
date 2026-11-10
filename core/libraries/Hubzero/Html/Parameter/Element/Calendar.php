@@ -23,7 +23,7 @@ class Calendar extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Calendar';
+    protected $name = 'Calendar';
 
     /**
      * Fetch a calendar element

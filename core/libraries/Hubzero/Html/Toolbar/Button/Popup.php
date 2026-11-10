@@ -24,7 +24,7 @@ class Popup extends Button
      * @public string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Popup';
+    protected $name = 'Popup';
 
     /**
      * Fetch the HTML for the button
@@ -55,7 +55,7 @@ class Popup extends Button
 
         $text  = Lang::txt($text);
         $class = $this->fetchIconClass($name);
-        $url   = $this->_getCommand($name, $url, $width, $height, $top, $left);
+        $url   = $this->getCommand($name, $url, $width, $height, $top, $left);
         $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" 
             rel=\"{size: {width: $width, height: $height}, onClose: function() {"
             . $onClose
@@ -77,7 +77,7 @@ class Popup extends Button
      */
     public function fetchId($type, $name)
     {
-        return $this->_parent->getName() . '-popup-' . $name;
+        return $this->parent->getName() . '-popup-' . $name;
     }
 
     /**
@@ -92,7 +92,7 @@ class Popup extends Button
      * @return  string   Command string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getCommand($name, $url, $width, $height, $top, $left)
+    protected function getCommand($name, $url, $width, $height, $top, $left)
     {
         if (substr($url, 0, 4) !== 'http') {
             $root = rtrim(Request::root(true), '/');

@@ -19,7 +19,7 @@ class Logs extends AbstractRenderer
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_logger = null;
+    protected $logger = null;
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ class Logs extends AbstractRenderer
     {
         parent::__construct($messages);
 
-        $this->_logger = \Log::getRoot();
+        $this->logger = \Log::getRoot();
     }
 
     /**
@@ -59,7 +59,7 @@ class Logs extends AbstractRenderer
         $messages = $this->getMessages();
 
         foreach ($messages as $item) {
-            $this->_logger->debug(print_r($item['var'], true));
+            $this->logger->debug(print_r($item['var'], true));
         }
     }
 
@@ -70,7 +70,7 @@ class Logs extends AbstractRenderer
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _deflate($arr)
+    protected function deflate($arr)
     {
         $output = 'Array( ' . "\n";
         $a = [];
@@ -80,7 +80,7 @@ class Logs extends AbstractRenderer
                     . '<code class="ky">'
                     . $key
                     . '</code> <code class="op">=></code> <code class="vl">'
-                    . $this->_deflate($val)
+                    . $this->deflate($val)
                     . '</code>';
             } else {
                 $a[] = "\t"

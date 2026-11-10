@@ -21,7 +21,7 @@ class Guard
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_observers = [];
+    protected $observers = [];
 
     /**
      * The state of the observable object
@@ -29,7 +29,7 @@ class Guard
      * @var  mixed
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_state = null;
+    protected $state = null;
 
     /**
      * A multi dimensional array of [function][] = key for observers
@@ -37,7 +37,7 @@ class Guard
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_methods = [];
+    protected $methods = [];
 
     /**
      * The application implementation.
@@ -70,7 +70,7 @@ class Guard
      */
     public function getState()
     {
-        return $this->_state;
+        return $this->state;
     }
 
     /**
@@ -91,7 +91,7 @@ class Guard
             }
 
             // Make sure we haven't already attached this array as an observer
-            foreach ($this->_observers as $check) {
+            foreach ($this->observers as $check) {
                 if (
                     is_array($check)
                     && $check['event'] == $observer['event']
@@ -101,8 +101,8 @@ class Guard
                 }
             }
 
-            $this->_observers[] = $observer;
-            end($this->_observers);
+            $this->observers[] = $observer;
+            end($this->observers);
             $methods = [$observer['event']];
         } else {
             if (!($observer instanceof Guard)) {
@@ -112,26 +112,26 @@ class Guard
             // Make sure we haven't already attached this object as an observer
             $class = get_class($observer);
 
-            foreach ($this->_observers as $check) {
+            foreach ($this->observers as $check) {
                 if ($check instanceof $class) {
                     return;
                 }
             }
 
-            $this->_observers[] = $observer;
+            $this->observers[] = $observer;
             $methods = array_diff(get_class_methods($observer), get_class_methods('Hubzero\\Plugin\\Plugin'));
         }
 
-        $key = key($this->_observers);
+        $key = key($this->observers);
 
         foreach ($methods as $method) {
             $method = strtolower($method);
 
-            if (!isset($this->_methods[$method])) {
-                $this->_methods[$method] = [];
+            if (!isset($this->methods[$method])) {
+                $this->methods[$method] = [];
             }
 
-            $this->_methods[$method][] = $key;
+            $this->methods[$method][] = $key;
         }
     }
 
@@ -150,13 +150,13 @@ class Guard
         // Initialise variables.
         $retval = false;
 
-        $key = array_search($observer, $this->_observers);
+        $key = array_search($observer, $this->observers);
 
         if ($key !== false) {
-            unset($this->_observers[$key]);
+            unset($this->observers[$key]);
             $retval = true;
 
-            foreach ($this->_methods as &$method) {
+            foreach ($this->methods as &$method) {
                 $k = array_search($key, $method);
 
                 if ($k !== false) {

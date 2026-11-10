@@ -23,7 +23,7 @@ class Timezones extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Timezones';
+    protected $name = 'Timezones';
 
     /**
      * Fetch a calendar element

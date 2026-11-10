@@ -19,7 +19,7 @@ class ClientManager
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_clients = null;
+    protected static $clients = null;
 
     /**
      * Gets information on a specific client id.  This method will be useful in
@@ -35,8 +35,8 @@ class ClientManager
     public static function client($id = null, $byName = false)
     {
         // Only create the array if it does not exist
-        if (self::$_clients === null) {
-            self::$_clients = [];
+        if (self::$clients === null) {
+            self::$clients = [];
 
             $dirIterator = new \DirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . 'Client');
             foreach ($dirIterator as $file) {
@@ -57,9 +57,9 @@ class ClientManager
 
                 $obj = new $cls();
 
-                self::$_clients[$obj->id] = $obj;
+                self::$clients[$obj->id] = $obj;
             }
-            ksort(self::$_clients);
+            ksort(self::$clients);
         }
 
         // If no client id has been passed return the whole array
@@ -69,11 +69,11 @@ class ClientManager
 
         // Are we looking for client information by id or by name?
         if (!$byName) {
-            if (isset(self::$_clients[$id])) {
-                return self::$_clients[$id];
+            if (isset(self::$clients[$id])) {
+                return self::$clients[$id];
             }
         } else {
-            foreach (self::$_clients as $client) {
+            foreach (self::$clients as $client) {
                 if ($client->name == strtolower($id)) {
                     return $client;
                 }
@@ -120,7 +120,7 @@ class ClientManager
             $client->id = count($info);
         }
 
-        self::$_clients[$client->id] = clone($client);
+        self::$clients[$client->id] = clone($client);
 
         return true;
     }
@@ -132,7 +132,7 @@ class ClientManager
      */
     public static function all()
     {
-        return self::$_clients;
+        return self::$clients;
     }
 
     /**
@@ -142,6 +142,6 @@ class ClientManager
      */
     public static function reset()
     {
-        self::$_clients = null;
+        self::$clients = null;
     }
 }

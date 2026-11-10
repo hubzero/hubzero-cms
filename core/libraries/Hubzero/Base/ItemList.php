@@ -27,7 +27,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_pos = 0;
+    protected $pos = 0;
 
     /**
      * Current array count
@@ -35,7 +35,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_total = 0;
+    protected $total = 0;
 
     /**
      * Container for data
@@ -43,7 +43,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_data = [];
+    protected $data = [];
 
     /**
      * Constructor
@@ -54,9 +54,9 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     public function __construct($data = null)
     {
         if (is_array($data)) {
-            $this->_data = $data;
+            $this->data = $data;
         }
-        $this->_total = count($this->_data);
+        $this->total = count($this->data);
     }
 
     /**
@@ -88,7 +88,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function rewind()
     {
-        $this->_pos = 0;
+        $this->pos = 0;
     }
 
     /**
@@ -100,8 +100,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function reset()
     {
-        $this->_pos = 0;
-        $this->_data = array_values($this->_data);
+        $this->pos = 0;
+        $this->data = array_values($this->data);
     }
 
     /**
@@ -111,7 +111,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function isFirst()
     {
-        return !isset($this->_data[$this->_pos - 1]);
+        return !isset($this->data[$this->pos - 1]);
     }
 
     /**
@@ -121,7 +121,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function isLast()
     {
-        return !isset($this->_data[$this->_pos + 1]);
+        return !isset($this->data[$this->pos + 1]);
     }
 
     /**
@@ -137,7 +137,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     {
         $this->rewind();
 
-        while ($this->_pos < $offset && $this->valid()) {
+        while ($this->pos < $offset && $this->valid()) {
             $this->next();
         }
 
@@ -157,7 +157,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     public function current()
     {
         if ($this->valid()) {
-            return $this->_data[$this->_pos];
+            return $this->data[$this->pos];
         }
         return null;
     }
@@ -181,7 +181,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function count()
     {
-        return $this->_total;
+        return $this->total;
     }
 
     /**
@@ -202,7 +202,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function last()
     {
-        $this->_pos = ($this->_total - 1);
+        $this->pos = ($this->total - 1);
         return $this->current();
     }
 
@@ -215,7 +215,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function key()
     {
-        return $this->_pos;
+        return $this->pos;
     }
 
     /**
@@ -227,7 +227,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function prev()
     {
-        --$this->_pos;
+        --$this->pos;
     }
 
     /**
@@ -239,7 +239,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function next()
     {
-        ++$this->_pos;
+        ++$this->pos;
     }
 
     /**
@@ -251,7 +251,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function valid()
     {
-        return isset($this->_data[$this->_pos]);
+        return isset($this->data[$this->pos]);
     }
 
     /**
@@ -264,7 +264,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
-        return array_key_exists($offset, $this->_data);
+        return array_key_exists($offset, $this->data);
     }
 
     /**
@@ -277,7 +277,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        return isset($this->_data[$offset]) ? $this->_data[$offset] : null;
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
 
     /**
@@ -291,10 +291,10 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     public function offsetSet($offset, $item)
     {
         if ($offset === null) {
-            $this->_data[] = $item;
-            $this->_total = count($this->_data);
+            $this->data[] = $item;
+            $this->total = count($this->data);
         } else {
-            $this->_data[$offset] = $item;
+            $this->data[$offset] = $item;
         }
     }
 
@@ -307,8 +307,8 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        unset($this->_data[$offset]);
-        $this->_total = count($this->_data);
+        unset($this->data[$offset]);
+        $this->total = count($this->data);
     }
 
     /**
@@ -319,7 +319,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function map(Closure $callback)
     {
-        return (array_map($callback, $this->_data));
+        return (array_map($callback, $this->data));
     }
 
     /**
@@ -334,7 +334,7 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
         // $_data[$_pos] from zero, so a filtered list that kept the keys it
         // matched on counts what it holds but iterates as though it were
         // empty, unless the first match happened to be the first item.
-        return new static(array_values(array_filter($this->_data, $callback)));
+        return new static(array_values(array_filter($this->data, $callback)));
     }
 
     /**
@@ -347,11 +347,11 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
     {
         foreach (func_get_args() as $list) {
             if ($list instanceof self) {
-                $this->_data = array_merge($this->_data, $list->_data);
+                $this->data = array_merge($this->data, $list->data);
             }
         }
 
-        return new static($this->_data);
+        return new static($this->data);
     }
 
     /**
@@ -361,6 +361,6 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
      */
     public function reverse()
     {
-        return new static(array_reverse($this->_data));
+        return new static(array_reverse($this->data));
     }
 }

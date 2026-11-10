@@ -22,7 +22,7 @@ class ItemList extends \Hubzero\Base\ItemList
      */
     public function fetch($key, $value)
     {
-        foreach ($this->_data as $data) {
+        foreach ($this->data as $data) {
             if ($data->get($key) == $value) {
                 return $data;
             }
@@ -40,7 +40,7 @@ class ItemList extends \Hubzero\Base\ItemList
     public function lists($key, $default = null)
     {
         $results = [];
-        foreach ($this->_data as $data) {
+        foreach ($this->data as $data) {
             array_push($results, $data->get($key));
         }
         return $results;

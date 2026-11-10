@@ -20,7 +20,7 @@ class Password extends Element
      *
      * @var  string
      */
-    protected $_name = 'Password';
+    protected $name = 'Password';
 
     /**
      * Fetch a calendar element

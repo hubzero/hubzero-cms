@@ -21,7 +21,7 @@ class Separator extends Button
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Separator';
+    protected $name = 'Separator';
 
     /**
      * Get the HTML for a separator in the toolbar

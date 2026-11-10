@@ -28,7 +28,7 @@ abstract class Service extends Obj implements DetectorInterface
      * @var mixed
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_value;
+    protected $value;
 
     /**
      * Returns the validation value
@@ -37,7 +37,7 @@ abstract class Service extends Obj implements DetectorInterface
      */
     public function getValue()
     {
-        return $this->_value;
+        return $this->value;
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class Service extends Obj implements DetectorInterface
      */
     public function setValue($value)
     {
-        $this->_value  = $value;
+        $this->value  = $value;
         $this->_errors = [];
         $this->message = '';
     }

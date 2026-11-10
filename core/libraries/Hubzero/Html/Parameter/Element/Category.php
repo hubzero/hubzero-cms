@@ -22,7 +22,7 @@ class Category extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Category';
+    protected $name = 'Category';
 
     /**
      * Fetch the element

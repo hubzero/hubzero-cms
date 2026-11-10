@@ -22,7 +22,7 @@ class ComponentLayouts extends Select
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'ComponentLayouts';
+    protected $name = 'ComponentLayouts';
 
     /**
      * Get the options for the list.
@@ -31,7 +31,7 @@ class ComponentLayouts extends Select
      * @return  array
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getOptions(&$node)
+    protected function getOptions(&$node)
     {
         $options = [];
         $path1 = null;
@@ -78,7 +78,7 @@ class ComponentLayouts extends Select
         }
 
         // Merge any additional options in the XML definition.
-        $options = array_merge(parent::_getOptions($node), $options);
+        $options = array_merge(parent::getOptions($node), $options);
 
         return $options;
     }

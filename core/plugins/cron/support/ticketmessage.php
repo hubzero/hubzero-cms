@@ -20,7 +20,7 @@ class Ticketmessage extends Element
      *
      * @var  string
      */
-    protected $_name = 'Ticketmessage';
+    protected $name = 'Ticketmessage';
 
     /**
      * Fetch the element

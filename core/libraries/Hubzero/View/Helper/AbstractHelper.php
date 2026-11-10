@@ -21,7 +21,7 @@ abstract class AbstractHelper implements HelperInterface
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_view = null;
+    protected $view = null;
 
     /**
      * Set the View object
@@ -31,7 +31,7 @@ abstract class AbstractHelper implements HelperInterface
      */
     public function setView(View $view)
     {
-        $this->_view = $view;
+        $this->view = $view;
 
         return $this;
     }
@@ -43,6 +43,6 @@ abstract class AbstractHelper implements HelperInterface
      */
     public function getView()
     {
-        return $this->_view;
+        return $this->view;
     }
 }

@@ -293,11 +293,11 @@ class Sanitize
      */
     public static function html($text, $options = [])
     {
-        $config = self::_buildHtmlPurifierConfig($options);
+        $config = self::buildHtmlPurifierConfig($options);
         $htmlPurifierWhitelist  = $config->getHTMLDefinition(true);
 
-        self::_addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist);
-        self::_addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist);
+        self::addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist);
+        self::addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist);
 
         $purifier = new \HTMLPurifier($config);
 
@@ -310,7 +310,7 @@ class Sanitize
      * @param    array    $options   Custom purifier configuration options
      * @return   object   $config    HTML purifier configuration
      */
-    protected static function _buildHtmlPurifierConfig($options)
+    protected static function buildHtmlPurifierConfig($options)
     {
         $config = \HTMLPurifier_Config::createDefault();
         $root = str_replace(['http://', 'https://', '.'], ['', '', '\.'], App::get('request')->root());
@@ -328,7 +328,7 @@ class Sanitize
         ];
         $combinedSettings = array_merge($defaultSettings, $options);
 
-        self::_findOrCreateClientSerializerDirectory($combinedSettings);
+        self::findOrCreateClientSerializerDirectory($combinedSettings);
 
         foreach ($combinedSettings as $setting => $value) {
             $config->set($setting, $value);
@@ -343,7 +343,7 @@ class Sanitize
      * @param    array   $purifierConfigSettings   HTML purifier configuration settings
      * @return   void
      */
-    protected static function _findOrCreateClientSerializerDirectory(&$purifierConfigSettings)
+    protected static function findOrCreateClientSerializerDirectory(&$purifierConfigSettings)
     {
         $client = App::get('client');
         $clientAlias = isset($client->alias) ? $client->alias : $client->name;
@@ -366,7 +366,7 @@ class Sanitize
      * @param    object   $htmlPurifierWhitelist HTML purifier whitelist
      * @return   void
      */
-    protected static function _addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist)
+    protected static function addElementsToHtmlPurifierWhitelist($htmlPurifierWhitelist)
     {
         $styleElement = [
             'name' => 'style',
@@ -489,7 +489,7 @@ class Sanitize
      * @param    object   $htmlPurifierWhitelist HTML purifier whitelist
      * @return   void
      */
-    protected static function _addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
+    protected static function addAttributesToHtmlPurifierWhitelist($htmlPurifierWhitelist)
     {
         $htmlPurifierWhitelist->addAttribute('img', 'usemap', 'CDATA');
 
@@ -560,7 +560,7 @@ class Sanitize
                 break;
 
             case 'STRING':
-                $result = (string) self::clean(self::_decode((string) $source));
+                $result = (string) self::clean(self::decode((string) $source));
                 break;
 
             case 'HTML':
@@ -587,7 +587,7 @@ class Sanitize
                     foreach ($source as $key => $value) {
                         // filter element for XSS and other 'bad' code etc.
                         if (is_string($value)) {
-                            $source[$key] = self::clean(self::_decode($value));
+                            $source[$key] = self::clean(self::decode($value));
                         }
                     }
                     $result = $source;
@@ -595,7 +595,7 @@ class Sanitize
                     // Or a string?
                     if (is_string($source) && !empty($source)) {
                         // filter source for XSS and other 'bad' code etc.
-                        $result = self::clean(self::_decode($source));
+                        $result = self::clean(self::decode($source));
                     } else {
                         // Not an array or string.. return the passed parameter
                         $result = $source;
@@ -613,7 +613,7 @@ class Sanitize
      * @param   string  $source  The source string.
      * @return  string  Plaintext string
      */
-    protected static function _decode($source)
+    protected static function decode($source)
     {
         static $ttr;
 

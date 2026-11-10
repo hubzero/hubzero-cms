@@ -349,7 +349,7 @@ class Arr
         self::$sortLocale    = $locale;
 
         usort($a, function ($a, $b) {
-            return static::_sortObjects($a, $b);
+            return static::compareObjects($a, $b);
         });
 
         self::$sortCase      = null;
@@ -367,7 +367,7 @@ class Arr
      * @param   array    &$b  An array of objects
      * @return  integer  Comparison status
      */
-    protected static function _sortObjects($a, $b)
+    protected static function compareObjects($a, $b)
     {
         $key = self::$sortKey;
 

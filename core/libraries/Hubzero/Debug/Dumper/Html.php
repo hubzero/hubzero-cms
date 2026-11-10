@@ -66,7 +66,7 @@ class Html extends AbstractRenderer
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _deflate($arr)
+    protected function deflate($arr)
     {
         if (is_string($arr)) {
             $arr = htmlentities($arr, ENT_COMPAT, 'UTF-8');
@@ -83,7 +83,7 @@ class Html extends AbstractRenderer
                         . '<code class="ky">'
                         . $key
                         . '</code> <code class="op">=></code> <code class="vl">'
-                        . $this->_deflate($val)
+                        . $this->deflate($val)
                         . '</code>';
                 } else {
                     $val = htmlentities($val, ENT_COMPAT, 'UTF-8');

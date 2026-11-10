@@ -23,7 +23,7 @@ class Standard extends Button
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Standard';
+    protected $name = 'Standard';
 
     /**
      * Fetch the HTML for the button
@@ -39,7 +39,7 @@ class Standard extends Button
     {
         $i18n_text = Lang::txt($text);
         $class = $this->fetchIconClass($name);
-        $message = $this->_getCommand($text, $task, $list);
+        $message = $this->getCommand($text, $task, $list);
 
         $cls = 'toolbar toolbar-submit';
 
@@ -75,7 +75,7 @@ class Standard extends Button
      */
     public function fetchId($type = 'Standard', $name = '', $text = '', $task = '', $list = true, $hideMenu = false)
     {
-        return $this->_parent->getName() . '-' . $name;
+        return $this->parent->getName() . '-' . $name;
     }
 
     /**
@@ -87,7 +87,7 @@ class Standard extends Button
      * @return  string
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _getCommand($name, $task, $list)
+    protected function getCommand($name, $task, $list)
     {
         Behavior::framework();
 

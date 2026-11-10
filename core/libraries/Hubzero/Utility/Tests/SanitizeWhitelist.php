@@ -30,8 +30,8 @@ class SanitizeWhitelist extends Sanitize
         $config->set('Cache.DefinitionImpl', null);
 
         $definition = $config->getHTMLDefinition(true);
-        static::_addElementsToHtmlPurifierWhitelist($definition);
-        static::_addAttributesToHtmlPurifierWhitelist($definition);
+        static::addElementsToHtmlPurifierWhitelist($definition);
+        static::addAttributesToHtmlPurifierWhitelist($definition);
 
         return trim((new \HTMLPurifier($config))->purify($html));
     }

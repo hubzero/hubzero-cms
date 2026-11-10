@@ -22,7 +22,7 @@ class Validate
      *
      * @var  array
      */
-    protected static $_pattern = [
+    protected static $pattern = [
         'hostname' => '(?:[_a-z0-9][-_a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,})',
     ];
 
@@ -40,7 +40,7 @@ class Validate
     public static function notEmpty($check)
     {
         if (is_array($check)) {
-            $vars = self::_defaults($check);
+            $vars = self::defaults($check);
 
             extract($vars);
         }
@@ -48,7 +48,7 @@ class Validate
         if (empty($check) && $check != '0') {
             return false;
         }
-        return self::_check($check, '/[^\s]+/m');
+        return self::check($check, '/[^\s]+/m');
     }
 
     /**
@@ -65,7 +65,7 @@ class Validate
     public static function alphaNumeric($check)
     {
         if (is_array($check)) {
-            $vars = self::_defaults($check);
+            $vars = self::defaults($check);
 
             extract($vars);
         }
@@ -73,7 +73,7 @@ class Validate
         if (empty($check) && $check != '0') {
             return false;
         }
-        return self::_check($check, '/^[\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]+$/Du');
+        return self::check($check, '/^[\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]+$/Du');
     }
 
     /**
@@ -105,12 +105,12 @@ class Validate
     public static function blank($check)
     {
         if (is_array($check)) {
-            $vars = self::_defaults($check);
+            $vars = self::defaults($check);
 
             extract($vars);
         }
 
-        return !self::_check($check, '/[^\\s]/');
+        return !self::check($check, '/[^\\s]/');
     }
 
     /**
@@ -564,20 +564,20 @@ class Validate
     public static function email($check, $deep = false, $regex = null)
     {
         if (is_array($check)) {
-            $vars = self::_defaults($check);
+            $vars = self::defaults($check);
 
             extract($vars);
         }
 
         if ($regex === null) {
-            $regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@' . self::$_pattern['hostname'] . '$/i';
+            $regex = '/^[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*@' . self::$pattern['hostname'] . '$/i';
         }
-        $return = self::_check($check, $regex);
+        $return = self::check($check, $regex);
         if ($deep === false || $deep === null) {
             return $return;
         }
 
-        if ($return === true && preg_match('/@(' . self::$_pattern['hostname'] . ')$/i', $check, $regs)) {
+        if ($return === true && preg_match('/@(' . self::$pattern['hostname'] . ')$/i', $check, $regs)) {
             if (function_exists('getmxrr') && getmxrr($regs[1], $mxhosts)) {
                 return true;
             }
@@ -621,7 +621,7 @@ class Validate
      */
     public static function url($check, $strict = false)
     {
-        self::_populateIp();
+        self::populateIp();
 
         $validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=~[]|') . '\/0-9a-z\p{L}\p{N}]|(%[0-9a-f]{2}))';
 
@@ -630,12 +630,12 @@ class Validate
         // shared with the address validator and should not start accepting mail
         // for a host that cannot receive it.
         $regex = '/^(?:(?:https?|ftps?|sftp|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?')
-            . '(?:' . self::$_pattern['IPv4'] . '|\[' . self::$_pattern['IPv6'] . '\]|localhost|' . self::$_pattern['hostname'] . ')(?::[1-9][0-9]{0,4})?'
+            . '(?:' . self::$pattern['IPv4'] . '|\[' . self::$pattern['IPv6'] . '\]|localhost|' . self::$pattern['hostname'] . ')(?::[1-9][0-9]{0,4})?'
             . '(?:\/?|\/' . $validChars . '*)?'
             . '(?:\?' . $validChars . '*)?'
             . '(?:#' . $validChars . '*)?$/iu';
 
-        return self::_check($check, $regex);
+        return self::check($check, $regex);
     }
 
     /**
@@ -649,7 +649,7 @@ class Validate
     public static function phone($check, $regex = null, $country = 'all')
     {
         if (is_array($check)) {
-            $vars = self::_defaults($check);
+            $vars = self::defaults($check);
 
             extract($vars);
         }
@@ -681,9 +681,9 @@ class Validate
             }
         }
         if (empty($regex)) {
-            return self::_pass('phone', $check, $country);
+            return self::pass('phone', $check, $country);
         }
-        return self::_check($check, $regex);
+        return self::check($check, $regex);
     }
 
     /**
@@ -696,7 +696,7 @@ class Validate
      * @param  string $classPrefix The prefix for the class to do the validation.
      * @return mixed Return of Passed method, false on failure
      */
-    protected static function _pass($method, $check, $classPrefix)
+    protected static function pass($method, $check, $classPrefix)
     {
         $className = ucwords($classPrefix) . 'Validation';
         if (!class_exists($className)) {
@@ -717,7 +717,7 @@ class Validate
      * @return  boolean  Success of match
      * @codeCoverageIgnore
      */
-    protected static function _check($check, $regex)
+    protected static function check($check, $regex)
     {
         if ($check === null) {
             $check = '';
@@ -737,7 +737,7 @@ class Validate
      * @return  array
      * @codeCoverageIgnore
      */
-    protected static function _defaults($params)
+    protected static function defaults($params)
     {
         $defaults = [
             'check'   => null,
@@ -759,9 +759,9 @@ class Validate
      * @return  void
      * @codeCoverageIgnore
      */
-    protected static function _populateIp()
+    protected static function populateIp()
     {
-        if (!isset(self::$_pattern['IPv6'])) {
+        if (!isset(self::$pattern['IPv6'])) {
             $pattern  = '((([0-9A-Fa-f]{1,4}:){7}(([0-9A-Fa-f]{1,4})|:))|(([0-9A-Fa-f]{1,4}:){6}';
             $pattern .= '(:|((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})';
             $pattern .= '|(:[0-9A-Fa-f]{1,4})))|(([0-9A-Fa-f]{1,4}:){5}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})';
@@ -777,11 +777,11 @@ class Validate
             $pattern .= '\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4})';
             $pattern .= '{1,2})))|(((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})))(%.+)?';
 
-            self::$_pattern['IPv6'] = $pattern;
+            self::$pattern['IPv6'] = $pattern;
         }
-        if (!isset(self::$_pattern['IPv4'])) {
+        if (!isset(self::$pattern['IPv4'])) {
             $pattern = '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])';
-            self::$_pattern['IPv4'] = $pattern;
+            self::$pattern['IPv4'] = $pattern;
         }
     }
 

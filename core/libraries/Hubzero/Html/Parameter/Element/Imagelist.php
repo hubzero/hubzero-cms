@@ -21,7 +21,7 @@ class ImageList extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'ImageList';
+    protected $name = 'ImageList';
 
     /**
      * Fetch a calendar element
@@ -37,7 +37,7 @@ class ImageList extends Element
         $filter = '\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$';
         $node->addAttribute('filter', $filter);
 
-        $parameter = $this->_parent->loadElement('filelist');
+        $parameter = $this->parent->loadElement('filelist');
 
         return $parameter->fetchElement($name, $value, $node, $control_name);
     }

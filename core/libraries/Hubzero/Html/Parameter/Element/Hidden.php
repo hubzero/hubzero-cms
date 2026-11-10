@@ -22,7 +22,7 @@ class Hidden extends Element
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Hidden';
+    protected $name = 'Hidden';
 
     /**
      * Fetch a calendar element

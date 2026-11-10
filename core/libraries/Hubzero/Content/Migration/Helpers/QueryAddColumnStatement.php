@@ -13,15 +13,15 @@ use Hubzero\Utility\Arr;
 class QueryAddColumnStatement
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_asString;
+    protected $asString;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_default;
+    protected $defaultValue;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name;
+    protected $name;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_restriction;
+    protected $restriction;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type;
+    protected $type;
 
     /**
      * Constructs QueryAddColumnStatement instance
@@ -31,11 +31,11 @@ class QueryAddColumnStatement
      */
     public function __construct($args = [])
     {
-        $this->_name = $args['name'];
-        $this->_type = $args['type'];
-        $this->_restriction = Arr::getValue($args, 'restriction', null);
-        $this->_default = Arr::getValue($args, 'default', null);
-        $this->_asString = '';
+        $this->name = $args['name'];
+        $this->type = $args['type'];
+        $this->restriction = Arr::getValue($args, 'restriction', null);
+        $this->defaultValue = Arr::getValue($args, 'default', null);
+        $this->asString = '';
     }
 
     /**
@@ -45,13 +45,13 @@ class QueryAddColumnStatement
      */
     public function toString()
     {
-        $this->_generateBaseString();
-        $this->_addName();
-        $this->_addType();
-        $this->_addRestriction();
-        $this->_addDefault();
+        $this->generateBaseString();
+        $this->addName();
+        $this->addType();
+        $this->addRestriction();
+        $this->addDefault();
 
-        return $this->_asString;
+        return $this->asString;
     }
 
     /**
@@ -60,9 +60,9 @@ class QueryAddColumnStatement
      * @return   void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _generateBaseString()
+    protected function generateBaseString()
     {
-        $this->_asString = 'ADD COLUMN';
+        $this->asString = 'ADD COLUMN';
     }
 
     /**
@@ -71,9 +71,9 @@ class QueryAddColumnStatement
      * @return   void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addName()
+    protected function addName()
     {
-        $this->_asString .= " $this->_name";
+        $this->asString .= " $this->name";
     }
 
     /**
@@ -82,9 +82,9 @@ class QueryAddColumnStatement
      * @return   void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addType()
+    protected function addType()
     {
-        $this->_asString .= " $this->_type";
+        $this->asString .= " $this->type";
     }
 
     /**
@@ -93,11 +93,11 @@ class QueryAddColumnStatement
      * @return   void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addRestriction()
+    protected function addRestriction()
     {
-        $restriction = rtrim(" $this->_restriction");
+        $restriction = rtrim(" $this->restriction");
 
-        $this->_asString .= $restriction;
+        $this->asString .= $restriction;
     }
 
     /**
@@ -106,14 +106,14 @@ class QueryAddColumnStatement
      * @return   void
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    protected function _addDefault()
+    protected function addDefault()
     {
         $default = '';
 
-        if ($this->_default === 0 || $this->_default) {
-            $default = " DEFAULT $this->_default";
+        if ($this->defaultValue === 0 || $this->defaultValue) {
+            $default = " DEFAULT $this->defaultValue";
         }
 
-        $this->_asString .= $default;
+        $this->asString .= $default;
     }
 }
