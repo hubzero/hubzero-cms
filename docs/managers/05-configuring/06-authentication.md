@@ -83,7 +83,7 @@ the domain; others, Google among them, want every URI listed exactly.
 
 The hub builds these itself, so they are not a guess:
 
-<!--include: core/libraries/Hubzero/Plugin/OauthClient.php:72-98-->
+<!--include: core/libraries/Hubzero/Plugin/OauthClient.php:76-98-->
 
 ## Enable the plugin
 

@@ -29,7 +29,7 @@ adding a file.
 jQuery is not loaded by the template. The `System - jQuery` plugin loads it, on
 `onAfterRoute`, for the site client only:
 
-<!--include: core/plugins/system/jquery/jquery.php:21-50-->
+<!--include: core/plugins/system/jquery/jquery.php:29-53-->
 
 So:
 
@@ -115,7 +115,7 @@ of what a click on that element means.
 
 `kimera` does exactly one thing:
 
-<!--include: core/templates/kimera/index.php:13-14-->
+<!--include: core/templates/kimera/index.php:22-25-->
 
 `$this` in a template layout is the document, so `addScript()`,
 `addScriptDeclaration()`, `addStyleSheet()` and `addStyleDeclaration()` are all
@@ -133,7 +133,7 @@ It works out the root and appends the file's modification time to bust caches
 after a deploy. `kimera` and `kameleon` still write the address out by hand,
 with `filemtime()` beside it; that form works, but it throws on a file that
 has been removed. See
-[Stylesheets](07-css.md#the-templates-own-stylesheets).
+[Stylesheets](07-css.md#the-template-s-own-stylesheets).
 
 What ships in the templates' `js/` directories is thinner than the old
 documentation suggested:

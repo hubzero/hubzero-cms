@@ -77,7 +77,7 @@ The plugin answers `onCronEvents` with a `stdClass` carrying a `plugin`
 name and an `events` array. The support plugin is the fullest example in the
 tree:
 
-<!--include: core/plugins/cron/support/support.php:16-52-->
+<!--include: core/plugins/cron/support/support.php:28-64-->
 
 Each entry has three keys:
 
@@ -211,4 +211,4 @@ hub's administrator to create one, ship a
 [migration](../06-database/03-migrations.md) that inserts the row — check for the
 job first so re-running the migration does not duplicate it:
 
-<!--include: core/plugins/cron/groups/migrations/Migration20260810000000PlgCronGroups.php:19-56-->
+<!--include: core/plugins/cron/groups/migrations/Migration20260810000000PlgCronGroups.php:22-56-->

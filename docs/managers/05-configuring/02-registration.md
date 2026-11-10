@@ -88,7 +88,7 @@ above: `R` required, `O` optional, `H` hidden, `U` read only. The stored
 values are listed in the
 [Members component reference](../../reference/configuration/components/members.md#registration).
 
-<!--include: core/components/com_members/config/config.xml:329-340-->
+<!--include: core/components/com_members/config/config.xml:317-328-->
 
 Those shipped defaults are sensible for a hub that anyone may join, and most
 hubs never change them. The **Create Account** column is the visible sign-up

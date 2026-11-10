@@ -399,42 +399,55 @@ working directory. Run it from the installation root.</p>
 database, extend it — or extend <code>TestCase</code> directly — and follow the
 <a href="https://docs.phpunit.de/en/11.5/">PHPUnit documentation</a>.</p>
 <h3 id="database">Database</h3>
-<p><a href="../../core/libraries/Hubzero/Test/Database.php"><code>Hubzero\Test\Database</code></a> is
-for tests that need a driver. It gives you a real, throwaway SQLite database
-rather than a connection to anyone's development server:</p>
-<pre><code class="language-php">public function testBasicFetch()
-{
-    $dbo   = $this-&gt;getMockDriver();
-    $query = new Query($dbo);
-
-    $rows = $query-&gt;select('*')
-                  -&gt;from('users')
-                  -&gt;whereEquals('id', '1')
-                  -&gt;fetch();
-
-    $this-&gt;assertCount(1, $rows, 'Query should have returned one result');
-}
+<p>There is no shared base class for database tests: the old
+<code>Hubzero\Test\Database</code> harness, a DBUnit-style layer over the legacy driver,
+was retired. A test that needs a database builds what it needs, in one of
+three ways.</p>
+<p><strong>Against every configured database.</strong> Extend
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Tests/AbstractDriverTestCase.php"><code>Hubzero\Database\Tests\AbstractDriverTestCase</code></a>.
+Name your tables in <code>getTestTables()</code>, create them in <code>setUpDatabase()</code>, and
+take the driver each test runs against from the <code>databaseProvider</code> data
+provider:</p>
+<pre><code class="language-php"> * Usage:
+ * ```php
+ * class MyTest extends AbstractDriverTestCase
+ * {
+ *     protected static function getTestTables(): array
+ *     {
+ *         return ['my_test_table'];
+ *     }
+ *
+ *     protected static function setUpDatabase(Driver $driver): void
+ *     {
+ *         $driver-&gt;createTable('my_test_table')
+ *             -&gt;id()
+ *             -&gt;string('name', 255)
+ *             -&gt;execute();
+ *     }
+ *
+ *     #[Test]
+ *     #[DataProvider('databaseProvider')]
+ *     public function testSomething(string $dbName, Driver $driver): void
+ *     {
+ *         // ...
+ *     }
+ * }
+ * ```
 </code></pre>
-<p><code>getMockDriver()</code> returns a fully functioning driver over a SQLite file. Two
-fixtures back it, in a <code>Fixtures</code> directory beside the test:</p>
-<pre><code>Tests/Fixtures/test.sqlite3
-Tests/Fixtures/seed.xml
-</code></pre>
-<p><code>test.sqlite3</code> supplies the schema; <code>seed.xml</code> supplies the rows, reloaded
-for each test class. Override <code>$fixture</code> and <code>$seed</code> on the test class to
-use different filenames, or override <code>getDataSet()</code> for anything more
-involved.</p>
-<p><code>Hubzero\Test\Database</code> also bootstraps the facades — it adopts the
-container the bootstrap installed rather than replacing it, and registers an
-event dispatcher — so a model that calls <code>Event::trigger()</code> at file scope
-does not fatal.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> This class is Hubzero's own, not PHPUnit's. It replaces
-<code>PHPUnit\DbUnit\TestCase</code>, which was abandoned years ago. The supporting
-classes are in
-<a href="../../core/libraries/Hubzero/Test/Database"><code>Hubzero\Test\Database</code></a> —
-<code>Connection</code>, <code>DataSet</code>, <code>XmlDataSet</code>, <code>Table</code>.</p>
-</aside>
+<p>Which databases run is set by the <code>DB_*</code> variables in <code>phpunit.xml.dist</code>.
+Only those with <code>DB_{NAME}_ENABLED</code> set to <code>true</code> are tested; copy the file to
+<code>phpunit.xml</code> and edit it, or export the variables before running PHPUnit.</p>
+<p><strong>Over a SQLite file.</strong> Open a fixture through <code>SqliteDriver</code>, as
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Template/Tests/LoaderTest.php"><code>Hubzero\Template\Tests\LoaderTest</code></a>
+does with <code>Tests/Fixtures/test.sqlite3</code>, seeding it from the test at the start
+of each run so the fixture in the repository stays empty.</p>
+<p><strong>With no database at all.</strong> The test bootstrap installs
+<code>Hubzero\Test\Stubs\DatabaseStub</code> as the <code>db</code> service: every query throws
+<code>ConnectionFailedException</code>, which is how <code>Component::path()</code> learns to fall
+back to the files on disk, and only the datetime format is answered. Code that
+must be handed a driver can take
+<code>Hubzero\Database\Drivers\Mock\MockDriver</code>, as <code>DatabaseServiceProviderTest</code>
+does.</p>
 <h3 id="scaffolding">Scaffolding</h3>
 <pre><code class="language-bash">php core/bin/muse scaffolding create test lib_database --type=database
 </code></pre>

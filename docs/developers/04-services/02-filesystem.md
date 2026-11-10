@@ -20,7 +20,7 @@ to pass `isSafe()`, and code that writes the file itself skips it.
 
 ## What the facade resolves to
 
-<!--include: core/bootstrap/Site/Providers/FilesystemServiceProvider.php:29-56-->
+<!--include: core/bootstrap/Site/Providers/FilesystemServiceProvider.php:30-56-->
 
 With `ftp_enable` set in the global configuration the adapter is
 [`Ftp`](../../../core/libraries/Hubzero/Filesystem/Adapter/Ftp.php),
@@ -140,7 +140,7 @@ A macro adds one method to the filesystem object. It implements
 — usually by extending `Hubzero\Filesystem\Macro\Base`, which supplies
 `setFilesystem()` — and provides `getMethod()` and `handle()`:
 
-<!--include: core/libraries/Hubzero/Filesystem/Macro/Files.php:13-50-->
+<!--include: core/libraries/Hubzero/Filesystem/Macro/Files.php:14-51-->
 
 `getMethod()` names the call; `handle()` receives whatever arguments the
 call was given, with `$this->filesystem` already set. Register it and call

@@ -42,12 +42,12 @@ $path = PATH_APP . DS . $resourcePath . DS . 'content' . DS . $name;
 The same join appears in `com_resources`, which builds every media path this
 way rather than concatenating separators of its own:
 
-<!--include: core/components/com_resources/helpers/hubpresenter.php:111-111-->
+<!--include: core/components/com_resources/helpers/hubpresenter.php:104-104-->
 
 ## Version
 
 `HVERSION` is the platform version as a string, currently
-<!--include: core/bootstrap/app.php:39-39-->
+<!--include: core/bootstrap/app.php:44-44-->
 
 ## Entry guard
 

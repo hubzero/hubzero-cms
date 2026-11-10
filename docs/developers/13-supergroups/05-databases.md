@@ -24,7 +24,7 @@ them through the existing models.
 ## How the group gets one
 
 Both halves are done when an administrator saves the group as a super group,
-in [`_handleSuperGroup()`](../../../core/components/com_groups/admin/controllers/manage.php):
+in [`handleSuperGroup()`](../../../core/components/com_groups/admin/controllers/manage.php):
 
 - A database named `sg_<alias>` is created, but **only if** the hub's own
   database account holds a grant matching `sg\_%`. If it does not, the save

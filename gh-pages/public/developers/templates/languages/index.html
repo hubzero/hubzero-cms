@@ -223,7 +223,27 @@ load.</p>
 <p>A language file is key/value pairs. Keys are case-insensitive — they are
 upper-cased before lookup — but the convention is upper case throughout, words
 separated by underscores, prefixed <code>TPL_{TEMPLATE}_</code>:</p>
-<!--include: core/templates/welcome/language/en-GB/en-GB.tpl_welcome.ini:1-20-->
+<pre><code class="language-ini">; @package      hubzero-cms
+; @copyright    Copyright (c) 2005-2020 The Regents of the University of California.
+; @license      http://opensource.org/licenses/MIT MIT
+
+; Note : All ini files need to be saved as UTF-8 - No BOM
+
+; Top bar
+TPL_KIMERA_SKIP=&quot;Skip to content&quot;
+TPL_KIMERA_CONTACT=&quot;Contact&quot;
+
+; Tagline
+TPL_KIMERA_TAGLINE=&quot;The open source &lt;a href=&quot;http://hubzero.org&quot;&gt;platform&lt;/a&gt; for scientific and educational &lt;a href=&quot;/community&quot;&gt;collaboration&lt;/a&gt;&quot;
+
+; Login/register
+TPL_KIMERA_LOGIN=&quot;Login&quot;
+TPL_KIMERA_SIGN_UP=&quot;Sign up for a free account&quot;
+TPL_KIMERA_REGISTER=&quot;Register&quot;
+
+; Help tab
+TPL_KIMERA_NEED_HELP=&quot;Need help? Send a trouble report to our support team.&quot;
+</code></pre>
 <p>The prefix is not enforced. It exists to keep one extension's keys from
 colliding with another's, because every loaded file merges into one flat table
 of strings. Two extensions that both define <code>TITLE</code> will fight over it.</p>
@@ -231,10 +251,15 @@ of strings. Two extensions that both define <code>TITLE</code> will fight over i
 <h2 id="loading">Loading</h2>
 <p>You do not need to load the template's own file. The document loads it while
 fetching the template:</p>
-<pre><code class="language-php">            ob_start();
-            try {
-                require $directory . DS . $filename;
-                $contents = ob_get_contents();
+<pre><code class="language-php">        // Load the language file for the template
+        $lang = App::get('language');
+        $lang-&gt;load('tpl_'
+            . $template, PATH_APP
+            . DS
+            . 'bootstrap'
+            . DS
+            . App::get('client')-&gt;name, null, false, true)
+        || $lang-&gt;load('tpl_' . $template, $directory . DS . $template, null, false, true);
 </code></pre>
 <p>Note the pair of calls. The first looks under
 <code>app/bootstrap/{client}/language/{tag}/</code>, which is where a hub puts a

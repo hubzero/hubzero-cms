@@ -200,48 +200,35 @@ database, extend it — or extend `TestCase` directly — and follow the
 
 ### Database
 
-[`Hubzero\Test\Database`](../../core/libraries/Hubzero/Test/Database.php) is
-for tests that need a driver. It gives you a real, throwaway SQLite database
-rather than a connection to anyone's development server:
+There is no shared base class for database tests: the old
+`Hubzero\Test\Database` harness, a DBUnit-style layer over the legacy driver,
+was retired. A test that needs a database builds what it needs, in one of
+three ways.
 
-```php
-public function testBasicFetch()
-{
-    $dbo   = $this->getMockDriver();
-    $query = new Query($dbo);
+**Against every configured database.** Extend
+[`Hubzero\Database\Tests\AbstractDriverTestCase`](../../core/libraries/Hubzero/Database/Tests/AbstractDriverTestCase.php).
+Name your tables in `getTestTables()`, create them in `setUpDatabase()`, and
+take the driver each test runs against from the `databaseProvider` data
+provider:
 
-    $rows = $query->select('*')
-                  ->from('users')
-                  ->whereEquals('id', '1')
-                  ->fetch();
+<!--include: core/libraries/Hubzero/Database/Tests/AbstractDriverTestCase.php:26-50-->
 
-    $this->assertCount(1, $rows, 'Query should have returned one result');
-}
-```
+Which databases run is set by the `DB_*` variables in `phpunit.xml.dist`.
+Only those with `DB_{NAME}_ENABLED` set to `true` are tested; copy the file to
+`phpunit.xml` and edit it, or export the variables before running PHPUnit.
 
-`getMockDriver()` returns a fully functioning driver over a SQLite file. Two
-fixtures back it, in a `Fixtures` directory beside the test:
+**Over a SQLite file.** Open a fixture through `SqliteDriver`, as
+[`Hubzero\Template\Tests\LoaderTest`](../../core/libraries/Hubzero/Template/Tests/LoaderTest.php)
+does with `Tests/Fixtures/test.sqlite3`, seeding it from the test at the start
+of each run so the fixture in the repository stays empty.
 
-```
-Tests/Fixtures/test.sqlite3
-Tests/Fixtures/seed.xml
-```
-
-`test.sqlite3` supplies the schema; `seed.xml` supplies the rows, reloaded
-for each test class. Override `$fixture` and `$seed` on the test class to
-use different filenames, or override `getDataSet()` for anything more
-involved.
-
-`Hubzero\Test\Database` also bootstraps the facades — it adopts the
-container the bootstrap installed rather than replacing it, and registers an
-event dispatcher — so a model that calls `Event::trigger()` at file scope
-does not fatal.
-
-> **Note:** This class is Hubzero's own, not PHPUnit's. It replaces
-> `PHPUnit\DbUnit\TestCase`, which was abandoned years ago. The supporting
-> classes are in
-> [`Hubzero\Test\Database`](../../core/libraries/Hubzero/Test/Database) —
-> `Connection`, `DataSet`, `XmlDataSet`, `Table`.
+**With no database at all.** The test bootstrap installs
+`Hubzero\Test\Stubs\DatabaseStub` as the `db` service: every query throws
+`ConnectionFailedException`, which is how `Component::path()` learns to fall
+back to the files on disk, and only the datetime format is answered. Code that
+must be handed a driver can take
+`Hubzero\Database\Drivers\Mock\MockDriver`, as `DatabaseServiceProviderTest`
+does.
 
 ### Scaffolding
 

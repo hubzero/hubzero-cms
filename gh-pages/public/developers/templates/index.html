@@ -129,7 +129,7 @@
 <li class="toc__item toc__item--l2"><a href="#the-example-these-chapters-build">The example these chapters build</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-templates-live">Where templates live</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-ships">What ships</a></li>
-<li class="toc__item toc__item--l2"><a href="#a-fresh-hub-renders-nothing">A fresh hub renders nothing</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-a-fresh-hub-renders">What a fresh hub renders</a></li>
 <li class="toc__item toc__item--l2"><a href="#where-to-start">Where to start</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-chapters">The chapters</a></li>
 </ol><ul class="tree">
@@ -284,9 +284,14 @@ before you look at anything else.</p>
 <td>A newer site template. Leaner, with layered LESS. Registered but not made the home style by its migration, and its manifest is in the older form.</td>
 </tr>
 <tr>
-<td><code>welcome</code></td>
+<td><code>meridian</code></td>
 <td>Site</td>
-<td>A single-page splash template. It is the home style on a fresh hub — see below.</td>
+<td>&quot;A hub before it has a subject&quot;: a complete site layout with no subject's imagery. It is the home style on a fresh hub — see below.</td>
+</tr>
+<tr>
+<td><code>mesozoic</code></td>
+<td>Site</td>
+<td>The same layout dressed for a hub about deep time; a worked example of a themed template.</td>
 </tr>
 <tr>
 <td><code>system</code></td>
@@ -300,32 +305,26 @@ before you look at anything else.</p>
 </tr>
 </tbody>
 </table>
-<p>Those five are the whole set; nothing else lives under <code>core/templates</code>.</p>
+<p>Those six are the whole set; nothing else lives under <code>core/templates</code>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> <code>kimera</code> and <code>lucent</code> are the two worth reading before you start.
 <code>kimera</code> shows the override-heavy approach and is what <code>northgate</code> is copied
 from; <code>lucent</code> shows a leaner one.</p>
 </aside>
-<h2 id="a-fresh-hub-renders-nothing">A fresh hub renders nothing</h2>
-<p>This surprises everybody, so it is worth knowing before you write a line of
-markup.</p>
-<p>The install data makes <strong><code>welcome</code></strong> the home style for the site client:</p>
+<h2 id="what-a-fresh-hub-renders">What a fresh hub renders</h2>
+<p>The install data makes <strong><code>meridian</code></strong> the home style for the site client:</p>
 <pre><code class="language-sql">INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
-VALUES (1,'welcome',0,'1','Welcome Template','{&quot;flavor&quot;:&quot;&quot;,&quot;template&quot;:&quot;kimera&quot;}');
+VALUES (1,'meridian',0,'1','Meridian, a hub before it has a subject','{}');
 </code></pre>
-<p><a href="../../../core/templates/welcome/index.php"><code>welcome/index.php</code></a> contains no
-<code>jdoc:include</code> tags at all — not for modules, not for messages, and not for the
-component. It prints its own splash page and nothing else, whatever the request
-asked for. So on a fresh hub no module renders and no component output reaches
-the page, and neither is a fault.</p>
-<p>The splash page's <strong>ready</strong> link is <code>?getstarted=1</code>. That branch of the layout
-sets <code>home = 1</code> on the style named by the template's own <code>template</code> parameter —
-seeded as <code>kimera</code> — and redirects. Until someone clicks it or an administrator
-changes the default style, the hub is the splash page.</p>
-<p>The second half of the surprise is waiting on the other side. The install data
-publishes the site's <strong>Main Menu</strong> module (and a <strong>Login Form</strong>) to a position
-named <code>position-7</code>, and no shipped site template includes that position. So the
-main menu still does not render after the switch. <a href="layouts/index.html#why-a-position-renders-nothing">Page
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/meridian/index.php"><code>meridian/index.php</code></a> is a whole
+layout: it includes the component, system messages and its module positions,
+so a fresh hub renders its pages straight away.</p>
+<p>One thing on a fresh hub does not render, and it is worth knowing before you
+write a line of markup. The install data publishes a <strong>Login Form</strong> module to a
+position named <code>position-7</code>, and no shipped site template includes that
+position. The <strong>Main Menu</strong> was seeded there too;
+<code>Migration20260913090000MainMenu</code> moves it to <code>user3</code>, which <code>meridian</code> draws
+as its main navigation, and builds a menu for a hub that has none. <a href="layouts/index.html#why-a-position-renders-nothing">Page
 layouts</a> has the full account and
 the check to run.</p>
 <h2 id="where-to-start">Where to start</h2>

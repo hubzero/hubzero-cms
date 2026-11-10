@@ -77,7 +77,7 @@ created by users on the site are always ordinary hub groups.
 8. Select **Save & Close**.
 
 On save the hub does the rest, in
-[`_handleSuperGroup()`](../../../core/components/com_groups/admin/controllers/manage.php):
+[`handleSuperGroup()`](../../../core/components/com_groups/admin/controllers/manage.php):
 
 - Creates the group's directory under the **Upload** path from the component
   options, `/site/groups` by default, named after the group's numeric ID.

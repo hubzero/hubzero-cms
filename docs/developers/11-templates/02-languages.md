@@ -57,7 +57,7 @@ A language file is key/value pairs. Keys are case-insensitive — they are
 upper-cased before lookup — but the convention is upper case throughout, words
 separated by underscores, prefixed `TPL_{TEMPLATE}_`:
 
-<!--include: core/templates/welcome/language/en-GB/en-GB.tpl_welcome.ini:1-20-->
+<!--include: core/templates/kimera/language/en-GB/en-GB.tpl_kimera.ini:1-20-->
 
 The prefix is not enforced. It exists to keep one extension's keys from
 colliding with another's, because every loaded file merges into one flat table
@@ -70,7 +70,7 @@ Files must be UTF-8 with no byte order mark.
 You do not need to load the template's own file. The document loads it while
 fetching the template:
 
-<!--include: core/libraries/Hubzero/Document/Type/Html.php:501-504-->
+<!--include: core/libraries/Hubzero/Document/Type/Html.php:566-574-->
 
 Note the pair of calls. The first looks under
 `app/bootstrap/{client}/language/{tag}/`, which is where a hub puts a

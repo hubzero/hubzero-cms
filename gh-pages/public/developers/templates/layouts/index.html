@@ -542,49 +542,51 @@ the browser drops it as an unknown element.</p>
 returns whatever the administrator has assigned to it. Kimera's content region
 shows the usual shape — an optional left column, the component, an optional
 right column, and a footer:</p>
-<pre><code class="language-php">                                        false,
-                                    ); ?&gt;
-                                    &lt;li class=&quot;user-account loggedout&quot;&gt;
-                                        &lt;a class=&quot;icon-login&quot;
-                                            href=&quot;&lt;?php echo $loginUrl; ?&gt;&quot;
-                                            title=&quot;&lt;?php echo Lang::txt('TPL_KIMERA_LOGIN'); ?&gt;&quot;&gt;&lt;?php
-                                                echo Lang::txt('TPL_KIMERA_LOGIN'); ?&gt;&lt;/a&gt;
-                                    &lt;/li&gt;
-                                    &lt;?php $allowReg = Component::params('com_members')-&gt;get('allowUserRegistration'); ?&gt;
-                                    &lt;?php if ($this-&gt;params-&gt;get('registerLink') &amp;&amp; $allowReg) : ?&gt;
-                                        &lt;li class=&quot;user-account-create&quot;&gt;
-                                            &lt;a class=&quot;icon-register&quot;
-                                                href=&quot;&lt;?php echo Route::url('index.php?option=com_register'); ?&gt;&quot;
-                                                title=&quot;&lt;?php echo Lang::txt('TPL_KIMERA_SIGN_UP'); ?&gt;&quot;&gt;&lt;?php
-                                                    echo Lang::txt('TPL_KIMERA_REGISTER'); ?&gt;&lt;/a&gt;
-                                        &lt;/li&gt;
-                                    &lt;?php endif; ?&gt;
-                                &lt;?php } ?&gt;
-                                &lt;/ul&gt;
-                            &lt;/nav&gt;
+<pre><code class="language-php">            &lt;div id=&quot;wrap&quot;&gt;
+                &lt;main id=&quot;content&quot; class=&quot;&lt;?php echo Request::getCmd('option', ''); ?&gt;&quot;&gt;
+                    &lt;div class=&quot;inner&lt;?php if ($this-&gt;countModules('left or right')) {
+                        echo ' withmenu';
+                                     } ?&gt;&quot;&gt;
+                    &lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+                        &lt;section class=&quot;main section&quot;&gt;
+                            &lt;div class=&quot;section-inner&quot;&gt;
+                    &lt;?php endif; ?&gt;
 
-                            &lt;nav id=&quot;nav&quot; class=&quot;main-navigation&quot;
-                                aria-label=&quot;&lt;?php echo Lang::txt('TPL_KIMERA_MAINMENU'); ?&gt;&quot;&gt;
-                                &lt;jdoc:include type=&quot;modules&quot; name=&quot;user3&quot; /&gt;
-                            &lt;/nav&gt;
-                        &lt;/header&gt;
+                    &lt;?php if ($this-&gt;countModules('left')) : ?&gt;
+                            &lt;aside class=&quot;aside&quot;&gt;
+                                &lt;jdoc:include type=&quot;modules&quot; name=&quot;left&quot; /&gt;
+                            &lt;/aside&gt;&lt;!-- / .aside --&gt;
+                    &lt;?php endif; ?&gt;
+                    &lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+                            &lt;div class=&quot;subject&quot;&gt;
+                    &lt;?php endif; ?&gt;
 
-                        &lt;div id=&quot;sub-masthead&quot;&gt;
-                            &lt;?php if ($this-&gt;countModules('helppane')) : ?&gt;
-                                &lt;p id=&quot;tab&quot;&gt;
-                                    &lt;a href=&quot;&lt;?php echo Route::url('index.php?option=com_support'); ?&gt;&quot;
-                                        title=&quot;&lt;?php echo Lang::txt('TPL_KIMERA_NEED_HELP'); ?&gt;&quot;&gt;
-                                        &lt;span&gt;&lt;?php echo Lang::txt('TPL_KIMERA_HELP'); ?&gt;&lt;/span&gt;
-                                    &lt;/a&gt;
-                                &lt;/p&gt;
-                            &lt;?php endif; ?&gt;
+                                &lt;!-- start component output --&gt;
+                                &lt;jdoc:include type=&quot;component&quot; /&gt;
+                                &lt;!-- end component output --&gt;
 
-                            &lt;div id=&quot;trail&quot;&gt;
-                                &lt;?php if ($isFrontPage) : ?&gt;
-                                    &lt;span class=&quot;pathway&quot;&gt;&lt;?php echo Lang::txt('TPL_KIMERA_TAGLINE'); ?&gt;&lt;/span&gt;
-                                &lt;?php else : ?&gt;
-                                    &lt;jdoc:include type=&quot;modules&quot; name=&quot;breadcrumbs&quot; /&gt;
-                                &lt;?php endif; ?&gt;
+                    &lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+                            &lt;/div&gt;&lt;!-- / .subject --&gt;
+                    &lt;?php endif; ?&gt;
+                    &lt;?php if ($this-&gt;countModules('right')) : ?&gt;
+                            &lt;aside class=&quot;aside&quot;&gt;
+                                &lt;jdoc:include type=&quot;modules&quot; name=&quot;right&quot; /&gt;
+                            &lt;/aside&gt;&lt;!-- / .aside --&gt;
+                    &lt;?php endif; ?&gt;
+
+                    &lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
+                            &lt;/div&gt;
+                        &lt;/section&gt;&lt;!-- / .main section --&gt;
+                    &lt;?php endif; ?&gt;
+                    &lt;/div&gt;&lt;!-- / .inner --&gt;
+                &lt;/main&gt;
+
+                &lt;footer id=&quot;footer&quot;&gt;
+                    &lt;jdoc:include type=&quot;modules&quot; name=&quot;footer&quot; /&gt;
+                &lt;/footer&gt;
+            &lt;/div&gt;&lt;!-- / #wrap --&gt;
+        &lt;/div&gt;
+        &lt;jdoc:include type=&quot;modules&quot; name=&quot;endpage&quot; /&gt;
 </code></pre>
 <p>The <code>&lt;positions&gt;</code> block in <code>templateDetails.xml</code> does <strong>not</strong> restrict
 anything. It is read only by <code>com_modules</code> when it builds the position picker
@@ -643,37 +645,33 @@ present in <code>#__modules</code>. So a position appears in the picker if any t
 mentions it, or if any module already sits in it. Being in the list means
 nothing about whether anything will draw it.</p>
 <h3 id="the-shipped-install-demonstrates-all-of-this">The shipped install demonstrates all of this</h3>
-<p>Two facts about a fresh hub, both in
-<code>core/bootstrap/Install/sql/mysql/data.sql</code>, and both worth checking before you
-suspect your own code.</p>
-<p><strong>The default site style is <code>welcome</code>, and <code>welcome</code> renders nothing.</strong></p>
+<p>Two facts about a fresh hub, in
+<code>core/bootstrap/Install/sql/mysql/data.sql</code> and the migrations that run after
+it, and both worth checking before you suspect your own code.</p>
+<p><strong>The default site style is <code>meridian</code>.</strong></p>
 <pre><code class="language-sql">INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
-VALUES (1,'welcome',0,'1','Welcome Template','{&quot;flavor&quot;:&quot;&quot;,&quot;template&quot;:&quot;kimera&quot;}');
+VALUES (1,'meridian',0,'1','Meridian, a hub before it has a subject','{}');
 </code></pre>
-<p><a href="../../../core/templates/welcome/index.php"><code>welcome/index.php</code></a> contains no
-<code>jdoc:include</code> tag of any type — not <code>modules</code>, not <code>message</code>, not even
-<code>component</code>. It prints a fixed splash page and discards whatever the request
-produced. On a fresh hub, therefore, no module renders and no component output
-reaches the page, and both are working as built.</p>
-<p>The splash page's <strong>ready</strong> link is <code>?getstarted=1</code>. That branch of
-<code>welcome/index.php</code> looks up the style named by the template's own <code>template</code>
-parameter — seeded as <code>kimera</code> — sets <code>home = 0</code> on every site style and <code>home = 1</code> on that one, and redirects. From then on the hub renders <code>kimera</code>. An
-administrator can do the same thing from <strong>Extensions → Templates</strong> by making
-another style the default.</p>
-<p><strong>The main menu is published to a position no site template includes.</strong></p>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/templates/meridian/index.php"><code>meridian/index.php</code></a> includes the
+component, system messages and its module positions, among them <code>breadcrumbs</code>
+and <code>user3</code>, its main navigation.</p>
+<p><strong>Two modules are published to a position no site template includes.</strong></p>
 <pre><code class="language-sql">INSERT INTO `#__modules` (…, `position`, …, `published`, `module`, …, `client_id`, …)
 VALUES (1,'Main Menu',…,'position-7',…,1,'mod_menu',…,0,'*');
 </code></pre>
-<p><code>position-7</code> appears in no layout of <code>kimera</code>, <code>lucent</code>, <code>welcome</code> or <code>system</code>.
-The seeded <strong>Login Form</strong> module is in the same position. So after switching to
-<code>kimera</code> the hub still has no main menu, and the module manager still shows both
-modules as published — to a position labelled a friendly <em>Position 7</em>, because
-<code>com_modules</code> ships a <code>COM_MODULES_POSITION_POSITION-7</code> string for it.</p>
+<p><code>position-7</code> appears in no layout of <code>kimera</code>, <code>lucent</code>, <code>meridian</code>,
+<code>mesozoic</code> or <code>system</code>. For the <strong>Main Menu</strong> that is put right after the
+install: <code>Migration20260913090000MainMenu</code> finds the menu module, publishes it
+to <code>user3</code>, and builds a navigation for a hub that has none. The seeded
+<strong>Login Form</strong> stays where it was, and the module manager shows it published —
+to a position labelled a friendly <em>Position 7</em>, because <code>com_modules</code> ships a
+<code>COM_MODULES_POSITION_POSITION-7</code> string for it — while it renders nowhere.</p>
 <p>The seeded <strong>Breadcrumbs</strong> module, by contrast, is in <code>breadcrumbs</code>, which
-<code>kimera</code> does include, and it appears immediately. That is the difference, and
+<code>meridian</code> includes, and it appears immediately. That is the difference, and
 it is entirely in the <code>position</code> column.</p>
-<p>Move the menu to a position your layout includes — <code>user3</code> for <code>kimera</code> and
-<code>northgate</code>, or whatever <code>northgate</code> calls its main navigation — and it renders.</p>
+<p>Move a module to a position your layout includes — <code>user3</code> for <code>meridian</code>,
+<code>kimera</code> and <code>northgate</code>, or whatever <code>northgate</code> calls its main navigation —
+and it renders.</p>
 <h3 id="the-check-to-run">The check to run</h3>
 <p>When a position of yours is empty, in this order.</p>
 <p><strong>1. Which layout is actually running?</strong> The home style for the site client, or
@@ -703,23 +701,29 @@ the <code>strings</code> object that <code>Lang::script()</code> fills for JavaS
 <p>Order matters, and the head block is late in the sequence, so anything a
 layout must load <em>before</em> extension assets goes in the markup above it. Kimera
 links its own stylesheet first and lets the head block follow:</p>
-<pre><code class="language-php">    'no-js',
-    $browser-&gt;name(),
-    $browser-&gt;name() . $browser-&gt;major(),
-    $this-&gt;direction,
-    $this-&gt;params-&gt;get('header', 'light'),
-    ($isFrontPage ? 'home' : ''),
-];
-
-// Prepend site name to document title
-if ($this-&gt;getTitle() != Config::get('sitename')) {
-    $this-&gt;setTitle(Config::get('sitename') . ' - ' . $this-&gt;getTitle());
-}
-?&gt;
-&lt;!DOCTYPE html&gt;
+<pre><code class="language-php">&lt;!DOCTYPE html&gt;
 &lt;html dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot; lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot;
     class=&quot;&lt;?php echo implode(' ', $cls); ?&gt;&quot;&gt;
     &lt;head&gt;
+        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;all&quot;
+            href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/index.css?v=&lt;?php
+                echo filemtime(__DIR__ . '/css/index.css'); ?&gt;&quot; /&gt;
+
+        &lt;jdoc:include type=&quot;head&quot; /&gt;
+
+        &lt;!--[if IE 9]&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot;
+                href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie9.css&quot; /&gt;
+        &lt;![endif]--&gt;
+        &lt;!--[if lt IE 9]&gt;
+            &lt;script type=&quot;text/javascript&quot;
+                src=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/js/html5.js&quot;&gt;&lt;/script&gt;
+            &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; media=&quot;screen&quot;
+                href=&quot;&lt;?php echo $this-&gt;baseurl; ?&gt;/templates/&lt;?php echo $this-&gt;template; ?&gt;/css/browser/ie8.css&quot; /&gt;
+        &lt;![endif]--&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
 </code></pre>
 <p>Anything the layout adds with <code>$this-&gt;addStyleSheet()</code> or <code>$this-&gt;addScript()</code>
 instead appears <em>inside</em> the head block, after whatever the component queued.

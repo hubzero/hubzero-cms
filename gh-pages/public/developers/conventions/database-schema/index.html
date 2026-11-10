@@ -304,7 +304,8 @@ followed closely.</p>
 <h2 id="a-table-in-a-migration">A table in a migration</h2>
 <p>Put the whole definition in one <code>CREATE TABLE</code>, guarded by <code>tableExists()</code> so
 the migration is safe to re-run:</p>
-<pre><code class="language-php">        if (!$this-&gt;db-&gt;tableExists('#__blog_entries')) {
+<pre><code class="language-php">    {
+        if (!$this-&gt;db-&gt;tableExists('#__blog_entries')) {
             $query = &quot;CREATE TABLE `#__blog_entries` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',

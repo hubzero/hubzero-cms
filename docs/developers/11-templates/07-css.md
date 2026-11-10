@@ -39,7 +39,7 @@ loads ahead of anything an extension queues:
 Or through the document, in which case it lands *inside* the head block, after
 the component's stylesheets:
 
-<!--include: core/templates/kameleon/index.php:13-22-->
+<!--include: core/templates/kameleon/index.php:21-31-->
 
 Kimera and Lucent use the first form; Kameleon uses the second, which is why
 its own rules need enough specificity to win against a component's.
@@ -277,7 +277,7 @@ $this->css('.foo { color: #000; }');
 `img()` from
 [`Hubzero\Base\Traits\AssetAware`](../../../core/libraries/Hubzero/Base/Traits/AssetAware.php):
 
-<!--include: core/libraries/Hubzero/Base/Traits/AssetAware.php:31-58-->
+<!--include: core/libraries/Hubzero/Base/Traits/AssetAware.php:34-57-->
 
 > **Warning:** The third argument here is an **attributes array**, not a
 > plugin element. `$this->css('x.css', 'system', array('media' => 'print'))`

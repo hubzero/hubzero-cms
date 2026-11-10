@@ -566,9 +566,8 @@ wrong if you believed someone was checking.</p>
 sets it on, and the stored row is what runs, so the screen you have is set to
 Yes and the screen the documentation was written against was set to No. The
 submission code asks for either:</p>
-<pre><code class="language-php">if (!$review &amp;&amp; ($autoApprove || $this-&gt;_pubconfig-&gt;get('autoapprove') == 1))
-{
-	$state = 1;
+<pre><code class="language-php">if (!$review &amp;&amp; ($autoApprove || $this-&gt;pubconfig-&gt;get('autoapprove') == 1)) {
+    $state = 1;
 }
 </code></pre>
 <p>— <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/projects/publications/publications.php"><code>publications.php:2216</code></a>,

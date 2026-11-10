@@ -26,7 +26,7 @@ use Hubzero\Content\Server;
 
 ## Serving a file
 
-<!--include: core/components/com_blog/site/controllers/media.php:77-90-->
+<!--include: core/components/com_blog/site/controllers/media.php:110-122-->
 
 That is the whole pattern: set the file, say how it should be presented,
 call `serve()`, and stop. `serve()` returns `false` if it could not send

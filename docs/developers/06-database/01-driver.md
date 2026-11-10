@@ -30,7 +30,7 @@ return array(
 `Hubzero\Database\DatabaseServiceProvider` reads those values at boot and
 registers the resulting driver in the application container under `db`:
 
-<!--include: core/libraries/Hubzero/Database/DatabaseServiceProvider.php:23-40-->
+<!--include: core/libraries/Hubzero/Database/DatabaseServiceProvider.php:24-39-->
 
 Note the shim on the first line of the closure. A `dbtype` of `mysql` is
 turned into the `pdo` driver, and `Driver::getInstance()` then turns `pdo`

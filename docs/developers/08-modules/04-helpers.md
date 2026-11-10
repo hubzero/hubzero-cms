@@ -155,7 +155,7 @@ That contract splits the class in two: `run()` produces the output, and
 `display()` decides whether to reuse a stored copy. `mod_findresources` is the
 pattern in full:
 
-<!--include: core/modules/mod_findresources/helper.php:14-56-->
+<!--include: core/modules/mod_findresources/mod_findresources.php:18-57-->
 
 > **Note:** A module that calls `getCacheContent()` **must** define `run()`.
 > The base class does not: `getCacheContent()` calls `$this->run()`, and a

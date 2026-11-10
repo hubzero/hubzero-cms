@@ -275,12 +275,11 @@ accounts.</p>
 </table>
 <p>A new hub is online. Set <strong>Site Offline</strong> to <strong>Yes</strong> and the public front end
 returns the template's offline page with a <code>503 Service Temporarily Unavailable</code> status:</p>
-<pre><code class="language-php">
+<pre><code class="language-php">                $file = 'index';
+            }
+
             if ($this-&gt;app['config']-&gt;get('offline') &amp;&amp; !User::authorise('core.login.offline')) {
                 $file = 'offline';
-
-                $response-&gt;headers-&gt;set('Status', '503 Service Temporarily Unavailable', 'true');
-            }
 </code></pre>
 <p>Anyone holding <code>core.login.offline</code> still sees the real site. On a new hub
 that permission is granted to the <strong>Manager</strong> access group and inherited by
@@ -340,13 +339,13 @@ credentials, to match the machine.</p>
 <code>mandrill</code>, but the transport builder only recognises <code>mandrill+smtp</code>, so
 the hub builds no transport and every send throws. This is a known defect.</p>
 </aside>
-<pre><code class="language-php">                    case 'mandrill+smtp':
-                        $dsn = &quot;mandrill+smtp://&quot;;
+<pre><code class="language-php">
+                        break;
 
-                        if ($username || $password) {
-                            $dsn .= rawurlencode($username);
-
-                            if ($password) {
+                    case 'sendmail':
+                    case 'mail':
+                    case 'native':
+                        $dsn = &quot;sendmail://default&quot;;
 </code></pre>
 <p>The value the installer writes into <code>app/config/mail.php</code> is <code>mail</code>, which is
 not one of the three options the drop-down offers. It behaves as <strong>Sendmail</strong>,

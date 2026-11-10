@@ -342,7 +342,47 @@ recording when the copy was made, stores it, and returns it.</p>
 <p>That contract splits the class in two: <code>run()</code> produces the output, and
 <code>display()</code> decides whether to reuse a stored copy. <code>mod_findresources</code> is the
 pattern in full:</p>
-<!--include: core/modules/mod_findresources/helper.php:14-56-->
+<pre><code class="language-php">class Findresources extends Module
+{
+    protected $categories;
+    protected $tags;
+
+    /**
+     * Generate module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+
+        $this-&gt;tags = Tag::all()
+            -&gt;whereEquals('admin', 0)
+            -&gt;limit((int) $this-&gt;params-&gt;get('limit', 25))
+            -&gt;order('objects', 'desc')
+            -&gt;rows();
+
+        // Get major types
+        $this-&gt;categories = \Components\Resources\Models\Type::getMajorTypes();
+
+        require $this-&gt;getLayoutPath();
+    }
+
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this-&gt;getCacheContent()) {
+            echo $content;
+            return;
+        }
+
+        $this-&gt;run();
+    }
+}
+</code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> A module that calls <code>getCacheContent()</code> <strong>must</strong> define <code>run()</code>.
 The base class does not: <code>getCacheContent()</code> calls <code>$this-&gt;run()</code>, and a

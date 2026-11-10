@@ -43,7 +43,7 @@ in.
 
 A row of links sits above every Members screen. Which links appear depends on
 your permissions and on one configuration setting; the menu is built in
-[`core/components/com_members/admin/helpers/members.php`](../../../core/components/com_members/admin/helpers/members.php).
+[`core/components/com_members/admin/helpers/MembersHelper.php`](../../../core/components/com_members/admin/helpers/MembersHelper.php).
 
 | Link | Opens | Shown when |
 |---|---|---|
@@ -268,7 +268,7 @@ Deleting needs `core.delete` on `com_members`, and refuses to remove a Super
 User unless you are one yourself. For each checked account it calls `destroy()`
 on the member model:
 
-<!--include: core/components/com_members/models/member.php:474-522-->
+<!--include: core/components/com_members/models/member.php:435-476-->
 
 So the account's own profile field values, notes, hosts and tags go with it,
 and the `user.onUserAfterDelete` event carries the deletion outward. Seven

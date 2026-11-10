@@ -235,8 +235,13 @@ class plgBookingsNotify extends \Hubzero\Plugin\Plugin
 registration, and <code>com_bookings</code> triggering <code>bookings.onReservationCreate</code> is
 what calls it.</p>
 <h2 id="a-real-one">A real one</h2>
-<p><code>plgContentFormatwiki</code> is the same shape with two methods:</p>
-<pre><code class="language-php">/**
+<p><code>Plugins\Content\Formatwiki\Formatwiki</code> is the same shape with two methods:</p>
+<pre><code class="language-php">namespace Plugins\Content\Formatwiki;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Facades\Event;
+
+/**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
@@ -244,9 +249,12 @@ what calls it.</p>
 
 /**
  * Wiki formatted Content Plugin
+ */
+class Formatwiki extends Plugin
+{
 </code></pre>
 <p>It answers <code>onContentBeforeSave</code> and <code>onContentPrepare</code>, and keeps its two
-helpers, <code>_isWiki()</code> and <code>_key()</code>, private — which is not a style preference.
+helpers, <code>isWiki()</code> and <code>key()</code>, private — which is not a style preference.
 See the warning below.</p>
 <h2 id="what-the-base-class-gives-you">What the base class gives you</h2>
 <table>

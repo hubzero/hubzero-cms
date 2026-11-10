@@ -242,8 +242,7 @@ with <code>__default</code> unregistered, <code>execute()</code> throws <code>In
 with a 404 status.</p>
 </aside>
 <h2 id="a-site-controller">A site controller</h2>
-<pre><code class="language-php">
-namespace Components\Kb\Site\Controllers;
+<pre><code class="language-php">namespace Components\Kb\Site\Controllers;
 
 use Components\Kb\Models\Archive;
 use Components\Kb\Models\Category;
@@ -265,6 +264,10 @@ use Hubzero\Facades\Route;
 
 /**
  * Knowledge Base controller
+ */
+class Articles extends SiteController
+{
+    /**
 </code></pre>
 <p>The facade imports at the top are not decoration. Inside a namespace an
 unqualified <code>Route</code> resolves to
@@ -289,7 +292,15 @@ statement for a class that is never registered.</p>
 </aside>
 <p>A task takes no arguments and returns nothing; it produces output or a
 redirect:</p>
-<pre><code class="language-php">    }
+<pre><code class="language-php">     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this-&gt;archive = new Archive();
+
+        parent::execute();
+    }
 
     /**
      * Displays an overview of categories and articles in the knowledge base
@@ -301,6 +312,16 @@ redirect:</p>
         $this-&gt;view
             -&gt;set('archive', $this-&gt;archive)
             -&gt;set('category', $this-&gt;allCategory())
+            -&gt;set('catid', 0)
+            -&gt;set('filters', [
+                'sort'   =&gt; '',
+                'search' =&gt; '',
+            ])
+            -&gt;setLayout('display')
+            -&gt;display();
+    }
+
+    /**
 </code></pre>
 <h2 id="properties">Properties</h2>
 <p>Each controller has:</p>
@@ -391,9 +412,7 @@ reuses the edit form, <strong>Apply</strong> reuses the save method, and <strong
 <strong>Unpublish</strong> share one state method. The calls go in an overridden
 <code>execute()</code>, because the constructor has already built the map by the time it
 runs:</p>
-<pre><code class="language-php">{
-    /**
-     * Execute a task
+<pre><code class="language-php">     * Execute a task
      *
      * @return  void
      */
@@ -405,6 +424,7 @@ runs:</p>
         $this-&gt;registerTask('publish', 'state');
 
         parent::execute();
+    }
 </code></pre>
 <p><code>registerDefaultTask($method)</code> is the same call with a task of <code>__default</code>,
 and <code>unregisterTask($task)</code> removes a mapping.</p>
@@ -421,8 +441,7 @@ and <code>task=add</code> falls through to the default view.</p>
 <h2 id="administrator-controllers">Administrator controllers</h2>
 <p><code>AdminController</code> extends <code>SiteController</code> and adds exactly one thing, a
 cancel task that returns to the controller's default view:</p>
-<pre><code class="language-php"> */
-class AdminController extends SiteController
+<pre><code class="language-php">class AdminController extends SiteController
 {
     /**
      * Cancels a task and redirects to default view
@@ -436,6 +455,8 @@ class AdminController extends SiteController
                 . ($this-&gt;controller ? '&amp;controller='
                 . $this-&gt;controller : ''), false),
         );
+    }
+}
 </code></pre>
 <p>Everything else — the toolbar, the sub-menu, permission checks — is written by
 the component. Two habits are not optional:</p>
@@ -456,14 +477,30 @@ than <code>display</code>, and there is no view — a task calls <code>$this-&gt
 optionally, a status code. <code>Notify</code>, <code>Toolbar</code> and <code>Pathway</code> do not exist in
 this client.</p>
 <p>Controller files are versioned. The API loader takes the controller name from
-the request or the third URL segment and appends <code>v{major}_{minor}</code>; with no
-<code>version</code> variable in the request it globs
-<code>api/controllers/{controller}v*.php</code> and takes the highest. So
-<code>api/controllers/entriesv1_0.php</code> defines
-<code>Components\Kb\Api\Controllers\Entriesv1_0</code> and answers <code>/api/kb/list</code>.</p>
+the request or the third URL segment and appends <code>v{major}r{minor}</code>, falling
+back to the older <code>v{major}_{minor}</code> spelling; with no <code>version</code> variable in
+the request it globs <code>api/controllers/{controller}v*.php</code> and takes the
+highest. So <code>api/controllers/entriesv1r0.php</code> defines
+<code>Components\Kb\Api\Controllers\Entriesv1r0</code> and answers <code>/api/kb/list</code>.</p>
 <p>Tasks are documented in their docblock, and the base <code>indexTask()</code> reads those
 docblocks back with reflection to publish the endpoint list:</p>
-<!--include: core/components/com_kb/api/controllers/entriesv1_0.php:24-45-->
+<pre><code class="language-php">    /**
+     * List knowledge base articles
+     *
+     * Without a state, every caller gets what v1.0 always returned: published
+     * articles in published categories. A Super User who passes one gets
+     * articles in that state, from every category.
+     *
+     * @apiMethod GET
+     * @apiUri    /kb/list
+     * @apiParameter {
+     *      &quot;name&quot;:          &quot;limit&quot;,
+     *      &quot;description&quot;:   &quot;Number of results to return.&quot;,
+     *      &quot;type&quot;:          &quot;integer&quot;,
+     *      &quot;required&quot;:      false,
+     *      &quot;default&quot;:       25
+     * }
+</code></pre>
 <p>That means the docblock is the API documentation, not a comment about it. An
 endpoint with no docblock is an endpoint nobody discovers.</p>
 <p>A task that changes anything should call <code>$this-&gt;requiresAuthentication()</code>
@@ -471,7 +508,7 @@ first; it aborts with 403 when the request carries no authenticated user.</p>
 <p><code>ApiController</code> also ships generic <code>listTask()</code>, <code>createTask()</code>, <code>readTask()</code>,
 <code>updateTask()</code>, and <code>deleteTask()</code> implementations that work off a
 <code>Hubzero\Database\Relational</code> model — by default the singular of the
-controller name, in <code>Components\{Name}\Models</code>. Set <code>$_model</code> to a fully
+controller name, in <code>Components\{Name}\Models</code>. Set <code>$modelClass</code> to a fully
 qualified class name to point them somewhere else.</p>
 
         </div>

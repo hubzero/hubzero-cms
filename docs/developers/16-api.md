@@ -52,12 +52,12 @@ a different authentication provider, no template, no document. See
 4. **Match the component** by the next segment, then hand the rest of the
    segments to that component's API router.
 
-So `GET /api/blog/list` reaches `Components\Blog\Api\Controllers\Entriesv1_0::listTask()`.
+So `GET /api/blog/list` reaches `Components\Blog\Api\Controllers\Entriesv1r0::listTask()`.
 
 ## Controllers
 
 An API controller lives in `{component}/api/controllers/`, is named
-`{name}v{major}_{minor}.php`, and extends
+`{name}v{major}r{minor}.php`, and extends
 [`Hubzero\Component\ApiController`](../../core/libraries/Hubzero/Component/ApiController.php).
 Every public method ending in `Task` is a task the router can reach.
 
@@ -68,7 +68,7 @@ use Hubzero\Component\ApiController;
 use Request;
 use User;
 
-class Entriesv1_0 extends ApiController
+class Entriesv1r0 extends ApiController
 {
     public function listTask()
     {
@@ -82,7 +82,7 @@ class Entriesv1_0 extends ApiController
 ```
 
 The version is in the class name, which is how two versions of an endpoint
-coexist: add `Entriesv2_0` beside `Entriesv1_0` and a request that asks for
+coexist: add `Entriesv2r0` beside `Entriesv1r0` and a request that asks for
 `v2.0` gets the new one while everything else keeps working.
 
 ### The smallest working endpoint
@@ -93,9 +93,9 @@ An API controller that declares no tasks at all is not empty.
 [`Relational`](../../core/libraries/Hubzero/Database/Relational.php) model
 from the controller's own name — singularised, in
 `Components\[Name]\Models\` — and does the obvious thing with it. So a
-`Bookingsv1_0` controller in an instrument-booking component gets CRUD over
+`Bookingsv1r0` controller in an instrument-booking component gets CRUD over
 `Components\Bookings\Models\Booking` for free, and you override only the
-tasks whose behaviour has to differ. Set `protected $_model` if the class
+tasks whose behaviour has to differ. Set `protected $modelClass` if the class
 name is not the singular of the controller name; no core controller does.
 
 That inheritance is also a trap. When the model cannot be resolved the
@@ -135,7 +135,7 @@ interactive explorer a hub serves at `/developer/api/docs`, and
 `docs/_tools/gen_api_reference.py` builds the
 [API reference](../reference/api/index.md) in these pages.
 
-<!--include: core/components/com_blog/api/controllers/entriesv1_0.php:29-40-->
+<!--include: core/components/com_blog/api/controllers/entriesv1r0.php:83-94-->
 
 More `@apiParameter` blocks follow, one per parameter, and then
 `public function listTask()`.
@@ -222,7 +222,7 @@ return array(
 
 ## Adding an endpoint
 
-1. Create `{component}/api/controllers/{name}v1_0.php` with a class
+1. Create `{component}/api/controllers/{name}v1r0.php` with a class
    extending `ApiController`.
 2. Add a `{task}Task()` method, and give it `@apiMethod`, `@apiUri` and an
    `@apiParameter` for each parameter.

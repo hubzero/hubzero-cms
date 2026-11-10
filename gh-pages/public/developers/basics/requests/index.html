@@ -203,10 +203,9 @@ things go wrong.</p>
 with search-engine-friendly URLs, <code>/bookings/instrument/12</code> is parsed by the
 router, which puts the result back with <code>setVar($key, $val, 'get')</code> —
 Symfony's query bag. So:</p>
-<pre><code class="language-php">
-            $this-&gt;app['dispatcher']-&gt;trigger('system.onAfterRoute');
-
-            if ($this-&gt;app-&gt;has('profiler')) {
+<pre><code class="language-php">            foreach ($this-&gt;app['router']-&gt;parse($request-&gt;getUri()) as $key =&gt; $val) {
+                $request-&gt;setVar($key, $val, 'get');
+            }
 </code></pre>
 <pre><code class="language-php">$view = $_GET['view'];                  // undefined index — the URL had no query string
 $view = Request::getCmd('view', '');    // 'instrument'

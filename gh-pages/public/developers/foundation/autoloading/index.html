@@ -55,7 +55,7 @@
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Autoloading</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#three-loaders-in-order">Three loaders, in order</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-mapping">The mapping</a></li>
-<li class="toc__item toc__item--l2"><a href="#two-filename-variants-and-the-trap-between-them">Two filename variants, and the trap between them</a></li>
+<li class="toc__item toc__item--l2"><a href="#the-filename-spellings-it-tries">The filename spellings it tries</a></li>
 <li class="toc__item toc__item--l2"><a href="#whichever-tree-holds-the-extension-owns-it">Whichever tree holds the extension owns it</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-per-kind-details-that-catch-people">The per-kind details that catch people</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-legacy-underscore-fallback">The legacy underscore fallback</a></li>
@@ -223,13 +223,12 @@ below is what it did with it.</p>
 </tbody>
 </table>
 <p>Composer's map is two entries and no more:</p>
-<pre><code class="language-json">        &quot;phpunit/phpunit&quot;: &quot;^11.0&quot;,
-        &quot;squizlabs/php_codesniffer&quot;: &quot;3.13.*&quot;
-    },
-    &quot;autoload&quot;: {
+<pre><code class="language-json">    &quot;autoload&quot;: {
         &quot;psr-4&quot;: {
             &quot;Hubzero\\&quot;: &quot;libraries/Hubzero/&quot;,
             &quot;Bootstrap\\&quot;: &quot;bootstrap/&quot;
+        }
+    },
 </code></pre>
 <p>That is worth reading twice. <strong>Composer does not know about your component.</strong>
 <code>composer dump-autoload</code> will never help a component, plugin, module or
@@ -238,24 +237,24 @@ not how it is done. Extension classes are the class loader's job.</p>
 <p>The class loader is registered in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/bootstrap/app.php"><code>core/bootstrap/app.php</code></a>, before anything
 else runs:</p>
-<pre><code class="language-php">    $_SERVER['PHP_SELF'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['PHP_SELF']);
-}
+<pre><code class="language-php">Hubzero\Base\ClassLoader::addDirectories([ PATH_APP,   PATH_CORE]);
+Hubzero\Base\ClassLoader::register();
 </code></pre>
 <p>The two directories are the search path, and <code>PATH_APP</code> is first, which is
 what makes a hub's own copy of an extension win over the shipped one.</p>
 <h2 id="the-mapping">The mapping</h2>
 <p><code>ClassLoader::register()</code> declares the prefixes:</p>
-<pre><code class="language-php">        ];
-    }
+<pre><code class="language-php">        self::addPrefix('Hubzero\\', 'libraries/Hubzero');
+        self::addPrefix('Bootstrap\\', 'bootstrap');
 
-    /**
-     * Register autoloader with all HubZero namespace prefixes
-     */
-    public static function register(): void
-    {
-        if (static::$registered) {
-            return;
-        }
+        // Extensions (primary handler - needs PATH_APP override support)
+        self::addPrefix('Components\\', 'components', 'component');
+        self::addPrefix('Modules\\', 'modules', 'module');
+        self::addPrefix('Plugins\\', 'plugins', 'plugin');
+        self::addPrefix('Templates\\', 'templates', 'template');
+
+        // Migrations namespace
+        self::addPrefix('Migrations\\', 'migrations', 'psr4');
 </code></pre>
 <p>Each one turns the rest of the class name into a path a different way.</p>
 <table>
@@ -304,57 +303,75 @@ never keeps its capitals: <code>Components\Booking</code> is <code>com_booking</
 <code>com_Booking</code>. Everything after it is the path inside the extension, joined
 with <code>/</code> and given a <code>.php</code> suffix. A class with nothing after the extension
 name — <code>Components\Booking\Booking</code> — looks for <code>com_booking/Booking.php</code>.</p>
-<h2 id="two-filename-variants-and-the-trap-between-them">Two filename variants, and the trap between them</h2>
-<p>For each candidate path the loader tries exactly two spellings: the path as
-the namespace spells it, and the same path <strong>lowercased in full</strong>.</p>
-<pre><code class="language-php">            case 'template':
-                // Templates\Kameleon\Helper -&gt; templates/tpl_kameleon/Helper.php
-                //                           -&gt; templates/kameleon/Helper.php (fallback)
-                $name = array_shift($parts);
-                $lname = strtolower($name);
-                $file = implode('/', $parts) . '.php';
+<h2 id="the-filename-spellings-it-tries">The filename spellings it tries</h2>
+<p>For each candidate path the loader tries the path as the namespace spells
+it, the same path lowercased in full, the path with its directories
+lowercased but the file name as spelled, and the path with only the client
+directory (<code>site</code>, <code>admin</code>, <code>api</code>) or the one after the extension
+lowercased:</p>
+<pre><code class="language-php">
+        // Extensions are different: whichever directory holds the extension
+        // owns it outright, so an app level copy fully replaces the core one.
+        $owningBase = null;
+
+        foreach (self::$directories as $baseDir) {
+            foreach ($extensionDirs as $extDir) {
+                if (is_dir($baseDir . '/' . $extDir)) {
+                    $owningBase = $baseDir;
+                    break 2;
+                }
+            }
+        }
+
+        // If no extension directory found, class doesn't exist
+        if ($owningBase === null) {
+            return false;
+        }
+
+        // Search ONLY in the owning base directory
+        foreach ($fileVariants as $path) {
+            $fullPath = $owningBase . '/' . $path;
+            if (file_exists($fullPath)) {
+                require_once $fullPath;
+                return true;
 </code></pre>
 <p>So <code>Components\Booking\Models\Instrument</code> is looked for at:</p>
 <pre><code class="language-text">components/com_booking/Models/Instrument.php
 components/com_booking/models/instrument.php
+components/com_booking/models/Instrument.php
 </code></pre>
-<p>and nowhere else. There is no third try.</p>
-<aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> A capitalised filename in a lowercase directory does not
-autoload. <code>models/Instrument.php</code> matches neither variant: the first wants
-<code>Models/</code>, the second wants <code>instrument.php</code>. On Linux the filesystem is
-case-sensitive and the class is simply not found.</p>
+<p>and <code>Components\Dataviewer\Site\Modes\ModeDb</code>, which keeps capitalised
+directories under a lowercase client directory, at
+<code>components/com_dataviewer/site/Modes/ModeDb.php</code>.</p>
+<p>That is how <code>Components\Storefront\Models\Warehouse</code> is found in
+<code>core/components/com_storefront/models/Warehouse.php</code> — lowercase
+directory, capitalised file — and how a component's entry class,
+<code>Components\Blog\Site\Blog</code>, is found in <code>com_blog/site/Blog.php</code>.</p>
+<aside class="admonition admonition--tip">
+<p><strong>Tip:</strong> The loader tolerates a mix, but a reader does not have to
+guess where a class lives if one extension keeps one spelling: either
+directories and files as the namespace spells them, or all lowercase.</p>
 </aside>
-<p>That is not hypothetical. <code>Components\Storefront\Models\Warehouse</code> lives in
-<code>core/components/com_storefront/models/Warehouse.php</code> — lowercase directory,
-capitalised file — and cannot be autoloaded, which is why
-<code>core/components/com_storefront/site/storefront.php</code> opens by requiring the
-file by hand:</p>
-<!--include: core/components/com_storefront/site/storefront.php:13-14-->
-<p><code>com_cart</code> and <code>com_saml</code> carry model files in the same shape. Treat those
-<code>require_once</code> lines as a symptom, not a pattern: pick one spelling for the
-whole extension — all-lowercase directories and filenames is the common one
-in this tree — and the loader finds everything without help.</p>
 <h2 id="whichever-tree-holds-the-extension-owns-it">Whichever tree holds the extension owns it</h2>
 <p>For extension classes the loader first decides <em>which directory owns the
 extension</em>, then searches only there:</p>
-<pre><code class="language-php">        // Build all file path variants (CamelCase + lowercase + lowercase-dirs)
-        $fileVariants = [];
-        foreach ($relativePaths as $relativePath) {
-            $fileVariants[] = $relativePath;
-            $fileVariants[] = strtolower($relativePath);
-            // Lowercase directory parts but preserve filename case
-            $lastSlash = strrpos($relativePath, '/');
-            if ($lastSlash !== false) {
-                $fileVariants[] = strtolower(substr($relativePath, 0, $lastSlash))
-                    . substr($relativePath, $lastSlash);
+<pre><code class="language-php">        // Extensions are different: whichever directory holds the extension
+        // owns it outright, so an app level copy fully replaces the core one.
+        $owningBase = null;
+
+        foreach (self::$directories as $baseDir) {
+            foreach ($extensionDirs as $extDir) {
+                if (is_dir($baseDir . '/' . $extDir)) {
+                    $owningBase = $baseDir;
+                    break 2;
+                }
             }
-            // Lowercase only the leading client segment, keep the rest as-is:
-            // Components\Dataviewer\Site\Modes\ModeDb lives in
-            // com_dataviewer/site/Modes/ModeDb.php - a lowercase client
-            // directory holding capitalised ones.
-            $parts = explode('/', $relativePath);
-            foreach ([2, 3] as $depth) {
+        }
+
+        // If no extension directory found, class doesn't exist
+        if ($owningBase === null) {
+            return false;
+        }
 </code></pre>
 <p><code>app/</code> is checked first, so if <code>app/components/com_booking/</code> exists, the core
 copy is never consulted again — for any class in that namespace.</p>
@@ -390,14 +407,14 @@ class name, lowercased.</p>
 <h2 id="the-legacy-underscore-fallback">The legacy underscore fallback</h2>
 <p>If no prefix matches, the loader falls back to treating the whole class name
 as a path, converting <strong>both</strong> backslashes and underscores to separators:</p>
-<pre><code class="language-php">        }
+<pre><code class="language-php">    public static function normalizeClass(string $class): string
+    {
+        if ($class[0] == '\\') {
+            $class = substr($class, 1);
+        }
 
-        // Search ONLY in the owning base directory
-        foreach ($fileVariants as $path) {
-            $fullPath = $owningBase . '/' . $path;
-            if (file_exists($fullPath)) {
-                require_once $fullPath;
-                return true;
+        return str_replace(['\\', '_'], DIRECTORY_SEPARATOR, $class) . '.php';
+    }
 </code></pre>
 <p>That is why the pre-2.0 underscored names still resolve where the files still
 exist: <code>Hubzero_User_Profile</code> becomes <code>Hubzero/User/Profile.php</code>. It is a

@@ -115,7 +115,7 @@ a class list for the `<html>` element from `$browser->name()` and
 `$browser->name() . $browser->major()`, alongside the text direction and, in
 the first two, a no-script flag:
 
-<!--include: core/templates/kimera/index.php:32-42-->
+<!--include: core/templates/kimera/index.php:42-56-->
 
 Nothing keys off those classes to withhold a feature. The no-script flag is
 the one piece of progressive enhancement the templates actually implement,

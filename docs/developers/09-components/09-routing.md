@@ -107,7 +107,7 @@ string.
 
 Here is `com_kb`'s:
 
-<!--include: core/components/com_kb/site/router.php:19-93-->
+<!--include: core/components/com_kb/site/router.php:20-79-->
 
 Read it as a sequence of optional slots: an optional task, then section,
 category, alias, id, and vote. `task=article` is dropped entirely, because an
@@ -129,7 +129,7 @@ of the pretty URL. A router that forgets one `unset()` produces
 component. It receives the path segments after the component name and returns
 the request variables they mean.
 
-<!--include: core/components/com_kb/site/router.php:101-121-->
+<!--include: core/components/com_kb/site/router.php:87-105-->
 
 `com_kb` switches on the number of segments rather than reading them
 positionally, because one segment means a category, two may mean either a
@@ -173,11 +173,11 @@ it falls back to one of two generic implementations:
 An API router is the same interface against a different URL space. `com_kb`'s
 names a default controller and reads a numeric first segment as a record id:
 
-<!--include: core/components/com_kb/api/router.php:48-76-->
+<!--include: core/components/com_kb/api/router.php:48-70-->
 
 `/api/kb/list` reaches `listTask()`; `/api/kb/42` reaches `readTask()` with
 `id=42` on a GET. The controller name it produces — `entries` — is what the
-API loader turns into `entriesv1_0.php`. See
+API loader turns into `entriesv1r0.php`. See
 [Controllers](03-controllers.md#api-controllers).
 
 ## Building URLs

@@ -137,7 +137,7 @@ if ($profiler = App::get('profiler'))
 with three loggers registered at boot, writing to `/var/log/hubzero` where
 that exists and to the configured `log_path` otherwise:
 
-<!--include: core/bootstrap/Site/Providers/LogServiceProvider.php:39-58-->
+<!--include: core/bootstrap/Site/Providers/LogServiceProvider.php:37-56-->
 
 ```php
 App::get('log')->logger('debug')->info('released ' . $count . ' expired holds');

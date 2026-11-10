@@ -37,7 +37,7 @@ provider binds a closure to a key on the container; the closure runs the
 first time something asks for that key, and its result is cached for the
 rest of the request.
 
-<!--include: core/bootstrap/Site/Providers/CacheServiceProvider.php:23-41-->
+<!--include: core/bootstrap/Site/Providers/CacheServiceProvider.php:24-39-->
 
 Because the closure reads `$app['config']`, the service you get back depends
 on the hub's configuration. The cache store above is a real file cache on a

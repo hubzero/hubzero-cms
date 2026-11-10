@@ -31,7 +31,7 @@ The running version is the `HVERSION` constant, defined in
 the administrator's **System Information** screen and the `mod_version`
 module.
 
-<!--include: core/bootstrap/app.php:39-39-->
+<!--include: core/bootstrap/app.php:44-44-->
 
 > **Warning:** `Hubzero\Version\Version::VERSION` is a second, stale version
 > string. It reads `2.1.0` and is only used by `muse repository --version`,

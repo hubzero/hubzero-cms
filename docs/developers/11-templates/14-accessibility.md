@@ -56,13 +56,13 @@ and `role="navigation"` attributes in `kameleon` duplicate what `<header>` and
 `lucent` is the only shipped template with a skip link, and it is the first
 thing in the body:
 
-<!--include: core/templates/lucent/index.php:61-62-->
+<!--include: core/templates/lucent/index.php:85-86-->
 
 ### The skip link never becomes visible
 
 `.vh` is `lucent`'s visually-hidden utility, and it has no focused state:
 
-<!--include: core/templates/lucent/less/core/_core.less:1-11-->
+<!--include: core/templates/lucent/less/core/_core.less:1-17-->
 
 There is no `.vh:focus` or `.vh:focus-within` rule anywhere in
 `core/templates/lucent/less`, so the link stays clipped to one pixel even while
@@ -123,7 +123,7 @@ Two things to know:
 
 - The **site** branch labels its arrows:
 
-  <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:105-111-->
+  <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:87-101-->
 
   The strings are passed to `Lang::txt()` as literal English — `'Previous page'`
   and `'Next page'` — and no such keys exist in any `en-GB.ini`, so `Lang::txt()`
@@ -152,7 +152,7 @@ builds admin list tables. What it emits:
   direction — the current direction is carried in a CSS class.
 - `Grid::id()` builds the row checkbox:
 
-  <!--include: core/libraries/Hubzero/Html/Builder/Grid.php:104-112-->
+  <!--include: core/libraries/Hubzero/Html/Builder/Grid.php:116-135-->
 
   The `<label>` text is the **record's database id**, and the useful string
   ("Checkbox for row 3", from `JGRID_CHECKBOX_ROW_N`) is in the `title`
@@ -207,13 +207,13 @@ required, add the attribute yourself.
 `Html::behavior('tooltip')` binds jQuery UI tooltips to `.hasTip` and rewrites
 the `title` attribute on creation:
 
-<!--include: core/libraries/Hubzero/Html/Builder/Behavior.php:568-578-->
+<!--include: core/libraries/Hubzero/Html/Builder/Behavior.php:261-270-->
 
-After that runs, the element's `title` attribute contains a string of HTML tags.
-`title` is what assistive technology falls back to for an element's description,
-so the description it has is that markup. Where the behaviour is *not* loaded —
-which is most of the site — the `Label::Description` string from `getLabel()`
-stays in the `title` verbatim, double colon and all.
+After that runs, a `Label::Description` title holds only its description.
+`title` is what assistive technology falls back to for an element's
+description, so the label half is gone from it. Where the behaviour is *not*
+loaded — which is most of the site — the `Label::Description` string from
+`getLabel()` stays in the `title` verbatim, double colon and all.
 
 Prefer a visible `<p class="hint" id="…">` and an `aria-describedby` on the
 control over a `.hasTip` tooltip in any view you write.
@@ -233,7 +233,7 @@ of the three icon systems for that reason. See
 runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
 keeps ARIA:
 
-<!--include: core/libraries/Hubzero/Utility/Sanitize.php:481-494-->
+<!--include: core/libraries/Hubzero/Utility/Sanitize.php:492-504-->
 
 So `role`, `aria-label`, `aria-labelledby` and `aria-describedby` survive on
 `a`, `div`, `span`, `img`, `table`, `ul`, `ol`, `li`, `nav`, `section` and
@@ -248,7 +248,7 @@ markup.
 On a normal request, `<jdoc:include type="message" />` calls
 [`Hubzero\Document\Type\Html\Message`](../../../core/libraries/Hubzero/Document/Type/Html/Message.php):
 
-<!--include: core/libraries/Hubzero/Document/Type/Html/Message.php:52-76-->
+<!--include: core/libraries/Hubzero/Document/Type/Html/Message.php:51-77-->
 
 A `<div id="system-message-container">` holding a `<dl id="system-message">`,
 one `<dt>` per message type with the type name translated, and the messages in a

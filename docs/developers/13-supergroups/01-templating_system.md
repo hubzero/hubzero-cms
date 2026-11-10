@@ -47,7 +47,7 @@ includes and the stylesheets are convention.
 
 ## How the file is chosen
 
-[`Components\Groups\Helpers\Template::_fetch()`](../../../core/components/com_groups/helpers/template.php)
+[`Components\Groups\Helpers\Template::fetch()`](../../../core/components/com_groups/helpers/template.php)
 builds a list of candidates and uses the first that exists. When a group page
 is being rendered the order is:
 
@@ -155,7 +155,7 @@ into the group directory. It is a working starting point rather than a
 finished design: a header with the group title and menu, the content, and a
 footer.
 
-<!--include: core/components/com_groups/super/default/template/index.php:1-30-->
+<!--include: core/components/com_groups/super/default/template/index.php:1-35-->
 
 Note the `no_html` check. When a request carries `no_html=1` the template
 emits only the content, which is what AJAX requests from group plugins rely

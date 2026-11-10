@@ -76,7 +76,7 @@ If the task is not in the map, the controller runs `__default`, which is
 
 ## A site controller
 
-<!--include: core/components/com_kb/site/controllers/articles.php:8-30-->
+<!--include: core/components/com_kb/site/controllers/articles.php:9-34-->
 
 The facade imports at the top are not decoration. Inside a namespace an
 unqualified `Route` resolves to
@@ -103,7 +103,7 @@ tree: the file parses, the page loads, and one branch — the error path, the
 A task takes no arguments and returns nothing; it produces output or a
 redirect:
 
-<!--include: core/components/com_kb/site/controllers/articles.php:44-55-->
+<!--include: core/components/com_kb/site/controllers/articles.php:36-65-->
 
 ## Properties
 
@@ -185,7 +185,7 @@ reuses the edit form, **Apply** reuses the save method, and **Publish** and
 `execute()`, because the constructor has already built the map by the time it
 runs:
 
-<!--include: core/components/com_kb/admin/controllers/articles.php:27-40-->
+<!--include: core/components/com_kb/admin/controllers/articles.php:29-42-->
 
 `registerDefaultTask($method)` is the same call with a task of `__default`,
 and `unregisterTask($task)` removes a mapping.
@@ -204,7 +204,7 @@ and `unregisterTask($task)` removes a mapping.
 `AdminController` extends `SiteController` and adds exactly one thing, a
 cancel task that returns to the controller's default view:
 
-<!--include: core/libraries/Hubzero/Component/AdminController.php:13-27-->
+<!--include: core/libraries/Hubzero/Component/AdminController.php:14-29-->
 
 Everything else — the toolbar, the sub-menu, permission checks — is written by
 the component. Two habits are not optional:
@@ -228,16 +228,16 @@ optionally, a status code. `Notify`, `Toolbar` and `Pathway` do not exist in
 this client.
 
 Controller files are versioned. The API loader takes the controller name from
-the request or the third URL segment and appends `v{major}_{minor}`; with no
-`version` variable in the request it globs
-`api/controllers/{controller}v*.php` and takes the highest. So
-`api/controllers/entriesv1_0.php` defines
-`Components\Kb\Api\Controllers\Entriesv1_0` and answers `/api/kb/list`.
+the request or the third URL segment and appends `v{major}r{minor}`, falling
+back to the older `v{major}_{minor}` spelling; with no `version` variable in
+the request it globs `api/controllers/{controller}v*.php` and takes the
+highest. So `api/controllers/entriesv1r0.php` defines
+`Components\Kb\Api\Controllers\Entriesv1r0` and answers `/api/kb/list`.
 
 Tasks are documented in their docblock, and the base `indexTask()` reads those
 docblocks back with reflection to publish the endpoint list:
 
-<!--include: core/components/com_kb/api/controllers/entriesv1_0.php:24-45-->
+<!--include: core/components/com_kb/api/controllers/entriesv1r0.php:97-112-->
 
 That means the docblock is the API documentation, not a comment about it. An
 endpoint with no docblock is an endpoint nobody discovers.
@@ -248,5 +248,5 @@ first; it aborts with 403 when the request carries no authenticated user.
 `ApiController` also ships generic `listTask()`, `createTask()`, `readTask()`,
 `updateTask()`, and `deleteTask()` implementations that work off a
 `Hubzero\Database\Relational` model — by default the singular of the
-controller name, in `Components\{Name}\Models`. Set `$_model` to a fully
+controller name, in `Components\{Name}\Models`. Set `$modelClass` to a fully
 qualified class name to point them somewhere else.

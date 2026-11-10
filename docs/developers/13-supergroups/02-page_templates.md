@@ -17,7 +17,7 @@ is exactly what page templates are for: a layout variation for some pages,
 not a second design.
 
 The mechanism is the candidate list in
-[`Components\Groups\Helpers\Template::_fetch()`](../../../core/components/com_groups/helpers/template.php),
+[`Components\Groups\Helpers\Template::fetch()`](../../../core/components/com_groups/helpers/template.php),
 described in [Templating system](01-templating_system.md#how-the-file-is-chosen).
 This chapter is about the four ways a page can claim a file of its own.
 

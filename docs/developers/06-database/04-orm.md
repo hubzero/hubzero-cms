@@ -59,7 +59,7 @@ changed with `protected $pk`.
 
 Here is a real model's declarations — a knowledge base article:
 
-<!--include: core/components/com_kb/models/article.php:29-91-->
+<!--include: core/components/com_kb/models/article.php:25-87-->
 
 | Property | Meaning |
 |---|---|
@@ -155,7 +155,7 @@ A method named `transformFoo()` makes `$model->foo` return its result instead
 of the raw attribute. `com_blog` uses one to hand back the entry's parameters
 as a `Registry` rather than a JSON string:
 
-<!--include: core/components/com_blog/models/entry.php:566-584-->
+<!--include: core/components/com_blog/models/entry.php:540-557-->
 
 A method named `helperFoo()` makes `$model->foo(...)` call it. Listing a field
 in `$parsed` makes `$model->field` return the content run through
@@ -192,7 +192,7 @@ current attributes, and stores the return value. `$initiate` runs on insert,
 `automaticAssetId()` (resolves an `#__assets` entry). Everything else you
 write yourself; a slug generator is the usual case:
 
-<!--include: core/components/com_kb/models/article.php:113-124-->
+<!--include: core/components/com_kb/models/article.php:109-120-->
 
 ## Saving and deleting
 
@@ -251,7 +251,7 @@ with the two names sorted alphabetically, so both sides agree.
 
 The knowledge base article declares three:
 
-<!--include: core/components/com_kb/models/article.php:192-200-->
+<!--include: core/components/com_kb/models/article.php:184-192-->
 
 ```php
 public function comments()

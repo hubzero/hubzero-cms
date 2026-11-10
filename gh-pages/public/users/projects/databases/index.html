@@ -130,11 +130,10 @@ hub administrator can set: a read/write account that builds the tables and a
 read-only account that the DataViewer uses to read them.</p>
 <p>If either account is missing or wrong, the plugin hides the tab entirely.
 There is no error message and no explanation — the tab simply is not there:</p>
-<pre><code class="language-php">     * @param   string  $alias
-     * @return  array   Plugin name and title
-     */
-    public function &amp;onProjectAreas($alias = null)
-    {
+<pre><code class="language-php">        // Hide section completely if not configured
+        if ($this-&gt;checkConfig() == false) {
+            return $area;
+        }
 </code></pre>
 <p>So if your project has no <strong>Databases</strong> tab, one of three things is true:
 the plugin is disabled, the hub has restricted it to a list of projects that

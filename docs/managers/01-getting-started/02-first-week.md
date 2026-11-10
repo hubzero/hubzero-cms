@@ -97,7 +97,7 @@ A new hub is online. Set **Site Offline** to **Yes** and the public front end
 returns the template's offline page with a `503 Service Temporarily
 Unavailable` status:
 
-<!--include: core/bootstrap/Site/Providers/DocumentServiceProvider.php:81-86-->
+<!--include: core/bootstrap/Site/Providers/DocumentServiceProvider.php:79-83-->
 
 Anyone holding `core.login.offline` still sees the real site. On a new hub
 that permission is granted to the **Manager** access group and inherited by
@@ -169,7 +169,7 @@ credentials, to match the machine.
 > `mandrill`, but the transport builder only recognises `mandrill+smtp`, so
 > the hub builds no transport and every send throws. This is a known defect.
 
-<!--include: core/libraries/Hubzero/Mail/Message.php:136-142-->
+<!--include: core/libraries/Hubzero/Mail/Message.php:127-133-->
 
 The value the installer writes into `app/config/mail.php` is `mail`, which is
 not one of the three options the drop-down offers. It behaves as **Sendmail**,

@@ -19,7 +19,7 @@ namespace Components\Bookings\Models;
 
 class Tags extends \Components\Tags\Models\Cloud
 {
-    protected $_scope = 'bookings';
+    protected $scope = 'bookings';
 }
 ```
 
@@ -69,9 +69,9 @@ administrator's Tags screen changes it everywhere at once.
 ## Declaring a scope
 
 Subclass [`Components\Tags\Models\Cloud`](../../../core/components/com_tags/models/cloud.php)
-and set `$_scope`. The whole class is that:
+and set `$scope`. The whole class is that:
 
-<!--include: core/components/com_blog/models/tags.php:8-25-->
+<!--include: core/components/com_blog/models/tags.php:9-24-->
 
 Pick a scope name once and never change it. `#__tags_object` rows are found
 by `tbl`, so renaming a scope does not migrate anything: every existing tag

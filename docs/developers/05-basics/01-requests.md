@@ -32,7 +32,7 @@ with search-engine-friendly URLs, `/bookings/instrument/12` is parsed by the
 router, which puts the result back with `setVar($key, $val, 'get')` —
 Symfony's query bag. So:
 
-<!--include: core/bootstrap/Site/Providers/RouterServiceProvider.php:68-71-->
+<!--include: core/bootstrap/Site/Providers/RouterServiceProvider.php:65-67-->
 
 ```php
 $view = $_GET['view'];                  // undefined index — the URL had no query string

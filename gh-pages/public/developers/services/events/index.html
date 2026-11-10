@@ -296,8 +296,7 @@ object rather than unpacked arguments:</p>
     array('onBeforeRoute' =&gt; Hubzero\Events\Priority::NORMAL)
 );
 </code></pre>
-<pre><code class="language-php"> */
-final class Priority
+<pre><code class="language-php">final class Priority
 {
     public const MIN          = -3;
     public const LOW          = -2;
@@ -306,6 +305,7 @@ final class Priority
     public const ABOVE_NORMAL = 1;
     public const HIGH         = 2;
     public const MAX          = 3;
+}
 </code></pre>
 <p>Listeners with the same priority run in the order they were added.
 <code>listen()</code> is an alias for <code>addListener()</code>. <code>removeListener()</code>,

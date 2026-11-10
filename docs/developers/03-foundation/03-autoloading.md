@@ -34,7 +34,7 @@ They are registered in this order and PHP tries them in this order.
 
 Composer's map is two entries and no more:
 
-<!--include: core/composer.json:95-101-->
+<!--include: core/composer.json:98-103-->
 
 That is worth reading twice. **Composer does not know about your component.**
 `composer dump-autoload` will never help a component, plugin, module or
@@ -45,7 +45,7 @@ The class loader is registered in
 [`core/bootstrap/app.php`](../../../core/bootstrap/app.php), before anything
 else runs:
 
-<!--include: core/bootstrap/app.php:61-62-->
+<!--include: core/bootstrap/app.php:64-65-->
 
 The two directories are the search path, and `PATH_APP` is first, which is
 what makes a hub's own copy of an extension win over the shipped one.
@@ -54,7 +54,7 @@ what makes a hub's own copy of an extension win over the shipped one.
 
 `ClassLoader::register()` declares the prefixes:
 
-<!--include: core/libraries/Hubzero/Base/ClassLoader.php:72-82-->
+<!--include: core/libraries/Hubzero/Base/ClassLoader.php:85-95-->
 
 Each one turns the rest of the class name into a path a different way.
 
@@ -73,46 +73,43 @@ never keeps its capitals: `Components\Booking` is `com_booking`, not
 with `/` and given a `.php` suffix. A class with nothing after the extension
 name — `Components\Booking\Booking` — looks for `com_booking/Booking.php`.
 
-## Two filename variants, and the trap between them
+## The filename spellings it tries
 
-For each candidate path the loader tries exactly two spellings: the path as
-the namespace spells it, and the same path **lowercased in full**.
+For each candidate path the loader tries the path as the namespace spells
+it, the same path lowercased in full, the path with its directories
+lowercased but the file name as spelled, and the path with only the client
+directory (`site`, `admin`, `api`) or the one after the extension
+lowercased:
 
-<!--include: core/libraries/Hubzero/Base/ClassLoader.php:202-207-->
+<!--include: core/libraries/Hubzero/Base/ClassLoader.php:273-297-->
 
 So `Components\Booking\Models\Instrument` is looked for at:
 
 ```text
 components/com_booking/Models/Instrument.php
 components/com_booking/models/instrument.php
+components/com_booking/models/Instrument.php
 ```
 
-and nowhere else. There is no third try.
+and `Components\Dataviewer\Site\Modes\ModeDb`, which keeps capitalised
+directories under a lowercase client directory, at
+`components/com_dataviewer/site/Modes/ModeDb.php`.
 
-> **Warning:** A capitalised filename in a lowercase directory does not
-> autoload. `models/Instrument.php` matches neither variant: the first wants
-> `Models/`, the second wants `instrument.php`. On Linux the filesystem is
-> case-sensitive and the class is simply not found.
+That is how `Components\Storefront\Models\Warehouse` is found in
+`core/components/com_storefront/models/Warehouse.php` — lowercase
+directory, capitalised file — and how a component's entry class,
+`Components\Blog\Site\Blog`, is found in `com_blog/site/Blog.php`.
 
-That is not hypothetical. `Components\Storefront\Models\Warehouse` lives in
-`core/components/com_storefront/models/Warehouse.php` — lowercase directory,
-capitalised file — and cannot be autoloaded, which is why
-`core/components/com_storefront/site/storefront.php` opens by requiring the
-file by hand:
-
-<!--include: core/components/com_storefront/site/storefront.php:13-14-->
-
-`com_cart` and `com_saml` carry model files in the same shape. Treat those
-`require_once` lines as a symptom, not a pattern: pick one spelling for the
-whole extension — all-lowercase directories and filenames is the common one
-in this tree — and the loader finds everything without help.
+> **Tip:** The loader tolerates a mix, but a reader does not have to
+> guess where a class lives if one extension keeps one spelling: either
+> directories and files as the namespace spells them, or all lowercase.
 
 ## Whichever tree holds the extension owns it
 
 For extension classes the loader first decides *which directory owns the
 extension*, then searches only there:
 
-<!--include: core/libraries/Hubzero/Base/ClassLoader.php:229-245-->
+<!--include: core/libraries/Hubzero/Base/ClassLoader.php:274-290-->
 
 `app/` is checked first, so if `app/components/com_booking/` exists, the core
 copy is never consulted again — for any class in that namespace.
@@ -155,7 +152,7 @@ class name, lowercased.
 If no prefix matches, the loader falls back to treating the whole class name
 as a path, converting **both** backslashes and underscores to separators:
 
-<!--include: core/libraries/Hubzero/Base/ClassLoader.php:290-297-->
+<!--include: core/libraries/Hubzero/Base/ClassLoader.php:335-342-->
 
 That is why the pre-2.0 underscored names still resolve where the files still
 exist: `Hubzero_User_Profile` becomes `Hubzero/User/Profile.php`. It is a

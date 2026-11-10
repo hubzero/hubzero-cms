@@ -720,23 +720,23 @@ destination after signing out.</li>
 <p>A path that starts with <code>/</code> is treated as internal and the hub prefixes the
 site root. The same menu item also carries the login and logout
 descriptions and images.</p>
-<pre><code class="language-php">        $defaultReturn = base64_encode($defaultReturn);
-
-        $uri = Uri::getInstance();
-        if ($rtrn = $uri-&gt;getUriVar('return')) {
-            if (!$this-&gt;isBase64($rtrn)) {
-                // This isn't a base64 string and most likely is
-                // someone trying to do something nasty (XSS)
-                $uri-&gt;setUriVar('return', $defaultReturn);
+<pre><code class="language-php">        // Get the default return value
+        $defaultReturn = Route::url('index.php?option=com_members&amp;task=myaccount');
+        $description   = '';
+        if ($menu &amp;&amp; isset($menu-&gt;params) &amp;&amp; is_object($menu-&gt;params)) {
+            $defaultReturn = $menu-&gt;params-&gt;get('login_redirect_url', $defaultReturn);
+            // Assume redirect URLs that start with a slash are internal
+            // As such, we want to make sure the path has the appropriate root
+            $root = Request::root(true);
+            if (
+                substr($defaultReturn, 0, 1) == '/'
+                &amp;&amp; substr($defaultReturn, 0, strlen($root)) != $root
+            ) {
+                $defaultReturn = rtrim($root, '/') . $defaultReturn;
             }
+            $description   = $menu-&gt;params-&gt;get('login_description');
         }
-        $furl = base64_encode($uri-&gt;toString());
-
-        // HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
-        // Parse the return to retrive the authenticator, and remove it from the list below
-        $auth = '';
-        if ($return = Request::getString('return', '', 'get')) {
-            if (!$this-&gt;isBase64($return)) {
+        $defaultReturn = base64_encode($defaultReturn);
 </code></pre>
 
         </div>

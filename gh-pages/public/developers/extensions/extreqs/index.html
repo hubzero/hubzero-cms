@@ -277,12 +277,41 @@ build:</p>
 </code></pre>
 <h3 id="the-entry-point">The entry point</h3>
 <p><code>Hubzero\Component\Loader</code> looks, in order, for a
-<code>Components\Bookings\Site\Bootstrap</code> class, then for
-<code>site/bookings.php</code>, then for a React application under <code>site/assets/react/</code>,
-and only then falls back to its default dispatcher. Write the second form:
-every component in the tree uses it, and it is four lines that hand off to the
-controller:</p>
-<!--include: core/components/com_blog/site/blog.php:1-20-->
+<code>Components\Bookings\Site\Bookings</code> class in <code>site/Bookings.php</code>, then for a
+plain <code>site/bookings.php</code> to include, then for a React application under
+<code>site/assets/react/</code>, and only then falls back to its default dispatcher.
+Write the first form: 41 of the core components do. The class extends
+<code>Hubzero\Component\AbstractComponent</code>, and its <code>execute()</code> picks the
+controller and hands off to it:</p>
+<pre><code class="language-php">namespace Components\Blog\Site;
+
+use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\Request;
+
+/**
+ * Component entry point
+ */
+class Blog extends AbstractComponent
+{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'entries'));
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
+            $controllerName = 'entries';
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller-&gt;execute();
+    }
+}
+</code></pre>
 <p>A module's entry point is <code>mod_{name}.php</code>; <code>Hubzero\Module\Loader</code> <code>include</code>s
 the file. A plugin's entry point is <code>{name}.php</code>, holding a class whose public
 methods are named for the events it answers — the method name <em>is</em> the

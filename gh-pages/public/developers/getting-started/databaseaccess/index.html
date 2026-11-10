@@ -219,21 +219,25 @@ administrator has to grant SSH separately.</p>
 default install, whatever <code>dbprefix</code> says on yours. Code never writes that
 prefix. It writes <code>#__</code>, and the driver substitutes the configured value as
 the statement goes out:</p>
-<pre><code class="language-php">    {
-        static::incrementTelemetry('reset_calls');
+<pre><code class="language-php">    public function replacePrefix($sql, $prefix = '#__')
+    {
+        // As we replace strings of different lengths, subsequent prefix positions will become invalid.
+        // Thus, we track that differential here to account for the shifting locations
+        $differential = strlen($this-&gt;tablePrefix) - strlen($prefix);
+        $count        = 0;
 
-        $commitOpenTransaction = $options['commit_open_transaction'] ?? false;
-        $rollbackOpenTransaction = $options['rollback_open_transaction'] ?? true;
-        $softClose = $options['soft_close'] ?? false;
-        $flushQueryState = $options['flush_query_state'] ?? true;
-        $flushRelationalState = $options['flush_relational_state'] ?? true;
-        $flushTableState = $options['flush_table_state'] ?? true;
-        $queryOptions = (array) ($options['query_options'] ?? []);
-        $relationalOptions = (array) ($options['relational_options'] ?? []);
-        $tableOptions = (array) ($options['table_options'] ?? []);
+        foreach (self::findLiteralInSql($prefix, $sql) as $prefixPosition) {
+            $sql = substr_replace(
+                $sql,
+                $this-&gt;tablePrefix,
+                $prefixPosition + ($differential * $count),
+                strlen($prefix),
+            );
+            $count++;
+        }
 
-        if ($flushQueryState) {
-            Query::flush($queryOptions);
+        return $sql;
+    }
 </code></pre>
 <p>So <code>#__users</code> in a query is <code>jos_users</code> in the database, and a query with a
 literal <code>jos_</code> in it is a bug: it breaks on any hub whose prefix differs.

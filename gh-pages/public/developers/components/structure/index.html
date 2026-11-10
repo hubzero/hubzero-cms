@@ -207,7 +207,7 @@ exist, and the first line that mentions it is a fatal.</p>
         forms/
             article.xml  category.xml
     site/
-        kb.php                      entry point
+        Kb.php                      Components\Kb\Site\Kb, the entry point
         router.php                  Components\Kb\Site\Router
         controllers/
             articles.php            Components\Kb\Site\Controllers\Articles
@@ -223,7 +223,7 @@ exist, and the first line that mentions it is a fatal.</p>
         language/en-GB/
             en-GB.com_kb.ini
     admin/
-        kb.php                      entry point
+        Kb.php                      Components\Kb\Admin\Kb, the entry point
         controllers/
             articles.php            Components\Kb\Admin\Controllers\Articles
         helpers/
@@ -241,7 +241,7 @@ exist, and the first line that mentions it is a fatal.</p>
     api/
         router.php                  Components\Kb\Api\Router
         controllers/
-            entriesv1_0.php         Components\Kb\Api\Controllers\Entriesv1_0
+            entriesv1r0.php         Components\Kb\Api\Controllers\Entriesv1r0
 </code></pre>
 <p><code>config/</code>, <code>migrations/</code>, and <code>models/</code> sit above the client directories
 because all three clients use them. Everything else belongs to exactly one
@@ -328,22 +328,92 @@ That method defines <code>PATH_COMPONENT</code> (the client directory,
 <code>PATH_COMPONENT_ADMINISTRATOR</code>, loads the component's language files, and then
 looks for something to run, in this order:</p>
 <ol>
-<li>a <code>Components\{Name}\{Client}\Bootstrap</code> class, whose <code>start()</code> method is
-called;</li>
+<li>a <code>Components\{Name}\{Client}\{Name}</code> class in
+<code>PATH_COMPONENT/{Name}.php</code>, extending <code>Hubzero\Component\AbstractComponent</code>,
+whose <code>execute()</code> is called;</li>
 <li><code>PATH_COMPONENT/{componentname}.php</code>, which is simply <code>require</code>d;</li>
 <li>a directory <code>PATH_COMPONENT/assets/react/{componentname}</code>, run as a React
 application;</li>
 <li>failing all of those, a <code>Hubzero\Component\DefaultSiteController</code> is
 synthesised for the requested controller.</li>
 </ol>
-<p>Every component in the tree today uses the second form, and it is the one to
+<p>41 of the 58 components in the tree use the first form, and it is the one to
 write. Here is the whole of <code>com_kb</code>'s site entry point:</p>
-<!--include: core/components/com_kb/site/kb.php:8-15-->
-<p>That is the minimum: a namespace, a controller, <code>execute()</code>. (The two
-<code>require_once</code> lines above it in the file are the inherited habit noted above;
-the class loader covers both.) The administrator entry point does more,
-because the administrator needs an authorisation gate and a sub-menu:</p>
-<!--include: core/components/com_kb/admin/kb.php:8-41-->
+<pre><code class="language-php">namespace Components\Kb\Site;
+
+use Hubzero\Component\AbstractComponent;
+
+/**
+ * Component entry point
+ */
+class Kb extends AbstractComponent
+{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+
+        // Instantiate controller
+        $controller = new Controllers\Articles();
+        $controller-&gt;execute();
+    }
+}
+</code></pre>
+<p>That is the minimum: a class, a controller, <code>execute()</code>. The administrator
+entry point does more, because the administrator needs an authorisation gate
+and a sub-menu:</p>
+<pre><code class="language-php">namespace Components\Kb\Admin;
+
+use Hubzero\Component\AbstractComponent;
+use Hubzero\Facades\App;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Submenu;
+use Hubzero\Facades\User;
+
+/**
+ * Component entry point
+ */
+class Kb extends AbstractComponent
+{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!User::authorise('core.manage', 'com_kb')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
+
+        $controllerName = Request::getCmd('controller', 'articles');
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName), \Hubzero\Component\ControllerInterface::class)) {
+            $controllerName = 'articles';
+        }
+
+        Submenu::addEntry(
+            Lang::txt('COM_KB_ARTICLES'),
+            Route::url('index.php?option=com_kb&amp;controller=articles', false),
+            $controllerName == 'articles',
+        );
+        Submenu::addEntry(
+            Lang::txt('COM_KB_CATEGORIES'),
+            Route::url('index.php?option=com_categories&amp;extension=com_kb', false),
+        );
+
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller-&gt;execute();
+    }
+}
+</code></pre>
 <p>Three things are worth copying from it. The <code>core.manage</code> check is what keeps
 non-managers out of the whole client — no controller sees the request without
 it, and leaving it out means every logged-in user can reach the administrator
@@ -353,9 +423,9 @@ so <code>index.php?option=com_bookings&amp;controller=reservations</code> reache
 <code>Components\Bookings\Admin\Controllers\Reservations</code>.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> Entry point files are namespaced, so the facades they call must be
-imported or fully qualified. <code>com_kb</code>'s administrator entry point writes
-<code>\User::authorise()</code> and <code>\Route::url()</code> with a leading backslash for
-exactly this reason; see
+imported or fully qualified. <code>com_kb</code>'s administrator entry point imports
+<code>User</code>, <code>Route</code> and the rest from <code>Hubzero\Facades</code> for exactly this reason;
+see
 <a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>. The file parses
 either way — the fatal arrives only when the line runs.</p>
 </aside>

@@ -241,7 +241,7 @@ in.</p>
 <h2 id="the-sub-menu">The sub-menu</h2>
 <p>A row of links sits above every Members screen. Which links appear depends on
 your permissions and on one configuration setting; the menu is built in
-<a href="../../../core/components/com_members/admin/helpers/members.php"><code>core/components/com_members/admin/helpers/members.php</code></a>.</p>
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_members/admin/helpers/MembersHelper.php"><code>core/components/com_members/admin/helpers/MembersHelper.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -632,55 +632,48 @@ everything hung off it. This section replaces the older
 <p>Deleting needs <code>core.delete</code> on <code>com_members</code>, and refuses to remove a Super
 User unless you are one yourself. For each checked account it calls <code>destroy()</code>
 on the member model:</p>
-<pre><code class="language-php">
+<pre><code class="language-php">    public function destroy()
+    {
+        $data = $this-&gt;toArray();
+
+        Event::trigger('user.onUserBeforeDelete', [$data]);
+
+        // Remove profile fields
+        foreach ($this-&gt;profiles()-&gt;rows() as $field) {
+            if (!$field-&gt;destroy()) {
+                $this-&gt;addError($field-&gt;getError());
+                return false;
+            }
+        }
+
+        // Remove notes
+        foreach ($this-&gt;notes()-&gt;rows() as $note) {
+            if (!$note-&gt;destroy()) {
+                $this-&gt;addError($note-&gt;getError());
+                return false;
+            }
+        }
+
+        // Remove hosts
+        foreach ($this-&gt;hosts()-&gt;rows() as $host) {
+            if (!$host-&gt;destroy()) {
+                $this-&gt;addError($host-&gt;getError());
+                return false;
+            }
+        }
+
+        // Remove tags
+        $this-&gt;tag('');
+
+        // Attempt to delete the record
+        $result = parent::destroy();
+
+        if ($result) {
+            Event::trigger('user.onUserAfterDelete', [$data, true, $this-&gt;getError()]);
+        }
+
         return $result;
     }
-
-    /**
-     * Clears all terms of use agreements
-     *
-     * @return  bool
-     */
-    public static function clearTerms()
-    {
-        $tbl = self::blank();
-
-        $query = $tbl-&gt;getQuery()
-            -&gt;update($tbl-&gt;getTableName())
-            -&gt;set(['usageAgreement' =&gt; 0]);
-
-        return $query-&gt;execute();
-    }
-
-    /**
-     * Get records
-     *
-     * @param   integer  $limit
-     * @param   integer  $offset
-     * @return  object
-     */
-    public static function searchResults($limit, $offset = 0)
-    {
-        return self::all()
-            -&gt;start($offset)
-            -&gt;limit($limit)
-            -&gt;whereEquals('block', 0)
-            -&gt;where('activation', '&gt;', 0)
-            -&gt;where('approved', '&gt;', 0)
-            -&gt;rows();
-    }
-
-    /**
-     * Get a record count
-     *
-     * @return  integer
-     */
-    public static function searchTotal()
-    {
-        return self::all()
-            -&gt;whereEquals('block', 0)
-            -&gt;where('activation', '&gt;', 0)
-            -&gt;where('approved', '&gt;', 0)
 </code></pre>
 <p>So the account's own profile field values, notes, hosts and tags go with it,
 and the <code>user.onUserAfterDelete</code> event carries the deletion outward. Seven

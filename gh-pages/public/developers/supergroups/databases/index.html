@@ -195,7 +195,7 @@ does not belong here. Store those as hub records and let the group's code read
 them through the existing models.</p>
 <h2 id="how-the-group-gets-one">How the group gets one</h2>
 <p>Both halves are done when an administrator saves the group as a super group,
-in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>_handleSuperGroup()</code></a>:</p>
+in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>handleSuperGroup()</code></a>:</p>
 <ul>
 <li>A database named <code>sg_&lt;alias&gt;</code> is created, but <strong>only if</strong> the hub's own
 database account holds a grant matching <code>sg\_%</code>. If it does not, the save

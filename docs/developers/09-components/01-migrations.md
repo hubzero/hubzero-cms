@@ -77,7 +77,7 @@ re-running the rest, and makes each `down()` obvious.
 that permissions hang off, and adds the administrator menu entry. That one
 call is the whole of the first migration. `com_kb`'s is the pattern to copy:
 
-<!--include: core/components/com_kb/migrations/Migration20170831000000ComKb.php:8-33-->
+<!--include: core/components/com_kb/migrations/Migration20170831000000ComKb.php:11-33-->
 
 `com_bookings` is the same file with the name changed:
 
@@ -121,7 +121,7 @@ twice. The same is true of `addModuleEntry()`, `addPluginEntry()` and
 `$this->db` is a full database driver. Guard every statement so the migration
 can run against a hub that already has the table:
 
-<!--include: core/components/com_kb/migrations/Migration20170901000000ComKb.php:23-56-->
+<!--include: core/components/com_kb/migrations/Migration20170901000000ComKb.php:22-55-->
 
 `com_kb` repeats that block for `#__kb_comments` and `#__kb_votes`, and its
 `down()` drops all three. Table names use the `#__` prefix placeholder, which
@@ -182,7 +182,7 @@ same rule: check first, then change. `com_kb`'s third migration converts its
 `DATETIME` columns from `NOT NULL DEFAULT '0000-00-00 00:00:00'` to nullable,
 and checks both the table and the column before touching either:
 
-<!--include: core/components/com_kb/migrations/Migration20190221000000ComKb.php:16-58-->
+<!--include: core/components/com_kb/migrations/Migration20190221000000ComKb.php:16-57-->
 
 The three checks worth knowing are `tableExists()`, `tableHasField()`, and
 `tableHasKey()`.

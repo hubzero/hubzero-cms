@@ -85,7 +85,7 @@ instead. The prefix stays.
 
 Every PHP file opens with the same four-line docblock:
 
-<!--include: core/components/com_blog/site/controllers/entries.php:1-6-->
+<!--include: core/components/com_blog/site/controllers/entries.php:1-7-->
 
 `@package` is `hubzero-cms` for extensions and `framework` for files under
 `core/libraries/Hubzero`. `@license` is always MIT. A new file gets

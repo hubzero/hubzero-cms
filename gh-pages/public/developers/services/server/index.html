@@ -195,20 +195,19 @@ will not seek.</p>
 <pre><code class="language-php">use Hubzero\Content\Server;
 </code></pre>
 <h2 id="serving-a-file">Serving a file</h2>
-<pre><code class="language-php">        }
+<pre><code class="language-php">        $server = new Server();
+        $server-&gt;filename($file_path);
+        $server-&gt;disposition('inline');
+        $server-&gt;acceptranges(false); // @TODO fix byte range support
 
-        if (!($file = Request::getString('file', ''))) {
-            $parts = explode('/', $_SERVER['REQUEST_URI']);
-
-            $filename = array_pop($parts);
-
-            // Get the file name
-            if (substr(strtolower($filename), 0, strlen('image:')) == 'image:') {
-                $file = substr($filename, strlen('image:'));
-            } elseif (substr(strtolower($filename), 0, strlen('file:')) == 'file:') {
-                $file = substr($filename, strlen('file:'));
-            }
+        // Serve up file
+        if (!$server-&gt;serve()) {
+            // Should only get here on error
+            throw new RuntimeException(Lang::txt('An error occurred while trying to output the file'), 500);
         }
+
+        exit;
+    }
 </code></pre>
 <p>That is the whole pattern: set the file, say how it should be presented,
 call <code>serve()</code>, and stop. <code>serve()</code> returns <code>false</code> if it could not send

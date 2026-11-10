@@ -144,4 +144,4 @@ assigned to them, split into **Review** and **Pending changes**.
 
 The **Resources** dashboard panel counts each state directly:
 
-<!--include: core/modules/mod_resources/helper.php:32-45-->
+<!--include: core/modules/mod_resources/mod_resources.php:38-52-->

@@ -192,7 +192,7 @@ namespace Components\Bookings\Models;
 
 class Tags extends \Components\Tags\Models\Cloud
 {
-    protected $_scope = 'bookings';
+    protected $scope = 'bookings';
 }
 </code></pre>
 <pre><code class="language-php">// saving
@@ -285,9 +285,8 @@ own.</p>
 administrator's Tags screen changes it everywhere at once.</p>
 <h2 id="declaring-a-scope">Declaring a scope</h2>
 <p>Subclass <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_tags/models/cloud.php"><code>Components\Tags\Models\Cloud</code></a>
-and set <code>$_scope</code>. The whole class is that:</p>
-<pre><code class="language-php">
-namespace Components\Blog\Models;
+and set <code>$scope</code>. The whole class is that:</p>
+<pre><code class="language-php">namespace Components\Blog\Models;
 
 use Components\Tags\Models\Cloud;
 

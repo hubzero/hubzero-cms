@@ -70,7 +70,7 @@ A component view resolves its layout through
 [`Hubzero\View\View::setPath()`](../../../core/libraries/Hubzero/View/View.php),
 which builds the search list:
 
-<!--include: core/libraries/Hubzero/View/View.php:551-585-->
+<!--include: core/libraries/Hubzero/View/View.php:548-579-->
 
 Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:
@@ -122,7 +122,7 @@ code that renders another component's views should set it. Most does not.
 
 ## Rule 3: the layout is `display`
 
-`Hubzero\Component\View` declares `public $_layout = 'display';`. The abstract
+`Hubzero\Component\View` declares `public $layoutName = 'display';`. The abstract
 `Hubzero\View\View` it extends declares `'default'`. So a component view's
 layout is `display.php` unless a controller sets another with
 `$view->setLayout('edit')`.
@@ -177,7 +177,7 @@ template.
 [`Hubzero\Plugin\View`](../../../core/libraries/Hubzero/Plugin/View.php) builds
 its own search list:
 
-<!--include: core/libraries/Hubzero/Plugin/View.php:205-226-->
+<!--include: core/libraries/Hubzero/Plugin/View.php:207-227-->
 
 The override directory is named `plg_{folder}_{element}`, and the view name is
 a directory inside it. So
@@ -205,7 +205,7 @@ Every asset pushed with `$this->css()`, `$this->js()` or the
 [`Hubzero\Document\Asset\File`](../../../core/libraries/Hubzero/Document/Asset/File.php),
 which checks the template before the extension:
 
-<!--include: core/libraries/Hubzero/Document/Asset/File.php:350-358-->
+<!--include: core/libraries/Hubzero/Document/Asset/File.php:334-352-->
 
 The override path is the extension's name and the file's name, with no
 `assets`, no `css` and no `js` directory in between, whatever the source file's
@@ -246,7 +246,7 @@ Modules do not use a view object. `Hubzero\Module\Module::display()` requires
 one file, chosen by
 [`Hubzero\Module\Loader::getLayoutPath()`](../../../core/libraries/Hubzero/Module/Loader.php):
 
-<!--include: core/libraries/Hubzero/Module/Loader.php:346-381-->
+<!--include: core/libraries/Hubzero/Module/Loader.php:350-392-->
 
 There are exactly three candidates, tried in order:
 
@@ -325,7 +325,7 @@ error — PHP will not let the same function be declared twice.
 The system file defines `none`, `table`, `xhtml`, `outline`, `sliders` and
 `tabs`. The default is `none`:
 
-<!--include: core/templates/system/html/modules.php:10-16-->
+<!--include: core/templates/system/html/modules.php:13-19-->
 
 A layout picks a style with the `style` attribute on the `jdoc` tag:
 

@@ -276,11 +276,7 @@ the provider to an account they already have, and the third only if you
 enable the plugin for the administrator interface. Some providers want only
 the domain; others, Google among them, want every URI listed exactly.</p>
 <p>The hub builds these itself, so they are not a guess:</p>
-<pre><code class="language-php">     *
-     * @param   string  $name  The plugin name
-     * @return  string
-     **/
-    protected static function getRedirectUri($name)
+<pre><code class="language-php">    protected static function getRedirectUri($name)
     {
         // Get the hub url
         $service = trim(Request::base(), '/');

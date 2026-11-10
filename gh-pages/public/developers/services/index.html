@@ -228,8 +228,7 @@ one directory per client (<code>Site</code>, <code>Administrator</code>, <code>A
 provider binds a closure to a key on the container; the closure runs the
 first time something asks for that key, and its result is cached for the
 rest of the request.</p>
-<pre><code class="language-php">     */
-    public function register()
+<pre><code class="language-php">    public function register()
     {
         $this-&gt;app['cache'] = function ($app) {
             return new Manager($app);
@@ -245,7 +244,6 @@ rest of the request.</p>
             return $app['cache']-&gt;storage($handler);
         };
     }
-}
 </code></pre>
 <p>Because the closure reads <code>$app['config']</code>, the service you get back depends
 on the hub's configuration. The cache store above is a real file cache on a

@@ -158,7 +158,7 @@
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">PHP Naming Conventions</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-framework-hubzero">The framework: Hubzero\</a></li>
 <li class="toc__item toc__item--l2"><a href="#components-components">Components: Components\</a></li>
-<li class="toc__item toc__item--l3"><a href="#entry-file">Entry file</a></li>
+<li class="toc__item toc__item--l3"><a href="#entry-class">Entry class</a></li>
 <li class="toc__item toc__item--l3"><a href="#controllers">Controllers</a></li>
 <li class="toc__item toc__item--l3"><a href="#models">Models</a></li>
 <li class="toc__item toc__item--l3"><a href="#views-and-layouts">Views and layouts</a></li>
@@ -272,14 +272,30 @@ copy is not consulted for any of its classes.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="entry-file">Entry file</h3>
-<p>A component's entry file is named for the component without its <code>com_</code> prefix
-and sits in the client directory: <code>com_blog/site/blog.php</code>,
-<code>com_blog/admin/blog.php</code>. <code>Hubzero\Component\Loader</code> builds that path from the
-request and includes it. 41 of the 57 core components have one.</p>
-<p>The entry file picks a controller from the request and runs it:</p>
-<!--include: core/components/com_blog/site/blog.php:8-22-->
-<p>A component with no entry file falls through to
+<h3 id="entry-class">Entry class</h3>
+<p>A component's entry class is named for the component without its <code>com_</code>
+prefix, capitalised, in the client's namespace, and its file sits in the client
+directory: <code>Components\Blog\Site\Blog</code> in <code>com_blog/site/Blog.php</code>,
+<code>Components\Blog\Admin\Blog</code> in <code>com_blog/admin/Blog.php</code>.
+<code>Hubzero\Component\Loader</code> builds that name from the request, loads the file
+and runs the class's <code>execute()</code>. 41 of the 58 core components have one; one,
+<code>com_massmail</code>, still has a plain <code>site/massmail.php</code>, which the loader
+includes when there is no class.</p>
+<p>The entry class picks a controller from the request and runs it:</p>
+<pre><code class="language-php">    protected function execute(): void
+    {
+        $controllerName = Request::getCmd('controller', Request::getCmd('view', 'entries'));
+        if (!is_subclass_of(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)), \Hubzero\Component\ControllerInterface::class)) {
+            $controllerName = 'entries';
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller-&gt;execute();
+    }
+</code></pre>
+<p>A component with neither falls through to
 <code>Hubzero\Component\Loader::executeDefault()</code>, which instantiates
 <code>Components\[Name]\Site\Controllers\[Controller]</code> directly, defaulting the
 controller name to the component name and synthesising an empty controller
@@ -364,22 +380,32 @@ no <code>plg_</code> directory prefix to add.</p>
 reached by an explicit <code>require_once</code>, not by the autoloader. Namespace new
 ones.</p>
 <h2 id="modules-modules">Modules: <code>Modules\</code></h2>
-<pre><code>Modules\Login\Helper
-  -&gt; core/modules/mod_login/Helper.php
-  -&gt; core/modules/mod_login/helper.php   (what exists)
+<pre><code>Modules\Login\Login
+  -&gt; core/modules/mod_login/Login.php
+  -&gt; core/modules/mod_login/mod_login.php   (what exists)
 </code></pre>
-<p>The first segment is the module name without <code>mod_</code>. As with components, the
-loader also tries the directory without the prefix.</p>
-<p>On this branch a module is two files. <code>mod_login.php</code> is a stub that
-<code>Hubzero\Module\Loader</code> includes; it requires <code>helper.php</code> and calls the class:</p>
-<pre><code class="language-php">
-namespace Modules\Login;
+<p>The first segment is the module name without <code>mod_</code>, in PascalCase, and so is
+the class: <code>mod_articles_latest</code> holds <code>Modules\ArticlesLatest\ArticlesLatest</code>.
+As with components, the loader also tries the directory without the prefix,
+and it tries the module's own entry file, <code>mod_{name}.php</code>.</p>
+<p>A module is one class in that file, extending <code>Hubzero\Module\Module</code>.
+<code>Hubzero\Module\Loader</code> builds the class name from the module's name, loads
+the file and instantiates the class:</p>
+<pre><code class="language-php">namespace Modules\Login;
 
 use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
+use Hubzero\Utility\Uri;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Plugin;
+use Hubzero\Facades\User;
+use Hubzero\Facades\App;
+
+/**
+ * Module class for displaying a login form
+ */
+class Login extends Module
 </code></pre>
-<p>The class name is <code>Helper</code> in namespace <code>Modules\[Name]</code>. 201 module files
-carry a <code>Modules\</code> namespace and every module still has its <code>helper.php</code>.</p>
 <h2 id="templates-templates">Templates: <code>Templates\</code></h2>
 <pre><code>Templates\Kameleon\Helper
   -&gt; core/templates/tpl_kameleon/Helper.php

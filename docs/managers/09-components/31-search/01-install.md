@@ -94,7 +94,7 @@ exist. It creates:
 
 The file is written by `configure()` in the Solr controller:
 
-<!--include: core/components/com_search/admin/controllers/solr.php:157-169-->
+<!--include: core/components/com_search/admin/controllers/solr.php:135-147-->
 
 > **Warning:** That account is added to **every** access group on the hub, so
 > that the indexer can read content at every access level. Do not delete the

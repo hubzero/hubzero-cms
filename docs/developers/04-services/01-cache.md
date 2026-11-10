@@ -28,7 +28,7 @@ them, and it must not cache anything that depends on who is looking.
 
 Two keys are registered, and they are not the same object:
 
-<!--include: core/bootstrap/Site/Providers/CacheServiceProvider.php:23-41-->
+<!--include: core/bootstrap/Site/Providers/CacheServiceProvider.php:24-39-->
 
 `cache` is the [`Hubzero\Cache\Manager`](../../../core/libraries/Hubzero/Cache/Manager.php),
 which resolves and caches storage instances. `cache.store` is one storage
@@ -60,7 +60,7 @@ means two and a half **days**, not an hour.
 That is the shape of nearly every use in the tree — write with a TTL, read
 back, recompute on a miss:
 
-<!--include: core/components/com_wiki/site/controllers/pages.php:239-249-->
+<!--include: core/components/com_wiki/site/controllers/pages.php:230-238-->
 
 | Method | What it does |
 |---|---|

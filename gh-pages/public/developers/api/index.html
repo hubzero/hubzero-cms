@@ -224,10 +224,10 @@ might be <code>list</code> or <code>read</code> or something the component inven
 <li><strong>Match the component</strong> by the next segment, then hand the rest of the
 segments to that component's API router.</li>
 </ol>
-<p>So <code>GET /api/blog/list</code> reaches <code>Components\Blog\Api\Controllers\Entriesv1_0::listTask()</code>.</p>
+<p>So <code>GET /api/blog/list</code> reaches <code>Components\Blog\Api\Controllers\Entriesv1r0::listTask()</code>.</p>
 <h2 id="controllers">Controllers</h2>
 <p>An API controller lives in <code>{component}/api/controllers/</code>, is named
-<code>{name}v{major}_{minor}.php</code>, and extends
+<code>{name}v{major}r{minor}.php</code>, and extends
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Component/ApiController.php"><code>Hubzero\Component\ApiController</code></a>.
 Every public method ending in <code>Task</code> is a task the router can reach.</p>
 <pre><code class="language-php">namespace Components\Blog\Api\Controllers;
@@ -236,7 +236,7 @@ use Hubzero\Component\ApiController;
 use Request;
 use User;
 
-class Entriesv1_0 extends ApiController
+class Entriesv1r0 extends ApiController
 {
     public function listTask()
     {
@@ -249,7 +249,7 @@ class Entriesv1_0 extends ApiController
 }
 </code></pre>
 <p>The version is in the class name, which is how two versions of an endpoint
-coexist: add <code>Entriesv2_0</code> beside <code>Entriesv1_0</code> and a request that asks for
+coexist: add <code>Entriesv2r0</code> beside <code>Entriesv1r0</code> and a request that asks for
 <code>v2.0</code> gets the new one while everything else keeps working.</p>
 <h3 id="the-smallest-working-endpoint">The smallest working endpoint</h3>
 <p>An API controller that declares no tasks at all is not empty.
@@ -258,9 +258,9 @@ coexist: add <code>Entriesv2_0</code> beside <code>Entriesv1_0</code> and a requ
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Database/Relational.php"><code>Relational</code></a> model
 from the controller's own name — singularised, in
 <code>Components\[Name]\Models\</code> — and does the obvious thing with it. So a
-<code>Bookingsv1_0</code> controller in an instrument-booking component gets CRUD over
+<code>Bookingsv1r0</code> controller in an instrument-booking component gets CRUD over
 <code>Components\Bookings\Models\Booking</code> for free, and you override only the
-tasks whose behaviour has to differ. Set <code>protected $_model</code> if the class
+tasks whose behaviour has to differ. Set <code>protected $modelClass</code> if the class
 name is not the singular of the controller name; no core controller does.</p>
 <p>That inheritance is also a trap. When the model cannot be resolved the
 request aborts — 404 if the derived file path does not exist, 500 if it is
@@ -295,7 +295,19 @@ decoration — two things read them. <code>Hubzero\Api\Doc\Generator</code> buil
 interactive explorer a hub serves at <code>/developer/api/docs</code>, and
 <code>docs/_tools/gen_api_reference.py</code> builds the
 <a href="../../reference/api/index.html">API reference</a> in these pages.</p>
-<!--include: core/components/com_blog/api/controllers/entriesv1_0.php:29-40-->
+<pre><code class="language-php">    /**
+     * Display a list of entries
+     *
+     * @apiMethod GET
+     * @apiUri    /blog/list
+     * @apiParameter {
+     *      &quot;name&quot;:          &quot;scope&quot;,
+     *      &quot;description&quot;:   &quot;Scope type (group, member, etc.)&quot;,
+     *      &quot;type&quot;:          &quot;string&quot;,
+     *      &quot;required&quot;:      false,
+     *      &quot;default&quot;:       &quot;site&quot;
+     * }
+</code></pre>
 <p>More <code>@apiParameter</code> blocks follow, one per parameter, and then
 <code>public function listTask()</code>.</p>
 <p>The rules, and what breaks when you get them wrong:</p>
@@ -387,7 +399,7 @@ configured in <code>app/config/rate_limit.php</code>:</p>
 <p><code>period</code> is in minutes. Counts are kept in the database.</p>
 <h2 id="adding-an-endpoint">Adding an endpoint</h2>
 <ol>
-<li>Create <code>{component}/api/controllers/{name}v1_0.php</code> with a class
+<li>Create <code>{component}/api/controllers/{name}v1r0.php</code> with a class
 extending <code>ApiController</code>.</li>
 <li>Add a <code>{task}Task()</code> method, and give it <code>@apiMethod</code>, <code>@apiUri</code> and an
 <code>@apiParameter</code> for each parameter.</li>

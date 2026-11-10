@@ -84,13 +84,14 @@ com_bookings/
 ### The entry point
 
 `Hubzero\Component\Loader` looks, in order, for a
-`Components\Bookings\Site\Bootstrap` class, then for
-`site/bookings.php`, then for a React application under `site/assets/react/`,
-and only then falls back to its default dispatcher. Write the second form:
-every component in the tree uses it, and it is four lines that hand off to the
-controller:
+`Components\Bookings\Site\Bookings` class in `site/Bookings.php`, then for a
+plain `site/bookings.php` to include, then for a React application under
+`site/assets/react/`, and only then falls back to its default dispatcher.
+Write the first form: 41 of the core components do. The class extends
+`Hubzero\Component\AbstractComponent`, and its `execute()` picks the
+controller and hands off to it:
 
-<!--include: core/components/com_blog/site/blog.php:1-20-->
+<!--include: core/components/com_blog/site/Blog.php:9-36-->
 
 A module's entry point is `mod_{name}.php`; `Hubzero\Module\Loader` `include`s
 the file. A plugin's entry point is `{name}.php`, holding a class whose public

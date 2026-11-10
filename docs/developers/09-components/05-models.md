@@ -48,7 +48,7 @@ New models extend
 The class declares what makes it different from every other model and inherits
 the rest. `com_kb`'s `Article` shows the full set:
 
-<!--include: core/components/com_kb/models/article.php:29-91-->
+<!--include: core/components/com_kb/models/article.php:27-89-->
 
 | Property | Meaning |
 |---|---|
@@ -115,7 +115,7 @@ reservation's `created` and `created_by`.
 
 Relationships are methods that return a relation object:
 
-<!--include: core/components/com_kb/models/article.php:247-266-->
+<!--include: core/components/com_kb/models/article.php:231-249-->
 
 `belongsToOne()`, `oneToMany()`, `manyToMany()`, `oneShiftsToMany()`, and
 `oneToManyThrough()` are the ones in common use. For `com_bookings`, an

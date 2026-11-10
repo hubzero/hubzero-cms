@@ -228,11 +228,11 @@ the code:</p>
 </code></pre>
 <p>The same join appears in <code>com_resources</code>, which builds every media path this
 way rather than concatenating separators of its own:</p>
-<pre><code class="language-php">
+<pre><code class="language-php">        $new_file = PATH_APP . DS . $resource_path . DS . 'presentation.json';
 </code></pre>
 <h2 id="version">Version</h2>
 <p><code>HVERSION</code> is the platform version as a string, currently</p>
-<pre><code class="language-php">define('JPATH_THEMES', PATH_APP . '/templates');
+<pre><code class="language-php">define('HVERSION', '2.4.7');
 </code></pre>
 <h2 id="entry-guard">Entry guard</h2>
 <p><code>_HZEXEC_</code> is defined by the bootstrap and by nothing else. Files that must

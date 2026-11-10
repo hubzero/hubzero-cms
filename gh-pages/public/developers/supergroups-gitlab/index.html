@@ -388,7 +388,7 @@ hub that has not configured GitLab, including hubs that never intend to.
 It is noise, not a fault with the group. This is a known defect.</p>
 </aside>
 <h3 id="what-the-hub-does-when-a-super-group-is-saved">What the hub does when a super group is saved</h3>
-<p>Everything below happens in <code>_handSuperGroupGitlab()</code> in
+<p>Everything below happens in <code>handSuperGroupGitlab()</code> in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/admin/controllers/manage.php"><code>admin/controllers/manage.php</code></a>,
 after the group's directory and database have been created, and only when
 <code>application_env</code> starts with <code>production</code>. On a development or staging hub

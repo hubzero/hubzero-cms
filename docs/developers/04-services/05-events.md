@@ -153,7 +153,7 @@ App::get('dispatcher')->addListener(
 );
 ```
 
-<!--include: core/libraries/Hubzero/Events/Priority.php:14-23-->
+<!--include: core/libraries/Hubzero/Events/Priority.php:15-24-->
 
 Listeners with the same priority run in the order they were added.
 `listen()` is an alias for `addListener()`. `removeListener()`,

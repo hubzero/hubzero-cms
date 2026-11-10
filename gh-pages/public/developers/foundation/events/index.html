@@ -236,8 +236,7 @@ what the caller means.</p>
 <h2 id="where-the-dispatcher-comes-from">Where the dispatcher comes from</h2>
 <p>The <code>Event</code> facade resolves the container key <code>dispatcher</code>, which
 <code>EventServiceProvider</code> binds:</p>
-<pre><code class="language-php">     */
-    public function register()
+<pre><code class="language-php">    public function register()
     {
         $this-&gt;app['dispatcher'] = function ($app) {
             $dispatcher = new Dispatcher();
@@ -251,7 +250,6 @@ what the caller means.</p>
             return $dispatcher;
         };
     }
-}
 </code></pre>
 <p>In debug mode the real dispatcher is wrapped in a <code>TraceableDispatcher</code> so
 the debug bar can list what fired — the quickest way to see whether an event
@@ -265,7 +263,6 @@ the plugin loader as a service, then attaches it to the dispatcher in
             $this-&gt;app['dispatcher']-&gt;addListenerLoader($this-&gt;app['plugin']);
         }
     }
-}
 </code></pre>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> Anything that triggers an event before the application has

@@ -213,16 +213,17 @@ loads ahead of anything an extension queues:</p>
 </code></pre>
 <p>Or through the document, in which case it lands <em>inside</em> the head block, after
 the component's stylesheets:</p>
-<pre><code class="language-php">use Hubzero\Facades\Route;
-use Hubzero\Facades\Session;
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-Html::behavior('framework', true);
-
-// Load base styles
+<pre><code class="language-php">// Load base styles
 $this-&gt;addStyleSheet(
+    $this-&gt;baseurl . '/templates/' . $this-&gt;template . '/css/index.css?v=' . filemtime(__DIR__ . '/css/index.css'),
+);
+
+// Load theme
+$theme = $this-&gt;params-&gt;get('theme');
+if ($theme == 'custom') {
+    $color = $this-&gt;params-&gt;get('color');
+    $this-&gt;addStyleDeclaration(include_once __DIR__ . '/css/themes/custom.php');
+}
 </code></pre>
 <p>Kimera and Lucent use the first form; Kameleon uses the second, which is why
 its own rules need enough specificity to win against a component's.</p>
@@ -541,10 +542,7 @@ name and goes to <code>addStyleDeclaration()</code>:</p>
 <code>Hubzero\Module\Module</code> and <code>Hubzero\Plugin\Plugin</code> get <code>css()</code>, <code>js()</code> and
 <code>img()</code> from
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Base/Traits/AssetAware.php"><code>Hubzero\Base\Traits\AssetAware</code></a>:</p>
-<pre><code class="language-php">     * @param   array   $attributes  Attributes
-     * @return  object
-     */
-    public function css($stylesheet = '', $extension = null, $attributes = [])
+<pre><code class="language-php">    public function css($stylesheet = '', $extension = null, $attributes = [])
     {
         $extension = $extension ?: $this-&gt;detectExtensionName();
 

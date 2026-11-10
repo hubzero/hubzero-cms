@@ -288,9 +288,8 @@ Yes and the screen the documentation was written against was set to No. The
 submission code asks for either:
 
 ```php
-if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1))
-{
-	$state = 1;
+if (!$review && ($autoApprove || $this->pubconfig->get('autoapprove') == 1)) {
+    $state = 1;
 }
 ```
 

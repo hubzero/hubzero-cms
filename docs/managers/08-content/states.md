@@ -49,12 +49,12 @@ The hub has two model base classes, and both define the same three numbers.
 [`Relational`](../../../core/libraries/Hubzero/Database/Relational.php), which
 the newer components use:
 
-<!--include: core/libraries/Hubzero/Database/Relational.php:43-45-->
+<!--include: core/libraries/Hubzero/Database/Relational.php:177-179-->
 
 [`Base\Model`](../../../core/libraries/Hubzero/Base/Model.php), which the
 older ones use, adds a fourth:
 
-<!--include: core/libraries/Hubzero/Base/Model.php:22-43-->
+<!--include: core/libraries/Hubzero/Base/Model.php:28-49-->
 
 So at the platform level there are three states a record can be in —
 unpublished, published, deleted — plus a flagged value used for reported
@@ -115,7 +115,7 @@ are simply two different conventions living in one administrator interface.
 
 The front end is not confused by any of this, because it asks only for
 `state = 1`. Every module that lists content — see
-[`mod_articles_latest`](../../../core/modules/mod_articles_latest/helper.php),
+[`mod_articles_latest`](../../../core/modules/mod_articles_latest/mod_articles_latest.php),
 for instance — filters on the published value and nothing else. Anything
 that is not published is invisible to visitors, whichever of the other
 numbers it holds.

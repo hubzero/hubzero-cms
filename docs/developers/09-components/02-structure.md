@@ -36,7 +36,7 @@ core/components/com_kb/
         forms/
             article.xml  category.xml
     site/
-        kb.php                      entry point
+        Kb.php                      Components\Kb\Site\Kb, the entry point
         router.php                  Components\Kb\Site\Router
         controllers/
             articles.php            Components\Kb\Site\Controllers\Articles
@@ -52,7 +52,7 @@ core/components/com_kb/
         language/en-GB/
             en-GB.com_kb.ini
     admin/
-        kb.php                      entry point
+        Kb.php                      Components\Kb\Admin\Kb, the entry point
         controllers/
             articles.php            Components\Kb\Admin\Controllers\Articles
         helpers/
@@ -70,7 +70,7 @@ core/components/com_kb/
     api/
         router.php                  Components\Kb\Api\Router
         controllers/
-            entriesv1_0.php         Components\Kb\Api\Controllers\Entriesv1_0
+            entriesv1r0.php         Components\Kb\Api\Controllers\Entriesv1r0
 ```
 
 `config/`, `migrations/`, and `models/` sit above the client directories
@@ -180,25 +180,25 @@ That method defines `PATH_COMPONENT` (the client directory,
 `PATH_COMPONENT_ADMINISTRATOR`, loads the component's language files, and then
 looks for something to run, in this order:
 
-1. a `Components\{Name}\{Client}\Bootstrap` class, whose `start()` method is
-   called;
+1. a `Components\{Name}\{Client}\{Name}` class in
+   `PATH_COMPONENT/{Name}.php`, extending `Hubzero\Component\AbstractComponent`,
+   whose `execute()` is called;
 2. `PATH_COMPONENT/{componentname}.php`, which is simply `require`d;
 3. a directory `PATH_COMPONENT/assets/react/{componentname}`, run as a React
    application;
 4. failing all of those, a `Hubzero\Component\DefaultSiteController` is
    synthesised for the requested controller.
 
-Every component in the tree today uses the second form, and it is the one to
+41 of the 58 components in the tree use the first form, and it is the one to
 write. Here is the whole of `com_kb`'s site entry point:
 
-<!--include: core/components/com_kb/site/kb.php:8-15-->
+<!--include: core/components/com_kb/site/Kb.php:9-30-->
 
-That is the minimum: a namespace, a controller, `execute()`. (The two
-`require_once` lines above it in the file are the inherited habit noted above;
-the class loader covers both.) The administrator entry point does more,
-because the administrator needs an authorisation gate and a sub-menu:
+That is the minimum: a class, a controller, `execute()`. The administrator
+entry point does more, because the administrator needs an authorisation gate
+and a sub-menu:
 
-<!--include: core/components/com_kb/admin/kb.php:8-41-->
+<!--include: core/components/com_kb/admin/Kb.php:9-56-->
 
 Three things are worth copying from it. The `core.manage` check is what keeps
 non-managers out of the whole client — no controller sees the request without
@@ -209,9 +209,9 @@ so `index.php?option=com_bookings&controller=reservations` reaches
 `Components\Bookings\Admin\Controllers\Reservations`.
 
 > **Note:** Entry point files are namespaced, so the facades they call must be
-> imported or fully qualified. `com_kb`'s administrator entry point writes
-> `\User::authorise()` and `\Route::url()` with a leading backslash for
-> exactly this reason; see
+> imported or fully qualified. `com_kb`'s administrator entry point imports
+> `User`, `Route` and the rest from `Hubzero\Facades` for exactly this reason;
+> see
 > [Facades](../03-foundation/06-facades.md#importing-a-facade). The file parses
 > either way — the fatal arrives only when the line runs.
 

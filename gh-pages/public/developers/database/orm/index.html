@@ -234,7 +234,11 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
 <code>$table</code> rather than arguing with it.</p>
 </aside>
 <p>Here is a real model's declarations — a knowledge base article:</p>
-<pre><code class="language-php">     *
+<pre><code class="language-php">class Article extends Relational implements \Hubzero\Search\Searchable
+{
+    /**
+     * The table namespace
+     *
      * @var  string
      */
     protected $namespace = 'kb';
@@ -293,10 +297,6 @@ from your <a href="../migrations/index.html">migration</a>: <code>Reservation</c
     protected $parsed = [
         'fulltxt',
     ];
-
-    /**
-     * Base URL
-     *
 </code></pre>
 <table>
 <thead>
@@ -451,25 +451,24 @@ so does not save it.</p>
 <p>A method named <code>transformFoo()</code> makes <code>$model-&gt;foo</code> return its result instead
 of the raw attribute. <code>com_blog</code> uses one to hand back the entry's parameters
 as a <code>Registry</code> rather than a JSON string:</p>
-<pre><code class="language-php">    {
-        $field = 'content';
+<pre><code class="language-php">
+    /**
+     * Transform params
+     *
+     * @return  string
+     */
+    public function transformParams()
+    {
+        if (!is_object($this-&gt;params)) {
+            $params = new Registry($this-&gt;get('params'));
 
-        $property = &quot;_{$field}Parsed&quot;;
+            $p = Component::params('com_blog');
+            $p-&gt;merge($params);
 
-        if (!isset($this-&gt;$property)) {
-            $published = Date::of($this-&gt;get('publish_up'));
+            $this-&gt;params = $p;
+        }
 
-            $scope  = $published-&gt;toLocal('Y') . '/';
-            $scope .= $published-&gt;toLocal('m');
-
-            $params = [
-                'option'   =&gt; $this-&gt;adapter()-&gt;get('option'),
-                'scope'    =&gt; $this-&gt;adapter()-&gt;get('scope') . '/' . $scope,
-                'pagename' =&gt; $this-&gt;get('alias'),
-                'pageid'   =&gt; 0,
-                'filepath' =&gt; $this-&gt;adapter()-&gt;get('path'),
-                'domain'   =&gt; '',
-            ];
+        return $this-&gt;params;
 </code></pre>
 <p>A method named <code>helperFoo()</code> makes <code>$model-&gt;foo(...)</code> call it. Listing a field
 in <code>$parsed</code> makes <code>$model-&gt;field</code> return the content run through
@@ -510,7 +509,11 @@ current attributes, and stores the return value. <code>$initiate</code> runs on 
 <code>automaticCreatedBy()</code> (the current user id, unless already set) and
 <code>automaticAssetId()</code> (resolves an <code>#__assets</code> entry). Everything else you
 write yourself; a slug generator is the usual case:</p>
-<pre><code class="language-php">     * @return  string
+<pre><code class="language-php">    /**
+     * Generates automatic owned by field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
      */
     public function automaticAlias($data)
     {
@@ -518,10 +521,6 @@ write yourself; a slug generator is the usual case:</p>
         $alias = str_replace(' ', '-', $alias);
         return preg_replace(&quot;/[^a-zA-Z0-9\-]/&quot;, '', strtolower($alias));
     }
-
-    /**
-     * Are comments open?
-     *
 </code></pre>
 <h2 id="saving-and-deleting">Saving and deleting</h2>
 <pre><code class="language-php">$reservation = Reservation::oneOrNew($id);
@@ -601,15 +600,15 @@ names: <code>oneToMany</code> looks for <code>&lt;modelname&gt;_id</code> on the
 <code>manyToMany</code> guesses an associative table of <code>#__&lt;namespace&gt;_&lt;name&gt;_&lt;name&gt;</code>
 with the two names sorted alphabetically, so both sides agree.</p>
 <p>The knowledge base article declares three:</p>
-<pre><code class="language-php">    }
-
-    /**
-     * Return a formatted timestamp for modified date
+<pre><code class="language-php">    /**
+     * Defines a belongs to one relationship between comment and user
      *
-     * @param   string  $as  What data to return
-     * @return  string
+     * @return  object
      */
-    public function modified($as = '')
+    public function creator()
+    {
+        return $this-&gt;belongsToOne('Hubzero\User\User', 'created_by');
+    }
 </code></pre>
 <pre><code class="language-php">public function comments()
 {

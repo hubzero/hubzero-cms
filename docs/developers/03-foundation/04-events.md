@@ -73,7 +73,7 @@ autoloaded normally — `Plugins\Content\Formathtml\Parser` is
 The `Event` facade resolves the container key `dispatcher`, which
 `EventServiceProvider` binds:
 
-<!--include: core/bootstrap/Site/Providers/EventServiceProvider.php:25-41-->
+<!--include: core/bootstrap/Site/Providers/EventServiceProvider.php:26-39-->
 
 In debug mode the real dispatcher is wrapped in a `TraceableDispatcher` so
 the debug bar can list what fired — the quickest way to see whether an event
@@ -83,7 +83,7 @@ Plugins become reachable one step later. `PluginServiceProvider` registers
 the plugin loader as a service, then attaches it to the dispatcher in
 `boot()`, after every provider has registered:
 
-<!--include: core/bootstrap/Site/Providers/PluginServiceProvider.php:44-50-->
+<!--include: core/bootstrap/Site/Providers/PluginServiceProvider.php:44-49-->
 
 > **Warning:** Anything that triggers an event before the application has
 > booted reaches no plugins at all, and fails silently — `trigger()` returns

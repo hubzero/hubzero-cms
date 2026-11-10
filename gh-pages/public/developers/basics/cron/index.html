@@ -242,19 +242,7 @@ same way. Put yours there unless you are changing the distribution.</p>
 <p>The plugin answers <code>onCronEvents</code> with a <code>stdClass</code> carrying a <code>plugin</code>
 name and an <code>events</code> array. The support plugin is the fullest example in the
 tree:</p>
-<pre><code class="language-php">use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
-use Hubzero\Facades\Config;
-use Hubzero\Facades\Date;
-use Hubzero\Facades\Filesystem;
-use Hubzero\Facades\Lang;
-use Hubzero\Facades\Log;
-use Hubzero\Facades\Request;
-use Hubzero\Facades\User;
-
-class Support extends Plugin
-{
-    /**
+<pre><code class="language-php">    /**
      * Return a list of events
      *
      * @return  array
@@ -279,6 +267,18 @@ class Support extends Plugin
             ],
             [
                 'name'   =&gt; 'sendTicketList',
+                'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_EMAIL_LIST'),
+                'params' =&gt; 'ticketlist',
+            ],
+            [
+                'name'   =&gt; 'cleanTempUploads',
+                'label'  =&gt;  Lang::txt('PLG_CRON_SUPPORT_CLEAN_UPLOADS'),
+                'params' =&gt; 'tickettemp',
+            ],
+        ];
+
+        return $obj;
+    }
 </code></pre>
 <p>Each entry has three keys:</p>
 <table>
@@ -405,10 +405,7 @@ how the tick is delivered, is in
 hub's administrator to create one, ship a
 <a href="../../database/migrations/index.html">migration</a> that inserts the row — check for the
 job first so re-running the migration does not duplicate it:</p>
-<pre><code class="language-php"> * Both jobs are registered: without the notifier, end dates would be enforced
- * with no warning to the member.
- **/
-class Migration20260810000000PlgCronGroups extends Base
+<pre><code class="language-php">class Migration20260810000000PlgCronGroups extends Base
 {
     /**
      * event =&gt; (title, recurrence)

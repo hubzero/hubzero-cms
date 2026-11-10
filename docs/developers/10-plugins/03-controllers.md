@@ -65,12 +65,12 @@ what calls it.
 
 ## A real one
 
-`plgContentFormatwiki` is the same shape with two methods:
+`Plugins\Content\Formatwiki\Formatwiki` is the same shape with two methods:
 
-<!--include: core/plugins/content/formatwiki/formatwiki.php:8-15-->
+<!--include: core/plugins/content/formatwiki/formatwiki.php:3-18-->
 
 It answers `onContentBeforeSave` and `onContentPrepare`, and keeps its two
-helpers, `_isWiki()` and `_key()`, private — which is not a style preference.
+helpers, `isWiki()` and `key()`, private — which is not a style preference.
 See the warning below.
 
 ## What the base class gives you

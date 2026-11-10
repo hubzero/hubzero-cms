@@ -32,7 +32,7 @@ Every administrator URL is rewritten to the login component until you are both
 logged in and authorised, so it does not matter which back-end page you ask
 for first — you always land on the login screen:
 
-<!--include: core/bootstrap/Administrator/routes.php:88-105-->
+<!--include: core/bootstrap/Administrator/routes.php:89-101-->
 
 The check is the `core.login.admin` permission, not simply "is logged in". A
 member who is signed in to the front end and browses to `/administrator` is

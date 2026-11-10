@@ -207,8 +207,8 @@ addressed with an explicit path.</p>
 trait, and in every view, through the
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/View/Helper/AbstractHelper.php">view helpers</a>. They chain, and
 the usual call sits at the top of a layout:</p>
-<pre><code class="language-php">use Hubzero\Facades\Lang;
-use Hubzero\Facades\Pathway;
+<pre><code class="language-php">$this-&gt;css()
+     -&gt;js();
 </code></pre>
 <p>Both arguments have defaults, and both defaults are what you usually want:</p>
 <table>

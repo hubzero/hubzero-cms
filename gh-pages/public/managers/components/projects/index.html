@@ -238,7 +238,17 @@ and a publication with no project behind it cannot be assembled.</p>
 <h2 id="where-to-find-it">Where to find it</h2>
 <p>The component is <code>com_projects</code>, reached from <strong>Components → Projects</strong>. Its
 sub-navigation has two screens:</p>
-<!--include: core/components/com_projects/admin/projects.php:26-35-->
+<pre><code class="language-php">        Submenu::addEntry(
+            Lang::txt('COM_PROJECTS'),
+            Route::url('index.php?option=com_projects'),
+            ($controllerName == 'projects' || $controllerName == 'team'),
+        );
+        Submenu::addEntry(
+            Lang::txt('COM_PROJECTS_ACTIVITY'),
+            Route::url('index.php?option=com_projects&amp;controller=activity&amp;project=0'),
+            $controllerName == 'activity',
+        );
+</code></pre>
 <h2 id="the-projects-list">The Projects list</h2>
 <p>This is the screen you open when someone writes to you, which is how nearly
 all project administration starts: a team is out of space, a project owner

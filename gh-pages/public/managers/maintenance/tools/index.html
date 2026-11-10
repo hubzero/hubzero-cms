@@ -285,7 +285,23 @@ the pipeline appears to be empty and there is nothing on screen to say why.</p>
 <p>Administrator controls on the pipeline are not granted by the ordinary
 component ACL. They are granted by membership of the hub group named in
 <code>com_tools</code>' <strong>Admin Group</strong> option, which defaults to <code>apps</code>:</p>
-<pre><code class="language-php">
+<pre><code class="language-php">        // if no admin group is defined, allow superadmin to act as admin
+        // otherwise superadmins can only act if they are also a member of the component admin group
+        if ($admingroup = trim($this-&gt;config-&gt;get('admingroup', ''))) {
+            // Check if they're a member of admin group
+            $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
+            if ($ugs &amp;&amp; count($ugs) &gt; 0) {
+                $admingroup = strtolower($admingroup);
+                foreach ($ugs as $ug) {
+                    if (strtolower($ug-&gt;cn) == $admingroup) {
+                        $this-&gt;config-&gt;set('access-manage-' . $assetType, true);
+                        $this-&gt;config-&gt;set('access-admin-' . $assetType, true);
+                        $this-&gt;config-&gt;set('access-create-' . $assetType, true);
+                        $this-&gt;config-&gt;set('access-delete-' . $assetType, true);
+                        $this-&gt;config-&gt;set('access-edit-' . $assetType, true);
+                    }
+                }
+            }
 </code></pre>
 <p>While that option has a value, membership of the group is the <em>only</em> way to
 get those controls; a Super User outside the group sees none of them. Clear

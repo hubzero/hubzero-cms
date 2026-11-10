@@ -83,43 +83,36 @@ loader falls back to `core/templates/system`.
 |---|---|---|
 | `kimera` | Site | The reference site template. LESS sources (LESS is a stylesheet language the CMS compiles to CSS), a colour and background theme in its parameters, and a large set of output overrides in `html/`. Copy this one. |
 | `lucent` | Site | A newer site template. Leaner, with layered LESS. Registered but not made the home style by its migration, and its manifest is in the older form. |
-| `welcome` | Site | A single-page splash template. It is the home style on a fresh hub — see below. |
+| `meridian` | Site | "A hub before it has a subject": a complete site layout with no subject's imagery. It is the home style on a fresh hub — see below. |
+| `mesozoic` | Site | The same layout dressed for a hub about deep time; a worked example of a themed template. |
 | `system` | Site | The fallback. Also holds the default `email.php`, `group.php`, `help.php`, `login.php` and `offline.php` layouts that other templates inherit. |
 | `kameleon` | Administrator | The administration template, with a set of colour themes. |
 
-Those five are the whole set; nothing else lives under `core/templates`.
+Those six are the whole set; nothing else lives under `core/templates`.
 
 > **Note:** `kimera` and `lucent` are the two worth reading before you start.
 > `kimera` shows the override-heavy approach and is what `northgate` is copied
 > from; `lucent` shows a leaner one.
 
-## A fresh hub renders nothing
+## What a fresh hub renders
 
-This surprises everybody, so it is worth knowing before you write a line of
-markup.
-
-The install data makes **`welcome`** the home style for the site client:
+The install data makes **`meridian`** the home style for the site client:
 
 ```sql
 INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
-VALUES (1,'welcome',0,'1','Welcome Template','{"flavor":"","template":"kimera"}');
+VALUES (1,'meridian',0,'1','Meridian, a hub before it has a subject','{}');
 ```
 
-[`welcome/index.php`](../../../core/templates/welcome/index.php) contains no
-`jdoc:include` tags at all — not for modules, not for messages, and not for the
-component. It prints its own splash page and nothing else, whatever the request
-asked for. So on a fresh hub no module renders and no component output reaches
-the page, and neither is a fault.
+[`meridian/index.php`](../../../core/templates/meridian/index.php) is a whole
+layout: it includes the component, system messages and its module positions,
+so a fresh hub renders its pages straight away.
 
-The splash page's **ready** link is `?getstarted=1`. That branch of the layout
-sets `home = 1` on the style named by the template's own `template` parameter —
-seeded as `kimera` — and redirects. Until someone clicks it or an administrator
-changes the default style, the hub is the splash page.
-
-The second half of the surprise is waiting on the other side. The install data
-publishes the site's **Main Menu** module (and a **Login Form**) to a position
-named `position-7`, and no shipped site template includes that position. So the
-main menu still does not render after the switch. [Page
+One thing on a fresh hub does not render, and it is worth knowing before you
+write a line of markup. The install data publishes a **Login Form** module to a
+position named `position-7`, and no shipped site template includes that
+position. The **Main Menu** was seeded there too;
+`Migration20260913090000MainMenu` moves it to `user3`, which `meridian` draws
+as its main navigation, and builds a menu for a hub that has none. [Page
 layouts](06-layouts.md#why-a-position-renders-nothing) has the full account and
 the check to run.
 

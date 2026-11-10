@@ -243,10 +243,7 @@ re-running the rest, and makes each <code>down()</code> obvious.</p>
 <p><code>addComponentEntry()</code> writes the <code>#__extensions</code> row, creates the asset row
 that permissions hang off, and adds the administrator menu entry. That one
 call is the whole of the first migration. <code>com_kb</code>'s is the pattern to copy:</p>
-<pre><code class="language-php">
-namespace Components\Kb\Migrations;
-
-use Hubzero\Content\Migration\Base;
+<pre><code class="language-php">use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_kb
@@ -304,7 +301,8 @@ twice. The same is true of <code>addModuleEntry()</code>, <code>addPluginEntry()
 <h3 id="creating-the-tables">Creating the tables</h3>
 <p><code>$this-&gt;db</code> is a full database driver. Guard every statement so the migration
 can run against a hub that already has the table:</p>
-<pre><code class="language-php">        if (!$this-&gt;db-&gt;tableExists('#__kb_articles')) {
+<pre><code class="language-php">    {
+        if (!$this-&gt;db-&gt;tableExists('#__kb_articles')) {
             $query = &quot;CREATE TABLE `#__kb_articles` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(250) DEFAULT NULL,

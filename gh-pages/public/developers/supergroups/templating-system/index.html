@@ -216,7 +216,7 @@ first symptom of a mistyped filename or a directory copied without its
 contents.</p>
 </aside>
 <h2 id="how-the-file-is-chosen">How the file is chosen</h2>
-<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/template.php"><code>Components\Groups\Helpers\Template::_fetch()</code></a>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_groups/helpers/template.php"><code>Components\Groups\Helpers\Template::fetch()</code></a>
 builds a list of candidates and uses the first that exists. When a group page
 is being rendered the order is:</p>
 <ol>
@@ -393,6 +393,12 @@ Document::addScript($base . DS . 'assets/js/main.js');
 
 &lt;?php if (!$no_html) : ?&gt;
 &lt;group:include type=&quot;content&quot; scope=&quot;before&quot; /&gt;
+
+&lt;div class=&quot;super-group-body-wrap group-&lt;?php echo $this-&gt;group-&gt;get('cn'); ?&gt;&quot;&gt;
+    &lt;div class=&quot;super-group-body&quot;&gt;
+        &lt;?php include_once 'includes/header.php'; ?&gt;
+
+        &lt;div class=&quot;super-group-content-wrap&quot;&gt;
 </code></pre>
 <p>Note the <code>no_html</code> check. When a request carries <code>no_html=1</code> the template
 emits only the content, which is what AJAX requests from group plugins rely

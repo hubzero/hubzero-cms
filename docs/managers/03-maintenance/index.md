@@ -59,7 +59,7 @@ panel per module:
 
 ![The administrative dashboard: panels for support tickets, who is online, resources, members and the wish list, one for each module published in the cpanel position](../media/maintenance-dashboard.png)
 
-<!--include: core/components/com_cpanel/admin/views/cpanel/tmpl/default.php:15-40-->
+<!--include: core/components/com_cpanel/admin/views/cpanel/tmpl/default.php:21-43-->
 
 So what the dashboard shows depends entirely on which modules the hub
 publishes there. A fresh install ships only two panels — **Popular Articles**

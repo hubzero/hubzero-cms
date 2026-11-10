@@ -48,7 +48,7 @@ does not carry the administrator's vocabulary into every page it renders.
 Key/value pairs, one per line, values in double quotes. Lines beginning with a
 semicolon are comments:
 
-<!--include: core/components/com_kb/site/language/en-GB/en-GB.com_kb.ini:7-27-->
+<!--include: core/components/com_kb/site/language/en-GB/en-GB.com_kb.ini:7-26-->
 
 Keys may contain letters, digits, and underscores, but no spaces. Convention is
 uppercase, words separated by underscores, prefixed with the component name:

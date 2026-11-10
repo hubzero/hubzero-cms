@@ -115,7 +115,7 @@ between those two variants, and what to check when a class will not load.
 Every request, whatever the URL, runs
 [`index.php`](../../../index.php):
 
-<!--include: index.php:9-22-->
+<!--include: index.php:11-25-->
 
 That is the whole entry point. `PATH_ROOT` comes from the web server's
 document root and `PATH_CORE` from the environment, so the platform can live

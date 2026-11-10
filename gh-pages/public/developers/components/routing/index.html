@@ -267,8 +267,7 @@ component name, <strong>in the order they should appear</strong>. Anything it co
 must <code>unset()</code> from <code>$query</code>; whatever is left over is appended as a query
 string.</p>
 <p>Here is <code>com_kb</code>'s:</p>
-<pre><code class="language-php">{
-    /**
+<pre><code class="language-php">    /**
      * Build the route for the component.
      *
      * @param   array  &amp;$query  An array of URL arguments
@@ -328,20 +327,6 @@ string.</p>
 
         return $segments;
     }
-
-    /**
-     * Parse the segments of a URL.
-     *
-     * @param   array  &amp;$segments  The segments of the URL to parse.
-     * @return  array  The URL attributes to be used by the application.
-     */
-    public function parse(&amp;$segments)
-    {
-        $vars  = [];
-
-        $vars['task'] = 'categories';
-
-        if (empty($segments[0])) {
 </code></pre>
 <p>Read it as a sequence of optional slots: an optional task, then section,
 category, alias, id, and vote. <code>task=article</code> is dropped entirely, because an
@@ -357,27 +342,25 @@ of the pretty URL. A router that forgets one <code>unset()</code> produces
 <p><code>parse(&amp;$segments)</code> is the inverse, and it runs on every page view of the
 component. It receives the path segments after the component name and returns
 the request variables they mean.</p>
-<pre><code class="language-php">            case 1:
+<pre><code class="language-php">    public function parse(&amp;$segments)
+    {
+        $vars  = [];
+
+        $vars['task'] = 'categories';
+
+        if (empty($segments[0])) {
+            return $vars;
+        }
+
+        $count = count($segments);
+
+        // section/
+        switch ($count) {
+            case 1:
                 $vars['task'] = 'category';
                 $vars['categoryAlias'] = urldecode($segments[0]);
                 $vars['categoryAlias'] = str_replace(':', '-', $vars['categoryAlias']);
                 break;
-
-            case 2:
-                $categoryAlias = urldecode($segments[0]);
-                $categoryAlias = str_replace(':', '-', $categoryAlias);
-                $articleAlias = urldecode($segments[1]);
-                $articleAlias = str_replace(':', '-', $articleAlias);
-
-                $category = Category::all()
-                    -&gt;whereEquals('alias', $categoryAlias)
-                    -&gt;whereEquals('published', Category::STATE_PUBLISHED)
-                    -&gt;row();
-                $categoryId = $category-&gt;get('id');
-
-                // Check if the next segment is a category
-                // If not, then we assume it's an article
-                $category = Category::all()
 </code></pre>
 <p><code>com_kb</code> switches on the number of segments rather than reading them
 positionally, because one segment means a category, two may mean either a
@@ -440,11 +423,10 @@ names a default controller and reads a numeric first segment as a record id:</p>
 
         return $vars;
     }
-}
 </code></pre>
 <p><code>/api/kb/list</code> reaches <code>listTask()</code>; <code>/api/kb/42</code> reaches <code>readTask()</code> with
 <code>id=42</code> on a GET. The controller name it produces — <code>entries</code> — is what the
-API loader turns into <code>entriesv1_0.php</code>. See
+API loader turns into <code>entriesv1r0.php</code>. See
 <a href="../controllers/index.html#api-controllers">Controllers</a>.</p>
 <h2 id="building-urls">Building URLs</h2>
 <p>Never assemble a component URL by hand. <code>Route::url()</code> runs <code>preprocess()</code>,

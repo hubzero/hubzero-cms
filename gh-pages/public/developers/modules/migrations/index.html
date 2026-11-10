@@ -315,8 +315,7 @@ appear as soon as it is installed, <code>installModule()</code> writes a publish
 each menu id in <code>$menus</code> — the default of <code>0</code> meaning all of them.</p>
 <p>One migration in the tree does this, and it is worth reading whole because it
 gets both hard parts right:</p>
-<pre><code class="language-php">     **/
-    public function up()
+<pre><code class="language-php">    public function up()
     {
         $this-&gt;deletePluginEntry('content', 'collect');
         $this-&gt;deletePluginEntry('resources', 'collect');
@@ -353,6 +352,15 @@ gets both hard parts right:</p>
                     -&gt;count();
 
                 if ($count) {
+                    $found = true;
+                }
+            }
+
+            if ($found) {
+                $this-&gt;installModule('collect', $position);
+            }
+        }
+    }
 </code></pre>
 <p><code>addModuleEntry()</code> first, <code>installModule()</code> second, and the position is not
 guessed: the migration looks for a position other site modules are already

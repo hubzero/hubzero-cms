@@ -309,10 +309,18 @@ setting is fixed and there is no drop-down.</p>
 above: <code>R</code> required, <code>O</code> optional, <code>H</code> hidden, <code>U</code> read only. The stored
 values are listed in the
 <a href="../../../reference/configuration/components/members/index.html#registration">Members component reference</a>.</p>
-<pre><code class="language-xml">	&lt;fieldset name=&quot;permissions&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; description=&quot;JCONFIG_PERMISSIONS_DESC&quot;&gt;
-		&lt;field name=&quot;rules&quot; type=&quot;rules&quot; label=&quot;JCONFIG_PERMISSIONS_LABEL&quot; class=&quot;inputbox&quot; validate=&quot;rules&quot; filter=&quot;rules&quot; component=&quot;com_members&quot; section=&quot;component&quot; /&gt;
+<pre><code class="language-xml">	&lt;fieldset name=&quot;registration&quot;&gt;
+		&lt;field name=&quot;ConfirmationReturn&quot; type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;&quot; label=&quot;Confirmation Return URL&quot; description=&quot;Redirect here after confirming email...&quot; /&gt;
+		&lt;field name=&quot;registrationUsername&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Username&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationPassword&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Password&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationConfirmPassword&quot;  type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Password Confirmation&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationFullname&quot;         type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Full Name&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationEmail&quot;            type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Email&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationConfirmEmail&quot;     type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RRUU&quot; label=&quot;Email Confirmation&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationOptIn&quot;            type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;HHHO&quot; label=&quot;OptIn&quot; description=&quot;Receieve Emails. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationCAPTCHA&quot;          type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHHH&quot; label=&quot;CAPTCHA&quot; description=&quot;In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
+		&lt;field name=&quot;registrationTOU&quot;              type=&quot;text&quot; menu=&quot;hide&quot; default=&quot;RHRH&quot; label=&quot;TOU&quot; description=&quot;Terms of Use. In order: Create, Proxy Create, Update, Edit. O = Optional, R = Required, U = Read Only, H = Hidden&quot; /&gt;
 	&lt;/fieldset&gt;
-&lt;/config&gt;
 </code></pre>
 <p>Those shipped defaults are sensible for a hub that anyone may join, and most
 hubs never change them. The <strong>Create Account</strong> column is the visible sign-up

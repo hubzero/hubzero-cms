@@ -185,7 +185,7 @@ messages you may see are:
 
 ### What the hub does when a super group is saved
 
-Everything below happens in `_handSuperGroupGitlab()` in
+Everything below happens in `handSuperGroupGitlab()` in
 [`admin/controllers/manage.php`](../../core/components/com_groups/admin/controllers/manage.php),
 after the group's directory and database have been created, and only when
 `application_env` starts with `production`. On a development or staging hub

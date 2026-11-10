@@ -49,7 +49,7 @@ The common shape is a class of static methods with no state. `com_kb`
 resolves the current user's permissions this way, and both administrator views
 call it to decide which toolbar buttons to draw:
 
-<!--include: core/components/com_kb/admin/helpers/permissions.php:8-59-->
+<!--include: core/components/com_kb/admin/helpers/permissions.php:9-58-->
 
 Used from a view:
 

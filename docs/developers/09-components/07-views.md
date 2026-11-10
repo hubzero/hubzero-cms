@@ -106,7 +106,7 @@ call.
 same `option`, `controller`, and `task`, a different layout. `com_kb` uses it
 to render a comment thread:
 
-<!--include: core/components/com_kb/site/views/articles/tmpl/article.php:153-161-->
+<!--include: core/components/com_kb/site/views/articles/tmpl/article.php:165-173-->
 
 Pass a second argument to reach a partial in another view's directory.
 Data does **not** carry over from the parent — a partial sees only what you

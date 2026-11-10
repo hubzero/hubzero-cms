@@ -73,18 +73,22 @@ The segments in use across core:
 | `Components\[Name]\Helpers\` | shared helpers |
 | `Components\[Name]\Tests\` | unit tests |
 
-### Entry file
+### Entry class
 
-A component's entry file is named for the component without its `com_` prefix
-and sits in the client directory: `com_blog/site/blog.php`,
-`com_blog/admin/blog.php`. `Hubzero\Component\Loader` builds that path from the
-request and includes it. 41 of the 57 core components have one.
+A component's entry class is named for the component without its `com_`
+prefix, capitalised, in the client's namespace, and its file sits in the client
+directory: `Components\Blog\Site\Blog` in `com_blog/site/Blog.php`,
+`Components\Blog\Admin\Blog` in `com_blog/admin/Blog.php`.
+`Hubzero\Component\Loader` builds that name from the request, loads the file
+and runs the class's `execute()`. 41 of the 58 core components have one; one,
+`com_massmail`, still has a plain `site/massmail.php`, which the loader
+includes when there is no class.
 
-The entry file picks a controller from the request and runs it:
+The entry class picks a controller from the request and runs it:
 
-<!--include: core/components/com_blog/site/blog.php:8-22-->
+<!--include: core/components/com_blog/site/Blog.php:24-35-->
 
-A component with no entry file falls through to
+A component with neither falls through to
 `Hubzero\Component\Loader::executeDefault()`, which instantiates
 `Components\[Name]\Site\Controllers\[Controller]` directly, defaulting the
 controller name to the component name and synthesising an empty controller
@@ -200,21 +204,21 @@ ones.
 ## Modules: `Modules\`
 
 ```
-Modules\Login\Helper
-  -> core/modules/mod_login/Helper.php
-  -> core/modules/mod_login/helper.php   (what exists)
+Modules\Login\Login
+  -> core/modules/mod_login/Login.php
+  -> core/modules/mod_login/mod_login.php   (what exists)
 ```
 
-The first segment is the module name without `mod_`. As with components, the
-loader also tries the directory without the prefix.
+The first segment is the module name without `mod_`, in PascalCase, and so is
+the class: `mod_articles_latest` holds `Modules\ArticlesLatest\ArticlesLatest`.
+As with components, the loader also tries the directory without the prefix,
+and it tries the module's own entry file, `mod_{name}.php`.
 
-On this branch a module is two files. `mod_login.php` is a stub that
-`Hubzero\Module\Loader` includes; it requires `helper.php` and calls the class:
+A module is one class in that file, extending `Hubzero\Module\Module`.
+`Hubzero\Module\Loader` builds the class name from the module's name, loads
+the file and instantiates the class:
 
-<!--include: core/modules/mod_login/mod_login.php:8-12-->
-
-The class name is `Helper` in namespace `Modules\[Name]`. 201 module files
-carry a `Modules\` namespace and every module still has its `helper.php`.
+<!--include: core/modules/mod_login/mod_login.php:9-22-->
 
 ## Templates: `Templates\`
 

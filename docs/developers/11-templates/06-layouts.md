@@ -222,7 +222,7 @@ returns whatever the administrator has assigned to it. Kimera's content region
 shows the usual shape — an optional left column, the component, an optional
 right column, and a footer:
 
-<!--include: core/templates/kimera/index.php:164-206-->
+<!--include: core/templates/kimera/index.php:223-267-->
 
 The `<positions>` block in `templateDetails.xml` does **not** restrict
 anything. It is read only by `com_modules` when it builds the position picker
@@ -264,49 +264,43 @@ nothing about whether anything will draw it.
 
 ### The shipped install demonstrates all of this
 
-Two facts about a fresh hub, both in
-`core/bootstrap/Install/sql/mysql/data.sql`, and both worth checking before you
-suspect your own code.
+Two facts about a fresh hub, in
+`core/bootstrap/Install/sql/mysql/data.sql` and the migrations that run after
+it, and both worth checking before you suspect your own code.
 
-**The default site style is `welcome`, and `welcome` renders nothing.**
+**The default site style is `meridian`.**
 
 ```sql
 INSERT INTO `#__template_styles` (`id`, `template`, `client_id`, `home`, `title`, `params`)
-VALUES (1,'welcome',0,'1','Welcome Template','{"flavor":"","template":"kimera"}');
+VALUES (1,'meridian',0,'1','Meridian, a hub before it has a subject','{}');
 ```
 
-[`welcome/index.php`](../../../core/templates/welcome/index.php) contains no
-`jdoc:include` tag of any type — not `modules`, not `message`, not even
-`component`. It prints a fixed splash page and discards whatever the request
-produced. On a fresh hub, therefore, no module renders and no component output
-reaches the page, and both are working as built.
+[`meridian/index.php`](../../../core/templates/meridian/index.php) includes the
+component, system messages and its module positions, among them `breadcrumbs`
+and `user3`, its main navigation.
 
-The splash page's **ready** link is `?getstarted=1`. That branch of
-`welcome/index.php` looks up the style named by the template's own `template`
-parameter — seeded as `kimera` — sets `home = 0` on every site style and `home
-= 1` on that one, and redirects. From then on the hub renders `kimera`. An
-administrator can do the same thing from **Extensions → Templates** by making
-another style the default.
-
-**The main menu is published to a position no site template includes.**
+**Two modules are published to a position no site template includes.**
 
 ```sql
 INSERT INTO `#__modules` (…, `position`, …, `published`, `module`, …, `client_id`, …)
 VALUES (1,'Main Menu',…,'position-7',…,1,'mod_menu',…,0,'*');
 ```
 
-`position-7` appears in no layout of `kimera`, `lucent`, `welcome` or `system`.
-The seeded **Login Form** module is in the same position. So after switching to
-`kimera` the hub still has no main menu, and the module manager still shows both
-modules as published — to a position labelled a friendly *Position 7*, because
-`com_modules` ships a `COM_MODULES_POSITION_POSITION-7` string for it.
+`position-7` appears in no layout of `kimera`, `lucent`, `meridian`,
+`mesozoic` or `system`. For the **Main Menu** that is put right after the
+install: `Migration20260913090000MainMenu` finds the menu module, publishes it
+to `user3`, and builds a navigation for a hub that has none. The seeded
+**Login Form** stays where it was, and the module manager shows it published —
+to a position labelled a friendly *Position 7*, because `com_modules` ships a
+`COM_MODULES_POSITION_POSITION-7` string for it — while it renders nowhere.
 
 The seeded **Breadcrumbs** module, by contrast, is in `breadcrumbs`, which
-`kimera` does include, and it appears immediately. That is the difference, and
+`meridian` includes, and it appears immediately. That is the difference, and
 it is entirely in the `position` column.
 
-Move the menu to a position your layout includes — `user3` for `kimera` and
-`northgate`, or whatever `northgate` calls its main navigation — and it renders.
+Move a module to a position your layout includes — `user3` for `meridian`,
+`kimera` and `northgate`, or whatever `northgate` calls its main navigation —
+and it renders.
 
 ### The check to run
 
@@ -353,7 +347,7 @@ Order matters, and the head block is late in the sequence, so anything a
 layout must load *before* extension assets goes in the markup above it. Kimera
 links its own stylesheet first and lets the head block follow:
 
-<!--include: core/templates/kimera/index.php:50-66-->
+<!--include: core/templates/kimera/index.php:63-85-->
 
 Anything the layout adds with `$this->addStyleSheet()` or `$this->addScript()`
 instead appears *inside* the head block, after whatever the component queued.

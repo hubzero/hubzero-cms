@@ -26,7 +26,7 @@ and two plugins carry it to Solr:
    and `onContentDestroy` on any model built on the hub's ORM, and raises
    `search.onAddIndex` or `search.onRemoveIndex`.
 
-   <!--include: core/plugins/system/content/content.php:23-40-->
+   <!--include: core/plugins/system/content/content.php:27-44-->
 
 2. **Search - Solr** (`plg_search_solr`) picks that up, checks that the
    record's component is in the **Indexed** state and that the document is not

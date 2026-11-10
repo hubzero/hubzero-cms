@@ -194,8 +194,7 @@ functions will fail there in ways that only appear on that hub. And the
 virus scan is here, not in your controller: everything a member uploads has
 to pass <code>isSafe()</code>, and code that writes the file itself skips it.</p>
 <h2 id="what-the-facade-resolves-to">What the facade resolves to</h2>
-<pre><code class="language-php">     */
-    public function register()
+<pre><code class="language-php">    public function register()
     {
         $this-&gt;app['filesystem'] = function ($app) {
             if ($app['config']-&gt;get('ftp_enable')) {
@@ -439,8 +438,7 @@ characters of Unicode:</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Filesystem/MacroInterface.php"><code>MacroInterface</code></a>
 — usually by extending <code>Hubzero\Filesystem\Macro\Base</code>, which supplies
 <code>setFilesystem()</code> — and provides <code>getMethod()</code> and <code>handle()</code>:</p>
-<pre><code class="language-php"> */
-class Files extends Base
+<pre><code class="language-php">class Files extends Base
 {
     /**
      * Get the method name.
@@ -477,6 +475,7 @@ class Files extends Base
         }
 
         return $result;
+    }
 </code></pre>
 <p><code>getMethod()</code> names the call; <code>handle()</code> receives whatever arguments the
 call was given, with <code>$this-&gt;filesystem</code> already set. Register it and call

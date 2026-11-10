@@ -204,8 +204,7 @@ plain array:</p>
 </code></pre>
 <p><code>Hubzero\Database\DatabaseServiceProvider</code> reads those values at boot and
 registers the resulting driver in the application container under <code>db</code>:</p>
-<pre><code class="language-php">     */
-    public function register()
+<pre><code class="language-php">    public function register()
     {
         $this-&gt;app['db'] = function ($app) {
             $driver = \Config::get('dbtype');
@@ -221,7 +220,6 @@ registers the resulting driver in the application container under <code>db</code
 
             return Driver::getInstance($options);
         };
-    }
 </code></pre>
 <p>Note the shim on the first line of the closure. A <code>dbtype</code> of <code>mysql</code> is
 turned into the <code>pdo</code> driver, and <code>Driver::getInstance()</code> then turns <code>pdo</code>

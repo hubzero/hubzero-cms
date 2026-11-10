@@ -33,7 +33,7 @@ read-only account that the DataViewer uses to read them.
 If either account is missing or wrong, the plugin hides the tab entirely.
 There is no error message and no explanation — the tab simply is not there:
 
-<!--include: core/plugins/projects/databases/databases.php:79-83-->
+<!--include: core/plugins/projects/databases/databases.php:99-102-->
 
 So if your project has no **Databases** tab, one of three things is true:
 the plugin is disabled, the hub has restricted it to a list of projects that

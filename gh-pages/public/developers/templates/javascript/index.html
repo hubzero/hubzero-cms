@@ -204,15 +204,7 @@ adding a file.</p>
 <h3 id="jquery">jQuery</h3>
 <p>jQuery is not loaded by the template. The <code>System - jQuery</code> plugin loads it, on
 <code>onAfterRoute</code>, for the site client only:</p>
-<pre><code class="language-php"> */
-class Jquery extends Plugin
-{
-    /**
-     * Hook for after routing application
-     *
-     * @return  void
-     */
-    public function onAfterRoute()
+<pre><code class="language-php">    public function onAfterRoute()
     {
         if (!App::isSite()) {
             return;
@@ -234,6 +226,9 @@ class Jquery extends Plugin
         }
 
         if ($this-&gt;params-&gt;get('noconflictSite')) {
+            Document::addScript(Request::root(true) . '/core/assets/js/jquery.noconflict.js');
+        }
+    }
 </code></pre>
 <p>So:</p>
 <ul>
@@ -392,8 +387,10 @@ menu toggle should probably not be in the template at all: a template's script
 runs on every page of the hub, including pages whose component has its own idea
 of what a click on that element means.</p>
 <p><code>kimera</code> does exactly one thing:</p>
-<pre><code class="language-php">use Hubzero\Facades\Request;
-use Hubzero\Facades\Route;
+<pre><code class="language-php">// Include global scripts
+$this-&gt;addScript(
+    $this-&gt;baseurl . '/templates/' . $this-&gt;template . '/js/hub.js?v=' . filemtime(__DIR__ . '/js/hub.js'),
+);
 </code></pre>
 <p><code>$this</code> in a template layout is the document, so <code>addScript()</code>,
 <code>addScriptDeclaration()</code>, <code>addStyleSheet()</code> and <code>addStyleDeclaration()</code> are all
@@ -407,7 +404,7 @@ rather than building one:</p>
 after a deploy. <code>kimera</code> and <code>kameleon</code> still write the address out by hand,
 with <code>filemtime()</code> beside it; that form works, but it throws on a file that
 has been removed. See
-<a href="../css/index.html#the-templates-own-stylesheets">Stylesheets</a>.</p>
+<a href="../css/index.html#the-template-s-own-stylesheets">Stylesheets</a>.</p>
 <p>What ships in the templates' <code>js/</code> directories is thinner than the old
 documentation suggested:</p>
 <table>
