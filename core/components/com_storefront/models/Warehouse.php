@@ -15,6 +15,7 @@ use Components\Storefront\Models\CourseOffering;
 use Components\Storefront\Models\Sku;
 use Components\Storefront\Models\Coupon;
 use Components\Storefront\Models\Collection;
+use Components\Storefront\Admin\Helpers\RestrictionsHelper;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
@@ -380,7 +381,7 @@ class Warehouse extends \Hubzero\Base\Obj
         // Get the SKUs whitelist for a user
         if ($this->userScope) {
             $allProductSkus = $this->getProductSkus($pInfo->pId);
-            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser(
+            $this->userWhitelistedSkus = RestrictionsHelper::checkWhitelistedSkusUser(
                 $this->userScope,
                 $allProductSkus,
             );
@@ -603,7 +604,7 @@ class Warehouse extends \Hubzero\Base\Obj
                     // Get all SKUs for this product and check if the user is whitelisted
                     // Get the SKUs whitelist for a user
                     $allProductSkus = $this->getProductSkus($product->pId);
-                    $whitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser(
+                    $whitelistedSkus = RestrictionsHelper::checkWhitelistedSkusUser(
                         $this->userScope,
                         $allProductSkus,
                     );

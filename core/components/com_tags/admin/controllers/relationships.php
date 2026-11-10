@@ -422,9 +422,17 @@ class Relationships extends AdminController
             $new_tag = $this->getTag($_POST['name-' . $id], false);
             $this->database->setQuery('UPDATE `#__focus_areas` SET
 				mandatory_depth = '
-                . (($_POST['mandatory-' . $id] ?? '') === 'mandatory' ? 1 : (($_POST['mandatory-' . $id] ?? '') === 'depth' ? (int) $_POST['mandatory-depth-' . $id] : 'NULL')) . ',
+                . (($_POST['mandatory-' . $id] ?? '') === 'mandatory'
+                    ? 1
+                    : (($_POST['mandatory-' . $id] ?? '') === 'depth'
+                        ? (int) $_POST['mandatory-depth-' . $id]
+                        : 'NULL')) . ',
 				multiple_depth = '
-                . (($_POST['multiple-' . $id] ?? '')  === 'multiple' ? 1 : (($_POST['multiple-' . $id] ?? '')  === 'depth' ? (int) $_POST['multiple-depth-' . $id] : 'NULL')) . ',
+                . (($_POST['multiple-' . $id] ?? '')  === 'multiple'
+                    ? 1
+                    : (($_POST['multiple-' . $id] ?? '')  === 'depth'
+                        ? (int) $_POST['multiple-depth-' . $id]
+                        : 'NULL')) . ',
 				tag_id = ' . $new_tag['id'] . '
 				WHERE id = ' . $id);
             $this->database->execute();

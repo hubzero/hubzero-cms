@@ -641,7 +641,8 @@ class Author extends Table
                 $result->orgid = $user->get('orgid');
             }
         } else {
-            $result->p_name = $result->username = $result->p_organization = $result->picture = $result->givenName = $result->surname = $result->p_email = null;
+            $result->p_name = $result->username = $result->p_organization = $result->picture
+                = $result->givenName = $result->surname = $result->p_email = null;
         }
 
         return $result;
@@ -691,7 +692,8 @@ class Author extends Table
                 $result->orgid = $user->get('orgid');
             }
         } else {
-            $result->p_name = $result->username = $result->p_organization = $result->picture = $result->givenName = $result->surname = $result->p_email = null;
+            $result->p_name = $result->username = $result->p_organization = $result->picture
+                = $result->givenName = $result->surname = $result->p_email = null;
         }
 
         return $result;

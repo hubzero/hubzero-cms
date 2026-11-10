@@ -638,7 +638,8 @@ class Publication extends Obj
                                         $this->_curationModel->progress->blocks->$blockId->status->elements->$elementId,
                                     )
                                 ) {
-                                    return $this->_curationModel->progress->blocks->$blockId->status->elements->$elementId->status;
+                                    return $this->_curationModel->progress->blocks->$blockId
+                                        ->status->elements->$elementId->status;
                                 }
                                 break;
 
@@ -646,13 +647,16 @@ class Publication extends Obj
                                 if ($elementId) {
                                     if (
                                         isset(
-                                            $this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId,
+                                            $this->_curationModel->progress->blocks->$blockId
+                                                ->manifest->elements->$elementId,
                                         )
                                     ) {
-                                        return $this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId;
+                                        return $this->_curationModel->progress->blocks->$blockId
+                                            ->manifest->elements->$elementId;
                                     } else {
                                         $first = $this->curation('blocks', $blockId, 'firstElement');
-                                        return $this->_curationModel->progress->blocks->$blockId->manifest->elements->$first;
+                                        return $this->_curationModel->progress->blocks->$blockId
+                                            ->manifest->elements->$first;
                                     }
                                 }
                                 return $this->_curationModel->progress->blocks->$blockId->manifest->elements;

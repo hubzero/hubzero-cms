@@ -1122,7 +1122,13 @@ class Create extends SiteController
                 }
                 if (isset($fas[$tag[2]]) && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth']) {
                     // count depth if necessary to determine whether focus area constraints are satisified
-                    for ($depth = $parent ? 2 : 1; $parent_id && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth'] && $depth < $fas[$tag[2]]['minimum_depth']; ++$depth) {
+                    for (
+                        $depth = $parent ? 2 : 1;
+                        $parent_id
+                            && $fas[$tag[2]]['actual_depth'] < $fas[$tag[2]]['minimum_depth']
+                            && $depth < $fas[$tag[2]]['minimum_depth'];
+                        ++$depth
+                    ) {
                         $this->database->setQuery(
                             'SELECT t.id
 							FROM `#__tags_object` to1

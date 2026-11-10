@@ -230,7 +230,8 @@ class Event extends Table
 
                 $sql = "SELECT $this->tableName.* FROM #__categories AS b, $this->tableName
 					WHERE $this->tableName.catid = b.id AND
-						((publish_up >= " . $this->db->quote($select_date) . " AND publish_up <= " . $this->db->quote($select_date_fin) . ") 
+						((publish_up >= " . $this->db->quote($select_date) . " AND publish_up <= "
+                    . $this->db->quote($select_date_fin) . ") 
 						OR (publish_down >= " . $this->db->quote($select_date) . " AND publish_down <= "
                     . $this->db->quote($select_date_fin) . ") 
 						OR (publish_up <= " . $this->db->quote($select_date) . " AND publish_down >= "

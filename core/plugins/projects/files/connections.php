@@ -181,7 +181,8 @@ class Connections
         ])->save();
 
         // Redirect
-        App::redirect(Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id, false));*/
+        App::redirect(Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id,
+            false));*/
         return $this->editconnection();
     }
 

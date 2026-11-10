@@ -142,7 +142,8 @@ class Prerequisite extends Base
                         if (
                             !isset($this->progress[$this->member_id])
                             || !isset($this->progress[$this->member_id][$prerequisite['scope_id']])
-                            || $this->progress[$this->member_id][$prerequisite['scope_id']]['percentage_complete'] != 100
+                            || $this->progress[$this->member_id][$prerequisite['scope_id']]['percentage_complete']
+                                != 100
                         ) {
                             $return = false;
                             continue;

@@ -459,7 +459,9 @@ class CurrentCart extends Cart
             $transactionTotalAmount = 0;
 
             foreach ($transaction->items as $transactionItem) {
-                $transactionTotalAmount += ($transactionItem['transactionInfo']->tiPrice * $transactionItem['transactionInfo']->qty);
+                $transactionTotalAmount += (
+                    $transactionItem['transactionInfo']->tiPrice * $transactionItem['transactionInfo']->qty
+                );
             }
 
             $tInfo->tTotalAmount = $transactionTotalAmount;
@@ -1191,7 +1193,8 @@ class CurrentCart extends Cart
                                         $couponDiscount = 100;
                                     }
 
-                                    $discountAmount = ($cartItem['info']->sPrice * $applyPerkToQty) *  ($couponDiscount / 100);
+                                    $discountAmount = ($cartItem['info']->sPrice * $applyPerkToQty)
+                                        * ($couponDiscount / 100);
                                 }
 
                                 $perk->discount = round($discountAmount, 2, PHP_ROUND_HALF_DOWN);
