@@ -102,12 +102,6 @@ MaxMind provider for geocode
 |---|---|---|---|---|
 | `apiKey` | API Key | text | — | API key |
 
-## Geocode - MaxMindBinary (`plg_geocode_maxmindbinary`)
-
-MaxMindBinary provider for geocode
-
-This plugin has no parameters.
-
 ## Geocode - Nominatim (`plg_geocode_nominatim`)
 
 Nominatim provider for geocode

@@ -223,13 +223,13 @@ below is what it did with it.</p>
 </tbody>
 </table>
 <p>Composer's map is two entries and no more:</p>
-<pre><code class="language-json">        &quot;phpstan/phpstan&quot;: &quot;^2.1&quot;,
-        &quot;phpunit/phpunit&quot;: &quot;^11.0&quot;,
+<pre><code class="language-json">        &quot;phpunit/phpunit&quot;: &quot;^11.0&quot;,
         &quot;squizlabs/php_codesniffer&quot;: &quot;3.13.*&quot;
     },
     &quot;autoload&quot;: {
         &quot;psr-4&quot;: {
             &quot;Hubzero\\&quot;: &quot;libraries/Hubzero/&quot;,
+            &quot;Bootstrap\\&quot;: &quot;bootstrap/&quot;
 </code></pre>
 <p>That is worth reading twice. <strong>Composer does not know about your component.</strong>
 <code>composer dump-autoload</code> will never help a component, plugin, module or

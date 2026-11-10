@@ -129,7 +129,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/controllers/course.php:552`](../../../core/components/com_courses/site/controllers/course.php#L552) with `[$this->course]`
+- [`core/components/com_courses/site/controllers/course.php:560`](../../../core/components/com_courses/site/controllers/course.php#L560) with `[$this->course]`
 
 No plugin in the source tree listens for this event.
 

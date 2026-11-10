@@ -70,7 +70,7 @@ Every parameter an administrator can set, generated from the extension manifests
 | [editors](plugins/editors.md) | 8 | 65 |
 | [editors-xtd](plugins/editors-xtd.md) | 4 | 0 |
 | [filesystem](plugins/filesystem.md) | 5 | 12 |
-| [geocode](plugins/geocode.md) | 15 | 10 |
+| [geocode](plugins/geocode.md) | 14 | 10 |
 | [groups](plugins/groups.md) | 18 | 56 |
 | [handlers](plugins/handlers.md) | 8 | 3 |
 | [hubzero](plugins/hubzero.md) | 5 | 9 |

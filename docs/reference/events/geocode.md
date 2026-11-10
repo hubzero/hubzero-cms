@@ -30,7 +30,6 @@ Listeners:
 - `plg_geocode_local` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/local/local.php)
 - `plg_geocode_mapquest` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/mapquest/mapquest.php)
 - `plg_geocode_maxmind` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/maxmind/maxmind.php)
-- `plg_geocode_maxmindbinary` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/maxmindbinary/maxmindbinary.php)
 - `plg_geocode_nominatim` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/nominatim/nominatim.php)
 - `plg_geocode_tomtom` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/tomtom/tomtom.php)
 - `plg_geocode_yandex` — [`onGeocodeProvider($context, $adapter, $ip = false)`](../../../core/plugins/geocode/yandex/yandex.php)

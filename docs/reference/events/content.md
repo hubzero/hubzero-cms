@@ -11,7 +11,7 @@ Events in the `content` group. A plugin in `core/plugins/content/` receives an e
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:578`](../../../core/components/com_answers/site/controllers/questions.php#L578) with `['Question']`
+- [`core/components/com_answers/site/controllers/questions.php:580`](../../../core/components/com_answers/site/controllers/questions.php#L580) with `['Question']`
 - [`core/components/com_blog/site/controllers/entries.php:155`](../../../core/components/com_blog/site/controllers/entries.php#L155) with `['Blog']`
 - [`core/components/com_groups/site/controllers/groups.php:354`](../../../core/components/com_groups/site/controllers/groups.php#L354) with `['Group']`
 - [`core/components/com_projects/site/controllers/projects.php:648`](../../../core/components/com_projects/site/controllers/projects.php#L648) with `['Project']`
