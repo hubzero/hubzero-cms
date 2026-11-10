@@ -11,7 +11,6 @@ namespace Components\Courses\Migrations;
 use Hubzero\Content\Migration\Base;
 
 // no direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration to support ordering of course offerings.

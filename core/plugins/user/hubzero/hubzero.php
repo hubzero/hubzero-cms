@@ -17,8 +17,6 @@ use Hubzero\Facades\Notify;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\User;
 
-defined('_HZEXEC_') or die();
-
 /**
  * Hubzero User plugin
  */
@@ -524,7 +522,6 @@ class Hubzero extends Plugin
 
         return $instance;
     }
-
 
     /**
      * Event Trigger and different functions used to deidentify users

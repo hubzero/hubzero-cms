@@ -10,9 +10,6 @@ namespace Components\Cron\Migrations;
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script adding process-ownership tracking to cron jobs.
  *

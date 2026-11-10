@@ -11,9 +11,6 @@ namespace Plugins\Wiki\Parserdefault\Macros;
 use Plugins\Wiki\Parserdefault\WikiMacro;
 use Hubzero\Facades\Lang;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Redirect Macro
  */

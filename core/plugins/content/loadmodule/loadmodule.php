@@ -14,8 +14,6 @@ use Hubzero\Plugin\Plugin;
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Module;
 
-defined('_HZEXEC_') or die();
-
 /**
  * Plugin that loads module positions within content
  */

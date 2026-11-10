@@ -10,9 +10,6 @@ namespace Components\Publications\Migrations;
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration creating #__publication_bundle_queue — the queue/state for asynchronous
  * publication bundle building.

@@ -8,9 +8,6 @@
 
 namespace Plugins\Filesystem\Local;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PathPrefixer;
 

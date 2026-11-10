@@ -10,9 +10,6 @@ namespace Components\Publications\Migrations;
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration registering the asynchronous publication-bundle build worker as a
  * scheduled cron job (plg_cron_publications::buildPublicationBundles).

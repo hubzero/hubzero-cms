@@ -10,9 +10,6 @@ namespace Plugins\Authentication\Pucas\Migrations;
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script that explicitly persists the default value for the
  * pucas "passive_sso" plugin param.

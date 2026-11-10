@@ -17,9 +17,6 @@ use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 
-// No direct access
-defined('_HZEXEC_') or die('Restricted access');
-
 /**
  * Logs cart activity and sends emails out as necessary
  */
@@ -190,7 +187,6 @@ class CartMessenger
         if ($transactionInfo->tiNotes) {
             $summary .= "\n" . 'Notes/Comments: ' . "\n" . $transactionInfo->tiNotes . "\n";
         }
-
 
         // Check the notes, both SKU-specific and other
         $notes = [];

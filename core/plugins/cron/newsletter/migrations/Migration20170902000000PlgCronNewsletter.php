@@ -10,9 +10,6 @@ namespace Plugins\Cron\Newsletter\Migrations;
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for installing default newsletter cron jobs
  **/
