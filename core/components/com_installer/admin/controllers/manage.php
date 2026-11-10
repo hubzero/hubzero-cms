@@ -224,7 +224,7 @@ class Manage extends AdminController
     public function publishTask()
     {
         // Check for request forgeries.
-        Request::checkToken() or exit(Lang::txt('JINVALID_TOKEN'));
+        Request::checkToken();
 
         if (
             !User::authorise('core.edit.state', $this->_option)
