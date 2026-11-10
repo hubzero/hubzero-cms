@@ -126,7 +126,7 @@ class Incomplete extends Plugin
 
                     $this->event->stop();
                 } else { // otherwise, send to profile to fill in missing info
-                // Does the user even have access to the profile plugin?
+                    // Does the user even have access to the profile plugin?
                     // If not, then we can't redirect them there
                     $plugin = \Plugin::byType('members', 'profile');
 
