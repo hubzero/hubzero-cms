@@ -22,7 +22,7 @@ class General extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_wishlist',
     ];
 
@@ -32,7 +32,7 @@ class General extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'general';
+    protected $scope = 'general';
 
     /**
      * Constructor
@@ -44,7 +44,7 @@ class General extends Base
     {
         $this->set('referenceid', $referenceid)
              ->set('category', 'general')
-             ->set('option', $this->_segments['option']);
+             ->set('option', $this->segments['option']);
     }
 
     /**
@@ -68,7 +68,7 @@ class General extends Base
                 break;
         }
 
-        return $this->_item;
+        return $this->item;
     }
 
     /**
@@ -101,7 +101,7 @@ class General extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         if ($this->get('category')) {
             $segments['category'] = $this->get('category');
@@ -115,7 +115,7 @@ class General extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -265,7 +265,7 @@ class General extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**

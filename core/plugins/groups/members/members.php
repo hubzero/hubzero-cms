@@ -32,9 +32,9 @@ use Components\Groups\Tables\Reason;
 class Members extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_output;
+    protected $output;
     protected $action;
     protected $authorized;
     protected $database;
@@ -129,7 +129,7 @@ class Members extends Plugin
         // Set some variables so other functions have access
         $this->authorized = $authorized;
         $this->action = $action;
-        $this->_option = $option;
+        $this->componentOption = $option;
         $this->group = $group;
         $this->name = substr($option, 4, strlen($option));
 
@@ -182,7 +182,7 @@ class Members extends Plugin
                 $this->membership_control = 0;
             }
 
-            $oparams = Component::params($this->_option);
+            $oparams = Component::params($this->componentOption);
             $this->display_system_users = $oparams->get('display_system_users', 'no');
 
             switch ($gparams->get('display_system_users', "global")) {
@@ -221,8 +221,8 @@ class Members extends Plugin
                 $this->$action();
 
                 // Did the action return anything? (HTML)
-                if (isset($this->_output) && $this->_output != '') {
-                    $arr['html'] = $this->_output;
+                if (isset($this->output) && $this->output != '') {
+                    $arr['html'] = $this->output;
                 }
             }
 
@@ -841,7 +841,7 @@ class Members extends Plugin
         $users = array_values(array_filter(array_map('intval', (array) $users)));
 
         $view = $this->view('default', 'expiration');
-        $view->option     = $this->_option;
+        $view->option     = $this->componentOption;
         $view->group      = $this->group;
         $view->authorized = $this->authorized;
         $view->users      = $users;
@@ -857,7 +857,7 @@ class Members extends Plugin
             $view->setError($error);
         }
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -924,7 +924,7 @@ class Members extends Plugin
         $filter = Request::getWord('filter', 'members');
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter),
+            Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=members&filter=' . $filter),
             ($mode == 'clear'
                 ? Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_CLEARED', $done)
                 : Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_SAVED', $done)),
@@ -957,7 +957,7 @@ class Members extends Plugin
 
         // Cancel membership confirmation screen
         $view = $this->view('default', 'remove');
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->users = Request::getArray('users', []);
@@ -966,7 +966,7 @@ class Members extends Plugin
             $view->setError($error);
         }
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -1138,7 +1138,7 @@ class Members extends Plugin
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'deny');
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->users = Request::getArray('users', []);
@@ -1148,7 +1148,7 @@ class Members extends Plugin
             $view->setError($error);
         }
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -1192,7 +1192,7 @@ class Members extends Plugin
         Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'));
 
         $view = $this->view('default', 'responses');
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->responses = is_array($responses) ? $responses : $this->getDenyResponses();
@@ -1203,7 +1203,7 @@ class Members extends Plugin
             $view->setError($error);
         }
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -1264,7 +1264,7 @@ class Members extends Plugin
             return $this->denyresponses($responses);
         }
 
-        $url = 'index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members';
+        $url = 'index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=members';
 
         $users = array_filter(array_map('intval', Request::getArray('users', [], 'post')));
         if (count($users)) {
@@ -1398,7 +1398,7 @@ class Members extends Plugin
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'cancel');
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->users = Request::getArray('users', []);
@@ -1406,7 +1406,7 @@ class Members extends Plugin
             $view->setError($this->getError());
         }
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -1568,7 +1568,7 @@ class Members extends Plugin
         }
 
         App::redirect(
-            Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=members'),
+            Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=members'),
             Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_DONE'),
             'passed',
         );
@@ -1647,7 +1647,7 @@ class Members extends Plugin
         // pass vars to view
         $view = $this->view('add', 'role')
             ->set('role', $role)
-            ->set('option', $this->_option)
+            ->set('option', $this->componentOption)
             ->set('group', $this->group)
             ->set('authorized', $this->authorized)
             ->set('available_permissions', [
@@ -1658,7 +1658,7 @@ class Members extends Plugin
 
         $view->setErrors($this->getErrors());
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -1840,7 +1840,7 @@ class Members extends Plugin
 
         $roles = $this->getRoles();
 
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->uid = $uid;
@@ -1851,7 +1851,7 @@ class Members extends Plugin
             $view->setError($error);
         }
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 
     /**
@@ -1980,7 +1980,7 @@ class Members extends Plugin
         $group = $this->group;
 
         // Build the SEF referenced in the message
-        $sef  = Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn'));
+        $sef  = Route::url('index.php?option=' . $this->componentOption . '&cn=' . $group->get('cn'));
         $sef  = ltrim($sef, '/');
 
         // Start building the subject
@@ -2079,7 +2079,7 @@ class Members extends Plugin
         $group = $this->group;
 
         // Build the SEF referenced in the message
-        $sef = Route::url('index.php?option=' . $this->_option . '&cn=' . $group->get('cn'));
+        $sef = Route::url('index.php?option=' . $this->componentOption . '&cn=' . $group->get('cn'));
         $sef = ltrim($sef, '/');
 
         //get the reason
@@ -2156,13 +2156,13 @@ class Members extends Plugin
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'profile')
             ->set('params', $params)
-            ->set('option', $this->_option)
+            ->set('option', $this->componentOption)
             ->set('profile', $profile)
             ->set('fields', $fields)
             ->set('group', $this->group)
             ->set('authorized', $this->authorized)
             ->set('membership_control', $this->membership_control);
 
-        $this->_output = $view->loadTemplate();
+        $this->output = $view->loadTemplate();
     }
 }

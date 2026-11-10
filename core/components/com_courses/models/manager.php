@@ -22,7 +22,7 @@ class Manager extends Member
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'manager';
+    protected $scope = 'manager';
 
     /**
      * Constructor

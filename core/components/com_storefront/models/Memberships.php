@@ -23,7 +23,7 @@ class Memberships
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Contructor
@@ -32,7 +32,7 @@ class Memberships
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // Load language file
         App::get('language')->load('com_storefront');
@@ -46,8 +46,8 @@ class Memberships
     public function getMembershipTypes()
     {
         $sql = "SELECT `ptId` FROM `#__storefront_product_types` WHERE `ptModel` = 'membership'";
-        $this->_db->setQuery($sql);
-        $membershipTypes = $this->_db->loadColumn();
+        $this->db->setQuery($sql);
+        $membershipTypes = $this->db->loadColumn();
 
         return $membershipTypes;
     }
@@ -66,11 +66,11 @@ class Memberships
         $sql = "SELECT `crtmExpires`,";
         $sql .= " IF(`crtmExpires` < '" . $now . "', 0, 1) AS `crtmActive`";
         $sql .= " FROM `#__cart_memberships`";
-        $sql .= " WHERE `pId` = " . $this->_db->quote($pId);
-        $sql .= " AND `crtId` = " . $this->_db->quote($crtId);
-        $this->_db->setQuery($sql);
+        $sql .= " WHERE `pId` = " . $this->db->quote($pId);
+        $sql .= " AND `crtId` = " . $this->db->quote($crtId);
+        $this->db->setQuery($sql);
 
-        return $this->_db->loadAssoc();
+        return $this->db->loadAssoc();
     }
 
     /* ****************************** Static Functions *********************************/

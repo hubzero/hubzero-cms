@@ -29,21 +29,21 @@ class Data extends Base
      *
      * @var  string
      */
-    protected $_name = 'data';
+    protected $name = 'data';
 
     /**
      * Image Helper
      *
      * @var  object
      */
-    protected $_imgHelper = null;
+    protected $imgHelper = null;
 
     /**
      * Unique attachment properties
      *
      * @var  array
      */
-    protected $_connector = ['object_name', 'object_revision'];
+    protected $connector = ['object_name', 'object_revision'];
 
     /**
      * Get configs
@@ -111,7 +111,7 @@ class Data extends Base
         if ($attachments) {
             // Serve individually
             foreach ($attachments as $attach) {
-                if ($attach->type != $this->_name) {
+                if ($attach->type != $this->name) {
                     continue;
                 }
 
@@ -121,7 +121,7 @@ class Data extends Base
                 $pop     = Lang::txt('Browse database') . ' ' . $title;
 
                 $html .= '<li>';
-                $html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
+                $html .= $authorized === 'administrator' ? '[' . $this->name . '] ' : '';
                 $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" rel="noopener" target="_blank" class="data-type">' . $title . '</a>';
                 $html .= '</li>';
             }
@@ -151,10 +151,10 @@ class Data extends Base
                      ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments(
+        $attachments = $this->parent->getElementAttachments(
             $elementId,
             $attachments,
-            $this->_name,
+            $this->name,
         );
 
         $disabled = 0;
@@ -247,29 +247,29 @@ class Data extends Base
         // Create new version path
         if (!is_dir($newConfigs->dataPath)) {
             if (!Filesystem::makeDirectory($newConfigs->dataPath, 0755, true, true)) {
-                $this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+                $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
         }
 
         // Loop through attachments
         foreach ($attachments as $att) {
-            if ($att->type != $this->_name) {
+            if ($att->type != $this->name) {
                 continue;
             }
             // Get database object and load record
-            $objData = new \Components\Projects\Tables\Database($this->_parent->_db);
+            $objData = new \Components\Projects\Tables\Database($this->parent->db);
             $objData->loadRecord($att->object_name);
             $dbVersion = null;
 
             if (!$objData->id) {
                 // Original database not found
-                $this->_parent->setError(Lang::txt('Oops! Cannot attach selected database: database not found'));
+                $this->parent->setError(Lang::txt('Oops! Cannot attach selected database: database not found'));
                 return false;
             }
 
             // Make new attachment record
-            $pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pAttach = new \Components\Publications\Tables\Attachment($this->parent->db);
             if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id'))) {
                 continue;
             }
@@ -280,7 +280,7 @@ class Data extends Base
 
             // Failed to clone
             if (!$dbVersion) {
-                $this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE'));
+                $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE'));
                 $pAttach->delete();
                 return false;
             }
@@ -317,7 +317,7 @@ class Data extends Base
         $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
+        $attachments = $this->parent->getElementAttachments($elementId, $attachments, $this->name);
 
         $path = null;
         if ($itemId) {
@@ -340,7 +340,7 @@ class Data extends Base
 
         // Absolute or relative link?
         $where = preg_match($v, $path) ? $path : DS . trim($path, DS);
-        $this->_parent->set('redirect', $where);
+        $this->parent->set('redirect', $where);
         return true;
     }
 
@@ -378,7 +378,7 @@ class Data extends Base
         // Create new version path
         if (!is_dir($configs->dataPath)) {
             if (!Filesystem::makeDirectory($configs->dataPath, 0755, true, true)) {
-                $this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+                $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
         }
@@ -429,17 +429,17 @@ class Data extends Base
     public function addAttachment($database_name, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
     {
         // Get database object and load record
-        $objData = new \Components\Projects\Tables\Database($this->_parent->_db);
+        $objData = new \Components\Projects\Tables\Database($this->parent->db);
         $objData->loadRecord($database_name);
         $dbVersion = null;
 
-        $objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+        $objPA = new \Components\Publications\Tables\Attachment($this->parent->db);
         if (
             $objPA->loadElementAttachment(
                 $pub->version_id,
                 ['object_name' => $database_name],
                 $elementId,
-                $this->_name,
+                $this->name,
                 $element->role,
             )
         ) {
@@ -458,14 +458,14 @@ class Data extends Base
             }
             $objPA->publication_id         = $pub->id;
             $objPA->publication_version_id = $pub->version_id;
-            $objPA->type                   = $this->_name;
+            $objPA->type                   = $this->name;
             $objPA->created_by             = $uid;
             $objPA->created                = Date::toSql();
             $objPA->role                   = $element->role;
             $new = 1;
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         if ($new) {
@@ -486,7 +486,7 @@ class Data extends Base
         }
         // Failed to clone
         if (!$dbVersion) {
-            $this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE'));
+            $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE'));
             return false;
         }
 
@@ -501,7 +501,7 @@ class Data extends Base
         $objPA->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl' . DS . $database_name . DS . '?v=' . $dbVersion;
 
         if (!$objPA->store()) {
-            $this->_parent->setError(Lang::txt('There was a problem attaching the database'));
+            $this->parent->setError(Lang::txt('There was a problem attaching the database'));
             return false;
         }
         // Determine accompanying files and copy them in the right location
@@ -541,7 +541,7 @@ class Data extends Base
             $this->set('_message', Lang::txt('Item removed'));
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
 
             return true;
         }
@@ -666,7 +666,7 @@ class Data extends Base
             'folder'  => 'projects',
             'element' => 'publications',
             'name'    => 'attachments',
-            'layout'  => $this->_name,
+            'layout'  => $this->name,
         ]);
         $view->data   = $data;
         $view->params = $params;

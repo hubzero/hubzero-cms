@@ -28,7 +28,7 @@ class Ckeditor extends Plugin
     /**
      * Base path for editor files
      */
-    protected $_basePath = 'core/plugins/editors/ckeditor/assets/';
+    protected $basePath = 'core/plugins/editors/ckeditor/assets/';
 
     /**
      * Method to handle the onInitEditor event.
@@ -44,8 +44,8 @@ class Ckeditor extends Plugin
         $this->css();
 
         // Add ckeditor
-        Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'ckeditor.js?v=' . filemtime(__DIR__ . '/assets/ckeditor.js'));
-        Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'adapters/jquery.js?v=' . filemtime(__DIR__ . '/assets/adapters/jquery.js'));
+        Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->basePath . 'ckeditor.js?v=' . filemtime(__DIR__ . '/assets/ckeditor.js'));
+        Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->basePath . 'adapters/jquery.js?v=' . filemtime(__DIR__ . '/assets/adapters/jquery.js'));
     }
 
     /**

@@ -29,7 +29,7 @@ class Economy extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_db = null;
+    private $db = null;
 
     /**
      * Constructor
@@ -39,7 +39,7 @@ class Economy extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -55,8 +55,8 @@ class Economy extends Obj
         }
         $sql = "SELECT DISTINCT uid FROM `#__users_transactions`"
             . " WHERE category='wish' AND referenceid=$wishid AND type='hold'";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -73,8 +73,8 @@ class Economy extends Obj
         }
         $sql = "SELECT SUM(amount) FROM `#__users_transactions`"
             . " WHERE category='wish' AND referenceid='$wishid' AND type='hold' AND uid='$uid'";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**

@@ -18,9 +18,9 @@ use Hubzero\Facades\App;
 class Archive extends \Hubzero\Base\Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_count;
+    protected $count;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
 
     /**
      * Products
@@ -43,7 +43,7 @@ class Archive extends \Hubzero\Base\Obj
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
     }
 
     /**
@@ -138,8 +138,8 @@ class Archive extends \Hubzero\Base\Obj
 
         switch (strtolower($rtrn)) {
             case 'count':
-                $this->_count = $warehouse->getProductSkus($pId, 'count', false);
-                return $this->_count;
+                $this->count = $warehouse->getProductSkus($pId, 'count', false);
+                return $this->count;
                 break;
 
             case 'list':
@@ -477,9 +477,9 @@ class Archive extends \Hubzero\Base\Obj
 				-- AND (ogActive IS NULL OR ogActive = 1)
 				ORDER BY og.ogName, o.oName";
 
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
-        $res = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $this->db->execute();
+        $res = $this->db->loadObjectList();
 
         // reformat it a little
         $optionGroups = [];

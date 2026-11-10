@@ -26,28 +26,28 @@ class Review extends Base
   *
   * @var        string
   */
-    protected $_name          = 'review';
+    protected $name          = 'review';
 
     /**
   * Parent block name
   *
   * @var        string
   */
-    protected $_parentname    = null;
+    protected $parentname    = null;
 
     /**
   * Default manifest
   *
   * @var        string
   */
-    protected $_manifest      = null;
+    protected $manifest      = null;
 
     /**
   * Numeric block ID
   *
   * @var        integer
   */
-    protected $_blockId       = 0;
+    protected $blockId       = 0;
 
     /**
      * Display block content
@@ -57,12 +57,12 @@ class Review extends Base
     public function display($pub = null, $manifest = null, $viewname = 'review', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Do not show
@@ -79,10 +79,10 @@ class Review extends Base
             ]);
         }
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
         $view->showControls = 0;
 
@@ -112,8 +112,8 @@ class Review extends Base
         \Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'css/calendar');
 
         $view->pub      = $pub;
-        $view->manifest = $this->_manifest;
-        $view->step     = $this->_blockId;
+        $view->manifest = $this->manifest;
+        $view->step     = $this->blockId;
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -129,8 +129,8 @@ class Review extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         return true;
@@ -157,8 +157,8 @@ class Review extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {
@@ -196,8 +196,8 @@ class Review extends Base
         $aid = $aid ? $aid : Request::getInt('aid', 0);
 
         // Load classes
-        $row  = new \Components\Publications\Tables\Author($this->_parent->_db);
-        $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+        $row  = new \Components\Publications\Tables\Author($this->parent->db);
+        $objO = new \Components\Projects\Tables\Owner($this->parent->db);
 
         // We need attachment record
         if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id) {
@@ -271,7 +271,7 @@ class Review extends Base
             $this->set('_message', Lang::txt('Author record saved'));
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         } else {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
             return false;

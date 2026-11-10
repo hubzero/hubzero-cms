@@ -22,5 +22,5 @@ class Tags extends Cloud
      *
      * @var string
      */
-    protected $_scope = 'events';
+    protected $scope = 'events';
 }

@@ -27,15 +27,15 @@ use Hubzero\Facades\User;
 class Team extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $model;
 
     /**
@@ -50,14 +50,14 @@ class Team extends Plugin
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Event call to determine if this plugin should return data
@@ -111,11 +111,11 @@ class Team extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -137,15 +137,15 @@ class Team extends Plugin
         if ($returnhtml) {
             // Set vars
             $act = Request::getString('action', '');
-            $this->_task     = $action ? $action : $act;
-            if ($act && ($this->_task == 'edit' || $this->_task == 'setup')) {
-                $this->_task = $act;
+            $this->task     = $action ? $action : $act;
+            if ($act && ($this->task == 'edit' || $this->task == 'setup')) {
+                $this->task = $act;
             }
-            $this->_database = App::get('db');
-            $this->_uid      = User::get('id');
-            $this->_config   = $model->config();
+            $this->database = App::get('db');
+            $this->uid      = User::get('id');
+            $this->config   = $model->config();
 
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'edit':
                 case 'setup':
                     $arr['html'] = $this->display(1);
@@ -271,7 +271,7 @@ class Team extends Plugin
     public function display($edit = 0)
     {
         $layout = $edit ? 'edit' : 'view';
-        $setup  = $this->_task == 'setup' ? 1 : 0;
+        $setup  = $this->task == 'setup' ? 1 : 0;
 
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -314,18 +314,18 @@ class Team extends Plugin
         $view->currentUser = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $userId);
         $view->count_groups = $groups ? count($groups) : 0;
         $view->params   = $this->model->params;
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->setup    = $setup;
-        $view->config   = $this->_config;
-        $view->task     = $this->_task;
+        $view->config   = $this->config;
+        $view->task     = $this->task;
         $view->edit     = $edit;
-        $view->title    = $this->_area['title'];
+        $view->title    = $this->area['title'];
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -359,13 +359,13 @@ class Team extends Plugin
         }
 
         $view->params   = $this->model->params;
-        $view->option   = $this->_option;
+        $view->option   = $this->componentOption;
         $view->controller = Request::getCmd('controller', 'projects');
-        $view->database = $this->_database;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
-        $view->config   = $this->_config;
-        $view->task     = $this->_task;
+        $view->uid      = $this->uid;
+        $view->config   = $this->config;
+        $view->task     = $this->task;
         $view->section  = $this->pluginName;
         $view->step     = 1;
         $view->ajax     = $no_html;
@@ -400,7 +400,7 @@ class Team extends Plugin
         $block   = (isset($parts[0]) && in_array($parts[0], ['content', 'extras'])) ? $parts[0] : 'authors';
         $step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 
-        $layout = $this->_task == 'newauthor' || $this->model->isProvisioned() ? 'newauthor' : 'default';
+        $layout = $this->task == 'newauthor' || $this->model->isProvisioned() ? 'newauthor' : 'default';
 
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -424,7 +424,7 @@ class Team extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -463,18 +463,18 @@ class Team extends Plugin
 
         $view->mc = Event::trigger('hubzero.onGetSingleEntry', [['members', 'uid', 'uid']]);
 
-        $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->componentOption;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->ajax     = $ajax;
-        $view->task     = $this->_task;
+        $view->task     = $this->task;
         $view->block    = $block;
         $view->step     = $step;
         $view->props    = $props;
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -577,7 +577,7 @@ class Team extends Plugin
                                     if ($objO->saveInvite($this->model->get('id'), $cid, $code, '', $role)) {
                                         $uids[] = $cid;
                                         $m_invited++;
-                                        if (!$setup && $this->_config->get('messaging') == 1) {
+                                        if (!$setup && $this->config->get('messaging') == 1) {
                                             $this->sendInviteEmail(0, $cid, $code, $role);
                                             $sent[] = $cid;
                                         }
@@ -590,7 +590,7 @@ class Team extends Plugin
                                         $uids[] = $cid;
                                         $objO->store();
                                         $m_invited++;
-                                        if (!$setup && $this->_config->get('messaging') == 1) {
+                                        if (!$setup && $this->config->get('messaging') == 1) {
                                             $this->sendInviteEmail(0, $cid, $objO->invited_code, $objO->role);
                                             $sent[] = $cid;
                                         }
@@ -614,7 +614,7 @@ class Team extends Plugin
 
                     // Save new author
                     $native = ($this->model->access('owner')) ? 1 : 0;
-                    if ($objO->saveOwners($this->model->get('id'), $this->_uid, $uid, $forgroup, $role, $status = 1, $native)) {
+                    if ($objO->saveOwners($this->model->get('id'), $this->uid, $uid, $forgroup, $role, $status = 1, $native)) {
                         $uids[] = $uid;
                     }
                 }
@@ -622,7 +622,7 @@ class Team extends Plugin
 
             if ($groups) {
                 // Save new authors from group
-                $g_added = $objO->saveOwners($this->model->get('id'), $this->_uid, 0, $groups, $role, $status = 1, $native = 0);
+                $g_added = $objO->saveOwners($this->model->get('id'), $this->uid, 0, $groups, $role, $status = 1, $native = 0);
                 if ($objO->getError()) {
                     $this->setError($objO->getError());
                 }
@@ -636,10 +636,10 @@ class Team extends Plugin
         // Did we add anyone new?
         $uids = array_unique($uids);
         if (count($uids) > 0) {
-            $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED') . ' ' . count($uids) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_NEW') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS');
+            $this->msg = Lang::txt('PLG_PROJECTS_TEAM_SUCCESS_ADDED_OR_INVITED') . ' ' . count($uids) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_NEW') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS');
 
             if (count($invalid) > 0) {
-                $this->_msg .= '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
+                $this->msg .= '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES');
             }
 
             if (!$setup) {
@@ -668,7 +668,7 @@ class Team extends Plugin
                 $note .= ' ' . Lang::txt('PLG_PROJECTS_TEAM_TO_PROJECT_TEAM');
 
                 // Send out emails
-                if ($this->_config->get('messaging') == 1) {
+                if ($this->config->get('messaging') == 1) {
                     foreach ($uids as $user) {
                         if (in_array($user, $sent)) {
                             continue;
@@ -680,7 +680,7 @@ class Team extends Plugin
             }
 
             // Sync with system group
-            $objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
+            $objO->sysGroup($this->model->get('alias'), $this->config->get('group_prefix', 'pr-'));
         } elseif (count($invalid) > 0) {
             $this->setError(Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES') . '<br />' . Lang::txt('PLG_PROJECTS_TEAM_MEMBERS_INVALID_NAMES_EXPLAIN'));
         }
@@ -688,8 +688,8 @@ class Team extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         $url = $setup
@@ -768,7 +768,7 @@ class Team extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_TEAM_ERROR_NOONE_TO_DELETE'));
         }
 
-        if ($this->_task == 'delete') {
+        if ($this->task == 'delete') {
             // Output HTML
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -778,12 +778,12 @@ class Team extends Plugin
 
             $view->selected = $selected;
             $view->checked  = $checked;
-            $view->option   = $this->_option;
+            $view->option   = $this->componentOption;
             $view->model    = $this->model;
-            $view->uid      = $this->_uid;
+            $view->uid      = $this->uid;
             $view->setup    = $setup;
-            $view->aid      = $objO->getOwnerID($this->model->get('id'), $this->_uid);
-            $view->msg      = isset($this->_msg) ? $this->_msg : '';
+            $view->aid      = $objO->getOwnerID($this->model->get('id'), $this->uid);
+            $view->msg      = isset($this->msg) ? $this->msg : '';
             $view->setErrors($this->getErrors());
 
             return $view->loadTemplate();
@@ -798,7 +798,7 @@ class Team extends Plugin
                 // Perform delete
                 $deleted = $objO->removeOwners($this->model->get('id'), $checked, 1);
                 if ($deleted) {
-                    $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERS_DELETED');
+                    $this->msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERS_DELETED');
                 }
             } else {
                 if (count($all) > 0) {
@@ -810,17 +810,17 @@ class Team extends Plugin
 
             if ($deleted) {
                 // Sync with system group
-                $objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
+                $objO->sysGroup($this->model->get('alias'), $this->config->get('group_prefix', 'pr-'));
             }
 
             // Pass error or success message
             if ($this->getError()) {
                 Notify::message($this->getError(), 'error', 'projects');
-            } elseif (!empty($this->_msg)) {
-                Notify::message($this->_msg, 'success', 'projects');
+            } elseif (!empty($this->msg)) {
+                Notify::message($this->msg, 'success', 'projects');
             }
 
-            $url  = 'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&task=';
+            $url  = 'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&task=';
             $url .= $setup ? 'setup' : 'edit';
             $url .= '&active=team';
 
@@ -852,7 +852,7 @@ class Team extends Plugin
                 $message = '';
 
                 $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
-                $url = Route::url('index.php?option=' . $this->_option
+                $url = Route::url('index.php?option=' . $this->componentOption
                     . '&task=team' . '&alias=' . $this->model->get('alias'), false);
                 Notify::success(Lang::txt('PLG_PROJECTS_TEAM_MEMBERSHIP_APPROVED'));
                 App::redirect($url);
@@ -883,7 +883,7 @@ class Team extends Plugin
                     'name'    => 'memberrequest',
                 ]);
 
-                $view->option = $this->_option;
+                $view->option = $this->componentOption;
                 $view->model  = $this->model;
                 $view->owner  = $owner;
                 $view->setErrors($this->getErrors());
@@ -913,7 +913,7 @@ class Team extends Plugin
 
                 $this->sendMemberRequestEmail($ownerEmail, $subject, $message);
                 Notify::success('Membership request has been denied');
-                $url = Route::url('index.php?option=' . $this->_option
+                $url = Route::url('index.php?option=' . $this->componentOption
                     . '&task=team' . '&alias=' . $this->model->get('alias'), false);
                 App::redirect($url);
             }
@@ -925,7 +925,7 @@ class Team extends Plugin
     private function sendMemberRequestEmail($email, $subject, $message)
     {
         \Components\Projects\Helpers\Html::sendHUBMessage(
-            $this->_option,
+            $this->componentOption,
             $this->model,
             $email,
             $subject,
@@ -994,7 +994,7 @@ class Team extends Plugin
                 $objO->store();
             }
 
-            $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERSHIP_UPDATED');
+            $this->msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERSHIP_UPDATED');
         } else {
             // Output HTML
             $view = new \Hubzero\Plugin\View([
@@ -1009,10 +1009,10 @@ class Team extends Plugin
                 $view->groups[] = $this->model->groupOwner();
             }
 
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->model  = $this->model;
-            $view->msg    = isset($this->_msg) ? $this->_msg : '';
-            $view->title  = $this->_area['title'];
+            $view->msg    = isset($this->msg) ? $this->msg : '';
+            $view->title  = $this->area['title'];
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1022,8 +1022,8 @@ class Team extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         App::redirect(Route::url($this->model->link('edit') . '&section=team'));
@@ -1056,9 +1056,9 @@ class Team extends Plugin
             // Check for request forgeries
             Request::checkToken();
 
-            $deleted = $objO->removeOwners($this->model->get('id'), [$this->_uid]);
+            $deleted = $objO->removeOwners($this->model->get('id'), [$this->uid]);
             if ($deleted) {
-                $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
+                $this->msg = Lang::txt('PLG_PROJECTS_TEAM_MEMBER_QUIT_SUCCESS');
 
                 // Record activity
                 $aid = $this->model->recordActivity(
@@ -1083,13 +1083,13 @@ class Team extends Plugin
 
             $view->group       = $this->model->groupOwner('id');
             $view->onlymanager = $onlymanager;
-            $view->option      = $this->_option;
-            $view->database    = $this->_database;
+            $view->option      = $this->componentOption;
+            $view->database    = $this->database;
             $view->model       = $this->model;
-            $view->uid         = $this->_uid;
-            $view->config      = $this->_config;
-            $view->msg         = isset($this->_msg) ? $this->_msg : '';
-            $view->title       = $this->_area['title'];
+            $view->uid         = $this->uid;
+            $view->config      = $this->config;
+            $view->msg         = isset($this->msg) ? $this->msg : '';
+            $view->title       = $this->area['title'];
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1099,11 +1099,11 @@ class Team extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
-        App::redirect(Route::url('index.php?option=' . $this->_option));
+        App::redirect(Route::url('index.php?option=' . $this->componentOption));
     }
 
     /**
@@ -1141,7 +1141,7 @@ class Team extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_TEAM_ERROR_NOONE_TO_REASSIGN_ROLE'));
         }
 
-        if ($this->_task == 'changerole') {
+        if ($this->task == 'changerole') {
             // Output HTML
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -1151,11 +1151,11 @@ class Team extends Plugin
 
             $view->selected = $selected;
             $view->checked  = $checked;
-            $view->option   = $this->_option;
+            $view->option   = $this->componentOption;
             $view->model    = $this->model;
-            $view->uid      = $this->_uid;
-            $view->aid      = $objO->getOwnerID($this->model->get('id'), $this->_uid);
-            $view->msg      = isset($this->_msg) ? $this->_msg : '';
+            $view->uid      = $this->uid;
+            $view->aid      = $objO->getOwnerID($this->model->get('id'), $this->uid);
+            $view->msg      = isset($this->msg) ? $this->msg : '';
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1174,13 +1174,13 @@ class Team extends Plugin
             }
 
             if ($objO->reassignRole($this->model->get('id'), $left, 1, $role)) {
-                $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERS_ROLE_CHANGED');
+                $this->msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERS_ROLE_CHANGED');
 
                 // Sync with system group
-                $objO->sysGroup($this->model->get('alias'), $this->_config->get('group_prefix', 'pr-'));
+                $objO->sysGroup($this->model->get('alias'), $this->config->get('group_prefix', 'pr-'));
             }
 
-            $this->_task = $s ? 'setup' : 'edit';
+            $this->task = $s ? 'setup' : 'edit';
 
             return $this->display($edit = 1);
         }
@@ -1209,7 +1209,7 @@ class Team extends Plugin
             return false;
         }
 
-        $option = $option ? $option : $this->_option;
+        $option = $option ? $option : $this->componentOption;
         $model  = $model ? $model : $this->model;
 
         if (!$model->exists()) {

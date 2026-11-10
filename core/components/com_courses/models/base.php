@@ -32,7 +32,7 @@ abstract class Base extends Model
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = null;
+    protected $scope = null;
 
     /**
      * Entry creator
@@ -40,7 +40,7 @@ abstract class Base extends Model
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_creator = null;
+    protected $creator = null;
 
     /**
      * Date keys coming from
@@ -49,7 +49,7 @@ abstract class Base extends Model
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public static $_section_keys = [
+    public static $sectionKeys = [
         //'section_id',
         'publish_up',
         'publish_down',
@@ -61,7 +61,7 @@ abstract class Base extends Model
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config = null;
+    protected $config = null;
 
     /**
      * Is the entyr in draft state?
@@ -162,13 +162,13 @@ abstract class Base extends Model
      */
     public function creator($property = null, $default = null)
     {
-        if (!$this->_creator) {
-            $this->_creator = User::getInstance($this->get('created_by'));
+        if (!$this->creator) {
+            $this->creator = User::getInstance($this->get('created_by'));
         }
         if ($property) {
-            return $this->_creator->get($property, $default);
+            return $this->creator->get($property, $default);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**
@@ -190,7 +190,7 @@ abstract class Base extends Model
 
         if ($res = parent::delete()) {
             // Log the event
-            $this->log($scope_id, $this->_scope, 'delete', $log);
+            $this->log($scope_id, $this->scope, 'delete', $log);
         }
 
         return $res;
@@ -232,13 +232,13 @@ abstract class Base extends Model
      */
     public function config($property = null, $default = null)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_courses');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_courses');
         }
         if ($property) {
-            return $this->_config->get($property, $default);
+            return $this->config->get($property, $default);
         }
-        return $this->_config;
+        return $this->config;
     }
 
     /**

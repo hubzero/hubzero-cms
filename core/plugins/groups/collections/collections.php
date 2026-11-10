@@ -43,7 +43,7 @@ class Collections extends Plugin
      *
      * @var  object
      */
-    protected $_params = null;
+    protected $customParams = null;
 
     /**
      * Loads the plugin language file
@@ -2454,10 +2454,10 @@ class Collections extends Plugin
      */
     protected function _params($group_id)
     {
-        if (!$this->_params) {
-            $this->_params = \Hubzero\Plugin\Params::getCustomParams($group_id, 'groups', $this->pluginName);
+        if (!$this->customParams) {
+            $this->customParams = \Hubzero\Plugin\Params::getCustomParams($group_id, 'groups', $this->pluginName);
         }
-        return $this->_params;
+        return $this->customParams;
     }
 
     /**

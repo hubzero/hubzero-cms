@@ -388,7 +388,7 @@ class Projects extends Base
         // Reconcile members of project groups
         if (!$ajax) {
             if (
-                $this->model->_tblOwner->reconcileGroups(
+                $this->model->tblOwner->reconcileGroups(
                     $this->model->get('id'),
                     $this->model->get('owned_by_group'),
                     $this->model->get('sync_group'),
@@ -413,7 +413,7 @@ class Projects extends Base
 
         // Sync with system group in case of changes
         if ($sync == true) {
-            $this->model->_tblOwner->sysGroup(
+            $this->model->tblOwner->sysGroup(
                 $this->model->get('alias'),
                 $this->config->get('group_prefix', 'pr-'),
             );
@@ -451,7 +451,7 @@ class Projects extends Base
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
             }
             $this->view->pub       = $pub;
-            $this->view->team      = $this->model->_tblOwner->getOwnerNames($this->model->get('id'));
+            $this->view->team      = $this->model->tblOwner->getOwnerNames($this->model->get('id'));
             $this->view->suggested = Helpers\Html::suggestAlias($pub->title);
             $this->view->verified  = $this->model->check($this->view->suggested, $this->model->get('id'), 0);
             $this->view->suggested = $this->view->verified ? $this->view->suggested : '';
@@ -470,7 +470,7 @@ class Projects extends Base
 
         // Invitation view
         if ($confirmcode && (!$member or $member->status != 1)) {
-            $match = $this->model->_tblOwner->matchInvite(
+            $match = $this->model->tblOwner->matchInvite(
                 $this->model->get('id'),
                 $confirmcode,
                 $email,
@@ -478,18 +478,18 @@ class Projects extends Base
 
             if (User::isGuest() && $match) {
                 $layout = 'invited';
-            } elseif ($match && $this->model->_tblOwner->load($match)) {
+            } elseif ($match && $this->model->tblOwner->load($match)) {
                 if (strtolower(User::get('email')) == strtolower($email)) {
                     // Confirm user
-                    $this->model->_tblOwner->status = 1;
-                    $this->model->_tblOwner->userid = User::get('id');
+                    $this->model->tblOwner->status = 1;
+                    $this->model->tblOwner->userid = User::get('id');
 
-                    if (!$this->model->_tblOwner->store()) {
-                        $this->setError($this->model->_tblOwner->getError());
+                    if (!$this->model->tblOwner->store()) {
+                        $this->setError($this->model->tblOwner->getError());
                         return false;
                     } else {
                         // Sync with system group
-                        $this->model->_tblOwner->sysGroup(
+                        $this->model->tblOwner->sysGroup(
                             $this->model->get('alias'),
                             $this->config->get('group_prefix', 'pr-'),
                         );
@@ -717,7 +717,7 @@ class Projects extends Base
             $this->view->setLayout('provisioned');
             $this->view->set('model', $this->model);
 
-            $this->view->set('team', $this->model->_tblOwner->getOwnerNames($this->model->get('alias')));
+            $this->view->set('team', $this->model->tblOwner->getOwnerNames($this->model->get('alias')));
 
             // Output HTML
             $this->view->set('pub', isset($pub) ? $pub : '');
@@ -873,7 +873,7 @@ class Projects extends Base
         // user.onAfterStoreGroup -> the ldap plugin -> the LDAP posixGroup, so SFTP
         // (projfs) access is revoked on delete and restored on reinstate (ticket 2802).
         if (in_array($this->task, ['delete', 'reinstate'], true)) {
-            $this->model->_tblOwner->sysGroup(
+            $this->model->tblOwner->sysGroup(
                 $this->model->get('alias'),
                 $this->config->get('group_prefix', 'pr-'),
             );

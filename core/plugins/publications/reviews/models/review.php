@@ -21,7 +21,7 @@ use Hubzero\Facades\Request;
 class Review extends \Hubzero\Base\Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base;
+    protected $base;
 
     /**
      * ResourcesReview
@@ -284,10 +284,10 @@ class Review extends \Hubzero\Base\Model
      */
     public function link($type = '')
     {
-        if (!isset($this->_base)) {
-            $this->_base = 'index.php?option=com_publications&id=' . $this->get('item_id') . '&active=reviews';
+        if (!isset($this->base)) {
+            $this->base = 'index.php?option=com_publications&id=' . $this->get('item_id') . '&active=reviews';
         }
-        $link = $this->_base;
+        $link = $this->base;
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {

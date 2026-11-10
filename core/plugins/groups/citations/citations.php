@@ -43,7 +43,7 @@ use Components\Citations\Models\Importer;
 class Citations extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     protected $access;
     protected $action;
     protected $authorized;
@@ -1171,7 +1171,7 @@ class Citations extends Plugin
         $filename = $file ? $file->getClientOriginalName() : '';
         if ($filename == '') {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_MISSING_FILE'),
                 'error',
             );
@@ -1181,7 +1181,7 @@ class Citations extends Plugin
         // make sure file is under 4MB
         if ($file->getSize() > 4000000) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_FILE_TOO_BIG'),
                 'error',
             );
@@ -1191,7 +1191,7 @@ class Citations extends Plugin
         // make sure we dont have any file errors
         if ($file->getError() > 0) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
@@ -1205,7 +1205,7 @@ class Citations extends Plugin
         // did we get citations from the citation plugins
         if (!$citations) {
             App::redirect(
-                Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
+                Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn') . '&active=citations&action=import'),
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );

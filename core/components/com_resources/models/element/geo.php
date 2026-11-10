@@ -24,7 +24,7 @@ class Geo extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Geo Location';
+    protected $name = 'Geo Location';
 
     /**
      * Flag for if JS has been pushed to document or not
@@ -32,7 +32,7 @@ class Geo extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_script = false;
+    protected $script = false;
 
     /**
      * Return any options this element may have
@@ -76,11 +76,11 @@ class Geo extends Base
      */
     public function fetchElement($name, $value, &$element, $control_name)
     {
-        if (!$this->_script) {
+        if (!$this->script) {
             Document::addScript('//maps.google.com/maps/api/js?sensor=false');
             $geoJs = '/core/components/com_resources/models/element/assets/js/geo.js';
             Document::addScript(Request::base(true) . $geoJs);
-            $this->_script = true;
+            $this->script = true;
         }
 
         $size  = (isset($element->size) ? 'size="' . $element->size . '"' : '');

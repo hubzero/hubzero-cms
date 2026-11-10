@@ -22,7 +22,7 @@ class Checkbox extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Checkboxes';
+    protected $name = 'Checkboxes';
 
     /**
      * Return any options this element may have

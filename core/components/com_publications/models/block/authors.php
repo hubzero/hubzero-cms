@@ -27,28 +27,28 @@ class Authors extends Base
      *
      * @var  string
      */
-    protected $_name = 'authors';
+    protected $name = 'authors';
 
     /**
      * Parent block name
      *
      * @var  string
      */
-    protected $_parentname = 'authors';
+    protected $parentname = 'authors';
 
     /**
      * Default manifest
      *
      * @var  string
      */
-    protected $_manifest = null;
+    protected $manifest = null;
 
     /**
      * Numeric block ID
      *
      * @var  integer
      */
-    protected $_blockId = 0;
+    protected $blockId = 0;
 
     /**
      * Display block content
@@ -62,12 +62,12 @@ class Authors extends Base
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Output HTML
@@ -87,12 +87,12 @@ class Authors extends Base
             ]);
         }
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
-        $showGroupOwner     = isset($this->_manifest->params->group_owner) ? $this->_manifest->params->group_owner : '';
+        $showGroupOwner     = isset($this->manifest->params->group_owner) ? $this->manifest->params->group_owner : '';
         $view->showControls = $showGroupOwner ? 4 : 2;
 
         if ($this->getError()) {
@@ -114,12 +114,12 @@ class Authors extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure changes are allowed
-        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+        if ($this->parent->checkFreeze($this->manifest->params, $pub)) {
             return false;
         }
 
@@ -128,8 +128,8 @@ class Authors extends Base
         $added = 0;
 
         // Load classes
-        $pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
-        $objO    = new \Components\Projects\Tables\Owner($this->_parent->_db);
+        $pAuthor = new \Components\Publications\Tables\Author($this->parent->db);
+        $objO    = new \Components\Projects\Tables\Owner($this->parent->db);
 
         $order = $pAuthor->getLastOrder($pub->version_id) + 1;
 
@@ -154,7 +154,7 @@ class Authors extends Base
 
                     if ($pAuthor->updateAssociationByOwner()) {
                         // Reflect the update in curation record
-                        $this->_parent->set('_update', 1);
+                        $this->parent->set('_update', 1);
                     }
                 }
             } else {
@@ -180,7 +180,7 @@ class Authors extends Base
                     $order++;
 
                     // Reflect the update in curation record
-                    $this->_parent->set('_update', 1);
+                    $this->parent->set('_update', 1);
 
                     $added++;
                 }
@@ -210,7 +210,7 @@ class Authors extends Base
         // Incoming
         $group_owner = Request::getInt('group_owner', 0);
 
-        $saveGroupOwner = isset($this->_manifest->params->group_owner) ? $this->_manifest->params->group_owner : '';
+        $saveGroupOwner = isset($this->manifest->params->group_owner) ? $this->manifest->params->group_owner : '';
 
         if ($saveGroupOwner) {
             $pub->publication->group_owner = $group_owner;
@@ -231,7 +231,7 @@ class Authors extends Base
     {
         // Get authors
         if (!isset($pub->_authors)) {
-            $pAuthors = new \Components\Publications\Tables\Author($this->_parent->_db);
+            $pAuthors = new \Components\Publications\Tables\Author($this->parent->db);
             $pub->_authors   = $pAuthors->getAuthors($pub->version_id);
             $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
         }
@@ -241,7 +241,7 @@ class Authors extends Base
         }
 
         foreach ($pub->_authors as $author) {
-            $pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
+            $pAuthor = new \Components\Publications\Tables\Author($this->parent->db);
             $pAuthor->user_id                = $author->user_id;
             $pAuthor->ordering               = $author->ordering;
             $pAuthor->credit                 = $author->credit;
@@ -274,8 +274,8 @@ class Authors extends Base
     public function reorder($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Incoming
@@ -288,7 +288,7 @@ class Authors extends Base
                 continue;
             }
 
-            $pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
+            $pAuthor = new \Components\Publications\Tables\Author($this->parent->db);
             if ($pAuthor->load($id) && $pAuthor->publication_version_id == $pub->version_id) {
                 $pAuthor->ordering = $o;
                 $o++;
@@ -299,7 +299,7 @@ class Authors extends Base
 
         $this->set('_message', Lang::txt('New author order saved'));
         // Reflect the update in curation record
-        $this->_parent->set('_update', 1);
+        $this->parent->set('_update', 1);
 
         return true;
     }
@@ -342,7 +342,7 @@ class Authors extends Base
         }
 
         // Load classes
-        $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+        $objO = new \Components\Projects\Tables\Owner($this->parent->db);
 
         // Instantiate a new registration object
 
@@ -379,7 +379,7 @@ class Authors extends Base
             $objO->invited_email = $objO->userid ? $objO->invited_email : $email;
             $objO->store();
         } elseif ($email || trim($name)) {
-            $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+            $objO = new \Components\Projects\Tables\Owner($this->parent->db);
 
             $objO->projectid     = $pub->_project->get('id');
             $objO->userid        = $uid;
@@ -406,7 +406,7 @@ class Authors extends Base
         }
 
         // Get author information
-        $pAuthor = new \Components\Publications\Tables\Author($this->_parent->_db);
+        $pAuthor = new \Components\Publications\Tables\Author($this->parent->db);
 
         if ($pAuthor->loadAssociationByOwner($owner, $pub->version_id)) {
             $pAuthor->modified    = Date::toSql();
@@ -444,7 +444,7 @@ class Authors extends Base
         }
 
         // Reflect the update in curation record
-        $this->_parent->set('_update', 1);
+        $this->parent->set('_update', 1);
 
         // (Re)send email invitation
         if ($sendInvite && ($email || $uid) && $emailConfig) {
@@ -493,8 +493,8 @@ class Authors extends Base
         $aid = $aid ? $aid : Request::getInt('aid', 0);
 
         // Load classes
-        $row  = new \Components\Publications\Tables\Author($this->_parent->_db);
-        $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+        $row  = new \Components\Publications\Tables\Author($this->parent->db);
+        $objO = new \Components\Projects\Tables\Owner($this->parent->db);
 
         // We need attachment record
         if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id) {
@@ -578,7 +578,7 @@ class Authors extends Base
             $this->set('_message', Lang::txt('Author record saved'));
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         } else {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
             return false;
@@ -644,8 +644,8 @@ class Authors extends Base
         $aid = $aid ? $aid : Request::getInt('aid', 0);
 
         // Load classes
-        $row  = new \Components\Publications\Tables\Author($this->_parent->_db);
-        $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+        $row  = new \Components\Publications\Tables\Author($this->parent->db);
+        $objO = new \Components\Projects\Tables\Owner($this->parent->db);
 
         // We need attachment record
         if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id) {
@@ -657,7 +657,7 @@ class Authors extends Base
             $this->set('_message', Lang::txt('Author deleted'));
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         return true;
@@ -687,7 +687,7 @@ class Authors extends Base
 
         // Get authors
         if (!isset($pub->_authors)) {
-            $pAuthors = new \Components\Publications\Tables\Author($this->_parent->_db);
+            $pAuthors = new \Components\Publications\Tables\Author($this->parent->db);
             $pub->_authors   = $pAuthors->getAuthors($pub->version_id);
             $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
         }
@@ -696,11 +696,11 @@ class Authors extends Base
         $view->groups = \Hubzero\User\Helper::getGroups($pub->_project->get('owned_by_user'), 'members', 1);
 
         $view->pub      = $pub;
-        $view->manifest = $this->_manifest;
-        $view->step     = $this->_blockId;
+        $view->manifest = $this->manifest;
+        $view->step     = $this->blockId;
 
         // Get team members
-        $objO = new \Components\Projects\Tables\Owner($this->_parent->_db);
+        $objO = new \Components\Projects\Tables\Owner($this->parent->db);
         $view->teamids = $objO->getIds($pub->_project->get('id'), 'all', 0, 0);
 
         if ($this->getError()) {
@@ -720,8 +720,8 @@ class Authors extends Base
     public function getStatus($pub = null, $manifest = null, $elementId = null)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Start status
@@ -729,13 +729,13 @@ class Authors extends Base
 
         // Get authors
         if (!isset($pub->_authors)) {
-            $pAuthors = new \Components\Publications\Tables\Author($this->_parent->_db);
+            $pAuthors = new \Components\Publications\Tables\Author($this->parent->db);
             $pub->_authors = $pAuthors->getAuthors($pub->version_id);
             $pub->_submitter = $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
         }
 
         // Are authors required?
-        $required = $this->_manifest->params->required;
+        $required = $this->manifest->params->required;
         $status->status = $required && (!$pub->_authors || count($pub->_authors) == 0) ? 0 : 1;
 
         if ($status->status == 0) {
@@ -754,8 +754,8 @@ class Authors extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

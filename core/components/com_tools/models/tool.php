@@ -104,7 +104,7 @@ class Tool
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_list_keys = ['version'];
+    private $listKeys = ['version'];
 
     /**
      * Description for '_updateAll'
@@ -112,7 +112,7 @@ class Tool
      * @var boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_updateAll = false;
+    private $updateAll = false;
 
     /**
      * Description for '_propertyattrmap'
@@ -120,7 +120,7 @@ class Tool
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_propertyattrmap = [
+    protected static $propertyattrmap = [
         'toolname' => 'toolName',
         'title' => 'cn',
         'version' => 'member',
@@ -132,7 +132,7 @@ class Tool
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_updatedkeys = [];
+    private $updatedkeys = [];
 
     /**
      * Constructor
@@ -152,13 +152,13 @@ class Tool
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = [];
+        $this->updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
                 unset($this->$key);
 
-                if (!in_array($key, $this->_list_keys)) {
+                if (!in_array($key, $this->listKeys)) {
                     $this->$key = null;
                 } else {
                     $this->$key = [];
@@ -166,8 +166,8 @@ class Tool
             }
         }
 
-        $this->_updateAll = false;
-        $this->_updatedkeys = [];
+        $this->updateAll = false;
+        $this->updatedkeys = [];
     }
 
     /**
@@ -204,7 +204,7 @@ class Tool
         $result = [];
 
         if (true) {
-            foreach (self::$_propertyattrmap as $key => $value) {
+            foreach (self::$propertyattrmap as $key => $value) {
                 $current = $this->__get($key);
 
                 $result[$key] = $current;
@@ -377,7 +377,7 @@ class Tool
             $this->__get('version');
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedkeys = [];
 
         return true;
     }
@@ -442,11 +442,11 @@ class Tool
         $first = true;
 
         foreach ($classvars as $property => $value) {
-            if (($property[0] == '_') || in_array($property, $this->_list_keys)) {
+            if (($property[0] == '_') || in_array($property, $this->listKeys)) {
                 continue;
             }
 
-            if (!$all && !in_array($property, $this->_updatedkeys)) {
+            if (!$all && !in_array($property, $this->updatedkeys)) {
                 continue;
             }
 
@@ -481,8 +481,8 @@ class Tool
             }
         }
 
-        foreach ($this->_list_keys as $property) {
-            if (!$all && !in_array($property, $this->_updatedkeys)) {
+        foreach ($this->listKeys as $property) {
+            if (!$all && !in_array($property, $this->updatedkeys)) {
                 continue;
             }
 
@@ -569,7 +569,7 @@ class Tool
      */
     public function sync()
     {
-        $this->_updateAll = true;
+        $this->updateAll = true;
         return $this->update();
     }
 
@@ -585,14 +585,14 @@ class Tool
         $result = true;
 
         if (true) {
-            $result = $this->_sql_update($this->_updateAll);
+            $result = $this->_sql_update($this->updateAll);
 
             if ($result === false) {
                 $this->error(__FUNCTION__ . ': MySQL update failed', E_USER_WARNING);
             }
         }
 
-        $this->_updateAll = false;
+        $this->updateAll = false;
         return $result;
     }
 
@@ -680,7 +680,7 @@ class Tool
             die();
         }
 
-        if (in_array($property, $this->_list_keys)) {
+        if (in_array($property, $this->listKeys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db = App::get('db');
 
@@ -700,7 +700,7 @@ class Tool
 
                     if ($result !== false) {
                         $this->$property = (isset($result[0])) ? $result : [];
-                        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+                        $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
                     }
                 }
             }
@@ -738,14 +738,14 @@ class Tool
             die();
         }
 
-        if (in_array($property, $this->_list_keys)) {
+        if (in_array($property, $this->listKeys)) {
             $this->$property = array_values(array_unique(array_diff((array) $value, [''])));
         } else {
             $this->$property = $value;
         }
 
-        if (!in_array($property, $this->_updatedkeys)) {
-            $this->_updatedkeys[] = $property;
+        if (!in_array($property, $this->updatedkeys)) {
+            $this->updatedkeys[] = $property;
         }
     }
 
@@ -790,7 +790,7 @@ class Tool
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+        $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
 
         unset($this->$property);
     }

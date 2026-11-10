@@ -23,7 +23,7 @@ class Tags extends Cloud
      *
      * @var  string
      */
-    protected $_scope = 'resources';
+    protected $scope = 'resources';
 
     /**
      * Turn a comma-separated string of tags into an array of normalized tags
@@ -49,8 +49,8 @@ class Tags extends Cloud
     {
         $now = Date::toSql();
 
-        $this->_db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag=" . $this->_db->quote($tag) . " AND o.tbl=" . $this->_db->quote($this->_scope));
-        $objs = $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT objectid FROM `#__tags` AS t, `#__tags_object` AS o WHERE o.tagid=t.id AND t.tag=" . $this->db->quote($tag) . " AND o.tbl=" . $this->db->quote($this->scope));
+        $objs = $this->db->loadObjectList();
 
         $ids = '';
         if ($objs) {
@@ -63,16 +63,16 @@ class Tags extends Cloud
 
         $sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids
 				FROM `#__tags` AS t, `#__tags_object` AS o, `#__resources` AS r
-				WHERE o.tbl=" . $this->_db->quote($this->_scope) . "
+				WHERE o.tbl=" . $this->db->quote($this->scope) . "
 				AND o.tagid=t.id
 				AND t.admin <> 1 
 				AND o.objectid=r.id
 				AND r.published=1
 				AND r.standalone=1
-				AND (r.publish_up IS NULL OR r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->_db->quote($now) . ")
-				AND (r.publish_down IS NULL OR r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->_db->quote($now) . ") ";
+				AND (r.publish_up IS NULL OR r.publish_up = '0000-00-00 00:00:00' OR r.publish_up <= " . $this->db->quote($now) . ")
+				AND (r.publish_down IS NULL OR r.publish_down = '0000-00-00 00:00:00' OR r.publish_down >= " . $this->db->quote($now) . ") ";
         if ($type) {
-            $sql .= "AND r.type=" . $this->_db->quote($type) . " ";
+            $sql .= "AND r.type=" . $this->db->quote($type) . " ";
         }
 
         if (!User::isGuest()) {
@@ -86,7 +86,7 @@ class Tags extends Cloud
                 }
                 $sql .= "AND (r.access=0 OR r.access=1 OR r.access=3 OR (r.access=4 AND (r.group_owner IN ('" . $groups . "') ";
                 foreach ($usersgroups as $group) {
-                    $sql .= " OR r.group_access LIKE " . $this->_db->quote('%;' . $group . ';%');
+                    $sql .= " OR r.group_access LIKE " . $this->db->quote('%;' . $group . ';%');
                 }
                 $sql .= "))) ";
             } else {
@@ -100,8 +100,8 @@ class Tags extends Cloud
         }
         $sql .= "ORDER BY t.raw_tag ASC";
 
-        $this->_db->setQuery($sql);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $results = $this->db->loadObjectList();
 
         $rows = [];
         if ($results) {
@@ -222,7 +222,7 @@ class Tags extends Cloud
 
         $query .= "WHERE C.published=1 AND C.standalone=1 ";
         if ($type) {
-            $query .= "AND C.type=" . $this->_db->quote($type) . " ";
+            $query .= "AND C.type=" . $this->db->quote($type) . " ";
         }
         if ($type == 7) {
             $query .= " AND TV.toolname=C.alias AND TV.state=1 AND TV.revision = (SELECT MAX(revision) FROM #__tool_version as TV WHERE TV.toolname=C.alias AND TV.state=1 GROUP BY TV.toolid) ";
@@ -241,8 +241,8 @@ class Tags extends Cloud
             $fquery .= "))";
             $query .= $fquery;
         }
-        $query .= "AND (C.publish_up IS NULL OR C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->_db->quote($now) . ") ";
-        $query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->_db->quote($now) . ") AND ";
+        $query .= "AND (C.publish_up IS NULL OR C.publish_up = '0000-00-00 00:00:00' OR C.publish_up <= " . $this->db->quote($now) . ") ";
+        $query .= "AND (C.publish_down IS NULL OR C.publish_down = '0000-00-00 00:00:00' OR C.publish_down >= " . $this->db->quote($now) . ") AND ";
 
         if (!User::isGuest()) {
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
@@ -255,7 +255,7 @@ class Tags extends Cloud
                 }
                 $query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('" . $groups . "') ";
                 foreach ($usersgroups as $group) {
-                    $query .= " OR C.group_access LIKE " . $this->_db->quote('%;' . $group . ';%');
+                    $query .= " OR C.group_access LIKE " . $this->db->quote('%;' . $group . ';%');
                 }
                 $query .= "))) ";
             } else {
@@ -266,13 +266,13 @@ class Tags extends Cloud
         }
         if ($tag || $tag2) {
             if ($tag && !$tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag) . "))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN (" . $this->db->quote($tag) . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
             } elseif ($tag2 && !$tag) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag2) . "))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN (" . $this->db->quote($tag2) . "))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
             } elseif ($tag && $tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_scope' AND (TA.tag IN (" . $this->_db->quote($tag) . "," . $this->_db->quote($tag2) . "))";
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->scope' AND (TA.tag IN (" . $this->db->quote($tag) . "," . $this->db->quote($tag2) . "))";
                 $query .= " GROUP BY C.id HAVING uniques=2";
             }
         }
@@ -296,8 +296,8 @@ class Tags extends Cloud
         }
         $query .= " ORDER BY " . $sort . ", publish_up";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -318,7 +318,7 @@ class Tags extends Cloud
             $query = "SELECT COUNT(*)
 						FROM `#__tags_object` AS ta, `#__tags` AS t
 						WHERE ta.tagid=t.id
-						AND t.tag=" . $this->_db->quote($tag) . "
+						AND t.tag=" . $this->db->quote($tag) . "
 						AND ta.tbl='resources'
 						AND ta.objectid=" . $id;
         }
@@ -327,14 +327,14 @@ class Tags extends Cloud
             $query = "SELECT COUNT(*)
 						FROM `#__tags_object` AS ta, `#__tags` AS t, `#__resources` AS r
 						WHERE ta.tagid=t.id
-						AND t.tag=" . $this->_db->quote($tag) . "
+						AND t.tag=" . $this->db->quote($tag) . "
 						AND ta.tbl='resources'
 						AND ta.objectid=r.id
-						AND r.alias=" . $this->_db->quote($alias);
+						AND r.alias=" . $this->db->quote($alias);
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -353,12 +353,12 @@ class Tags extends Cloud
         $query = "SELECT r.$rtrn
 					FROM `#__tags_object` AS ta, `#__tags` AS t, `#__resources` AS r
 					WHERE ta.tagid=t.id
-					AND t.tag=" . $this->_db->quote($tag) . "
+					AND t.tag=" . $this->db->quote($tag) . "
 					AND ta.tbl='resources'
 					AND ta.objectid=r.id";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadColumn();
+        $this->db->setQuery($query);
+        return $this->db->loadColumn();
     }
 
     /**

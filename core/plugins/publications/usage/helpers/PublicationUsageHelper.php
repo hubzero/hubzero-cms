@@ -18,7 +18,7 @@ class PublicationUsageHelper
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
 
     /**
      * Publication
@@ -26,7 +26,7 @@ class PublicationUsageHelper
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_publication;
+    protected $publication;
 
     /**
      * Log table
@@ -34,7 +34,7 @@ class PublicationUsageHelper
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_logsTable = '#__publication_logs';
+    protected $logsTable = '#__publication_logs';
 
     /**
      * Version ID
@@ -42,7 +42,7 @@ class PublicationUsageHelper
      * @var int
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_versionId;
+    protected $versionId;
 
     /**
      * Publication ID
@@ -50,7 +50,7 @@ class PublicationUsageHelper
      * @var int
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_publicationId;
+    protected $publicationId;
 
     /**
      * Instantiates PublicationUsageHelper
@@ -60,8 +60,8 @@ class PublicationUsageHelper
      */
     public function __construct($args = [])
     {
-        $this->_db = App::get('db');
-        $this->_publication = $args['publication'];
+        $this->db = App::get('db');
+        $this->publication = $args['publication'];
     }
 
     /**
@@ -101,7 +101,7 @@ class PublicationUsageHelper
         $versionId = $this->_getVersionId();
 
         $sumQuery = "SELECT SUM($column)
-			FROM `$this->_logsTable`
+			FROM `$this->logsTable`
 			WHERE `publication_id`=$publicationId AND `publication_version_id`=$versionId
 			ORDER BY `year` ASC, `month` ASC";
 
@@ -117,9 +117,9 @@ class PublicationUsageHelper
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _runQuery($query)
     {
-        $this->_db->setQuery($query);
+        $this->db->setQuery($query);
 
-        return $this->_db->loadResult();
+        return $this->db->loadResult();
     }
 
     /**
@@ -130,12 +130,12 @@ class PublicationUsageHelper
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getPublicationId()
     {
-        if (!isset($this->_publicationId)) {
-            $publicationId = $this->_publication->id;
-            $this->_publicationId = $this->_db->quote($publicationId);
+        if (!isset($this->publicationId)) {
+            $publicationId = $this->publication->id;
+            $this->publicationId = $this->db->quote($publicationId);
         }
 
-        return $this->_publicationId;
+        return $this->publicationId;
     }
 
     /**
@@ -146,11 +146,11 @@ class PublicationUsageHelper
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getVersionId()
     {
-        if (!isset($this->_versionId)) {
-            $versionId = $this->_publication->version->id;
-            $this->_versionId = $this->_db->quote($versionId);
+        if (!isset($this->versionId)) {
+            $versionId = $this->publication->version->id;
+            $this->versionId = $this->db->quote($versionId);
         }
 
-        return $this->_versionId;
+        return $this->versionId;
     }
 }

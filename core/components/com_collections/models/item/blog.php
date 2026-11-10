@@ -25,7 +25,7 @@ class Blog extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'blog';
+    protected $type = 'blog';
 
     /**
      * Get the item type
@@ -82,7 +82,7 @@ class Blog extends GenericItem
             $id = $post->get('id');
         }
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -97,7 +97,7 @@ class Blog extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $post->get('id'))
              ->set('created', $post->get('created'))
              ->set('created_by', $post->get('created_by'))

@@ -24,7 +24,7 @@ use Hubzero\Facades\Component;
 class Collection extends Base
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_counts;
+    protected $counts;
 
     /**
      * Authorization checked?
@@ -391,8 +391,8 @@ class Collection extends Base
      */
     public function count($what = '')
     {
-        if (!isset($this->_counts) || !is_array($this->_counts)) {
-            $this->_counts = [];
+        if (!isset($this->counts) || !is_array($this->counts)) {
+            $this->counts = [];
         }
         $what = strtolower(trim($what));
         switch ($what) {
@@ -401,22 +401,22 @@ class Collection extends Base
             case 'text':
             case 'file':
             case 'link':
-                if (isset($this->_counts[$what])) {
-                    return (int) $this->_counts[$what];
+                if (isset($this->counts[$what])) {
+                    return (int) $this->counts[$what];
                 } else {
                     return 0;
                 }
                 break;
 
             case 'followers':
-                if (!isset($this->_counts[$what])) {
+                if (!isset($this->counts[$what])) {
                     $tbl = new Tables\Following($this->db);
-                    $this->_counts[$what] = $tbl->count([
+                    $this->counts[$what] = $tbl->count([
                         'following_type' => 'collection',
                         'following_id'   => $this->get('id'),
                     ]);
                 }
-                return $this->_counts[$what];
+                return $this->counts[$what];
                 break;
 
             case 'likes':

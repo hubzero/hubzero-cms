@@ -16,7 +16,7 @@ use Hubzero\Base\Obj;
 class Attachment extends Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connector;
+    protected $connector;
 
     /**
      * Element name
@@ -27,7 +27,7 @@ class Attachment extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = null;
+    protected $name = null;
 
     /**
      * Reference to the object that instantiated the element
@@ -35,7 +35,7 @@ class Attachment extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parent = null;
+    protected $parent = null;
 
     /**
      * Constructor
@@ -45,7 +45,7 @@ class Attachment extends Obj
      */
     public function __construct($parent = null)
     {
-        $this->_parent = $parent;
+        $this->parent = $parent;
     }
 
     /**
@@ -55,7 +55,7 @@ class Attachment extends Obj
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -65,6 +65,6 @@ class Attachment extends Obj
      */
     public function getConnector()
     {
-        return $this->_connector;
+        return $this->connector;
     }
 }

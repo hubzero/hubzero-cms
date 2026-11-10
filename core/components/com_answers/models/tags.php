@@ -21,7 +21,7 @@ class Tags extends Cloud
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'answers';
+    protected $scope = 'answers';
 
     /**
      * Turn a comma-separated string of tags into an array of normalized tags

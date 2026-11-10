@@ -25,7 +25,7 @@ class Resources extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'resource';
+    protected $type = 'resource';
 
     /**
      * Get the item type
@@ -84,7 +84,7 @@ class Resources extends GenericItem
             $id = $resource->id;
         }
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -99,7 +99,7 @@ class Resources extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $resource->id)
              ->set('created', $resource->created)
              ->set('created_by', $resource->created_by)

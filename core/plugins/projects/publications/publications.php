@@ -37,25 +37,25 @@ use Hubzero\Facades\User;
 class Publications extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_activity;
+    protected $activity;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_image_ext;
+    protected $imageExt;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_pid;
+    protected $pid;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_pubconfig;
+    protected $pubconfig;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_video_ext;
+    protected $videoExt;
     protected $model;
 
     /**
@@ -70,14 +70,14 @@ class Publications extends Plugin
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Event call to determine if this plugin should return data
@@ -120,9 +120,9 @@ class Publications extends Plugin
         $counts = ['publications' => 0];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
-        if (!empty($this->_area) && $model->exists()) {
+        if (!empty($this->area) && $model->exists()) {
             $database = App::get('db');
 
             // Instantiate a publication object
@@ -159,11 +159,11 @@ class Publications extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -177,20 +177,20 @@ class Publications extends Plugin
         $this->model = $model;
 
         // Incoming
-        $this->_task = Request::getString('action', '');
-        $this->_pid  = Request::getInt('pid', 0);
-        if (!$this->_task) {
-            $this->_task = $this->_pid ? 'publication' : $action;
+        $this->task = Request::getString('action', '');
+        $this->pid  = Request::getInt('pid', 0);
+        if (!$this->task) {
+            $this->task = $this->pid ? 'publication' : $action;
         }
 
-        $this->_uid       = User::get('id');
-        $this->_database  = App::get('db');
-        $this->_config    = $this->model->config();
-        $this->_pubconfig = Component::params('com_publications');
+        $this->uid       = User::get('id');
+        $this->database  = App::get('db');
+        $this->config    = $this->model->config();
+        $this->pubconfig = Component::params('com_publications');
 
         // Common extensions (for gallery)
-        $this->_image_ext = \Components\Projects\Helpers\Html::getParamArray($this->params->get('image_types', 'bmp, jpeg, jpg, png'));
-        $this->_video_ext = \Components\Projects\Helpers\Html::getParamArray($this->params->get('video_types', 'avi, mpeg, mov, wmv'));
+        $this->imageExt = \Components\Projects\Helpers\Html::getParamArray($this->params->get('image_types', 'bmp, jpeg, jpg, png'));
+        $this->videoExt = \Components\Projects\Helpers\Html::getParamArray($this->params->get('video_types', 'avi, mpeg, mov, wmv'));
 
         // Check if exists or new
         if (!$this->model->exists()) {
@@ -198,15 +198,15 @@ class Publications extends Plugin
             $this->model->set('provisioned', 1);
 
             $ajax_tasks  = ['showoptions', 'save', 'showitem'];
-            $this->_task = $action == 'start' ? 'start' : 'contribute';
+            $this->task = $action == 'start' ? 'start' : 'contribute';
             if ($action == 'publication') {
-                $this->_task = 'publication';
+                $this->task = 'publication';
             } elseif (in_array($action, $ajax_tasks)) {
-                $this->_task = $action;
+                $this->task = $action;
             }
         } elseif ($this->model->isProvisioned()) {
             // No browsing within provisioned project
-            $this->_task = $action == 'browse' ? 'contribute' : $action;
+            $this->task = $action == 'browse' ? 'contribute' : $action;
         }
 
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
@@ -214,7 +214,7 @@ class Publications extends Plugin
         \Hubzero\Document\Assets::addPluginScript('projects', 'publications', 'curation');
 
         // Actions
-        switch ($this->_task) {
+        switch ($this->task) {
             case 'browse':
             default:
                 $arr['html'] = $this->browse();
@@ -443,14 +443,14 @@ class Publications extends Plugin
                         : \Components\Projects\Helpers\Html::convertSize(floatval($this->model->config()->get('pubQuota', '1')), 'GB', 'b');
 
         // Output HTML
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->project  = $this->model;
         $view->filters  = $filters;
-        $view->title    = $this->_area['title'];
+        $view->title    = $this->area['title'];
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -496,7 +496,7 @@ class Publications extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -510,7 +510,7 @@ class Publications extends Plugin
         }
 
         // Load handler
-        $modelHandler = new \Components\Publications\Models\Handlers($this->_database);
+        $modelHandler = new \Components\Publications\Models\Handlers($this->database);
         $view->handler = $modelHandler->ini($handler);
         if (!$view->handler) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER'));
@@ -524,19 +524,19 @@ class Publications extends Plugin
             $view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
         }
 
-        $view->set('option', $this->_option);
-        $view->database = $this->_database;
-        $view->uid      = $this->_uid;
+        $view->set('option', $this->componentOption);
+        $view->database = $this->database;
+        $view->uid      = $this->uid;
         $view->ajax     = $ajax;
-        $view->set('task', $this->_task);
+        $view->set('task', $this->task);
         $view->element  = $element;
         $view->block    = $block;
         $view->blockId  = $blockId;
         $view->props    = $props;
-        $view->config   = $this->_pubconfig;
+        $view->config   = $this->pubconfig;
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -581,7 +581,7 @@ class Publications extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -601,17 +601,17 @@ class Publications extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT'));
             return $view->loadTemplate();
         }
 
-        $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->model->isProvisioned() ? 'com_publications' : $this->componentOption;
+        $view->database = $this->database;
         $view->project  = $this->model;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->ajax     = $ajax;
-        $view->task     = $this->_task;
+        $view->task     = $this->task;
         $view->element  = $element;
         $view->block    = $block;
         $view->blockId  = $blockId;
@@ -619,7 +619,7 @@ class Publications extends Plugin
         $view->filter   = $filter;
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -634,7 +634,7 @@ class Publications extends Plugin
     public function saveParam()
     {
         // Incoming
-        $pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid   = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $vid   = Request::getInt('vid', 0);
         $param = Request::getString('param', '');
         $value = urldecode(Request::getString('value', ''));
@@ -670,7 +670,7 @@ class Publications extends Plugin
     public function checkStatus()
     {
         // Incoming
-        $pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
         $ajax    = Request::getInt('ajax', 0);
         $block   = Request::getString('section', '');
@@ -718,7 +718,7 @@ class Publications extends Plugin
     public function saveDraft()
     {
         // Incoming
-        $pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $vid     = Request::getInt('vid', 0);
         $version = Request::getString('version', 'dev');
         $block   = Request::getString('section', '');
@@ -744,14 +744,14 @@ class Publications extends Plugin
         }
 
         // Check for request forgeries (the remove buttons post the token)
-        if ($this->_task == 'deleteitem') {
+        if ($this->task == 'deleteitem') {
             Request::checkToken();
         }
 
         // Parse props for curation
         if (
-            $this->_task == 'saveitem'
-            || $this->_task == 'deleteitem'
+            $this->task == 'saveitem'
+            || $this->task == 'deleteitem'
             || (!$block || !$blockId)
         ) {
             $block   = (isset($parts[0])) ? $parts[0] : 'content';
@@ -792,46 +792,46 @@ class Publications extends Plugin
         }
 
         // Save incoming
-        switch ($this->_task) {
+        switch ($this->task) {
             case 'additem':
-                $pub->_curationModel->addItem($this->_uid, $element);
+                $pub->_curationModel->addItem($this->uid, $element);
                 break;
 
             case 'saveitem':
-                $pub->_curationModel->saveItem($this->_uid, $element);
+                $pub->_curationModel->saveItem($this->uid, $element);
                 break;
 
             case 'deleteitem':
-                $pub->_curationModel->deleteItem($this->_uid, $element);
+                $pub->_curationModel->deleteItem($this->uid, $element);
                 break;
 
             case 'reorder':
-                $pub->_curationModel->reorder($this->_uid, $element);
+                $pub->_curationModel->reorder($this->uid, $element);
                 $json = 1; // return result as json
                 break;
 
             case 'dispute':
-                $pub->_curationModel->dispute($this->_uid, $element);
+                $pub->_curationModel->dispute($this->uid, $element);
                 break;
 
             case 'skip':
-                $pub->_curationModel->skip($this->_uid, $element);
+                $pub->_curationModel->skip($this->uid, $element);
                 break;
 
             case 'undispute':
-                $pub->_curationModel->undispute($this->_uid, $element);
+                $pub->_curationModel->undispute($this->uid, $element);
                 break;
 
             default:
-                if ($this->_task != 'rewind') {
-                    $pub->_curationModel->saveBlock($this->_uid, $element);
+                if ($this->task != 'rewind') {
+                    $pub->_curationModel->saveBlock($this->uid, $element);
                 }
                 break;
         }
 
         // Save new version label
         if ($block == 'status') {
-            $pub->_curationModel->saveVersionLabel($this->_uid);
+            $pub->_curationModel->saveVersionLabel($this->uid);
         }
 
         // Pick up error messages
@@ -840,7 +840,7 @@ class Publications extends Plugin
         }
 
         // Pick up success message
-        $this->_msg = $pub->_curationModel->get('_message')
+        $this->msg = $pub->_curationModel->get('_message')
             ? $pub->_curationModel->get('_message')
             : Lang::txt(ucfirst($block) . ' information successfully saved');
 
@@ -854,19 +854,19 @@ class Publications extends Plugin
             return json_encode([
                 'success' => 1,
                 'error'   => $this->getError(),
-                'message' => $this->_msg,
+                'message' => $this->msg,
             ]);
         }
 
         // Go back to panel after changes to individual attachment
-        if ($this->_task == 'saveitem') {
+        if ($this->task == 'saveitem') {
             App::redirect($back);
             return;
         }
 
         // Get blockId & count
-        $blockId = $pub->_curationModel->_blockorder;
-        $total   = $pub->_curationModel->_blockcount;
+        $blockId = $pub->_curationModel->blockorder;
+        $total   = $pub->_curationModel->blockcount;
 
         // Get next element
         if ($next) {
@@ -875,13 +875,13 @@ class Publications extends Plugin
 
         // What's next?
         $nextnum     = $pub->_curationModel->getNextBlock($block, $blockId);
-        $nextsection = isset($pub->_curationModel->_blocks->$nextnum)
-                     ? $pub->_curationModel->_blocks->$nextnum->name : 'status';
+        $nextsection = isset($pub->_curationModel->blocks->$nextnum)
+                     ? $pub->_curationModel->blocks->$nextnum->name : 'status';
 
         // Get previous section
         $prevnum     = $pub->_curationModel->getPreviousBlock($block, $blockId);
-        $prevsection = isset($pub->_curationModel->_blocks->$prevnum)
-                     ? $pub->_curationModel->_blocks->$prevnum->name : 'status';
+        $prevsection = isset($pub->_curationModel->blocks->$prevnum)
+                     ? $pub->_curationModel->blocks->$prevnum->name : 'status';
 
         // Build route
         $route  = $pub->link('edit');
@@ -891,7 +891,7 @@ class Publications extends Plugin
         $route .= $version != 'default' ? '&version=' . $version : '';
 
         // Determine which panel to go to
-        if ($this->_task == 'apply' || !$move) {
+        if ($this->task == 'apply' || !$move) {
             // Stay where you were
             $route .= '&section=' . $block;
             $route .= $block == 'status' ? '' : '&step=' . $blockId;
@@ -907,7 +907,7 @@ class Publications extends Plugin
             } elseif ($element) {
                 $route .= '&el=' . $element . '#element' . $element;
             }
-        } elseif ($this->_task == 'rewind') {
+        } elseif ($this->task == 'rewind') {
             // Go back one step
             $route .= '&section=' . $prevsection;
             $route .= $prevnum ? '&step=' . $prevnum : '';
@@ -940,7 +940,7 @@ class Publications extends Plugin
         }
 
         // Incoming
-        $pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'dev');
 
         // Load publication
@@ -981,25 +981,25 @@ class Publications extends Plugin
     public function onAfterSave($pub)
     {
         // No afterSave actions when backing one step
-        if ($this->_task == 'rewind') {
+        if ($this->task == 'rewind') {
             return false;
         }
 
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Record activity
-        if ($this->_activity) {
+        if ($this->activity) {
             $pubTitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
             $aid = $this->model->recordActivity(
-                $this->_activity,
+                $this->activity,
                 $pub->id,
                 $pubTitle,
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $pub->id . '&version=' . $pub->get('version_number')),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $pub->id . '&version=' . $pub->get('version_number')),
                 'publication',
                 1,
             );
@@ -1035,7 +1035,7 @@ class Publications extends Plugin
     public function startDraft()
     {
         // Get contributable types
-        $mt = new \Components\Publications\Tables\MasterType($this->_database);
+        $mt = new \Components\Publications\Tables\MasterType($this->database);
         $choices = $mt->getTypes('*', 1, 0, 'ordering', $this->model->config());
 
         // Contribute process outside of projects
@@ -1075,17 +1075,17 @@ class Publications extends Plugin
         );
 
         // Output HTML
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->project  = $this->model;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->config   = $this->model->config();
         $view->choices  = $choices;
-        $view->title    = $this->_area['title'];
-        $view->pubConfig = $this->_pubconfig;
+        $view->title    = $this->area['title'];
+        $view->pubConfig = $this->pubconfig;
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1109,9 +1109,9 @@ class Publications extends Plugin
         }
 
         // Load publication & version classes
-        $objP = new \Components\Publications\Tables\Publication($this->_database);
-        $objC = new \Components\Publications\Tables\Category($this->_database);
-        $mt   = new \Components\Publications\Tables\MasterType($this->_database);
+        $objP = new \Components\Publications\Tables\Publication($this->database);
+        $objC = new \Components\Publications\Tables\Category($this->database);
+        $mt   = new \Components\Publications\Tables\MasterType($this->database);
 
         // Determine publication master type
         $choices  = $mt->getTypes('alias', 1);
@@ -1132,8 +1132,8 @@ class Publications extends Plugin
             $this->model->set('state', 1);
             $this->model->set('setup_stage', 3);
             $this->model->set('created', Date::toSql());
-            $this->model->set('created_by_user', $this->_uid);
-            $this->model->set('owned_by_user', $this->_uid);
+            $this->model->set('created_by_user', $this->uid);
+            $this->model->set('owned_by_user', $this->uid);
             $this->model->set('params', $this->model->type()->params);
 
             // Save changes
@@ -1156,21 +1156,21 @@ class Publications extends Plugin
         $curationModel = new \Components\Publications\Models\Curation($mType->curation);
 
         // Get default category from manifest
-        $cat = isset($curationModel->_manifest->params->default_category)
-                ? $curationModel->_manifest->params->default_category : 1;
+        $cat = isset($curationModel->manifest->params->default_category)
+                ? $curationModel->manifest->params->default_category : 1;
         if (!$objC->load($cat)) {
             $cat = 1;
         }
 
         // Get default title from manifest
-        $title = isset($curationModel->_manifest->params->default_title)
-                ? $curationModel->_manifest->params->default_title : Lang::txt('Untitled Draft');
+        $title = isset($curationModel->manifest->params->default_title)
+                ? $curationModel->manifest->params->default_title : Lang::txt('Untitled Draft');
 
         // Make a new publication entry
         $objP->master_type = $mType->id;
         $objP->category    = $cat;
         $objP->project_id  = $this->model->get('id');
-        $objP->created_by  = $this->_uid;
+        $objP->created_by  = $this->uid;
         $objP->created     = Date::toSql();
         $objP->access      = 0;
         if (!$objP->store()) {
@@ -1180,7 +1180,7 @@ class Publications extends Plugin
         if (!$objP->id) {
             $objP->checkin();
         }
-        $this->_pid = $objP->id;
+        $this->pid = $objP->id;
 
         // Initizalize Git repo and transfer files from member dir
         if ($this->model->isProvisioned()) {
@@ -1197,8 +1197,8 @@ class Publications extends Plugin
                 if (
                     !$objO->saveOwners(
                         $this->model->get('id'),
-                        $this->_uid,
-                        $this->_uid,
+                        $this->uid,
+                        $this->uid,
                         0,
                         1,
                         1,
@@ -1212,14 +1212,14 @@ class Publications extends Plugin
         }
 
         // Make a new dev version entry
-        $row = new \Components\Publications\Tables\Version($this->_database);
-        $row->publication_id = $this->_pid;
+        $row = new \Components\Publications\Tables\Version($this->database);
+        $row->publication_id = $this->pid;
         $row->title          = $row->getDefaultTitle($this->model->get('id'), $title);
         $row->abstract       = "";
         $row->description    = "";
         $row->state          = 3; // dev
         $row->main           = 1;
-        $row->created_by     = $this->_uid;
+        $row->created_by     = $this->uid;
         $row->created        = Date::toSql();
         $row->version_number = 1;
         $row->license_type   = 0;
@@ -1238,7 +1238,7 @@ class Publications extends Plugin
         }
 
         // Models\Publication
-        $pub = new \Components\Publications\Models\Publication($this->_pid, 'dev');
+        $pub = new \Components\Publications\Models\Publication($this->pid, 'dev');
 
         // Record action, notify team
         $this->onAfterCreate($pub);
@@ -1255,7 +1255,7 @@ class Publications extends Plugin
     public function editDraft()
     {
         // Incoming
-        $pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $vid     = Request::getInt('vid', 0);
         $version = Request::getString('version', 'default');
         $block   = Request::getString('section', 'status');
@@ -1272,7 +1272,7 @@ class Publications extends Plugin
             // Get curation model
             $pub->setCuration();
             $blockId    = $pub->_curationModel->getFirstBlock();
-            $firstBlock = $pub->_curationModel->_blocks->$blockId->name;
+            $firstBlock = $pub->_curationModel->blocks->$blockId->name;
 
             // Redirect to first block
             App::redirect(htmlspecialchars_decode(Route::url($pub->link('editversion') . '&move=continue&step=' . $blockId . '&section=' . $firstBlock)));
@@ -1306,7 +1306,7 @@ class Publications extends Plugin
         $pub->_curationModel->convertToCuration($pub);
 
         // Go to last incomplete section
-        if ($this->_task == 'continue') {
+        if ($this->task == 'continue') {
             $blocks  = $pub->curation('blocks');
             $blockId = $pub->curation('firstBlock');
             $block   = $blockId ? $blocks->$blockId->name : 'status';
@@ -1314,8 +1314,8 @@ class Publications extends Plugin
 
         // Go to review screen
         if (
-            $this->_task == 'review'
-            || ($this->_task == 'continue' && $pub->curation('complete') == 1)
+            $this->task == 'review'
+            || ($this->task == 'continue' && $pub->curation('complete') == 1)
         ) {
             $blockId = $pub->curation('lastBlock');
             $block   = 'review';
@@ -1343,23 +1343,23 @@ class Publications extends Plugin
         ]);
 
         // Output HTML
-        $view->option           = $this->_option;
-        $view->database         = $this->_database;
+        $view->option           = $this->componentOption;
+        $view->database         = $this->database;
         $view->project          = $this->model;
-        $view->uid              = $this->_uid;
+        $view->uid              = $this->uid;
         $view->config           = $this->model->config();
-        $view->title            = $this->_area['title'];
+        $view->title            = $this->area['title'];
         $view->active           = $block;
         $view->pub              = $pub;
         $view->selected_version = $version;
-        $view->pubconfig        = $this->_pubconfig;
-        $view->task             = $this->_task;
+        $view->pubconfig        = $this->pubconfig;
+        $view->task             = $this->task;
 
         // Append breadcrumbs
         $this->_appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1383,14 +1383,14 @@ class Publications extends Plugin
         $step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
-        if ($this->_task == 'editauthor') {
+        if ($this->task == 'editauthor') {
             // Get author information
-            $row = new \Components\Publications\Tables\Author($this->_database);
+            $row = new \Components\Publications\Tables\Author($this->database);
             $error = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_LOAD_AUTHOR');
             $layout = 'author';
         } else {
             // Load attachment
-            $row = new \Components\Publications\Tables\Attachment($this->_database);
+            $row = new \Components\Publications\Tables\Attachment($this->database);
             $error = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_ERROR_EDIT_CONTENT');
             $layout = 'attachment';
         }
@@ -1420,7 +1420,7 @@ class Publications extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -1437,15 +1437,15 @@ class Publications extends Plugin
         ]);
 
         // Get project path
-        if ($this->_task != 'editauthor') {
+        if ($this->task != 'editauthor') {
             $view->path = $pub->project()->repo()->get('path');
         }
 
         $view->step     = $step;
         $view->block    = $block;
         $view->element  = $element;
-        $view->database = $this->_database;
-        $view->option   = $this->_option;
+        $view->database = $this->database;
+        $view->option   = $this->componentOption;
         $view->project  = $this->model;
         $view->pub      = $pub;
         $view->row      = $row;
@@ -1482,7 +1482,7 @@ class Publications extends Plugin
     protected function _stats()
     {
         // Incoming
-        $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
 
         $view = new \Hubzero\Plugin\View([
@@ -1492,7 +1492,7 @@ class Publications extends Plugin
         ]);
 
         // Get pub stats for each publication
-        $pubLog = new \Components\Publications\Tables\Log($this->_database);
+        $pubLog = new \Components\Publications\Tables\Log($this->database);
         $view->pubstats = $pubLog->getPubStats($this->model->get('id'), $pid);
 
         // Get date of first log
@@ -1502,20 +1502,20 @@ class Publications extends Plugin
         $view->totals = $pubLog->getTotals($this->model->get('id'), 'project');
 
         // Output HTML
-        $view->option    = $this->_option;
-        $view->database  = $this->_database;
+        $view->option    = $this->componentOption;
+        $view->database  = $this->database;
         $view->project   = $this->model;
-        $view->uid       = $this->_uid;
+        $view->uid       = $this->uid;
         $view->pid       = $pid;
         $view->pub       = new \Components\Publications\Models\Publication($pid, $version);
-        $view->task      = $this->_task;
+        $view->task      = $this->task;
         $view->config    = $this->model->config();
-        $view->pubconfig = $this->_pubconfig;
+        $view->pubconfig = $this->pubconfig;
         $view->version   = $version;
-        $view->title     = $this->_area['title'];
+        $view->title     = $this->area['title'];
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -1530,7 +1530,7 @@ class Publications extends Plugin
     protected function _suggestLicense()
     {
         // Incoming
-        $pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
         $ajax    = Request::getInt('ajax', 0);
 
@@ -1538,12 +1538,12 @@ class Publications extends Plugin
         $pub = new \Components\Publications\Models\Publication($pid, $version);
         if (!$pub->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
-            $this->_task = '';
+            $this->task = '';
             return $this->browse();
         }
 
         // File a support ticket
-        if ($this->_task == 'save_license') {
+        if ($this->task == 'save_license') {
             $l_title = htmlentities(Request::getString('license_title', '', 'post'));
             $l_url   = htmlentities(Request::getString('license_url', '', 'post'));
             $l_text  = htmlentities(Request::getString('details', '', 'post'));
@@ -1600,7 +1600,7 @@ class Publications extends Plugin
                         // Send out email to admins
                         if (!empty($admins)) {
                             \Components\Projects\Helpers\Html::sendHUBMessage(
-                                $this->_option,
+                                $this->componentOption,
                                 $this->model,
                                 $admins,
                                 Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_NEW'),
@@ -1611,7 +1611,7 @@ class Publications extends Plugin
                         }
                     }
 
-                    $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_SENT');
+                    $this->msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_SENT');
                 }
             }
         } else {
@@ -1622,21 +1622,21 @@ class Publications extends Plugin
             ]);
 
             // Output HTML
-            $view->option    = $this->_option;
-            $view->database  = $this->_database;
+            $view->option    = $this->componentOption;
+            $view->database  = $this->database;
             $view->project   = $this->model;
-            $view->uid       = $this->_uid;
+            $view->uid       = $this->uid;
             $view->pid       = $pid;
             $view->pub       = $pub;
-            $view->task      = $this->_task;
+            $view->task      = $this->task;
             $view->config    = $this->model->config();
-            $view->pubconfig = $this->_pubconfig;
+            $view->pubconfig = $this->pubconfig;
             $view->ajax      = $ajax;
             $view->version   = $version;
-            $view->title     = $this->_area['title'];
+            $view->title     = $this->area['title'];
 
             // Get messages and errors
-            $view->msg = $this->_msg;
+            $view->msg = $this->msg;
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1646,8 +1646,8 @@ class Publications extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -1663,7 +1663,7 @@ class Publications extends Plugin
     public function newVersion()
     {
         // Incoming
-        $pid   = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid   = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $ajax  = Request::getInt('ajax', 0);
         $label = trim(Request::getString('version_label', '', 'post'));
         $selected_version = Request::getString('selected_version', 'default');
@@ -1678,7 +1678,7 @@ class Publications extends Plugin
         $pub = new \Components\Publications\Models\Publication($pid, $selected_version);
         if (!$pub->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
-            $this->_task = '';
+            $this->task = '';
             return $this->browse();
         }
 
@@ -1711,7 +1711,7 @@ class Publications extends Plugin
         }
 
         // Saving new version
-        if ($this->_task == 'savenew') {
+        if ($this->task == 'savenew') {
             $used_labels = $pub->version->getUsedLabels($pid, 'dev');
             if (!$label) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_NONE'));
@@ -1719,7 +1719,7 @@ class Publications extends Plugin
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
             } else {
                 // Create new version
-                $new =  new \Components\Publications\Tables\Version($this->_database);
+                $new =  new \Components\Publications\Tables\Version($this->database);
                 // Copy from previous version
                 $new->publication_id = $pub->get('publication_id');
                 $new->title          = $pub->get('title');
@@ -1732,9 +1732,9 @@ class Publications extends Plugin
                 $new->access         = $pub->get('access');
 
                 $new->created        = Date::toSql();
-                $new->created_by     = $this->_uid;
+                $new->created_by     = $this->uid;
                 $new->modified       = Date::toSql();
-                $new->modified_by    = $this->_uid;
+                $new->modified_by    = $this->uid;
                 $new->state          = 3;
                 $new->main           = 0;
                 $new->version_label  = $label;
@@ -1746,13 +1746,13 @@ class Publications extends Plugin
                     $pub->_curationModel->transfer($pub, $pub->version, $new);
 
                     // Set response message
-                    $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');
+                    $this->msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED');
 
                     // Set activity message
                     $pubTitle = \Hubzero\Utility\Str::truncate($new->title, 100);
                     $action   = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_VERSION') . ' ' . $new->version_label . ' ';
                     $action .=  Lang::txt('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION') . ' "' . $pubTitle . '"';
-                    $this->_activity = $action;
+                    $this->activity = $action;
 
                     // Record action, notify team
                     $pub->set('version_number', $new->version_number);
@@ -1771,21 +1771,21 @@ class Publications extends Plugin
             ]);
 
             // Output HTML
-            $view->option           = $this->_option;
-            $view->database         = $this->_database;
+            $view->option           = $this->componentOption;
+            $view->database         = $this->database;
             $view->project          = $this->model;
-            $view->uid              = $this->_uid;
+            $view->uid              = $this->uid;
             $view->pid              = $pid;
             $view->pub              = $pub;
-            $view->task             = $this->_task;
+            $view->task             = $this->task;
             $view->config           = $this->model->config();
-            $view->pubconfig        = $this->_pubconfig;
+            $view->pubconfig        = $this->pubconfig;
             $view->selected_version = $selected_version;
             $view->ajax             = $ajax;
-            $view->title            = $this->_area['title'];
+            $view->title            = $this->area['title'];
 
             // Get messages and errors
-            $view->msg = $this->_msg;
+            $view->msg = $this->msg;
             if ($this->getError()) {
                 $view->setError($this->getError());
             }
@@ -1795,8 +1795,8 @@ class Publications extends Plugin
         // Pass success or error message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -1836,13 +1836,13 @@ class Publications extends Plugin
     public function publishDraft()
     {
         // Incoming
-        $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $confirm   = Request::getInt('confirm', 0);
         $version   = Request::getString('version', 'dev');
         $agree     = Request::getInt('agree', 0);
         $pubdate   = Request::getString('publish_date', '', 'post');
         $review    = Request::getInt('request_review', 0);
-        $submitter = Request::getInt('submitter', $this->_uid, 'post');
+        $submitter = Request::getInt('submitter', $this->uid, 'post');
         $notify    = 1;
 
         $block     = Request::getString('section', '');
@@ -1856,8 +1856,8 @@ class Publications extends Plugin
         }
 
         // Load review step
-        if (!$confirm && $this->_task != 'revert') {
-            $this->_task = 'review';
+        if (!$confirm && $this->task != 'revert') {
+            $this->task = 'review';
             return $this->editDraft();
         }
 
@@ -1874,14 +1874,14 @@ class Publications extends Plugin
         // Agreement to terms is required
         if ($confirm && !$agree) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED'), 'projects');
-            App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
+            App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
             return;
         }
 
         // Check against quota
         if ($this->_overQuota()) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE'), 'projects');
-            App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
+            App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
             return;
         }
 
@@ -1889,12 +1889,12 @@ class Publications extends Plugin
         $pub->setCuration();
 
         // Require DOI?
-        $requireDoi = isset($pub->_curationModel->_manifest->params->require_doi)
-                    ? $pub->_curationModel->_manifest->params->require_doi : 0;
+        $requireDoi = isset($pub->_curationModel->manifest->params->require_doi)
+                    ? $pub->_curationModel->manifest->params->require_doi : 0;
 
         // Auto-approve?
-        $autoApprove = isset($pub->_curationModel->_manifest->params->auto_approve)
-                    ? $pub->_curationModel->_manifest->params->auto_approve : 0;
+        $autoApprove = isset($pub->_curationModel->manifest->params->auto_approve)
+                    ? $pub->_curationModel->manifest->params->auto_approve : 0;
 
         // Make sure the publication belongs to the project
         if (!$pub->belongsToProject($this->model->get('id'))) {
@@ -1910,7 +1910,7 @@ class Publications extends Plugin
         }
 
         // Is draft complete?
-        if (!$pub->curation('complete') && $this->_task != 'revert') {
+        if (!$pub->curation('complete') && $this->task != 'revert') {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED'));
         }
 
@@ -1918,7 +1918,7 @@ class Publications extends Plugin
         // they were added: the selection is stale and the served bundle would not
         // reflect the project's current folder layout. Block publish and point the
         // curator at the files to re-select. (Not on revert — no re-selection there.)
-        if ($this->_task != 'revert') {
+        if ($this->task != 'revert') {
             $movedFiles = $pub->_curationModel->movedSourceAttachments();
 
             if ($movedFiles) {
@@ -1941,7 +1941,7 @@ class Publications extends Plugin
         }
 
         // Is revert allowed?
-        $revertAllowed = $this->_pubconfig->get('graceperiod', 0);
+        $revertAllowed = $this->pubconfig->get('graceperiod', 0);
         if (
             $revertAllowed && $pub->version->state == 1
             && $pub->version->accepted && $pub->version->accepted != '0000-00-00 00:00:00'
@@ -1965,7 +1965,7 @@ class Publications extends Plugin
         }
 
         // Contact info is required for repositories
-        if ($pub->config()->get('repository') && $this->_task != 'revert') {
+        if ($pub->config()->get('repository') && $this->task != 'revert') {
             $contact = Request::getArray('contact', [], 'post');
 
             if (!$contact || empty($contact)) {
@@ -2001,7 +2001,7 @@ class Publications extends Plugin
                         Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INSTITUTION_MISSING'), 'projects');
                     }
 
-                    App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
+                    App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
                     return;
                 }
 
@@ -2014,17 +2014,17 @@ class Publications extends Plugin
         }
 
         // Main version?
-        $main = $this->_task == 'republish' ? $pub->version->main : 1;
+        $main = $this->task == 'republish' ? $pub->version->main : 1;
         $main_vid = $pub->version->getMainVersionId($pid); // current default version
 
         // Save version before changes
         $originalStatus = $pub->version->state;
 
         // Checks
-        if ($this->_task == 'republish' && $pub->version->state != 0) {
+        if ($this->task == 'republish' && $pub->version->state != 0) {
             // Can only re-publish unpublished version
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REPUBLISH'));
-        } elseif ($this->_task == 'revert' && $pub->version->state != 5 && !$revertAllowed) {
+        } elseif ($this->task == 'revert' && $pub->version->state != 5 && !$revertAllowed) {
             // Can only revert a pending resource
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CANNOT_REVERT'));
         }
@@ -2033,26 +2033,26 @@ class Publications extends Plugin
         if ($this->getError()) {
             Notify::error($this->getError(), 'projects');
 
-            App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->_task));
+            App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
         }
 
         // Determine state
         $state = 5; // Default - pending approval
-        if ($this->_task == 'share' || $this->_task == 'revert') {
+        if ($this->task == 'share' || $this->task == 'revert') {
             $state = 4; // No approval needed
-        } elseif ($this->_task == 'republish') {
+        } elseif ($this->task == 'republish') {
             $state = 1; // No approval needed
         } else {
             $pub->version->set('submitted', Date::toSql());
 
             // Save submitter
-            $pa = new \Components\Publications\Tables\Author($this->_database);
+            $pa = new \Components\Publications\Tables\Author($this->database);
             $pa->saveSubmitter($pub->version->id, $submitter, $this->model->get('id'));
 
-            if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1)) {
+            if (!$review && ($autoApprove || $this->pubconfig->get('autoapprove') == 1)) {
                 $state = 1;
             } else {
-                $apu = $this->_pubconfig->get('autoapproved_users');
+                $apu = $this->pubconfig->get('autoapproved_users');
                 $apu = explode(',', $apu == null ? '' : $apu);
                 $apu = array_map('trim', $apu);
 
@@ -2074,8 +2074,8 @@ class Publications extends Plugin
         $pub->version->set('state', $state);
         $pub->version->set('main', $main);
 
-        if ($this->_task != 'revert') {
-            $publishedUp = $this->_task == 'republish'
+        if ($this->task != 'revert') {
+            $publishedUp = $this->task == 'republish'
                 ? $pub->version->published_up : Date::toSql();
             $publishedUp = $pubdate ? $pubdate : $publishedUp;
 
@@ -2084,13 +2084,13 @@ class Publications extends Plugin
             $pub->version->set('published_down', '');
         }
         $pub->version->set('modified', Date::toSql());
-        $pub->version->set('modified_by', $this->_uid);
+        $pub->version->set('modified_by', $this->uid);
 
         // Get DOI service
         $doiService = new \Components\Publications\Models\Doi($pub);
 
         // Issue DOI
-        if ($requireDoi > 0 && $this->_task == 'publish' && !$pub->version->doi) {
+        if ($requireDoi > 0 && $this->task == 'publish' && !$pub->version->doi) {
             $extended = $state == 5 ? false : true;
             $status   = $state == 5 ? 'reserved' : 'public';
 
@@ -2108,7 +2108,7 @@ class Publications extends Plugin
         $updateDoiMetadata = ($pub->version->doi ? preg_match("/" . $doiService->configs()->shoulder . "/", $pub->version->doi) : false);
 
         // When dataset is automatically approved.
-        if (!$review && ($autoApprove || $this->_pubconfig->get('autoapprove') == 1) && $updateDoiMetadata) {
+        if (!$review && ($autoApprove || $this->pubconfig->get('autoapprove') == 1) && $updateDoiMetadata) {
             // Update DOI metadata
             $doiService->update($pub->version->get('doi'), true);
 
@@ -2126,7 +2126,7 @@ class Publications extends Plugin
             }
         }
 
-        if ($this->_task == 'revert' && $updateDoiMetadata && $originalStatus == 1) {
+        if ($this->task == 'revert' && $updateDoiMetadata && $originalStatus == 1) {
             $doiService->revert($pub->version->doi, $doiService::STATE_FROM_PUBLISHED_TO_DRAFTREADY);
 
             if ($doiService->getError()) {
@@ -2135,7 +2135,7 @@ class Publications extends Plugin
             }
         }
 
-        if ($this->_task == 'publish' && $updateDoiMetadata && $originalStatus == 4) {
+        if ($this->task == 'publish' && $updateDoiMetadata && $originalStatus == 4) {
             $doiService->revert($pub->version->doi, $doiService::STATE_FROM_DRAFTREADY_TO_PUBLISHED);
 
             if ($doiService->getError()) {
@@ -2149,7 +2149,7 @@ class Publications extends Plugin
             if ($state == 1) {
                 // Get and save manifest and its version
                 $versionNumber = $pub->_curationModel->checkCurationVersion();
-                $pub->version->set('curation', json_encode($pub->_curationModel->_manifest));
+                $pub->version->set('curation', json_encode($pub->_curationModel->manifest));
                 $pub->version->set('curation_version_id', $versionNumber);
             }
 
@@ -2195,31 +2195,31 @@ class Publications extends Plugin
 
         // Log activity in curation history
         if (isset($pub->_curationModel)) {
-            $pub->_curationModel->saveHistory($this->_uid, $originalStatus, $pub->version->get('state'), 0);
+            $pub->_curationModel->saveHistory($this->uid, $originalStatus, $pub->version->get('state'), 0);
         }
 
         // Display status message
         switch ($pub->version->get('state')) {
             case 1:
             default:
-                $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PUBLISHED');
-                $action = $this->_task == 'republish'
+                $this->msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PUBLISHED');
+                $action = $this->task == 'republish'
                             ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REPUBLISHED')
                             : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_PUBLISHED');
                 break;
 
             case 4:
-                $this->_msg = $this->_task == 'revert'
+                $this->msg = $this->task == 'revert'
                             ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_REVERTED')
                             : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED');
-                $action = $this->_task == 'revert'
+                $action = $this->task == 'revert'
                             ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REVERTED')
                             : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SAVED');
                 $notify = 0;
                 break;
 
             case 5:
-                $this->_msg = $originalStatus == 7
+                $this->msg = $originalStatus == 7
                             ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING_RESUBMITTED')
                             : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING');
                 $action = $originalStatus == 7
@@ -2227,7 +2227,7 @@ class Publications extends Plugin
                             : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
                 break;
         }
-        $this->_msg .= ' <a href="' . Route::url($pub->link('version')) . '">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT') . '</a>';
+        $this->msg .= ' <a href="' . Route::url($pub->link('version')) . '">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT') . '</a>';
 
         $pubtitle = \Hubzero\Utility\Str::truncate($pub->version->get('title'), 100);
         $action  .= ' ' . $pub->version->get('version_label') . ' ';
@@ -2247,7 +2247,7 @@ class Publications extends Plugin
         }
 
         // Send out notifications
-        $profile = User::getInstance($this->_uid);
+        $profile = User::getInstance($this->uid);
         $actor  = $profile
                 ? $profile->get('name')
                 : Lang::txt('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
@@ -2283,8 +2283,8 @@ class Publications extends Plugin
             $curatorMessage = ($pub->version->get('state') == 5) ? $message . "\n" . "\n" . Lang::txt('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . $curationPubLink : $message;
 
             $curatorgroups = [$pub->masterType()->curatorgroup];
-            if ($this->_pubconfig->get('curatorgroup', '')) {
-                $curatorgroups[] = $this->_pubconfig->get('curatorgroup', '');
+            if ($this->pubconfig->get('curatorgroup', '')) {
+                $curatorgroups[] = $this->pubconfig->get('curatorgroup', '');
             }
             $admins = [];
             foreach ($curatorgroups as $curatorgroup) {
@@ -2332,8 +2332,8 @@ class Publications extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         return;
@@ -2381,7 +2381,7 @@ class Publications extends Plugin
     public function cancelDraft()
     {
         // Incoming
-        $pid     = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid     = $this->pid ? $this->pid : Request::getInt('pid', 0);
         $confirm = Request::getInt('confirm', 0);
         $version = Request::getString('version', 'default');
         $ajax    = Request::getInt('ajax', 0);
@@ -2430,13 +2430,13 @@ class Publications extends Plugin
                     // Unpublish published version
                     $pub->version->set('published_down', Date::toSql());
                     $pub->version->set('modified', Date::toSql());
-                    $pub->version->set('modified_by', $this->_uid);
+                    $pub->version->set('modified_by', $this->uid);
                     $pub->version->set('state', 0);
 
                     if (!$pub->version->store()) {
                         throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
                     } else {
-                        $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_UNPUBLISHED');
+                        $this->msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_UNPUBLISHED');
 
                         // Add activity
                         $action  = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
@@ -2460,19 +2460,19 @@ class Publications extends Plugin
                     }
 
                     // Delete authors
-                    $pa = new \Components\Publications\Tables\Author($this->_database);
+                    $pa = new \Components\Publications\Tables\Author($this->database);
                     $authors = $pa->deleteAssociations($vid);
 
                     // Delete attachments
-                    $pContent = new \Components\Publications\Tables\Attachment($this->_database);
+                    $pContent = new \Components\Publications\Tables\Attachment($this->database);
                     $pContent->deleteAttachments($vid);
 
                     // Delete screenshots
-                    $pScreenshot = new \Components\Publications\Tables\Screenshot($this->_database);
+                    $pScreenshot = new \Components\Publications\Tables\Screenshot($this->database);
                     $pScreenshot->deleteScreenshots($vid);
 
                     // Build publication path
-                    $path =  PATH_APP . DS . trim($this->_pubconfig->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid);
+                    $path =  PATH_APP . DS . trim($this->pubconfig->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid);
 
                     // Build version path
                     $vPath = $path . DS . \Hubzero\Utility\Str::pad($vid);
@@ -2483,11 +2483,11 @@ class Publications extends Plugin
                     }
 
                     // Delete access accosiations
-                    $pAccess = new \Components\Publications\Tables\Access($this->_database);
+                    $pAccess = new \Components\Publications\Tables\Access($this->database);
                     $pAccess->deleteGroups($vid);
 
                     // Delete audience
-                    $pAudience = new \Components\Publications\Tables\Audience($this->_database);
+                    $pAudience = new \Components\Publications\Tables\Audience($this->database);
                     $pAudience->deleteAudience($vid);
 
                     // Delete publication existence
@@ -2530,7 +2530,7 @@ class Publications extends Plugin
 
                     $aid = $this->model->recordActivity($action, $pid, '', '', 'publication', 0);
 
-                    $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DRAFT_DELETED');
+                    $this->msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DRAFT_DELETED');
                 }
             }
         } else {
@@ -2541,21 +2541,21 @@ class Publications extends Plugin
             ]);
 
             // Output HTML
-            $view->option         = $this->_option;
-            $view->database       = $this->_database;
+            $view->option         = $this->componentOption;
+            $view->database       = $this->database;
             $view->project        = $this->model;
-            $view->uid            = $this->_uid;
+            $view->uid            = $this->uid;
             $view->pid            = $pid;
             $view->pub            = $pub;
             $view->publishedCount = $pub->version->getPublishedCount($pid);
-            $view->task           = $this->_task;
+            $view->task           = $this->task;
             $view->config         = $this->model->config();
-            $view->pubconfig      = $this->_pubconfig;
+            $view->pubconfig      = $this->pubconfig;
             $view->ajax           = $ajax;
-            $view->title          = $this->_area['title'];
+            $view->title          = $this->area['title'];
 
             // Get messages and errors
-            $view->msg = $this->_msg;
+            $view->msg = $this->msg;
             $view->setErrors($this->getErrors());
 
             return $view->loadTemplate();
@@ -2564,8 +2564,8 @@ class Publications extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         App::redirect($baseUrl);
@@ -2580,7 +2580,7 @@ class Publications extends Plugin
     public function versions()
     {
         // Incoming
-        $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
+        $pid = $this->pid ? $this->pid : Request::getInt('pid', 0);
 
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -2607,18 +2607,18 @@ class Publications extends Plugin
         $view->versions = $view->pub->version->getVersions($pid, $filters = ['withdev' => 1]);
 
         // Output HTML
-        $view->option    = $this->_option;
-        $view->database  = $this->_database;
+        $view->option    = $this->componentOption;
+        $view->database  = $this->database;
         $view->project   = $this->model;
-        $view->uid       = $this->_uid;
+        $view->uid       = $this->uid;
         $view->pid       = $pid;
-        $view->task      = $this->_task;
+        $view->task      = $this->task;
         $view->config    = $this->model->config();
-        $view->pubconfig = $this->_pubconfig;
-        $view->title     = $this->_area['title'];
+        $view->pubconfig = $this->pubconfig;
+        $view->title     = $this->area['title'];
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         $view->setErrors($this->getErrors());
 
         return $view->loadTemplate();
@@ -2633,9 +2633,9 @@ class Publications extends Plugin
     {
         $choices = [];
 
-        if ($this->_pubconfig->get('contribute', 0)) {
-            $mt = new \Components\Publications\Tables\MasterType($this->_database);
-            $choice = $this->_pubconfig->get('contribute_default', 'files');
+        if ($this->pubconfig->get('contribute', 0)) {
+            $mt = new \Components\Publications\Tables\MasterType($this->database);
+            $choice = $this->pubconfig->get('contribute_default', 'files');
 
             if ($choice != '*') {
                 $type = $mt->getType($choice);
@@ -2654,9 +2654,9 @@ class Publications extends Plugin
             'name'    => 'browse',
             'layout'  => 'provisioned',
         ]);
-        $view->option   = $this->_option;
+        $view->option   = $this->componentOption;
         $view->juser    = User::getInstance();
-        $view->database = $this->_database;
+        $view->database = $this->database;
 
         // Instantiate a publication object
         $view->pub     = new \Components\Publications\Models\Publication();
@@ -2677,7 +2677,7 @@ class Publications extends Plugin
         $mconfig = Component::params('com_members');
 
         // Build upload path
-        $dir  = \Hubzero\Utility\Str::pad($this->_uid);
+        $dir  = \Hubzero\Utility\Str::pad($this->uid);
         $path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
         if (!is_dir(PATH_APP . $path)) {
@@ -2794,8 +2794,8 @@ class Publications extends Plugin
         $view->total = $pub_model->entries('count', $filters);
 
         $view->project = $model;
-        $view->option  = $this->_option;
-        $view->title   = isset($this->_area['title']) ? $this->_area['title'] : '';
+        $view->option  = $this->componentOption;
+        $view->title   = isset($this->area['title']) ? $this->area['title'] : '';
 
         return $view->loadTemplate();
     }
@@ -2810,8 +2810,8 @@ class Publications extends Plugin
      */
     public function serve($type = '', $projectid = 0, $query = '')
     {
-        $this->_area = $this->onProjectAreas();
-        if ($type != $this->_area['name']) {
+        $this->area = $this->onProjectAreas();
+        if ($type != $this->area['name']) {
             return false;
         }
         $data = json_decode($query);

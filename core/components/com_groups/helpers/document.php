@@ -64,7 +64,7 @@ class Document extends Obj
      *
      * @var  array
      */
-    private $_tags       = [];
+    private $tags       = [];
 
     /**
      * Parse Document Content
@@ -92,7 +92,7 @@ class Document extends Obj
                 unset($attribs['type']);
                 $params = $attribs;
 
-                $this->_tags[$matches[0][$i]] = [
+                $this->tags[$matches[0][$i]] = [
                     'type'   => $type,
                     'name'   => $name,
                     'params' => $params,
@@ -116,7 +116,7 @@ class Document extends Obj
         $with    = [];
 
         // loop through all includes and render
-        foreach ($this->_tags as $tag => $props) {
+        foreach ($this->tags as $tag => $props) {
             $replace[] = $tag;
             $with[]    = $this->getBuffer($tag, $props['type'], $props['name'], $props['params']);
         }
@@ -125,7 +125,7 @@ class Document extends Obj
         $this->set('document', str_replace($replace, $with, $this->get('document')));
 
         // reset tags
-        $this->_tags = [];
+        $this->tags = [];
 
         //return this for chainability
         return $this;

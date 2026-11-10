@@ -55,8 +55,8 @@ class Contributor extends Macro
             $id = intval($et);
             $sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` WHERE id=" . $id;
             // Perform query
-            $this->_db->setQuery($sql);
-            $a = $this->_db->loadRow();
+            $this->db->setQuery($sql);
+            $a = $this->db->loadRow();
 
             // Did we get a result from the database?
             if ($a) {
@@ -87,11 +87,11 @@ class Contributor extends Macro
             } else {
                 $bits = explode(' ', $n);
                 $sql = "SELECT id, givenName, middleName, surname, name FROM `#__users` "
-                    . "WHERE givenName=" . $this->_db->quote($bits[0])
-                    . " AND surname=" . $this->_db->quote(end($bits));
+                    . "WHERE givenName=" . $this->db->quote($bits[0])
+                    . " AND surname=" . $this->db->quote(end($bits));
                 // Perform query
-                $this->_db->setQuery($sql);
-                $a = $this->_db->loadRow();
+                $this->db->setQuery($sql);
+                $a = $this->db->loadRow();
 
                 // Did we get a result from the database?
                 if ($a) {

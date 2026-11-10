@@ -21,9 +21,9 @@ use Hubzero\Facades\Route;
 class Tools extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     protected $totals;
 
     /**
@@ -530,32 +530,32 @@ class Tools extends Plugin
         if ($period == 'prior12' || $period == '12') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=12&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
+        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=12&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_PRIOR12') . '</span></a></li>' . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'month' || $period == '1') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=1&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
+        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=1&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_MONTH') . '</span></a></li>' . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'qtr' || $period == '3') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=3&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
+        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=3&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_QTR') . '</span></a></li>' . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'year' || $period == '0') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=0&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
+        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=0&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_YEAR') . '</span></a></li>' . "\n";
         $html .= "\t\t" . '<li';
         if ($period == 'fiscal' || $period == '13') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=13&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
+        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=13&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_FISCAL') . '</span></a></li>' . "\n";
         $html .= "\t\t" . '<li';
         if ($period == '14') {
             $html .= ' class="active"';
         }
-        $html .= '><a href="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=14&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_OVERALL') . '</span></a></li>' . "\n";
+        $html .= '><a href="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=14&top=' . $top) . '"><span>' . Lang::txt('PLG_USAGE_PERIOD_OVERALL') . '</span></a></li>' . "\n";
         $html .= "\t" . '</ul>' . "\n";
         $html .= '</div>' . "\n";
 
@@ -636,8 +636,8 @@ class Tools extends Plugin
         }
 
         // Set some vars
-        $this->_option = $option;
-        $this->_task = $task;
+        $this->componentOption = $option;
+        $this->task = $task;
 
         // Incoming
         $period = Request::getString('period', '12');
@@ -650,7 +650,7 @@ class Tools extends Plugin
         if ($s_top < 9) {
             $html .= $this->navlinks($period, $s_top);
         }
-        $html  = '<form method="post" action="' . Route::url('index.php?option=' . $this->_option . '&task=' . $this->_task . '&period=' . $period) . '">' . "\n";
+        $html  = '<form method="post" action="' . Route::url('index.php?option=' . $this->componentOption . '&task=' . $this->task . '&period=' . $period) . '">' . "\n";
         $html .= "\t" . '<fieldset class="filters">' . "\n";
         $html .= "\t\t" . '<legend class="sr-only">' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . '</legend>' . "\n";
         $html .= "\t\t" . '<label for="usage-top">' . Lang::txt('PLG_USAGE_SHOW_DATA_FOR') . ': </label>' . "\n";

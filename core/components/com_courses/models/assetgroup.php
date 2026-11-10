@@ -31,7 +31,7 @@ class Assetgroup extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'asset_group';
+    protected $scope = 'asset_group';
 
     /**
      * Curent asset
@@ -67,7 +67,7 @@ class Assetgroup extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_siblings = null;
+    public $siblings = null;
 
     /**
      * Registry
@@ -117,7 +117,7 @@ class Assetgroup extends Base
             return $this->table->$property;
         } elseif (isset($this->table->{'__' . $property})) {
             return $this->table->{'__' . $property};
-        } elseif (in_array($property, self::$_section_keys)) {
+        } elseif (in_array($property, self::$sectionKeys)) {
             $tbl = new Tables\SectionDate($this->db);
             $tbl->load($this->get('id'), 'asset_group', $this->get('section_id'));
 
@@ -272,7 +272,7 @@ class Assetgroup extends Base
         if (!($siblings instanceof \Traversable)) {
             $siblings = new Iterator($siblings);
         }
-        $this->_siblings = $siblings;
+        $this->siblings = $siblings;
     }
 
     /**
@@ -282,10 +282,10 @@ class Assetgroup extends Base
      */
     public function isFirst()
     {
-        if (!$this->_siblings) {
+        if (!$this->siblings) {
             return true;
         }
-        return $this->_siblings->isFirst();
+        return $this->siblings->isFirst();
     }
 
     /**
@@ -295,10 +295,10 @@ class Assetgroup extends Base
      */
     public function isLast()
     {
-        if (!$this->_siblings) {
+        if (!$this->siblings) {
             return true;
         }
-        return $this->_siblings->isLast();
+        return $this->siblings->isLast();
     }
 
     /**
@@ -309,7 +309,7 @@ class Assetgroup extends Base
      */
     public function key($idx = null)
     {
-        return $this->_siblings->key($idx);
+        return $this->siblings->key($idx);
     }
 
     /**
@@ -320,14 +320,14 @@ class Assetgroup extends Base
      */
     public function sibling($dir = 'next')
     {
-        if (!$this->_siblings) {
+        if (!$this->siblings) {
             return null;
         }
         $dir = strtolower(trim($dir));
         switch ($dir) {
             case 'prev':
             case 'next':
-                return $this->_siblings->fetch($dir);
+                return $this->siblings->fetch($dir);
                 break;
 
             default:
@@ -348,7 +348,7 @@ class Assetgroup extends Base
 
         if ($value && $this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
             $dt->set('publish_up', $this->get('publish_up'));
             $dt->set('publish_down', $this->get('publish_down'));
             if (!$dt->store()) {
@@ -386,7 +386,7 @@ class Assetgroup extends Base
 
         if ($this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
             if ($dt->id) {
                 if (!$dt->delete()) {
                     $this->setError($dt->getError());

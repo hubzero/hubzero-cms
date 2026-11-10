@@ -24,7 +24,7 @@ class Tags extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'tags';
+    protected $name = 'tags';
 
     /**
      * Parent block name
@@ -32,7 +32,7 @@ class Tags extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parentname = null;
+    protected $parentname = null;
 
     /**
      * Default manifest
@@ -40,7 +40,7 @@ class Tags extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest = null;
+    protected $manifest = null;
 
     /**
      * Numeric block ID
@@ -48,7 +48,7 @@ class Tags extends Base
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockId = 0;
+    protected $blockId = 0;
 
     /**
      * Display block content
@@ -62,12 +62,12 @@ class Tags extends Base
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Output HTML
@@ -87,10 +87,10 @@ class Tags extends Base
             ]);
         }
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
         $view->showControls = 4;
 
@@ -120,8 +120,8 @@ class Tags extends Base
         ]);
 
         $view->pub      = $pub;
-        $view->manifest = $this->_manifest;
-        $view->step     = $this->_blockId;
+        $view->manifest = $this->manifest;
+        $view->step     = $this->blockId;
 
         // Get categories
         $view->categories = $pub->category()->getContribCategories();
@@ -145,29 +145,29 @@ class Tags extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure changes are allowed
-        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+        if ($this->parent->checkFreeze($this->manifest->params, $pub)) {
             return false;
         }
 
         // Load publication version
-        $objP = new \Components\Publications\Tables\Publication($this->_parent->_db);
+        $objP = new \Components\Publications\Tables\Publication($this->parent->db);
 
         if (!$objP->load($pub->id)) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
             return false;
         }
 
-        $tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
+        $tagsHelper = new \Components\Publications\Helpers\Tags($this->parent->db);
         $tags = trim(Request::getString('tags', '', 'post'));
         $tagsHelper->tag_object($actor, $pub->version->id, $tags, 1);
 
         // Reflect the update in curation record
-        $this->_parent->set('_update', 1);
+        $this->parent->set('_update', 1);
 
         // Save category
         $cat = Request::getInt('pubtype', 0);
@@ -192,7 +192,7 @@ class Tags extends Base
         // Start status
         $status = new \Components\Publications\Models\Status();
 
-        $tagsHelper = new \Components\Publications\Helpers\Tags($this->_parent->_db);
+        $tagsHelper = new \Components\Publications\Helpers\Tags($this->parent->db);
 
         // Required?
         $required = $manifest->params->required;
@@ -212,8 +212,8 @@ class Tags extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

@@ -31,15 +31,7 @@ class Editor extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_db = null;
-
-    /**
-     * Configs
-     *
-     * @var  object
-     */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_configs = null;
+    private $db = null;
 
     /**
      * Constructor
@@ -50,7 +42,7 @@ class Editor extends Obj
      */
     public function __construct($handler, $configs)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         $this->handler  = $handler;
         $this->configs  = $configs;

@@ -26,7 +26,7 @@ class Citations extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'citations';
+    protected $name = 'citations';
 
     /**
      * Parent block name
@@ -34,7 +34,7 @@ class Citations extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parentname = null;
+    protected $parentname = null;
 
     /**
      * Default manifest
@@ -42,7 +42,7 @@ class Citations extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest = null;
+    protected $manifest = null;
 
     /**
      * Numeric block ID
@@ -50,7 +50,7 @@ class Citations extends Base
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockId = 0;
+    protected $blockId = 0;
 
     /**
      * Display block content
@@ -64,12 +64,12 @@ class Citations extends Base
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Output HTML
@@ -89,10 +89,10 @@ class Citations extends Base
             ]);
         }
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
         $view->showControls = 2;
 
@@ -129,8 +129,8 @@ class Citations extends Base
         $pub->getCitations();
 
         $view->pub      = $pub;
-        $view->manifest = $this->_manifest;
-        $view->step     = $this->_blockId;
+        $view->manifest = $this->manifest;
+        $view->step     = $this->blockId;
 
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -151,17 +151,17 @@ class Citations extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure changes are allowed
-        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+        if ($this->parent->checkFreeze($this->manifest->params, $pub)) {
             return false;
         }
 
         // Load publication version
-        $objP = new \Components\Publications\Tables\Publication($this->_parent->_db);
+        $objP = new \Components\Publications\Tables\Publication($this->parent->db);
 
         if (!$objP->load($pub->id)) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
@@ -198,7 +198,7 @@ class Citations extends Base
                 $this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATION_SAVED'));
 
                 // Reflect the update in curation record
-                $this->_parent->set('_update', 1);
+                $this->parent->set('_update', 1);
             } else {
                 $this->setError($output[0]['error']);
                 return false;
@@ -282,7 +282,7 @@ class Citations extends Base
             }
         }
         $this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_SUCCESS_SAVE'));
-        $this->_parent->set('_update', 1);
+        $this->parent->set('_update', 1);
         return true;
     }
 
@@ -333,7 +333,7 @@ class Citations extends Base
                 $this->set('_message', Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATION_DELETED'));
 
                 // Reflect the update in curation record
-                $this->_parent->set('_update', 1);
+                $this->parent->set('_update', 1);
             } else {
                 $this->setError($output[0]['error']);
                 return false;
@@ -343,7 +343,7 @@ class Citations extends Base
             return false;
         }
 
-        $this->_parent->set('_update', 1);
+        $this->parent->set('_update', 1);
         return true;
     }
 
@@ -378,8 +378,8 @@ class Citations extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

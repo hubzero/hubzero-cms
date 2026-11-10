@@ -24,7 +24,7 @@ class License extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'license';
+    protected $name = 'license';
 
     /**
      * Parent block name
@@ -32,7 +32,7 @@ class License extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parentname = null;
+    protected $parentname = null;
 
     /**
      * Default manifest
@@ -40,7 +40,7 @@ class License extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest = null;
+    protected $manifest = null;
 
     /**
      * Numeric block ID
@@ -48,7 +48,7 @@ class License extends Base
      * @var     integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockId = 0;
+    protected $blockId = 0;
 
     /**
      * Display block content
@@ -58,12 +58,12 @@ class License extends Base
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Output HTML
@@ -83,10 +83,10 @@ class License extends Base
             ]);
         }
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
         $view->showControls = 4;
 
@@ -117,19 +117,19 @@ class License extends Base
         ]);
 
         $view->pub      = $pub;
-        $view->manifest = $this->_manifest;
-        $view->step     = $this->_blockId;
+        $view->manifest = $this->manifest;
+        $view->step     = $this->blockId;
 
-        $objL = new \Components\Publications\Tables\License($this->_parent->_db);
+        $objL = new \Components\Publications\Tables\License($this->parent->db);
 
         // Get selected license
         $view->license = $objL->getPubLicense($pub->version_id);
 
-        $view->selections = $objL->getBlockLicenses($this->_manifest, $view->license);
+        $view->selections = $objL->getBlockLicenses($this->manifest, $view->license);
 
         // Pre-select single available license
         if (!$view->license && count($view->selections) == 1) {
-            $view->license = new \Components\Publications\Tables\License($this->_parent->_db);
+            $view->license = new \Components\Publications\Tables\License($this->parent->db);
             $view->license->load($view->selections[0]->id);
         }
 
@@ -147,17 +147,17 @@ class License extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure changes are allowed
-        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+        if ($this->parent->checkFreeze($this->manifest->params, $pub)) {
             return false;
         }
 
         // Load publication version
-        $row = new \Components\Publications\Tables\Version($this->_parent->_db);
+        $row = new \Components\Publications\Tables\Version($this->parent->db);
 
         if (!$row->load($pub->version_id)) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
@@ -168,7 +168,7 @@ class License extends Base
         $originalText = $row->license_text;
 
         // Load license class
-        $objL = new \Components\Publications\Tables\License($this->_parent->_db);
+        $objL = new \Components\Publications\Tables\License($this->parent->db);
 
         // Incoming - license screen agreements
         $license = Request::getInt('license', 0, 'post');
@@ -225,7 +225,7 @@ class License extends Base
             }
 
             if ($license != $originalType || $text != $originalText) {
-                $this->_parent->set('_update', 1);
+                $this->parent->set('_update', 1);
             }
 
             // Check agreements
@@ -259,7 +259,7 @@ class License extends Base
                 if ($originalType != $license) {
                     // Save agreement
                     $row->saveParam($pub->version_id, 'licenseagreement', 0);
-                    $this->_parent->set('_update', 1);
+                    $this->parent->set('_update', 1);
                 }
 
                 // Only one choice
@@ -299,7 +299,7 @@ class License extends Base
         $status->status = 1;
 
         // Load license class
-        $objL = new \Components\Publications\Tables\License($this->_parent->_db);
+        $objL = new \Components\Publications\Tables\License($this->parent->db);
 
         if ($pub->license_type && $objL->load($pub->license_type) && $required == 1) {
             $agreement = $pub->params->get('licenseagreement');
@@ -357,8 +357,8 @@ class License extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

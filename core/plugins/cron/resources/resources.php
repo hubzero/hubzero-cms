@@ -99,7 +99,7 @@ class Resources extends Plugin
         $doiService = new \Components\Publications\Models\Doi();
 
         // Is service enabled?
-        if (!$doiService->on() || !$doiService->_configs->livesite) {
+        if (!$doiService->on() || !$doiService->configs->livesite) {
             return true;
         }
 
@@ -116,7 +116,7 @@ class Resources extends Plugin
             $doiService->mapUser($row->created_by, [], 'creator');
             $doiService->set('resourceType', 'Software');
             $doiService->set('title', htmlspecialchars(stripslashes($row->title)));
-            $doiService->set('url', $doiService->_configs->livesite . '/resources/' . $row->toolname . '/main');
+            $doiService->set('url', $doiService->configs->livesite . '/resources/' . $row->toolname . '/main');
 
             // Register DOI
             $masterDoi = $doiService->register();

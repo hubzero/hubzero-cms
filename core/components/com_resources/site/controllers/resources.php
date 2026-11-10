@@ -57,9 +57,9 @@ class Resources extends SiteController
             $this->_sub = $config['sub'];
         }
 
-        $this->_group = false;
+        $this->group = false;
         if (isset($config['group'])) {
-            $this->_group = $config['group'];
+            $this->group = $config['group'];
         }
 
         parent::__construct($config);
@@ -75,9 +75,9 @@ class Resources extends SiteController
         $task = Request::getCmd('task', '');
         $this->_id    = Request::getInt('id', 0);
         $this->_alias = Request::getString('alias', '');
-        $this->_resid = Request::getInt('resid', 0);
+        $this->resid = Request::getInt('resid', 0);
 
-        if ($this->_resid && !$task) {
+        if ($this->resid && !$task) {
             Request::setVar('task', 'play');
         }
         if (($this->_id || $this->_alias) && !$task) {

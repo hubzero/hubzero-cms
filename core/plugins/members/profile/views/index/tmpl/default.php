@@ -35,12 +35,12 @@ $invalid = [];
 //registration update
 $update_missing = [];
 if (isset($this->registration_update)) {
-    $update_missing = $this->registration_update->_missing;
+    $update_missing = $this->registration_update->missing;
 }
 
 $invalid = [];
 if (isset($this->registration_update)) {
-    $invalid = $this->registration_update->_invalid;
+    $invalid = $this->registration_update->invalid;
 }
 
 

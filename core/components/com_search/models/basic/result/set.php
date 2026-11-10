@@ -22,7 +22,7 @@ use Hubzero\Facades\App;
 class Set extends Obj implements Iterator
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
     protected $terms;
 
     /**
@@ -168,12 +168,12 @@ class Set extends Obj implements Iterator
     {
         parent::__construct();
 
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         if (is_null(self::$plugin_weights) && $terms->any()) {
             self::$plugin_weights = [];
-            $this->_db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
-            foreach ($this->_db->loadAssocList() as $weight) {
+            $this->db->setQuery('SELECT plugin, weight FROM `#__ysearch_plugin_weights`');
+            foreach ($this->db->loadAssocList() as $weight) {
                 self::$plugin_weights[$weight['plugin']] = $weight['weight'];
             }
         }

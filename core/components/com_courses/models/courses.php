@@ -23,7 +23,7 @@ class Courses extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_tbl = null;
+    private $tbl = null;
 
     /**
      * Database
@@ -31,7 +31,7 @@ class Courses extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_db = null;
+    private $db = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -39,7 +39,7 @@ class Courses extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_courses = null;
+    private $courses = null;
 
     /**
      * \Components\Courses\Models\Course
@@ -47,7 +47,7 @@ class Courses extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_course = null;
+    private $course = null;
 
     /**
      * Constructor
@@ -57,9 +57,9 @@ class Courses extends Obj
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_tbl = new Tables\Course($this->_db);
+        $this->tbl = new Tables\Course($this->db);
     }
 
     /**
@@ -95,23 +95,23 @@ class Courses extends Obj
     public function course($id = null)
     {
         if (
-            !isset($this->_course)
-            || ($id !== null && (int) $this->_course->get('id') != $id && (string) $this->_course->get('alias') != $id)
+            !isset($this->course)
+            || ($id !== null && (int) $this->course->get('id') != $id && (string) $this->course->get('alias') != $id)
         ) {
-            $this->_course = null;
+            $this->course = null;
 
-            if (isset($this->_courses)) {
+            if (isset($this->courses)) {
                 foreach ($this->courses() as $key => $course) {
                     if ((int) $course->get('id') == $id || (string) $course->get('alias') == $id) {
-                        $this->_course = $course;
+                        $this->course = $course;
                         break;
                     }
                 }
             } else {
-                $this->_course = Course::getInstance($id);
+                $this->course = Course::getInstance($id);
             }
         }
-        return $this->_course;
+        return $this->course;
     }
 
     /**
@@ -125,11 +125,11 @@ class Courses extends Obj
     public function courses($filters = [], $clear = false)
     {
         if (isset($filters['count']) && $filters['count']) {
-            return $this->_tbl->getCount($filters);
+            return $this->tbl->getCount($filters);
         }
 
-        if (!($this->_courses instanceof \Traversable) || $clear) {
-            if (($results = $this->_tbl->getRecords($filters))) {
+        if (!($this->courses instanceof \Traversable) || $clear) {
+            if (($results = $this->tbl->getRecords($filters))) {
                 foreach ($results as $key => $result) {
                     $results[$key] = new Course($result);
                 }
@@ -137,10 +137,10 @@ class Courses extends Obj
                 $results = [];
             }
 
-            $this->_courses = new Iterator($results);
+            $this->courses = new Iterator($results);
         }
 
-        return $this->_courses;
+        return $this->courses;
     }
 
     /**
@@ -152,7 +152,7 @@ class Courses extends Obj
      */
     public function userCourses($uid, $type = 'all', $limit = null, $start = 0)
     {
-        if (($results = $this->_tbl->getUserCourses($uid, $type, $limit, $start))) {
+        if (($results = $this->tbl->getUserCourses($uid, $type, $limit, $start))) {
             foreach ($results as $key => $result) {
                 $results[$key] = new Course($result);
             }

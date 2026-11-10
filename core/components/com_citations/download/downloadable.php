@@ -19,7 +19,7 @@ abstract class Downloadable
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_mime = '';
+    protected $mime = '';
 
     /**
      * File extension
@@ -27,7 +27,7 @@ abstract class Downloadable
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_extension = '';
+    protected $extension = '';
 
     /**
      * Set the mime type
@@ -37,7 +37,7 @@ abstract class Downloadable
      */
     public function setMimeType($mime)
     {
-        $this->_mime = trim($mime);
+        $this->mime = trim($mime);
     }
 
     /**
@@ -47,7 +47,7 @@ abstract class Downloadable
      */
     public function getMimeType()
     {
-        return $this->_mime;
+        return $this->mime;
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class Downloadable
      */
     public function setExtension($ext)
     {
-        $this->_extension = trim($ext);
+        $this->extension = trim($ext);
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class Downloadable
      */
     public function getExtension()
     {
-        return $this->_extension;
+        return $this->extension;
     }
 
     /**

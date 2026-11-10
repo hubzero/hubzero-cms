@@ -27,28 +27,28 @@ class Archive extends Obj
      *
      * @var object
      */
-    private $_pages = null;
+    private $pages = null;
 
     /**
      * Page count
      *
      * @var integer
      */
-    private $_pages_count = null;
+    private $pagesCount = null;
 
     /**
      * Database
      *
      * @var object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * \Hubzero\User\Group
      *
      * @var object
      */
-    private $_group = null;
+    private $group = null;
 
     /**
      * Constructor
@@ -57,8 +57,8 @@ class Archive extends Obj
      */
     public function __construct()
     {
-        $this->_db    = App::get('db');
-        $this->_group = \Hubzero\User\Group::getInstance(Request::getString('cn', ''));
+        $this->db    = App::get('db');
+        $this->group = \Hubzero\User\Group::getInstance(Request::getString('cn', ''));
     }
 
     /**
@@ -129,16 +129,16 @@ class Archive extends Obj
                 return $tree;
             case 'list':
             default:
-                if (!($this->_pages instanceof ItemList) || $clear) {
-                    $tbl = new Tables\Page($this->_db);
+                if (!($this->pages instanceof ItemList) || $clear) {
+                    $tbl = new Tables\Page($this->db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Page($result);
                         }
                     }
-                    $this->_pages = new ItemList($results);
+                    $this->pages = new ItemList($results);
                 }
-                return $this->_pages;
+                return $this->pages;
                 break;
         }
     }

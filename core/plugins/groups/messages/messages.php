@@ -24,7 +24,7 @@ use Hubzero\Facades\User;
 class Messages extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     protected $action;
     protected $authorized;
     protected $group;
@@ -126,7 +126,7 @@ class Messages extends Plugin
             $this->authorized = $authorized;
             $this->members = $members;
             $this->group = $group;
-            $this->_option = $option;
+            $this->componentOption = $option;
             $this->action = $action;
 
             //if set to nobody make sure cant access
@@ -222,7 +222,7 @@ class Messages extends Plugin
         $view = $this->view('default', 'sent');
 
         // Pass some info to the view
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->rows = $rows;
@@ -293,7 +293,7 @@ class Messages extends Plugin
         $view = $this->view('default', 'message');
 
         // Pass the view some info
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->xmessage = $xmessage;
@@ -335,7 +335,7 @@ class Messages extends Plugin
         $members = $this->group->get('members');
 
         // Pass the view some info
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->group = $this->group;
         $view->authorized = $this->authorized;
         $view->params = $this->params;
@@ -476,7 +476,7 @@ class Messages extends Plugin
         ];
 
         // create url
-        $sef = Route::url('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn'));
+        $sef = Route::url('index.php?option=' . $this->componentOption . '&cn=' . $this->group->get('cn'));
         $sef = ltrim($sef, '/');
 
         // create subject

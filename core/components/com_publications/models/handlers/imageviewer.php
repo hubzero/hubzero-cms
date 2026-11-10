@@ -27,21 +27,21 @@ class ImageViewer extends Base
      *
      * @var  string
      */
-    protected $_name = 'imageviewer';
+    protected $name = 'imageviewer';
 
     /**
      * Configs
      *
      * @var  object
      */
-    protected $_config = null;
+    protected $config = null;
 
     /**
      * Image Helper
      *
      * @var  object
      */
-    protected $_imgHelper = null;
+    protected $imgHelper = null;
 
     /**
      * Get default params for the handler
@@ -73,8 +73,8 @@ class ImageViewer extends Base
             ],
         ];
 
-        $this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), false);
-        return $this->_config;
+        $this->config = json_decode(json_encode($this->parent->parseConfig($this->name, $configs, $savedConfig)), false);
+        return $this->config;
     }
 
     /**
@@ -88,14 +88,14 @@ class ImageViewer extends Base
     public function cleanUp($path, $configs = null, $md5 = null)
     {
         // Make sure we got config
-        if (!$this->_config) {
+        if (!$this->config) {
             $this->getConfig();
         }
 
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($path),
-            $this->_config->params->thumbSuffix,
-            $this->_config->params->thumbFormat,
+            $this->config->params->thumbSuffix,
+            $this->config->params->thumbFormat,
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
@@ -135,7 +135,7 @@ class ImageViewer extends Base
     public function makeDefault($row, $pub, $configs)
     {
         // Make sure we got config
-        if (!$this->_config) {
+        if (!$this->config) {
             $this->getConfig();
         }
 
@@ -160,8 +160,8 @@ class ImageViewer extends Base
 
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($path),
-            $this->_config->params->thumbSuffix,
-            $this->_config->params->thumbFormat,
+            $this->config->params->thumbSuffix,
+            $this->config->params->thumbFormat,
         );
         $thumbPath = dirname($path) . DS . $thumbName;
 
@@ -182,7 +182,7 @@ class ImageViewer extends Base
         }
 
         // Get current default
-        $currentDefault = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+        $currentDefault = new \Components\Publications\Tables\Attachment($this->parent->db);
         $currentDefault->getDefault($row->publication_version_id);
 
         // Unmark as default
@@ -212,7 +212,7 @@ class ImageViewer extends Base
         }
 
         // Make sure we got config
-        if (!$this->_config) {
+        if (!$this->config) {
             $this->getConfig();
         }
 
@@ -250,8 +250,8 @@ class ImageViewer extends Base
 
             $thumbName = \Components\Publications\Helpers\Html::createThumbName(
                 basename($fpath),
-                $this->_config->params->thumbSuffix,
-                $this->_config->params->thumbFormat,
+                $this->config->params->thumbSuffix,
+                $this->config->params->thumbFormat,
             );
             $thumbPath = dirname($fpath) . DS . $thumbName;
 
@@ -301,7 +301,7 @@ class ImageViewer extends Base
         }
 
         // Make sure we got config
-        if (!$this->_config) {
+        if (!$this->config) {
             $this->getConfig();
         }
 
@@ -317,8 +317,8 @@ class ImageViewer extends Base
 
             $thumbName = \Components\Publications\Helpers\Html::createThumbName(
                 basename($fpath),
-                $this->_config->params->thumbSuffix,
-                $this->_config->params->thumbFormat,
+                $this->config->params->thumbSuffix,
+                $this->config->params->thumbFormat,
             );
             $title = $attach->title ? $attach->title : $attConfigs->title;
             $title = $title ? $title : basename($attach->path);
@@ -362,7 +362,7 @@ class ImageViewer extends Base
     public function makeThumbnail($row, $pub, $configs)
     {
         // Make sure we got config
-        if (!$this->_config) {
+        if (!$this->config) {
             $this->getConfig();
         }
 
@@ -370,8 +370,8 @@ class ImageViewer extends Base
 
         $thumbName = \Components\Publications\Helpers\Html::createThumbName(
             basename($fpath),
-            $this->_config->params->thumbSuffix,
-            $this->_config->params->thumbFormat,
+            $this->config->params->thumbSuffix,
+            $this->config->params->thumbFormat,
         );
         $thumbPath = $configs->pubPath . DS . $thumbName;
 
@@ -392,7 +392,7 @@ class ImageViewer extends Base
             Filesystem::copy($fpath, $thumbPath);
             $hi = new \Hubzero\Image\Processor($thumbPath);
             if (count($hi->getErrors()) == 0) {
-                $hi->resize($this->_config->params->thumbWidth, false, true, true);
+                $hi->resize($this->config->params->thumbWidth, false, true, true);
                 $hi->save($thumbPath);
             } else {
                 return false;
@@ -412,7 +412,7 @@ class ImageViewer extends Base
     public function drawAttachment($data, $params)
     {
         // Make sure we got config
-        if (!$this->_config) {
+        if (!$this->config) {
             $this->getConfig();
         }
 
@@ -427,7 +427,7 @@ class ImageViewer extends Base
             'layout'  => $layout,
         ]);
         $view->data   = $data;
-        $view->config = $this->_config;
+        $view->config = $this->config;
         $view->params = $params;
 
         if ($this->getError()) {

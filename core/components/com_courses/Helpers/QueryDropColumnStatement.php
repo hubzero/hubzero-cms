@@ -13,9 +13,9 @@ use Hubzero\Utility\Arr;
 class QueryDropColumnStatement
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_asString;
+    protected $asString;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name;
+    protected $name;
 
     /**
      * Constructs QueryDropColumnStatement instance
@@ -25,8 +25,8 @@ class QueryDropColumnStatement
      */
     public function __construct($args = [])
     {
-        $this->_name = $args['name'];
-        $this->_asString = '';
+        $this->name = $args['name'];
+        $this->asString = '';
     }
 
     /**
@@ -39,18 +39,18 @@ class QueryDropColumnStatement
         $this->_generateBaseString();
         $this->_addName();
 
-        return $this->_asString;
+        return $this->asString;
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _generateBaseString()
     {
-        $this->_asString = 'DROP COLUMN';
+        $this->asString = 'DROP COLUMN';
     }
 
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addName()
     {
-        $this->_asString .= " $this->_name";
+        $this->asString .= " $this->name";
     }
 }

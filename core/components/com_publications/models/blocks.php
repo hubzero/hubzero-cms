@@ -23,7 +23,7 @@ class Blocks extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db = null;
+    public $db = null;
 
     /**
      * Table class
@@ -31,7 +31,7 @@ class Blocks extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_objBlock = null;
+    public $objBlock = null;
 
     /**
      * Loaded elements
@@ -39,7 +39,7 @@ class Blocks extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blocks = [];
+    protected $blocks = [];
 
     /**
      * Directories, where block types can be stored
@@ -47,7 +47,7 @@ class Blocks extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockPath = [];
+    protected $blockPath = [];
 
     /**
      * Constructor
@@ -57,10 +57,10 @@ class Blocks extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
-        $this->_blockPath[] = dirname(__FILE__) . DS . 'block';
+        $this->db = $db;
+        $this->blockPath[] = dirname(__FILE__) . DS . 'block';
 
-        $this->_objBlock = new \Components\Publications\Tables\Block($db);
+        $this->objBlock = new \Components\Publications\Tables\Block($db);
     }
 
     /**
@@ -101,11 +101,11 @@ class Blocks extends Obj
         $signature = md5($name);
 
         if (
-            (isset($this->_blocks[$signature])
-            && !($this->_blocks[$signature] instanceof \__PHP_Incomplete_Class))
+            (isset($this->blocks[$signature])
+            && !($this->blocks[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
-            return $this->_blocks[$signature];
+            return $this->blocks[$signature];
         }
 
         $elementClass = __NAMESPACE__ . '\\Block\\' . ucfirst($name);
@@ -113,8 +113,8 @@ class Blocks extends Obj
             return false;
         }
 
-        $this->_blocks[$signature] = new $elementClass($this);
-        return $this->_blocks[$signature];
+        $this->blocks[$signature] = new $elementClass($this);
+        return $this->blocks[$signature];
     }
 
     /**
@@ -127,7 +127,7 @@ class Blocks extends Obj
      */
     public function getBlocks($select = '*', $where = '', $order = '')
     {
-        return $this->_objBlock->getBlocks($select, $where, $order);
+        return $this->objBlock->getBlocks($select, $where, $order);
     }
 
     /**

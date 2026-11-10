@@ -26,37 +26,37 @@ use Hubzero\Facades\Component;
 class Repo extends Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_quota;
+    protected $quota;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_sizeLimit;
+    protected $sizeLimit;
 
     /**
      * Tables\Repo
      *
      * @var  object
      */
-    private $_tbl = null;
+    private $tbl = null;
 
     /**
      * Database
      *
      * @var  object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * Registry
      *
      * @var  object
      */
-    private $_config;
+    private $config;
 
     /**
      * Data management adapter
      *
      * @var  string
      */
-    private $_adapter;
+    private $adapter;
 
     /**
      * Constructor
@@ -66,7 +66,7 @@ class Repo extends Obj
      */
     public function __construct($project = null, $name = 'local')
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         $this->set('project', $project);
         $this->set('name', $name);
@@ -96,10 +96,10 @@ class Repo extends Obj
 
         if ($this->get('name') !== 'local') {
             // Load repo info from db
-            if (!$this->_tbl) {
-                $this->_tbl = new Tables\Repo($this->_db);
+            if (!$this->tbl) {
+                $this->tbl = new Tables\Repo($this->db);
             }
-            $this->_tbl->loadRepo($this->get('project')->get('id'), $this->get('name'));
+            $this->tbl->loadRepo($this->get('project')->get('id'), $this->get('name'));
         } else {
             // Use regex to avoid what might be a caching thing with Tables
             $matches = [];
@@ -143,7 +143,7 @@ class Repo extends Obj
      */
     private function adapter()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapter) {
             $engine = 'nogit';
 
             if (is_object($this->get('project'))) {
@@ -164,18 +164,18 @@ class Repo extends Obj
                 throw new \InvalidArgumentException(Lang::txt('Invalid engine of "%s"', $engine));
             }
 
-            $this->_adapter = new $cls($this->get('path'), $this->get('remote'));
+            $this->adapter = new $cls($this->get('path'), $this->get('remote'));
         }
 
-        return $this->_adapter;
+        return $this->adapter;
     }
 
     public function getAdapterName()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapter) {
             $this->adapter();
         }
-        $class = get_class($this->_adapter);
+        $class = get_class($this->adapter);
         $lastSlash = strrpos($class, '\\');
         $className = substr($class, $lastSlash + 1);
         return strtolower($className);
@@ -213,15 +213,15 @@ class Repo extends Obj
             $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_EMPTY_REQUEST'));
             return false;
         }
-        if (!isset($this->_adapter)) {
+        if (!isset($this->adapter)) {
             $this->adapter();
         }
 
         // Perform request
         try {
-            $result = $this->_adapter->$call($params);
-            if ($this->_adapter->getError()) {
-                $this->setError($this->_adapter->getError());
+            $result = $this->adapter->$call($params);
+            if ($this->adapter->getError()) {
+                $this->setError($this->adapter->getError());
             }
             return $result;
         } catch (Exception $e) {
@@ -502,7 +502,7 @@ class Repo extends Obj
             $type = $file->get('type');
         }
 
-        $this->_adapter->history($params, $versions, $timestamps);
+        $this->adapter->history($params, $versions, $timestamps);
 
         // Sort by time, most recent first
         array_multisort($timestamps, SORT_DESC, $versions);
@@ -520,7 +520,7 @@ class Repo extends Obj
      */
     public function getTrash()
     {
-        return $this->_adapter->getTrash();
+        return $this->adapter->getTrash();
     }
 
     /**
@@ -608,7 +608,7 @@ class Repo extends Obj
             return false;
         }
 
-        return $this->_adapter->diff($params);
+        return $this->adapter->diff($params);
     }
 
     /**
@@ -700,7 +700,7 @@ class Repo extends Obj
         if (!($file instanceof Models\File)) {
             return false;
         }
-        return $this->_adapter->getLastRevision($params);
+        return $this->adapter->getLastRevision($params);
     }
 
     /**
@@ -1305,15 +1305,15 @@ class Repo extends Obj
      */
     protected function _check($file, $tmp_name, $size, &$available, $virusChecked = false)
     {
-        if (!isset($this->_sizeLimit)) {
+        if (!isset($this->sizeLimit)) {
             $pParams = Plugin::params('projects', 'files');
-            $this->_sizeLimit = $pParams->get('maxUpload', '104857600');
+            $this->sizeLimit = $pParams->get('maxUpload', '104857600');
         }
 
         // Check against upload size limit
-        if (intval($this->_sizeLimit) && $size > intval($this->_sizeLimit)) {
+        if (intval($this->sizeLimit) && $size > intval($this->sizeLimit)) {
             $this->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
-                . \Hubzero\Utility\Number::formatBytes($this->_sizeLimit) . '. '
+                . \Hubzero\Utility\Number::formatBytes($this->sizeLimit) . '. '
                 . Lang::txt('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD'));
             return false;
         }
@@ -1353,7 +1353,7 @@ class Repo extends Obj
         }
 
         // Initialize
-        $this->_adapter->ini();
+        $this->adapter->ini();
 
         return true;
     }
@@ -1627,12 +1627,12 @@ class Repo extends Obj
         );
 
         // Get quota
-        if (!isset($this->_quota)) {
-            $this->_quota = $projectParams->get('quota')
+        if (!isset($this->quota)) {
+            $this->quota = $projectParams->get('quota')
                         ? $projectParams->get('quota')
                         : Helpers\Html::convertSize(floatval($quota), 'GB', 'b');
         }
 
-        return $this->_quota - $diskUsage;
+        return $this->quota - $diskUsage;
     }
 }

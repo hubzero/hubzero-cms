@@ -22,7 +22,7 @@ class Hidden extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Hidden';
+    protected $name = 'Hidden';
 
     /**
      * Return any options this element may have

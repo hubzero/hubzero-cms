@@ -24,7 +24,7 @@ use Hubzero\Facades\User;
 class Files extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     protected $action;
     protected $authorized;
     protected $group;
@@ -117,7 +117,7 @@ class Files extends Plugin
         // Set some variables so other functions have access
         $this->authorized = $authorized;
         $this->action = $action;
-        $this->_option = $option;
+        $this->componentOption = $option;
         $this->group = $group;
         $this->name = substr($option, 4, strlen($option));
 

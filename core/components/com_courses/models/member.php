@@ -30,7 +30,7 @@ class Member extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'manager';
+    protected $scope = 'manager';
 
     /**
      * \Components\Courses\Models\MemberBadge

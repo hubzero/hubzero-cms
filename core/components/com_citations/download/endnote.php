@@ -21,7 +21,7 @@ class Endnote extends Downloadable
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_mime = 'application/x-endnote-refer';
+    protected $mime = 'application/x-endnote-refer';
 
     /**
      * File extension
@@ -29,7 +29,7 @@ class Endnote extends Downloadable
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_extension = 'enw';
+    protected $extension = 'enw';
 
     /**
      * Format the file

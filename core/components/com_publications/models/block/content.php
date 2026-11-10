@@ -25,7 +25,7 @@ class Content extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name      = 'content';
+    protected $name      = 'content';
 
     /**
      * Parent block name
@@ -33,7 +33,7 @@ class Content extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parentname    = 'content';
+    protected $parentname    = 'content';
 
     /**
      * Default manifest
@@ -41,7 +41,7 @@ class Content extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest  = null;
+    protected $manifest  = null;
 
     /**
      * Numeric block ID
@@ -49,7 +49,7 @@ class Content extends Base
      * @var     integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockId = 0;
+    protected $blockId = 0;
 
     /**
      * Display block content
@@ -59,12 +59,12 @@ class Content extends Base
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Output HTML
@@ -92,19 +92,19 @@ class Content extends Base
         $status->review = $pub->curation('blocks', $blockId, 'review');
 
         // Get block element model
-        $elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
+        $elModel = new \Components\Publications\Models\BlockElements($this->parent->db);
 
         // Properties object
         $master             = new stdClass();
-        $master->block      = $this->_name;
-        $master->blockId    = $this->_blockId;
-        $master->params     = $this->_manifest->params;
+        $master->block      = $this->name;
+        $master->blockId    = $this->blockId;
+        $master->params     = $this->manifest->params;
         $master->props      = $elModel->getActiveElement($status->elements, $status->review);
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname, $status, $master);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
         $view->showControls = isset($master->params->collapse_elements)
                             && $master->params->collapse_elements == 1 ? 3 : 2;
@@ -125,12 +125,12 @@ class Content extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure changes are allowed
-        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+        if ($this->parent->checkFreeze($this->manifest->params, $pub)) {
             return false;
         }
 
@@ -139,17 +139,17 @@ class Content extends Base
 
         // Save each element
         $saved = 0;
-        foreach ($this->_manifest->elements as $id => $element) {
+        foreach ($this->manifest->elements as $id => $element) {
             // Are we saving just one element?
             if ($elementId && $id != $elementId) {
                 continue;
             }
 
-            if ($this->saveElement($id, $element->params, $pub, $this->_manifest->params)) {
+            if ($this->saveElement($id, $element->params, $pub, $this->manifest->params)) {
                 $saved++;
 
                 if ($this->get('_update')) {
-                    $lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $blockId);
+                    $lastRecord = $pub->_curationModel->getLastUpdate($id, $this->name, $blockId);
 
                     // Record update time
                     $data               = new stdClass();
@@ -162,13 +162,13 @@ class Content extends Base
                         $data->review_status = 0;
                         $data->update = '';
                     }
-                    $pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $blockId);
+                    $pub->_curationModel->saveUpdate($data, $id, $this->name, $pub, $blockId);
                 }
             }
         }
 
         // Set success message
-        $this->_parent->set('_message', $this->get('_message'));
+        $this->parent->set('_message', $this->get('_message'));
 
         return true;
     }
@@ -184,7 +184,7 @@ class Content extends Base
         $pub->attachments();
 
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         // Transfer data of each element
         foreach ($manifest->elements as $elementId => $element) {
@@ -216,11 +216,11 @@ class Content extends Base
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases', 'selector');
 
         // Get block element model
-        $elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
+        $elModel = new \Components\Publications\Models\BlockElements($this->parent->db);
 
         // Build each element
         $o = 1;
-        foreach ($this->_manifest->elements as $elementId => $element) {
+        foreach ($this->manifest->elements as $elementId => $element) {
             $html  .= $elModel->drawElement(
                 $element->name,
                 $elementId,
@@ -245,8 +245,8 @@ class Content extends Base
     public function getStatus($pub = null, $manifest = null, $elementId = null)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure we have attachments
@@ -256,10 +256,10 @@ class Content extends Base
         $status = new \Components\Publications\Models\Status();
 
         // Check against manifested requirements
-        if ($this->_manifest) {
+        if ($this->manifest) {
             // Get attachment elements from manifest
             $mAttach = [];
-            foreach ($this->_manifest->elements as $id => $element) {
+            foreach ($this->manifest->elements as $id => $element) {
                 if ($element->type == 'attachment') {
                     $mAttach[$id] = $element->params;
                 }
@@ -305,7 +305,7 @@ class Content extends Base
     public function getElementStatus($elementId, $elementparams, $attachments = null)
     {
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         $status = $attModel->getStatus($elementparams->type, $elementparams, $elementId, $attachments);
         return $status;
@@ -319,7 +319,7 @@ class Content extends Base
     public function saveElement($elementId, $elementparams, $pub = null, $params = null)
     {
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         if ($attModel->attach($elementparams->type, $elementparams, $elementId, $pub, $params)) {
             // Pick up status message
@@ -353,7 +353,7 @@ class Content extends Base
         $aid = $aid ? $aid : Request::getInt('aid', 0);
 
         // Load attachment
-        $row = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+        $row = new \Components\Publications\Tables\Attachment($this->parent->db);
 
         // We need attachment record
         if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id) {
@@ -365,7 +365,7 @@ class Content extends Base
         $type = $row->type;
 
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         // Save incoming attachment info
         $attModel->update(
@@ -385,7 +385,7 @@ class Content extends Base
 
         // Set request to update curation record
         if ($attModel->get('_update')) {
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         return true;
@@ -401,7 +401,7 @@ class Content extends Base
         $aid = $aid ? $aid : Request::getInt('aid', 0);
 
         // Load attachment
-        $row = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+        $row = new \Components\Publications\Tables\Attachment($this->parent->db);
 
         // We need attachment record
         if (!$aid || !$row->load($aid) || $row->publication_version_id != $pub->version_id) {
@@ -413,7 +413,7 @@ class Content extends Base
         $type = $row->type;
 
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         // Save incoming attachment info
         $attModel->remove(
@@ -433,7 +433,7 @@ class Content extends Base
 
         // Set request to update curation record
         if ($attModel->get('_update')) {
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         return true;
@@ -483,8 +483,8 @@ class Content extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

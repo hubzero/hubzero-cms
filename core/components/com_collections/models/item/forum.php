@@ -24,7 +24,7 @@ class Forum extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'forum';
+    protected $type = 'forum';
 
     /**
      * Get the item type
@@ -72,7 +72,7 @@ class Forum extends GenericItem
 
         $id = ($id ?: Request::getInt('thread', 0));
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -88,7 +88,7 @@ class Forum extends GenericItem
         $clean = strip_tags($thread->get('comment'));
         $clean = \Hubzero\Utility\Str::truncate($clean, 200);
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $thread->get('id'))
              ->set('created', $thread->get('created'))
              ->set('created_by', $thread->get('created_by'))

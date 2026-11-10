@@ -23,7 +23,7 @@ class Languages extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Language List';
+    protected $name = 'Language List';
 
     /**
      * Language list
@@ -31,7 +31,7 @@ class Languages extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_codes = [
+    protected $codes = [
         "aa" => "Afar",
         "ab" => "Abkhazian",
         "ae" => "Avestan",
@@ -236,7 +236,7 @@ class Languages extends Base
         }
 
         $languages = [];
-        foreach ($this->_codes as $code => $lang) {
+        foreach ($this->codes as $code => $lang) {
             $languages[] = Html::select('option', $code, $lang);
         }
 
@@ -267,6 +267,6 @@ class Languages extends Base
     public function display($value)
     {
         $value = trim(strip_tags($value));
-        return (isset($this->_codes[$value]) ? $this->_codes[$value] : $value);
+        return (isset($this->codes[$value]) ? $this->codes[$value] : $value);
     }
 }

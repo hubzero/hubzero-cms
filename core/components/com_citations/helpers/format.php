@@ -29,14 +29,14 @@ class Format
      *
      * @var  string
      */
-    protected $_template = 'apa';
+    protected $template = 'apa';
 
     /**
      * Description for '_template_keys'
      *
      * @var  array
      */
-    protected $_template_keys = [
+    protected $templateKeys = [
         "type" => "{TYPE}",
         "cite" => "{CITE KEY}",
         "ref_type" => "{REF TYPE}",
@@ -81,7 +81,7 @@ class Format
      *
      * @var  array
      */
-    protected $_coins_keys = [
+    protected $coinsKeys = [
         'title'        => 'rft.atitle',
         'journaltitle' => 'rft.jtitle',
         'date_publish' => 'rft.date',
@@ -101,7 +101,7 @@ class Format
      *
      * @var  array
      */
-    protected $_default_format = [
+    protected $defaultFormat = [
         'apa'  => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
         'ieee' => "{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, <i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, <b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, {SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})",
     ];
@@ -114,9 +114,9 @@ class Format
     public function setTemplate($template)
     {
         if ($template != '') {
-            $this->_template = trim($template);
+            $this->template = trim($template);
         } else {
-            $this->_template = $this->_default_format['apa'];
+            $this->template = $this->defaultFormat['apa'];
         }
     }
 
@@ -127,7 +127,7 @@ class Format
      */
     public function getTemplate()
     {
-        return $this->_template;
+        return $this->template;
     }
 
     /**
@@ -138,7 +138,7 @@ class Format
     public function setTemplateKeys($template_keys)
     {
         if (!empty($template_keys)) {
-            $this->_template_keys = $template_keys;
+            $this->templateKeys = $template_keys;
         }
     }
 
@@ -149,7 +149,7 @@ class Format
      */
     public function getTemplateKeys()
     {
-        return $this->_template_keys;
+        return $this->templateKeys;
     }
 
     /**
@@ -230,26 +230,26 @@ class Format
                 $replace_values[$v] = htmlspecialchars((string) $citation->$k, ENT_QUOTES, 'UTF-8');
 
                 //add to coins data if we can but not authors as that will get processed below
-                if (in_array($k, array_keys($this->_coins_keys)) && $k != 'author') {
+                if (in_array($k, array_keys($this->coinsKeys)) && $k != 'author') {
                     //key specific
                     switch ($k) {
                         case 'title':
                             break;
                         case 'doi':
-                            $coins_data[] = $this->_coins_keys[$k] . $citation->$k;
+                            $coins_data[] = $this->coinsKeys[$k] . $citation->$k;
                             break;
                         case 'url':
-                            $coins_data[] = $this->_coins_keys[$k] . '=' . htmlentities($citation->$k);
+                            $coins_data[] = $this->coinsKeys[$k] . '=' . htmlentities($citation->$k);
                             break;
                         case 'journaltitle':
                             $jt = html_entity_decode($citation->$k);
                             if (function_exists('mbstring')) {
                                 $jt = (!preg_match('!\S!u', $jt)) ? mbstring($jt) : $jt;
                             }
-                            $coins_data[] = $this->_coins_keys[$k] . '=' . $jt;
+                            $coins_data[] = $this->coinsKeys[$k] . '=' . $jt;
                             break;
                         default:
-                            $coins_data[] = $this->_coins_keys[$k] . '=' . $citation->$k;
+                            $coins_data[] = $this->coinsKeys[$k] . '=' . $citation->$k;
                     }
                 }
 
@@ -371,7 +371,7 @@ class Format
 
         // Add more to coins
 
-        $tmpl = isset($this->_default_format[$template]) ? $this->_default_format[$template] : $template;
+        $tmpl = isset($this->defaultFormat[$template]) ? $this->defaultFormat[$template] : $template;
         $cite = strtr($tmpl, $replace_values);
 
         // Strip empty tags
@@ -468,7 +468,7 @@ class Format
      */
     public function getDefaultFormat($format = 'apa')
     {
-        return $this->_default_format[$format];
+        return $this->defaultFormat[$format];
     }
 
     /**

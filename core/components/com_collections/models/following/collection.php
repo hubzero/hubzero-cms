@@ -17,7 +17,7 @@ use Hubzero\Facades\User;
 class Collection extends Base
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_creator;
+    protected $creator;
 
     /**
      * Collection
@@ -85,19 +85,19 @@ class Collection extends Base
     {
         switch ($this->obj->get('object_type')) {
             case 'group':
-                if (!isset($this->_creator) || !is_object($this->_creator)) {
-                    $this->_creator = \Hubzero\User\Group::getInstance($this->obj->get('object_id'));
+                if (!isset($this->creator) || !is_object($this->creator)) {
+                    $this->creator = \Hubzero\User\Group::getInstance($this->obj->get('object_id'));
                 }
                 if ($property) {
                     switch ($property) {
                         case 'name':
-                            return $this->_creator->get('description');
+                            return $this->creator->get('description');
                             break;
                         case 'alias':
-                            return $this->_creator->get('cn');
+                            return $this->creator->get('cn');
                             break;
                         case 'id':
-                            return $this->_creator->get('gidNumber');
+                            return $this->creator->get('gidNumber');
                             break;
                     }
                 }
@@ -105,25 +105,25 @@ class Collection extends Base
 
             case 'member':
             default:
-                if (!isset($this->_creator) || !is_object($this->_creator)) {
-                    $this->_creator = User::getInstance($this->obj->get('created_by'));
+                if (!isset($this->creator) || !is_object($this->creator)) {
+                    $this->creator = User::getInstance($this->obj->get('created_by'));
                 }
                 if ($property) {
                     switch ($property) {
                         case 'name':
-                            return $this->_creator->get('name');
+                            return $this->creator->get('name');
                             break;
                         case 'alias':
-                            return $this->_creator->get('username');
+                            return $this->creator->get('username');
                             break;
                         case 'id':
-                            return $this->_creator->get('id');
+                            return $this->creator->get('id');
                             break;
                     }
                 }
                 break;
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**

@@ -101,7 +101,7 @@ class BibTex
      * @var    array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_delimiters;
+    protected $delimiters;
 
     /**
      * Array to store warnings
@@ -118,7 +118,7 @@ class BibTex
      * @var    array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_options;
+    protected $options;
 
     /**
      * RTF Format String
@@ -153,9 +153,9 @@ class BibTex
     public $authorstring;
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_oldpos;
+    protected $oldpos;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_pos;
+    protected $pos;
 
     /**
      * Constructor
@@ -166,13 +166,13 @@ class BibTex
      */
     public function __construct($options = [])
     {
-        $this->_delimiters     = ['"' => '"', '{' => '}'];
+        $this->delimiters     = ['"' => '"', '{' => '}'];
         $this->data            = [];
         $this->content         = '';
         //$this->_stripDelimiter = $stripDel;
         //$this->_validate       = $val;
         $this->warnings        = [];
-        $this->_options        = [
+        $this->options        = [
             'stripDelimiter'    => true,
             'validate'          => true,
             'unwrap'            => false,
@@ -229,8 +229,8 @@ class BibTex
     public function setOption($option, $value)
     {
         $ret = true;
-        if (array_key_exists($option, $this->_options)) {
-            $this->_options[$option] = $value;
+        if (array_key_exists($option, $this->options)) {
+            $this->options[$option] = $value;
         } else {
             $ret = new \Exception('Unknown option ' . $option);
         }
@@ -250,8 +250,8 @@ class BibTex
             if (($this->content = @file_get_contents($filename)) === false) {
                 return new \Exception('Could not open file ' . $filename);
             } else {
-                $this->_pos    = 0;
-                $this->_oldpos = 0;
+                $this->pos    = 0;
+                $this->oldpos = 0;
                 return true;
             }
         } else {
@@ -348,7 +348,7 @@ class BibTex
             $valid = false;
         }
         //Are there Multiple entries with the same cite?
-        if ($this->_options['validate']) {
+        if ($this->options['validate']) {
             $cites = [];
             foreach ($this->data as $entry) {
                 $cites[] = $entry['cite'];
@@ -396,18 +396,18 @@ class BibTex
     public function _parseEntry($entry)
     {
         $entrycopy = '';
-        if ($this->_options['validate']) {
+        if ($this->options['validate']) {
             $entrycopy = $entry; //We need a copy for printing the warnings
         }
         $ret = [];
         if ('@string' ==  strtolower(substr($entry, 0, 7))) {
             //String are not yet supported!
-            if ($this->_options['validate']) {
+            if ($this->options['validate']) {
                 $this->_generateWarning('STRING_ENTRY_NOT_YET_SUPPORTED', '', $entry . '}');
             }
         } elseif ('@preamble' ==  strtolower(substr($entry, 0, 9))) {
             //Preamble not yet supported!
-            if ($this->_options['validate']) {
+            if ($this->options['validate']) {
                 $this->_generateWarning('PREAMBLE_ENTRY_NOT_YET_SUPPORTED', '', $entry . '}');
             }
         } else {
@@ -440,16 +440,16 @@ class BibTex
                 if (',' == substr($value, strlen($value) - 1, 1)) {
                     $value = substr($value, 0, -1);
                 }
-                if ($this->_options['validate']) {
+                if ($this->options['validate']) {
                     $this->_validateValue($value, $entrycopy);
                 }
-                if ($this->_options['stripDelimiter']) {
+                if ($this->options['stripDelimiter']) {
                     $value = $this->_stripDelimiter($value);
                 }
-                if ($this->_options['unwrap']) {
+                if ($this->options['unwrap']) {
                     $value = $this->_unwrap($value);
                 }
-                if ($this->_options['removeCurlyBraces']) {
+                if ($this->options['removeCurlyBraces']) {
                     $value = $this->_removeCurlyBraces($value);
                 }
                 $position    = strrpos($entry, ',');
@@ -464,13 +464,13 @@ class BibTex
             if ('@' == $ret['type'][0]) {
                 $ret['type'] = substr($ret['type'], 1);
             }
-            if ($this->_options['validate']) {
+            if ($this->options['validate']) {
                 if (!$this->_checkAllowedType($ret['type'])) {
                     $this->_generateWarning('WARNING_NOT_ALLOWED_TYPE', $ret['type'], $entry . '}');
                 }
             }
             //Handling the authors
-            if (in_array('author', array_keys($ret)) && $this->_options['extractAuthors']) {
+            if (in_array('author', array_keys($ret)) && $this->options['extractAuthors']) {
                 $ret['author'] = $this->_extractAuthors($ret['author']);
             }
         }
@@ -570,8 +570,8 @@ class BibTex
     public function _checkAt($entry)
     {
         $ret     = false;
-        $opening = array_keys($this->_delimiters);
-        $closing = array_values($this->_delimiters);
+        $opening = array_keys($this->delimiters);
+        $closing = array_values($this->delimiters);
         //Getting the value (at is only allowd in values)
         if (strrpos($entry, '=') !== false) {
             $position = strrpos($entry, '=');
@@ -618,12 +618,12 @@ class BibTex
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _stripDelimiter($entry)
     {
-        $beginningdels = array_keys($this->_delimiters);
+        $beginningdels = array_keys($this->delimiters);
         $length        = strlen($entry);
         $firstchar     = substr($entry, 0, 1);
         $lastchar      = substr($entry, -1, 1);
         while (in_array($firstchar, $beginningdels)) { //The first character is an opening delimiter
-            if ($lastchar == $this->_delimiters[$firstchar]) { //Matches to closing Delimiter
+            if ($lastchar == $this->delimiters[$firstchar]) { //Matches to closing Delimiter
                 $entry = substr($entry, 1, -1);
             } else {
                 break;
@@ -659,9 +659,9 @@ class BibTex
     public function _wordwrap($entry)
     {
         if (('' != $entry) && (is_string($entry))) {
-            $width = $this->_options['wordWrapWidth'];
-            $break = $this->_options['wordWrapBreak'];
-            $cut = $this->_options['wordWrapCut'];
+            $width = $this->options['wordWrapWidth'];
+            $break = $this->options['wordWrapBreak'];
+            $cut = $this->options['wordWrapCut'];
             $entry = wordwrap($entry, $width, $break, $cut);
         }
         return $entry;
@@ -906,13 +906,13 @@ class BibTex
     public function _removeCurlyBraces($value)
     {
         //First we save the delimiters
-        $beginningdels = array_keys($this->_delimiters);
+        $beginningdels = array_keys($this->delimiters);
         $firstchar     = substr($value, 0, 1);
         $lastchar      = substr($value, -1, 1);
         $begin         = '';
         $end           = '';
         while (in_array($firstchar, $beginningdels)) { //The first character is an opening delimiter
-            if ($lastchar == $this->_delimiters[$firstchar]) { //Matches to closing Delimiter
+            if ($lastchar == $this->delimiters[$firstchar]) { //Matches to closing Delimiter
                 $begin .= $firstchar;
                 $end   .= $lastchar;
                 $value  = substr($value, 1, -1);
@@ -1040,7 +1040,7 @@ class BibTex
             $bibtex .= '@' . strtolower($entry['type']) . ' { ' . $entry['cite'] . ",\n";
             //Other fields except author
             foreach ($entry as $key => $val) {
-                if ($this->_options['wordWrapWidth'] > 0) {
+                if ($this->options['wordWrapWidth'] > 0) {
                     $val = $this->_wordWrap($val);
                 }
                 if (!in_array($key, ['cite', 'type', 'author'])) {
@@ -1049,7 +1049,7 @@ class BibTex
             }
             //Author
             if (array_key_exists('author', $entry)) {
-                if ($this->_options['extractAuthors']) {
+                if ($this->options['extractAuthors']) {
                     $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->_formatAuthor($authorentry);
@@ -1135,7 +1135,7 @@ class BibTex
                 $year = $this->_unwrap($entry['year']);
             }
             if (array_key_exists('author', $entry)) {
-                if ($this->_options['extractAuthors']) {
+                if ($this->options['extractAuthors']) {
                     $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->_formatAuthor($authorentry);
@@ -1201,7 +1201,7 @@ class BibTex
                 $publisher = $this->_unwrap($entry['publisher']);
             }
             if (array_key_exists('author', $entry)) {
-                if ($this->_options['extractAuthors']) {
+                if ($this->options['extractAuthors']) {
                     $tmparray = []; //In this array the authors are saved and the joind with an and
                     foreach ($entry['author'] as $authorentry) {
                         $tmparray[] = $this->_formatAuthor($authorentry);

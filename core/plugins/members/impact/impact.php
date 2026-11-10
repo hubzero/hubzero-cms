@@ -23,9 +23,9 @@ use Hubzero\Facades\User;
 class Impact extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -48,7 +48,7 @@ class Impact extends Plugin
      * @var boolean
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_stats = null;
+    protected $stats = null;
 
     /**
      * Publication categories
@@ -75,7 +75,7 @@ class Impact extends Plugin
     {
         parent::__construct($subject, $config);
 
-        $this->_database = App::get('db');
+        $this->database = App::get('db');
     }
 
     /**
@@ -96,10 +96,10 @@ class Impact extends Plugin
             || $this->params->get('show_impact', 0) == 2
         ) {
             // Check if user has any publications
-            $pubLog = new \Components\Publications\Tables\Log($this->_database);
-            $this->_stats = $pubLog->getAuthorStats($member->get('id'), 0, false);
+            $pubLog = new \Components\Publications\Tables\Log($this->database);
+            $this->stats = $pubLog->getAuthorStats($member->get('id'), 0, false);
 
-            if ($this->_stats) {
+            if ($this->stats) {
                 $areas['impact'] = Lang::txt('PLG_MEMBERS_IMPACT');
                 $areas['icon'] = 'f012';
                 $areas['icon-class'] = 'icon-signal';
@@ -140,7 +140,7 @@ class Impact extends Plugin
         ];
 
         if ($returnhtml) {
-            $this->_option = $option;
+            $this->componentOption = $option;
 
             // Which view
             $task = Request::getCmd('action', '');
@@ -155,7 +155,7 @@ class Impact extends Plugin
 
         //get meta
         $arr['metadata'] = [];
-        $arr['metadata']['count'] = $this->_stats ? count($this->_stats) : 0;
+        $arr['metadata']['count'] = $this->stats ? count($this->stats) : 0;
 
         return $arr;
     }
@@ -173,8 +173,8 @@ class Impact extends Plugin
         $view = $this->view('default', 'stats');
 
         // Get pub stats for each publication
-        $pubLog = new \Components\Publications\Tables\Log($this->_database);
-        $view->pubstats = $this->_stats ? $this->_stats : $pubLog->getAuthorStats($uid, 0, false);
+        $pubLog = new \Components\Publications\Tables\Log($this->database);
+        $view->pubstats = $this->stats ? $this->stats : $pubLog->getAuthorStats($uid, 0, false);
 
         // Get date of first log
         $view->firstlog = $pubLog->getFirstLogDate();
@@ -182,8 +182,8 @@ class Impact extends Plugin
         $view->totals = $pubLog->getTotals($uid);
 
         // Output HTML
-        $view->option = $this->_option;
-        $view->database = $this->_database;
+        $view->option = $this->componentOption;
+        $view->database = $this->database;
         $view->uid = $uid;
         $view->pubconfig = Component::params('com_publications');
 

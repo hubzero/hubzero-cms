@@ -119,7 +119,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  bool
      */
-    protected $_authorized = false;
+    protected $authorized = false;
 
     /**
      * Tool
@@ -1065,7 +1065,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
      */
     public function access($action = 'view')
     {
-        if (!$this->_authorized) {
+        if (!$this->authorized) {
             $this->authorize();
         }
         return $this->params->get('access-' . strtolower($action) . '-resource');
@@ -1108,7 +1108,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
         // Access checks are a little convoluted so rather than using nested
         // if-else we return inline as we determine access. We check for
 
-        $this->_authorized = true;
+        $this->authorized = true;
 
         // Check if they are guest
         if (User::isGuest()) {

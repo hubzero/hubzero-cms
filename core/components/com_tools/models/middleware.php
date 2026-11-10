@@ -22,7 +22,7 @@ use Hubzero\Facades\Component;
 class Middleware extends Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
 
     /**
      * \Hubzero\ItemList
@@ -30,7 +30,7 @@ class Middleware extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_cache = [
+    private $cache = [
         'zones.count' => null,
         'zones.list'  => null,
         'zones.one'   => null,
@@ -44,7 +44,7 @@ class Middleware extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_config = null;
+    private $config = null;
 
     /**
      * Constructor
@@ -58,7 +58,7 @@ class Middleware extends Obj
             $db = Utils::getMWDBO();
         }
 
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -70,13 +70,13 @@ class Middleware extends Obj
     public function session($sessnum = null, $permissions = null)
     {
         if (
-            !isset($this->_cache['session'])
-            || ($sessnum !== null && (int) $this->_cache['session']->get('sessnum') != $sessnum)
+            !isset($this->cache['session'])
+            || ($sessnum !== null && (int) $this->cache['session']->get('sessnum') != $sessnum)
         ) {
-            $this->_cache['session'] = Session::getInstance($sessnum, $permissions);
+            $this->cache['session'] = Session::getInstance($sessnum, $permissions);
         }
 
-        return $this->_cache['session'];
+        return $this->cache['session'];
     }
 
     /**
@@ -89,31 +89,31 @@ class Middleware extends Obj
         // If the current offering isn't set
         //    OR the ID passed doesn't equal the current offering's ID or alias
         if (
-            !isset($this->_cache['zones.one'])
-            || ($id !== null && (int) $this->_cache['zones.one']->get('id') != $id)
+            !isset($this->cache['zones.one'])
+            || ($id !== null && (int) $this->cache['zones.one']->get('id') != $id)
         ) {
             // Reset current offering
-            $this->_cache['zones.one'] = null;
+            $this->cache['zones.one'] = null;
 
             // If the list of all offerings is available ...
-            if (isset($this->_cache['zones.list'])) {
+            if (isset($this->cache['zones.list'])) {
                 // Find an offering in the list that matches the ID passed
-                foreach ($this->_cache['zones.list'] as $key => $zone) {
+                foreach ($this->cache['zones.list'] as $key => $zone) {
                     if ((int) $zone->get('id') == $id) {
                         // Set current offering
-                        $this->_cache['zones.one'] = $zone;
+                        $this->cache['zones.one'] = $zone;
                         break;
                     }
                 }
             }
 
-            if (is_null($this->_cache['zones.one'])) {
+            if (is_null($this->cache['zones.one'])) {
                 // Get current offering
-                $this->_cache['zones.one'] = new Zone($id);
+                $this->cache['zones.one'] = new Zone($id);
             }
         }
         // Return current offering
-        return $this->_cache['zones.one'];
+        return $this->cache['zones.one'];
     }
 
     /**
@@ -182,20 +182,20 @@ class Middleware extends Obj
      */
     public function zones($rtrn = 'list', $filters = [], $clear = false)
     {
-        $tbl = new \Components\Tools\Tables\Zones($this->_db);
+        $tbl = new \Components\Tools\Tables\Zones($this->db);
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_cache['zones.count']) || $clear) {
-                    $this->_cache['zones.count'] = $tbl->find('count', $filters);
+                if (!isset($this->cache['zones.count']) || $clear) {
+                    $this->cache['zones.count'] = $tbl->find('count', $filters);
                 }
-                return $this->_cache['zones.count'];
+                return $this->cache['zones.count'];
                 break;
 
             case 'list':
             case 'results':
             default:
-                if (!($this->_cache['zones.list'] instanceof ItemList) || $clear) {
+                if (!($this->cache['zones.list'] instanceof ItemList) || $clear) {
                     if ($results = $tbl->find('list', $filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Zone($result);
@@ -203,9 +203,9 @@ class Middleware extends Obj
                     } else {
                         $results = [];
                     }
-                    $this->_cache['zones.list'] = new ItemList($results);
+                    $this->cache['zones.list'] = new ItemList($results);
                 }
-                return $this->_cache['zones.list'];
+                return $this->cache['zones.list'];
                 break;
         }
     }
@@ -219,13 +219,13 @@ class Middleware extends Obj
      */
     public function config($key = '', $default = null)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_tools');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_tools');
         }
 
         if ($key) {
-            return $this->_config->get((string) $key, $default);
+            return $this->config->get((string) $key, $default);
         }
-        return $this->_config;
+        return $this->config;
     }
 }

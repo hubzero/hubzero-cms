@@ -41,7 +41,7 @@ class Page extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'page';
+    protected $scope = 'page';
 
     /**
      * Get the state of the entry as either text or numerical value

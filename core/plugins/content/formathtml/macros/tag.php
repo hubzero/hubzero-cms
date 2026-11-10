@@ -47,8 +47,8 @@ class Tag extends Macro
 
         if ($tag) {
             // Perform query
-            $this->_db->setQuery("SELECT raw_tag FROM `#__tags` WHERE tag=" . $this->_db->quote($tag) . " LIMIT 1");
-            $a = $this->_db->loadResult();
+            $this->db->setQuery("SELECT raw_tag FROM `#__tags` WHERE tag=" . $this->db->quote($tag) . " LIMIT 1");
+            $a = $this->db->loadResult();
 
             // Did we get a result from the database?
             if ($a) {

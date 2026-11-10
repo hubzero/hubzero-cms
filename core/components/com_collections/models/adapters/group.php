@@ -21,7 +21,7 @@ class Group extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_groups',
     ];
 
@@ -31,7 +31,7 @@ class Group extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_group = null;
+    protected $group = null;
 
     /**
      * Constructor
@@ -51,12 +51,12 @@ class Group extends Base
             $group->set('description', Lang::txt('(unknown)'));
         }
 
-        $this->_group = $group;
+        $this->group = $group;
 
-        $this->_segments['cn']     = $group->get('cn');
-        $this->_segments['active'] = 'collections';
+        $this->segments['cn']     = $group->get('cn');
+        $this->segments['active'] = 'collections';
 
-        $this->set('option', $this->_segments['option']);
+        $this->set('option', $this->segments['option']);
     }
 
     /**
@@ -69,14 +69,14 @@ class Group extends Base
      */
     public function build($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -121,7 +121,7 @@ class Group extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -132,11 +132,11 @@ class Group extends Base
      */
     public function canAccess($user_id)
     {
-        if (!$this->_group || !$this->_group->get('cn')) {
+        if (!$this->group || !$this->group->get('cn')) {
             return true;
         }
 
-        if (in_array($user_id, $this->_group->get('members'))) {
+        if (in_array($user_id, $this->group->get('members'))) {
             return true;
         }
 

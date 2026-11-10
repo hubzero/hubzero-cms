@@ -120,8 +120,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
         if (!$xregistration->check('edit', $this->record->entry->get('id'), [])) {
             $skip = [];
 
-            if (!empty($xregistration->_missing)) {
-                foreach ($xregistration->_missing as $key => $missing) {
+            if (!empty($xregistration->missing)) {
+                foreach ($xregistration->missing as $key => $missing) {
                     if ($this->mode == 'PATCH') {
                         $skip[] = $key;
                         continue;
@@ -130,8 +130,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
                     array_push($this->record->errors, $missing);
                 }
             }
-            if (!empty($xregistration->_invalid)) {
-                foreach ($xregistration->_invalid as $key => $invalid) {
+            if (!empty($xregistration->invalid)) {
+                foreach ($xregistration->invalid as $key => $invalid) {
                     if (in_array($key, $skip)) {
                         continue;
                     }

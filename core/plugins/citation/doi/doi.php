@@ -34,7 +34,7 @@ class Doi extends Plugin
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_configs = null;
+    public $configs = null;
 
     /**
      * Relation type
@@ -218,15 +218,15 @@ class Doi extends Plugin
     protected function _getDoiXml($doi)
     {
         if (
-            $this->_configs->dataciteEZIDSwitch
+            $this->configs->dataciteEZIDSwitch
             == \Components\Publications\Models\Doi::SWITCH_OPTION_DATACITE
         ) {
-            $url = rtrim($this->_configs->dataciteServiceURL, '/') . '/metadata/' . $doi;
+            $url = rtrim($this->configs->dataciteServiceURL, '/') . '/metadata/' . $doi;
 
             $ch = curl_init($url);
             $options = [
                 CURLOPT_URL             => $url,
-                CURLOPT_USERPWD         => $this->_configs->dataciteUserPW,
+                CURLOPT_USERPWD         => $this->configs->dataciteUserPW,
                 CURLOPT_RETURNTRANSFER  => true,
                 CURLOPT_HTTPHEADER      => [
                     'Content-Type:text/plain;charset=UTF-8',
@@ -487,10 +487,10 @@ class Doi extends Plugin
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _regMetadata($xml)
     {
-        $url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';
+        $url = rtrim($this->configs->dataciteServiceURL, '/') . '/' . 'metadata';
 
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->dataciteUserPW);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->configs->dataciteUserPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt(
@@ -515,7 +515,7 @@ class Doi extends Plugin
      */
     public function getPubConfig()
     {
-        if (empty($this->_configs)) {
+        if (empty($this->configs)) {
             $params = Component::params('com_publications');
 
             $configs = new \stdClass();
@@ -523,7 +523,7 @@ class Doi extends Plugin
             $configs->dataciteServiceURL = $params->get('datacite_doi_service');
             $configs->dataciteUserPW = $params->get('datacite_doi_userpw');
 
-            $this->_configs = $configs;
+            $this->configs = $configs;
         }
     }
 

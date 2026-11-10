@@ -21,7 +21,7 @@ use Hubzero\Facades\User;
 class Entry extends Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_project;
+    protected $project;
 
     /**
      * Table name
@@ -139,12 +139,12 @@ class Entry extends Model
      */
     public function project($get = null)
     {
-        if (empty($this->_project)) {
-            $this->_project = new \Components\Projects\Models\Project($this->get('projectid'));
-            $this->_project->_params = new \Hubzero\Config\Registry($this->_project->params);
+        if (empty($this->project)) {
+            $this->project = new \Components\Projects\Models\Project($this->get('projectid'));
+            $this->project->_params = new \Hubzero\Config\Registry($this->project->params);
         }
 
-        return $get ? $this->_project->get($get) : $this->_project;
+        return $get ? $this->project->get($get) : $this->project;
     }
 
     /**

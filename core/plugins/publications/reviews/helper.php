@@ -27,7 +27,7 @@ class Helper extends \Hubzero\Base\Obj
     // publication and the option it is working on, and the views read the
     // reviewer's own review back off it. The same is true of the resources
     // reviews helper, which is the same class under a different name.
-    public $_option;
+    public $componentOption;
     public $loggedin;
     public $myreview;
     public $publication;
@@ -264,7 +264,7 @@ class Helper extends \Hubzero\Base\Obj
                 'name'   => 'browse',
                 'layout' => '_rateitem',
             ]);
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->item   = new Models\Review($response[0]);
             $view->rid    = $publication->get('id');
 
@@ -423,7 +423,7 @@ class Helper extends \Hubzero\Base\Obj
             'element' => 'reviews',
             'name'    => 'emails',
         ]);
-        $eview->option      = $this->_option;
+        $eview->option      = $this->componentOption;
         $eview->juser       = User::getInstance();
         $eview->publication = $publication;
         $message            = $eview->loadTemplate();
@@ -442,7 +442,7 @@ class Helper extends \Hubzero\Base\Obj
                 $message,
                 $from,
                 $users,
-                $this->_option,
+                $this->componentOption,
             ])
         ) {
             $this->setError(Lang::txt('PLG_PUBLICATIONS_REVIEWS_FAILED_TO_MESSAGE'));

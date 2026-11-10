@@ -38,21 +38,21 @@ class Asset extends Base
      *
      * @var string
      */
-    protected $_scope = 'asset';
+    protected $scope = 'asset';
 
     /**
      * Registry
      *
      * @var object
      */
-    protected $_params = null;
+    protected $params = null;
 
     /**
      * Auxiliary keys for assets (links to other tables)
      *
      * @var array
      */
-    protected static $_aux_tablekeys = [
+    protected static $auxTablekeys = [
         'progress_factors' => [
             'id',
             'section_id',
@@ -69,7 +69,7 @@ class Asset extends Base
     {
         parent::__construct($oid);
 
-        $this->_params = Component::params('com_courses');
+        $this->params = Component::params('com_courses');
     }
 
     /**
@@ -85,7 +85,7 @@ class Asset extends Base
             return $this->table->$property;
         } elseif (isset($this->table->{'__' . $property})) {
             return $this->table->{'__' . $property};
-        } elseif (in_array($property, self::$_section_keys)) {
+        } elseif (in_array($property, self::$sectionKeys)) {
             $tbl = new Tables\SectionDate($this->db);
             $tbl->load($this->get('id'), 'asset', $this->get('section_id'));
 
@@ -95,17 +95,17 @@ class Asset extends Base
             return $tbl->get($property, $default);
         } elseif (strpos($property, '.') !== false) {
             $parts = explode('.', $property);
-            if (isset($parts[0]) && array_key_exists($parts[0], self::$_aux_tablekeys)) {
+            if (isset($parts[0]) && array_key_exists($parts[0], self::$auxTablekeys)) {
                 $key = str_replace('_', ' ', $parts[0]);
                 $key = ucwords($key);
                 $key = str_replace(' ', '', $key);
                 $tbl = "Components\\Courses\\Tables\\{$key}";
                 $tbl = new $tbl($this->db);
                 $aux = [];
-                foreach (self::$_aux_tablekeys[$parts[0]] as $item) {
+                foreach (self::$auxTablekeys[$parts[0]] as $item) {
                     $k = $item;
                     if ($item == 'id') {
-                        $k = $this->_scope . '_' . $item;
+                        $k = $this->scope . '_' . $item;
                     }
                     $aux[$k] = $this->get((string) $item);
                 }
@@ -138,7 +138,7 @@ class Asset extends Base
             $assetPath = str_replace('/', DS, $assetPath);
         }
 
-        $path = DS . trim($this->_params->get('uploadpath', '/site/courses'), DS) . DS . $assetPath;
+        $path = DS . trim($this->params->get('uploadpath', '/site/courses'), DS) . DS . $assetPath;
         if ($withUrl) {
             $path .= DS . ltrim($this->get('url'), DS);
         }
@@ -174,7 +174,7 @@ class Asset extends Base
             $dt = new Tables\SectionDate($this->db);
             $dt->load(
                 $this->get('id'),
-                $this->_scope,
+                $this->scope,
                 $this->get('section_id'),
             );
             $dt->set('publish_up', $this->get('publish_up'));
@@ -187,7 +187,7 @@ class Asset extends Base
         $properties = get_object_vars($this->table);
         foreach ($properties as $k => $v) {
             $kname = substr($k, 2);
-            if (!empty($kname) && array_key_exists($kname, self::$_aux_tablekeys)) {
+            if (!empty($kname) && array_key_exists($kname, self::$auxTablekeys)) {
                 $key = $kname;
                 $key = str_replace('_', ' ', $key);
                 $key = ucwords($key);
@@ -197,10 +197,10 @@ class Asset extends Base
 
                 if ($v == 'delete') {
                     $aux = [];
-                    foreach (self::$_aux_tablekeys[$kname] as $item) {
+                    foreach (self::$auxTablekeys[$kname] as $item) {
                         $k = $item;
                         if ($item == 'id') {
-                            $k = $this->_scope . '_' . $item;
+                            $k = $this->scope . '_' . $item;
                         }
                         $aux[$k] = $this->get((string) $item);
                     }
@@ -229,7 +229,7 @@ class Asset extends Base
         // Remove dates
         if ($this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
             if (!$dt->delete()) {
                 $this->setError($dt->getError());
             }

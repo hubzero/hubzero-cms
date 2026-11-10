@@ -26,7 +26,7 @@ class Base extends Model
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_creator = null;
+    protected $creator = null;
 
     /**
      * Return a formatted timestamp
@@ -64,18 +64,18 @@ class Base extends Model
      */
     public function creator($property = null, $default = null)
     {
-        if (!($this->_creator instanceof Member)) {
-            $this->_creator = Member::oneOrNew($this->get('created_by'));
+        if (!($this->creator instanceof Member)) {
+            $this->creator = Member::oneOrNew($this->get('created_by'));
 
-            if (!trim($this->_creator->get('name'))) {
-                $this->_creator->set('name', Lang::txt('(unknown)'));
+            if (!trim($this->creator->get('name'))) {
+                $this->creator->set('name', Lang::txt('(unknown)'));
             }
         }
         if ($property) {
             $property = ($property == 'uidNumber' ? 'id' : $property);
-            return $this->_creator->get($property, $default);
+            return $this->creator->get($property, $default);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**

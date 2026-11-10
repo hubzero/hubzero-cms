@@ -25,7 +25,7 @@ class Description extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'description';
+    protected $name = 'description';
 
     /**
      * Parent block name
@@ -33,7 +33,7 @@ class Description extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parentname = 'description';
+    protected $parentname = 'description';
 
     /**
      * Default manifest
@@ -41,7 +41,7 @@ class Description extends Base
      * @var     string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest = null;
+    protected $manifest = null;
 
     /**
      * Numeric block ID
@@ -49,7 +49,7 @@ class Description extends Base
      * @var     integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockId = 0;
+    protected $blockId = 0;
 
     /**
      * Display block content
@@ -59,12 +59,12 @@ class Description extends Base
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Register blockId
-        $this->_blockId = $blockId;
+        $this->blockId = $blockId;
 
         if ($viewname == 'curator') {
             // Output HTML
@@ -89,19 +89,19 @@ class Description extends Base
         $status->review = $pub->curation('blocks', $blockId, 'review');
 
         // Get block element model
-        $elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
+        $elModel = new \Components\Publications\Models\BlockElements($this->parent->db);
 
         // Properties object
         $master             = new stdClass();
-        $master->block      = $this->_name;
-        $master->blockId    = $this->_blockId;
-        $master->params     = $this->_manifest->params;
+        $master->block      = $this->name;
+        $master->blockId    = $this->blockId;
+        $master->params     = $this->manifest->params;
         $master->props      = $elModel->getActiveElement($status->elements, $status->review);
 
-        $view->manifest     = $this->_manifest;
+        $view->manifest     = $this->manifest;
         $view->content      = self::buildContent($pub, $viewname, $status, $master);
         $view->pub          = $pub;
-        $view->active       = $this->_name;
+        $view->active       = $this->name;
         $view->step         = $blockId;
         $view->showControls = isset($master->params->collapse_elements)
                             && $master->params->collapse_elements == 1 ? 3 : 1;
@@ -122,17 +122,17 @@ class Description extends Base
     public function save($manifest = null, $blockId = 0, $pub = null, $actor = 0, $elementId = 0)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Make sure changes are allowed
-        if ($this->_parent->checkFreeze($this->_manifest->params, $pub)) {
+        if ($this->parent->checkFreeze($this->manifest->params, $pub)) {
             return false;
         }
 
         // Load publication version
-        $row = new \Components\Publications\Tables\Version($this->_parent->_db);
+        $row = new \Components\Publications\Tables\Version($this->parent->db);
 
         if (!$row->load($pub->version_id)) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
@@ -142,7 +142,7 @@ class Description extends Base
         // Track changes
         $changed  = 0;
         $missed   = 0;
-        $collapse = $this->_manifest->params->collapse_elements == 0 ? 0 : 1;
+        $collapse = $this->manifest->params->collapse_elements == 0 ? 0 : 1;
 
         // Incoming
         $nbtags = Request::getArray('nbtag', []);
@@ -157,7 +157,7 @@ class Description extends Base
         }
 
         // Save each element
-        foreach ($this->_manifest->elements as $id => $element) {
+        foreach ($this->manifest->elements as $id => $element) {
             // Are we saving just one element?
             if ($elementId && $id != $elementId && $collapse) {
                 continue;
@@ -201,7 +201,7 @@ class Description extends Base
                     $missed++;
                 }
                 if ($row->$field != $value) {
-                    $lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $blockId);
+                    $lastRecord = $pub->_curationModel->getLastUpdate($id, $this->name, $blockId);
                     $changed++;
 
                     // Record update time
@@ -217,7 +217,7 @@ class Description extends Base
                     if ($value) {
                         $data->update = ''; // remove dispute message if requirement satisfied
                     }
-                    $pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $blockId);
+                    $pub->_curationModel->saveUpdate($data, $id, $this->name, $pub, $blockId);
                 }
                 $row->$field = $value;
             }
@@ -227,7 +227,7 @@ class Description extends Base
         if ($changed) {
             $row->modified    = Date::toSql();
             $row->modified_by = $actor;
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         // Report error
@@ -242,7 +242,7 @@ class Description extends Base
         }
 
         // Set success message
-        $this->_parent->set('_message', $this->get('_message'));
+        $this->parent->set('_message', $this->get('_message'));
 
         return true;
     }
@@ -256,14 +256,14 @@ class Description extends Base
     public function buildContent($pub, $viewname, $status, $master)
     {
         // Get block element model
-        $elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
+        $elModel = new \Components\Publications\Models\BlockElements($this->parent->db);
 
         $html = '';
 
         // Build each element
         $o = 1;
 
-        foreach ($this->_manifest->elements as $elementId => $element) {
+        foreach ($this->manifest->elements as $elementId => $element) {
             $html  .= $elModel->drawElement(
                 $element->name,
                 $elementId,
@@ -288,26 +288,26 @@ class Description extends Base
     public function getStatus($pub = null, $manifest = null, $elementId = null)
     {
         // Set block manifest
-        if ($this->_manifest === null) {
-            $this->_manifest = $manifest ? $manifest : self::getManifest();
+        if ($this->manifest === null) {
+            $this->manifest = $manifest ? $manifest : self::getManifest();
         }
 
         // Start status
         $status = new \Components\Publications\Models\Status();
 
         // Return element status
-        if ($elementId !== null && isset($this->_manifest->elements->$elementId)) {
-            return self::getElementStatus($this->_manifest->elements->$elementId, $pub);
+        if ($elementId !== null && isset($this->manifest->elements->$elementId)) {
+            return self::getElementStatus($this->manifest->elements->$elementId, $pub);
         }
 
         // Check against manifested requirements
-        if ($this->_manifest && $this->_manifest->elements) {
+        if ($this->manifest && $this->manifest->elements) {
             // Check if requirements are satisfied for each attachment element
             $i          = 0;
             $success    = 0;
             $incomplete = 0;
 
-            foreach ($this->_manifest->elements as $elementId => $element) {
+            foreach ($this->manifest->elements as $elementId => $element) {
                 if (!isset($status->elements)) {
                     $status->elements = new stdClass();
                 }
@@ -336,7 +336,7 @@ class Description extends Base
     public function getElementStatus($element, $pub = null)
     {
         // Get block element model
-        $elModel = new \Components\Publications\Models\BlockElements($this->_parent->_db);
+        $elModel = new \Components\Publications\Models\BlockElements($this->parent->db);
 
         $status = $elModel->getStatus($element->type, $element, $pub);
         return $status;
@@ -378,8 +378,8 @@ class Description extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

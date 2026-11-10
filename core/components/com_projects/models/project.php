@@ -26,45 +26,45 @@ use Hubzero\Facades\Request;
 class Project extends Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base;
+    protected $base;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_creator;
+    protected $creator;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_groupOwner;
+    protected $groupOwner;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_member;
+    protected $member;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_newCount;
+    protected $newCount;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_objPub;
+    protected $objPub;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_owner;
+    protected $owner;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_project;
+    protected $project;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_publication;
+    protected $publication;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_repo;
+    protected $repo;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblActivity;
+    protected $tblActivity;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblBlog;
+    protected $tblBlog;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblComment;
+    protected $tblComment;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     // Read and written from outside the class: the projects controller
     // reconciles groups, matches invitations and loads the team through it.
-    public $_tblOwner;
+    public $tblOwner;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblTodo;
+    protected $tblTodo;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblType;
+    protected $tblType;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_team;
+    protected $team;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type;
+    protected $type;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_userGroups;
+    protected $userGroups;
 
     // Read from outside the class throughout the setup and project views,
     // as $this->model->params->get(...).
@@ -89,7 +89,7 @@ class Project extends Model
      *
      * @var  object
      */
-    protected $_config = null;
+    protected $config = null;
 
     /**
      * Authorized
@@ -198,11 +198,11 @@ class Project extends Model
      */
     public function project($reload = false)
     {
-        if (!isset($this->_project) || $reload == true) {
-            $this->_project = $this->table->getProject($this->get('id'), User::get('id'));
+        if (!isset($this->project) || $reload == true) {
+            $this->project = $this->table->getProject($this->get('id'), User::get('id'));
         }
 
-        return $this->_project;
+        return $this->project;
     }
 
     /**
@@ -213,11 +213,11 @@ class Project extends Model
     public function repo()
     {
 
-        if (!isset($this->_repo)) {
-            $this->_repo = new Repo($this, 'local');
+        if (!isset($this->repo)) {
+            $this->repo = new Repo($this, 'local');
         }
 
-        return $this->_repo;
+        return $this->repo;
     }
 
     /**
@@ -288,15 +288,15 @@ class Project extends Model
         if (!$this->exists()) {
             return false;
         }
-        if (!isset($this->_tblOwner)) {
-            $this->_tblOwner = new Tables\Owner($this->db);
+        if (!isset($this->tblOwner)) {
+            $this->tblOwner = new Tables\Owner($this->db);
         }
-        if (!isset($this->_member) || $reload == true) {
-            $this->_tblOwner->loadOwner($this->get('id'), User::get('id'));
-            $this->_member = $this->_tblOwner->id ? $this->_tblOwner : false;
+        if (!isset($this->member) || $reload == true) {
+            $this->tblOwner->loadOwner($this->get('id'), User::get('id'));
+            $this->member = $this->tblOwner->id ? $this->tblOwner : false;
         }
 
-        return $this->_member;
+        return $this->member;
     }
 
     /**
@@ -463,11 +463,11 @@ class Project extends Model
         if (!$this->exists() || !$this->isProvisioned()) {
             return false;
         }
-        if (!isset($this->_publication)) {
-            $this->_objPub = new \Components\Publications\Tables\Publication($this->db);
-            $this->_publication = $this->_objPub->getProvPublication($this->get('id'));
+        if (!isset($this->publication)) {
+            $this->objPub = new \Components\Publications\Tables\Publication($this->db);
+            $this->publication = $this->objPub->getProvPublication($this->get('id'));
         }
-        return $this->_publication;
+        return $this->publication;
     }
 
     /**
@@ -580,9 +580,9 @@ class Project extends Model
         // Check reviewer access?
         if ($reviewer) {
             // Get user groups
-            if (!isset($this->_userGroups)) {
+            if (!isset($this->userGroups)) {
                 $ugs = \Hubzero\User\Helper::getGroups(User::get('id'));
-                $this->_userGroups = $this->getGroupProperty($ugs);
+                $this->userGroups = $this->getGroupProperty($ugs);
             }
 
             switch (strtolower($reviewer)) {
@@ -607,8 +607,8 @@ class Project extends Model
             }
 
             $authorized = false;
-            if ($this->_userGroups && count($this->_userGroups) > 0) {
-                foreach ($this->_userGroups as $cn) {
+            if ($this->userGroups && count($this->userGroups) > 0) {
+                foreach ($this->userGroups as $cn) {
                     if ($group && $cn == $group->get('cn')) {
                         $authorized = true;
 
@@ -754,13 +754,13 @@ class Project extends Model
      */
     public function owner($property = null)
     {
-        if (!isset($this->_owner) || !($this->_owner instanceof \Hubzero\User\User)) {
-            $this->_owner = User::getInstance($this->get('owned_by_user'));
+        if (!isset($this->owner) || !($this->owner instanceof \Hubzero\User\User)) {
+            $this->owner = User::getInstance($this->get('owned_by_user'));
         }
         if ($property) {
-            return $this->_owner->get($property);
+            return $this->owner->get($property);
         }
-        return $this->_owner;
+        return $this->owner;
     }
 
     /**
@@ -775,13 +775,13 @@ class Project extends Model
      */
     public function creator($property = null)
     {
-        if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = User::getInstance($this->get('created_by_user'));
+        if (!isset($this->creator) || !($this->creator instanceof \Hubzero\User\User)) {
+            $this->creator = User::getInstance($this->get('created_by_user'));
         }
         if ($property) {
-            return $this->_creator->get($property);
+            return $this->creator->get($property);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**
@@ -799,14 +799,14 @@ class Project extends Model
         if (!$this->get('owned_by_group')) {
             return false;
         }
-        if (!isset($this->_groupOwner) || !($this->_groupOwner instanceof \Hubzero\User\Group)) {
-            $this->_groupOwner = \Hubzero\User\Group::getInstance($this->get('owned_by_group'));
+        if (!isset($this->groupOwner) || !($this->groupOwner instanceof \Hubzero\User\Group)) {
+            $this->groupOwner = \Hubzero\User\Group::getInstance($this->get('owned_by_group'));
         }
         if ($property) {
             $property = ($property == 'id' ? 'gidNumber' : $property);
-            return $this->_groupOwner ? $this->_groupOwner->get($property) : null;
+            return $this->groupOwner ? $this->groupOwner->get($property) : null;
         }
-        return $this->_groupOwner;
+        return $this->groupOwner;
     }
 
     /**
@@ -882,13 +882,13 @@ class Project extends Model
      */
     public function config($key = null)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_projects');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_projects');
         }
         if ($key) {
-            return $this->_config->get($key);
+            return $this->config->get($key);
         }
-        return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -1022,8 +1022,8 @@ class Project extends Model
      */
     public function newCount($refresh = false)
     {
-        if (!isset($this->_newCount) || $refresh == true) {
-            $this->_newCount = \Hubzero\Activity\Recipient::all()
+        if (!isset($this->newCount) || $refresh == true) {
+            $this->newCount = \Hubzero\Activity\Recipient::all()
                 ->whereEquals('scope', 'project')
                 ->whereEquals('scope_id', $this->get('id'))
                 ->where('viewed', 'IS', null, 'and', 1)
@@ -1033,7 +1033,7 @@ class Project extends Model
                 ->total();
         }
 
-        return $this->_newCount;
+        return $this->newCount;
     }
 
     /**
@@ -1045,14 +1045,14 @@ class Project extends Model
      */
     public function team($filters = [], $refresh = false)
     {
-        if (!isset($this->_tblOwner)) {
-            $this->_tblOwner = new Tables\Owner($this->db);
+        if (!isset($this->tblOwner)) {
+            $this->tblOwner = new Tables\Owner($this->db);
         }
-        if (!isset($this->_team) || $refresh == true) {
-            $this->_team = $this->_tblOwner->getOwners($this->get('id'), $filters);
+        if (!isset($this->team) || $refresh == true) {
+            $this->team = $this->tblOwner->getOwners($this->get('id'), $filters);
         }
 
-        return $this->_team;
+        return $this->team;
     }
 
     /**
@@ -1064,40 +1064,40 @@ class Project extends Model
     public function table($name = null)
     {
         if ($name == 'Activity') {
-            if (!isset($this->_tblActivity)) {
-                $this->_tblActivity = new Tables\Activity($this->db);
+            if (!isset($this->tblActivity)) {
+                $this->tblActivity = new Tables\Activity($this->db);
             }
-            return $this->_tblActivity;
+            return $this->tblActivity;
         }
         if ($name == 'Owner') {
-            if (!isset($this->_tblOwner)) {
-                $this->_tblOwner = new Tables\Owner($this->db);
+            if (!isset($this->tblOwner)) {
+                $this->tblOwner = new Tables\Owner($this->db);
             }
-            return $this->_tblOwner;
+            return $this->tblOwner;
         }
         if ($name == 'Type') {
-            if (!isset($this->_tblType)) {
-                $this->_tblType = new Tables\Type($this->db);
+            if (!isset($this->tblType)) {
+                $this->tblType = new Tables\Type($this->db);
             }
-            return $this->_tblType;
+            return $this->tblType;
         }
         if ($name == 'Blog') {
-            if (!isset($this->_tblBlog)) {
-                $this->_tblBlog = new Tables\Blog($this->db);
+            if (!isset($this->tblBlog)) {
+                $this->tblBlog = new Tables\Blog($this->db);
             }
-            return $this->_tblBlog;
+            return $this->tblBlog;
         }
         if ($name == 'Comment') {
-            if (!isset($this->_tblComment)) {
-                $this->_tblComment = new Tables\Comment($this->db);
+            if (!isset($this->tblComment)) {
+                $this->tblComment = new Tables\Comment($this->db);
             }
-            return $this->_tblComment;
+            return $this->tblComment;
         }
         if ($name == 'Todo') {
-            if (!isset($this->_tblTodo)) {
-                $this->_tblTodo = new Tables\Todo($this->db);
+            if (!isset($this->tblTodo)) {
+                $this->tblTodo = new Tables\Todo($this->db);
             }
-            return $this->_tblTodo;
+            return $this->tblTodo;
         }
 
         return $this->table;
@@ -1475,13 +1475,13 @@ class Project extends Model
      */
     public function type()
     {
-        if (empty($this->_type)) {
-            $this->_type = new Tables\Type($this->db);
-            $this->_type->load($this->get('type'));
-            $this->_type->_params = new \Hubzero\Html\Parameter($this->_type->params);
+        if (empty($this->type)) {
+            $this->type = new Tables\Type($this->db);
+            $this->type->load($this->get('type'));
+            $this->type->_params = new \Hubzero\Html\Parameter($this->type->params);
         }
 
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -1493,9 +1493,9 @@ class Project extends Model
      */
     public function link($type = '')
     {
-        if (!isset($this->_base)) {
-            $this->_base  = 'index.php?option=com_projects';
-            $this->_base .= '&alias=' . $this->get('alias');
+        if (!isset($this->base)) {
+            $this->base  = 'index.php?option=com_projects';
+            $this->base .= '&alias=' . $this->get('alias');
         }
 
         // If it doesn't exist or isn't published
@@ -1508,15 +1508,15 @@ class Project extends Model
             case 'databases':
             case 'notes':
             case 'todo':
-                $link = $this->_base . '&active=' . strtolower($type);
+                $link = $this->base . '&active=' . strtolower($type);
                 break;
 
             case 'setup':
-                $link = $this->_base . '&task=setup';
+                $link = $this->base . '&task=setup';
                 break;
 
             case 'edit':
-                $link = $this->_base . '&task=edit';
+                $link = $this->base . '&task=edit';
                 break;
 
             case 'thumb':
@@ -1529,7 +1529,7 @@ class Project extends Model
 
             case 'permalink':
             default:
-                $link = $this->_base;
+                $link = $this->base;
                 break;
         }
 

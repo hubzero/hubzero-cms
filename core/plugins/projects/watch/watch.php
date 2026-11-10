@@ -27,7 +27,7 @@ use Hubzero\Facades\User;
 class Watch extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     protected $action;
     protected $database;
     protected $project;
@@ -69,11 +69,11 @@ class Watch extends Plugin
     public function onProject($model, $action = '', $areas = null)
     {
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }

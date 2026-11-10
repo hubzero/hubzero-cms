@@ -20,7 +20,7 @@ use Hubzero\Facades\Lang;
 class Info extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -66,11 +66,11 @@ class Info extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }

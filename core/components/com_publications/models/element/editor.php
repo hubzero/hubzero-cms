@@ -22,7 +22,7 @@ class Editor extends Base
   * @var  string
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Editor';
+    protected $name = 'Editor';
 
     /**
      * Return any options this element may have

@@ -21,7 +21,7 @@ class Column extends WikiMacro
      * @var integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_columns = 0;
+    protected static $columns = 0;
 
     /**
      * Indicator of where we are in the column count
@@ -29,7 +29,7 @@ class Column extends WikiMacro
      * @var integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_cursor = 0;
+    protected static $cursor = 0;
 
     /**
      * Returns description of macro, use, and accepted arguments
@@ -69,18 +69,18 @@ class Column extends WikiMacro
         $text = strtolower(array_shift($attribs));
 
         if (is_numeric($text)) {
-            self::$_columns = intval($text);
+            self::$columns = intval($text);
             return '<div class="grid">' . "\n";
         }
 
         $div = '';
 
         if (trim($text) == 'start') {
-            self::$_cursor++;
+            self::$cursor++;
 
             $cls = ['col'];
 
-            switch (self::$_columns) {
+            switch (self::$columns) {
                 case 6:
                     $cls[] = 'span2';
                     break;
@@ -100,7 +100,7 @@ class Column extends WikiMacro
                     break;
             }
 
-            if (self::$_cursor == self::$_columns) {
+            if (self::$cursor == self::$columns) {
                 $cls[] = 'omega';
             }
 
@@ -135,9 +135,9 @@ class Column extends WikiMacro
             $div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
         } elseif (trim($text) == 'end') {
             $div  = '</div><!-- / .col -->';
-            if (self::$_cursor == self::$_columns) {
+            if (self::$cursor == self::$columns) {
                 $div .= "\n" . '</div><!-- / .grid -->';
-                self::$_cursor = 0;
+                self::$cursor = 0;
             }
         }
 

@@ -25,7 +25,7 @@ class Tags extends Cloud
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'bulletinboard';
+    protected $scope = 'bulletinboard';
 
     /**
      * Get tags for a list of IDs
@@ -47,7 +47,7 @@ class Tags extends Cloud
 
         $sql = "SELECT t.tag, t.raw_tag, t.admin, rt.objectid
 				FROM " . $tt->getTableName() . " AS t 
-				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='" . $this->_scope . "' 
+				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='" . $this->scope . "' 
 				WHERE rt.objectid IN (" . implode(',', $ids) . ") ";
 
         switch ($admin) {
@@ -83,8 +83,8 @@ class Tags extends Cloud
      */
     public function append($tag)
     {
-        if (!($this->_cache['tags.list'] instanceof ItemList)) {
-            $this->_cache['tags.list'] = new ItemList([]);
+        if (!($this->cache['tags.list'] instanceof ItemList)) {
+            $this->cache['tags.list'] = new ItemList([]);
         }
 
         if (!$tag) {
@@ -95,14 +95,14 @@ class Tags extends Cloud
             if (is_array($tag)) {
                 foreach ($tag as $t) {
                     $t = is_object($t) ? $t->tag : $t;
-                    $this->_cache['tags.list']->add(Tag::oneByTag($t));
+                    $this->cache['tags.list']->add(Tag::oneByTag($t));
                 }
                 return $this;
             } else {
                 $tag = Tag::oneByTag($tag);
             }
         }
-        $this->_cache['tags.list']->add($tag);
+        $this->cache['tags.list']->add($tag);
 
         return $this;
     }

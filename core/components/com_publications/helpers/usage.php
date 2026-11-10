@@ -22,7 +22,7 @@ class Usage
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db = null;
+    public $db = null;
 
     /**
      * Publication ID
@@ -30,7 +30,7 @@ class Usage
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_pubid = null;
+    public $pubid = null;
 
     /**
      * Publication master type
@@ -38,7 +38,7 @@ class Usage
      * @var unknown
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_type = null;
+    public $type = null;
 
     /**
      * Resource rating
@@ -95,9 +95,9 @@ class Usage
      */
     public function __construct(&$db, $pubid, $type = 'files', $rating = 0, $cites = 0, $lastcite = '')
     {
-        $this->_db      = $db;
-        $this->_pubid   = $pubid;
-        $this->_type    = $type;
+        $this->db      = $db;
+        $this->pubid   = $pubid;
+        $this->type    = $type;
         $this->rating   = $rating;
         $this->cites    = $cites;
         $this->lastcite = $lastcite;
@@ -136,11 +136,11 @@ class Usage
                 break;
         }
 
-        $sql = "SELECT * FROM `#__publication_stats` WHERE publication_id=" . $this->_db->quote($this->_pubid) . "
-			AND period=" . $this->_db->quote((int) $period) . " ORDER BY datetime DESC LIMIT 1";
+        $sql = "SELECT * FROM `#__publication_stats` WHERE publication_id=" . $this->db->quote($this->pubid) . "
+			AND period=" . $this->db->quote((int) $period) . " ORDER BY datetime DESC LIMIT 1";
 
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
 
         $this->process($result);
 

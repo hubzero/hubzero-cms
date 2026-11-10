@@ -28,7 +28,7 @@ class Ckeditor5 extends Plugin
     /**
      * Base path for editor files
      */
-    protected $_basePath = 'core/plugins/editors/ckeditor5/assets/';
+    protected $basePath = 'core/plugins/editors/ckeditor5/assets/';
 
     /**
      * Method to handle the onInitEditor event.
@@ -48,7 +48,7 @@ class Ckeditor5 extends Plugin
 
         Document::addScript(
             str_replace('/administrator', '', Request::base(true))
-            . '/' . $this->_basePath . 'js/ckeditor.js' . $version,
+            . '/' . $this->basePath . 'js/ckeditor.js' . $version,
         );
     }
 

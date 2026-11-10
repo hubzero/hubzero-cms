@@ -32,7 +32,7 @@ class Code extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'section_code';
+    protected $scope = 'section_code';
 
     /**
      * User

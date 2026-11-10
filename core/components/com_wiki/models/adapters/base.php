@@ -21,7 +21,7 @@ abstract class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base = 'index.php';
+    protected $base = 'index.php';
 
     /**
      * URL segments
@@ -29,7 +29,7 @@ abstract class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [];
+    protected $segments = [];
 
     /**
      * Scope ID
@@ -37,7 +37,7 @@ abstract class Base extends Obj
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope_id = 0;
+    protected $scopeId = 0;
 
     /**
      * Constructor
@@ -51,9 +51,9 @@ abstract class Base extends Obj
     {
         $pagename = ($path ? $path . '/' : '') . $pagename;
 
-        $this->_segments['pagename'] = $pagename;
+        $this->segments['pagename'] = $pagename;
 
-        $this->_scope_id = $scope_id;
+        $this->scopeId = $scope_id;
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class Base extends Obj
      */
     public function link($type = '', $params = null)
     {
-        return $this->_base;
+        return $this->base;
     }
 
     /**

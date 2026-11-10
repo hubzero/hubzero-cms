@@ -28,15 +28,15 @@ use Hubzero\Facades\User;
 class Notes extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $model;
     protected $note;
 
@@ -52,49 +52,49 @@ class Notes extends Plugin
      *
      * @var  array
      */
-    protected $_group = null;
+    protected $group = null;
 
     /**
      * Name of master scope
      *
      * @var  array
      */
-    protected $_masterScope = null;
+    protected $masterScope = null;
 
     /**
      * Name of page
      *
      * @var  array
      */
-    protected $_pagename = null;
+    protected $pagename = null;
 
     /**
      * Tool record (tool wiki)
      *
      * @var  array
      */
-    protected $_tool = null;
+    protected $tool = null;
 
     /**
      * Controller name
      *
      * @var  array
      */
-    protected $_controllerName = null;
+    protected $controllerName = null;
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Component name
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Event call to determine if this plugin should return data
@@ -154,11 +154,11 @@ class Notes extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -186,54 +186,54 @@ class Notes extends Plugin
             }
 
             // Set vars
-            $this->_database = App::get('db');
-            $this->_uid      = User::get('id');
+            $this->database = App::get('db');
+            $this->uid      = User::get('id');
 
             // Load component configs
-            $this->_config = $model->config();
-            $this->_group = $this->_config->get('group_prefix', 'pr-') . $this->model->get('alias');
+            $this->config = $model->config();
+            $this->group = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
 
             // Incoming
-            $this->_pagename = trim(Request::getString('pagename', ''));
-            if (strstr($this->_pagename, '/')) {
-                $bits = explode('/', $this->_pagename);
-                $this->_pagename = array_pop($bits);
+            $this->pagename = trim(Request::getString('pagename', ''));
+            if (strstr($this->pagename, '/')) {
+                $bits = explode('/', $this->pagename);
+                $this->pagename = array_pop($bits);
                 $scope = implode('/', $bits);
                 Request::setVar('scope', $scope);
             }
-            $this->_masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
+            $this->masterScope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
             // Get our model
             $this->note = new \Components\Projects\Models\Note(
-                $this->_masterScope,
-                $this->_group,
+                $this->masterScope,
+                $this->group,
                 $this->model->get('id'),
             );
 
             // What's the task?
-            $this->_task = $action ? $action : Request::getString('action', 'view');
+            $this->task = $action ? $action : Request::getString('action', 'view');
 
             // Publishing?
-            if ($this->_task == 'browser') {
+            if ($this->task == 'browser') {
                 return $this->browser();
             }
 
             // Import some needed libraries
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'upload':
                 case 'download':
                 case 'deletefolder':
                 case 'deletefile':
                 case 'media':
                 case 'list':
-                    $this->_controllerName = 'media';
+                    $this->controllerName = 'media';
                     break;
 
                 case 'history':
                 case 'compare':
                 case 'approve':
                 case 'deleterevision':
-                    $this->_controllerName = 'history';
+                    $this->controllerName = 'history';
                     break;
 
                 case 'editcomment':
@@ -242,7 +242,7 @@ class Notes extends Plugin
                 case 'reportcomment':
                 case 'removecomment':
                 case 'comments':
-                    $this->_controllerName = 'comments';
+                    $this->controllerName = 'comments';
                     $cid = Request::getInt('cid', 0);
                     if ($cid) {
                         Request::setVar('comment', $cid);
@@ -255,25 +255,25 @@ class Notes extends Plugin
                 case 'rename':
                 case 'saverename':
                 default:
-                    $this->_controllerName = 'pages';
+                    $this->controllerName = 'pages';
                     break;
             }
 
             if (
-                substr(strtolower($this->_pagename), 0, strlen('image:')) == 'image:'
-                || substr(strtolower($this->_pagename), 0, strlen('file:')) == 'file:'
+                substr(strtolower($this->pagename), 0, strlen('image:')) == 'image:'
+                || substr(strtolower($this->pagename), 0, strlen('file:')) == 'file:'
             ) {
-                $this->_controllerName = 'media';
-                $this->_task = 'download';
+                $this->controllerName = 'media';
+                $this->task = 'download';
             }
 
-            if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php')) {
-                $this->_controllerName = 'pages';
+            if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->controllerName . '.php')) {
+                $this->controllerName = 'pages';
             }
             // Listing/unlisting?
-            if ($this->_task == 'publist' || $this->_task == 'unlist') {
+            if ($this->task == 'publist' || $this->task == 'unlist') {
                 $arr['html'] = $this->_list();
-            } elseif ($this->_task == 'share') {
+            } elseif ($this->task == 'share') {
                 $arr['html'] = $this->_share();
             } else {
                 // Display page
@@ -295,8 +295,8 @@ class Notes extends Plugin
         // Incoming
         $preview = trim(Request::getString('preview', ''));
         $note    = Request::getArray('page', [], 'post');
-        $scope   = trim(Request::getString('scope', $this->_masterScope), '/');
-        $scope   = trim(str_replace($this->_masterScope, '', $scope), '/');
+        $scope   = trim(Request::getString('scope', $this->masterScope), '/');
+        $scope   = trim(str_replace($this->masterScope, '', $scope), '/');
         $pagePrefix = '';
 
         // Output HTML (wrap for notes)
@@ -311,30 +311,30 @@ class Notes extends Plugin
         $view->firstNote = $this->note->getFirstNote($pagePrefix);
 
         // Default view to first available note if no page is requested
-        if (!$this->_pagename && $this->_task != 'new' && $this->_task != 'save') {
-            $this->_pagename = $view->firstNote ? $view->firstNote : '';
+        if (!$this->pagename && $this->task != 'new' && $this->task != 'save') {
+            $this->pagename = $view->firstNote ? $view->firstNote : '';
         }
 
         // Are we saving?
-        $save   = $this->_task == 'save' ? 1 : 0;
-        $rename = $this->_task == 'saverename' ? 1 : 0;
+        $save   = $this->task == 'save' ? 1 : 0;
+        $rename = $this->task == 'saverename' ? 1 : 0;
         $canDelete = 1;
 
         // Get page
-        $view->page    = $this->note->page($this->_pagename);
+        $view->page    = $this->note->page($this->pagename);
         $view->content = null;
         $exists = $view->page->get('id') ? true : false;
 
-        Request::setVar('pagename', ($scope ? $scope . '/' : '') . $this->_pagename);
-        Request::setVar('action', $this->_task);
+        Request::setVar('pagename', ($scope ? $scope . '/' : '') . $this->pagename);
+        Request::setVar('action', $this->task);
         Request::setVar('scope', $scope);
-        Request::setVar('group_cn', $this->_group);
+        Request::setVar('group_cn', $this->group);
 
-        Request::setVar('tool', $this->_tool);
+        Request::setVar('tool', $this->tool);
         Request::setVar('project', $this->model);
         Request::setVar('candelete', $canDelete);
 
-        if (!$view->page->get('id') && $this->_task == 'view' && $view->page->get('namespace') != 'special') {
+        if (!$view->page->get('id') && $this->task == 'view' && $view->page->get('namespace') != 'special') {
             // Output HTML (wrap for notes)
             $nview = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -343,13 +343,13 @@ class Notes extends Plugin
                 'layout'  => 'doesnotexist',
             ]);
             $nview->scope   = $scope;
-            $nview->option  = $this->_option;
+            $nview->option  = $this->componentOption;
             $nview->project = $this->model;
             $view->content  = $nview->loadTemplate();
         }
 
         $basePath = Component::path('com_wiki') . DS . 'site';
-        if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save') {
+        if ($this->task == 'edit' || $this->task == 'new' || $this->task == 'save') {
             $basePath = __DIR__;
             if (!$this->model->access('content')) {
                 throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
@@ -357,7 +357,7 @@ class Notes extends Plugin
         }
 
         if (!$view->content) {
-            $controllerName = "Components\Wiki\Site\Controllers\\" . ucfirst($this->_controllerName);
+            $controllerName = "Components\Wiki\Site\Controllers\\" . ucfirst($this->controllerName);
             // Instantiate controller
             $controller = new $controllerName([
                 'base_path' => $basePath,
@@ -377,7 +377,7 @@ class Notes extends Plugin
                     : Lang::txt('COM_PROJECTS_NOTE_ADDED');
                 $what .= $exists ? ' "' . $controller->page->get('title') . '" ' : '';
                 $what .= ' ' . Lang::txt('COM_PROJECTS_NOTE_IN_NOTES');
-                $aid = $this->model->recordActivity($what, $controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes'), 'notes', 0);
+                $aid = $this->model->recordActivity($what, $controller->page->get('id'), 'notes', Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=notes'), 'notes', 0);
 
                 // Record page order for new pages
                 $lastorder = $this->note->getLastNoteOrder($scope);
@@ -402,22 +402,22 @@ class Notes extends Plugin
         $this->fixupPathway();
 
         // Get messages and errors
-        $view->msg = isset($this->_msg) ? $this->_msg : null;
+        $view->msg = isset($this->msg) ? $this->msg : null;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
 
-        $view->title    = $this->_area['title'];
+        $view->title    = $this->area['title'];
         $view->note     = $this->note;
-        $view->task     = $this->_task;
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->task     = $this->task;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->project  = $this->model;
-        $view->uid      = $this->_uid;
-        $view->pagename = $this->_pagename;
+        $view->uid      = $this->uid;
+        $view->pagename = $this->pagename;
         $view->scope    = $scope;
         $view->preview  = $preview;
-        $view->group    = $this->_group;
+        $view->group    = $this->group;
         $view->params   = $this->params;
 
         return $view->loadTemplate();
@@ -438,15 +438,15 @@ class Notes extends Plugin
             return;
         }
 
-        $listed = $this->_task == 'publist' ? 1 : 0;
+        $listed = $this->task == 'publist' ? 1 : 0;
 
         // Get/update public stamp for page
         if ($this->note->getPublicStamp($page->get('id'), true, $listed)) {
-            $this->_msg = $this->_task == 'publist' ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED') : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
+            $this->msg = $this->task == 'publist' ? Lang::txt('COM_PROJECTS_NOTE_MSG_LISTED') : Lang::txt('COM_PROJECTS_NOTE_MSG_UNLISTED');
 
-            Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->msg, 'success', 'projects');
 
-            App::redirect(Route::url('index.php?option=' . $this->_option . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename')));
+            App::redirect(Route::url('index.php?option=' . $this->componentOption . '&scope=' . $page->get('scope') . '&pagename=' . $page->get('pagename')));
         }
 
         App::redirect(Route::url($this->model->link('notes')));
@@ -477,7 +477,7 @@ class Notes extends Plugin
 
         // Get/update public stamp for page
         $view->set('publicStamp', $this->note->getPublicStamp($page->get('id'), true));
-        $view->set('option', $this->_option);
+        $view->set('option', $this->componentOption);
 
         if (!$view->publicStamp) {
             $this->setError(Lang::txt('PLG_PROJECTS_NOTES_ERROR_SHARE'));
@@ -534,36 +534,36 @@ class Notes extends Plugin
         } else {
             Pathway::append(
                 Lang::txt('COMPONENT_LONG_NAME'),
-                Route::url('index.php?option=' . $this->_option),
+                Route::url('index.php?option=' . $this->componentOption),
             );
         }
 
         if ($this->model->exists()) {
             Pathway::append(
                 stripslashes($this->model->get('title')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias')),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias')),
             );
         }
 
-        if ($this->_tool && $this->_tool->id) {
+        if ($this->tool && $this->tool->id) {
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_PANEL_TOOLS')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools'),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=tools'),
             );
 
             Pathway::append(
-                \Hubzero\Utility\Str::truncate($this->_tool->title, 50),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id),
+                \Hubzero\Utility\Str::truncate($this->tool->title, 50),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->tool->id),
             );
 
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_TOOLS_TAB_WIKI')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->_tool->id . '&action=wiki'),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=tools&tool=' . $this->tool->id . '&action=wiki'),
             );
         } else {
             Pathway::append(
                 ucfirst(Lang::txt('COM_PROJECTS_TAB_NOTES')),
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=notes'),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=notes'),
             );
         }
     }
@@ -592,7 +592,7 @@ class Notes extends Plugin
         ]);
 
         // Get current attachments
-        $pContent = new \Components\Publications\Tables\Attachment($this->_database);
+        $pContent = new \Components\Publications\Tables\Attachment($this->database);
         $role  = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
@@ -603,12 +603,12 @@ class Notes extends Plugin
 
         // Output HTML
         $view->params = $this->model->params;
-        $view->option = $this->_option;
-        $view->database = $this->_database;
+        $view->option = $this->componentOption;
+        $view->database = $this->database;
         $view->model = $this->model;
-        $view->uid = $this->_uid;
-        $view->config = $this->_config;
-        $view->title = $this->_area['title'];
+        $view->uid = $this->uid;
+        $view->config = $this->config;
+        $view->title = $this->area['title'];
         $view->primary = $primary;
         $view->versionid = $versionid;
 
@@ -636,8 +636,8 @@ class Notes extends Plugin
      */
     public function serve($type = '', $projectid = 0, $query = '')
     {
-        $this->_area = $this->onProjectAreas();
-        if ($type != $this->_area['name']) {
+        $this->area = $this->onProjectAreas();
+        if ($type != $this->area['name']) {
             return false;
         }
         $data = json_decode($query);
@@ -649,7 +649,7 @@ class Notes extends Plugin
         $this->loadLanguage();
 
         $database = App::get('db');
-        $this->_option = 'com_projects';
+        $this->componentOption = 'com_projects';
 
         // Instantiate a project
         $this->model = new \Components\Projects\Models\Project($projectid);
@@ -674,7 +674,7 @@ class Notes extends Plugin
         }
 
         // Write title & build pathway
-        Document::setTitle(Lang::txt(strtoupper($this->_option)) . ': '
+        Document::setTitle(Lang::txt(strtoupper($this->componentOption)) . ': '
             . stripslashes($this->model->get('title')) . ' - ' . stripslashes($page->get('title')));
 
         // Instantiate a new view
@@ -683,7 +683,7 @@ class Notes extends Plugin
             'element' => 'notes',
             'name'    => 'pubview',
         ]);
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->model = $this->model;
         $view->page = $page;
         $view->revision = $page->revision('current');

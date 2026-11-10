@@ -31,7 +31,7 @@ class Item extends Base
      *
      * @var  string
      */
-    protected $_type = 'file';
+    protected $type = 'file';
 
     /**
      * Table class name
@@ -636,7 +636,7 @@ class Item extends Base
      */
     public function is($type)
     {
-        if ($type == $this->_type) {
+        if ($type == $this->type) {
             return true;
         }
         return false;

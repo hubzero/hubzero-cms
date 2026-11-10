@@ -31,17 +31,17 @@ use Hubzero\Utility\Arr;
 class Todo extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_mine;
+    protected $mine;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_todoid;
+    protected $todoid;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $model;
     protected $todo;
 
@@ -57,14 +57,14 @@ class Todo extends Plugin
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Event call to determine if this plugin should return data
@@ -126,11 +126,11 @@ class Todo extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -154,12 +154,12 @@ class Todo extends Plugin
             $this->todo = new \Components\Projects\Models\Todo();
 
             // Set vars
-            $this->_task     = $action ? $action : Request::getString('action', '');
-            $this->_todoid   = Request::getInt('todoid', 0);
-            $this->_database = App::get('db');
-            $this->_uid      = User::get('id');
+            $this->task     = $action ? $action : Request::getString('action', '');
+            $this->todoid   = Request::getInt('todoid', 0);
+            $this->database = App::get('db');
+            $this->uid      = User::get('id');
 
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'save':
                     $arr['html'] = $this->save();
                     break;
@@ -281,7 +281,7 @@ class Todo extends Plugin
 
         // Incoming
         $layout = Request::getString('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
-        $mine = isset($this->_mine) ? $this->_mine : Request::getInt('mine', 0);
+        $mine = isset($this->mine) ? $this->mine : Request::getInt('mine', 0);
 
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -299,17 +299,17 @@ class Todo extends Plugin
             'todolist'   => Request::getWord('list', ''),
             'state'      => isset($this->state) ? $this->state : Request::getInt('state', 0),
             'mine'       => $mine,
-            'assignedto' => $mine == 1 ? $this->_uid : 0,
+            'assignedto' => $mine == 1 ? $this->uid : 0,
             'sortby'     => Request::getString('sortby', 'priority'),
             'sortdir'    => Request::getString('sortdir', 'ASC'),
             'layout'     => $layout,
         ];
 
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
-        $view->title    = $this->_area['title'];
+        $view->uid      = $this->uid;
+        $view->title    = $this->area['title'];
         $view->todo     = $this->todo;
 
         // Update view preference if changed
@@ -317,7 +317,7 @@ class Todo extends Plugin
             $objO = $this->model->table('Owner');
             $objO->saveParam(
                 $this->model->get('id'),
-                $this->_uid,
+                $this->uid,
                 $param = 'todo_layout',
                 $layout,
             );
@@ -334,11 +334,11 @@ class Todo extends Plugin
     public function item()
     {
         // Incoming
-        $todoid = $this->_todoid ? $this->_todoid : Request::getInt('todoid', 0);
-        $layout = ($this->_task == 'edit' || $this->_task == 'new') ? 'edit' : 'default';
+        $todoid = $this->todoid ? $this->todoid : Request::getInt('todoid', 0);
+        $layout = ($this->task == 'edit' || $this->task == 'new') ? 'edit' : 'default';
 
         // Check permission
-        if ($this->_task == 'edit' && !$this->model->access('content')) {
+        if ($this->task == 'edit' && !$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
@@ -364,7 +364,7 @@ class Todo extends Plugin
             $view->row = $this->todo->entry($todoid);
         }
 
-        if (!$view->row->exists() && $this->_task != 'new') {
+        if (!$view->row->exists() && $this->task != 'new') {
             return $this->page();
         }
 
@@ -374,8 +374,8 @@ class Todo extends Plugin
             Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid),
         );
 
-        $view->uid   = $this->_uid;
-        $view->title = $this->_area['title'];
+        $view->uid   = $this->uid;
+        $view->title = $this->area['title'];
         $view->list  = Request::getString('list', '');
         $view->ajax  = Request::getInt('ajax', 0);
 
@@ -410,7 +410,7 @@ class Todo extends Plugin
         $mine      = Request::getInt('mine', 0);
         $state     = Request::getInt('state', 0);
         $ajax      = Request::getInt('ajax', 0);
-        $task      = $this->_task;
+        $task      = $this->task;
 
         $new = 0;
 
@@ -426,15 +426,15 @@ class Todo extends Plugin
             $assigned = 0;
         }
         if ($mine && !$assigned) {
-            $assigned = $this->_uid;
+            $assigned = $this->uid;
         }
 
         // Initiate extended database class
-        $objTD = new \Components\Projects\Tables\Todo($this->_database);
+        $objTD = new \Components\Projects\Tables\Todo($this->database);
 
         // Load up todo if exists
         if (!$objTD->loadTodo($this->model->get('id'), $todoid)) {
-            $objTD->created_by = $this->_uid;
+            $objTD->created_by = $this->uid;
             $objTD->created    = Date::toSql();
             $objTD->projectid  = $this->model->get('id');
             $assigned          = $assigned;
@@ -513,7 +513,7 @@ class Todo extends Plugin
             if (!$objTD->store()) {
                 $this->setError($objTD->getError());
             } else {
-                $this->_msg = $todoid
+                $this->msg = $todoid
                     ? Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
                     : Lang::txt('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
             }
@@ -522,13 +522,13 @@ class Todo extends Plugin
             $changed = $objTD->assigned_to == $assigned ? 0 : 1;
             if ($changed) {
                 $objTD->assigned_to = $assigned;
-                $this->_mine = 0; // do not send to My Todo's list
+                $this->mine = 0; // do not send to My Todo's list
 
                 // Store content
                 if (!$objTD->store()) {
                     $this->setError($objTD->getError());
                 } else {
-                    $this->_msg = $mine
+                    $this->msg = $mine
                         ? Lang::txt('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO_MINE')
                         : Lang::txt('PLG_PROJECTS_TODO_TODO_REASSIGNED');
                 }
@@ -540,13 +540,13 @@ class Todo extends Plugin
                 $objTD->state = $state;
                 if ($state == 1) {
                     $objTD->closed = Date::toSql();
-                    $objTD->closed_by = $this->_uid;
+                    $objTD->closed_by = $this->uid;
                 }
                 // Store content
                 if (!$objTD->store()) {
                     $this->setError($objTD->getError());
                 } else {
-                    $this->_msg = $state == 1
+                    $this->msg = $state == 1
                         ? Lang::txt('PLG_PROJECTS_TODO_TODO_MARKED_COMPLETED')
                         : Lang::txt('PLG_PROJECTS_TODO_TODO_MARKED_INCOMPLETE');
 
@@ -556,7 +556,7 @@ class Todo extends Plugin
                             Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'),
                             $objTD->id,
                             'to do',
-                            Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
+                            Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
                             'todo',
                             1,
                         );
@@ -570,8 +570,8 @@ class Todo extends Plugin
             $new = 0;
             $newlist = \Hubzero\Utility\Sanitize::stripAll(trim($newlist));
             if (!$objTD->getListName($this->model->get('id'), $newcolor)) {
-                $objTD = new \Components\Projects\Tables\Todo($this->_database);
-                $objTD->created_by = $this->_uid;
+                $objTD = new \Components\Projects\Tables\Todo($this->database);
+                $objTD->created_by = $this->uid;
                 $objTD->created    = Date::toSql();
                 $objTD->projectid  = $this->model->get('id');
                 $objTD->content    = 'provisioned';
@@ -583,7 +583,7 @@ class Todo extends Plugin
                 if (!$objTD->store()) {
                     $this->setError(Lang::txt('PLG_PROJECTS_TODO_TODO_ERROR_LIST_SAVE'));
                 } else {
-                    $this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
+                    $this->msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
                 }
             }
         }
@@ -594,7 +594,7 @@ class Todo extends Plugin
                 Lang::txt('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'),
                 $objTD->id,
                 'to do',
-                Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
+                Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id),
                 'todo',
                 1,
             );
@@ -607,14 +607,14 @@ class Todo extends Plugin
 
         // Set redirect path
         if ($page == 'item') {
-            $url = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id);
+            $url = Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo' . '&action=view&todoid=' . $objTD->id);
         } else {
-            $url = Route::url('index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=todo&list=' . $objTD->color);
+            $url = Route::url('index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=todo&list=' . $objTD->color);
         }
 
         // Go to view
         if ($ajax) {
-            $this->_todoid = $todoid;
+            $this->todoid = $todoid;
             return $page == 'item'
                 ? $this->item()
                 : $this->page();
@@ -623,8 +623,8 @@ class Todo extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -648,16 +648,16 @@ class Todo extends Plugin
         }
 
         // Incoming
-        $todoid = $this->_todoid;
+        $todoid = $this->todoid;
         $list = Request::getString('dl', '');
 
         $gobacklist = '';
 
         // Load todo
-        $objTD = new \Components\Projects\Tables\Todo($this->_database);
+        $objTD = new \Components\Projects\Tables\Todo($this->database);
         if ($todoid && $objTD->loadTodo($this->model->get('id'), $todoid)) {
             // Get associated commenting activities
-            $objC = new \Components\Projects\Tables\Comment($this->_database);
+            $objC = new \Components\Projects\Tables\Comment($this->database);
             $activities = $objC->collectActivities($todoid, "todo");
             $activities[] = $objTD->activityid;
 
@@ -678,7 +678,7 @@ class Todo extends Plugin
                     $objAA->deleteActivity();
                 }
 
-                $this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED');
+                $this->msg = Lang::txt('PLG_PROJECTS_TODO_TODO_DELETED');
             }
         } elseif ($list && $objTD->getListName($this->model->get('id'), $list)) {
             // Are we deleting a list?
@@ -691,7 +691,7 @@ class Todo extends Plugin
                     foreach ($todos as $todo) {
                         if ($objTD->loadTodo($this->model->get('id'), $todo->id)) {
                             // Get associated commenting activities
-                            $objC = new \Components\Projects\Tables\Comment($this->_database);
+                            $objC = new \Components\Projects\Tables\Comment($this->database);
                             $activities = $objC->collectActivities($todo->id, "todo");
                             $activities[] = $objTD->activityid;
 
@@ -702,7 +702,7 @@ class Todo extends Plugin
 
                                 // Delete all associated activities
                                 foreach ($activities as $a) {
-                                    $objAA = new \Components\Projects\Tables\Activity($this->_database);
+                                    $objAA = new \Components\Projects\Tables\Activity($this->database);
                                     $objAA->loadActivity($a, $this->model->get('id'));
                                     $objAA->deleteActivity();
                                 }
@@ -714,14 +714,14 @@ class Todo extends Plugin
 
             // Clean-up colored items
             $objTD->deleteList($this->model->get('id'), $list);
-            $this->_msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
+            $this->msg = Lang::txt('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
         }
 
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect back to todo list
@@ -750,10 +750,10 @@ class Todo extends Plugin
         $items = Request::getArray('item', []);
 
         if ($newid && $oldid) {
-            $objTD1 = new \Components\Projects\Tables\Todo($this->_database);
+            $objTD1 = new \Components\Projects\Tables\Todo($this->database);
             $objTD1->loadTodo($this->model->get('id'), $oldid);
 
-            $objTD2 = new \Components\Projects\Tables\Todo($this->_database);
+            $objTD2 = new \Components\Projects\Tables\Todo($this->database);
             $objTD2->loadTodo($this->model->get('id'), $newid);
 
             $priority1 = $objTD1->priority;
@@ -767,7 +767,7 @@ class Todo extends Plugin
         } elseif (!empty($items)) {
             $o = 1;
             foreach ($items as $item) {
-                $objTD = new \Components\Projects\Tables\Todo($this->_database);
+                $objTD = new \Components\Projects\Tables\Todo($this->database);
                 $objTD->loadTodo($this->model->get('id'), $item);
                 $objTD->priority = $o;
                 $objTD->store();
@@ -795,21 +795,21 @@ class Todo extends Plugin
 
         // Incoming
         $cid    = Request::getInt('cid', 0);
-        $todoid = $this->_todoid;
+        $todoid = $this->todoid;
 
         // Instantiate comment
-        $objC = new \Components\Projects\Tables\Comment($this->_database);
+        $objC = new \Components\Projects\Tables\Comment($this->database);
 
         if ($objC->load($cid)) {
             // The comment's todo must belong to the current project
-            $todo = new \Components\Projects\Tables\Todo($this->_database);
+            $todo = new \Components\Projects\Tables\Todo($this->database);
             $todo->loadTodo($this->model->get('id'), $objC->itemid);
             if (!$todo->id) {
                 throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
             }
 
             // Only the author (or a project manager) may remove a comment
-            if ($objC->created_by != $this->_uid && !$this->model->access('manager')) {
+            if ($objC->created_by != $this->uid && !$this->model->access('manager')) {
                 throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
             }
 
@@ -817,11 +817,11 @@ class Todo extends Plugin
 
             // delete comment
             if ($objC->deleteComment()) {
-                $this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_DELETED');
+                $this->msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_DELETED');
             }
 
             // delete associated activity
-            $objAA = new \Components\Projects\Tables\Activity($this->_database);
+            $objAA = new \Components\Projects\Tables\Activity($this->database);
             if ($activityid && $objAA->load($activityid)) {
                 $objAA->deleteActivity();
             }
@@ -830,8 +830,8 @@ class Todo extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -864,24 +864,24 @@ class Todo extends Plugin
         $comment = \Hubzero\Utility\Str::truncate($comment, 800);
 
         // The todo being commented on must belong to this project
-        $todo = new \Components\Projects\Tables\Todo($this->_database);
+        $todo = new \Components\Projects\Tables\Todo($this->database);
         if (!$itemid || !$todo->loadTodo($this->model->get('id'), $itemid)) {
             throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Instantiate comment
-        $objC = new \Components\Projects\Tables\Comment($this->_database);
+        $objC = new \Components\Projects\Tables\Comment($this->database);
         if ($comment) {
             $objC->itemid          = $itemid;
             $objC->tbl             = 'todo';
             $objC->parent_activity = $parent_activity;
             $objC->comment         = $comment;
             $objC->created         = Date::toSql();
-            $objC->created_by      = $this->_uid;
+            $objC->created_by      = $this->uid;
             if (!$objC->store()) {
                 $this->setError($objC->getError());
             } else {
-                $this->_msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_POSTED');
+                $this->msg = Lang::txt('PLG_PROJECTS_TODO_COMMENT_POSTED');
             }
             // Get new entry ID
             if (!$objC->id) {
@@ -912,8 +912,8 @@ class Todo extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect

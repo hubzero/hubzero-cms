@@ -21,15 +21,15 @@ use Hubzero\Facades\User;
 class Git extends Models\Adapter
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_fileLog;
+    protected $fileLog;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_files;
+    protected $files;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_git;
+    protected $git;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_gitpath;
+    protected $gitpath;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_profileAssoc;
+    protected $profileAssoc;
 
     /**
      * Adapter name
@@ -58,13 +58,13 @@ class Git extends Models\Adapter
         $configs = Component::params('com_projects');
 
         // Set path to git engine
-        $this->_gitpath = $configs->get('gitpath', '/opt/local/bin/git');
+        $this->gitpath = $configs->get('gitpath', '/opt/local/bin/git');
 
         // Set repo path
         $this->path = $path;
 
         // Git helper
-        $this->_git = new Helpers\Git($this->path);
+        $this->git = new Helpers\Git($this->path);
 
         $this->set('remote', $remote);
     }
@@ -104,10 +104,10 @@ class Git extends Models\Adapter
 
         if (!$dirsOnly) {
             // Get a list of files from the git repository
-            $files = empty($files) ? $this->_git->getFiles($dirPath, $showAll) : $files;
+            $files = empty($files) ? $this->git->getFiles($dirPath, $showAll) : $files;
 
             // Add untracked?
-            $untracked = $showUntracked ? $this->_git->getUntrackedFiles($dirPath) : [];
+            $untracked = $showUntracked ? $this->git->getUntrackedFiles($dirPath) : [];
             if (!empty($untracked)) {
                 $files = array_merge($files, $untracked);
             }
@@ -120,10 +120,10 @@ class Git extends Models\Adapter
             }
         } else {
             $recursive = true;
-            $files = empty($files) ? $this->_git->getDirectories($dirPath, $recursive) : $files;
+            $files = empty($files) ? $this->git->getDirectories($dirPath, $recursive) : $files;
 
             // Add untracked?
-            $untracked = $showUntracked ? $this->_git->getUntrackedDirectories($dirPath) : [];
+            $untracked = $showUntracked ? $this->git->getUntrackedDirectories($dirPath) : [];
             if (!empty($untracked)) {
                 $files = array_merge($files, $untracked);
             }
@@ -231,7 +231,7 @@ class Git extends Models\Adapter
         $hash     = isset($params['hash']) ? $params['hash'] : null;
         $target   = isset($params['target']) ? $params['target'] : null;
 
-        return $this->_git->getContent($fileName, $hash, $target);
+        return $this->git->getContent($fileName, $hash, $target);
     }
 
     /**
@@ -284,7 +284,7 @@ class Git extends Models\Adapter
 
             // Get size from Git?
             if (!$file->get('size') && $file->get('hash')) {
-                $file->setSize($this->_git->gitLog($file->get('localPath'), $file->get('hash'), 'size'));
+                $file->setSize($this->git->gitLog($file->get('localPath'), $file->get('hash'), 'size'));
             }
 
             $results[] = $file;
@@ -317,11 +317,11 @@ class Git extends Models\Adapter
 
         // Local file present?
         if (file_exists($file->get('fullPath'))) {
-            $this->_git->sortLocalRevisions($file->get('localPath'), $versions, $timestamps);
+            $this->git->sortLocalRevisions($file->get('localPath'), $versions, $timestamps);
         }
         if ($file->get('originalPath') && $file->get('originalPath') != $file->get('localPath')) {
             // Should history be paired with another file?
-            $this->_git->sortLocalRevisions($file->get('originalPath'), $versions, $timestamps, 1);
+            $this->git->sortLocalRevisions($file->get('originalPath'), $versions, $timestamps, 1);
         }
         return true;
     }
@@ -333,7 +333,7 @@ class Git extends Models\Adapter
      */
     public function getTrash()
     {
-        return $this->_git->listDeleted();
+        return $this->git->listDeleted();
     }
 
     /**
@@ -350,7 +350,7 @@ class Git extends Models\Adapter
         $localRenames = isset($params['localRenames']) ? $params['localRenames'] : null;
         $connections  = isset($params['connections']) ? $params['connections'] : null;
 
-        return $this->_git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections);
+        return $this->git->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections);
     }
 
     /**
@@ -367,7 +367,7 @@ class Git extends Models\Adapter
             return false;
         }
 
-        return $this->_git->gitLog($file->get('localPath'), '', 'hash');
+        return $this->git->gitLog($file->get('localPath'), '', 'hash');
     }
 
     /**
@@ -389,8 +389,8 @@ class Git extends Models\Adapter
         }
 
         $commitMsg = '';
-        $this->_git->gitMove($fromFile->get('localPath'), $toFile->get('localPath'), $type, $commitMsg);
-        $this->_git->gitCommit($commitMsg, $author, $date);
+        $this->git->gitMove($fromFile->get('localPath'), $toFile->get('localPath'), $type, $commitMsg);
+        $this->git->gitCommit($commitMsg, $author, $date);
 
         return true;
     }
@@ -437,8 +437,8 @@ class Git extends Models\Adapter
 
         // Delete from Git
         $commitMsg = '';
-        $this->_git->gitDelete($file->get('localPath'), 'folder', $commitMsg);
-        $this->_git->gitCommit($commitMsg, $author, $date);
+        $this->git->gitDelete($file->get('localPath'), 'folder', $commitMsg);
+        $this->git->gitCommit($commitMsg, $author, $date);
 
         if (!$this->get('remote') && file_exists($file->get('fullPath'))) {
             // Remove directory that is not in Git
@@ -468,8 +468,8 @@ class Git extends Models\Adapter
 
         // Delete from Git
         $commitMsg = '';
-        $this->_git->gitDelete($file->get('localPath'), 'file', $commitMsg);
-        $this->_git->gitCommit($commitMsg, $author, $date);
+        $this->git->gitDelete($file->get('localPath'), 'file', $commitMsg);
+        $this->git->gitCommit($commitMsg, $author, $date);
 
         // Untracked?
         if (!$this->get('remote') && file_exists($file->get('fullPath'))) {
@@ -505,14 +505,14 @@ class Git extends Models\Adapter
         if ($file->get('type') == 'folder') {
             if ($new) {
                 // Provision new folder in Git
-                $this->_git->makeEmptyFolder($file->get('localPath'));
+                $this->git->makeEmptyFolder($file->get('localPath'));
             }
             return;
         }
 
         // Git add
-        $this->_git->gitAdd($file->get('localPath'), $commitMsg, $new);
-        $this->_git->gitCommit($commitMsg, $author, $date);
+        $this->git->gitAdd($file->get('localPath'), $commitMsg, $new);
+        $this->git->gitCommit($commitMsg, $author, $date);
         return true;
     }
 
@@ -534,7 +534,7 @@ class Git extends Models\Adapter
         }
 
         // Checkout
-        $this->_git->gitCheckout($file->get('localPath'));
+        $this->git->gitCheckout($file->get('localPath'));
 
         return true;
     }
@@ -564,7 +564,7 @@ class Git extends Models\Adapter
         }
 
         // Checkout pre-delete revision
-        if (!$this->_git->gitCheckout($file->get('localPath'), $hash . '^')) {
+        if (!$this->git->gitCheckout($file->get('localPath'), $hash . '^')) {
             return false;
         }
 
@@ -572,8 +572,8 @@ class Git extends Models\Adapter
         if (is_file($file->get('fullPath'))) {
             // Git add & commit
             $commitMsg = '';
-            $this->_git->gitAdd($file->get('localPath'), $commitMsg, $new = false);
-            $this->_git->gitCommit($commitMsg, $author, $date);
+            $this->git->gitAdd($file->get('localPath'), $commitMsg, $new = false);
+            $this->git->gitCommit($commitMsg, $author, $date);
         }
 
         return true;
@@ -629,8 +629,8 @@ class Git extends Models\Adapter
         ];
 
         // Get text blobs
-        $rev1['text'] = $this->_git->gitLog($rev1['fpath'], $rev1['hash'], 'blob');
-        $rev2['text'] = $this->_git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
+        $rev1['text'] = $this->git->gitLog($rev1['fpath'], $rev1['hash'], 'blob');
+        $rev2['text'] = $this->git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
 
         $context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
         $options = ['context' => $context];
@@ -648,7 +648,7 @@ class Git extends Models\Adapter
             $diff = $objDiff->Render($renderer);
         } else {
             // Print git diff
-            $diff = $this->_git->gitDiff($rev1, $rev2);
+            $diff = $this->git->gitDiff($rev1, $rev2);
 
             if (is_array($diff)) {
                 $diff = implode("\n", $diff);
@@ -668,26 +668,26 @@ class Git extends Models\Adapter
      */
     protected function _file($file, $dirPath, $property = null)
     {
-        if (isset($this->_files[$file->get('localPath')])) {
+        if (isset($this->files[$file->get('localPath')])) {
             return $property
-                ? $this->_files[$file->get('localPath')]->get($property)
-                : $this->_files[$file->get('localPath')];
+                ? $this->files[$file->get('localPath')]->get($property)
+                : $this->files[$file->get('localPath')];
         }
 
         // Master log exists?
-        if (!isset($this->_fileLog)) {
-            $this->_fileLog = $this->_git->gitLogAll($dirPath);
+        if (!isset($this->fileLog)) {
+            $this->fileLog = $this->git->gitLogAll($dirPath);
         }
 
-        if (!isset($this->_profileAssoc)) {
-            $this->_profileAssoc = [];
+        if (!isset($this->profileAssoc)) {
+            $this->profileAssoc = [];
         }
 
         // Entry is in the master log?
-        if (isset($this->_fileLog[$file->get('localPath')])) {
-            $log = $this->_fileLog[$file->get('localPath')];
+        if (isset($this->fileLog[$file->get('localPath')])) {
+            $log = $this->fileLog[$file->get('localPath')];
         } else {
-            $log = $this->_git->gitLog($file->get('localPath'), $file->get('hash'), 'combined');
+            $log = $this->git->gitLog($file->get('localPath'), $file->get('hash'), 'combined');
         }
 
         // Map data we got
@@ -701,14 +701,14 @@ class Git extends Models\Adapter
         if ($file->get('message') && substr($file->get('message'), 0, 5) == 'SFTP-') {
             $file->set('origin', 'SFTP');
 
-            if (isset($this->_profileAssoc[trim($file->get('author'))])) {
-                $profile = $this->_profileAssoc[trim($file->get('author'))];
+            if (isset($this->profileAssoc[trim($file->get('author'))])) {
+                $profile = $this->profileAssoc[trim($file->get('author'))];
                 $file->set('author', $profile->get('name'));
                 $file->set('email', $profile->get('email'));
             } else {
                 $profile = User::getInstance(trim($file->get('author')));
                 if ($profile->get('id')) {
-                    $this->_profileAssoc[trim($file->get('author'))] = $profile;
+                    $this->profileAssoc[trim($file->get('author'))] = $profile;
                     $file->set('author', $profile->get('name'));
                     $file->set('email', $profile->get('email'));
                 }
@@ -716,11 +716,11 @@ class Git extends Models\Adapter
         }
 
         // Store
-        $this->_files[$file->get('localPath')] = $file;
+        $this->files[$file->get('localPath')] = $file;
 
         return $property
-            ? $this->_files[$file->get('localPath')]->get($property)
-            : $this->_files[$file->get('localPath')];
+            ? $this->files[$file->get('localPath')]->get($property)
+            : $this->files[$file->get('localPath')];
     }
 
     /**
@@ -811,7 +811,7 @@ class Git extends Models\Adapter
 
         if ($path && is_dir($path . DS . '.git')) {
             $command = $aggressive ? 'gc --aggressive' : 'gc';
-            $this->_git->callGit($command);
+            $this->git->callGit($command);
             return true;
         }
 
@@ -826,6 +826,6 @@ class Git extends Models\Adapter
     public function ini()
     {
         // Initialize
-        $this->_git->iniGit();
+        $this->git->iniGit();
     }
 }

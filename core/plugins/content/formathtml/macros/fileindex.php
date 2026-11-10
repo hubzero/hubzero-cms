@@ -47,15 +47,15 @@ class FileIndex extends Macro
         if ($et) {
             $et = strip_tags($et);
             // Get pages with a prefix
-            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE " . $this->_db->quote(strtolower($et) . '%') . " AND page_id=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
+            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE " . $this->db->quote(strtolower($et) . '%') . " AND page_id=" . $this->db->quote($this->pageid) . " ORDER BY created ASC";
         } else {
             // Get all pages
-            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE page_id=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
+            $sql  = "SELECT * FROM `#__wiki_attachments` WHERE page_id=" . $this->db->quote($this->pageid) . " ORDER BY created ASC";
         }
 
         // Perform query
-        $this->_db->setQuery($sql);
-        $rows = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $rows = $this->db->loadObjectList();
 
         // Did we get a result from the database?
         if ($rows) {

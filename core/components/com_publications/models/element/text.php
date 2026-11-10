@@ -21,7 +21,7 @@ class Text extends Base
   * @var        string
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Single-line text box';
+    protected $name = 'Single-line text box';
 
     /**
      * Return any options this element may have

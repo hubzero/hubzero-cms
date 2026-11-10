@@ -21,7 +21,7 @@ class Usage
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db = null;
+    public $db = null;
 
     /**
      * Resource ID
@@ -29,7 +29,7 @@ class Usage
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_resid = null;
+    public $resid = null;
 
     /**
      * Resource type
@@ -37,7 +37,7 @@ class Usage
      * @var unknown
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_type = null;
+    public $type = null;
 
     /**
      * Resource rating
@@ -94,9 +94,9 @@ class Usage
      */
     public function __construct(&$db, $resid, $type, $rating = 0, $cites = 0, $lastcite = '')
     {
-        $this->_db = $db;
-        $this->_resid   = $resid;
-        $this->_type    = $type;
+        $this->db = $db;
+        $this->resid   = $resid;
+        $this->type    = $type;
         $this->rating   = $rating;
         $this->cites    = $cites;
         $this->lastcite = $lastcite;
@@ -135,11 +135,11 @@ class Usage
                 break;
         }
 
-        $sql = "SELECT * FROM `#__resource_stats` WHERE resid=" . $this->_resid
+        $sql = "SELECT * FROM `#__resource_stats` WHERE resid=" . $this->resid
             . " AND period=" . (int) $period . " ORDER BY datetime DESC LIMIT 1";
 
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
 
         $this->process($result);
 

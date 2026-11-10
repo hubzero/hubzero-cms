@@ -28,88 +28,88 @@ use Hubzero\Facades\Component;
 class Curation extends Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_curationVersion;
+    protected $curationVersion;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tbl;
+    protected $tbl;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_tblHistory;
+    protected $tblHistory;
 
     /**
      * Database
      *
      * @var  object
      */
-    public $_db = null;
+    public $db = null;
 
     /**
      * Publication
      *
      * @var  object
      */
-    public $_pub = null;
+    public $pub = null;
 
     /**
      * Publication model
      *
      * @var  object
      */
-    public $_model = null;
+    public $model = null;
 
     /**
      * Curation manifest
      *
      * @var  string
      */
-    public $_manifest = null;
+    public $manifest = null;
 
     /**
      * Blocks
      *
      * @var  object
      */
-    public $_blocks = [];
+    public $blocks = [];
 
     /**
      * Total blocks
      *
      * @var  int
      */
-    public $_blockcount = 0;
+    public $blockcount = 0;
 
     /**
      * Current block
      *
      * @var  object
      */
-    public $_block = [];
+    public $block = [];
 
     /**
      * Current block name
      *
      * @var  string
      */
-    public $_blockname = null;
+    public $blockname = null;
 
     /**
      * Current block blockId
      *
      * @var  string
      */
-    public $_blockorder = null;
+    public $blockorder = null;
 
     /**
      * Progress
      *
      * @var  object
      */
-    public $_progress = null;
+    public $progress = null;
 
     /**
      * Message
      *
      * @var  string
      */
-    public $_message = null;
+    public $message = null;
 
     public $readmeFileName = 'hubREADME.txt';
 
@@ -122,7 +122,7 @@ class Curation extends Obj
      */
     public function __construct($manifest = null, $masterManifest = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // Parse blocks
         $this->setBlocks($manifest, $masterManifest);
@@ -146,7 +146,7 @@ class Curation extends Obj
         // We need a manifest
         if (!$manifest) {
             // Get blocks model
-            $blocksModel = new Blocks($this->_db);
+            $blocksModel = new Blocks($this->db);
 
             // Get default blocks
             $blocks = $blocksModel->getBlocks(
@@ -187,7 +187,7 @@ class Curation extends Obj
         // Additional parsing
         foreach ($manifest->blocks as $blockId => $b) {
             // Get block count
-            $this->_blockcount++;
+            $this->blockcount++;
 
             // Some values like published_editing should come from master manifest
             // This is important for published drafts
@@ -214,8 +214,8 @@ class Curation extends Obj
             }
         }
 
-        $this->_manifest = $manifest;
-        $this->_blocks   = $manifest->blocks;
+        $this->manifest = $manifest;
+        $this->blocks   = $manifest->blocks;
 
         return true;
     }
@@ -229,7 +229,7 @@ class Curation extends Obj
      */
     public function setBlock($name = null, $blockId = 0)
     {
-        if ($blockId && (!isset($this->_blocks->$blockId) || $this->_blocks->$blockId->name != $name)) {
+        if ($blockId && (!isset($this->blocks->$blockId) || $this->blocks->$blockId->name != $name)) {
             $blockId = $this->getBlockId($name);
         }
 
@@ -241,9 +241,9 @@ class Curation extends Obj
             return false;
         }
 
-        $this->_block      = $this->_blocks->$blockId;
-        $this->_blockname  = $this->_blocks->$blockId->name;
-        $this->_blockorder = $blockId;
+        $this->block      = $this->blocks->$blockId;
+        $this->blockname  = $this->blocks->$blockId->name;
+        $this->blockorder = $blockId;
         return true;
     }
 
@@ -256,7 +256,7 @@ class Curation extends Obj
     public function getBlockId($name = null)
     {
         $blockId = null;
-        foreach ($this->_blocks as $index => $block) {
+        foreach ($this->blocks as $index => $block) {
             if ($block->name == $name) {
                 $blockId = $index;
                 break;
@@ -273,7 +273,7 @@ class Curation extends Obj
      */
     public function getBlockSchema()
     {
-        return $this->_blocks;
+        return $this->blocks;
     }
 
     /**
@@ -283,17 +283,17 @@ class Curation extends Obj
      */
     public function getMetaSchema()
     {
-        if (!$this->_blocks) {
+        if (!$this->blocks) {
             return false;
         }
 
         $customFields = [];
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
         // Find all blocks of the same parent
-        foreach ($this->_blocks as $blockId => $block) {
+        foreach ($this->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             if ($parentBlock == 'description') {
@@ -325,17 +325,17 @@ class Curation extends Obj
      */
     public function getElements($role = 1, $type = 'file')
     {
-        if (!$this->_blocks) {
+        if (!$this->blocks) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
         $elements = [];
 
         // Find all blocks of the same parent
-        foreach ($this->_blocks as $blockId => $block) {
+        foreach ($this->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             if ($parentBlock == 'content') {
@@ -367,12 +367,12 @@ class Curation extends Obj
      */
     public function getElementIdByAttachment($aid = 0)
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
 
         // Make sure we got attachments
-        $attachments = $this->_pub->attachments();
+        $attachments = $this->pub->attachments();
         if (empty($attachments)) {
             return false;
         }
@@ -399,15 +399,15 @@ class Curation extends Obj
             return false;
         }
 
-        if (!$this->_blocks) {
+        if (!$this->blocks) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
         // Find all blocks of the same parent
-        foreach ($this->_blocks as $blockId => $block) {
+        foreach ($this->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             // Go through elements
@@ -443,14 +443,14 @@ class Curation extends Obj
         }
 
         // We'll need block information from the block containing our manifest
-        if (!$this->_blocks) {
+        if (!$this->blocks) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        foreach ($this->_blocks as $blockId => $block) {
+        foreach ($this->blocks as $blockId => $block) {
             foreach ($block->elements as $elId => $element) {
                 if ($element->name == 'dataselector') {
                     // Check the list for one matching our element ID
@@ -482,7 +482,7 @@ class Curation extends Obj
      */
     public function parseBlock($viewer = 'edit', $name = null, $blockId = 0)
     {
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
 
         // Set the block
         if ($name) {
@@ -495,15 +495,15 @@ class Curation extends Obj
                 return false;
             }
 
-            $this->_block      = $this->_blocks->$blockId;
-            $this->_blockname  = $this->_blocks->$blockId->name;
-            $this->_blockorder = $blockId;
+            $this->block      = $this->blocks->$blockId;
+            $this->blockname  = $this->blocks->$blockId->name;
+            $this->blockorder = $blockId;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        return $blocksModel->renderBlock($this->_blockname, $viewer, $this->_block, $this->_pub, $blockId);
+        return $blocksModel->renderBlock($this->blockname, $viewer, $this->block, $this->pub, $blockId);
     }
 
     /**
@@ -519,7 +519,7 @@ class Curation extends Obj
         if (empty($pub->versionAlias) && isset($pub->version) && !is_object($pub->version)) {
             $pub->versionAlias = $pub->version;
         }
-        $this->_pub = $pub;
+        $this->pub = $pub;
 
         // Set progress
         if ($setProgress) {
@@ -540,14 +540,14 @@ class Curation extends Obj
      */
     public function addItem($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        $blocksModel->addItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+        $blocksModel->addItem($this->blockname, $this->block, $this->blockorder, $this->pub, $actor, $elementId);
 
         // Set error
         if ($blocksModel->getError()) {
@@ -565,7 +565,7 @@ class Curation extends Obj
             $data = new stdClass();
             $data->updated    = Date::toSql();
             $data->updated_by = $actor;
-            $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+            $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
         }
 
         return true;
@@ -580,14 +580,14 @@ class Curation extends Obj
      */
     public function saveItem($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        $blocksModel->saveItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+        $blocksModel->saveItem($this->blockname, $this->block, $this->blockorder, $this->pub, $actor, $elementId);
 
         // Set error
         if ($blocksModel->getError()) {
@@ -605,7 +605,7 @@ class Curation extends Obj
             $data = new stdClass();
             $data->updated    = Date::toSql();
             $data->updated_by = $actor;
-            $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+            $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
         }
 
         return true;
@@ -620,14 +620,14 @@ class Curation extends Obj
      */
     public function deleteItem($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        $blocksModel->deleteItem($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+        $blocksModel->deleteItem($this->blockname, $this->block, $this->blockorder, $this->pub, $actor, $elementId);
 
         // Set error
         if ($blocksModel->getError()) {
@@ -645,7 +645,7 @@ class Curation extends Obj
             $data = new stdClass();
             $data->updated    = Date::toSql();
             $data->updated_by = $actor;
-            $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+            $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
         }
 
         return true;
@@ -660,14 +660,14 @@ class Curation extends Obj
      */
     public function reorder($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        $blocksModel->reorder($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+        $blocksModel->reorder($this->blockname, $this->block, $this->blockorder, $this->pub, $actor, $elementId);
 
         // Set error
         if ($blocksModel->getError()) {
@@ -685,7 +685,7 @@ class Curation extends Obj
             $data = new stdClass();
             $data->updated    = Date::toSql();
             $data->updated_by = $actor;
-            $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+            $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
         }
 
         return true;
@@ -703,7 +703,7 @@ class Curation extends Obj
      */
     public function dispute($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
@@ -720,7 +720,7 @@ class Curation extends Obj
         $data->updated    = Date::toSql();
         $data->updated_by = $actor;
         $data->update     = stripslashes($dispute);
-        $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+        $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
 
         $this->set('_message', 'Curator change request disputed');
 
@@ -736,7 +736,7 @@ class Curation extends Obj
      */
     public function skip($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
@@ -754,7 +754,7 @@ class Curation extends Obj
         $data->updated_by    = $actor;
         $data->review_status = 3;
         $data->update        = stripslashes($reason);
-        $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+        $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
 
         $this->set('_message', 'Your request has been saved');
 
@@ -770,7 +770,7 @@ class Curation extends Obj
      */
     public function undispute($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
@@ -779,7 +779,7 @@ class Curation extends Obj
         $data->update     = null;
         $data->updated    = null;
         $data->updated_by = 0;
-        $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+        $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
 
         $this->set('_message', 'Dispute cleared. Please make changes requested by curator.');
 
@@ -799,7 +799,7 @@ class Curation extends Obj
     {
         $result = new stdClass();
 
-        if (!$this->_blocks) {
+        if (!$this->blocks) {
             return false;
         }
 
@@ -811,18 +811,18 @@ class Curation extends Obj
         $k = 0;
 
         // Check status for each
-        foreach ($this->_blocks as $blockId => $block) {
+        foreach ($this->blocks as $blockId => $block) {
             // Skip inactive blocks
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
-            $autoStatus   = self::getStatus($block->name, $this->_pub, $blockId);
+            $autoStatus   = self::getStatus($block->name, $this->pub, $blockId);
             $reviewStatus = self::getReviewStatus($block->name, $blockId);
 
             $result->blocks->$blockId = new stdClass();
             $result->blocks->$blockId->name         = $block->name;
             $result->blocks->$blockId->manifest     = $block;
-            $result->blocks->$blockId->firstElement = self::getFirstElement($block->name, $this->_pub, $blockId);
+            $result->blocks->$blockId->firstElement = self::getFirstElement($block->name, $this->pub, $blockId);
 
             if ($autoStatus->status > 0) {
                 $result->lastBlock = $blockId;
@@ -865,7 +865,7 @@ class Curation extends Obj
         // Are all sections complete for submission?
         $result->complete  = $i == $k ? 1 : 0;
 
-        $this->_progress = $result;
+        $this->progress = $result;
     }
 
     /**
@@ -876,12 +876,12 @@ class Curation extends Obj
      */
     public function blockExists($name = null)
     {
-        if (!$this->_blocks || $name === null) {
+        if (!$this->blocks || $name === null) {
             return false;
         }
 
         // Check status for each
-        foreach ($this->_blocks as $blockId => $block) {
+        foreach ($this->blocks as $blockId => $block) {
             if ($block->name == $name) {
                 return true;
             }
@@ -897,7 +897,7 @@ class Curation extends Obj
      */
     public function getFirstBlock()
     {
-        foreach ($this->_blocks as $id => $block) {
+        foreach ($this->blocks as $id => $block) {
             if (!isset($block->active) || $block->active > 0) {
                 return $id;
             }
@@ -916,7 +916,7 @@ class Curation extends Obj
      */
     public function getNextBlock($name, $blockId = 0, $activeId = 1)
     {
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -928,7 +928,7 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        foreach ($this->_blocks as $id => $block) {
+        foreach ($this->blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
@@ -954,7 +954,7 @@ class Curation extends Obj
      */
     public function isBlockComing($name, $blockId = 0, $activeId = 1)
     {
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -966,7 +966,7 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        foreach ($this->_blocks as $id => $block) {
+        foreach ($this->blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
@@ -991,7 +991,7 @@ class Curation extends Obj
      */
     public function getPreviousBlock($name, $blockId = 0, $activeId = 1)
     {
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1003,7 +1003,7 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        foreach ($this->_blocks as $id => $block) {
+        foreach ($this->blocks as $id => $block) {
             if (isset($block->active) && $block->active == 0) {
                 continue;
             }
@@ -1029,9 +1029,9 @@ class Curation extends Obj
      */
     public function getStatus($name, $pub, $blockId = 0)
     {
-        $pub = $pub ? $pub : $this->_pub;
+        $pub = $pub ? $pub : $this->pub;
 
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1042,8 +1042,8 @@ class Curation extends Obj
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
-        return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId);
+        $blocksModel = new Blocks($this->db);
+        return $blocksModel->getStatus($name, $pub, $this->blocks->$blockId);
     }
 
     /**
@@ -1055,14 +1055,14 @@ class Curation extends Obj
      */
     public function saveBlock($actor = 0, $elementId = 0)
     {
-        if (!$this->_blocks || !$this->_block || !$this->_pub) {
+        if (!$this->blocks || !$this->block || !$this->pub) {
             return false;
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
         // Save data
-        $blocksModel->saveBlock($this->_blockname, $this->_block, $this->_blockorder, $this->_pub, $actor, $elementId);
+        $blocksModel->saveBlock($this->blockname, $this->block, $this->blockorder, $this->pub, $actor, $elementId);
 
         // Set error
         if ($blocksModel->getError()) {
@@ -1080,7 +1080,7 @@ class Curation extends Obj
             $data = new stdClass();
             $data->updated    = Date::toSql();
             $data->updated_by = $actor;
-            $this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+            $this->saveUpdate($data, $elementId, $this->blockname, $this->pub, $this->blockorder);
         }
 
         return true;
@@ -1096,10 +1096,10 @@ class Curation extends Obj
      */
     public function getFirstElement($name, $pub, $blockId = 0)
     {
-        $pub = $pub ? $pub : $this->_pub;
+        $pub = $pub ? $pub : $this->pub;
         $elementId = 0;
 
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1109,8 +1109,8 @@ class Curation extends Obj
             return $elementId;
         }
 
-        if ($this->_blocks->$blockId->elements) {
-            foreach ($this->_blocks->$blockId->elements as $id => $element) {
+        if ($this->blocks->$blockId->elements) {
+            foreach ($this->blocks->$blockId->elements as $id => $element) {
                 return $id;
             }
         }
@@ -1129,7 +1129,7 @@ class Curation extends Obj
      */
     public function getNextElement($name, $blockId = 0, $activeId = 1)
     {
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1141,8 +1141,8 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        if ($this->_blocks->$blockId->elements) {
-            foreach ($this->_blocks->$blockId->elements as $id => $element) {
+        if ($this->blocks->$blockId->elements) {
+            foreach ($this->blocks->$blockId->elements as $id => $element) {
                 if (isset($element->active) && $element->active == 0) {
                     continue;
                 }
@@ -1170,7 +1170,7 @@ class Curation extends Obj
      */
     public function isComing($name, $blockId = 0, $activeId = 1, $elementId = 0)
     {
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1182,8 +1182,8 @@ class Curation extends Obj
 
         $remaining = [];
         $start     = 0;
-        if ($this->_blocks->$blockId->elements) {
-            foreach ($this->_blocks->$blockId->elements as $id => $element) {
+        if ($this->blocks->$blockId->elements) {
+            foreach ($this->blocks->$blockId->elements as $id => $element) {
                 if (isset($element->active) && $element->active == 0) {
                     continue;
                 }
@@ -1210,9 +1210,9 @@ class Curation extends Obj
      */
     public function getElementStatus($name, $elementId, $pub, $blockId)
     {
-        $pub = $pub ? $pub : $this->_pub;
+        $pub = $pub ? $pub : $this->pub;
 
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1223,8 +1223,8 @@ class Curation extends Obj
         }
 
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
-        return $blocksModel->getStatus($name, $pub, $this->_blocks->$blockId, $elementId);
+        $blocksModel = new Blocks($this->db);
+        return $blocksModel->getStatus($name, $pub, $this->blocks->$blockId, $elementId);
     }
 
     /**----------------------------
@@ -1243,11 +1243,11 @@ class Curation extends Obj
         // Get status model
         $status = new Status();
 
-        if (!isset($this->_pub->reviewedItems)) {
-            $this->_pub->reviewedItems = $this->getReviewedItems();
+        if (!isset($this->pub->reviewedItems)) {
+            $this->pub->reviewedItems = $this->getReviewedItems();
         }
 
-        $manifest = $this->_blocks->$blockId;
+        $manifest = $this->blocks->$blockId;
 
         // Get element status
         if ($manifest->elements) {
@@ -1267,7 +1267,7 @@ class Curation extends Obj
                 if (!isset($status->elements)) {
                     $status->elements = new stdClass();
                 }
-                $status->elements->$elementId = $this->getReviewItemStatus($props, $this->_pub->reviewedItems);
+                $status->elements->$elementId = $this->getReviewItemStatus($props, $this->pub->reviewedItems);
 
                 // Store element label (for history tracking)
                 $status->elements->$elementId->label = $element->label;
@@ -1291,14 +1291,14 @@ class Curation extends Obj
             }
 
             // Determine block status based on element status
-            $passed = ($success == $i || $this->_pub->state == 1) ? 1 : 0;
+            $passed = ($success == $i || $this->pub->state == 1) ? 1 : 0;
             $status->status     = $failed > 0 ? 0 : $passed;
             $status->status     = ($incomplete  && !$failed) ? 2 : $status->status; // unreviewed
             $status->status     = ($skipped > 0 && ($skipped + $incomplete) == $i) ? 3 : $status->status; // skipped
             $status->lastupdate = ($pending > 0 || $skipped > 0) && $passed == 1 ? true : null;
         } else {
             $props = $block . '-' . $blockId;
-            return $this->getReviewItemStatus($props, $this->_pub->reviewedItems);
+            return $this->getReviewItemStatus($props, $this->pub->reviewedItems);
         }
 
         // Return status
@@ -1375,14 +1375,14 @@ class Curation extends Obj
         // Make sure the step exists
         // If it doesn't, this is possibly a block that was
         // disabled on the master type and later enabled.
-        if (!isset($pub->_curationModel->_progress->blocks->$step)) {
+        if (!isset($pub->_curationModel->progress->blocks->$step)) {
             return $status;
         }
 
         if ($elId) {
-            $reviewStatus = $pub->_curationModel->_progress->blocks->$step->review->elements->$elId;
+            $reviewStatus = $pub->_curationModel->progress->blocks->$step->review->elements->$elId;
         } else {
-            $reviewStatus = $pub->_curationModel->_progress->blocks->$step->review;
+            $reviewStatus = $pub->_curationModel->progress->blocks->$step->review;
         }
 
         if (!$reviewStatus) {
@@ -1492,16 +1492,16 @@ class Curation extends Obj
      */
     public function getReviewedItems()
     {
-        if (empty($this->_pub->version_id)) {
+        if (empty($this->pub->version_id)) {
             return false;
         }
 
         $review = [];
 
-        if (!isset($this->_tbl)) {
-            $this->_tbl = new Tables\Curation($this->_db);
+        if (!isset($this->tbl)) {
+            $this->tbl = new Tables\Curation($this->db);
         }
-        $results = $this->_tbl->getRecords($this->_pub->version_id);
+        $results = $this->tbl->getRecords($this->pub->version_id);
 
         if ($results) {
             foreach ($results as $result) {
@@ -1528,14 +1528,14 @@ class Curation extends Obj
      */
     public function getHistory($filters = [])
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
-        if (!isset($this->_tblHistory)) {
-            $this->_tblHistory = new Tables\CurationHistory($this->_db);
+        if (!isset($this->tblHistory)) {
+            $this->tblHistory = new Tables\CurationHistory($this->db);
         }
 
-        $history = $this->_tblHistory->getRecords($this->_pub->version_id, $filters);
+        $history = $this->tblHistory->getRecords($this->pub->version_id, $filters);
 
         return $history;
     }
@@ -1547,14 +1547,14 @@ class Curation extends Obj
      */
     public function getLastHistoryRecord()
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
-        if (!isset($this->_tblHistory)) {
-            $this->_tblHistory = new Tables\CurationHistory($this->_db);
+        if (!isset($this->tblHistory)) {
+            $this->tblHistory = new Tables\CurationHistory($this->db);
         }
 
-        $history = $this->_tblHistory->getLastRecord($this->_pub->version_id);
+        $history = $this->tblHistory->getLastRecord($this->pub->version_id);
 
         return $history;
     }
@@ -1594,13 +1594,13 @@ class Curation extends Obj
         }
 
         // Add details
-        if (!empty($this->_progress) && ($newStatus == 7 || $oldStatus == 7)) {
+        if (!empty($this->progress) && ($newStatus == 7 || $oldStatus == 7)) {
             $changelog .= '<hr />';
             $changelog .= $newStatus == 7
                         ? '<p>Changes requested for sections: </p>'
                         : '<p>Updated sections include: </p>';
             $changelog .= '<ul>';
-            foreach ($this->_progress->blocks as $blockId => $block) {
+            foreach ($this->progress->blocks as $blockId => $block) {
                 if ($block->review && (($newStatus == 7 && $block->review->status == 0) || ($oldStatus == 7 && $block->review->lastupdate))) {
                     $changelog .= '<li>';
                     $changelog .= $block->manifest->label;
@@ -1647,7 +1647,7 @@ class Curation extends Obj
      */
     public function saveHistory($actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0)
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
 
@@ -1661,10 +1661,10 @@ class Curation extends Obj
             return false;
         }
 
-        $obj = new Tables\CurationHistory($this->_db);
+        $obj = new Tables\CurationHistory($this->db);
 
         // Create new record
-        $obj->publication_version_id = $this->_pub->version_id;
+        $obj->publication_version_id = $this->pub->version_id;
         $obj->created                = Date::toSql();
         $obj->created_by             = $actor;
         $obj->changelog              = $changelog;
@@ -1690,16 +1690,16 @@ class Curation extends Obj
      */
     public function getLastUpdate($elementId, $name, $blockId)
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
-        if (!isset($this->_tbl)) {
-            $this->_tbl = new Tables\Curation($this->_db);
+        if (!isset($this->tbl)) {
+            $this->tbl = new Tables\Curation($this->db);
         }
 
-        return $this->_tbl->getRecord(
-            $this->_pub->id,
-            $this->_pub->version_id,
+        return $this->tbl->getRecord(
+            $this->pub->id,
+            $this->pub->version_id,
             $name,
             $blockId,
             $elementId,
@@ -1722,9 +1722,9 @@ class Curation extends Obj
             return false;
         }
 
-        $name    = $name ? $name : $this->_blockname;
-        $pub     = $pub ? $pub : $this->_pub;
-        $blockId = $blockId ? $blockId : $this->_blockorder;
+        $name    = $name ? $name : $this->blockname;
+        $pub     = $pub ? $pub : $this->pub;
+        $blockId = $blockId ? $blockId : $this->blockorder;
         if (!$blockId) {
             $blockId = $this->getBlockId($name);
         }
@@ -1733,29 +1733,29 @@ class Curation extends Obj
             return false;
         }
 
-        if (!isset($this->_tbl)) {
-            $this->_tbl = new Tables\Curation($this->_db);
+        if (!isset($this->tbl)) {
+            $this->tbl = new Tables\Curation($this->db);
         }
 
         // Load curation record if exists
-        if ($this->_tbl->loadRecord($pub->id, $pub->version_id, $name, $blockId, $elementId)) {
+        if ($this->tbl->loadRecord($pub->id, $pub->version_id, $name, $blockId, $elementId)) {
             // Record found - update
         } else {
             // Create new record
-            $this->_tbl->publication_id         = $pub->id;
-            $this->_tbl->publication_version_id = $pub->version_id;
-            $this->_tbl->block                  = $name;
-            $this->_tbl->step                   = $blockId;
-            $this->_tbl->element                = $elementId;
+            $this->tbl->publication_id         = $pub->id;
+            $this->tbl->publication_version_id = $pub->version_id;
+            $this->tbl->block                  = $name;
+            $this->tbl->step                   = $blockId;
+            $this->tbl->element                = $elementId;
         }
 
         // Insert incoming data
         foreach ($data as $field => $value) {
             $field = trim((string) $field);
-            $this->_tbl->$field = trim((string) $value);
+            $this->tbl->$field = trim((string) $value);
         }
 
-        if ($this->_tbl->store()) {
+        if ($this->tbl->store()) {
             return true;
         }
 
@@ -1773,7 +1773,7 @@ class Curation extends Obj
      */
     public function showPackageContents()
     {
-        if (!$this->_pub) {
+        if (!$this->pub) {
             return false;
         }
 
@@ -1790,9 +1790,9 @@ class Curation extends Obj
         }
 
         // Get attachment type model
-        $attModel = new Attachments($this->_db);
+        $attModel = new Attachments($this->db);
 
-        $bundle = $this->_pub->bundlePath();
+        $bundle = $this->pub->bundlePath();
 
         $contents = '<div class="bundle-data">';
         if (file_exists($bundle)) {
@@ -1816,11 +1816,11 @@ class Curation extends Obj
 
         $contents .= $attModel->showPackagedItems(
             $elements,
-            $this->_pub,
+            $this->pub,
         );
 
         // Custom license to be included in LICENSE.txt
-        if ($this->_pub->license_text) {
+        if ($this->pub->license_text) {
             $contents .= '<li>';
             $contents .= '<span class="item-icon">' . \Components\Projects\Models\File::drawIcon('txt') . '</span>';
             $contents .= '<span class="item-title">LICENSE.txt</span>';
@@ -1845,18 +1845,18 @@ class Curation extends Obj
      */
     public function getBundleName($linkName = false)
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
-        $doi = $this->_pub->version->get('doi');
+        $doi = $this->pub->version->get('doi');
         if ($doi != '') {
             $doi = str_replace('.', '_', $doi);
             $doi = str_replace('/', '_', $doi);
             $bundleName = $doi;
         } else {
-            $bundleName = 'Publication' . '_' . $this->_pub->id;
+            $bundleName = 'Publication' . '_' . $this->pub->id;
             if ($linkName) {
-                $bundleName .= '_' . $this->_pub->version->get('version_number');
+                $bundleName .= '_' . $this->pub->version->get('version_number');
             }
         }
         return $bundleName . '.zip';
@@ -1869,11 +1869,11 @@ class Curation extends Obj
      */
     public function serveBundle()
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             throw new \Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
         }
 
-        $bundle = $this->_pub->path('base', true) . DS . $this->getBundleName();
+        $bundle = $this->pub->path('base', true) . DS . $this->getBundleName();
 
         // Already contains a '.zip' on the end.
         $serveas = $this->getBundleName();
@@ -1917,7 +1917,7 @@ class Curation extends Obj
      */
     public function createLink()
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
 
@@ -1926,7 +1926,7 @@ class Curation extends Obj
             return false;
         }
 
-        $tarpath = $this->_pub->path('base', true) . DS . $this->getBundleName();
+        $tarpath = $this->pub->path('base', true) . DS . $this->getBundleName();
         if (!is_file($tarpath)) {
             return false;
         }
@@ -2014,11 +2014,11 @@ class Curation extends Obj
      */
     public function movedSourceAttachments()
     {
-        if (empty($this->_pub) || empty($this->_pub->_project) || empty($this->_pub->version_id)) {
+        if (empty($this->pub) || empty($this->pub->_project) || empty($this->pub->version_id)) {
             return [];
         }
 
-        $repo = $this->_pub->_project->repo();
+        $repo = $this->pub->_project->repo();
         if (!$repo) {
             return [];
         }
@@ -2028,8 +2028,8 @@ class Curation extends Obj
             return [];
         }
 
-        $objPA = new Tables\Attachment($this->_db);
-        $files = $objPA->getAttachments($this->_pub->version_id, ['type' => 'file']);
+        $objPA = new Tables\Attachment($this->db);
+        $files = $objPA->getAttachments($this->pub->version_id, ['type' => 'file']);
 
         $moved = [];
 
@@ -2059,7 +2059,7 @@ class Curation extends Obj
      */
     public function package($bundleOverwrite = false)
     {
-        if (empty($this->_pub)) {
+        if (empty($this->pub)) {
             return false;
         }
 
@@ -2075,9 +2075,9 @@ class Curation extends Obj
         }
 
         // Set overwrite flag in case when are generating a new bundle
-        $this->_pub->params->set('bundleOverwrite', $bundleOverwrite);
+        $this->pub->params->set('bundleOverwrite', $bundleOverwrite);
 
-        if (!is_dir($this->_pub->path('base', true))) {
+        if (!is_dir($this->pub->path('base', true))) {
             return false;
         }
 
@@ -2086,9 +2086,9 @@ class Curation extends Obj
         // Set archival properties
         $bundleDir  = $bundleName;
         $tarname    = $this->getBundleName();
-        $tarpath    = $this->_pub->path('base', true) . DS . $tarname;
-        $licFile    = $this->_pub->path('base', true) . DS . 'LICENSE.txt';
-        $readmeFile = $this->_pub->path('base', true) . DS . $this->readmeFileName;
+        $tarpath    = $this->pub->path('base', true) . DS . $tarname;
+        $licFile    = $this->pub->path('base', true) . DS . 'LICENSE.txt';
+        $readmeFile = $this->pub->path('base', true) . DS . $this->readmeFileName;
 
         // If we're NOT overwriting and the file already exists
         // then we're done!
@@ -2097,17 +2097,17 @@ class Curation extends Obj
         }
 
         // Get attachment type model
-        $attModel = new Attachments($this->_db);
+        $attModel = new Attachments($this->db);
 
         // Start README
-        $readme  = $this->_pub->title . "\n ";
-        $readme .= 'Version ' . $this->_pub->version_label . "\n ";
+        $readme  = $this->pub->title . "\n ";
+        $readme .= 'Version ' . $this->pub->version_label . "\n ";
 
         // List authors
-        if (isset($this->_pub->_authors) && $this->_pub->_authors) {
+        if (isset($this->pub->_authors) && $this->pub->_authors) {
             $readme .= 'Authors: ' . "\n ";
 
-            foreach ($this->_pub->_authors as $author) {
+            foreach ($this->pub->_authors as $author) {
                 $readme .= ($author->name) ? $author->name : $author->p_name;
                 $org = ($author->organization) ? $author->organization : $author->p_organization;
 
@@ -2119,24 +2119,24 @@ class Curation extends Obj
         }
 
         // Add DOI if available
-        if ($this->_pub->doi) {
-            $readme .= 'doi:' . $this->_pub->doi . "\n ";
+        if ($this->pub->doi) {
+            $readme .= 'doi:' . $this->pub->doi . "\n ";
         }
 
         // Add license information
-        $objL = new Tables\License($this->_db);
-        if ($objL->loadLicense($this->_pub->license_type) && $objL->id) {
+        $objL = new Tables\License($this->db);
+        if ($objL->loadLicense($this->pub->license_type) && $objL->id) {
             $readme .= "\n " . "\n ";
             $readme .= 'License: ' . "\n ";
             $readme .= $objL->title . "\n ";
 
             // Custom license text?
-            if ($this->_pub->license_text) {
-                $readme .= $this->_pub->license_text . "\n ";
+            if ($this->pub->license_text) {
+                $readme .= $this->pub->license_text . "\n ";
 
                 // Create license file
                 $handle  = fopen($licFile, 'w');
-                fwrite($handle, $this->_pub->license_text);
+                fwrite($handle, $this->pub->license_text);
                 fclose($handle);
             } elseif ($objL->text) {
                 $readme .= $objL->text . "\n ";
@@ -2155,7 +2155,7 @@ class Curation extends Obj
             $bundled = $attModel->bundleItems(
                 $zip,
                 $elements,
-                $this->_pub,
+                $this->pub,
                 $readme,
                 $bundleDir,
             );
@@ -2214,7 +2214,7 @@ class Curation extends Obj
         // publish-time createLink callers use): package() also runs on-demand for
         // unpublished/embargoed versions, and their bundle must never be linked
         // into the anonymously-served FTP directory.
-        if ($this->_pub->isPublished() && !$this->_pub->isEmbargoed()) {
+        if ($this->pub->isPublished() && !$this->pub->isEmbargoed()) {
             $this->createLink();
         }
 
@@ -2233,7 +2233,7 @@ class Curation extends Obj
      */
     public function convertToCuration($pub = null)
     {
-        $pub     = $pub ? $pub : $this->_pub;
+        $pub     = $pub ? $pub : $this->pub;
         $oldFlow = false;
 
         // Load attachments
@@ -2257,7 +2257,7 @@ class Curation extends Obj
             foreach ($elementAttachments as $elAttach) {
                 if ($elAttach->element_id == 0) {
                     // Save elementid
-                    $row = new Tables\Attachment($this->_db);
+                    $row = new Tables\Attachment($this->db);
                     if ($row->load($elAttach->id)) {
                         $markId = $elAttach->role != 1 && $sElement ? $sElement->id : $elementId;
                         $row->element_id = $markId;
@@ -2277,13 +2277,13 @@ class Curation extends Obj
         $element = $elements ? $elements[0] : null;
 
         // Retrieve screenshots
-        $pScreenshot = new Tables\Screenshot($this->_db);
+        $pScreenshot = new Tables\Screenshot($this->db);
         $shots = $pScreenshot->getScreenshots($pub->version_id);
 
         // Transfer gallery files to the right location
         if ($element && $shots) {
             // Get attachment type model
-            $attModel = new Attachments($this->_db);
+            $attModel = new Attachments($this->db);
             $fileAttach = $attModel->loadAttach('file');
 
             // Set configs
@@ -2311,12 +2311,12 @@ class Curation extends Obj
                 $firstImageAttach = null;
 
                 foreach ($shots as $shot) {
-                    $objPA = new Tables\Attachment($this->_db);
+                    $objPA = new Tables\Attachment($this->db);
                     if (
                         is_file($galleryPath . DS . $shot->srcfile)
                         && !$objPA->loadElementAttachment($pub->version_id, ['path' => $shot->filename], $element->id, 'file', $element->manifest->params->role)
                     ) {
-                        $objPA = new Tables\Attachment($this->_db);
+                        $objPA = new Tables\Attachment($this->db);
                         $objPA->publication_id         = $pub->id;
                         $objPA->publication_version_id = $pub->version_id;
                         $objPA->path                   = $shot->filename;
@@ -2360,7 +2360,7 @@ class Curation extends Obj
                     $firstImageAttach !== null && $configs->handler
                     && $configs->handler->getName() == 'imageviewer'
                 ) {
-                    $currentDefault = new Tables\Attachment($this->_db);
+                    $currentDefault = new Tables\Attachment($this->db);
                     if (!$currentDefault->getDefault($pub->version_id)) {
                         $configs->handler->makeDefault($firstImageAttach, $pub, $configs);
                     }
@@ -2369,10 +2369,10 @@ class Curation extends Obj
         }
 
         // Check if published version has curation manifest saved
-        $row = new Tables\Version($this->_db);
+        $row = new Tables\Version($this->db);
         if ($pub->state == 1 && !$pub->curation) {
             if ($row->load($pub->version_id)) {
-                $row->curation = json_encode($this->_manifest);
+                $row->curation = json_encode($this->manifest);
                 $row->store();
             }
         }
@@ -2392,9 +2392,9 @@ class Curation extends Obj
     public function transfer($pub, $old, $new)
     {
         // Get blocks model
-        $blocksModel = new Blocks($this->_db);
+        $blocksModel = new Blocks($this->db);
 
-        foreach ($pub->_curationModel->_progress->blocks as $blockId => $block) {
+        foreach ($pub->_curationModel->progress->blocks as $blockId => $block) {
             $parentBlock = $blocksModel->getBlockProperty($block->name, '_parentname');
 
             if (in_array($parentBlock, ['content', 'authors'])) {
@@ -2418,21 +2418,21 @@ class Curation extends Obj
      */
     public function saveVersionLabel($uid = 0)
     {
-        if (!$this->_pub) {
+        if (!$this->pub) {
             return false;
         }
 
-        $row = new Tables\Version($this->_db);
+        $row = new Tables\Version($this->db);
 
         // Incoming
         $label = trim(Request::getString('label', '', 'post'));
-        $used_labels = $row->getUsedLabels($this->_pub->id, $this->_pub->version_number);
+        $used_labels = $row->getUsedLabels($this->pub->id, $this->pub->version_number);
 
         if ($label && in_array($label, $used_labels)) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_USED'));
             return false;
         } elseif ($label) {
-            if (!$row->loadVersion($this->_pub->id, $this->_pub->version_number)) {
+            if (!$row->loadVersion($this->pub->id, $this->pub->version_number)) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_LABEL_ERROR'));
                 return false;
             }
@@ -2456,7 +2456,7 @@ class Curation extends Obj
      */
     public function drawStatusBar()
     {
-        if (!$this->_progress) {
+        if (!$this->progress) {
             return false;
         }
 
@@ -2466,11 +2466,11 @@ class Curation extends Obj
             'name'    => 'draft',
             'layout'  => 'statusbar',
         ]);
-        $view->pub       = $this->_pub;
-        $view->progress  = $this->_progress;
-        $view->active    = $this->_blockname;
-        $view->activenum = $this->_blockorder;
-        $view->database  = $this->_db;
+        $view->pub       = $this->pub;
+        $view->progress  = $this->progress;
+        $view->active    = $this->blockname;
+        $view->activenum = $this->blockorder;
+        $view->database  = $this->db;
         $view->display();
     }
 
@@ -2482,17 +2482,17 @@ class Curation extends Obj
      */
     public function getCurationVersion($id = 0)
     {
-        if (!isset($this->_curationVersion) || $id != $this->_curationVersion->id) {
-            $this->_curationVersion = new Tables\CurationVersion($this->_db);
+        if (!isset($this->curationVersion) || $id != $this->curationVersion->id) {
+            $this->curationVersion = new Tables\CurationVersion($this->db);
             if (intval($id) > 0) {
-                $this->_curationVersion->load($id);
+                $this->curationVersion->load($id);
             } else {
                 // Load latest by type
-                $this->_curationVersion->loadLatest($this->_pub->get('master_type'));
+                $this->curationVersion->loadLatest($this->pub->get('master_type'));
             }
         }
 
-        return $this->_curationVersion;
+        return $this->curationVersion;
     }
 
     /**
@@ -2503,7 +2503,7 @@ class Curation extends Obj
     public function checkCurationVersion()
     {
         // Get current master type manifest
-        $manifest = $this->_pub->masterType()->curation;
+        $manifest = $this->pub->masterType()->curation;
 
         // Get saved current version
         $current = $this->getCurationVersion();
@@ -2512,13 +2512,13 @@ class Curation extends Obj
         if (!$current || $current->curation != $manifest) {
             $versionNumber = $current ? $current->version_number + 1 : 1;
 
-            $this->_curationVersion = new Tables\CurationVersion($this->_db);
-            $this->_curationVersion->type_id        = $this->_pub->get('master_type');
-            $this->_curationVersion->curation       = $manifest;
-            $this->_curationVersion->created        = Date::toSql();
-            $this->_curationVersion->version_number = $versionNumber;
-            if ($this->_curationVersion->store()) {
-                return $this->_curationVersion->id;
+            $this->curationVersion = new Tables\CurationVersion($this->db);
+            $this->curationVersion->type_id        = $this->pub->get('master_type');
+            $this->curationVersion->curation       = $manifest;
+            $this->curationVersion->created        = Date::toSql();
+            $this->curationVersion->version_number = $versionNumber;
+            if ($this->curationVersion->store()) {
+                return $this->curationVersion->id;
             }
         }
 

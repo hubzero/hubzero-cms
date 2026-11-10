@@ -22,7 +22,7 @@ use Hubzero\Facades\Date;
 class Changelog extends Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_raw;
+    protected $raw;
 
     /**
      * ItemList
@@ -47,7 +47,7 @@ class Changelog extends Obj
     public function __construct($data = null)
     {
         if ($data) {
-            $this->_raw = $data;
+            $this->raw = $data;
 
             if (substr($data, 0, 1) == '{') {
                 $this->log = json_decode($data, true);

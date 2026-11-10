@@ -23,7 +23,7 @@ class Site extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_blog',
     ];
 
@@ -37,11 +37,11 @@ class Site extends Base
     {
         $this->set('scope_id', $scope_id);
 
-        $config = Component::params($this->_segments['option']);
+        $config = Component::params($this->segments['option']);
 
         $this->set('path', $config->get('uploadpath', '/site/blog'));
         $this->set('scope', '');
-        $this->set('option', $this->_segments['option']);
+        $this->set('option', $this->segments['option']);
     }
 
     /**
@@ -83,14 +83,14 @@ class Site extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -139,6 +139,6 @@ class Site extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 }

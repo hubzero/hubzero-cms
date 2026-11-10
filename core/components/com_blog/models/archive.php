@@ -27,7 +27,7 @@ class Archive extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_config;
+    private $config;
 
     /**
      * File space path
@@ -35,7 +35,7 @@ class Archive extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_adapter;
+    private $adapter;
 
     /**
      * Constructor
@@ -192,7 +192,7 @@ class Archive extends Obj
      */
     private function adapter()
     {
-        if (!$this->_adapter) {
+        if (!$this->adapter) {
             $scope = strtolower($this->get('scope'));
 
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
@@ -201,9 +201,9 @@ class Archive extends Obj
                 throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 
-            $this->_adapter = new $cls($this->get('scope_id'));
+            $this->adapter = new $cls($this->get('scope_id'));
         }
-        return $this->_adapter;
+        return $this->adapter;
     }
 
     /**
@@ -216,13 +216,13 @@ class Archive extends Obj
      */
     public function config($property = null, $default = null)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_blog');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_blog');
         }
         if ($property) {
-            return $this->_config->get($property, $default);
+            return $this->config->get($property, $default);
         }
-        return $this->_config;
+        return $this->config;
     }
 
     /**

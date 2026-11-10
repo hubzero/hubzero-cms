@@ -39,7 +39,7 @@ class Dashboard extends Plugin
      *
      * @var  array
      */
-    protected $_actionMap = [];
+    protected $actionMap = [];
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ class Dashboard extends Plugin
         foreach ($reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             $name = $method->getName();
             if (substr(strtolower($name), -6) == 'action') {
-                $this->_actionMap[] = $name;
+                $this->actionMap[] = $name;
             }
         }
 
@@ -139,7 +139,7 @@ class Dashboard extends Plugin
             $doAction = strtolower($this->action) . 'Action';
 
             // make sure we have that action
-            if (in_array($doAction, $this->_actionMap)) {
+            if (in_array($doAction, $this->actionMap)) {
                 $arr['html'] = $this->$doAction();
             } else {
                 throw new \Exception(Lang::txt('Members dashboard action does not exist: [%s].', $doAction), 404);

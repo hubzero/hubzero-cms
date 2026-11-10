@@ -28,7 +28,7 @@ class Prerequisite extends Base
      *
      * @var string
      */
-    protected $_scope = 'prerequisite';
+    protected $scope = 'prerequisite';
 
     /**
      * Track the member id for whom the prereqs apply

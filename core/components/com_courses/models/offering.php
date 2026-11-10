@@ -22,9 +22,9 @@ use Hubzero\Facades\Request;
 class Offering extends Base
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_membership;
+    protected $membership;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_plugins;
+    protected $plugins;
 
     /**
      * Table class name
@@ -40,7 +40,7 @@ class Offering extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'offering';
+    protected $scope = 'offering';
 
     /**
      * \Components\Courses\Models\Iterator
@@ -755,7 +755,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_membership[$user_id]) || !is_array($this->_membership[$user_id])) {
+        if (!isset($this->membership[$user_id]) || !is_array($this->membership[$user_id])) {
             $tbl = new Tables\Member($this->db);
 
             $results = [];
@@ -772,10 +772,10 @@ class Offering extends Base
                 }
             }
 
-            $this->_membership[$user_id] = $results;
+            $this->membership[$user_id] = $results;
         }
 
-        return $this->_membership[$user_id];
+        return $this->membership[$user_id];
     }
 
     /**
@@ -932,22 +932,22 @@ class Offering extends Base
      */
     public function plugins($name = null)
     {
-        if (!isset($this->_plugins) || !is_array($this->_plugins)) {
+        if (!isset($this->plugins) || !is_array($this->plugins)) {
             $this->importPlugin('courses');
 
             $course = Course::getInstance($this->get('course_id'));
-            $this->_plugins = $this->trigger('onCourse', [$course, $this, true]);
+            $this->plugins = $this->trigger('onCourse', [$course, $this, true]);
         }
 
         if ($name !== null) {
-            foreach ($this->_plugins as $plugin) {
+            foreach ($this->plugins as $plugin) {
                 if ($plugin->get('name') == $name) {
                     return $plugin;
                 }
             }
         }
 
-        return $this->_plugins;
+        return $this->plugins;
     }
 
     /**
@@ -1127,7 +1127,7 @@ class Offering extends Base
              ->trigger('onOfferingSave', [$this]);
 
         if ($isNew) {
-            $this->log($this->get('id'), $this->_scope, 'create');
+            $this->log($this->get('id'), $this->scope, 'create');
         }
 
         return true;

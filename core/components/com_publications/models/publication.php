@@ -44,21 +44,21 @@ class Publication extends Obj
      *
      * @var  mixed
      */
-    private $_authorized = false;
+    private $authorized = false;
 
     /**
      * Database
      *
      * @var  object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * Container for properties
      *
      * @var  array
      */
-    private $_data = [];
+    private $data = [];
 
     /**
      * Is this publication of type tool?
@@ -89,14 +89,14 @@ class Publication extends Obj
      */
     public function __construct($oid = null, $version = 'default', $vid = null)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         if (is_object($oid)) {
             // This mapping is used in item listings
-            $this->version = new Tables\Version($this->_db);
+            $this->version = new Tables\Version($this->db);
             $this->version->bind($oid);
 
-            $this->publication = new Tables\Publication($this->_db);
+            $this->publication = new Tables\Publication($this->db);
             $this->publication->bind($oid);
 
             // Map values
@@ -112,8 +112,8 @@ class Publication extends Obj
                 $this->params->merge($this->version->type_params);
             }
         } else {
-            $this->version = new Tables\Version($this->_db);
-            $this->publication = new Tables\Publication($this->_db);
+            $this->version = new Tables\Version($this->db);
+            $this->publication = new Tables\Publication($this->db);
 
             // Load version & master record
             if (intval($vid)) {
@@ -135,8 +135,8 @@ class Publication extends Obj
             }
             $this->version_id        = $this->version->id;
             $this->id                = $this->publication->id;
-            $this->base              = $this->_type->alias;
-            $this->curatorgroup      = $this->_type->curatorgroup;
+            $this->base              = $this->type->alias;
+            $this->curatorgroup      = $this->type->curatorgroup;
 
             // Map master values
             foreach ($this->publication as $field => $value) {
@@ -151,7 +151,7 @@ class Publication extends Obj
             // Collect params
             $this->params = clone(Component::params('com_publications'));
             $this->params->merge(new \Hubzero\Config\Registry($this->version->params));
-            $this->params->merge($this->_type->_params);
+            $this->params->merge($this->type->_params);
         }
 
         // Set version alias
@@ -195,7 +195,7 @@ class Publication extends Obj
      */
     public function __isset($property)
     {
-        return isset($this->_data[$property]);
+        return isset($this->data[$property]);
     }
 
     /**
@@ -207,7 +207,7 @@ class Publication extends Obj
      */
     public function __set($property, $value)
     {
-        $this->_data[$property] = $value;
+        $this->data[$property] = $value;
     }
 
     /**
@@ -218,8 +218,8 @@ class Publication extends Obj
      */
     public function __get($property)
     {
-        if (isset($this->_data[$property])) {
-            return $this->_data[$property];
+        if (isset($this->data[$property])) {
+            return $this->data[$property];
         }
 
         return null;
@@ -436,7 +436,7 @@ class Publication extends Obj
      */
     public function isEmbargoed()
     {
-        if (!$this->get('published_up') || $this->get('published_up') == $this->_db->getNullDate()) {
+        if (!$this->get('published_up') || $this->get('published_up') == $this->db->getNullDate()) {
             return false;
         }
         if (Date::of($this->get('published_up'))->toUnix() > Date::toUnix()) {
@@ -470,7 +470,7 @@ class Publication extends Obj
      */
     protected function _date($key, $as = '')
     {
-        if ($this->get($key) == $this->_db->getNullDate()) {
+        if ($this->get($key) == $this->db->getNullDate()) {
             return null;
         }
         switch (strtolower($as)) {
@@ -563,13 +563,13 @@ class Publication extends Obj
      */
     public function masterType()
     {
-        if (empty($this->_type)) {
-            $this->_type = new Tables\MasterType($this->_db);
-            $this->_type->load($this->publication->master_type);
-            $this->_type->_params = new \Hubzero\Config\Registry($this->_type->params);
+        if (empty($this->type)) {
+            $this->type = new Tables\MasterType($this->db);
+            $this->type->load($this->publication->master_type);
+            $this->type->_params = new \Hubzero\Config\Registry($this->type->params);
         }
 
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -592,10 +592,10 @@ class Publication extends Obj
             // Get manifest from either version record (published) or master type
             $manifest = $this->version->curation
                         ? $this->version->curation
-                        : $this->_type->curation;
+                        : $this->type->curation;
 
             // Get curation model
-            $this->_curationModel = new Curation($manifest, $this->_type->curation);
+            $this->_curationModel = new Curation($manifest, $this->type->curation);
 
             // Set pub assoc and load curation
             $this->_curationModel->setPubAssoc($this, $setProgress);
@@ -620,78 +620,78 @@ class Publication extends Obj
         }
         switch ($property) {
             case 'progress':
-                return $this->_curationModel->_progress;
+                return $this->_curationModel->progress;
                 break;
 
             case 'blocks':
-                if ($blockId && isset($this->_curationModel->_progress->blocks->$blockId)) {
+                if ($blockId && isset($this->_curationModel->progress->blocks->$blockId)) {
                     if ($blockProperty) {
                         switch ($blockProperty) {
                             case 'complete':
-                                return $this->_curationModel->_progress->blocks->$blockId->status->status;
+                                return $this->_curationModel->progress->blocks->$blockId->status->status;
                                 break;
 
                             case 'elementStatus':
-                                if ($elementId && isset($this->_curationModel->_progress->blocks->$blockId->status->elements->$elementId)) {
-                                    return $this->_curationModel->_progress->blocks->$blockId->status->elements->$elementId->status;
+                                if ($elementId && isset($this->_curationModel->progress->blocks->$blockId->status->elements->$elementId)) {
+                                    return $this->_curationModel->progress->blocks->$blockId->status->elements->$elementId->status;
                                 }
                                 break;
 
                             case 'elements':
                                 if ($elementId) {
-                                    if (isset($this->_curationModel->_progress->blocks->$blockId->manifest->elements->$elementId)) {
-                                        return $this->_curationModel->_progress->blocks->$blockId->manifest->elements->$elementId;
+                                    if (isset($this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId)) {
+                                        return $this->_curationModel->progress->blocks->$blockId->manifest->elements->$elementId;
                                     } else {
                                         $first = $this->curation('blocks', $blockId, 'firstElement');
-                                        return $this->_curationModel->_progress->blocks->$blockId->manifest->elements->$first;
+                                        return $this->_curationModel->progress->blocks->$blockId->manifest->elements->$first;
                                     }
                                 }
-                                return $this->_curationModel->_progress->blocks->$blockId->manifest->elements;
+                                return $this->_curationModel->progress->blocks->$blockId->manifest->elements;
                                 break;
 
                             case 'props':
-                                return $this->_curationModel->_progress->blocks->$blockId->name . '-' . $blockId;
+                                return $this->_curationModel->progress->blocks->$blockId->name . '-' . $blockId;
                                 break;
 
                             case 'required':
-                                return isset($this->_curationModel->_progress->blocks->$blockId->manifest->params->required) ? $this->_curationModel->_progress->blocks->$blockId->manifest->params->required : 0;
+                                return isset($this->_curationModel->progress->blocks->$blockId->manifest->params->required) ? $this->_curationModel->progress->blocks->$blockId->manifest->params->required : 0;
                                 break;
 
                             case 'hasElements':
-                                return empty($this->_curationModel->_progress->blocks->$blockId->manifest->elements) ? false : true;
+                                return empty($this->_curationModel->progress->blocks->$blockId->manifest->elements) ? false : true;
                                 break;
 
                             default:
-                                if (isset($this->_curationModel->_progress->blocks->$blockId->$blockProperty)) {
-                                    return $this->_curationModel->_progress->blocks->$blockId->$blockProperty;
+                                if (isset($this->_curationModel->progress->blocks->$blockId->$blockProperty)) {
+                                    return $this->_curationModel->progress->blocks->$blockId->$blockProperty;
                                 } else {
                                     return null;
                                 }
                                 break;
                         }
                     }
-                    return $this->_curationModel->_progress->blocks->$blockId;
+                    return $this->_curationModel->progress->blocks->$blockId;
                 } elseif ($blockId) {
                     // Block does not exist or is inactive
                     return false;
                 }
-                return $this->_curationModel->_progress->blocks;
+                return $this->_curationModel->progress->blocks;
                 break;
 
             case 'complete':
-                return $this->_curationModel->_progress->complete;
+                return $this->_curationModel->progress->complete;
                 break;
 
             case 'lastBlock':
-                return $this->_curationModel->_progress->lastBlock;
+                return $this->_curationModel->progress->lastBlock;
                 break;
 
             case 'firstBlock':
-                return $this->_curationModel->_progress->firstBlock;
+                return $this->_curationModel->progress->firstBlock;
                 break;
 
             case 'params':
-                return $this->_curationModel->_manifest->params;
+                return $this->_curationModel->manifest->params;
                 break;
 
             default:
@@ -708,7 +708,7 @@ class Publication extends Obj
     public function category()
     {
         if (empty($this->_category)) {
-            $this->_category = new Tables\Category($this->_db);
+            $this->_category = new Tables\Category($this->db);
             $this->_category->load($this->publication->category);
             $this->_category->_params = new \Hubzero\Config\Registry($this->_category->params);
         }
@@ -724,7 +724,7 @@ class Publication extends Obj
     public function authors()
     {
         if (!isset($this->_tblAuthors)) {
-            $this->_tblAuthors = new Tables\Author($this->_db);
+            $this->_tblAuthors = new Tables\Author($this->db);
         }
         if (!$this->exists()) {
             return [];
@@ -747,19 +747,19 @@ class Publication extends Obj
     {
         if ($name == 'Author') {
             if (!isset($this->_tblAuthor)) {
-                $this->_tblAuthor = new Tables\Author($this->_db);
+                $this->_tblAuthor = new Tables\Author($this->db);
             }
             return $this->_tblAuthor;
         }
         if ($name == 'Content') {
             if (!isset($this->_tblContent)) {
-                $this->_tblContent = new Tables\Attachment($this->_db);
+                $this->_tblContent = new Tables\Attachment($this->db);
             }
             return $this->_tblContent;
         }
         if ($name == 'License') {
             if (!isset($this->_tblLicense)) {
-                $this->_tblLicense = new Tables\License($this->_db);
+                $this->_tblLicense = new Tables\License($this->db);
             }
             return $this->_tblLicense;
         }
@@ -839,7 +839,7 @@ class Publication extends Obj
             return [];
         }
         if (!isset($this->_owner)) {
-            $objO = new \Components\Projects\Tables\Owner($this->_db);
+            $objO = new \Components\Projects\Tables\Owner($this->db);
             $this->_owner = $objO->isOwner(User::get('id'), $this->publication->project_id);
         }
 
@@ -858,8 +858,8 @@ class Publication extends Obj
         }
         if (!isset($this->_curatorGroups)) {
             $groups = [];
-            if ($this->_type->curatorgroup) {
-                $groups[] = $this->_type->curatorgroup;
+            if ($this->type->curatorgroup) {
+                $groups[] = $this->type->curatorgroup;
             }
             if ($this->params->get('curatorgroup')) {
                 $groups[] = $this->params->get('curatorgroup');
@@ -881,7 +881,7 @@ class Publication extends Obj
             return [];
         }
         if (!isset($this->_accessGroups)) {
-            $paccess = new Tables\Access($this->_db);
+            $paccess = new Tables\Access($this->db);
             $aGroups = $paccess->getGroups($this->version->id, $this->publication->id);
             $this->_accessGroups = $this->getGroupProperty($aGroups);
         }
@@ -921,7 +921,7 @@ class Publication extends Obj
             return [];
         }
         if (!isset($this->_tblContent)) {
-            $this->_tblContent = new Tables\Attachment($this->_db);
+            $this->_tblContent = new Tables\Attachment($this->db);
         }
         if (!isset($this->_attachments) || $reload == true) {
             $this->_attachments = $this->_tblContent->sortAttachments($this->version->id);
@@ -941,7 +941,7 @@ class Publication extends Obj
             return [];
         }
         if (!isset($this->_tblContent)) {
-            $this->_tblContent = new Tables\Attachment($this->_db);
+            $this->_tblContent = new Tables\Attachment($this->db);
         }
         if (!isset($this->_attachmentsCount)) {
             $this->_attachmentsCount = $this->_tblContent->getAttachmentsCount($this->version->id);
@@ -961,7 +961,7 @@ class Publication extends Obj
             return [];
         }
         if (!isset($this->_tblLicense)) {
-            $this->_tblLicense = new Tables\License($this->_db);
+            $this->_tblLicense = new Tables\License($this->db);
         }
         if (!isset($this->_license)) {
             $this->_license = $this->_tblLicense->getLicense($this->version->license_type);
@@ -1103,7 +1103,7 @@ class Publication extends Obj
                     $this->params->set('access-view-all-publication', true);
                 }
             }
-            $this->_authorized = true;
+            $this->authorized = true;
             return;
         }
 
@@ -1189,7 +1189,7 @@ class Publication extends Obj
             $this->params->set('access-manage-publication', true);
         }
 
-        $this->_authorized = true;
+        $this->authorized = true;
     }
 
     /**
@@ -1200,7 +1200,7 @@ class Publication extends Obj
      */
     public function access($action = 'view')
     {
-        if (!$this->_authorized) {
+        if (!$this->authorized) {
             $this->authorize();
         }
         return $this->params->get('access-' . strtolower($action) . '-publication');
@@ -1669,7 +1669,7 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_tags)) {
-            $rt = new Helpers\Tags($this->_db);
+            $rt = new Helpers\Tags($this->db);
             $this->_tags = $rt->get_tags_on_object($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         }
 
@@ -1690,7 +1690,7 @@ class Publication extends Obj
             return false;
         }
 
-        $rt = new Helpers\Tags($this->_db);
+        $rt = new Helpers\Tags($this->db);
         $this->_tagsForEditing = $rt->get_tag_string($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         return $this->_tagsForEditing;
     }
@@ -1708,7 +1708,7 @@ class Publication extends Obj
         }
 
         if (!isset($this->_tagCloud)) {
-            $rt = new Helpers\Tags($this->_db);
+            $rt = new Helpers\Tags($this->db);
             $this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->version->get('id'));
         }
 
@@ -1759,16 +1759,16 @@ class Publication extends Obj
             $date = $date ? $date : $this->published();
 
             $query .= ", (SELECT v.pagetext FROM #__wiki_versions as v WHERE v.page_id=p.id AND ";
-            $query .= $versionid ? " v.id=" . $versionid : " v.created <= " . $this->_db->quote($date);
+            $query .= $versionid ? " v.id=" . $versionid : " v.created <= " . $this->db->quote($date);
             $query .= " ORDER BY v.created DESC LIMIT 1) as pagetext ";
         }
 
-        $query .= " FROM #__wiki_pages as p WHERE p.scope LIKE " . $this->_db->quote($masterscope . '%') . " ";
-        $query .=  is_numeric($pageid) ? " AND p.id=" . $this->_db->quote($pageid) . " " : " AND p.pagename=" . $this->_db->quote($pageid) . " ";
+        $query .= " FROM #__wiki_pages as p WHERE p.scope LIKE " . $this->db->quote($masterscope . '%') . " ";
+        $query .=  is_numeric($pageid) ? " AND p.id=" . $this->db->quote($pageid) . " " : " AND p.pagename=" . $this->db->quote($pageid) . " ";
         $query .= " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         return $result ? $result[0] : null;
     }
@@ -2010,7 +2010,7 @@ class Publication extends Obj
         }
 
         if (!isset($this->_tblLog)) {
-            $this->_tblLog = new Tables\Log($this->_db);
+            $this->_tblLog = new Tables\Log($this->db);
         }
 
         // Build log path (access logs)
@@ -2064,15 +2064,15 @@ class Publication extends Obj
      */
     public function entries($rtrn = 'list', $filters = [], $admin = false)
     {
-        if (!isset($this->_tbl)) {
-            $this->_tbl = new Tables\Publication($this->_db);
+        if (!isset($this->tbl)) {
+            $this->tbl = new Tables\Publication($this->db);
         }
 
         if (strtolower($rtrn) == 'count') {
-            return (int) $this->_tbl->getCount($filters, $admin);
+            return (int) $this->tbl->getCount($filters, $admin);
         }
 
-        if ($results = $this->_tbl->getRecords($filters, $admin)) {
+        if ($results = $this->tbl->getRecords($filters, $admin)) {
             foreach ($results as $key => $result) {
                 $results[$key] = new self($result);
             }
@@ -2256,7 +2256,7 @@ class Publication extends Obj
         }
 
         // Query the series that the publication belongs to
-        $this->_tblAttachment = new Tables\Attachment($this->_db);
+        $this->_tblAttachment = new Tables\Attachment($this->db);
         $series = $this->_tblAttachment->getSeries($this->version->id);
 
         return $series;
@@ -2274,7 +2274,7 @@ class Publication extends Obj
             return false;
         }
 
-        $tagsObj = new Helpers\Tags($this->_db);
+        $tagsObj = new Helpers\Tags($this->db);
 
         return $tagsObj->getAllUserTags($this->version->id);
     }
@@ -2291,7 +2291,7 @@ class Publication extends Obj
             return false;
         }
 
-        $tagsObj = new Helpers\Tags($this->_db);
+        $tagsObj = new Helpers\Tags($this->db);
 
         return $tagsObj->getFOSTag($this->version->id);
     }
@@ -2525,7 +2525,7 @@ class Publication extends Obj
         }
 
         if (!isset($this->tblCollaborator)) {
-            $this->tblCollaborator = new Tables\Collaborator($this->_db);
+            $this->tblCollaborator = new Tables\Collaborator($this->db);
         }
 
         return $this->tblCollaborator->getCollaboratorByName($name);

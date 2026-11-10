@@ -25,11 +25,11 @@ use Hubzero\Facades\User;
 class Projects extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_filters;
+    protected $filters;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_projects;
+    protected $projects;
     protected $action;
     protected $authorized;
     protected $group;
@@ -55,7 +55,7 @@ class Projects extends Plugin
     {
         parent::__construct($subject, $config);
 
-        $this->_config = Component::params('com_projects');
+        $this->config = Component::params('com_projects');
     }
 
     /**
@@ -139,7 +139,7 @@ class Projects extends Plugin
         // Model
         $this->model = new \Components\Projects\Models\Project();
 
-        $this->_projects = $this->model->table()->getGroupProjectIds(
+        $this->projects = $this->model->table()->getGroupProjectIds(
             $group->get('gidNumber'),
             User::get('id'),
         );
@@ -147,7 +147,7 @@ class Projects extends Plugin
         // If we want to return content
         if ($return == 'html') {
             // Set filters
-            $this->_filters = [
+            $this->filters = [
                 'mine'     => 1,
                 'updates'  => 1,
                 'getowner' => 1,
@@ -156,8 +156,8 @@ class Projects extends Plugin
                 'sortdir'  => Request::getString('sortdir', 'ASC'),
                 'filterby' => Request::getString('filterby', 'active'),
             ];
-            if (!in_array($this->_filters['filterby'], ['active', 'archived'])) {
-                $this->_filters['filterby'] = 'active';
+            if (!in_array($this->filters['filterby'], ['active', 'archived'])) {
+                $this->filters['filterby'] = 'active';
             }
 
             // Set group members plugin access level
@@ -229,7 +229,7 @@ class Projects extends Plugin
         $arr['metadata'] = [];
 
         // return total record count
-        $arr['metadata']['count'] = count($this->_projects);
+        $arr['metadata']['count'] = count($this->projects);
 
         // Return the output
         return $arr;
@@ -264,7 +264,7 @@ class Projects extends Plugin
                 );
                 $this->model->table('Owner')->sysGroup(
                     $project->alias,
-                    $this->_config->get('group_prefix', 'pr-'),
+                    $this->config->get('group_prefix', 'pr-'),
                 );
             }
         }
@@ -326,15 +326,15 @@ class Projects extends Plugin
 
         // Get records
         if ($which == 'all') {
-            $this->_filters['which'] = 'owned';
-            $owned = $this->model->entries('group', $this->_filters);
+            $this->filters['which'] = 'owned';
+            $owned = $this->model->entries('group', $this->filters);
 
-            $this->_filters['which'] = 'other';
-            $rows = $this->model->entries('group', $this->_filters);
+            $this->filters['which'] = 'other';
+            $rows = $this->model->entries('group', $this->filters);
         } else {
-            $this->_filters['which'] = $which;
+            $this->filters['which'] = $which;
 
-            $rows = $this->model->entries('group', $this->_filters);
+            $rows = $this->model->entries('group', $this->filters);
             $owned = null;
         }
 
@@ -342,11 +342,11 @@ class Projects extends Plugin
         $view = $this->view('default', 'browse')
             ->set('rows', $rows)
             ->set('owned', $owned)
-            ->set('projectcount', count($this->_projects))
-            ->set('newcount', $this->model->table()->getUpdateCount($this->_projects, User::get('id')))
+            ->set('projectcount', count($this->projects))
+            ->set('newcount', $this->model->table()->getUpdateCount($this->projects, User::get('id')))
             ->set('which', $which)
-            ->set('filters', $this->_filters)
-            ->set('config', $this->_config)
+            ->set('filters', $this->filters)
+            ->set('config', $this->config)
             ->set('option', 'com_projects')
             ->set('group', $this->group)
             ->setErrors($this->getErrors());
@@ -370,7 +370,7 @@ class Projects extends Plugin
         $results = Event::trigger('projects.onShared', [
             'feed',
             $this->model,
-            $this->_projects,
+            $this->projects,
             User::get('id'),
             $filters,/*,
             in_array(User::get('id'), $this->group->get('managers')),
@@ -390,12 +390,12 @@ class Projects extends Plugin
             ->set('filters', $filters)
             ->set('content', $content)
             ->set('newcount', $this->model->table()->getUpdateCount(
-                $this->_projects,
+                $this->projects,
                 User::get('id'),
             ))
-            ->set('projectcount', count($this->_projects))
-            ->set('projects', $this->_projects)
-            ->set('config', $this->_config)
+            ->set('projectcount', count($this->projects))
+            ->set('projects', $this->projects)
+            ->set('config', $this->config)
             ->set('group', $this->group)
             ->setErrors($this->getErrors());
 
@@ -424,10 +424,10 @@ class Projects extends Plugin
         $projectid = Request::getInt('projectid', 0, 'post');
 
         if (!$projectid) {
-            $projects = $this->_projects;
+            $projects = $this->projects;
         } else {
             // The project must be one of this group's projects
-            if (!in_array($projectid, (array) $this->_projects)) {
+            if (!in_array($projectid, (array) $this->projects)) {
                 App::abort(403, Lang::txt('ALERTNOTAUTH'));
             }
             $projects = [$projectid];

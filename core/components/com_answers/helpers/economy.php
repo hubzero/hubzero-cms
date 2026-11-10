@@ -31,7 +31,7 @@ class Economy extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Constructor
@@ -41,7 +41,7 @@ class Economy extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -52,13 +52,13 @@ class Economy extends Obj
     public function getQuestions()
     {
         // get all closed questions
-        $this->_db->setQuery(
+        $this->db->setQuery(
             "SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
 			FROM `#__answers_questions` AS q
 			LEFT JOIN `#__answers_responses` AS a ON q.id=a.question_id AND a.state=1
 			WHERE q.state=1",
         );
-        return $this->_db->loadObjectList();
+        return $this->db->loadObjectList();
     }
 
     /**

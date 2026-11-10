@@ -26,7 +26,7 @@ use Hubzero\Facades\User;
 class Comments extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     protected $action;
     protected $comment;
     protected $obj;
@@ -568,7 +568,7 @@ class Comments extends Plugin
         $doc = Document::instance();
         $doc->link = Route::url($this->url);
 
-        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->_option));
+        $doc->title  = Config::get('sitename') . ' - ' . Lang::txt(strtoupper($this->componentOption));
         $doc->title .= ($title) ? ': ' . stripslashes($title) : '';
         $doc->title .= ': ' . Lang::txt('PLG_HUBZERO_COMMENTS');
 

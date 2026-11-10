@@ -25,25 +25,25 @@ use Hubzero\Facades\User;
 class Tool extends Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_actor;
+    protected $actor;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $componentConfig;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_creator;
+    protected $creator;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_lastUpdate;
+    protected $lastUpdate;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_lastView;
+    protected $lastView;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_log;
+    protected $log;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_status;
+    protected $status;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_statusChanger;
+    protected $statusChanger;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_version;
+    protected $version;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_viewLog;
+    protected $viewLog;
 
     /**
      * Table class name
@@ -162,13 +162,13 @@ class Tool extends Model
     public function version($id = null, $parent = null)
     {
         if (
-            !isset($this->_version)
-            || ($id !== null && (int) $this->_version->get('id') != $id)
+            !isset($this->version)
+            || ($id !== null && (int) $this->version->get('id') != $id)
         ) {
-            $this->_version = Tool\Instance::getInstance($id, $parent);
+            $this->version = Tool\Instance::getInstance($id, $parent);
         }
 
-        return $this->_version;
+        return $this->version;
     }
 
     /**
@@ -180,9 +180,9 @@ class Tool extends Model
     public function instance($property)
     {
         if ($property) {
-            return $this->_version->get($property);
+            return $this->version->get($property);
         }
-        return $this->_version;
+        return $this->version;
     }
 
     /**
@@ -194,16 +194,16 @@ class Tool extends Model
      */
     public function log($parent_id = null, $parent_name = null)
     {
-        if (!isset($this->_log)) {
-            $this->_log = new Tool\Log();
+        if (!isset($this->log)) {
+            $this->log = new Tool\Log();
             if ($parent_id) {
-                $this->_log->set('parent_id', $parent_id);
+                $this->log->set('parent_id', $parent_id);
             }
             if ($parent_name) {
-                $this->_log->set('parent_name', $parent_name);
+                $this->log->set('parent_name', $parent_name);
             }
         }
-        return $this->_log;
+        return $this->log;
     }
 
     /**
@@ -245,25 +245,25 @@ class Tool extends Model
         // Get log model
         $log = $this->log($this->get('id'), $this->get('name'));
 
-        if (!isset($this->_lastUpdate)) {
-            $this->_lastUpdate = $log->getLastUpdate($statusChange);
+        if (!isset($this->lastUpdate)) {
+            $this->lastUpdate = $log->getLastUpdate($statusChange);
         }
         if ($property) {
             if ($property == 'recorded') {
-                $this->set('recorded', $this->_lastUpdate->recorded);
+                $this->set('recorded', $this->lastUpdate->recorded);
                 return $this->_date('recorded', $as);
             }
             if ($property == 'actor') {
-                if (!isset($this->_actor) || !($this->_actor instanceof \Hubzero\User\User)) {
-                    $this->_actor = User::getInstance($this->_lastUpdate->actor);
+                if (!isset($this->actor) || !($this->actor instanceof \Hubzero\User\User)) {
+                    $this->actor = User::getInstance($this->lastUpdate->actor);
                 }
                 if ($as) {
-                    return $this->_actor->get($as);
+                    return $this->actor->get($as);
                 }
             }
-            return isset($this->_lastUpdate->$property) ? $this->_lastUpdate->$property : null;
+            return isset($this->lastUpdate->$property) ? $this->lastUpdate->$property : null;
         }
-        return $this->_lastUpdate;
+        return $this->lastUpdate;
     }
 
     /**
@@ -277,17 +277,17 @@ class Tool extends Model
     {
         if (!empty($statusModel) && ($statusModel instanceof Tool\Status)) {
             $statusModel->getStatus($this->get('status'));
-            $this->_status = $statusModel;
+            $this->status = $statusModel;
         }
-        if (!isset($this->_status)) {
-            $this->_status = new Tool\Status($this->get('status'));
-            $options = new \Hubzero\Config\Registry($this->_status->get('options'));
-            $this->_status->set('options', $options);
+        if (!isset($this->status)) {
+            $this->status = new Tool\Status($this->get('status'));
+            $options = new \Hubzero\Config\Registry($this->status->get('options'));
+            $this->status->set('options', $options);
         }
         if ($property) {
-            return $this->_status->get($property);
+            return $this->status->get($property);
         }
-        return $this->_status;
+        return $this->status;
     }
 
     /**
@@ -339,13 +339,13 @@ class Tool extends Model
      */
     public function lastView($as = '')
     {
-        if (!isset($this->_lastView)) {
-            if (!isset($this->_viewLog)) {
-                $this->_viewLog = new Tool\View();
+        if (!isset($this->lastView)) {
+            if (!isset($this->viewLog)) {
+                $this->viewLog = new Tool\View();
             }
-            $this->_lastView = $this->_viewLog->lastView($this->get('id'), User::get('id'));
+            $this->lastView = $this->viewLog->lastView($this->get('id'), User::get('id'));
         }
-        return $this->_lastView;
+        return $this->lastView;
     }
 
     /**
@@ -434,13 +434,13 @@ class Tool extends Model
      */
     public function config($key = null)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_tools');
+        if (!isset($this->componentConfig)) {
+            $this->componentConfig = Component::params('com_tools');
         }
         if ($key) {
-            return $this->_config->get($key);
+            return $this->componentConfig->get($key);
         }
-        return $this->_config;
+        return $this->componentConfig;
     }
 
     /**
@@ -479,11 +479,11 @@ class Tool extends Model
         $this->config();
 
         // Set name length
-        $minLength = $this->_config->get('min_name_length', 3);
-        $maxLength = $this->_config->get('max_name_length', 30);
+        $minLength = $this->componentConfig->get('min_name_length', 3);
+        $maxLength = $this->componentConfig->get('max_name_length', 30);
 
         // Array of reserved names (task names and default dirs)
-        $reserved = explode(',', $this->_config->get('reserved_names'));
+        $reserved = explode(',', $this->componentConfig->get('reserved_names'));
         $tasks    = ['temp', 'toolname', 'register'];
 
         if ($name) {
@@ -537,13 +537,13 @@ class Tool extends Model
      */
     public function creator($property = null)
     {
-        if (!isset($this->_creator) || !($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_creator = User::getInstance($this->get('created_by'));
+        if (!isset($this->creator) || !($this->creator instanceof \Hubzero\User\User)) {
+            $this->creator = User::getInstance($this->get('created_by'));
         }
         if ($property) {
-            return $this->_creator->get($property);
+            return $this->creator->get($property);
         }
-        return $this->_creator;
+        return $this->creator;
     }
 
     /**
@@ -558,13 +558,13 @@ class Tool extends Model
      */
     public function statusChanger($property = null)
     {
-        if (!isset($this->_statusChanger) || !($this->_statusChanger instanceof \Hubzero\User\User)) {
-            $this->_statusChanger = User::getInstance($this->get('status_changed_by'));
+        if (!isset($this->statusChanger) || !($this->statusChanger instanceof \Hubzero\User\User)) {
+            $this->statusChanger = User::getInstance($this->get('status_changed_by'));
         }
         if ($property) {
-            return is_object($this->_statusChanger) ? $this->_statusChanger->get($property) : null;
+            return is_object($this->statusChanger) ? $this->statusChanger->get($property) : null;
         }
-        return $this->_statusChanger;
+        return $this->statusChanger;
     }
 
     /**

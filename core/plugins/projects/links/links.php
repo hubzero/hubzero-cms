@@ -27,17 +27,17 @@ use voku\helper\HtmlDomParser;
 class Links extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_pubconfig;
+    protected $pubconfig;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $model;
 
     /**
@@ -52,7 +52,7 @@ class Links extends Plugin
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Event call to determine if this plugin should return data
@@ -95,14 +95,14 @@ class Links extends Plugin
     public function onProject($model, $action = '', $areas = null)
     {
         // What's the task?
-        $this->_task = $action ? $action : Request::getString('action');
+        $this->task = $action ? $action : Request::getString('action');
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -117,7 +117,7 @@ class Links extends Plugin
         ];
 
         // Publishing?
-        if (in_array($this->_task, $tasks)) {
+        if (in_array($this->task, $tasks)) {
             // These actions read/write citation data and fetch URLs on behalf of
             // the project; require project content access.
             if (!$this->model->access('content')) {
@@ -125,15 +125,15 @@ class Links extends Plugin
             }
 
             // Set vars
-            $this->_database = App::get('db');
-            $this->_uid      = User::get('id');
+            $this->database = App::get('db');
+            $this->uid      = User::get('id');
 
             // Load component configs
-            $this->_config    = $model->config();
-            $this->_pubconfig = Component::params('com_publications');
+            $this->config    = $model->config();
+            $this->pubconfig = Component::params('com_publications');
 
             // Actions
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'browser':
                 default:
                     $html = $this->browser();
@@ -197,7 +197,7 @@ class Links extends Plugin
         }
 
         // Make sure this publication belongs to this project
-        $objP = new \Components\Publications\Tables\Publication($this->_database);
+        $objP = new \Components\Publications\Tables\Publication($this->database);
         if (!$objP->load($pid) || $objP->project_id != $this->model->get('id')) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
         }
@@ -252,10 +252,10 @@ class Links extends Plugin
 
         $parts  = explode("doi:", $url);
         $doi    = count($parts) > 1 ? $parts[1] : $url;
-        $format = $this->_pubconfig->get('citation_format', 'apa');
+        $format = $this->pubconfig->get('citation_format', 'apa');
 
         // Attach citation
-        if ($this->attachCitation($vid, $doi, $format, $this->_uid)) {
+        if ($this->attachCitation($vid, $doi, $format, $this->uid)) {
             Notify::success(Lang::txt('PLG_PROJECTS_LINKS_CITATION_SAVED'), 'projects');
         }
 
@@ -305,7 +305,7 @@ class Links extends Plugin
         } else {
             $citation = \Components\Citations\Models\Citation::blank()->set($cite);
             $citation->set('created', $new == true ? Date::toSql() : $citation->get('created'));
-            $citation->set('uid', $new == true ? $this->_uid : $citation->get('uid'));
+            $citation->set('uid', $new == true ? $this->uid : $citation->get('uid'));
             $citation->set('published', 1);
 
             if (!$citation->save()) {
@@ -589,7 +589,7 @@ class Links extends Plugin
         $step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 
-        $layout = $this->_task == 'newcite' ? 'edit' : 'default';
+        $layout = $this->task == 'newcite' ? 'edit' : 'default';
 
         // Output HTML
         $view = new \Hubzero\Plugin\View([
@@ -611,7 +611,7 @@ class Links extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
             return $view->loadTemplate();
         }
@@ -632,7 +632,7 @@ class Links extends Plugin
             \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
         }
 
-        if ($this->_task == 'newcite') {
+        if ($this->task == 'newcite') {
             // Incoming
             $cid    = Request::getInt('cid', 0);
 
@@ -643,12 +643,12 @@ class Links extends Plugin
             $view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
         }
 
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->ajax     = $ajax;
-        $view->task     = $this->_task;
+        $view->task     = $this->task;
         $view->element  = $element;
         $view->block    = $block;
         $view->step     = $step;
@@ -682,8 +682,8 @@ class Links extends Plugin
         ]);
 
         // Load classes
-        $objP = new \Components\Publications\Tables\Publication($this->_database);
-        $view->version = new \Components\Publications\Tables\Version($this->_database);
+        $objP = new \Components\Publications\Tables\Publication($this->database);
+        $view->version = new \Components\Publications\Tables\Version($this->database);
 
         // Load publication version
         $view->version->load($vid);
@@ -708,7 +708,7 @@ class Links extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -719,11 +719,11 @@ class Links extends Plugin
         // get the citation types
         $view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
 
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
-        $view->task     = $this->_task;
+        $view->uid      = $this->uid;
+        $view->task     = $this->task;
         $view->ajax     = Request::getInt('ajax', 0);
 
         // Get messages and errors
@@ -756,18 +756,18 @@ class Links extends Plugin
         ]);
 
         // Get current attachments
-        $pContent = new \Components\Publications\Tables\Attachment($this->_database);
+        $pContent = new \Components\Publications\Tables\Attachment($this->database);
         $role  = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
         $view->attachments = $pContent->getAttachments($versionid, $filters = ['role' => $role, 'type' => 'link']);
 
         // Output HTML
-        $view->option    = $this->_option;
-        $view->database  = $this->_database;
+        $view->option    = $this->componentOption;
+        $view->database  = $this->database;
         $view->model     = $this->model;
-        $view->uid       = $this->_uid;
-        $view->config    = $this->_config;
+        $view->uid       = $this->uid;
+        $view->config    = $this->config;
         $view->primary   = $primary;
         $view->versionid = $versionid;
 
@@ -792,7 +792,7 @@ class Links extends Plugin
         $doi   = count($parts) > 1 ? $url : 'doi:' . $url;
 
         // Get format from config
-        $format = $this->_pubconfig->get('citation_format', 'apa');
+        $format = $this->pubconfig->get('citation_format', 'apa');
 
         return $this->parseUrl($doi, true, true, $format);
     }

@@ -22,7 +22,7 @@ class Dataselector extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'dataselector';
+    protected $name = 'dataselector';
 
     /**
      * Git helper
@@ -30,7 +30,7 @@ class Dataselector extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_git = null;
+    protected $git = null;
 
     /**
      * Project repo path
@@ -72,8 +72,8 @@ class Dataselector extends Base
         $activeElement = Request::getInt('el', $showElement);
 
         // Git helper
-        if (!$this->_git) {
-            $this->_git = new \Components\Projects\Helpers\Git($this->path);
+        if (!$this->git) {
+            $this->git = new \Components\Projects\Helpers\Git($this->path);
         }
 
         // Do we need to collapse inactive elements?
@@ -132,12 +132,12 @@ class Dataselector extends Base
         ]);
 
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         // Make sure we have attachments
         if (!isset($pub->_attachments)) {
             // Get attachments
-            $pContent = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pContent = new \Components\Publications\Tables\Attachment($this->parent->db);
             $pub->_attachments = $pContent->sortAttachments($pub->version_id);
         }
 
@@ -158,11 +158,11 @@ class Dataselector extends Base
         $view->status      = $status;
         $view->elementId   = $elementId;
         $view->attachments = $attachments;
-        $view->database    = $this->_parent->_db;
+        $view->database    = $this->parent->db;
         $view->master      = $master;
         $view->name        = $viewname;
         $view->viewer      = 'freeze';
-        $view->git         = $this->_git;
+        $view->git         = $this->git;
 
         return $view->loadTemplate();
     }
@@ -193,12 +193,12 @@ class Dataselector extends Base
         $order = 0,
     ) {
         // Get attachment type model
-        $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
+        $attModel = new \Components\Publications\Models\Attachments($this->parent->db);
 
         // Make sure we have attachments
         if (!isset($pub->_attachments)) {
             // Get attachments
-            $pContent = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pContent = new \Components\Publications\Tables\Attachment($this->parent->db);
             $pub->_attachments = $pContent->sortAttachments($pub->version_id);
         }
 
@@ -230,10 +230,10 @@ class Dataselector extends Base
         $view->collapse    = $collapse;
         $view->total       = $total;
         $view->master      = $master;
-        $view->database    = $this->_parent->_db;
+        $view->database    = $this->parent->db;
         $view->order       = $order;
         $view->viewer      = 'edit';
-        $view->git         = $this->_git;
+        $view->git         = $this->git;
 
         return $view->loadTemplate();
     }

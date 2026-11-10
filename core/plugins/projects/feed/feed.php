@@ -25,13 +25,13 @@ use Hubzero\Facades\User;
 class Feed extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $model;
 
     /**
@@ -46,21 +46,21 @@ class Feed extends Plugin
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Repository path
      *
      * @var  array
      */
-    protected $_path = null;
+    protected $path = null;
 
     /**
      * Event call to determine if this plugin should return data
@@ -113,11 +113,11 @@ class Feed extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -161,11 +161,11 @@ class Feed extends Plugin
             }
 
             // Set vars
-            $this->_config = $model->config();
-            $this->_task   = Request::getString('action', '');
-            $this->_uid    = User::get('id');
+            $this->config = $model->config();
+            $this->task   = Request::getString('action', '');
+            $this->uid    = User::get('id');
 
-            switch ($this->_task) {
+            switch ($this->task) {
                 case 'delete':
                     $arr['html'] = $this->_delete();
                     break;
@@ -268,7 +268,7 @@ class Feed extends Plugin
 
             // Display welcome message
             $view = $this->view('_welcome', 'modules')
-                ->set('option', $this->_option)
+                ->set('option', $this->componentOption)
                 ->set('suggestions', $suggestions)
                 ->set('model', $model);
 
@@ -330,14 +330,14 @@ class Feed extends Plugin
         // Output html
         $view = $this->view('default', 'view')
             ->set('params', $this->model->params)
-            ->set('option', $this->_option)
+            ->set('option', $this->componentOption)
             ->set('model', $this->model)
-            ->set('uid', $this->_uid)
+            ->set('uid', $this->uid)
             ->set('filters', $filters)
             ->set('limit', $limit)
             ->set('total', $total)
             ->set('activities', $activities)
-            ->set('title', $this->_area['title']);
+            ->set('title', $this->area['title']);
 
         return $view->loadTemplate();
     }
@@ -392,7 +392,7 @@ class Feed extends Plugin
             if (!$row->save()) {
                 $this->setError($row->getError());
             } else {
-                $this->_msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED') : Lang::txt('PLG_PROJECTS_BLOG_BLOG_ENTRY_SAVED'));
+                $this->msg = ($isNew ? Lang::txt('PLG_PROJECTS_BLOG_NEW_BLOG_ENTRY_SAVED') : Lang::txt('PLG_PROJECTS_BLOG_BLOG_ENTRY_SAVED'));
             }
 
             // Record activity
@@ -457,8 +457,8 @@ class Feed extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -525,8 +525,8 @@ class Feed extends Plugin
         // Pass error or success message
         if ($this->getError()) {
             Notify::message($this->getError(), 'error', 'projects');
-        } elseif (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        } elseif (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -617,7 +617,7 @@ class Feed extends Plugin
                     ];
 
                     $prep['body'] = $this->view('_activity', 'activity')
-                        ->set('option', $this->_option)
+                        ->set('option', $this->componentOption)
                         ->set('model', $this->model)
                         ->set('activity', $a)
                         ->set('online', [])
@@ -634,14 +634,14 @@ class Feed extends Plugin
         }
 
         $view = $this->view('default', 'activity')
-            ->set('option', $this->_option)
+            ->set('option', $this->componentOption)
             ->set('model', $this->model)
             ->set('filters', $filters)
             ->set('limit', $limit)
             ->set('total', $total)
             ->set('activities', $activities)
-            ->set('uid', $this->_uid)
-            ->set('title', $this->_area['title']);
+            ->set('uid', $this->uid)
+            ->set('title', $this->area['title']);
 
         return $view->loadTemplate();
     }

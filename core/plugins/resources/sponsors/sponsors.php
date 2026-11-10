@@ -22,11 +22,11 @@ use Hubzero\Facades\Route;
 class Sponsors extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_controller;
+    protected $controller;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option;
+    protected $componentOption;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     protected $database;
 
     /**
@@ -137,9 +137,9 @@ class Sponsors extends Plugin
 
         $task = ($task) ? $task : 'default';
 
-        $this->_option     = $option;
-        $this->_controller = $controller;
-        $this->_task       = $task;
+        $this->componentOption     = $option;
+        $this->controller = $controller;
+        $this->task       = $task;
         $this->database    = App::get('db');
 
         $method = strtolower($task) . 'Task';
@@ -155,24 +155,24 @@ class Sponsors extends Plugin
         // Incoming
         $filters = [
             'limit'    => Request::getState(
-                $this->_option . '.plugins.sponsors.limit',
+                $this->componentOption . '.plugins.sponsors.limit',
                 'limit',
                 Config::get('list_limit'),
                 'int',
             ),
             'start'    => Request::getState(
-                $this->_option . '.plugins.sponsors.limitstart',
+                $this->componentOption . '.plugins.sponsors.limitstart',
                 'limitstart',
                 0,
                 'int',
             ),
             'sort'     => Request::getState(
-                $this->_option . '.plugins.sponsors.sort',
+                $this->componentOption . '.plugins.sponsors.sort',
                 'filter_order',
                 'title',
             ),
             'sort_Dir' => Request::getState(
-                $this->_option . '.plugins.sponsors.sortdir',
+                $this->componentOption . '.plugins.sponsors.sortdir',
                 'filter_order_Dir',
                 'ASC',
             ),
@@ -189,9 +189,9 @@ class Sponsors extends Plugin
         $view = $this->view('default', 'admin')
             ->set('rows', $rows)
             ->set('filters', $filters)
-            ->set('option', $this->_option)
-            ->set('controller', $this->_controller)
-            ->set('task', $this->_task);
+            ->set('option', $this->componentOption)
+            ->set('controller', $this->controller)
+            ->set('task', $this->task);
 
         return $view
             ->setErrors($this->getErrors())
@@ -226,9 +226,9 @@ class Sponsors extends Plugin
 
         $view = $this->view('edit', 'admin')
             ->set('row', $row)
-            ->set('option', $this->_option)
-            ->set('controller', $this->_controller)
-            ->set('task', $this->_task);
+            ->set('option', $this->componentOption)
+            ->set('controller', $this->controller)
+            ->set('task', $this->task);
 
         // Output the HTML
         return $view
@@ -270,8 +270,8 @@ class Sponsors extends Plugin
         }
 
         // Redirect
-        $url = 'index.php?option=' . $this->_option . '&controller='
-            . $this->_controller . '&task=manage&plugin=sponsors';
+        $url = 'index.php?option=' . $this->componentOption . '&controller='
+            . $this->controller . '&task=manage&plugin=sponsors';
         App::redirect(
             Route::url($url, false),
             Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_SAVED'),
@@ -294,8 +294,8 @@ class Sponsors extends Plugin
         // Ensure we have an ID to work with
         if (empty($ids)) {
             // Redirect with error message
-            $url = 'index.php?option=' . $this->_option . '&controller='
-                . $this->_controller . '&task=manage&plugin=sponsors';
+            $url = 'index.php?option=' . $this->componentOption . '&controller='
+                . $this->controller . '&task=manage&plugin=sponsors';
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('PLG_RESOURCES_SPONSORS_NO_ITEM_SELECTED'),
@@ -314,12 +314,12 @@ class Sponsors extends Plugin
         }
 
         // Redirect
-        $url = 'index.php?option=' . $this->_option . '&controller='
-            . $this->_controller . '&task=manage&plugin=sponsors';
+        $url = 'index.php?option=' . $this->componentOption . '&controller='
+            . $this->controller . '&task=manage&plugin=sponsors';
         App::redirect(
             Route::url(
-                'index.php?option=' . $this->_option . '&controller='
-                    . $this->_controller . '&task=manage&plugin=sponsors',
+                'index.php?option=' . $this->componentOption . '&controller='
+                    . $this->controller . '&task=manage&plugin=sponsors',
                 false,
             ),
             Lang::txt('PLG_RESOURCES_SPONSORS_ITEM_REMOVED'),
@@ -366,8 +366,8 @@ class Sponsors extends Plugin
                 ? Lang::txt('PLG_RESOURCES_SPONSORS_UNPUBLISH')
                 : Lang::txt('PLG_RESOURCES_SPONSORS_PUBLISH');
 
-            $url = 'index.php?option=' . $this->_option . '&controller='
-                . $this->_controller . '&task=manage&plugin=sponsors';
+            $url = 'index.php?option=' . $this->componentOption . '&controller='
+                . $this->controller . '&task=manage&plugin=sponsors';
             App::redirect(
                 Route::url($url, false),
                 Lang::txt('PLG_RESOURCES_SPONSORS_SELECT_ITEM_TO', $action),
@@ -394,8 +394,8 @@ class Sponsors extends Plugin
             $message = Lang::txt('PLG_RESOURCES_SPONSORS_ITEMS_UNPUBLISHED', count($ids));
         }
 
-        $url = 'index.php?option=' . $this->_option . '&controller='
-            . $this->_controller . '&task=manage&plugin=sponsors';
+        $url = 'index.php?option=' . $this->componentOption . '&controller='
+            . $this->controller . '&task=manage&plugin=sponsors';
         App::redirect(
             Route::url($url, false),
             $message,
@@ -409,8 +409,8 @@ class Sponsors extends Plugin
      */
     public function cancelTask()
     {
-        $url = 'index.php?option=' . $this->_option . '&controller='
-            . $this->_controller . '&task=manage&plugin=sponsors';
+        $url = 'index.php?option=' . $this->componentOption . '&controller='
+            . $this->controller . '&task=manage&plugin=sponsors';
         App::redirect(
             Route::url($url, false),
         );

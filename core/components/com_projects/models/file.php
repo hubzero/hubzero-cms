@@ -26,7 +26,7 @@ class File extends Obj
      *
      * @var  array
      */
-    private $_data = [];
+    private $data = [];
 
     /**
      * Constructor
@@ -57,7 +57,7 @@ class File extends Obj
      */
     public function __isset($property)
     {
-        return isset($this->_data[$property]);
+        return isset($this->data[$property]);
     }
 
     /**
@@ -69,7 +69,7 @@ class File extends Obj
      */
     public function __set($property, $value)
     {
-        $this->_data[$property] = $value;
+        $this->data[$property] = $value;
     }
 
     /**
@@ -80,8 +80,8 @@ class File extends Obj
      */
     public function clear($property)
     {
-        if (isset($this->_data[$property])) {
-            unset($this->_data[$property]);
+        if (isset($this->data[$property])) {
+            unset($this->data[$property]);
         }
     }
 
@@ -93,8 +93,8 @@ class File extends Obj
      */
     public function __get($property)
     {
-        if (isset($this->_data[$property])) {
-            return $this->_data[$property];
+        if (isset($this->data[$property])) {
+            return $this->data[$property];
         }
     }
 
@@ -105,7 +105,7 @@ class File extends Obj
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**

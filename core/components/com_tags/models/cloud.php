@@ -24,28 +24,28 @@ class Cloud extends \Hubzero\Base\Obj
      *
      * @var string
      */
-    protected $_scope = 'site';
+    protected $scope = 'site';
 
     /**
      * The object to be tagged
      *
      * @var integer
      */
-    protected $_scope_id = null;
+    protected $scopeId = null;
 
     /**
      * Database
      *
      * @var object
      */
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Container for properties
      *
      * @var array
      */
-    protected $_cache = [
+    protected $cache = [
         'tags.one'    => null,
         'tags.count'  => null,
         'tags.list'   => null,
@@ -62,14 +62,14 @@ class Cloud extends \Hubzero\Base\Obj
      */
     public function __construct($scope_id = null, $scope = '')
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         if ($scope) {
-            $this->_scope    = (string) $scope;
+            $this->scope    = (string) $scope;
         }
         // null = no object at all (a whole scope's tags); 0 = an object that
         // has no id yet, which has no tags. tags() tells the two apart.
-        $this->_scope_id = ($scope_id === null || $scope_id === '') ? null : (int) $scope_id;
+        $this->scopeId = ($scope_id === null || $scope_id === '') ? null : (int) $scope_id;
     }
 
     /**
@@ -106,10 +106,10 @@ class Cloud extends \Hubzero\Base\Obj
     public function get($property, $default = null)
     {
         if ($property == 'scope') {
-            return $this->_scope;
+            return $this->scope;
         }
         if ($property == 'scope_id') {
-            return $this->_scope_id;
+            return $this->scopeId;
         }
 
         return parent::get($property, $default);
@@ -125,11 +125,11 @@ class Cloud extends \Hubzero\Base\Obj
     public function set($property, $value = null)
     {
         if ($property == 'scope') {
-            $this->_scope = $value;
+            $this->scope = $value;
             return $this;
         }
         if ($property == 'scope_id') {
-            $this->_scope_id = $value;
+            $this->scopeId = $value;
             return $this;
         }
 
@@ -145,17 +145,17 @@ class Cloud extends \Hubzero\Base\Obj
     public function tag($id = null)
     {
         if (
-            !$this->_cache['tags.one']
+            !$this->cache['tags.one']
             || (
                 $id !== null
-             && (int) $this->_cache['tags.one']->get('id') != $id
-             && (string) $this->_cache['tags.one']->get('tag') != $this->normalize($id)
+             && (int) $this->cache['tags.one']->get('id') != $id
+             && (string) $this->cache['tags.one']->get('tag') != $this->normalize($id)
             )
         ) {
-            $this->_cache['tags.one'] = is_numeric($id) ? Tag::oneOrNew($id) : Tag::oneByTag($id);
+            $this->cache['tags.one'] = is_numeric($id) ? Tag::oneOrNew($id) : Tag::oneByTag($id);
         }
 
-        return $this->_cache['tags.one'];
+        return $this->cache['tags.one'];
     }
 
     /**
@@ -249,12 +249,12 @@ class Cloud extends \Hubzero\Base\Obj
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_cache['tags.count']) || $clear) {
+                if (!isset($this->cache['tags.count']) || $clear) {
                     $results->select($results->getTableName() . '.id', null, true);
 
-                    $this->_cache['tags.count'] = (int) $results->total();
+                    $this->cache['tags.count'] = (int) $results->total();
                 }
-                return $this->_cache['tags.count'];
+                return $this->cache['tags.count'];
                 break;
 
             case 'top':
@@ -266,7 +266,7 @@ class Cloud extends \Hubzero\Base\Obj
                 $results
                     ->select($results->getTableName() . '.*')
                     ->group($results->getTableName() . '.id');
-                if (!$this->_cache['tags.list'] || $clear) {
+                if (!$this->cache['tags.list'] || $clear) {
                     if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') {
                         if (!isset($filters['start'])) {
                             $filters['start'] = 0;
@@ -284,9 +284,9 @@ class Cloud extends \Hubzero\Base\Obj
                         $results->order($filters['sort'], $filters['sort_Dir']);
                     }
 
-                    $this->_cache['tags.list'] = $results->rows();
+                    $this->cache['tags.list'] = $results->rows();
                 }
-                return $this->_cache['tags.list'];
+                return $this->cache['tags.list'];
                 break;
         }
     }
@@ -303,7 +303,7 @@ class Cloud extends \Hubzero\Base\Obj
      */
     public function add($tags, $tagger = 0, $admin = 0, $strength = 1, $label = '')
     {
-        if (!$this->_scope_id) {
+        if (!$this->scopeId) {
             $this->setError('Unable to add tags: No objct ID provided.');
             return false;
         }
@@ -329,7 +329,7 @@ class Cloud extends \Hubzero\Base\Obj
             }
 
             // Add the tag to the object
-            if (!$tag->addTo($this->_scope, $this->_scope_id, $tagger, $strength, $label)) {
+            if (!$tag->addTo($this->scope, $this->scopeId, $tagger, $strength, $label)) {
                 $this->setError($tag->getError());
                 return false;
             }
@@ -347,7 +347,7 @@ class Cloud extends \Hubzero\Base\Obj
      */
     public function remove($tags, $tagger = 0)
     {
-        if (!$this->_scope_id) {
+        if (!$this->scopeId) {
             $this->setError('Unable to remove tags: No objct ID provided.');
             return false;
         }
@@ -367,7 +367,7 @@ class Cloud extends \Hubzero\Base\Obj
             }
 
             // Remove tag from object
-            if (!$tag->removeFrom($this->_scope, $this->_scope_id, $tagger)) {
+            if (!$tag->removeFrom($this->scope, $this->scopeId, $tagger)) {
                 $this->setError($tag->getError());
             }
         }
@@ -384,14 +384,14 @@ class Cloud extends \Hubzero\Base\Obj
      */
     public function removeAll($tagger = 0)
     {
-        if (!$this->_scope_id) {
+        if (!$this->scopeId) {
             $this->setError('Unable to remove tags: No objct ID provided.');
             return false;
         }
 
         $to = Objct::all()
-            ->whereEquals('tbl', $this->_scope)
-            ->whereEquals('objectid', $this->_scope_id);
+            ->whereEquals('tbl', $this->scope)
+            ->whereEquals('objectid', $this->scopeId);
 
         if ($tagger) {
             $to->whereEquals('taggerid', $tagger);
@@ -447,14 +447,14 @@ class Cloud extends \Hubzero\Base\Obj
     {
         switch (strtolower($rtrn)) {
             case 'string':
-                if (!isset($this->_cache['tags.string']) || $clear) {
+                if (!isset($this->cache['tags.string']) || $clear) {
                     $tags = [];
                     foreach ($this->tags('list', $filters, $clear) as $tag) {
                         $tags[] = $tag->get('raw_tag');
                     }
-                    $this->_cache['tags.string'] = implode(', ', $tags);
+                    $this->cache['tags.string'] = implode(', ', $tags);
                 }
-                return $this->_cache['tags.string'];
+                return $this->cache['tags.string'];
                 break;
 
             case 'array':
@@ -468,7 +468,7 @@ class Cloud extends \Hubzero\Base\Obj
             case 'cloud':
             case 'html':
             default:
-                if (!isset($this->_cache['tags.cloud']) || $clear) {
+                if (!isset($this->cache['tags.cloud']) || $clear) {
                     $view = new View([
                         'base_path' => dirname(__DIR__) . '/site',
                         'name'      => 'tags',
@@ -477,9 +477,9 @@ class Cloud extends \Hubzero\Base\Obj
                     $view->set('config', Component::params('com_tags'))
                          ->set('tags', $this->tags('list', $filters, $clear));
 
-                    $this->_cache['tags.cloud'] = $view->loadTemplate();
+                    $this->cache['tags.cloud'] = $view->loadTemplate();
                 }
-                return $this->_cache['tags.cloud'];
+                return $this->cache['tags.cloud'];
                 break;
         }
     }

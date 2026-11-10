@@ -25,7 +25,7 @@ class Helper extends \Hubzero\Base\Obj
     // resource and the option it is working on, and the views read the
     // reviewer's own review back off it.
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_option;
+    public $componentOption;
     public $isAuthor;
     public $loggedin;
     public $myreview;
@@ -261,7 +261,7 @@ class Helper extends \Hubzero\Base\Obj
                 'name'    => 'browse',
                 'layout'  => '_rateitem',
             ]);
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->item = $rev;
 
             $view->display();
@@ -410,7 +410,7 @@ class Helper extends \Hubzero\Base\Obj
             'element' => 'reviews',
             'name'    => 'emails',
         ]);
-        $eview->option   = $this->_option;
+        $eview->option   = $this->componentOption;
         $eview->user     = User::getInstance();
         $eview->resource = $this->resource;
         $eview->review   = $row;
@@ -426,7 +426,7 @@ class Helper extends \Hubzero\Base\Obj
         if (
             !Event::trigger(
                 'xmessage.onSendMessage',
-                ['resources_new_comment', $subject, $message, $from, $users, $this->_option],
+                ['resources_new_comment', $subject, $message, $from, $users, $this->componentOption],
             )
         ) {
             $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_FAILED_TO_MESSAGE'));

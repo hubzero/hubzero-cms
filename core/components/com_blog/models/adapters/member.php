@@ -24,7 +24,7 @@ class Member extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_members',
     ];
 
@@ -38,10 +38,10 @@ class Member extends Base
     {
         $this->set('scope_id', $scope_id);
 
-        $this->_segments['id']     = $scope_id;
-        $this->_segments['active'] = 'blog';
+        $this->segments['id']     = $scope_id;
+        $this->segments['active'] = 'blog';
 
-        $this->_item = User::oneOrNew($scope_id);
+        $this->item = User::oneOrNew($scope_id);
 
         $config = Plugin::params('members', 'blog');
 
@@ -49,7 +49,7 @@ class Member extends Base
 
         $this->set('path', str_replace('{{uid}}', $id, $config->get('uploadpath', '/site/members/{{uid}}/blog')));
         $this->set('scope', $this->get('scope_id') . '/blog');
-        $this->set('option', $this->_segments['option']);
+        $this->set('option', $this->segments['option']);
     }
 
     /**
@@ -91,14 +91,14 @@ class Member extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -147,6 +147,6 @@ class Member extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 }

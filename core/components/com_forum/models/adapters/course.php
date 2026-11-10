@@ -22,7 +22,7 @@ class Course extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_courses',
     ];
 
@@ -39,14 +39,14 @@ class Course extends Base
         $offering = \Components\Courses\Models\Offering::getInstance($this->get('scope_id'));
         $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));
 
-        $this->_segments['gid']      = $course->get('alias');
-        $this->_segments['offering'] = $offering->alias();
-        $this->_segments['active']   = 'discussions';
+        $this->segments['gid']      = $course->get('alias');
+        $this->segments['offering'] = $offering->alias();
+        $this->segments['active']   = 'discussions';
         if (Request::getWord('active') == 'outline') {
-            $this->_segments['active']   = 'outline';
+            $this->segments['active']   = 'outline';
         }
 
-        $this->_name = Str::truncate($course->get('alias'), 50) . ': ' . Str::truncate($offering->get('alias'), 50);
+        $this->name = Str::truncate($course->get('alias'), 50) . ': ' . Str::truncate($offering->get('alias'), 50);
     }
 
     /**
@@ -59,9 +59,9 @@ class Course extends Base
      */
     public function build($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
-        if ($this->_segments['active'] == 'outline') {
+        if ($this->segments['active'] == 'outline') {
             if ($this->get('section')) {
                 $segments['unit'] = $this->get('section');
             }
@@ -75,11 +75,11 @@ class Course extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($segments);
+                return $this->base . '?' . (string) $this->_build($segments);
                 break;
 
             case 'edit':
-                if ($this->_segments['active'] == 'outline') {
+                if ($this->segments['active'] == 'outline') {
                     $segments['active']   = 'discussions';
                     unset($segments['unit']);
                     unset($segments['b']);
@@ -155,6 +155,6 @@ class Course extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 }

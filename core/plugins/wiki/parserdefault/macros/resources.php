@@ -76,15 +76,15 @@ class Resources extends WikiMacro
         if (is_numeric($resource)) {
             // Yes, then get resource by ID
             $id = intval($resource);
-            $sql = "SELECT id, title, alias FROM `#__resources` WHERE id=" . $this->_db->quote($id);
+            $sql = "SELECT id, title, alias FROM `#__resources` WHERE id=" . $this->db->quote($id);
         } else {
             // No, get resource by alias
-            $sql = "SELECT id, title, alias FROM `#__resources` WHERE alias=" . $this->_db->quote(trim($resource));
+            $sql = "SELECT id, title, alias FROM `#__resources` WHERE alias=" . $this->db->quote(trim($resource));
         }
 
         // Perform query
-        $this->_db->setQuery($sql);
-        $r = $this->_db->loadRow();
+        $this->db->setQuery($sql);
+        $r = $this->db->loadRow();
 
         // Did we get a result from the database?
         if ($r) {

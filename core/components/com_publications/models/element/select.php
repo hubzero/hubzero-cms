@@ -23,7 +23,7 @@ class Select extends Base
   * @var  string
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Select list';
+    protected $name = 'Select list';
 
     /**
      * Return any options this element may have

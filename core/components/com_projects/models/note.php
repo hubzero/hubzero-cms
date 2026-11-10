@@ -20,11 +20,11 @@ use Hubzero\Facades\Request;
 class Note extends \Components\Wiki\Models\Book
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_cache;
+    protected $cache;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope;
+    protected $scope;
 
     /**
      * Project group cn
@@ -50,8 +50,8 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function __construct($scope = 'project', $group_cn = '', $project_id = 0)
     {
-        $this->_db = App::get('db');
-        $this->_scope = $scope;
+        $this->db = App::get('db');
+        $this->scope = $scope;
         $this->project_id = $project_id;
 
         parent::__construct($scope);
@@ -66,10 +66,10 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function page($id = null, $scope = '')
     {
-        $scope = $scope ? $scope : $this->_scope;
-        $this->_cache['page'] = \Components\Wiki\Models\Page::oneByPath($id, 'project', $this->project_id);
+        $scope = $scope ? $scope : $this->scope;
+        $this->cache['page'] = \Components\Wiki\Models\Page::oneByPath($id, 'project', $this->project_id);
 
-        return $this->_cache['page'];
+        return $this->cache['page'];
     }
 
     /**
@@ -92,7 +92,7 @@ class Note extends \Components\Wiki\Models\Book
             return false;
         }
 
-        $objSt = new Tables\Stamp($this->_db);
+        $objSt = new Tables\Stamp($this->db);
 
         // Build reference for latest revision of page
         $reference = [
@@ -129,13 +129,13 @@ class Note extends \Components\Wiki\Models\Book
     public function getFirstNote($prefix = '')
     {
         $query  = "SELECT p.pagename FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . " AND p.state!=2";
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . " AND p.state!=2";
 
-        $query .= $prefix ? " AND p.pagename LIKE " . $this->_db->quote($prefix . '%') : "";
+        $query .= $prefix ? " AND p.pagename LIKE " . $this->db->quote($prefix . '%') : "";
         $query .= " ORDER BY p.times_rated, p.id ASC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -146,23 +146,23 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function getParentNotes($scope = '')
     {
-        $scope = $scope ? $scope : $this->_scope;
+        $scope = $scope ? $scope : $this->scope;
         $parts = explode('/', $scope);
         $remaining = array_slice($parts, 3);
         if ($remaining) {
             $query  = "SELECT DISTINCT p.pagename, p.title, p.path, p.scope, p.scope_id ";
             $query .= "FROM `#__wiki_pages` AS p ";
-            $query .= "WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . " AND p.state!=2 ";
+            $query .= "WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . " AND p.state!=2 ";
             $k = 1;
             $where = '';
             foreach ($remaining as $r) {
-                $where .= "p.pagename=" . $this->_db->quote(trim($r));
+                $where .= "p.pagename=" . $this->db->quote(trim($r));
                 $where .= $k == count($remaining) ? '' : ' OR ';
                 $k++;
             }
             $query .= "AND (" . $where . ")";
-            $this->_db->setQuery($query);
-            return $this->_db->loadObjectList();
+            $this->db->setQuery($query);
+            return $this->db->loadObjectList();
         }
 
         return [];
@@ -179,15 +179,15 @@ class Note extends \Components\Wiki\Models\Book
     {
         $query = "SELECT DISTINCT p.id, p.path, p.pagename, p.title, p.scope, p.times_rated
 				  FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . "
 				  AND p.pagename NOT LIKE 'Template:%'
 				  AND p.state!=2
 				  ORDER BY " . (preg_replace('/[^a-zA-Z0-9_,. ]/', '', (string) $orderby) ?: '1') . " ";
 
         $query .= intval($limit) ? " LIMIT " . (int) $limit : '';
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -198,11 +198,11 @@ class Note extends \Components\Wiki\Models\Book
     public function getNoteCount()
     {
         $query = "SELECT COUNT(*) FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . " AND p.state!=2
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . " AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -219,14 +219,14 @@ class Note extends \Components\Wiki\Models\Book
 				  (SELECT vv.id FROM `#__wiki_versions` as vv WHERE vv.page_id=p.id
 				  ORDER by vv.id DESC LIMIT 1) as instance
 				  FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . "
 				  AND p.state!=2
 				  AND p.pagename NOT LIKE 'Template:%'";
 
-        $query .= is_numeric($id) ? " AND p.id=" . (int) $id . " LIMIT 1" : " AND p.pagename=" . $this->_db->quote($id) . " LIMIT 1";
+        $query .= is_numeric($id) ? " AND p.id=" . (int) $id . " LIMIT 1" : " AND p.pagename=" . $this->db->quote($id) . " LIMIT 1";
 
-        $this->_db->setQuery($query);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        $result = $this->db->loadObjectList();
 
         return $result ? $result[0] : null;
     }
@@ -239,13 +239,13 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function getLastNoteOrder($scope = '')
     {
-        $scope = $scope ? $scope : $this->_scope;
+        $scope = $scope ? $scope : $this->scope;
         $query = "SELECT p.times_rated FROM `#__wiki_pages` AS p
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . "
 				  ORDER BY p.times_rated DESC LIMIT 1";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -258,11 +258,11 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function fixScopePaths($scope, $oldpagename, $newpagename)
     {
-        $query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, " . $this->_db->quote('/' . $oldpagename) . ", " . $this->_db->quote('/' . $newpagename) . ")
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id);
+        $query = "UPDATE `#__wiki_pages` AS p SET p.path=replace(p.path, " . $this->db->quote('/' . $oldpagename) . ", " . $this->db->quote('/' . $newpagename) . ")
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id);
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
             return false;
         }
         return true;
@@ -277,12 +277,12 @@ class Note extends \Components\Wiki\Models\Book
      */
     public function saveNoteOrder($scope, $order = 0)
     {
-        $query = "UPDATE `#__wiki_pages` AS p SET p.times_rated=" . $this->_db->quote($order) . "
-				  WHERE p.scope='project' AND p.scope_id=" . $this->_db->quote($this->project_id) . "
+        $query = "UPDATE `#__wiki_pages` AS p SET p.times_rated=" . $this->db->quote($order) . "
+				  WHERE p.scope='project' AND p.scope_id=" . $this->db->quote($this->project_id) . "
 				  AND p.times_rated='0'";
 
-        $this->_db->setQuery($query);
-        if (!$this->_db->query()) {
+        $this->db->setQuery($query);
+        if (!$this->db->query()) {
             return false;
         }
         return true;

@@ -22,7 +22,7 @@ class User extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_members',
     ];
 
@@ -32,7 +32,7 @@ class User extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'user';
+    protected $scope = 'user';
 
     /**
      * Constructor
@@ -44,12 +44,12 @@ class User extends Base
     {
         $this->set('referenceid', $referenceid)
              ->set('category', 'user')
-             ->set('option', $this->_segments['option']);
+             ->set('option', $this->segments['option']);
 
-        $this->_segments['id']     = $referenceid;
-        $this->_segments['active'] = 'wishlist';
+        $this->segments['id']     = $referenceid;
+        $this->segments['active'] = 'wishlist';
 
-        $this->_item = \Hubzero\User\User::oneOrNew($this->get('scope_id'));
+        $this->item = \Hubzero\User\User::oneOrNew($this->get('scope_id'));
     }
 
     /**
@@ -100,7 +100,7 @@ class User extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         if ($this->get('category')) {
             $segments['category'] = $this->get('category');
@@ -114,7 +114,7 @@ class User extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -171,7 +171,7 @@ class User extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -190,7 +190,7 @@ class User extends Base
                 'index.php?option=' . $this->get('option'),
             );
             Pathway::append(
-                stripslashes((string) $this->_item->get('name')),
+                stripslashes((string) $this->item->get('name')),
                 'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid'),
             );
             $url = 'index.php?option=' . $this->get('option') . '&active=wishlist&category='

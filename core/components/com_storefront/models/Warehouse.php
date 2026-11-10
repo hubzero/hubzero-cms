@@ -27,7 +27,7 @@ use Hubzero\Facades\Component;
 class Warehouse extends \Hubzero\Base\Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $database;
 
     // Product categories to look at (to define scope)
     public $lookupCollections = null;
@@ -58,7 +58,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->database = App::get('db');
 
         // Load language file
         App::get('language')->load('com_storefront');
@@ -163,14 +163,14 @@ class Warehouse extends \Hubzero\Base\Obj
     public function getCollectionInfo($cId, $showInactive = false)
     {
         $sql = "SELECT * FROM `#__storefront_collections` c
- 				WHERE c.`cId` = " . $this->_db->quote($cId);
+ 				WHERE c.`cId` = " . $this->database->quote($cId);
 
         if (!$showInactive) {
             $sql .= " AND `cActive` = 1";
         }
 
-        $this->_db->setQuery($sql);
-        $collection = $this->_db->loadObject();
+        $this->database->setQuery($sql);
+        $collection = $this->database->loadObject();
 
         return $collection;
     }
@@ -214,14 +214,14 @@ class Warehouse extends \Hubzero\Base\Obj
     public function collectionExists($cId, $showInactive = false)
     {
         $sql = 'SELECT `cId` FROM `#__storefront_collections` c
-				WHERE c.`cId` = ' . $this->_db->quote($cId) . ' OR
-				c.`cAlias` = ' . $this->_db->quote($cId);
+				WHERE c.`cId` = ' . $this->database->quote($cId) . ' OR
+				c.`cAlias` = ' . $this->database->quote($cId);
         if (!$showInactive) {
             $sql .= " AND c.`cActive` = 1";
         }
 
-        $this->_db->setQuery($sql);
-        $cId = $this->_db->loadResult();
+        $this->database->setQuery($sql);
+        $cId = $this->database->loadResult();
 
         return $cId;
     }
@@ -292,23 +292,23 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         $sql .= "
-				`cName` = " . $this->_db->quote($collection->getName()) . ",
-				`cActive` = " . $this->_db->quote($collection->getActiveStatus()) . ",
-				`cType` = " . $this->_db->quote($collection->getType());
+				`cName` = " . $this->database->quote($collection->getName()) . ",
+				`cActive` = " . $this->database->quote($collection->getActiveStatus()) . ",
+				`cType` = " . $this->database->quote($collection->getType());
 
         // Set pId if needed if adding new product
         if ($action == 'add' && !empty($cId)) {
             $sql .= ",
-				`cId` = " . $this->_db->quote($collection->getId());
+				`cId` = " . $this->database->quote($collection->getId());
         }
 
         // Add WHERE if updating product
         if ($action == 'update') {
-            $sql .= " WHERE `cId` = " . $this->_db->quote($collection->getId());
+            $sql .= " WHERE `cId` = " . $this->database->quote($collection->getId());
         }
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $this->database->setQuery($sql);
+        $this->database->query();
 
         return ($cId);
     }
@@ -328,13 +328,13 @@ class Warehouse extends \Hubzero\Base\Obj
             $lookupField = 'pAlias';
         }
 
-        $sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
+        $sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->database->quote($product);
         if (!$showInactive) {
             $sql .= " AND p.`pActive` = 1";
         }
 
-        $this->_db->setQuery($sql);
-        $pId = $this->_db->loadResult();
+        $this->database->setQuery($sql);
+        $pId = $this->database->loadResult();
 
         return $pId;
     }
@@ -359,13 +359,13 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql .= " (`publish_up` IS NULL OR `publish_up` <= NOW())";
         $sql .= " AND (`publish_down` IS NULL OR `publish_down` = '0000-00-00 00:00:00' OR `publish_down` > NOW()";
         $sql .= "), 1, 0) AS isPublished";
-        $sql .= " FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
+        $sql .= " FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->database->quote($product);
         if (!$showInactive) {
             $sql .= " AND p.`pActive` = 1";
         }
 
-        $this->_db->setQuery($sql);
-        $pInfo = $this->_db->loadObject();
+        $this->database->setQuery($sql);
+        $pInfo = $this->database->loadObject();
 
         $response = new \stdClass();
 
@@ -455,10 +455,10 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function couponExists($code)
     {
-        $sql = "SELECT cnId FROM `#__storefront_coupons` WHERE `cnCode` = " . $this->_db->quote($code);
+        $sql = "SELECT cnId FROM `#__storefront_coupons` WHERE `cnCode` = " . $this->database->quote($code);
 
-        $this->_db->setQuery($sql);
-        $cnId = $this->_db->loadResult();
+        $this->database->setQuery($sql);
+        $cnId = $this->database->loadResult();
 
         return $cnId;
     }
@@ -496,7 +496,7 @@ class Warehouse extends \Hubzero\Base\Obj
         // Filter by collections
         if ($this->lookupCollections) {
             foreach ($this->lookupCollections as $cId) {
-                $sql .= " AND c.`cId` = " . $this->_db->quote($cId);
+                $sql .= " AND c.`cId` = " . $this->database->quote($cId);
             }
         }
         // Filter by authorized view levels (if current user scope is set)
@@ -528,8 +528,8 @@ class Warehouse extends \Hubzero\Base\Obj
         // Filter by filters
         if (isset($filters['search']) && $filters['search']) {
             $where   = [];
-            $where[] = "p.`pName` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
-            $where[] = "p.`pDescription` LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
+            $where[] = "p.`pName` LIKE " . $this->database->quote('%' . $filters['search'] . '%');
+            $where[] = "p.`pDescription` LIKE " . $this->database->quote('%' . $filters['search'] . '%');
 
             $addToSql = " AND (" . implode(" OR ", $where) . ")";
             $sql .= $addToSql;
@@ -537,7 +537,7 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         if (isset($filters['type']) && $filters['type'] >= 0) {
-            $addToSql = " AND p.`ptId`=" . $this->_db->quote((int) $filters['type']);
+            $addToSql = " AND p.`ptId`=" . $this->database->quote((int) $filters['type']);
             $sql .= $addToSql;
             $whiteListSql .= $addToSql;
         }
@@ -577,18 +577,18 @@ class Warehouse extends \Hubzero\Base\Obj
             }
         }
 
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
+        $this->database->setQuery($sql);
+        $this->database->execute();
 
         // WhiteList logic: run the expensive query twice, find the whitlisted SKUs for each product, white list the corresponding product,
         // keep the white listed products, kill the non-authorized products (not very efficient)
         if ($this->userScope && ($useAccessGroups || $this->accessLevelsScope)) {
-            $products = $this->_db->loadObjectList('pId');
+            $products = $this->database->loadObjectList('pId');
 
             // get all products
-            $this->_db->setQuery($whiteListSql);
-            $this->_db->execute();
-            $allProducts = $this->_db->loadObjectList('pId');
+            $this->database->setQuery($whiteListSql);
+            $this->database->execute();
+            $allProducts = $this->database->loadObjectList('pId');
 
             // compare the two results and find those that didn't make the permissions test
             $notAuthorizedProducts = [];
@@ -614,7 +614,7 @@ class Warehouse extends \Hubzero\Base\Obj
 
             return $allProducts;
         } else {
-            $products = $this->_db->loadObjectList();
+            $products = $this->database->loadObjectList();
 
             if ($return == 'count') {
                 return count($products);
@@ -713,19 +713,19 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql .= " 	AND (s.`publish_down` IS NULL OR s.`publish_down` = '0000-00-00 00:00:00' OR s.`publish_down` > NOW())";
         $sql .= "	ORDER BY og.`ogId`, o.`oId`";
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $this->database->setQuery($sql);
+        $this->database->query();
 
         // check some values to figure out what to return
         $returnObject = new \stdClass();
         $returnObject->status = 'ok';
 
-        if (!$this->_db->getNumRows()) {
+        if (!$this->database->getNumRows()) {
             $returnObject->status = 'error';
             $returnObject->msg = 'not found';
             return $returnObject;
         } else {
-            $results = $this->_db->loadObjectList();
+            $results = $this->database->loadObjectList();
             $res = $results;
 
             // Go through each SKU and do the checks to determine what needs to be returned
@@ -861,13 +861,13 @@ class Warehouse extends \Hubzero\Base\Obj
             }
         }
 
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
+        $this->database->setQuery($sql);
+        $this->database->execute();
         if ($rtrn == 'count') {
-            return $this->_db->getNumRows();
+            return $this->database->getNumRows();
         }
 
-        $res = $this->_db->loadObjectList();
+        $res = $this->database->loadObjectList();
 
         return $res;
     }
@@ -884,7 +884,7 @@ class Warehouse extends \Hubzero\Base\Obj
         if ($showOnlyActive) {
             $sql .= " AND `oActive` = 1";
         }
-        $sql .= " AND `ogId` = " . $this->_db->quote($ogId);
+        $sql .= " AND `ogId` = " . $this->database->quote($ogId);
 
         // Filter by filters
         if (isset($filters['sort'])) {
@@ -912,12 +912,12 @@ class Warehouse extends \Hubzero\Base\Obj
                 $sql .= ' OFFSET ' . $filters['start'];
             }
         }
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
+        $this->database->setQuery($sql);
+        $this->database->execute();
         if ($return == 'count') {
-            $res = $this->_db->getNumRows();
+            $res = $this->database->getNumRows();
         } else {
-            $res = $this->_db->loadObjectList();
+            $res = $this->database->loadObjectList();
         }
 
         return $res;
@@ -942,13 +942,13 @@ class Warehouse extends \Hubzero\Base\Obj
                 WHERE s.`pId` = '" . (int) $pId . "' AND s.`sActive` > 0
                 GROUP BY s.`sId` ORDER BY cnt DESC LIMIT 1";
         */
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
+        $this->database->setQuery($sql);
+        $this->database->execute();
 
-        if ($this->_db->getNumRows() < 1) {
+        if ($this->database->getNumRows() < 1) {
             $totalOptionsRequired = 0;
         } else {
-            $totalOptionsRequired = $this->_db->loadResult();
+            $totalOptionsRequired = $this->database->loadResult();
         }
 
         if (!empty($options) && $totalOptionsRequired > count($options)) {
@@ -972,8 +972,8 @@ class Warehouse extends \Hubzero\Base\Obj
         }
         $sql .= " GROUP BY s.`sId` HAVING matches = {$totalOptionsRequired}";
 
-        $this->_db->setQuery($sql);
-        $sId = $this->_db->loadObject();
+        $this->database->setQuery($sql);
+        $sId = $this->database->loadObject();
 
         if ($sId) {
             return $sId->sId;
@@ -1048,10 +1048,10 @@ class Warehouse extends \Hubzero\Base\Obj
             $sql .= " ORDER BY s.`sId`";
         }
 
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
+        $this->database->setQuery($sql);
+        $this->database->execute();
 
-        $rawSkusInfo = $this->_db->loadObjectList();
+        $rawSkusInfo = $this->database->loadObjectList();
 
         /*
             Parse the result and organize it by SKU (since same SKU can be returned several times, depending on the number of options):
@@ -1154,7 +1154,7 @@ class Warehouse extends \Hubzero\Base\Obj
         if ($showOnlyActive) {
             $sql .= " AND `sActive` = 1";
         }
-        $sql .= " AND `pId` = " . $this->_db->quote($pId);
+        $sql .= " AND `pId` = " . $this->database->quote($pId);
 
         // Filter by filters
         if (isset($filters['sort'])) {
@@ -1186,19 +1186,19 @@ class Warehouse extends \Hubzero\Base\Obj
             }
         }
 
-        $this->_db->setQuery($sql);
+        $this->database->setQuery($sql);
 
         if ($return != 'count') {
             //echo $this->_db->toString(); die;
         }
 
-        $this->_db->execute();
+        $this->database->execute();
         if ($return == 'count') {
-            $res = $this->_db->getNumRows();
+            $res = $this->database->getNumRows();
         } elseif ($return == 'all') {
-            $res = $this->_db->loadObjectList();
+            $res = $this->database->loadObjectList();
         } else {
-            $res = $this->_db->loadColumn();
+            $res = $this->database->loadColumn();
         }
 
         return $res;
@@ -1214,8 +1214,8 @@ class Warehouse extends \Hubzero\Base\Obj
     {
         $sql = "SELECT * FROM `#__storefront_product_types`";
 
-        $this->_db->setQuery($sql);
-        $res = $this->_db->loadObjectList();
+        $this->database->setQuery($sql);
+        $res = $this->database->loadObjectList();
         return $res;
     }
 
@@ -1227,10 +1227,10 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function getProductTypeInfo($ptId)
     {
-        $sql = "SELECT * FROM `#__storefront_product_types` WHERE `ptId` = " . $this->_db->quote($ptId);
+        $sql = "SELECT * FROM `#__storefront_product_types` WHERE `ptId` = " . $this->database->quote($ptId);
 
-        $this->_db->setQuery($sql);
-        $res = $this->_db->loadAssoc();
+        $this->database->setQuery($sql);
+        $res = $this->database->loadAssoc();
         return $res;
     }
 
@@ -1268,11 +1268,11 @@ class Warehouse extends \Hubzero\Base\Obj
 				LEFT JOIN `#__storefront_products` p ON s.`pId` = p.`pId`
 				WHERE p.`ptId` = 20
 				AND `smKey` = 'courseId'
-				AND `smValue` = " . $this->_db->quote($alias);
+				AND `smValue` = " . $this->database->quote($alias);
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
-        return $this->_db->loadResult();
+        $this->database->setQuery($sql);
+        $this->database->query();
+        return $this->database->loadResult();
     }
 
     /**
@@ -1312,24 +1312,24 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         // Delete conditions
-        $sql = "DELETE FROM `#__storefront_coupon_conditions` WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__storefront_coupon_conditions` WHERE `cnId` = " . $this->database->quote($cnId);
+        $this->database->setQuery($sql);
+        $this->database->query();
 
         // Delete actions
-        $sql = "DELETE FROM `#__storefront_coupon_actions` WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__storefront_coupon_actions` WHERE `cnId` = " . $this->database->quote($cnId);
+        $this->database->setQuery($sql);
+        $this->database->query();
 
         // Delete objects
-        $sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = " . $this->database->quote($cnId);
+        $this->database->setQuery($sql);
+        $this->database->query();
 
         // Delete coupon
-        $sql = "DELETE FROM `#__storefront_coupons` WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__storefront_coupons` WHERE `cnId` = " . $this->database->quote($cnId);
+        $this->database->setQuery($sql);
+        $this->database->query();
     }
 
     /**
@@ -1380,27 +1380,27 @@ class Warehouse extends \Hubzero\Base\Obj
         }
 
         $sql .= "
-				`cnDescription` = " . $this->_db->quote($coupon->getDescription()) . ",
+				`cnDescription` = " . $this->database->quote($coupon->getDescription()) . ",
 				`cnUseLimit` = " . $coupon->getUseLimit() . ",
-				`cnExpires` = FROM_UNIXTIME(" . $this->_db->quote($coupon->getExpiration()) . "),
-				`cnObject` = " . $this->_db->quote($coupon->getobjectType()) . ",
+				`cnExpires` = FROM_UNIXTIME(" . $this->database->quote($coupon->getExpiration()) . "),
+				`cnObject` = " . $this->database->quote($coupon->getobjectType()) . ",
 				`cnActive` = " . $coupon->getActiveStatus();
 
 
         // Set code if adding new coupon
         if ($action == 'add') {
-            $sql .= ", `cnCode` = " . $this->_db->quote($couponCode);
+            $sql .= ", `cnCode` = " . $this->database->quote($couponCode);
         }
 
         // Add WHERE if updating coupon
         if ($action == 'update') {
-            $sql .= " WHERE `cnCode` = " . $this->_db->quote($couponCode);
+            $sql .= " WHERE `cnCode` = " . $this->database->quote($couponCode);
         }
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $this->database->setQuery($sql);
+        $this->database->query();
         if (empty($cnId)) {
-            $cnId = $this->_db->insertid();
+            $cnId = $this->database->insertid();
         }
 
 
@@ -1412,14 +1412,14 @@ class Warehouse extends \Hubzero\Base\Obj
 
         foreach ($objects as $obj) {
             $sql = "INSERT INTO `#__storefront_coupon_objects`
-					SET `cnId` = " . $this->_db->quote($cnId) . ",
-					`cnoObjectId` = " . $this->_db->quote($obj->id) . ",
+					SET `cnId` = " . $this->database->quote($cnId) . ",
+					`cnoObjectId` = " . $this->database->quote($obj->id) . ",
 					`cnoObjectsLimit` = " . $obj->objectLimit . "
-					ON DUPLICATE KEY UPDATE `cnoObjectsLimit` = " . $this->_db->quote($obj->objectLimit);
+					ON DUPLICATE KEY UPDATE `cnoObjectsLimit` = " . $this->database->quote($obj->objectLimit);
 
-            $this->_db->setQuery($sql);
+            $this->database->setQuery($sql);
             //echo '<br>'; echo $this->_db->_sql;
-            $this->_db->query();
+            $this->database->query();
 
             $activeObjectIds[] = $obj->id;
         }
@@ -1427,31 +1427,31 @@ class Warehouse extends \Hubzero\Base\Obj
         // Delete unused object IDs
         $deleteSql = '(0';
         foreach ($activeObjectIds as $activeObjectId) {
-            $deleteSql .= ", " . $this->_db->quote($activeObjectId);
+            $deleteSql .= ", " . $this->database->quote($activeObjectId);
         }
         $deleteSql .= ')';
-        $sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = " . $this->_db->quote($cnId) . " AND `cnoObjectId` NOT IN {$deleteSql}";
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__storefront_coupon_objects` WHERE `cnId` = " . $this->database->quote($cnId) . " AND `cnoObjectId` NOT IN {$deleteSql}";
+        $this->database->setQuery($sql);
+        $this->database->query();
 
 
         // ### Do action
         $action = $coupon->getAction();
 
         // Delete old action
-        $sql = "DELETE FROM `#__storefront_coupon_actions` WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "DELETE FROM `#__storefront_coupon_actions` WHERE `cnId` = " . $this->database->quote($cnId);
+        $this->database->setQuery($sql);
+        $this->database->query();
 
         $sql = "INSERT INTO `#__storefront_coupon_actions`
 				SET
-				`cnId` = " . $this->_db->quote($cnId) . ",
-				`cnaAction` = " . $this->_db->quote($action->action) . ",
-				`cnaVal` = " . $this->_db->quote($action->value);
+				`cnId` = " . $this->database->quote($cnId) . ",
+				`cnaAction` = " . $this->database->quote($action->action) . ",
+				`cnaVal` = " . $this->database->quote($action->value);
 
-        $this->_db->setQuery($sql);
+        $this->database->setQuery($sql);
         //echo '<br>'; echo $this->_db->_sql;
-        $this->_db->query();
+        $this->database->query();
 
         $return = new \stdClass();
         $return->cnId = $cnId;
@@ -1482,8 +1482,8 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql .= " AND c.`cType` = '{$collectionType}'";
         $sql .= " ORDER BY c.`cName`";
 
-        $this->_db->setQuery($sql);
-        $res = $this->_db->loadObjectList();
+        $this->database->setQuery($sql);
+        $res = $this->database->loadObjectList();
 
         return $res;
     }
@@ -1537,13 +1537,13 @@ class Warehouse extends \Hubzero\Base\Obj
             }
         }
 
-        $this->_db->setQuery($sql);
-        $this->_db->execute();
+        $this->database->setQuery($sql);
+        $this->database->execute();
         if ($return == 'count') {
-            return $this->_db->getNumRows();
+            return $this->database->getNumRows();
         }
 
-        $res = $this->_db->loadObjectList();
+        $res = $this->database->loadObjectList();
 
         return $res;
     }
@@ -1556,9 +1556,9 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function getProductCollections($pId)
     {
-        $sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $this->_db->quote($pId);
-        $this->_db->setQuery($sql);
-        $res = $this->_db->loadColumn();
+        $sql = "SELECT `cId` FROM `#__storefront_product_collections` WHERE `pId` = " . $this->database->quote($pId);
+        $this->database->setQuery($sql);
+        $res = $this->database->loadColumn();
 
         return $res;
     }

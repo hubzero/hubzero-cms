@@ -31,7 +31,7 @@ class Categories
      * @var  mixed
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_nodes;
+    protected $nodes;
 
     /**
      * Array of checked categories -- used to save values when _nodes are null
@@ -39,7 +39,7 @@ class Categories
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_checkedCategories;
+    protected $checkedCategories;
 
     /**
      * Name of the extension the categories belong to
@@ -47,7 +47,7 @@ class Categories
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_extension = null;
+    protected $extension = null;
 
     /**
      * Name of the linked content table to get category content count
@@ -55,7 +55,7 @@ class Categories
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_table = null;
+    protected $table = null;
 
     /**
      * Name of the category field
@@ -63,7 +63,7 @@ class Categories
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_field = null;
+    protected $field = null;
 
     /**
      * Name of the key field
@@ -71,7 +71,7 @@ class Categories
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_key = null;
+    protected $key = null;
 
     /**
      * Name of the items state field
@@ -79,7 +79,7 @@ class Categories
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_statefield = null;
+    protected $statefield = null;
 
     /**
      * Array of options
@@ -87,7 +87,7 @@ class Categories
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_options = null;
+    protected $options = null;
 
     /**
      * Class constructor
@@ -97,16 +97,16 @@ class Categories
      */
     public function __construct($options)
     {
-        $this->_extension = $options['extension'];
-        $this->_table = $options['table'];
-        $this->_field = (isset($options['field']) && $options['field']) ? $options['field'] : 'catid';
-        $this->_key = (isset($options['key']) && $options['key']) ? $options['key'] : 'id';
-        $this->_statefield = (isset($options['statefield'])) ? $options['statefield'] : 'state';
+        $this->extension = $options['extension'];
+        $this->table = $options['table'];
+        $this->field = (isset($options['field']) && $options['field']) ? $options['field'] : 'catid';
+        $this->key = (isset($options['key']) && $options['key']) ? $options['key'] : 'id';
+        $this->statefield = (isset($options['statefield'])) ? $options['statefield'] : 'state';
 
         $options['access'] = (isset($options['access'])) ? $options['access'] : 'true';
         $options['published'] = (isset($options['published'])) ? $options['published'] : 1;
 
-        $this->_options = $options;
+        $this->options = $options;
     }
 
     /**
@@ -163,14 +163,14 @@ class Categories
         }
 
         // If this $id has not been processed yet, execute the _load method
-        if ((!isset($this->_nodes[$id]) && !isset($this->_checkedCategories[$id])) || $forceload) {
+        if ((!isset($this->nodes[$id]) && !isset($this->checkedCategories[$id])) || $forceload) {
             $this->_load($id);
         }
 
         // If we already have a value in _nodes for this $id, then use it.
-        if (isset($this->_nodes[$id])) {
-            return $this->_nodes[$id];
-        } elseif (isset($this->_checkedCategories[$id])) {
+        if (isset($this->nodes[$id])) {
+            return $this->nodes[$id];
+        } elseif (isset($this->checkedCategories[$id])) {
             // If we processed this $id already and it was not valid, then return null.
             return null;
         }
@@ -189,9 +189,9 @@ class Categories
     {
         $db = App::get('db');
 
-        $extension = $this->_extension;
+        $extension = $this->extension;
         // Record that has this $id has been checked
-        $this->_checkedCategories[$id] = true;
+        $this->checkedCategories[$id] = true;
 
         $query = $db->getQuery();
 
@@ -212,11 +212,11 @@ class Categories
             ->orWhereEquals('c.extension', 'system', 1)
             ->resetDepth();
 
-        if ($this->_options['access']) {
+        if ($this->options['access']) {
             $query->whereIn('c.access', User::getAuthorisedViewLevels());
         }
 
-        if ($this->_options['published'] == 1) {
+        if ($this->options['published'] == 1) {
             $query->whereEquals('c.published', 1);
         }
 
@@ -249,20 +249,20 @@ class Categories
         $query->whereRaw('badcats.id is null');
 
         // i for item
-        if (isset($this->_options['countItems']) && $this->_options['countItems'] == 1) {
-            if ($this->_options['published'] == 1) {
+        if (isset($this->options['countItems']) && $this->options['countItems'] == 1) {
+            if ($this->options['published'] == 1) {
                 $query->joinRaw(
-                    $db->quoteName($this->_table) . ' AS i',
-                    'i.' . $db->quoteName($this->_field) . ' = c.id AND i.' . $this->_statefield . ' = 1',
+                    $db->quoteName($this->table) . ' AS i',
+                    'i.' . $db->quoteName($this->field) . ' = c.id AND i.' . $this->statefield . ' = 1',
                     'left',
                 );
             } else {
-                $tableAlias = $db->quoteName($this->_table) . ' AS i';
-                $joinOn = 'i.' . $db->quoteName($this->_field) . ' = c.id';
+                $tableAlias = $db->quoteName($this->table) . ' AS i';
+                $joinOn = 'i.' . $db->quoteName($this->field) . ' = c.id';
                 $query->joinRaw($tableAlias, $joinOn, 'left');
             }
 
-            $query->select('COUNT(i.' . $db->quoteName($this->_key) . ')', 'numitems');
+            $query->select('COUNT(i.' . $db->quoteName($this->key) . ')', 'numitems');
         }
 
         // Group by
@@ -312,51 +312,51 @@ class Categories
                 }
 
                 // Create the node
-                if (!isset($this->_nodes[$result->id])) {
+                if (!isset($this->nodes[$result->id])) {
                     // Create the JCategoryNode and add to _nodes
-                    $this->_nodes[$result->id] = new Node($result, $this);
+                    $this->nodes[$result->id] = new Node($result, $this);
 
                     // If not root and if the current node's parent is in the list or parent is 0
-                    $hasParent = isset($this->_nodes[$result->parent_id]) || $result->parent_id == 1;
+                    $hasParent = isset($this->nodes[$result->parent_id]) || $result->parent_id == 1;
                     if ($result->id != 'root' && $hasParent) {
                         // Compute relationship between node and its parent
-                        $this->_nodes[$result->id]->setParent($this->_nodes[$result->parent_id]);
+                        $this->nodes[$result->id]->setParent($this->nodes[$result->parent_id]);
                     }
 
                     // If the node's parent id is not in the _nodes list and the node
                     // is not root (doesn't have parent_id == 0), remove from the list
-                    $hasParentNode = isset($this->_nodes[$result->parent_id]) || $result->parent_id == 0;
+                    $hasParentNode = isset($this->nodes[$result->parent_id]) || $result->parent_id == 0;
                     if (!$hasParentNode) {
-                        unset($this->_nodes[$result->id]);
+                        unset($this->nodes[$result->id]);
                         continue;
                     }
 
                     if ($result->id == $id || $childrenLoaded) {
-                        $this->_nodes[$result->id]->setAllLoaded();
+                        $this->nodes[$result->id]->setAllLoaded();
                         $childrenLoaded = true;
                     }
                 } elseif ($result->id == $id || $childrenLoaded) {
                     // Create the JCategoryNode
-                    $this->_nodes[$result->id] = new Node($result, $this);
+                    $this->nodes[$result->id] = new Node($result, $this);
 
-                    if ($result->id != 'root' && (isset($this->_nodes[$result->parent_id]) || $result->parent_id)) {
+                    if ($result->id != 'root' && (isset($this->nodes[$result->parent_id]) || $result->parent_id)) {
                         // Compute relationship between node and its parent
-                        $this->_nodes[$result->id]->setParent($this->_nodes[$result->parent_id]);
+                        $this->nodes[$result->id]->setParent($this->nodes[$result->parent_id]);
                     }
 
-                    if (!isset($this->_nodes[$result->parent_id])) {
-                        unset($this->_nodes[$result->id]);
+                    if (!isset($this->nodes[$result->parent_id])) {
+                        unset($this->nodes[$result->id]);
                         continue;
                     }
 
                     if ($result->id == $id || $childrenLoaded) {
-                        $this->_nodes[$result->id]->setAllLoaded();
+                        $this->nodes[$result->id]->setAllLoaded();
                         $childrenLoaded = true;
                     }
                 }
             }
         } else {
-            $this->_nodes[$id] = null;
+            $this->nodes[$id] = null;
         }
     }
 }

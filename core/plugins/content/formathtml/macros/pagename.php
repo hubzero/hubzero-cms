@@ -42,11 +42,11 @@ class PageName extends Macro
         switch (trim($et)) {
             case 'title':
                 $sql = "SELECT title FROM `#__wiki_page` WHERE pagename="
-                    . $this->_db->quote($this->pagename) . "' AND `group_cn`="
-                    . $this->_db->quote($this->domain) . " AND scope=" . $this->_db->quote($this->scope);
+                    . $this->db->quote($this->pagename) . "' AND `group_cn`="
+                    . $this->db->quote($this->domain) . " AND scope=" . $this->db->quote($this->scope);
                 // Perform query
-                $this->_db->setQuery($sql);
-                return stripslashes($this->_db->loadResult());
+                $this->db->setQuery($sql);
+                return stripslashes($this->db->loadResult());
                 break;
 
             case 'alias':

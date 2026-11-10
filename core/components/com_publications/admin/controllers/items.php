@@ -492,7 +492,7 @@ class Items extends AdminController
                 $doiService->set('authors', $authors);
 
                 // Update DOI
-                if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->doi)) {
+                if (preg_match("/" . $doiService->configs->shoulder . "/", $model->version->doi)) {
                     $doiService->update($model->version->doi, true);
 
                     if ($doiService->getError()) {
@@ -579,7 +579,7 @@ class Items extends AdminController
                 $doiService->set('authors', $authors);
 
                 // Update DOI
-                if (preg_match("/" . $doiService->_configs->shoulder . "/", $model->version->get('doi'))) {
+                if (preg_match("/" . $doiService->configs->shoulder . "/", $model->version->get('doi'))) {
                     $doiService->update($model->version->get('doi'), true);
 
                     if ($doiService->getError()) {
@@ -653,8 +653,8 @@ class Items extends AdminController
         $project = $this->model->project();
 
         $this->model->setCuration();
-        $requireDoi = isset($this->model->_curationModel->_manifest->params->require_doi)
-                    ? $this->model->_curationModel->_manifest->params->require_doi : 0;
+        $requireDoi = isset($this->model->_curationModel->manifest->params->require_doi)
+                    ? $this->model->_curationModel->manifest->params->require_doi : 0;
 
         // Incoming updates
         $title          = trim(Request::getString('title', '', 'post'));
@@ -744,7 +744,7 @@ class Items extends AdminController
         $doi = trim(Request::getString('doi', '', 'post'));
         if (
             $doi
-            && (!$this->model->version->doi || !preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi))
+            && (!$this->model->version->doi || !preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi))
         ) {
             $this->model->version->doi = $doi;
         }
@@ -841,7 +841,7 @@ class Items extends AdminController
 
         // Update DOI with latest information
         if ($this->model->version->doi && !$action) {
-            if (preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi)) {
+            if (preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi)) {
                 $doiService->set('authors', $authors);
 
                 $fosTag = $this->model->getFOSTag();
@@ -890,7 +890,7 @@ class Items extends AdminController
                     if ($doiService->on()) {
                         if (
                             $this->model->version->doi
-                            && preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi)
+                            && preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi)
                         ) {
                             $doiService->set('authors', $authors);
                             $doiService->update($this->model->version->doi, true);
@@ -941,7 +941,7 @@ class Items extends AdminController
 
                         // Get and save manifest and its version
                         $versionNumber = $this->model->_curationModel->checkCurationVersion();
-                        $this->model->version->set('curation', json_encode($this->model->_curationModel->_manifest));
+                        $this->model->version->set('curation', json_encode($this->model->_curationModel->manifest));
                         $this->model->version->set('curation_version_id', $versionNumber);
 
                         // Check if publication is within grace period (published status)
@@ -1136,12 +1136,12 @@ class Items extends AdminController
                     if ($doiService->on()) {
                         if (
                             $this->model->version->doi
-                            && preg_match("/" . $doiService->_configs->shoulder . "/", $this->model->version->doi)
+                            && preg_match("/" . $doiService->configs->shoulder . "/", $this->model->version->doi)
                         ) {
                             $doiService->set('authors', $authors);
                             $doiService->update($this->model->version->doi, true);
 
-                            $resURL = $doiService->_configs->livesite . DS . 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tombstone' . '&id=' . $id . '&v=' . $this->model->version->version_number;
+                            $resURL = $doiService->configs->livesite . DS . 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tombstone' . '&id=' . $id . '&v=' . $this->model->version->version_number;
                             $result = $doiService->registerURL($doi, $resURL);
 
                             if (!$result) {

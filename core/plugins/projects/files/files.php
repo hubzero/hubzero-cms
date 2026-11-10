@@ -32,21 +32,21 @@ use Components\Projects\Models\Orm\Project;
 class Files extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connect;
+    protected $connect;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_publishing;
+    protected $publishing;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_rSync;
+    protected $rSync;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_remoteService;
+    protected $remoteService;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_task;
+    protected $task;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $forceSync;
     protected $model;
     protected $publication;
@@ -65,21 +65,21 @@ class Files extends Plugin
      *
      * @var  string
      */
-    protected $_path = null;
+    protected $path = null;
 
     /**
      * Component name
      *
      * @var  string
      */
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Event call to determine if this plugin should return data
@@ -164,11 +164,11 @@ class Files extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -198,10 +198,10 @@ class Files extends Plugin
 
             $default = $this->params->get('default_action', 'browse');
 
-            $this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
-            $this->_database   = App::get('db');
-            $this->_uid        = User::get('id');
-            $this->_task       = $action ? $action : Request::getString('action', $default);
+            $this->publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+            $this->database   = App::get('db');
+            $this->uid        = User::get('id');
+            $this->task       = $action ? $action : Request::getString('action', $default);
             $this->subdir      = $subdir; // already confined above
             $this->publication = Request::getInt('pid', 0);
 
@@ -209,40 +209,40 @@ class Files extends Plugin
             if (!$this->model->exists()) {
                 // Contribute process outside of projects
                 $this->model->set('provisioned', 1);
-                $this->_path = $this->getMembersPath();
+                $this->path = $this->getMembersPath();
             } else {
                 if (!$this->repo->exists()) {
                     // Default to local repo (will redirect to add repo page in the future)
                     $this->repo = new \Components\Projects\Models\Repo($this->model, 'local');
                 }
-                $this->_path = $this->repo->get('path');
+                $this->path = $this->repo->get('path');
             }
 
             //  Establish connection to external services
             if ($this->model->exists() && !$this->model->isProvisioned()) {
-                $this->_connect = new \Components\Projects\Helpers\Connect(
+                $this->connect = new \Components\Projects\Helpers\Connect(
                     $this->model,
-                    $this->_uid,
+                    $this->uid,
                     date_default_timezone_get(),
                 );
 
                 // Sync service is Google
-                if (!empty($this->_connect->_active) && $this->repo->isLocal()) {
-                    $this->_remoteService = 'google';
+                if (!empty($this->connect->active) && $this->repo->isLocal()) {
+                    $this->remoteService = 'google';
                 }
             }
 
             $ctask = 'connections';
             if (
                 ($connection = Request::getInt('connection', null))
-                || $this->_task == 'editconnection'
-                || $this->_task == 'saveconnection'
-                || $this->_task == 'newconnection'
-                || $this->_task == 'deleteconnection'
-                || $this->_task == 'refreshconnection'
+                || $this->task == 'editconnection'
+                || $this->task == 'saveconnection'
+                || $this->task == 'newconnection'
+                || $this->task == 'deleteconnection'
+                || $this->task == 'refreshconnection'
             ) {
-                $ctask       = $this->_task;
-                $this->_task = 'connections';
+                $ctask       = $this->task;
+                $this->task = 'connections';
             }
 
             // Someone who is not a member got this far only because subdir is
@@ -250,7 +250,7 @@ class Files extends Plugin
             // nothing else: no trash, sync, selectors or connections, and no
             // item named with a path that climbs back out of the directory.
             if ($this->model->exists() && !$this->model->access('member')) {
-                if (!in_array($this->_task, ['browse', 'download', 'open', 'history', 'diff', 'serve'])) {
+                if (!in_array($this->task, ['browse', 'download', 'open', 'history', 'diff', 'serve'])) {
                     App::abort(403, Lang::txt('ALERTNOTAUTH'));
                 }
 
@@ -264,7 +264,7 @@ class Files extends Plugin
             }
 
             // File actions
-            switch ($this->_task) {
+            switch ($this->task) {
                 // Basic file management
                 case 'upload':
                     $arr['html'] = $this->_upload();
@@ -339,7 +339,7 @@ class Files extends Plugin
                     $arr['html'] = $this->diskspace(
                         $this->model,
                         $this->repo->get('name'),
-                        $this->_uid,
+                        $this->uid,
                     );
                     break;
                 case 'optimize':
@@ -375,7 +375,7 @@ class Files extends Plugin
 
                     // New connected methods
                 case 'connections':
-                    $controller = new Connections($this, $this->_option, $connection);
+                    $controller = new Connections($this, $this->componentOption, $connection);
                     $arr['html'] = $controller->execute($ctask);
                     break;
                     // File browser
@@ -455,22 +455,22 @@ class Files extends Plugin
 
         // Sync active?
         $remotes = [];
-        $view->connect     = $this->_connect;
-        $view->services    = $this->_connect->_active;
-        $view->connections = $this->_connect->getConnections($this->_uid);
+        $view->connect     = $this->connect;
+        $view->services    = $this->connect->active;
+        $view->connections = $this->connect->getConnections($this->uid);
 
         // Get stored remote connections
-        if (!empty($this->_remoteService)) {
-            $objRFile = new \Components\Projects\Tables\RemoteFile($this->_database);
+        if (!empty($this->remoteService)) {
+            $objRFile = new \Components\Projects\Tables\RemoteFile($this->database);
             $remotes  = $objRFile->getRemoteFiles(
                 $this->model->get('id'),
-                $this->_remoteService,
+                $this->remoteService,
                 $this->subdir,
             );
             $forceSync = $this->forceSync ?? $this->model->params->get('google_sync_queue', 0);
 
             $view->sync    = $sync == 2 ? 0 : $forceSync;
-            $view->rSync   = new Sync($this->_connect);
+            $view->rSync   = new Sync($this->connect);
             $view->sharing = 1;
         }
 
@@ -493,14 +493,14 @@ class Files extends Plugin
         $view->items = $this->repo->filelist($view->params);
 
         $view->publishing = false; // do not show publishing info
-        $view->title      = $this->_area['title'];
-        $view->option     = $this->_option;
+        $view->title      = $this->area['title'];
+        $view->option     = $this->componentOption;
         $view->subdir     = $this->subdir;
         $view->model      = $this->model;
         $view->repo       = $this->repo;
-        $view->uid        = $this->_uid;
+        $view->uid        = $this->uid;
         $view->fileparams = $this->params;
-        $view->database   = $this->_database;
+        $view->database   = $this->database;
 
         return $view->loadTemplate();
     }
@@ -563,7 +563,7 @@ class Files extends Plugin
                 ]);
 
                 $view->title  = '';
-                $view->option = $this->_option;
+                $view->option = $this->componentOption;
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
                 return $view->loadTemplate();
             }
@@ -586,7 +586,7 @@ class Files extends Plugin
 
             // Make sure block exists, else use default
             $view->publication->_curationModel->setBlock($block, $step);
-            $attModel = new \Components\Publications\Models\Attachments($this->_database);
+            $attModel = new \Components\Publications\Models\Attachments($this->database);
             // Get attached items
             $attachments = $view->publication->attachments();
             $attachments = isset($attachments['elements'][$elId]) ? $attachments['elements'][$elId] : null;
@@ -685,13 +685,13 @@ class Files extends Plugin
             $view->folders = $this->repo->filelist($fileParams);
         }
         $view->hiddenFields = $hiddenFields;
-        $view->option    = $this->model->isProvisioned() ? 'com_publications' : $this->_option;
-        $view->database  = $this->_database;
+        $view->option    = $this->model->isProvisioned() ? 'com_publications' : $this->componentOption;
+        $view->database  = $this->database;
         $view->model     = $this->model;
         $view->repo      = $this->repo;
-        $view->uid       = $this->_uid;
+        $view->uid       = $this->uid;
         $view->ajax      = $ajax;
-        $view->task      = $this->_task;
+        $view->task      = $this->task;
         $view->element   = $element;
         $view->block     = $block;
         $view->step      = $step;
@@ -711,7 +711,7 @@ class Files extends Plugin
         $view->connections = $this->connections();
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -820,7 +820,7 @@ class Files extends Plugin
 
         $view->url       = Route::url($this->model->link('files'));
         $view->unused    = $this->model->repo()->getAvailableDiskSpace();
-        $view->option    = $this->_option;
+        $view->option    = $this->componentOption;
         $view->model     = $this->model;
         $view->repo      = $this->repo;
         $view->subdir    = $this->subdir;
@@ -832,7 +832,7 @@ class Files extends Plugin
         // runs, so the basic-upload form needs to know this value to
         // validate client-side and surface a useful error.
         $view->postLimit = self::iniBytes('post_max_size');
-        $view->title     = $this->_area['title'];
+        $view->title     = $this->area['title'];
         $view->params    = $this->params;
 
         return $view->loadTemplate();
@@ -868,7 +868,7 @@ class Files extends Plugin
             'subdir'     => $this->subdir,
             'expand'     => Request::getInt('expand_zip', 0),
             'ajaxUpload' => $ajaxUpload,
-            'path'       => $this->_path,
+            'path'       => $this->path,
         ];
 
         // Upload file
@@ -920,12 +920,12 @@ class Files extends Plugin
 
             return json_encode([
                 'error'   => $this->getError(),
-                'success' => $this->_msg,
+                'success' => $this->msg,
             ]);
         }
 
-        if (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        if (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -947,10 +947,10 @@ class Files extends Plugin
             'name'    => 'newfolder',
         ]);
 
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->model  = $this->model;
         $view->repo   = $this->repo;
-        $view->uid    = $this->_uid;
+        $view->uid    = $this->uid;
         $view->ajax   = 1;
         $view->subdir = $this->subdir;
         $view->url    = Route::url($this->model->link('files'));
@@ -984,7 +984,7 @@ class Files extends Plugin
         $params = [
             'subdir' => $this->subdir,
             'newDir' => $newDir,
-            'path'   => $this->_path,
+            'path'   => $this->path,
         ];
 
         // Create
@@ -993,7 +993,7 @@ class Files extends Plugin
         if ($this->repo->getError()) {
             Notify::message($this->repo->getError(), 'error', 'projects');
         } else {
-            Notify::message($this->_msg, 'success', 'projects');
+            Notify::message($this->msg, 'success', 'projects');
 
             // Force sync
             if ($this->repo->isLocal()) {
@@ -1034,7 +1034,7 @@ class Files extends Plugin
         $params = [
             'subdir'  => $this->subdir,
             'item'    => trim($item, DS),
-            'path'    => $this->_path,
+            'path'    => $this->path,
         ];
 
         // Create
@@ -1082,7 +1082,7 @@ class Files extends Plugin
         ];
 
         // Confirm or process request
-        if ($this->_task == 'delete') {
+        if ($this->task == 'delete') {
             // Output HTML
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -1091,18 +1091,18 @@ class Files extends Plugin
             ]);
 
             $view->items       = [];
-            $view->services    = $this->_connect->_active;
-            $view->connections = $this->_connect->getConnections();
-            $view->connect     = $this->_connect;
-            $view->database    = $this->_database;
-            $view->option      = $this->_option;
+            $view->services    = $this->connect->active;
+            $view->connections = $this->connect->getConnections();
+            $view->connect     = $this->connect;
+            $view->database    = $this->database;
+            $view->option      = $this->componentOption;
             $view->model       = $this->model;
             $view->repo        = $this->repo;
-            $view->uid         = $this->_uid;
+            $view->uid         = $this->uid;
             $view->ajax        = Request::getInt('ajax', 0);
             $view->subdir      = $this->subdir;
             $view->url         = Route::url($this->model->link('files'));
-            $view->path        = $this->_path;
+            $view->path        = $this->path;
             if (empty($items)) {
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
             } else {
@@ -1151,9 +1151,9 @@ class Files extends Plugin
                 if ($params['file']->get('converted')) {
                     // Delete remote converted file
                     if (
-                        $this->_connect->deleteRemoteItem(
+                        $this->connect->deleteRemoteItem(
                             $this->model->get('id'),
-                            $this->_remoteService,
+                            $this->remoteService,
                             $this->model->get('owned_by_user'),
                             $params['file']->get('remoteId'),
                             false,
@@ -1197,7 +1197,7 @@ class Files extends Plugin
         }
 
         // Confirm request
-        if ($this->_task == 'rename') {
+        if ($this->task == 'rename') {
             // Get incoming array of items
             $items = $this->_sortIncoming();
 
@@ -1219,14 +1219,14 @@ class Files extends Plugin
                 }
             }
 
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->model  = $this->model;
             $view->repo   = $this->repo;
-            $view->uid    = $this->_uid;
+            $view->uid    = $this->uid;
             $view->ajax   = 1;
             $view->subdir = $this->subdir;
             $view->url    = Route::url($this->model->link('files'));
-            $view->path   = $this->_path;
+            $view->path   = $this->path;
             return $view->loadTemplate();
         }
 
@@ -1241,7 +1241,7 @@ class Files extends Plugin
         // Set params
         $params = [
             'subdir'  => $this->subdir,
-            'path'    => $this->_path,
+            'path'    => $this->path,
             'from'    => $from,
             'to'      => $to,
             'type'    => Request::getString('type', 'file'),
@@ -1285,7 +1285,7 @@ class Files extends Plugin
         $remotes = $this->_getRemoteConnections();
 
         // Confirmation screen
-        if ($this->_task == 'move') {
+        if ($this->task == 'move') {
             // Output HTML
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -1302,16 +1302,16 @@ class Files extends Plugin
             ];
 
             $view->list        = $this->repo->filelist($listParams);
-            $view->path        = $this->_path;
+            $view->path        = $this->path;
             $view->items       = [];
-            $view->database    = $this->_database;
-            $view->services    = $this->_connect->_active;
-            $view->connections = $this->_connect->getConnections();
-            $view->connect     = $this->_connect;
-            $view->option      = $this->_option;
+            $view->database    = $this->database;
+            $view->services    = $this->connect->active;
+            $view->connections = $this->connect->getConnections();
+            $view->connect     = $this->connect;
+            $view->option      = $this->componentOption;
             $view->model       = $this->model;
             $view->repo        = $this->repo;
-            $view->uid         = $this->_uid;
+            $view->uid         = $this->uid;
             $view->ajax        = Request::getInt('ajax', 0);
             $view->subdir      = $this->subdir;
             $view->url         = Route::url($this->model->link('files'));
@@ -1351,7 +1351,7 @@ class Files extends Plugin
         // Set params for the move
         $params = [
             'subdir'          => $this->subdir,
-            'path'            => $this->_path,
+            'path'            => $this->path,
             'targetDir'       => $target,
             'createTargetDir' => $newdir ? true : false,
         ];
@@ -1455,7 +1455,7 @@ class Files extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
@@ -1464,32 +1464,32 @@ class Files extends Plugin
 
         // Get remote revision history
         $view->connected = false;
-        if (!empty($this->_remoteService)) {
+        if (!empty($this->remoteService)) {
             if ($view->file->get('converted')) {
-                $this->_connect->sortRemoteRevisions(
+                $this->connect->sortRemoteRevisions(
                     $view->file->get('remoteId'),
                     $view->file->get('converted'),
                     $view->file->get('author'),
-                    $this->_uid,
-                    $this->_remoteService,
+                    $this->uid,
+                    $this->remoteService,
                     $view->file->get('localPath'),
                     $versions,
                     $timestamps,
                 );
             } elseif ($view->file->get('originalId')) {
-                $this->_connect->sortRemoteRevisions(
+                $this->connect->sortRemoteRevisions(
                     $view->file->get('originalId'),
                     0,
                     '',
-                    $this->_uid,
-                    $this->_remoteService,
+                    $this->uid,
+                    $this->remoteService,
                     $view->file->get('localPath'),
                     $versions,
                     $timestamps,
                     1,
                 );
             }
-            $view->connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
+            $view->connected = $this->connect->getStoredParam($this->remoteService . '_token', $this->uid);
         }
 
         $this->repo->versions($params, $versions, $timestamps);
@@ -1513,19 +1513,19 @@ class Files extends Plugin
         }
 
         $view->versions = $versions;
-        $view->path     = $this->_path;
-        $view->option   = $this->_option;
+        $view->path     = $this->path;
+        $view->option   = $this->componentOption;
         $view->model    = $this->model;
         $view->repo     = $this->repo;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->ajax     = Request::getInt('ajax');
-        $view->title    = $this->_area['title'];
+        $view->title    = $this->area['title'];
         $view->subdir   = $this->subdir;
 
         if ($this->getError()) {
             $view->setError($this->getError());
         }
-        $view->msg = isset($this->_msg) ? $this->_msg : '';
+        $view->msg = isset($this->msg) ? $this->msg : '';
         return $view->loadTemplate();
     }
 
@@ -1583,11 +1583,11 @@ class Files extends Plugin
         $view->url    = Route::url($this->model->link('files'));
         $view->config = $this->model->config();
         $view->file   = $params['file'];
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->model  = $this->model;
         $view->repo   = $this->repo;
-        $view->uid    = $this->_uid;
-        $view->title  = $this->_area['title'];
+        $view->uid    = $this->uid;
+        $view->title  = $this->area['title'];
         $view->subdir = $this->subdir;
         $view->ajax   = 0;
         $view->params = $params;
@@ -1595,7 +1595,7 @@ class Files extends Plugin
         if ($this->getError()) {
             $view->setError($this->getError());
         }
-        $view->msg = isset($this->_msg) ? $this->_msg : '';
+        $view->msg = isset($this->msg) ? $this->msg : '';
         return $view->loadTemplate();
     }
 
@@ -1608,8 +1608,8 @@ class Files extends Plugin
      */
     public function serve($type = '', $projectid = 0, $query = '')
     {
-        $this->_area = $this->onProjectAreas();
-        if ($type != $this->_area['name']) {
+        $this->area = $this->onProjectAreas();
+        if ($type != $this->area['name']) {
             return false;
         }
         $data = json_decode($query);
@@ -1797,7 +1797,7 @@ class Files extends Plugin
                 $hash = $this->repo->getLastRevision($params);
                 $view->file->set('hash', $hash);
             }
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->model  = $this->model;
 
             if (!($view->file instanceof \Components\Projects\Models\File)) {
@@ -1847,9 +1847,9 @@ class Files extends Plugin
             $serveas = $file->get('name');
 
             // Open converted file
-            if (!empty($this->_remoteService) && $file->get('converted') && $this->_task == 'open') {
+            if (!empty($this->remoteService) && $file->get('converted') && $this->task == 'open') {
                 // Is user connected?
-                $connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
+                $connected = $this->connect->getStoredParam($this->remoteService . '_token', $this->uid);
 
                 if (!$connected) {
                     // Redirect to connect screen
@@ -1860,9 +1860,9 @@ class Files extends Plugin
                 }
 
                 // Load remote resource
-                $this->_connect->setUser($this->model->get('owned_by_user'));
-                $resource = $this->_connect->loadRemoteResource(
-                    $this->_remoteService,
+                $this->connect->setUser($this->model->get('owned_by_user'));
+                $resource = $this->connect->loadRemoteResource(
+                    $this->remoteService,
                     $this->model->get('owned_by_user'),
                     $file->get('remoteId'),
                 );
@@ -1879,13 +1879,13 @@ class Files extends Plugin
             }
 
             // Import & download converted file
-            if (!empty($this->_remoteService) && $file->get('converted')) {
+            if (!empty($this->remoteService) && $file->get('converted')) {
                 $temp_path = sys_get_temp_dir();
 
                 // Load remote resource
-                $this->_connect->setUser($this->model->get('owned_by_user'));
-                $resource = $this->_connect->loadRemoteResource(
-                    $this->_remoteService,
+                $this->connect->setUser($this->model->get('owned_by_user'));
+                $resource = $this->connect->loadRemoteResource(
+                    $this->remoteService,
                     $this->model->get('owned_by_user'),
                     $file->get('remoteId'),
                 );
@@ -1896,8 +1896,8 @@ class Files extends Plugin
                 $cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($file->get('mimeType'));
                 $url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
-                $data = $this->_connect->sendHttpRequest(
-                    $this->_remoteService,
+                $data = $this->connect->sendHttpRequest(
+                    $this->remoteService,
                     $this->model->get('owned_by_user'),
                     $url,
                 );
@@ -1908,7 +1908,7 @@ class Files extends Plugin
                 $ftname = \Components\Projects\Helpers\Google::getImportFilename($file->get('remoteTitle'), $cExt);
                 $serveas = $ftname;
 
-                $this->_connect->fetchFile($data, $ftname, $temp_path);
+                $this->connect->fetchFile($data, $ftname, $temp_path);
                 $downloadPath = $temp_path . DS . $ftname;
             } elseif ($hash) {
                 // Download local revision
@@ -2077,11 +2077,11 @@ class Files extends Plugin
         $tempBase = str_replace(' ', '_', $tempBase);
 
         // Get file contents
-        if (!empty($this->_remoteService) && $file->get('converted')) {
+        if (!empty($this->remoteService) && $file->get('converted')) {
             // Load remote resource
-            $this->_connect->setUser($this->model->get('owned_by_user'));
-            $resource = $this->_connect->loadRemoteResource(
-                $this->_remoteService,
+            $this->connect->setUser($this->model->get('owned_by_user'));
+            $resource = $this->connect->loadRemoteResource(
+                $this->remoteService,
                 $this->model->get('owned_by_user'),
                 $file->get('remoteId'),
             );
@@ -2091,8 +2091,8 @@ class Files extends Plugin
             $url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
 
             // Get data
-            $view->data = $this->_connect->sendHttpRequest(
-                $this->_remoteService,
+            $view->data = $this->connect->sendHttpRequest(
+                $this->remoteService,
                 $this->model->get('owned_by_user'),
                 $url,
             );
@@ -2130,7 +2130,7 @@ class Files extends Plugin
             $tempBase = \Components\Projects\Helpers\Google::getImportFilename($file->get('name'), $cExt);
 
             // Write content to temp file
-            $this->_connect->fetchFile($view->data, $tempBase, PATH_APP . $outputDir);
+            $this->connect->fetchFile($view->data, $tempBase, PATH_APP . $outputDir);
             $contentFile = $tempBase;
         } elseif (!$this->getError()) {
             // Local file
@@ -2192,7 +2192,7 @@ class Files extends Plugin
                 $pdfName = str_replace('temp__', '', basename($contentFile));
                 $where   = $this->subdir ? $this->subdir . DS . $pdfName : $pdfName;
 
-                if (Filesystem::copy(PATH_APP . $outputDir . DS . $contentFile, $this->_path . DS . $where)) {
+                if (Filesystem::copy(PATH_APP . $outputDir . DS . $contentFile, $this->path . DS . $where)) {
                     // Checkin into repo
                     $params = ['subdir' => $this->subdir];
                     $params['file'] = $this->repo->getMetadata($pdfName, 'file', $params);
@@ -2246,7 +2246,7 @@ class Files extends Plugin
         $view->embed     = $contentFile;
         $view->cType     = $cType;
         $view->subdir    = $this->subdir;
-        $view->option    = $this->_option;
+        $view->option    = $this->componentOption;
         $view->image     = !empty($image) ? $image : null;
         $view->model     = $this->model;
         $view->repo      = $this->repo;
@@ -2304,8 +2304,8 @@ class Files extends Plugin
         $url .= $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
         // Check user is connected
-        if (!empty($this->_remoteService)) {
-            $connected = $this->_connect->getStoredParam($this->_remoteService . '_token', $this->_uid);
+        if (!empty($this->remoteService)) {
+            $connected = $this->connect->getStoredParam($this->remoteService . '_token', $this->uid);
             if (!$connected) {
                 // Redirect to connect screen
                 Notify::message(Lang::txt('PLG_PROJECTS_FILES_REMOTE_PLEASE_CONNECT'), 'success', 'projects');
@@ -2317,7 +2317,7 @@ class Files extends Plugin
         }
 
         // Confirmation screen
-        if ($this->_task == 'share') {
+        if ($this->task == 'share') {
             // Output HTML
             $view = new \Hubzero\Plugin\View([
                 'folder'  => 'projects',
@@ -2325,19 +2325,19 @@ class Files extends Plugin
                 'name'    => 'share',
             ]);
 
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->model  = $this->model;
             $view->repo   = $this->repo;
-            $view->uid    = $this->_uid;
+            $view->uid    = $this->uid;
             $view->subdir = $this->subdir;
-            $view->path   = $this->_path;
+            $view->path   = $this->path;
 
             if ($this->getError()) {
                 $view->setError($this->getError());
             } else {
                 $view->file    = !empty($file) ? $file : null;
-                $view->connect = $this->_connect;
-                $view->service = $this->_remoteService;
+                $view->connect = $this->connect;
+                $view->service = $this->remoteService;
             }
 
             return $view->loadTemplate();
@@ -2353,20 +2353,20 @@ class Files extends Plugin
             ]);
 
             $view->title  = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError($this->getError());
             return $view->loadTemplate();
         }
 
         // Send file for remote editing on Google
-        if ($this->_task == 'shareit') {
+        if ($this->task == 'shareit') {
             // Get convertable formats
             $formats = \Components\Projects\Helpers\Google::getGoogleConversionExts();
 
             // Import remote file
             if ($file->get('converted')) {
                 // Load remote resource
-                $resource = $this->_connect->loadRemoteResource($service, $this->_uid, $file->get('remoteId'));
+                $resource = $this->connect->loadRemoteResource($service, $this->uid, $file->get('remoteId'));
 
                 if (!$resource) {
                     $this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_NO_REMOTE'));
@@ -2389,16 +2389,16 @@ class Files extends Plugin
                     $newpath = $this->subdir ? $this->subdir . DS . $title : $title;
                     $file->set('localPath', $newpath);
                     $file->set('name', $title);
-                    $file->set('fullPath', $this->_path . DS . $newpath);
+                    $file->set('fullPath', $this->path . DS . $newpath);
 
                     // Replacing file?
                     $exists = file_exists($file->get('fullPath')) ? 1 : 0;
 
                     // Download remote file
                     if (
-                        $this->_connect->importFile(
-                            $this->_remoteService,
-                            $this->_uid,
+                        $this->connect->importFile(
+                            $this->remoteService,
+                            $this->uid,
                             $resource,
                             $file->get('localPath'),
                             $this->repo->get('path'),
@@ -2410,10 +2410,10 @@ class Files extends Plugin
                         $this->repo->call('checkin', $params);
 
                         // Remove remote resource
-                        $deleted = $this->_connect->deleteRemoteItem(
+                        $deleted = $this->connect->deleteRemoteItem(
                             $this->model->get('id'),
                             $service,
-                            $this->_uid,
+                            $this->uid,
                             $file->get('remoteId'),
                             false,
                         );
@@ -2421,18 +2421,18 @@ class Files extends Plugin
                         // Create remote file for imported file
                         $created = null;
                         if (!$exists) {
-                            $created = $this->_connect->addRemoteFile(
+                            $created = $this->connect->addRemoteFile(
                                 $this->model->get('id'),
-                                $this->_remoteService,
-                                $this->_uid,
+                                $this->remoteService,
+                                $this->uid,
                                 $file,
                             );
                         }
 
                         // Update connection record
-                        $this->_connect->savePairing(
+                        $this->connect->savePairing(
                             $this->model->get('id'),
-                            $this->_remoteService,
+                            $this->remoteService,
                             $created,
                             $file->get('localPath'),
                             $file->get('recordId'),
@@ -2476,10 +2476,10 @@ class Files extends Plugin
                         }
 
                         // Convert file
-                        $added = $this->_connect->addRemoteFile(
+                        $added = $this->connect->addRemoteFile(
                             $this->model->get('id'),
-                            $this->_remoteService,
-                            $this->_uid,
+                            $this->remoteService,
+                            $this->uid,
                             $file,
                             $file->get('remoteParent'),
                             true,
@@ -2491,10 +2491,10 @@ class Files extends Plugin
                             $this->repo->deleteItem($params);
 
                             // Remove original remote file
-                            $deleted = $this->_connect->deleteRemoteItem(
+                            $deleted = $this->connect->deleteRemoteItem(
                                 $this->model->get('id'),
-                                $this->_remoteService,
-                                $this->_uid,
+                                $this->remoteService,
+                                $this->uid,
                                 $file->get('remoteId'),
                                 false,
                             );
@@ -2503,9 +2503,9 @@ class Files extends Plugin
                             $file->setMimeType();
 
                             // Update connection record
-                            $this->_connect->savePairing(
+                            $this->connect->savePairing(
                                 $this->model->get('id'),
-                                $this->_remoteService,
+                                $this->remoteService,
                                 $added,
                                 '',
                                 $file->get('recordId'),
@@ -2523,8 +2523,8 @@ class Files extends Plugin
                             // Something went wrong
                             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARE_ERROR_NO_CONVERT'));
 
-                            if ($this->_connect->getError()) {
-                                $this->setError($this->_connect->getError());
+                            if ($this->connect->getError()) {
+                                $this->setError($this->connect->getError());
                             }
                         }
                     }
@@ -2558,9 +2558,9 @@ class Files extends Plugin
         if (!isset($this->repo)) {
             $this->repo = new \Components\Projects\Models\Repo($model, $repoName);
         }
-        $adv = $this->_task == 'advoptimize' ? true : false;
+        $adv = $this->task == 'advoptimize' ? true : false;
         $params = [
-            'path' => $this->_path,
+            'path' => $this->path,
             'adv'  => $adv,
         ];
         $this->repo->call('optimize', $params);
@@ -2588,7 +2588,7 @@ class Files extends Plugin
             $this->repo = new \Components\Projects\Models\Repo($model, $repoName);
         }
 
-        $url = Route::url('index.php?option=' . $this->_option . '&alias=' . $model->get('alias') . '&active=files&action=diskspace');
+        $url = Route::url('index.php?option=' . $this->componentOption . '&alias=' . $model->get('alias') . '&active=files&action=diskspace');
 
         // Report usage with all history?
         if ($this->params->get('disk_usage') == true || $by == 'admin') {
@@ -2635,9 +2635,9 @@ class Files extends Plugin
 
         $view->by     = $by;
         $view->model  = $model;
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->config = $model->config();
-        $view->title  = isset($this->_area['title']) ? $this->_area['title'] : '';
+        $view->title  = isset($this->area['title']) ? $this->area['title'] : '';
         $view->params = $this->params;
         $view->versionTracking = $model->params->get('versionTracking', '0');
 
@@ -2661,7 +2661,7 @@ class Files extends Plugin
         // Get deleted files
         $view->files  = $this->repo->getTrash();
 
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->model  = $this->model;
         $view->ajax   = Request::getInt('ajax', 0);
 
@@ -2700,38 +2700,38 @@ class Files extends Plugin
 
         // Handle authentication request for service
         if ($service) {
-            $configs = $this->_connect->getConfigs($service, false);
+            $configs = $this->connect->getConfigs($service, false);
 
-            if ($this->_task == 'disconnect') {
+            if ($this->task == 'disconnect') {
                 // Require POST to prevent accidental disconnect by crawlers
                 if (Request::method() !== 'POST') {
                     App::abort(405, Lang::txt('PLG_PROJECTS_FILES_ERROR_METHOD_NOT_ALLOWED'));
                 }
                 Request::checkToken();
 
-                if ($this->_connect->disconnect($service, $removeData)) {
-                    $this->_msg = Lang::txt('PLG_PROJECTS_FILES_DISCONNECT_SUCCESS')
+                if ($this->connect->disconnect($service, $removeData)) {
+                    $this->msg = Lang::txt('PLG_PROJECTS_FILES_DISCONNECT_SUCCESS')
                         . ' ' . $configs['servicename'];
                 } else {
-                    $this->setError($this->_connect->getError());
+                    $this->setError($this->connect->getError());
                 }
 
                 // Redirect to connect screen
                 App::redirect(Route::url($this->model->link('files') . '&action=connect'));
                 return;
-            } elseif (!$this->_connect->makeConnection($service, $reauth, $return)) {
-                $this->setError($this->_connect->getError());
+            } elseif (!$this->connect->makeConnection($service, $reauth, $return)) {
+                $this->setError($this->connect->getError());
             } else {
                 // Successful authentication
-                if (!$this->_connect->afterConnect($service, $this->_uid)) {
-                    $this->setError($this->_connect->getError());
+                if (!$this->connect->afterConnect($service, $this->uid)) {
+                    $this->setError($this->connect->getError());
                 } else {
-                    $this->_msg = Lang::txt('PLG_PROJECTS_FILES_CONNECT_SUCCESS');
+                    $this->msg = Lang::txt('PLG_PROJECTS_FILES_CONNECT_SUCCESS');
                 }
             }
 
             // Refresh info
-            $this->_connect->setConfigs();
+            $this->connect->setConfigs();
         }
 
         // Output HTML
@@ -2741,14 +2741,14 @@ class Files extends Plugin
             'name'   => 'connect',
         ]);
 
-        $view->option   = $this->_option;
-        $view->database = $this->_database;
+        $view->option   = $this->componentOption;
+        $view->database = $this->database;
         $view->model    = $this->model;
-        $view->uid      = $this->_uid;
+        $view->uid      = $this->uid;
         $view->url      = $url;
-        $view->title    = $this->_area['title'];
-        $view->services = $this->_connect->getServices();
-        $view->connect  = $this->_connect;
+        $view->title    = $this->area['title'];
+        $view->services = $this->connect->getServices();
+        $view->connect  = $this->connect;
 
         // Get refreshed params
         $this->model->reloadProject();
@@ -2759,7 +2759,7 @@ class Files extends Plugin
         $view->oparams = new \Hubzero\Config\Registry($member ? $member->params : '');
 
         // Get messages and errors
-        $view->msg = $this->_msg;
+        $view->msg = $this->msg;
         if ($this->getError()) {
             $view->setError($this->getError());
         }
@@ -2778,14 +2778,14 @@ class Files extends Plugin
 
         // Timed sync?
         $autoSync = $this->params->get('auto_sync', 0);
-        $this->_rSync = new Sync($this->_connect);
+        $this->rSync = new Sync($this->connect);
 
         // Remote service(s) active?
-        if (!empty($this->_connect->_active) && $this->repo->isLocal()) {
+        if (!empty($this->connect->active) && $this->repo->isLocal()) {
             // Get remote files for each active service
-            foreach ($this->_connect->_active as $servicename) {
+            foreach ($this->connect->active as $servicename) {
                 // Set syncing service
-                $this->_rSync->set('service', $servicename);
+                $this->rSync->set('service', $servicename);
 
                 // Get time of last sync
                 $synced = $this->model->params->get($servicename . '_sync');
@@ -2805,25 +2805,25 @@ class Files extends Plugin
                 }
 
                 // Send sync request
-                $success = $this->_rSync->sync($servicename, $queue, $auto);
+                $success = $this->rSync->sync($servicename, $queue, $auto);
 
                 // Unlock sync
                 if ($success) {
-                    $this->_rSync->lockSync($servicename, true);
+                    $this->rSync->lockSync($servicename, true);
                 }
 
                 // Success message
-                $this->_rSync->set('message', Lang::txt('PLG_PROJECTS_FILES_SYNC_SUCCESS'));
+                $this->rSync->set('message', Lang::txt('PLG_PROJECTS_FILES_SYNC_SUCCESS'));
             }
         }
 
-        $this->_rSync->set('auto', $auto);
+        $this->rSync->set('auto', $auto);
 
         if (!$ajax) {
             return $this->_browse();
         } else {
-            $this->_rSync->set('output', $this->_browse());
-            return json_encode($this->_rSync->getStatus());
+            $this->rSync->set('output', $this->_browse());
+            return json_encode($this->rSync->getStatus());
         }
     }
 
@@ -2834,10 +2834,10 @@ class Files extends Plugin
     {
         $service = Request::getString('service', 'google');
 
-        $this->_rSync = new Sync($this->_connect);
-        $this->_rSync->writeToFile('');
-        $this->_rSync->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR'));
-        $this->_rSync->lockSync($service, true);
+        $this->rSync = new Sync($this->connect);
+        $this->rSync->writeToFile('');
+        $this->rSync->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR'));
+        $this->rSync->lockSync($service, true);
     }
 
     /**
@@ -2847,7 +2847,7 @@ class Files extends Plugin
      */
     public function syncStatus()
     {
-        $this->_rSync = new Sync($this->_connect);
+        $this->rSync = new Sync($this->connect);
 
         // Incoming
         $pid     = Request::getInt('id', 0);
@@ -2855,7 +2855,7 @@ class Files extends Plugin
         $status  = ['status' => '', 'msg' => time(), 'output' => ''];
 
         // Read status file
-        $rFile = $this->_rSync->readFile();
+        $rFile = $this->rSync->readFile();
 
         // Report sync progress
         if ($rFile && $rFile != Lang::txt('PLG_PROJECTS_FILES_SYNC_COMPLETE')) {
@@ -2912,7 +2912,7 @@ class Files extends Plugin
             return false;
         }
 
-        if (!$this->_path || !is_dir($this->_path)) {
+        if (!$this->path || !is_dir($this->path)) {
             return false;
         }
 
@@ -2925,8 +2925,8 @@ class Files extends Plugin
         // Get temp directory
         $base_path    = sys_get_temp_dir();
         $tarname      = 'project_files_' . \Components\Projects\Helpers\Html::generateCode(6, 6, 0, 1, 1) . '.zip';
-        $path         = $this->subdir ? $this->_path . DS . $this->subdir : $this->_path;
-        $root         = realpath($this->_path);
+        $path         = $this->subdir ? $this->path . DS . $this->subdir : $this->path;
+        $root         = realpath($this->path);
         $combinedSize = 0;
         $tarpath      =  $base_path . DS . $tarname;
 
@@ -2993,11 +2993,11 @@ class Files extends Plugin
     protected function _getRemoteConnections($remoteEdit = true)
     {
         $remotes = [];
-        if (!empty($this->_remoteService)) {
-            $objRFile = new \Components\Projects\Tables\RemoteFile($this->_database);
+        if (!empty($this->remoteService)) {
+            $objRFile = new \Components\Projects\Tables\RemoteFile($this->database);
             $remotes  = $objRFile->getRemoteFiles(
                 $this->model->get('id'),
-                $this->_remoteService,
+                $this->remoteService,
                 $this->subdir,
                 $remoteEdit,
             );
@@ -3017,7 +3017,7 @@ class Files extends Plugin
         $mconfig = Component::params('com_members');
 
         // Build upload path
-        $dir  = \Hubzero\Utility\Str::pad($this->_uid);
+        $dir  = \Hubzero\Utility\Str::pad($this->uid);
         $path = DS . trim($mconfig->get('webpath', '/site/members'), DS) . DS . $dir . DS . 'files';
 
         if (!is_dir(PATH_APP . $path)) {
@@ -3040,7 +3040,7 @@ class Files extends Plugin
     {
         // Check path format
         $subdir = trim($this->subdir, DS);
-        $fullpath = $subdir ? $this->_path . DS . $subdir : $this->_path;
+        $fullpath = $subdir ? $this->path . DS . $subdir : $this->path;
 
         $get = Filesystem::files($fullpath);
 
@@ -3048,8 +3048,8 @@ class Files extends Plugin
         if ($get) {
             foreach ($get as $file) {
                 if (substr($file, 0, 1) != '.' && strtolower($file) !== 'index.html') {
-                    $file = str_replace($this->_path . DS, '', $file);
-                    $entry = new \Components\Projects\Models\File(trim($file), $this->_path);
+                    $file = str_replace($this->path . DS, '', $file);
+                    $entry = new \Components\Projects\Models\File(trim($file), $this->path);
                     $files[] = $entry;
                 }
             }

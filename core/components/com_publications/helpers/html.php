@@ -621,7 +621,7 @@ class Html
 
         // Include version label?
         if (isset($publication->_curationModel)) {
-            $params = $publication->_curationModel->_manifest->params;
+            $params = $publication->_curationModel->manifest->params;
             if (isset($params->appendVersionLabel) && $params->appendVersionLabel == 1) {
                 $txt .= ' ' . $publication->version->get('version_label');
             }
@@ -643,7 +643,7 @@ class Html
     public static function footer($publication, $html = '')
     {
         if (isset($publication->_curationModel)) {
-            $params = $publication->_curationModel->_manifest->params;
+            $params = $publication->_curationModel->manifest->params;
             if (isset($params->footer) && $params->footer) {
                 $html = '<div class="pub-footer">' . $params->footer . '</div>';
             }

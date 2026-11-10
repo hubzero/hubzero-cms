@@ -22,7 +22,7 @@ use OAuthProvider;
 class Api extends ApiController
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_provider;
+    protected $provider;
     protected $segments;
     protected $view;
 
@@ -84,7 +84,7 @@ class Api extends ApiController
      */
     private function tokenInfo()
     {
-        $this->send($this->_provider->getTokenData(), 200);
+        $this->send($this->provider->getTokenData(), 200);
     }
 
     /**
@@ -110,7 +110,7 @@ class Api extends ApiController
      */
     private function requestToken()
     {
-        if (empty($this->_provider)) {
+        if (empty($this->provider)) {
             $this->send('Bad Request', 400);
             return;
         }
@@ -123,7 +123,7 @@ class Api extends ApiController
 
         $db = App::get('db');
 
-        $consumer_data = $this->_provider->getConsumerData();
+        $consumer_data = $this->provider->getConsumerData();
 
         if (empty($consumer_data)) {
             $this->send('Internal Server Error', 500);
@@ -235,7 +235,7 @@ class Api extends ApiController
      */
     private function accessToken()
     {
-        if (empty($this->_provider)) {
+        if (empty($this->provider)) {
             $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
             $this->send('oauth_problem=bad oauth provider', 501);
             return;
@@ -271,7 +271,7 @@ class Api extends ApiController
         }
 
         if ($xauth_request) {
-            if ($this->_provider->getConsumerData()->xauth == '0') {
+            if ($this->provider->getConsumerData()->xauth == '0') {
                 $this->response->headers->set('Content-Type', 'application/x-www-form-urlencoded');
                 $this->send('oauth_problem=permission_denied', 401);
                 return;
@@ -282,8 +282,8 @@ class Api extends ApiController
                 return;
             }
 
-            if (isset($this->_provider->x_auth_mode)) {
-                $x_auth_mode = $this->_provider->x_auth_mode;
+            if (isset($this->provider->x_auth_mode)) {
+                $x_auth_mode = $this->provider->x_auth_mode;
             } elseif (isset($_POST['x_auth_mode'])) {
                 $x_auth_mode = $_POST['x_auth_mode'];
             } elseif (isset($_GET['x_auth_mode'])) {
@@ -292,8 +292,8 @@ class Api extends ApiController
                 $x_auth_mode = '';
             }
 
-            if (isset($this->_provider->x_auth_username)) {
-                $x_auth_username = $this->_provider->x_auth_username;
+            if (isset($this->provider->x_auth_username)) {
+                $x_auth_username = $this->provider->x_auth_username;
             } elseif (isset($_POST['x_auth_username'])) {
                 $x_auth_username = $_POST['x_auth_username'];
             } elseif (isset($_GET['x_auth_username'])) {
@@ -302,8 +302,8 @@ class Api extends ApiController
                 $x_auth_username = '';
             }
 
-            if (isset($this->_provider->x_auth_password)) {
-                $x_auth_password = $this->_provider->x_auth_password;
+            if (isset($this->provider->x_auth_password)) {
+                $x_auth_password = $this->provider->x_auth_password;
             } elseif (isset($_POST['x_auth_password'])) {
                 $x_auth_password = $_POST['x_auth_password'];
             } elseif (isset($_GET['x_auth_password'])) {
@@ -332,7 +332,7 @@ class Api extends ApiController
             $db = App::get('db');
 
             $db->setQuery("SELECT token,token_secret FROM `#__oauthp_tokens` WHERE consumer_id="
-                . $db->Quote($this->_provider->getConsumerData()->id) . " AND user_id ="
+                . $db->Quote($this->provider->getConsumerData()->id) . " AND user_id ="
                 . $db->Quote($useraccount->get('id')) . " LIMIT 1;");
 
             $result = $db->loadObject();
@@ -343,7 +343,7 @@ class Api extends ApiController
             }
 
             if (!is_object($result)) {
-                if ($this->_provider->getConsumerData()->xauth_grant < 1) {
+                if ($this->provider->getConsumerData()->xauth_grant < 1) {
                     $this->send('Internal Server Error', 501);
                     return;
                 }
@@ -355,10 +355,10 @@ class Api extends ApiController
 
                 $sql = "INSERT INTO #__oauthp_tokens "
                     . "(consumer_id,user_id,state,token,token_secret,callback_url) VALUE ("
-                    . $db->Quote($this->_provider->getConsumerData()->id) . ","
+                    . $db->Quote($this->provider->getConsumerData()->id) . ","
                     . $db->Quote($useraccount->get('id')) . ",'1',"
                     . $db->Quote($token) . "," . $db->Quote($token_secret) . ","
-                    . $db->Quote($this->_provider->getConsumerData()->callback_url) . ");";
+                    . $db->Quote($this->provider->getConsumerData()->callback_url) . ");";
                 $db->setQuery($sql);
 
                 if (!$db->query()) {

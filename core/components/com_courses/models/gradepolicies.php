@@ -30,7 +30,7 @@ class GradePolicies extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'gradepolicies';
+    protected $scope = 'gradepolicies';
 
     /**
      * Constructor

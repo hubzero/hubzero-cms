@@ -33,7 +33,7 @@ class BaseSubscription
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
 
     /**
      * Constructor
@@ -46,7 +46,7 @@ class BaseSubscription
     {
         $this->pId = $pId;
         $this->uId = $uId;
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
     }
 
     /**
@@ -60,14 +60,14 @@ class BaseSubscription
         $now = Date::of('now')->toSql();
 
         $sql = 'SELECT `crtmExpires`,
-				IF(`crtmExpires` < ' . $this->_db->quote($now) . ', 0, 1) AS `crtmActive`
+				IF(`crtmExpires` < ' . $this->db->quote($now) . ', 0, 1) AS `crtmActive`
 				FROM `#__cart_memberships` m
 				LEFT JOIN `#__cart_carts` c ON m.`crtId` = c.`crtId`
-				WHERE m.`pId` = ' . $this->_db->quote($this->pId)
-                . ' AND c.`uidNumber` = ' . $this->_db->quote($this->uId);
-        $this->_db->setQuery($sql);
+				WHERE m.`pId` = ' . $this->db->quote($this->pId)
+                . ' AND c.`uidNumber` = ' . $this->db->quote($this->uId);
+        $this->db->setQuery($sql);
 
-        $membershipInfo = $this->_db->loadAssoc();
+        $membershipInfo = $this->db->loadAssoc();
         return $membershipInfo;
     }
 
@@ -81,13 +81,13 @@ class BaseSubscription
     public function setExpiration($expires)
     {
         $sql = 'INSERT INTO `#__cart_memberships` SET
-				`crtmExpires` = ' . $this->_db->quote($expires) . ',
-				`pId` = ' . $this->_db->quote($this->pId) . ',
-				`crtId` = (SELECT crtId FROM `#__cart_carts` WHERE `uidNumber` = ' . $this->_db->quote($this->uId) . ')
+				`crtmExpires` = ' . $this->db->quote($expires) . ',
+				`pId` = ' . $this->db->quote($this->pId) . ',
+				`crtId` = (SELECT crtId FROM `#__cart_carts` WHERE `uidNumber` = ' . $this->db->quote($this->uId) . ')
 				ON DUPLICATE KEY UPDATE
-				`crtmExpires` = ' . $this->_db->quote($expires) . '';
+				`crtmExpires` = ' . $this->db->quote($expires) . '';
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $this->db->setQuery($sql);
+        $this->db->query();
     }
 }

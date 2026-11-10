@@ -14,7 +14,7 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 // Get blocks
-$blocks = $this->pub->_curationModel->_blocks;
+$blocks = $this->pub->_curationModel->blocks;
 
 $history = $this->pub->_curationModel->getHistory();
 

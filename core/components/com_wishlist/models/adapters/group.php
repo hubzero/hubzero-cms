@@ -22,7 +22,7 @@ class Group extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_wishlist',
     ];
 
@@ -32,7 +32,7 @@ class Group extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'group';
+    protected $scope = 'group';
 
     /**
      * Constructor
@@ -44,15 +44,15 @@ class Group extends Base
     {
         $this->set('referenceid', $referenceid)
              ->set('category', 'group')
-             ->set('option', $this->_segments['option']);
+             ->set('option', $this->segments['option']);
 
-        $this->_item = \Hubzero\User\Group::getInstance($referenceid);
-        if (!$this->_item) {
-            $this->_item = new \Hubzero\User\Group();
+        $this->item = \Hubzero\User\Group::getInstance($referenceid);
+        if (!$this->item) {
+            $this->item = new \Hubzero\User\Group();
         }
 
-        $this->_segments['cn']     = $this->_item->get('cn');
-        $this->_segments['active'] = 'wishlist';
+        $this->segments['cn']     = $this->item->get('cn');
+        $this->segments['active'] = 'wishlist';
     }
 
     /**
@@ -62,7 +62,7 @@ class Group extends Base
      */
     public function title()
     {
-        return $this->_item->get('cn') . ' ' . Lang::txt('COM_WISHLIST_NAME_GROUP');
+        return $this->item->get('cn') . ' ' . Lang::txt('COM_WISHLIST_NAME_GROUP');
     }
 
     /**
@@ -103,7 +103,7 @@ class Group extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         if ($this->get('category')) {
             $segments['category'] = $this->get('category');
@@ -117,7 +117,7 @@ class Group extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -267,7 +267,7 @@ class Group extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -286,12 +286,12 @@ class Group extends Base
                 'index.php?option=' . $this->get('option'),
             );
             Pathway::append(
-                stripslashes($this->_item->get('description')),
-                'index.php?option=com_groups&cn=' . $this->_segments['cn'],
+                stripslashes($this->item->get('description')),
+                'index.php?option=com_groups&cn=' . $this->segments['cn'],
             );
             Pathway::append(
                 Lang::txt('Wishlist'),
-                'index.php?option=com_groups&cn=' . $this->_segments['cn'] . '&active=wishlist',
+                'index.php?option=com_groups&cn=' . $this->segments['cn'] . '&active=wishlist',
             );
         } else {
             Pathway::append(

@@ -28,7 +28,7 @@ Toolbar::save('saveblock');
 Toolbar::cancel();
 
 $params = new \Hubzero\Config\Registry($this->row->params);
-$manifest  = $this->curation->_manifest;
+$manifest  = $this->curation->manifest;
 $curParams = $manifest->params;
 $blocks    = $manifest->blocks;
 

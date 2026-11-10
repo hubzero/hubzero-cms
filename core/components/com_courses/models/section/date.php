@@ -29,5 +29,5 @@ class Date extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'section_date';
+    protected $scope = 'section_date';
 }

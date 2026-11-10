@@ -23,7 +23,7 @@ class Download
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_formatter;
+    protected $formatter;
 
     /**
      * Download formt
@@ -31,7 +31,7 @@ class Download
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_format = 'Bibtex';
+    protected $format = 'Bibtex';
 
     /**
      * Citation object
@@ -39,7 +39,7 @@ class Download
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_reference = null;
+    protected $reference = null;
 
     /**
      * List of formatters
@@ -47,7 +47,7 @@ class Download
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_formatters = [];
+    protected $formatters = [];
 
     /**
      * Mime type
@@ -55,7 +55,7 @@ class Download
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_mime = '';
+    protected $mime = '';
 
     /**
      * File extension
@@ -63,7 +63,7 @@ class Download
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_extension = '';
+    protected $extension = '';
 
     /**
      * Constructor
@@ -86,7 +86,7 @@ class Download
      */
     public function setFormat($format)
     {
-        $this->_format = ucfirst(trim(strtolower($format)));
+        $this->format = ucfirst(trim(strtolower($format)));
     }
 
     /**
@@ -96,7 +96,7 @@ class Download
      */
     public function getFormat()
     {
-        return $this->_format;
+        return $this->format;
     }
 
     /**
@@ -107,7 +107,7 @@ class Download
      */
     public function setReference($reference)
     {
-        $this->_reference = $reference;
+        $this->reference = $reference;
     }
 
     /**
@@ -117,7 +117,7 @@ class Download
      */
     public function getReference()
     {
-        return $this->_reference;
+        return $this->reference;
     }
 
     /**
@@ -128,7 +128,7 @@ class Download
      */
     public function setMimeType($mime)
     {
-        $this->_mime = $mime;
+        $this->mime = $mime;
     }
 
     /**
@@ -138,7 +138,7 @@ class Download
      */
     public function getMimeType()
     {
-        return $this->_mime;
+        return $this->mime;
     }
 
     /**
@@ -149,7 +149,7 @@ class Download
      */
     public function setExtension($extension)
     {
-        $this->_extension = $extension;
+        $this->extension = $extension;
     }
 
     /**
@@ -159,7 +159,7 @@ class Download
      */
     public function getExtension()
     {
-        return $this->_extension;
+        return $this->extension;
     }
 
     /**
@@ -171,9 +171,9 @@ class Download
      */
     public function setFormatter($formatter, $format = '')
     {
-        $format = ($format) ? $format : $this->_format;
+        $format = ($format) ? $format : $this->format;
 
-        $this->_formatters[$format] = $formatter;
+        $this->formatters[$format] = $formatter;
     }
 
     /**
@@ -184,9 +184,9 @@ class Download
      */
     public function getFormatter($format = '')
     {
-        $format = ($format) ? $format : $this->_format;
+        $format = ($format) ? $format : $this->format;
 
-        return (isset($this->_formatters[$format])) ? $this->_formatter[$format] : null;
+        return (isset($this->formatters[$format])) ? $this->formatter[$format] : null;
     }
 
     /**

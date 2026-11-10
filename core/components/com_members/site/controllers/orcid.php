@@ -30,7 +30,7 @@ class Orcid extends SiteController
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_userName;
+    protected $userName;
 
     /**
      * user's ORCID ID
@@ -38,7 +38,7 @@ class Orcid extends SiteController
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_userOrcidID;
+    protected $userOrcidID;
 
     /**
      * OAuth AccessTokens
@@ -46,7 +46,7 @@ class Orcid extends SiteController
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_accessToken;
+    protected $accessToken;
 
     /**
      * A list of ORCID services that can be used
@@ -54,7 +54,7 @@ class Orcid extends SiteController
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_services = [
+    protected $services = [
         'public'  => 'pub.orcid.org',
         'publicsandbox'  => 'pub.sandbox.orcid.org',
         'members' => 'api.orcid.org',
@@ -67,7 +67,7 @@ class Orcid extends SiteController
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_oauthToken = [
+    protected $oauthToken = [
         'members' => 'https://orcid.org/oauth/token',
         'sandbox' => 'https://sandbox.orcid.org/oauth/token',
     ];
@@ -103,7 +103,7 @@ class Orcid extends SiteController
     private function getUserName($orcid, $token)
     {
         $srv = $this->config->get('orcid_service', 'members');
-        $url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/' . $orcid . '/person';
+        $url = Request::scheme() . '://' . $this->services[$srv] . '/v2.0/' . $orcid . '/person';
         $header = ['Accept: application/vnd.orcid+xml'];
         $header[] = 'Authorization: Bearer ' . $token;
 
@@ -169,7 +169,7 @@ class Orcid extends SiteController
                     foreach ($search_res->children() as $profile) {
                         if (($profile->getName() == 'path')) {
                             $fields[$profile->getName()] = $profile->__toString();
-                            $names = $this->getUserName($profile->__toString(), $this->_accessToken);
+                            $names = $this->getUserName($profile->__toString(), $this->accessToken);
                             $fields = array_merge($fields, $names);
                         } elseif ($profile->getName() == 'uri') {
                             $fields[$profile->getName()] = $profile->__toString();
@@ -194,7 +194,7 @@ class Orcid extends SiteController
         $srv = $this->config->get('orcid_service', 'members');
         $clientID = $this->config->get('orcid_' . $srv . '_client_id');
         $clientSecret = $this->config->get('orcid_' . $srv . '_token');
-        $oauthToken = isset($this->_oauthToken[$srv]) ? $this->_oauthToken[$srv] : '';
+        $oauthToken = isset($this->oauthToken[$srv]) ? $this->oauthToken[$srv] : '';
         $params = "client_id=" . $clientID . "&client_secret=" . $clientSecret
             . "&grant_type=client_credentials&scope=/read-public";
 
@@ -208,8 +208,8 @@ class Orcid extends SiteController
 
         if ($result) {
             $response = json_decode($result, true);
-            $this->_accessToken = $response['access_token'];
-            return $this->_accessToken;
+            $this->accessToken = $response['access_token'];
+            return $this->accessToken;
         } else {
             return false;
         }
@@ -228,8 +228,8 @@ class Orcid extends SiteController
         $srv = $this->config->get('orcid_service', 'members');
 
         // Search by first name, last name, institution name
-        $url = Request::scheme() . '://' . $this->_services[$srv] . '/v2.0/search/?q=';
-        $tkn = $this->_accessToken;
+        $url = Request::scheme() . '://' . $this->services[$srv] . '/v2.0/search/?q=';
+        $tkn = $this->accessToken;
 
         $bits = [];
 
@@ -516,7 +516,7 @@ class Orcid extends SiteController
         $output->message = '';
 
         $srv = $this->config->get('orcid_service', 'members');
-        $url = Request::scheme() . '://' . $this->_services[$srv] . '/v1.2' . '/orcid-profile';
+        $url = Request::scheme() . '://' . $this->services[$srv] . '/v1.2' . '/orcid-profile';
 
         $tkn = $this->config->get('orcid_' . $srv . '_token');
 
@@ -614,7 +614,7 @@ class Orcid extends SiteController
     {
         $srv = $this->config->get('orcid_service', 'members');
 
-        $url = 'https://' . $this->_services[$srv] . '/oauth/token';
+        $url = 'https://' . $this->services[$srv] . '/oauth/token';
 
         $client_id     = Request::getString('client_id');
         $client_secret = Request::getString('client_secret');
@@ -647,7 +647,7 @@ class Orcid extends SiteController
         $srv = $this->config->get('orcid_service', 'members');
         $clientID = $this->config->get('orcid_' . $srv . '_client_id');
         $clientSecret = $this->config->get('orcid_' . $srv . '_token');
-        $oauthToken = $this->_oauthToken[$srv];
+        $oauthToken = $this->oauthToken[$srv];
 
         if (Request::getString('code')) {
             //Build request parameter string
@@ -667,8 +667,8 @@ class Orcid extends SiteController
             //Transform cURL response from json string to php array
             if ($result) {
                 $response = json_decode($result, true);
-                $this->_userName = $response['name'];
-                $this->_userOrcidID = $response['orcid'];
+                $this->userName = $response['name'];
+                $this->userOrcidID = $response['orcid'];
             }
             //Close cURL session
             curl_close($ch);
@@ -742,13 +742,13 @@ class Orcid extends SiteController
 
             $user_id = User::get('id');
             if ($user_id != 0) {
-                self::saveORCIDToProfile($user_id, 'orcid', $this->_userOrcidID);
+                self::saveORCIDToProfile($user_id, 'orcid', $this->userOrcidID);
             } else {
-                Session::set('orcid', $this->_userOrcidID);
+                Session::set('orcid', $this->userOrcidID);
             }
         }
         $view = new \Hubzero\Component\View(['name' => 'orcid', 'layout' => 'redirect']);
-        $view->set('userName', $this->_userName)->set('userORCID', $this->_userOrcidID);
+        $view->set('userName', $this->userName)->set('userORCID', $this->userOrcidID);
         $view->display();
     }
 
@@ -766,7 +766,7 @@ class Orcid extends SiteController
             $srv = $this->config->get('orcid_service', 'members');
             $clientID = $this->config->get('orcid_' . $srv . '_client_id');
             $clientSecret = $this->config->get('orcid_' . $srv . '_token');
-            $oauthToken = $this->_oauthToken[$srv];
+            $oauthToken = $this->oauthToken[$srv];
             $permissionURI = $this->config->get('orcid_' . $srv . '_permission_uri');
             $authCode = Request::getString('code');
             $params = "client_id=" . $clientID . "&client_secret=" . $clientSecret

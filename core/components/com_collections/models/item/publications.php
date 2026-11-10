@@ -25,7 +25,7 @@ class Publications extends GenericItem
      *
      * @var  string
      */
-    protected $_type = 'publication';
+    protected $type = 'publication';
 
     /**
      * Get the item type
@@ -83,7 +83,7 @@ class Publications extends GenericItem
         $resource = new Publication($id, $v, null);
         $uid = $resource->version->id;
 
-        $this->table->loadType($uid, $this->_type);
+        $this->table->loadType($uid, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -94,7 +94,7 @@ class Publications extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $uid)
              ->set('created', $resource->created)
              ->set('created_by', $resource->created_by)

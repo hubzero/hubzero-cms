@@ -216,7 +216,7 @@ $panels = [
                     <tr>
                         <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE'); ?></th>
                         <td>
-                            <?php echo $this->model->_type->type; ?>
+                            <?php echo $this->model->type->type; ?>
                         </td>
                     </tr>
                     <?php if ($this->model->isPublished() || $this->model->isUnpublished()) { ?>

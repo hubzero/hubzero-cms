@@ -26,28 +26,28 @@ class Archive extends Obj
      *
      * @var object
      */
-    private $_modules = null;
+    private $modules = null;
 
     /**
      * Modules count
      *
      * @var integer
      */
-    private $_modules_count = null;
+    private $modulesCount = null;
 
     /**
      * Database
      *
      * @var object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * Registry
      *
      * @var object
      */
-    private $_config;
+    private $config;
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ class Archive extends Obj
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
     }
 
     /**
@@ -105,14 +105,14 @@ class Archive extends Obj
                 break;
             case 'list':
             default:
-                $tbl = new Tables\Module($this->_db);
+                $tbl = new Tables\Module($this->db);
                 if ($results = $tbl->find($filters)) {
                     foreach ($results as $key => $result) {
                         $results[$key] = new Module($result);
                     }
                 }
-                $this->_modules = new ItemList($results);
-                return $this->_modules;
+                $this->modules = new ItemList($results);
+                return $this->modules;
                 break;
         }
     }

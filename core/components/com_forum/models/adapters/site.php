@@ -19,7 +19,7 @@ class Site extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_forum',
     ];
 
@@ -29,7 +29,7 @@ class Site extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'site';
+    protected $name = 'site';
 
     /**
      * Generate and return various links to the entry
@@ -41,7 +41,7 @@ class Site extends Base
      */
     public function build($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         if ($this->get('section')) {
             $segments['section'] = $this->get('section');
@@ -58,7 +58,7 @@ class Site extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -124,6 +124,6 @@ class Site extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 }

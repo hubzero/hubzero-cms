@@ -24,7 +24,7 @@ class Project extends Base
      *
      * @var  array
      */
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_projects',
         'alias' => '',
         'active' => 'notes',
@@ -42,20 +42,20 @@ class Project extends Base
     {
         $pagename = ($path ? $path . '/' : '') . $pagename;
 
-        $this->_segments['pagename'] = $pagename;
+        $this->segments['pagename'] = $pagename;
 
-        $this->_scope_id = $scope_id;
+        $this->scopeId = $scope_id;
 
         $project = Request::getVar('project', null);
         if (is_object($project)) {
             $project = $project->get('alias');
         }
         if (!$project) {
-            $p = new \Components\Projects\Models\Project($this->_scope_id);
+            $p = new \Components\Projects\Models\Project($this->scopeId);
             $project = $p->get('alias');
         }
 
-        $this->_segments['alias'] = $project;
+        $this->segments['alias'] = $project;
     }
 
     /**
@@ -68,7 +68,7 @@ class Project extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
@@ -76,7 +76,7 @@ class Project extends Base
         switch (strtolower($type)) {
             case 'base':
                 unset($segments['pagename']);
-                return $this->_base . '?' . (string) $this->_build($segments);
+                return $this->base . '?' . (string) $this->_build($segments);
                 break;
 
             case 'pdf':
@@ -116,7 +116,7 @@ class Project extends Base
         $segments = array_merge($segments, (array) $params);
         //$segments['t'] = 1;
 
-        return Route::url($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor);
+        return Route::url($this->base . '?' . (string) $this->_build($segments) . (string) $anchor);
     }
 
     /**
@@ -128,9 +128,9 @@ class Project extends Base
     public function routing($task = 'save')
     {
         return [
-            'option' => $this->_segments['option'],
-            'alias' => $this->_segments['alias'],
-            'active' => $this->_segments['active'],
+            'option' => $this->segments['option'],
+            'alias' => $this->segments['alias'],
+            'active' => $this->segments['active'],
             'action' => $task,
         ];
     }
@@ -149,7 +149,7 @@ class Project extends Base
 
         $page->config()->set('access-check-done', true);
 
-        $project = new \Components\Projects\Models\Project($this->_scope_id);
+        $project = new \Components\Projects\Models\Project($this->scopeId);
 
         if ($project->isArchived()) {
             // Read-only

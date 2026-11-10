@@ -25,7 +25,7 @@ Toolbar::title(
     'publications',
 );
 
-$manifest  = $this->curation->_manifest;
+$manifest  = $this->curation->manifest;
 $blocks    = $manifest->blocks;
 
 ?>

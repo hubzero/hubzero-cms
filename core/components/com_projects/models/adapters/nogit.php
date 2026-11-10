@@ -20,11 +20,11 @@ use Hubzero\Facades\User;
 class Nogit extends Models\Adapter
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_files;
+    protected $files;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_nogit;
+    protected $nogit;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_profileAssoc;
+    protected $profileAssoc;
 
     /**
      * Adapter name
@@ -54,7 +54,7 @@ class Nogit extends Models\Adapter
 
         // Set repo path
         $this->path = $path;
-        $this->_nogit = new Helpers\Nogit($this->path);
+        $this->nogit = new Helpers\Nogit($this->path);
 
         $this->set('remote', $remote);
     }
@@ -92,9 +92,9 @@ class Nogit extends Models\Adapter
 
         if (!$dirsOnly) {
             // Get a list of files from the git repository
-            $files = empty($files) ? $this->_nogit->getFiles($dirPath, $recursive) : $files;
+            $files = empty($files) ? $this->nogit->getFiles($dirPath, $recursive) : $files;
         } else {
-            $files = empty($files) ? $this->_nogit->getDirectories($dirPath, $recursive) : $files;
+            $files = empty($files) ? $this->nogit->getDirectories($dirPath, $recursive) : $files;
         }
 
         // Output containers
@@ -176,7 +176,7 @@ class Nogit extends Models\Adapter
         $fileName = isset($params['fileName']) ? $params['fileName'] : null;
         $target   = isset($params['target']) ? $params['target'] : null;
 
-        return $this->_nogit->getContent($fileName, $target);
+        return $this->nogit->getContent($fileName, $target);
     }
 
     /**
@@ -263,7 +263,7 @@ class Nogit extends Models\Adapter
         $localRenames = isset($params['localRenames']) ? $params['localRenames'] : null;
         $connections  = isset($params['connections']) ? $params['connections'] : null;
 
-        return $this->_nogit->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections);
+        return $this->nogit->getChanges($localPath, $fromLocal, $localDir, $localRenames, $connections);
     }
 
     /**
@@ -286,7 +286,7 @@ class Nogit extends Models\Adapter
 
         $fromPath = escapeshellarg($fromFile->get('localPath'));
         $toPath = escapeshellarg($toFile->get('localPath'));
-        $this->_nogit->call("mv ./" . $fromPath . " ./" . $toPath);
+        $this->nogit->call("mv ./" . $fromPath . " ./" . $toPath);
         return true;
     }
 
@@ -355,7 +355,7 @@ class Nogit extends Models\Adapter
             return false;
         }
 
-        $this->_nogit->call("rm ./" . escapeshellarg($file->get('localPath')));
+        $this->nogit->call("rm ./" . escapeshellarg($file->get('localPath')));
 
         return true;
     }
@@ -371,21 +371,21 @@ class Nogit extends Models\Adapter
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _file($file, $dirPath, $property = null)
     {
-        if (isset($this->_files[$file->get('localPath')])) {
+        if (isset($this->files[$file->get('localPath')])) {
             return $property
-                ? $this->_files[$file->get('localPath')]->get($property)
-                : $this->_files[$file->get('localPath')];
+                ? $this->files[$file->get('localPath')]->get($property)
+                : $this->files[$file->get('localPath')];
         }
 
-        if (!isset($this->_profileAssoc)) {
-            $this->_profileAssoc = [];
+        if (!isset($this->profileAssoc)) {
+            $this->profileAssoc = [];
         }
 
         // Entry is in the master log?
         if (isset($this->_fileLog[$file->get('localPath')])) {
             $log = $this->_fileLog[$file->get('localPath')];
         } else {
-            $log = $this->_nogit->gitLog($file->get('localPath'), 'combined');
+            $log = $this->nogit->gitLog($file->get('localPath'), 'combined');
         }
 
         // Map data we got
@@ -399,14 +399,14 @@ class Nogit extends Models\Adapter
         if ($file->get('message') && substr($file->get('message'), 0, 5) == 'SFTP-') {
             $file->set('origin', 'SFTP');
 
-            if (isset($this->_profileAssoc[trim($file->get('author'))])) {
-                $profile = $this->_profileAssoc[trim($file->get('author'))];
+            if (isset($this->profileAssoc[trim($file->get('author'))])) {
+                $profile = $this->profileAssoc[trim($file->get('author'))];
                 $file->set('author', $profile->get('name'));
                 $file->set('email', $profile->get('email'));
             } else {
                 $profile = User::getInstance(trim($file->get('author')));
                 if ($profile->get('id')) {
-                    $this->_profileAssoc[trim($file->get('author'))] = $profile;
+                    $this->profileAssoc[trim($file->get('author'))] = $profile;
                     $file->set('author', $profile->get('name'));
                     $file->set('email', $profile->get('email'));
                 }
@@ -414,11 +414,11 @@ class Nogit extends Models\Adapter
         }
 
         // Store
-        $this->_files[$file->get('localPath')] = $file;
+        $this->files[$file->get('localPath')] = $file;
 
         return $property
-            ? $this->_files[$file->get('localPath')]->get($property)
-            : $this->_files[$file->get('localPath')];
+            ? $this->files[$file->get('localPath')]->get($property)
+            : $this->files[$file->get('localPath')];
     }
 
     /**
@@ -453,7 +453,7 @@ class Nogit extends Models\Adapter
     public function ini()
     {
         // Initialize
-        $this->_nogit->iniGit();
+        $this->nogit->iniGit();
     }
 
     /**

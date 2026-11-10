@@ -239,7 +239,7 @@ class Types extends AdminController
 
                 $manifest   = new stdClass();
                 $manifest->blocks = new stdClass();
-                $oManifest  = $curation->_manifest;
+                $oManifest  = $curation->manifest;
 
                 if ($blockid) {
                     // Get blocks model
@@ -310,7 +310,7 @@ class Types extends AdminController
 
         $manifest   = new stdClass();
         $manifest->blocks = new stdClass();
-        $oManifest  = $curation->_manifest;
+        $oManifest  = $curation->manifest;
 
         if ($newblock) {
             // Get blocks model
@@ -323,8 +323,8 @@ class Types extends AdminController
                 if ($oId > $maxBlockId) {
                     $maxBlockId = $oId;
                 }
-                $parentBlock = $blocksModel->getBlockProperty($oBlock->name, '_parentname');
-                $pnBlock     = $blocksModel->getBlockProperty($newblock, '_parentname');
+                $parentBlock = $blocksModel->getBlockProperty($oBlock->name, 'parentname');
+                $pnBlock     = $blocksModel->getBlockProperty($newblock, 'parentname');
 
                 if ($parentBlock == $pnBlock && $oBlock->elements) {
                     foreach ($oBlock->elements as $elId => $el) {
@@ -554,7 +554,7 @@ class Types extends AdminController
         );
 
         $objC = new \Components\Publications\Models\Curation($row->curation);
-        $manifest = $objC->_manifest;
+        $manifest = $objC->manifest;
 
         // Get curation configs
         $curation = Request::getArray('curation', [], 'post');
@@ -700,7 +700,7 @@ class Types extends AdminController
 
         $manifest = new stdClass();
         if ($neworder && !empty($order)) {
-            $oManifest = $curation->_manifest;
+            $oManifest = $curation->manifest;
             foreach ($order as $o) {
                 if (trim($o)) {
                     if (!isset($manifest->blocks)) {
@@ -836,7 +836,7 @@ class Types extends AdminController
             }
 
             $objC = new \Components\Publications\Models\Curation($row->curation);
-            $manifest = $objC->_manifest;
+            $manifest = $objC->manifest;
 
             // Get curation configs
             $curation = Request::getArray('curation', []);

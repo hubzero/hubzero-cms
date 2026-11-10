@@ -24,17 +24,17 @@ use Hubzero\Facades\User;
 class Databases extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_area;
+    protected $area;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_configured;
+    protected $configured;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path;
+    protected $path;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $gitpath;
     protected $model;
     protected $repo;
@@ -61,7 +61,7 @@ class Databases extends Plugin
      * @var  string
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_option = 'com_projects';
+    protected $componentOption = 'com_projects';
 
     /**
      * Store internal message
@@ -69,7 +69,7 @@ class Databases extends Plugin
      * @var  array
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_msg = null;
+    protected $msg = null;
 
     /**
      * Event call after databases initialized
@@ -131,8 +131,8 @@ class Databases extends Plugin
         $counts['databases'] = 0;
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
-        if (empty($this->_area) || !$model->exists()) {
+        $this->area = $this->onProjectAreas();
+        if (empty($this->area) || !$model->exists()) {
             return $counts;
         }
 
@@ -154,8 +154,8 @@ class Databases extends Plugin
     // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _checkConfig()
     {
-        if (isset($this->_configured)) {
-            return $this->_configured;
+        if (isset($this->configured)) {
+            return $this->configured;
         }
 
         try {
@@ -175,15 +175,15 @@ class Databases extends Plugin
             $db_ro = \Hubzero\Database\Driver::getInstance($db_opt_ro);
 
             if ($db_rw->getErrorNum() > 0 || $db_ro->getErrorNum() > 0) {
-                $this->_configured = false;
+                $this->configured = false;
             } else {
-                $this->_configured = true;
+                $this->configured = true;
             }
         } catch (\Exception $e) {
-            $this->_configured = false;
+            $this->configured = false;
         }
 
-        return $this->_configured;
+        return $this->configured;
     }
 
     /**
@@ -204,11 +204,11 @@ class Databases extends Plugin
         ];
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return;
             }
         }
@@ -222,38 +222,38 @@ class Databases extends Plugin
         $this->model = $model;
 
         // Load component configs
-        $this->_config = $model->config();
-        $this->gitpath = $this->_config->get('gitpath', '/opt/local/bin/git');
+        $this->config = $model->config();
+        $this->gitpath = $this->config->get('gitpath', '/opt/local/bin/git');
 
         $repoName = !empty($params['repo']) ? $params['repo'] : Request::getString('repo', 'local');
         $this->repo = new \Components\Projects\Models\Repo($this->model, $repoName);
 
-        $this->_database = App::get('db');
-        $this->_uid = User::get('id');
+        $this->database = App::get('db');
+        $this->uid = User::get('id');
         $this->subdir = trim(urldecode(Request::getString('subdir', '')), DS);
 
         if (!$this->repo->exists()) {
             // Default to local repo (will redirect to add repo page in the future)
             $this->repo = new \Components\Projects\Models\Repo($this->model, 'local');
         }
-        $this->_path = $this->repo->get('path');
+        $this->path = $this->repo->get('path');
 
         // Incoming
         $raw_op = Request::getInt('raw_op', 0);
         $action = $action ? $action : Request::getString('action', 'list');
 
         // Get this area details
-        $this->_area = $this->onProjectAreas();
+        $this->area = $this->onProjectAreas();
 
         // Check if our area is in the array of areas we want to return results for
         if (is_array($areas)) {
-            if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+            if (empty($this->area) || !in_array($this->area['name'], $areas)) {
                 return $arr;
             }
         }
 
-        $this->_database = App::get('db');
-        $this->_uid = User::get('id');
+        $this->database = App::get('db');
+        $this->uid = User::get('id');
 
         // Publishing?
         if ($action == 'browser') {
@@ -339,7 +339,7 @@ class Databases extends Plugin
             ]);
 
             $view->title = '';
-            $view->option = $this->_option;
+            $view->option = $this->componentOption;
             $view->setError(Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_ERROR_NO_PUBID'));
             return $view->loadTemplate();
         }
@@ -365,10 +365,10 @@ class Databases extends Plugin
             \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
         }
 
-        $view->option = $this->_option;
-        $view->database = $this->_database;
+        $view->option = $this->componentOption;
+        $view->database = $this->database;
         $view->model = $this->model;
-        $view->uid = $this->_uid;
+        $view->uid = $this->uid;
         $view->ajax = $ajax;
         $view->element = $element;
         $view->block = $block;
@@ -377,7 +377,7 @@ class Databases extends Plugin
         $view->filter = $filter;
 
         // Get databases to choose from
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
         $view->items = $objPD->getItems($this->model->get('id'), []);
 
         // Get messages and errors
@@ -430,7 +430,7 @@ class Databases extends Plugin
         ]);
 
         // Get current attachments
-        $pContent = new \Components\Publications\Tables\Attachment($this->_database);
+        $pContent = new \Components\Publications\Tables\Attachment($this->database);
         $role = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
@@ -441,12 +441,12 @@ class Databases extends Plugin
 
         // Output HTML
         $view->params = $this->model->params;
-        $view->option = $this->_option;
-        $view->database = $this->_database;
+        $view->option = $this->componentOption;
+        $view->database = $this->database;
         $view->model = $this->model;
-        $view->uid = $this->_uid;
-        $view->config = $this->_config;
-        $view->title = $this->_area['title'];
+        $view->uid = $this->uid;
+        $view->config = $this->config;
+        $view->title = $this->area['title'];
         $view->primary = $primary;
         $view->versionid = $versionid;
 
@@ -477,7 +477,7 @@ class Databases extends Plugin
         $path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
 
         // Get project database object
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
 
         // Get database list
         $list = $objPD->getList($this->model->get('id'));
@@ -497,7 +497,7 @@ class Databases extends Plugin
 
             $l['source_available'] = file_exists($path . DS . $file) ? true : false;
 
-            if ($l['created_by'] == $this->_uid) {
+            if ($l['created_by'] == $this->uid) {
                 $l['name'] = 'me';
             }
 
@@ -511,7 +511,7 @@ class Databases extends Plugin
             'name' => 'list',
         ]);
         $view->model = $this->model;
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->dataviewer = $this->dataviewer;
         $view->list = $list_u;
 
@@ -561,7 +561,7 @@ class Databases extends Plugin
         }
 
         // Get project database object
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
 
         // Get database list
         $used_files = $objPD->getUsedItems($this->model->get('id'));
@@ -583,7 +583,7 @@ class Databases extends Plugin
         ]);
 
         $view->model = $this->model;
-        $view->option = $this->_option;
+        $view->option = $this->componentOption;
         $view->files = $files;
         $view->msg = null;
 
@@ -592,7 +592,7 @@ class Databases extends Plugin
         }
 
         // Get project database object
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
 
         if ($objPD->loadRecord($db_id)) {
             $view->db_id = $db_id;
@@ -1033,7 +1033,7 @@ class Databases extends Plugin
             $dd = json_encode($dd);
 
             // Get project database object
-            $objPD = new \Components\Projects\Tables\Database($this->_database);
+            $objPD = new \Components\Projects\Tables\Database($this->database);
 
             // Recreate or Expert mode
             if ($recreate) {
@@ -1048,8 +1048,8 @@ class Databases extends Plugin
                 $objPD->description = $desc;
                 $objPD->data_definition = $dd;
                 $objPD->updated = Date::toSql();
-                $objPD->updated_by = $this->_uid;
-                $objPD->updated_by = $this->_uid;
+                $objPD->updated_by = $this->uid;
+                $objPD->updated_by = $this->uid;
                 $msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED_DATABASE') . ' "' . $title . '"';
                 $msg .= Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
             } else {
@@ -1062,9 +1062,9 @@ class Databases extends Plugin
                 $objPD->description = $desc;
                 $objPD->data_definition = $dd;
                 $objPD->created = Date::toSql();
-                $objPD->created_by = $this->_uid;
+                $objPD->created_by = $this->uid;
 
-                $objPD->created_by = $this->_uid;
+                $objPD->created_by = $this->uid;
                 $msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED_DATABASE') . ' "' . $title . '"';
                 $msg .= Lang::txt('PLG_PROJECTS_DATABASES_IN_PROJECT');
             }
@@ -1085,7 +1085,7 @@ class Databases extends Plugin
                     $objPD->id,
                     'databases',
                     Route::url(
-                        'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias')
+                        'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias')
                         . '&active=databases',
                     ),
                     'databases',
@@ -1093,7 +1093,7 @@ class Databases extends Plugin
                     1,
                 );
                 ob_clean();
-                $this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED');
+                $this->msg = Lang::txt('PLG_PROJECTS_DATABASES_CREATED');
             }
         }
 
@@ -1103,8 +1103,8 @@ class Databases extends Plugin
         echo json_encode(['status' => 'success', 'data' => $url]);
 
         // Success message
-        if (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        if (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         return;
@@ -1122,7 +1122,7 @@ class Databases extends Plugin
         $db = $this->get_ds_db($this->model->get('id'));
 
         // Get project database object
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
 
         // Get project path
         $path = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'));
@@ -1207,7 +1207,7 @@ class Databases extends Plugin
                 $file,
                 'files',
                 Route::url(
-                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=files',
+                    'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=files',
                 ),
                 'files',
                 'files',
@@ -1243,7 +1243,7 @@ class Databases extends Plugin
         $ds_db = $this->get_ds_db($this->model->get('id'));
 
         // Get project database object
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
 
         if ($objPD->loadRecord($id)) {
             $table = $objPD->database_name;
@@ -1258,7 +1258,7 @@ class Databases extends Plugin
                 $ds_db->setQuery($sql);
                 $ds_db->query();
 
-                $this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_DELETED');
+                $this->msg = Lang::txt('PLG_PROJECTS_DATABASES_DELETED');
             }
 
             // Record project activity
@@ -1271,7 +1271,7 @@ class Databases extends Plugin
                 $id,
                 'databases',
                 Route::url(
-                    'index.php?option=' . $this->_option . '&alias=' . $this->model->get('alias') . '&active=databases',
+                    'index.php?option=' . $this->componentOption . '&alias=' . $this->model->get('alias') . '&active=databases',
                 ),
                 'databases',
                 'databases',
@@ -1283,8 +1283,8 @@ class Databases extends Plugin
             . "/projects/" . $this->model->get('alias') . "/databases/";
 
         // Pass success message
-        if (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        if (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect
@@ -1315,7 +1315,7 @@ class Databases extends Plugin
         $description = Request::getString('db_description', '');
 
         // Get project database object
-        $objPD = new \Components\Projects\Tables\Database($this->_database);
+        $objPD = new \Components\Projects\Tables\Database($this->database);
 
         if ($objPD->loadRecord($id)) {
             $dd = json_decode($objPD->data_definition, true);
@@ -1328,7 +1328,7 @@ class Databases extends Plugin
                 $objPD->data_definition = json_encode($dd);
                 $objPD->store();
 
-                $this->_msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED');
+                $this->msg = Lang::txt('PLG_PROJECTS_DATABASES_UPDATED');
             }
         }
 
@@ -1336,8 +1336,8 @@ class Databases extends Plugin
             . "/projects/" . $this->model->get('alias') . "/databases/";
 
         // Pass success message
-        if (!empty($this->_msg)) {
-            Notify::message($this->_msg, 'success', 'projects');
+        if (!empty($this->msg)) {
+            Notify::message($this->msg, 'success', 'projects');
         }
 
         // Redirect

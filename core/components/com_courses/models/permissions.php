@@ -20,7 +20,7 @@ use Hubzero\Facades\User;
 class Permissions extends Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
 
     /**
      * Config
@@ -28,7 +28,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_config = null;
+    private $config = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -36,7 +36,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_managers = null;
+    private $managers = null;
 
     /**
      * \Components\Courses\Models\Member
@@ -44,7 +44,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_manager = null;
+    private $manager = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -52,7 +52,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_students = null;
+    private $students = null;
 
     /**
      * \Components\Courses\Models\Member
@@ -60,7 +60,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_student = null;
+    private $student = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -68,7 +68,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_course_id = null;
+    private $courseId = null;
 
     /**
      * \Components\Courses\Models\Section
@@ -76,7 +76,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_offering_id = null;
+    private $offeringId = null;
 
     /**
      * \Components\Courses\Models\Section
@@ -84,7 +84,7 @@ class Permissions extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_section_id = null;
+    private $sectionId = null;
 
     /**
      * Constructor
@@ -133,10 +133,10 @@ class Permissions extends Obj
      */
     public function config()
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_courses');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_courses');
         }
-        return $this->_config;
+        return $this->config;
     }
 
     /**
@@ -148,8 +148,10 @@ class Permissions extends Obj
      */
     public function get($property, $default = null)
     {
-        if (isset($this->{'_' . $property})) {
-            return $this->{'_' . $property};
+        $property = self::propertyName($property);
+
+        if (isset($this->{$property})) {
+            return $this->{$property};
         }
         return $default;
     }
@@ -163,9 +165,9 @@ class Permissions extends Obj
      */
     public function set($property, $value = null)
     {
-        $key = '_' . $property;
+        $key = self::propertyName($property);
         $previous = isset($this->{$key}) ? $this->{$key} : null;
-        $this->{'_' . $property} = $value;
+        $this->{$key} = $value;
         return $previous;
     }
 
@@ -189,18 +191,18 @@ class Permissions extends Obj
     public function manager($user_id = null)
     {
         if (
-            !isset($this->_manager)
+            !isset($this->manager)
             || ($user_id !== null
-                && (int) $this->_manager->get('user_id') != $user_id)
+                && (int) $this->manager->get('user_id') != $user_id)
         ) {
-            $this->_manager = null;
+            $this->manager = null;
 
-            if (isset($this->_managers) && isset($this->_managers[$user_id])) {
-                $this->_manager = $this->_managers[$user_id];
+            if (isset($this->managers) && isset($this->managers[$user_id])) {
+                $this->manager = $this->managers[$user_id];
             }
 
-            if (!$this->_manager) {
-                $this->_manager = Manager::getInstance(
+            if (!$this->manager) {
+                $this->manager = Manager::getInstance(
                     $user_id,
                     $this->get('course_id'),
                     $this->get('offering_id'),
@@ -209,7 +211,7 @@ class Permissions extends Obj
             }
         }
 
-        return $this->_manager;
+        return $this->manager;
     }
 
     /**
@@ -233,13 +235,13 @@ class Permissions extends Obj
         $filters['student'] = 0;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_managers) || !is_array($this->_managers) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+        if (!isset($this->managers) || !is_array($this->managers) || $clear) {
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -274,10 +276,10 @@ class Permissions extends Obj
                 }
             }
 
-            $this->_managers = $results;
+            $this->managers = $results;
         }
 
-        return $this->_managers;
+        return $this->managers;
     }
 
     /**
@@ -308,19 +310,19 @@ class Permissions extends Obj
     public function student($user_id = null)
     {
         if (
-            !isset($this->_student)
+            !isset($this->student)
             || ($user_id !== null
-                && (int) $this->_student->get('user_id') != $user_id)
+                && (int) $this->student->get('user_id') != $user_id)
         ) {
-            $this->_student = null;
+            $this->student = null;
 
-            if (isset($this->_students) && isset($this->_students[$user_id])) {
-                $this->_student = $this->_students[$user_id];
+            if (isset($this->students) && isset($this->students[$user_id])) {
+                $this->student = $this->students[$user_id];
             }
         }
 
-        if (!$this->_student) {
-            $this->_student = \Components\Courses\Models\Student::getInstance(
+        if (!$this->student) {
+            $this->student = \Components\Courses\Models\Student::getInstance(
                 $user_id,
                 $this->get('course_id'),
                 null,
@@ -328,7 +330,7 @@ class Permissions extends Obj
             );
         }
 
-        return $this->_student;
+        return $this->student;
     }
 
     /**
@@ -352,13 +354,13 @@ class Permissions extends Obj
         $filters['student'] = 1;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Member($this->_db);
+            $tbl = new Tables\Member($this->db);
 
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_students) || !is_array($this->_students) || $clear) {
-            $tbl = new Tables\Member($this->_db);
+        if (!isset($this->students) || !is_array($this->students) || $clear) {
+            $tbl = new Tables\Member($this->db);
 
             $results = [];
 
@@ -372,10 +374,10 @@ class Permissions extends Obj
             }
 
             // Previously: new \Components\Courses\Models\Iterator($results)
-            $this->_students = $results;
+            $this->students = $results;
         }
 
-        return $this->_students;
+        return $this->students;
     }
 
     /**
@@ -569,5 +571,17 @@ class Permissions extends Obj
         }
 
         return $this->config()->get('access-' . strtolower($action) . '-' . $item);
+    }
+
+    /**
+     * The property holding a value callers name in snake case, as the
+     * properties were once spelled: object_type for $objectType
+     *
+     * @param   string  $name
+     * @return  string
+     */
+    private static function propertyName($name)
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', (string) $name))));
     }
 }

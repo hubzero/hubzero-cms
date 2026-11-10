@@ -38,7 +38,7 @@ class Certificate extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'certificate';
+    protected $scope = 'certificate';
 
     /**
      * Properties object
@@ -46,7 +46,7 @@ class Certificate extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_properties = null;
+    protected $properties = null;
 
     /**
      * Base file path
@@ -54,7 +54,7 @@ class Certificate extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base = null;
+    protected $base = null;
 
     /**
      * Constructor
@@ -234,10 +234,10 @@ class Certificate extends Base
      */
     public function path($type = '')
     {
-        if (!$this->_base) {
+        if (!$this->base) {
             $path = $this->config('uploadpath', '/site/courses');
             $uploadPath = DS . trim($path, DS);
-            $this->_base = $uploadPath . DS . $this->get('course_id')
+            $this->base = $uploadPath . DS . $this->get('course_id')
                 . DS . 'certificates' . DS . $this->get('id');
         }
 
@@ -245,18 +245,18 @@ class Certificate extends Base
             case 'sys':
             case 'system':
             case 'upload':
-                return PATH_APP . $this->_base;
+                return PATH_APP . $this->base;
                 break;
 
             case 'web':
                 $reqBase = trim(Request::base(true), '/');
                 $base = str_replace('administrator', '', $reqBase);
                 $appPath = substr(PATH_APP, strlen(PATH_ROOT));
-                return rtrim($base, '/') . $appPath . $this->_base;
+                return rtrim($base, '/') . $appPath . $this->base;
                 break;
 
             default:
-                return $this->_base;
+                return $this->base;
                 break;
         }
     }
@@ -272,18 +272,18 @@ class Certificate extends Base
      */
     public function properties()
     {
-        if (!$this->_properties) {
+        if (!$this->properties) {
             $default = '{width:900,height:694,elements:[]}';
             $props = $this->get('properties', $default);
-            $this->_properties = json_decode($props);
-            if (!$this->_properties) {
-                $this->_properties = new \stdClass();
-                $this->_properties->width    = 900;
-                $this->_properties->height   = 694;
-                $this->_properties->elements = [];
+            $this->properties = json_decode($props);
+            if (!$this->properties) {
+                $this->properties = new \stdClass();
+                $this->properties->width    = 900;
+                $this->properties->height   = 694;
+                $this->properties->elements = [];
             }
         }
-        return $this->_properties;
+        return $this->properties;
     }
 
     /**

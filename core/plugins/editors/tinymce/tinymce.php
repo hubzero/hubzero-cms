@@ -35,7 +35,7 @@ class Tinymce extends Plugin
      * Base path for editor files
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
+    protected $basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
 
     /**
      * Initialises the Editor.
@@ -439,7 +439,7 @@ class Tinymce extends Plugin
         switch ($mode) {
             case 0: /* Simple mode*/
                 $load = "\t<script type=\"text/javascript\" src=\""
-                        . Request::root() . $this->_basePath
+                        . Request::root() . $this->basePath
                         . "/tiny_mce.js\"></script>\n";
 
                 $return = $load
@@ -469,7 +469,7 @@ class Tinymce extends Plugin
 
             case 1: /* Advanced mode*/
                 $load = "\t<script type=\"text/javascript\" src=\""
-                        . Request::root() . $this->_basePath
+                        . Request::root() . $this->basePath
                         . "/tiny_mce.js\"></script>\n";
 
                 $return = $load
@@ -509,7 +509,7 @@ class Tinymce extends Plugin
 
             case 2: /* Extended mode*/
                 $load = "\t<script type=\"text/javascript\" src=\""
-                        . Request::root() . $this->_basePath
+                        . Request::root() . $this->basePath
                         . "/tiny_mce.js\"></script>\n";
 
                 $return = $load

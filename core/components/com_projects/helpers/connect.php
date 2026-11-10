@@ -32,7 +32,7 @@ class Connect extends Obj
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     // Read from outside the class: the project files plugin asks the
     // connection which services are active.
-    public $_active;
+    public $active;
 
     /**
      * Project
@@ -46,49 +46,49 @@ class Connect extends Obj
      *
      * @var object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * User ID
      *
      * @var integer
      */
-    private $_uid = null;
+    private $uid = null;
 
     /**
      * Connection configuration
      *
      * @var array
      */
-    private $_connect = [];
+    private $connect = [];
 
     /**
      * Service configuration
      *
      * @var array
      */
-    private $_service = [];
+    private $service = [];
 
     /**
      * Available services
      *
      * @var array
      */
-    private $_services = ['google', 'dropbox'];
+    private $services = ['google', 'dropbox'];
 
     /**
      * Service client
      *
      * @var array
      */
-    public $_client = [];
+    public $client = [];
 
     /**
      * Service API
      *
      * @var array
      */
-    public $_api = [];
+    public $api = [];
 
     /**
      * URL to revoke Google token
@@ -115,9 +115,9 @@ class Connect extends Obj
      */
     public function __construct($model = null, $userid = 0, $zone = 'UTC')
     {
-        $this->_db   = App::get('db');
+        $this->db   = App::get('db');
         $this->model = $model;
-        $this->_uid  = $userid ? $userid : User::get('id');
+        $this->uid  = $userid ? $userid : User::get('id');
 
         // Set configurations
         $this->setConfigs();
@@ -136,7 +136,7 @@ class Connect extends Obj
      */
     public function setUser($uid = 0)
     {
-        $this->_uid = $uid;
+        $this->uid = $uid;
     }
 
     /**
@@ -148,7 +148,7 @@ class Connect extends Obj
     {
         $active = false;
 
-        foreach ($this->_services as $servicename) {
+        foreach ($this->services as $servicename) {
             $configs = $this->getConfigs($servicename, true);
 
             if ($configs && $configs['active']) {
@@ -166,21 +166,21 @@ class Connect extends Obj
      */
     public function getActive()
     {
-        if (isset($this->_active)) {
-            return $this->_active;
+        if (isset($this->active)) {
+            return $this->active;
         }
 
-        $this->_active = [];
+        $this->active = [];
 
-        foreach ($this->_services as $servicename) {
+        foreach ($this->services as $servicename) {
             $configs = $this->getConfigs($servicename, true);
 
             if ($configs && $configs['active']) {
-                $this->_active[] = $servicename;
+                $this->active[] = $servicename;
             }
         }
 
-        return $this->_active;
+        return $this->active;
     }
 
     /**
@@ -190,7 +190,7 @@ class Connect extends Obj
      */
     public function getServices()
     {
-        return $this->_services;
+        return $this->services;
     }
 
     /**
@@ -202,10 +202,10 @@ class Connect extends Obj
      */
     public function getConfigParam($service = 'google', $param = '')
     {
-        if (!$param || !isset($this->_connect[$service][$param])) {
+        if (!$param || !isset($this->connect[$service][$param])) {
             return null;
         }
-        return $this->_connect[$service][$param];
+        return $this->connect[$service][$param];
     }
 
     /**
@@ -217,9 +217,9 @@ class Connect extends Obj
     public function getConnections($uid = 0)
     {
         $connections = [];
-        $uid = $uid ? $uid : $this->_uid;
+        $uid = $uid ? $uid : $this->uid;
 
-        foreach ($this->_services as $servicename) {
+        foreach ($this->services as $servicename) {
             $connections[$servicename] = $this->getStoredParam($servicename . '_token', $uid);
         }
 
@@ -277,7 +277,7 @@ class Connect extends Obj
             ],
         ];
 
-        $this->_connect = $connect;
+        $this->connect = $connect;
     }
 
     /**
@@ -289,23 +289,23 @@ class Connect extends Obj
      */
     public function getConfigs($service = 'google', $active = true)
     {
-        if (!isset($this->_connect[$service])) {
+        if (!isset($this->connect[$service])) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        foreach ($this->_connect[$service] as $key => $value) {
+        foreach ($this->connect[$service] as $key => $value) {
             if (!$value && $key != 'active') {
                 // Return only active service?
                 if ($active == true) {
                     return false;
                 } else {
-                    $this->_connect[$service]['on'] = 0;
+                    $this->connect[$service]['on'] = 0;
                 }
             }
         }
 
-        return $this->_connect[$service];
+        return $this->connect[$service];
     }
 
     /**
@@ -318,12 +318,12 @@ class Connect extends Obj
      */
     public function makeConnection($service = 'google', $reauth = false, $return = '')
     {
-        if (!in_array($service, $this->_services)) {
+        if (!in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
         $jsession = App::get('session');
 
         // Make sure we have service
@@ -357,7 +357,7 @@ class Connect extends Obj
                     $this->storeParam($service . '_token_created', time());
 
                     // Store master token for project
-                    if ($this->_uid == $this->model->get('owned_by_user')) {
+                    if ($this->uid == $this->model->get('owned_by_user')) {
                         $this->model->saveParam($service . '_token', $token->refresh_token);
                     }
                 }
@@ -415,15 +415,15 @@ class Connect extends Obj
      */
     public function startClient($service = 'google', $uid = 0, $force = false)
     {
-        $config = $this->_connect[$service];
-        $uid = $uid ? $uid : $this->_uid;
+        $config = $this->connect[$service];
+        $uid = $uid ? $uid : $this->uid;
         $access_token = 0;
 
         // Get access token
-        if ($uid == $this->_uid && $force == false) {
+        if ($uid == $this->uid && $force == false) {
             // Do we have a client started already?
-            if (isset($this->_client[$service]) && $this->_client[$service]) {
-                return $this->_client[$service];
+            if (isset($this->client[$service]) && $this->client[$service]) {
+                return $this->client[$service];
             }
 
             // Acting user - get token from session
@@ -472,7 +472,7 @@ class Connect extends Obj
             $client->setAccessToken($access_token);
         }
 
-        $this->_client[$service] = $client;
+        $this->client[$service] = $client;
 
         return $client;
     }
@@ -487,22 +487,22 @@ class Connect extends Obj
     public function getAPI($service = 'google', $uid = 0)
     {
         // Do we have API started already?
-        if (isset($this->_api[$service]) && $this->_api[$service] && $uid == $this->_uid) {
-            return $this->_api[$service];
+        if (isset($this->api[$service]) && $this->api[$service] && $uid == $this->uid) {
+            return $this->api[$service];
         }
 
-        $uid = $uid ? $uid : $this->_uid;
+        $uid = $uid ? $uid : $this->uid;
 
         // Is user connected?
         $connected = $this->getStoredParam($service . '_token', $uid);
         $uid = $connected ? $uid : $this->model->get('owned_by_user');
 
-        if (!in_array($service, $this->_services)) {
+        if (!in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
 
         // Make sure we have service
         if (!isset($config) || !$config) {
@@ -518,12 +518,12 @@ class Connect extends Obj
 
         // Get API
         if ($service == 'google') {
-            $this->_api[$service] = new Google_Service_Drive($client);
+            $this->api[$service] = new Google_Service_Drive($client);
         } else {
-            $this->_api[$service] = null;
+            $this->api[$service] = null;
         }
 
-        return $this->_api[$service];
+        return $this->api[$service];
     }
 
     /**
@@ -535,12 +535,12 @@ class Connect extends Obj
      */
     public function afterConnect($service = 'google', $uid = 0)
     {
-        if (!in_array($service, $this->_services)) {
+        if (!in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
 
         // Make sure we have service
         if (!isset($config) || !$config) {
@@ -581,7 +581,7 @@ class Connect extends Obj
         }
 
         // Service config
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
 
         // Get ID of user's remote project folder
         $folderID = $config['remote_dir_id'];
@@ -611,7 +611,7 @@ class Connect extends Obj
 
                 $folderID = $createdFolder['id'];
                 if ($folderID) {
-                    $obj = new \Components\Projects\Tables\Project($this->_db);
+                    $obj = new \Components\Projects\Tables\Project($this->db);
                     $obj->saveParam($this->model->get('id'), $service . '_dir_id', $folderID);
                 }
             }
@@ -663,8 +663,8 @@ class Connect extends Obj
      */
     public function getAccessProfile($service = 'google', $uid = 0)
     {
-        $config = $this->_connect[$service];
-        $uid = $uid ? $uid : $this->_uid;
+        $config = $this->connect[$service];
+        $uid = $uid ? $uid : $this->uid;
         $email = $this->getStoredParam($service . '_email', $uid);
 
         if ($service == 'google') {
@@ -774,7 +774,7 @@ class Connect extends Obj
 
         // Perform request
         if ($service == 'google') {
-            $newItemId = Google::insertFile($apiService, $this->_client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+            $newItemId = Google::insertFile($apiService, $this->client[$service], $title, $localPath, $mimeType, $parentId, $metadata, $convert);
         }
 
         // Error!
@@ -813,7 +813,7 @@ class Connect extends Obj
         }
 
         // Update connection record
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
         $update = $objRFile->updateRecord(
             $projectid,
@@ -821,7 +821,7 @@ class Connect extends Obj
             $newItemId,
             $fpath,
             'file',
-            $this->_uid,
+            $this->uid,
             $parentId,
             $title,
             $remote_md5,
@@ -887,7 +887,7 @@ class Connect extends Obj
 
             // There was a change in content, update
             if (!$success) {
-                $success = Google::updateFile($apiService, $this->_client[$service], $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
+                $success = Google::updateFile($apiService, $this->client[$service], $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
             }
         }
 
@@ -904,7 +904,7 @@ class Connect extends Obj
                             && !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
         // Update connection record
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
         $update = $objRFile->updateRecord(
             $projectid,
@@ -982,7 +982,7 @@ class Connect extends Obj
                         : null;
 
         // Update connection record
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
         $update = $objRFile->updateRecord(
             $projectid,
@@ -1048,7 +1048,7 @@ class Connect extends Obj
         $remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
 
         // Update connection record
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
         $update = $objRFile->updateRecord(
             $projectid,
@@ -1104,7 +1104,7 @@ class Connect extends Obj
         }
 
         // Delete connection record
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
         if ($objRFile->loadItem($projectid, $remoteid, $service)) {
             $objRFile->delete();
@@ -1178,7 +1178,7 @@ class Connect extends Obj
             ];
 
             // Update connection record
-            $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+            $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
             $update = $objRFile->updateRecord(
                 $projectid,
@@ -1186,7 +1186,7 @@ class Connect extends Obj
                 $newParentId,
                 $path,
                 'folder',
-                $this->_uid,
+                $this->uid,
                 $parentId,
                 $title,
             );
@@ -1270,7 +1270,7 @@ class Connect extends Obj
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
         $history = [];
 
         // Get remote folder ID
@@ -1441,7 +1441,7 @@ class Connect extends Obj
             return false;
         }
 
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
 
         if ($objRFile->loadItem($projectid, $id, $service, $path)) {
             $objRFile->paired          = $paired;
@@ -1471,7 +1471,7 @@ class Connect extends Obj
             return false;
         }
 
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
         $converted = $objRFile->getRemoteConnections($this->model->get('id'), $service, $dir, 1);
 
         if (!empty($converted['paths'])) {
@@ -1634,7 +1634,7 @@ class Connect extends Obj
                 }
                 if ($folder && $folder['title'] != $folderName) {
                     // Save renamed reference
-                    $obj = new \Components\Projects\Tables\Project($this->_db);
+                    $obj = new \Components\Projects\Tables\Project($this->db);
                     $obj->saveParam($this->model->get('id'), $service . '_dir', $folder['title']);
                 }
             } catch (Exception $e) {
@@ -1890,7 +1890,7 @@ class Connect extends Obj
      */
     public function getStoredParam($param, $uid = 0)
     {
-        $uid = $uid ? $uid : $this->_uid;
+        $uid = $uid ? $uid : $this->uid;
         $objO = $this->model->table('Owner');
         $objO->loadOwner($this->model->get('id'), $uid);
         $params = new \Hubzero\Config\Registry($objO->params);
@@ -1907,7 +1907,7 @@ class Connect extends Obj
      */
     public function storeParam($param = '', $value = '', $uid = 0)
     {
-        $uid = $uid ? $uid : $this->_uid;
+        $uid = $uid ? $uid : $this->uid;
 
         $objO = $this->model->table('Owner');
         $objO->saveParam(
@@ -1962,12 +1962,12 @@ class Connect extends Obj
      */
     public function createAuthUrl($service, $return = '')
     {
-        if (!$service || !in_array($service, $this->_services)) {
+        if (!$service || !in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
 
         // Make sure we have service
         if (!isset($config) || !$config) {
@@ -2015,12 +2015,12 @@ class Connect extends Obj
      */
     public function refreshToken($service, $refreshToken = '')
     {
-        if (!$service || !in_array($service, $this->_services)) {
+        if (!$service || !in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
         if (!$refreshToken) {
             $this->setError(Lang::txt('Missing refresh token for service'));
             return false;
@@ -2144,12 +2144,12 @@ class Connect extends Obj
      */
     public function disconnect($service, $removeData = false)
     {
-        if (!$service || !in_array($service, $this->_services)) {
+        if (!$service || !in_array($service, $this->services)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_INVALID_SERVICE'));
             return false;
         }
 
-        $config = $this->_connect[$service];
+        $config = $this->connect[$service];
 
         // Make sure we have service
         if (!isset($config) || !$config) {
@@ -2158,7 +2158,7 @@ class Connect extends Obj
         }
 
         // Load project
-        $obj = new \Components\Projects\Tables\Project($this->_db);
+        $obj = new \Components\Projects\Tables\Project($this->db);
         if (!$obj->loadProject($this->model->get('id'))) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_PROBLEM_LOADING_DATA'));
             return false;
@@ -2171,10 +2171,10 @@ class Connect extends Obj
         $remoteid = $pparams->get($service . '_dir_id');
 
         // Project creator?
-        $creator = $this->_uid == $this->model->get('owned_by_user') ? 1 : 0;
+        $creator = $this->uid == $this->model->get('owned_by_user') ? 1 : 0;
 
         // Clean up stored values for the disconnecting member
-        $this->disconnectMember($service, $this->_uid, $remoteid);
+        $this->disconnectMember($service, $this->uid, $remoteid);
 
         // Disconnect service if user is project creator
         if ($creator) {
@@ -2190,7 +2190,7 @@ class Connect extends Obj
                     }
                 }
 
-                $this->deleteRemoteItem($this->model->get('id'), $service, $this->_uid, $remoteid, $permanent = true);
+                $this->deleteRemoteItem($this->model->get('id'), $service, $this->uid, $remoteid, $permanent = true);
 
                 $obj->saveParam($this->model->get('id'), $service . '_sync', '');
                 $obj->saveParam($this->model->get('id'), $service . '_last_remote_change', '');

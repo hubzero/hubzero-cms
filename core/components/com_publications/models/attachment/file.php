@@ -35,21 +35,21 @@ class File extends Base
      *
      * @var  string
      */
-    protected $_name = 'file';
+    protected $name = 'file';
 
     /**
      * Git handler
      *
      * @var  object
      */
-    protected $_git = null;
+    protected $git = null;
 
     /**
      * Unique attachment properties
      *
      * @var  array
      */
-    protected $_connector = ['path', 'vcs_hash'];
+    protected $connector = ['path', 'vcs_hash'];
 
     /**
      * Get configs
@@ -109,7 +109,7 @@ class File extends Base
 
         // Load handler
         if ($configs->handler) {
-            $modelHandler = new \Components\Publications\Models\Handlers($this->_parent->_db);
+            $modelHandler = new \Components\Publications\Models\Handlers($this->parent->db);
             $configs->handler = $modelHandler->ini($configs->handler);
         }
 
@@ -405,7 +405,7 @@ class File extends Base
         } elseif ($attachments) {
             // Serve individually
             foreach ($attachments as $attach) {
-                if ($attach->type != $this->_name) {
+                if ($attach->type != $this->name) {
                     continue;
                 }
 
@@ -513,15 +513,15 @@ class File extends Base
                     ? $attachments['elements'][$elementId]
                     : null;
 
-        $showArchive = isset($pub->_curationModel->_manifest->params->show_archival)
-                ? $pub->_curationModel->_manifest->params->show_archival
+        $showArchive = isset($pub->_curationModel->manifest->params->show_archival)
+                ? $pub->_curationModel->manifest->params->show_archival
                 : 0;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments(
+        $attachments = $this->parent->getElementAttachments(
             $elementId,
             $attachments,
-            $this->_name,
+            $this->name,
         );
         $attachments = $attachments ? (array) $attachments : [];
 
@@ -725,7 +725,7 @@ class File extends Base
         // Loop through attachments
         foreach ($attachments as $att) {
             // Make new attachment record
-            $pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pAttach = new \Components\Publications\Tables\Attachment($this->parent->db);
             if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id'))) {
                 continue;
             }
@@ -789,7 +789,7 @@ class File extends Base
             $firstImageAttach !== null && $configs->handler
             && $configs->handler->getName() == 'imageviewer'
         ) {
-            $currentDefault = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $currentDefault = new \Components\Publications\Tables\Attachment($this->parent->db);
             if (!$currentDefault->getDefault($newVersion->id)) {
                 // makeDefault uses $pub->version_id internally for some lookups
                 // (saveParam on Attachment), so set it to the new version.
@@ -825,7 +825,7 @@ class File extends Base
         $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
+        $attachments = $this->parent->getElementAttachments($elementId, $attachments, $this->name);
         $attachments = $attachments ? (array) $attachments : [];
 
         if (!$forceDownload && $configs->handler) {
@@ -1166,7 +1166,7 @@ class File extends Base
 
         // Git helper
 
-        $this->_git = new \Components\Projects\Helpers\Git($configs->path);
+        $this->git = new \Components\Projects\Helpers\Git($configs->path);
 
         // Counter
         $i = 0;
@@ -1295,7 +1295,7 @@ class File extends Base
             $this->set('_message', Lang::txt('Item removed'));
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
 
             return true;
         }
@@ -1345,12 +1345,12 @@ class File extends Base
         $this->set('_message', Lang::txt('Update successful'));
 
         // Reflect the update in curation record
-        $this->_parent->set('_update', 1);
+        $this->parent->set('_update', 1);
 
         // Make image default
         if ($thumb) {
             // Get handler model
-            $modelHandler = new \Components\Publications\Models\Handlers($this->_parent->_db);
+            $modelHandler = new \Components\Publications\Models\Handlers($this->parent->db);
 
             // Load image handler
             $handler = $modelHandler->ini('imageviewer');
@@ -1390,13 +1390,13 @@ class File extends Base
         }
 
         // Get latest Git hash
-        $vcs_hash = $this->_git->gitLog($filePath, '', 'hash');
+        $vcs_hash = $this->git->gitLog($filePath, '', 'hash');
 
         $new = 0;
         $update = 0;
 
-        $objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
-        if ($objPA->loadElementAttachment($pub->version_id, ['path' => $filePath], $elementId, $this->_name, $element->role)) {
+        $objPA = new \Components\Publications\Tables\Attachment($this->parent->db);
+        if ($objPA->loadElementAttachment($pub->version_id, ['path' => $filePath], $elementId, $this->name, $element->role)) {
             // Update if new hash
             if ($vcs_hash && $vcs_hash != $objPA->vcs_hash) {
                 $objPA->vcs_hash    = $vcs_hash;
@@ -1405,21 +1405,21 @@ class File extends Base
                 $update = 1; // Copy file again (new version)
 
                 // Reflect the update in curation record
-                $this->_parent->set('_update', 1);
+                $this->parent->set('_update', 1);
             }
         } else {
             $new = 1;
             $objPA->publication_id         = $pub->id;
             $objPA->publication_version_id = $pub->version_id;
             $objPA->path                   = $filePath;
-            $objPA->type                   = $this->_name;
+            $objPA->type                   = $this->name;
             $objPA->vcs_hash               = $vcs_hash;
             $objPA->created_by             = $uid;
             $objPA->created                = Date::toSql();
             $objPA->role                   = $element->role;
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         $objPA->element_id = $elementId;
@@ -1431,7 +1431,7 @@ class File extends Base
             if ($new == 1) {
                 $suffix = $this->checkForDuplicate($configs->path . DS . $filePath, $objPA, $configs);
                 if ($suffix) {
-                    $pa = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+                    $pa = new \Components\Publications\Tables\Attachment($this->parent->db);
                     $pa->saveParam($objPA, 'suffix', $suffix);
                 }
             }
@@ -1443,7 +1443,7 @@ class File extends Base
 
             // Make default image (if applicable)
             if ($configs->handler && $configs->handler->getName() == 'imageviewer') {
-                $currentDefault = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+                $currentDefault = new \Components\Publications\Tables\Attachment($this->parent->db);
 
                 if (!$currentDefault->getDefault($pub->version_id)) {
                     $configs->handler->makeDefault($objPA, $pub, $configs);
@@ -1779,7 +1779,7 @@ class File extends Base
             'folder'  => 'projects',
             'element' => 'publications',
             'name'    => 'attachments',
-            'layout'  => $this->_name,
+            'layout'  => $this->name,
         ]);
 
         $view->data   = $data;

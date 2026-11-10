@@ -20,6 +20,8 @@
         <testsuite name="Components">
             <directory suffix="Test.php">core/components/com_courses/tests/helpers/</directory>
             <file>core/components/com_cart/tests/AuditorClassTest.php</file>
+            <file>core/components/com_collections/tests/ArchiveStateTest.php</file>
+            <file>core/components/com_courses/tests/PermissionsStateTest.php</file>
             <file>core/components/com_search/tests/configHelperMacroTest.php</file>
             <file>core/components/com_storefront/tests/SubscriptionObjectTest.php</file>
             <file>core/components/com_tools/tests/HostUpdateTest.php</file>

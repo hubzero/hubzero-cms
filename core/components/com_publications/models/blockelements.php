@@ -23,7 +23,7 @@ class BlockElements extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db = null;
+    public $db = null;
 
     /**
      * Loaded elements
@@ -31,7 +31,7 @@ class BlockElements extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elements = [];
+    protected $elements = [];
 
     /**
      * Directories, where block elements can be stored
@@ -39,7 +39,7 @@ class BlockElements extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = [];
+    protected $path = [];
 
     /**
      * Constructor
@@ -49,8 +49,8 @@ class BlockElements extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
-        $this->_path[] = dirname(__FILE__) . DS . 'blockelement';
+        $this->db = $db;
+        $this->path[] = dirname(__FILE__) . DS . 'blockelement';
     }
 
     /**
@@ -178,11 +178,11 @@ class BlockElements extends Obj
         $signature = md5($name);
 
         if (
-            (isset($this->_elements[$signature])
-            && !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class))
+            (isset($this->elements[$signature])
+            && !($this->elements[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
-            return $this->_elements[$signature];
+            return $this->elements[$signature];
         }
 
         $elementClass = __NAMESPACE__ . '\\BlockElement\\' . ucfirst($name);
@@ -190,7 +190,7 @@ class BlockElements extends Obj
             return false;
         }
 
-        $this->_elements[$signature] = new $elementClass($this);
-        return $this->_elements[$signature];
+        $this->elements[$signature] = new $elementClass($this);
+        return $this->elements[$signature];
     }
 }

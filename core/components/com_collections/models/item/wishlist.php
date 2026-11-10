@@ -25,7 +25,7 @@ class Wishlist extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'wish';
+    protected $type = 'wish';
 
     /**
      * Get the item type
@@ -73,7 +73,7 @@ class Wishlist extends GenericItem
 
         $id = ($id ?: Request::getInt('wishid', 0));
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -86,7 +86,7 @@ class Wishlist extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $wish->get('id'))
              ->set('created', $wish->get('proposed'))
              ->set('created_by', $wish->get('proposed_by'))

@@ -307,11 +307,11 @@ class Batchcreate extends AdminController
         $curationModel = new \Components\Publications\Models\Curation($this->mastertype->curation);
 
         // Get defaults from manifest
-        $title = $curationModel && isset($curationModel->_manifest->params->default_title)
-            ? $curationModel->_manifest->params->default_title : 'Untitled Draft';
+        $title = $curationModel && isset($curationModel->manifest->params->default_title)
+            ? $curationModel->manifest->params->default_title : 'Untitled Draft';
         $title = $title ? $title : 'Untitled Draft';
-        $cat = isset($curationModel->_manifest->params->default_category)
-                ? $curationModel->_manifest->params->default_category : 1;
+        $cat = isset($curationModel->manifest->params->default_category)
+                ? $curationModel->manifest->params->default_category : 1;
         $this->curationModel = $curationModel;
 
         // Get element IDs

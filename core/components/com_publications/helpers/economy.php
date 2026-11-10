@@ -25,7 +25,7 @@ class Economy extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Constructor
@@ -35,7 +35,7 @@ class Economy extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -51,8 +51,8 @@ class Economy extends Obj
             . " JOIN #__publications AS r ON r.id=v.publication_id "
             . " WHERE aa.user_id > 0 AND v.state=1 GROUP BY r.id, aa.user_id ";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**

@@ -23,7 +23,7 @@ abstract class Base extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_item = null;
+    protected $item = null;
 
     /**
      * Script name
@@ -31,7 +31,7 @@ abstract class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base = 'index.php';
+    protected $base = 'index.php';
 
     /**
      * URL segments
@@ -39,7 +39,7 @@ abstract class Base extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [];
+    protected $segments = [];
 
     /**
      * Scope name
@@ -47,7 +47,7 @@ abstract class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = '';
+    protected $scope = '';
 
     /**
      * Constructor
@@ -67,7 +67,7 @@ abstract class Base extends Obj
      */
     public function handles($scope)
     {
-        return ($this->_scope && $this->_scope == $scope);
+        return ($this->scope && $this->scope == $scope);
     }
 
     /**
@@ -108,10 +108,10 @@ abstract class Base extends Obj
      */
     public function item($key = '')
     {
-        if ($key && is_object($this->_item)) {
-            return $this->_item->$key;
+        if ($key && is_object($this->item)) {
+            return $this->item->$key;
         }
-        return $this->_item;
+        return $this->item;
     }
 
     /**
@@ -137,7 +137,7 @@ abstract class Base extends Obj
      */
     public function link($type = '', $params = null)
     {
-        return $this->_base;
+        return $this->base;
     }
 
     /**

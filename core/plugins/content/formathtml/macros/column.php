@@ -22,14 +22,14 @@ class Column extends Macro
      *
      * @var integer
      */
-    protected static $_columns = 0;
+    protected static $columns = 0;
 
     /**
      * Indicator of where we are in the column count
      *
      * @var integer
      */
-    protected static $_cursor = 0;
+    protected static $cursor = 0;
 
     /**
      * Returns description of macro, use, and accepted arguments
@@ -70,18 +70,18 @@ class Column extends Macro
         $text = strtolower(array_shift($attribs));
 
         if (is_numeric($text)) {
-            $this->_columns = intval($text);
+            $this->columns = intval($text);
             return '<div class="grid">' . "\n";
         }
 
         $div  = '';
 
         if (trim($text) == 'start') {
-            $this->_cursor++;
+            $this->cursor++;
 
             $cls = ['col'];
 
-            switch ($this->_columns) {
+            switch ($this->columns) {
                 case 6:
                     $cls[] = 'span2';
                     break;
@@ -101,7 +101,7 @@ class Column extends Macro
                     break;
             }
 
-            if ($this->_cursor == $this->_columns) {
+            if ($this->cursor == $this->columns) {
                 $cls[] = 'omega';
             }
 
@@ -130,9 +130,9 @@ class Column extends Macro
             $div .= (!empty($atts)) ? ' ' . implode(' ', $atts) . '>' : '>';
         } elseif (trim($text) == 'end') {
             $div  = '</div><!-- / .col -->';
-            if ($this->_cursor == $this->_columns) {
+            if ($this->cursor == $this->columns) {
                 $div .= "\n" . '</div><!-- / .grid -->';
-                $this->_cursor = 0;
+                $this->cursor = 0;
             }
         }
 

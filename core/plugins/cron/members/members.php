@@ -22,7 +22,7 @@ use Hubzero\Facades\Log;
 class Members extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_message;
+    protected $message;
     protected $database;
 
     /**
@@ -69,12 +69,12 @@ class Members extends Plugin
         $curyear  = Date::format("Y-m");
         $ref = strtotime($curyear);
 
-        $this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
+        $this->message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_ANSWERS', $curyear);
         $rmsg   = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_REVIEWS', $curyear);
         $resmsg = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_DISTRIBUTED_RESOURCES', $curyear);
 
         // Make sure we distribute royalties only once/ month
-        $royaltyAnswers   = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'answers', $curyear, $this->_message);
+        $royaltyAnswers   = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'answers', $curyear, $this->message);
         $royaltyReviews   = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'reviews', $curyear, $rmsg);
         $royaltyResources = \Hubzero\Bank\MarketHistory::getRecord('', $action, 'resources', $curyear, $resmsg);
 
@@ -106,7 +106,7 @@ class Members extends Plugin
                         'market_value' => $accumulated,
                         'category'     => 'answers',
                         'action'       => $action,
-                        'log'          => $this->_message,
+                        'log'          => $this->message,
                     ]);
 
                     if (!$MH->save()) {
@@ -114,10 +114,10 @@ class Members extends Plugin
                     }
                 }
             } else {
-                $this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_QUESTIONS');
+                $this->message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_QUESTIONS');
             }
         } else {
-            $this->_message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_ANSWERS', $curyear);
+            $this->message = Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_ANSWERS', $curyear);
         }
 
         // Get Royalties on Resource Reviews
@@ -138,9 +138,9 @@ class Members extends Plugin
                     $accumulated = $accumulated + $RE->calculate_marketvalue($r, $action);
                 }
 
-                $this->_message .= $rmsg;
+                $this->message .= $rmsg;
             } else {
-                $this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_REVIEWS');
+                $this->message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_REVIEWS');
             }
 
             // make a record of royalty payment
@@ -159,7 +159,7 @@ class Members extends Plugin
                 }
             }
         } else {
-            $this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_REVIEWS', $curyear);
+            $this->message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_REVIEWS', $curyear);
         }
 
         // Get Royalties on Resources
@@ -175,9 +175,9 @@ class Members extends Plugin
                     $accumulated = $accumulated + $con->ranking;
                 }
 
-                $this->_message .= $resmsg;
+                $this->message .= $resmsg;
             } else {
-                $this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_RESOURCES');
+                $this->message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_NO_RESOURCES');
             }
 
             // make a record of royalty payment
@@ -196,7 +196,7 @@ class Members extends Plugin
                 }
             }
         } else {
-            $this->_message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
+            $this->message .= Lang::txt('PLG_CRON_MEMBERS_POINT_ROYALTIES_ALREADY_DISTRIBUTED_RESOURCES', $curyear);
         }
 
         return true;

@@ -23,7 +23,7 @@ class Publication extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_wishlist',
     ];
 
@@ -33,7 +33,7 @@ class Publication extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'publication';
+    protected $scope = 'publication';
 
     /**
      * Constructor
@@ -45,14 +45,14 @@ class Publication extends Base
     {
         $this->set('referenceid', $referenceid)
              ->set('category', 'publication')
-             ->set('option', $this->_segments['option']);
+             ->set('option', $this->segments['option']);
 
         $database = App::get('db');
         $objP = new \Components\Publications\Tables\Publication($database);
-        $this->_item = $objP->getPublication($referenceid, 'default');
+        $this->item = $objP->getPublication($referenceid, 'default');
 
         //$this->_segments['id']     = $this->_item->id;
-        $this->_segments['active'] = 'wishlist';
+        $this->segments['active'] = 'wishlist';
     }
 
     /**
@@ -62,7 +62,7 @@ class Publication extends Base
      */
     public function title()
     {
-        return $this->_item->title;
+        return $this->item->title;
     }
 
     /**
@@ -75,7 +75,7 @@ class Publication extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         if ($this->get('category')) {
             $segments['category'] = $this->get('category');
@@ -89,7 +89,7 @@ class Publication extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -238,7 +238,7 @@ class Publication extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -257,7 +257,7 @@ class Publication extends Base
                 'index.php?option=com_publications',
             );
             Pathway::append(
-                stripslashes($this->_item->title),
+                stripslashes($this->item->title),
                 'index.php?option=com_publications&id=' . $this->get('referenceid'),
             );
             Pathway::append(

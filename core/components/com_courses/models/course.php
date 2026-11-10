@@ -33,7 +33,7 @@ class Course extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'course';
+    protected $scope = 'course';
 
     /**
      * \Components\Courses\Models\Offering
@@ -580,7 +580,7 @@ class Course extends Base
         }
 
         if ($isNew) {
-            $this->log($this->get('id'), $this->_scope, 'create');
+            $this->log($this->get('id'), $this->scope, 'create');
         }
 
         return true;

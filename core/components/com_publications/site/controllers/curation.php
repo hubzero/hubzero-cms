@@ -41,7 +41,7 @@ class Curation extends SiteController
     {
         $this->task  = Request::getCmd('task', '');
         $this->_id    = Request::getInt('id', 0);
-        $this->_pub   = null;
+        $this->pub   = null;
 
         // View individual curation
         if ($this->_id && !$this->task) {
@@ -165,10 +165,10 @@ class Curation extends SiteController
             'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display',
         );
 
-        if ($this->_pub) {
+        if ($this->pub) {
             Pathway::append(
-                $this->_pub->title,
-                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $this->_pub->id,
+                $this->pub->title,
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $this->pub->id,
             );
         }
     }
@@ -190,15 +190,15 @@ class Curation extends SiteController
         }
 
         // Load publication model
-        $this->_pub = new \Components\Publications\Models\Publication($pid, $version, $vid);
+        $this->pub = new \Components\Publications\Models\Publication($pid, $version, $vid);
 
         // If publication not found, raise error
-        if (!$this->_pub->exists()) {
+        if (!$this->pub->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'), 404);
         }
 
         // We can only view pending publications
-        if ($this->_pub->state != 5) {
+        if ($this->pub->state != 5) {
             Notify::warning(Lang::txt('COM_PUBLICATIONS_CURATION_PUB_WRONG_STATUS'));
 
             App::redirect(
@@ -208,7 +208,7 @@ class Curation extends SiteController
         }
 
         // Check curator authorization
-        if (!$this->_pub->access('curator')) {
+        if (!$this->pub->access('curator')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
                 $this->_login();
@@ -219,13 +219,13 @@ class Curation extends SiteController
         }
 
         // Get curation model
-        $this->_pub->setCuration();
+        $this->pub->setCuration();
 
         // Get reviewed Items
-        $this->_pub->reviewedItems = $this->_pub->_curationModel->getReviewedItems($this->_pub->version_id);
+        $this->pub->reviewedItems = $this->pub->_curationModel->getReviewedItems($this->pub->version_id);
 
         // Get last history record (from author)
-        $history = $this->_pub->_curationModel->getLastHistoryRecord();
+        $history = $this->pub->_curationModel->getLastHistoryRecord();
 
         // Set page title
         $this->_buildTitle();
@@ -235,7 +235,7 @@ class Curation extends SiteController
 
         $this->view
             ->set('history', $history)
-            ->set('pub', $this->_pub)
+            ->set('pub', $this->pub)
             ->set('title', $this->_title)
             ->set('option', $this->option)
             ->setErrors($this->getErrors())
@@ -259,10 +259,10 @@ class Curation extends SiteController
         }
 
         // Load publication model
-        $this->_pub = new \Components\Publications\Models\Publication($pid, $version);
+        $this->pub = new \Components\Publications\Models\Publication($pid, $version);
 
         // Publication version exists?
-        if (!$this->_pub->exists()) {
+        if (!$this->pub->exists()) {
             if ($ajax) {
                 $this->view
                     ->set('title', $this->title)
@@ -277,7 +277,7 @@ class Curation extends SiteController
         }
 
         // Check authorization
-        if (!$this->_pub->access('curator')) {
+        if (!$this->pub->access('curator')) {
             if ($ajax) {
                 $this->view
                     ->set('title', $this->title)
@@ -292,7 +292,7 @@ class Curation extends SiteController
         }
 
         // Set curation
-        $this->_pub->setCuration();
+        $this->pub->setCuration();
 
         if (!$ajax) {
             // Set page title
@@ -306,7 +306,7 @@ class Curation extends SiteController
         }
 
         $this->view
-            ->set('pub', $this->_pub)
+            ->set('pub', $this->pub)
             ->set('title', $this->_title)
             ->set('option', $this->option)
             ->set('ajax', $ajax)
@@ -328,9 +328,9 @@ class Curation extends SiteController
         $ajax    = Request::getInt('ajax', 0);
 
         // Load publication model
-        $this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $this->pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
-        if (!$this->_pub->exists()) {
+        if (!$this->pub->exists()) {
             if ($ajax) {
                 $this->view
                     ->set('title', $this->title)
@@ -344,7 +344,7 @@ class Curation extends SiteController
             throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'), 404);
         }
 
-        if (!$this->_pub->access('curator')) {
+        if (!$this->pub->access('curator')) {
             if ($ajax) {
                 $this->view
                     ->set('title', $this->title)
@@ -360,7 +360,7 @@ class Curation extends SiteController
 
         // Perform assignment
         if ($confirm) {
-            $previousOwner = $this->_pub->version->get('curator');
+            $previousOwner = $this->pub->version->get('curator');
             $selected = Request::getInt('selected', 0);
 
             // Make sure owner profile exists
@@ -375,22 +375,22 @@ class Curation extends SiteController
 
             // Assign
             if (!$this->getError()) {
-                $this->_pub->version->set('curator', $owner);
-                if (!$this->_pub->version->store()) {
+                $this->pub->version->set('curator', $owner);
+                if (!$this->pub->version->store()) {
                     $this->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_FAILED'));
                 }
                 // Notify curator
                 if ($owner && $owner != $previousOwner) {
-                    $item  =  '"' . html_entity_decode($this->_pub->version->title) . '"';
-                    $item .= ' v.' . $this->_pub->version->version_label . ' ';
+                    $item  =  '"' . html_entity_decode($this->pub->version->title) . '"';
+                    $item .= ' v.' . $this->pub->version->version_label . ' ';
                     $item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
                     $message = Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
-                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim(Request::base(), DS) . DS . trim(Route::url($this->_pub->link('curate')), DS) . "\n" . "\n";
-                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . rtrim(Request::base(), DS) . DS . trim(Route::url($this->_pub->link('version')), DS);
+                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim(Request::base(), DS) . DS . trim(Route::url($this->pub->link('curate')), DS) . "\n" . "\n";
+                    $message .= Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . rtrim(Request::base(), DS) . DS . trim(Route::url($this->pub->link('version')), DS);
 
                     Helpers\Html::notify(
-                        $this->_pub,
+                        $this->pub,
                         [$owner],
                         Lang::txt('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
                         $message,
@@ -406,13 +406,13 @@ class Curation extends SiteController
                     }
 
                     // Create new record
-                    $obj->publication_version_id = $this->_pub->version->id;
+                    $obj->publication_version_id = $this->pub->version->id;
                     $obj->created    = Date::toSql();
                     $obj->created_by = User::get('id');
                     $obj->changelog  = $changelog;
                     $obj->curator    = 1;
-                    $obj->newstatus  = $this->_pub->version->state;
-                    $obj->oldstatus  = $this->_pub->version->state;
+                    $obj->newstatus  = $this->pub->version->state;
+                    $obj->oldstatus  = $this->pub->version->state;
                     $obj->store();
                 }
             }
@@ -429,7 +429,7 @@ class Curation extends SiteController
             }
 
             $this->view
-                ->set('pub', $this->_pub)
+                ->set('pub', $this->pub)
                 ->set('title', $this->_title)
                 ->set('option', $this->option)
                 ->set('ajax', $ajax)
@@ -461,14 +461,14 @@ class Curation extends SiteController
         $vid = Request::getInt('vid', 0);
 
         // Load publication model
-        $this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $this->pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
-        if (!$this->_pub->exists()) {
+        if (!$this->pub->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
         // Check authorization
-        if (!$this->_pub->access('curator')) {
+        if (!$this->pub->access('curator')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
                 $this->_login();
@@ -478,42 +478,42 @@ class Curation extends SiteController
             throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'), 403);
         }
 
-        $this->_pub->version->set('state', 1);
-        $this->_pub->version->set('accepted', Date::toSql());
-        $this->_pub->version->set('reviewed', Date::toSql());
-        $this->_pub->version->set('reviewed_by', User::get('id'));
+        $this->pub->version->set('state', 1);
+        $this->pub->version->set('accepted', Date::toSql());
+        $this->pub->version->set('reviewed', Date::toSql());
+        $this->pub->version->set('reviewed_by', User::get('id'));
 
         // Archive (mkAIP) if no grace period and not previously archived
         if (
             !$this->getError() && !$this->config->get('graceperiod', 0)
-            && $this->_pub->version->doi
-            && \Components\Publications\Helpers\Utilities::mkAip($this->_pub->version)
-            && !$this->_pub->archived()
+            && $this->pub->version->doi
+            && \Components\Publications\Helpers\Utilities::mkAip($this->pub->version)
+            && !$this->pub->archived()
         ) {
-            $this->_pub->version->set('archived', Date::toSql());
+            $this->pub->version->set('archived', Date::toSql());
         }
 
         // Set curation
-        $this->_pub->setCuration();
+        $this->pub->setCuration();
 
-        $curation = json_encode($this->_pub->_curationModel->_manifest);
+        $curation = json_encode($this->pub->_curationModel->manifest);
         //$curation = $this->_pub->masterType()->curation;
 
         // Get manifest version
-        $versionNumber = $this->_pub->_curationModel->checkCurationVersion();
+        $versionNumber = $this->pub->_curationModel->checkCurationVersion();
 
         // Store curation manifest
-        $this->_pub->version->set('curation', $curation);
-        $this->_pub->version->set('curation_version_id', $versionNumber);
+        $this->pub->version->set('curation', $curation);
+        $this->pub->version->set('curation_version_id', $versionNumber);
 
         // Save dataset bundle size
-        $zipPath = PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid) . DS . \Hubzero\Utility\Str::pad($vid) . DS . str_replace(['.', '/'], '_', $this->_pub->version->doi) . ".zip";
+        $zipPath = PATH_APP . DS . trim($this->config->get('webpath'), DS) . DS . \Hubzero\Utility\Str::pad($pid) . DS . \Hubzero\Utility\Str::pad($vid) . DS . str_replace(['.', '/'], '_', $this->pub->version->doi) . ".zip";
 
         if (file_exists($zipPath)) {
-            $this->_pub->version->set('datasize', filesize($zipPath));
+            $this->pub->version->set('datasize', filesize($zipPath));
         }
 
-        if (!$this->_pub->version->store()) {
+        if (!$this->pub->version->store()) {
             throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
         }
 
@@ -521,23 +521,23 @@ class Curation extends SiteController
         // user asks for it (gated; when async is off the synchronous bundle
         // produced during curation is used as before).
         if ((int) $this->config->get('bundle_async', 0)) {
-            \Components\Publications\Models\BundleQueue::enqueueVersion($this->_pub->version->get('id'));
+            \Components\Publications\Models\BundleQueue::enqueueVersion($this->pub->version->get('id'));
         }
 
         // Get DOI service
-        $doiService = new \Components\Publications\Models\Doi($this->_pub);
+        $doiService = new \Components\Publications\Models\Doi($this->pub);
 
-        $updateDoiMetadata = ($this->_pub->version->doi ? preg_match("/" . $doiService->configs()->shoulder . "/", $this->_pub->version->doi) : false);
+        $updateDoiMetadata = ($this->pub->version->doi ? preg_match("/" . $doiService->configs()->shoulder . "/", $this->pub->version->doi) : false);
 
         if ($updateDoiMetadata) {
-            $doiService->update($this->_pub->version->doi, true);
+            $doiService->update($this->pub->version->doi, true);
 
             if ($doiService->getError()) {
                 throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UPDATE_METADATA') . ' ' . $doiService->getError(), 403);
             }
 
             // Register URL and DOI name for DataCite DOI service
-            $doiService->register(false, true, $this->_pub->version->doi);
+            $doiService->register(false, true, $this->pub->version->doi);
 
             if ($doiService->getError()) {
                 throw new Exception(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_REGISTER_URL') . ' ' . $doiService->getError(), 403);
@@ -545,13 +545,13 @@ class Curation extends SiteController
         }
 
         // Mark as curated
-        $this->_pub->saveParam('curated', 1);
+        $this->pub->saveParam('curated', 1);
 
         // On after status change
         $this->onAfterStatusChange();
 
         // Add publication to author's ORCID record
-        $authors = $this->_pub->authors();
+        $authors = $this->pub->authors();
         foreach ($authors as $author) {
             if (!empty($author->user_id)) {
                 $profile = \Components\Members\Models\Member::oneOrFail($author->user_id);
@@ -561,7 +561,7 @@ class Curation extends SiteController
                     $accessToken = $profile->get('access_token');
 
                     if (!empty($orcidID) && !empty($accessToken)) {
-                        $putCode = $this->_pub->addPubToORCID($orcidID, $accessToken);
+                        $putCode = $this->pub->addPubToORCID($orcidID, $accessToken);
 
                         if ($putCode) {
                             $authorTbl = new Tables\Author($this->database);
@@ -570,14 +570,14 @@ class Curation extends SiteController
                     }
                 }
             } else {
-                $collaborator = $this->_pub->getCollaboratorByName($author->invited_name);
+                $collaborator = $this->pub->getCollaboratorByName($author->invited_name);
 
                 if (!empty($collaborator)) {
                     $orcidID = $collaborator->orcid;
                     $accessToken = $collaborator->access_token;
 
                     if (!empty($orcidID) && !empty($accessToken)) {
-                        $putCode = $this->_pub->addPubToORCID($orcidID, $accessToken);
+                        $putCode = $this->pub->addPubToORCID($orcidID, $accessToken);
 
                         if (!empty($putCode)) {
                             $authorTbl = new Tables\Author($this->database);
@@ -621,7 +621,7 @@ class Curation extends SiteController
                                 'layout'    => '_html',
                             ]);
 
-                            $eview->publication = $this->_pub;
+                            $eview->publication = $this->pub;
                             $eview->message     = $message;
                             $eview->subject     = $subject;
                             $eview->permissionURL = $permissionURL;
@@ -668,14 +668,14 @@ class Curation extends SiteController
         $vid = Request::getInt('vid', 0);
 
         // Load publication model
-        $this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $this->pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
-        if (!$this->_pub->exists()) {
+        if (!$this->pub->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
         }
 
         // Check authorization
-        if (!$this->_pub->access('curator')) {
+        if (!$this->pub->access('curator')) {
             if (User::isGuest()) {
                 $this->_msg = Lang::txt('COM_PUBLICATIONS_CURATION_LOGIN');
                 $this->_login();
@@ -686,16 +686,16 @@ class Curation extends SiteController
         }
 
         // Change publication status
-        $this->_pub->version->set('state', 7); // pending author changes
-        $this->_pub->version->set('reviewed', Date::toSql());
-        $this->_pub->version->set('reviewed_by', User::get('id'));
+        $this->pub->version->set('state', 7); // pending author changes
+        $this->pub->version->set('reviewed', Date::toSql());
+        $this->pub->version->set('reviewed_by', User::get('id'));
 
-        if (!$this->_pub->version->store()) {
+        if (!$this->pub->version->store()) {
             throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
         }
 
         // Set curation
-        $this->_pub->setCuration();
+        $this->pub->setCuration();
 
         // On after status change
         $this->onAfterStatusChange();
@@ -746,10 +746,10 @@ class Curation extends SiteController
         }
 
         // Load publication model
-        $this->_pub = new \Components\Publications\Models\Publication($pid, null, $vid);
+        $this->pub = new \Components\Publications\Models\Publication($pid, null, $vid);
 
         // If publication not found, raise error
-        if (!$this->_pub) {
+        if (!$this->pub) {
             echo json_encode([
                 'success' => 0,
                 'error'   => Lang::txt('Error loading publication'),
@@ -758,7 +758,7 @@ class Curation extends SiteController
         }
 
         // Check authorization
-        if (!$this->_pub->access('curator')) {
+        if (!$this->pub->access('curator')) {
             echo json_encode([
                 'success' => 0,
                 'error'  => Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'),
@@ -767,7 +767,7 @@ class Curation extends SiteController
         }
 
         // Set curation model
-        $this->_pub->setCuration();
+        $this->pub->setCuration();
 
         $data = new stdClass();
         $data->reviewed      = Date::toSql();
@@ -783,7 +783,7 @@ class Curation extends SiteController
         $notice = $action == 'pass' ? '' : $review;
 
         // Save curation
-        if ($this->_pub->_curationModel->saveUpdate($data, $element, $block, $this->_pub, $step)) {
+        if ($this->pub->_curationModel->saveUpdate($data, $element, $block, $this->pub, $step)) {
             echo json_encode([
                 'success' => 1,
                 'error'   => $this->getError(),
@@ -808,8 +808,8 @@ class Curation extends SiteController
         if ($this->getError()) {
             return;
         }
-        $pub    = $this->_pub;
-        $status = $this->_pub->version->state;
+        $pub    = $this->pub;
+        $status = $this->pub->version->state;
 
         $activity = $status == 1
                     ? Lang::txt('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
@@ -818,7 +818,7 @@ class Curation extends SiteController
         $pubtitle = \Hubzero\Utility\Str::truncate($pub->title, 100);
 
         // Create SFTP accessible link for package
-        if ($status == 1 && !$this->_pub->isEmbargoed()) {
+        if ($status == 1 && !$this->pub->isEmbargoed()) {
             $pub->_curationModel->createLink();
         }
 

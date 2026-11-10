@@ -24,7 +24,7 @@ class Resources extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_wishlist',
     ];
 
@@ -34,7 +34,7 @@ class Resources extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'resource';
+    protected $scope = 'resource';
 
     /**
      * Constructor
@@ -46,15 +46,15 @@ class Resources extends Base
     {
         $this->set('referenceid', $referenceid)
              ->set('category', 'resource')
-             ->set('option', $this->_segments['option']);
+             ->set('option', $this->segments['option']);
 
-        $this->_item = Entry::getInstance((int) $this->get('referenceid'));
+        $this->item = Entry::getInstance((int) $this->get('referenceid'));
 
-        if ($this->_item->standalone != 1 || $this->_item->published != Entry::STATE_PUBLISHED) {
-            $this->_item->id = 0;
+        if ($this->item->standalone != 1 || $this->item->published != Entry::STATE_PUBLISHED) {
+            $this->item->id = 0;
         }
 
-        $this->_segments['active'] = 'wishlist';
+        $this->segments['active'] = 'wishlist';
     }
 
     /**
@@ -66,10 +66,10 @@ class Resources extends Base
     {
         $owners = [];
 
-        if ($this->_item->isTool()) {
-            $cons = $this->_item->contributors('tool');
+        if ($this->item->isTool()) {
+            $cons = $this->item->contributors('tool');
         } else {
-            $cons = $this->_item->contributors();
+            $cons = $this->item->contributors();
         }
 
         foreach ($cons as $contributor) {
@@ -92,13 +92,13 @@ class Resources extends Base
     {
         $groups = [];
 
-        if ($this->_item->isTool()) {
+        if ($this->item->isTool()) {
             $db = App::get('db');
             $query = "SELECT g.cn FROM `#__tool_groups` AS g
 				INNER JOIN `#__xgroups` AS xg ON g.cn=xg.cn
 				INNER JOIN `#__tool` AS t ON g.toolid=t.id
 				INNER JOIN `#__resources` as r ON r.alias = t.toolname
-				WHERE r.id = " . $db->quote($this->_item->id) . " AND g.role=1";
+				WHERE r.id = " . $db->quote($this->item->id) . " AND g.role=1";
 
             $db->setQuery($query);
             $toolgroup = $db->loadResult();
@@ -118,9 +118,9 @@ class Resources extends Base
      */
     public function title()
     {
-        return ($this->_item->isTool() && isset($this->_item->alias))
-                ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->_item->alias
-                : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->_item->id;
+        return ($this->item->isTool() && isset($this->item->alias))
+                ? Lang::txt('COM_WISHLIST_NAME_RESOURCE_TOOL') . ' ' . $this->item->alias
+                : Lang::txt('COM_WISHLIST_NAME_RESOURCE_ID') . ' ' . $this->item->id;
     }
 
     /**
@@ -133,7 +133,7 @@ class Resources extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         if ($this->get('category')) {
             $segments['category'] = $this->get('category');
@@ -147,7 +147,7 @@ class Resources extends Base
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -297,7 +297,7 @@ class Resources extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -316,7 +316,7 @@ class Resources extends Base
                 'index.php?option=com_resources',
             );
             Pathway::append(
-                stripslashes($this->_item->title),
+                stripslashes($this->item->title),
                 'index.php?option=com_resources&id=' . $this->get('referenceid'),
             );
             Pathway::append(

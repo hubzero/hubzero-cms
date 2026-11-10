@@ -26,7 +26,7 @@ class DoiService extends Obj
      *
      * @var  object
      */
-    public $_configs = null;
+    public $configs = null;
 
     /**
      * DataCite and EZID switch options
@@ -59,7 +59,7 @@ class DoiService extends Obj
      */
     public function configs()
     {
-        if (empty($this->_configs)) {
+        if (empty($this->configs)) {
             $params = Component::params('com_tools');
 
             $configs = new stdClass();
@@ -72,10 +72,10 @@ class DoiService extends Obj
             $configs->livesite      = trim(Request::root(), '/');
             $configs->xmlSchema     = trim($params->get('doi_xmlschema', 'http://schema.datacite.org/meta/kernel-4/metadata.xsd'), '/');
 
-            $this->_configs = $configs;
+            $this->configs = $configs;
         }
 
-        return $this->_configs;
+        return $this->configs;
     }
 
     /**
@@ -90,11 +90,11 @@ class DoiService extends Obj
 
         // Check required
         if (
-            $this->_configs->serviceSwitch
-            && $this->_configs->shoulder
+            $this->configs->serviceSwitch
+            && $this->configs->shoulder
             && (
-                ($this->_configs->serviceSwitch == 2 && $this->_configs->serviceURL && $this->_configs->userPW)
-                || ($this->_configs->serviceSwitch == 1 && $this->_configs->serviceURL && $this->_configs->userPW && $this->_configs->prefix)
+                ($this->configs->serviceSwitch == 2 && $this->configs->serviceURL && $this->configs->userPW)
+                || ($this->configs->serviceSwitch == 1 && $this->configs->serviceURL && $this->configs->userPW && $this->configs->prefix)
             )
         ) {
             return true;
@@ -116,20 +116,20 @@ class DoiService extends Obj
         }
 
         if ($doi) {
-            if ($this->_configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
-                $call  = $this->_configs->serviceURL . '/id/doi:' . $doi;
-            } elseif ($this->_configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
-                $call  = $this->_configs->serviceURL . '/id/doi:' . $doi;
+            if ($this->configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
+                $call  = $this->configs->serviceURL . '/id/doi:' . $doi;
+            } elseif ($this->configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
+                $call  = $this->configs->serviceURL . '/id/doi:' . $doi;
             }
         } else {
-            if ($this->_configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
-                $call  = $this->_configs->serviceURL . '/shoulder/doi:';
-            } elseif ($this->_configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
-                $call  = $this->_configs->serviceURL . '/shoulder/doi:';
+            if ($this->configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
+                $call  = $this->configs->serviceURL . '/shoulder/doi:';
+            } elseif ($this->configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
+                $call  = $this->configs->serviceURL . '/shoulder/doi:';
             }
 
-            $call .= $this->_configs->shoulder;
-            $call .= $this->_configs->prefix ? '/' . $this->_configs->prefix : '/';
+            $call .= $this->configs->shoulder;
+            $call .= $this->configs->prefix ? '/' . $this->configs->prefix : '/';
         }
 
         return $call;
@@ -251,7 +251,7 @@ class DoiService extends Obj
     {
         $this->set('language', 'en');
         $this->set('pubYear', gmdate('Y'));
-        $this->set('publisher', htmlspecialchars($this->_configs->publisher));
+        $this->set('publisher', htmlspecialchars($this->configs->publisher));
         $this->set('resourceType', 'Software');
         $this->set('resourceTypeTitle', 'Simulation Tool');
         $this->set('datePublished', gmdate('Y-m-d'));
@@ -392,7 +392,7 @@ class DoiService extends Obj
     public function regMetadata($url, $postvals, &$doi)
     {
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/xml;charset=UTF-8', 'Content-Length: ' . strlen($postvals)]);
@@ -438,7 +438,7 @@ class DoiService extends Obj
     public function regURL($url, $postvals)
     {
         $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postvals);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($postvals)]);
@@ -480,7 +480,7 @@ class DoiService extends Obj
         }
 
         // Submit DOI metadata
-        $metadataURL = $this->_configs->serviceURL . '/metadata/' . $this->_configs->shoulder;
+        $metadataURL = $this->configs->serviceURL . '/metadata/' . $this->configs->shoulder;
         $xml = $this->buildXml();
         $subResult = $this->regMetadata($metadataURL, $xml, $doi);
 
@@ -506,7 +506,7 @@ class DoiService extends Obj
 
         // Register URL
         $resURL = $this->get('url');
-        $url = $this->_configs->serviceURL . '/doi/' . $doi;
+        $url = $this->configs->serviceURL . '/doi/' . $doi;
         $postvals = "doi=" . $doi . "\n" . "url=" . $resURL;
 
         $regResult = $this->regURL($url, $postvals);
@@ -538,11 +538,11 @@ class DoiService extends Obj
             return false;
         }
 
-        $metadataURL = $this->_configs->serviceURL . '/metadata';
+        $metadataURL = $this->configs->serviceURL . '/metadata';
         $xml = $this->buildXml($doi);
 
         $ch = curl_init($metadataURL);
-        curl_setopt($ch, CURLOPT_USERPWD, $this->_configs->userPW);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->configs->userPW);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:text/plain;charset=UTF-8', 'Content-Length: ' . strlen($xml)]);
@@ -635,7 +635,7 @@ class DoiService extends Obj
         $options = [
             CURLOPT_URL             => $url,
             CURLOPT_POST            => true,
-            CURLOPT_USERPWD         => $this->_configs->userPW,
+            CURLOPT_USERPWD         => $this->configs->userPW,
             CURLOPT_POSTFIELDS      => $postvals,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_HTTPHEADER      => ['Content-Type: text/plain; charset=UTF-8', 'Content-Length: ' . strlen($postvals)],
@@ -651,7 +651,7 @@ class DoiService extends Obj
             $handle = trim(end($out));
             if ($handle) {
                 // Return DOI
-                return strtoupper($this->_configs->shoulder . '/' . $handle);
+                return strtoupper($this->configs->shoulder . '/' . $handle);
             }
         } else {
             $this->setError($success . ' ' . $response);
@@ -729,7 +729,7 @@ class DoiService extends Obj
         }
 
         // Check that we are trying to update a DOI issued by the hub
-        if (!preg_match("/" . $this->_configs->shoulder . "/", $doi)) {
+        if (!preg_match("/" . $this->configs->shoulder . "/", $doi)) {
             return false;
         }
 
@@ -748,7 +748,7 @@ class DoiService extends Obj
             $xdoc->loadXML($xml);
 
             // Validate against schema
-            if (!$xdoc->schemaValidate($this->_configs->xmlSchema)) {
+            if (!$xdoc->schemaValidate($this->configs->xmlSchema)) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_DOI_XML_INVALID'));
             } else {
                 // Append XML
@@ -774,13 +774,13 @@ class DoiService extends Obj
      */
     public function update($doi, $sendXML = false)
     {
-        if ($this->_configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
+        if ($this->configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
             $result = $this->dataciteMetadataUpdate($doi);
 
             if (!$result) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_UPDATE_DATACITE_DOI_METADATA'));
             }
-        } elseif ($this->_configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
+        } elseif ($this->configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
             $result = $this->ezidMetadataUpdate($doi, $sendXML);
 
             if (!$result) {
@@ -801,7 +801,7 @@ class DoiService extends Obj
      */
     public function register($regMetadata = false, $regUrl = false, $doi = null, $sendXML = false, $status = 'public')
     {
-        if ($this->_configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
+        if ($this->configs->serviceSwitch == self::SWITCH_OPTION_DATACITE) {
             // Register DOI Metadata through DataCite service
             if ($regMetadata) {
                 $doi = $this->registerMetadata();
@@ -822,7 +822,7 @@ class DoiService extends Obj
 
                 return $regResult;
             }
-        } elseif ($this->_configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
+        } elseif ($this->configs->serviceSwitch == self::SWITCH_OPTION_EZID) {
             // Register DOI through EZID service
             if (!$regUrl) {
                 $doi = $this->registerEZID($sendXML, $status);
@@ -833,7 +833,7 @@ class DoiService extends Obj
 
                 return $doi;
             }
-        } elseif ($this->_configs->serviceSwitch == self::SWITCH_OPTION_NONE) {
+        } elseif ($this->configs->serviceSwitch == self::SWITCH_OPTION_NONE) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_DOI_SERVICE_ACTIVATED'));
 
             return false;

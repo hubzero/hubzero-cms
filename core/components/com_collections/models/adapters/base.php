@@ -21,7 +21,7 @@ abstract class Base extends Obj
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base = 'index.php';
+    protected $base = 'index.php';
 
     /**
      * URL segments
@@ -29,7 +29,7 @@ abstract class Base extends Obj
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [];
+    protected $segments = [];
 
     /**
      * Constructor
@@ -51,7 +51,7 @@ abstract class Base extends Obj
      */
     public function build($type = '', $params = null)
     {
-        return $this->_base;
+        return $this->base;
     }
 
     /**

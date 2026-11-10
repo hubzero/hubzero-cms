@@ -245,21 +245,21 @@ class Version
      *
      * @var array
      */
-    private $_list_keys = ['alias', 'middleware', 'hostreq', 'author', 'member', 'owner'];
+    private $listKeys = ['alias', 'middleware', 'hostreq', 'author', 'member', 'owner'];
 
     /**
      * Description for '_updateAll'
      *
      * @var boolean
      */
-    private $_updateAll = false;
+    private $updateAll = false;
 
     /**
      * Description for '_propertyattrmap'
      *
      * @var array
      */
-    public static $_propertyattrmap = [
+    public static $propertyattrmap = [
         'title' => 'cn',
         'description' => 'description',
         'version' => 'version',
@@ -292,7 +292,7 @@ class Version
      *
      * @var array
      */
-    private $_updatedkeys = [];
+    private $updatedkeys = [];
 
     /**
      * Constructor
@@ -314,13 +314,13 @@ class Version
     {
         $cvars = get_class_vars(__CLASS__);
 
-        $this->_updatedkeys = [];
+        $this->updatedkeys = [];
 
         foreach ($cvars as $key => $value) {
             if ($key[0] != '_') {
                 unset($this->$key);
 
-                if (!in_array($key, $this->_list_keys)) {
+                if (!in_array($key, $this->listKeys)) {
                     $this->$key = null;
                 } else {
                     $this->$key = [];
@@ -328,8 +328,8 @@ class Version
             }
         }
 
-        $this->_updateAll = false;
-        $this->_updatedkeys = [];
+        $this->updateAll = false;
+        $this->updatedkeys = [];
     }
 
     /**
@@ -395,7 +395,7 @@ class Version
         $result = [];
 
         if (true) {
-            foreach (self::$_propertyattrmap as $key => $value) {
+            foreach (self::$propertyattrmap as $key => $value) {
                 $current = $this->__get($key);
 
                 $result[$key] = $current;
@@ -585,7 +585,7 @@ class Version
             $this->__get('owner');
         }
 
-        $this->_updatedkeys = [];
+        $this->updatedkeys = [];
 
         return true;
     }
@@ -655,11 +655,11 @@ class Version
         $first = true;
 
         foreach ($classvars as $property => $value) {
-            if (($property[0] == '_') || in_array($property, $this->_list_keys)) {
+            if (($property[0] == '_') || in_array($property, $this->listKeys)) {
                 continue;
             }
 
-            if (!$all && !in_array($property, $this->_updatedkeys)) {
+            if (!$all && !in_array($property, $this->updatedkeys)) {
                 continue;
             }
 
@@ -694,8 +694,8 @@ class Version
             }
         }
 
-        foreach ($this->_list_keys as $property) {
-            if (!$all && !in_array($property, $this->_updatedkeys)) {
+        foreach ($this->listKeys as $property) {
+            if (!$all && !in_array($property, $this->updatedkeys)) {
                 continue;
             }
 
@@ -818,7 +818,7 @@ class Version
      */
     public function sync()
     {
-        $this->_updateAll = true;
+        $this->updateAll = true;
         return $this->update();
     }
 
@@ -836,14 +836,14 @@ class Version
         $result = true;
 
         if (true) {
-            $result = $this->sqlUpdate($this->_updateAll);
+            $result = $this->sqlUpdate($this->updateAll);
 
             if ($result === false) {
                 $this->error(__FUNCTION__ . ": MySQL update failed", E_USER_WARNING);
             }
         }
 
-        $this->_updateAll = false;
+        $this->updateAll = false;
         return $result;
     }
 
@@ -945,7 +945,7 @@ class Version
             $this->error("Cannot access property " . __CLASS__ . "::$" . $property, E_USER_ERROR);
             die();
         }
-        if (in_array($property, $this->_list_keys)) {
+        if (in_array($property, $this->listKeys)) {
             if (!array_key_exists($property, get_object_vars($this))) {
                 $db = App::get('db');
 
@@ -975,7 +975,7 @@ class Version
 
                     if ($result !== false) {
                         $this->$property = (isset($result[0])) ? $result : [];
-                        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+                        $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
                     }
                 }
             }
@@ -1018,14 +1018,14 @@ class Version
                 "strtolower",
                 array_values(array_unique(array_diff((array) $value, ['']))),
             );
-        } elseif (in_array($property, $this->_list_keys)) {
+        } elseif (in_array($property, $this->listKeys)) {
             $this->$property = array_values(array_unique(array_diff((array) $value, [''])));
         } else {
             $this->$property = $value;
         }
 
-        if (!in_array($property, $this->_updatedkeys)) {
-            $this->_updatedkeys[] = $property;
+        if (!in_array($property, $this->updatedkeys)) {
+            $this->updatedkeys[] = $property;
         }
     }
 
@@ -1070,7 +1070,7 @@ class Version
             die();
         }
 
-        $this->_updatedkeys = array_diff($this->_updatedkeys, [$property]);
+        $this->updatedkeys = array_diff($this->updatedkeys, [$property]);
 
         unset($this->$property);
     }

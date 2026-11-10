@@ -24,7 +24,7 @@ class Tags extends Cloud
      *
      * @var string
      */
-    protected $_scope = 'support';
+    protected $scope = 'support';
 
     /**
      * Render a tag cloud
@@ -68,7 +68,7 @@ class Tags extends Cloud
 
         $where = [];
         $where[] = "rt.objectid IN ($id)";
-        $where[] = "rt.tbl=" . $db->quote($this->_scope);
+        $where[] = "rt.tbl=" . $db->quote($this->scope);
 
         if ($tagger_id != 0) {
             $where[] = "rt.taggerid=" . $db->quote($tagger_id);
@@ -91,8 +91,8 @@ class Tags extends Cloud
      */
     public function append($tag)
     {
-        if (!isset($this->_cache['tags'])) {
-            $this->_cache['tags'] = new ItemList([]);
+        if (!isset($this->cache['tags'])) {
+            $this->cache['tags'] = new ItemList([]);
         }
 
         if (!$tag) {
@@ -106,6 +106,6 @@ class Tags extends Cloud
             $tag = $tg;
         }
 
-        $this->_cache['tags']->add($tag);
+        $this->cache['tags']->add($tag);
     }
 }

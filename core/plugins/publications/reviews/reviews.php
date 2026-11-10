@@ -62,7 +62,7 @@ class Reviews extends Plugin
 
         $h = new Helper();
         $h->option   = $option;
-        $h->_option  = $option;
+        $h->componentOption  = $option;
         $h->execute();
 
         return $arr;
@@ -104,7 +104,7 @@ class Reviews extends Plugin
         $h = new Helper();
         $h->publication = $model;
         $h->option      = $option;
-        $h->_option     = $option;
+        $h->componentOption     = $option;
         $h->execute();
 
         // Get reviews for this publication

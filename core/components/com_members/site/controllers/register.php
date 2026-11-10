@@ -417,7 +417,7 @@ class Register extends SiteController
             // Gather data to pass to the form processor
             $profile = \Components\Members\Models\Profile::collect($profiles);
 
-            $xregistration->_registration['_profile'] = $profile;
+            $xregistration->registration['_profile'] = $profile;
         }
 
         $check = $xregistration->check('update');
@@ -443,10 +443,10 @@ class Register extends SiteController
 
                 foreach ($form->getErrors() as $key => $error) {
                     if ($error instanceof \Hubzero\Form\Exception\MissingData) {
-                        $xregistration->_missing[$key] = $error;
+                        $xregistration->missing[$key] = $error;
                     }
 
-                    $xregistration->_invalid[$key] = $error;
+                    $xregistration->invalid[$key] = $error;
                 }
             }
         }
@@ -524,7 +524,7 @@ class Register extends SiteController
                     $access[$field->get('name')] = $field->get('access');
                 }
 
-                $profile = $xregistration->_registration['_profile'];
+                $profile = $xregistration->registration['_profile'];
 
                 // Save profile data
                 $member = Member::oneOrNew($xprofile->get('id'));
@@ -781,10 +781,10 @@ class Register extends SiteController
 
                     foreach ($form->getErrors() as $key => $error) {
                         if ($error instanceof \Hubzero\Form\Exception\MissingData) {
-                            $xregistration->_missing[$key] = $error;
+                            $xregistration->missing[$key] = $error;
                         }
 
-                        $xregistration->_invalid[$key] = $error;
+                        $xregistration->invalid[$key] = $error;
                     }
                 }
             }
@@ -883,7 +883,7 @@ class Register extends SiteController
                         $access[$field->get('name')] = $field->get('access');
                     }
 
-                    $profile = $xregistration->_registration['_profile'];
+                    $profile = $xregistration->registration['_profile'];
 
                     // Save profile data
                     $member = Member::oneOrNew($user->get('id'));
@@ -1079,7 +1079,7 @@ class Register extends SiteController
             ->set('isSelf', $isSelf)
             ->set('password_rules', $password_rules)
             ->set('xregistration', $xregistration)
-            ->set('registration', $xregistration->_registration)
+            ->set('registration', $xregistration->registration)
             ->setLayout('default')
             ->setErrors($this->getErrors())
             ->display();

@@ -25,7 +25,7 @@ class Date extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'Date';
+    protected $name = 'Date';
 
     /**
      * Return any options this element may have

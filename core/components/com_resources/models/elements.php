@@ -24,7 +24,7 @@ class Elements
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_raw = null;
+    protected $raw = null;
 
     /**
      * The XML params element
@@ -32,7 +32,7 @@ class Elements
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_schema = null;
+    protected $schema = null;
 
     /**
      * Loaded elements
@@ -40,7 +40,7 @@ class Elements
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elements = [];
+    protected $elements = [];
 
     /**
      * Directories, where element types can be stored
@@ -48,7 +48,7 @@ class Elements
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_elementPath = [];
+    protected $elementPath = [];
 
     /**
      * Registry Object
@@ -66,9 +66,9 @@ class Elements
      */
     public function __construct($data = null, $setup = null)
     {
-        $this->_elementPath[] = __DIR__ . DS . 'element';
+        $this->elementPath[] = __DIR__ . DS . 'element';
 
-        $this->_raw = $data;
+        $this->raw = $data;
 
         // Instantiate the internal data object.
         $this->data = new stdClass();
@@ -311,11 +311,11 @@ class Elements
                     $obj->fields[] = $element;
                 }
 
-                $this->_schema[$group] = $obj;
+                $this->schema[$group] = $obj;
             } else {
                 $handler = Format::getInstance('JSON');
                 if ($obj = $handler->stringToObject($setup, [])) {
-                    $this->_schema[$group] = $obj;
+                    $this->schema[$group] = $obj;
                 }
             }
         } else {
@@ -526,7 +526,7 @@ class Elements
      */
     public function render($name = 'nbtag', $group = '_default')
     {
-        if (!isset($this->_schema[$group])) {
+        if (!isset($this->schema[$group])) {
             return false;
         }
 
@@ -590,12 +590,12 @@ class Elements
      */
     public function renderToArray($name = 'nbtag', $group = '_default')
     {
-        if (!isset($this->_schema[$group])) {
+        if (!isset($this->schema[$group])) {
             return false;
         }
 
         $results = [];
-        foreach ($this->_schema[$group]->fields as $element) {
+        foreach ($this->schema[$group]->fields as $element) {
             $result = $this->getElement($element, $name, $group);
             $results[$result->name] = $result;
         }
@@ -611,11 +611,11 @@ class Elements
      */
     public function getSchema($group = '_default')
     {
-        if (!isset($this->_schema[$group])) {
+        if (!isset($this->schema[$group])) {
             return false;
         }
 
-        return $this->_schema[$group];
+        return $this->schema[$group];
     }
 
     /**
@@ -627,12 +627,12 @@ class Elements
      */
     public function getElements($name = 'nbtag', $group = '_default')
     {
-        if (!isset($this->_schema[$group])) {
+        if (!isset($this->schema[$group])) {
             return false;
         }
 
         $results = [];
-        foreach ($this->_schema[$group]->fields as $element) {
+        foreach ($this->schema[$group]->fields as $element) {
             $results[] = $this->getElement($element, $name, $group);
         }
 
@@ -729,17 +729,17 @@ class Elements
 
         $signature = md5($type);
 
-        $elementExists = isset($this->_elements[$signature])
-            && !($this->_elements[$signature] instanceof \__PHP_Incomplete_Class);
+        $elementExists = isset($this->elements[$signature])
+            && !($this->elements[$signature] instanceof \__PHP_Incomplete_Class);
         if ($elementExists && $new === false) {
-            return $this->_elements[$signature];
+            return $this->elements[$signature];
         }
 
         $elementClass = __NAMESPACE__ . '\\Element\\' . $type;
 
         if (!class_exists($elementClass)) {
-            if (isset($this->_elementPath)) {
-                $dirs = $this->_elementPath;
+            if (isset($this->elementPath)) {
+                $dirs = $this->elementPath;
             } else {
                 $dirs = [];
             }
@@ -761,8 +761,8 @@ class Elements
             return false;
         }
 
-        $this->_elements[$signature] = new $elementClass($this);
+        $this->elements[$signature] = new $elementClass($this);
 
-        return $this->_elements[$signature];
+        return $this->elements[$signature];
     }
 }

@@ -86,7 +86,7 @@ class ImgHandler extends Obj
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_MEMORY_TO_ALLOCATE = '100M';
+    public $memoryTOALLOCATE = '100M';
 
     /**
      * Process an image
@@ -202,7 +202,7 @@ class ImgHandler extends Obj
         $resized = $docRoot . $resizedImage;
 
         // We don't want to run out of memory
-        ini_set('memory_limit', $this->_MEMORY_TO_ALLOCATE);
+        ini_set('memory_limit', $this->memoryTOALLOCATE);
 
         // Set up a blank canvas for our resized image (destination)
         $dst = imagecreatetruecolor($tnWidth, $tnHeight);

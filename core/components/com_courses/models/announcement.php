@@ -41,7 +41,7 @@ class Announcement extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'announcement';
+    protected $scope = 'announcement';
 
     /**
      * Returns a reference to this model

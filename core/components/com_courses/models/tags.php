@@ -22,7 +22,7 @@ class Tags extends Cloud
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'courses';
+    protected $scope = 'courses';
 
     /**
      * Turn a string of tags to an array
@@ -66,14 +66,14 @@ class Tags extends Cloud
     {
         switch (strtolower($rtrn)) {
             case 'string':
-                if (!isset($this->_cache['tags_string']) || $clear) {
+                if (!isset($this->cache['tags_string']) || $clear) {
                     $tags = [];
                     foreach ($this->tags('list', $filters, $clear) as $tag) {
                         $tags[] = $tag->get('raw_tag');
                     }
-                    $this->_cache['tags_string'] = implode(', ', $tags);
+                    $this->cache['tags_string'] = implode(', ', $tags);
                 }
-                return $this->_cache['tags_string'];
+                return $this->cache['tags_string'];
                 break;
 
             case 'array':
@@ -83,7 +83,7 @@ class Tags extends Cloud
             case 'cloud':
             case 'html':
             default:
-                if (!isset($this->_cache['tags_cloud']) || $clear) {
+                if (!isset($this->cache['tags_cloud']) || $clear) {
                     $view = new \Hubzero\Component\View([
                         'base_path' => dirname(__DIR__) . '/site',
                         'name'      => 'courses',
@@ -96,9 +96,9 @@ class Tags extends Cloud
                     $view->config = Component::params('com_tags');
                     $view->tags   = $this->tags('list', $filters, $clear);
 
-                    $this->_cache['tags_cloud'] = $view->loadTemplate();
+                    $this->cache['tags_cloud'] = $view->loadTemplate();
                 }
-                return $this->_cache['tags_cloud'];
+                return $this->cache['tags_cloud'];
                 break;
         }
     }

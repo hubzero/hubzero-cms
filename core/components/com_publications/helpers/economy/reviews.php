@@ -26,7 +26,7 @@ class Reviews extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_db = null;
+    private $db = null;
 
     /**
      * Constructor
@@ -36,7 +36,7 @@ class Reviews extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
+        $this->db = $db;
     }
 
     /**
@@ -55,8 +55,8 @@ class Reviews extends Obj
             . "\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no'
 			AND v.category='review' AND v.referenceid=r.id) AS nothelpful "
             . "\n FROM #__publication_ratings AS r";
-        $this->_db->setQuery($sql);
-        $result = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $result = $this->db->loadObjectList();
         $reviews = [];
         if ($result) {
             foreach ($result as $r) {

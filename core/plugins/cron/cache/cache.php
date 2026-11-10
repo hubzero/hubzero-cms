@@ -24,7 +24,7 @@ class Cache extends Plugin
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = null;
+    protected $path = null;
 
     /**
      * Constructor
@@ -37,7 +37,7 @@ class Cache extends Plugin
     {
         parent::__construct($subject, $config);
 
-        $this->_path = PATH_APP . DS . 'cache';
+        $this->path = PATH_APP . DS . 'cache';
     }
 
     /**
@@ -75,7 +75,7 @@ class Cache extends Plugin
      */
     public function trashExpiredData(\Components\Cron\Models\Job $job)
     {
-        if (!is_dir($this->_path)) {
+        if (!is_dir($this->path)) {
             return;
         }
 
@@ -92,13 +92,13 @@ class Cache extends Plugin
      */
     public function cleanSystemCss(\Components\Cron\Models\Job $job)
     {
-        if (!is_dir($this->_path)) {
+        if (!is_dir($this->path)) {
             return;
         }
 
         $docs = [];
 
-        $dirIterator = new \DirectoryIterator($this->_path);
+        $dirIterator = new \DirectoryIterator($this->path);
         foreach ($dirIterator as $file) {
             if ($file->isDot() || $file->isDir()) {
                 continue;
@@ -121,7 +121,7 @@ class Cache extends Plugin
                     continue;
                 }
 
-                $docs[$this->_path . DS . $name] = $name;
+                $docs[$this->path . DS . $name] = $name;
             }
         }
 

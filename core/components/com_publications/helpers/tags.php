@@ -25,7 +25,7 @@ class Tags extends \Hubzero\Base\Obj
      * @var unknown
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db  = null;
+    public $db  = null;
 
     /**
      * Object type, used for linking objects (such as resources) to tags
@@ -33,7 +33,7 @@ class Tags extends \Hubzero\Base\Obj
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_tbl = 'tags';
+    public $tbl = 'tags';
 
     /**
      * The object to be tagged
@@ -41,7 +41,7 @@ class Tags extends \Hubzero\Base\Obj
      * @var unknown
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_oid = null;
+    public $oid = null;
 
     /**
      * The primary tag table
@@ -49,7 +49,7 @@ class Tags extends \Hubzero\Base\Obj
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_tag_tbl = '#__tags';
+    public $tagTbl = '#__tags';
 
     /**
      * Tag/object mapping table
@@ -57,7 +57,7 @@ class Tags extends \Hubzero\Base\Obj
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_obj_tbl = '#__tags_object';
+    public $objTbl = '#__tags_object';
 
     /**
      * Constructor
@@ -68,8 +68,8 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function __construct($db, $config = [])
     {
-        $this->_db  = $db;
-        $this->_tbl = 'publications';
+        $this->db  = $db;
+        $this->tbl = 'publications';
     }
 
     /**
@@ -93,10 +93,10 @@ class Tags extends \Hubzero\Base\Obj
         $admin = 0,
         $label = '',
     ) {
-        $cloud = new Cloud($object_id, $this->_tbl);
+        $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->tags('list', [
             'objectid' => $object_id,
-            'tbl' => $this->_tbl,
+            'tbl' => $this->tbl,
         ]);
     }
 
@@ -121,7 +121,7 @@ class Tags extends \Hubzero\Base\Obj
             return false;
         }
 
-        $cloud = new Cloud($object_id, $this->_tbl);
+        $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->add($tag, $tagger_id, 0, $strength, $label);
     }
 
@@ -136,26 +136,26 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function getTags($id, $tagger_id = 0, $strength = 0, $admin = 0)
     {
-        $sql = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t, $this->_obj_tbl AS rt WHERE ";
+        $sql = "SELECT DISTINCT t.* FROM $this->tagTbl AS t, $this->objTbl AS rt WHERE ";
 
         $where = [];
         $where[] = "rt.objectid=$id";
-        $where[] = "rt.tbl='$this->_tbl'";
+        $where[] = "rt.tbl='$this->tbl'";
         $where[] = "rt.tagid=t.id";
         if ($admin != 1) {
             $where[] = "t.admin=0";
         }
         if ($tagger_id != 0) {
-            $where[] = "rt.taggerid=" . $this->_db->quote($tagger_id);
+            $where[] = "rt.taggerid=" . $this->db->quote($tagger_id);
         }
         if ($strength) {
-            $where[] = "rt.strength=" . $this->_db->quote($strength);
+            $where[] = "rt.strength=" . $this->db->quote($strength);
         }
 
         $sql .= implode(" AND ", $where) . " ORDER BY t.raw_tag";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -167,10 +167,10 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function getAllUserTags($vid)
     {
-        $sql = "SELECT DISTINCT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid 
+        $sql = "SELECT DISTINCT jt.* FROM $this->tagTbl AS jt LEFT JOIN $this->objTbl AS jto ON jt.id = jto.tagid 
 		WHERE jt.admin = 0 AND jto.tbl = 'publications' AND jto.objectid = $vid";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -186,9 +186,9 @@ class Tags extends \Hubzero\Base\Obj
     {
         $now = Date::toSql();
 
-        $this->_db->setQuery("SELECT objectid FROM $this->_tag_tbl AS t,
-			$this->_obj_tbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->_tbl'");
-        $objs = $this->_db->loadObjectList();
+        $this->db->setQuery("SELECT objectid FROM $this->tagTbl AS t,
+			$this->objTbl AS o WHERE o.tagid=t.id AND t.tag='$tag' AND o.tbl='$this->tbl'");
+        $objs = $this->db->loadObjectList();
 
         $ids = '';
         if ($objs) {
@@ -200,9 +200,9 @@ class Tags extends \Hubzero\Base\Obj
         }
 
         $sql = "SELECT t.id, t.tag, t.raw_tag, r.id AS rid, 0 AS ucount, NULL AS rids
-				FROM $this->_tag_tbl AS t, $this->_obj_tbl AS o, `#__publications` AS r
+				FROM $this->tagTbl AS t, $this->objTbl AS o, `#__publications` AS r
 				JOIN `#__publication_versions` as V ON V.publication_id = r.id AND V.main = 1
-				WHERE o.tbl='$this->_tbl'
+				WHERE o.tbl='$this->tbl'
 				AND o.tagid=t.id
 				AND t.admin=0
 				AND o.objectid=V.id
@@ -210,7 +210,7 @@ class Tags extends \Hubzero\Base\Obj
 				AND (V.publish_up IS NULL OR V.publish_up = '0000-00-00 00:00:00' OR V.publish_up <= '$now')
 				AND (V.publish_down IS NULL OR V.publish_down = '0000-00-00 00:00:00' OR V.publish_down >= '$now') ";
         if ($category) {
-            $sql .= "AND r.category=" . $this->_db->quote($category) . " ";
+            $sql .= "AND r.category=" . $this->db->quote($category) . " ";
         }
 
         if (!User::isGuest()) {
@@ -223,8 +223,8 @@ class Tags extends \Hubzero\Base\Obj
         }
         $sql .= "ORDER BY t.raw_tag ASC";
 
-        $this->_db->setQuery($sql);
-        $results = $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        $results = $this->db->loadObjectList();
 
         $rows = [];
         if ($results) {
@@ -260,7 +260,7 @@ class Tags extends \Hubzero\Base\Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function tag_object($tagger_id, $object_id, $tag_string, $strength, $admin = false, $label = '')
     {
-        $cloud = new Cloud($object_id, $this->_tbl);
+        $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->setTags($tag_string, $tagger_id, $admin, $strength, $label);
     }
 
@@ -276,7 +276,7 @@ class Tags extends \Hubzero\Base\Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_tag($tagger_id, $object_id, $tag, $admin)
     {
-        $cloud = new Cloud($object_id, $this->_tbl);
+        $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->remove($tag, $tagger_id);
     }
 
@@ -289,7 +289,7 @@ class Tags extends \Hubzero\Base\Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function remove_all_tags($object_id)
     {
-        $cloud = new Cloud($object_id, $this->_tbl);
+        $cloud = new Cloud($object_id, $this->tbl);
         return $cloud->removeAll();
     }
 
@@ -368,7 +368,7 @@ class Tags extends \Hubzero\Base\Obj
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function get_tag_cloud($showsizes = 0, $admin = 0, $objectid = null)
     {
-        $cloud = new Cloud($objectid, $this->_tbl);
+        $cloud = new Cloud($objectid, $this->tbl);
         return $cloud->render(); //TODO: Check with author as to why admin is aasumed not needed
         //return $cloud->render('html', array('admin' => $admin));
     }
@@ -394,7 +394,7 @@ class Tags extends \Hubzero\Base\Obj
         $admin = 0,
         $label = '',
     ) {
-        $cloud = new Cloud($oid, $this->_tbl);
+        $cloud = new Cloud($oid, $this->tbl);
         return $cloud->render('string');
     }
 
@@ -499,7 +499,7 @@ class Tags extends \Hubzero\Base\Obj
             $query .= "FROM #__publications AS C ";
             $query .= "JOIN #__publication_versions as V ON V.publication_id = C.id AND V.main = 1 ";
             $query .= " LEFT JOIN #__publication_audience AS TTA ON C.id=TTA.rid ";
-            $query .= ", $this->_obj_tbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
+            $query .= ", $this->objTbl AS RTA INNER JOIN #__tags AS TA ON (RTA.tagid = TA.id) ";
         } else {
             $query  = "SELECT C.id, V.title  ";
             switch ($sortby) {
@@ -534,15 +534,15 @@ class Tags extends \Hubzero\Base\Obj
 
         if ($tag || $tag2) {
             if ($tag && !$tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' "
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->tbl' "
                     . "AND (TA.tag IN ('" . $tag . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
             } elseif ($tag2 && !$tag) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' "
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->tbl' "
                     . "AND (TA.tag IN ('" . $tag2 . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=1";
             } elseif ($tag && $tag2) {
-                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->_tbl' "
+                $query .= "AND RTA.objectid=C.id AND RTA.tbl='$this->tbl' "
                     . "AND (TA.tag IN ('" . $tag . "','" . $tag2 . "'))";
                 $query .= " GROUP BY C.id HAVING uniques=2";
             }
@@ -567,8 +567,8 @@ class Tags extends \Hubzero\Base\Obj
         }
         $query .= " ORDER BY " . $sort . ", V.published_up";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($query);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -586,7 +586,7 @@ class Tags extends \Hubzero\Base\Obj
         }
         if ($id) {
             $query = "SELECT COUNT(*)
-						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t
+						FROM $this->objTbl AS ta, $this->tagTbl AS t
 						WHERE ta.tagid=t.id
 						AND t.tag='" . $tag . "'
 						AND ta.tbl='publications'
@@ -594,7 +594,7 @@ class Tags extends \Hubzero\Base\Obj
         }
         if (!$id && $alias) {
             $query = "SELECT COUNT(*)
-						FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__publications AS r
+						FROM $this->objTbl AS ta, $this->tagTbl AS t, #__publications AS r
 						WHERE ta.tagid=t.id
 						AND t.tag='" . $tag . "'
 						AND ta.tbl='publications'
@@ -602,8 +602,8 @@ class Tags extends \Hubzero\Base\Obj
 						AND r.alias='" . $alias . "'";
         }
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadResult();
+        $this->db->setQuery($query);
+        return $this->db->loadResult();
     }
 
     /**
@@ -620,14 +620,14 @@ class Tags extends \Hubzero\Base\Obj
         }
 
         $query = "SELECT r.$rtrn
-					FROM $this->_obj_tbl AS ta, $this->_tag_tbl AS t, #__publications AS r
+					FROM $this->objTbl AS ta, $this->tagTbl AS t, #__publications AS r
 					WHERE ta.tagid=t.id
 					AND t.tag='" . $tag . "'
 					AND ta.tbl='publications'
 					AND ta.objectid=r.id";
 
-        $this->_db->setQuery($query);
-        return $this->_db->loadColumn();
+        $this->db->setQuery($query);
+        return $this->db->loadColumn();
     }
 
     /**
@@ -639,12 +639,12 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function countTags($id)
     {
-        $sql = "SELECT COUNT(*) FROM $this->_tag_tbl AS t,
-			$this->_obj_tbl AS rt WHERE rt.objectid=$id
-			AND rt.tbl='$this->_tbl' AND rt.tagid=t.id";
+        $sql = "SELECT COUNT(*) FROM $this->tagTbl AS t,
+			$this->objTbl AS rt WHERE rt.objectid=$id
+			AND rt.tbl='$this->tbl' AND rt.tagid=t.id";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        return $this->db->loadResult();
     }
 
     /**
@@ -668,11 +668,11 @@ class Tags extends \Hubzero\Base\Obj
             $k++;
         }
 
-        $sql  = "SELECT DISTINCT t.* FROM $this->_tag_tbl AS t ";
+        $sql  = "SELECT DISTINCT t.* FROM $this->tagTbl AS t ";
         $sql .= "WHERE  t.id IN (" . $picked . ")";
         $sql .= " ORDER BY t.raw_tag";
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -685,20 +685,20 @@ class Tags extends \Hubzero\Base\Obj
     public function getFOSTag($vid)
     {
         // Get department tag id
-        $deptQuery = "SELECT jt.id FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid 
+        $deptQuery = "SELECT jt.id FROM $this->tagTbl AS jt LEFT JOIN $this->objTbl AS jto ON jt.id = jto.tagid 
 		WHERE jt.admin = 1 AND jto.tbl='publications' AND jt.raw_tag LIKE '%(Dept)%' AND jto.objectid = $vid";
-        $this->_db->setQuery($deptQuery);
-        $deptTagID = $this->_db->loadResult();
+        $this->db->setQuery($deptQuery);
+        $deptTagID = $this->db->loadResult();
 
         if (!$deptTagID) {
             return false;
         }
 
         // Get FOS tag by department tag id
-        $fosQuery = "SELECT jt.* FROM $this->_tag_tbl AS jt LEFT JOIN $this->_obj_tbl AS jto ON jt.id = jto.tagid 
+        $fosQuery = "SELECT jt.* FROM $this->tagTbl AS jt LEFT JOIN $this->objTbl AS jto ON jt.id = jto.tagid 
 		WHERE jto.tbl = 'tags' AND jto.label = 'parent' AND jto.objectid = $deptTagID";
-        $this->_db->setQuery($fosQuery);
-        return $this->_db->loadObject();
+        $this->db->setQuery($fosQuery);
+        return $this->db->loadObject();
     }
 
     /**
@@ -739,18 +739,18 @@ class Tags extends \Hubzero\Base\Obj
         }
 
         $sql  = "SELECT DISTINCT t.*, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount  ";
-        $sql .= "FROM $this->_tag_tbl AS t ";
-        $sql .= "JOIN $this->_obj_tbl AS tj ON t.id=tj.tagid ";
+        $sql .= "FROM $this->tagTbl AS t ";
+        $sql .= "JOIN $this->objTbl AS tj ON t.id=tj.tagid ";
         $sql .= "WHERE ";
-        $sql .= $picked ? " t.id NOT IN (" . $this->_db->quote($picked) . ")" : "1=1";
+        $sql .= $picked ? " t.id NOT IN (" . $this->db->quote($picked) . ")" : "1=1";
         $sql .= " GROUP BY tagid ";
-        $sql .= " HAVING tcount > " . $this->_db->quote($tcount);
+        $sql .= " HAVING tcount > " . $this->db->quote($tcount);
 
         if (!empty($keywords)) {
             $sql .= ' OR (';
             $w = 1;
             foreach ($keywords as $key) {
-                $sql .= 't.raw_tag LIKE "%' . $this->_db->escape($key) . '%"';
+                $sql .= 't.raw_tag LIKE "%' . $this->db->escape($key) . '%"';
                 $sql .= $w == count($keywords) ? '' : ' OR ';
                 $w++;
             }
@@ -759,8 +759,8 @@ class Tags extends \Hubzero\Base\Obj
         $sql .= " AND t.admin=0 ";
         $sql .= " ORDER BY  RAND()";
         $sql .= " LIMIT " . $limit;
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**
@@ -791,17 +791,17 @@ class Tags extends \Hubzero\Base\Obj
         $sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid ";
         $sql .= "LEFT JOIN #__publication_versions AS V ON V.id=tj.objectid AND tj.tbl='publications' ";
         $sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
-        $sql .= "AND tj.tbl=" . $this->_db->quote($this->_tbl) . " ";
+        $sql .= "AND tj.tbl=" . $this->db->quote($this->tbl) . " ";
         $sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
-        $sql .= "AND V.published_up < " . $this->_db->quote(Date::toSql()) . " ";
+        $sql .= "AND V.published_up < " . $this->db->quote(Date::toSql()) . " ";
         $sql .= "AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' "
-            . "OR V.published_down > " . $this->_db->quote(Date::toSql()) . ") ";
+            . "OR V.published_down > " . $this->db->quote(Date::toSql()) . ") ";
         $sql .= "GROUP BY tj.tagid ";
         $sql .= "ORDER BY tcount DESC ";
         $sql .= "LIMIT $limit";
 
-        $this->_db->setQuery($sql);
-        return $this->_db->loadObjectList();
+        $this->db->setQuery($sql);
+        return $this->db->loadObjectList();
     }
 
     /**

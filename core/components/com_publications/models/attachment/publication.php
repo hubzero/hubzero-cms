@@ -28,7 +28,7 @@ class Publication extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'publication';
+    protected $name = 'publication';
 
     /**
      * Unique attachment properties
@@ -36,7 +36,7 @@ class Publication extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connector = ['path'];
+    protected $connector = ['path'];
 
     /**
      * Get configs
@@ -109,7 +109,7 @@ class Publication extends Base
         if ($attachments) {
             // Serve individually
             foreach ($attachments as $attach) {
-                if ($attach->type != $this->_name) {
+                if ($attach->type != $this->name) {
                     continue;
                 }
 
@@ -145,7 +145,7 @@ class Publication extends Base
                 $pop = Lang::txt('View link') . ' ' . $title;
 
                 $html .= '<li>';
-                $html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
+                $html .= $authorized === 'administrator' ? '[' . $this->name . '] ' : '';
                 $html .= '<p><a href="' . $itemUrl . '" title="' . $pop . '" ';
                 $html .= 'rel="noopener" target="_blank" class="link-type">' . $title . '</a></p>';
                 $html .= '<p>' . $description . '</p>';
@@ -262,7 +262,7 @@ class Publication extends Base
         // Loop through attachments
         foreach ($attachments as $att) {
             // Make new attachment record
-            $pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pAttach = new \Components\Publications\Tables\Attachment($this->parent->db);
 
             if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id'))) {
                 continue;
@@ -289,7 +289,7 @@ class Publication extends Base
         $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
+        $attachments = $this->parent->getElementAttachments($elementId, $attachments, $this->name);
 
         $path = null;
         if ($itemId) {
@@ -312,7 +312,7 @@ class Publication extends Base
 
         // Absolute or relative link?
         $where = preg_match($v, $path) ? $path : DS . trim($path, DS);
-        $this->_parent->set('redirect', $where);
+        $this->parent->set('redirect', $where);
 
         return true;
     }
@@ -352,14 +352,14 @@ class Publication extends Base
         $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
+        $attachments = $this->parent->getElementAttachments($elementId, $attachments, $this->name);
 
         // Counters
         $i = 0;
         $a = 0;
 
         // Default title for publication
-        $defaultTitle = $pub->_curationModel->_manifest->params->default_title;
+        $defaultTitle = $pub->_curationModel->manifest->params->default_title;
 
         // Attach/refresh each selected item
         foreach ($toAttach as $identifier) {
@@ -370,7 +370,7 @@ class Publication extends Base
             $a++;
             $ordering = $i + 1;
 
-            $row = new \Components\Publications\Tables\Version($this->_parent->_db);
+            $row = new \Components\Publications\Tables\Version($this->parent->db);
             if (!$row->load($identifier)) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'));
                 return false;
@@ -443,13 +443,13 @@ class Publication extends Base
             $path = $baseUrl . ltrim(Route::url($versionLink), '/');
         }
 
-        $objPA = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+        $objPA = new \Components\Publications\Tables\Attachment($this->parent->db);
 
         $loaded = $objPA->loadElementAttachment(
             $pub->version_id,
             ['path' => $path],
             $elementId,
-            $this->_name,
+            $this->name,
             $element->role,
         );
         if ($loaded) {
@@ -460,16 +460,16 @@ class Publication extends Base
             $objPA->publication_id = $pub->id;
             $objPA->publication_version_id = $pub->version_id;
             $objPA->path        = $path;
-            $objPA->type        = $this->_name;
+            $objPA->type        = $this->name;
             $objPA->created_by  = $uid;
             $objPA->created     = Date::toSql();
             $objPA->role        = $element->role;
             $objPA->title       = $title;
             $objPA->object_id   = $id;
-            $objPA->object_name = $this->_name;
+            $objPA->object_name = $this->name;
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
         }
 
         $objPA->element_id = $elementId;
@@ -510,7 +510,7 @@ class Publication extends Base
             $this->set('_message', Lang::txt('Item removed'));
 
             // Reflect the update in curation record
-            $this->_parent->set('_update', 1);
+            $this->parent->set('_update', 1);
 
             return true;
         }
@@ -652,7 +652,7 @@ class Publication extends Base
             'folder'  => 'projects',
             'element' => 'publications',
             'name'    => 'attachments',
-            'layout'  => $this->_name,
+            'layout'  => $this->name,
         ]);
         $view->data   = $data;
         $view->params = $params;

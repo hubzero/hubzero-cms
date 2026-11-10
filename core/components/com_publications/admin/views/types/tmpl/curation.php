@@ -34,7 +34,7 @@ $curatorGroup = '';
 if ($this->row->curatorgroup && $group = \Hubzero\User\Group::getInstance($this->row->curatorgroup)) {
     $curatorGroup = $group->get('cn');
 }
-$manifest  = $this->curation->_manifest;
+$manifest  = $this->curation->manifest;
 $curParams = $manifest->params;
 $blocks    = $manifest->blocks;
 

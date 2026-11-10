@@ -23,21 +23,21 @@ class Attachments extends Obj
      *
      * @var object
      */
-    public $_db = null;
+    public $db = null;
 
     /**
      * Loaded elements
      *
      * @var  array
      */
-    protected $_types = [];
+    protected $types = [];
 
     /**
      * Directories, where attachment types can be stored
      *
      * @var  array
      */
-    protected $_path = [];
+    protected $path = [];
 
     /**
      * Constructor
@@ -47,8 +47,8 @@ class Attachments extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db = $db;
-        $this->_path[] = dirname(__FILE__) . DS . 'attachment';
+        $this->db = $db;
+        $this->path[] = dirname(__FILE__) . DS . 'attachment';
     }
 
     /**
@@ -457,11 +457,11 @@ class Attachments extends Obj
         $signature = md5($name);
 
         if (
-            (isset($this->_types[$signature])
-            && !($this->_types[$signature] instanceof \__PHP_Incomplete_Class))
+            (isset($this->types[$signature])
+            && !($this->types[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
-            return $this->_types[$signature];
+            return $this->types[$signature];
         }
 
         $elementClass = __NAMESPACE__ . '\\Attachment\\' . ucfirst($name);
@@ -469,8 +469,8 @@ class Attachments extends Obj
             return false;
         }
 
-        $this->_types[$signature] = new $elementClass($this);
-        return $this->_types[$signature];
+        $this->types[$signature] = new $elementClass($this);
+        return $this->types[$signature];
     }
 
     /**

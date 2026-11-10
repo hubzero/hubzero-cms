@@ -64,7 +64,7 @@ class Andmore extends Base
     {
         list($caption, $period) = $this->fetch($disp);
 
-        if ($this->_type == 1) {
+        if ($this->type == 1) {
             $vlabel  = Lang::txt('Views');
             $avlabel = Lang::txt('Avg. view time');
         } else {

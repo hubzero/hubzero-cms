@@ -22,7 +22,7 @@ use Hubzero\Facades\User;
 class Section extends Base
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_permissions;
+    protected $permissions;
 
     /**
      * Table class name
@@ -36,7 +36,7 @@ class Section extends Base
      *
      * @var string
      */
-    protected $_scope = 'section';
+    protected $scope = 'section';
 
     /**
      * Flag for if authorization checks have been run
@@ -292,12 +292,12 @@ class Section extends Base
      */
     public function access($action = 'view', $item = 'section')
     {
-        if (!isset($this->_permissions)) {
-            $this->_permissions = Permissions::getInstance();
-            $this->_permissions->set('offering_id', $this->get('offering_id'));
-            $this->_permissions->set('section_id', $this->get('id'));
+        if (!isset($this->permissions)) {
+            $this->permissions = Permissions::getInstance();
+            $this->permissions->set('offering_id', $this->get('offering_id'));
+            $this->permissions->set('section_id', $this->get('id'));
         }
-        return $this->_permissions->access($action, $item);
+        return $this->permissions->access($action, $item);
     }
 
     /**
@@ -544,7 +544,7 @@ class Section extends Base
              ->trigger('onAfterSaveSection', [$this, $isNew]);
 
         if ($isNew) {
-            $this->log($this->get('id'), $this->_scope, 'create');
+            $this->log($this->get('id'), $this->scope, 'create');
         }
 
         return $value;

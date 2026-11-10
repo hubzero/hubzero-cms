@@ -23,7 +23,7 @@ class Group extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_groups',
     ];
 
@@ -37,21 +37,21 @@ class Group extends Base
     {
         $this->set('scope_id', $scope_id);
 
-        $this->_item = UserGroup::getInstance($scope_id);
-        if (!($this->_item instanceof UserGroup)) {
-            $this->_item = new UserGroup();
+        $this->item = UserGroup::getInstance($scope_id);
+        if (!($this->item instanceof UserGroup)) {
+            $this->item = new UserGroup();
         }
 
-        $this->_segments['cn']     = $this->_item->get('cn');
-        $this->_segments['active'] = 'blog';
+        $this->segments['cn']     = $this->item->get('cn');
+        $this->segments['active'] = 'blog';
 
         $groupParams = Component::params('com_groups');
         $uploadpath = $groupParams->get('uploadpath', '/site/groups');
         $uploadpath = trim($uploadpath, DS) . DS . $this->get('scope_id') . DS . 'uploads' . DS . 'blog';
 
         $this->set('path', $uploadpath);
-        $this->set('scope', $this->_segments['cn'] . '/blog');
-        $this->set('option', $this->_segments['option']);
+        $this->set('scope', $this->segments['cn'] . '/blog');
+        $this->set('option', $this->segments['option']);
     }
 
     /**
@@ -93,14 +93,14 @@ class Group extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'base':
-                return $this->_base . '?' . (string) $this->_build($this->_segments);
+                return $this->base . '?' . (string) $this->_build($this->segments);
                 break;
 
             case 'edit':
@@ -149,6 +149,6 @@ class Group extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 }

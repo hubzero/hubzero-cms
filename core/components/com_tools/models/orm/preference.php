@@ -40,7 +40,7 @@ class Preference extends Relational
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_params = null;
+    protected $params = null;
 
     /**
      * Transform params
@@ -49,11 +49,11 @@ class Preference extends Relational
      */
     public function transformParams()
     {
-        if (!is_object($this->_params)) {
-            $this->_params = new Registry($this->get('params'));
+        if (!is_object($this->params)) {
+            $this->params = new Registry($this->get('params'));
         }
 
-        return $this->_params;
+        return $this->params;
     }
 
     /**
@@ -73,8 +73,8 @@ class Preference extends Relational
      */
     public function save()
     {
-        if (is_object($this->_params)) {
-            $this->set('params', $this->_params->toString());
+        if (is_object($this->params)) {
+            $this->set('params', $this->params->toString());
         }
 
         return parent::save();

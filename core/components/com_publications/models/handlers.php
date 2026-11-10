@@ -24,7 +24,7 @@ class Handlers extends Obj
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    public $_db = null;
+    public $db = null;
 
     /**
      * Loaded elements
@@ -32,7 +32,7 @@ class Handlers extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_types = [];
+    protected $types = [];
 
     /**
      * Directories, where handlers can be stored
@@ -40,7 +40,7 @@ class Handlers extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = [];
+    protected $path = [];
 
     /**
      * Configs
@@ -48,7 +48,7 @@ class Handlers extends Obj
      * @var
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_configs = null;
+    protected $configs = null;
 
     /**
      * Editor
@@ -65,8 +65,8 @@ class Handlers extends Obj
      */
     public function __construct(&$db)
     {
-        $this->_db     = $db;
-        $this->_path[] = dirname(__FILE__) . DS . 'handlers';
+        $this->db     = $db;
+        $this->path[] = dirname(__FILE__) . DS . 'handlers';
     }
 
     /**
@@ -85,7 +85,7 @@ class Handlers extends Obj
         $html = '';
 
         // TBD - Get handler configs from pub/type manifest
-        $this->_configs = isset($pub->_curationModel->handlers) ? $pub->_curationModel->handlers : null;
+        $this->configs = isset($pub->_curationModel->handlers) ? $pub->_curationModel->handlers : null;
 
         // We have a forced handler
         if ($handler) {
@@ -100,7 +100,7 @@ class Handlers extends Obj
             return '';
 
             // Load needed objects
-            $obj = new \Components\Publications\Tables\Handler($this->_db);
+            $obj = new \Components\Publications\Tables\Handler($this->db);
 
             // Get all available handlers
             $all = $obj->getHandlers($pub->version_id, $elementid);
@@ -193,7 +193,7 @@ class Handlers extends Obj
         // Make sure we have attachments
         if (!isset($pub->_attachments)) {
             // Get attachments
-            $pContent = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pContent = new \Components\Publications\Tables\Attachment($this->_parent->db);
             $pub->_attachments = $pContent->sortAttachments($pub->version_id);
         }
 
@@ -207,7 +207,7 @@ class Handlers extends Obj
         $editor->set('elementId', $elementId);
 
         // Check if assigned and get association record
-        $objAssoc = new \Components\Publications\Tables\HandlerAssoc($this->_db);
+        $objAssoc = new \Components\Publications\Tables\HandlerAssoc($this->db);
         $association = $objAssoc->getAssociation($pub->version_id, $elementId, $handler->get('_name'));
         $editor->set('assoc', $association);
 
@@ -392,11 +392,11 @@ class Handlers extends Obj
         $signature = md5($name);
 
         if (
-            (isset($this->_types[$signature])
-            && !($this->_types[$signature] instanceof \__PHP_Incomplete_Class))
+            (isset($this->types[$signature])
+            && !($this->types[$signature] instanceof \__PHP_Incomplete_Class))
             && $new === false
         ) {
-            return $this->_types[$signature];
+            return $this->types[$signature];
         }
 
         $elementClass = '\Components\Publications\Models\Handlers\\' . ucfirst($name);
@@ -404,8 +404,8 @@ class Handlers extends Obj
             return false;
         }
 
-        $this->_types[$signature] = new $elementClass($this);
-        return $this->_types[$signature];
+        $this->types[$signature] = new $elementClass($this);
+        return $this->types[$signature];
     }
 
     /**
@@ -420,7 +420,7 @@ class Handlers extends Obj
     {
         // Get custom config from db
         if (!$savedConfig  || empty($savedConfig)) {
-            $obj = new \Components\Publications\Tables\Handler($this->_db);
+            $obj = new \Components\Publications\Tables\Handler($this->db);
             $savedConfig = $obj->getConfig($name);
         }
 

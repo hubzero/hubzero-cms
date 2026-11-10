@@ -26,7 +26,7 @@ class Pagedown extends Plugin
     public const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_editorCount = 1;
+    protected $editorCount = 1;
 
     /*
      *  Adds editor scripts & stylesheets to the HTML document
@@ -217,11 +217,11 @@ class Pagedown extends Plugin
     protected function _buildEditorDomElements($content, $name, $columns, $rows)
     {
         $editorDomElements = '<div>';
-        $idPostfix = ($this->_editorCount > 1) ? ("-" . $this->_editorCount) : '';
+        $idPostfix = ($this->editorCount > 1) ? ("-" . $this->editorCount) : '';
         $editorDomElements .= '<div id="' . self::BUTTON_BAR_ID . $idPostfix . '"></div>';
         $editorDomElements .= $this->_buildTextarea($content, $name, $columns, $rows, $idPostfix);
         $editorDomElements .= '</div>';
-        $this->_editorCount++;
+        $this->editorCount++;
 
         return $editorDomElements;
     }

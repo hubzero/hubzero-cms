@@ -25,7 +25,7 @@ class Courses extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'course';
+    protected $type = 'course';
 
     /**
      * Get the item type
@@ -81,7 +81,7 @@ class Courses extends GenericItem
             $id = $course->get('id');
         }
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -96,7 +96,7 @@ class Courses extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $course->get('id'))
              ->set('created', $course->get('created'))
              ->set('created_by', $course->get('created_by'))

@@ -35,7 +35,7 @@ class GradeBook extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'gradebook';
+    protected $scope = 'gradebook';
 
     /**
      * Course object

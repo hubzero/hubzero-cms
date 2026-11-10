@@ -21,7 +21,7 @@ class Bibtex extends Downloadable
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_mime = 'application/x-bibtex';
+    protected $mime = 'application/x-bibtex';
 
     /**
      * File extension
@@ -29,7 +29,7 @@ class Bibtex extends Downloadable
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_extension = 'bib';
+    protected $extension = 'bib';
 
     /**
      * Format the file

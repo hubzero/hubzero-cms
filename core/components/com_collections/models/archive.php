@@ -26,63 +26,63 @@ class Archive extends Obj
      *
      * @var string
      */
-    private $_object_type = null;
+    private $objectType = null;
 
     /**
      * Object ID [member ID, group ID, etc.]
      *
      * @var integer
      */
-    private $_object_id = null;
+    private $objectId = null;
 
     /**
      * Database
      *
      * @var object
      */
-    private $_db = null;
+    private $db = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_collections = null;
+    private $collections = null;
 
     /**
      * Collection
      *
      * @var object
      */
-    private $_collection = null;
+    private $collection = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_followers = null;
+    private $followers = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_following = null;
+    private $following = null;
 
     /**
      * Is following?
      *
      * @var boolean
      */
-    private $_isFollowing = null;
+    private $isFollowing = null;
 
     /**
      * Is being followed?
      *
      * @var boolean
      */
-    private $_isFollowed = null;
+    private $isFollowed = null;
 
     /**
      * Constructor
@@ -93,10 +93,10 @@ class Archive extends Obj
      */
     public function __construct($object_type = '', $object_id = 0)
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
-        $this->_object_type = (string) $object_type;
-        $this->_object_id   = (int) $object_id;
+        $this->objectType = (string) $object_type;
+        $this->objectId   = (int) $object_id;
     }
 
     /**
@@ -132,7 +132,7 @@ class Archive extends Obj
      */
     public function get($property, $default = null)
     {
-        $property = '_' . $property;
+        $property = self::propertyName($property);
         if (isset($this->$property)) {
             return $this->$property;
         }
@@ -148,7 +148,7 @@ class Archive extends Obj
      */
     public function set($property, $value = null)
     {
-        $property = '_' . $property;
+        $property = self::propertyName($property);
         $previous = isset($this->$property) ? $this->$property : null;
         $this->$property = $value;
         return $previous;
@@ -165,26 +165,26 @@ class Archive extends Obj
         // If the current offering isn't set
         //    OR the ID passed doesn't equal the current offering's ID or alias
         if (
-            !isset($this->_collection)
-            || ($id !== null && (int) $this->_collection->get('id') != $id && (string) $this->_collection->get('alias') != $id)
+            !isset($this->collection)
+            || ($id !== null && (int) $this->collection->get('id') != $id && (string) $this->collection->get('alias') != $id)
         ) {
             // Reset current offering
-            $this->_collection = null;
+            $this->collection = null;
 
             // If the list of all offerings is available ...
-            if ($this->_collections instanceof ItemList) {
+            if ($this->collections instanceof ItemList) {
                 // Find an offering in the list that matches the ID passed
                 foreach ($this->collections() as $key => $collection) {
                     if ((int) $collection->get('id') == $id || (string) $collection->get('alias') == $id) {
                         // Set current offering
-                        $this->_collection = $collection;
+                        $this->collection = $collection;
                         break;
                     }
                 }
             }
 
-            if (!$this->_collection) {
-                $this->_collection = Collection::getInstance($id, $this->_object_id, $this->_object_type);
+            if (!$this->collection) {
+                $this->collection = Collection::getInstance($id, $this->objectId, $this->objectType);
             }
 
             // Tables\Collection::load() short-circuits to parent::load() for a
@@ -203,17 +203,17 @@ class Archive extends Obj
             // a post from any board and then asks canAccess()) carries no scope
             // to apply and is left alone.
             if (
-                $this->_object_id
-                && $this->_object_type
-                && $this->_collection->exists()
-                && ((int) $this->_collection->get('object_id') !== (int) $this->_object_id
-                || strtolower((string) $this->_collection->get('object_type')) !== strtolower($this->_object_type))
+                $this->objectId
+                && $this->objectType
+                && $this->collection->exists()
+                && ((int) $this->collection->get('object_id') !== (int) $this->objectId
+                || strtolower((string) $this->collection->get('object_type')) !== strtolower($this->objectType))
             ) {
-                $this->_collection = new Collection();
+                $this->collection = new Collection();
             }
         }
         // Return current offering
-        return $this->_collection;
+        return $this->collection;
     }
 
     /**
@@ -224,24 +224,24 @@ class Archive extends Obj
      */
     public function collections($filters = [])
     {
-        if ($this->_object_id) {
-            $filters['object_id']   = $this->_object_id;
+        if ($this->objectId) {
+            $filters['object_id']   = $this->objectId;
         }
-        if ($this->_object_type) {
-            $filters['object_type'] = $this->_object_type;
+        if ($this->objectType) {
+            $filters['object_type'] = $this->objectType;
         }
         if (!isset($filters['state'])) {
             $filters['state'] = 1;
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Collection($this->_db);
+            $tbl = new Tables\Collection($this->db);
 
             return $tbl->getCount($filters);
         }
 
-        if (!($this->_collections instanceof ItemList)) {
-            $tbl = new Tables\Collection($this->_db);
+        if (!($this->collections instanceof ItemList)) {
+            $tbl = new Tables\Collection($this->db);
 
             if (($results = $tbl->getRecords($filters))) {
                 // Loop through all the items and push assets and tags
@@ -250,10 +250,10 @@ class Archive extends Obj
                 }
             }
 
-            $this->_collections = new ItemList($results);
+            $this->collections = new ItemList($results);
         }
 
-        return $this->_collections;
+        return $this->collections;
     }
 
     /**
@@ -264,16 +264,16 @@ class Archive extends Obj
      */
     public function followers($filters = [])
     {
-        $filters['following_id']   = $this->_object_id;
-        $filters['following_type'] = $this->_object_type;
+        $filters['following_id']   = $this->objectId;
+        $filters['following_type'] = $this->objectType;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Following($this->_db);
+            $tbl = new Tables\Following($this->db);
 
             return $tbl->count($filters);
         }
-        if (!($this->_followers instanceof ItemList)) {
-            $tbl = new Tables\Following($this->_db);
+        if (!($this->followers instanceof ItemList)) {
+            $tbl = new Tables\Following($this->db);
 
             if ($results = $tbl->find($filters)) {
                 // Loop through all the items and push assets and tags
@@ -282,10 +282,10 @@ class Archive extends Obj
                 }
             }
 
-            $this->_followers = new ItemList($results);
+            $this->followers = new ItemList($results);
         }
 
-        return $this->_followers;
+        return $this->followers;
     }
 
     /**
@@ -297,11 +297,11 @@ class Archive extends Obj
      */
     public function following($filters = [], $what = 'all')
     {
-        $filters['follower_id']   = $this->_object_id;
-        $filters['follower_type'] = $this->_object_type;
+        $filters['follower_id']   = $this->objectId;
+        $filters['follower_type'] = $this->objectType;
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Following($this->_db);
+            $tbl = new Tables\Following($this->db);
 
             return $tbl->count($filters);
         }
@@ -310,8 +310,8 @@ class Archive extends Obj
             $filters['limit'] = 1;
         }
 
-        if (!($this->_following instanceof ItemList)) {
-            $tbl = new Tables\Following($this->_db);
+        if (!($this->following instanceof ItemList)) {
+            $tbl = new Tables\Following($this->db);
 
             if ($results = $tbl->find($filters)) {
                 // Loop through all the items and push assets and tags
@@ -320,14 +320,14 @@ class Archive extends Obj
                 }
             }
 
-            $this->_following = new ItemList($results);
+            $this->following = new ItemList($results);
         }
 
         if ($what == 'collections') {
             $ids     = [];
             $members = [];
             $groups  = [];
-            foreach ($this->_following as $following) {
+            foreach ($this->following as $following) {
                 if ($following->get('following_type') == 'collection') {
                     $ids[] = $following->get('following_id');
                 } else {
@@ -353,14 +353,14 @@ class Archive extends Obj
                     $query = $query2;
                 }
 
-                $this->_db->setQuery($query);
-                $ids = array_merge($ids, $this->_db->loadColumn());
+                $this->db->setQuery($query);
+                $ids = array_merge($ids, $this->db->loadColumn());
             }
 
             return $ids;
         }
 
-        return $this->_following;
+        return $this->following;
     }
 
     /**
@@ -371,18 +371,18 @@ class Archive extends Obj
      */
     public function posts($filters = [])
     {
-        $filters['object_id']   = $this->_object_id;
-        $filters['object_type'] = $this->_object_type;
+        $filters['object_id']   = $this->objectId;
+        $filters['object_type'] = $this->objectType;
         if (!isset($filters['state'])) {
             $filters['state'] = 1;
         }
 
         if (isset($filters['count']) && $filters['count']) {
-            $tbl = new Tables\Post($this->_db);
+            $tbl = new Tables\Post($this->db);
             return $tbl->getCount($filters);
         }
 
-        $tbl = new Tables\Post($this->_db);
+        $tbl = new Tables\Post($this->db);
 
         if ($results = $tbl->getRecords($filters)) {
             $ids = [];
@@ -391,7 +391,7 @@ class Archive extends Obj
             }
 
             // Get all the assets for this list of items (avoids an N+1 per post)
-            $ba = new Tables\Asset($this->_db);
+            $ba = new Tables\Asset($this->db);
             $assets = $ba->getRecords(['item_id' => $ids]);
 
             // Get all the tags for this list of items
@@ -442,7 +442,7 @@ class Archive extends Obj
     {
         $user = User::getInstance();
 
-        $tbl = new Tables\Collection($this->_db);
+        $tbl = new Tables\Collection($this->db);
 
         switch (strtolower(trim($type))) {
             case 'group':
@@ -515,19 +515,19 @@ class Archive extends Obj
      */
     public function isFollowing($follower_id = null, $follower_type = 'member')
     {
-        if (!isset($this->_isFollowing)) {
-            $this->_isFollowing = false;
+        if (!isset($this->isFollowing)) {
+            $this->isFollowing = false;
 
             if (!$follower_id && $follower_type == 'member') {
                 $follower_id = User::get('id');
             }
 
-            $follow = new Following($this->_object_id, $this->_object_type, $follower_id, $follower_type);
+            $follow = new Following($this->objectId, $this->objectType, $follower_id, $follower_type);
             if ($follow->exists()) {
-                $this->_isFollowing = true;
+                $this->isFollowing = true;
             }
         }
-        return $this->_isFollowing;
+        return $this->isFollowing;
     }
 
     /**
@@ -539,19 +539,19 @@ class Archive extends Obj
      */
     public function isFollowed($follower_id = null, $follower_type = 'member')
     {
-        if (!isset($this->_isFollowed)) {
-            $this->_isFollowed = false;
+        if (!isset($this->isFollowed)) {
+            $this->isFollowed = false;
 
             if (!$follower_id && $follower_type == 'member') {
                 $follower_id = User::get('id');
             }
 
-            $follow = new Following($follower_id, $follower_type, $this->_object_id, $this->_object_type);
+            $follow = new Following($follower_id, $follower_type, $this->objectId, $this->objectType);
             if ($follow->exists()) {
-                $this->_isFollowed = true;
+                $this->isFollowed = true;
             }
         }
-        return $this->_isFollowed;
+        return $this->isFollowed;
     }
 
     /**
@@ -628,5 +628,17 @@ class Archive extends Obj
         }
 
         return new $cls();
+    }
+
+    /**
+     * The property holding a value callers name in snake case, as the
+     * properties were once spelled: object_type for $objectType
+     *
+     * @param   string  $name
+     * @return  string
+     */
+    private static function propertyName($name)
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', (string) $name))));
     }
 }

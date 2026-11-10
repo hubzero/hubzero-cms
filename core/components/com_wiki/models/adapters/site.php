@@ -19,7 +19,7 @@ class Site extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_wiki',
     ];
 
@@ -35,7 +35,7 @@ class Site extends Base
     {
         $pagename = ($path ? $path . '/' : '') . $pagename;
 
-        $this->_segments['pagename'] = $pagename;
+        $this->segments['pagename'] = $pagename;
     }
 
     /**
@@ -48,7 +48,7 @@ class Site extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
@@ -56,7 +56,7 @@ class Site extends Base
         switch (strtolower($type)) {
             case 'base':
                 unset($segments['pagename']);
-                return $this->_base . '?' . (string) $this->_build($segments);
+                return $this->base . '?' . (string) $this->_build($segments);
                 break;
 
             case 'pdf':
@@ -95,7 +95,7 @@ class Site extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -107,7 +107,7 @@ class Site extends Base
     public function routing($task = 'save')
     {
         return [
-            'option' => $this->_segments['option'],
+            'option' => $this->segments['option'],
             'task'   => $task,
         ];
     }

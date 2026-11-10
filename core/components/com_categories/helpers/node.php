@@ -219,7 +219,7 @@ class Node extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parent = null;
+    protected $parent = null;
 
     /**
      * Array of Children
@@ -227,7 +227,7 @@ class Node extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_children = [];
+    protected $children = [];
 
     /**
      * Path from root to this category
@@ -235,7 +235,7 @@ class Node extends Obj
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path = [];
+    protected $path = [];
 
     /**
      * Category left of this one
@@ -243,7 +243,7 @@ class Node extends Obj
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_leftSibling = null;
+    protected $leftSibling = null;
 
     /**
      * Category right of this one
@@ -251,7 +251,7 @@ class Node extends Obj
      * @var  integer
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_rightSibling = null;
+    protected $rightSibling = null;
 
     /**
      * true if all children have been loaded
@@ -259,7 +259,7 @@ class Node extends Obj
      * @var  boolean
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_allChildrenloaded = false;
+    protected $allChildrenloaded = false;
 
     /**
      * Constructor of this tree
@@ -267,7 +267,7 @@ class Node extends Obj
      * @var
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_constructor = null;
+    protected $constructor = null;
 
     /**
      * Class constructor
@@ -281,7 +281,7 @@ class Node extends Obj
         if ($category) {
             $this->setProperties($category);
             if ($constructor) {
-                $this->_constructor = &$constructor;
+                $this->constructor = &$constructor;
             }
 
             return true;
@@ -301,28 +301,28 @@ class Node extends Obj
     public function setParent(&$parent)
     {
         if ($parent instanceof self || is_null($parent)) {
-            if (!is_null($this->_parent)) {
-                $key = array_search($this, $this->_parent->_children);
-                unset($this->_parent->_children[$key]);
+            if (!is_null($this->parent)) {
+                $key = array_search($this, $this->parent->children);
+                unset($this->parent->children[$key]);
             }
 
             if (!is_null($parent)) {
-                $parent->_children[] = & $this;
+                $parent->children[] = & $this;
             }
 
-            $this->_parent = & $parent;
+            $this->parent = & $parent;
 
             if ($this->id != 'root') {
                 if ($this->parent_id != 1) {
-                    $this->_path = $parent->getPath();
+                    $this->path = $parent->getPath();
                 }
-                $this->_path[] = $this->id . ':' . $this->alias;
+                $this->path[] = $this->id . ':' . $this->alias;
             }
 
-            if (count($parent->_children) > 1) {
-                end($parent->_children);
-                $this->_leftSibling = prev($parent->_children);
-                $this->_leftSibling->_rightsibling = &$this;
+            if (count($parent->children) > 1) {
+                end($parent->children);
+                $this->leftSibling = prev($parent->children);
+                $this->leftSibling->_rightsibling = &$this;
             }
         }
     }
@@ -350,8 +350,8 @@ class Node extends Obj
      */
     public function removeChild($id)
     {
-        $key = array_search($this, $this->_parent->_children);
-        unset($this->_parent->_children[$key]);
+        $key = array_search($this, $this->parent->children);
+        unset($this->parent->children[$key]);
     }
 
     /**
@@ -362,26 +362,26 @@ class Node extends Obj
      */
     public function &getChildren($recursive = false)
     {
-        if (!$this->_allChildrenloaded) {
-            $temp = $this->_constructor->get($this->id, true);
+        if (!$this->allChildrenloaded) {
+            $temp = $this->constructor->get($this->id, true);
             if ($temp) {
-                $this->_children = $temp->getChildren();
-                $this->_leftSibling = $temp->getSibling(false);
-                $this->_rightSibling = $temp->getSibling(true);
+                $this->children = $temp->getChildren();
+                $this->leftSibling = $temp->getSibling(false);
+                $this->rightSibling = $temp->getSibling(true);
                 $this->setAllLoaded();
             }
         }
 
         if ($recursive) {
             $items = [];
-            foreach ($this->_children as $child) {
+            foreach ($this->children as $child) {
                 $items[] = $child;
                 $items = array_merge($items, $child->getChildren(true));
             }
             return $items;
         }
 
-        return $this->_children;
+        return $this->children;
     }
 
     /**
@@ -391,7 +391,7 @@ class Node extends Obj
      */
     public function &getParent()
     {
-        return $this->_parent;
+        return $this->parent;
     }
 
     /**
@@ -401,7 +401,7 @@ class Node extends Obj
      */
     public function hasChildren()
     {
-        return count($this->_children);
+        return count($this->children);
     }
 
     /**
@@ -424,9 +424,9 @@ class Node extends Obj
     public function setSibling($sibling, $right = true)
     {
         if ($right) {
-            $this->_rightSibling = $sibling;
+            $this->rightSibling = $sibling;
         } else {
-            $this->_leftSibling = $sibling;
+            $this->leftSibling = $sibling;
         }
     }
 
@@ -439,18 +439,18 @@ class Node extends Obj
      */
     public function getSibling($right = true)
     {
-        if (!$this->_allChildrenloaded) {
-            $temp = $this->_constructor->get($this->id, true);
-            $this->_children = $temp->getChildren();
-            $this->_leftSibling = $temp->getSibling(false);
-            $this->_rightSibling = $temp->getSibling(true);
+        if (!$this->allChildrenloaded) {
+            $temp = $this->constructor->get($this->id, true);
+            $this->children = $temp->getChildren();
+            $this->leftSibling = $temp->getSibling(false);
+            $this->rightSibling = $temp->getSibling(true);
             $this->setAllLoaded();
         }
 
         if ($right) {
-            return $this->_rightSibling;
+            return $this->rightSibling;
         } else {
-            return $this->_leftSibling;
+            return $this->leftSibling;
         }
     }
 
@@ -493,7 +493,7 @@ class Node extends Obj
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -518,8 +518,8 @@ class Node extends Obj
      */
     public function setAllLoaded()
     {
-        $this->_allChildrenloaded = true;
-        foreach ($this->_children as $child) {
+        $this->allChildrenloaded = true;
+        foreach ($this->children as $child) {
             $child->setAllLoaded();
         }
     }

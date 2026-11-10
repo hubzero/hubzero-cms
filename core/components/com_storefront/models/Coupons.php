@@ -19,7 +19,7 @@ use Hubzero\Facades\Lang;
 class Coupons
 {
     // Database instance
-    public $_db = null;
+    public $db = null;
 
     /**
      * Contructor
@@ -29,7 +29,7 @@ class Coupons
      */
     public function __construct()
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // Load language file
         App::get('language')->load('com_storefront', PATH_CORE . '/components/com_storefront/site/');
@@ -54,8 +54,8 @@ class Coupons
 				IF(`cnExpires` < NOW(), 1, 0) AS `cnExpired`,
 				IF(`cnObject` = 'sku' OR `cnObject` = 'product', 1, 0) AS `itemCoupon`
 				FROM `#__storefront_coupons` cn WHERE `cnId` IN (" . $sqlCnIds . ") ORDER BY `itemCoupon` DESC";
-        $this->_db->setQuery($sql);
-        $couponsInfo = $this->_db->loadObjectList('cnId');
+        $this->db->setQuery($sql);
+        $couponsInfo = $this->db->loadObjectList('cnId');
 
         // rearrange coupons in the order of applied within coupon types time keeping the item coupons on top (so that it is ordered by itemCoupon, dateAdded)
 
@@ -102,31 +102,31 @@ class Coupons
 
         // Get objects
         if ($returnObjects) {
-            $sql = "SELECT * FROM `#__storefront_coupon_objects` WHERE cnId = " . $this->_db->quote($cnId);
+            $sql = "SELECT * FROM `#__storefront_coupon_objects` WHERE cnId = " . $this->db->quote($cnId);
 
-            $this->_db->setQuery($sql);
-            $this->_db->query();
-            $objects = $this->_db->loadObjectList();
+            $this->db->setQuery($sql);
+            $this->db->query();
+            $objects = $this->db->loadObjectList();
             $couponInfo->objects = $objects;
         }
 
         // Get conditions
         if ($returnConditions) {
-            $sql = "SELECT * FROM `#__storefront_coupon_conditions` WHERE cnId = " . $this->_db->quote($cnId);
+            $sql = "SELECT * FROM `#__storefront_coupon_conditions` WHERE cnId = " . $this->db->quote($cnId);
 
-            $this->_db->setQuery($sql);
-            $this->_db->query();
-            $conditions = $this->_db->loadObjectList();
+            $this->db->setQuery($sql);
+            $this->db->query();
+            $conditions = $this->db->loadObjectList();
             $couponInfo->conditions = $conditions;
         }
 
         // Get action
         if ($returnAction) {
-            $sql = "SELECT * FROM `#__storefront_coupon_actions` WHERE cnId = " . $this->_db->quote($cnId);
+            $sql = "SELECT * FROM `#__storefront_coupon_actions` WHERE cnId = " . $this->db->quote($cnId);
 
-            $this->_db->setQuery($sql);
-            $this->_db->query();
-            $action = $this->_db->loadObject();
+            $this->db->setQuery($sql);
+            $this->db->query();
+            $action = $this->db->loadObject();
             $couponInfo->action = $action;
         }
 
@@ -134,11 +134,11 @@ class Coupons
         if ($returnInfo) {
             $sql = "SELECT cn.*,
 					IF(`cnObject` = 'sku' OR `cnObject` = 'product', 1, 0) AS `itemCoupon`
-					FROM `#__storefront_coupons` cn WHERE cnId = " . $this->_db->quote($cnId);
+					FROM `#__storefront_coupons` cn WHERE cnId = " . $this->db->quote($cnId);
 
-            $this->_db->setQuery($sql);
-            $this->_db->query();
-            $info = $this->_db->loadObject();
+            $this->db->setQuery($sql);
+            $this->db->query();
+            $info = $this->db->loadObject();
             $couponInfo->info = $info;
         }
 
@@ -158,17 +158,17 @@ class Coupons
 				IF(cn.`cnUseLimit` IS NULL, 'unlimited', cn.`cnUseLimit`) AS `cnUseLimit`,
 				IF(cn.`cnExpires` IS NULL OR cn.`cnExpires` >= DATE(NOW()), 'valid', 'expired') AS `cnValid`"
                 . ' FROM #__storefront_coupons cn '
-                . ' WHERE cn.`cnCode` = ' . $this->_db->quote($couponCode);
+                . ' WHERE cn.`cnCode` = ' . $this->db->quote($couponCode);
 
-        $this->_db->setQuery($sql);
+        $this->db->setQuery($sql);
         //echo $this->_db->_sql;
-        $this->_db->query();
+        $this->db->query();
 
-        if (!$this->_db->getNumRows()) {
+        if (!$this->db->getNumRows()) {
             throw new \Exception(Lang::txt('COM_STOREFRONT_INVALID_COUPON_CODE'));
         }
 
-        $row = $this->_db->loadObject();
+        $row = $this->db->loadObject();
 
         // check if expired
         if ($row->cnValid != 'valid') {
@@ -190,9 +190,9 @@ class Coupons
      */
     public function apply($cnId)
     {
-        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = " . $this->db->quote($cnId);
+        $this->db->setQuery($sql);
+        $this->db->query();
 
         return true;
     }
@@ -205,9 +205,9 @@ class Coupons
      */
     public function recycle($cnId)
     {
-        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = " . $this->_db->quote($cnId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = " . $this->db->quote($cnId);
+        $this->db->setQuery($sql);
+        $this->db->query();
 
         return true;
     }

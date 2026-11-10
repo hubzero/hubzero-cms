@@ -21,15 +21,15 @@ use Hubzero\Facades\User;
 class Sync extends \Hubzero\Base\Obj
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connect;
+    protected $connect;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_db;
+    protected $db;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_logPath;
+    protected $logPath;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_path;
+    protected $path;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_uid;
+    protected $uid;
     protected $model;
     protected $params;
 
@@ -44,17 +44,17 @@ class Sync extends \Hubzero\Base\Obj
         if (empty($connect)) {
             return false;
         }
-        $this->_db      = App::get('db');
-        $this->_connect = $connect;
+        $this->db      = App::get('db');
+        $this->connect = $connect;
         $this->model    = $connect->model;
-        $this->_uid     = User::get('id');
+        $this->uid     = User::get('id');
 
         $this->params   = Plugin::params('projects', 'files');
-        $this->_logPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'logs', false);
-        if (!is_dir($this->_logPath)) {
-            Filesystem::makeDirectory($this->_logPath, 0755, true, true);
+        $this->logPath = \Components\Projects\Helpers\Html::getProjectRepoPath($this->model->get('alias'), 'logs', false);
+        if (!is_dir($this->logPath)) {
+            Filesystem::makeDirectory($this->logPath, 0755, true, true);
         }
-        $this->_path    = $this->model->repo()->get('path');
+        $this->path    = $this->model->repo()->get('path');
     }
 
     /**
@@ -113,9 +113,9 @@ class Sync extends \Hubzero\Base\Obj
         $prevSyncId = $this->model->params->get($service . '_prev_sync_id', null);
 
         // Are we syncing project home directory or other?
-        $localDir   = $this->_connect->getConfigParam($service, 'local_dir');
+        $localDir   = $this->connect->getConfigParam($service, 'local_dir');
         $localDir   = $localDir == '#home' ? '' : $localDir;
-        $localPath  = $this->_path;
+        $localPath  = $this->path;
         $localPath .= $localDir ? DS . $localDir : '';
 
         // Record sync status
@@ -125,7 +125,7 @@ class Sync extends \Hubzero\Base\Obj
         $projectOwner = $this->model->get('owned_by_user');
 
         // Get service API - always project owner!
-        $this->_connect->getAPI($service, $projectOwner);
+        $this->connect->getAPI($service, $projectOwner);
 
         // Collectors
         $locals        = [];
@@ -151,7 +151,7 @@ class Sync extends \Hubzero\Base\Obj
         $output .= 'Last synced local change: ' . $lastLocalChange . "\n";
         $output .= 'Time passed since last sync: ' . $passed . "\n";
         $output .= 'Local sync start time: ' . $startTime . "\n";
-        $output .= 'Initiated by (user ID): ' . $this->_uid . ' [';
+        $output .= 'Initiated by (user ID): ' . $this->uid . ' [';
         $output .= ($auto == true) ? 'Auto sync' : 'Manual sync request';
         $output .= ']' . "\n";
 
@@ -160,11 +160,11 @@ class Sync extends \Hubzero\Base\Obj
         $this->cleanUnusedRemotes();
 
         // Get stored remote connections
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
         $connections = $objRFile->getRemoteConnections($this->model->get('id'), $service);
 
         // Get remote folder structure (to find out remote ids)
-        $this->_connect->getFolderStructure($service, $projectOwner, $remoteFolders);
+        $this->connect->getFolderStructure($service, $projectOwner, $remoteFolders);
 
         // Record sync status
         $this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_COLLECT_LOCAL'));
@@ -189,7 +189,7 @@ class Sync extends \Hubzero\Base\Obj
         $nextSyncId = 0;
         if ($lastSyncId > 1) {
             // Via Changes feed
-            $newSyncId = $this->_connect->getChangedItems(
+            $newSyncId = $this->connect->getChangedItems(
                 $service,
                 $projectOwner,
                 $lastSyncId,
@@ -199,7 +199,7 @@ class Sync extends \Hubzero\Base\Obj
             );
         } else {
             // Via List feed
-            $remotes = $this->_connect->getRemoteItems($service, $projectOwner, '', $connections);
+            $remotes = $this->connect->getRemoteItems($service, $projectOwner, '', $connections);
             $newSyncId = 1;
         }
 
@@ -224,7 +224,7 @@ class Sync extends \Hubzero\Base\Obj
         // Get changes via List feed (to make sure we get ALL changes)
         // We need this because Changes feed is not 100% reliable :(
         if ($newSyncId > $lastSyncId) {
-            $timedRemotes = $this->_connect->getRemoteItems($service, $projectOwner, $from, $connections);
+            $timedRemotes = $this->connect->getRemoteItems($service, $projectOwner, $from, $connections);
         }
 
         // Record timed remote changes (for debugging)
@@ -247,9 +247,9 @@ class Sync extends \Hubzero\Base\Obj
         }
 
         // Catch any errors we ran into so far
-        if ($this->_connect->getError()) {
+        if ($this->connect->getError()) {
             $this->writeToFile('');
-            $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR_OUPS') . ' ' . $this->_connect->getError());
+            $this->setError(Lang::txt('PLG_PROJECTS_FILES_SYNC_ERROR_OUPS') . ' ' . $this->connect->getError());
             $this->lockSync($service, true);
             return false;
         }
@@ -292,7 +292,7 @@ class Sync extends \Hubzero\Base\Obj
                 if ($local['status'] == 'R') {
                     if ($local['remoteid']) {
                         // Rename remote item
-                        $renamed = $this->_connect->renameRemoteItem(
+                        $renamed = $this->connect->renameRemoteItem(
                             $this->model->get('id'),
                             $service,
                             $projectOwner,
@@ -304,7 +304,7 @@ class Sync extends \Hubzero\Base\Obj
                         $output .= '>> renamed ' . $local['rename'] . ' to ' . $filename . "\n";
 
                         if ($local['type'] == 'folder') {
-                            $this->_connect->fixConvertedItems($service, $this->_uid, $local['rename'], 'R', $filename);
+                            $this->connect->fixConvertedItems($service, $this->uid, $local['rename'], 'R', $filename);
                         }
 
                         continue;
@@ -314,11 +314,11 @@ class Sync extends \Hubzero\Base\Obj
                 if ($local['status'] == 'W') {
                     if ($local['remoteid']) {
                         // Determine new remote parent
-                        $parentId = $this->_connect->prepRemoteParent($this->model->get('id'), $service, $projectOwner, $local, $remoteFolders);
+                        $parentId = $this->connect->prepRemoteParent($this->model->get('id'), $service, $projectOwner, $local, $remoteFolders);
 
                         if ($parentId != $local['rParent']) {
                             // Move to new parent
-                            $moved = $this->_connect->moveRemoteItem(
+                            $moved = $this->connect->moveRemoteItem(
                                 $this->model->get('id'),
                                 $service,
                                 $projectOwner,
@@ -330,7 +330,7 @@ class Sync extends \Hubzero\Base\Obj
                             $output .= '>> moved ' . $local['rename'] . ' to ' . $filename . ' (new parent id ' . $parentId . ')' . "\n";
 
                             if ($local['type'] == 'folder') {
-                                $this->_connect->fixConvertedItems($service, $this->_uid, $local['rename'], 'W', $filename, $parentId);
+                                $this->connect->fixConvertedItems($service, $this->uid, $local['rename'], 'W', $filename, $parentId);
                             }
 
                             continue;
@@ -350,7 +350,7 @@ class Sync extends \Hubzero\Base\Obj
                         // Delete operation
                         if ($local['remoteid']) {
                             // Delete remote file
-                            $deleted = $this->_connect->deleteRemoteItem(
+                            $deleted = $this->connect->deleteRemoteItem(
                                 $this->model->get('id'),
                                 $service,
                                 $projectOwner,
@@ -367,12 +367,12 @@ class Sync extends \Hubzero\Base\Obj
                         }
 
                         if ($local['type'] == 'folder') {
-                            $this->_connect->fixConvertedItems($service, $this->_uid, $filename, 'D');
+                            $this->connect->fixConvertedItems($service, $this->uid, $filename, 'D');
                         }
 
                         // Delete connection record if exists
                         if ($deleted) {
-                            $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+                            $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
                             $objRFile->deleteRecord(
                                 $this->model->get('id'),
                                 $service,
@@ -386,12 +386,12 @@ class Sync extends \Hubzero\Base\Obj
                             $output .= '## skipped locally changed converted file: ' . $filename . "\n";
                         } else {
                             // Item in directory? Make sure we have correct remote dir structure in place
-                            $parentId = $this->_connect->prepRemoteParent($this->model->get('id'), $service, $projectOwner, $local, $remoteFolders);
+                            $parentId = $this->connect->prepRemoteParent($this->model->get('id'), $service, $projectOwner, $local, $remoteFolders);
 
                             // Add/update operation
                             if ($local['remoteid']) {
                                 // Update remote file
-                                $updated = $this->_connect->updateRemoteFile(
+                                $updated = $this->connect->updateRemoteFile(
                                     $this->model->get('id'),
                                     $service,
                                     $projectOwner,
@@ -405,7 +405,7 @@ class Sync extends \Hubzero\Base\Obj
                                 // Add item from local to remote (new)
                                 if ($local['type'] == 'folder') {
                                     // Create remote folder
-                                    $created = $this->_connect->createRemoteFolder(
+                                    $created = $this->connect->createRemoteFolder(
                                         $this->model->get('id'),
                                         $service,
                                         $projectOwner,
@@ -418,7 +418,7 @@ class Sync extends \Hubzero\Base\Obj
                                     $output .= '++ created remote folder: ' . $filename . "\n";
                                 } elseif ($local['type'] == 'file') {
                                     // Create remote file
-                                    $created = $this->_connect->addRemoteFile(
+                                    $created = $this->connect->addRemoteFile(
                                         $this->model->get('id'),
                                         $service,
                                         $projectOwner,
@@ -444,7 +444,7 @@ class Sync extends \Hubzero\Base\Obj
 
         // Get new change ID after local changes got sent to remote
         if (!empty($locals)) {
-            $newSyncId = $this->_connect->getChangedItems(
+            $newSyncId = $this->connect->getChangedItems(
                 $service,
                 $projectOwner,
                 $newSyncId,
@@ -472,7 +472,7 @@ class Sync extends \Hubzero\Base\Obj
                 if ($nR['thumb']) {
                     $this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
 
-                    $this->_connect->generateThumbnail(
+                    $this->connect->generateThumbnail(
                         $service,
                         $projectOwner,
                         $nR,
@@ -534,7 +534,7 @@ class Sync extends \Hubzero\Base\Obj
                 // Change acting user to whoever did the remote change
                 $uid = $objO->getProfileId($email, $this->model->get('id'));
                 if ($uid) {
-                    $this->_uid = $uid;
+                    $this->uid = $uid;
                 }
 
                 $updated = 0;
@@ -548,7 +548,7 @@ class Sync extends \Hubzero\Base\Obj
 
                 // Item in directory? Make sure we have correct local dir structure
                 $local_dir = dirname($filename) != '.' ? dirname($filename) : '';
-                if ($remote['status'] != 'D' && $local_dir && !is_dir($this->_path . DS . $local_dir)) {
+                if ($remote['status'] != 'D' && $local_dir && !is_dir($this->path . DS . $local_dir)) {
                     // Set params
                     $params = [
                         'newDir' => $local_dir, //$this->_path . DS . $local_dir
@@ -564,7 +564,7 @@ class Sync extends \Hubzero\Base\Obj
                 // Send remote change to local
                 // Remote version always prevails
                 if ($remote['status'] == 'D') {
-                    if (file_exists($this->_path . DS . $filename)) {
+                    if (file_exists($this->path . DS . $filename)) {
                         // Params for repo call
                         $params = [
                             'item'   => $filename,
@@ -586,7 +586,7 @@ class Sync extends \Hubzero\Base\Obj
 
                     // Delete connection record if exists
                     if (!empty($deleted)) {
-                        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+                        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
                         $objRFile->deleteRecord(
                             $this->model->get('id'),
                             $service,
@@ -595,7 +595,7 @@ class Sync extends \Hubzero\Base\Obj
                     }
                 } elseif ($remote['status'] == 'R' || $remote['status'] == 'W') {
                     // Rename/move in Git
-                    if (file_exists($this->_path . DS . $remote['rename'])) {
+                    if (file_exists($this->path . DS . $remote['rename'])) {
                         $output .= '>> rename from: ' . $remote['rename'] . ' to ' . $filename . "\n";
 
                         // Rename
@@ -635,11 +635,11 @@ class Sync extends \Hubzero\Base\Obj
                         // Not updating converted files via sync
                         $output .= '## skipped converted remotely changed file: ' . $filename . "\n";
                         $updated = 1;
-                    } elseif (file_exists($this->_path . DS . $filename)) {
+                    } elseif (file_exists($this->path . DS . $filename)) {
                         // Update
                         if ($remote['type'] == 'file') {
                             // Check md5 hash - do we have identical files?
-                            $md5Checksum = hash_file('md5', $this->_path . DS . $filename);
+                            $md5Checksum = hash_file('md5', $this->path . DS . $filename);
                             if ($remote['md5'] == $md5Checksum) {
                                 // Skip update
                                 $output .= '## update skipped: local and remote versions identical: ' . $filename . "\n";
@@ -647,11 +647,11 @@ class Sync extends \Hubzero\Base\Obj
                             } else {
                                 // Download remote file
                                 if (
-                                    $this->_connect->downloadFileCurl(
+                                    $this->connect->downloadFileCurl(
                                         $service,
                                         $projectOwner,
                                         $remote['url'],
-                                        $this->_path . DS . $remote['local_path'],
+                                        $this->path . DS . $remote['local_path'],
                                     )
                                 ) {
                                     // Checkin into repo
@@ -679,7 +679,7 @@ class Sync extends \Hubzero\Base\Obj
                         if ($remote['type'] == 'folder') {
                             // Set params
                             $params = [
-                                'newDir' => $this->_path . DS . $filename,
+                                'newDir' => $this->path . DS . $filename,
                                 'author' => $author,
                             ];
 
@@ -705,11 +705,11 @@ class Sync extends \Hubzero\Base\Obj
 
                             // Download remote file
                             if (
-                                $this->_connect->downloadFileCurl(
+                                $this->connect->downloadFileCurl(
                                     $service,
                                     $projectOwner,
                                     ($remote['url'] ? $remote['url'] : $remote['remoteid']),
-                                    $this->_path . DS . $remote['local_path'],
+                                    $this->path . DS . $remote['local_path'],
                                 )
                             ) {
                                 // Checkin into repo
@@ -732,11 +732,11 @@ class Sync extends \Hubzero\Base\Obj
 
                 // Update connection record
                 if (!empty($updated)) {
-                    $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+                    $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
                     $objRFile->updateSyncRecord(
                         $this->model->get('id'),
                         $service,
-                        $this->_uid,
+                        $this->uid,
                         $remote['type'],
                         $remote['remoteid'],
                         $filename,
@@ -749,7 +749,7 @@ class Sync extends \Hubzero\Base\Obj
                     // Generate local thumbnail
                     if ($remote['thumb'] && $remote['status'] != 'D') {
                         $this->writeToFile(Lang::txt('PLG_PROJECTS_FILES_SYNC_GET_THUMB') . ' ' . \Components\Projects\Helpers\Html::shortenFileName($filename, 15));
-                        $this->_connect->generateThumbnail(
+                        $this->connect->generateThumbnail(
                             $service,
                             $projectOwner,
                             $remote,
@@ -796,7 +796,7 @@ class Sync extends \Hubzero\Base\Obj
         $this->model->saveParam($service . '_last_local_change', $lastLocalChange);
 
         // Debug output
-        $this->writeToFile($output, $this->_logPath . DS . 'sync.' . Date::of('now')->format('Y-m') . '.log', true);
+        $this->writeToFile($output, $this->logPath . DS . 'sync.' . Date::of('now')->format('Y-m') . '.log', true);
 
         // Unlock sync
         $this->lockSync($service, true);
@@ -865,7 +865,7 @@ class Sync extends \Hubzero\Base\Obj
         }
 
         // Lock sync
-        $this->model->saveParam($service . '_sync_lock', $this->_uid);
+        $this->model->saveParam($service . '_sync_lock', $this->uid);
         $this->set('status', 'progress');
         return true;
     }
@@ -882,10 +882,10 @@ class Sync extends \Hubzero\Base\Obj
     {
         // Get temp path
         if (!$filename) {
-            if (empty($this->_logPath)) {
+            if (empty($this->logPath)) {
                 return false;
             }
-            $sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+            $sfile = $this->logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
         } else {
             $sfile = $filename;
         }
@@ -909,7 +909,7 @@ class Sync extends \Hubzero\Base\Obj
     {
         // Get temp path
         if (!$filename) {
-            $sfile = $this->_logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
+            $sfile = $this->logPath . DS . 'sync_' . $this->model->get('alias') . '.hidden';
         } else {
             $sfile = $filename;
         }
@@ -940,7 +940,7 @@ class Sync extends \Hubzero\Base\Obj
     public function cleanUnusedRemotes($showAll = true, $service = 'google')
     {
         // Get records listed on remote directory related to this project's directory
-        $objRFile = new \Components\Projects\Tables\RemoteFile($this->_db);
+        $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
         $projectId = $this->model->get('id');
         $remotes = $objRFile->getRemoteConnections($projectId, $service);
         // Get local directory repo information

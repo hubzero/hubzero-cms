@@ -71,7 +71,7 @@ class Service extends Relational
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_params = null;
+    protected $params = null;
 
     /**
      * Transform params
@@ -80,11 +80,11 @@ class Service extends Relational
      */
     public function transformParams()
     {
-        if (!is_object($this->_params)) {
-            $this->_params = new Registry($this->get('params'));
+        if (!is_object($this->params)) {
+            $this->params = new Registry($this->get('params'));
         }
 
-        return $this->_params;
+        return $this->params;
     }
 
     /**

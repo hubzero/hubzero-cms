@@ -33,7 +33,7 @@ class Badge extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'sectionbadge';
+    protected $scope = 'sectionbadge';
 
     /**
      * Constructor

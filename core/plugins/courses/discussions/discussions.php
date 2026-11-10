@@ -65,7 +65,7 @@ class Discussions extends Plugin
      * @var string
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_active = null;
+    protected $active = null;
 
     /**
      * @var string
@@ -81,7 +81,7 @@ class Discussions extends Plugin
      * @var array
      */
     // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_instructors = null;
+    protected $instructors = null;
 
     /**
      * @var object
@@ -346,7 +346,7 @@ class Discussions extends Plugin
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
         if ($response->get('name') == $active) {
-            $this->_active = $this->pluginName;
+            $this->active = $this->pluginName;
 
             $this->sections = Section::all()
                 ->whereEquals('scope', 'course')
@@ -542,13 +542,13 @@ class Discussions extends Plugin
 
         $this->params->merge(new \Hubzero\Config\Registry($course->offering()->section()->get('params')));
 
-        $this->_active = 'outline';
+        $this->active = 'outline';
         $this->database = App::get('db');
         $this->course = $course;
         $this->offering = $course->offering();
         $this->unit = $unit;
         $this->lecture = $lecture;
-        $this->base = $this->offering->link() . '&active=' . $this->_active;
+        $this->base = $this->offering->link() . '&active=' . $this->active;
 
         $this->_authorize('category');
         $this->_authorize('thread');
@@ -798,18 +798,18 @@ class Discussions extends Plugin
      */
     protected function _instructors()
     {
-        if (!isset($this->_instructors) || !is_array($this->_instructors)) {
-            $this->_instructors = [];
+        if (!isset($this->instructors) || !is_array($this->instructors)) {
+            $this->instructors = [];
 
             $inst = $this->course->instructors();
             if (count($inst) > 0) {
                 foreach ($inst as $i) {
-                    $this->_instructors[] = $i->get('user_id');
+                    $this->instructors[] = $i->get('user_id');
                 }
             }
         }
 
-        return $this->_instructors;
+        return $this->instructors;
     }
 
     /**
@@ -870,7 +870,7 @@ class Discussions extends Plugin
             ->set('unit', '')
             ->set('lecture', '');
 
-        if ($this->_active == 'outline') {
+        if ($this->active == 'outline') {
             $view->set('unit', $this->unit->get('alias'));
             $view->set('lecture', $this->lecture->get('alias'));
         }
@@ -932,7 +932,7 @@ class Discussions extends Plugin
                 ->set('course', $this->course)
                 ->set('instructors', $this->_instructors());
 
-            if ($this->_active == 'outline') {
+            if ($this->active == 'outline') {
                 $cview->set('unit', $this->unit->get('alias'));
                 $cview->set('lecture', $this->lecture->get('alias'));
             }
@@ -1002,7 +1002,7 @@ class Discussions extends Plugin
                     ->set('course', $this->course)
                     ->set('instructors', $this->_instructors());
 
-                if ($this->_active == 'outline') {
+                if ($this->active == 'outline') {
                     $cview->set('unit', $this->unit->get('alias'));
                     $cview->set('lecture', $this->lecture->get('alias'));
                 }
@@ -1075,7 +1075,7 @@ class Discussions extends Plugin
                     ->set('unit', '')
                     ->set('lecture', '');
 
-                if ($this->_active == 'outline') {
+                if ($this->active == 'outline') {
                     $cview->set('unit', $this->unit->get('alias'));
                     $cview->set('lecture', $this->lecture->get('alias'));
                 }

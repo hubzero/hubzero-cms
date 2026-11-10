@@ -172,10 +172,10 @@ class Profile extends Plugin
 
                 foreach ($form->getErrors() as $key => $error) {
                     if ($error instanceof \Hubzero\Form\Exception\MissingData) {
-                        $xreg->_missing[$key] = (string) $error;
+                        $xreg->missing[$key] = (string) $error;
                     }
 
-                    $xreg->_invalid[$key] = (string) $error;
+                    $xreg->invalid[$key] = (string) $error;
                 }
             }
 

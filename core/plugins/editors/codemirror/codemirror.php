@@ -25,7 +25,7 @@ class Codemirror extends Plugin
      * Base path for editor files
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_basePath = 'core/plugins/editors/codemirror/';
+    protected $basePath = 'core/plugins/editors/codemirror/';
 
     /**
      * Initialises the Editor.
@@ -192,13 +192,13 @@ class Codemirror extends Plugin
         }
 
         foreach ($styleSheet as &$style) {
-            $style = Request::root() . '/' . $this->_basePath . 'assets/css/' . $style;
+            $style = Request::root() . '/' . $this->basePath . 'assets/css/' . $style;
         }
 
         $options = new \stdClass();
 
         $options->basefiles  = ['basefiles' . $compressed . '.js'];
-        $options->path       = Request::root() . '/' . $this->_basePath . 'assets/js/';
+        $options->path       = Request::root() . '/' . $this->basePath . 'assets/js/';
         $options->parserfile = $parserFile;
         $options->stylesheet = $styleSheet;
         $options->height     = $height;

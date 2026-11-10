@@ -29,7 +29,7 @@ class Tool extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = 'tool';
+    protected $name = 'tool';
 
     /**
      * Unique attachment properties
@@ -37,7 +37,7 @@ class Tool extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_connector  = ['object_name', 'object_instance'];
+    protected $connector  = ['object_name', 'object_instance'];
 
     /**
      * Get configs
@@ -126,7 +126,7 @@ class Tool extends Base
                 $pop     = Lang::txt('Launch tool') . ' ' . $title;
 
                 $html .= '<li>';
-                $html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
+                $html .= $authorized === 'administrator' ? '[' . $this->name . '] ' : '';
                 $html .= '<a href="' . $itemUrl . '" title="' . $pop . '" ';
                 $html .= 'rel="noopener" target="_blank" class="data-type">' . $title . '</a>';
                 $html .= '</li>';
@@ -157,10 +157,10 @@ class Tool extends Base
                      ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments(
+        $attachments = $this->parent->getElementAttachments(
             $elementId,
             $attachments,
-            $this->_name,
+            $this->name,
         );
 
         $disabled = 0;
@@ -244,7 +244,7 @@ class Tool extends Base
         // Loop through attachments
         foreach ($attachments as $att) {
             // Make new attachment record
-            $pAttach = new \Components\Publications\Tables\Attachment($this->_parent->_db);
+            $pAttach = new \Components\Publications\Tables\Attachment($this->parent->db);
             if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, User::get('id'))) {
                 continue;
             }
@@ -272,7 +272,7 @@ class Tool extends Base
         $attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : null;
 
         // Sort out attachments for this element
-        $attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
+        $attachments = $this->parent->getElementAttachments($elementId, $attachments, $this->name);
 
         // Default to first attachment
         $record = count($attachments) > 0 ? $attachments[0] : null;
@@ -315,7 +315,7 @@ class Tool extends Base
 
         // Absolute or relative link?
         $where = preg_match($v, $path) ? $path : DS . trim($path, DS);
-        $this->_parent->set('redirect', $where);
+        $this->parent->set('redirect', $where);
         return true;
     }
 
@@ -353,7 +353,7 @@ class Tool extends Base
         // Create new version path
         if (!is_dir($configs->dataPath)) {
             if (!Filesystem::makeDirectory($configs->dataPath, 0755, true, true)) {
-                $this->_parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
+                $this->parent->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH'));
                 return false;
             }
         }
@@ -536,7 +536,7 @@ class Tool extends Base
             'folder'  => 'projects',
             'element' => 'publications',
             'name'    => 'attachments',
-            'layout'  => $this->_name,
+            'layout'  => $this->name,
         ]);
         $view->data   = $data;
         $view->params = $params;

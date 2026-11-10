@@ -27,7 +27,7 @@ abstract class Cart
      *
      * @var  object
      */
-    public $_db = null;
+    public $db = null;
 
     /**
      * Cart ID
@@ -65,7 +65,7 @@ abstract class Cart
     public function __construct()
     {
         // Initialize DB
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         // Load language file
         App::get('language')->load('com_cart');
@@ -127,9 +127,9 @@ abstract class Cart
         }
 
         // Get all user addresses
-        $sql = 'SELECT * FROM `#__cart_saved_addresses` WHERE `uidNumber` = ' . $this->_db->quote($uId);
-        $this->_db->setQuery($sql);
-        $shippingAddresses = $this->_db->loadObjectList();
+        $sql = 'SELECT * FROM `#__cart_saved_addresses` WHERE `uidNumber` = ' . $this->db->quote($uId);
+        $this->db->setQuery($sql);
+        $shippingAddresses = $this->db->loadObjectList();
 
         if (empty($shippingAddresses)) {
             return false;
@@ -273,11 +273,11 @@ abstract class Cart
         }
 
         $sql = "SELECT `sId`, `crtiQty`, `crtiPrice`, `crtiOldPrice` FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
-        $this->_db->setQuery($sql);
+        $this->db->setQuery($sql);
         // Get all info
-        $allSkuInfo = $this->_db->loadObjectList('sId');
+        $allSkuInfo = $this->db->loadObjectList('sId');
         // Get just sku IDs
-        $skus = $this->_db->loadColumn();
+        $skus = $this->db->loadColumn();
 
         $items = new \stdClass();
         $items->allSkuInfo = $allSkuInfo;
@@ -294,9 +294,9 @@ abstract class Cart
     protected function getCartItem($sId)
     {
         $sql = 'SELECT `crtiQty` FROM `#__cart_cart_items`
-				WHERE `sId` = ' . $this->_db->quote($sId) . ' AND `crtId` = ' . $this->_db->quote($this->crtId);
-        $this->_db->setQuery($sql);
-        $skuCartInfo = $this->_db->loadObject();
+				WHERE `sId` = ' . $this->db->quote($sId) . ' AND `crtId` = ' . $this->db->quote($this->crtId);
+        $this->db->setQuery($sql);
+        $skuCartInfo = $this->db->loadObject();
 
         if ($skuCartInfo) {
             return $skuCartInfo;
@@ -313,8 +313,8 @@ abstract class Cart
     protected function cartIsLinked($crtId)
     {
         $sql = "SELECT COUNT(`crtId`) FROM `#__cart_carts` WHERE `crtId` = " . (int) $crtId . " AND `uidNumber` IS NOT NULL";
-        $this->_db->setQuery($sql);
-        $isLinked = $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        $isLinked = $this->db->loadResult();
 
         if ($isLinked) {
             return true;
@@ -330,8 +330,8 @@ abstract class Cart
     protected function getUserCartId($uId)
     {
         $sql = "SELECT `crtId` FROM `#__cart_carts` WHERE `uidNumber` = '{$uId}'";
-        $this->_db->setQuery($sql);
-        $crtId = $this->_db->loadResult();
+        $this->db->setQuery($sql);
+        $crtId = $this->db->loadResult();
 
         if (!empty($crtId)) {
             return $crtId;
@@ -346,9 +346,9 @@ abstract class Cart
      */
     protected function exists()
     {
-        $sql = 'SELECT `crtId` FROM `#__cart_carts` WHERE `crtId` = ' . $this->_db->quote($this->crtId);
-        $this->_db->setQuery($sql);
-        $crtId = $this->_db->loadResult();
+        $sql = 'SELECT `crtId` FROM `#__cart_carts` WHERE `crtId` = ' . $this->db->quote($this->crtId);
+        $this->db->setQuery($sql);
+        $crtId = $this->db->loadResult();
 
         if (!empty($crtId)) {
             return true;
@@ -365,9 +365,9 @@ abstract class Cart
     protected function markItemUnavailable($sId)
     {
         $sql = "UPDATE `#__cart_cart_items` SET `crtiAvailable` = 0
-				WHERE `crtId` = {$this->crtId} AND `sId` = " . $this->_db->quote($sId);
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+				WHERE `crtId` = {$this->crtId} AND `sId` = " . $this->db->quote($sId);
+        $this->db->setQuery($sql);
+        $this->db->query();
     }
 
     /**
@@ -494,8 +494,8 @@ abstract class Cart
         $sql = "INSERT INTO `#__cart_cart_items`
 				(`crtId`, `sId`, `crtiQty`, `crtiOldQty`, `crtiPrice`, `crtiOldPrice`, `crtiName`)
 				VALUES
-				({$this->crtId}, '{$sId}', {$qty}, NULL, {$skuInfo->sPrice}, NULL, " . $this->_db->quote($skuName) . ")
-				ON DUPLICATE KEY UPDATE `crtiOldPrice` = `crtiPrice`, `crtiPrice` = {$skuInfo->sPrice}, `crtiName` = " . $this->_db->quote($skuName);
+				({$this->crtId}, '{$sId}', {$qty}, NULL, {$skuInfo->sPrice}, NULL, " . $this->db->quote($skuName) . ")
+				ON DUPLICATE KEY UPDATE `crtiOldPrice` = `crtiPrice`, `crtiPrice` = {$skuInfo->sPrice}, `crtiName` = " . $this->db->quote($skuName);
 
         // Check if old value has to be retained
         if ($retainOldValue) {
@@ -513,8 +513,8 @@ abstract class Cart
         }
         // keep the qty value if syncing
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $this->db->setQuery($sql);
+        $this->db->query();
     }
 
     /**
@@ -528,8 +528,8 @@ abstract class Cart
         // delete cart item
         $sql = "DELETE FROM `#__cart_cart_items` WHERE `sId` = " . (int) $sId . " AND `crtId` = " . (int) $this->crtId;
 
-        $this->_db->setQuery($sql);
-        $this->_db->query();
+        $this->db->setQuery($sql);
+        $this->db->query();
     }
 
     /********************************* Static functions *********************************/

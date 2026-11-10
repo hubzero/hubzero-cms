@@ -25,21 +25,21 @@ class ACL extends Obj
      *
      * @var object
      */
-    private $_user;
+    private $user;
 
     /**
      * Database
      *
      * @var object
      */
-    private $_db;
+    private $db;
 
     /**
      * Raw data from database
      *
      * @var array
      */
-    private $_raw_data;
+    private $rawData;
 
     /**
      * User's groups
@@ -55,19 +55,19 @@ class ACL extends Obj
      */
     public function __construct()
     {
-        $this->_user = User::getInstance();
-        $this->_db = App::get('db');
+        $this->user = User::getInstance();
+        $this->db = App::get('db');
 
         $sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
 				FROM `#__support_acl_aros_acos` AS m
 				LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id
 				LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id";
 
-        $this->_db->setQuery($sql);
-        $this->_raw_data = $this->_db->loadAssocList();
+        $this->db->setQuery($sql);
+        $this->rawData = $this->db->loadAssocList();
 
-        if (!$this->_user->isGuest()) {
-            $this->memberGroups = UserHelper::getGroups($this->_user->get('id'));
+        if (!$this->user->isGuest()) {
+            $this->memberGroups = UserHelper::getGroups($this->user->get('id'));
         }
     }
 
@@ -101,11 +101,11 @@ class ACL extends Obj
         $permission = 0;
 
         // Check if they are logged in
-        if (!$aro_foreign_key && $this->_user->isGuest()) {
+        if (!$aro_foreign_key && $this->user->isGuest()) {
             return $permission;
         }
 
-        if ($this->_user->authorise('core.admin')) {
+        if ($this->user->authorise('core.admin')) {
             return 1;
         }
 
@@ -116,7 +116,7 @@ class ACL extends Obj
         // Check user's groups
         if ($this->memberGroups && count($this->memberGroups) > 0) {
             foreach ($this->memberGroups as $ug) {
-                foreach ($this->_raw_data as $line) {
+                foreach ($this->rawData as $line) {
                     // Get the aco permission
                     if (
                         $line['aro_model'] == 'group'
@@ -147,11 +147,11 @@ class ACL extends Obj
         $userspecific = false;
         // Check individual
         $permission = 0;
-        foreach ($this->_raw_data as $line) {
+        foreach ($this->rawData as $line) {
             // Get the aco permission
             if (
                 $line['aro_model'] == 'user'
-                && $line['aro_foreign_key'] == $this->_user->get('id')
+                && $line['aro_foreign_key'] == $this->user->get('id')
                 && $line['aco_model'] == $aco
             ) {
                 if (isset($line['action_' . $action])) {
@@ -163,7 +163,7 @@ class ACL extends Obj
             if ($aco_foreign_key) {
                 if (
                     $line['aro_model'] == 'user'
-                    && $line['aro_foreign_key'] == $this->_user->get('id')
+                    && $line['aro_foreign_key'] == $this->user->get('id')
                     && $line['aco_model'] == $aco
                     && $line['aco_foreign_key'] == $aco_foreign_key
                 ) {
@@ -191,9 +191,9 @@ class ACL extends Obj
     public function setUser($aro_foreign_key = null)
     {
         if ($aro_foreign_key) {
-            if ($this->_user->get('id') != $aro_foreign_key) {
-                $this->_user = User::getInstance($aro_foreign_key);
-                $this->memberGroups = UserHelper::getGroups($this->_user->get('id'));
+            if ($this->user->get('id') != $aro_foreign_key) {
+                $this->user = User::getInstance($aro_foreign_key);
+                $this->memberGroups = UserHelper::getGroups($this->user->get('id'));
             }
         }
     }
@@ -214,13 +214,13 @@ class ACL extends Obj
             $this->setUser($aro_foreign_key);
         }
         $set = false;
-        for ($i = 0, $n = count($this->_raw_data); $i < $n; $i++) {
-            $line = & $this->_raw_data[$i];
+        for ($i = 0, $n = count($this->rawData); $i < $n; $i++) {
+            $line = & $this->rawData[$i];
 
             // Get the aco permission
             if (
                 $line['aro_model'] == 'user'
-                && $line['aro_foreign_key'] == $this->_user->get('id')
+                && $line['aro_foreign_key'] == $this->user->get('id')
                 && $line['aco_model'] == $aco
             ) {
                 $line['action_' . $action] = $permission;
@@ -230,7 +230,7 @@ class ACL extends Obj
             if ($aco_foreign_key) {
                 if (
                     $line['aro_model'] == 'user'
-                    && $line['aro_foreign_key'] == $this->_user->get('id')
+                    && $line['aro_foreign_key'] == $this->user->get('id')
                     && $line['aco_model'] == $aco
                     && $line['aco_foreign_key'] == $aco_foreign_key
                 ) {
@@ -242,12 +242,12 @@ class ACL extends Obj
         if (!$set) {
             $l = [
                 'aro_model'         => 'user',
-                'aro_foreign_key'   => $this->_user->get('id'),
+                'aro_foreign_key'   => $this->user->get('id'),
                 'aco_model'         => $aco,
                 'aco_foreign_key'   => $aco_foreign_key,
                 'action_' . $action => $permission,
             ];
-            array_push($this->_raw_data, $l);
+            array_push($this->rawData, $l);
         }
     }
 

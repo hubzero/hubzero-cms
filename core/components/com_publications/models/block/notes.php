@@ -22,7 +22,7 @@ class Notes extends Base
   * @var        string
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name              = 'notes';
+    protected $name              = 'notes';
 
     /**
   * Parent block name
@@ -30,7 +30,7 @@ class Notes extends Base
   * @var        string
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_parentname        = 'description';
+    protected $parentname        = 'description';
 
     /**
   * Default manifest
@@ -38,7 +38,7 @@ class Notes extends Base
   * @var        string
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest          = null;
+    protected $manifest          = null;
 
     /**
   * Numeric block ID
@@ -46,7 +46,7 @@ class Notes extends Base
   * @var        integer
   */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blockId           = 0;
+    protected $blockId           = 0;
 
     /**
      * Get default manifest for the block
@@ -56,8 +56,8 @@ class Notes extends Base
     public function getManifest($new = false)
     {
         // Load config from db
-        $obj = new \Components\Publications\Tables\Block($this->_parent->_db);
-        $manifest = $obj->getManifest($this->_name);
+        $obj = new \Components\Publications\Tables\Block($this->parent->db);
+        $manifest = $obj->getManifest($this->name);
 
         // Fall back
         if (!$manifest) {

@@ -22,7 +22,7 @@ class Group extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [
+    protected $segments = [
         'option' => 'com_groups',
         'cn'     => '',
         'active' => 'wiki',
@@ -40,17 +40,17 @@ class Group extends Base
     {
         $pagename = ($path ? $path . '/' : '') . $pagename;
 
-        $this->_segments['pagename'] = $pagename;
+        $this->segments['pagename'] = $pagename;
 
-        $this->_scope_id = $scope_id;
+        $this->scopeId = $scope_id;
 
-        $group = \Hubzero\User\Group::getInstance($this->_scope_id);
+        $group = \Hubzero\User\Group::getInstance($this->scopeId);
         if (!$group) {
             $group = new \Hubzero\User\Group();
-            $group->set('gidNumber', $this->_scope_id);
+            $group->set('gidNumber', $this->scopeId);
         }
 
-        $this->_segments['cn'] = $group->get('cn');
+        $this->segments['cn'] = $group->get('cn');
     }
 
     /**
@@ -63,7 +63,7 @@ class Group extends Base
      */
     public function link($type = '', $params = null)
     {
-        $segments = $this->_segments;
+        $segments = $this->segments;
 
         $anchor = '';
 
@@ -71,7 +71,7 @@ class Group extends Base
         switch (strtolower($type)) {
             case 'base':
                 unset($segments['pagename']);
-                return $this->_base . '?' . (string) $this->_build($segments);
+                return $this->base . '?' . (string) $this->_build($segments);
                 break;
 
             case 'pdf':
@@ -110,7 +110,7 @@ class Group extends Base
 
         $segments = array_merge($segments, (array) $params);
 
-        return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+        return $this->base . '?' . (string) $this->_build($segments) . (string) $anchor;
     }
 
     /**
@@ -122,9 +122,9 @@ class Group extends Base
     public function routing($task = 'save')
     {
         return [
-            'option' => $this->_segments['option'],
-            'cn'     => $this->_segments['cn'],
-            'active' => $this->_segments['active'],
+            'option' => $this->segments['option'],
+            'cn'     => $this->segments['cn'],
+            'active' => $this->segments['active'],
             'action' => $task,
         ];
     }
@@ -141,11 +141,11 @@ class Group extends Base
             return true;
         }
 
-        $group = \Hubzero\User\Group::getInstance($this->_scope_id);
+        $group = \Hubzero\User\Group::getInstance($this->scopeId);
 
         if (!$group) {
             $group = new \Hubzero\User\Group();
-            $group->set('gidNumber', $this->_scope_id);
+            $group->set('gidNumber', $this->scopeId);
         }
 
         // Is this a group manager?

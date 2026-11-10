@@ -23,15 +23,15 @@ use Hubzero\Facades\Route;
 class Projects extends Plugin
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_config;
+    protected $config;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_database;
+    protected $database;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_filters;
+    protected $filters;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_total;
+    protected $total;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_user;
+    protected $user;
     protected $model;
 
     /**
@@ -54,8 +54,8 @@ class Projects extends Plugin
         parent::__construct($subject, $config);
 
         // load plugin parameters
-        $this->_config = Component::params('com_projects');
-        $this->_database = App::get('db');
+        $this->config = Component::params('com_projects');
+        $this->database = App::get('db');
     }
 
     /**
@@ -115,7 +115,7 @@ class Projects extends Plugin
         $this->model = new \Components\Projects\Models\Project();
 
         // Set filters
-        $this->_filters = [
+        $this->filters = [
             'mine'     => 1,
             'updates'  => 1,
             'getowner' => 1,
@@ -124,22 +124,22 @@ class Projects extends Plugin
             'filterby' => Request::getString('filterby', 'active'),
             'uid'      => $member->get('id'),
         ];
-        if (!in_array($this->_filters['filterby'], ['active', 'archived'])) {
-            $this->_filters['filterby'] = 'active';
+        if (!in_array($this->filters['filterby'], ['active', 'archived'])) {
+            $this->filters['filterby'] = 'active';
         }
 
         // If configured to only show public projects to other users
         // We'll let admins see everything
         if ($this->params->get('show') == 'public' && !$user->authorise('core.manage', 'com_projects')) {
             if ($user->get('id') != $member->get('id')) {
-                $this->_filters['private'] = 0;
+                $this->filters['private'] = 0;
             }
         }
 
         // Get a record count
-        $this->_total = $this->model->entries('count', $this->_filters);
+        $this->total = $this->model->entries('count', $this->filters);
 
-        $this->_user = $member;
+        $this->user = $member;
 
         if ($returnhtml) {
             // Which view
@@ -172,10 +172,10 @@ class Projects extends Plugin
         $arr['metadata'] = [];
 
         $prefix = ($user->get('id') == $member->get('id')) ? 'I have' : $member->get('name') . ' has';
-        $title = $prefix . ' ' . $this->_total . ' active projects.';
+        $title = $prefix . ' ' . $this->total . ' active projects.';
 
         //return total message count
-        $arr['metadata']['count'] = $this->_total;
+        $arr['metadata']['count'] = $this->total;
 
         $invites = $this->model->table('Owner')->checkInvitesByEmail($member->get('email'));
 
@@ -203,33 +203,33 @@ class Projects extends Plugin
         // Build the final HTML
         $view = $this->view('default', 'browse');
 
-        $view->projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
-        $view->newcount = $this->model->table()->getUpdateCount($view->projects, $this->_user->get('id'));
+        $view->projects = $this->model->table()->getUserProjectIds($this->user->get('id'));
+        $view->newcount = $this->model->table()->getUpdateCount($view->projects, $this->user->get('id'));
 
-        $invites = $this->model->table('Owner')->checkInvitesByEmail($this->_user->get('email'));
+        $invites = $this->model->table('Owner')->checkInvitesByEmail($this->user->get('email'));
 
         if ($which == 'all') {
-            $this->_filters['which'] = 'owned';
-            $view->owned = $this->model->entries('list', $this->_filters);
+            $this->filters['which'] = 'owned';
+            $view->owned = $this->model->entries('list', $this->filters);
 
-            $this->_filters['which'] = 'other';
-            $view->rows = $this->model->entries('list', $this->_filters);
+            $this->filters['which'] = 'other';
+            $view->rows = $this->model->entries('list', $this->filters);
         } else {
             // Get records
             $options = ['owned', 'other', 'group'];
             if (!in_array($which, $options)) {
                 $which = 'owned';
             }
-            $this->_filters['which'] = $which;
-            $view->rows = $this->model->entries('list', $this->_filters);
+            $this->filters['which'] = $which;
+            $view->rows = $this->model->entries('list', $this->filters);
         }
 
         $view->invites = $invites;
         $view->which   = $which;
-        $view->total   = $this->_total;
-        $view->user    = $this->_user;
-        $view->filters = $this->_filters;
-        $view->config  = $this->_config;
+        $view->total   = $this->total;
+        $view->user    = $this->user;
+        $view->filters = $this->filters;
+        $view->config  = $this->config;
         $view->option  = 'com_projects';
         if ($this->getError()) {
             $view->setError($this->getError());
@@ -250,7 +250,7 @@ class Projects extends Plugin
         $view = $this->view('default', 'updates');
 
         // Get all projects user has access to
-        $projects = $this->model->table()->getUserProjectIds($this->_user->get('id'));
+        $projects = $this->model->table()->getUserProjectIds($this->user->get('id'));
 
         $view->filters = [
             'limit' => Request::getInt('limit', 25, 'request'),
@@ -263,7 +263,7 @@ class Projects extends Plugin
                 'feed',
                 $this->model,
                 $projects,
-                $this->_user->get('id'),
+                $this->user->get('id'),
                 $view->filters,
             ],
         );
@@ -271,10 +271,10 @@ class Projects extends Plugin
         $view->content      = !empty($results) && isset($results[0]) ? $results[0] : null;
         $view->newcount     = $this->model->table()->getUpdateCount(
             $projects,
-            $this->_user->get('id'),
+            $this->user->get('id'),
         );
-        $view->projectcount = $this->_total;
-        $view->uid          = $this->_user->get('id');
+        $view->projectcount = $this->total;
+        $view->uid          = $this->user->get('id');
 
         if ($this->getError()) {
             $view->setError($this->getError());

@@ -24,10 +24,10 @@ if (!defined('NBSP')) {
  */
 class WordAccumulator
 {
-    public $_lines = '';
-    public $_line = '';
-    public $_group = '';
-    public $_tag = '';
+    public $lines = '';
+    public $line = '';
+    public $group = '';
+    public $tag = '';
 
     /**
      * Short description for 'WordAccumulator'
@@ -38,10 +38,10 @@ class WordAccumulator
      */
     public function __construct()
     {
-        $this->_lines = [];
-        $this->_line = '';
-        $this->_group = '';
-        $this->_tag = '';
+        $this->lines = [];
+        $this->line = '';
+        $this->group = '';
+        $this->tag = '';
     }
 
     /**
@@ -54,17 +54,17 @@ class WordAccumulator
      */
     public function _flushGroup($new_tag)
     {
-        if ($this->_group !== '') {
-            if ($this->_tag == 'ins') {
-                $this->_line .= '<ins class="diffchange">' . htmlspecialchars($this->_group) . '</ins>';
-            } elseif ($this->_tag == 'del') {
-                $this->_line .= '<del class="diffchange">' . htmlspecialchars($this->_group) . '</del>';
+        if ($this->group !== '') {
+            if ($this->tag == 'ins') {
+                $this->line .= '<ins class="diffchange">' . htmlspecialchars($this->group) . '</ins>';
+            } elseif ($this->tag == 'del') {
+                $this->line .= '<del class="diffchange">' . htmlspecialchars($this->group) . '</del>';
             } else {
-                $this->_line .= htmlspecialchars($this->_group);
+                $this->line .= htmlspecialchars($this->group);
             }
         }
-        $this->_group = '';
-        $this->_tag = $new_tag;
+        $this->group = '';
+        $this->tag = $new_tag;
     }
 
     /**
@@ -78,13 +78,13 @@ class WordAccumulator
     public function _flushLine($new_tag)
     {
         $this->_flushGroup($new_tag);
-        if ($this->_line != '') {
-            array_push($this->_lines, $this->_line);
+        if ($this->line != '') {
+            array_push($this->lines, $this->line);
         } else {
             // make empty lines visible by inserting an NBSP
-            array_push($this->_lines, NBSP);
+            array_push($this->lines, NBSP);
         }
-        $this->_line = '';
+        $this->line = '';
     }
 
     /**
@@ -98,7 +98,7 @@ class WordAccumulator
      */
     public function addWords($words, $tag = '')
     {
-        if ($tag != $this->_tag) {
+        if ($tag != $this->tag) {
             $this->_flushGroup($tag);
         }
 
@@ -112,7 +112,7 @@ class WordAccumulator
                 $word = substr($word, 1);
             }
             assert(!strstr($word, "\n"));
-            $this->_group .= $word;
+            $this->group .= $word;
         }
     }
 
@@ -126,6 +126,6 @@ class WordAccumulator
     public function getLines()
     {
         $this->_flushLine('~done');
-        return $this->_lines;
+        return $this->lines;
     }
 }

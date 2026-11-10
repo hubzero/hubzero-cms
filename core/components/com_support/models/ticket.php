@@ -67,7 +67,7 @@ class Ticket extends Relational
      *
      * @var  object
      */
-    protected $_tags = null;
+    protected $tags = null;
 
     /**
      * Generates automatic summary field value
@@ -373,11 +373,11 @@ class Ticket extends Relational
      */
     public function tags($as = 'cloud', $admin = null)
     {
-        if (!$this->_tags) {
-            $this->_tags = new Tags($this->get('id'));
+        if (!$this->tags) {
+            $this->tags = new Tags($this->get('id'));
         }
 
-        return $this->_tags->render($as, ['admin' => $admin]);
+        return $this->tags->render($as, ['admin' => $admin]);
     }
 
     /**

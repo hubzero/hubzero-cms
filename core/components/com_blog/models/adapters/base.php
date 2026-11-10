@@ -21,7 +21,7 @@ abstract class Base extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_item = null;
+    protected $item = null;
 
     /**
      * Script name
@@ -29,7 +29,7 @@ abstract class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_base = 'index.php';
+    protected $base = 'index.php';
 
     /**
      * URL segments
@@ -37,7 +37,7 @@ abstract class Base extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_segments = [];
+    protected $segments = [];
 
     /**
      * Constructor
@@ -58,10 +58,10 @@ abstract class Base extends Obj
      */
     public function item($key = '', $default = null)
     {
-        if ($key && is_object($this->_item)) {
-            return $this->_item->get($key, $default);
+        if ($key && is_object($this->item)) {
+            return $this->item->get($key, $default);
         }
-        return $this->_item;
+        return $this->item;
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class Base extends Obj
      */
     public function link($type = '', $params = null)
     {
-        return $this->_base;
+        return $this->base;
     }
 
     /**

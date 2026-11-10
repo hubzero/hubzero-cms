@@ -23,35 +23,35 @@ class WikiMacro
      *
      * @var  string
      */
-    protected $_name = null;
+    protected $name = null;
 
     /**
      * Container for internal data
      *
      * @var  array
      */
-    protected $_data = [];
+    protected $data = [];
 
     /**
      * Database
      *
      * @var  object
      */
-    protected $_db = null;
+    protected $db = null;
 
     /**
      * Container for errors
      *
      * @var  array
      */
-    protected $_error = null;
+    protected $error = null;
 
     /**
      * Container for errors
      *
      * @var  array
      */
-    protected $_arguments = null;
+    protected $arguments = null;
 
     /**
      * Allow macro in partial parsing?
@@ -82,14 +82,14 @@ class WikiMacro
      */
     public function __construct($config = [])
     {
-        $this->_db = App::get('db');
+        $this->db = App::get('db');
 
         $this->args = '';
 
         // Set the controller name
-        if (empty($this->_name)) {
+        if (empty($this->name)) {
             if (isset($config['name'])) {
-                $this->_name = $config['name'];
+                $this->name = $config['name'];
             } else {
                 // Get the reflection info
                 $r = new \ReflectionClass($this);
@@ -97,9 +97,9 @@ class WikiMacro
                 // Is it namespaced?
                 if ($r->inNamespace()) {
                     // It is! This makes things easy.
-                    $this->_name = strtolower($r->getShortName());
+                    $this->name = strtolower($r->getShortName());
                 } elseif (preg_match('/(.*)Macro/i', get_class($this), $r)) {
-                    $this->_name = strtolower($r[1]);
+                    $this->name = strtolower($r[1]);
                 } else {
                     throw new \RuntimeException(__CLASS__ . '::__construct(); Can\'t get or parse class name.');
                 }
@@ -117,9 +117,9 @@ class WikiMacro
     public function __set($property, $value)
     {
         if ($property == 'args') {
-            $this->_arguments = null;
+            $this->arguments = null;
         }
-        $this->_data[$property] = $value;
+        $this->data[$property] = $value;
     }
 
     /**
@@ -130,8 +130,8 @@ class WikiMacro
      */
     public function __get($property)
     {
-        if (isset($this->_data[$property])) {
-            return $this->_data[$property];
+        if (isset($this->data[$property])) {
+            return $this->data[$property];
         }
     }
 
@@ -173,7 +173,7 @@ class WikiMacro
      */
     public function name()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -194,15 +194,15 @@ class WikiMacro
      */
     protected function getArguments()
     {
-        if (!is_array($this->_arguments)) {
+        if (!is_array($this->arguments)) {
             // get the args passed in
             $arguments = explode(',', (string) $this->args);
             $arguments = array_map('trim', (array) $arguments);
 
-            $this->_arguments = $arguments;
+            $this->arguments = $arguments;
         }
 
-        return $this->_arguments;
+        return $this->arguments;
     }
 
     /**
@@ -233,7 +233,7 @@ class WikiMacro
      */
     protected function setArguments($data)
     {
-        $this->_arguments = (array) $data;
+        $this->arguments = (array) $data;
 
         return $this;
     }
@@ -247,7 +247,7 @@ class WikiMacro
      */
     protected function setArgument($key, $val)
     {
-        $this->_arguments[$key] = $val;
+        $this->arguments[$key] = $val;
 
         return $this;
     }

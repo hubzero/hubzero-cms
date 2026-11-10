@@ -19,7 +19,7 @@ use Hubzero\Facades\App;
 class Unit extends Base
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_assetgroups;
+    protected $assetgroupsBackup;
 
     protected $course_id = 0;
 
@@ -37,7 +37,7 @@ class Unit extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_scope = 'unit';
+    protected $scope = 'unit';
 
     /**
      * \Components\Courses\Models\Assetgroup
@@ -134,7 +134,7 @@ class Unit extends Base
             return $this->table->$property;
         } elseif (isset($this->table->{'__' . $property})) {
             return $this->table->{'__' . $property};
-        } elseif (in_array($property, self::$_section_keys)) {
+        } elseif (in_array($property, self::$sectionKeys)) {
             $tbl = new Tables\SectionDate($this->db);
             $tbl->load($this->get('id'), 'unit', $this->get('section_id'));
 
@@ -171,7 +171,7 @@ class Unit extends Base
                 } else {
                     foreach ($group->children() as $child) {
                         if ((int) $child->get('id') == $id || (string) $child->get('alias') == $id) {
-                            $this->_assetgroups = $this->assetgroups; // back up the data
+                            $this->assetgroupsBackup = $this->assetgroups; // back up the data
                             $this->group = $child;
                             $children = $group->children();
                             $this->group->siblings($children);
@@ -194,7 +194,7 @@ class Unit extends Base
      */
     public function resetAssetgroups($idx = null, $filters = [])
     {
-        $this->assetgroups = $this->_assetgroups;
+        $this->assetgroups = $this->assetgroupsBackup;
         return $this->assetgroups($idx, $filters);
     }
 
@@ -420,14 +420,14 @@ class Unit extends Base
 
         if ($value && $this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
 
             $dt->set('publish_up', $this->get('publish_up'));
             $dt->set('publish_down', $this->get('publish_down'));
 
             if (!$dt->get('id')) {
                 $dt->set('section_id', $this->get('section_id'));
-                $dt->set('scope', $this->_scope);
+                $dt->set('scope', $this->scope);
                 $dt->set('scope_id', $this->get('id'));
                 $dt->set('created', Date::toSql());
                 $dt->set('created_by', User::get('id'));
@@ -470,7 +470,7 @@ class Unit extends Base
         // Remove dates
         if ($this->get('section_id')) {
             $dt = new Tables\SectionDate($this->db);
-            $dt->load($this->get('id'), $this->_scope, $this->get('section_id'));
+            $dt->load($this->get('id'), $this->scope, $this->get('section_id'));
             if (!$dt->delete()) {
                 $this->setError($dt->getError());
             }

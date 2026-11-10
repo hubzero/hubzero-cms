@@ -39,14 +39,14 @@ class Page extends Model
      *
      * @var object
      */
-    protected $_versions = null;
+    protected $versions = null;
 
     /**
      * Versions Count
      *
      * @var integer
      */
-    protected $_versions_count = null;
+    protected $versionsCount = null;
 
     /**
      * Constructor
@@ -86,16 +86,16 @@ class Page extends Model
      */
     public function versions($opt = [])
     {
-        if (!isset($this->_versions)) {
+        if (!isset($this->versions)) {
             $options = array_merge([
                 'pageid'  => $this->get('id', -1),
                 'orderby' => 'version DESC',
             ], $opt);
 
             $pageVersionArchive = new Page\Version\Archive();
-            $this->_versions = $pageVersionArchive->versions('list', $options);
+            $this->versions = $pageVersionArchive->versions('list', $options);
         }
-        return $this->_versions;
+        return $this->versions;
     }
 
     /**

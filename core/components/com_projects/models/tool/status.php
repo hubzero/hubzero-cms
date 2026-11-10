@@ -18,7 +18,7 @@ use Hubzero\Facades\App;
 class Status extends Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_statuses;
+    protected $statuses;
 
     /**
      * Table class name
@@ -48,17 +48,17 @@ class Status extends Model
         if (!isset($this->table)) {
             $this->table = new Tables\ToolStatus($this->db);
         }
-        if (!isset($this->_statuses)) {
-            $this->_statuses = [];
+        if (!isset($this->statuses)) {
+            $this->statuses = [];
             $statuses = $this->table->getItems();
             foreach ($statuses as $status) {
-                $this->_statuses[$status->id] = $status;
+                $this->statuses[$status->id] = $status;
             }
         }
 
         if (is_numeric($oid)) {
-            if (isset($this->_statuses[$oid])) {
-                $this->table->bind($this->_statuses[$oid]);
+            if (isset($this->statuses[$oid])) {
+                $this->table->bind($this->statuses[$oid]);
             } else {
                 $this->table->load($oid);
             }
@@ -73,8 +73,8 @@ class Status extends Model
      */
     public function getStatus($oid = null)
     {
-        if (isset($this->_statuses[$oid])) {
-            $this->table->bind($this->_statuses[$oid]);
+        if (isset($this->statuses[$oid])) {
+            $this->table->bind($this->statuses[$oid]);
         }
     }
 

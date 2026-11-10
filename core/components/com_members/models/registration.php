@@ -39,27 +39,27 @@ class Registration
     /**
      * @var  array
      */
-    public $_registration;
+    public $registration;
 
     /**
      * @var  unknown
      */
-    public $_encoded;
+    public $encoded;
 
     /**
      * @var  array
      */
-    public $_missing;
+    public $missing;
 
     /**
      * @var  mixed
      */
-    public $_invalid;
+    public $invalid;
 
     /**
      * @var  boolean
      */
-    public $_checked;
+    public $checked;
 
     /**
      * Clear cached data
@@ -68,11 +68,11 @@ class Registration
      */
     public function clear()
     {
-        $this->_registration = [];
+        $this->registration = [];
         $this->normalize();
-        $this->_missing = [];
-        $this->_invalid = false;
-        $this->_checked = true;
+        $this->missing = [];
+        $this->invalid = false;
+        $this->checked = true;
     }
 
     /**
@@ -93,20 +93,20 @@ class Registration
      */
     public function normalize()
     {
-        $this->_registration['login'] = null;
-        $this->_registration['email'] = null;
-        $this->_registration['confirmEmail'] = null;
-        $this->_registration['name'] = null;
-        $this->_registration['givenName'] = null;
-        $this->_registration['middleName'] = null;
-        $this->_registration['surname'] = null;
-        $this->_registration['password'] = null;
-        $this->_registration['confirmPassword'] = null;
-        $this->_registration['usageAgreement'] = null;
-        $this->_registration['sendEmail'] = null;
-        $this->_registration['captcha'] = null;
-        $this->_registration['orcid'] = null;
-        $this->_registration['_profile'] = [];
+        $this->registration['login'] = null;
+        $this->registration['email'] = null;
+        $this->registration['confirmEmail'] = null;
+        $this->registration['name'] = null;
+        $this->registration['givenName'] = null;
+        $this->registration['middleName'] = null;
+        $this->registration['surname'] = null;
+        $this->registration['password'] = null;
+        $this->registration['confirmPassword'] = null;
+        $this->registration['usageAgreement'] = null;
+        $this->registration['sendEmail'] = null;
+        $this->registration['captcha'] = null;
+        $this->registration['orcid'] = null;
+        $this->registration['_profile'] = [];
     }
 
     /**
@@ -144,19 +144,19 @@ class Registration
             $nm  = trim($name['first']);
             $nm .= (isset($name['middle']) && trim($name['middle']) != '') ? ' ' . $name['middle'] : '';
             $nm .= ' ' . trim($name['last']);
-            $this->_registration['name'] = $nm;
-            $this->_registration['givenName'] = $name['first'];
-            $this->_registration['middleName'] = $name['middle'];
-            $this->_registration['surname'] = $name['last'];
+            $this->registration['name'] = $nm;
+            $this->registration['givenName'] = $name['first'];
+            $this->registration['middleName'] = $name['middle'];
+            $this->registration['surname'] = $name['last'];
         }
 
-        $this->_registration['login'] = strtolower((string) Request::getString('login', null, 'post'));
-        $this->_registration['email'] = (string) Request::getString('email', null, 'post');
-        $this->_registration['confirmEmail'] = (string) Request::getString('email2', null, 'post');
-        $this->_registration['password'] = (string) Request::getString('password', null, 'post');
-        $this->_registration['confirmPassword'] = (string) Request::getString('password2', null, 'post');
-        $this->_registration['usageAgreement'] = Request::getInt('usageAgreement', 0, 'post');
-        $this->_registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
+        $this->registration['login'] = strtolower((string) Request::getString('login', null, 'post'));
+        $this->registration['email'] = (string) Request::getString('email', null, 'post');
+        $this->registration['confirmEmail'] = (string) Request::getString('email2', null, 'post');
+        $this->registration['password'] = (string) Request::getString('password', null, 'post');
+        $this->registration['confirmPassword'] = (string) Request::getString('password2', null, 'post');
+        $this->registration['usageAgreement'] = Request::getInt('usageAgreement', 0, 'post');
+        $this->registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
 
         // Incoming profile edits
         $profile = Request::getArray('profile', [], 'post', 'none', 2);
@@ -177,9 +177,9 @@ class Registration
             }
         }
 
-        $this->_registration['_profile'] = $profile;
+        $this->registration['_profile'] = $profile;
 
-        $this->_checked = false;
+        $this->checked = false;
     }
 
     /**
@@ -230,7 +230,7 @@ class Registration
         //$this->set('address', $addresses);
         $this->set('orcid', $xprofile->get('orcid'));
 
-        $this->_checked = false;
+        $this->checked = false;
     }
 
     /**
@@ -251,7 +251,7 @@ class Registration
         $this->set('name', $user->get('name'));
         $this->set('email', $user->get('email'));
 
-        $this->_checked = false;
+        $this->checked = false;
     }
 
     /**
@@ -262,11 +262,11 @@ class Registration
      */
     public function get($key)
     {
-        if (!array_key_exists($key, $this->_registration)) {
+        if (!array_key_exists($key, $this->registration)) {
             App::abort(500, __CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
         }
 
-        return $this->_registration[$key];
+        return $this->registration[$key];
     }
 
     /**
@@ -278,13 +278,13 @@ class Registration
      */
     public function set($key, $value)
     {
-        $this->_checked = false;
+        $this->checked = false;
 
-        if (!array_key_exists($key, $this->_registration)) {
+        if (!array_key_exists($key, $this->registration)) {
             App::abort(500, __CLASS__ . "::" . __METHOD__ . "() Unknown key: $key \n");
         }
 
-        $this->_registration[$key] = $value;
+        $this->registration[$key] = $value;
     }
 
     /**
@@ -377,14 +377,14 @@ class Registration
             $id = User::get('id');
         }
 
-        $registration = $this->_registration;
+        $registration = $this->registration;
 
         if ($task == 'proxy') {
             $task = 'proxycreate';
         }
 
-        $this->_missing = [];
-        $this->_invalid = [];
+        $this->missing = [];
+        $this->invalid = [];
 
         $registrationUsername = $this->registrationField('registrationUsername', 'RROO', $task);
         $registrationPassword = $this->registrationField('registrationPassword', 'RRHH', $task);
@@ -429,15 +429,15 @@ class Registration
 
         if ($registrationUsername == self::REG_REQUIRED) {
             if (empty($login)) {
-                $this->_missing['login'] = 'User Login';
-                $this->_invalid['login'] = 'Please provide a username';
+                $this->missing['login'] = 'User Login';
+                $this->invalid['login'] = 'Please provide a username';
             }
         }
 
         if ($registrationUsername != self::REG_HIDE) {
             $allowNumericFirstCharacter = ($task == 'update') ? true : false;
             if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter)) {
-                $this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only lowercase alphanumeric characters.';
+                $this->invalid['login'] = 'Invalid login name. Please type at least 2 characters and use only lowercase alphanumeric characters.';
             }
         }
 
@@ -445,11 +445,11 @@ class Registration
             $uid = User::getInstance($login)->get('id');
 
             if ($uid && $uid != $id) {
-                $this->_invalid['login'] = 'The user login "' . htmlentities($login) . '" already exists. Please try another.';
+                $this->invalid['login'] = 'The user login "' . htmlentities($login) . '" already exists. Please try another.';
             }
 
             if (\Hubzero\Utility\Validate::reserved('username', $login)) {
-                $this->_invalid['login'] = 'The user login "' . htmlentities($login) . '" already exists. Please try another.';
+                $this->invalid['login'] = 'The user login "' . htmlentities($login) . '" already exists. Please try another.';
             }
 
             // system username check
@@ -457,14 +457,14 @@ class Registration
             if (!empty($puser) && $uid && $uid != $puser['uid']) {
                 // log error and display error to user
                 Log::error('System username/userid does not match DB username/password for user: ' . $uid);
-                $this->_invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
+                $this->invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
             }
         }
 
         if ($registrationPassword == self::REG_REQUIRED) {
             if (empty($registration['password'])) {
-                $this->_missing['password'] = 'Password';
-                $this->_invalid['password'] = 'Please provide a password.';
+                $this->missing['password'] = 'Password';
+                $this->invalid['password'] = 'Please provide a password.';
             }
         }
 
@@ -483,21 +483,21 @@ class Registration
 
         if ($registrationConfirmPassword == self::REG_REQUIRED) {
             if (empty($registration['confirmPassword'])) {
-                $this->_missing['confirmPassword'] = 'Password Confirmation';
-                $this->_invalid['confirmPassword'] = 'Please provide the password again.';
+                $this->missing['confirmPassword'] = 'Password Confirmation';
+                $this->invalid['confirmPassword'] = 'Please provide the password again.';
             }
         }
 
         if ($registrationPassword != self::REG_HIDE && $registrationConfirmPassword != self::REG_HIDE) {
             if ($registration['password'] != $registration['confirmPassword']) {
-                $this->_invalid['confirmPassword'] = 'Passwords do not match. Please correct and try again.';
+                $this->invalid['confirmPassword'] = 'Passwords do not match. Please correct and try again.';
             }
         }
 
         if ($registrationPassword == self::REG_REQUIRED) {
             $score = $this->scorePassword($registration['password'], $registration['login']);
             if ($score < self::PASS_SCORE_MEDIOCRE) {
-                $this->_invalid['password'] = 'Password strength is too weak.';
+                $this->invalid['password'] = 'Password strength is too weak.';
             } elseif ($score >= self::PASS_SCORE_MEDIOCRE && $score < self::PASS_SCORE_GOOD) {
                 // Mediocre pass
             } elseif ($score >= self::PASS_SCORE_GOOD && $score < self::PASS_SCORE_STRONG) {
@@ -512,14 +512,14 @@ class Registration
 
             $msg = \Hubzero\Password\Rule::verify($registration['password'], $rules, $login, $registration['name']);
             if (!empty($msg)) {
-                $this->_invalid['password'] = $msg;
+                $this->invalid['password'] = $msg;
             }
         }
 
         if ($registrationFullname == self::REG_REQUIRED) {
             if (empty($registration['name'])) {
-                $this->_missing['name'] = 'Full Name';
-                $this->_invalid['name'] = 'Please provide a name.';
+                $this->missing['name'] = 'Full Name';
+                $this->invalid['name'] = 'Please provide a name.';
             } else {
                 $bits = explode(' ', $registration['name']);
                 $surname = null;
@@ -540,8 +540,8 @@ class Registration
                 }
 
                 if (!$givenName || !$surname) {
-                    $this->_missing['name'] = 'Full Name';
-                    $this->_invalid['name'] = 'Please provide a name.';
+                    $this->missing['name'] = 'Full Name';
+                    $this->invalid['name'] = 'Please provide a name.';
                 }
             }
         }
@@ -551,22 +551,22 @@ class Registration
             // José -> Jos&eacute;), which the validator's '&' rule rejects; check the
             // name as the person typed it
             if (!empty($registration['name']) && !Helpers\Utility::validname(html_entity_decode($registration['name'], ENT_QUOTES, 'UTF-8'))) {
-                $this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
+                $this->invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
             }
         }
 
         if ($registrationEmail == self::REG_REQUIRED) {
             if (empty($email)) {
-                $this->_missing['email'] = 'Valid Email';
-                $this->_invalid['email'] = 'Please provide a valid e-mail address.';
+                $this->missing['email'] = 'Valid Email';
+                $this->invalid['email'] = 'Please provide a valid e-mail address.';
             }
         }
 
         if ($registrationEmail != self::REG_HIDE) {
             if (empty($email)) {
-                $this->_missing['email'] = 'Valid Email';
+                $this->missing['email'] = 'Valid Email';
             } elseif (!Helpers\Utility::validemail($email)) {
-                $this->_invalid['email'] = 'Invalid email address. Please correct and try again.';
+                $this->invalid['email'] = 'Invalid email address. Please correct and try again.';
             } else {
                 $usersConfig = Component::params('com_members');
                 $allow_duplicate_emails = $usersConfig->get('allow_duplicate_emails');
@@ -584,12 +584,12 @@ class Registration
                 // 2 = only existing accounts (grandfathered)
                 if ($xid && ($allow_duplicate_emails == 0 || $allow_duplicate_emails == 2)) {
                     if ($allow_duplicate_emails == 0) {
-                        $this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+                        $this->invalid['email'] = 'An existing account is already using this e-mail address.';
                     } elseif ($allow_duplicate_emails == 2) {
                         // If duplicates are only allowed in grandfathered accounts,
                         // then new accounts shouldn't be created with the same email.
                         if (($task == 'create' || $task == 'proxycreate')) {
-                            $this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+                            $this->invalid['email'] = 'An existing account is already using this e-mail address.';
                         } else {
                             // We also need to catch existing users who might try to change their
                             // email to an existing email address on the hub. For that, we need to
@@ -598,7 +598,7 @@ class Registration
                             $currentEmail = $row->get('email');
 
                             if ($currentEmail != $email) {
-                                $this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+                                $this->invalid['email'] = 'An existing account is already using this e-mail address.';
                             }
                         }
                     }
@@ -607,53 +607,53 @@ class Registration
         }
 
         if ($registrationConfirmEmail == self::REG_REQUIRED) {
-            if (empty($confirmEmail) && empty($this->_invalid['email'])) {
-                $this->_missing['confirmEmail'] = 'Valid Email Confirmation';
-                $this->_invalid['confirmEmail'] = 'Please provide a valid e-mail address again.';
+            if (empty($confirmEmail) && empty($this->invalid['email'])) {
+                $this->missing['confirmEmail'] = 'Valid Email Confirmation';
+                $this->invalid['confirmEmail'] = 'Please provide a valid e-mail address again.';
             }
         }
 
         if ($registrationConfirmEmail != self::REG_HIDE) {
             if ($email != $confirmEmail) {
-                if (empty($this->_invalid['email'])) {
-                    $this->_invalid['confirmEmail'] = 'Email addresses do not match. Please correct and try again.';
-                    $this->_invalid['email'] = 'Email addresses do not match. Please correct and try again.';
+                if (empty($this->invalid['email'])) {
+                    $this->invalid['confirmEmail'] = 'Email addresses do not match. Please correct and try again.';
+                    $this->invalid['email'] = 'Email addresses do not match. Please correct and try again.';
                 }
             }
         }
 
         if ($registrationOptIn == self::REG_REQUIRED) {
             if (is_null($registration['sendEmail']) || intval($registration['sendEmail']) < 0) {
-                $this->_missing['sendEmail'] = 'Receive Email Updates';
-                $this->_invalid['sendEmail'] = 'Receive Email Updates has not been selected';
+                $this->missing['sendEmail'] = 'Receive Email Updates';
+                $this->invalid['sendEmail'] = 'Receive Email Updates has not been selected';
             }
         }
 
         if ($registrationCAPTCHA == self::REG_REQUIRED) {
             $botcheck = Request::getString('botcheck', '');
             if ($botcheck) {
-                $this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
+                $this->invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
             }
 
             $validcaptchas = Event::trigger('captcha.onCheckAnswer');
             if (count($validcaptchas) > 0) {
                 foreach ($validcaptchas as $validcaptcha) {
                     if (!$validcaptcha) {
-                        $this->_invalid['captcha'] = 'Please answer the Human Check question correctly.';
+                        $this->invalid['captcha'] = 'Please answer the Human Check question correctly.';
                     }
                 }
             }
 
             // Name it in the summary of fields to fix, like the other fields
-            if (!empty($this->_invalid['captcha'])) {
-                $this->_missing['captcha'] = 'Human Check';
+            if (!empty($this->invalid['captcha'])) {
+                $this->missing['captcha'] = 'Human Check';
             }
         }
 
         if ($registrationTOU == self::REG_REQUIRED) {
             if (empty($registration['usageAgreement'])) {
-                $this->_missing['usageAgreement'] = 'Usage Agreement';
-                $this->_invalid['usageAgreement'] = 'Registration requires acceptance of the usage agreement';
+                $this->missing['usageAgreement'] = 'Usage Agreement';
+                $this->invalid['usageAgreement'] = 'Registration requires acceptance of the usage agreement';
             }
         }
 
@@ -719,24 +719,24 @@ class Registration
 
         // Filter out fields
         if (!empty($field_to_check)) {
-            if ($this->_missing) {
-                foreach ($this->_missing as $k => $v) {
+            if ($this->missing) {
+                foreach ($this->missing as $k => $v) {
                     if (!in_array($k, $field_to_check)) {
-                        unset($this->_missing[$k]);
+                        unset($this->missing[$k]);
                     }
                 }
             }
 
-            if ($this->_invalid) {
-                foreach ($this->_invalid as $k => $v) {
+            if ($this->invalid) {
+                foreach ($this->invalid as $k => $v) {
                     if (!in_array($k, $field_to_check)) {
-                        unset($this->_invalid[$k]);
+                        unset($this->invalid[$k]);
                     }
                 }
             }
         }
 
-        if (empty($this->_missing) && empty($this->_invalid)) {
+        if (empty($this->missing) && empty($this->invalid)) {
             return true;
         }
 

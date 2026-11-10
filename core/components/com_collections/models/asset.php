@@ -33,7 +33,7 @@ class Asset extends Base
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_size = null;
+    protected $size = null;
 
     /**
      * Diemnsions for file (must be an image)
@@ -41,7 +41,7 @@ class Asset extends Base
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_dimensions = null;
+    protected $dimensions = null;
 
     /**
      * Constructor
@@ -159,8 +159,8 @@ class Asset extends Base
      */
     public function size()
     {
-        if (is_null($this->_size)) {
-            $this->_size = 0;
+        if (is_null($this->size)) {
+            $this->size = 0;
 
             if ($this->exists()) {
                 $path  = $this->filespace() . DS . $this->get('item_id') . DS;
@@ -168,11 +168,11 @@ class Asset extends Base
 
                 // The stored filename is owner-editable; a name that is not on
                 // disk must not warn
-                $this->_size = is_file($path) ? filesize($path) : 0;
+                $this->size = is_file($path) ? filesize($path) : 0;
             }
         }
 
-        return $this->_size;
+        return $this->size;
     }
 
     /**
@@ -182,15 +182,15 @@ class Asset extends Base
      */
     public function dimensions()
     {
-        if (!$this->_dimensions) {
-            $this->_dimensions = [0, 0];
+        if (!$this->dimensions) {
+            $this->dimensions = [0, 0];
 
             if ($this->isImage() && $this->exists()) {
-                $this->_dimensions = getimagesize($this->path());
+                $this->dimensions = getimagesize($this->path());
             }
         }
 
-        return $this->_dimensions;
+        return $this->dimensions;
     }
 
     /**

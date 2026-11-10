@@ -20,9 +20,9 @@ use Hubzero\Facades\User;
 class Log extends Model
 {
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_actor;
+    protected $actor;
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_creator;
+    protected $creator;
 
     /**
      * Table class name
@@ -191,12 +191,12 @@ class Log extends Model
      */
     public function actor($property = null)
     {
-        if (!isset($this->_actor) || !($this->_creator instanceof \Hubzero\User\User)) {
-            $this->_actor = User::getInstance($this->get('actor'));
+        if (!isset($this->actor) || !($this->creator instanceof \Hubzero\User\User)) {
+            $this->actor = User::getInstance($this->get('actor'));
         }
         if ($property) {
-            return $this->_actor->get($property);
+            return $this->actor->get($property);
         }
-        return $this->_actor;
+        return $this->actor;
     }
 }

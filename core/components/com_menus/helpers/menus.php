@@ -29,7 +29,7 @@ class Menus
      * @var  array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected static $_filter = ['option', 'view', 'layout'];
+    protected static $filter = ['option', 'view', 'layout'];
 
     /**
      * Gets a list of the actions that can be performed.
@@ -81,7 +81,7 @@ class Menus
 
         // Only take the option, view and layout parts.
         foreach ($request as $name => $value) {
-            if ((!in_array($name, self::$_filter)) && (!($name == 'task' && !array_key_exists('view', $request)))) {
+            if ((!in_array($name, self::$filter)) && (!($name == 'task' && !array_key_exists('view', $request)))) {
                 // Remove the variables we want to ignore.
                 unset($request[$name]);
             }

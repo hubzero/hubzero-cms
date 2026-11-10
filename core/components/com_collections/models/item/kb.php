@@ -26,7 +26,7 @@ class Kb extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'kb';
+    protected $type = 'kb';
 
     /**
      * Get the item type
@@ -94,7 +94,7 @@ class Kb extends GenericItem
             $id = $article->get('id');
         }
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -109,7 +109,7 @@ class Kb extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $article->get('id'))
              ->set('created', $article->get('created'))
              ->set('created_by', $article->get('created_by'))

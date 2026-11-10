@@ -56,12 +56,12 @@ class Filefsv1r0 extends ApiController
      *
      * @var  object
      */
-    protected $_database = null;
+    protected $database = null;
 
     /**
      * @var  integer
      */
-    protected $_uid = 0;
+    protected $uid = 0;
 
     /**
      * Connection id from the request, when a task targets a connection
@@ -588,8 +588,8 @@ class Filefsv1r0 extends ApiController
         $hash   = Request::getString('hash', '');
         $this->repo = new \Components\Projects\Models\Repo($this->model, "local");
 
-        $this->_database   = App::get('db');
-        $this->_uid        = User::get('id');
+        $this->database   = App::get('db');
+        $this->uid        = User::get('id');
         $this->subdir      = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
         if ($this->subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);
@@ -658,8 +658,8 @@ class Filefsv1r0 extends ApiController
         // Combine file and folder data
         $items = $this->_sortIncoming();
 
-        $this->_database   = App::get('db');
-        $this->_uid        = User::get('id');
+        $this->database   = App::get('db');
+        $this->uid        = User::get('id');
         $this->subdir      = \Hubzero\Filesystem\SafePath::relative(urldecode((string) Request::getString('subdir', '')));
         if ($this->subdir === false) {
             throw new Exception(Lang::txt('COM_PROJECTS_FILES_ERROR_INVALID_PATH'), 404);

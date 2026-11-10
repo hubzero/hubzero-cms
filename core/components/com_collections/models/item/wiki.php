@@ -27,7 +27,7 @@ class Wiki extends GenericItem
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = 'wiki';
+    protected $type = 'wiki';
 
     /**
      * Get the item type
@@ -92,7 +92,7 @@ class Wiki extends GenericItem
             $id = $page->get('id');
         }
 
-        $this->table->loadType($id, $this->_type);
+        $this->table->loadType($id, $this->type);
 
         if ($this->exists()) {
             return true;
@@ -107,7 +107,7 @@ class Wiki extends GenericItem
             return false;
         }
 
-        $this->set('type', $this->_type)
+        $this->set('type', $this->type)
              ->set('object_id', $page->get('id'))
              ->set('created', $page->get('created'))
              ->set('created_by', $page->get('created_by'))
