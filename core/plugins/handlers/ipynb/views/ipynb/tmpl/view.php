@@ -36,13 +36,13 @@ $this->js('highlighter/shCore.js')
             elseif (isset($contents->cells)) :
                 foreach ($contents->cells as $cell) :
                     $output[] = $this->view('cell')
-                                    ->set('cell', $cell)
-                                    ->set('parser', $parser)
-                                    ->loadTemplate();
+                    ->set('cell', $cell)
+                    ->set('parser', $parser)
+                    ->loadTemplate();
                 endforeach;
             endif;
 
-            echo implode("\n", $output);
+                echo implode("\n", $output);
             ?>
         </div>
     </div>

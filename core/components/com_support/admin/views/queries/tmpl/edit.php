@@ -207,20 +207,19 @@ if (!$tmpl) :
 
         <?php echo Html::input('token'); ?>
     </form>
-    <?php
-else :
+<?php else :
     if ($this->row->iscore != 0) :
         $this->row->title .= ' ' . Lang::txt('COM_SUPPORT_COPY');
     endif;
     ?>
-    <?php
-    $formAction2 = Route::url(
-        'index.php?option=' . $this->option
-        . '&controller=' . $this->controller,
-    );
-    $missingTitleMsg = Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE');
-    $actionUrl = Route::url('index.php?option=' . $this->option);
-    ?>
+        <?php
+        $formAction2 = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller,
+        );
+        $missingTitleMsg = Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE');
+        $actionUrl = Route::url('index.php?option=' . $this->option);
+        ?>
     <form
         action="<?php echo $formAction2; ?>"
         method="post"
@@ -385,5 +384,5 @@ else :
 
         <?php echo Html::input('token'); ?>
     </form>
-    <?php
+        <?php
 endif;

@@ -22,16 +22,16 @@ $minGitSize = 61440;
 $usageGit = $this->params->get('disk_usage');
 
 // Check used space against quota (percentage)
-$inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
+$inuse = round((($this->dirsize * 100) / $this->quota), 1);
 if ($this->total > 0 && $inuse < 1) {
-    $inuse = round((($this->dirsize * 100 ) / $this->quota), 2);
+    $inuse = round((($this->dirsize * 100) / $this->quota), 2);
     if ($inuse < 0.1) {
         $inuse = 0.01;
     }
 }
 $working = ($usageGit || $this->by == 'admin') ? $this->totalspace - $this->dirsize : $this->totalspace;
 
-$actual  = $working > 0 ? round((($working * 100 ) / $this->quota), 1) : null;
+$actual  = $working > 0 ? round((($working * 100) / $this->quota), 1) : null;
 $actual  = $actual > 100 ? 100 : $actual;
 if ($this->versionTracking == '0') {
     $versions = 0;

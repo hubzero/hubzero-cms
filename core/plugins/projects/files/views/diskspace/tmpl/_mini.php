@@ -14,9 +14,9 @@ use Hubzero\Facades\Lang;
 defined('_HZEXEC_') or die();
 
 // Check used space against quota (percentage)
-$inuse = round(($this->dirsize * 100 ) / $this->quota);
+$inuse = round(($this->dirsize * 100) / $this->quota);
 if ($inuse < 1) {
-    $inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
+    $inuse = round((($this->dirsize * 100) / $this->quota), 1);
     if ($inuse < 0.1) {
         $inuse = 0.0;
     }

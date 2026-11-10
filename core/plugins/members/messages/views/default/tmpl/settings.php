@@ -45,7 +45,7 @@ $this->css()
             </thead>
             <tfoot>
                 <tr>
-                    <td colspan="<?php echo (count($this->notimethods) + 1); ?>">
+                    <td colspan="<?php echo(count($this->notimethods) + 1); ?>">
                         <input type="submit"
                             class="btn"
                             value="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SAVE_SETTINGS'); ?>"/>

@@ -37,7 +37,7 @@ $filter = Request::getString('searchterm', '');
             if ($this->getError()) :
                 echo '<p class="error">' . $this->getError() . '</p>';
             elseif ($this->msg) :
-                echo '<p>' . $this->msg . '</p>';
+                    echo '<p>' . $this->msg . '</p>';
             endif;
             ?>
         </div>

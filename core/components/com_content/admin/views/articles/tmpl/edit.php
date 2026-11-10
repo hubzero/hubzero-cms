@@ -232,7 +232,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                 <?php // If the parameter says to show the article options or if the parameters have never been set, we will
                       // show the article options.?>
 
-                <?php if ($params['show_article_options'] || (( $params['show_article_options'] == '' && !empty($editoroptions) ))) : ?>
+                <?php if ($params['show_article_options'] || (($params['show_article_options'] == '' && !empty($editoroptions)))) : ?>
                     <?php // Go through all the fieldsets except the configuration and basic-limited, which are
                           // handled separately below.?>
 
@@ -251,7 +251,7 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                         </fieldset>
                     <?php endif ?>
                     <?php // If we are not showing the options we need to use the hidden fields so the values are not lost.?>
-                <?php  elseif ($name == 'basic-limited') : ?>
+                <?php elseif ($name == 'basic-limited') : ?>
                     <?php foreach ($this->form->getFieldset('basic-limited') as $field) : ?>
                         <?php  echo $field->input; ?>
                     <?php endforeach; ?>

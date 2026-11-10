@@ -122,13 +122,13 @@ $version = $record['summary']['version'];
                                                             class="answer-marker correct"
                                                             type="radio">&#10004;</div>';
                         elseif ($record['detail'][$qid]['answer_id'] == $ans['id']) :
-                                                      Document::addStyleDeclaration('
+                                                            Document::addStyleDeclaration('
                                                                 #question-' . $qid . '-marker-incorrect {
                                                                         top: ' . ($ans['top'] - 4) . 'px;
                                                                         left: ' . $ans['left'] . 'px;
                                                                 }
                                                         ');
-                                                        echo '<div
+                                                            echo '<div
                                                             name="question-' . $qid . '"
                                                             id="question-' . $qid . '-marker-incorrect"
                                                             value="' . $ans['id'] . '"

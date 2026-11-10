@@ -282,8 +282,7 @@ class Quotas extends AdminController
 
                 $i++;
             }
-        } else // no rows were selected
-            {
+        } else { // no rows were selected
             // Output message and redirect
             Notify::warning(Lang::txt('No Quotas Synced'));
             return $this->cancelTask();
@@ -481,9 +480,8 @@ class Quotas extends AdminController
                 // Restore all members of this class to default
                 Quota::restoreDefaultClass($id);
             }
-        } else // no rows were selected
-        {
-            // Output message and redirect
+        } else { // no rows were selected
+        // Output message and redirect
             Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
             return $this->cancelClassTask();
         }

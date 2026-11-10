@@ -37,28 +37,28 @@ if ($this->data['type'] != 'folder') :
         );
     endif;
 else :
-    $icon = Html::asset(
-        'image',
-        'assets/filetypes/folder.svg',
-        '',
-        null,
-        true,
-        true,
-    );
+        $icon = Html::asset(
+            'image',
+            'assets/filetypes/folder.svg',
+            '',
+            null,
+            true,
+            true,
+        );
 endif;
 
-$fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
-    $this->data['size'],
-);
-$imgAlt = $this->escape(
-    Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], $fileSize),
-);
+    $fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
+        $this->data['size'],
+    );
+    $imgAlt = $this->escape(
+        Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->data['name'], $fileSize),
+    );
 
-$formAction = Route::url(
-    'index.php?option=' . $this->option
-    . '&controller=medialist&file=' . urlencode($this->data['path']),
-);
-?>
+    $formAction = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=medialist&file=' . urlencode($this->data['path']),
+    );
+    ?>
 
 <form action="<?php echo $formAction; ?>"
     id="component-form" method="post"

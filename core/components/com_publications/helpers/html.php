@@ -1291,7 +1291,7 @@ class Html
             $file = $path . DIRECTORY_SEPARATOR . ltrim($attachment->path, '/');
             if (file_exists($file)) {
                 if ($fast) {
-                    $mimer = new  \Hubzero\Content\Mimetypes();
+                    $mimer = new \Hubzero\Content\Mimetypes();
                     $mimeType = $mimer->getMimeType($file, true);
                 } else {
                     $mimeType = mime_content_type($file);
@@ -1339,7 +1339,7 @@ class Html
             $file = $galleryDir . DIRECTORY_SEPARATOR . $galleryFile;
 
             if ($fast) {
-                $mimer = new  \Hubzero\Content\Mimetypes();
+                $mimer = new \Hubzero\Content\Mimetypes();
                 $mimeType = $mimer->getMimeType($file, true);
             } else {
                 $mimeType = mime_content_type($file);

@@ -45,7 +45,7 @@ $this->css('display.css', 'com_massmail');
                 <select name="status" id="filter-status" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MASSMAIL_ALL_STATUSES'); ?></option>
                     <?php foreach ($statuses as $s) { ?>
-                        <option value="<?php echo $s; ?>"<?php echo ($this->filters['status'] === $s ? ' selected="selected"' : ''); ?>><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($s)); ?></option>
+                        <option value="<?php echo $s; ?>"<?php echo($this->filters['status'] === $s ? ' selected="selected"' : ''); ?>><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($s)); ?></option>
                     <?php } ?>
                 </select>
             </div>

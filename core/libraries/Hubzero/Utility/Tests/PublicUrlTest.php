@@ -35,8 +35,7 @@ class PublicUrlTest extends Basic
             'http://10.0.0.1/',
             'http://100.100.100.200/',
             'http://[fd00::1]/',
-        ] as $url)
-        {
+        ] as $url) {
             $this->assertFalse(PublicUrl::check($url), $url);
         }
     }
@@ -53,8 +52,7 @@ class PublicUrlTest extends Basic
             'http://1.1.1.1@127.0.0.1/',
             'http://user:pass@1.1.1.1/',
             'http://1.1.1.1\\x/',
-        ] as $url)
-        {
+        ] as $url) {
             $this->assertFalse(PublicUrl::check($url), $url);
         }
     }

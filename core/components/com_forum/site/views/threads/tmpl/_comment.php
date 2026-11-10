@@ -184,13 +184,15 @@ if ($this->comment->isReported()) {
             </div><!-- / .comment-attachments -->
             <?php if (
             $this->config->get('access-manage-thread')
-                        || (!$this->comment->get('parent') && $this->comment->get('created_by') == User::get('id')
+                        || (
+                            !$this->comment->get('parent') && $this->comment->get('created_by') == User::get('id')
                             && (
                                 $this->config->get('access-delete-thread')
                                 || $this->config->get('access-edit-thread')
                             )
                         )
-                        || ($this->comment->get('parent') && $this->comment->get('created_by') == User::get('id')
+                        || (
+                            $this->comment->get('parent') && $this->comment->get('created_by') == User::get('id')
                             && (
                                 $this->config->get('access-delete-post')
                                 || $this->config->get('access-edit-post')

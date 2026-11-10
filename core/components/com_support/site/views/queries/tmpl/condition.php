@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
         <?php echo Lang::txt(
             'COM_SUPPORT_QUERY_MATCH',
             '<select aria-label="' . Lang::txt('COM_SUPPORT_QUERY_MATCH_OPERATOR') . '">
-			<option value="AND"' . (strtolower($this->condition->operator) == 'and' ? ' selected="selected"' : '' ) . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>
+			<option value="AND"' . (strtolower($this->condition->operator) == 'and' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>
 			<option value="OR"' . (strtolower($this->condition->operator) == 'or' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>
 		</select>',
         ); ?>

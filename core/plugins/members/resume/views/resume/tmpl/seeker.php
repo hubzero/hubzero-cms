@@ -111,7 +111,7 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
             <?php if ($this->seeker->linkedin) { ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?php echo (preg_match('#^https?://#i', $this->seeker->linkedin) ? $this->escape($this->seeker->linkedin) : ''); ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
+                    <a href="<?php echo(preg_match('#^https?://#i', $this->seeker->linkedin) ? $this->escape($this->seeker->linkedin) : ''); ?>" class="linkedin" rel="external" title="<?php echo Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN'); ?>"><?php echo Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN'); ?></a>
                 </span>
             <?php } ?>
         <?php } else { ?>

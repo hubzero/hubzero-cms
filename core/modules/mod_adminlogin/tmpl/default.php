@@ -33,12 +33,12 @@ Html::behavior('keepalive');
                         echo is_array($html) ? implode("\n", $html) : $html;
                     else :
                         ?>
-                        <?php
-                        $authUrl = Route::url(
-                            'index.php?option=com_login&task=display&authenticator='
-                            . $a['name'] . $returnQueryString,
-                        );
-                        ?>
+                            <?php
+                            $authUrl = Route::url(
+                                'index.php?option=com_login&task=display&authenticator='
+                                . $a['name'] . $returnQueryString,
+                            );
+                            ?>
                         <a class="<?php echo $a['name']; ?> account"
                             href="<?php echo $authUrl; ?>"
                         >
@@ -46,7 +46,7 @@ Html::behavior('keepalive');
                                 <?php echo Lang::txt('COM_LOGIN_SIGN_IN_WITH_METHOD', $a['display']); ?>
                             </div>
                         </a>
-                        <?php
+                            <?php
                     endif;
                 endforeach;
                 ?>

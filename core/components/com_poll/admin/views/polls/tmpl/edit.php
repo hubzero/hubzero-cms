@@ -175,7 +175,7 @@ $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
                     <div class="input-wrap">
                         <label for="polloption<?php echo $option->id; ?>">
                             <?php echo $optionLabel; ?>
-                            <?php echo ($i + 1); ?>
+                            <?php echo($i + 1); ?>
                         </label><br />
                         <input
                             class="inputbox"

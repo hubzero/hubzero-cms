@@ -21,8 +21,7 @@ if (!count($fieldSets)) :
             <?php echo Lang::txt('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?>
         </p>
     </div>
-    <?php
-else :
+<?php else :
     foreach ($fieldSets as $name => $fieldSet) :
         $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDSET_LABEL';
 
@@ -33,7 +32,7 @@ else :
         endif;
         ?>
         <fieldset class="panelform">
-            <?php $hidden_fields = ''; ?>
+        <?php $hidden_fields = ''; ?>
 
             <?php foreach ($this->form->getFieldset($name) as $field) : ?>
                 <?php if (!$field->hidden) : ?>
@@ -48,7 +47,7 @@ else :
                 <?php endif; ?>
             <?php endforeach; ?>
 
-            <?php echo $hidden_fields; ?>
+                <?php echo $hidden_fields; ?>
         </fieldset>
     <?php endforeach;
 endif;

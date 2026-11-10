@@ -360,8 +360,7 @@ class PasswordRules extends AdminController
 
                 $i++;
             }
-        } else // no rows were selected
-        {
+        } else { // no rows were selected
             Notify::warning(Lang::txt('COM_MEMBERS_PASSWORD_RULES_DELETE_NO_ROW_SELECTED'));
         }
 

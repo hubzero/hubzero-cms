@@ -34,8 +34,8 @@ defined('_HZEXEC_') or die();
                     <?php
                 endforeach;
             else :
-                $fieldId = 'hzform_' . $this->section . '_' . $key;
-                $fieldName = 'hzother[' . $this->section . '][' . $key . ']';
+                    $fieldId = 'hzform_' . $this->section . '_' . $key;
+                    $fieldName = 'hzother[' . $this->section . '][' . $key . ']';
                 ?>
                 <div class="input-wrap">
                     <label for="<?php echo $fieldId; ?>"><?php echo $key; ?></label>
@@ -46,7 +46,7 @@ defined('_HZEXEC_') or die();
                         value="<?php echo $this->escape($val); ?>"
                     />
                 </div>
-                <?php
+                    <?php
             endif;
         endforeach;
         ?>

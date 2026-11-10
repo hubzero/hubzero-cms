@@ -44,7 +44,7 @@ defined('_HZEXEC_') or die();
     elseif ($this->model->get('setup_stage') >= 2) :
             echo ' completed';
     else :
-            echo ' coming';
+                echo ' coming';
     endif;
     ?>">
         <?php if ($this->model->get('setup_stage') >= 1 && $this->step != 1) : ?>

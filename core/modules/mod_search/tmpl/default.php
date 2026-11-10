@@ -24,7 +24,7 @@ $formSuffix = (Search::$instances > 1) ? $this->module->id : '';
     class="<?php echo $moduleclass_sfx; ?>searchform"
 >
     <fieldset>
-        <legend><?php echo ($text ?: $label); ?></legend>
+        <legend><?php echo($text ?: $label); ?></legend>
 
         <?php
             $sfx = Search::$instances > 1 ? $this->module->id : '';

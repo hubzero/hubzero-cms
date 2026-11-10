@@ -62,7 +62,7 @@ $handlers     = $this->manifest->params->typeParams->handlers;
 
 // Is there handler assigned?
 $handler      = $this->manifest->params->typeParams->handler;
-$useHandles   = ($handlers || $handler ) ? true : false;
+$useHandles   = ($handlers || $handler) ? true : false;
 
 if ($handler) {
     // Load handler

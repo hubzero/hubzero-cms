@@ -31,10 +31,10 @@ endif;
             $cls = ' class="open"';
             $icon = Html::asset('image', 'assets/filetypes/folder-open.svg', '', null, true, true);
         else :
-            $fld = trim($this->folder, '/');
-            $trail = explode('/', $fld);
+                $fld = trim($this->folder, '/');
+                $trail = explode('/', $fld);
 
-            $p = explode('/', trim($folder['path'], '/'));
+                $p = explode('/', trim($folder['path'], '/'));
 
             foreach ($p as $i => $f) :
                 if (!isset($trail[$i])) :

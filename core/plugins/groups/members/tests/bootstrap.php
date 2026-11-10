@@ -6,8 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-if (!defined('_HZEXEC_'))
-{
+if (!defined('_HZEXEC_')) {
     define('_HZEXEC_', true);
 }
 

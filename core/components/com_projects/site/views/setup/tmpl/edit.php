@@ -32,7 +32,7 @@ if ($layout == 'extended') :
     // Include theme CSS
     $this->css('theme' . $theme . '.css');
 else :
-    $this->css('standard.css');
+        $this->css('standard.css');
 endif;
 
 ?>
@@ -55,9 +55,8 @@ endif;
              ->display();
         ?>
         <div class="project-inner-wrap">
-        <?php
-    else :
-        $this->view('_header', 'projects')
+    <?php else :
+            $this->view('_header', 'projects')
              ->set('model', $this->model)
              ->set('showPic', 1)
              ->set('showPrivacy', 0)
@@ -68,7 +67,7 @@ endif;
     endif;
 
     // Display status message
-    $this->view('_statusmsg', 'projects')
+        $this->view('_statusmsg', 'projects')
          ->set('error', $this->getError())
          ->set('msg', $this->msg)
          ->display();

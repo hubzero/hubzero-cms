@@ -76,7 +76,7 @@ class Controller
         }
 
         if (!self::authorize($dd)) {
-            print ('<br /><p class="warning">Sorry, you are not authorized to view this page.</p>');
+            print('<br /><p class="warning">Sorry, you are not authorized to view this page.</p>');
             return;
         }
 
@@ -98,7 +98,7 @@ class Controller
 
 
         if (!self::authorize($dd)) {
-            print ('<br /><p class="error">Sorry, you are not authorized to view this page.</p>');
+            print('<br /><p class="error">Sorry, you are not authorized to view this page.</p>');
             return;
         }
 

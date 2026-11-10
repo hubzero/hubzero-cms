@@ -15,8 +15,8 @@ foreach ($this->contents as $element) :
             ->set('directory', $element)
             ->display();
     else :
-        $this->view('_bundle_file')
-            ->set('file', $element)
-            ->display();
+                $this->view('_bundle_file')
+                ->set('file', $element)
+                ->display();
     endif;
 endforeach;

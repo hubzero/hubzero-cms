@@ -34,8 +34,7 @@ class ServiceAccountsMigrationTest extends Basic
     {
         $dsn = getenv('HZ_TEST_DB_DSN');
 
-        if (!$dsn)
-        {
+        if (!$dsn) {
             $this->markTestSkipped('HZ_TEST_DB_DSN not set: no scratch database');
         }
 
@@ -45,16 +44,14 @@ class ServiceAccountsMigrationTest extends Basic
 
         $sql = PATH_CORE . '/bootstrap/Install/sql/mysql/';
 
-        foreach (['users', 'usergroups', 'user_usergroup_map'] as $table)
-        {
+        foreach (['users', 'usergroups', 'user_usergroup_map'] as $table) {
             $pdo->exec('DROP TABLE IF EXISTS `jos_' . $table . '`');
             $pdo->exec(str_replace('#__', 'jos_', self::statement($sql . 'schema.sql', '/CREATE TABLE `#__' . $table . '` \(.*?\) ENGINE=[^;]*;/s')));
         }
 
         preg_match_all('/INSERT INTO `#__usergroups` .*?;/s', file_get_contents($sql . 'data.sql'), $inserts);
         $this->assertNotEmpty($inserts[0]);
-        foreach ($inserts[0] as $insert)
-        {
+        foreach ($inserts[0] as $insert) {
             $pdo->exec(str_replace('#__', 'jos_', $insert));
         }
 
@@ -70,8 +67,7 @@ class ServiceAccountsMigrationTest extends Basic
         $migration->up();
 
         $after = self::tree($pdo);
-        $group = array_values(array_filter($after, function ($row)
-        {
+        $group = array_values(array_filter($after, function ($row) {
             return $row['title'] == 'Service accounts';
         }));
 
@@ -108,8 +104,7 @@ class ServiceAccountsMigrationTest extends Basic
     private static function tree($pdo)
     {
         $rows = [];
-        foreach ($pdo->query('SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')->fetchAll(PDO::FETCH_ASSOC) as $row)
-        {
+        foreach ($pdo->query('SELECT id, parent_id, lft, rgt, title FROM jos_usergroups ORDER BY id')->fetchAll(PDO::FETCH_ASSOC) as $row) {
             $rows[$row['id']] = $row;
         }
         return $rows;
@@ -127,33 +122,27 @@ class ServiceAccountsMigrationTest extends Basic
     {
         $bounds = [];
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $bounds[] = (int) $row['lft'];
             $bounds[] = (int) $row['rgt'];
 
-            if ((int) $row['lft'] >= (int) $row['rgt'])
-            {
+            if ((int) $row['lft'] >= (int) $row['rgt']) {
                 return false;
             }
 
-            if ($row['parent_id'] != 0)
-            {
+            if ($row['parent_id'] != 0) {
                 $parent = $rows[$row['parent_id']];
-                if (!((int) $parent['lft'] < (int) $row['lft'] && (int) $row['rgt'] < (int) $parent['rgt']))
-                {
+                if (!((int) $parent['lft'] < (int) $row['lft'] && (int) $row['rgt'] < (int) $parent['rgt'])) {
                     return false;
                 }
             }
 
-            foreach ($rows as $other)
-            {
+            foreach ($rows as $other) {
                 $a = [(int) $row['lft'], (int) $row['rgt']];
                 $b = [(int) $other['lft'], (int) $other['rgt']];
                 $disjoint = ($a[1] < $b[0] || $b[1] < $a[0]);
                 $nested   = ($a[0] <= $b[0] && $b[1] <= $a[1]) || ($b[0] <= $a[0] && $a[1] <= $b[1]);
-                if (!$disjoint && !$nested)
-                {
+                if (!$disjoint && !$nested) {
                     return false;
                 }
             }
@@ -171,8 +160,7 @@ class ServiceAccountsMigrationTest extends Basic
      */
     private static function statement($file, $pattern)
     {
-        if (!preg_match($pattern, file_get_contents($file), $m))
-        {
+        if (!preg_match($pattern, file_get_contents($file), $m)) {
             throw new \RuntimeException($pattern . ' not found in ' . $file);
         }
 

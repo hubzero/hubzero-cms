@@ -50,15 +50,11 @@ class DurationTest extends Basic
      */
     public function testRefusesWhatIsNotALength()
     {
-        foreach ([['two', 'hours'], ['-1', 'hours'], ['2', 'fortnights']] as $case)
-        {
-            try
-            {
+        foreach ([['two', 'hours'], ['-1', 'hours'], ['2', 'fortnights']] as $case) {
+            try {
                 Duration::toSeconds($case[0], $case[1]);
                 $this->fail('Accepted ' . implode(' ', $case));
-            }
-            catch (\InvalidArgumentException $e)
-            {
+            } catch (\InvalidArgumentException $e) {
                 $this->assertStringContainsString('Not a', $e->getMessage());
             }
         }

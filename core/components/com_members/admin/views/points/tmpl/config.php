@@ -44,7 +44,7 @@ Toolbar::cancel();
             $param = isset($this->params[$i]) ? $this->params[$i] : null;
             ?>
             <tr>
-                <th scope="row">(<?php echo ($i + 1); ?>)</th>
+                <th scope="row">(<?php echo($i + 1); ?>)</th>
                 <td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo $param ? $this->escape($param->points) : ''; ?>" size="10" maxlength="10" /></td>
                 <td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $param ? $this->escape($param->alias) : ''; ?>" size="20" maxlength="50" /></td>
                 <td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $param ? $this->escape($param->description) : ''; ?>" size="100" maxlength="255" /></td>

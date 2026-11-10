@@ -263,8 +263,7 @@ class Accesslevels extends AdminController
 
                 $i++;
             }
-        } else // no rows were selected
-        {
+        } else { // no rows were selected
             Notify::warning(Lang::txt('COM_MEMBERS_ACCESSLEVELS_DELETE_NO_ROW_SELECTED'));
         }
 

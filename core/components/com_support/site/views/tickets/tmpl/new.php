@@ -239,7 +239,7 @@ endif;
                 <div class="form-group">
                     <label for="field-target_date">
                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
-                        <input type="text" name="problem[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="" />
+                        <input type="text" name="problem[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?php echo(timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="" />
                     </label>
                 </div>
 

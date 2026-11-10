@@ -49,7 +49,7 @@ $referrer = Request::getString("HTTP_REFERER", "", "SERVER");
 if (filter_var($referrer, FILTER_VALIDATE_URL) === false || $referrer == "" || strpos($referrer, $host) === false) :
     $link = Route::url('index.php?option=' . $this->option);
 else :
-    $link = $referrer;
+        $link = $referrer;
 endif;
 
 //if we are in edit mode we want to redirect back to group
@@ -57,7 +57,7 @@ if ($this->task == "edit") :
     $link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn'));
     $title = Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP');
 else :
-    $title = Lang::txt('COM_GROUPS_ACTION_BACK');
+        $title = Lang::txt('COM_GROUPS_ACTION_BACK');
 endif;
 ?>
 <header id="content-header">

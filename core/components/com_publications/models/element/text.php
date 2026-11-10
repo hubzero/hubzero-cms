@@ -34,8 +34,8 @@ class Text extends Base
      */
     public function fetchElement($name, $value, &$element, $control_name)
     {
-        $size = ( isset($element->size) ? 'size="' . $element->size . '"' : '' );
-        $class = ( isset($element->class) ? 'class="' . $element->class . '"' : 'class="text_area"' );
+        $size = (isset($element->size) ? 'size="' . $element->size . '"' : '');
+        $class = (isset($element->class) ? 'class="' . $element->class . '"' : 'class="text_area"');
         /*
          * Required to avoid a cycle of encoding &
          * html_entity_decode was used in place of htmlspecialchars_decode because

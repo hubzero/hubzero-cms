@@ -326,9 +326,8 @@ class Sessions extends AdminController
                 $prefs = new Tables\Preferences($this->database);
                 $prefs->restoreDefaultClass($id);
             }
-        } else // no rows were selected
-        {
-            // Output message and redirect
+        } else { // no rows were selected
+        // Output message and redirect
             Notify::warning(Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_NO_ROWS'));
             return $this->cancelclassTask();
         }

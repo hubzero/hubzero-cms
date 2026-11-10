@@ -137,9 +137,9 @@ class Html
         if (empty($datestr)) {
             return null;
         }
-        list ($date, $time) = explode(' ', $datestr);
-        list ($y, $m, $d) = explode('-', $date);
-        list ($h, $i, $s) = explode(':', $time);
+        list($date, $time) = explode(' ', $datestr);
+        list($y, $m, $d) = explode('-', $date);
+        list($h, $i, $s) = explode(':', $time);
         return mktime($h, $i, $s, $m, $d, $y);
     }
 

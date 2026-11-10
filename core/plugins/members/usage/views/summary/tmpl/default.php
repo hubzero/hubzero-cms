@@ -122,7 +122,7 @@ $this->css('usage', 'com_usage');
                 <tr class="<?php
                     $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
-                    <td><?php echo ($count + 1); ?></td>
+                    <td><?php echo($count + 1); ?></td>
                     <td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id=' . $row->id); ?>"><?php echo $row->title; ?></a></td>
                     <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12; ?></a></td>
                     <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12; ?></a></td>
@@ -229,7 +229,7 @@ $this->css('usage', 'com_usage');
                 <tr class="<?php
                     $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
-                    <td><?php echo ($count + 1); ?></td>
+                    <td><?php echo($count + 1); ?></td>
                     <td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id=' . $row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
                     <td><?php echo $usercount12; ?></td>
                     <td><?php echo $usercount14; ?></td>
@@ -254,7 +254,7 @@ $this->css('usage', 'com_usage');
                         <tr class="child <?php
                             $cls = ($cls == 'even') ? 'odd' : 'even';
                             echo $cls; ?>">
-                            <td class="highlight"><?php echo ($count + 1); ?></td>
+                            <td class="highlight"><?php echo($count + 1); ?></td>
                             <td class="highlight textual-data"><span class="child-connector">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id=' . $rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>

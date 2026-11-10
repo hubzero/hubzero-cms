@@ -204,21 +204,21 @@ Html::behavior('framework');
             ),
         );
     else :
-        $menu = App::get('menu');
-        $active = $menu->getActive();
-        $itemId = $active->id;
-        $link1 = Route::url(
-            'index.php?option=com_users&view=login&Itemid=' . $itemId,
-        );
-        $returnURL = Route::url(
-            \Components\Content\Site\Helpers\Route::getArticleRoute(
-                $this->item->slug,
-                $this->item->catid,
-                $this->item->language,
-            ),
-        );
-        $link = new Hubzero\Utility\Uri($link1);
-        $link->setUriVar('return', base64_encode(urlencode($returnURL)));
+            $menu = App::get('menu');
+            $active = $menu->getActive();
+            $itemId = $active->id;
+            $link1 = Route::url(
+                'index.php?option=com_users&view=login&Itemid=' . $itemId,
+            );
+            $returnURL = Route::url(
+                \Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $this->item->slug,
+                    $this->item->catid,
+                    $this->item->language,
+                ),
+            );
+            $link = new Hubzero\Utility\Uri($link1);
+            $link->setUriVar('return', base64_encode(urlencode($returnURL)));
     endif;
     ?>
         <p class="readmore">
@@ -226,15 +226,15 @@ Html::behavior('framework');
                     <?php if (!$params->get('access-view')) :
                         echo Lang::txt('COM_CONTENT_REGISTER_TO_READ_MORE');
                     elseif ($readmore = $this->item->alternative_readmore) :
-                        echo $readmore;
+                            echo $readmore;
                         if ($params->get('show_readmore_title', 0) != 0) :
                             echo Hubzero\Utility\Str::truncate($this->item->title, $params->get('readmore_limit'));
                         endif;
                     elseif ($params->get('show_readmore_title', 0) == 0) :
-                        echo Lang::txt('COM_CONTENT_READ_MORE_TITLE');
+                            echo Lang::txt('COM_CONTENT_READ_MORE_TITLE');
                     else :
-                        echo Lang::txt('COM_CONTENT_READ_MORE');
-                        echo Hubzero\Utility\Str::truncate($this->item->title, $params->get('readmore_limit'));
+                            echo Lang::txt('COM_CONTENT_READ_MORE');
+                            echo Hubzero\Utility\Str::truncate($this->item->title, $params->get('readmore_limit'));
                     endif; ?></a>
         </p>
 <?php endif; ?>

@@ -70,7 +70,7 @@ class Timezone extends Groupedlist
             }
 
             // Get the group/locale from the timezone.
-            list ($group, $locale) = explode('/', $zone, 2);
+            list($group, $locale) = explode('/', $zone, 2);
 
             // Only use known groups.
             if (in_array($group, self::$zones)) {

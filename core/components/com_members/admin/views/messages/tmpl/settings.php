@@ -54,7 +54,7 @@ $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.
             <?php if ($canDo) { ?>
             <tfoot>
                 <tr>
-                    <td colspan="<?php echo (count($this->notimethods) + 1); ?>">
+                    <td colspan="<?php echo(count($this->notimethods) + 1); ?>">
                         <input
                             type="submit"
                             class="btn"

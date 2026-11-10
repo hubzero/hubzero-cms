@@ -380,8 +380,7 @@ class Warehouse extends \Hubzero\Base\Obj
         // Get the SKUs whitelist for a user
         if ($this->userScope) {
             $allProductSkus = $this->getProductSkus($pInfo->pId);
-            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper
-                ::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
         }
 
         // Check if the product can be viewed (if access level scope is set)

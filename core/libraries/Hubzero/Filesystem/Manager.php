@@ -135,7 +135,7 @@ class Manager
     public static function copy($source, $dest, $overwrite = false)
     {
         list($source, $sourceName, $sourceMount) = self::parseLocation($source);
-        list($dest,   $destName,   $destMount)   = self::parseLocation($dest);
+        list($dest, $destName, $destMount)   = self::parseLocation($dest);
 
         // Make sure we got the mounts we need
         if (!$sourceMount) {

@@ -89,7 +89,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                 $privacyTxt = Lang::txt('COM_PROJECTS_OPEN');
                 $icon = 'icon-unlock';
             elseif ($this->row->get('access') == 4) :
-                $privacyTxt = Lang::txt('COM_PROJECTS_PUBLIC');
+                    $privacyTxt = Lang::txt('COM_PROJECTS_PUBLIC');
             endif;
 
             if ($this->row->access('member')) :
@@ -206,13 +206,13 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                 if ($this->row->isActive()) :
                                     echo '<span class="project-status active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
                                 elseif ($this->row->inSetup()) :
-                                    echo '<span class="project-status setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ';
+                                        echo '<span class="project-status setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ';
                                 elseif ($this->row->isInactive()) :
-                                    echo '<span class="project-status inactive">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
+                                        echo '<span class="project-status inactive">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
                                 elseif ($this->row->isArchived()) :
-                                    echo '<span class="project-status archived">' . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+                                        echo '<span class="project-status archived">' . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED') . '</span> ';
                                 elseif ($this->row->isPending()) :
-                                    echo '<span class="project-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
+                                        echo '<span class="project-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
                                 endif;
                                 ?>
                             </div>
@@ -257,9 +257,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                         if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0) :
                                             echo '<span class="project-grant-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
                                         elseif ($params->get('grant_approval') || $params->get('grant_status') == 1) :
-                                            echo '<span class="project-grant-status active">' . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
+                                                echo '<span class="project-grant-status active">' . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
                                         elseif ($params->get('grant_status') == '2') :
-                                            echo '<span class="project-grant-status rejected">' . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
+                                                echo '<span class="project-grant-status rejected">' . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
                                         endif;
                                         ?>
 

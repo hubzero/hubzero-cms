@@ -189,7 +189,7 @@ class Ini extends Base
             }
 
             // Get the key and value for the line.
-            list ($key, $value) = explode('=', $line, 2);
+            list($key, $value) = explode('=', $line, 2);
 
             // Validate the key.
             if (preg_match('/[^A-Z0-9_]/i', $key)) {

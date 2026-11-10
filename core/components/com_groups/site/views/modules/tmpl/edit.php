@@ -166,7 +166,7 @@ foreach ($menus as $menu) {
                             <select name="module[ordering]" id="field-ordering" class="fancy-select">
                                 <?php foreach ($this->order as $k => $order) : ?>
                                     <?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
-                                    <option <?php echo $sel;?> value="<?php echo ($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
+                                    <option <?php echo $sel;?> value="<?php echo($k + 1); ?>"><?php echo ($k + 1) . '. ' . $order->get('title'); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </label>

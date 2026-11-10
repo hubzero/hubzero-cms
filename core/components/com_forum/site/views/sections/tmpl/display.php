@@ -135,7 +135,7 @@ $this->css()
                                             </span>
                                         </td>
                                         <td  class="priority-3">
-                                            <span><?php echo ($threads ) ? $row->posts()
+                                            <span><?php echo ($threads) ? $row->posts()
                                                 ->whereEquals('state', $this->filters['state'])
                                                 ->whereIn('access', $this->filters['access'])
                                                 ->total() : 0; ?></span>

@@ -312,7 +312,7 @@ class Miner extends Obj implements Provider
                 if ($files != false && !empty($files)) {
                     foreach ($files as $file) {
                         //$mimeType = mime_content_type($file);
-                        $mimer = new  \Hubzero\Content\Mimetypes();
+                        $mimer = new \Hubzero\Content\Mimetypes();
                         $mimeType = $mimer->getMimeType($file, true);
                         if ($mimeType && !in_array($mimeType, $mimeTypes)) {
                             $mimeTypes[] = $mimeType;

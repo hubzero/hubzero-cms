@@ -41,10 +41,8 @@ class PasswordTest extends Basic
      */
     public function testExpiryDayIsFirstDayPamDenies()
     {
-        foreach ([1, 10957, 20000, 20389] as $lastChange)
-        {
-            foreach (range(0, 400) as $max)
-            {
+        foreach ([1, 10957, 20000, 20389] as $lastChange) {
+            foreach (range(0, 400) as $max) {
                 $day = Password::passwordExpiryDay($lastChange, $max);
 
                 $this->assertFalse(self::pamExpired($day - 1, $lastChange, $max), "lastChange $lastChange, max $max: day before $day must allow");
@@ -61,10 +59,8 @@ class PasswordTest extends Basic
      */
     public function testShadowMaxRoundTrips()
     {
-        foreach ([20000, '20000'] as $lastChange)
-        {
-            foreach (range(20001, 21500, 7) as $day)
-            {
+        foreach ([20000, '20000'] as $lastChange) {
+            foreach (range(20001, 21500, 7) as $day) {
                 $max = Password::shadowMaxForExpiryDay($lastChange, $day);
 
                 $this->assertSame($day, Password::passwordExpiryDay($lastChange, $max));
@@ -111,8 +107,7 @@ class PasswordTest extends Basic
         $this->assertTrue(Password::isInactive(self::record('333')));
         $this->assertTrue(Password::isInactive(self::record(Password::INACTIVE_EXPIRE_DAY)));
 
-        foreach ([null, '', '0', '1', (string) Password::BLOCKED_EXPIRE_DAY] as $other)
-        {
+        foreach ([null, '', '0', '1', (string) Password::BLOCKED_EXPIRE_DAY] as $other) {
             $this->assertFalse(Password::isInactive(self::record($other)), var_export($other, true) . ' is not inactive');
         }
     }

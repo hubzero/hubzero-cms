@@ -83,7 +83,7 @@ $resumesUrl = Route::url(
                             ? ' top ' . count($seekers) . ' out of ' . $pageNav->total
                             : strtolower(Lang::txt('all')) . ' ' . count($seekers);
                     } else {
-                        echo ($filters['start'] + 1);
+                        echo($filters['start'] + 1);
                         echo ' - ' . ($filters['start'] + count($seekers))
                             . ' out of ' . $pageNav->total;
                     }

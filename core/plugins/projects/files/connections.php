@@ -1097,8 +1097,7 @@ class Connections
                     }
                 }
             }
-        } else // Basic upload
-        {
+        } else { // Basic upload
             $files = [];
 
             // Regular upload

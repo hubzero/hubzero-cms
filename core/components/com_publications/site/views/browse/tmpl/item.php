@@ -97,8 +97,7 @@ $extras = Event::trigger('publications.onPublicationsList', [$this->line]);
                     </dd>
                 </dl>
             </div>
-            <?php
-        elseif ($this->params->get('show_rating') && $this->config->get('show_rating')) :
+        <?php elseif ($this->params->get('show_rating') && $this->config->get('show_rating')) :
             switch ($this->line->get('master_rating')) :
                 case 0.5:
                     $class = ' half-stars';
@@ -145,7 +144,7 @@ $extras = Event::trigger('publications.onPublicationsList', [$this->line]);
                 <p class="rating"><span title="<?php echo $ratingTxt; ?>" class="avgrating<?php echo $class; ?>
                     "><span><?php echo $ratingTxt; ?></span>&nbsp;</span></p>
             </div>
-            <?php
+                <?php
         endif;
         ?>
 
@@ -160,10 +159,10 @@ $extras = Event::trigger('publications.onPublicationsList', [$this->line]);
             if ($this->line->get('abstract')) :
                 $content = $this->line->get('abstract');
             elseif ($this->line->get('description')) :
-                $content = $this->line->get('description');
+                    $content = $this->line->get('description');
             endif;
 
-            echo \Hubzero\Utility\Str::truncate(stripslashes($content), 300);
+                echo \Hubzero\Utility\Str::truncate(stripslashes($content), 300);
             ?>
         </p>
     </div>

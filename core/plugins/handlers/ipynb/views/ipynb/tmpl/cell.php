@@ -20,7 +20,7 @@ $source = '';
 if (isset($cell->source)) :
     $source = $text($cell->source);
 elseif (isset($cell->input)) :
-    $source = $text($cell->input);
+        $source = $text($cell->input);
 endif;
 ?>
 
@@ -68,9 +68,8 @@ if ($cell->cell_type == 'code') :
                             <?php else : ?>
                                 <pre class="output"><?php echo $this->escape(isset($output->text) ? $text($output->text) : ''); ?></pre>
                             <?php endif; ?>
-                            <?php
-                        elseif ($output->output_type == 'stream') :
-                            $out[] = isset($output->text) ? $text($output->text) : '';
+                        <?php elseif ($output->output_type == 'stream') :
+                                $out[] = isset($output->text) ? $text($output->text) : '';
                         endif;
                     endforeach;
 

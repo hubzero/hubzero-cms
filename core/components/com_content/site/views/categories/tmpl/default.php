@@ -35,7 +35,7 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                         'com_content.categories',
                     );
                     ?>
-                <?php  else : ?>
+                <?php else : ?>
                     <?php //Otherwise get one from the database if it exists.?>
                     <?php if ($this->parent->description) : ?>
                         <div class="category-desc">

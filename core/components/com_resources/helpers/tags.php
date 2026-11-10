@@ -377,8 +377,7 @@ class Tags extends Cloud
         if (($maxTagCount != null) && (count($tagArray) > $maxTagCount)) {
             // nope, too many, don't search:
             $retval = null;
-        } else // ok, search for the tags:
-        {
+        } else { // ok, search for the tags:
             $tags = $this->getTopTags($limit);
             $retval = $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
         }

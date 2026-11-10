@@ -829,8 +829,8 @@ if ($this->message) { ?>
                     plotUO.setSelection(ranges, true);
                 });
                 var chart_users = $.plot(cusers, datasets, options);
-                chart_users.highlight(0, <?php echo (count($visits) - 1); ?>);
-                chart_users.highlight(1, <?php echo (count($downloads) - 1); ?>);
+                chart_users.highlight(0, <?php echo(count($visits) - 1); ?>);
+                chart_users.highlight(1, <?php echo(count($downloads) - 1); ?>);
 
                 /*var zm = $('<div class="zoom-controls"></div>');
                 $('<div class="zoom zoom-out" title="zoom out">zoom out</div>')
@@ -975,7 +975,7 @@ if ($this->message) { ?>
                         }
                     }
                 });
-                chart_sim_users.highlight(0, <?php echo (count($simusers) - 1); ?>);
+                chart_sim_users.highlight(0, <?php echo(count($simusers) - 1); ?>);
 
                 var dataset_sim_jobs = [
                     {
@@ -1041,7 +1041,7 @@ if ($this->message) { ?>
                         }
                     }
                 });
-                chart_sim_jobs.highlight(0, <?php echo (count($simjobs) - 1); ?>);
+                chart_sim_jobs.highlight(0, <?php echo(count($simjobs) - 1); ?>);
             });
         }
     </script>

@@ -29,7 +29,7 @@ $hide = Request::getInt('hidemainmenu');
                         $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
                         ?><a class="active" href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                     else :
-                        $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
+                            $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
                         ?><a href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                     endif;
                 else :
@@ -66,7 +66,7 @@ if (is_array($list) && count($list)) {
                                 $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
                                 ?><a class="active" href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                             else :
-                                $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
+                                    $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
                                 ?><a href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                             endif;
                         else :

@@ -173,8 +173,7 @@ class Form extends SiteController
                     'id'      => $pdf->getId(),
                 ]);
                 exit();
-            } else // Otherwise, redirect
-            {
+            } else { // Otherwise, redirect
                 App::redirect(
                     Route::url('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
                     Lang::txt('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),

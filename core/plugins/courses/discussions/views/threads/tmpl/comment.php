@@ -138,7 +138,7 @@ if ($this->lecture) {
                             <input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
                             <input type="hidden" name="fields[created]" value="" />
                             <input type="hidden" name="fields[created_by]" value="<?php echo User::get('id'); ?>" />
-                            <input type="hidden" name="depth" value="<?php echo ($this->depth + 1); ?>" />
+                            <input type="hidden" name="depth" value="<?php echo($this->depth + 1); ?>" />
 
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />

@@ -49,17 +49,17 @@ if ($this->resp->getStartTime()) {
         if ($this->dep->getTimeLimit()) :
             ?>
     <span id="time-left" data-time="<?php echo $timeLeft; ?>"></span>
-            <?php
+                <?php
         endif;
-        $layout = $pdf->getPageLayout();
-        $view = $this;
+            $layout = $pdf->getPageLayout();
+            $view = $this;
         if ($incomplete) :
             echo '<p class="error incomplete">' . Lang::txt('COM_COURSES_SELECT_ANSWER_FOR_EACH_QUESTION') . '</p>';
         endif;
         ?>
     <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
         <ol id="pages" class="complete">
-        <?php $pdf->eachPage(function ($url, $idx) use ($view, $layout, $progress, $incomplete) { ?>
+            <?php $pdf->eachPage(function ($url, $idx) use ($view, $layout, $progress, $incomplete) { ?>
             <li>
                 <img src="<?php echo $url ?>" alt="" />
                 <?php
@@ -78,13 +78,14 @@ if ($this->resp->getStartTime()) {
                                 id="question-' . $qid . '-' . $aidx . '"
                                 value="' . $ans['id'] . '"
                                 ' . (
-                                    (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
+                                (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
                                     || (!isset($_POST['question-' . $qid])
                                         && isset($progress[$qid])
                                         && $progress[$qid]['answer_id'] == $ans['id'])
                                     ? '
                                 checked="checked"
-                                ' : '') . 'class="placeholder"
+                                ' : ''
+                            ) . 'class="placeholder"
                                 type="radio" />';
                             if (isset($incomplete[$qid])) :
                                 $view->css(
@@ -102,7 +103,7 @@ if ($this->resp->getStartTime()) {
                     endforeach;
                 endif; ?>
             </li>
-        <?php }); ?>
+            <?php }); ?>
         </ol>
         <fieldset>
             <p>

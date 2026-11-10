@@ -113,8 +113,7 @@ class Extension extends Base implements CommandInterface
         // "migration" callback; without one (the previous state here) their
         // messages, including why a helper refused, were simply dropped.
         $output = $this->output;
-        $logger = new class ($output)
-        {
+        $logger = new class ($output) {
             private $output;
 
             public function __construct($output)

@@ -312,7 +312,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     data-autoplay="<?php echo (int) $sub->autoplay; ?>"
                                     data-type="subtitle"
                                     data-lang="<?php echo $this->escape($sub->name); ?>"
-                                    data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo (is_file($sub->source) ? filemtime($sub->source) : 0); ?>"></div>
+                                    data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo(is_file($sub->source) ? filemtime($sub->source) : 0); ?>"></div>
                             <?php endforeach; ?>
                         <?php endif; ?>
 

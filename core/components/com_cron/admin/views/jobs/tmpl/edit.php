@@ -465,7 +465,7 @@ foreach ($this->getErrors() as $error) {
                 <div class="input-wrap">
                     <label for="field-detach">
                         <input type="hidden" name="params[detach]" value="0" />
-                        <input type="checkbox" name="params[detach]" id="field-detach" value="1"<?php echo ($detach ? ' checked="checked"' : ''); ?> />
+                        <input type="checkbox" name="params[detach]" id="field-detach" value="1"<?php echo($detach ? ' checked="checked"' : ''); ?> />
                         <?php echo Lang::txt('COM_CRON_FIELD_DETACH'); ?>
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_CRON_FIELD_DETACH_DESC'); ?></p>

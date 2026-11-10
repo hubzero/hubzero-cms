@@ -67,11 +67,11 @@ defined('_HZEXEC_') or die;
                             <?php if ($item->params->get('access-view') == false) :
                                     echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
                             elseif ($readmore = $item->alternative_readmore) :
-                                    echo $readmore;
-                                    echo \Hubzero\Utility\Str::truncate(
-                                        $item->title,
-                                        $params->get('readmore_limit'),
-                                    );
+                                        echo $readmore;
+                                        echo \Hubzero\Utility\Str::truncate(
+                                            $item->title,
+                                            $params->get('readmore_limit'),
+                                        );
                                 if ($params->get('show_readmore_title', 0) != 0) :
                                     echo \Hubzero\Utility\Str::truncate(
                                         $this->item->title,
@@ -81,11 +81,11 @@ defined('_HZEXEC_') or die;
                             elseif ($params->get('show_readmore_title', 0) == 0) :
                                     echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
                             else :
-                                    echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
-                                    echo \Hubzero\Utility\Str::truncate(
-                                        $item->title,
-                                        $params->get('readmore_limit'),
-                                    );
+                                        echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
+                                        echo \Hubzero\Utility\Str::truncate(
+                                            $item->title,
+                                            $params->get('readmore_limit'),
+                                        );
                             endif; ?>
                             </a>
                         </p>
@@ -141,19 +141,19 @@ defined('_HZEXEC_') or die;
                     <?php if ($item->params->get('access-view') == false) :
                         echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
                     elseif ($readmore = $item->alternative_readmore) :
-                        echo $readmore;
-                        echo \Hubzero\Utility\Str::truncate(
-                            $item->title,
-                            $params->get('readmore_limit'),
-                        );
+                            echo $readmore;
+                            echo \Hubzero\Utility\Str::truncate(
+                                $item->title,
+                                $params->get('readmore_limit'),
+                            );
                     elseif ($params->get('show_readmore_title', 0) == 0) :
-                        echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
+                            echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
                     else :
-                        echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
-                        echo \Hubzero\Utility\Str::truncate(
-                            $item->title,
-                            $params->get('readmore_limit'),
-                        );
+                            echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
+                            echo \Hubzero\Utility\Str::truncate(
+                                $item->title,
+                                $params->get('readmore_limit'),
+                            );
                     endif; ?>
                 </a>
             </p>

@@ -1031,7 +1031,7 @@ class Item extends Nested
 
                 // if custom layout, get the xml file from the template folder
                 // template folder is first part of file name -- template:folder
-                if (!$formFile && (strpos($layout, ':') > 0 )) {
+                if (!$formFile && (strpos($layout, ':') > 0)) {
                     $temp = explode(':', $layout);
                     $templatePath = \Hubzero\Filesystem\Util::normalizePath(PATH_APP . '/templates/' . $temp[0] . '/html/' . $option . '/' . $view . '/' . $temp[1] . '.xml');
 

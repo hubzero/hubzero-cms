@@ -31,7 +31,7 @@ $viewer  = $this->data->viewer;
         <?php } ?>
         </span>
         <span class="item-title link-type">
-             <a href="<?php echo (preg_match('/^https?:\/\//i', $row->path) ? $this->escape($row->path) : ''); ?>" rel="external"><?php echo $this->escape($title); ?></a>
+             <a href="<?php echo(preg_match('/^https?:\/\//i', $row->path) ? $this->escape($row->path) : ''); ?>" rel="external"><?php echo $this->escape($title); ?></a>
             <span class="item-details"><?php echo $this->escape($details); ?></span>
         </span>
     </li>

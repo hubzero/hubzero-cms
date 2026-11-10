@@ -101,8 +101,7 @@ if ($this->ag->assets()->total()) {
     ?>
         </ul>
     <?php
-} else // no assets in this asset group
-{
+} else { // no assets in this asset group
     ?>
     <ul class="assets-list sortable-assets">
         <li class="asset-item asset missing nofiles">

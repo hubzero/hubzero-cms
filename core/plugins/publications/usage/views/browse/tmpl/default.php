@@ -279,7 +279,7 @@ $heights = [];
                         }
                     }
                 });
-                chart_views.highlight(0, <?php echo (count($views) - 1); ?>);
+                chart_views.highlight(0, <?php echo(count($views) - 1); ?>);
 
 
                 var downloads = $('#chart-downloads');
@@ -333,7 +333,7 @@ $heights = [];
                         }
                     }
                 });
-                chart_downloads.highlight(0, <?php echo (count($downloads) - 1); ?>);
+                chart_downloads.highlight(0, <?php echo(count($downloads) - 1); ?>);
             });
         }
     </script>

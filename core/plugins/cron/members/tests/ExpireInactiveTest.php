@@ -39,8 +39,7 @@ class ExpireInactiveTest extends Basic
         $this->assertSame(12, Members::inactivityMonths(' 12 '));
         $this->assertSame(1, Members::inactivityMonths('1'));
 
-        foreach (['0', 0, '-1', '1.5', 'abc', '', null] as $bad)
-        {
+        foreach (['0', 0, '-1', '1.5', 'abc', '', null] as $bad) {
             $this->assertSame(0, Members::inactivityMonths($bad), var_export($bad, true) . ' must be refused');
         }
     }
@@ -79,8 +78,7 @@ class ExpireInactiveTest extends Basic
     {
         $dsn = getenv('HZ_TEST_DB_DSN');
 
-        if (!$dsn)
-        {
+        if (!$dsn) {
             $this->markTestSkipped('HZ_TEST_DB_DSN not set: no scratch database');
         }
 
@@ -90,8 +88,7 @@ class ExpireInactiveTest extends Basic
         // The install schema's '0000-00-00' defaults need a permissive mode
         $db->exec("SET SESSION sql_mode = ''");
 
-        foreach (['users', 'users_password', 'usergroups', 'user_usergroup_map'] as $table)
-        {
+        foreach (['users', 'users_password', 'usergroups', 'user_usergroup_map'] as $table) {
             $db->exec('DROP TABLE IF EXISTS `jos_' . $table . '`');
             $db->exec(str_replace('#__', 'jos_', self::schemaTable($table)));
         }
@@ -121,12 +118,10 @@ class ExpireInactiveTest extends Basic
         $insertUser = $db->prepare("INSERT INTO jos_users (id, username, block, registerDate, lastvisitDate, params) VALUES (?, ?, ?, ?, ?, '')");
         $insertPass = $db->prepare("INSERT INTO jos_users_password (user_id, passhash, shadowLastChange, shadowExpire) VALUES (?, '', ?, ?)");
 
-        foreach ($users as $id => $u)
-        {
+        foreach ($users as $id => $u) {
             $insertUser->execute([$id, 'user' . $id, $u[0], $u[1], $u[2]]);
 
-            if ($u[3] !== null)
-            {
+            if ($u[3] !== null) {
                 $insertPass->execute([$id, $u[3][0], $u[3][1]]);
             }
         }
@@ -134,8 +129,7 @@ class ExpireInactiveTest extends Basic
         $db->exec("INSERT INTO jos_usergroups (id, parent_id, title) VALUES (2, 1, 'Registered'), (9, 2, 'Service accounts')");
         $db->exec("INSERT INTO jos_user_usergroup_map (user_id, group_id) VALUES (12, 9), (13, 9), (14, 2), (2, 2)");
 
-        $select = function ($exemptGroup) use ($db, $cutoff, $cutoffDay)
-        {
+        $select = function ($exemptGroup) use ($db, $cutoff, $cutoffDay) {
             $query = Members::inactiveAccountsQuery($db->quote($cutoff), $cutoffDay, $exemptGroup === null ? null : $db->quote($exemptGroup));
             $ids   = array_map('intval', $db->query(str_replace('#__', 'jos_', $query))->fetchAll(PDO::FETCH_COLUMN));
             sort($ids);
@@ -157,8 +151,7 @@ class ExpireInactiveTest extends Basic
     {
         $schema = file_get_contents(PATH_CORE . '/bootstrap/Install/sql/mysql/schema.sql');
 
-        if (!preg_match('/CREATE TABLE `#__' . preg_quote($table, '/') . '` \(.*?\) ENGINE=[^;]*;/s', $schema, $m))
-        {
+        if (!preg_match('/CREATE TABLE `#__' . preg_quote($table, '/') . '` \(.*?\) ENGINE=[^;]*;/s', $schema, $m)) {
             throw new \RuntimeException('#__' . $table . ' not found in schema.sql');
         }
 

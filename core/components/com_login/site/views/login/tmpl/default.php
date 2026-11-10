@@ -13,5 +13,5 @@ if ($this->user->get('guest')) :
     echo $this->loadTemplate('login');
 else :
     // The user is already logged in.
-    echo $this->loadTemplate('logout');
+        echo $this->loadTemplate('logout');
 endif;

@@ -92,14 +92,12 @@ class SafePathTest extends Basic
      */
     private function remove($path)
     {
-        if (is_link($path) || !is_dir($path))
-        {
+        if (is_link($path) || !is_dir($path)) {
             @unlink($path);
             return;
         }
 
-        foreach (array_diff(scandir($path), ['.', '..']) as $item)
-        {
+        foreach (array_diff(scandir($path), ['.', '..']) as $item) {
             $this->remove($path . DS . $item);
         }
 
@@ -246,8 +244,7 @@ class SafePathTest extends Basic
             "data\0/victim",
         ];
 
-        foreach ($paths as $relative)
-        {
+        foreach ($paths as $relative) {
             $reason = null;
 
             $this->assertFalse(SafePath::directory($this->base, $relative, false, 0700, $reason), $relative . ' was accepted');
@@ -263,8 +260,7 @@ class SafePathTest extends Basic
      */
     public function testTreatsBackslashAsPartOfTheName()
     {
-        if (DS == '\\')
-        {
+        if (DS == '\\') {
             $this->markTestSkipped('Backslash is a separator on this platform');
         }
 
@@ -338,8 +334,7 @@ class SafePathTest extends Basic
     {
         $dir = SafePath::directory($this->home, 'data', true);
 
-        if (!@link($this->victim . DS . 'data' . DS . 'secret', $dir . DS . 'hard'))
-        {
+        if (!@link($this->victim . DS . 'data' . DS . 'secret', $dir . DS . 'hard')) {
             $this->markTestSkipped('Hard links are not available here');
         }
 

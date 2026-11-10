@@ -49,27 +49,27 @@ if ($v = Request::getInt('version', 0)) :
         ->whereEquals('id', $v)
         ->row();
 else :
-    $revision = $page->version();
+            $revision = $page->version();
 endif;
 
-$permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
+        $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 
 // Find what links to the current page
-$l = Components\Wiki\Models\Link::blank()->getTableName();
-$p = Components\Wiki\Models\Page::blank()->getTableName();
+        $l = Components\Wiki\Models\Link::blank()->getTableName();
+        $p = Components\Wiki\Models\Page::blank()->getTableName();
 
-$rows = Components\Wiki\Models\Page::all()
-    ->select($p . '.*')
-    ->select($l . '.timestamp')
-    ->join($l, $l . '.scope_id', $p . '.id', 'inner')
-    ->whereEquals($p . '.scope', $page->get('scope'))
-    ->whereEquals($p . '.scope_id', $page->get('scope_id'))
-    ->whereEquals($p . '.state', Components\Wiki\Models\Page::STATE_PUBLISHED)
-    ->whereEquals($l . '.scope', 'internal')
-    ->whereEquals($l . '.scope_id', $page->get('id'))
-    ->order($sort, $dir)
-    ->paginated()
-    ->rows();
+        $rows = Components\Wiki\Models\Page::all()
+        ->select($p . '.*')
+        ->select($l . '.timestamp')
+        ->join($l, $l . '.scope_id', $p . '.id', 'inner')
+        ->whereEquals($p . '.scope', $page->get('scope'))
+        ->whereEquals($p . '.scope_id', $page->get('scope_id'))
+        ->whereEquals($p . '.state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+        ->whereEquals($l . '.scope', 'internal')
+        ->whereEquals($l . '.scope_id', $page->get('id'))
+        ->order($sort, $dir)
+        ->paginated()
+        ->rows();
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
     <p><?php
@@ -128,7 +128,7 @@ $rows = Components\Wiki\Models\Page::all()
                         <?php echo Lang::txt('COM_WIKI_NONE'); ?>
                     </td>
                 </tr>
-                <?php
+                    <?php
             endif;
             ?>
             </tbody>

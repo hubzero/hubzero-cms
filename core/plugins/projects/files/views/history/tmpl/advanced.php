@@ -39,7 +39,7 @@ foreach ($this->versions as $version) {
 
 $endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . $this->escape(\Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40)) . '</span></span>';
 
-$allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candiff <= 1 ) ? 0 : 1;
+$allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candiff <= 1) ? 0 : 1;
 
 ?>
 <?php if ($this->ajax) { ?>

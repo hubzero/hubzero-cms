@@ -203,7 +203,7 @@ $this->css('compare.css');
                         }
                         ?>
                         <tr class="<?php echo $cls; ?>">
-                            <th><?php echo ($att->lft ? ($i + 1) : ''); ?></th>
+                            <th><?php echo($att->lft ? ($i + 1) : ''); ?></th>
                             <td class="left">
                                 <?php
                                 if ($att->lft) {
@@ -211,7 +211,7 @@ $this->css('compare.css');
                                 }
                                 ?>
                             </td>
-                            <th><?php echo ($att->rgt ? ($i + 1) : ''); ?></th>
+                            <th><?php echo($att->rgt ? ($i + 1) : ''); ?></th>
                             <td class="right">
                                 <?php
                                 if ($att->rgt) {

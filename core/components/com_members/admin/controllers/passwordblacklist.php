@@ -190,8 +190,7 @@ class PasswordBlacklist extends AdminController
 
                 $i++;
             }
-        } else // no rows were selected
-        {
+        } else { // no rows were selected
             Notify::warning(Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'));
         }
 

@@ -267,9 +267,8 @@ class Preferences extends AdminController
                 $row->set('jobs', $class->jobs);
                 $row->store();
             }
-        } else // no rows were selected
-        {
-            // Output message and redirect
+        } else { // no rows were selected
+        // Output message and redirect
             App::redirect(
                 Route::url('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
                 Lang::txt('COM_TOOLS_USER_PREFS_DELETE_NO_ROWS'),

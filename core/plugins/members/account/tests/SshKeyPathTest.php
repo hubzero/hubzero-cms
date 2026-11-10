@@ -200,14 +200,12 @@ class SshKeyPathTest extends Basic
      */
     private function remove($path)
     {
-        if (is_link($path) || !is_dir($path))
-        {
+        if (is_link($path) || !is_dir($path)) {
             @unlink($path);
             return;
         }
 
-        foreach (array_diff(scandir($path), ['.', '..']) as $item)
-        {
+        foreach (array_diff(scandir($path), ['.', '..']) as $item) {
             $this->remove($path . DS . $item);
         }
 
@@ -316,8 +314,7 @@ class SshKeyPathTest extends Basic
      */
     public function testRejectsUnsafeUsernames()
     {
-        foreach (['..', '.', '../victim', 'member' . DS . '..' . DS . 'victim', '', '.hidden'] as $username)
-        {
+        foreach (['..', '.', '../victim', 'member' . DS . '..' . DS . 'victim', '', '.hidden'] as $username) {
             $error = null;
 
             $this->assertFalse($this->plugin($username)->sshDirectory(true, $error), $username . ' was accepted');
@@ -351,8 +348,7 @@ class SshKeyPathTest extends Basic
     {
         $ssh = $this->plugin->sshDirectory();
 
-        if (!@link($this->victimKeys(), $ssh . DS . 'authorized_keys'))
-        {
+        if (!@link($this->victimKeys(), $ssh . DS . 'authorized_keys')) {
             $this->markTestSkipped('Hard links are not available here');
         }
 

@@ -44,8 +44,7 @@ if ($children) {
 
         $serveas  = $params->get('serveas');
         $ftype    = $child->type == 'file'
-            ? \Components\Projects\Helpers\Html
-            ::getFileExtension($child->path) : 'supporting';
+            ? \Components\Projects\Helpers\Html::getFileExtension($child->path) : 'supporting';
         $class    = $params->get('class', $ftype);
         $doctitle = $params->get('title', $child->title);
 

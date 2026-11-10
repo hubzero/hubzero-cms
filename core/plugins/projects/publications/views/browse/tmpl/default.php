@@ -17,9 +17,9 @@ $sortbyDir  = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 
 // Check used space against quota (percentage)
-$inuse = round(($this->dirsize * 100 ) / $this->quota);
+$inuse = round(($this->dirsize * 100) / $this->quota);
 if ($inuse < 1) {
-    $inuse = round((($this->dirsize * 100 ) / $this->quota), 1);
+    $inuse = round((($this->dirsize * 100) / $this->quota), 1);
     if ($inuse < 0.1) {
         $inuse = 0.0;
     }

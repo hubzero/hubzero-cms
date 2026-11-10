@@ -201,11 +201,11 @@ $formAction = Route::url(
                 $cls = 'publish';
                 $alt = Lang::txt('UNPUBLISH');
             elseif ($row->published == 0) :
-                $cls = 'unpublish';
-                $alt = Lang::txt('PUBLISH');
+                    $cls = 'unpublish';
+                    $alt = Lang::txt('PUBLISH');
             elseif ($row->published == 2) :
-                $cls = 'delete';
-                $alt = Lang::txt('DELETED');
+                    $cls = 'delete';
+                    $alt = Lang::txt('DELETED');
             endif;
             ?>
             <tr class="<?php echo "row$k"; ?>">
@@ -267,15 +267,15 @@ $formAction = Route::url(
                                 . $row->id . '&' . $token . '=1',
                             );
                         elseif ($row->published == 0) :
-                            $pubUrl = Route::url(
-                                $baseUrl . '&task=publish&id='
-                                . $row->id . '&' . $token . '=1',
-                            );
+                                $pubUrl = Route::url(
+                                    $baseUrl . '&task=publish&id='
+                                    . $row->id . '&' . $token . '=1',
+                                );
                         elseif ($row->published == 2) :
-                            $pubUrl = Route::url(
-                                $baseUrl . '&task=publish&id='
-                                . $row->id . '&' . $token . '=1',
-                            );
+                                $pubUrl = Route::url(
+                                    $baseUrl . '&task=publish&id='
+                                    . $row->id . '&' . $token . '=1',
+                                );
                         endif;
                         ?>
                         <a href="<?php echo $pubUrl; ?>">

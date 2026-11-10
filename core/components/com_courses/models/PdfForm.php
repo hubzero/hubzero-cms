@@ -237,8 +237,7 @@ class PdfForm
         // If there's a dir for the given version, just use that
         if (in_array($version, $versions)) {
             $version_dir = $version;
-        } else // Otherwise, see if there's a version dir for a previous version
-        {
+        } else { // Otherwise, see if there's a version dir for a previous version
             foreach ($versions as $v) {
                 if ($v < $version) {
                     $version_dir = $v;

@@ -38,7 +38,7 @@ $tmpl = Request::getCmd('tmpl', '');
                 if ($child['type'] == 'dir') :
                     $folders[] = $child;
                 elseif ($child['type'] == 'file' || $child['type'] == 'img') :
-                    $files[] = $child;
+                        $files[] = $child;
                 endif;
             endforeach;
 
@@ -58,8 +58,8 @@ $tmpl = Request::getCmd('tmpl', '');
                     $this->currentDoc = $child;
                     echo $this->loadTemplate('doc');
                 elseif ($child['type'] == 'img') :
-                    $this->currentImg = $child;
-                    echo $this->loadTemplate('img');
+                        $this->currentImg = $child;
+                        echo $this->loadTemplate('img');
                 endif;
             endforeach;
             ?>

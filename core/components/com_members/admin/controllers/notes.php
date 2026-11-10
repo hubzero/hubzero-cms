@@ -224,8 +224,7 @@ class Notes extends AdminController
 
                 $i++;
             }
-        } else // no rows were selected
-        {
+        } else { // no rows were selected
             Notify::warning(Lang::txt('COM_MEMBERS_NOTES_DELETE_NO_ROW_SELECTED'));
         }
 

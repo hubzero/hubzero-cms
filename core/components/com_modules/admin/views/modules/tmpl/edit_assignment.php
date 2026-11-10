@@ -125,11 +125,11 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                         if (trim($assignment) == '-') :
                             $checked = '';
                         elseif ($assignment == 0) :
-                            $checked = ' checked="checked"';
+                                $checked = ' checked="checked"';
                         elseif ($assignment < 0) :
-                            $checked = in_array(-$link->value, $this->item->menuAssigned()) ? ' checked="checked"' : '';
+                                $checked = in_array(-$link->value, $this->item->menuAssigned()) ? ' checked="checked"' : '';
                         elseif ($assignment > 0) :
-                            $checked = in_array($link->value, $this->item->menuAssigned()) ? ' checked="checked"' : '';
+                                $checked = in_array($link->value, $this->item->menuAssigned()) ? ' checked="checked"' : '';
                         endif;
                         ?>
                     <li class="menu-link">

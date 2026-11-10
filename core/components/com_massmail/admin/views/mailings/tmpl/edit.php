@@ -477,7 +477,7 @@ $this->js('edit.js', 'com_massmail');
             <?php if ($canDo->get('core.override')) { ?>
             <div class="mm-rcpt-section">
                 <h5><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></h5>
-                <label class="mm-warn mm-optout-label"><input type="checkbox" form="adminForm" name="ignore_optout" id="field-optout" value="1"<?php echo ($ignore ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT'); ?></label>
+                <label class="mm-warn mm-optout-label"><input type="checkbox" form="adminForm" name="ignore_optout" id="field-optout" value="1"<?php echo($ignore ? ' checked="checked"' : ''); ?> /> <?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT'); ?></label>
                 <p class="<?php echo $ignore ? 'warning' : 'info'; ?> mm-optout-note" id="mm-optout-note"><?php echo Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT'); ?></p>
             </div>
             <?php } ?>

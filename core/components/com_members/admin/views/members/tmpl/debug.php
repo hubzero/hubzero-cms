@@ -112,14 +112,14 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                         $class = 'check-a';
                         $text  = '<span class="state yes"><span>&#10003;</span></span>';
                     elseif ($check === false) :
-                        $class = 'check-d';
-                        $text  = '<span class="state no"><span>&#10007;</span></span>';
+                            $class = 'check-d';
+                            $text  = '<span class="state no"><span>&#10007;</span></span>';
                     elseif ($check === null) :
-                        $class = 'check-0';
-                        $text  = '<span class="state no"><span>&#10007;</span></span>';
+                            $class = 'check-0';
+                            $text  = '<span class="state no"><span>&#10007;</span></span>';
                     else :
-                        $class = '';
-                        $text  = '&#160;';
+                            $class = '';
+                            $text  = '&#160;';
                     endif;
                     ?>
                     <td class="center <?php echo $class; ?>">

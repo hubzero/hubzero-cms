@@ -30,7 +30,7 @@ foreach ($this->rows as $i => $row) :
     if ($row->client_id == 0) :
         $siteUserCount++;
     else :
-        $adminUserCount++;
+            $adminUserCount++;
     endif;
 endforeach;
 
@@ -86,8 +86,8 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
                                     echo '<a href="' . $editUrl . '" title="'
                                         . $editTitle . '">' . $userName . '</a>';
                                 else :
-                                    echo $this->escape($user->get('name'))
-                                        . ' [' . $this->escape($user->get('username')) . ']';
+                                            echo $this->escape($user->get('name'))
+                                            . ' [' . $this->escape($user->get('username')) . ']';
                                 endif;
                                 ?>
                             </td>

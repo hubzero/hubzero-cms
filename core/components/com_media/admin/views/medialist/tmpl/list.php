@@ -54,7 +54,7 @@ $tmpl = Request::getCmd('tmpl', '');
                         if ($child['type'] == 'dir') :
                             $folders[] = $child;
                         elseif ($child['type'] == 'file' || $child['type'] == 'img') :
-                            $files[] = $child;
+                                $files[] = $child;
                         endif;
                     endforeach;
 

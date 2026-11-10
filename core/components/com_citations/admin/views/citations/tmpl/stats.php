@@ -32,7 +32,7 @@ Toolbar::title(Lang::txt('CITATION') . ': ' . Lang::txt('CITATION_STATS'), 'cita
                 <th><?php echo $year; ?></th>
                 <td class="priority-2"><?php echo $amt['affiliate']; ?></td>
                 <td class="priority-2"><?php echo $amt['non-affiliate']; ?></td>
-                <td><?php echo (intval($amt['affiliate']) + intval($amt['non-affiliate'])); ?></td>
+                <td><?php echo(intval($amt['affiliate']) + intval($amt['non-affiliate'])); ?></td>
             </tr>
         <?php } ?>
         </tbody>

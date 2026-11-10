@@ -30,7 +30,7 @@ $typeSelectLabel = Lang::txt('COM_SEARCH_FIELDS_BOOST_TYPE');
                     <input type="text"
                         value="<?php echo $boost->getFormattedFieldValue(); ?>"
                         disabled>
-            <?php	else :
+            <?php else :
                     $this->view('_boost_document_type_select')
                         ->set('boost', $boost)
                         ->set('typeOptions', $typeOptions)

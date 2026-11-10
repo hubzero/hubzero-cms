@@ -77,7 +77,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
         <td width="565" style="padding: 14px;">
             <span style="font-weight: bold; font-size: 14px; color: #333;">Your <?php echo $this->escape($this->interval); ?> group discussion digest</span>
             <hr style="border: none; border-top: 1px solid #dddddd; margin: 8px 0;" />
-            <span>You have <strong><?php echo $posts; ?></strong> new post<?php echo ($posts != 1 ? 's' : ''); ?> across <strong><?php echo $groups; ?></strong> of your group<?php echo ($groups != 1 ? 's' : ''); ?>.</span>
+            <span>You have <strong><?php echo $posts; ?></strong> new post<?php echo($posts != 1 ? 's' : ''); ?> across <strong><?php echo $groups; ?></strong> of your group<?php echo($groups != 1 ? 's' : ''); ?>.</span>
         </td>
     </tr>
 </table>
@@ -106,7 +106,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
         <tr>
             <td colspan="2" style="text-align: center; font-size: 14px; padding: 14px 0 4px;">
                 <strong><?php echo $this->escape($group->get('description')); ?></strong>
-                <span style="color: #999;">&mdash; <?php echo $posts->count(); ?> new post<?php echo ($posts->count() != 1 ? 's' : ''); ?></span>
+                <span style="color: #999;">&mdash; <?php echo $posts->count(); ?> new post<?php echo($posts->count() != 1 ? 's' : ''); ?></span>
             </td>
         </tr>
         <tr>

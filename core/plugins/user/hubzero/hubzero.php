@@ -485,8 +485,7 @@ class Hubzero extends Plugin
         // If requiring admin approval, set user to not approved
         if ($useractivation == 2) {
             $instance->set('approved', 0);
-        } else // Automatically approved
-        {
+        } else { // Automatically approved
             $instance->set('approved', 2);
         }
 
