@@ -581,15 +581,12 @@ class Assetv1r0 extends Base
         $status = ($id) ? ['code' => 200, 'text' => 'OK'] : ['code' => 201, 'text' => 'Created'];
 
         // Return message
-        $this->send(
-            [
-                'asset_id'    => $asset->get('id'),
-                'asset_title' => $asset->get('title'),
-                'course_id'   => $this->course_id,
-                'files'       => [$files],
-            ],
-            ($id ? 200 : 201),
-        );
+        $this->send([
+            'asset_id'    => $asset->get('id'),
+            'asset_title' => $asset->get('title'),
+            'course_id'   => $this->course_id,
+            'files'       => [$files],
+        ], ($id ? 200 : 201));
     }
 
     /**

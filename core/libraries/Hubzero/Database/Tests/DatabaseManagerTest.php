@@ -586,12 +586,9 @@ class DatabaseManagerTest extends TestCase
     {
         $candidates = BackendRegistry::conventionSyntaxClassCandidates('custom_backend');
 
-        $this->assertSame(
-            [
-                '\\Hubzero\\Database\\Drivers\\CustomBackend\\CustomBackendSyntax',
-            ],
-            $candidates,
-        );
+        $this->assertSame([
+            '\\Hubzero\\Database\\Drivers\\CustomBackend\\CustomBackendSyntax',
+        ], $candidates);
     }
 
     #[Test]
@@ -599,12 +596,9 @@ class DatabaseManagerTest extends TestCase
     {
         $candidates = BackendRegistry::conventionSyntaxClassCandidates('ibm');
 
-        $this->assertSame(
-            [
-                '\\Hubzero\\Database\\Drivers\\Db2\\Db2Syntax',
-            ],
-            $candidates,
-        );
+        $this->assertSame([
+            '\\Hubzero\\Database\\Drivers\\Db2\\Db2Syntax',
+        ], $candidates);
     }
 
     #[Test]
@@ -612,12 +606,9 @@ class DatabaseManagerTest extends TestCase
     {
         $candidates = BackendRegistry::conventionDriverClassCandidates('custom_backend');
 
-        $this->assertSame(
-            [
-                '\\Hubzero\\Database\\Drivers\\CustomBackend\\CustomBackendDriver',
-            ],
-            $candidates,
-        );
+        $this->assertSame([
+            '\\Hubzero\\Database\\Drivers\\CustomBackend\\CustomBackendDriver',
+        ], $candidates);
     }
 
     #[Test]

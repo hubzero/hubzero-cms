@@ -150,15 +150,12 @@ class Select
     public static function groupedlist($data, $name, $options = [])
     {
         // Set default options and overwrite with anything passed in
-        $options = array_merge(
-            [
-                'group.items' => 'items',
-                'group.label' => 'text',
-                'group.label.toHtml' => true,
-                'id' => false,
-            ],
-            $options,
-        );
+        $options = array_merge([
+            'group.items' => 'items',
+            'group.label' => 'text',
+            'group.label.toHtml' => true,
+            'id' => false,
+        ], $options);
 
         // Apply option rules
         if ($options['group.items'] === null) {

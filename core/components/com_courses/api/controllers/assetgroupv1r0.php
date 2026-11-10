@@ -180,18 +180,15 @@ class Assetgroupv1r0 extends Base
         }
 
         // Return message
-        $this->send(
-            [
-                'assetgroup_id'    => $assetGroup->get('id'),
-                'assetgroup_title' => $assetGroup->get('title'),
-                'assetgroup_state' => (int) $assetGroup->get('state'),
-                'assetgroup_style' => 'display:none',
-                'course_id'        => $this->course_id,
-                'offering_alias'   => $this->offering_alias,
-                'allow_tools'      => Tool::getToolDirectory(),
-            ],
-            ($id ? 200 : 201),
-        );
+        $this->send([
+            'assetgroup_id'    => $assetGroup->get('id'),
+            'assetgroup_title' => $assetGroup->get('title'),
+            'assetgroup_state' => (int) $assetGroup->get('state'),
+            'assetgroup_style' => 'display:none',
+            'course_id'        => $this->course_id,
+            'offering_alias'   => $this->offering_alias,
+            'allow_tools'      => Tool::getToolDirectory(),
+        ], ($id ? 200 : 201));
     }
 
     /**

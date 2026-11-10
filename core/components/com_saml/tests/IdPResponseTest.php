@@ -205,14 +205,11 @@ class IdPResponseTest extends Basic
      **/
     public function testConfiguredMapReplacesDefaultSet()
     {
-        $mapped = new StubSamlSp(
-            [
-                'entity_id'     => 'https://sp.example.com/saml2',
-                'acs_url'       => 'https://sp.example.com/acs',
-                'nameid_source' => 'username',
-            ],
-            [['name' => 'eppn', 'friendly' => 'eppn', 'source' => 'username']],
-        );
+        $mapped = new StubSamlSp([
+            'entity_id'     => 'https://sp.example.com/saml2',
+            'acs_url'       => 'https://sp.example.com/acs',
+            'nameid_source' => 'username',
+        ], [['name' => 'eppn', 'friendly' => 'eppn', 'source' => 'username']]);
 
         $x = $this->xpath($this->idp->createSAMLResponse($mapped, $this->user, '_r', '_s'));
 

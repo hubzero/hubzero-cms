@@ -819,18 +819,15 @@ class RulesTest extends TestCase
 
     public function allRulesPass(): void
     {
-        $result = Rules::validate(
-            [
-                'name' => 'John Doe',
-                'age' => 25,
-                'status' => 'active',
-            ],
-            [
-                'name' => 'required|length:2,100',
-                'age' => 'numeric|between:18,120',
-                'status' => 'in:active,inactive,pending',
-            ],
-        );
+        $result = Rules::validate([
+            'name' => 'John Doe',
+            'age' => 25,
+            'status' => 'active',
+        ], [
+            'name' => 'required|length:2,100',
+            'age' => 'numeric|between:18,120',
+            'status' => 'in:active,inactive,pending',
+        ]);
 
         $this->assertTrue($result);
     }

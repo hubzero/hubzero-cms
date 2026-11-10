@@ -755,21 +755,17 @@ class User extends \Hubzero\Database\Relational
             return '';
         }
 
-        $link = str_replace(
-            [
-                '{ID}',
-                '{USERNAME}',
-                '{EMAIL}',
-                '{NAME}',
-            ],
-            [
-                $this->get('id'),
-                $this->get('username'),
-                $this->get('email'),
-                str_replace(' ', '+', $this->get('name')),
-            ],
-            self::$linkBase,
-        );
+        $link = str_replace([
+            '{ID}',
+            '{USERNAME}',
+            '{EMAIL}',
+            '{NAME}',
+        ], [
+            $this->get('id'),
+            $this->get('username'),
+            $this->get('email'),
+            str_replace(' ', '+', $this->get('name')),
+        ], self::$linkBase);
 
         return $link;
     }

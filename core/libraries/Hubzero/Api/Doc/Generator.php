@@ -365,15 +365,11 @@ class Generator
     private function parseClassFromFile($file, $returnAsParts = false)
     {
         // replace some values in file path to get what we need
-        $file = str_replace(
-            [
-                PATH_CORE . DS . 'components' . DS . 'com_',
-                PATH_APP . DS . 'components' . DS . 'com_',
-                '.php',
-            ],
-            ['', '', ''],
-            $file,
-        );
+        $file = str_replace([
+            PATH_CORE . DS . 'components' . DS . 'com_',
+            PATH_APP . DS . 'components' . DS . 'com_',
+            '.php',
+        ], ['', '', ''], $file);
 
         // split by "/"
         $parts = explode(DS, $file);

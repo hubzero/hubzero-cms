@@ -116,13 +116,10 @@ class Handler
         }
 
         if (!$duplicate) {
-            $this->storage->store(
-                [
-                    'message' => $message,
-                    'type'    => $type,
-                ],
-                $domain,
-            );
+            $this->storage->store([
+                'message' => $message,
+                'type'    => $type,
+            ], $domain);
         }
 
         return $this;

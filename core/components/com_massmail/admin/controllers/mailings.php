@@ -938,18 +938,14 @@ class Mailings extends AdminController
      */
     public function stopTask()
     {
-        $this->transition(
-            [
-                Mailing::STATUS_SENDING,
-                Mailing::STATUS_PREPARING,
-                Mailing::STATUS_PAUSED,
-                Mailing::STATUS_PENDING_APPROVAL,
-                Mailing::STATUS_HELD,
-                Mailing::STATUS_SCHEDULED,
-            ],
-            Mailing::STATUS_CANCELLED,
-            'COM_MASSMAIL_CANCELLED',
-        );
+        $this->transition([
+            Mailing::STATUS_SENDING,
+            Mailing::STATUS_PREPARING,
+            Mailing::STATUS_PAUSED,
+            Mailing::STATUS_PENDING_APPROVAL,
+            Mailing::STATUS_HELD,
+            Mailing::STATUS_SCHEDULED,
+        ], Mailing::STATUS_CANCELLED, 'COM_MASSMAIL_CANCELLED');
     }
 
     /**

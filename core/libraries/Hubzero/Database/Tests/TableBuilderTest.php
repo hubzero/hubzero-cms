@@ -272,13 +272,10 @@ class TableBuilderTest extends AbstractDriverTestCase
         $builder = $this->createBuilderWithGrammar($driver, 'delegation_test', $stub);
         $builder->id();
 
-        $this->assertSame(
-            [
-                'CREATE TABLE delegated_stub (id INTEGER)',
-                'CREATE INDEX delegated_stub_idx ON delegated_stub (id)',
-            ],
-            $builder->toSqlStatements(),
-        );
+        $this->assertSame([
+            'CREATE TABLE delegated_stub (id INTEGER)',
+            'CREATE INDEX delegated_stub_idx ON delegated_stub (id)',
+        ], $builder->toSqlStatements());
     }
 
     /**

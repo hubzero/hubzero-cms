@@ -628,14 +628,10 @@ class UpsertTest extends AbstractDriverTestCase
         $this->setupTestData($driver);
         $this->insertRow($driver, 'R01', 'Existing R', 10);
 
-        $count = UpsertItem::upsertMany(
-            [
-                ['code' => 'R01', 'name' => 'Updated R', 'value' => 99],
-                ['code' => 'R02', 'name' => 'New R', 'value' => 50],
-            ],
-            ['name', 'value'],
-            ['code'],
-        );
+        $count = UpsertItem::upsertMany([
+            ['code' => 'R01', 'name' => 'Updated R', 'value' => 99],
+            ['code' => 'R02', 'name' => 'New R', 'value' => 50],
+        ], ['name', 'value'], ['code']);
 
         $this->assertSame(2, $count);
 

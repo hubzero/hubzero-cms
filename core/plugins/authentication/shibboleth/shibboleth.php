@@ -295,15 +295,14 @@ class Shibboleth extends Plugin
         }
 
         // Attach style and scripts
-        foreach (
-            [
-                'bootstrap-select.min.js',
-                'shibboleth.js',
-                'bootstrap-select.min.css',
-                'bootstrap-theme.min.css',
-                'shibboleth.css',
-            ] as $asset
-        ) {
+        $assets = [
+            'bootstrap-select.min.js',
+            'shibboleth.js',
+            'bootstrap-select.min.css',
+            'bootstrap-theme.min.css',
+            'shibboleth.css',
+        ];
+        foreach ($assets as $asset) {
             $mtd = 'addPlugin' . (preg_match('/[.]js$/', $asset) ? 'script' : 'stylesheet');
             \Hubzero\Document\Assets::$mtd('authentication', 'shibboleth', $asset);
         }
@@ -416,12 +415,20 @@ class Shibboleth extends Plugin
                     ? $_SERVER['REDIRECT_Shib-Identity-Provider']
                     : $_SERVER['Shib-Identity-Provider'],
             ];
-            foreach (
-                [
-                    'email', 'eppn', 'displayName', 'givenName', 'sn', 'mail', 'middleName', 'lastName',
-                    'userPrincipalName', 'eduPersonPrincipalName', 'eduPersonUniqueId',
-                ] as $key
-            ) {
+            $keys = [
+                'email',
+                'eppn',
+                'displayName',
+                'givenName',
+                'sn',
+                'mail',
+                'middleName',
+                'lastName',
+                'userPrincipalName',
+                'eduPersonPrincipalName',
+                'eduPersonUniqueId',
+            ];
+            foreach ($keys as $key) {
                 if (isset($_SERVER[$key])) {
                     $attrs[$key] = $_SERVER[$key];
                 } elseif (isset($_SERVER['REDIRECT_' . $key])) {

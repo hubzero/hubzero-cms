@@ -237,15 +237,12 @@ class FlavorTest extends TestCase
             ['module' => 35, 'col' => 1],
         ]);
 
-        $this->assertSame(
-            [
-                ['module' => 44, 'col' => 1, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
-                ['module' => 35, 'col' => 1, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
-                ['module' => 37, 'col' => 3, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
-                ['module' => 41, 'col' => 3, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
-            ],
-            $laid,
-        );
+        $this->assertSame([
+            ['module' => 44, 'col' => 1, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
+            ['module' => 35, 'col' => 1, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
+            ['module' => 37, 'col' => 3, 'row' => 1, 'size_x' => 1, 'size_y' => 2],
+            ['module' => 41, 'col' => 3, 'row' => 3, 'size_x' => 1, 'size_y' => 2],
+        ], $laid);
     }
 
     /**

@@ -180,20 +180,17 @@ class Unitv1r0 extends Base
              ->set('items', clone($this->course->offering()->units()));*/
 
         // Return message
-        $this->send(
-            [
-                'unit_id'        => $unit->get('id'),
-                'unit_title'     => $unit->get('title'),
-                'course_id'      => $this->course_id,
-                'assetgroups'    => $assetGroups,
-                'course_alias'   => $this->course->get('alias'),
-                'offering_alias' => $this->offering_alias,
-                'section_id'     => (isset($section_id)
-                    ? $section_id
-                    : $this->course->offering()->section()->get('id')),
-                'prerequisites'  => '',//$view->loadTemplate()
-            ],
-            ($id ? 200 : 201),
-        );
+        $this->send([
+            'unit_id'        => $unit->get('id'),
+            'unit_title'     => $unit->get('title'),
+            'course_id'      => $this->course_id,
+            'assetgroups'    => $assetGroups,
+            'course_alias'   => $this->course->get('alias'),
+            'offering_alias' => $this->offering_alias,
+            'section_id'     => (isset($section_id)
+                ? $section_id
+                : $this->course->offering()->section()->get('id')),
+            'prerequisites'  => '',//$view->loadTemplate()
+        ], ($id ? 200 : 201));
     }
 }

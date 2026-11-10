@@ -292,25 +292,25 @@ class Relationships extends AdminController
                 return preg_replace('/[^a-zA-Z0-9]/', '', strtolower($a));
             };
             // reconcile post data with what we already know about a tag's relationships
-            foreach (
-                [
-                    'labels'   => [
-                        'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
-                        'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d',
-                    ],
-                    'labeled'  => [
-                        'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
-                        'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d',
-                    ],
-                    'parents'  => [
-                        'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
-                        'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d',
-                    ],
-                    'children' => [
-                        'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
-                        'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d',
-                    ]] as $type => $sql
-            ) {
+            $queries = [
+                'labels'   => [
+                    'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d',
+                ],
+                'labeled'  => [
+                    'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d',
+                ],
+                'parents'  => [
+                    'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d',
+                ],
+                'children' => [
+                    'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
+                    'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d',
+                ],
+            ];
+            foreach ($queries as $type => $sql) {
                 $ex = array_flip(array_map($normalize, $tag[$type]));
                 if (isset($_POST[$type])) {
                     foreach ($_POST[$type] as $n_tag) {
