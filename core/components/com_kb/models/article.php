@@ -91,7 +91,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      *
      * @var  string
      */
-    private $_base = 'index.php?option=com_kb';
+    private $base = 'index.php?option=com_kb';
 
     /**
      * Runs extra setup code when creating a new model
@@ -303,7 +303,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
      */
     public function link($type = '')
     {
-        $link  = $this->_base;
+        $link  = $this->base;
         if (!$this->get('calias')) {
             $category = Category::oneOrNew($this->get('category'));
             $this->set('calias', $category->get('path'));
@@ -315,11 +315,11 @@ class Article extends Relational implements \Hubzero\Search\Searchable
         switch (strtolower($type)) {
             case 'component':
             case 'base':
-                return $this->_base;
+                return $this->base;
                 break;
 
             case 'vote':
-                $link  = $this->_base . '&task=vote&category=article&id=' . $this->get('id');
+                $link  = $this->base . '&task=vote&category=article&id=' . $this->get('id');
                 break;
 
             case 'edit':

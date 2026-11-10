@@ -110,7 +110,7 @@ class Question extends Relational
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_base = 'index.php?option=com_answers';
+    private $base = 'index.php?option=com_answers';
 
     /**
      * Is the question closed?
@@ -289,7 +289,7 @@ class Question extends Relational
      */
     public function link($type = '')
     {
-        $link = $this->_base;
+        $link = $this->base;
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
